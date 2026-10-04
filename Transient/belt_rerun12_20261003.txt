@@ -1,0 +1,112 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 14:43:29 defs_resolve PASS 
+[cauldron] 14:43:29 flora_expansion_shape PASS 
+[cauldron] 14:43:29 fexxil_venom_shape PASS 
+[cauldron] 14:43:31 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 14:43:31 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 14:43:32 biome_roster PASS 
+[cauldron] 14:43:32 biome_worker_and_terrain PASS 
+[cauldron] 14:43:32 nettle_habitat_wired PASS 
+[cauldron] 14:43:32 vent_habitat_wired PASS 
+[cauldron] 14:43:34 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 14:43:35 weathers_selectable PASS 
+[cauldron] 14:43:53 defaults PASS 
+[cauldron] 14:43:57 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 14:44:00 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 14:44:04 ventsEnabled_roundtrip PASS 
+[cauldron] 14:44:08 ventFalterMessage_roundtrip PASS 
+[cauldron] 14:44:11 ventGardensEnabled_roundtrip PASS 
+[cauldron] 14:44:15 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 14:44:17 suush_and_vexxiss_comps PASS 
+[cauldron] 14:44:17 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 14:44:20 fauna_spawns PASS 
+[cauldron] 14:44:20 suush_can_fly PASS 
+[cauldron] 14:44:29 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, true]
+[cauldron] 14:44:34 suush_detonates_when_shot PASS 
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 14:44:39 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 14:44:40 assay_grades PASS 
+[cauldron] 14:44:43 assay_toggle_off PASS 
+[cauldron] 14:44:46 assay_factor_scales PASS 
+[cauldron] 14:44:50 yield_site_ready PASS 
+[cauldron] 14:45:15 harvest_pays_metal UNMEASURED surprise: colonist_injured_unexpectedly: colonist Zeiph gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic; colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic; colonist_injured_unexpectedly: colonist Nicholas gained 1 new hediff(s) (ToxicBuil
+[cauldron] 14:45:15 yield_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Zeiph gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic; colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (ToxicBuildup); 
+[cauldron] 14:45:15 yield_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Zeiph gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic; colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (ToxicBuildup); 
+[cauldron]-note map-biome native / non-native herbivore picked: ["Muffalo", "Deer"]
+[cauldron] 14:45:30 bloom_site_ready UNMEASURED surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T144326\Cauldron__bloom__colonist_injured_unexpectedly__t2001__001.json]
+[cauldron] 14:45:30 bloom_loads_exposed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:30 bloom_no_double_tax UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:30 bloom_spares_roofed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:30 bloom_spares_natives UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:30 bloom_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:30 bloom_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surpr
+[cauldron] 14:45:34 water_site_ready PASS 
+[cauldron]-note pond A terrain after 300 ticks of a vexxiss wading: {"WaterShallow": 55, "ToxicWaterShallow": 9}
+[cauldron] 14:45:38 water_poison_on PASS 
+[cauldron] 14:45:38 water_letter_arrives PASS 
+[cauldron] 14:45:43 water_letter_cooldown PASS 
+[cauldron] 14:45:50 water_letter_toggle_off PASS 
+[cauldron] 14:45:56 water_poison_toggle_off PASS 
+[cauldron] 14:46:02 fire_warden_beats_fire UNMEASURED surprise: fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T144326\Cauldron__fire__fire_on_map__t3251__001.json]
+[cauldron] 14:46:02 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T144326\Cauldron__fire__fire_on_map
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 14:46:05 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 14:46:10 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 14:46:57 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.012, 0.008143173]
+[cauldron]-note OFF arm: near / far: [0.012, 0.012]
+[cauldron] 14:47:47 vent_exposure_is_local PASS 
+[cauldron]-note wild vexxiss took RM_VexxissDrinkVent: true
+[cauldron]-note OFF arm: took the drink job: false
+[cauldron] 14:48:34 vexxiss_drinks_vent PASS 
+[cauldron]-note vent silenced by a drinking vexxiss: [true, 0.0, "silenced"]
+[cauldron]-note recovery output first / 3000 ticks later: [0.0, 0.05]
+[cauldron] 14:51:05 vent_silences_and_recovers PASS 
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 1000}
+[cauldron] 14:51:09 log_clean PASS 
+[bacta] 14:51:22 defs_resolve PASS 
+[bacta] 14:51:22 tank_def_wiring PASS 
+[bacta] 14:51:22 fluid_and_items_trade PASS 
+[bacta] 14:51:22 trader_stock_patch_landed FAIL ExpectationFailed: Base_Outlander_Standard stockGenerators lack the patch's rows [(0, 6), (0, 3)]: the patch matched nothing, or another mod rewrote the list
+[bacta] 14:51:22 doctor_recipes_patch_landed UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:51:22 settings_ship_defaults UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:51:22 no_bacta_errors_in_log UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:51:48 site_ready_heals PASS 
+[bacta] 14:52:22 tank_refuels_via_vanilla_job PASS 
+[bacta] 14:53:26 enters_and_reports_off PASS 
+[bacta] 14:53:53 heals_fresh_wound_at_tuned_rate PASS 
+[bacta] 14:53:53 drains_bacta_while_healing FAIL ExpectationFailed: fluidCostPerDay=5: used 0.000 bacta in a 2500-tick healing phase, expected about 0.21
+[bacta] 14:53:53 never_regrows_never_touches_brain UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:53:53 ejects_when_nothing_left UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:53:53 no_bacta_errors_after_ticking UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:55:28 site_ready_scar FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bacta] 14:55:28 scar_erasure_off_keeps_the_scar UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 14:55:28 scar_erasure_on_removes_the_scar UNMEASURED upstream failed -- this chain's state is meaningless
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 788
+  FAIL bland world established (tile 122, map 1)  -- ['ruins present: 3']
+  -- Cauldron
+     !! Cauldron: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 42, 'UNMEASURED': 12} surprises=3 serious=['colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE']
+  -- Bacta
+  -- BrainWorms
+  -- LeaningScrub
+  -- BlueDesert
+  -- WeepingStones
+  -- TheForge
+  FAIL no suite raised out of run_suite  -- ['Bacta: RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound', 'BrainWorms: RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound', 'LeaningScrub: RimBridge
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+UNMEASURED situational_rerun -- RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

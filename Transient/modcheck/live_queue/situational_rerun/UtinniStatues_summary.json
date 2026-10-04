@@ -1,0 +1,990 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "82 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [
+         {
+          "type": "Error",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> Failed to get texture report for RM_SlackwaxTimber: Failed to find texture path i.e. graphicData.texPath 'Things/Plant/RM_Slackwax/RM_Slackwax' (Verse.Graphic_StackCount) pass 0",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.beliar 'Beliar Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> van.beasts 'Dark Ages : Beasts and Monsters' has 2 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.keshig 'Det's Xenotypes - Keshig' has 3 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.highborn 'Highborn Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.horrors 'Horrors (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> sihv.rombonesport 'Rim of Madness - Bones Unofficial Fix' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.starwarsanimalcollection 'Star Wars Animal Collection (Continued)' has 13 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.swbestiary 'RimMandrake: SW \u2014 Bestiary' has 11 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> jellypowered.survivaltools 'Survival Tools Reborn' has 22 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> ludeon.rimworld 'Core' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> vanillaquestsexpanded.ancients 'Vanilla Quests Expanded - Ancients' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.dungeonpack 'Dungeon Pack (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> lee.theforce.lightsaber 'Star Wars : The Force - Lightsaber' has 5 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.armoury 'Jawa Armoury Rebalance' has 40 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.biomes 'RimMandrake: Baroque Biomes' has 6 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.pyrinth 'RimMandrake: Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.epochspyrinth 'Epochs - Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=38 elapsedMs=978498",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1972 elapsedMs=980471",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=980472",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=980474",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=980476",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=980477",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=980481",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=980482",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=980483",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=980487",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=14 elapsedMs=980502",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=2004 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=15 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find player faction.",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12122,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.ResearchProjectDef named RimFridge_PowerFactorSetting. There are 413 defs of this type loaded.\n\nPossible Matches:\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ResearchProjectDefs\\ResearchProjects.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\Fridge_Building.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\WallFridge_Building.xml]\n",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1C964610]\n  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a] in <948532676ba340059cc9093181148128>:0 \n    - TRANSPILER PerformanceOptimizer.Main: IEnumerable`1 PerformanceOptimizer.Optimization_FasterGetCompReplacement:Transpiler(IEnumerable`1 instructions, MethodBase method)\n  at RimFridge.RimFridgeComponent.StartedNewGame () [0x00000] in <948532676ba340059cc9093181148128>:0 \n  at Verse.GameComponentUtility.StartedNewGame () [0x0001a] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void SmashTools.GameEvent:RaiseOnNewGame()\n    - POSTFIX SmashPhil.VehicleFramework: Void UpdateLogTool.Patches:UpdateOnNewGame()\n    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_GameComponentUtility_LoadedGame_Patch+StartedNewGame:Postfix()",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Ascendant Helix is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Deepwater Compact is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Free Droid Enclaves is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Geonosian Foundry Hive is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Hutt Cartel is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Wildsteam Clan is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 22,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 3
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DF9ACD49]\n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4 () [0x00062] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>b__0 () [0x00000] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at Verse.LongEventHandler.UpdateCurrentSynchronousEvent (System.Boolean& sceneChanged) [0x0001d] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Rhydonium/RhydoniumPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Plasma/TibannaPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing SteamGeyser36748",
+          "repeats": 4
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock43437",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock_Large43438",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock43439",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43491",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43512",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43526",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43550",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_41cc42f6a37647ff8cd845391389194c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:51.4513225+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:51.5003996+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RUT_StatueSmall",
+          "found": true,
+          "defName": "RUT_StatueSmall",
+          "defType": "ThingDef",
+          "label": "Utinni votive",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "RUT_StatueSmall"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_Statue",
+          "found": true,
+          "defName": "RUT_Statue",
+          "defType": "ThingDef",
+          "label": "Utinni statue",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "RUT_Statue"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_StatueGrand",
+          "found": true,
+          "defName": "RUT_StatueGrand",
+          "defType": "ThingDef",
+          "label": "Utinni grand statue",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "RUT_StatueGrand"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_StatueGrand_Shkaar",
+          "found": true,
+          "defName": "RUT_StatueGrand_Shkaar",
+          "defType": "ThingDef",
+          "label": "burning idol of Sh'kaar",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "RUT_StatueGrand_Shkaar"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RUT_StatueSmall",
+          "found": true,
+          "defName": "Make_RUT_StatueSmall",
+          "defType": "RecipeDef",
+          "label": "make Utinni votive",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "Make_RUT_StatueSmall"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RUT_Statue",
+          "found": true,
+          "defName": "Make_RUT_Statue",
+          "defType": "RecipeDef",
+          "label": "make Utinni statue",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "Make_RUT_Statue"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RUT_StatueGrand",
+          "found": true,
+          "defName": "Make_RUT_StatueGrand",
+          "defType": "RecipeDef",
+          "label": "make Utinni grand statue",
+          "modName": "Jawa Utinni Statues",
+          "packageId": "mandrake.rut.utinnistatues",
+          "fields": {
+           "defName": "Make_RUT_StatueGrand"
+          }
+         }
+        ],
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_fad9912dac3748428079245b680bc5ae",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:57.1512745+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:57.2006037+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "dedicate",
+   "components": [
+    {
+     "name": "statue_takes_the_chosen_god",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL idol of Sh'kaar | HONOURS Sh'kaar the All-Searing | DEF RUT_Statue | FUEL False",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_0bcdbdb5bf2c469dbd9ee385b36d3e7b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:03.0012858+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:03.050326+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rededicate_changes_it",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL idol of Rekko | HONOURS Rekko of the Second Hand | DEF RUT_Statue | FUEL False",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_4127a649c322481e9c65c56fa9e08de1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:03.1016566+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:03.1497651+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tier_offers_only_its_own_size",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "REFUSED: RUT_Relief_Crawler is not a carving of RUT_Statue",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_64dfc45537f443d791349224ebefe783",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:03.200209+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:03.2497533+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grand_takes_the_crawler",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL relief of the Crawler | HONOURS the clan's ark | DEF RUT_StatueGrand | FUEL False",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_1b0e130760344e2fa09f5552855dd587",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:03.3006503+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:03.3505381+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "shkaar_idol",
+   "components": [
+    {
+     "name": "shkaar_grand_becomes_the_burning_idol",
+     "toggle": "shkaarIdolBurns",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL grand idol of Sh'kaar | HONOURS Sh'kaar the All-Searing | DEF RUT_StatueGrand_Shkaar | FUEL True",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_601a35af366e472681fd705fcd027b78",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:09.241963+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:09.294523+00:00",
+         "DurationMs": 52,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rededicated_idol_goes_cold",
+     "toggle": "shkaarIdolBurns",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL grand idol of Ohm | HONOURS Ohm the All-Current | DEF RUT_StatueGrand | FUEL False",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_903161e3f9ae4f73b7482b264e8a5081",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:09.3416111+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:09.3906831+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burning_off_stays_cold",
+     "toggle": "shkaarIdolBurns",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.UtinniStatues.UtinniStatuesSettings, {'shkaarIdolBurns': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDedicate(Verse.Map, Verse.IntVec3, System.String)",
+        "result": "LABEL grand idol of Sh'kaar | HONOURS Sh'kaar the All-Searing | DEF RUT_StatueGrand | FUEL False",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_3a891acd23324b14a05918b8e72aa6ae",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:23:10.9217182+00:00",
+         "CompletedAtUtc": "2026-10-04T01:23:10.970774+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.UtinniStatues.UtinniStatuesSettings, {'shkaarIdolBurns': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\UtinniStatues.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": true
+}

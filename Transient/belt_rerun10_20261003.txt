@@ -1,0 +1,242 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 13:30:02 defs_resolve PASS 
+[cauldron] 13:30:02 flora_expansion_shape PASS 
+[cauldron] 13:30:02 fexxil_venom_shape PASS 
+[cauldron] 13:30:04 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 13:30:04 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 13:30:04 biome_roster PASS 
+[cauldron] 13:30:04 biome_worker_and_terrain PASS 
+[cauldron] 13:30:04 nettle_habitat_wired PASS 
+[cauldron] 13:30:04 vent_habitat_wired PASS 
+[cauldron] 13:30:07 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 13:30:07 weathers_selectable PASS 
+[cauldron] 13:30:29 defaults PASS 
+[cauldron] 13:30:34 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 13:30:39 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 13:30:43 ventsEnabled_roundtrip PASS 
+[cauldron] 13:30:47 ventFalterMessage_roundtrip PASS 
+[cauldron] 13:30:51 ventGardensEnabled_roundtrip PASS 
+[cauldron] 13:30:55 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 13:30:57 suush_and_vexxiss_comps PASS 
+[cauldron] 13:30:57 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 13:31:00 fauna_spawns PASS 
+[cauldron] 13:31:00 suush_can_fly PASS 
+[cauldron] 13:31:11 suush_ignores_melee FAIL ExpectationFailed: a suush hit by a Cut (melee) detonated or died: only Bullet/Bomb start the wick, melee must not (None)
+[cauldron] 13:31:11 suush_detonates_when_shot UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 13:31:16 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 13:31:17 assay_grades PASS 
+[cauldron] 13:31:20 assay_toggle_off PASS 
+[cauldron] 13:31:23 assay_factor_scales PASS 
+[cauldron] 13:31:27 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [0, 0]
+[cauldron] 13:32:50 harvest_pays_metal UNMEASURED UNMEASURED: no wood from the first harvest in 5000 ticks (job not done): cannot judge the metal beside it
+[cauldron] 13:32:50 yield_factor_scales UNMEASURED UNMEASURED: no factor-1.0 baseline (harvest_pays_metal did not pay)
+[cauldron] 13:32:50 yield_toggle_off UNMEASURED UNMEASURED: no steel baseline from the earlier harvests
+[cauldron]-note map-biome native / non-native herbivore picked: ["Muffalo", "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 13:33:55 bloom_site_ready UNMEASURED surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modche
+[cauldron] 13:33:55 bloom_loads_exposed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:33:55 bloom_no_double_tax UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:33:55 bloom_spares_roofed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:33:55 bloom_spares_natives UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:33:55 bloom_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:33:55 bloom_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Iosif gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown; colonist_injured_unexpectedly: colonist Pug gained 1 new hediff(s) (RM_VentMetalL
+[cauldron] 13:34:00 water_site_ready UNMEASURED UNMEASURED: a 'Vexxiss poisoning water' letter is already on the stack before the vexxiss wades
+[cauldron] 13:34:00 water_poison_on UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:34:00 water_letter_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:34:00 water_letter_cooldown UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:34:00 water_letter_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:34:00 water_poison_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:34:05 fire_warden_beats_fire UNMEASURED surprise: colonist_damaged: colonist Marjot took 1 damage event(s): Crush by nobody; fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132959\Cauldron__fire__colonist_damaged__t17340__001.json]
+[cauldron] 13:34:05 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Marjot took 1 damage event(s): Crush by nobody; fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\found
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 13:34:09 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 13:34:14 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 13:35:05 vent_falter_precedes_bloom PASS 
+[cauldron] 13:35:53 vent_exposure_is_local UNMEASURED surprise: colonist_injured_unexpectedly: colonist Marjot gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132959\Cauldron__vents__colonist_injured_unexpectedly__t27643__001.json]
+[cauldron] 13:35:53 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Marjot gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[cauldron] 13:35:53 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Marjot gained 1 new hediff(s) (RM_VentMetalLoad); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 1000}
+[cauldron] 13:35:55 log_clean PASS 
+[lscrub-note] shipped defs resolved: 58
+[lscrub] 13:36:08 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 13:36:08 biome_weather_table PASS 
+[lscrub] 13:36:08 biome_density_and_flora PASS 
+[lscrub] 13:36:08 biome_lean_extension PASS 
+[lscrub] 13:36:11 rules_armed PASS 
+[lscrub] 13:36:11 thicket_smotherable PASS 
+[lscrub] 13:36:11 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 20, "campfire": ["Fuel: 19 / 20 (1.9 days)", "Comfort: +0.09 (inactive)", "Rest effectiveness: +6% (inactive)", "Max connected per building: 1"]}
+[lscrub] 13:37:12 dead_venomvine_fuels_fire FAIL ExpectationFailed: the colonist did not burn any dead venomvine (stack 20 -> 20): the fuel patch does not apply to the Campfire's fuel filter
+[lscrub] 13:37:46 defaults PASS 
+[lscrub] 13:37:50 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 13:37:54 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 13:37:58 leanEnabled_roundtrip PASS 
+[lscrub] 13:38:01 leanScentEnabled_roundtrip PASS 
+[lscrub] 13:38:05 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 13:38:08 fauna_spawns PASS 
+[lscrub] 13:38:08 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 13:38:12 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub-note] Stall: path lengths (cells) over 1500 ticks: {"RM_Thornhold115661": {"alive": 7, "samples": 7, "path": 0.0}, "RM_Shirrel115662": {"alive": 7, "samples": 7, "path": 27.073417464113888}}
+[lscrub] 13:38:34 stall_freezes_small PASS 
+[lscrub-note] Stall, stallFreezeEnabled OFF: path: {"RM_Thornhold115661": {"alive": 7, "samples": 7, "path": 20.41640786499874}}
+[lscrub] 13:39:00 stall_toggle_off_wanders PASS 
+[lscrub-note] Stall, modEnabled OFF: path: {"RM_Thornhold115661": {"alive": 7, "samples": 7, "path": 33.82523059077341}}
+[lscrub] 13:39:21 stall_master_off_wanders PASS 
+[lscrub] 13:39:25 gale_site_ready PASS 
+[lscrub] 13:39:31 gale_deafens_outdoors PASS 
+[lscrub] 13:39:31 gale_spares_roofed PASS 
+[lscrub] 13:39:40 gale_deafen_toggle_off PASS 
+[lscrub-note] turbine output W (on, off, on): [4485.0, 3450.0, 4485.0]
+[lscrub] 13:40:32 gale_turbine_surge PASS 
+[lscrub] 13:41:32 gale_turbine_breakdown FAIL ExpectationFailed: no breakdown on a running turbine after two rolls at a 0.01-day mean in the Gale: ['Power output: 4787 W', 'Grid excess: 4787 W (0 Wd stored)']
+[lscrub] 13:41:35 lash_site_ready PASS 
+[lscrub] 13:41:43 lash_toggle_off_quiet UNMEASURED surprise: colonist_damaged: colonist Marjot took 1 damage event(s): Crush by nobody; colonist_downed: colonist Marjot is bleeding; colonist_injured_unexpectedly: colonist Marjot gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transien
+[lscrub] 13:41:43 lash_strikes_once UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Marjot took 1 damage event(s): Crush by nobody; colonist_downed: colonist Marjot is bleeding; colonist_injured_unexpectedly: colonist Marjot gained 1 new hediff(s)
+[lscrub] 13:41:47 smother_site_ready PASS 
+[lscrub] 13:42:38 smother_claims_stands PASS 
+[lscrub] 13:43:03 smother_off_holds_claims UNMEASURED harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 8721 of cap 948
+[lscrub] 13:43:03 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 8721 of cap 948
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [0, 1, ["Ready to harvest."]]
+[lscrub] 13:43:39 dripping_survives_harvest UNMEASURED UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives
+[lscrub] 13:43:42 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand: [16.492422502470642, 17.0, 18.439088914585774]
+[lscrub] 13:44:01 crown_toggle_off_stays_away PASS 
+[lscrub-note] crown trial ON: dustflutter distances to the stand: [3.605551275463989, 7.615773105863909, 2.0]
+[lscrub] 13:44:17 crown_mob_gathers PASS 
+[lscrub-note] bloom trial OFF: Flee seen per species / vissler arms shed: [{"RM_Crustweevil": false, "RM_Fuzzrunner": false, "RM_Dustflutter": false, "RM_Vissler": false}, 0]
+[lscrub] 13:44:43 bloom_toggle_off_quiet PASS 
+[lscrub-note] bloom trial ON: Flee seen per species / vissler arms shed: [{"RM_Crustweevil": false, "RM_Fuzzrunner": false, "RM_Dustflutter": false, "RM_Vissler": false}, 0]
+[lscrub] 13:45:04 bloom_answers_a_walker FAIL ExpectationFailed: no Flee job seen for ['RM_Crustweevil', 'RM_Dustflutter', 'RM_Fuzzrunner', 'RM_Vissler'] after a colonist walked through the canopy (responding species must flee)
+[lscrub] 13:45:07 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden117550", "RM_Barkwarden117551", "RM_Barkwarden117552"]
+[lscrub] 13:45:08 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Ombrol (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 17 hours.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 13:45:08 station_named_and_timed PASS 
+[lscrub] 13:45:10 station_toggle_off_plain PASS 
+[lscrub] 13:45:20 station_sheds_wool UNMEASURED surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fire_on_map__t392965__001.json]
+[lscrub] 13:45:20 scratch_toggle_off_refused UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 scratch_drops_coat UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 visitors_toggle_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 visitors_come_and_leave_marks UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 felt_comfort_toggle_off_plain UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 felt_furniture_comfort UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 map_step_chance_zero_plants_none UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub] 13:45:20 map_step_plants_one_or_two UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 4 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T133606\LeaningScrub__sweetline__fi
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 13:45:22 log_clean PASS 
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 13:45:35 defs_resolve PASS 
+[bdesert] 13:45:35 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 13:45:35 biome_weather_table PASS 
+[bdesert] 13:45:35 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "spawning"}
+[bdesert] 13:45:35 biome_roster_and_density PASS 
+[bdesert] 13:45:35 charge_comps_wired PASS 
+[bdesert] 13:45:35 rack_needs_no_power PASS 
+[bdesert] 13:45:35 ablation_and_murrek_wired PASS 
+[bdesert] 13:45:55 defaults PASS 
+[bdesert] 13:45:58 burnerHaloEnabled_roundtrip PASS 
+[bdesert] 13:46:02 crackCueEnabled_roundtrip PASS 
+[bdesert] 13:46:06 murrekReseedEnabled_roundtrip PASS 
+[bdesert] 13:46:09 ablationSalvageEnabled_roundtrip PASS 
+[bdesert] 13:46:13 ablationPaceFactor_roundtrip PASS 
+[bdesert] 13:46:16 vhaulkRoadDaysFactor_roundtrip PASS 
+[bdesert] 13:46:20 vhaulkStayDaysFactor_roundtrip PASS 
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 13:46:23 natives_spawn_charged PASS 
+[bdesert] 13:46:23 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": ["RM_Palefloss", "RM_Glassfern", "RM_Chimeglobe", "RM_Virr", "RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk"]}
+[bdesert] 13:46:27 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Palefloss', 'RM_Glassfern', 'RM_Chimeglobe', 'RM_Virr', 'RM_Qeshra', 'RM_Kethevar', 'RM_Lisqueth', 'RM_Vashpuk']
+[bdesert] 13:46:29 plant_death_chains UNMEASURED UNMEASURED: chain ON: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 13:46:32 plant_death_toggle_off_no_chain UNMEASURED UNMEASURED: chain OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 13:46:35 plant_death_master_off_no_chain UNMEASURED UNMEASURED: master OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert-note] warm arms: {"amb": 31.6255741, "low": 5.0, "high": 39.63}
+[bdesert] 13:46:37 warm_site_ready UNMEASURED UNMEASURED: only 0 of 3 palefloss stand on the warm pad
+[bdesert] 13:46:37 warm_threshold_above_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 13:46:37 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 13:46:37 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 13:46:40 dorrak_site_ready PASS 
+[bdesert-note] hump hit, native detonations ON: {"hump_missing": true, "dead": true}
+[bdesert] 13:46:42 hump_hit_kills PASS 
+[bdesert-note] leg hit control: {"leg_missing": true, "dead": false}
+[bdesert] 13:46:45 leg_hit_does_not_kill PASS 
+[bdesert] 13:46:49 hump_toggle_off_ordinary_part UNMEASURED UNMEASURED: dorrak(hump,off) vanished from list_pawns after a hit
+[bdesert-note] krissek death, detonations ON: {"krissek_dead": false, "near": null, "far": null}
+[bdesert] 13:46:55 krissek_death_blasts UNMEASURED UNMEASURED: the krissek did not die of 9999 Cut to the brain: {'krissek_dead': False, 'near': None, 'far': None}
+[bdesert-note] krissek death, detonations OFF: {"krissek_dead": true, "near": true, "far": false}
+[bdesert] 13:47:02 krissek_off_quiet FAIL ExpectationFailed: nativeDetonationsEnabled OFF but a colonist 2 cells from the dying krissek still burned: the krissek does not die like an ordinary animal (its RM_KrissekCharge hediff carries the vanilla ExplodeOnDeath, which ignores the setting): {'krissek_dead': True, 'near': True, 'far': False}
+[bdesert] 13:47:05 heat_kill_detonates UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 kinetic_kill_does_not UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 emp_on_living_detonates UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 heat_gate_off_any_death_detonates UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 emp_trap_off_is_ordinary_damage UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 native_toggle_off_no_blast UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:05 master_off_no_blast UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:07 haze_site_ready UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:07 haze_film_on_outdoor_colonist UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:07 haze_spares_natives UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:07 haze_toggle_off_new_arrival_clean UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:10 foreign_grazer_takes_butane_gut UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:10 native_grazer_exempt UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:10 butane_toggle_off_clean UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:13 wax_toggle_off_ruined_but_inert UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:13 wax_ruined_wicks_and_goes UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:16 rack_site_ready UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:16 rack_cools_loaded_room_only UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:16 rack_spends_ice_and_drips UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:16 rack_toggle_off_leaves_room_alone UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:21 thaw_toggle_off_mines_cleanly UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:21 thaw_roll_finds_debris UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:24 road_laid_and_flora_cropped UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:24 road_toggle_off_walks_clean UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:27 ruled_weathers_toggle_applies UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:31 ablation_only_in_blue_desert UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:33 vhaulk_walks_off_with_a_letter UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[bdesert] 13:47:36 log_clean UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:49 player_log_names_no_weepingstones_error UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 resolve_probe_sees_absence UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_race_things UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_pawnkinds UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_items UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_plants UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_recipes UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_thoughts UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_jobs UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_workgivers UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_set_makers UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_biome UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_buildings UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_resolve_letters UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:51 defs_pair_up_by_convention UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 biome_probe_ready UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 biome_flags_and_densities UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 wild_animals_wired UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 wild_plants_wired UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 vhorrin_never_ambient_and_probe_is_honest UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 stocked_catch_has_living_counterpart UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 fish_types_wired UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 water_truce_extension_present UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 sun_heat_extension_present UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:54 no_dead_windhour_text UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:56 recipes_on_both_stoves UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:56 rottable_items_tick UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:59 setting_default_on_and_assembly_loaded UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:47:59 designator_listed_when_on UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:48:00 designator_hidden_when_off UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:48:03 vhorrinOddsMultiplier_slider_roundtrip UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]
+[ws] 13:48:04 vizhikEscapeChance_slider_roundtrip UNMEASURED could not establish a bland map -- not a verdict on the mod: restore_colonists unverified: [('Human698', 'Food'), ('Human702', 'Food'), ('Human707', 'Food')]

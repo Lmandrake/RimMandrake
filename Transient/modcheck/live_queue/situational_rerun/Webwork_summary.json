@@ -1,0 +1,2179 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RM_WebworkNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_WebworkNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_WebworkNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_6a3b8f287a1a42a0842e4cfc3ab596bf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:38:36.9126413+00:00",
+         "CompletedAtUtc": "2026-10-04T01:38:36.9613847+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_shipped_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Webwork",
+          "found": true,
+          "defName": "RM_Webwork",
+          "defType": "BiomeDef",
+          "label": "the Webwork",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_Damage_LoomSpit",
+          "found": true,
+          "defName": "RM_Damage_LoomSpit",
+          "defType": "DamageDef",
+          "label": "loom spit",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Damage_LoomSpit"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_Damage_OllathrixVenom",
+          "found": true,
+          "defName": "RM_Damage_OllathrixVenom",
+          "defType": "DamageDef",
+          "label": "ollathrix venom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Damage_OllathrixVenom"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_WebworkNestScatter",
+          "found": true,
+          "defName": "RM_WebworkNestScatter",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WebworkNestScatter"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_LoomBound",
+          "found": true,
+          "defName": "RM_LoomBound",
+          "defType": "HediffDef",
+          "label": "loom-bound",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LoomBound"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_OllathrixVenom",
+          "found": true,
+          "defName": "RM_OllathrixVenom",
+          "defType": "HediffDef",
+          "label": "ollathrix venom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OllathrixVenom"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Webwork_Slick",
+          "found": true,
+          "defName": "RM_Webwork_Slick",
+          "defType": "HediffDef",
+          "label": "webbed-slick",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Slick"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Webwork_SunScald",
+          "found": true,
+          "defName": "RM_Webwork_SunScald",
+          "defType": "HediffDef",
+          "label": "sun-scald",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_SunScald"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Cravvet",
+          "found": true,
+          "defName": "RM_Cravvet",
+          "defType": "PawnKindDef",
+          "label": "cravvet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Cravvet"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Ollathrix",
+          "found": true,
+          "defName": "RM_Ollathrix",
+          "defType": "PawnKindDef",
+          "label": "wyyyschokk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Ollathrix"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Quarrok",
+          "found": true,
+          "defName": "RM_Quarrok",
+          "defType": "PawnKindDef",
+          "label": "quarrok",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Quarrok"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Sivvern",
+          "found": true,
+          "defName": "RM_Sivvern",
+          "defType": "PawnKindDef",
+          "label": "sivvern",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sivvern"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Skennet",
+          "found": true,
+          "defName": "RM_Skennet",
+          "defType": "PawnKindDef",
+          "label": "skennet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Skennet"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Vennick",
+          "found": true,
+          "defName": "RM_Vennick",
+          "defType": "PawnKindDef",
+          "label": "vennick",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Vennick"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Webwork_Hush",
+          "found": true,
+          "defName": "RM_Webwork_Hush",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Hush"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Webwork_Thrum",
+          "found": true,
+          "defName": "RM_Webwork_Thrum",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Thrum"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brennoth",
+          "found": true,
+          "defName": "RM_Brennoth",
+          "defType": "ThingDef",
+          "label": "brennoth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brennoth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brimlock",
+          "found": true,
+          "defName": "RM_Brimlock",
+          "defType": "ThingDef",
+          "label": "brimlock",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brimlock"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BrimlockWater",
+          "found": true,
+          "defName": "RM_BrimlockWater",
+          "defType": "ThingDef",
+          "label": "brimlock water",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BrimlockWater"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Bullet_LoomSpit",
+          "found": true,
+          "defName": "RM_Bullet_LoomSpit",
+          "defType": "ThingDef",
+          "label": "web-silk glob",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Bullet_LoomSpit"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Cravvet",
+          "found": true,
+          "defName": "RM_Cravvet",
+          "defType": "ThingDef",
+          "label": "cravvet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Cravvet"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Dulloth",
+          "found": true,
+          "defName": "RM_Dulloth",
+          "defType": "ThingDef",
+          "label": "dulloth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dulloth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Fellome",
+          "found": true,
+          "defName": "RM_Fellome",
+          "defType": "ThingDef",
+          "label": "fellome",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Fellome"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Grennick",
+          "found": true,
+          "defName": "RM_Grennick",
+          "defType": "ThingDef",
+          "label": "grennick",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Grennick"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Gun_LoomSpit",
+          "found": true,
+          "defName": "RM_Gun_LoomSpit",
+          "defType": "ThingDef",
+          "label": "mouth-loom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Gun_LoomSpit"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Kessaroth",
+          "found": true,
+          "defName": "RM_Kessaroth",
+          "defType": "ThingDef",
+          "label": "kessaroth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Kessaroth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Kollavane",
+          "found": true,
+          "defName": "RM_Kollavane",
+          "defType": "ThingDef",
+          "label": "kollavane",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Kollavane"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Norrveth",
+          "found": true,
+          "defName": "RM_Norrveth",
+          "defType": "ThingDef",
+          "label": "norrveth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Norrveth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Ollathrix",
+          "found": true,
+          "defName": "RM_Ollathrix",
+          "defType": "ThingDef",
+          "label": "wyyyschokk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Ollathrix"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OllathrixEgg",
+          "found": true,
+          "defName": "RM_OllathrixEgg",
+          "defType": "ThingDef",
+          "label": "ollathrix egg",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OllathrixEgg"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Pellareth",
+          "found": true,
+          "defName": "RM_Pellareth",
+          "defType": "ThingDef",
+          "label": "pellareth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Pellareth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Quarrok",
+          "found": true,
+          "defName": "RM_Quarrok",
+          "defType": "ThingDef",
+          "label": "quarrok",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Quarrok"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_QuarrokChitin",
+          "found": true,
+          "defName": "RM_QuarrokChitin",
+          "defType": "ThingDef",
+          "label": "quarrok chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_QuarrokChitin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Ruddreth",
+          "found": true,
+          "defName": "RM_Ruddreth",
+          "defType": "ThingDef",
+          "label": "ruddreth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Ruddreth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Sellith",
+          "found": true,
+          "defName": "RM_Sellith",
+          "defType": "ThingDef",
+          "label": "sellith",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sellith"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Sivvern",
+          "found": true,
+          "defName": "RM_Sivvern",
+          "defType": "ThingDef",
+          "label": "sivvern",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sivvern"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Skennet",
+          "found": true,
+          "defName": "RM_Skennet",
+          "defType": "ThingDef",
+          "label": "skennet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Skennet"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Sorrivel",
+          "found": true,
+          "defName": "RM_Sorrivel",
+          "defType": "ThingDef",
+          "label": "sorrivel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sorrivel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tavrosk",
+          "found": true,
+          "defName": "RM_Tavrosk",
+          "defType": "ThingDef",
+          "label": "tavrosk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tavrosk"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_TavroskLiquor",
+          "found": true,
+          "defName": "RM_TavroskLiquor",
+          "defType": "ThingDef",
+          "label": "tavrosk liquor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TavroskLiquor"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_82b4aabf1d4848f0b4f106c35ce4c020",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:38:37.0137787+00:00",
+         "CompletedAtUtc": "2026-10-04T01:38:37.0629157+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "9 of 9 def(s) resolved",
+        "requested": 9,
+        "foundCount": 9,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Threllick",
+          "found": true,
+          "defName": "RM_Threllick",
+          "defType": "ThingDef",
+          "label": "threllick",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Threllick"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Varrisk",
+          "found": true,
+          "defName": "RM_Varrisk",
+          "defType": "ThingDef",
+          "label": "varrisk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Varrisk"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Vennick",
+          "found": true,
+          "defName": "RM_Vennick",
+          "defType": "ThingDef",
+          "label": "vennick",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Vennick"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Vessark",
+          "found": true,
+          "defName": "RM_Vessark",
+          "defType": "ThingDef",
+          "label": "vessark",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Vessark"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Webwork_Anchor",
+          "found": true,
+          "defName": "RM_Webwork_Anchor",
+          "defType": "ThingDef",
+          "label": "web anchor line",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Anchor"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Webwork_EggClutch",
+          "found": true,
+          "defName": "RM_Webwork_EggClutch",
+          "defType": "ThingDef",
+          "label": "egg clutch",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_EggClutch"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Webwork_Gutter",
+          "found": true,
+          "defName": "RM_Webwork_Gutter",
+          "defType": "ThingDef",
+          "label": "silk irrigation gutter",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Gutter"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Webwork_NestWall",
+          "found": true,
+          "defName": "RM_Webwork_NestWall",
+          "defType": "ThingDef",
+          "label": "webwork nest",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_NestWall"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Webwork_Web",
+          "found": true,
+          "defName": "RM_Webwork_Web",
+          "defType": "ThingDef",
+          "label": "sheet web",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Webwork_Web"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_5ebb39795b1c42f599d451ef7a34729b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:38:37.1132268+00:00",
+         "CompletedAtUtc": "2026-10-04T01:38:37.1626695+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "eggRelayIntervalMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "emergentSpawnChanceMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "emergentSpawnEnabled_round_trips",
+     "toggle": "emergentSpawnEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "frontCreepEnabled_round_trips",
+     "toggle": "frontCreepEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "frontCreepIntervalMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "generateOnWorldgen_round_trips",
+     "toggle": "generateOnWorldgen",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "nestEnabled_round_trips",
+     "toggle": "nestEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "thrixweaveTraderStripEnabled_round_trips",
+     "toggle": "thrixweaveTraderStripEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "biome_wiring",
+   "components": [
+    {
+     "name": "animal_and_plant_density_positive",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity",
+         "plantDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Webwork",
+          "found": true,
+          "defName": "RM_Webwork",
+          "defType": "BiomeDef",
+          "label": "the Webwork",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 1.0,
+           "plantDensity": 0.9
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_0f7590b420f44816b340fe7b86770779",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:20.863766+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:20.9038098+00:00",
+         "DurationMs": 40,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roster_rows_present",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: biome lacks roster rows the XML ships: ['RM_Ollathrix', 'RM_Quarrok', 'RM_Vennick', 'RM_Skennet', 'RM_Cravvet', 'RM_Sivvern']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "wildAnimals"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Webwork",
+          "found": true,
+          "defName": "RM_Webwork",
+          "defType": "BiomeDef",
+          "label": "the Webwork",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "wildAnimals": "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_0fb2bb8c34204e01beb80b41be382104",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:20.9548364+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:21.0038727+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "nest_scatter_step_on_map_common_base",
+     "toggle": "nestEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "nest_egg_state",
+   "components": [
+    {
+     "name": "nest_wall_carries_the_relay_comp",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "comps"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Webwork_NestWall",
+          "found": true,
+          "defName": "RM_Webwork_NestWall",
+          "defType": "ThingDef",
+          "label": "webwork nest",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "comps": [
+            {
+             "startsDormant": true,
+             "wakeUpSignalTag": "CompCanBeDormant.WakeUp",
+             "maxDistAwakenByOther": 40.0,
+             "canWakeUpFogged": false,
+             "jobDormancy": false,
+             "wakeUpDelayRange": {
+              "min": 60,
+              "max": 300
+             },
+             "awakeStateLabelKey": "AwokeDaysAgo",
+             "dormantStateLabelKey": "DormantCompInactive",
+             "wakeUpDelayStateLabelKey": null,
+             "wakeUpEffect": null,
+             "wakeUpRepeatSignalDelayRange": null,
+             "showSleepingZs": true,
+             "delayedWakeUpDoesZs": true,
+             "dontShowDevGizmos": false,
+             "freezeNeeds": [],
+             "compClass": "CompCanBeDormant"
+            },
+            {
+             "wakeUpSignalTag": "CompCanBeDormant.WakeUp",
+             "wakeUpCheckRadius": 10.0,
+             "wakeUpOnThingConstructedRadius": 3.0,
+             "wakeUpOnDamage": true,
+             "onlyWakeUpSameFaction": true,
+             "onlySendSignalOnce": true,
+             "wakeUpSound": null,
+             "wakeUpIfAnyTargetClose": true,
+             "wakeUpTargetingParams": {
+              "canTargetLocations": false,
+              "canTargetSelf": false,
+              "canTargetPawns": true,
+              "canTargetFires": false,
+              "canTargetBuildings": false,
+              "canTargetItems": false,
+              "canTargetAnimals": true,
+              "canTargetHumans": true,
+              "canTargetMechs": true,
+              "canTargetPlants": false,
+              "canTargetSubhumans": true,
+              "canTargetEntities": true,
+              "onlyTargetFactions": null,
+              "validator": null,
+              "onlyTargetFlammables": false,
+              "targetSpecificThing": null,
+              "mustBeSelectable": false,
+              "neverTargetDoors": false,
+              "neverTargetIncapacitated": false,
+              "neverTargetHostileFaction": false,
+              "onlyTargetSameIdeo": false,
+              "onlyTargetThingsAffectingRegions": false,
+              "onlyTargetDamagedThings": false,
+              "mapObjectTargetsMustBeAutoAttackable": true,
+              "onlyTargetIncapacitatedPawns": false,
+              "onlyTargetColonistsOrPrisoners": false,
+              "onlyTargetColonistsOrPrisonersOrSlaves": false,
+              "onlyTargetColonistsOrPrisonersOrSlavesAllowMinorMentalBreaks": false,
+              "onlyTargetControlledPawns": false,
+              "onlyTargetColonists": true,
+              "onlyTargetPrisonersOfColony": false,
+              "onlyTargetPsychicSensitive": false,
+              "onlyTargetAnimaTrees": false,
+              "canTargetBloodfeeders": true,
+              "onlyRepairableMechs": false,
+              "thingCategory": "None",
+              "onlyTargetDoors": false,
+              "canTargetCorpses": false,
+              "onlyTargetCorpses": false,
+              "mapBoundsContractedBy": 0
+             },
+             "wakeUpWithDelay": false,
+             "radiusCheckInspectPaneKey": null,
+             "activateMessageKey": null,
+             "activatePluralMessageKey": null,
+             "activateMessageType": null,
+             "compClass": "CompWakeUpDormant"
+            },
+            {
+             "spawnablePawnKinds": [
+              "RM_Ollathrix"
+             ],
+             "spawnSound": null,
+             "spawnMessageKey": null,
+             "noPawnsLeftToSpawnKey": null,
+             "pawnsLeftToSpawnKey": null,
+             "showNextSpawnInInspect": false,
+             "shouldJoinParentLord": false,
+             "lordJob": "LordJob_DefendAndExpandHive",
+             "defendRadius": 21.0,
+             "lordJoinRadius": 10.0,
+             "initialPawnsCount": 0,
+             "initialPawnsPoints": 320.0,
+             "maxSpawnedPawnsPoints": 640.0,
+             "pawnSpawnIntervalDays": {
+              "min": 0.85,
+              "max": 1.15
+             },
+             "pawnSpawnRadius": 2,
+             "maxPawnsToSpawn": {
+              "min": 0,
+              "max": 0
+             },
+             "chooseSingleTypeToSpawn": false,
+             "nextSpawnInspectStringKey": null,
+             "nextSpawnInspectStringKeyDormant": null,
+             "compClass": "CompSpawnerPawn"
+            },
+            {
+             "relayIntervalDays": {
+              "min": 20.0,
+              "max": 30.0
+             },
+             "clutchesPerRelay": {
+              "min": 1,
+              "max": 2
+             },
+             "clutchSearchRadius": 4,
+             "eggClutchDefName": "RM_Webwork_EggClutch",
+             "motherRaceDefName": "RM_Ollathrix",
+             "compClass": "RM_CompEggClutchRelay"
+            },
+            {
+             "compClass": "CompOffsetter"
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_52d76b00c4fe4408885ae61a917bc518",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:26.0276961+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:26.0775149+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clutch_mines_to_the_egg",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "building"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Webwork_EggClutch",
+          "found": true,
+          "defName": "RM_Webwork_EggClutch",
+          "defType": "ThingDef",
+          "label": "egg clutch",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "building": {
+            "isEdifice": true,
+            "buildingTags": [],
+            "isInert": true,
+            "isTargetable": true,
+            "alwaysDeconstructible": false,
+            "alwaysUninstallable": false,
+            "leavingsBlacklist": null,
+            "forcedCostLeavings": null,
+            "claimable": true,
+            "isSittable": false,
+            "multiSittable": false,
+            "sitIgnoreOrientation": false,
+            "spawnedConceptLearnOpportunity": null,
+            "boughtConceptLearnOpportunity": null,
+            "expandHomeArea": true,
+            "blueprintClass": "Blueprint_Build",
+            "blueprintGraphicData": null,
+            "uninstallWork": 200.0,
+            "forceShowRoomStats": false,
+            "neverBuildable": false,
+            "isWall": false,
+            "alwaysExchangeVacuum": false,
+            "canExchangeVacuum": false,
+            "draftAttackNonDeconstructable": true,
+            "wantsHopperAdjacent": false,
+            "allowWireConnection": true,
+            "shipPart": false,
+            "canPlaceOverImpassablePlant": true,
+            "heatPerTickWhileWorking": 0.0,
+            "canBuildNonEdificesUnder": false,
+            "canPlaceOverWall": false,
+            "isPlaceOverableWall": false,
+            "allowAutoroof": true,
+            "preventDeteriorationOnTop": false,
+            "preventDeteriorationInside": false,
+            "isMealSource": false,
+            "isNaturalRock": true,
+            "isResourceRock": true,
+            "repairable": true,
+            "roofCollapseDamageMultiplier": 1.0,
+            "hasFuelingPort": false,
+            "smoothedThing": null,
+            "unsmoothedThing": null,
+            "naturalTerrain": null,
+            "leaveTerrain": null,
+            "combatPower": 0.0,
+            "minMechClusterPoints": 0,
+            "destroyShakeAmount": 0.0,
+            "destroySound": null,
+            "soundMeleeHitOverride": null,
+            "destroyEffecter": null,
+            "buildingSizeCategory": "None",
+            "isFence": false,
+            "relatedBuildCommands": null,
+            "relatedTerrain": null,
+            "alwaysShowRelatedBuildCommands": false,
+            "useIdeoColor": false,
+            "wakeDormantPawnsOnConstruction": true,
+            "maxItemsInCell": 1,
+            "paintable": false,
+            "canBeDamagedByAttacks": true,
+            "isHopper": false,
+            "quickTargetable": false,
+            "displayAttackToDestroyOnInspectPane": false,
+            "isEscapableContainer": false,
+            "isPowerConduit": false,
+            "biomeSpecific": false,
+            "crater": false,
+            "canLandGravshipOn": false,
+            "isAirtight": true,
+            "isStuffableAirtight": false,
+            "canConstructInCorner": false,
+            "isAttachment": false,
+            "supportsWallAttachments": true,
+            "isPlayerEjectable": false,
+            "openingStartedSound": null,
+            "fullGraveGraphicData": null,
+            "bed_healPerDay": 0.0,
+            "bed_defaultMedical": false,
+            "bed_showSleeperBody": false,
+            "bed_humanlike": true,
+            "bed_maxBodySize": 9999.0,
+            "bed_caravansCanUse": false,
+            "bed_slabBed": false,
+            "bed_crib": false,
+            "bed_pawnDrawOffset": 0.0,
+            "bed_canBeMedical": true,
+            "bed_DisplayOwnerType": true,
+            "bed_DisplayOwnersInInspectString": true,
+            "bed_countsForBedroomOrBarracks": true,
+            "bed_emptyCountsForBarracks": true,
+            "bed_UseSheetColor": true,
+            "nutritionCostPerDispense": 0.0,
+            "soundDispense": null,
+            "turretGunDef": null,
+            "turretBurstWarmupTime": {
+             "min": 0.25,
+             "max": 0.75
+            },
+            "turretBurstCooldownTime": -1.0,
+            "turretInitialCooldownTime": 0.0,
+            "turretTopMat": null,
+            "turretTopLoadedMat": null,
+            "turretTopDrawSize": 2.0,
+            "turretTopOffset": {
+             "x": 0.0,
+             "y": 0.0
+            },
+            "playTargetAcquiredSound": true,
+            "turretTopLoadedGraphic": null,
+            "requiredMechWeightClasses": null,
+            "ai_combatDangerous": false,
+            "ai_chillDestination": true,
+            "ai_neverTrashThis": false,
+            "preferConnectingToFences": false,
+            "roamerCanOpen": false,
+            "soundDoorOpenPowered": "Door_OpenPowered",
+            "soundDoorClosePowered": "Door_ClosePowered",
+            "soundDoorOpenManual": "Door_OpenManual",
+            "soundDoorCloseManual": "Door_CloseManual",
+            "soundDoorCloseEnd": null,
+            "poweredDoorOpenSpeedFactor": 1.0,
+            "poweredDoorCloseSpeedFactor": 1.0,
+            "unpoweredDoorOpenSpeedFactor": 1.0,
+            "unpoweredDoorCloseSpeedFactor": 1.0,
+            "doorTempEqualizeIntervalClosed": 375,
+            "doorTempEqualizeIntervalOpen": 34,
+            "doorTempEqualizeRate": 1.0,
+            "sowTag": null,
+            "defaultPlantToGrow": null,
+            "mineableThing": "RM_OllathrixEgg",
+            "mineableYield": 4,
+            "veinMineable": false,
+            "mineableNonMinedEfficiency": 0.7,
+            "mineableDropChance": 1.0,
+            "mineableYieldWasteable": true,
+            "mineableScatterCommonality": 0.0,
+            "mineableScatterLumpSizeRange": {
+             "min": 1,
+             "max": 1
+            },
+            "mineablePreventMeteorite": false,
+            "mineablePreventNaturalRockOnSurface": false,
+            "fixedStorageSettings": null,
+            "defaultStorageSettings": null,
+            "ignoreStoredThingsBeauty": false,
+            "storageGroupTag": null,
+            "groupingLabel": null,
+            "groupingOrder": 0,
+            "isTrap": false,
+            "trapDestroyOnSpring": false,
+            "trapPeacefulWildAnimalsSpringChanceFactor": 1.0,
+            "trapDamageCategory": null,
+            "trapUnarmedGraphicData": null,
+            "trapUnarmedGraphic": null,
+            "workTableRoomRole": null,
+            "workTableNotInRoomRoleFactor": 1.0,
+            "unpoweredWorkTableWorkSpeedFactor": 0.0,
+            "workTableCompleteSoundDef": null,
+            "watchBuildingStandDistanceRange": {
+             "min": 1,
+             "max": 1
+            },
+            "watchBuildingStandRectWidth": 3,
+            "watchBuildingInSameRoom": false,
+            "joyKind": null,
+            "haulToContainerDuration": 0,
+            "instrumentRange": 0.0,
+            "minDistanceToSameTypeOfBuilding": 0,
+            "artificialForMeditationPurposes": false,
+            "effectWatching": null,
+            "gibbetCageTopGraphicData": null,
+            "gibbetCorposeDrawOffset": {
+             "x": 0.0,
+             "y": 0.0,
+             "z": 0.0
+            },
+            "gibbetCagePlaceCorpseEffecter": null,
+            "openingEffect": null,
+            "barDrawData": {
+             "north": {
+              "center": "(Vector3, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "size": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "fillPercent": 0.0,
+              "filledMat": null,
+              "unfilledMat": null,
+              "margin": 0.0,
+              "rotation": "(Rot4, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "preRotationOffset": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             },
+             "south": {
+              "center": "(Vector3, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "size": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "fillPercent": 0.0,
+              "filledMat": null,
+              "unfilledMat": null,
+              "margin": 0.0,
+              "rotation": "(Rot4, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "preRotationOffset": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             },
+             "east": {
+              "center": "(Vector3, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "size": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "fillPercent": 0.0,
+              "filledMat": null,
+              "unfilledMat": null,
+              "margin": 0.0,
+              "rotation": "(Rot4, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "preRotationOffset": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             },
+             "west": {
+              "center": "(Vector3, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "size": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "fillPercent": 0.0,
+              "filledMat": null,
+              "unfilledMat": null,
+              "margin": 0.0,
+              "rotation": "(Rot4, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "preRotationOffset": "(Vector2, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             }
+            },
+            "gestatorFormingMote": null,
+            "gestatorCycleCompleteMote": null,
+            "gestatorFormedMote": null,
+            "mechGestatorCylinderGraphic": null,
+            "mechGestatorTopGraphic": null,
+            "formingGraphicData": null,
+            "formingMechBobSpeed": 0.001,
+            "formingMechYBobDistance": 0.1,
+            "formingMechPerRotationOffset": [],
+            "maxFormedMechDrawSize": {
+             "x": 1.5,
+             "y": 1.5
+            },
+            "subcoreScannerFixedIngredients": null,
+            "subcoreScannerTicks": 7500,
+            "subcoreScannerHediff": null,
+            "destroyBrain": false,
+            "subcoreScannerOutputDef": null,
+            "subcoreScannerStartEffect": null,
+            "subcoreScannerWorking": null,
+            "subcoreScannerComplete": null,
+            "isInsectCocoon": false,
+            "wastepackAtomizerBottomGraphic": null,
+            "wastepackAtomizerWindowGraphic": null,
+            "wastepackAtomizerOperationEffecter": null,
+            "bookendGraphicEast": null,
+            "bookendGraphicNorth": null,
+            "isSupportDoor": false,
+            "doorTopGraphic": null,
+            "doorSupportGraphic": null,
+            "upperMoverGraphic": null,
+            "doorTopGraphicOffset": {
+             "x": 0.0,
+             "y": 0.0,
+             "z": 0.0
+            },
+            "doorSupportGraphicOffset": {
+             "x": 0.0,
+             "y": 0.0,
+             "z": 0.0
+            },
+            "doorTopHorizontalOffset": {
+             "x": 0.0,
+             "y": 0.0,
+             "z": 0.1
+            },
+            "doorTopVerticalOffset": {
+             "x": 0.0,
+             "y": 0.0,
+             "z": 0.0
+            },
+            "groundSpawnerThingToSpawn": null,
+            "groundSpawnerSpawnDelay": {
+             "min": 0,
+             "max": 0
+            },
+            "groundSpawnerDestroyAdjacent": false,
+            "groundSpawnerSustainerSound": null,
+            "groundSpawnerSustainedEffecter": null,
+            "groundSpawnerCompleteEffecter": null,
+            "groundSpawnerLetterLabel": null,
+            "groundSpawnerLetterText": null
+           }
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_6427c7a602544178be200bc7c4a17fd5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:26.1267499+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:26.1754002+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "egg_is_inert_contraband_with_no_hatcher",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: the egg carries a hatcher comp: ban 1 (inert cargo, it must never hatch)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "tradeability",
+         "tradeTags",
+         "comps"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_OllathrixEgg",
+          "found": true,
+          "defName": "RM_OllathrixEgg",
+          "defType": "ThingDef",
+          "label": "ollathrix egg",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "comps": [
+            {
+             "allowNonPlayer": false,
+             "forbidOnMake": false,
+             "compClass": "CompForbiddable"
+            },
+            {
+             "daysToRotStart": 15.0,
+             "rotDestroys": true,
+             "rotDamagePerDay": 40.0,
+             "daysToDessicated": 999.0,
+             "dessicatedDamagePerDay": 0.0,
+             "disableIfHatcher": false,
+             "compClass": "CompRottable"
+            }
+           ],
+           "tradeability": "All",
+           "tradeTags": [
+            "RM_Contraband"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_b012b3740b4b40a09c4129747d1b41fe",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:26.2265419+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:26.2756593+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ollathrix_is_dormant_capable_with_a_turret_gun",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "thrixweave_and_front",
+   "components": [
+    {
+     "name": "hyperweave_reads_thrixweave",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/Hyperweave",
+          "found": true,
+          "defName": "Hyperweave",
+          "defType": "ThingDef",
+          "label": "thrixweave",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "label": "thrixweave"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_2f29e854669749a78d63c0ff4e2e4723",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:31.2834112+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:31.3312341+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "trader_strip_applied",
+     "toggle": "thrixweaveTraderStripEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "tradeability"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/Hyperweave",
+          "found": true,
+          "defName": "Hyperweave",
+          "defType": "ThingDef",
+          "label": "thrixweave",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "tradeability": "Sellable"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_447bc8b8ea9c434aad19aae87f55e22e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:31.3821796+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:31.4305425+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "front_creep_extension_on_biome",
+     "toggle": "frontCreepEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RM_Webwork carries no RM_FrontCreepExtension with the toggle on: [{'frontThingDefNames': ['RM_Webwork_Anchor', 'RM_Webwork_Web', 'RM_Webwork_Gutter'], 'advanceIntervalTicks': 60000, 'maxBandDepth': 10, 'spawnDensity': 0.15}, {'heatKind': 'overhead', 'heatOffsetC': 10.0, 'maxHeatOffsetC': 70.0, 'bodySizeExponent': 0.5, 'minBodySizeFactor': 0.25, 'maxBodySizeFactor': 2.5, 'sunPathCostPerCell': 20.0, 'substellarLatitude': 0.0, 'substellarLongitude': 0.0, 'minElevationDegrees': 5.0, 'maxElevationDegrees': 60.0, 'overheadAboveElevationDegrees': 55.0, 'heatScalesWithElevation': True, 'minScaledHeatOffsetC': 4.0, 'sandGlareExposureFloor': 0.0, 'glareBlindHediff': None, 'glareBlindExposureMin': 0.6, 'glareBlindSeverityPerDay': 4.0, 'mirageCondition': None, 'mirageMinElevationDegrees': 45.0, 'mirageMentalState': None, 'mirageHeatstrokeMin': 0.2, 'mirageBreakMtbDays': 1.5, 'mirageFullSunExposureMin': 0.6, 'shadeExposureMax': 0.35, 'minPatchCells': 2, 'dashHeatstrokeBudget': 0.008, 'minDashCells': 3.0, 'maxDashCells': 24.0, 'hopChance': 0.35, 'restTicks': {'min': 600, 'max': 1500}, 'rimPauseTicks': {'min': 45, 'max': 120}, 'ringHeatstrokeBudget': 0.035, 'ringMaxCells': 60.0}]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Webwork",
+          "found": true,
+          "defName": "RM_Webwork",
+          "defType": "BiomeDef",
+          "label": "the Webwork",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "modExtensions": [
+            {
+             "frontThingDefNames": [
+              "RM_Webwork_Anchor",
+              "RM_Webwork_Web",
+              "RM_Webwork_Gutter"
+             ],
+             "advanceIntervalTicks": 60000,
+             "maxBandDepth": 10,
+             "spawnDensity": 0.15
+            },
+            {
+             "heatKind": "overhead",
+             "heatOffsetC": 10.0,
+             "maxHeatOffsetC": 70.0,
+             "bodySizeExponent": 0.5,
+             "minBodySizeFactor": 0.25,
+             "maxBodySizeFactor": 2.5,
+             "sunPathCostPerCell": 20.0,
+             "substellarLatitude": 0.0,
+             "substellarLongitude": 0.0,
+             "minElevationDegrees": 5.0,
+             "maxElevationDegrees": 60.0,
+             "overheadAboveElevationDegrees": 55.0,
+             "heatScalesWithElevation": true,
+             "minScaledHeatOffsetC": 4.0,
+             "sandGlareExposureFloor": 0.0,
+             "glareBlindHediff": null,
+             "glareBlindExposureMin": 0.6,
+             "glareBlindSeverityPerDay": 4.0,
+             "mirageCondition": null,
+             "mirageMinElevationDegrees": 45.0,
+             "mirageMentalState": null,
+             "mirageHeatstrokeMin": 0.2,
+             "mirageBreakMtbDays": 1.5,
+             "mirageFullSunExposureMin": 0.6,
+             "shadeExposureMax": 0.35,
+             "minPatchCells": 2,
+             "dashHeatstrokeBudget": 0.008,
+             "minDashCells": 3.0,
+             "maxDashCells": 24.0,
+             "hopChance": 0.35,
+             "restTicks": {
+              "min": 600,
+              "max": 1500
+             },
+             "rimPauseTicks": {
+              "min": 45,
+              "max": 120
+             },
+             "ringHeatstrokeBudget": 0.035,
+             "ringMaxCells": 60.0
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_45ec979b9c424d3c80577732b94c0395",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:31.4816083+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:31.5308949+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "structures_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "scald_binding",
+   "components": [
+    {
+     "name": "sun_scald_hediff_class_is_the_creature_behaviors_one",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "hediffClass"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RM_Webwork_SunScald",
+          "found": true,
+          "defName": "RM_Webwork_SunScald",
+          "defType": "HediffDef",
+          "label": "sun-scald",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "hediffClass": "RM_Hediff_SunScald"
+          }
+         }
+        ],
+        "ticksGame": 7929,
+        "operation": {
+         "OperationId": "op_0d743353b6ed452eab239f7786351cb1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:39:36.5488799+00:00",
+         "CompletedAtUtc": "2026-10-04T01:39:36.5989414+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "map_mechanics",
+   "components": [
+    {
+     "name": "nest_placed_at_mapgen",
+     "toggle": "nestEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clutch_relays_every_20_to_30_days",
+     "toggle": "eggRelayIntervalMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "emergent_spawn_on_destroy",
+     "toggle": "emergentSpawnEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "emergent_spawn_chance_scales",
+     "toggle": "emergentSpawnChanceMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "webwork_competes_for_tiles",
+     "toggle": "generateOnWorldgen",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sun_scald_in_open_sun",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "loom_spit_fires",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000019A379673F0>",
+  "<suite.Component object at 0x0000019A3791B950>",
+  "<suite.Component object at 0x0000019A378AF280>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Webwork.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

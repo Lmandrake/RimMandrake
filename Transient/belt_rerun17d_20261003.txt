@@ -1,0 +1,41 @@
+[ws-note] Player.log scan: {"lines": 25960, "hits": [], "game-wide config/xref lines (instrument probe)": 76}
+[ws] 19:01:55 player_log_names_no_weepingstones_error PASS 
+[ws] 19:02:01 resolve_probe_sees_absence PASS 
+[ws] 19:02:01 defs_resolve_race_things PASS 
+[ws] 19:02:01 defs_resolve_pawnkinds PASS 
+[ws] 19:02:01 defs_resolve_items PASS 
+[ws] 19:02:01 defs_resolve_plants PASS 
+[ws] 19:02:02 defs_resolve_recipes PASS 
+[ws] 19:02:02 defs_resolve_thoughts PASS 
+[ws] 19:02:02 defs_resolve_jobs PASS 
+[ws] 19:02:02 defs_resolve_workgivers PASS 
+[ws] 19:02:02 defs_resolve_set_makers PASS 
+[ws] 19:02:02 defs_resolve_biome PASS 
+[ws] 19:02:02 defs_resolve_buildings PASS 
+[ws] 19:02:02 defs_resolve_letters PASS 
+[ws] 19:02:02 defs_pair_up_by_convention PASS 
+[ws] 19:02:08 biome_probe_ready PASS 
+[ws] 19:02:08 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[ws] 19:02:08 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 19:02:08 wild_plants_wired PASS 
+[ws] 19:02:08 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 19:02:08 stocked_catch_has_living_counterpart PASS 
+[ws] 19:02:08 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 19:02:08 water_truce_extension_present PASS 
+[ws] 19:02:08 sun_heat_extension_present PASS 
+[ws] 19:02:09 no_dead_windhour_text PASS 
+[ws] 19:02:14 recipes_on_both_stoves PASS 
+[ws] 19:02:15 rottable_items_tick PASS 
+[ws] 19:02:21 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 19:02:21 designator_listed_when_on PASS 
+[ws] 19:02:25 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 19:02:34 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 19:02:38 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 19:02:41 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 19:02:45 waterTruceRadius_slider_roundtrip PASS 
+[ws] 19:02:50 suppression_source_wired PASS 
+[ws] 19:02:53 suppression_toggle_default_and_roundtrip PASS 

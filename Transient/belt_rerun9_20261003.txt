@@ -1,0 +1,103 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 13:22:15 defs_resolve PASS 
+[cauldron] 13:22:15 flora_expansion_shape PASS 
+[cauldron] 13:22:15 fexxil_venom_shape PASS 
+[cauldron] 13:22:17 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 13:22:17 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 13:22:17 biome_roster PASS 
+[cauldron] 13:22:17 biome_worker_and_terrain PASS 
+[cauldron] 13:22:17 nettle_habitat_wired PASS 
+[cauldron] 13:22:17 vent_habitat_wired PASS 
+[cauldron] 13:22:19 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 13:22:19 weathers_selectable PASS 
+[cauldron] 13:22:43 defaults PASS 
+[cauldron] 13:22:47 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 13:22:51 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 13:22:55 ventsEnabled_roundtrip PASS 
+[cauldron] 13:22:58 ventFalterMessage_roundtrip PASS 
+[cauldron] 13:23:02 ventGardensEnabled_roundtrip PASS 
+[cauldron] 13:23:06 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 13:23:08 suush_and_vexxiss_comps PASS 
+[cauldron] 13:23:08 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 13:23:11 fauna_spawns PASS 
+[cauldron] 13:23:11 suush_can_fly PASS 
+[cauldron] 13:23:22 suush_ignores_melee UNMEASURED surprise: colonist_injured_unexpectedly: colonist Emmie gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; colonist_injured_unexpectedly: colonist Zippy gained 1 new hed
+[cauldron] 13:23:22 suush_detonates_when_shot UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Emmie gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (MCR_M
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 13:23:27 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 13:23:27 assay_grades PASS 
+[cauldron] 13:23:30 assay_toggle_off PASS 
+[cauldron] 13:23:33 assay_factor_scales PASS 
+[cauldron] 13:23:37 yield_site_ready PASS 
+[cauldron] 13:24:02 harvest_pays_metal UNMEASURED surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Bomb by RM_Suush; colonist_damaged: colonist Zippy took 1 damage event(s): Bomb by RM_Suush; colonist_downed: colonist Perkins is downed; colonist_downed: colonist Zippy is bleeding [evidence: \\wsl.localhost\Ubuntu\home\mandrake\r
+[cauldron] 13:24:02 yield_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Bomb by RM_Suush; colonist_damaged: colonist Zippy took 1 damage event(s): Bomb by RM_Suush; colonist_downed: colonist Perkins is d
+[cauldron] 13:24:02 yield_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Bomb by RM_Suush; colonist_damaged: colonist Zippy took 1 damage event(s): Bomb by RM_Suush; colonist_downed: colonist Perkins is d
+[cauldron]-note map-biome native / non-native herbivore picked: ["Muffalo", "Deer"]
+[cauldron] 13:24:15 bloom_site_ready UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132212\Cauldron__bloom__colonist_injured_unexpectedly__t1601__001.json]
+[cauldron] 13:24:15 bloom_loads_exposed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:15 bloom_no_double_tax UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:15 bloom_spares_roofed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:15 bloom_spares_natives UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:15 bloom_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:15 bloom_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:19 water_site_ready PASS 
+[cauldron] 13:24:24 water_poison_on UNMEASURED surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Crush by nobody; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132212\Cauldro
+[cauldron] 13:24:24 water_letter_arrives UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Crush by nobody; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: 
+[cauldron] 13:24:24 water_letter_cooldown UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Crush by nobody; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: 
+[cauldron] 13:24:24 water_letter_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Crush by nobody; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: 
+[cauldron] 13:24:24 water_poison_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Perkins took 1 damage event(s): Crush by nobody; colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: 
+[cauldron] 13:24:28 fire_warden_beats_fire UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132212\Cauldron__fire__colonis
+[cauldron] 13:24:28 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 13:24:31 vents_site_ready PASS 
+[cauldron] 13:24:34 vent_weather_multiplier UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132212\Cauldron__vents__colonist_injured_unexpectedly__t2011__001.json]
+[cauldron] 13:24:34 vent_falter_precedes_bloom UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:34 vent_exposure_is_local UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:34 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron] 13:24:34 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 1000}
+[cauldron] 13:24:37 log_clean PASS 
+[lscrub-note] shipped defs resolved: 58
+[lscrub] 13:24:49 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 13:24:49 biome_weather_table PASS 
+[lscrub] 13:24:49 biome_density_and_flora PASS 
+[lscrub] 13:24:49 biome_lean_extension PASS 
+[lscrub] 13:24:52 rules_armed PASS 
+[lscrub] 13:24:52 thicket_smotherable PASS 
+[lscrub] 13:24:52 vissler_arm_is_rotting_meat PASS 
+[lscrub] 13:25:00 dead_venomvine_fuels_fire UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__patches__colonist_injured_unexpectedly__t2611__001.json]
+[lscrub] 13:25:39 defaults PASS 
+[lscrub] 13:25:43 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 13:25:46 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 13:25:50 leanEnabled_roundtrip PASS 
+[lscrub] 13:25:54 leanScentEnabled_roundtrip PASS 
+[lscrub] 13:25:57 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 13:26:01 fauna_spawns PASS 
+[lscrub] 13:26:01 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 13:26:05 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub] 13:26:12 stall_freezes_small UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__stall__colonist_injured_unexpectedly__t2861__001.json]
+[lscrub] 13:26:12 stall_toggle_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:12 stall_master_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:15 gale_site_ready PASS 
+[lscrub] 13:26:23 gale_deafens_outdoors UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__gale__colonist_injured_unexpectedly__t3461__001.json]
+[lscrub] 13:26:23 gale_spares_roofed UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:23 gale_deafen_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:23 gale_turbine_surge UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:23 gale_turbine_breakdown UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:26 lash_site_ready PASS 
+[lscrub] 13:26:34 lash_toggle_off_quiet UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__lash__colonist_injured_unexpectedly__t3761__001.json]
+[lscrub] 13:26:34 lash_strikes_once UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:38 smother_site_ready PASS 
+[lscrub] 13:26:58 smother_claims_stands UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__smother__colonist_injured_unexpectedly__t4011__001.json]
+[lscrub] 13:26:58 smother_off_holds_claims UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:26:58 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 13:27:26 dripping_survives_harvest UNMEASURED surprise: colonist_injured_unexpectedly: colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T132447\LeaningScrub__dripping__colonist_injured_unexpectedly__t4611__001.json]

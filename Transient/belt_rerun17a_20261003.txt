@@ -1,0 +1,27 @@
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 1719
+  FAIL bland world established (tile 22, map 1)  -- ['ruins present: 3', "colonist Human43412 carries ['Bite']", "colonist Human43415 carries ['Gunshot']"]
+  -- AcousticScanner
+     !! AcousticScanner: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 17, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- AssailantSalvage
+     !! AssailantSalvage: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 4, 'FAIL': 2, 'UNMEASURED': 6} surprises=0 serious=[]
+  -- FallLineArrivals
+     !! FallLineArrivals: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 3, 'FAIL': 4, 'UNMEASURED': 4} surprises=0 serious=[]
+  -- UtinniStatues
+     !! UtinniStatues: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 9} surprises=0 serious=[]
+  -- KeelHoist
+     !! KeelHoist: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 11, 'FAIL': 3, 'UNMEASURED': 4} surprises=0 serious=[]
+  -- UnfinishedLine
+     !! UnfinishedLine: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 14} surprises=1 serious=['colonist_damaged:SURPRISE', 'raid_arrived:SURPRISE']
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 4/5 checks ; failed: bland world established (tile 22, map 1)
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

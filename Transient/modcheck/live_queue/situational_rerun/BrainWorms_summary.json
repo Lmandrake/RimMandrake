@@ -1,0 +1,2297 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RSW_BrainWormNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RSW_BrainWormNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RSW_BrainWormNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_e718e64c73174c3ca713804ccf42539a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:00.2053101+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:00.2233566+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_shipped_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "10 of 10 def(s) resolved",
+        "requested": 10,
+        "foundCount": 10,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RSW_BrainWormInfection",
+          "found": true,
+          "defName": "RSW_BrainWormInfection",
+          "defType": "HediffDef",
+          "label": "brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormInfection"
+          }
+         },
+         {
+          "requested": "IncidentDef/RSW_BrainWormCargoPod",
+          "found": true,
+          "defName": "RSW_BrainWormCargoPod",
+          "defType": "IncidentDef",
+          "label": "cargo pod crash",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormCargoPod"
+          }
+         },
+         {
+          "requested": "MentalStateDef/RSW_BrainWormPuppet",
+          "found": true,
+          "defName": "RSW_BrainWormPuppet",
+          "defType": "MentalStateDef",
+          "label": "puppeted",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormPuppet"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RSW_BrainWormKind",
+          "found": true,
+          "defName": "RSW_BrainWormKind",
+          "defType": "PawnKindDef",
+          "label": "brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormKind"
+          }
+         },
+         {
+          "requested": "RecipeDef/RSW_RemoveBrainWorm",
+          "found": true,
+          "defName": "RSW_RemoveBrainWorm",
+          "defType": "RecipeDef",
+          "label": "extract brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_RemoveBrainWorm"
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_BrainWorm",
+          "found": true,
+          "defName": "RSW_BrainWorm",
+          "defType": "ThingDef",
+          "label": "brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWorm"
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_BrainWormEggCluster",
+          "found": true,
+          "defName": "RSW_BrainWormEggCluster",
+          "defType": "ThingDef",
+          "label": "brain worm egg cluster",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormEggCluster"
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_Bullet_Shell_BrainWormEgg",
+          "found": true,
+          "defName": "RSW_Bullet_Shell_BrainWormEgg",
+          "defType": "ThingDef",
+          "label": "brain worm egg shell",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_Bullet_Shell_BrainWormEgg"
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_Shell_BrainWormEgg",
+          "found": true,
+          "defName": "RSW_Shell_BrainWormEgg",
+          "defType": "ThingDef",
+          "label": "brain worm egg shell",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_Shell_BrainWormEgg"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RSW_BrainWormPuppetInsert",
+          "found": true,
+          "defName": "RSW_BrainWormPuppetInsert",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "defName": "RSW_BrainWormPuppetInsert"
+          }
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_04dc2c804835461dbda215736443534f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:00.260144+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:00.2767577+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "custom_comp_types_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "comps"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RSW_BrainWormInfection",
+          "found": true,
+          "defName": "RSW_BrainWormInfection",
+          "defType": "HediffDef",
+          "label": "brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "comps": [
+            {
+             "sendLetterWhenDiscovered": true,
+             "discoverLetterLabel": "Brain worm: {0}",
+             "discoverLetterText": "{0} has a Geonosian brain worm. It has been in there for days. It is talking to them now, and before long it will be doing the talking.\n\nCold kills it \u2014 get them below freezing and keep them there. A surgeon can also cut it out, at a risk.",
+             "messageType": null,
+             "letterType": "ThreatSmall",
+             "compClass": "HediffComp_Discoverable"
+            },
+            {
+             "severityPerDay": 0.14,
+             "coldThreshold": 0.0,
+             "severityPerDayWhenCold": -3.0,
+             "expelledWorm": "RSW_BrainWormKind",
+             "compClass": "HediffComp_BrainWormProgress"
+            },
+            {
+             "puppetSeverity": 0.8,
+             "mentalState": "RSW_BrainWormPuppet",
+             "compClass": "HediffComp_BrainWormPuppeteer"
+            },
+            {
+             "minSeverity": 0.35,
+             "maxSeverity": 0.8,
+             "mtbHours": 4.0,
+             "texts": [
+              "\"...not yet...\"",
+              "\"...Karina...\"",
+              "\"...I can hear the nest...\"",
+              "\"...it is warm in here...\"",
+              "\"...we are so many...\""
+             ],
+             "compClass": "HediffComp_BrainWormWhispers"
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_84faf57b78f54582a40f3a00800d7f09",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:00.2943038+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:00.3120695+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cargoIncidentEnabled_round_trips",
+     "toggle": "cargoIncidentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "coldKillRateMultiplier_round_trips",
+     "toggle": "coldKillRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "eggProjectileEnabled_round_trips",
+     "toggle": "eggProjectileEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "progressionSpeedMultiplier_round_trips",
+     "toggle": "progressionSpeedMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ladder_wiring",
+   "components": [
+    {
+     "name": "stage_ladder_live",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "stages"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RSW_BrainWormInfection",
+          "found": true,
+          "defName": "RSW_BrainWormInfection",
+          "defType": "HediffDef",
+          "label": "brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "stages": [
+            {
+             "minSeverity": 0.0,
+             "label": "latent",
+             "overrideLabel": null,
+             "untranslatedLabel": "latent",
+             "becomeVisible": false,
+             "lifeThreatening": false,
+             "tale": null,
+             "vomitMtbDays": -1.0,
+             "deathMtbDays": -1.0,
+             "mtbDeathDestroysBrain": false,
+             "painFactor": 1.0,
+             "painOffset": 0.0,
+             "totalBleedFactor": 1.0,
+             "naturalHealingFactor": -1.0,
+             "regeneration": -1.0,
+             "showRegenerationStat": true,
+             "forgetMemoryThoughtMtbDays": -1.0,
+             "pctConditionalThoughtsNullified": 0.0,
+             "pctAllThoughtNullification": 0.0,
+             "opinionOfOthersFactor": 1.0,
+             "fertilityFactor": 1.0,
+             "hungerRateFactor": 1.0,
+             "hungerRateFactorOffset": 0.0,
+             "restFallFactor": 1.0,
+             "restFallFactorOffset": 0.0,
+             "socialFightChanceFactor": 1.0,
+             "foodPoisoningChanceFactor": 1.0,
+             "mentalBreakMtbDays": -1.0,
+             "mentalBreakExplanation": null,
+             "blocksMentalBreaks": false,
+             "blocksInspirations": false,
+             "overrideMoodBase": -1.0,
+             "severityGainFactor": 1.0,
+             "removeRoamMtb": false,
+             "preventVacuumBurns": false,
+             "allowedMentalBreakIntensities": null,
+             "makeImmuneTo": null,
+             "capMods": [],
+             "hediffGivers": null,
+             "mentalStateGivers": null,
+             "statOffsets": null,
+             "statFactors": null,
+             "statOffsetsBySeverity": null,
+             "statFactorsBySeverity": null,
+             "damageFactors": [],
+             "enablesNeeds": null,
+             "disablesNeeds": null,
+             "multiplyStatChangesBySeverity": false,
+             "statOffsetEffectMultiplier": null,
+             "statFactorEffectMultiplier": null,
+             "capacityFactorEffectMultiplier": null,
+             "disabledWorkTags": "None",
+             "overrideTooltip": null,
+             "extraTooltip": null,
+             "blocksSleeping": false,
+             "partEfficiencyOffset": 0.0,
+             "partIgnoreMissingHP": false,
+             "destroyPart": false
+            },
+            {
+             "minSeverity": 0.35,
+             "label": "influenced",
+             "overrideLabel": null,
+             "untranslatedLabel": "influenced",
+             "becomeVisible": true,
+             "lifeThreatening": false,
+             "tale": null,
+             "vomitMtbDays": -1.0,
+             "deathMtbDays": -1.0,
+             "mtbDeathDestroysBrain": false,
+             "painFactor": 1.0,
+             "painOffset": 0.0,
+             "totalBleedFactor": 1.0,
+             "naturalHealingFactor": -1.0,
+             "regeneration": -1.0,
+             "showRegenerationStat": true,
+             "forgetMemoryThoughtMtbDays": -1.0,
+             "pctConditionalThoughtsNullified": 0.0,
+             "pctAllThoughtNullification": 0.0,
+             "opinionOfOthersFactor": 0.4,
+             "fertilityFactor": 1.0,
+             "hungerRateFactor": 1.0,
+             "hungerRateFactorOffset": 0.0,
+             "restFallFactor": 1.4,
+             "restFallFactorOffset": 0.0,
+             "socialFightChanceFactor": 3.0,
+             "foodPoisoningChanceFactor": 1.0,
+             "mentalBreakMtbDays": -1.0,
+             "mentalBreakExplanation": null,
+             "blocksMentalBreaks": false,
+             "blocksInspirations": false,
+             "overrideMoodBase": -1.0,
+             "severityGainFactor": 1.0,
+             "removeRoamMtb": false,
+             "preventVacuumBurns": false,
+             "allowedMentalBreakIntensities": null,
+             "makeImmuneTo": null,
+             "capMods": [
+              {
+               "capacity": "Consciousness",
+               "offset": -0.1,
+               "setMax": 999.0,
+               "postFactor": 1.0,
+               "statFactorMod": null,
+               "setMaxCurveOverride": null,
+               "setMaxCurveEvaluateStat": null
+              }
+             ],
+             "hediffGivers": null,
+             "mentalStateGivers": null,
+             "statOffsets": [
+              {
+               "stat": "SocialImpact",
+               "value": -0.35
+              }
+             ],
+             "statFactors": [
+              {
+               "stat": "WorkSpeedGlobal",
+               "value": 0.8
+              }
+             ],
+             "statOffsetsBySeverity": null,
+             "statFactorsBySeverity": null,
+             "damageFactors": [],
+             "enablesNeeds": null,
+             "disablesNeeds": null,
+             "multiplyStatChangesBySeverity": false,
+             "statOffsetEffectMultiplier": null,
+             "statFactorEffectMultiplier": null,
+             "capacityFactorEffectMultiplier": null,
+             "disabledWorkTags": "None",
+             "overrideTooltip": null,
+             "extraTooltip": null,
+             "blocksSleeping": false,
+             "partEfficiencyOffset": 0.0,
+             "partIgnoreMissingHP": false,
+             "destroyPart": false
+            },
+            {
+             "minSeverity": 0.8,
+             "label": "puppeted",
+             "overrideLabel": null,
+             "untranslatedLabel": "puppeted",
+             "becomeVisible": true,
+             "lifeThreatening": true,
+             "tale": null,
+             "vomitMtbDays": -1.0,
+             "deathMtbDays": -1.0,
+             "mtbDeathDestroysBrain": false,
+             "painFactor": 0.3,
+             "painOffset": 0.0,
+             "totalBleedFactor": 1.0,
+             "naturalHealingFactor": -1.0,
+             "regeneration": -1.0,
+             "showRegenerationStat": true,
+             "forgetMemoryThoughtMtbDays": -1.0,
+             "pctConditionalThoughtsNullified": 0.0,
+             "pctAllThoughtNullification": 0.0,
+             "opinionOfOthersFactor": 0.0,
+             "fertilityFactor": 1.0,
+             "hungerRateFactor": 1.0,
+             "hungerRateFactorOffset": 0.0,
+             "restFallFactor": 1.0,
+             "restFallFactorOffset": 0.0,
+             "socialFightChanceFactor": 1.0,
+             "foodPoisoningChanceFactor": 1.0,
+             "mentalBreakMtbDays": -1.0,
+             "mentalBreakExplanation": null,
+             "blocksMentalBreaks": false,
+             "blocksInspirations": true,
+             "overrideMoodBase": -1.0,
+             "severityGainFactor": 1.0,
+             "removeRoamMtb": false,
+             "preventVacuumBurns": false,
+             "allowedMentalBreakIntensities": null,
+             "makeImmuneTo": null,
+             "capMods": [],
+             "hediffGivers": null,
+             "mentalStateGivers": null,
+             "statOffsets": null,
+             "statFactors": null,
+             "statOffsetsBySeverity": null,
+             "statFactorsBySeverity": null,
+             "damageFactors": [],
+             "enablesNeeds": null,
+             "disablesNeeds": null,
+             "multiplyStatChangesBySeverity": false,
+             "statOffsetEffectMultiplier": null,
+             "statFactorEffectMultiplier": null,
+             "capacityFactorEffectMultiplier": null,
+             "disabledWorkTags": "None",
+             "overrideTooltip": null,
+             "extraTooltip": null,
+             "blocksSleeping": false,
+             "partEfficiencyOffset": 0.0,
+             "partIgnoreMissingHP": false,
+             "destroyPart": false
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_03970e3f4ca542019c396ca3c18450db",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:20.6371418+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:20.6521794+00:00",
+         "DurationMs": 15,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "surgery_recipe_removes_infection",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "removesHediff"
+        ],
+        "defs": [
+         {
+          "requested": "RecipeDef/RSW_RemoveBrainWorm",
+          "found": true,
+          "defName": "RSW_RemoveBrainWorm",
+          "defType": "RecipeDef",
+          "label": "extract brain worm",
+          "modName": "Geonosian Brain Worms",
+          "packageId": "mandrake.rsw.brainworms",
+          "fields": {
+           "removesHediff": "RSW_BrainWormInfection"
+          }
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_e69c14d11c0e4d4e9be0ea294530c7fe",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:20.6694811+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:20.6860993+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "infection_state",
+   "components": [
+    {
+     "name": "infected_pawn_carries_hediff_clean_control_does_not",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: jawa/pawn_get has no hediffs list",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 6220,
+        "tileValid": true,
+        "mapId": 1,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "ZBiome_Grasslands",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 261.174927,
+         "rainfall": 554.1614,
+         "swampiness": 0.0,
+         "temperature": 24.6040459,
+         "pollution": 0.0,
+         "waterCovered": false,
+         "isSurfaceTile": true,
+         "fieldErrors": null
+        },
+        "mapBiome": "ZBiome_Grasslands",
+        "mapBiomeLabel": "the Pyrelands",
+        "outdoorTempNow": 28.5663033,
+        "latitude": 22.629427,
+        "longitude": 1.58393455,
+        "season": "Spring",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "NorthstarBland",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_f5d1d86826ea4adfb8c6d62663545e95",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.0454848+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.0599966+00:00",
+         "DurationMs": 14,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "clear_area(12)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 65 thing(s) across 144 cell(s).",
+        "cellsExamined": 144,
+        "outOfBounds": 0,
+        "destroyed": 65,
+        "pawnsSkipped": 0,
+        "perCategory": {
+         "Building": 3,
+         "Plant": 60,
+         "Filth": 2
+        },
+        "samples": [
+         {
+          "x": 44,
+          "z": 194,
+          "def": "PassableMarble",
+          "category": "Building"
+         },
+         {
+          "x": 44,
+          "z": 195,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 196,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 197,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 198,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 199,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 203,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         },
+         {
+          "x": 44,
+          "z": 204,
+          "def": "RM_FE_Plant_Quickgrass",
+          "category": "Plant"
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_d9c6d247d9954f4088ca927fad432b4e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.08183+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.1435419+00:00",
+         "DurationMs": 61,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human163835",
+          "name": "Engie",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_5668adf8eac64cec8cb54c7fc1b078d5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.1445688+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.3681534+00:00",
+         "DurationMs": 223,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human163850",
+          "name": "Ozzy",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_c76bb82e785047f0ad6373150b580aff",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.3897395+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.4907209+00:00",
+         "DurationMs": 100,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_BrainWormInfection (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "SEX_Reproduction",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue"
+        ],
+        "hediffCount": 6,
+        "hediffs": [
+         {
+          "def": "AS_PsychicPassion",
+          "part": null,
+          "severity": 1.0
+         },
+         {
+          "def": "AS_CompetitivePassion",
+          "part": null,
+          "severity": 1.0
+         },
+         {
+          "def": "Gunshot",
+          "part": "Torso",
+          "severity": 6.0
+         },
+         {
+          "def": "Bite",
+          "part": "Torso",
+          "severity": 2.0
+         },
+         {
+          "def": "SEX_Womb",
+          "part": "SEX_Reproduction",
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_BrainWormInfection",
+          "part": null,
+          "severity": 0.5
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_1ea673f0dd0f424bb23ae48c0805e260",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.5085964+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.533226+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human163835",
+          "thingIdNumber": 163835,
+          "name": "Amelia 'Engie' Flais",
+          "nameShort": "Engie",
+          "title": "combat engineer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 62,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Prejudiced Creed",
+          "childhood": "FoundryApprentice76",
+          "adulthood": "CombatEngineer4",
+          "headType": "Female_AverageNormal",
+          "bodyType": "Female",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 1,
+            "label": "Chemical interest",
+            "forced": false
+           },
+           {
+            "def": "Tough",
+            "degree": 0,
+            "label": "Tough",
+            "forced": false
+           },
+           {
+            "def": "VTE_Squeamish",
+            "degree": 0,
+            "label": "Squeamish",
+            "forced": false
+           },
+           {
+            "def": "Gay",
+            "degree": 0,
+            "label": "Gay",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "4",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "6",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "VAE_Handwear_Gloves",
+            "defName": "VAE_Handwear_Gloves",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "AS_PsychicPassion",
+            "part": null,
+            "severity": 1.0
+           },
+           {
+            "def": "AS_CompetitivePassion",
+            "part": null,
+            "severity": 1.0
+           },
+           {
+            "def": "Gunshot",
+            "part": "Torso",
+            "severity": 6.0
+           },
+           {
+            "def": "Bite",
+            "part": "Torso",
+            "severity": 2.0
+           },
+           {
+            "def": "SEX_Womb",
+            "part": "SEX_Reproduction",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_BrainWormInfection",
+            "part": null,
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9539593,
+            "pct": 0.9539593
+           },
+           {
+            "need": "Hygiene",
+            "level": 0.6193391,
+            "pct": 0.6193391
+           },
+           {
+            "need": "Joy",
+            "level": 0.5413197,
+            "pct": 0.5413197
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_TeaNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_CoffeeNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Bladder",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DBHThirst",
+            "level": 0.948195457,
+            "pct": 0.948195457
+           },
+           {
+            "need": "RomanceOnTheRim_Need_Romance",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "PrisonLabor_Motivation",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "PrisonLabor_Treatment",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Desserts",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Anonymity",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Corruption",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "SEX_Intimacy",
+            "level": 0.545193851,
+            "pct": 0.545193851
+           }
+          ]
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_addfaf64c6da4f448b674684b9378c5a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.5522788+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.5745525+00:00",
+         "DurationMs": 22,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "severity_advances_while_warm",
+     "toggle": "progressionSpeedMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: pawn_get hediff rows carry no severity field",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human163835",
+          "thingIdNumber": 163835,
+          "name": "Amelia 'Engie' Flais",
+          "nameShort": "Engie",
+          "title": "combat engineer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 23,
+          "ageChronologicalYears": 62,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Prejudiced Creed",
+          "childhood": "FoundryApprentice76",
+          "adulthood": "CombatEngineer4",
+          "headType": "Female_AverageNormal",
+          "bodyType": "Female",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "DrugDesire",
+            "degree": 1,
+            "label": "Chemical interest",
+            "forced": false
+           },
+           {
+            "def": "Tough",
+            "degree": 0,
+            "label": "Tough",
+            "forced": false
+           },
+           {
+            "def": "VTE_Squeamish",
+            "degree": 0,
+            "label": "Squeamish",
+            "forced": false
+           },
+           {
+            "def": "Gay",
+            "degree": 0,
+            "label": "Gay",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "4",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "6",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "VAE_Handwear_Gloves",
+            "defName": "VAE_Handwear_Gloves",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "AS_PsychicPassion",
+            "part": null,
+            "severity": 1.0
+           },
+           {
+            "def": "AS_CompetitivePassion",
+            "part": null,
+            "severity": 1.0
+           },
+           {
+            "def": "Gunshot",
+            "part": "Torso",
+            "severity": 6.0
+           },
+           {
+            "def": "Bite",
+            "part": "Torso",
+            "severity": 2.0
+           },
+           {
+            "def": "SEX_Womb",
+            "part": "SEX_Reproduction",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_BrainWormInfection",
+            "part": null,
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9539593,
+            "pct": 0.9539593
+           },
+           {
+            "need": "Hygiene",
+            "level": 0.6193391,
+            "pct": 0.6193391
+           },
+           {
+            "need": "Joy",
+            "level": 0.5413197,
+            "pct": 0.5413197
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_TeaNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_CoffeeNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Bladder",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DBHThirst",
+            "level": 0.948195457,
+            "pct": 0.948195457
+           },
+           {
+            "need": "RomanceOnTheRim_Need_Romance",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "PrisonLabor_Motivation",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "PrisonLabor_Treatment",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Desserts",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Anonymity",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Corruption",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "SEX_Intimacy",
+            "level": 0.545193851,
+            "pct": 0.545193851
+           }
+          ]
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_073da017a094494589d64442450b5b44",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:23.5935186+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:23.6115546+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__infection_state__raid_arrived__t26951__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__infection_state__raid_arrived__t26951__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 26951,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Brain worm: Engie; open, awaiting arrivals"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "puppet_state",
+   "components": [
+    {
+     "name": "host_at_puppet_severity_is_held_in_puppet_state",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: raid_arrived: raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 6220,
+        "tileValid": true,
+        "mapId": 1,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "ZBiome_Grasslands",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 261.174927,
+         "rainfall": 554.1614,
+         "swampiness": 0.0,
+         "temperature": 24.6040459,
+         "pollution": 0.0,
+         "waterCovered": false,
+         "isSurfaceTile": true,
+         "fieldErrors": null
+        },
+        "mapBiome": "ZBiome_Grasslands",
+        "mapBiomeLabel": "the Pyrelands",
+        "outdoorTempNow": 28.5663033,
+        "latitude": 22.629427,
+        "longitude": 1.58393455,
+        "season": "Spring",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "NorthstarBland",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_c0885f5ddd3b483e809c6f8d21b23c15",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:27.1124684+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:27.1277507+00:00",
+         "DurationMs": 15,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "clear_area(12)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 144 cell(s).",
+        "cellsExamined": 144,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 0,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_c5ff8029c86c4e0185f53aa19350ddfa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:27.1453216+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:27.1614605+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human163855",
+          "name": "Bullock",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_510c3b129c7a4702a776878481cd2260",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:27.1614605+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:27.2775665+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_BrainWormInfection (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "SEX_Reproduction",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue"
+        ],
+        "hediffCount": 2,
+        "hediffs": [
+         {
+          "def": "SEX_Womb",
+          "part": "SEX_Reproduction",
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_BrainWormInfection",
+          "part": null,
+          "severity": 0.9
+         }
+        ],
+        "ticksGame": 26951,
+        "operation": {
+         "OperationId": "op_a8d102f3d1c14a649473d4d71158306c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:27.3007193+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:27.3225012+00:00",
+         "DurationMs": 21,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "raid_arrived: raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals",
+      "hits": [
+       {
+        "detector": "raid_arrived",
+        "severity": "SURPRISE",
+        "summary": "raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.png"
+      ]
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 250,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 27201,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "cargo_incident",
+   "components": [
+    {
+     "name": "cargo_incident_off_refuses_to_fire",
+     "toggle": "cargoIncidentEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: cargoIncidentEnabled=false but the incident can still fire",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RSW_BrainWormCargoPod canFireNow=True (dry run, nothing fired).",
+        "incident": "RSW_BrainWormCargoPod",
+        "category": "Misc",
+        "canFireNow": true,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 27201,
+        "operation": {
+         "OperationId": "op_4bfdca14ef2945da805832d237af6152",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:34.1723988+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:34.2103874+00:00",
+         "DurationMs": 37,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RSW_BrainWormCargoPod canFireNow=True (dry run, nothing fired).",
+        "incident": "RSW_BrainWormCargoPod",
+        "category": "Misc",
+        "canFireNow": true,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 27201,
+        "operation": {
+         "OperationId": "op_d687d8e4922144858d5cce7a0f7d140a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T23:45:34.9840331+00:00",
+         "CompletedAtUtc": "2026-10-03T23:45:35.0236829+00:00",
+         "DurationMs": 39,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mechanics_unmeasured",
+   "components": [
+    {
+     "name": "worm_burrows_living_humanlike_host",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: a loose worm biting and burrowing into a live humanlike needs a hostile worm, a host and a bite; no bridge verb forces CompRSWWormBurrow's attack path",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cold_below_freezing_clears_the_infection",
+     "toggle": "coldKillRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: clearing a puppeted host needs ~8 hours of below-freezing ambient; no verb sets a map's temperature",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "surgery_removes_worm",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: an operation bill needs a visible hediff, Medicine 9, a bed and 4000 work ticks of a surgeon",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "egg_shell_bursts_into_worms",
+     "toggle": "eggProjectileEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: a fired mortar shell is needed; a spawned projectile does not impact on its own",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ruin_loot_can_hold_egg_cluster",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a generated ancient complex (map generation); the patch target is vanilla's ThingSetMakerDef",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "dead_host_is_never_puppeted",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a killed infected pawn and ticks past death (static check covers the Dead refusals in source)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000016BBF871E90>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\BrainWorms.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 1,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": [
+   "corpses present: 1"
+  ]
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}
