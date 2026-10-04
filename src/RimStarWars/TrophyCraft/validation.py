@@ -118,6 +118,19 @@ def static_checks():
     pd = _def("ThingDefs/RSW_TrophyCraft_Items.xml", "ThingDef", PENDANT)
     if pd is None or pd.findtext("apparel/layers/li") != LAYER or pd.findtext("apparel/bodyPartGroups/li") != "Neck":
         bad.append("pendant is not a Neck-group apparel on layer %s" % LAYER)
+    # NORTHSTAR_PARTIAL_GAPS_FILL_1: "sells anywhere" -- the pendant carries ExoticMisc, the fang Exotic, and the
+    # crafted pendant is worth more than the four fangs it eats (or crafting it destroys value).
+    fg = _def("ThingDefs/RSW_TrophyCraft_Items.xml", "ThingDef", FANG)
+    if pd is not None and "ExoticMisc" not in [x.text for x in pd.findall("tradeTags/li")]:
+        bad.append("pendant lost tradeTags ExoticMisc (no longer sells to any trader)")
+    if fg is not None and "Exotic" not in [x.text for x in fg.findall("tradeTags/li")]:
+        bad.append("fang lost tradeTags Exotic")
+    try:
+        pv, fv = float(pd.findtext("statBases/MarketValue")), float(fg.findtext("statBases/MarketValue"))
+        if pv <= 4 * fv:
+            bad.append("pendant MarketValue %s <= 4 fangs at %s: crafting destroys value" % (pv, fv))
+    except (AttributeError, TypeError, ValueError):
+        bad.append("pendant or fang MarketValue unreadable from XML")
     if _def("ApparelLayerDefs/RSW_TrophyCraft_ApparelLayerDefs.xml", "ApparelLayerDef", LAYER) is None:
         bad.append("ApparelLayerDef %s missing" % LAYER)
     # the fang-drop patch: butcherProducts is dictionary-keyed (an <li> discards the whole donor def)
