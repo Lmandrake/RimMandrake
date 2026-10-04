@@ -2797,3 +2797,25 @@
 {"seat":"FOUNDRY","event":"start","id":"GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1","ts":"2026-10-04T08:44:26Z","tsn":1791103466437165240}
 {"seat":"FOUNDRY","event":"claim","id":"LASSO_CHERRYPICKER_REMOVAL_1","ts":"2026-10-04T08:46:44Z","tsn":1791103604231498993}
 {"seat":"FOUNDRY","event":"start","id":"LASSO_CHERRYPICKER_REMOVAL_1","ts":"2026-10-04T08:46:44Z","tsn":1791103604751291277}
+{"seat":"FOUNDRY","event":"file","id":"SANGUOPHAGE_KEPT_UNREACHABLE_1","title":"Owner card: Sanguophage cannot be deleted (XenotypeDefOf binding) - keep the def but make it unreachable (suppress Sanguophages faction, Sanguophage scenario, quest routes)?","kind":"decision","target":"v1","needs":"owner","spec":"infrastructure/state/items/closed/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md (FOUNDRY cut plan item 2)","caused_by":"VANILLA_XENOTYPE_DEFCUT_1","for":"BENCH","ts":"2026-10-04T08:51:48Z","tsn":1791103908095880624}
+{"seat":"FOUNDRY","event":"claim","id":"VANILLA_XENOTYPE_DEFCUT_1","ts":"2026-10-04T08:51:48Z","tsn":1791103908599845957}
+{"seat":"FOUNDRY","event":"start","id":"VANILLA_XENOTYPE_DEFCUT_1","ts":"2026-10-04T08:51:49Z","tsn":1791103909111286072}
+{"seat":"FOUNDRY","event":"claim","id":"DIVINGINTERACTION_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:39Z","tsn":1791104079425545762}
+{"seat":"FOUNDRY","event":"start","id":"DIVINGINTERACTION_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:39Z","tsn":1791104079997905838}
+{"seat":"FOUNDRY","event":"close","id":"DIVINGINTERACTION_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:40Z","tsn":1791104080518050146}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:41Z","tsn":1791104081042145274}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:41Z","tsn":1791104081567050812}
+{"seat":"FOUNDRY","event":"close","id":"LONGSHADE_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:42Z","tsn":1791104082086083926}
+{"seat":"FOUNDRY","event":"claim","id":"RIMPROPERTY_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:42Z","tsn":1791104082604434422}
+{"seat":"FOUNDRY","event":"start","id":"RIMPROPERTY_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:43Z","tsn":1791104083118473710}
+{"seat":"FOUNDRY","event":"close","id":"RIMPROPERTY_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:43Z","tsn":1791104083634755462}
+{"seat":"FOUNDRY","event":"claim","id":"ENVIRONMENTALHAZARDS_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:44Z","tsn":1791104084154033205}
+{"seat":"FOUNDRY","event":"start","id":"ENVIRONMENTALHAZARDS_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:44Z","tsn":1791104084682327635}
+{"seat":"FOUNDRY","event":"close","id":"ENVIRONMENTALHAZARDS_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:45Z","tsn":1791104085200561532}
+{"seat":"FOUNDRY","event":"claim","id":"STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:45Z","tsn":1791104085715060387}
+{"seat":"FOUNDRY","event":"start","id":"STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:46Z","tsn":1791104086227227976}
+{"seat":"FOUNDRY","event":"close","id":"STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:46Z","tsn":1791104086748699684}
+{"seat":"FOUNDRY","event":"claim","id":"CREATUREBEHAVIORS_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:47Z","tsn":1791104087286555873}
+{"seat":"FOUNDRY","event":"start","id":"CREATUREBEHAVIORS_COVERAGE_GAPS_1","ts":"2026-10-04T08:54:47Z","tsn":1791104087813409354}
+{"seat":"FOUNDRY","event":"close","id":"CREATUREBEHAVIORS_COVERAGE_GAPS_1","sha":"d278a8f8b","reason":"asserting/UNMEASURED-named component per listed behaviour; lint clean","ts":"2026-10-04T08:54:48Z","tsn":1791104088337221609}
+{"seat":"FOUNDRY","event":"close","id":"VANILLA_XENOTYPE_DEFCUT_1","sha":"ecd9944e3","reason":"offline slice done; live harvest check rides next load with SHIP applied","ts":"2026-10-04T08:54:48Z","tsn":1791104088846905179}
