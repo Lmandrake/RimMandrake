@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  XenotypeCut_SpawnSets.xml — VANILLA_XENOTYPE_CUT_SPAWNSETS_1, slice 1 of the owner's
+  2026-10-03 ruling (question card): CUT the twelve non-Star-Wars xenotypes entirely.
+
+  This slice removes them from every xenotypeSet in the load (FactionDef and PawnKindDef,
+  abstract parents included, so inheriting children follow). A xenotypeSet's unassigned
+  chance falls to Baseliner, so no faction or pawnkind is left unable to make a pawn; the
+  five factions whose set was ONLY cut xenotypes (OutlanderRoughPig, PirateYttakin,
+  TribeRoughNeanderthal, TribeSavageImpid, VRESaurids_OutlanderRoughSaurid) become baseliner
+  factions, and all five are already zeroed out of world creation by
+  FactionSlate/OnlyOurFactions.xml. Removing the references FIRST is what makes the later
+  def cut (slice 2, Cherry Picker) safe: no xenotypeChances entry is left pointing at a
+  removed def.
+
+  Sanguophage is handled separately: XenotypeDefOf.Sanguophage is a [MayRequireBiotech]
+  DefOf binding, so its def cannot simply vanish with Biotech active. Here it is removed
+  only from the Empire noble sets; its own pawnkinds (Sanguophage, Sanguophage_Player)
+  and the Sanguophages faction are slice 2's call.
+
+  XenotypeChance loads by NODE NAME (<Dirtmole>0.035</Dirtmole>), so each op removes that
+  node. Every Remove is wrapped in a Conditional on the same xpath: a Remove that matches
+  nothing logs a red error, a Conditional that matches nothing is silent.
+  Guarded by src/RimUtinni/UtinniPatches/selftest_xenotype_cut_spawnsets.py.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Dirtmole</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Dirtmole</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Genie</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Genie</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Highmate</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Highmate</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Hussar</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Hussar</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Impid</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Impid</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Neanderthal</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Neanderthal</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Pigskin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Pigskin</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Starjack</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Starjack</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/VRESaurids_Saurid</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/VRESaurids_Saurid</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Waster</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Waster</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/*/xenotypeSet/xenotypeChances/Yttakin</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/*/xenotypeSet/xenotypeChances/Yttakin</xpath>
+    </match>
+  </Operation>
+  <!-- Sanguophage: Empire noble sets only (see header). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/PawnKindDef[starts-with(defName,"Empire_")]/xenotypeSet/xenotypeChances/Sanguophage</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/PawnKindDef[starts-with(defName,"Empire_")]/xenotypeSet/xenotypeChances/Sanguophage</xpath>
+    </match>
+  </Operation>
+</Patch>
