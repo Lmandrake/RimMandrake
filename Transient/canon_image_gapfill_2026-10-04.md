@@ -22,6 +22,27 @@ the owner's word).
 
 Note: the wiki CDN serves WebP whatever the file is named; pulled files are named `.webp`.
 
+## Summary
+- Swept every non-humanlike race def under `src/RimStarWars` (249; juvenile/larva/pupa variants
+  folded into the parent → 179 base creatures checked). Sanity probe: `bantha` resolved canon +
+  Legends with 8 candidate images before any subject ran.
+- **64 creatures filled** (63 new entries incl. hand-written `gorg` and `longtailgorg`, plus
+  `blurrg`, the one existing entry with no images, now 4), **201 images added**, canon and /Legends both read;
+  Legends images are labelled as Legends in each entry's `## Candidate images`.
+- Library: 138 → 201 entries, 583 → 784 reference images. All 784 registered in the art ledger
+  (`art.py backfill canon`, 201 new canon variant events), so review sheets show them.
+- ⚠️ New script-made entries carry sourced text, Source URLs and captioned images, but their
+  **Visual brief and Must show are OWED** (no agent viewed those images). `gorg` and
+  `longtailgorg` were viewed and written in full.
+- ⚠️ Identity is by exact Wookieepedia title + creature infobox. One collision found and dropped
+  (screecher). The rest were not cross-checked against our def descriptions.
+- Existing entries: only `blurrg` had no images; the other 45 creature entries all had some.
+
+## Still missing — no Wookieepedia title matched (114)
+Most look invented by donor mods (Mlie, VE-style biome packs) or by us. They are listed for the
+owner, not filed. A guessed-title miss does not prove a creature is non-canon, but each was
+searched by label and defName: Baseopsis, Diplocaulus, Holcorobeus, Platyhystrix, Protosolpuga, Protovermes, Scavrats, Segnosaurus, Termitotron, aaroxis dendoria, abyssal colo, acid slug, alpha wraid, basilisk, bloodletter petrel, bloodrop larvae, bloodrop pupa, bokka, bunker bug, chikka, crested dragon, crimson opee, crystal crab, crystal fairy mole, diggerpede, drazzik, drinker, durrok, elder sando, excretor, facet moth, fang leaf, feral grazer, feral nerf, foundry beetle, frilled gorg, gastro toad, gembug, glowbulb, glowtail, grabber, grellik, groundrunner, ikee, imperial toad, jellypot, jewel beetle, karrask, khorrak, korrum, kroffa, kudda, lanternwhale, maguana, mahllik, mature fleshbeast, maxolotl, megakrill, megaphorid, megapleura, moornak, moss beetle, mullgoth, mutagenic norphea, mutating tumorfish, mutating tumorfish fry, mutating tumorfish spawn, nizzek, ommok, onnik, ossik, pod worm, polluwog, puffmite, pustule hornet, pustule hornet, pustule queen, pustule queen, reefback, royal rhino beetle, rust nipper, sacapillar, sand leaper, sand stalker, sandpillar, sarlacc swimmer, scrap-nest bird, shade whale, shale gorger, shatterjaw beetle, silt lamprey, skerrith, skorra, smog moth, smog pupa, starmaw, storm sando, tellurox, thornback colo, thrumbungus, thunderstep, thurra, truffle mole, ulgga, vekka, vent stalker, vosska, vozzik, vurra, war wyrm, yanker, yooka, zakkro, zhakka.
+
 ## Per creature
 | creature | defName | entry before | images before → after | sources | notes |
 |---|---|---|---|---|---|
@@ -86,7 +107,7 @@ Note: the wiki CDN serves WebP whatever the file is named; pulled files are name
 | igitz | `RSW_Igitz` | — | 0 → 1 | canon `Igitz` | filled |
 | ikee | `RSW_Ikee` | — | 0 → 0 | — | no exact Wookieepedia title for: ikee, Ikee |
 | imperial toad | `RSW_ImperialToad` | — | 0 → 0 | — | no exact Wookieepedia title for: imperial toad, Imperial Toad |
-| iridonian reek | `RSW_IridonianReek` | — | 0 → 0 | — | no exact Wookieepedia title for: iridonian reek, Iridonian Reek |
+| iridonian reek | `RSW_IridonianReek` | — | 0 → 4 | canon `Reek`; Legends `Reek/Legends` | filled (canon name is "reek") |
 | jakobeast | `RSW_Jakobeast` | — | 0 → 2 | canon `Jakobeast`; Legends `Jakobeast/Legends` | filled |
 | Jamel | `RSW_Jamel` | — | 0 → 3 | canon `Jamel` | filled |
 | jellypot | `RSW_Jellypot` | — | 0 → 0 | — | no exact Wookieepedia title for: jellypot, Jellypot |
@@ -114,3 +135,93 @@ Note: the wiki CDN serves WebP whatever the file is named; pulled files are name
 | mature fleshbeast | `RSW_MatureFleshbeast` | — | 0 → 0 | — | no exact Wookieepedia title for: mature fleshbeast, Mature Fleshbeast |
 | maxolotl | `RSW_Maxolotl` | — | 0 → 0 | — | no exact Wookieepedia title for: maxolotl, Maxolotl |
 | mee scalefish | `RSW_Mee` | — | 0 → 4 | canon `Mee`; Legends `Mee/Legends` | filled |
+| megakrill | `RSW_Megakrill` | — | 0 → 0 | — | no exact Wookieepedia title for: megakrill, Megakrill |
+| megaphorid | `RSW_Megaphorid` | — | 0 → 0 | — | no exact Wookieepedia title for: megaphorid, Megaphorid |
+| megapleura | `RSW_Megapleura` | — | 0 → 0 | — | no exact Wookieepedia title for: megapleura, Megapleura |
+| moornak | `RSW_Moornak` | — | 0 → 0 | — | no exact Wookieepedia title for: moornak, Moornak |
+| moss beetle | `RSW_MossBeetle` | — | 0 → 0 | — | no exact Wookieepedia title for: moss beetle, Moss Beetle |
+| mott | `RSW_Mott` | — | 0 → 4 | canon `Mott`; Legends `Mott/Legends` | filled |
+| mullgoth | `RSW_Mullgoth` | — | 0 → 0 | — | no exact Wookieepedia title for: mullgoth, Mullgoth |
+| mutagenic norphea | `RSW_MutagenicNorphea` | — | 0 → 0 | — | no exact Wookieepedia title for: mutagenic norphea, Mutagenic Norphea |
+| mutating tumorfish | `RSW_MutatingTumorfishAdult` | — | 0 → 0 | — | no exact Wookieepedia title for: mutating tumorfish, Mutating Tumorfish Adult |
+| mutating tumorfish fry | `RSW_MutatingTumorfishFry` | — | 0 → 0 | — | no exact Wookieepedia title for: mutating tumorfish fry, Mutating Tumorfish Fry |
+| mutating tumorfish spawn | `RSW_MutatingTumorfishSpawn` | — | 0 → 0 | — | no exact Wookieepedia title for: mutating tumorfish spawn, Mutating Tumorfish Spawn |
+| mynock | `RSW_Mynock` | — | 0 → 4 | canon `Mynock`; Legends `Mynock/Legends` | filled |
+| neebray | `RSW_Neebray` | — | 0 → 4 | canon `Neebray`; Legends `Neebray/Legends` | filled |
+| nerf | `RSW_Nerf` | — | 0 → 4 | canon `Nerf`; Legends `Nerf/Legends` | filled |
+| nizzek | `RSW_Nizzek` | — | 0 → 0 | — | no exact Wookieepedia title for: nizzek, Nizzek |
+| ommok | `RSW_Ommok` | — | 0 → 0 | — | no exact Wookieepedia title for: ommok, Ommok |
+| onnik | `RSW_Onnik` | — | 0 → 0 | — | no exact Wookieepedia title for: onnik, Onnik |
+| opee sea killer | `RSW_OpeeSeaKiller` | — | 0 → 4 | canon `Opee sea killer`; Legends `Opee sea killer/Legends` | filled |
+| ossik | `RSW_Ossik` | — | 0 → 0 | — | no exact Wookieepedia title for: ossik, Ossik |
+| pikobis | `RSW_Pikobis` | — | 0 → 3 | canon `Pikobi`; Legends `Pikobi/Legends` | filled |
+| Platyhystrix | `RSW_Platyhystrix` | — | 0 → 0 | — | no exact Wookieepedia title for: Platyhystrix |
+| pod worm | `RSW_PodWorm` | — | 0 → 0 | — | no exact Wookieepedia title for: pod worm, Pod Worm |
+| polluwog | `RSW_Polluwog` | — | 0 → 0 | — | no exact Wookieepedia title for: polluwog, Polluwog |
+| Protosolpuga | `RSW_Protosolpuga` | — | 0 → 0 | — | no exact Wookieepedia title for: Protosolpuga |
+| Protovermes | `RSW_Protovermes` | — | 0 → 0 | — | no exact Wookieepedia title for: Protovermes |
+| Pufferpig | `RSW_Pufferpig` | — | 0 → 3 | canon `Puffer pig` | filled |
+| pustule hornet | `RSW_PustuleHornet` | — | 0 → 0 | — | no exact Wookieepedia title for: pustule hornet, Pustule Hornet |
+| pustule queen | `RSW_PustuleHornetQueen` | — | 0 → 0 | — | no exact Wookieepedia title for: pustule queen, Pustule Hornet Queen |
+| qormot | `RSW_Qormot` | — | 0 → 1 | canon `Qormot` | filled |
+| reefback | `RSW_Reefback` | — | 0 → 0 | — | no exact Wookieepedia title for: reefback, Reefback |
+| royal rhino beetle | `RSW_RoyalRhino` | — | 0 → 0 | — | no exact Wookieepedia title for: royal rhino beetle, Royal Rhino |
+| runyip | `RSW_Runyip` | — | 0 → 4 | canon `Runyip`; Legends `Runyip/Legends` | filled |
+| rust nipper | `RSW_RustNipper` | — | 0 → 0 | — | no exact Wookieepedia title for: rust nipper, Rust Nipper |
+| sacapillar | `RSW_Sacapillar` | — | 0 → 0 | — | no exact Wookieepedia title for: sacapillar, Sacapillar |
+| sand leaper | `RSW_SandLeaper` | — | 0 → 0 | — | no exact Wookieepedia title for: sand leaper, Sand Leaper |
+| vekka | `RSW_SandLion` | — | 0 → 0 | — | no exact Wookieepedia title for: vekka, Sand Lion |
+| sandpillar | `RSW_SandPillar` | — | 0 → 0 | — | no exact Wookieepedia title for: sandpillar, Sand Pillar |
+| sand stalker | `RSW_SandStalker` | — | 0 → 0 | — | no exact Wookieepedia title for: sand stalker, Sand Stalker |
+| sando aqua monster | `RSW_SandoAquaMonster` | — | 0 → 4 | canon `Sando aqua monster`; Legends `Sando aqua monster/Legends` | filled |
+| sarlacc swimmer | `RSW_SarlaccSwimmer` | — | 0 → 0 | — | no exact Wookieepedia title for: sarlacc swimmer, Sarlacc Swimmer |
+| Scavrats | `RSW_Scavrat` | — | 0 → 0 | — | no exact Wookieepedia title for: Scavrats, Scavrat |
+| scrap-nest bird | `RSW_ScrapNestBird` | — | 0 → 0 | — | no exact Wookieepedia title for: scrap-nest bird, Scrap Nest Bird |
+| screecher | `RSW_Screecher` | — | 0 → 0 | — | NAME COLLISION: Wookieepedia `Screecher` is a Kirtania rain-forest animal (one line, no image); ours is a pollution-mutated corvid. No entry created. |
+| scurrier | `RSW_Scurrier` | — | 0 → 4 | canon `Scurrier`; Legends `Scurrier/Legends` | filled |
+| Segnosaurus | `RSW_Segnosaurus` | — | 0 → 0 | — | no exact Wookieepedia title for: Segnosaurus |
+| shaaks | `RSW_Shaak` | — | 0 → 4 | canon `Shaak`; Legends `Shaak/Legends` | filled |
+| shade whale | `RSW_ShadeWhale` | — | 0 → 0 | — | no exact Wookieepedia title for: shade whale, Shade Whale |
+| shale gorger | `RSW_ShaleGorger` | — | 0 → 0 | — | no exact Wookieepedia title for: shale gorger, Shale Gorger |
+| shatterjaw beetle | `RSW_ShatterjawBeetle` | — | 0 → 0 | — | no exact Wookieepedia title for: shatterjaw beetle, Shatterjaw Beetle |
+| shiro-trap | `RSW_ShiroTrap` | — | 0 → 2 | canon `Shiro-trap` | filled |
+| thunderstep | `RSW_ShrublandGiant` | — | 0 → 0 | — | no exact Wookieepedia title for: thunderstep, Shrubland Giant |
+| shyrack | `RSW_Shyrack` | — | 0 → 2 | Legends `Shyrack/Legends` | filled |
+| silt lamprey | `RSW_SiltLamprey` | — | 0 → 0 | — | no exact Wookieepedia title for: silt lamprey, Silt Lamprey |
+| skalders | `RSW_Skalder` | — | 0 → 2 | canon `Skalder`; Legends `Skalder/Legends` | filled |
+| sketto | `RSW_Sketto` | — | 0 → 3 | canon `Sketto`; Legends `Sketto/Legends` | filled |
+| skorra | `RSW_Skorra` | — | 0 → 0 | — | no exact Wookieepedia title for: skorra, Skorra |
+| smog moth | `RSW_SmogMoth` | — | 0 → 0 | — | no exact Wookieepedia title for: smog moth, Smog Moth |
+| smog pupa | `RSW_SmogPupa` | — | 0 → 0 | — | no exact Wookieepedia title for: smog pupa, Smog Pupa |
+| starmaw | `RSW_Starmaw` | — | 0 → 0 | — | no exact Wookieepedia title for: starmaw, Starmaw |
+| storm sando | `RSW_StormSando` | — | 0 → 0 | — | no exact Wookieepedia title for: storm sando, Storm Sando |
+| strill | `RSW_Strill` | — | 0 → 2 | canon `Strill`; Legends `Strill/Legends` | filled |
+| tee muss | `RSW_TeeMuss` | — | 0 → 1 | canon `Tee-muss`; Legends `Tee-muss/Legends` | filled |
+| tellurox | `RSW_TelluroxRace` | — | 0 → 0 | — | no exact Wookieepedia title for: tellurox, Tellurox |
+| Termitotron | `RSW_Termitotron` | — | 0 → 0 | — | no exact Wookieepedia title for: Termitotron |
+| thornback colo | `RSW_ThornbackColo` | — | 0 → 0 | — | no exact Wookieepedia title for: thornback colo, Thornback Colo |
+| thrumbungus | `RSW_Thrumbungus` | — | 0 → 0 | — | no exact Wookieepedia title for: thrumbungus, Thrumbungus |
+| thurra | `RSW_Thurra` | — | 0 → 0 | — | no exact Wookieepedia title for: thurra, Thurra |
+| truffle mole | `RSW_TruffleMole` | — | 0 → 0 | — | no exact Wookieepedia title for: truffle mole, Truffle Mole |
+| yanker | `RSW_TunnelSnake` | — | 0 → 0 | — | no exact Wookieepedia title for: yanker, Tunnel Snake |
+| ulgga | `RSW_Ulgga` | — | 0 → 0 | — | no exact Wookieepedia title for: ulgga, Ulgga |
+| urusai | `RSW_Urusai` | — | 0 → 4 | canon `Urusai`; Legends `Urusai/Legends` | filled |
+| uvak | `RSW_Uvak` | — | 0 → 4 | canon `Uvak` | filled |
+| varactyl | `RSW_Varactyl` | — | 0 → 4 | canon `Varactyl`; Legends `Varactyl/Legends` | filled |
+| vent stalker | `RSW_VentStalker` | — | 0 → 0 | — | no exact Wookieepedia title for: vent stalker, Vent Stalker |
+| voorpak | `RSW_Voorpak` | — | 0 → 4 | canon `Voorpak`; Legends `Voorpak/Legends` | filled |
+| vosska | `RSW_Vosska` | — | 0 → 0 | — | no exact Wookieepedia title for: vosska, Vosska |
+| vozzik | `RSW_Vozzik` | — | 0 → 0 | — | no exact Wookieepedia title for: vozzik, Vozzik |
+| vurra | `RSW_Vurra` | — | 0 → 0 | — | no exact Wookieepedia title for: vurra, Vurra |
+| war wyrm | `RSW_WarWyrm` | — | 0 → 0 | — | no exact Wookieepedia title for: war wyrm, War Wyrm |
+| womp rat | `RSW_WompRat` | — | 0 → 4 | canon `Womp rat`; Legends `Womp rat/Legends` | filled |
+| woolamander | `RSW_Woolamander` | — | 0 → 4 | canon `Woolamander`; Legends `Woolamander/Legends` | filled |
+| worrt | `RSW_Worrt` | — | 0 → 4 | canon `Worrt`; Legends `Worrt/Legends` | filled |
+| wraid | `RSW_Wraid` | — | 0 → 2 | canon `Wraid` | filled |
+| alpha wraid | `RSW_WraidAlpha` | — | 0 → 0 | — | no exact Wookieepedia title for: alpha wraid, Wraid Alpha |
+| pale yobshrimp | `RSW_Yobshrimp` | — | 0 → 2 | canon `Yobshrimp`; Legends `Yobshrimp/Legends` | filled |
+| yobshrimp | `RSW_YobshrimpLand` | — | 0 → 2 | canon `Yobshrimp`; Legends `Yobshrimp/Legends` | filled |
+| yooka | `RSW_Yooka` | — | 0 → 0 | — | no exact Wookieepedia title for: yooka, Yooka |
+| zakkro | `RSW_Zakkro` | — | 0 → 0 | — | no exact Wookieepedia title for: zakkro, Zakkro |
+| zhakka | `RSW_Zhakka` | — | 0 → 0 | — | no exact Wookieepedia title for: zhakka, Zhakka |
+| ysalamir | `SWPotF_RaceDef_ysalamir` | — | 0 → 4 | canon `Ysalamiri`; Legends `Ysalamiri/Legends` | filled (canon name is "ysalamiri"; label search missed it) |
