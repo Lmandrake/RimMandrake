@@ -12,7 +12,7 @@
 
   All three of the doc's options ship: (weight 4) RUT_LampBlack x1-2, the
   kellu-ink dye-and-chart resource (sibling item, RUT_TwilightFish_Niim.xml);
-  (weight 2) RM_Niim x8-12, "a net that hit the shoal"; (weight 1)
+  (weight 2) RM_NiimCatch x8-12, "a net that hit the shoal"; (weight 1)
   Corpse_RSW_ColoClawFish (5-10 days rotted per the doc's own line — flavor
   only, no rot-progress override; same restraint this build already took on
   RUT_LungerFry's forward reference), "something in the dark between columns
@@ -50,7 +50,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RM_Niim</li>
+                  <li>RM_NiimCatch</li>
                 </thingDefs>
               </filter>
               <countRange>8~12</countRange>
@@ -79,7 +79,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RM_Aluun</li>
+                  <li>RM_AluunCatch</li>
                 </thingDefs>
               </filter>
               <countRange>6~10</countRange>

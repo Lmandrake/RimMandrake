@@ -5,7 +5,7 @@
   ============================================================================
   §3.1/§3.3: the independence arc's centrepiece. Fed on any raw floor food
   (CompRefuelable #2, category FoodRaw), needs one wild seed to start
-  (CompRefuelable #1, RM_Pallu or RM_LampBladder — "the sea's, free"),
+  (CompRefuelable #1, RM_PalluCatch or RM_LampBladder — "the sea's, free"),
   never explodes, dims to a seedable husk past its grace period. Growth IS
   brightness — RM_Building_SunSphere.cs reads the two comps by ORDER (seed
   first, food second), since two CompRefuelable siblings share no distinct
@@ -70,7 +70,7 @@
         <fuelCapacity>1</fuelCapacity>
         <fuelFilter>
           <thingDefs>
-            <li>RM_Pallu</li>
+            <li>RM_PalluCatch</li>
             <li>RM_LampBladder</li>
           </thingDefs>
         </fuelFilter>
