@@ -105,6 +105,71 @@
        whichever copy of a co-declared def the load ends up holding. -->
 
   <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_default : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_nadd : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_plasma : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBowcasterBolt_default : 34 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORSlugBolt : 34 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
@@ -261,39 +326,6 @@
         <!-- OuterRim_CyclerRifleProjectile : 36 -> 36 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_CyclerRifleProjectile"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>36</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- KotORBlasterBolt_default : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBlasterBolt_nadd : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBlasterBolt_plasma : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBowcasterBolt_default : 34 -> 36 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>36</damageAmountBase></value>
-        </li>
-        <!-- KotORSlugBolt : 34 -> 36 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>36</damageAmountBase></value>
         </li>
       </operations>

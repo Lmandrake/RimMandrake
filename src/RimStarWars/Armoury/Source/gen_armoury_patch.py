@@ -403,6 +403,45 @@ turret_guns = set()
 # typed. The emit needs them because an op on a def we declare OURSELVES must
 # not be wrapped in a PatchOperationFindMod naming us -- see OWN_NOTE.
 own_mod_names = set()
+
+
+def _armoury_declared_defnames():
+    """(About.xml name, ThingDef defNames declared under this mod's Defs/).
+
+    🔴 The dump says which mod declared a def AT DUMP TIME. A def absorbed
+    from a donor after the dump still reads as the donor's, and its op lands
+    under a FindMod naming a mod that is no longer loaded -- FindMod returns
+    true on no match, so the op silently never runs (ARMOURY_KOTOR_BOLT_GUARD_1:
+    five KotOR bolts). What this mod's own Defs/ declares today is ours,
+    whatever the dump remembers.
+    """
+    root = os.path.dirname(PATCHDIR)
+    name = ET.parse(os.path.join(root, "About", "About.xml")).getroot().findtext("name")
+    found = set()
+    for dp, _dn, fns in os.walk(os.path.join(root, "Defs")):
+        for fn in fns:
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot().findall("ThingDef"):
+                    dn = el.findtext("defName")
+                    if dn:
+                        found.add(dn.strip())
+    return (name or "").strip(), found
+
+
+ARMOURY_NAME, ARMOURY_DEFS = _armoury_declared_defnames()
+if not ARMOURY_NAME or len(ARMOURY_DEFS) < 50:
+    sys.exit("own-def scan is blind: name %r, %d ThingDefs under Armoury/Defs"
+             % (ARMOURY_NAME, len(ARMOURY_DEFS)))
+own_mod_names.add(ARMOURY_NAME)
+
+
+def group_mod(defname, dump_mod):
+    """The emit group for an op: ours if Armoury/Defs declares the def today.
+    Only the GROUP moves -- w["mod"] stays the dump's, because is_sw() and the
+    tier census read it."""
+    return ARMOURY_NAME if defname in ARMOURY_DEFS else dump_mod
+
+
 for d in iter_live_defs(DUMP):
     f = d.get("fields") or {}
     if str(d.get("packageId") or "").lower().startswith("mandrake."):
@@ -804,7 +843,7 @@ for pname, (old, new) in sorted(proj_changes.items()):
         missing.append(pname)
         continue
     sel = '[defName="%s"]' % owner if attr == "defName" else '[@Name="%s"]' % owner
-    ranged_by_mod[projectiles[pname]["mod"]].append(
+    ranged_by_mod[group_mod(pname, projectiles[pname]["mod"])].append(
         ('/Defs/ThingDef' + sel,
          '        <!-- %s : %s -> %d -->' % (pname, old, new) + NL +
          repl('/Defs/ThingDef' + sel + '/projectile/damageAmountBase',
@@ -922,7 +961,7 @@ for dn, (old, new) in sorted(tool_changes.items()):
                     repl('/Defs/ThingDef' + sel + '/tools/li[label="' + lab + '"]/power',
                          'power', newp)))
     if ops:
-        melee_by_mod[wmap[dn]["mod"]].extend(ops)
+        melee_by_mod[group_mod(dn, wmap[dn]["mod"])].extend(ops)
 
 with io.open(os.path.join(OUTDIR, "Armoury_MeleePower.xml"), "w", encoding="utf-8") as fh:
     m_own, m_dup = emit(

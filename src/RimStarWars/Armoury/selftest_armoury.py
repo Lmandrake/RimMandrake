@@ -135,14 +135,14 @@ def main():
     check("the generated ranged patch parses (>= 40 damageAmountBase ops; 43 on 2026-10-03)", len(r) >= 40, len(r))
     check("RSW_High_Blue_Blaster_Bolt is def-guarded at 30 and declared by this mod",
           ("RSW_High_Blue_Blaster_Bolt", 30, None) in r and "RSW_High_Blue_Blaster_Bolt" in own, r[:3])
-    # the shipped patch carries ops on our own defs under a donor FindMod (KotOR bolts): the guard component says so;
-    # a clean patch (same ops, the own-def ops moved out of the FindMod) must PASS both components
+    # the guard component FAILs exactly when the shipped patch puts an op on our own def under a donor FindMod
+    # (the five KotOR bolts did until ARMOURY_KOTOR_BOLT_GUARD_1); a clean patch (same ops, the own-def ops moved out of the FindMod) must PASS both components
     clean = [(n, v, (None if n in own else g)) for n, v, g in r]
     got = run_ranged(targets=clean)
     check("clean (own ops def-guarded): both components PASS",
           got == {"own_ranged_ops_carry_no_donor_guard": "PASS", "ranged_patch_damage_is_live": "PASS"}, got)
     shipped = run_ranged()
-    check("shipped patch: own-def ops under a donor FindMod turn the guard component FAIL",
+    check("shipped patch: guard component FAILs iff an own-def op sits under a donor FindMod",
           shipped.get("own_ranged_ops_carry_no_donor_guard")
           == ("FAIL" if any(n in own and g not in (None, "Core", "Anomaly", "Odyssey") for n, _v, g in r) else "PASS"),
           shipped)
