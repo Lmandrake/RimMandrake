@@ -36,6 +36,11 @@ XML = """<Defs>
 WIRED = [
     ("RimStarWars/Cuisine", ("RSW_SaltCuredRation_White", "RSW_CureWithAmberSalt", "RSW_AteCrystalSaltCured"), 30),
     ("RimUtinni/Antiquities", ("RUT_AntiquityCipherBench",), 8),
+    ("RimUtinni/Rites", ("RUT_Rites", "RUT_Rites_GodsSpeakBack"), 6),
+    ("RimMandrake/SacredGraffiti", ("RM_Ishko_RitualOutcome_PlaceSacredMark", "RM_ViewedSacredMark_Ishko"), 5),
+    ("RimUtinni/UtinniStatues", ("RUT_StatueGrand_Shkaar",), 4),
+    ("RimUtinni/ScarlandsLadder", ("RUT_PilgrimCamps", "RUT_ScarlandsLadder", "RUT_PilgrimJournal"), 3),
+    ("RimMandrake/Scarlands", ("RM_Warscar", "RM_OldLineTurret", "RM_Chatrak"), 90),
 ]
 
 
@@ -103,6 +108,56 @@ def reds(r):
     return sorted(k for k, (v, _d) in r.items() if v == "FAIL")
 
 
+def _components(res):
+    out = {}
+    for ch in res["chains"]:
+        for c in ch["components"]:
+            out[c["name"]] = (c["verdict"], c.get("detail") or "")
+    return out
+
+
+def run_real(rel, brk=()):
+    """Import the wired mod's own validation.py, take the chain it registered, and run it against a mock serving
+    that mod's own XML. Clean must be green (its fields_by_type really compares something); 'missing' drops one def
+    from the game and must redden the loaded component; 'drift' changes every served value and must redden the
+    fields component. None = the validation.py registers no such chain."""
+    import importlib.util
+    mod_dir = os.path.join(ROOT, "src", rel)
+    spec = importlib.util.spec_from_file_location("v_" + rel.replace("/", "_"), os.path.join(mod_dir, "validation.py"))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    fns = [fn for n, fn in (m.suite.chains if getattr(m, "suite", None) else []) if n == "every_shipped_def_reads_back"]
+    if len(fns) != 1:
+        return None
+    # keyed by "Type/name": names collide across types (Warscar's RM_Chotrix is a ThingDef AND a PawnKindDef)
+    parsed = dict(("%s/%s" % (t, n), leaf) for t, n, leaf in shipped_defs.parse(mod_dir))
+    drop = set([sorted(parsed)[0]]) if "missing" in brk else set()
+
+    def ext(game, tool, p):
+        if tool != "jawa/get_defs":
+            return None
+        want = [x for x in str(p.get("defs") or "").split(";") if "/" in x]
+        fields = [x for x in str(p.get("fields") or "").split(",") if x]
+        rows = []
+        for spec in want:
+            if spec in parsed and spec not in drop:
+                vals = dict((f, parsed[spec][f]) for f in fields if f in parsed[spec])
+                if "drift" in brk:
+                    vals = dict((f, v if f == "defName" else "drifted-" + v) for f, v in vals.items())
+                rows.append({"defName": spec.split("/", 1)[1], "fields": vals})
+        return {"success": True, "foundCount": len(rows), "notFound": [x.split("/", 1)[1] for x in want if x in drop],
+                "defs": rows}
+
+    suite = Suite("Real_" + rel.replace("/", "_"))
+    suite.chain("every_shipped_def_reads_back")(fns[0])
+    game = MockGame()
+    game.ext = ext
+    s = FastSession(transport=MockTransport(game), strict=False)
+    with s:
+        res = runner.run_suite(suite, s, anchor=None, mod=None)
+    return _components(res)
+
+
 LOADED, FIELDS = "every_shipped_def_is_loaded", "shipped_scalar_fields_match_xml"
 
 
@@ -151,6 +206,14 @@ def main():
         names = [n for _t, n, _l in shipped_defs.parse(mod)]
         check("wired %s: parse finds %d >= %d defs and its sanity names" % (rel, len(names), min_count),
               len(names) >= min_count and all(s in names for s in sanity), (len(names), [s for s in sanity if s not in names]))
+        clean = run_real(rel)
+        check("wired %s: its validation.py registers the chain and it is green on its own XML" % rel,
+              clean is not None and all(v == "PASS" for v, _d in clean.values()) and len(clean) == 2, clean)
+        if clean is not None:
+            check("wired %s: a def the game lacks reddens exactly the loaded component" % rel,
+                  reds(run_real(rel, ("missing",))) == [LOADED], reds(run_real(rel, ("missing",))))
+            check("wired %s: drifted values redden exactly the fields component" % rel,
+                  reds(run_real(rel, ("drift",))) == [FIELDS], reds(run_real(rel, ("drift",))))
 
     if FAILS:
         print("\n%d shipped_defs selftest(s) FAILED" % len(FAILS))

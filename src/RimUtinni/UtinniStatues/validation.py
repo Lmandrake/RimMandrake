@@ -12,7 +12,7 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, shipped_defs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 suite = Suite("UtinniStatues")
@@ -140,3 +140,11 @@ if __name__ == "__main__":
     for p in problems:
         print("  - " + p)
     sys.exit(1 if problems else 0)
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1: the four statue defs read back with their authored scalars (fill, stuff cost,
+# minified def, ticker), not only resolve.
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"ThingDef": ("label", "fillPercent", "costStuffCount", "minifiedDef",
+                                                    "tickerType", "rotatable")},
+                       sanity=("RUT_StatueGrand_Shkaar",), min_count=4)
