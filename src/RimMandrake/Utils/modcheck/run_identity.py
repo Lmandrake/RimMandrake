@@ -34,7 +34,7 @@ for _p in (_UTILS, _HERE):
         sys.path.insert(0, _p)
 
 HASHED_EXTS = {".dll", ".xml", ".json", ".txt", ".cs"}
-MODAL_DIALOGS = ("Dialog_NamePlayerFactionAndSettlement", "Dialog_ModSettings")
+MODAL_DIALOGS = ("Dialog_NamePlayerFactionAndSettlement", "Dialog_ModSettings", "Dialog_NodeTree")   # NodeTree: quest/letter choice, forcePause (LeaningScrub, load 14)
 
 
 def _sha(path):
