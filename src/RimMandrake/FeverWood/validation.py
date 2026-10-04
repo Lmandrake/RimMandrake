@@ -1250,7 +1250,7 @@ def foul_pool(t):
                     stack, [(r.get("id"), _stack(r)) for r in stacks]))
             item = stacks[0].get("id")
         r = t.bridge_call("jawa/ordered_job", pawnId=box["handler"], jobDef="RM_FoulPool", targetAId=item,
-                          targetBX=x + 4, targetBZ=z + 4, waitTicks=60, timeoutSeconds=25)
+                          targetBX=x + 4, targetBZ=z + 4, count=amount, waitTicks=60, timeoutSeconds=25)   # the real WorkGiver sets job.count = min(stack, amount); an order without it consumes 1 (LIVE 2026-10-03)
         if _live(t) and not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
             _fail("jawa/ordered_job RM_FoulPool was not accepted and running: %r" % r)
         seen = {"msg": False}
