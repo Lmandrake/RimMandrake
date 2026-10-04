@@ -269,6 +269,220 @@ def _proof_cls(t, cls, method, arg):
     return text
 
 
+# ============================================================================ static gates and formulas
+# KEELHOIST_COVERAGE_GAPS_1 (offline half). Pure reads of the shipped C#/XML, no game; every function takes the source
+# texts as a dict so selftest_keelhoist.py can plant a break in memory. The live behaviours (a hoist cycle with cargo, the
+# tether lock refusing a real launch, a beast arriving restrained) stay UNMEASURED: they need a live gravship + hoist.
+
+def load_srcs():
+    d = os.path.join(HERE, "Source")
+    return dict((f, _src(f)) for f in sorted(os.listdir(d)) if f.endswith(".cs"))
+
+
+def method_body(src, header_re):
+    """Text of the first brace-balanced block after the first match of header_re, or None."""
+    m = re.search(header_re, src)
+    if not m:
+        return None
+    i = src.find("{", m.end())
+    semi = src.find(";", m.end())
+    if semi >= 0 and (i < 0 or semi < i):
+        return src[m.end():semi]          # expression-bodied member
+    if i < 0:
+        return None
+    depth = 0
+    for j in range(i, len(src)):
+        depth += (src[j] == "{") - (src[j] == "}")
+        if depth == 0:
+            return src[i:j + 1]
+    return None
+
+
+# setting -> (file, method header regex, how the OFF arm must degrade). 'guard' = an early-out `if (... !setting ...) {... return}`
+# that precedes anything else; 'used' = the setting is read inside the method.
+GATES = [
+    ("masterEnabled", "RM_KeelHoist.cs", r"public override bool IsEnterable\(", "guard"),
+    ("masterEnabled", "RM_KeelHoist.cs", r"public override IEnumerable<Gizmo> GetGizmos\(\)", "used"),
+    ("masterEnabled", "RM_HoistFrame.cs", r"public override void Generate\(Map map", "guard"),
+    ("requireGravEngine", "PlaceWorker_NeedsGravEngine.cs", r"public override AcceptanceReport AllowsPlacing\(", "guard"),
+    ("tetherLock", "KeelHoistPatches.cs", r"public static void Postfix\(Building_GravEngine", "guard"),
+    ("colonistsMayRide", "RM_KeelHoist.cs", r"public override void OnEntered\(", "used"),
+    ("colonistsMayRide", "KeelHoistPatches.cs", r"public static void Postfix\(Dialog_EnterPortal", "used"),
+    ("downedStrangersAndBeasts", "RM_KeelHoist.cs", r"public static bool TryCapture\(", "guard"),
+    ("downedStrangersAndBeasts", "KeelHoistPatches.cs", r"public static void Postfix\(Dialog_EnterPortal", "used"),
+    ("openLineMeter", "KeelHoistPatches.cs", r"public override void MapComponentTick\(\)", "guard"),
+    ("cycleTimeMultiplier", "RM_KeelHoist.cs", r"public static int CycleTicksFor\(", "used"),
+    ("cableRange", "RM_KeelHoist.cs", r"public bool IsValidCableTarget\(", "used"),
+    ("restraintHours", "RM_KeelHoist.cs", r"public static bool TryCapture\(", "used"),
+    ("pitSales", "RM_HoistFrame.cs", r"public bool KeepersBuying", "used"),
+]
+
+
+def gate_findings(srcs):
+    out = []
+    for setting, fn, header, kind in GATES:
+        body = method_body(srcs.get(fn, ""), header)
+        if body is None:
+            out.append("%s: cannot read %s in %s (gate check blind)" % (setting, header, fn))
+            continue
+        if ("KeelHoistSettings." + setting) not in body:
+            out.append("%s is never read in %s %s: the toggle does nothing there" % (setting, fn, header))
+            continue
+        if kind == "guard":
+            first_if = re.search(r"if\s*\((?:[^{};]*)\)\s*\{[^{}]*\breturn\b", body)
+            if not first_if or ("!KeelHoistSettings." + setting) not in first_if.group(0):
+                out.append("%s: no early-out guard `if (!%s ...) { ... return }` in %s" % (setting, setting, fn))
+    # the tether lock must refuse by ACCEPTANCE REPORT with the user-facing sentence, and only while the cable is down
+    tl = method_body(srcs.get("KeelHoistPatches.cs", ""), r"public static void Postfix\(Building_GravEngine") or ""
+    if "hoist.CableDown" not in tl or "new AcceptanceReport(" not in tl or "ValidSubstructureAt" not in tl:
+        out.append("tether lock: must refuse via AcceptanceReport only for a hoist whose cable is down and that stands on this ship's substructure")
+    return out
+
+
+SLIDER_RE = re.compile(r"(\w+) = (?:Mathf\.Round\()?list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)")
+
+
+def settings_findings(srcs):
+    """Every setting: declared field default == Scribe default; each toggle in suite.toggles exists; every slider's range
+    contains its shipped default (a default outside the slider cannot be reached again after one drag)."""
+    src = srcs.get("KeelHoistMod.cs", "")
+    out = []
+    fields = dict((m.group(2), m.group(3)) for m in re.finditer(r"public static (bool|float) (\w+) = ([0-9.]+|true|false)f?;", src))
+    if len(fields) < 19:
+        return ["only %d settings fields parsed from KeelHoistMod.cs: parse failure" % len(fields)]
+    scribe = dict((m.group(1), m.group(2)) for m in re.finditer(r'Scribe_Values\.Look\(ref (\w+), "\1", ([0-9.]+|true|false)f?\);', src))
+    for name, dv in sorted(fields.items()):
+        if name not in scribe:
+            out.append("%s is not saved (no Scribe_Values.Look)" % name)
+        elif scribe[name] != dv:
+            out.append("%s default %s but its Scribe default is %s" % (name, dv, scribe[name]))
+    for name in suite.toggles:
+        if name not in fields:
+            out.append("declared toggle %s is not a settings field" % name)
+    sliders = dict((m.group(1), (float(m.group(2)), float(m.group(3)))) for m in SLIDER_RE.finditer(src))
+    for name, (lo, hi) in sliders.items():
+        if name in fields and not lo <= float(fields[name]) <= hi:
+            out.append("%s default %s lies outside its slider %s..%s" % (name, fields[name], lo, hi))
+    for name, dv in fields.items():
+        if dv not in ("true", "false") and name not in sliders:
+            out.append("float setting %s has no slider in the settings window" % name)
+        if dv in ("true", "false") and not re.search(r"CheckboxLabeled\([^;]*ref %s," % name, src):
+            out.append("bool setting %s has no checkbox in the settings window" % name)
+    return out
+
+
+def cycle_formula(srcs):
+    """(base, floor, mass_divisor) parsed from CycleTicksFor and BaseCycleTicks, or None."""
+    base = re.search(r"public const int BaseCycleTicks = (\d+);", srcs.get("RM_KeelHoist.cs", ""))
+    body = method_body(srcs.get("RM_KeelHoist.cs", ""), r"public static int CycleTicksFor\(") or ""
+    f = re.search(r"Mathf\.Max\((\d+), Mathf\.RoundToInt\(BaseCycleTicks \* KeelHoistSettings\.cycleTimeMultiplier \* \(1f \+ mass / (\d+)f\)\)\)", body)
+    if not base or not f:
+        return None
+    return int(base.group(1)), int(f.group(1)), int(f.group(2))
+
+
+def cycle_ticks(formula, mass, mult):
+    base, floor, div = formula
+    return max(floor, int(round(base * mult * (1.0 + mass / float(div)) + 1e-9)))
+
+
+def open_line_step(srcs, level, cable_open):
+    rise = re.search(r"RisePerHour = ([0-9.]+)f;", srcs.get("KeelHoistPatches.cs", ""))
+    fall = re.search(r"FallPerHour = ([0-9.]+)f;", srcs.get("KeelHoistPatches.cs", ""))
+    if not rise or not fall:
+        return None
+    return level + float(rise.group(1)) if cable_open else max(0.0, level - float(fall.group(1)))
+
+
+def formula_findings(srcs, hediff_root):
+    out = []
+    fm = cycle_formula(srcs)
+    if fm is None:
+        return ["CycleTicksFor no longer has the parsed shape Max(floor, Round(BaseCycleTicks * cycleTimeMultiplier * (1 + mass/div)))"]
+    base, floor, div = fm
+    if base != 625:
+        out.append("BaseCycleTicks is %d, the ruled quarter hour is 625 (2500/4)" % base)
+    if cycle_ticks(fm, 0, 1.0) != 625:
+        out.append("a weightless load at the default multiplier takes %d ticks, not 625" % cycle_ticks(fm, 0, 1.0))
+    if div != 50:
+        out.append("mass divisor is %d, ruled 50 (a 50 kg load doubles the cycle time)" % div)
+    if cycle_ticks(fm, div, 1.0) != 2 * cycle_ticks(fm, 0, 1.0):
+        out.append("a load of %d kg does not double the cycle time" % div)
+    if not (cycle_ticks(fm, 10, 1.0) < cycle_ticks(fm, 40, 1.0) < cycle_ticks(fm, 90, 1.0)):
+        out.append("cycle time is not strictly increasing with mass")
+    lo, hi = 0.25, 4.0
+    for mm in SLIDER_RE.finditer(srcs.get("KeelHoistMod.cs", "")):
+        if mm.group(1) == "cycleTimeMultiplier":
+            lo, hi = float(mm.group(2)), float(mm.group(3))
+    if not (cycle_ticks(fm, 0, lo) < cycle_ticks(fm, 0, 1.0) < cycle_ticks(fm, 0, hi)):
+        out.append("the multiplier slider ends do not bracket the default cycle time")
+    if cycle_ticks(fm, 0, lo) <= floor:
+        out.append("the slider's fastest setting (%.2fx) hits the %d-tick floor: the slider's low end is dead" % (lo, floor))
+    if "t.GetStatValue(StatDefOf.Mass) * t.stackCount" not in method_body(srcs.get("RM_KeelHoist.cs", ""), r"public static int CycleTicksFor\(") \
+            or "p.GetStatValue(StatDefOf.Mass)" not in srcs.get("RM_KeelHoist.cs", ""):
+        out.append("a stack's mass is not item mass x stackCount, or a pawn's is not its own Mass stat")
+    # Open Line meter: +1 per open hour, -0.5 per closed hour, floored at 0
+    if open_line_step(srcs, 0.0, True) is None:
+        out.append("Open Line constants RisePerHour/FallPerHour not parseable")
+    else:
+        up = 0.0
+        for _ in range(10):
+            up = open_line_step(srcs, up, True)
+        down = up
+        for _ in range(30):
+            down = open_line_step(srcs, down, False)
+        if up != 10.0 or open_line_step(srcs, 0.3, False) != 0.0 or down != 0.0 or open_line_step(srcs, 2.0, False) != 1.5:
+            out.append("Open Line meter arithmetic: 10 open hours -> %s (want 10), fall from 2.0 -> %s (want 1.5), floor 0" % (up, open_line_step(srcs, 2.0, False)))
+    if "TicksGame % GenDate.TicksPerHour != 137" not in srcs.get("KeelHoistPatches.cs", ""):
+        out.append("Open Line meter is not stepped once per hour")
+    # restraint: ticksToDisappear = restraintHours * 2500, and the shipped default 24 h equals the hediff's own 60000
+    cap = method_body(srcs.get("RM_KeelHoist.cs", ""), r"public static bool TryCapture\(") or ""
+    if "Mathf.RoundToInt(KeelHoistSettings.restraintHours * GenDate.TicksPerHour)" not in cap or "ticksToDisappear" not in cap:
+        out.append("restraint duration is not restraintHours x TicksPerHour written to ticksToDisappear")
+    mod = srcs.get("KeelHoistMod.cs", "")
+    rh = re.search(r"public static float restraintHours = ([0-9.]+)f;", mod)
+    dis = hediff_root.findtext(".//HediffCompProperties_Disappears/disappearsAfterTicks") if hediff_root is not None else None
+    dis = dis or next((e.text for e in hediff_root.iter("disappearsAfterTicks")), None) if hediff_root is not None else None
+    if not rh or not dis or int(float(rh.group(1)) * 2500) != int(dis):
+        out.append("hediff disappearsAfterTicks %s disagrees with restraintHours default %s x 2500" % (dis, rh.group(1) if rh else None))
+    if hediff_root is None or hediff_root.findtext(".//capMods/li/capacity") != "Moving" or hediff_root.findtext(".//capMods/li/setMax") != "0":
+        out.append("RM_HoistRestraint no longer caps Moving at 0 (the beast would walk out of the cradle)")
+    if "HediffMaker.MakeHediff(KeelHoistDefOf.RM_HoistRestraint" not in cap or "p.Faction == null" not in cap:
+        out.append("only an unowned (wild) animal may be restrained")
+    return out
+
+
+@suite.chain("static_gates_and_formulas")
+def static_gates_and_formulas(t):
+    """KEELHOIST_COVERAGE_GAPS_1 offline half: every settings toggle is read where it must gate (off arm degrades, never errors),
+    the cycle-time and Open Line formulas hold their ruled numbers, and the restraint hediff matches its setting. Order:
+    cheap-and-wrong first (a failing component marks later ones UNMEASURED)."""
+    srcs = load_srcs()
+    with t.component("settings_are_saved_declared_and_reachable", beyond_toggle=True):
+        if len(srcs) < 7:   # sanity probe: all seven source files read
+            raise ExpectationFailed("read only %d source files" % len(srcs))
+        bad = settings_findings(srcs)
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:4]))
+    with t.component("every_gate_reads_its_toggle_where_it_must", beyond_toggle=True):
+        bad = gate_findings(srcs)
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:4]))
+    with t.component("cycle_time_open_line_and_restraint_formulas_hold", beyond_toggle=True):
+        bad = formula_findings(srcs, _xml("Defs", "HediffDefs", "RM_HoistRestraint.xml").find("HediffDef"))
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:4]))
+    for name, why in (
+        ("hoist_cycle_moves_cargo_down_and_up", "needs a live gravship, a powered hoist and a target (instrument: a proof hook driving LowerCableTo/BeginTransit)"),
+        ("tether_lock_refuses_a_real_launch", "needs a launchable gravship with the cable down (instrument: CanLaunch call on a live engine)"),
+        ("beast_arrives_restrained_live", "needs a downed wild animal lowered live (RM_HoistRestraint is checked statically above)"),
+    ):
+        with t.component(name, beyond_toggle=True):
+            if _live(t):
+                t.upstream_reason = "UNMEASURED: " + why
+                t.upstream_failed = True
+
+
 # Live mechanics are NOT components here: a component with nothing to ask would record PASS. They are walk lines
 # marked UNCOVERED until a drive exists (walk: design/validation_walks/RimMandrake/KeelHoist.md):
 #   items + a downed wild animal down RM_LanternDeepMineshaft and back up, manifest 2 DOWN + 2 UP, beast restrained;
