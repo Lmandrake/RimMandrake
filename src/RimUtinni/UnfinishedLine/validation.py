@@ -151,13 +151,13 @@ def cores(t):
             raise ExpectationFailed("after two successes the spine did not offer The Pattern Cores: %s" % text)
     with t.component("cores_home_raises_the_broker", toggle="coreBrokerEnabled"):
         _proof(t, "ProofCores", "home")  # accepts the offered beat first
-        t.bridge_call("jawa/step_game_ticks", ticks=300)
+        t.bridge_call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=120000)
         text = _proof(t, "ProofCores", "state")
         if t._guard() and not ("home True" in text and "decided False" in text and "broker deadline -1" not in text):
             raise ExpectationFailed("all three cores home did not raise the broker's offer: %s" % text)
     with t.component("selling_fails_the_chain", toggle="coreBrokerEnabled"):
         text = _proof(t, "ProofCores", "sell")
-        t.bridge_call("jawa/step_game_ticks", ticks=60)
+        t.bridge_call("rimworld/step_game_ticks", ticks=60, pauseFirst=True, timeoutMs=120000)
         chain_text = _proof(t, "ProofChain")
         if t._guard() and not (text.startswith("CORES SOLD") and chain_text.startswith("CHAIN EndedFailed")):
             raise ExpectationFailed("the sell-out did not reach the parent: %s || %s" % (text, chain_text))

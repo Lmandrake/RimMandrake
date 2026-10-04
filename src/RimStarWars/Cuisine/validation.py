@@ -313,8 +313,7 @@ def namegen_fallback_on_bare_spawn(t):
     with t.component("unchanged_label_with_no_ingredients", beyond_toggle=True):
         cells = t.spawn("RSW_MeatOnAStick", count=1, at="point")
         x, z = cells[0] if cells else t.anchor
-        r = t.bridge_call("jawa/list_things", rect="%d,%d,3,3" % (x - 1, z - 1),
-                          fields="label")
+        r = t.bridge_call("jawa/list_things", rect="%d,%d,3,3" % (x - 1, z - 1))
         rows = (r or {}).get("things") or []
         row = next((row for row in rows if row.get("def") == "RSW_MeatOnAStick"), None)
         label = (row or {}).get("label", "")
