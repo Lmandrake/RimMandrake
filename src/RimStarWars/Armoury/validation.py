@@ -446,3 +446,110 @@ def melee_ladder_landed(t):
             if bad:
                 raise ExpectationFailed("%d of %d patched melee powers are not live (patch did not apply, or a "
                                         "later patch overrides): %s" % (len(bad), checked, "; ".join(bad[:12])))
+
+
+# ------------------------------------------------- the ranged ladder landed (ARMOURY_PROJECTILE_DAMAGE_TOOL_1)
+# ProjectileProperties.damageAmountBase is PRIVATE, so get_defs cannot read it; jawa/projectile_damage (JawaBench,
+# JawaBenchProjectileTools.cs) returns the raw private field. Every PatchOperationReplace on
+# /Defs/ThingDef[defName=X]/projectile/damageAmountBase in the GENERATED Armoury_RangedDamage.xml is compared to it.
+# Required: every def this mod DECLARES (its own Defs/) and every def under a Ludeon FindMod (all DLC assumed).
+# A donor group counts only when its defs are loaded, and a group partly loaded is a FAIL (its siblings prove the
+# donor active). 🔴 An op on a def we declare must not sit under a donor FindMod: when that donor is not loaded
+# the op never runs and our own def keeps the unpatched value (FindMod returns true on no match, so silently).
+_RANGED_PATCH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches", "Armoury_RangedDamage.xml")
+_DMG_XPATH = _re.compile(r'^/Defs/ThingDef\[defName="([^"]+)"\]/projectile/damageAmountBase$')
+_LUDEON_MOD_NAMES = {"Core", "Royalty", "Ideology", "Biotech", "Anomaly", "Odyssey"}
+
+
+def ranged_targets(path=_RANGED_PATCH):
+    """[(defName, value, guard)] where guard is the FindMod's mod name, or None for a def-guarded (own) op."""
+    out = []
+    for op in _ET.parse(path).getroot().findall("Operation"):
+        mods = [li.text for li in op.findall("mods/li")]
+        guard = mods[0] if op.get("Class", "").endswith("PatchOperationFindMod") and mods else None
+        for li in op.iter("li"):
+            if not li.get("Class", "").endswith("PatchOperationReplace"):
+                continue
+            m = _DMG_XPATH.match((li.findtext("xpath") or "").strip())
+            val = li.find("value/damageAmountBase")
+            if m and val is not None and (val.text or "").strip():
+                out.append((m.group(1), int(val.text), guard))
+    return out
+
+
+def own_declared_defnames(defs_dir=None):
+    """Every defName a ThingDef in this mod's own Defs/ declares (the absorbed KotOR/JDS/OPTurret sets included)."""
+    defs_dir = defs_dir or _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Defs")
+    names = set()
+    for dp, _dn, fns in _os.walk(defs_dir):
+        for fn in fns:
+            if not fn.endswith(".xml"):
+                continue
+            try:
+                root = _ET.parse(_os.path.join(dp, fn)).getroot()
+            except _ET.ParseError:
+                continue
+            for td in root.iter("ThingDef"):
+                n = td.findtext("defName")
+                if n:
+                    names.add(n.strip())
+    return names
+
+
+@suite.chain("ranged_ladder_landed")
+def ranged_ladder_landed(t):
+    """Every generated projectile damageAmountBase is the live raw value on every loaded patched projectile."""
+    targets = ranged_targets()
+    own = own_declared_defnames()
+    with t.component("own_ranged_ops_carry_no_donor_guard", beyond_toggle=True):
+        if not targets or not own:
+            raise ExpectationFailed("the ranged patch / own-def parse is blind: %d ops, %d own defs"
+                                    % (len(targets), len(own)))
+        bad = sorted("%s (under FindMod '%s')" % (n, g) for n, _v, g in targets
+                     if n in own and g is not None and g not in _LUDEON_MOD_NAMES)
+        if bad:
+            raise ExpectationFailed("%d op(s) on defs this mod declares sit under a donor FindMod, so they never run "
+                                    "when that donor is not loaded: %s" % (len(bad), "; ".join(bad)))
+    with t.component("ranged_patch_damage_is_live", beyond_toggle=True):
+        if len(targets) < 20 or not any(n in own for n, _v, _g in targets):
+            raise ExpectationFailed("the ranged patch parse is blind: %d ops, %d on our own defs"
+                                    % (len(targets), sum(1 for n, _v, _g in targets if n in own)))
+        r = t.bridge_call("jawa/projectile_damage", defs=";".join(sorted({n for n, _v, _g in targets})))
+        if t.session is not None and not t.upstream_failed:
+            if not (r or {}).get("success"):
+                raise ExpectationFailed("projectile_damage failed: %r" % r)
+            missing = set(r.get("notFound") or [])
+            rows = dict((row.get("defName"), row) for row in (r.get("rows") or []) if row.get("found"))
+            required = sorted({n for n, _v, g in targets if n in own or g is None or g in _LUDEON_MOD_NAMES})
+            lost = [n for n in required if n in missing]
+            if lost:
+                raise ExpectationFailed("required projectiles are not loaded: %s" % lost)
+            groups = {}
+            for n, _v, g in targets:
+                if g is not None and g not in _LUDEON_MOD_NAMES and n not in own:
+                    groups.setdefault(g, set()).add(n)
+            partial = ["%s: %s missing of %d" % (g, sorted(ns & missing), len(ns))
+                       for g, ns in sorted(groups.items()) if (ns & missing) and (ns - missing)]
+            if partial:
+                raise ExpectationFailed("a donor group is partly loaded: %s" % "; ".join(partial))
+            bad, checked = [], 0
+            for n, want, _g in targets:
+                if n not in rows:
+                    continue                                   # a donor def whose mod is not active
+                checked += 1
+                row = rows[n]
+                got = row.get("damageAmountBase")
+                if not row.get("isProjectile"):
+                    bad.append("%s: not a projectile" % n)
+                    continue
+                try:
+                    ok = int(got) == want
+                except (TypeError, ValueError):
+                    ok = False
+                if not ok:
+                    bad.append("%s: patch %d, live %r" % (n, want, got))
+            if checked == 0:
+                raise ExpectationFailed("compared no projectile at all")
+            if bad:
+                raise ExpectationFailed("%d of %d patched projectile damages are not live (patch did not apply, or a "
+                                        "later patch overrides): %s" % (len(bad), checked, "; ".join(bad[:12])))
