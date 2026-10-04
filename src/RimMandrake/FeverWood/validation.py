@@ -630,6 +630,60 @@ def source_guards(t):
                 _fail("RM_FeverWood must carry preventGenSteps ScatterShrines itself (no ancient dangers): %r" % prevent)
 
 
+    with _comp(t, "free_text_names_no_canon_and_dianoga_patches_guarded", independent=True):
+        # FEVERWOOD_DIANOGA_GIANT_MAP_1 + BIOME_TIER_CLEANUP_1 (b) Fever Wood part: the free mod's player-facing
+        # text carries no Star Wars name; the campaign's dianoga patches carry no inert top-level MayRequire.
+        if t.session is not None:
+            leaks, seen = [], 0
+            for base, _, files in os.walk(os.path.join(_HERE, "Defs")):
+                for fn in files:
+                    if not fn.endswith(".xml"):
+                        continue
+                    for el in ET.parse(os.path.join(base, fn)).getroot().iter():
+                        if el.tag in ("label", "description", "text", "labelPlural", "reportString") and el.text:
+                            seen += 1
+                            if re.search(r"dianoga|canon|sarlacc|\bRSW_", el.text, re.I):
+                                leaks.append("%s: %s" % (fn, el.text.strip()[:60]))
+            if seen < 50:
+                _fail("read only %d text nodes from Defs/: parse failure" % seen)
+            if leaks:
+                _fail("Star Wars names in the free mod's text: %s" % leaks[:4])
+            swp = os.path.join(_HERE, "..", "..", "RimStarWars", "SWBestiary", "Patches")
+            if os.path.isdir(swp):              # absent in the selftest's temp copy: the free-text half still runs
+                giant = os.path.join(swp, "RSW_Sekkulaath_DianogaGiant.xml")
+                if not os.path.isfile(giant):
+                    _fail("campaign patch RSW_Sekkulaath_DianogaGiant.xml is missing")
+                for fn in ("RSW_Sekkulaath_DianogaGiant.xml", "RSW_SekkulaathTank_DianogaSwap.xml"):
+                    body = re.sub(r"<!--.*?-->", "", open(os.path.join(swp, fn), encoding="utf-8").read(), flags=re.S)
+                    if re.search(r"<Operation\b[^>]*\bMayRequire", body):
+                        _fail("%s: top-level <Operation MayRequire=...> is inert in 1.6" % fn)
+                gtxt = open(giant, encoding="utf-8").read()
+                for limb in ("Feeler", "Snare", "Lash", "Porter", "Sentinel", "Bloom"):
+                    if 'defName="RM_Sekkulaath_%s"]/description' % limb not in gtxt:
+                        _fail("the dianoga patch does not rewrite RM_Sekkulaath_%s's description" % limb)
+
+
+@suite.chain("dianoga_mapping")
+def dianoga_mapping(t):
+    """FEVERWOOD_DIANOGA_GIANT_MAP_1, live: the six limbs read as the giant dianoga's when the Star Wars tier
+    (RSW_Dianoga) is loaded, and as the sekkulaath's when it is not -- whichever list this run is on."""
+    with _comp(t, "limbs_named_for_the_loaded_tier", independent=True):
+        limbs = ["ThingDef/RM_Sekkulaath_%s" % x for x in ("Feeler", "Snare", "Lash", "Porter", "Sentinel", "Bloom")]
+        rows, missing = _get_defs(t, limbs + ["ThingDef/RSW_Dianoga"], fields="label,description")
+        if _live(t):
+            if any(m != "ThingDef/RSW_Dianoga" for m in missing):
+                _fail("limb defs not loaded: %s" % missing)
+            sw = "ThingDef/RSW_Dianoga" not in missing
+            texts = [(r.get("defName"), json.dumps(r.get("fields") or {}).lower()) for r in rows
+                     if r.get("defName", "").startswith("RM_Sekkulaath_")]
+            if len(texts) != 6:
+                _fail("expected 6 limb rows, got %d" % len(texts))
+            wrong = [n for n, tx in texts if ("dianoga" in tx) != sw]
+            _note(t, "dianoga tier", {"swTier": sw, "wrong": wrong})
+            if wrong:
+                _fail("limbs not named for the loaded tier (Star Wars tier %s): %s" % (sw, wrong))
+
+
 @suite.chain("defs_resolve")
 def defs_resolve(t):
     """Every def this mod ships resolves in the running game and resolves to this mod, not a donor (a def that

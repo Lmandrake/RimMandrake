@@ -537,7 +537,7 @@ def reds(result):
     return sorted(k for k, (v, _) in result.items() if v == "FAIL")
 
 
-def guards_with(extra_files):
+def guards_with(extra_files, leak_text=None):
     """Run ONLY the source_guards chain over a synthetic mod tree: a 12-entry compose file whose entries each
     have an About.xml, plus the Patches/ files in `extra_files`. Proves the two source guards can go red."""
     tmp = tempfile.mkdtemp()
@@ -562,6 +562,11 @@ def guards_with(extra_files):
         os.makedirs(os.path.join(mod, "Defs", "BiomeDefs"))
         with open(os.path.join(mod, "Defs", "BiomeDefs", "RM_FeverWood.xml"), "w") as fh:
             fh.write("<Defs><BiomeDef><defName>RM_FeverWood</defName><preventGenSteps><li>ScatterShrines</li></preventGenSteps></BiomeDef></Defs>")
+        os.makedirs(os.path.join(mod, "Defs", "ThingDefs"))
+        with open(os.path.join(mod, "Defs", "ThingDefs", "Things.xml"), "w") as fh:
+            fh.write("<Defs>%s</Defs>" % "".join(
+                "<ThingDef><defName>T%d</defName><label>thing %d</label><description>%s</description></ThingDef>"
+                % (i, i, (leak_text if (leak_text and i == 7) else "a plain thing")) for i in range(30)))
         utp = os.path.join(tmp, "WildAnimals_FeverWood.xml")
         with open(utp, "w") as fh:
             fh.write("<Patch><!-- RM_FeverWood roster --></Patch>")
@@ -679,6 +684,10 @@ def main():
     topop = guards_with({"y.xml": '<Patch><Operation Class="PatchOperationAdd" MayRequire="some.mod"><xpath>/Defs</xpath></Operation></Patch>'})
     check("break top-level <Operation MayRequire> reddens its guard only",
           [k for k, v in topop.items() if v == "FAIL"] == ["source_guards.no_top_level_operation_carries_mayrequire"], topop)
+
+    leak = guards_with({}, leak_text="canon dianoga tentacles are suckered")
+    check("break a Star Wars name in free text reddens its guard only",
+          [k for k, v in leak.items() if v == "FAIL"] == ["source_guards.free_text_names_no_canon_and_dianoga_patches_guarded"], leak)
 
     print()
     if FAILS:

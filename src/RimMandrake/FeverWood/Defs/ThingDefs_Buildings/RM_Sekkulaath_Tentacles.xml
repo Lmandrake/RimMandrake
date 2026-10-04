@@ -87,7 +87,7 @@
   <ThingDef ParentName="RM_SekkulaathTentacleBase">
     <defName>RM_Sekkulaath_Snare</defName>
     <label>snare tentacle</label>
-    <description>Thick, fast, and gripping — canon dianoga tentacles are suckered, and this one shows why. It reaches for whatever wades too close and drags it toward the water. The killer of the six, and the reason nothing drinks at these pools unbothered.</description>
+    <description>Thick, fast, and gripping, its underside ridged with suckers. It reaches for whatever wades too close and drags it toward the water. The killer of the six, and the reason nothing drinks at these pools unbothered.</description>
     <graphicData>
       <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Snare</texPath>
     </graphicData>
@@ -105,7 +105,7 @@
   <ThingDef ParentName="RM_SekkulaathTentacleBase">
     <defName>RM_Sekkulaath_Lash</defName>
     <label>lash tentacle</label>
-    <description>Long and barbed — the giant form's own tentacles are barbed, canon-confirmed, and this limb is why. It never grips; it strikes at maximum reach and withdraws, punishing anyone who lingers at the margin rather than crossing it.</description>
+    <description>Long and barbed. It never grips; it strikes at maximum reach and withdraws, punishing anyone who lingers at the margin rather than crossing it.</description>
     <graphicData>
       <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Lash</texPath>
     </graphicData>
@@ -141,7 +141,7 @@
   <ThingDef ParentName="RM_SekkulaathTentacleBase">
     <defName>RM_Sekkulaath_Sentinel</defName>
     <label>sentinel tentacle</label>
-    <description>Motionless, raised just above the water. It does nothing — it listens. Canon dianoga have excellent hearing, and while this one is up the whole crown's chorus above falls silent to watch it. That silence is the loudest warning the Fever Wood has.</description>
+    <description>Motionless, raised just above the water. It does nothing — it listens, and the thing below hears very well. While this one is up the whole crown's chorus above falls silent to watch it. That silence is the loudest warning the Fever Wood has.</description>
     <graphicData>
       <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Sentinel</texPath>
     </graphicData>
@@ -159,7 +159,7 @@
   <ThingDef ParentName="RM_SekkulaathTentacleBase">
     <defName>RM_Sekkulaath_Bloom</defName>
     <label>bloom tentacle</label>
-    <description>Vast. It does not reach — it opens, the way a mouth not unlike a sarlacc's opens, and for one long moment the eye beneath the Fever Wood is exposed. This is the near-glimpse of the thing itself, and the only moment it can truly be hurt.</description>
+    <description>Vast. It does not reach — it opens, a ring of teeth around a pit of a throat, and for one long moment the eye beneath the Fever Wood is exposed. This is the near-glimpse of the thing itself, and the only moment it can truly be hurt.</description>
     <graphicData>
       <texPath>Things/Building/RM_Sekkulaath/RM_Sekkulaath_Bloom</texPath>
       <drawSize>2.2</drawSize>

@@ -26,7 +26,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_SekkulaathSpleenChemicals</defName>
     <label>sekkulaath spleen chemicals</label>
-    <description>A vial of thick, faintly luminous fluid drained from a captive sekkulaath's spleen. Brewed, it makes a narcotic tea that stains everything it touches purple — a canon dianoga product, in the tradition this creature stands in for.</description>
+    <description>A vial of thick, faintly luminous fluid drained from a captive sekkulaath's spleen. Brewed, it makes a narcotic tea that stains everything it touches purple.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
@@ -48,7 +48,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_SekkulaathCream</defName>
     <label>sekkulaath cream</label>
-    <description>A pale, rich secretion harvested from a fed captive sekkulaath — the base of the cream-filled donut line canon dianoga trade is known for. It spoils quickly, same as any dairy off any animal.</description>
+    <description>A pale, rich, faintly sweet secretion harvested from a fed captive sekkulaath, thick enough to fill pastry. It spoils quickly, same as any dairy off any animal.</description>
     <tickerType>Rare</tickerType>
     <thingCategories>
       <li>ResourcesRaw</li>
