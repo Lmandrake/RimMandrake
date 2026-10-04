@@ -50,7 +50,13 @@ def candidates(rows, hint=HINT_TILE):
 
 
 def close_naming_dialogs(session):
-    """Housekeeping only: never a verdict. (detectors.modal_open already ignores these prompts.)"""
+    """Housekeeping only: never a verdict. (detectors.modal_open already ignores these prompts.)
+    Names the colony first (jawa/name_colony == the dialogs' OK, idempotent): an unnamed colony re-raises the naming
+    dialog every ~600 ticks, which force-pauses the clock mid-chain (LIVE 2026-10-03, rerun15/16 BlueDesert)."""
+    try:
+        session.call("jawa/name_colony", factionName="NorthstarBland", settlementName="NorthstarBland")
+    except Exception:                                            # noqa: BLE001
+        pass
     try:
         r = session.call("jawa/window_list_close", action="close", typeName=NAMING_DIALOG, closeAll=True)
         return int(r.get("closedCount") or 0)
