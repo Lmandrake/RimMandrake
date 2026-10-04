@@ -68,7 +68,7 @@ art and human review artifacts go to the request's declared repository paths.
 Repository root:
 
 ```text
-D:\Luke\dev\Rimworld
+D:\Luke\dev\RimMandrake
 ```
 
 Queue layout:
@@ -205,14 +205,14 @@ but do not grant authority. Required fields are marked **required** below.
 
   "references": [
     {
-      "path": "D:\\Luke\\dev\\Rimworld\\design\\Jawa\\art\\references\\approved_worktable.png",
+      "path": "D:\\Luke\\dev\\RimMandrake\\design\\Jawa\\art\\references\\approved_worktable.png",
       "sha256": "optional-lowercase-hex",
       "role": "identity",
       "priority": "required",
       "instruction": "Preserve the asymmetric left-side tool rack and the bent copper exhaust."
     },
     {
-      "path": "D:\\Luke\\dev\\Rimworld\\design\\Jawa\\art\\references\\material_language.png",
+      "path": "D:\\Luke\\dev\\RimMandrake\\design\\Jawa\\art\\references\\material_language.png",
       "role": "style",
       "priority": "guidance",
       "instruction": "Use its matte, sand-abraded metals; do not copy its composition."
@@ -252,7 +252,7 @@ but do not grant authority. Required fields are marked **required** below.
   "delivery": {
     "outputs": [
       {
-        "path": "D:\\Luke\\dev\\Rimworld\\Transient\\art_gen\\RUT_JawaWorktable_north.png",
+        "path": "D:\\Luke\\dev\\RimMandrake\\Transient\\art_gen\\RUT_JawaWorktable_north.png",
         "width": 512,
         "height": 512,
         "format": "png",

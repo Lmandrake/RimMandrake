@@ -11,6 +11,9 @@ baked in here: fewer/broader lanes, no hard in-band holes, no 1-3px glints, and 
 sigma-8 radial low-pass. Do not re-sharpen this file; sharpening IS the artifact."""
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
+import os
+
+TRANSIENT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "Transient")
 
 W, H = 2048, 128
 rng = np.random.default_rng(20260908)
@@ -92,7 +95,7 @@ strip = np.zeros((H, W, 4), dtype=np.float32)
 strip[..., :3] = np.clip(rgb, 0, 1)[None]
 strip[..., 3] = alpha[None]
 out = Image.fromarray((strip * 255 + 0.5).astype(np.uint8), "RGBA")
-out.save("/mnt/d/Luke/dev/Rimworld/Transient/ring_debris_candidate.png")
+out.save(os.path.join(TRANSIENT, "ring_debris_candidate.png"))
 
 # --- preview: polar warp, top-down + oblique with planet ------------------
 INNER, OUTER, PLANET = 140.0, 200.0, 100.0   # ring units (planet radius 100)
@@ -179,5 +182,5 @@ d = ImageDraw.Draw(canvas)
 d.text((8, S + 4), "strip (left=inner edge 140, right=outer edge 200; shader reads one row)", fill=(220, 220, 220))
 d.text((8, 4), "top-down: planet R=100, ring 140-200", fill=(220, 220, 220))
 d.text((S + 28, 4), "oblique (world camera view)", fill=(220, 220, 220))
-canvas.save("/mnt/d/Luke/dev/Rimworld/Transient/ring_debris_preview.png")
+canvas.save(os.path.join(TRANSIENT, "ring_debris_preview.png"))
 print("alpha mean %.2f, gap fraction %.2f" % (alpha.mean(), (alpha < 0.02).mean()))

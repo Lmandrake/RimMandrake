@@ -4,8 +4,8 @@ READ-ONLY. Calls `jawa/get_defs` and nothing else: it does not start a game, doe
 not instantiate a map, and writes nothing. Safe to run at the main menu or on the
 world screen.
 
-    python.exe D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\bridgetools\\check_map_biomes_live.py
-    python3 /mnt/d/Luke/dev/Rimworld/src/RimMandrake/bridgetools/check_map_biomes_live.py
+    python.exe D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\bridgetools\\check_map_biomes_live.py
+    python3 /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/bridgetools/check_map_biomes_live.py
 
 WHY THIS AND NOT THE DEF DUMP. The DefDump is a snapshot taken at ONE point in the
 load, and Cherry Picker removes defs late - the 2026-08-23T05-05-29Z capture still

@@ -3,7 +3,7 @@
 ship_dress.py - dress the Gravship Cradle: Aurebesh signage, landing pads,
 gutted factory bays, and in-map design notes. Run under WINDOWS python.
 
-VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 
 Owner's brief, 2026-08-27, going AFK: "take risks, do interesting unusual things.
 Place wreckage and ruin on the vessel to indicate where the beautiful factories

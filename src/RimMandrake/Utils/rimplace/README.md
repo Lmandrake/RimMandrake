@@ -16,7 +16,7 @@ python3 -m venv ~/.local/venvs/rimlua
 ## Use
 
 ```bash
-cd /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils
+cd /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils
 P=~/.local/venvs/rimlua/bin/python
 
 $P -m rimplace minrect all                                # how big a canvas does each need?

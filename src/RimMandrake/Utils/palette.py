@@ -2,7 +2,7 @@
 """
 palette.py - load a material palette from Palettes/<name>.md, and check it.
 
-VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 
 A palette is an ordinary markdown document whose DATA lives in one fenced
 ```palette block. Prose is for humans; the block is what generators import, so a

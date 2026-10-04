@@ -268,8 +268,8 @@ same file rides along.
 Diff it against the tree; it takes about a minute:
 
 ```bash
-find /mnt/d/Luke/dev/Rimworld -maxdepth 2 -type d -not -path '*/.git*'
-ls /mnt/d/Luke/dev/Rimworld/*/README.md    # every tier states its own rule
+find /mnt/d/Luke/dev/RimMandrake -maxdepth 2 -type d -not -path '*/.git*'
+ls /mnt/d/Luke/dev/RimMandrake/*/README.md    # every tier states its own rule
 ```
 
 **A new top-level directory, a new root file, or a new `infrastructure/state/`

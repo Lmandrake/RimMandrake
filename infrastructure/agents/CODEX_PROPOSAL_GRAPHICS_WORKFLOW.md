@@ -300,7 +300,7 @@ exists, create a fresh Codex task in the existing Rimworld project, using the
 same local checkout rather than a new project/worktree, and send:
 
 ```text
-Assume D:\Luke\dev\Rimworld\infrastructure\agents\CODEX_ART_WORKER.md.
+Assume D:\Luke\dev\RimMandrake\infrastructure\agents\CODEX_ART_WORKER.md.
 
 This is an explicitly authorized manual graphics-worker run.
 Worker ID: codex-art-manual-01

@@ -83,7 +83,7 @@ C:\Users\Mandrake\AppData\Local\RimworldCodexArtQueue
 For manual Codex desktop startup, publish the request and send:
 
 ```text
-Assume D:\Luke\dev\Rimworld\infrastructure\agents\CODEX_ART_WORKER.md.
+Assume D:\Luke\dev\RimMandrake\infrastructure\agents\CODEX_ART_WORKER.md.
 Worker id codex-art-01. Queue root C:\Users\Mandrake\AppData\Local\RimworldCodexArtQueue.
 Process job <JOB_ID>; max jobs this run 1; exit at terminal state.
 ```

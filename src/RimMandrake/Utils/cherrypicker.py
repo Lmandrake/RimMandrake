@@ -3,7 +3,7 @@
 cherrypicker.py — what the running game does NOT have, for anything projecting
 over the def dump.
 
-VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 WHY THIS EXISTS
