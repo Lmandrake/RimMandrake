@@ -378,7 +378,9 @@ class Fake(object):
                         self.things[tid]["wool"] = self.ticks + 3 * 60000     # staggered first shed
                         if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
                             for dx in (1, -1):                                # two roosting bark-wardens
-                                self.new("RM_Barkwarden", cx + dx, cz, stackCount=1)
+                                wid = self.new("RM_Barkwarden", cx + dx, cz, stackCount=1)   # inspectable thing ...
+                                self.pawns[wid] = dict(id=wid, kind="RM_Barkwarden", x=cx + dx, z=cz, faction="none",
+                                                       dead=False, hediffs=[], flee_until=0)   # ... and a pawn row (the suite lists pawns)
         return {"success": True}
 
     def t_destroy_batch(self, rects="", categories="All", **k):
