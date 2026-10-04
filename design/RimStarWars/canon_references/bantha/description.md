@@ -47,6 +47,7 @@ especially the hanging beard under the chin.
 - [ ] Heavyset, shaggy, long-haired quadruped body
 - [ ] Pair of large, tightly-curled, ram-like spiraling horns
 - [ ] Hanging beard-like fringe of fur at the chin/chest
+- [ ] A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (as in `wookieepedia_infobox.jpg`)
 - [ ] Body coat dark brown to near-black
 - [ ] Horns pale ivory/tan/cream, contrasting against the dark coat
 - [ ] Fully fur-covered body with no bare skin visible
@@ -69,4 +70,10 @@ none known
 - `official_concept_art_olivera.jpg` — official Mandalorian-era promotional concept art, rider astride a bantha, full body with saddle rig
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**REDO** (owner, 2026-10-04, doubles sheet `Transient/art_doubles_compare_2026-10-04.decisions.json`, item ART_VERSION_WRANGLING_1) on `swanimals/Bantha/BanthaW`:
+
+> "Look at the canon library and regen to modern standards. Criteria: it MUST have that very wide-slit mouth as shown in the canon imagery."
+
+On `swanimals/Bantha/BanthaW_j`:
+
+> "Female short-horn version of above"

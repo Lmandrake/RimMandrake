@@ -81,3 +81,9 @@ none known
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_sot_art.png`
 
 > "But the Donor mod really isn't too bad this time."
+
+**REDO** (owner, 2026-10-04, doubles sheet `Transient/art_doubles_compare_2026-10-04.decisions.json`, item ART_VERSION_WRANGLING_1) on `swanimals/Dalgo/Dalgo`:
+
+> "Canon shows somthing more like C. We need a high quality version of that. Look at Canon please."
+
+(C = render `pyrelands_dalgo_v1`, a cartoon-register sail-crested orange dalgo.)

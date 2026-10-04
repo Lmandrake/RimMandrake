@@ -74,3 +74,7 @@ none known
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`
 
 > "We have a regenerated Eopie that is pretty good, but it has legs. We should remove and regenerate it to the new spec level."
+
+**REDO** (owner, 2026-10-04, doubles sheet `Transient/art_doubles_compare_2026-10-04.decisions.json`, item ART_VERSION_WRANGLING_1) on `swanimals/Eopie/Eopie` (variants A–E and `Eopie_j` marked "redundant with above"):
+
+> "B is closest but still pretty bad. Please look at Canon imagery."
