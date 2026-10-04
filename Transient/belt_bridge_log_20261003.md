@@ -56,3 +56,12 @@
 - 15:28:17 rerun13 died at preflight: foreground 'Noah Floersch - Green Flash Sunset' stole focus. Fixed: Prefs.RunInBackground=true set live via static_call (get returns True), focus_game retries 4x. Relaunching rerun14
 - 15:32:14 rerun14 running
 - 15:40:29 rerun14 UNMEASURED: game main thread hung twice in Bacta chain tank_scar (log frozen 15:33:52; also 14:59:31 in rerun12) at/after execute_debug_action 'Make injuries permanent'. Suspect that call; load9 launched, first poke = search_debug_actions + replace with non-debug-action permanent injury
+- 16:05:17 load9 UP 16:01; RunInBackground re-set True. CONFIRMED search_debug_actions itself hangs the main thread (enumerating nodes runs quest-gen tests: QuestNode_TradeRequest loop; RitualSiegeWithSpecifics NRE on entry scene). Need a non-debug-action permanent injury
+- 16:06:24 load10 launched 16:06 (companion has pawn_health action=permanent; Bacta uses it). runbook row 8 added
+- 16:20:32 load10 loading
+- 16:24:47 load10 UP; RunInBackground set; rerun15 start (Bacta,BrainWorms,LeaningScrub,BlueDesert,WeepingStones,TheForge,Cauldron)
+- 16:32:19 rerun15 live, heartbeat present, watchdog OK
+- 16:42:01 rerun15 Bacta stage, healthy
+- 16:47:02 rerun15: Bacta done, BrainWorms done, LeaningScrub running
+- 17:00:41 rerun15 at BlueDesert, healthy; closed naming dialog
+- 17:03:07 HANDOFF written (FOUNDRY_REBOOT_HANDOFF_202610040002.md); rerun15 still live in background, bridge deliberately still held
