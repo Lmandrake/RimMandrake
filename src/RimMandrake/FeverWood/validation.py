@@ -799,6 +799,11 @@ def biome_roster(t):
             if ext in (None, "(no such field)") or not blob:
                 _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
             absent = [c for c in EXT_CLASSES if not any(c in s for s in blob)]
+            if absent and len(absent) == len(EXT_CLASSES):
+                # LIVE 2026-10-03: get_defs renders a modExtension as its FIELDS (heartwoodThing, ...) without the class name, so
+                # not one class can ever be found; that is the instrument, not a missing extension.
+                _unmeasured(t, "get_defs lists the biome's modExtensions by field values with no class names (%d entries): "
+                               "class presence is not answerable this way" % len(blob))
             if absent:
                 _fail("the biome lacks modExtensions %s (have %s)" % (absent, blob[:8]))
 
