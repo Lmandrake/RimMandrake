@@ -4,3 +4,9 @@
 - wired 8 PNGs (256x512), tops cropped 256x128, table regenerated, drawSize (2,4), top overlay scale x=width/128 in C#
 - human_review station 4 sub look-aware, station 7 pole text fixed; running checks
 - offline 7/7 PASS, run_selftests running
+- committed+pushed 4a08a954c, 85b346933 (DLL); deploying
+- game relaunched, building review map
+- pole_shots.py captured 32 shots in D:\Luke\dev\_rmscratch\mc_poles
+- reshot with rootSize 11 close-ups
+- station 7 viewed all 4 looks: poles right style, wires at insulator tips
+- stations 7,8,10 verified all four looks; style restored StarWars, camera on 7; lamp masts report powerOn true (NeedsPower bolt overlay still drawn on first lamp mast, not investigated); wires converge at pole centre top, not per insulator
