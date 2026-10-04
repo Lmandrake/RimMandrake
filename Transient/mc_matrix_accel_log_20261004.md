@@ -8,3 +8,6 @@
 - step4: run()/main() flags + timing print; now docstring + post + tests
 - step5: docstring + post note; running selftest
 - step6: selftest 54/54, mock clean; committing
+- coordinator: no-shots wrong live; investigating C# for camera/draw-time dependence
+- evidence: graph only updates via Rebuild() (on-screen section regen OR StaleOffscreen flag w/ same-frame skip); probe poll interval cannot change what a read returns; fix = no-shots keeps all camera/state, skip render only; add --profile, --probe-poll
+- fix done: no-shots keeps camera/state, --profile, --probe-poll; selftest ok; publishing
