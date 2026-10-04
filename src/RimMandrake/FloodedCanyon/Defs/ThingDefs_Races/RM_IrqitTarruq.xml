@@ -57,8 +57,9 @@
   The bible's ambient-call/silence mechanism: the GATE is built
   (Source/RM_TarruqHushPatch.cs skips the idle call while the flood component's
   TarruqSilenced is true, i.e. from the herald's third beat to the recede). The
-  CALL itself is owed audio, CRACKEDLANDS_FIVE_BEATS_AUDIO_1. Until it lands
-  this def sets no soundCall, so there is nothing yet for the gate to silence.
+  CALL is vanilla Pawn_Muffalo_Call on the juvenile and adult stages (the long
+  low lowing is the closest vanilla grain to "long low tones the canyon carries";
+  owner 2026-10-03: vanilla audio ships as final, CRACKEDLANDS_FIVE_BEATS_AUDIO_1).
 
   ═════════════════════════════════════ ART ═════════════════════════════════════
 
@@ -227,10 +228,12 @@
         <li>
           <def>AnimalJuvenile</def>
           <minAge>0.2</minAge>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
         </li>
         <li>
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
