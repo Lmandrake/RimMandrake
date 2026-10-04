@@ -29,6 +29,11 @@
     <windSpeedOffset>0.5</windSpeedOffset>
     <ambientSounds>
       <li>Ambient_Wind_Clear</li>
+      <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 7, the rich soundscape ("bugs and birds and stranger animals in the
+           wind"), vanilla beds (owner 2026-10-03: vanilla audio ships as final): the jungle insect day/night
+           chorus rides the WIND, so the Stall, which carries no ambient sound at all, simply goes quiet. -->
+      <li>Ambient_DayInsects_Jungle</li>
+      <li>Ambient_NightInsects_Jungle</li>
     </ambientSounds>
     <skyColorsDay>
       <sky>(1,1,1)</sky>
@@ -73,6 +78,11 @@
     </commonalityRainfallFactor>
     <ambientSounds>
       <li>Ambient_Wind_Fog</li>
+      <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 7, the rich soundscape ("bugs and birds and stranger animals in the
+           wind"), vanilla beds (owner 2026-10-03: vanilla audio ships as final): the jungle insect day/night
+           chorus rides the WIND, so the Stall, which carries no ambient sound at all, simply goes quiet. -->
+      <li>Ambient_DayInsects_Jungle</li>
+      <li>Ambient_NightInsects_Jungle</li>
     </ambientSounds>
     <overlayClasses>
       <li>WeatherOverlay_Fog</li>
