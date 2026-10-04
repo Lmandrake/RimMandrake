@@ -301,6 +301,207 @@ def patch_xpaths_land(t):
             t.upstream_failed = True
             t.upstream_reason = "UNMEASURED: " + t._why
 
+# ---------------------------------------------------------------------------------------------------------------------
+# STARWARSPATCHES_COVERAGE_GAPS_1 (second half; the xpath replay above was the first). Static bars over the patch XML and the
+# fresh offline def dump for what a silently-no-op or silently-destructive patch does: an <li> poured into a dictionary-keyed
+# field (which discards the WHOLE BiomeDef), an inert MayRequire on a whole operation, a weather def never attached, a patch
+# value naming a def that does not exist, and the post-patch weapon-tag index leaving a Core/campaign kind disarmed.
+# Each rule has a planted-break selftest (selftest_starwarspatches_semantics.py). Still UNMEASURED: a blast door actually
+# opening and closing (needs a built, powered door), and a generated pawn's gear after WeaponTags_Renormalise.
+import json as _json
+import re as _re
+import xml.etree.ElementTree as _ET
+
+DICT_KEYED_FIELDS = ("baseWeatherCommonalities", "wildAnimals", "wildPlants")
+EDIT_CLASSES = ("PatchOperationAdd", "PatchOperationReplace", "PatchOperationInsert")
+OURS_PREFIXES = ("RSW_", "RUT_", "RM_", "Jawa_")
+OFFICIAL_MODS = ("Core", "Royalty", "Ideology", "Biotech", "Anomaly", "Odyssey")
+
+
+def load_patch_roots(root=_MOD_DIR):
+    import glob as _glob
+    return [(_os.path.basename(f), _ET.parse(f).getroot()) for f in sorted(_glob.glob(_os.path.join(root, "Patches", "*.xml")))]
+
+
+def pack_def_names(root=_MOD_DIR):
+    """{defType: {defName}} from this mod's own Defs/."""
+    import glob as _glob
+    out = {}
+    for f in _glob.glob(_os.path.join(root, "Defs", "**", "*.xml"), recursive=True):
+        for e in _ET.parse(f).getroot():
+            if isinstance(e.tag, str) and e.findtext("defName"):
+                out.setdefault(e.tag.split(".")[-1], set()).add(e.findtext("defName").strip())
+    return out
+
+
+def _dump_dir():
+    try:
+        import sys as _sys
+        _sys.path.insert(0, _os.path.join(_MOD_DIR, "..", "..", "RimMandrake", "Utils"))
+        import game_paths as GP
+        d = _os.path.join(GP.DEF_DUMP, "defs")
+        return d if _os.path.isdir(d) else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def dump_defs(def_type):
+    """The list of def dicts of one type from the newest offline def dump, or None (UNMEASURED) when unreadable."""
+    d = _dump_dir()
+    try:
+        j = _json.load(open(_os.path.join(d, def_type + ".json"), encoding="utf-8"))
+        return j["defs"] if len(j["defs"]) > 0 else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def dump_names(types=("XenotypeDef", "GeneDef", "WeatherDef", "ThingDef", "PawnKindDef", "FactionDef", "BiomeDef")):
+    """{defType: {defName}} for the types the patch values can name, or None when the dump is unreadable."""
+    out = {}
+    for ty in types:
+        rows = dump_defs(ty)
+        if rows is None:
+            return None
+        out[ty] = set(r.get("defName") for r in rows)
+    return out
+
+
+def _walk(el, ancestors=()):
+    yield el, ancestors
+    for c in list(el):
+        for x in _walk(c, ancestors + (el,)):
+            yield x
+
+
+def patch_findings(roots, pack, dump):
+    bad = []
+    n_ops = 0
+    for fn, root in roots:
+        if root.tag != "Patch":
+            bad.append("%s: root is <%s>, not <Patch> (the whole file is ignored)" % (fn, root.tag))
+        for el, anc in _walk(root):
+            if not el.get("Class", "").startswith("PatchOperation"):
+                continue        # any tag: nested branches are <match>/<nomatch>/<li>/<success>, not only <Operation>
+            n_ops += 1
+            cls = el.get("Class")
+            if el.get("MayRequire") or el.get("MayRequireAnyOf"):
+                bad.append("%s: %s carries MayRequire on a whole operation (inert in 1.6: it applies anyway); use PatchOperationFindMod/Conditional" % (fn, cls))
+            if cls in EDIT_CLASSES + ("PatchOperationRemove", "PatchOperationAttributeAdd", "PatchOperationAttributeSet", "PatchOperationAttributeRemove") and not (el.findtext("xpath") or "").strip():
+                bad.append("%s: %s has no xpath" % (fn, cls))
+            if cls in EDIT_CLASSES + ("PatchOperationAttributeAdd", "PatchOperationAttributeSet") and el.find("value") is None:
+                bad.append("%s: %s has no value" % (fn, cls))
+            xp = el.findtext("xpath") or ""
+            last = xp.rstrip("/").rsplit("/", 1)[-1].split("[", 1)[0]
+            val = el.find("value")
+            if cls in EDIT_CLASSES and val is not None and (last in DICT_KEYED_FIELDS or any(last == f for f in DICT_KEYED_FIELDS)):
+                if any(c.tag == "li" for c in val):
+                    bad.append("%s: adds <li> to dictionary-keyed %s (the whole def is discarded: element name = def, text = value)" % (fn, last))
+            # weather attachments: element name must be a real weather and the commonality positive
+            if cls in EDIT_CLASSES and val is not None and last == "baseWeatherCommonalities":
+                for c in val:
+                    known = (pack.get("WeatherDef", set()) | (dump["WeatherDef"] if dump else set()))
+                    if dump is not None and c.tag not in known:
+                        bad.append("%s: attaches weather %s, which no mod defines" % (fn, c.tag))
+                    try:
+                        if not float(c.text) > 0:
+                            bad.append("%s: weather %s attached at commonality %s (never rolls)" % (fn, c.tag, c.text))
+                    except (TypeError, ValueError):
+                        bad.append("%s: weather %s has a non-numeric commonality %r" % (fn, c.tag, c.text))
+            # a def literal in an xpath that neither this pack nor the dump knows must sit under a FindMod/Conditional
+            if dump is not None and xp:
+                for m in _re.finditer(r"/(\w+)\[defName\s*=\s*\"([^\"]+)\"", xp):
+                    ty, nm = m.group(1), m.group(2)
+                    if ty in dump and nm in dump[ty]:
+                        continue
+                    if nm in pack.get(ty, set()):
+                        continue
+                    guarded = any((a.get("Class") in ("PatchOperationFindMod", "PatchOperationConditional")) for a in anc) \
+                        or el.get("Class") == "PatchOperationConditional"
+                    if ty in dump and not guarded:
+                        bad.append("%s: xpath targets %s %s, which is not in the loaded defs and the operation is not guarded (it matches nothing and logs nothing)" % (fn, ty, nm))
+            # our own def names written as patch VALUES must exist
+            if dump is not None and val is not None:
+                for node in val.iter():
+                    txt = (node.text or "").strip()
+                    if txt.startswith("RSW_") and _re.fullmatch(r"\w+", txt) and node.tag in ("li", "xenotype", "weather", "gene", "kindDef", "def"):
+                        if not any(txt in names for names in list(dump.values()) + list(pack.values())):
+                            bad.append("%s: value names %s, which neither the pack nor the loaded defs define" % (fn, txt))
+    if n_ops < 100:
+        bad.append("parsed only %d patch operations, want >= 100 (sanity probe failed)" % n_ops)
+    attached = set()
+    for fn, root in roots:
+        if fn == "SWDesertWeather_Attach.xml":
+            for el in root.iter("value"):
+                attached.update(c.tag for c in el)
+    for w in sorted(pack.get("WeatherDef", set())):
+        if w not in attached:
+            bad.append("weather def %s is defined but SWDesertWeather_Attach.xml never attaches it to a biome (dead content)" % w)
+    return bad
+
+
+def disarmed_kinds(things, kinds):
+    """[(defName, modName, weaponTags)] of fighter-capable PawnKindDefs whose every weapon tag matches no weapon in the loaded defs."""
+    tags = set()
+    for x in things:
+        for tg in (x.get("fields") or {}).get("weaponTags") or []:
+            tags.add(tg)
+    out = []
+    for k in kinds:
+        f = k.get("fields") or {}
+        wt = f.get("weaponTags") or []
+        wm = f.get("weaponMoney")
+        if wt and isinstance(wm, dict) and wm.get("max", 0) > 0 and not any(tg in tags for tg in wt):
+            out.append((k["defName"], k.get("modName"), wt))
+    return out
+
+
+def ours_or_official(row):
+    return row[0].startswith(OURS_PREFIXES) or row[1] in OFFICIAL_MODS
+
+
+@suite.chain("patch_semantics_static")
+def patch_semantics_static(t):
+    roots, pack, dump = load_patch_roots(), pack_def_names(), dump_names()
+
+    def pick(keys):
+        return [f for f in patch_findings(roots, pack, dump) if any(k in f for k in keys)]
+    with t.component("patch_files_wellformed_and_no_inert_mayrequire", beyond_toggle=True):
+        bad = pick(["not <Patch>", "MayRequire", "no xpath", "has no value", "sanity probe"])
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("dictionary_keyed_fields_never_get_li", beyond_toggle=True):
+        bad = pick(["dictionary-keyed"])
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("weather_defs_are_all_attached_with_real_names_and_positive_commonality", beyond_toggle=True):
+        bad = pick(["weather", "commonality", "dead content"])
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("patch_xpath_literals_and_values_name_loaded_defs_or_are_guarded", beyond_toggle=True):
+        bad = pick(["xpath targets", "value names"])
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+        if dump is None:
+            t.upstream_reason, t.upstream_failed = "UNMEASURED: no readable offline def dump to look the targets up in", True
+    with t.component("weapon_tag_index_leaves_no_core_or_campaign_kind_disarmed", beyond_toggle=True):
+        things, kinds = dump_defs("ThingDef"), dump_defs("PawnKindDef")
+        if things is None or kinds is None:
+            t.upstream_reason, t.upstream_failed = "UNMEASURED: no readable offline def dump for ThingDef/PawnKindDef", True
+        else:
+            dis = disarmed_kinds(things, kinds)
+            mine = [d for d in dis if ours_or_official(d)]
+            t._record("%d kinds disarmed in this dump, %d of them Core/DLC/campaign; the rest are third-party: %s" % (
+                len(dis), len(mine), sorted(set(d[1] for d in dis if not ours_or_official(d)))), not mine)
+            if mine:
+                raise ExpectationFailed("fighter kinds whose weapon tags match no loaded weapon (they spawn unarmed): %s" % mine[:8])
+    with t.component("blast_door_opens_and_closes_state_read", beyond_toggle=True):
+        if t._guard():
+            t.upstream_reason = ("UNMEASURED: a built, powered blast door actually opening and closing needs a constructed instance and ticks "
+                                 "(DoorsExpanded.Building_DoorExpanded); the doors only spawn-check above; instrument missing: a [Tool] that "
+                                 "builds a door and reads its openPct over time")
+            t.upstream_failed = True
+
+
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # Heron research, pawnkinds, weathers). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402
