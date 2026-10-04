@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03)",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -363,6 +363,14 @@
     "layerId",
     "name",
     "tile"
+   ],
+   "required": []
+  },
+  "jawa/comp_read": {
+   "parameters": [
+    "thing",
+    "comp",
+    "members"
    ],
    "required": []
   },
@@ -2541,6 +2549,14 @@
    ],
    "required": []
   },
+  "jawa/static_call": {
+   "parameters": [
+    "type",
+    "method",
+    "args"
+   ],
+   "required": []
+  },
   "jawa/stop_job": {
    "parameters": [
     "canReturnToPool",
@@ -2626,6 +2642,12 @@
     "limit",
     "maxPaths",
     "mod"
+   ],
+   "required": []
+  },
+  "jawa/thing_ambient_temp": {
+   "parameters": [
+    "thing"
    ],
    "required": []
   },

@@ -22,7 +22,7 @@ TOOLS_NEEDED = (
     "jawa/get_terrain_layers", "jawa/inspect_string", "jawa/letter_list", "jawa/list_pawns",
     "jawa/list_things", "jawa/make_empty_room", "jawa/map_info", "jawa/mod_settings_field",
     "jawa/ordered_job", "jawa/pawn_flight", "jawa/pawn_need", "jawa/room_heat", "jawa/set_draft",
-    "jawa/designate_batch", "jawa/set_thing_props",
+    "jawa/designate_batch", "jawa/set_thing_props", "jawa/comp_read", "jawa/map_fire",
     "jawa/set_pawn_skill", "jawa/set_plants", "jawa/set_terrain_batch", "jawa/spawn_batch",
     "jawa/spawn_pawn", "jawa/weather_get", "jawa/weather_set", "jawa/window_list_close",
     "rimworld/open_mod_settings", "rimworld/set_time_speed")

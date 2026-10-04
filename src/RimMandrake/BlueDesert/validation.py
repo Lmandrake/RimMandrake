@@ -460,11 +460,21 @@ def _wait(t, n):
     t._record("_wait(%d) at Ultrafast -> %d real ticks" % (n, now - start), now - start)
 
 
-def _stable(t, fn):
-    """Run a chain body, then ALWAYS release the weather lock and clear the pad."""
+def _stable(t, fn, fire=False):
+    """Run a chain body, then ALWAYS release the weather lock and clear the pad. `fire=True` for chains whose own
+    blast/wick ignites the map (flame radius, burning wax): the fires are that chain's own act, declared expected and
+    extinguished at the end so the next chain starts clean (live 2026-10-03: krissek_blast 26 fires, vhaulk_gates,
+    cold_wax 23 -> fire_on_map surprise made every later component UNMEASURED)."""
+    if fire:
+        t.expect("fire", lambda e: True)
     try:
         fn()
     finally:
+        if fire and t.session is not None:
+            try:
+                t.session.call("jawa/map_fire", action="extinguish", rect="0,0,250,250")
+            except Exception as ex:
+                print("[bdesert] extinguish failed: %s" % ex, file=sys.stderr, flush=True)
         _unlock_weather(t)
         if t.session is not None and getattr(t, "anchor", None):
             try:
@@ -945,7 +955,7 @@ def dorrak_hump(t):
                     _unmeasured(t, "the hump was never destroyed with the toggle off: cannot judge")
                 if row.get("dead"):
                     _fail("nativeDetonationsEnabled OFF but destroying the Hump still killed the dorrak")
-    _stable(t, body)
+    _stable(t, body, fire=True)
 
 
 # --------------------------------------------------------------------------- chain: krissek blast
@@ -993,7 +1003,7 @@ def krissek_blast(t):
                     _fail("nativeDetonationsEnabled OFF but a colonist 2 cells from the dying krissek still "
                           "burned: the krissek does not die like an ordinary animal (its RM_KrissekCharge "
                           "hediff carries the vanilla ExplodeOnDeath, which ignores the setting): %r" % res)
-    _stable(t, body)
+    _stable(t, body, fire=True)
 
 
 # --------------------------------------------------------------------------- chain: vhaulk gates
@@ -1052,7 +1062,7 @@ def vhaulk_gates(t):
                    (("nativeDetonationsEnabled", False),), toggle="nativeDetonationsEnabled")
         comp_trial("master_off_no_blast", "Flame", 9999, "Brain", False,
                    (("masterEnabled", False),), toggle="masterEnabled")
-    _stable(t, body)
+    _stable(t, body, fire=True)
 
 
 # --------------------------------------------------------------------------- chain: haze
@@ -1191,7 +1201,7 @@ def butane_chain(t):
                     _unmeasured(t, "the second muffalo did not finish eating the plant in 900 ticks")
                 if _hediff(row, "RM_ButaneGut") is not None:
                     _fail("butaneGutEnabled OFF but a muffalo that ate palefloss took RM_ButaneGut")
-    _stable(t, body)
+    _stable(t, body, fire=True)
 
 
 # --------------------------------------------------------------------------- chain: cold wax
@@ -1253,7 +1263,7 @@ def cold_wax(t):
                 if end != "gone":
                     _fail("warm-ruined cold wax with the mechanic ON is still standing (%s): the ruined "
                           "signal does not start the wick" % ("ruined seen" if ruined else "never ruined"))
-    _stable(t, body)
+    _stable(t, body, fire=True)
 
 
 # --------------------------------------------------------------------------- chain: cold rack
