@@ -34,14 +34,8 @@
   gradient is not faked here with a fixed color, since a permanently-blushed
   veqma would read as a false "water here" signal.
 
-  ART: covered in this sitting's art commission
-  (infrastructure/artpipe/art_lists/cracked_lands_bedazzle_cast.csv — checked,
-  row present for RM_Veqma) so no fill_queue.py job is filed here. Until that
-  art lands, ships with a LOUD vanilla placeholder texPath (vanilla Bush,
-  grey-green tinted — a sparse wiry shrub silhouette is the closest vanilla
-  plant shape to "a sparse fan of grey-green whips"), same posture as this
-  biome's fauna file (RM_IrqitTarruq.xml) and this codebase's other invented
-  (donor-less) defs.
+  ART: landed from the cracked_lands_bedazzle_cast.csv commission (artpipe
+  job RM_Veqma, validated) at Textures/Things/Plant/RM_Veqma/.
 -->
 <Defs>
 
@@ -50,12 +44,9 @@
     <label>veqma</label>
     <description>A wiry, near-leafless plant of the shade line — mostly taproot, the visible growth a sparse fan of tough grey-green whip-stems rising from one deep crown. Its root finds the hidden water, and its stem tips blush green in proportion to how near the water table sits: dull grey where it lies deep, brightening cell by cell toward the seep, vivid over a find. A stand of veqma is a contour map. Reading one is the first thing a Farmer teaches a child.</description>
     <graphicData>
-      <!-- TEMP PLACEHOLDER: vanilla Bush texture, grey-green tinted. No donor def
-           exists (invented per the bible); real art is queued in
-           cracked_lands_bedazzle_cast.csv (row present, checked this pass). No
-           dynamic tint — see header — this is a single static graphic. -->
-      <texPath>Things/Plant/Bush</texPath>
-      <color>(150,158,132)</color>
+      <!-- Real art (artpipe RM_Veqma, validated): one static graphic, no
+      dynamic tint; see header. -->
+      <texPath>Things/Plant/RM_Veqma</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>

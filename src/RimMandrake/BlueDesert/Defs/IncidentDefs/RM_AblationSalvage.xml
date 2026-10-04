@@ -20,8 +20,8 @@
   (ThingDefs_Races/RM_BlueDesertFauna.xml). ShipChunk, ChunkSlagSteel,
   ComponentIndustrial, Steel, Plasteel, Gold are Core ThingDefs.
 
-  ART OWED: Things/Special/RM_AblationSilhouette (the dark shape under the
-  ice; one texture, drawn translucent, 3x3 cells).
+  ART: Things/Special/RM_AblationSilhouette (artpipe job of that name; the dark
+  shape under the ice, one texture, drawn translucent, 3x3 cells).
 -->
 <Defs>
 

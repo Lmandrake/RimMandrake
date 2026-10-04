@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   WASTELAND_GPT_ENRICHMENT_1 §2 — filth the Middenshell Procession drops on its trail.
-  Textures are vanilla cluster folders (Things/Filth/Ash, Things/Filth/RubbleRock, verified
-  against the decompiled 1.6 Filth_Ash / Filth_RubbleRock), tinted — PLACEHOLDER art.
+  Textures are our own one-texture cluster folders (artpipe jobs RM_Filth_Middenshell*,
+  painted against the def tints, which therefore stay).
   The footprint's heat is a heat push + heat-glow fleck at drop time
   (Building_Middenshell.LeaveTrail); filth itself cannot carry a heater comp.
 -->
@@ -15,7 +15,7 @@
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
-      <texPath>Things/Filth/Ash</texPath>
+      <texPath>Things/Filth/RM_MiddenshellFootprint</texPath>
       <color>(150,88,52,230)</color>
       <drawSize>3</drawSize>
     </graphicData>
@@ -37,7 +37,7 @@
     <graphicData>
       <graphicClass>Graphic_Cluster</graphicClass>
       <shaderType>Transparent</shaderType>
-      <texPath>Things/Filth/RubbleRock</texPath>
+      <texPath>Things/Filth/RM_MiddenshellFlakes</texPath>
       <color>(130,138,104)</color>
     </graphicData>
     <statBases>

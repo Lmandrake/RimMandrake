@@ -519,8 +519,8 @@
     <pathCost>30</pathCost>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_AncientBlackBox_Off</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3.5,1.5)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3.5,1.75)</drawSize>
     </graphicData>
     <costList>
       <ChunkSlagSteel>2</ChunkSlagSteel>
@@ -556,8 +556,9 @@
     <fillPercent>0.4</fillPercent>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_BlueprintsBench</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(1,2)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2,1.2)</drawSize>
+      <drawRotated>false</drawRotated>
     </graphicData>
     <rotatable>true</rotatable>
     <size>(1, 2)</size>
