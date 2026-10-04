@@ -224,6 +224,17 @@ namespace RimMandrake.FlowWorks
         //      retroactively and nothing un-repaints.
         public static bool typedLiquidShoresEnabled = true;
 
+        // ══════════════════════════════════════════════════════════════════
+        // CRACKEDLANDS_MECHANICS_BUILD_1 §1 — THE SWALE. Own contiguous section.
+        //  31. swaleEnabled — a water-fed swale walks the ground around it up
+        //      the fertility ladder (Source/Swale/RM_Swale.cs). Off: a built
+        //      swale is an inert liner; terrain it already improved stays.
+        //  swaleRateMultiplier — PROVISIONAL tuning on the one-rung-per-fed-day pace.
+        public static bool swaleEnabled = true;
+        public static float swaleRateMultiplier = 1f;
+
+        public static float SwaleRateMultiplier => Mathf.Clamp(swaleRateMultiplier, 0.1f, 10f);
+
         public static float DrillUnitsPerCycle => Mathf.Max(0.05f, drillUnitsPerCycle);
 
         public static int MinLimitlessBodyCells => Mathf.Max(1, Mathf.RoundToInt(minLimitlessBodyCells));
@@ -282,6 +293,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref drillUnitsPerCycle, "drillUnitsPerCycle", 1f);
             // ── WORLDMAP_LIQUID_TAGS_1 (see the block above; contiguous) ───
             Scribe_Values.Look(ref typedLiquidShoresEnabled, "typedLiquidShoresEnabled", true);
+            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 swale (contiguous) ───────
+            Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
+            Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -631,6 +645,19 @@ namespace RimMandrake.FlowWorks
               + "river feeding a brine sea is still fresh — and neither is shore sand. Off: "
               + "every map generates exactly as it would without this mod. Either way, a map "
               + "you have already generated keeps the terrain it was generated with.");
+
+            // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Swales");
+            Text.Font = GameFont.Small;
+            list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
+                "On: a swale laid in a dug channel, while its own cell carries water (a fill, a flood "
+              + "or a natural source), slowly turns the ground within two cells one step richer — "
+              + "sand to soil to rich soil, never past rich soil, never while dry. Off: a built "
+              + "swale does nothing; ground it already improved stays improved.");
+            list.Label("Swale pace: " + SwaleRateMultiplier.ToString("F2") + "x  (1x = one step per fed day; first-guess number)");
+            swaleRateMultiplier = list.Slider(swaleRateMultiplier, 0.1f, 10f);
 
             list.End();
             Widgets.EndScrollView();
