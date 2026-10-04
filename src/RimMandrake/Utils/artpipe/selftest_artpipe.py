@@ -457,7 +457,7 @@ def test_fill_queue_verifies_reference_path_and_stores_absolute():
             "id": "missingref", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
             "canvas_w": 64, "canvas_h": 64, "reference": str(q.root / "nope.png"),
         }]))
-        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(bad_list),
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(bad_list), "--no-subject", "selftest fixture",
                 "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                 "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
         proc = subprocess.run(fill, capture_output=True, text=True, timeout=30)
@@ -472,7 +472,7 @@ def test_fill_queue_verifies_reference_path_and_stores_absolute():
             # relative path — fill_queue must resolve it to absolute.
             "reference": os.path.relpath(str(q.reference), start=str(q.root)),
         }]))
-        fill2 = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(good_list),
+        fill2 = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(good_list), "--no-subject", "selftest fixture",
                  "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                  "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
         proc2 = subprocess.run(fill2, capture_output=True, text=True, cwd=str(q.root), timeout=30)
@@ -496,7 +496,7 @@ def test_fill_queue_blank_priority_cell_does_not_crash():
             "id,rimflow_item_id,prompt,canvas_w,canvas_h,priority\n"
             "blankprio,SELFTEST_ARTPIPE,a plain crate,64,64,\n"
         )
-        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(csv_path),
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(csv_path), "--no-subject", "selftest fixture",
                 "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                 "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
         proc = subprocess.run(fill, capture_output=True, text=True, timeout=30)
@@ -524,7 +524,7 @@ def test_fill_queue_write_job_never_leaves_a_corrupt_id_blocking_file():
             "id": "linked", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
             "canvas_w": 64, "canvas_h": 64,
         }]))
-        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list),
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list), "--no-subject", "selftest fixture",
                 "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                 "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
         proc = subprocess.run(fill, capture_output=True, text=True, timeout=30)
@@ -642,7 +642,7 @@ def test_fill_queue_refuses_duplicate_id():
             "id": "dupcheck", "rimflow_item_id": "SELFTEST_ARTPIPE",
             "prompt": "x", "canvas_w": 64, "canvas_h": 64,
         }]))
-        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list),
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list), "--no-subject", "selftest fixture",
                 "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                 "--done-dir", str(q.done), "--failed-dir", str(q.failed)]
         first = subprocess.run(fill, capture_output=True, text=True, timeout=30)
@@ -1009,7 +1009,7 @@ def test_fill_queue_derives_north_south_from_east_master():
            "prompt": "a six-legged desert beast", "canvas_w": 256, "canvas_h": 256,
            "facings": ["north", "south", "east"]}
 
-    jobs = fill_queue.row_to_jobs(row)
+    jobs = fill_queue.row_to_jobs(row, no_subject="selftest fixture")
     by_facing = {j["facing"]: j for j in jobs}
     ok("fill_queue derive: east carries no derive_from (it is the master)",
        "derive_from" not in by_facing["east"], by_facing["east"])
@@ -1023,7 +1023,7 @@ def test_fill_queue_derives_north_south_from_east_master():
     ok("fill_queue derive: east's prompt is untouched",
        by_facing["east"]["prompt"] == row["prompt"], by_facing["east"]["prompt"])
 
-    jobs_off = fill_queue.row_to_jobs(row, derive_facings=False)
+    jobs_off = fill_queue.row_to_jobs(row, derive_facings=False, no_subject="selftest fixture")
     ok("fill_queue derive: --no-derive-facings omits derive_from entirely",
        all("derive_from" not in j for j in jobs_off), jobs_off)
 
@@ -1041,6 +1041,63 @@ def test_fill_queue_derives_north_south_from_east_master():
             ok(f"fill_queue derive: {j['id']} passes common.load_job", False, str(exc))
         finally:
             p.unlink(missing_ok=True)
+
+
+def test_fill_queue_binds_every_job_to_its_subject():
+    """ART_SUBJECT_RESOLVER_1: a row with no target_def is refused; a bound row's jobs carry
+    target_def + original names + texPath + install_to; canon_reference rides as guidance (never
+    `reference`), gets the canon prompt prefix, passes load_job, and is what the daemon attaches."""
+    base = {"rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "a six-legged desert beast",
+            "canvas_w": 256, "canvas_h": 256, "biome_neutral": "true"}
+    try:
+        fill_queue.row_to_jobs(dict(base, id="nosubj"), world=False)
+        ok("fill_queue bind: a row with no target_def is refused", False, "accepted")
+    except ValueError as exc:
+        ok("fill_queue bind: a row with no target_def is refused", "target_def" in str(exc), str(exc))
+    j = fill_queue.row_to_jobs(dict(base, id="glyph"), no_subject="a UI glyph", world=False)[0]
+    ok("fill_queue bind: --no-subject records why on the job", j.get("no_subject") == "a UI glyph", j)
+    with tempfile.TemporaryDirectory() as td:
+        img = Path(td) / "canon_1.png"
+        img.write_bytes(b"\x89PNG\r\n\x1a\n")
+        row = dict(base, id="bound", target_def="RSW_Beast", target_original="Beast; canon:beast",
+                   target_texpath="Things/Pawn/Animal/Beast/Beast", facings=["east", "north"],
+                   install_to="src/RimStarWars/X/Textures/Things/Pawn/Animal/Beast/Beast_{facing}.png",
+                   canon_reference=[str(img)])
+        jobs = {x["facing"]: x for x in fill_queue.row_to_jobs(row, world=False)}
+        e = jobs["east"]
+        ok("fill_queue bind: target_def and BOTH original names ride on the job",
+           e.get("target_def") == "RSW_Beast" and e.get("target_original") == ["Beast", "canon:beast"], e)
+        ok("fill_queue bind: target_texpath rides on the job",
+           e.get("target_texpath") == "Things/Pawn/Animal/Beast/Beast", e)
+        ok("fill_queue bind: install_to substitutes the facing",
+           e.get("install_to", "").endswith("Beast_east.png") and jobs["north"]["install_to"].endswith("Beast_north.png"), e)
+        ok("fill_queue bind: canon images are canon_reference, never reference",
+           e.get("canon_reference") == [str(img.resolve())] and e.get("reference") is None, e)
+        ok("fill_queue bind: the east master's prompt says the attachment is a canon reference",
+           e["prompt"].startswith(fill_queue.CANON_PROMPT_PREFIX), e["prompt"][:80])
+        ok("fill_queue bind: a derived facing keeps the derivation prompt, not the canon one",
+           jobs["north"]["prompt"].startswith(fill_queue.DERIVE_PROMPT_PREFIX), jobs["north"]["prompt"][:80])
+        ok("daemon: canon_attachment returns the first existing canon image",
+           common.canon_attachment(e) == img.resolve(), common.canon_attachment(e))
+        p = Path(td) / "bound_east.json"
+        p.write_text(json.dumps(e))
+        try:
+            common.load_job(p)
+            ok("fill_queue bind: a bound job passes common.load_job", True)
+        except common.JobError as exc:
+            ok("fill_queue bind: a bound job passes common.load_job", False, str(exc))
+        p.write_text(json.dumps(dict(e, target_original="Beast")))
+        try:
+            common.load_job(p)
+            ok("load_job: target_original as a bare string is refused", False, "accepted")
+        except common.JobError as exc:
+            ok("load_job: target_original as a bare string is refused", "target_original" in str(exc), str(exc))
+        try:
+            fill_queue.row_to_jobs(dict(row, id="badcanon", canon_reference=[str(Path(td) / "nope.png")]),
+                                   world=False)
+            ok("fill_queue bind: a dangling canon_reference is refused", False, "accepted")
+        except ValueError as exc:
+            ok("fill_queue bind: a dangling canon_reference is refused", "canon_reference" in str(exc), str(exc))
 
 
 # --------------------------------------------------------------------------
@@ -2027,7 +2084,7 @@ def test_fill_queue_channel_flag_and_per_row_override():
             {"id": "viacodexoverride", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "x",
              "canvas_w": 64, "canvas_h": 64, "channel": "codex"},
         ]))
-        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list),
+        fill = [sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list), "--no-subject", "selftest fixture",
                 "--pending-dir", str(q.pending), "--active-dir", str(q.active),
                 "--done-dir", str(q.done), "--failed-dir", str(q.failed),
                 "--channel", "gemini"]
@@ -3624,6 +3681,7 @@ def main() -> int:
         test_derived_job_attaches_master_and_skips_reskin_validate_end_to_end,
         test_derivation_duplicate_gate_fails_exact_copy_passes_different_image,
         test_fill_queue_derives_north_south_from_east_master,
+        test_fill_queue_binds_every_job_to_its_subject,
         test_detector_meter_thresholds,
         test_meters_flow_end_to_end_through_codex_grumpiness,
         test_meter_after_never_reads_a_previous_jobs_rollout,

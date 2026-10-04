@@ -32,6 +32,32 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        design/RimStarWars/canon_references/; its
                        `## Visual brief` + `## Must show` are appended to
                        style_notes. A named entry with no brief is REFUSED.
+    target_def         REQUIRED (ART_SUBJECT_RESOLVER_1) — the defName this
+                       render is a picture of. A donor/original defName is
+                       accepted and mapped to ours (it is kept as an
+                       original). A row without one is REFUSED unless it
+                       carries `no_subject: "<why>"` or the run passes
+                       --no-subject "<why>" (templates, glyphs, fixtures).
+    target_original    optional — the ORIGINAL name(s) (donor defName, canon
+                       species), comma/semicolon-separated or a JSON list.
+                       Owner, 2026-10-04: renders are named by their original
+                       name as well as ours, so a rename never loses the
+                       donor or canon reference. Known donor names for
+                       target_def (rename comments, mlie maps) are added.
+    target_texpath     optional — the texPath (no facing suffix) the art is
+                       for; defaults to the def's body texPath when it has
+                       exactly one (art/subject.py).
+    install_to         optional — repo-relative PNG destination for
+                       `artpipe_state.py collect --from-jobs`; "{facing}" is
+                       substituted per job.
+    canon_reference    optional — image path(s) to attach as ANATOMY guidance.
+                       Defaults to the canon-library entry's images when
+                       art/subject.py resolves one for target_def (exact or
+                       base species). Never `reference` — that arms
+                       reskin-validate (same-pose pixel fidelity), which a
+                       canon photo would always fail. The daemon attaches the
+                       first image only when the job has no `reference` and no
+                       `derive_from`; the job's prompt says how to use it.
     biome_register     optional — the subject's biome light/palette register
                        (from its biome sheet), prepended to style_notes.
                        A row with neither this nor `biome_neutral: true`
@@ -74,6 +100,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "art"))
 import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl
 
 REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h")
@@ -97,6 +124,94 @@ DERIVE_PROMPT_PREFIX = (
 # same as today.
 _DERIVED_FACINGS = ("north", "south")
 _MASTER_FACING = "east"
+
+
+# ART_SUBJECT_RESOLVER_1: prepended to a job that carries canon_reference and
+# no reference/derive_from, so the attached photo is read as anatomy guidance,
+# never as an image to edit.
+CANON_PROMPT_PREFIX = (
+    "The attached image is a CANON REFERENCE of this species, not a sprite to "
+    "edit: match its anatomy, proportions, limb count and colouring, but draw "
+    "a NEW game sprite in the house style below — do not copy its pixels, "
+    "background, lighting or camera framing. "
+)
+
+
+def _split_names(raw) -> list[str]:
+    if raw is None:
+        return []
+    if isinstance(raw, list):
+        return [str(x).strip() for x in raw if str(x).strip()]
+    return [x.strip() for x in str(raw).replace(";", ",").split(",") if x.strip()]
+
+
+def _world():
+    """art/subject.World, built once per process (lazy: nothing is read until a row needs it)."""
+    global _WORLD
+    if _WORLD is None:
+        import subject  # noqa: E402 — art/subject.py
+        _WORLD = subject.World()
+    return _WORLD
+
+
+_WORLD = None
+
+
+def bind_subject(row: dict, no_subject: str | None = None, world=None) -> dict:
+    """The binding fields for a row's jobs (ART_SUBJECT_RESOLVER_1). Refuses a row with no target_def
+    unless a no-subject reason is given. WORLD (art/subject.World) resolves originals, texPath and canon;
+    None means 'use the default World'; False means 'resolve nothing, keep only what the row says'."""
+    base_id = row.get("id", "?")
+    target = str(row.get("target_def") or "").strip()
+    why = str(row.get("no_subject") or no_subject or "").strip()
+    if not target:
+        if not why:
+            raise ValueError(f"row {base_id!r} has no target_def — every render must name the defName it "
+                             f"is a picture of (ART_SUBJECT_RESOLVER_1); give target_def, or no_subject "
+                             f"/ --no-subject \"<why>\" for art that is no creature/plant/thing")
+        return {"no_subject": why}
+    originals = _split_names(row.get("target_original"))
+    texpath = str(row.get("target_texpath") or "").strip() or None
+    canon_slug, canon_imgs = None, _split_names(row.get("canon_reference"))
+    w = _world() if world is None else world
+    if w:
+        import subject  # noqa: E402
+        ours, orig = w.identify(target, originals)
+        target, originals = ours, list(orig)
+        if not texpath:
+            tps = sorted(w.tex_by_def.get(target, ()))
+            texpath = tps[0] if len(tps) == 1 else None
+        c = subject.resolve_canon(target, w, originals)
+        if c["match"] != "none":
+            canon_slug = c["slug"]
+            if not canon_imgs:
+                canon_imgs = list(c["images"])
+        elif target not in w.defs:
+            print(f"  ⚠️  {base_id}: target_def {target!r} is not a ThingDef/PawnKindDef in src/ yet — "
+                  f"filed anyway (a def may follow its art)", file=sys.stderr)
+    if not canon_slug and str(row.get("canon") or "").strip():
+        canon_slug = str(row["canon"]).strip()
+        if not canon_imgs:
+            d = common.CANON_ROOT / canon_slug
+            canon_imgs = sorted(str(p) for p in d.iterdir() if p.suffix.lower() in
+                                (".png", ".jpg", ".jpeg", ".webp") and not p.name.startswith("donor_")) \
+                if d.is_dir() else []
+    resolved = []
+    for im in canon_imgs:
+        ip = Path(im).expanduser()
+        if not ip.is_absolute():
+            ip = Path.cwd() / ip
+        if not ip.is_file():
+            raise ValueError(f"row {base_id!r} canon_reference does not exist: {ip}")
+        resolved.append(str(ip.resolve()))
+    out = {"target_def": target, "target_original": originals}
+    if texpath:
+        out["target_texpath"] = texpath
+    if canon_slug:
+        out["target_canon"] = canon_slug
+    if resolved:
+        out["canon_reference"] = resolved
+    return out
 
 
 class DuplicateJobId(ValueError):
@@ -125,10 +240,11 @@ def load_rows(path: Path) -> list[dict]:
 
 
 def row_to_jobs(row: dict, default_channel: str = "codex",
-                 derive_facings: bool = True) -> list[dict]:
+                 derive_facings: bool = True, no_subject: str | None = None, world=None) -> list[dict]:
     missing = [f for f in REQUIRED_ROW_FIELDS if not row.get(f)]
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
+    binding = bind_subject(row, no_subject=no_subject, world=world)
 
     # A per-row "channel" always wins over --channel, if the row bothers to
     # name one; otherwise every row in this invocation gets --channel's
@@ -250,9 +366,14 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             "facings": facings,
             "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
+        job.update(binding)
+        if row.get("install_to"):
+            job["install_to"] = str(row["install_to"]).replace("{facing}", facing or "")
         if master_facing_present and facing in _DERIVED_FACINGS:
             job["derive_from"] = master_job_id
             job["prompt"] = DERIVE_PROMPT_PREFIX + job["prompt"]
+        elif job.get("canon_reference") and not reference:
+            job["prompt"] = CANON_PROMPT_PREFIX + job["prompt"]
         jobs.append(job)
     return jobs
 
@@ -333,6 +454,9 @@ def main(argv=None) -> int:
                           "pre-§2 behavior")
     ap.add_argument("--dry-run", action="store_true",
                      help="print what would be filed, write nothing")
+    ap.add_argument("--no-subject", metavar="WHY", default=None,
+                     help="file rows without target_def, recording WHY on each job "
+                          "(templates, glyphs, fixtures) — ART_SUBJECT_RESOLVER_1")
     args = ap.parse_args(argv)
 
     path = Path(args.input)
@@ -352,7 +476,8 @@ def main(argv=None) -> int:
     for row in rows:
         try:
             jobs = row_to_jobs(row, default_channel=args.channel,
-                                derive_facings=args.derive_facings)
+                                derive_facings=args.derive_facings,
+                                no_subject=args.no_subject)
         except ValueError as exc:
             errors.append(str(exc))
             continue
