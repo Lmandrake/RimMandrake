@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-04T14:52:57-0700",
- "git_head": "79c294972",
+ "generated": "2026-10-04T15:23:33-0700",
+ "git_head": "eeff5234d",
  "inputs": {
-  "ledger_events": 43380,
-  "ledger_variants": 10546,
+  "ledger_events": 43396,
+  "ledger_variants": 10562,
   "load_order": "ModsConfig.xml 9 active, modified 2026-10-04 10:55",
-  "artpipe_state": "searched 17048 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 17092 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -15,10 +15,10 @@
   "hawkbat": 1,
   "bantha": 3,
   "anooba": 3,
-  "stoneback": 1,
+  "stoneback": 2,
   "_canon_index_defnames": 233,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 10546
+  "_ledger_variants": 10562
  },
  "biome_order": [
   "RM_LongShade",
@@ -317,7 +317,7 @@
        "defName": "RSW_Bokka",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Bokka / RSW_Bokka",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -723,7 +723,7 @@
        "defName": "RSW_GreatDevourer",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_GreatDevourer / RSW_GreatDevourer",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -819,7 +819,7 @@
        "defName": "RSW_Groundrunner",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Groundrunner / RSW_Groundrunner",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -915,7 +915,7 @@
        "defName": "RSW_Jellypot",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Jellypot / RSW_Jellypot",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -1045,7 +1045,7 @@
        "defName": "RSW_Khorrak",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Khorrak / RSW_Khorrak",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -1144,7 +1144,7 @@
        "defName": "RSW_Kudda",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Kudda / RSW_Kudda",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -1243,7 +1243,7 @@
        "defName": "RSW_MatureFleshbeast",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_MatureFleshbeast / RSW_MatureFleshbeast",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -1419,7 +1419,7 @@
        "defName": "RSW_Ommok",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ommok / RSW_Ommok",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -1518,7 +1518,7 @@
        "defName": "RSW_Ossik",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ossik / RSW_Ossik",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -2379,7 +2379,7 @@
        "defName": "RSW_Thurra",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Thurra / RSW_Thurra",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -2478,7 +2478,7 @@
        "defName": "RSW_TruffleMole",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_TruffleMole / RSW_TruffleMole",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -2595,7 +2595,7 @@
        "defName": "RSW_Ulgga",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ulgga / RSW_Ulgga",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -2694,7 +2694,7 @@
        "defName": "RSW_Vosska",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Vosska / RSW_Vosska",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -3118,6 +3118,110 @@
        "ts": "2026-10-04T08:26:04-0700",
        "via": "Transient/art_doubles_compare_2026-10-04.decisions.json",
        "row": "swanimals/Bantha/BanthaW_j"
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Bokka",
+     "kind": "fauna",
+     "port": "RSW_Bokka",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Bokka",
+     "layer": "Star Wars twin of RM_Bokka (not cast in this biome)",
+     "label": "bokka",
+     "defNames": [
+      "RSW_Bokka"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Bokka",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Bokka / RM_Bokka",
+       "in_this_biome": true
+      },
+      {
+       "defName": "RM_Ssurr",
+       "relation": "tier_twin_shared_texpath",
+       "evidence": "shares texPath Things/Pawn/Animal/Iguana/Dessicated_Iguana",
+       "in_this_biome": false
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_Bokka",
+         "RSW_Bokka"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
+          "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
+          "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
+           "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
+           "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RSW_Stoneback",
+          "detail": "2026-09-23 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 STONEBACK_BOKKA_ART_STANDARD_1",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "eafc5f0e96822ed379d91db612a1b8bcd33d33ad28c338ea22c0dbcfb27437a6",
+           "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
+           "south": "9225dd365647e53b48cdadbd2c8c25eb2950f5b5e030a02900b6e3de95f6d2f7"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keeps_name",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
       }
      ],
      "noncanon_twin": []
@@ -4771,6 +4875,140 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_GreatDevourer",
+     "kind": "fauna",
+     "port": "RSW_GreatDevourer",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_GreatDevourer",
+     "layer": "Star Wars twin of RM_GreatDevourer (not cast in this biome)",
+     "label": "great devourer",
+     "defNames": [
+      "RSW_GreatDevourer"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": "design/RimStarWars/canon_references/greatdevourer",
+      "match": "index_defname",
+      "images": [
+       "design/RimStarWars/canon_references/greatdevourer/wookieepedia_canon_1.webp"
+      ],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_GreatDevourer",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_GreatDevourer / RM_GreatDevourer",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_GreatDevourer"
+        ],
+        "live": null,
+        "versions": [],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 0,
+      "has_art": false,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [
+      "RM_GreatDevourer"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": [
+      "RM_GreatDevourer"
+     ]
+    },
+    {
+     "key": "RSW_Groundrunner",
+     "kind": "fauna",
+     "port": "RSW_Groundrunner",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Groundrunner",
+     "layer": "Star Wars twin of RM_Groundrunner (not cast in this biome)",
+     "label": "groundrunner",
+     "defNames": [
+      "RSW_Groundrunner"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Groundrunner",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Groundrunner / RM_Groundrunner",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_Groundrunner"
+        ],
+        "live": null,
+        "versions": [],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 0,
+      "has_art": false,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [
+      "RM_Groundrunner"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_Gutkurr",
      "kind": "fauna",
      "port": "RSW_Gutkurr",
@@ -6043,6 +6281,133 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_Jellypot",
+     "kind": "fauna",
+     "port": "RSW_Jellypot",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Jellypot",
+     "layer": "Star Wars twin of RM_Jellypot (not cast in this biome)",
+     "label": "jellypot",
+     "defNames": [
+      "RSW_Jellypot"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Jellypot",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Jellypot / RM_Jellypot",
+       "in_this_biome": true
+      },
+      {
+       "defName": "RM_Mirrik",
+       "relation": "tier_twin_shared_texpath",
+       "evidence": "shares texPath Things/Pawn/Animal/Spelopede/Dessicated_Spelopede",
+       "in_this_biome": false
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_Jellypot",
+         "RSW_Jellypot"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+           "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+           "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_jellypot",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-27",
+          "faces": {
+           "east": "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
+           "north": "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899",
+           "south": "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "desertportb_jellypot"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_Jimvu",
      "kind": "fauna",
      "port": "RSW_Jimvu",
@@ -6180,6 +6545,97 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Khorrak",
+     "kind": "fauna",
+     "port": "RSW_Khorrak",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Khorrak",
+     "layer": "Star Wars twin of RM_Khorrak (not cast in this biome)",
+     "label": "khorrak",
+     "defNames": [
+      "RSW_Khorrak"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Khorrak",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Khorrak / RM_Khorrak",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Khorrak"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "436b8501c92a18f633e3ffc8897c7f69880eac5e4f37431110a3072ac4c942b8",
+          "north": "e8b87690b8ee7d96a30aa58ec44609a8c61cf3c799df612dfd88707b1b1e44c3",
+          "south": "94de8bc7c51967f44ad4075c08556460223ab4b3e0fc582e81e24fa1ed9355aa"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "436b8501c92a18f633e3ffc8897c7f69880eac5e4f37431110a3072ac4c942b8",
+           "north": "e8b87690b8ee7d96a30aa58ec44609a8c61cf3c799df612dfd88707b1b1e44c3",
+           "south": "94de8bc7c51967f44ad4075c08556460223ab4b3e0fc582e81e24fa1ed9355aa"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "436b8501c92a18f633e3ffc8897c7f69880eac5e4f37431110a3072ac4c942b8",
+          "north": "e8b87690b8ee7d96a30aa58ec44609a8c61cf3c799df612dfd88707b1b1e44c3",
+          "south": "94de8bc7c51967f44ad4075c08556460223ab4b3e0fc582e81e24fa1ed9355aa"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Khorrak"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -6323,6 +6779,84 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Kudda",
+     "kind": "fauna",
+     "port": "RSW_Kudda",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Kudda",
+     "layer": "Star Wars twin of RM_Kudda (not cast in this biome)",
+     "label": "kudda",
+     "defNames": [
+      "RSW_Kudda"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Kudda",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Kudda / RM_Kudda",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Kudda"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
+          "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
+          "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
+           "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
+           "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Kudda"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -6758,6 +7292,71 @@
       },
       {
        "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_MatureFleshbeast",
+     "kind": "fauna",
+     "port": "RSW_MatureFleshbeast",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_MatureFleshbeast",
+     "layer": "Star Wars twin of RM_MatureFleshbeast (not cast in this biome)",
+     "label": "mature fleshbeast",
+     "defNames": [
+      "RSW_MatureFleshbeast"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_MatureFleshbeast",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_MatureFleshbeast / RM_MatureFleshbeast",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_MatureFleshbeast"
+        ],
+        "live": null,
+        "versions": [],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 0,
+      "has_art": false,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [
+      "RM_MatureFleshbeast"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
        "by": "agent",
        "trust": "prefill",
        "ts": "2026-10-04T08:03:11-0700",
@@ -7305,6 +7904,175 @@
        "row": "swanimals/Nuna/Nuna_m"
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ommok",
+     "kind": "fauna",
+     "port": "RSW_Ommok",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ommok",
+     "layer": "Star Wars twin of RM_Ommok (not cast in this biome)",
+     "label": "ommok",
+     "defNames": [
+      "RSW_Ommok"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ommok",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ommok / RM_Ommok",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ommok"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+          "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+          "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+           "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+           "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ommok"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ossik",
+     "kind": "fauna",
+     "port": "RSW_Ossik",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ossik",
+     "layer": "Star Wars twin of RM_Ossik (not cast in this biome)",
+     "label": "ossik",
+     "defNames": [
+      "RSW_Ossik"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ossik",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ossik / RM_Ossik",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ossik"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
+          "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+          "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
+           "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+           "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
+          "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+          "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ossik"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -8549,6 +9317,296 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_Thurra",
+     "kind": "fauna",
+     "port": "RSW_Thurra",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Thurra",
+     "layer": "Star Wars twin of RM_Thurra (not cast in this biome)",
+     "label": "thurra",
+     "defNames": [
+      "RSW_Thurra"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Thurra",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Thurra / RM_Thurra",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Thurra"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
+          "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
+          "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
+           "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
+           "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
+          "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
+          "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Thurra"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_TruffleMole",
+     "kind": "fauna",
+     "port": "RSW_TruffleMole",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_TruffleMole",
+     "layer": "Star Wars twin of RM_TruffleMole (not cast in this biome)",
+     "label": "truffle mole",
+     "defNames": [
+      "RSW_TruffleMole"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_TruffleMole",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_TruffleMole / RM_TruffleMole",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_TruffleMole",
+         "RSW_TruffleMole"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "681035b6a4485896d65e1080dfb366c25892abe54f6395905ee7ae24637a3cee",
+          "north": "11e1aedb5b3ae818717c7535b83f606804ea86ec5cd724a904ca833dadb43cb8",
+          "south": "e6173760cd2a4923996d14e7f0801d0a5aca9a8bcf1fa27350ce435dcf98e5cc"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "681035b6a4485896d65e1080dfb366c25892abe54f6395905ee7ae24637a3cee",
+           "north": "11e1aedb5b3ae818717c7535b83f606804ea86ec5cd724a904ca833dadb43cb8",
+           "south": "e6173760cd2a4923996d14e7f0801d0a5aca9a8bcf1fa27350ce435dcf98e5cc"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_TruffleMole",
+          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
+          "date": "2026-09-30",
+          "faces": {
+           "east": "2d1a22bd0a52cf8369673d7eaa4e7f8a96afb6f60d72469081fbc9074c8d27b3",
+           "north": "fb8f53e926779191a054214f047a480247cdefbacd76d690870a0c54c9f03b14",
+           "south": "61d3f0154f390757b082d669406c0abda4079094834a6825d72d52c8287d9a24"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_TruffleMole"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ulgga",
+     "kind": "fauna",
+     "port": "RSW_Ulgga",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ulgga",
+     "layer": "Star Wars twin of RM_Ulgga (not cast in this biome)",
+     "label": "ulgga",
+     "defNames": [
+      "RSW_Ulgga"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ulgga",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ulgga / RM_Ulgga",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ulgga"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+          "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+          "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+           "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+           "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+          "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+          "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ulgga"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_Uvak",
      "kind": "fauna",
      "port": "RSW_Uvak",
@@ -9051,6 +10109,97 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Vosska",
+     "kind": "fauna",
+     "port": "RSW_Vosska",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Vosska",
+     "layer": "Star Wars twin of RM_Vosska (not cast in this biome)",
+     "label": "vosska",
+     "defNames": [
+      "RSW_Vosska"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Vosska",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Vosska / RM_Vosska",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Vosska"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+          "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+          "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+           "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+           "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+          "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+          "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Vosska"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -12604,7 +13753,7 @@
        "defName": "RSW_Ultracactus",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ultracactus / RSW_Ultracactus",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -16457,6 +17606,553 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_Ultracactus",
+     "kind": "flora",
+     "port": "RSW_Ultracactus",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ultracactus",
+     "layer": "Star Wars twin of RM_Ultracactus (not cast in this biome)",
+     "label": "ultracactus",
+     "defNames": [
+      "RSW_Ultracactus"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ultracactus",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ultracactus / RM_Ultracactus",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RSW_Ultracactus",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_Ultracactus"
+        ],
+        "live": null,
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_eldspar",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_fuselight",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_ghostpane",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_keelgrass",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_pitchpearl",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_skyharp",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_slackwax",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stillbloom",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stonewater",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_tarspool",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brimlock",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ammeth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_cistrel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_claithe",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_corvath",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_halquin",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_maulith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_nubrith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_plennith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_seepril",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skimmel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_sodderel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_varnoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_wanlith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brennoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_dulloth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_fellome",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_grennick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kessaroth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kollavane",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_norrveth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_pellareth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_ruddreth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sellith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sorrivel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_tavrosk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_threllick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_varrisk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_vessark",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ossagrel",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skethral",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_thulvane",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_tullick",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_verrow",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_bloddle",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_chakroot_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_hubbagourd_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_nysyllin_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_furnacecap_plant_v1",
+          "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_WARM_MAT_1",
+          "date": "2026-09-17",
+          "faces": {
+           "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 49,
+      "has_art": true,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [
+      "RM_UltracactusPad"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_VellaraBloom",
      "kind": "flora",
      "port": "RSW_VellaraBloom",
@@ -17018,6 +18714,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 14,
     "rows": 75,
     "fauna": 62,
     "flora": 13,
@@ -17164,7 +18861,7 @@
        "defName": "RSW_Drazzik",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Drazzik / RSW_Drazzik",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -17442,7 +19139,7 @@
        "defName": "RSW_Ikee",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ikee / RSW_Ikee",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -18385,7 +20082,7 @@
        "defName": "RSW_Vozzik",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Vozzik / RSW_Vozzik",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -18432,6 +20129,63 @@
      "artpipe_state_jobs": [
       "RM_Vozzik",
       "RM_VozzikSkeleton"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Drazzik",
+     "kind": "fauna",
+     "port": "RSW_Drazzik",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Drazzik",
+     "layer": "Star Wars twin of RM_Drazzik (not cast in this biome)",
+     "label": "drazzik",
+     "defNames": [
+      "RSW_Drazzik"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Drazzik",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Drazzik / RM_Drazzik",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_Drazzik",
+         "RSW_SandLion"
+        ],
+        "live": null,
+        "versions": [],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 0,
+      "has_art": false,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [
+      "RM_Drazzik"
      ],
      "ledger_rulings": [],
      "noncanon_twin": []
@@ -18932,6 +20686,106 @@
        "verdict": "rescale",
        "by": "agent",
        "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ikee",
+     "kind": "fauna",
+     "port": "RSW_Ikee",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ikee",
+     "layer": "Star Wars twin of RM_Ikee (not cast in this biome)",
+     "label": "ikee",
+     "defNames": [
+      "RSW_Ikee"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ikee",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ikee / RM_Ikee",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ikee"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+           "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+           "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ikee"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
@@ -19601,6 +21455,85 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Vozzik",
+     "kind": "fauna",
+     "port": "RSW_Vozzik",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Vozzik",
+     "layer": "Star Wars twin of RM_Vozzik (not cast in this biome)",
+     "label": "vozzik",
+     "defNames": [
+      "RSW_Vozzik"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Vozzik",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Vozzik / RM_Vozzik",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Vozzik"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+          "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+          "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+           "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+           "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Vozzik",
+      "RM_VozzikSkeleton"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -20970,7 +22903,7 @@
        "defName": "RSW_LightPipeNub",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_LightPipeNub / RSW_LightPipeNub",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -21524,7 +23457,7 @@
        "defName": "RSW_Ollim",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ollim / RSW_Ollim",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -21536,6 +23469,1096 @@
         "in_ledger": false,
         "subjects": [
          "RM_Ollim"
+        ],
+        "live": null,
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_eldspar",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_fuselight",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_ghostpane",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_keelgrass",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_pitchpearl",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_skyharp",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_slackwax",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stillbloom",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stonewater",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_tarspool",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brimlock",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ammeth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_cistrel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_claithe",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_corvath",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_halquin",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_maulith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_nubrith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_plennith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_seepril",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skimmel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_sodderel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_varnoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_wanlith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brennoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_dulloth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_fellome",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_grennick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kessaroth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kollavane",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_norrveth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_pellareth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_ruddreth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sellith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sorrivel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_tavrosk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_threllick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_varrisk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_vessark",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ossagrel",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skethral",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_thulvane",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_tullick",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_verrow",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_bloddle",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_chakroot_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_hubbagourd_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_nysyllin_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_furnacecap_plant_v1",
+          "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_WARM_MAT_1",
+          "date": "2026-09-17",
+          "faces": {
+           "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 49,
+      "has_art": true,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_LightPipeNub",
+     "kind": "flora",
+     "port": "RSW_LightPipeNub",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_LightPipeNub",
+     "layer": "Star Wars twin of RM_LightPipeNub (not cast in this biome)",
+     "label": "light-pipe nub",
+     "defNames": [
+      "RSW_LightPipeNub"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_LightPipeNub",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_LightPipeNub / RM_LightPipeNub",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RSW_LightPipeNub",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_LightPipeNub"
+        ],
+        "live": null,
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_eldspar",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_fuselight",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_ghostpane",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_keelgrass",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_pitchpearl",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_skyharp",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_slackwax",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stillbloom",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_stonewater",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render chill_plant_tarspool",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CHILL_FLORA_BUILD_1",
+          "date": "2026-09-27",
+          "faces": {
+           "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brimlock",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ammeth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_cistrel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_claithe",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_corvath",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_halquin",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_maulith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_nubrith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_plennith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_seepril",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skimmel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_sodderel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_varnoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_wanlith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_brennoth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_dulloth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_fellome",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_grennick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kessaroth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_kollavane",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_norrveth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_pellareth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_ruddreth",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sellith",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_sorrivel",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_tavrosk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_threllick",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_varrisk",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render webwork_plant_vessark",
+          "detail": "2026-09-26 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WEBWORK_FLORA_ROSTER_1",
+          "date": "2026-09-26",
+          "faces": {
+           "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_ossagrel",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_skethral",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_thulvane",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_tullick",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render feverwood_plant_verrow",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FEVERWOOD_RM_MOD_BUILD_1",
+          "date": "2026-09-25",
+          "faces": {
+           "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_bloddle",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_chakroot_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_hubbagourd_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_plant_nysyllin_wild",
+          "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-20",
+          "faces": {
+           "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_furnacecap_plant_v1",
+          "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_WARM_MAT_1",
+          "date": "2026-09-17",
+          "faces": {
+           "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 49,
+      "has_art": true,
+      "live_res": 0
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ollim",
+     "kind": "flora",
+     "port": "RSW_Ollim",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ollim",
+     "layer": "Star Wars twin of RM_Ollim (not cast in this biome)",
+     "label": "ollim",
+     "defNames": [
+      "RSW_Ollim"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ollim",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ollim / RM_Ollim",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Plant/RSW_Ollim",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RSW_Ollim"
         ],
         "live": null,
         "versions": [
@@ -22602,6 +25625,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 5,
     "rows": 28,
     "fauna": 22,
     "flora": 5,
@@ -24115,6 +27139,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 20,
     "fauna": 12,
     "flora": 8,
@@ -25754,7 +28779,7 @@
        "defName": "RSW_Vosska",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Vosska / RSW_Vosska",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -25807,6 +28832,97 @@
        }
       ],
       "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Vosska"
+     ],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Vosska",
+     "kind": "fauna",
+     "port": "RSW_Vosska",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Vosska",
+     "layer": "Star Wars twin of RM_Vosska (not cast in this biome)",
+     "label": "vosska",
+     "defNames": [
+      "RSW_Vosska"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Vosska",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Vosska / RM_Vosska",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Vosska"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+          "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+          "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+           "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+           "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+          "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+          "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
       "has_art": true,
       "live_res": 1
      },
@@ -27483,6 +30599,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 31,
     "fauna": 21,
     "flora": 10,
@@ -32366,6 +35483,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 46,
     "fauna": 29,
     "flora": 17,
@@ -32395,6 +35513,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -36087,6 +39206,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 35,
     "fauna": 22,
     "flora": 13,
@@ -40520,6 +43640,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 38,
     "fauna": 16,
     "flora": 22,
@@ -40715,7 +43836,7 @@
        "defName": "RSW_Ommok",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ommok / RSW_Ommok",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -41589,6 +44710,84 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ommok",
+     "kind": "fauna",
+     "port": "RSW_Ommok",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ommok",
+     "layer": "Star Wars twin of RM_Ommok (not cast in this biome)",
+     "label": "ommok",
+     "defNames": [
+      "RSW_Ommok"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ommok",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ommok / RM_Ommok",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ommok"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+          "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+          "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+           "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+           "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ommok"
+     ],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -44727,6 +47926,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 25,
     "fauna": 15,
     "flora": 10,
@@ -47627,6 +50827,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 12,
     "fauna": 8,
     "flora": 4,
@@ -55352,6 +58553,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 64,
     "fauna": 32,
     "flora": 25,
@@ -56462,7 +59664,7 @@
        "defName": "RSW_Reefback",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Reefback / RSW_Reefback",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -56752,6 +59954,101 @@
      },
      "artpipe_state_jobs": [],
      "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Reefback",
+     "kind": "fauna",
+     "port": "RSW_Reefback",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Reefback",
+     "layer": "Star Wars twin of RM_Reefback (not cast in this biome)",
+     "label": "reefback",
+     "defNames": [
+      "RSW_Reefback"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Reefback",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Reefback / RM_Reefback",
+       "in_this_biome": true
+      },
+      {
+       "defName": "RM_ReefbackJuv",
+       "relation": "tier_twin_shared_texpath",
+       "evidence": "shares texPath Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+       "in_this_biome": false
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_Reefback",
+         "RM_ReefbackJuv",
+         "RSW_Reefback"
+        ],
+        "live": {
+         "mod": "src/RimMandrake/TerminalBiomes",
+         "label": "shipped, shadowed \u2014 TerminalBiomes",
+         "faces": {
+          "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+          "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
+          "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d",
+          "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 TerminalBiomes",
+          "detail": "load index -1 \u00b7 bytes from cf1b5cbb79 2026-09-02: Add ThingDefs/PawnKindDefs for the 18 SW_SEA_MONSTERS_ART_1 sea beasts",
+          "date": "2026-09-02",
+          "faces": {
+           "east": "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+           "north": "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
+           "south": "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d",
+           "west": "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -59009,6 +62306,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 45,
     "fauna": 17,
     "flora": 16,
@@ -59154,7 +62452,7 @@
        "defName": "RSW_BloodropMoth",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_BloodropMoth / RSW_BloodropMoth",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -59264,7 +62562,7 @@
        "defName": "RSW_BovineBeetle",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_BovineBeetle / RSW_BovineBeetle",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -59686,7 +62984,7 @@
        "defName": "RSW_FacetMothLarvae",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_FacetMothLarvae / RSW_FacetMothLarvae",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -59788,7 +63086,7 @@
        "defName": "RSW_Gembug",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Gembug / RSW_Gembug",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -59910,7 +63208,7 @@
        "defName": "RSW_GlowSlug",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_GlowSlug / RSW_GlowSlug",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -60100,7 +63398,7 @@
        "defName": "RSW_Megapleura",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Megapleura / RSW_Megapleura",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -60212,7 +63510,7 @@
        "defName": "RSW_MossBeetleLarvae",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_MossBeetleLarvae / RSW_MossBeetleLarvae",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -60408,7 +63706,7 @@
        "defName": "RSW_ShatterjawBeetle",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_ShatterjawBeetle / RSW_ShatterjawBeetle",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -60799,6 +64097,927 @@
       "RM_Tapper"
      ],
      "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_BloodropMoth",
+     "kind": "fauna",
+     "port": "RSW_BloodropMoth",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_BloodropMoth",
+     "layer": "Star Wars twin of RM_BloodropMoth (not cast in this biome)",
+     "label": "drinker",
+     "defNames": [
+      "RSW_BloodropMoth"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_BloodropMoth",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_BloodropMoth / RM_BloodropMoth",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_BloodropMoth"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
+          "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
+          "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
+           "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
+           "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "1d04505102b068678c0e43031756cb07911b7d42d81fdc34db5bf8472c088959",
+           "north": "09392e00a033bba7d40b2ca39ac8a8fabe8f091e82b1369cb577fa9caa9d0e22",
+           "south": "11e8e0974cb408eaf5296ef59fa5e341dd59763f639f37c65185bcad51814464"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_BovineBeetle",
+     "kind": "fauna",
+     "port": "RSW_BovineBeetle",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_BovineBeetle",
+     "layer": "Star Wars twin of RM_BovineBeetle (not cast in this biome)",
+     "label": "grabber",
+     "defNames": [
+      "RSW_BovineBeetle"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_BovineBeetle",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_BovineBeetle / RM_BovineBeetle",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_BovineBeetle"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "16593bb512cea7429af4ef20ed13c2ac728a0fe7a365b7727fd48188c6a1d6ec",
+          "north": "9bb9643e71a9e40081224338d603b892829ad2e684ebf643daa241199e6ae15b",
+          "south": "b7bea51a71c5ad57ac96324dcfa28234a004bd7999216b77d090032b0865feb2"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "16593bb512cea7429af4ef20ed13c2ac728a0fe7a365b7727fd48188c6a1d6ec",
+           "north": "9bb9643e71a9e40081224338d603b892829ad2e684ebf643daa241199e6ae15b",
+           "south": "b7bea51a71c5ad57ac96324dcfa28234a004bd7999216b77d090032b0865feb2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "fbe676e6024b6833149193bd125b5d7897eac6d3416d631466125f3076c105d3",
+           "north": "b77e6174df38cddd52dde5aca011cd133d7cdced0b5aec81feab3c968daa6911",
+           "south": "23788644daa70c792c26a727c771ed21e9b9f89b8620912a4b1c9e152e0fe95d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-18",
+          "detail": "3f891c5c74 2026-09-18: CAVERNS_ARTOVERRIDE_REHOME_1: ten ArtOverride mods rehomed into SWBestiary and retired",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
+           "north": "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
+           "south": "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 3,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_FacetMothLarvae",
+     "kind": "fauna",
+     "port": "RSW_FacetMothLarvae",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_FacetMothLarvae",
+     "layer": "Star Wars twin of RM_FacetMothLarvae (not cast in this biome)",
+     "label": "soulchime",
+     "defNames": [
+      "RSW_FacetMothLarvae"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_FacetMothLarvae",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_FacetMothLarvae / RM_FacetMothLarvae",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+        "role": "dessicated",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_FacetMothLarvae",
+         "RSW_FacetMothPupa"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
+          "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
+          "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
+           "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
+           "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "bb8842a43d16e4002dc07dacdb21ed2bf618ab80407508e9725b7fb89cc65c97",
+           "north": "ced346acae7b745698ca8c2b8618a8484121437082c4090be3124f25c00c6ce4",
+           "south": "807e4d0ff73b821060cd14b0248f4928f1d842526b81df8052323fa1d700c525"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Gembug",
+     "kind": "fauna",
+     "port": "RSW_Gembug",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Gembug",
+     "layer": "Star Wars twin of RM_Gembug (not cast in this biome)",
+     "label": "gembug",
+     "defNames": [
+      "RSW_Gembug"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Gembug",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Gembug / RM_Gembug",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Gembug"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "09ea2845f712e69ccf7f38057b46b860fe35823657fb576fa5b7577df1cdaf4f",
+          "north": "4fe4f2b1eb78fddec42f0f0f33f6acd1f2b72fd09318b966a857de0b4e3e1dc4",
+          "south": "86c21cd513be958bc8ba859d8a594427979a2674abfeedc96769cd0e18cbdee1"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "09ea2845f712e69ccf7f38057b46b860fe35823657fb576fa5b7577df1cdaf4f",
+           "north": "4fe4f2b1eb78fddec42f0f0f33f6acd1f2b72fd09318b966a857de0b4e3e1dc4",
+           "south": "86c21cd513be958bc8ba859d8a594427979a2674abfeedc96769cd0e18cbdee1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_MessyConduit_ExtCord_Strand_Blue",
+          "detail": "2026-10-02 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 MESSY_CONDUIT_MOD_1",
+          "date": "2026-10-02",
+          "faces": {
+           "single": "dafbac654df2f7fd99027e065a2040a27a147d35106e3f7f3c04e0df32504f8c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "551971d8bc3de5fd268c88b11a7b6da236e97a871c377afb6384f6dfc791d313",
+           "north": "ec81cc37deb82b2d62c8e426ffd9eed42677e76db4203f1d829689bfbaf69d4a",
+           "south": "e62afccd40fbd8ac4e468abd7320b375c239ac5bc9fc7e763896c55b9a9947ee"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 3,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "deeps_gembug_v2"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_GlowSlug",
+     "kind": "fauna",
+     "port": "RSW_GlowSlug",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_GlowSlug",
+     "layer": "Star Wars twin of RM_GlowSlug (not cast in this biome)",
+     "label": "glowbulb",
+     "defNames": [
+      "RSW_GlowSlug"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_GlowSlug",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_GlowSlug / RM_GlowSlug",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_GlowSlug"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "2b9f85ababe7586bafbb4cf5e10571a5997df3ff49a03cbbce358cfb99adbe08",
+          "north": "330e279aae9c99258755358d816403000a52e59e0918acff02dc99a90e8c0985",
+          "south": "d43e12887f4c12a83ed41367deb8bf6847c28de62454b85c44ba6b0586ca53b0"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "2b9f85ababe7586bafbb4cf5e10571a5997df3ff49a03cbbce358cfb99adbe08",
+           "north": "330e279aae9c99258755358d816403000a52e59e0918acff02dc99a90e8c0985",
+           "south": "d43e12887f4c12a83ed41367deb8bf6847c28de62454b85c44ba6b0586ca53b0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "b07ef92d7a72c72de3d8e6f8626bc95275e5f8000928f6ff8aead654f9be2422",
+           "north": "27e7509bc874b6f9741bafabc74433d4492dabafda3a2c066f4bc6ed6306e1ad",
+           "south": "11aaa39474b9dd1c1d279932d10571b778745c7293c8f42fe1ecd155d9bc836b"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Megapleura",
+     "kind": "fauna",
+     "port": "RSW_Megapleura",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Megapleura",
+     "layer": "Star Wars twin of RM_Megapleura (not cast in this biome)",
+     "label": "megapleura",
+     "defNames": [
+      "RSW_Megapleura"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Megapleura",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Megapleura / RM_Megapleura",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Megapleura"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "8bbd6c1a909c7f81011b64e14b51b5f831be1ddcfc17a4127adec012039672f5",
+          "north": "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
+          "south": "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "8bbd6c1a909c7f81011b64e14b51b5f831be1ddcfc17a4127adec012039672f5",
+           "north": "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
+           "south": "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "a289f9f95fe41ca2bb7ac790f42a5825a58e50b145408c7caf7510ff7d9ecfac",
+           "north": "89b7d6e9da7c5409afb3c885ff704577002aa9800b961124efec5bf7a7d6aaa7",
+           "south": "137728981d034a4e3ef283ecf5ff775ab42f1d97209a5e8dc25e5b4b56cf8879"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "deeps_megapleura_v2"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_MossBeetleLarvae",
+     "kind": "fauna",
+     "port": "RSW_MossBeetleLarvae",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_MossBeetleLarvae",
+     "layer": "Star Wars twin of RM_MossBeetleLarvae (not cast in this biome)",
+     "label": "moss grub",
+     "defNames": [
+      "RSW_MossBeetleLarvae"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_MossBeetleLarvae",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_MossBeetleLarvae / RM_MossBeetleLarvae",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_MossBeetleLarvae"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
+          "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
+          "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
+           "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
+           "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_mossbeetle",
+          "detail": "2026-09-21 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-21",
+          "faces": {
+           "east": "be5d5fc7530ec7caf86b1caeabb7547929a7815d885134ba1fa66d09218f8743",
+           "north": "f33c82cab843bcb89fa6dbb5cbb931f15dcd69404470e966e036d98da69f3ed4",
+           "south": "326e114b1f0bc05980e1c1b46138dc0f7eb73ee247f7a2ac5b11ea0b7ac285ca"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "cd18739cd2687d42acdda7805116f05e71b2bddfa8acd4130b812d2022c8e7d4",
+           "north": "33d160e8b74c4470e1b6cda1d63f519c5b06bb0ac0b3b714e856a2bc69273642",
+           "south": "41796dfb29783bf4b7feb8b5fdaac9f4658e0a721b5236f6dc3f1055458d0548"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 3,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "deeps_mossbeetlelarvae_v2"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_ShatterjawBeetle",
+     "kind": "fauna",
+     "port": "RSW_ShatterjawBeetle",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_ShatterjawBeetle",
+     "layer": "Star Wars twin of RM_ShatterjawBeetle (not cast in this biome)",
+     "label": "shatterjaw beetle",
+     "defNames": [
+      "RSW_ShatterjawBeetle"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_ShatterjawBeetle",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_ShatterjawBeetle / RM_ShatterjawBeetle",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_ShatterjawBeetle"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "19a609b975f966e532eef787d11e513c5f9047f277773bfd3e41ffe699d405d7",
+          "north": "88c739e835daf7096dda4f3378584cb0df5ce9bd15e9a7674f9e047d30bf47e3",
+          "south": "9d44fcacda4811336b2e59d9b8bc55b9b06d7febcd8ffb1a42b51ef1e4b90033"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from be9f3b5137 2026-09-20: DEEPS_FAUNA_VERDICTS_1: wire the 8 restyled Lantern Deeps creatures' art",
+          "date": "2026-09-20",
+          "faces": {
+           "east": "19a609b975f966e532eef787d11e513c5f9047f277773bfd3e41ffe699d405d7",
+           "north": "88c739e835daf7096dda4f3378584cb0df5ce9bd15e9a7674f9e047d30bf47e3",
+           "south": "9d44fcacda4811336b2e59d9b8bc55b9b06d7febcd8ffb1a42b51ef1e4b90033"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history SWBestiary 2026-09-11",
+          "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "d3dff2b8a3d44276221a0593c33a83f58bc94d32f5a50638b57ae7b6927acdac",
+           "north": "db948056091c391270c180fce9f199543829e589091de64d3cea50acdd58fbda",
+           "south": "471889a7a15e6644cbbf36a64d3e25dea7f1c3205332d8bbcfc1cb0f434a5cb7"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -65901,6 +70120,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 8,
     "rows": 31,
     "fauna": 19,
     "flora": 12,
@@ -82923,6 +87143,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 77,
     "fauna": 58,
     "flora": 19,
@@ -84145,7 +88366,7 @@
        "defName": "RSW_RustNipperJuv",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_RustNipperJuv / RSW_RustNipperJuv",
-       "in_this_biome": false
+       "in_this_biome": true
       },
       {
        "defName": "RSW_RustNipper",
@@ -84330,7 +88551,7 @@
        "defName": "RSW_SiltLampreyJuv",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_SiltLampreyJuv / RSW_SiltLampreyJuv",
-       "in_this_biome": false
+       "in_this_biome": true
       },
       {
        "defName": "RSW_SiltLamprey",
@@ -86424,6 +90645,93 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_RustNipperJuv",
+     "kind": "fauna",
+     "port": "RSW_RustNipperJuv",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_RustNipperJuv",
+     "layer": "Star Wars twin of RM_RustNipperJuv (not cast in this biome)",
+     "label": "young rust nipper",
+     "defNames": [
+      "RSW_RustNipperJuv"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_RustNipperJuv",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_RustNipperJuv / RM_RustNipperJuv",
+       "in_this_biome": true
+      },
+      {
+       "defName": "RM_RustNipper",
+       "relation": "tier_twin_shared_texpath",
+       "evidence": "shares texPath Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
+       "in_this_biome": false
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_RustNipper",
+         "RM_RustNipperJuv",
+         "RSW_RustNipper",
+         "RSW_RustNipperJuv"
+        ],
+        "live": {
+         "mod": "src/RimMandrake/TerminalBiomes",
+         "label": "shipped, shadowed \u2014 TerminalBiomes",
+         "faces": {
+          "east": "8aae2b9368e34afe9ea4cd4519ed33c271052fec0e7c18aae1db428be0ec4269",
+          "north": "d235ac6242454ee6dd7c57afc52e6b31f76e68528f5111bd34588ac698013f0c",
+          "south": "31e81b5d5331595e8b782728a79a99ea3d91f56793be30dcdb9f278a3442acde",
+          "west": "f7702aa2126a386960eb1dc252d8121896c6cb5e90b5d92c2c49096c834eb3d3"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 TerminalBiomes",
+          "detail": "load index -1 \u00b7 bytes from cf1b5cbb79 2026-09-02: Add ThingDefs/PawnKindDefs for the 18 SW_SEA_MONSTERS_ART_1 sea beasts",
+          "date": "2026-09-02",
+          "faces": {
+           "east": "8aae2b9368e34afe9ea4cd4519ed33c271052fec0e7c18aae1db428be0ec4269",
+           "north": "d235ac6242454ee6dd7c57afc52e6b31f76e68528f5111bd34588ac698013f0c",
+           "south": "31e81b5d5331595e8b782728a79a99ea3d91f56793be30dcdb9f278a3442acde",
+           "west": "f7702aa2126a386960eb1dc252d8121896c6cb5e90b5d92c2c49096c834eb3d3"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_Shiro",
      "kind": "fauna",
      "port": "RSW_Shiro",
@@ -86576,6 +90884,93 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_SiltLampreyJuv",
+     "kind": "fauna",
+     "port": "RSW_SiltLampreyJuv",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_SiltLampreyJuv",
+     "layer": "Star Wars twin of RM_SiltLampreyJuv (not cast in this biome)",
+     "label": "young silt lamprey",
+     "defNames": [
+      "RSW_SiltLampreyJuv"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_SiltLampreyJuv",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_SiltLampreyJuv / RM_SiltLampreyJuv",
+       "in_this_biome": true
+      },
+      {
+       "defName": "RM_SiltLamprey",
+       "relation": "tier_twin_shared_texpath",
+       "evidence": "shares texPath Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
+       "in_this_biome": false
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_SiltLamprey",
+         "RM_SiltLampreyJuv",
+         "RSW_SiltLamprey",
+         "RSW_SiltLampreyJuv"
+        ],
+        "live": {
+         "mod": "src/RimMandrake/TerminalBiomes",
+         "label": "shipped, shadowed \u2014 TerminalBiomes",
+         "faces": {
+          "east": "2b06c700cbaf2ee003dddfe5f1ffc178e143475472d9fbce0cce6b0a8aee1e15",
+          "north": "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
+          "south": "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259",
+          "west": "546036a8af8ca831a5abb116ff594ea3ebe8946246dca28b7f396b40ed24254b"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 TerminalBiomes",
+          "detail": "load index -1 \u00b7 bytes from cf1b5cbb79 2026-09-02: Add ThingDefs/PawnKindDefs for the 18 SW_SEA_MONSTERS_ART_1 sea beasts",
+          "date": "2026-09-02",
+          "faces": {
+           "east": "2b06c700cbaf2ee003dddfe5f1ffc178e143475472d9fbce0cce6b0a8aee1e15",
+           "north": "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
+           "south": "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259",
+           "west": "546036a8af8ca831a5abb116ff594ea3ebe8946246dca28b7f396b40ed24254b"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -89272,6 +93667,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 2,
     "rows": 60,
     "fauna": 40,
     "flora": 20,
@@ -89665,6 +94061,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 4,
     "fauna": 4,
     "flora": 0,
@@ -93869,6 +98266,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 18,
     "fauna": 16,
     "flora": 2,
@@ -94181,6 +98579,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 4,
     "fauna": 3,
     "flora": 0,
@@ -94210,6 +98609,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -94239,6 +98639,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -94268,6 +98669,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -94297,6 +98699,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -94326,6 +98729,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -94355,6 +98759,7 @@
    ],
    "rows": [],
    "summary": {
+    "twin_rows": 0,
     "rows": 0,
     "fauna": 0,
     "flora": 0,
@@ -96647,6 +101052,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 29,
     "fauna": 10,
     "flora": 10,
@@ -100015,6 +104421,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 24,
     "fauna": 14,
     "flora": 10,
@@ -114556,6 +118963,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 56,
     "fauna": 21,
     "flora": 35,
@@ -115023,7 +119431,7 @@
        "defName": "RSW_ElderSando",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_ElderSando / RSW_ElderSando",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -115686,6 +120094,94 @@
       "scaldfloor_thuum"
      ],
      "ledger_rulings": [],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_ElderSando",
+     "kind": "fauna",
+     "port": "RSW_ElderSando",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_ElderSando",
+     "layer": "Star Wars twin of RM_ElderSando (not cast in this biome)",
+     "label": "elder sando",
+     "defNames": [
+      "RSW_ElderSando"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_ElderSando",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_ElderSando / RM_ElderSando",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_ElderSando",
+         "RSW_ElderSando"
+        ],
+        "live": {
+         "mod": "src/RimMandrake/TerminalBiomes",
+         "label": "shipped, shadowed \u2014 TerminalBiomes",
+         "faces": {
+          "east": "c42637fdca560c7c65a5263c352b57cae44cc9c05deb20e89a83511f9af78be9",
+          "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
+          "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00",
+          "west": "4007dc4c1cf2a18b985b65ce6ec78764cbd78671e1514d771a0d394744941f34"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 TerminalBiomes",
+          "detail": "load index -1 \u00b7 bytes from cf1b5cbb79 2026-09-02: Add ThingDefs/PawnKindDefs for the 18 SW_SEA_MONSTERS_ART_1 sea beasts",
+          "date": "2026-09-02",
+          "faces": {
+           "east": "c42637fdca560c7c65a5263c352b57cae44cc9c05deb20e89a83511f9af78be9",
+           "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
+           "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00",
+           "west": "4007dc4c1cf2a18b985b65ce6ec78764cbd78671e1514d771a0d394744941f34"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -116898,6 +121394,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 22,
     "fauna": 12,
     "flora": 1,
@@ -119153,6 +123650,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 21,
     "fauna": 11,
     "flora": 10,
@@ -119584,7 +124082,7 @@
        "defName": "RSW_Lanternwhale",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Lanternwhale / RSW_Lanternwhale",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -120935,6 +125433,94 @@
      "noncanon_twin": []
     },
     {
+     "key": "RSW_Lanternwhale",
+     "kind": "fauna",
+     "port": "RSW_Lanternwhale",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Lanternwhale",
+     "layer": "Star Wars twin of RM_Lanternwhale (not cast in this biome)",
+     "label": "lanternwhale",
+     "defNames": [
+      "RSW_Lanternwhale"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Lanternwhale",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Lanternwhale / RM_Lanternwhale",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_Lanternwhale",
+         "RSW_Lanternwhale"
+        ],
+        "live": {
+         "mod": "src/RimMandrake/TerminalBiomes",
+         "label": "shipped, shadowed \u2014 TerminalBiomes",
+         "faces": {
+          "east": "a50c62d6448027efcdae6d85dca2f8c981829a3ca9f8cd77a080218e57755753",
+          "north": "716edd7d0942e4415ad8dceb2bb662cef248bdbcd65f0ce2195ac750b6ef1496",
+          "south": "3a09151bee3a60501c11c0bc34c16056e14949c16e92c76ca3b3ec2579ac34b9",
+          "west": "abd135736e7570c8895c84032d9c56d928ad820d8b07c996c032260ca3219f20"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 TerminalBiomes",
+          "detail": "load index -1 \u00b7 bytes from 14a3ba7da6 2026-09-02: SeaBeasts: Starmaw and Lanternwhale had no art anywhere, so both drew as nothing",
+          "date": "2026-09-02",
+          "faces": {
+           "east": "a50c62d6448027efcdae6d85dca2f8c981829a3ca9f8cd77a080218e57755753",
+           "north": "716edd7d0942e4415ad8dceb2bb662cef248bdbcd65f0ce2195ac750b6ef1496",
+           "south": "3a09151bee3a60501c11c0bc34c16056e14949c16e92c76ca3b3ec2579ac34b9",
+           "west": "abd135736e7570c8895c84032d9c56d928ad820d8b07c996c032260ca3219f20"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": null
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "agent",
+       "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
      "key": "RSW_Mee",
      "kind": "fauna",
      "port": "RSW_Mee",
@@ -122215,6 +126801,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 33,
     "fauna": 18,
     "flora": 3,
@@ -124689,6 +129276,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 17,
     "fauna": 15,
     "flora": 2,
@@ -131074,6 +135662,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 21,
     "fauna": 9,
     "flora": 12,
@@ -132958,6 +137547,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 0,
     "rows": 23,
     "fauna": 6,
     "flora": 17,
@@ -133297,7 +137887,7 @@
        "defName": "RSW_Ikee",
        "relation": "tier_twin_same_stem",
        "evidence": "RM_Ikee / RSW_Ikee",
-       "in_this_biome": false
+       "in_this_biome": true
       }
      ],
      "art": {
@@ -135532,6 +140122,106 @@
        "verdict": "keep",
        "by": "agent",
        "trust": "prefill",
+       "ts": "2026-10-04T08:03:11-0700",
+       "via": null,
+       "row": null
+      }
+     ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RSW_Ikee",
+     "kind": "fauna",
+     "port": "RSW_Ikee",
+     "donors": [],
+     "pairing": {},
+     "placements": [],
+     "twin_row_of": "RM_Ikee",
+     "layer": "Star Wars twin of RM_Ikee (not cast in this biome)",
+     "label": "ikee",
+     "defNames": [
+      "RSW_Ikee"
+     ],
+     "commonality_max": null,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [
+      {
+       "defName": "RM_Ikee",
+       "relation": "tier_twin_same_stem",
+       "evidence": "RSW_Ikee / RM_Ikee",
+       "in_this_biome": true
+      }
+     ],
+     "art": {
+      "resources": [
+       {
+        "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RSW_Ikee"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "shipped, shadowed \u2014 SWBestiary",
+         "faces": {
+          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+         },
+         "winner_by_load_order": false
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "shipped, shadowed \u2014 SWBestiary",
+          "detail": "load index -1 \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
+          "date": "2026-09-23",
+          "faces": {
+           "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+           "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+           "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 1,
+      "has_art": true,
+      "live_res": 1
+     },
+     "artpipe_state_jobs": [
+      "RM_Ikee"
+     ],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "legacy-unresolved",
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
@@ -143210,6 +147900,7 @@
     }
    ],
    "summary": {
+    "twin_rows": 1,
     "rows": 52,
     "fauna": 26,
     "flora": 13,
@@ -143225,6 +147916,7 @@
   }
  },
  "totals": {
+  "twin_rows": 35,
   "rows": 911,
   "fauna": 538,
   "flora": 309,
@@ -143236,7 +147928,7 @@
   "noncanon_twin": 2,
   "any_twin": 138,
   "prior_selection_rows": 118,
-  "distinct_species": 841
+  "distinct_species": 873
  },
  "unmapped_patch_targets": {
   "RUT_Abyss": 26,

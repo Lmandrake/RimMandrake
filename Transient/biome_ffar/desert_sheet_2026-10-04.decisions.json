@@ -156,6 +156,11 @@
     "swanimals/Bantha/BanthaW_j": "E"
    }
   },
+  "RSW_Bokka": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Bolotaur": {
    "decision": "A",
    "note": "",
@@ -209,6 +214,16 @@
     "swanimals/Gorg/Gorg_j_Swimming": "E"
    }
   },
+  "RSW_GreatDevourer": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Groundrunner": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Gutkurr": {
    "decision": "A",
    "note": "",
@@ -253,12 +268,27 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_Jellypot": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Jimvu": {
    "decision": "A",
    "note": "",
    "prefill": "A"
   },
+  "RSW_Khorrak": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Krykna": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Kudda": {
    "decision": "A",
    "note": "",
    "prefill": "A"
@@ -278,6 +308,11 @@
     "swanimals/LongtailGorg/LongtailGorg_j_Swimming": "E"
    }
   },
+  "RSW_MatureFleshbeast": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Nerf": {
    "decision": "A",
    "note": "",
@@ -294,6 +329,16 @@
    "picks": {
     "swanimals/Nuna/Nuna_m": "F"
    }
+  },
+  "RSW_Ommok": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Ossik": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
   },
   "RSW_Ronto": {
    "decision": "A",
@@ -338,6 +383,21 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_Thurra": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_TruffleMole": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Ulgga": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Uvak": {
    "decision": "A",
    "note": "",
@@ -352,6 +412,11 @@
    }
   },
   "RSW_Voorpak": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Vosska": {
    "decision": "A",
    "note": "",
    "prefill": "A"
@@ -436,6 +501,11 @@
    "prefill": "A"
   },
   "RSW_SurraGrass": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Ultracactus": {
    "decision": "A",
    "note": "",
    "prefill": "A"
