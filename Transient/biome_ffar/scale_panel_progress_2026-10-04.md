@@ -1,0 +1,5 @@
+- 16:04 started: scale panel for Long Shade sheet
+- 16:09 recon done: live dump 2026-10-04T07:42Z has all 89 rows; vanilla Naked_Male/head/Rat in bundle_textures cache; Plant.Print read via RimSage
+- 16:16 scale_panel.py resolver+renderer written; art_sheet.py hook (SCALE_BIOMES={RM_LongShade}) + JS/CSS added
+- 16:24 live sheet rebuilt --sheet-only (decisions untouched, sha verified); check_sheet run
+- 16:25 code PUBLISHED 3352eee6c; publishing sheet + scale images + shots
