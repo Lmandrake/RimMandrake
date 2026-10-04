@@ -870,7 +870,7 @@ function scaleBlock(it) {
   const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc > 192 ? 'bs-over' : 'bs-ok';
   const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Owner rule: ~128 px per cell of the draw size; above it buys nothing on screen, below 64 loses detail at max zoom-in. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc > 192 ? 'over 128 target' : 'near 128 target'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
   const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · scene at 64 px/cell, then on-screen tiers 96 / 32 / 18 px per cell (true size) and ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
-  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human + rat, desert terrain · click to enlarge</span></div>${pic}
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human + rat, on the biome ground · click to enlarge</span></div>${pic}
     <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
     <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
 }
@@ -1026,7 +1026,10 @@ never casts it. Rows you already ruled on in <b>desert sitting 1</b> are prefill
 prefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
 
 
-SCALE_BIOMES = {"RM_LongShade"}
+# biome -> ground colour behind the panel (None = scale_panel's default Ash'karr tan). Measured as the mean opaque
+# RGB of the biome's own ground texture (vanilla Core bundle_textures): Sand.png (Stillsand terrainsByFertility
+# Sand), Ice.png (Blue Desert terrain Ice). The dump carries no terrain colour, so these are texture means.
+SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172)}
 SCALE_FACE = ("east", "south", "single", "west", "north")
 
 
@@ -1114,6 +1117,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     scale_res = None
     if biome in SCALE_BIOMES:             # owner 2026-10-04: "Let's fix just the first sheet."
         import scale_panel
+        if SCALE_BIOMES[biome]:
+            scale_panel.set_terrain(SCALE_BIOMES[biome])
         scale_res = scale_panel.Resolver()
     rel, elsewhere, find = _clusters(rows)
     labels = {r["key"]: _human(r) for r in rows}
