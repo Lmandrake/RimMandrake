@@ -325,23 +325,23 @@
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "49214331977a95aff9f02837838552cab534864b7ab7c66aa01fb40793d32a84",
+    "hash": "8a8a6a00ba47f943cfb4ad0c3f41a8b0bd266ec3e0fc0c5c6bfa3ea11a1d8a5b",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "MessyConduit/northstar_matrix/run_live.py@matrix_live_20261004T1152.json",
+    "run_id": "MessyConduit/northstar_matrix/run_live.py@mc_matrix_rec5_20261004.json",
     "source": {
-      "assembly_sha256": "9393f937a391e5101b44115f9c514b83a14ae43dd79cbbfa7d42ad8b0538aabd",
+      "assembly_sha256": "2ca22f18ec1df0c86df3ec31d0520740b15db1fa1b6e5c9285d8d951b85f3558",
       "env_running_count": 9,
       "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "src/RimMandrake/MessyConduit/northstar/matrix_live_20261004T1152.json",
-      "started": "2026-10-04T11:51:47",
+      "result": "Transient/mc_matrix_rec5_20261004.json",
+      "started": "2026-10-04T14:55:17",
       "ticks_spent": 1157,
       "tier": "messyconduit",
       "verb": "modcheck record"
     },
     "status": "GREEN",
-    "ts": 1791140704.9051483
+    "ts": 1791151298.651931
   },
   "Miasma": {
     "hash": "5e1e3d8b8202ef48e832ee6f24c363894eb9ce8de3b3fe8ce3a1be5356749785",

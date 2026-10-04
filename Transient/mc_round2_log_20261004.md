@@ -27,3 +27,8 @@
 - 14:44 core live run 1: 3 NEW FAILs (B6/B6b lit strips 0, ST2 aerialSpanFollows ExtensionCord false) = checks predating owner rulings B1 (strips Modern-only) and B12 (Modern overhead black); round 1 changed behaviour and never ran core live. Checks aligned to the rulings; rerun
 - 14:47 plan: core 42 PASS (+4 scope), save-load 3/3, aerial 18/18
 - 14:48 aerial s/l 3/3, hose 12/12, hose s/l 3/3; matrix starting (~26 min, background process, notified on exit)
+- 14:50 recorded: core REFUSED at 8a8a6a00ba47 (4 scope rows), aerial GREEN; save-load/hose files not recordable by design (no env.running/mode)
+- 14:50 matrix running; waiting
+- 14:55 matrix run 1: 104 PASS, 5 MOD FAIL = hose couplings min 3-4 from the catalog written 09:04, BEFORE owner B17 (design_spec already says min 2); 1 SITE FAIL (colonist in region). Regenerated catalog Transient/mc_scenes_D_20261004.json (only couplings_min differs); rerunning matrix
+- 15:01 matrix run 2: 109/109 PASS; recorded GREEN at 8a8a6a00ba47 (121 PASS, 1 SKIP). Rebuilding review map Industrial
+- 15:02 review map rebuilt, Industrial, paused, camera on station 1; bridge left held by FOUNDRY as found. DONE

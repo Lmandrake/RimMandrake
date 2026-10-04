@@ -1,0 +1,40 @@
+== core start 14:44:56
+U_motion_look                UNCOVERED whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above
+U_style_missing_art          UNBUILT   per-family EndFrayed_Live / PowerStrip / StrandShadow art does not exist; those slots fall back to the Jawa pieces (ST1 asserts the fallback list is e
+M4_save_load_hash            UNCOVERED walk M4: same polylines after save/load -- its own mode, --save-load NAME
+M9_remove_mod_clean          UNCOVERED walk M9: a save made with the mod loads clean without it -- its own mode, --removal-check NAME on a tier without the mod
+live: {'PASS': 42, 'UNCOVERED': 3, 'UNBUILT': 1} ticks=801 -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_result_20261004T144613.json
+== done in 77s
+== save start 14:46:19
+save-load: 3 rows, 0 not PASS -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_save-load_20261004T144631.json
+== done in 12s
+== aerial start 14:46:31
+aerial live: {'PASS': 18} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_aerial_live_20261004T144729.json
+== done in 58s
+== aerial_sl start 14:47:37
+aerial save-load: {'PASS': 3} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_aerial_save-load_20261004T144749.json
+== done in 12s
+== hose start 14:47:49
+hose live: {'PASS': 12} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_hose_live_20261004T144808.json
+== done in 19s
+== hose_sl start 14:48:08
+hose save-load: {'PASS': 3} -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\MessyConduit\northstar\validation_hose_save-load_20261004T144819.json
+== done in 11s
+== matrix start 14:48:35
+L6_no_pawn_in_region               FAIL       SITE     ["Human797"]
+MX_H02_Flat_water_L24              FAIL       MOD      [{"field": "couplings", "expected": {"exact_from_joints": 2, "min": 4}, "got": 2}]
+MX_H03_Plump_straight_L14          FAIL       MOD      [{"field": "couplings", "expected": {"exact_from_joints": 2, "min": 3}, "got": 2}]
+MX_H04_Plump_corner_L24            FAIL       MOD      [{"field": "couplings", "expected": {"exact_from_joints": 3, "min": 4}, "got": 3}]
+MX_H06_Filling50_straight_L24      FAIL       MOD      [{"field": "couplings", "expected": {"exact_from_joints": 2, "min": 4}, "got": 2}]
+MX_H08_Filling50_water_L14         FAIL       MOD      [{"field": "couplings", "expected": {"exact_from_joints": 2, "min": 3}, "got": 2}]
+result -> Transient/mc_matrix_rec4_20261004.json
+LIVE: {'scenes': 109, 'status': {'PASS': 104, 'FAIL': 5}, 'fail_class': {'MOD': 5}} ticks 1157 wall 318.8s calls 3920 boards 19 aborted None
+TIMING 318.8s wall, 0 shots: shots_camera_only 123.1s, scene_probes 110.2s, board_build 50.3s, board_ticks 14.4s, site_setup 9.9s, hose 4.0s, determinism 3.6s, setup 1.4s, teardown 1.4s, post 0.4s, idle 0.0s, shot_copy_wait 0.0s
+== matrix done 14:53:55
+ENDPLAN
+== matrix2 start 14:55:16
+result -> Transient/mc_matrix_rec5_20261004.json
+LIVE: {'scenes': 109, 'status': {'PASS': 109}, 'fail_class': {}} ticks 1157 wall 331.1s calls 3925 boards 19 aborted None
+TIMING 331.1s wall, 0 shots: shots_camera_only 122.8s, scene_probes 111.9s, board_build 57.2s, board_ticks 14.8s, site_setup 12.8s, hose 3.9s, determinism 3.8s, teardown 2.0s, setup 1.6s, post 0.4s, idle 0.0s, shot_copy_wait 0.0s
+== matrix2 done 15:00:48
+ENDPLAN2
