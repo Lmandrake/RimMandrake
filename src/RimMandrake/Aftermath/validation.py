@@ -193,6 +193,7 @@ def battle_lifecycle_repelled(t):
         if not (r or {}).get("fired"):
             raise ExpectationFailed(
                 "jawa/fire_incident did not report fired=true: %r" % r)
+        t.wait_ticks(300)  # the recorder opens a battle on its next poll (FallbackPollIntervalTicks 250), not at the fire (load 14)
         t.expect_log_contains("[RimMandrake.Aftermath] battle opened")
         t.screenshot()
 
