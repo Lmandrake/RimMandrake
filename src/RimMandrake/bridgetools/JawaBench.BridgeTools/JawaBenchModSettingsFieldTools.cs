@@ -41,10 +41,23 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
-        private static Type ResolveSettingsType(string typeName) =>
-            AppDomain.CurrentDomain.GetAssemblies()
+        // Measured 2026-10-04: the full scan of every type in every loaded assembly cost ~0.7 s per call on the 638-mod
+        // list, and the MessyConduit matrix made 3,169 of them (88% of a 2,640 s run). A loaded type never unloads, so a
+        // hit is cached; a miss is NOT cached (the mod may load later).
+        private static readonly Dictionary<string, Type> SettingsTypeCache = new Dictionary<string, Type>();
+
+        private static Type ResolveSettingsType(string typeName)
+        {
+            lock (SettingsTypeCache)
+            {
+                if (SettingsTypeCache.TryGetValue(typeName, out Type cached)) return cached;
+            }
+            Type found = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
                 .FirstOrDefault(t => t.FullName == typeName);
+            if (found != null) lock (SettingsTypeCache) SettingsTypeCache[typeName] = found;
+            return found;
+        }
 
         private static object FindModSettingsInstance(Type settingsType)
         {
