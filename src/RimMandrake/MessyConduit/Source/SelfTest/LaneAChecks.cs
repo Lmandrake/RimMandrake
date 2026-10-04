@@ -125,6 +125,26 @@ namespace RimMandrake.MessyConduit.SelfTest
             Check(V2.Dist(swA[0], span[0]) == 0, "sway: the pinned point moved");
             Check(swA.Zip(swB, (x, y) => V2.Dist(x, y)).Max() > 1e-3, "sway: pose does not change with time");
             Check(swA.Zip(span, (x, y) => V2.Dist(x, y)).Max() <= 0.12 * 1.3 + 1e-9, "sway: displacement beyond 1.3 x amp at wind 1");
+            // shader-path sway weights (B7 option 1): vertex alpha 0 at the pin, rising to the tip, all 0 under a roof
+            byte[] al = CordMotion.ShaderSwayAlpha(wt, false, 0.35), alR = CordMotion.ShaderSwayAlpha(wt, true, 0.35);
+            Check(al.Length == wt.Count && al[0] == 0 && al[al.Length - 1] == 89 && al.Max() == al[al.Length - 1],
+                  $"shader sway: alpha pin {al[0]} tip {al[al.Length - 1]} (want 0 .. 89 = 255 x 0.35, max at the tip)");
+            Check(alR.All(b => b == 0), "shader sway: a roofed lifted piece carries non-zero sway alpha");
+            Check(CordMotion.ShaderSwayAlpha(wt, false, 9).Max() == 255, "shader sway: alpha not clamped to 255");
+            // optional floor ripple: ends pinned, no wind no motion, bounded, moves with time, deterministic
+            var floor = new List<V2>();
+            for (int i = 0; i < 25; i++) floor.Add(new V2(2 + i * 0.25, 4 + 0.3 * Math.Sin(i * 0.4)));
+            List<V2> r0 = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 0), rA = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 1),
+                     rA2 = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 1), rB = CordMotion.Ripple(floor, 3.6, 7, CordMotion.RippleAmp, 1),
+                     rW = CordMotion.Ripple(floor, 3.0, 7, CordMotion.RippleAmp, 9);
+            double rMax = rA.Zip(floor, (x, y) => V2.Dist(x, y)).Max();
+            Check(r0.Zip(floor, (x, y) => V2.Dist(x, y)).Max() == 0, "ripple: moves with no wind");
+            Check(V2.Dist(rA[0], floor[0]) == 0 && V2.Dist(rA[24], floor[24]) == 0, "ripple: an end moved (ends are pinned)");
+            Check(rMax > 1e-3 && rMax <= CordMotion.RippleAmp + 1e-9, $"ripple: displacement {rMax:0.0000} at wind 1 (want >0, <= amp)");
+            Check(rW.Zip(floor, (x, y) => V2.Dist(x, y)).Max() <= 1.5 * CordMotion.RippleAmp + 1e-9, "ripple: wind not clamped to 1.5");
+            Check(rA.Zip(rB, (x, y) => V2.Dist(x, y)).Max() > 1e-3, "ripple: pose does not change with time");
+            Check(rA.Zip(rA2, (x, y) => V2.Dist(x, y)).Max() == 0, "ripple: pose not deterministic");
+            Console.WriteLine($"  shader sway alpha tip {al[al.Length - 1]}; ripple max {rMax:0.0000} cells at wind 1");
             Console.WriteLine($"  motion: whip max {maxD:0.000}, snaps {snaps}/20 s; drip states {seen.Count}, gaps {gmin:0.00}-{gmax:0.00} mean {mean:0.00}, sparks {sparks}/200");
         }
 

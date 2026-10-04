@@ -36,7 +36,12 @@ namespace RimMandrake.MessyConduit
         /// sub-mesh; the selection highlight (white band tinted warm, drawn over the cords).</summary>
         public static Material StrandLod, Highlight;
 
-        private static Material[] strandV = new Material[0], faceV = new Material[0], lodV = new Material[0];
+        private static Material[] strandV = new Material[0], faceV = new Material[0], lodV = new Material[0], plantV = new Material[0];
+        /// <summary>Optional shader sway (B7 option 1): the face strand built on ShaderDatabase.CutoutPlant. MaterialPool
+        /// registers every CutoutPlant material with WindManager (decompiled 1.6 MaterialPool.MatFrom), which then
+        /// writes _SwayHead into it every tick while the map is current.</summary>
+        public static Material StrandPlant;
+        private static readonly HashSet<Material> plants = new HashSet<Material>();
         private static readonly HashSet<Material> lods = new HashSet<Material>();
         private static readonly Dictionary<Texture2D, Material> lodCache = new Dictionary<Texture2D, Material>();
 
@@ -140,7 +145,7 @@ namespace RimMandrake.MessyConduit
             SlotPaths.Clear();
             // ---- strands (per-net variants)
             string[] paths = StrandPathsFor(style);
-            var sv = new List<Material>(); var fv = new List<Material>(); var lv = new List<Material>(); var used = new List<string>();
+            var sv = new List<Material>(); var fv = new List<Material>(); var lv = new List<Material>(); var pv = new List<Material>(); var used = new List<string>();
             foreach (string p in paths)
             {
                 Texture2D tex = Tex(p);
@@ -148,6 +153,7 @@ namespace RimMandrake.MessyConduit
                 tex.wrapMode = TextureWrapMode.Repeat;
                 sv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue }));
                 fv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue }));
+                pv.Add(PlantMat(tex));
                 if (!lodCache.TryGetValue(tex, out Material lod))
                 {
                     lod = new Material(sv[sv.Count - 1]) { name = "RM_MessyCords_StrandLod_" + tex.name };
@@ -167,12 +173,14 @@ namespace RimMandrake.MessyConduit
                     tex.wrapMode = TextureWrapMode.Repeat;
                     sv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue }));
                     fv.Add(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue }));
+                    pv.Add(PlantMat(tex));
                     if (!lodCache.TryGetValue(tex, out Material lod)) { lod = new Material(sv[0]) { name = "RM_MessyCords_StrandLod_" + tex.name }; lodCache[tex] = lod; lods.Add(lod); }
                     lv.Add(lod);
                     used.Add(Dir + "Strand_Jawa");
                 }
             }
-            strandV = sv.ToArray(); faceV = fv.ToArray(); lodV = lv.ToArray();
+            strandV = sv.ToArray(); faceV = fv.ToArray(); lodV = lv.ToArray(); plantV = pv.ToArray();
+            StrandPlant = plantV.Length > 0 ? plantV[0] : null;
             StrandPaths = used.ToArray();
             Strand = strandV.Length > 0 ? strandV[0] : null;
             StrandFace = faceV.Length > 0 ? faceV[0] : null;
@@ -242,6 +250,17 @@ namespace RimMandrake.MessyConduit
             tex.wrapMode = TextureWrapMode.Repeat;
             return MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = queue });
         }
+
+        private static Material PlantMat(Texture2D tex)
+        {
+            if (ShaderDatabase.CutoutPlant == null) return null;
+            Material m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.CutoutPlant) { renderQueue = FaceQueue });
+            if (m != null) plants.Add(m);
+            return m;
+        }
+
+        public static bool IsPlant(Material m) => m != null && plants.Contains(m);
+        public static Material StrandPlantFor(int v) => v >= 0 && v < plantV.Length ? plantV[v] : StrandPlant;
 
         public static int VariantCount => strandV.Length;
 

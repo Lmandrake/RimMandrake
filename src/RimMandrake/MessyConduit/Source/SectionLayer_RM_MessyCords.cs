@@ -24,6 +24,13 @@ namespace RimMandrake.MessyConduit
         public const float ShadowWidth = 0.17f;
         public const float FaceLift = 0.01f;
         public static int LastPrintedVerts;
+        /// <summary>Shader-path sway weight scale: vertex alpha = 255 x weight x this x strength (a plant's top carries
+        /// 255 x topWindExposure 0.25; a hanging cord tip is a little looser).</summary>
+        public const float ShaderAlphaScale = 0.35f;
+        /// <summary>State read (probe "motion"): what THIS section printed with the plant shader at its last
+        /// Regenerate -- vertices, lifted strands open / roofed, the largest vertex alpha written open / roofed -- and
+        /// how many floor strands it left out for the per-frame ripple.</summary>
+        public int plantVerts, plantOpenStrands, plantRoofedStrands, alphaMaxOpen, alphaMaxRoofed, rippleSkipped;
         private const int MaxMeshVerts = 65000;
 
         public SectionLayer_RM_MessyCords(Section section) : base(section)
@@ -71,6 +78,7 @@ namespace RimMandrake.MessyConduit
         {
             ClearSubMeshes(MeshParts.All);
             bounds = section.CellRect;
+            plantVerts = plantOpenStrands = plantRoofedStrands = alphaMaxOpen = alphaMaxRoofed = rippleSkipped = 0;
             var comp = Map.GetComponent<RM_MapComponent_CordGraph>();
             List<LaidPiece> owned = comp?.PiecesForSection(section.botLeft);
             int verts = 0;
@@ -96,6 +104,28 @@ namespace RimMandrake.MessyConduit
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
                         // a lifted piece that sways is drawn per frame by the component, not printed
                         if (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s)) { k++; continue; }
+                        // optional shader route: printed ONCE with the CutoutPlant strand, vertex alpha = sway weight
+                        // (0 at the pin, 0 everywhere under a roof), uv.z = per-piece phase; the GPU moves it
+                        if (RM_MapComponent_CordGraph.ShaderSwayPrints(s))
+                        {
+                            Material plant = CordMaterials.StrandPlantFor(variant);
+                            if (plant != null)
+                            {
+                                bool roofed = RM_MapComponent_CordGraph.PinRoofed(Map, s);
+                                byte[] alpha = CordMotion.ShaderSwayAlpha(s.SwayW, roofed, ShaderAlphaScale * Mathf.Clamp(MessyConduitSettings.swayAmplitude, 0f, 2f));
+                                float phase = (float)(CordRng.Hash("sway", p.Key) % 1024UL);
+                                int n = Ribbon(plant, s.Pts, StrandWidth, y, s.S0, Vector2.zero, alpha, phase);
+                                verts += n;
+                                plantVerts += n;
+                                foreach (byte b in alpha) { if (roofed) alphaMaxRoofed = Math.Max(alphaMaxRoofed, b); else alphaMaxOpen = Math.Max(alphaMaxOpen, b); }
+                                if (roofed) plantRoofedStrands++; else plantOpenStrands++;
+                                k++;
+                                continue;
+                            }
+                        }
+                        // optional floor ripple: an unroofed plain floor strand is drawn per frame by the component
+                        bool ripples = RM_MapComponent_CordGraph.RipplesNow(Map, s);
+                        if (ripples) rippleSkipped++;
                         List<V2> pts = s.Pts;
                         if (whip && (s.WhipA > 0 || s.WhipB > 0))
                         {
@@ -104,8 +134,9 @@ namespace RimMandrake.MessyConduit
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
-                        verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
-                                        pts, StrandWidth, y, s.S0, Vector2.zero);
+                        if (!ripples)
+                            verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
+                                            pts, StrandWidth, y, s.S0, Vector2.zero);
                         if (MessyConduitSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
                         {
                             // B8: one strand per piece, every 3rd point, a little thinner, no decals
@@ -168,7 +199,8 @@ namespace RimMandrake.MessyConduit
             }
         }
 
-        private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset)
+        private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset,
+                           byte[] alpha = null, float uvz = 0f)
         {
             if (pts.Count < 2) return 0;
             LayerSubMesh sm = GetSubMesh(mat);
@@ -184,10 +216,11 @@ namespace RimMandrake.MessyConduit
                 V2 l = pts[i] + n * hw, r = pts[i] - n * hw;
                 sm.verts.Add(new Vector3((float)l.X + offset.x, y, (float)l.Z + offset.y));
                 sm.verts.Add(new Vector3((float)r.X + offset.x, y, (float)r.Z + offset.y));
-                sm.uvs.Add(new Vector3((float)u, 1f, 0f));
-                sm.uvs.Add(new Vector3((float)u, 0f, 0f));
-                sm.colors.Add(new Color32(255, 255, 255, 255));
-                sm.colors.Add(new Color32(255, 255, 255, 255));
+                sm.uvs.Add(new Vector3((float)u, 1f, uvz));
+                sm.uvs.Add(new Vector3((float)u, 0f, uvz));
+                byte al = alpha != null && i < alpha.Length ? alpha[i] : (byte)255;
+                sm.colors.Add(new Color32(255, 255, 255, al));
+                sm.colors.Add(new Color32(255, 255, 255, al));
                 Grow(pts[i].X, pts[i].Z);
                 if (i == 0) continue;
                 int a = start + 2 * (i - 1);

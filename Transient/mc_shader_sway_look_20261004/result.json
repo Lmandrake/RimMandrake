@@ -1,0 +1,167 @@
+{
+ "tail": [
+  174,
+  157,
+  3,
+  4
+ ],
+ "ticks": 20,
+ "crop": [
+  2706,
+  687,
+  3046,
+  1027
+ ],
+ "window": [
+  1958,
+  230,
+  3794,
+  1484
+ ],
+ "camera": {
+  "success": true,
+  "map": "0",
+  "mapId": "Map_0",
+  "mapIndex": 0,
+  "rootSize": 11.0,
+  "zoomRootSize": 11.0,
+  "zoomRange": "Closest",
+  "sizeRange": {
+   "min": 11.0,
+   "max": 60.0
+  },
+  "cameraZoomExtensionEnabled": false,
+  "mapPosition": {
+   "x": 176,
+   "z": 159
+  },
+  "viewRect": {
+   "minX": 158,
+   "minZ": 147,
+   "maxX": 193,
+   "maxZ": 170,
+   "width": 36,
+   "height": 24
+  },
+  "operation": {
+   "OperationId": "op_1c52cdd3632549689c0a5bfea1df74ab",
+   "CapabilityId": "rimbridge.core/view/get-camera-state",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-10-04T18:48:28.8300901+00:00",
+   "CompletedAtUtc": "2026-10-04T18:48:28.8461123+00:00",
+   "DurationMs": 16,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "swayAmplitude": 2,
+ "off": {
+  "changedPx_ab": 0,
+  "bbox_ab": [
+   0,
+   0,
+   340,
+   340
+  ],
+  "changedPx_bc": 0,
+  "bbox_bc": [
+   0,
+   0,
+   340,
+   340
+  ],
+  "state": {
+   "swayMode": "CPU",
+   "swayDraws": 0,
+   "shaderLiftedOpen": 0,
+   "shaderLiftedRoofed": 0,
+   "shaderAlphaMaxOpen": 0,
+   "plantSwayHead": 573.379,
+   "windSpeed": 0.35,
+   "liveWallEnds": 0
+  }
+ },
+ "cpu": {
+  "changedPx_ab": 13,
+  "bbox_ab": [
+   0,
+   0,
+   226,
+   330
+  ],
+  "changedPx_bc": 2,
+  "bbox_bc": [
+   0,
+   0,
+   340,
+   340
+  ],
+  "state": {
+   "swayMode": "CPU",
+   "swayDraws": 2,
+   "shaderLiftedOpen": 0,
+   "shaderLiftedRoofed": 0,
+   "shaderAlphaMaxOpen": 0,
+   "plantSwayHead": 587.315,
+   "windSpeed": 0.347,
+   "liveWallEnds": 0
+  }
+ },
+ "shader": {
+  "changedPx_ab": 25,
+  "bbox_ab": [
+   0,
+   0,
+   340,
+   340
+  ],
+  "changedPx_bc": 23,
+  "bbox_bc": [
+   0,
+   0,
+   340,
+   340
+  ],
+  "state": {
+   "swayMode": "Shader",
+   "swayDraws": 0,
+   "shaderLiftedOpen": 2,
+   "shaderLiftedRoofed": 0,
+   "shaderAlphaMaxOpen": 178,
+   "plantSwayHead": 601.13,
+   "windSpeed": 0.344,
+   "liveWallEnds": 0
+  }
+ },
+ "shader_roofed": {
+  "changedPx_ab": 0,
+  "bbox_ab": [
+   0,
+   0,
+   331,
+   340
+  ],
+  "changedPx_bc": 0,
+  "bbox_bc": [
+   0,
+   0,
+   331,
+   340
+  ],
+  "state": {
+   "swayMode": "Shader",
+   "swayDraws": 0,
+   "shaderLiftedOpen": 1,
+   "shaderLiftedRoofed": 1,
+   "shaderAlphaMaxOpen": 178,
+   "plantSwayHead": 615.513,
+   "windSpeed": 0.341,
+   "liveWallEnds": 0
+  }
+ }
+}

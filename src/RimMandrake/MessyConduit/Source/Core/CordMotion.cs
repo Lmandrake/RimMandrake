@@ -76,6 +76,46 @@ namespace RimMandrake.MessyConduit.Core
             }
             return o;
         }
+
+        /// <summary>Peak floor-ripple displacement per unit wind, cells (optional setting, default off).</summary>
+        public const double RippleAmp = 0.035;
+
+        /// <summary>
+        /// Optional outdoor floor-cord ripple: a slow wave travelling along the cord, perpendicular to it, weight
+        /// sin(pi u) over arc fraction u so both ends (plug, junction, stub) never move. Displacement
+        /// amp x wind(0..1.5) x weight x sin(k s - w t + phi); |d| never exceeds 1.5 x amp. t is GAME seconds.
+        /// </summary>
+        public static List<V2> Ripple(IList<V2> pts, double t, ulong seed, double amp, double wind)
+        {
+            int n = pts.Count;
+            var o = new List<V2>(n);
+            if (n < 3) { o.AddRange(pts); return o; }
+            var arc = new double[n];
+            for (int i = 1; i < n; i++) arc[i] = arc[i - 1] + V2.Dist(pts[i - 1], pts[i]);
+            double len = arc[n - 1];
+            if (len < 1e-9) { o.AddRange(pts); return o; }
+            double k = 2.4 + 1.2 * H01(seed, 21), om = 1.4 + 0.6 * H01(seed, 22), ph = 6.283 * H01(seed, 23);
+            double a = amp * Geo.Clamp(wind, 0, 1.5);
+            for (int i = 0; i < n; i++)
+            {
+                Geo.TanNorm(pts, i, out V2 tg, out V2 nrm);
+                double u = arc[i] / len;
+                double d = i == 0 || i == n - 1 ? 0 : a * Math.Sin(Math.PI * u) * Math.Sin(k * arc[i] - om * t + ph);
+                o.Add(pts[i] + nrm * d);
+            }
+            return o;
+        }
+
+        /// <summary>Shader-path sway weight per vertex for a lifted piece (CutoutPlant reads vertex alpha as the
+        /// sway weight, PlantUtility/Plant.Print): 255 x weight x scale, 0 at pins, and ALL 0 under a roof.</summary>
+        public static byte[] ShaderSwayAlpha(IList<double> weight, bool roofed, double scale)
+        {
+            int n = weight == null ? 0 : weight.Count;
+            var a = new byte[n];
+            if (roofed) return a;
+            for (int i = 0; i < n; i++) a[i] = (byte)Math.Max(0, Math.Min(255, Math.Round(255.0 * weight[i] * scale)));
+            return a;
+        }
     }
 
     public enum DripState { Drip, Flash, Quiet, Crackle }
