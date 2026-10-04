@@ -1,0 +1,142 @@
+[
+ {
+  "id": "bluedesert_Dovvik_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dovvik",
+  "prompt": "RimWorld creature sprite: the dovvik, a patient glassy thing with one long curled proboscis held out in front of it like a coiled straw (it is only a body feature here: nothing is being fed on, no plant anywhere), pale white-blue segmented translucent body, yellow hydrocarbon blood pulsing visibly inside the proboscis. Previous attempt was rejected because it showed the beast eating a plant. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings."
+ },
+ {
+  "id": "bluedesert_Utikka_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Utikka",
+  "prompt": "RimWorld creature sprite: the utikka, a fist-sized scatter-living grazer, small and quick, a pale white-blue frosted crystalline body of fused plates with many tiny fine limbs, yellow hydrocarbon blood glowing at the plate seams. Not a mouse, beetle or any Earth animal. Previous attempt was rejected: it was drawn eating plants and was neither hydrocarbon-pale nor non-terrestrial. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.6,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings."
+ },
+ {
+  "id": "bluedesert_Ossivel_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ossivel",
+  "prompt": "RimWorld creature sprite: the ossivel, a knee-high round-bodied singer whose throat is a rank of organ-pipe tubes (a row of pale glassy resonator tubes on top of a rounded frosted body, wide-set and non-anatomical). Strictly NOT humanoid, no torso-and-limbs figure, no suggestive or phallic shapes, no face: a pearlescent pale white-blue pod-like body on short splayed stub legs with the pipes fanning from the top, yellow hydrocarbon blood visible inside the pipes. Previous attempt was rejected as lewd and humanoid. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.9,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings."
+ },
+ {
+  "id": "bluedesert_Vrisk_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vrisk",
+  "prompt": "RimWorld creature sprite: the vrisk, kite-thin and near-flat flier that rides the Haze drift, wingtips never quite still; keep the attached accepted render's body, wing membrane and silhouette exactly but replace the head: NO recognisable head and NO eyes at all, just a smooth tapering blunt prow of frosted pale blue-white tissue with a faint pale yellow hydrocarbon vein glowing through it. Pale white-blue translucent membrane with yellow vein accents. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings.",
+  "derive_from": "bluedesert_vrisk_east"
+ },
+ {
+  "id": "bluedesert_Thunderbeast_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Thunderbeast",
+  "prompt": "RimWorld creature sprite: the thunderbeast (native name yuddra), a heavy, stocky, static-charged beast reimagined as hydrocarbon life: a massive barrel-bodied thing of pale white-blue ice-like plated hide on thick columnar legs, NOT swine-like and NOT a mammal: no snout, no tusks, no ears; a blunt low sensory ridge instead of a head, faint yellow hydrocarbon blood glowing along seams and crackling pale static arcs along the spine. Body size 1.5. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings.",
+  "target_original": [
+   "yuddra",
+   "Thunderbeast"
+  ]
+ },
+ {
+  "id": "bluedesert_Vapaad_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Vapaad",
+  "prompt": "RimWorld creature sprite: the vapaad (Legends canon Vaapad: a ball-shaped multi-tentacled invertebrate, here as a hydrocarbon-based creature): a round central body with many writhing tentacles radiating around it, but pale white-and-blue translucent frosted body and tentacles with pale yellow hydrocarbon blood visible inside the tentacles and as the glow of its two eyes, NOT brown. Keep the ball-with-tentacles read, alien and non-terrestrial. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings.",
+  "target_original": [
+   "Vaapad"
+  ]
+ },
+ {
+  "id": "RM_Vhaulk_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vhaulk",
+  "prompt": "RimWorld creature sprite: the vhaulk, a house-sized sealed grazing colossus of a frozen night desert: six massive pillar legs like quarry columns, a vast seamed armored back with no true head, only a broad closed intake lid at the front like a garage door, frost rime standing thick on the flanks, one long translucent sludge-window low along the lower flank faintly revealing the pale liquid mass it carries; slow, mid-stride. Pale white-blue armor with yellow hydrocarbon in the window. EAST (side) view only: this must be the exact SAME individual as the attached accepted north-facing render, same armor plates, same pillar legs, same lid, same palette, same scale. BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau. Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks. It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape. The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant. Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 7.0,
+  "facings": [
+   "east"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert phase-line register: glassy translucent pale white-blue bodies with frost rime, starlit cold light, yellow hydrocarbon blood accents only",
+  "style_notes": "Same individual as the attached accepted render; side view. No plants, no props, creature alone.",
+  "derive_from": "RM_Vhaulk_north"
+ }
+]

@@ -50,6 +50,8 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
     install_to         optional — repo-relative PNG destination for
                        `artpipe_state.py collect --from-jobs`; "{facing}" is
                        substituted per job.
+    derive_from        optional — id of a FINISHED sibling job (done manifest + _artsrc PNG); every facing
+                       of the row is filed as an edit of that accepted render (same individual).
     canon_reference    optional — image path(s) to attach as ANATOMY guidance.
                        Defaults to the canon-library entry's images when
                        art/subject.py resolves one for target_def (exact or
@@ -318,6 +320,13 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     # job carrying both (they are different contracts; see its docstring).
     master_facing_present = derive_facings and _MASTER_FACING in facings and not reference
     master_job_id = f"{base_id}_{_MASTER_FACING}" if master_facing_present else None
+    # Explicit row `derive_from` (a finished sibling job id): every facing of the row is an edit of THAT job's
+    # accepted render — "regenerate east to match the accepted north" — overriding the east-master default.
+    explicit_derive = str(row.get("derive_from") or "").strip() or None
+    if explicit_derive:
+        if reference:
+            raise ValueError(f"row {base_id!r}: derive_from and reference are different contracts, not both")
+        master_facing_present = False
 
     # ART_VERSION_WRANGLING_1: scrub the retired outline clause, fold in the
     # biome register and the canon-library brief.
@@ -369,7 +378,10 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
         job.update(binding)
         if row.get("install_to"):
             job["install_to"] = str(row["install_to"]).replace("{facing}", facing or "")
-        if master_facing_present and facing in _DERIVED_FACINGS:
+        if explicit_derive:
+            job["derive_from"] = explicit_derive
+            job["prompt"] = DERIVE_PROMPT_PREFIX + job["prompt"]
+        elif master_facing_present and facing in _DERIVED_FACINGS:
             job["derive_from"] = master_job_id
             job["prompt"] = DERIVE_PROMPT_PREFIX + job["prompt"]
         elif job.get("canon_reference") and not reference:
