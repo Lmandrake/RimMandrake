@@ -256,6 +256,21 @@ def ion_damage_mechanism(t):
                 "(2 * 0.03 severityFixed * default ionSeverity 1.0)" % (ION_HEDIFF, sev))
 
 
+import contextlib as _contextlib
+
+
+@_contextlib.contextmanager
+def _pure(t, name, **kw):
+    """t.component() for a PURE READ (a Harmony-registry / def read that shares no state with its neighbours): a FAIL
+    does not poison the next component. Without this one dead donor patch (JumppackForMeleeAI throws in its static
+    constructor on this list, FULL_LOAD_RESIDUE_TRIAGE_1) left 10 harmony and 6 def components UNMEASURED (load 13)."""
+    before = t.upstream_failed
+    with t.component(name, **kw) as tt:
+        yield tt
+    if not before:
+        t.upstream_failed = False
+
+
 # ----------------------------------------------------------------- Tier 2
 @suite.chain("harmony_wiring")
 def harmony_wiring(t):
@@ -265,56 +280,56 @@ def harmony_wiring(t):
     is invisible any other way short of decompiling the running process."""
     t.clear_area(size=10)
 
-    with t.component("extra_sounds_patches_melee_verb", toggle="extraSoundsEnabled"):
+    with _pure(t, "extra_sounds_patches_melee_verb", toggle="extraSoundsEnabled"):
         _harmony_owner_present(t, "Verb_MeleeAttack", "SoundHitPawn",
                                "jecstools.jecrell.comps.sounds")
 
-    with t.component("instant_heal_patches_combat_drug_ai", toggle="instantHealEnabled"):
+    with _pure(t, "instant_heal_patches_combat_drug_ai", toggle="instantHealEnabled"):
         _harmony_owner_present(t, "JobGiver_TakeCombatEnhancingDrug", "TryGiveJob",
                                "kaitorisenkou.InstantHealingDrug")
-    with t.component("instant_heal_reuse_hours_floor", toggle="instantHealReuseHours"):
+    with _pure(t, "instant_heal_reuse_hours_floor", toggle="instantHealReuseHours"):
         _harmony_owner_present(t, "JobGiver_TakeCombatEnhancingDrug", "TryGiveJob",
                                "kaitorisenkou.InstantHealingDrug")
-    with t.component("instant_heal_recent_harm_floor", toggle="instantHealRecentHarmHours"):
+    with _pure(t, "instant_heal_recent_harm_floor", toggle="instantHealRecentHarmHours"):
         _harmony_owner_present(t, "JobGiver_TakeCombatEnhancingDrug", "TryGiveJob",
                                "kaitorisenkou.InstantHealingDrug")
 
-    with t.component("jumppack_patches_ai_fight_enemy", toggle="jumppackEnabled"):
+    with _pure(t, "jumppack_patches_ai_fight_enemy", toggle="jumppackEnabled"):
         _harmony_owner_present(t, "JobGiver_AIFightEnemy", "TryGiveJob",
                                "kaitorisenkou.JumppackForMeleeAI")
-    with t.component("jumppack_flank_ranged_floor", toggle="jumppackFlankRanged"):
+    with _pure(t, "jumppack_flank_ranged_floor", toggle="jumppackFlankRanged"):
         _harmony_owner_present(t, "JobGiver_AIFightEnemy", "TryGiveJob",
                                "kaitorisenkou.JumppackForMeleeAI")
-    with t.component("jumppack_distance_factor_floor", toggle="jumppackDistanceFactor"):
+    with _pure(t, "jumppack_distance_factor_floor", toggle="jumppackDistanceFactor"):
         _harmony_owner_present(t, "JobGiver_AIFightEnemy", "TryGiveJob",
                                "kaitorisenkou.JumppackForMeleeAI")
 
-    with t.component("mental_break_blocker_patches_try_start", toggle="mentalBreakBlockerEnabled"):
+    with _pure(t, "mental_break_blocker_patches_try_start", toggle="mentalBreakBlockerEnabled"):
         _harmony_owner_present(t, "MentalStateHandler", "TryStartMentalState",
                                "kaitorisenkou.MentalBreakBlocker")
 
-    with t.component("secondary_yield_patches_mineable", toggle="secondaryYieldEnabled"):
+    with _pure(t, "secondary_yield_patches_mineable", toggle="secondaryYieldEnabled"):
         _harmony_owner_present(t, "Mineable", "TrySpawnYield",
                                "kaitorisenkou.SecondaryMineableYield")
-    with t.component("secondary_yield_chance_floor", toggle="secondaryYieldChance"):
+    with _pure(t, "secondary_yield_chance_floor", toggle="secondaryYieldChance"):
         _harmony_owner_present(t, "Mineable", "TrySpawnYield",
                                "kaitorisenkou.SecondaryMineableYield")
-    with t.component("secondary_yield_amount_floor", toggle="secondaryYieldAmount"):
+    with _pure(t, "secondary_yield_amount_floor", toggle="secondaryYieldAmount"):
         _harmony_owner_present(t, "Mineable", "TrySpawnYield",
                                "kaitorisenkou.SecondaryMineableYield")
 
-    with t.component("self_hediff_verb_patches_equipment_source", toggle="selfHediffVerbEnabled"):
+    with _pure(t, "self_hediff_verb_patches_equipment_source", toggle="selfHediffVerbEnabled"):
         _harmony_owner_present(t, "Verb", None, "kaitorisenkou.SelfHediffVerb")
-    with t.component("self_hediff_cooldown_floor", toggle="selfHediffCooldown"):
+    with _pure(t, "self_hediff_cooldown_floor", toggle="selfHediffCooldown"):
         _harmony_owner_present(t, "Verb", None, "kaitorisenkou.SelfHediffVerb")
 
-    with t.component("returning_weapon_patches_carry_openly", toggle="returningWeaponEnabled"):
+    with _pure(t, "returning_weapon_patches_carry_openly", toggle="returningWeaponEnabled"):
         # See module docstring: the feature this gates is currently DEAD CODE
         # by the source's own admission (nothing ever sets IsThrowingWeapon).
         # This proves only that the Harmony patch itself is applied.
         _harmony_owner_present(t, "PawnRenderUtility", "CarryWeaponOpenly",
                                "Weapon_Spinning_Projectile")
-    with t.component("returning_weapon_speed_floor", toggle="returningWeaponSpeed"):
+    with _pure(t, "returning_weapon_speed_floor", toggle="returningWeaponSpeed"):
         _harmony_owner_present(t, "PawnRenderUtility", "CarryWeaponOpenly",
                                "Weapon_Spinning_Projectile")
 
@@ -328,29 +343,29 @@ def def_and_spawn_wiring(t):
     Falls back to def-field reads and, for KoltoTank, an actual spawn."""
     t.clear_area(size=10)
 
-    with t.component("crystal_genstep_wired", toggle="crystalFormationsEnabled"):
+    with _pure(t, "crystal_genstep_wired", toggle="crystalFormationsEnabled"):
         cls = _def_field(t, "GenStepDef/KOTOR_CrystalFormation", "genStep")
         if cls is None or "GenStep_ScatterLightsaberCrystals" not in str(cls):
             raise ExpectationFailed(
                 "GenStepDef/KOTOR_CrystalFormation.genStep read %r, expected it to "
                 "name CrystalFormations.GenStep_ScatterLightsaberCrystals" % cls)
-    with t.component("crystal_abundance_floor", toggle="crystalAbundance"):
+    with _pure(t, "crystal_abundance_floor", toggle="crystalAbundance"):
         cls = _def_field(t, "GenStepDef/KOTOR_CrystalFormation", "genStep")
         if cls is None:
             raise ExpectationFailed("GenStepDef/KOTOR_CrystalFormation.genStep did not resolve")
 
-    with t.component("mine_pocket_job_wired", toggle="minePocketEnabled"):
+    with _pure(t, "mine_pocket_job_wired", toggle="minePocketEnabled"):
         driver = _def_field(t, "JobDef/MinePocket_Job", "driverClass")
         if driver != "MinePocket.MinePocketJob":
             raise ExpectationFailed(
                 "JobDef/MinePocket_Job.driverClass read %r, expected "
                 "MinePocket.MinePocketJob" % driver)
-    with t.component("mine_pocket_defuse_time_floor", toggle="minePocketDefuseTime"):
+    with _pure(t, "mine_pocket_defuse_time_floor", toggle="minePocketDefuseTime"):
         driver = _def_field(t, "JobDef/MinePocket_Job", "driverClass")
         if driver != "MinePocket.MinePocketJob":
             raise ExpectationFailed("JobDef/MinePocket_Job.driverClass read %r" % driver)
 
-    with t.component("kolto_tank_spawns_with_comp", toggle="koltoHealEnabled"):
+    with _pure(t, "kolto_tank_spawns_with_comp", toggle="koltoHealEnabled"):
         cells = t.spawn("KoltoTank", count=1)
         if not cells:
             raise ExpectationFailed("t.spawn('KoltoTank') produced no cells")
@@ -362,12 +377,12 @@ def def_and_spawn_wiring(t):
                 "either the ThingDef or its CompProperties_KoltoTank failed to load: %r"
                 % (x, z, present))
         t.screenshot()
-    with t.component("kolto_heal_speed_floor", toggle="koltoHealSpeed"):
+    with _pure(t, "kolto_heal_speed_floor", toggle="koltoHealSpeed"):
         present = t.session.things_at(*t.anchor)
         if "KoltoTank" not in present:
             raise ExpectationFailed("KoltoTank no longer present at anchor for the floor check")
 
-    with t.component("plasma_grenade_damagedef_wired", toggle="plasmaGrenadeFires"):
+    with _pure(t, "plasma_grenade_damagedef_wired", toggle="plasmaGrenadeFires"):
         cls = _def_field(t, "DamageDef/guy762_GrenadeDamage_plasma", "workerClass")
         if cls != "guy762_Ionization.DamageWorker_KotORPlasmaGrenade":
             raise ExpectationFailed(
