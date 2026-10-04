@@ -357,15 +357,24 @@ namespace RimMandrake.TheRot
                 + " | spawned " + victim.Spawned + " | inspect " + (comp.CompInspectStringExtra() ?? "null");
         }
 
-        /// <summary>Deals <paramref name="damage"/> blunt damage to the hwelgrue's body. "CUT released B | inside NAME|none".</summary>
+        /// <summary>Cuts the hwelgrue's belly (its body core part) for <paramref name="damage"/>.
+        /// "CUT released B | spawned B | inside NAME|none | via belly|downed|dead | dealt N".
+        /// The part is fixed, not random: an untargeted hit landing on a leg is capped at the leg's hit points,
+        /// so the same 200 sometimes released and sometimes did not (run17 TheRot, 2026-10-03). A belly hit
+        /// past the core part's hit points kills, which also releases; `via` says which ending fired.</summary>
         public static string ProofCut(float damage)
         {
             Pawn h = Hwelgrue;
             RM_CompGutSwallow comp = h?.TryGetComp<RM_CompGutSwallow>();
             if (comp == null) return "REFUSED: no hwelgrue on the current map";
             Pawn before = comp.Inside;
-            h.TakeDamage(new DamageInfo(DamageDefOf.Blunt, damage, 0f, -1f, null));
-            return "CUT released " + (before != null && !comp.Holding) + " | spawned " + (before?.Spawned ?? false) + " | inside " + (comp.Inside?.LabelShort ?? "none");
+            BodyPartRecord belly = h.RaceProps.body.corePart;
+            DamageInfo cut = new DamageInfo(DamageDefOf.Cut, damage, 0f, -1f, null, belly);
+            cut.SetApplyAllDamage(true);
+            float dealt = h.TakeDamage(cut).totalDamageDealt;
+            string via = h.Dead ? "dead" : h.Downed ? "downed" : "belly";
+            return "CUT released " + (before != null && !comp.Holding) + " | spawned " + (before?.Spawned ?? false)
+                + " | inside " + (comp.Inside?.LabelShort ?? "none") + " | via " + via + " | dealt " + dealt.ToString("0");
         }
 
         /// <summary>The knock schedule at a given time-left fraction: "KNOCK def | volume v".</summary>
