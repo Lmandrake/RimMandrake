@@ -229,9 +229,19 @@ if Suite is not None:
         d = r.get("distinctTerrains") or []
         return d[0] if len(d) == 1 else None
 
+    def _clear_hostiles(t):
+        """Remove every hostile pawn on the map. LIVE run17 2026-10-03: two leftover Imperial labor droids (another
+        suite's site/raid on the shared bland map) beat the test colonists mid-chain, and the colonist_damaged
+        surprise ended the mire and frenzy chains UNMEASURED. Not Greentide's mechanism; cleared, not asserted."""
+        r = t.bridge_call("jawa/list_pawns", limit=300) or {}
+        for p in (r.get("pawns") or []) if isinstance(r, dict) else []:
+            if p.get("hostile") and p.get("spawned") and p.get("x", -1) >= 0 and p.get("z", -1) >= 0:
+                t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (p["x"], p["z"]), categories="Pawn")
+
     def _site(t):
         """Left half churnmud, then Concrete, then sealed floor; clear sky, no fog. Returns the anchor."""
         t.clear_area(size=SITE)
+        _clear_hostiles(t)
         x, z = t.anchor
         h = SITE // 2
         t.bridge_call("jawa/set_terrain_batch", ops="%s:%d,%d,12,%d;Concrete:%d,%d,6,%d;%s:%d,%d,6,%d"
