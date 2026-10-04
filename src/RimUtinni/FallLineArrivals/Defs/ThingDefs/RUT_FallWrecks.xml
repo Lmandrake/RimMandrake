@@ -34,6 +34,8 @@
             <li><kind>RSW_Mynock</kind><weight>6</weight></li>
             <li><kind>RSW_Scavrat</kind><weight>2</weight></li>
             <li><kind>RSW_WompRat</kind><weight>1</weight></li>
+            <!-- FALL_LINE_WRECKAGE_CREATURES_PORT_1: PROVISIONAL weight; its claws rend hull steel. -->
+            <li><kind>RSW_BunkerBug</kind><weight>1</weight></li>
         </speciesWeights>
         <initialBurst>2~4</initialBurst>
         <initialBurstDelayTicks>600~2400</initialBurstDelayTicks>

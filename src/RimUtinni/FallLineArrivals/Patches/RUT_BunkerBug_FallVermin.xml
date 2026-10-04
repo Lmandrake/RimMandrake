@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_WRECKAGE_CREATURES_PORT_1: the bunker bug (owner: "Superb for the Fall wreckage creature") is
+     already ported as mandrake.rsw.swbestiary's RSW_BunkerBug, so no donor load is owed. It comes out of the hull
+     rib (RUT_FallWrecks.xml). This puts it in the ShipVermin population group so the wreck nest's hard cap (12)
+     counts it; without the extension a nest would never see it and could spawn bunker bugs without limit.
+     PROVISIONAL caps, for the owner to tune at quicktest. The megapleura is NOT wired here: it already lives in the
+     Lantern Deeps as RM_Megapleura, and a second home needs his ruling (one-home rule, 2026-09-21). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_BunkerBug"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_BunkerBug"]/modExtensions</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_BunkerBug"]</xpath>
+            <value>
+              <modExtensions />
+            </value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_BunkerBug"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+              <populationSoftCap>1</populationSoftCap>
+              <populationHardCap>3</populationHardCap>
+              <populationGroupTag>ShipVermin</populationGroupTag>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
