@@ -26,9 +26,9 @@ antelope/giraffe-proportioned quadruped** — thin legs, a long slender neck,
 and a horse-or-goat-like head — with a base skin color of **muted
 green/olive-teal**, overlaid with **leopard-style orange-yellow spotted
 markings** scattered across the neck, shoulders and flank. It carries a
-single long, ridged, backward-curving horn sweeping up from the top of the
-head (the card art shows what could read as a pair, but the in-game model
-clearly shows one prominent ridged horn). The tail is thin and whip-like,
+pair of long, ridged, backward-curving horns sweeping up from the top of the
+head, as the card art shows (the in-game model reads as one prominent horn;
+the owner ruled for two on 2026-10-04). The tail is thin and whip-like,
 feet appear clawed rather than hooved. No fur is visible — smooth,
 reptilian-adjacent hide despite being classed a "creature" rather than
 explicitly scaled.
@@ -47,7 +47,8 @@ agreement found in this pass.
 - [ ] Long-necked, antelope/giraffe-proportioned quadruped body with thin legs
 - [ ] Base skin colour is muted green/olive-teal
 - [ ] Leopard-style orange-yellow spotted markings scattered across neck, shoulders and flank
-- [ ] A single long, ridged, backward-curving horn (the in-game model shows one dominant horn, not a pair)
+- [ ] Exactly two long, ridged, backward-curving horns, a matched pair (owner ruling 2026-10-04; the card art shows a pair)
+- [ ] Four legs
 - [ ] Thin, whip-like tail
 - [ ] Smooth hide with no visible fur
 
@@ -77,3 +78,9 @@ that specific art 2026-09-17 (*"Lock in that Iriaz."* — one horn, the second
 protrusion confirmed as an ear). A "two-legged Dathomir" alternative was
 flagged once (2026-09-14) and investigated on IRIAZ_ART_REGEN_1: it matches
 nothing in this repo and is dead — do not re-render against it.
+
+**Two horns — REDO** (owner, 2026-10-04, doubles sheet `Transient/art_doubles_compare_2026-10-04.decisions.json`, item ART_VERSION_WRANGLING_1), superseding the 2026-09-17 one-horn lock:
+
+> "Use canon imagery. Four legs, two horns, greenish. Try again. B is almost good except for one horn."
+
+(B = the shipped `IriazArtOverride` set, the one-horn art locked 2026-09-17.)
