@@ -116,6 +116,7 @@ namespace JawaBench.BridgeTools
         public string damageDef; public float amount; public float totalDealt; public bool deflected;
         public string instigatorId; public string instigatorDef; public string instigatorFaction;
         public string weapon; public string hitPart; public string culpritHediff;
+        public string origin;   // call-site stack (7 frames) for an instigator-less pawn hit: finds 'damage by nobody'
         public List<string> hediffsAdded;
         public int mapUniqueId = -1; public int x = -1; public int z = -1;
     }
@@ -251,6 +252,23 @@ namespace JawaBench.BridgeTools
 
         // ---------------------------------------------------------------- damage + kill
 
+        private static string CallSite()
+        {
+            try
+            {
+                var st = new System.Diagnostics.StackTrace(2, false);
+                var parts = new List<string>();
+                for (int i = 0; i < st.FrameCount && parts.Count < 7; i++)
+                {
+                    var m = st.GetFrame(i).GetMethod();
+                    if (m == null || m.DeclaringType == null) continue;
+                    parts.Add(m.DeclaringType.Name + "." + m.Name);
+                }
+                return string.Join(" < ", parts);
+            }
+            catch { return null; }
+        }
+
         private static void TakeDamagePostfix(Thing __instance, DamageInfo dinfo, DamageWorker.DamageResult __result)
         {
             try
@@ -282,6 +300,7 @@ namespace JawaBench.BridgeTools
                         ? __result.hediffs.Where(h => h != null && h.def != null).Select(h => h.def.defName).ToList()
                         : null
                 };
+                if (inst == null && victimPawn != null) e.origin = CallSite();
                 Place(__instance, out e.mapUniqueId, out e.x, out e.z);
                 e.seq = Damage.Add(e);
             }
@@ -448,7 +467,7 @@ namespace JawaBench.BridgeTools
         {
             e.seq, e.tick, e.kind, e.victimId, e.victimDef, e.victimIsPawn, e.victimFaction, e.victimColonist,
             e.victimDeadAfter, e.damageDef, e.amount, e.totalDealt, e.deflected, e.instigatorId, e.instigatorDef,
-            e.instigatorFaction, e.weapon, e.hitPart, e.culpritHediff, e.hediffsAdded, e.mapUniqueId, e.x, e.z
+            e.instigatorFaction, e.weapon, e.hitPart, e.culpritHediff, e.origin, e.hediffsAdded, e.mapUniqueId, e.x, e.z
         };
 
         private static object LineageRow(JawaLineageEvent e) => new
