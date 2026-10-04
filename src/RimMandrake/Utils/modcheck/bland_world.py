@@ -224,6 +224,18 @@ def setup(session, colonists=3, tmpdir=None, max_tiles=40, log=None):
         tile = t
         break
     if tile is None:
+        # Every candidate is spent: a previous setup() in this same game founded one of them. Reuse that map when it is
+        # the CURRENT map (reset() then makes it provably bland again) instead of dying UNMEASURED (MEASURED 2026-10-03:
+        # the second run after a load had 13 candidates and none unsettled).
+        cur = session.call("jawa/map_info")
+        if cur.get("success") and cur.get("tile") in cands:
+            close_naming_dialogs(session)
+            rows_ = H.read_pawns(session, health=False)
+            cols = [x["id"] for x in rows_ if H.is_colonist(x) and not x.get("dead")]
+            say("reusing the bland map already current (tile %s, %d colonists)" % (cur.get("tile"), len(cols)))
+            rep = reset(session)
+            return {"tile": cur.get("tile"), "mapIndex": cur.get("mapId"), "colonists": cols, "ruins_destroyed": 0,
+                    "wildlife_destroyed": 0, "ruins_left": 0, "problems": rep["problems"], "reused": True}
         raise BlandWorldError("no unsettled bland tile among the first %d candidates" % max_tiles)
     close_naming_dialogs(session)
     g = session.call("jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement")
