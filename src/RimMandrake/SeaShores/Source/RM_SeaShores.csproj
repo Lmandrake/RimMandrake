@@ -51,6 +51,8 @@
     <Compile Include="RM_SeaShoresHarmony.cs" />
     <Compile Include="RM_SeaShoresSettings.cs" />
     <Compile Include="RM_SeaShoresMod.cs" />
+    <!-- SEASHORES_COVERAGE_GAPS_1: live proof hooks (jawa/static_call) -->
+    <Compile Include="RM_SeaShoresProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
