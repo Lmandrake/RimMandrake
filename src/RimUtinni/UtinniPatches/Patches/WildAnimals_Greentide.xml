@@ -22,7 +22,7 @@
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <Operation Class="PatchOperationConditional">
+        <li Class="PatchOperationConditional">
           <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
@@ -52,7 +52,7 @@
               <RSW_Beldon>0.008</RSW_Beldon>
             </value>
           </match>
-        </Operation>
+        </li>
       </operations>
     </match>
   </Operation>
@@ -63,7 +63,7 @@
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <Operation Class="PatchOperationConditional">
+        <li Class="PatchOperationConditional">
           <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
@@ -72,7 +72,7 @@
               <AA_BloodShrimp MayRequire="sarg.alphaanimals">0.2</AA_BloodShrimp>
             </value>
           </match>
-        </Operation>
+        </li>
       </operations>
     </match>
   </Operation>
@@ -83,7 +83,7 @@
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <Operation Class="PatchOperationConditional">
+        <li Class="PatchOperationConditional">
           <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
@@ -91,7 +91,7 @@
               <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.4</VFEI2_Swarmling>
             </value>
           </match>
-        </Operation>
+        </li>
       </operations>
     </match>
   </Operation>
@@ -102,7 +102,7 @@
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <Operation Class="PatchOperationConditional">
+        <li Class="PatchOperationConditional">
           <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Common</xpath>
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Common</xpath>
@@ -110,7 +110,7 @@
               <RSW_MeeCatch>0.4</RSW_MeeCatch>
             </value>
           </match>
-        </Operation>
+        </li>
       </operations>
     </match>
   </Operation>
@@ -121,7 +121,7 @@
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <Operation Class="PatchOperationConditional">
+        <li Class="PatchOperationConditional">
           <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Uncommon</xpath>
           <match Class="PatchOperationAdd">
             <xpath>Defs/BiomeDef[defName="RM_Greentide"]/fishTypes/freshwater_Uncommon</xpath>
@@ -130,7 +130,7 @@
               <RSW_LaaCatch>0.3</RSW_LaaCatch>
             </value>
           </match>
-        </Operation>
+        </li>
       </operations>
     </match>
   </Operation>
