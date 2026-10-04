@@ -53,3 +53,10 @@ started
 - North-wall bracket art squashed to 0.55 height (`FORESHORTEN_N`); wall plates squashed to 0.5 along the cord (`WallSquash`).
 - Tap placement rule unchanged (beside their conduit); the tap is now a drawn NODE of both cord graphs.
 - Fallen wires lie 0.22 cell apart at the break (`FallenSpread`).
+
+## Commits
+- `898e82764` round 3 source, defs, art, selftests
+- `19186b1e1` DLL + srchash rebuilt from committed source
+
+## Unproven live
+Everything visual: switch over cords (Cutout edge look), wall plate squash, north-wall bracket look, lamp-mast colour/darklight gizmos (colour needs ColoredLights research), one-cord leads, 3 fallen wires, tap node + jaws-only clamp placement/scale. Needs redeploy after the game closes.
