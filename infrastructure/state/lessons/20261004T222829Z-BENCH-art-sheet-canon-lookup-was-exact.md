@@ -1,0 +1,1 @@
+art_sheet canon lookup was exact-dirname only: RSW_WraidAlpha read 'no canon' while canon_references/wraid/ exists; and the empty state said 'no canon-library entry — judge on its own', which reads as NOT CANON. Library absence is never a canon verdict; strip variant words (Alpha/Juv/Feral) and say 'not yet in our library'.
