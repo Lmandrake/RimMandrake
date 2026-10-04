@@ -54,6 +54,7 @@ from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
 import game_focus  # noqa: E402
 
 from .verify import Reconnected, mutate as _mutate  # noqa: E402
+from . import obs_events  # noqa: E402
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(_UTILS))))
 _RIMFLOW_CLI = os.path.join(_REPO_ROOT, "src", "RimMandrake", "rimflow", "cli.py")
@@ -214,14 +215,21 @@ class Session(object):
     def call(self, tool, **params):
         self.calls += 1
         self._keep_log_alive(tool)
+        _obs = obs_events.call_start(tool)        # observatory S2: never blocks, never raises
         try:
-            return self._rb.call(tool, params)
-        except _RECONNECTABLE:
+            r = self._rb.call(tool, params)
+            obs_events.call_end(_obs, *obs_events.classify_result(r))
+            return r
+        except _RECONNECTABLE as e:
+            obs_events.end_exception(_obs, e)
             self._reconnect()
             raise Reconnected(
                 "%s was in flight when the socket died; reconnected. Its "
                 "effect is UNKNOWN until a post-condition says otherwise."
                 % tool)
+        except BaseException as e:                # not reconnectable: still an END, never a phantom hang
+            obs_events.end_exception(_obs, e)
+            raise
 
     def action(self, path, **params):
         """Run a debug action. `path` uses real backslashes."""

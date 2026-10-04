@@ -188,6 +188,18 @@ def main(job_id, body, fake_builder=None, argv=None):
     if not dry:
         belt_heartbeat.start(job_id, on_budget=_on_budget)
     focus_lost = False
+    # Observatory S1/S2: run identity + per-call start/end telemetry (diagnostics only; never blocks a call, never
+    # touches the verdict). Live runs only: a dry run's FakeWorld bypasses Session.call and must not write _obs.
+    job.run_id = None
+    if not dry:
+        try:
+            import run_identity
+            from rimdrive import obs_events
+            job.run_id = obs_events.new_run_id(job_id)
+            obs_events.install(job.run_id)
+            job.note("run_identity", run_identity.new_identity(job_id, job.run_id))
+        except Exception:                                       # noqa: BLE001 - telemetry must never fail a job
+            job.run_id = None
     try:
         with open_session(dry, fake_builder) as s:
             belt_heartbeat.step("session open")
@@ -206,7 +218,12 @@ def main(job_id, body, fake_builder=None, argv=None):
     except Exception as e:                                      # noqa: BLE001
         job.note("traceback", traceback.format_exc()[-2000:])
         job.unmeasured("%s: %s" % (type(e).__name__, e))
-    rec = job.finish()
+    rec = job.finish()                                          # authoritative result first, telemetry after
+    try:
+        from rimdrive import obs_events
+        obs_events.uninstall()                                  # bounded join (1 s); writes run_end
+    except Exception:                                           # noqa: BLE001
+        pass
     belt_heartbeat.stop(status=rec["status"] if rec["status"] == UNMEASURED else rec["verdict"],
                         cause=rec.get("unmeasured_reason"))
     if focus_lost:
