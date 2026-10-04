@@ -78,7 +78,7 @@
   <!-- CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a superdeep (D = 4) canal floor, the
        ladder's shape: a Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Owner Q2
        2026-10-02 (by card): D = 4 only. Fire on descent only (RM_SuperdeepTrap.PitDescent), three
-       Sharp hits scaled by body size (numbers PROPOSED in RM_PitTrapMath, owner's word owed).
+       Sharp hits scaled by body size (numbers PROVISIONAL in RM_PitTrapMath: first guesses, tuned live later, owner ruling 2026-10-03).
        Graphic is a PLACEHOLDER (Ideology's skullspike: a spike at the pit's viewing angle; the item
        forbids TrapSpikeArmed); the real floor-of-spikes art is EXCAVATION_WALL_ART_1. -->
   <ThingDef ParentName="BuildingBase">

@@ -10,9 +10,10 @@ an explicit design decision this pass could not respons­ibly guess at.
    after every rewrite — soffeth rings grow at new seeps, mouse-lines
    re-route, flora margins migrate to new edges over days. The literacy game
    stays true after every belch." This is a multi-day simulation with no
-   numbers named anywhere (growth rate, re-route delay, migration speed) —
-   it needs either an owner ruling on pacing or a build-then-live-tune pass,
-   not an invented set of constants shipped cold. Depends on the belch (or a
+   numbers named anywhere (growth rate, re-route delay, migration speed).
+   Owner ruling 2026-10-03 (by question card): FOUNDRY picks first-guess
+   pacing numbers, marks them PROVISIONAL in this item and in the def
+   comment / settings tooltip, and they are tuned live later. Depends on the belch (or a
    canal release) actually rewriting the map first, which after
    `SUMP_TAR_FIRE_NETWORK_1`'s item 2 (belch -> real flood release) will be
    true; today the belch only splashes filth, so there is no real "after
