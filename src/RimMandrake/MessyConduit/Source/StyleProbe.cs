@@ -68,6 +68,18 @@ namespace RimMandrake.MessyConduit
             F("aerialSpanTex", S(TexName(AerialMaterials.Span)));
             F("aerialShadowTex", S(TexName(AerialMaterials.Shadow)));
             F("aerialBuiltKey", S(AerialMaterials.BuiltKey));
+            // owner review 2026-10-04: the look's pile art (B1/B15), piece colours per strand variant (B14), poles (B6/B16)
+            F("pileArt", S(MessyConduitSettings.BuildOptions().Pile.ToString()));
+            F("pieceColors", Arr(CordMaterials.PieceColors.Select(S)));
+            var pv = new List<string>();
+            for (int i = 0; i < CordMaterials.VariantCount; i++)
+                pv.Add("{" + string.Join(",", CordMaterials.ColourSlots.Keys.Select(k => S(k.ToString()) + ":" + S(CordMaterials.DecalTexName(k, i)))) + "}");
+            F("pieceTexPerVariant", Arr(pv));
+            F("aerialLook", S(AerialMaterials.Look));
+            F("aerialSpanWidth", AerialMaterials.SpanWidth.ToString("0.###", CultureInfo.InvariantCulture));
+            F("poleTex", "{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}");
+            F("poleStandIns", Arr(AerialMaterials.PoleStandIns.Select(S)));
+            F("switchTex", S(ConduitVisuals.SwitchTexPath()));
             // per-net variants over the laid pieces (edges only: node pieces carry no strand of their own net choice)
             var hist = new Dictionary<int, int>();
             var seedsPerVariant = new Dictionary<int, HashSet<int>>();

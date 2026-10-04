@@ -143,6 +143,7 @@ namespace RimMandrake.MessyConduit.Hose
                       .Append(",\"minBendPose\":").Append(D(HoseMath.MinBendRadius(pose, HoseMath.EndSkip)))
                       .Append(",\"selfIntersects\":").Append(B(HoseMath.SelfIntersects(lay.Flat)))
                       .Append(",\"couplings\":").Append(lay.Couplings.Count)
+                      .Append(",\"joints\":").Append(lay.Joints.Count)
                       .Append(",\"points\":").Append(lay.Flat.Count)
                       .Append(",\"fellBack\":").Append(B(lay.FellBack))
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))

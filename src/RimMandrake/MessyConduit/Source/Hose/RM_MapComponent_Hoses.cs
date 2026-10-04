@@ -8,7 +8,7 @@ using Verse;
 namespace RimMandrake.MessyConduit.Hose
 {
     /// <summary>
-    /// Runtime side of the fire hoses (design 3.4-3.5): ticks every reel's state machine from the flow providers,
+    /// Runtime side of the flexible hoses (design 3.4-3.5): ticks every reel's state machine from the flow providers,
     /// lays hoses lazily (planner + rope settle in HoseMath), and draws them every frame (a handful of meshes; a
     /// settled hose reuses its cached mesh, only a transitioning one is rebuilt per frame). Kept OUT of the save
     /// (Patch_Map_ExposeComponents_SkipHoses): the reels hold everything that must persist.
@@ -195,10 +195,13 @@ namespace RimMandrake.MessyConduit.Hose
 
         private void DrawAll()
         {
-            float y = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
+            float y0 = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
+                // B18: where hoses cross, one passes cleanly over the other, the same way every frame: each hose (and its
+                // fittings) sits in its own altitude band, ordered by when the reel was built
+                float y = y0 + HoseMath.CrossLift(RankOf(r));
                 HoseLay lay = EnsureLay(r);
                 if (lay == null) continue;
                 PoseInfo pi = Info(r);
@@ -206,7 +209,7 @@ namespace RimMandrake.MessyConduit.Hose
                 int T = HoseSettings.Tuning().TransitionTicks;
                 List<V2> pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
-                string key = settled ? (pi.Blend >= 1 ? "P" : "F") + r.layKey : null;
+                string key = settled ? (pi.Blend >= 1 ? "P" : "F") + r.layKey + "@" + RankOf(r) : null;
                 meshes.TryGetValue(r, out Cached c);
                 float vis = (float)pi.Visible;
                 float e = (float)pi.Eased;
@@ -275,7 +278,24 @@ namespace RimMandrake.MessyConduit.Hose
         // Art geometry (128 px canvases, measured 2026-10-02): the hose band in the coupling/nozzle/cap art is ~40
         // px tall (0.31 canvas); the coupling's brass face is at +0.46 canvas along +X, the nozzle tip at +0.47,
         // the cap face at +0.29; the hose enters every piece from the canvas's -X edge.
-        public const float PieceBand = 0.31f;
+        /// <summary>RE-MEASURED 2026-10-04 (owner review B8, "mismatched hose width"): the opaque hose band where the hose
+        /// enters Coupling_Brass/EndCap is 32 px of 128 (0.25), not the 0.31 first assumed, so every fitting was drawn ~20%
+        /// narrower than the hose. validation.py O6 re-measures these from the PNGs.</summary>
+        public const float PieceBand = 0.25f;
+        /// <summary>OpenEnd.png's hose band: 35 px of 128.</summary>
+        public const float OpenBand = 0.273f;
+        /// <summary>The coupling's brass face, canvas units along +X (measured 2026-10-02: 0.46).</summary>
+        public const double JoinerFace = 0.46;
+        /// <summary>OpenEnd.png (made from Strand_Flat by make_hose_open_end.py): the mouth, the hose's plain cut end, sits
+        /// at +0.30 canvas along +X; the hose enters from -X.</summary>
+        public const double OpenMouth = 0.30;
+
+        private int RankOf(CompHoseReel r)
+        {
+            int k = 0;
+            foreach (CompHoseReel o in reels) if (o.parent.thingIDNumber < r.parent.thingIDNumber) k++;
+            return k;
+        }
 
         private void DrawEnds(CompHoseReel r, HoseLay lay, List<V2> pts, float vis, float y)
         {
@@ -284,20 +304,25 @@ namespace RimMandrake.MessyConduit.Hose
             // reel end: a brass coupling whose face meets the reel, pointing into it
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
             Piece(HoseMaterials.Coupling, pts[0] - d0 * (0.40 * size), d0, size, y);
-            // couplings along the hose (skip the two ends)
-            double flatLen = Math.Max(1e-6, lay.FlatLen);
-            for (int k = 1; k < lay.Couplings.Count - 1; k++)
+            // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
+            // the lay's sample indices (equal-arc resamples of the same count).
+            foreach (int j0 in lay.Joints)
             {
-                // pose samples are equal-arc samples of the flat hose: coupling k sits at sample (k spacing / length)
-                double at = HoseSettings.Shape().CouplingSpacing * k;
-                int j = Math.Min(n - 2, Math.Max(1, (int)Math.Round(at / flatLen * (n - 1))));
+                int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + 1)] - pts[j - 1]).Norm();
-                Piece(HoseMaterials.Coupling, pts[j] - d * (0.24 * size), d, size, y);
+                HoseMath.JoinerPoses(pts[j], d, size, JoinerFace, out V2 fw, out V2 bw);
+                Piece(HoseMaterials.Coupling, fw, d, size, y);
+                Piece(HoseMaterials.Coupling, bw, -d, size, y);
             }
-            // free end: nozzle or cap, pointing out along the hose
+            // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
             if (r.end == HoseEnd.Nozzle) Piece(HoseMaterials.Nozzle, pts[n - 1] + d1 * (0.05 * size), d1, size, y);
-            else Piece(HoseMaterials.EndCap, pts[n - 1] - d1 * (0.10 * size), d1, size, y);
+            else if (r.end == HoseEnd.EndCap) Piece(HoseMaterials.EndCap, pts[n - 1] - d1 * (0.10 * size), d1, size, y);
+            else
+            {
+                float so = vis / OpenBand;
+                Piece(HoseMaterials.OpenEnd, pts[n - 1] - d1 * (OpenMouth * so), d1, so, y);
+            }
         }
 
         private static void Piece(Material m, V2 c, V2 dir, float size, float y)
@@ -345,7 +370,7 @@ namespace RimMandrake.MessyConduit.Hose
     {
         private const string Dir = "RimMandrake/MessyConduit/Hose/";
         private static readonly Texture2D flatTex, plumpTex, shadowTex;
-        public static readonly Material Coupling, Nozzle, EndCap;
+        public static readonly Material Coupling, Nozzle, EndCap, OpenEnd;
         private static readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
         public static readonly int Queue;
 
@@ -358,6 +383,7 @@ namespace RimMandrake.MessyConduit.Hose
             Coupling = Piece("Coupling_Brass");
             Nozzle = Piece("Nozzle");
             EndCap = Piece("EndCap");
+            OpenEnd = Piece("OpenEnd");
         }
 
         public static bool Installed => flatTex != null && plumpTex != null;
@@ -372,7 +398,7 @@ namespace RimMandrake.MessyConduit.Hose
         private static Material Piece(string n)
         {
             Texture2D t = ContentFinder<Texture2D>.Get(Dir + n, reportFailure: true);
-            return t == null ? null : MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Transparent) { renderQueue = Queue + 3 });
+            return t == null ? null : MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Transparent) { renderQueue = Queue });
         }
 
         /// <summary>Alpha quantised to 1/20 so the cross-fade reuses a handful of pooled materials.</summary>
@@ -387,9 +413,12 @@ namespace RimMandrake.MessyConduit.Hose
             return m;
         }
 
+        // B18: every hose material shares ONE render queue, so altitude alone orders them: a crossing hose (its own
+        // altitude band, HoseMath.CrossLift) and all its fittings draw over the hose beneath, never interleaved. Within a
+        // hose the shadow / flat / plump / fittings order is kept by their small altitude steps.
         public static Material Flat(float alpha) => Get(flatTex, 1, alpha, Color.white, Queue);
-        public static Material Plump(float alpha, Color tint) => Get(plumpTex, 2, alpha, tint, Queue + 1);
-        public static Material Shadow(float alpha) => Get(shadowTex, 3, alpha, Color.white, Queue - 1);
+        public static Material Plump(float alpha, Color tint) => Get(plumpTex, 2, alpha, tint, Queue);
+        public static Material Shadow(float alpha) => Get(shadowTex, 3, alpha, Color.white, Queue);
     }
 
     /// <summary>Keeps RM_MapComponent_Hoses out of the save (as the cord graph and aerial components): every

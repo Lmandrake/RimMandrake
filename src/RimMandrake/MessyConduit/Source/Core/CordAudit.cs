@@ -14,7 +14,10 @@ namespace RimMandrake.MessyConduit.Core
         public int Junctions, JunctionFaults, PlugEnds, PlugFaults, Stubs, StubFaults, DeadEnds, DeadFaults, LiveEnds, LiveFaults;
         public List<double> DeadOffLine = new List<double>(), LiveArrivalDeg = new List<double>();
         public List<string> Messages = new List<string>();
-        public int Faults => JunctionFaults + PlugFaults + StubFaults + DeadFaults + LiveFaults;
+        /// <summary>Piles (owner review 2026-10-04 B2/B13): connectors in tangles, strips anywhere, cable ends in a pile that
+        /// land on no connector port, connectors with fewer than two cables plugged in, rock holes drawn unforeshortened.</summary>
+        public int Piles, PileConnectors, PileJunctions, Strips, PileLooseEnds, PileIdleConnectors, FlatRockHoles;
+        public int Faults => JunctionFaults + PlugFaults + StubFaults + DeadFaults + LiveFaults + PileLooseEnds + PileIdleConnectors + FlatRockHoles;
     }
 
     public static class CordAudit
@@ -122,7 +125,10 @@ namespace RimMandrake.MessyConduit.Core
                 foreach (CordStrand s in StrandsAt(ps, nd))
                 {
                     pn++;
-                    List<V2> q = EndAt(s.Pts, nd.Pos);
+                    // the end nearer the machine's FOOTPRINT (a cord run on under the art, B10, ends inside it)
+                    double RectD(V2 v) => Math.Max(Math.Max(m.X0 - v.X, v.X - (m.X0 + m.W)), Math.Max(m.Z0 - v.Z, v.Z - (m.Z0 + m.H)));
+                    List<V2> q = new List<V2>(s.Pts);
+                    if (RectD(q[0]) < RectD(q[q.Count - 1])) q.Reverse();
                     V2 e = q[q.Count - 1];
                     CordDecal? plug = decals.Where(d => d.Kind == DecalKind.Plug).OrderBy(d => V2.Dist(d.Pos, e)).Cast<CordDecal?>().FirstOrDefault();
                     if (plug == null || V2.Dist(plug.Value.Pos, e) > 0.3) { pbad++; pmsg.Add($"{nd.Cell} no plug at the cord end"); continue; }
@@ -146,7 +152,7 @@ namespace RimMandrake.MessyConduit.Core
                 DecalKind k = nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock;
                 CordDecal? d = decals.Where(x => x.Kind == k).OrderBy(x => V2.Dist(x.Pos, nd.Face)).Cast<CordDecal?>().FirstOrDefault();
                 if (d == null) { sbad++; continue; }
-                V2 anchor = d.Value.Pos + Dir(d.Value.Angle) * ((k == DecalKind.StubRock ? RockHoleX : 0) * d.Value.Scale);
+                V2 anchor = d.Value.Pos + Dir(d.Value.Angle) * ((k == DecalKind.StubRock ? RockHoleX : 0) * d.Value.ScaleX);
                 if (AngDiff(d.Value.Angle, Ang(nd.Into)) > 3 * Deg || V2.Dist(anchor, nd.Face) > 0.1)
                 {
                     sbad++;
@@ -186,6 +192,29 @@ namespace RimMandrake.MessyConduit.Core
                     }
                 }
             }
+            // (6) piles: every cable end sits on a connector port; every connector has >= 2 cables plugged in
+            foreach (LaidPiece p in ps.Where(x => x.Key != null && x.Key.StartsWith("tangle:")))
+            {
+                R.Piles++;
+                List<CordDecal> cons = p.Decals.Where(d => d.Kind == DecalKind.JunctionTin || d.Kind == DecalKind.JunctionTape ||
+                                                         d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark).ToList();
+                R.PileConnectors += cons.Count;
+                R.PileJunctions += cons.Count(d => d.Kind == DecalKind.JunctionTin || d.Kind == DecalKind.JunctionTape);
+                List<CordBuilder.PilePort> ports = CordBuilder.PortsOf(cons);
+                var perCon = new int[cons.Count];
+                foreach (CordStrand s in p.Strands)
+                    foreach (V2 e in new[] { s.Pts[0], s.Pts[s.Pts.Count - 1] })
+                    {
+                        int best = -1; double bd = 0.06;
+                        for (int i = 0; i < ports.Count; i++) { double dd = V2.Dist(ports[i].Tip, e); if (dd < bd) { bd = dd; best = i; } }
+                        if (best < 0) R.PileLooseEnds++; else perCon[ports[best].Connector]++;
+                    }
+                int idle = perCon.Count(c => c < 2);
+                R.PileIdleConnectors += idle;
+                if (idle > 0) R.Messages.Add($"{p.Key}: {idle} of {cons.Count} connectors with < 2 cables plugged in");
+            }
+            R.Strips = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark));
+            R.FlatRockHoles = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubRock && !(d.Squash > 0.3 && d.Squash < 0.85)));
             R.DeadEnds = dead.Count; R.DeadFaults = dbad; R.DeadOffLine = dead;
             R.LiveEnds = liv.Count; R.LiveFaults = lbad; R.LiveArrivalDeg = liv;
             return R;

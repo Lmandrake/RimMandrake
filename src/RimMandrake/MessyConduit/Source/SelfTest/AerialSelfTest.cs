@@ -174,6 +174,16 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(g.Blocked && g.Pts.All(p => (int)Math.Floor(p.X) != 15) && g.Tip.X < 15, "a wall stops the cord; the rest is 'over the wall' (no vertex in the wall)");
             FallenLay h = AerialMath.LayFallen(new P2(10.5, 10.5), new P2(22.5, 10.5), 12.6, 42, open);
             C(h.Pts.Count == f.Pts.Count && h.Pts.Zip(f.Pts, (p, q) => P2.Dist(p, q) < 1e-12).All(v => v), "fallen cord deterministic by seed");
+            // B11 (owner review 2026-10-04): a cut wire still hangs from the pole TOP to the ground before it lies down
+            var top = new P2(10.5, 10.5 + 2.66);
+            int gi = AerialMath.GroundIndex(f.Pts);
+            P2 ground = f.Pts[gi];
+            List<P2> drop = AerialMath.FallenDrop(top, ground, 42);
+            double dl = 0, maxZ = drop.Max(p => p.Z);
+            for (int i = 1; i < drop.Count; i++) dl += P2.Dist(drop[i - 1], drop[i]);
+            C(P2.Dist(drop[0], top) < 1e-9 && P2.Dist(drop[drop.Count - 1], ground) < 1e-9, "drop runs exactly from the insulator to the ground point");
+            C(P2.Dist(f.Pts[0], ground) >= 0.35 - 1e-9 && P2.Dist(f.Pts[0], ground) < 0.7, "drop meets the ground 0.35-0.7 cell from the base");
+            C(dl >= P2.Dist(top, ground) - 1e-9 && dl < P2.Dist(top, ground) * 1.2 && maxZ <= top.Z + 1e-9, "drop descends from the top, length " + dl.ToString("0.00"));
         }
 
         private static void Explosion()

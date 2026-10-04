@@ -9,6 +9,10 @@ namespace RimMandrake.MessyConduit.Core
 {
     public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark }
 
+    /// <summary>What a pile (tangle) and a device stub are built from (owner review 2026-10-04 B1/B2/B13/B15): power strips
+    /// only for the modern extension-cord look; every other look plugs its cables into many + and T junction boxes.</summary>
+    public enum PileArt { Junctions, Strips }
+
     public struct CordDecal
     {
         public DecalKind Kind;
@@ -16,9 +20,13 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>Radians, 0 = +X; the art's long axis points along it.</summary>
         public double Angle;
         public double Scale;
+        /// <summary>Extra scale along the art's own X axis (0 = none): the rock-entry hole is foreshortened as if cut
+        /// into an angled face (owner review 2026-10-04 B4).</summary>
+        public double Squash;
         /// <summary>A live fray that rides the whipping tail: printed statically only with whip off.</summary>
         public bool OnWhip;
-        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; }
+        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; }
+        public double ScaleX => Scale * (Squash > 0 ? Squash : 1);
     }
 
     public sealed class CordStrand
@@ -92,6 +100,8 @@ namespace RimMandrake.MessyConduit.Core
         public ulong Seed = 1;
         /// <summary>Messiness: dense fields of at least this many cells become a tangle (setting, 6-20).</summary>
         public int TangleMin = CordGraph.TangleMin;
+        /// <summary>Strips (ExtensionCord) or junction boxes (every other style) in piles and at device stubs.</summary>
+        public PileArt Pile = PileArt.Junctions;
     }
 
     /// <summary>
@@ -135,7 +145,7 @@ namespace RimMandrake.MessyConduit.Core
                     full.Append(g.Nodes[v].Type).Append(',');
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
-                full.Append('#').Append(opt.Lay.Fingerprint());
+                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.Pile);
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
                 if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && CorridorHash(w, old) == old.CorridorHash)
@@ -287,6 +297,11 @@ namespace RimMandrake.MessyConduit.Core
                     P = new List<V2>(C);
                     fell = true;
                 }
+                // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
+                // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
+                // these points lie inside the machine's own footprint by design.
+                if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine);
+                if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle });
                 laid += Geo.Length(P);
             }
@@ -312,6 +327,8 @@ namespace RimMandrake.MessyConduit.Core
         // Junction_Tin is a centred 4-arm cross; StubRock's hole is centred +0.11 along X.
         public const double JunctionScale = 1.0, TapeAnchorZ = 0.152, ArmTuck = 0.40;
         public const double PlugScale = 0.55, PlugInset = 0.05, StubScale = 0.7, RockHoleX = 0.11;
+        /// <summary>B4: the rock hole drawn foreshortened along the cord (art X) as if cut into an angled rock face. PROVISIONAL.</summary>
+        public const double RockSquash = 0.6;
 
         public struct JunctionPose
         {
@@ -426,6 +443,34 @@ namespace RimMandrake.MessyConduit.Core
             return CordLayer.Approach(w, P, !atA, target, arrive, straight);
         }
 
+        /// <summary>The art inset (cells) on the footprint side a cord enters through.</summary>
+        public static double ArtInset(MachineInfo m, V2 into)
+        {
+            if (into.X > 0.5) return m.InsetW;
+            if (into.X < -0.5) return m.InsetE;
+            if (into.Z > 0.5) return m.InsetS;
+            return m.InsetN;
+        }
+
+        private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m)
+        {
+            if (P.Count < 2) return P;
+            V2 tip = atStart ? P[0] : P[P.Count - 1];
+            V2 into = IntoMachine(m, tip);
+            double inset = ArtInset(m, into);
+            if (inset <= 0) return P;
+            // measured from the footprint edge, not from the tip (which sits just outside it)
+            double gap = into.X > 0.5 ? m.X0 - tip.X : into.X < -0.5 ? tip.X - (m.X0 + m.W) : into.Z > 0.5 ? m.Z0 - tip.Z : tip.Z - (m.Z0 + m.H);
+            inset += Math.Max(0, gap);
+            var ext = new List<V2>();
+            for (double d = 0.05; d < inset - 0.02; d += 0.05) ext.Add(tip + into * d);
+            ext.Add(tip + into * inset);
+            var o = new List<V2>(P);
+            if (atStart) { ext.Reverse(); o.InsertRange(0, ext); }
+            else o.AddRange(ext);
+            return o;
+        }
+
         /// <summary>Points from one end of P whose arc length stays within len (at least 3), never more than half the strand.</summary>
         public static int TailCount(List<V2> P, bool atStart, double len)
         {
@@ -492,13 +537,16 @@ namespace RimMandrake.MessyConduit.Core
                 if (nd.Type == NodeType.StubWall)
                     piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale));
                 else if (nd.Type == NodeType.StubRock)
-                    piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale), ang, StubScale));
-                else if (nd.Type == NodeType.StubDevice)
+                    piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale * RockSquash), ang, StubScale) { Squash = RockSquash });
+                else if (nd.Type == NodeType.StubDevice && opt.Pile == PileArt.Strips)
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
                     piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
                     piece.LiveKeys.Add(nd.Cell);
                 }
+                else if (nd.Type == NodeType.StubDevice)
+                    // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it
+                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * 0.2, ang, 0.6));
                 if (nd.WallTerminal)
                 {
                     var tail = CordLayer.HangingTail(hole, nd.Into);
@@ -512,26 +560,105 @@ namespace RimMandrake.MessyConduit.Core
             }
         }
 
+        /// <summary>A place a pile cable plugs in: the point its end lands on and the direction it leaves in.</summary>
+        public struct PilePort
+        {
+            public V2 Tip, Out;
+            public int Connector;
+        }
+
+        // PowerStrip art (64x32, drawn 0.9 x 0.45): four sockets along its long axis. PROVISIONAL, read off the PNG.
+        public static readonly double[] StripSockets = { -0.22, -0.08, 0.06, 0.20 };
+        public const double StripScale = 0.9, PilePlugScale = 0.42;
+
+        /// <summary>The ports of every connector decal in a pile (junction arms, strip sockets), in decal order.</summary>
+        public static List<PilePort> PortsOf(List<CordDecal> ds)
+        {
+            var ports = new List<PilePort>();
+            for (int i = 0; i < ds.Count; i++)
+            {
+                CordDecal d = ds[i];
+                if (d.Kind == DecalKind.JunctionTin || d.Kind == DecalKind.JunctionTape)
+                {
+                    bool tape = d.Kind == DecalKind.JunctionTape;
+                    V2 jp = d.Pos + CordAudit.Rot(new V2(0, tape ? TapeAnchorZ * d.Scale : 0), d.Angle);
+                    double[] arms = tape ? new[] { 0, Math.PI, -Math.PI / 2 } : new[] { 0, Math.PI / 2, Math.PI, -Math.PI / 2 };
+                    foreach (double a in arms)
+                    {
+                        V2 o = CordAudit.Dir(a + d.Angle);
+                        ports.Add(new PilePort { Tip = jp + o * (ArmTuck * d.Scale), Out = o, Connector = i });
+                    }
+                }
+                else if (d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark)
+                {
+                    V2 along = CordAudit.Dir(d.Angle), side = along.Perp;
+                    for (int k = 0; k < StripSockets.Length; k++)
+                    {
+                        V2 o = k % 2 == 0 ? side : -side;
+                        // the plug's head face sits on the socket; the cable leaves the plug's tail
+                        V2 socket = d.Pos + along * (StripSockets[k] * d.Scale) + o * (0.1 * d.Scale);
+                        ports.Add(new PilePort { Tip = socket + o * (0.46 * PilePlugScale), Out = o, Connector = i });
+                    }
+                }
+            }
+            return ports;
+        }
+
+        /// <summary>
+        /// A pile (owner review 2026-10-04 B2/B13): a mass of cables PLUGGED INTO each other. Every cable of the heap
+        /// starts and ends on a connector's port, so no connector lies unused and no cable end lies loose. Star Wars,
+        /// Jawa and Cybertek piles use many + and T junction boxes (the praised T junction art); the modern
+        /// extension-cord pile uses power strips with a plug in their sockets.
+        /// </summary>
         private static LaidPiece TanglePiece(CordWorld w, CordNode nd, BuildOptions opt, Func<Cell, bool> isLive)
         {
             var p = new LaidPiece { Key = "tangle:" + nd.Cell, Owner = nd.Cell };
             List<Cell> comp = nd.Cells;
-            int n = Math.Min(14, 4 + comp.Count / 3);
-            for (int i = 0; i < n; i++)
+            bool lit = isLive(nd.Cell);
+            p.LiveKeys.Add(nd.Cell);
+            bool strips = opt.Pile == PileArt.Strips;
+            // ---- connectors on distinct cells of the pile
+            CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
+            var cells = new List<Cell>(comp);
+            for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
+            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(2, 1 + comp.Count / 3);
+            var cons = new List<CordDecal>();
+            foreach (Cell c in cells)
+            {
+                if (cons.Count >= want) break;
+                V2 at = c.Centre + new V2(rc.Range(-0.1, 0.1), rc.Range(-0.1, 0.1));
+                CordDecal d;
+                if (strips) d = new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, at, rc.Int(0, 1) * Math.PI / 2 + rc.Range(-0.25, 0.25), StripScale);
+                else d = new CordDecal(rc.Chance(0.5) ? DecalKind.JunctionTin : DecalKind.JunctionTape, at, rc.Int(0, 3) * Math.PI / 2, 0.8);
+                var one = new List<CordDecal> { d };
+                if (PortsOf(one).Any(q => !w.IsWalkable(q.Tip.Floor))) continue;
+                cons.Add(d);
+            }
+            List<PilePort> ports = PortsOf(cons);
+            // ---- cables: each runs port to port (round robin, two different connectors when there are two)
+            int n = Math.Min(24, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
+            var used = new HashSet<int>();
+            for (int i = 0; i < n && ports.Count >= 2; i++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i);
-                var stops = new List<V2>();
-                int ns = r.Int(4, 7);
+                int a = (2 * i) % ports.Count, b = (2 * i + 1) % ports.Count;
+                for (int k = 0; k < ports.Count && cons.Count > 1 && ports[b].Connector == ports[a].Connector; k++) b = (b + 1) % ports.Count;
+                if (a == b) continue;
+                PilePort pa = ports[a], pb = ports[b];
+                var stops = new List<V2> { pa.Tip, pa.Tip + pa.Out * 0.22 };
+                int ns = r.Int(2, 4);
                 for (int k = 0; k < ns; k++)
                     stops.Add(comp[r.Int(0, comp.Count - 1)].Centre + new V2(r.Range(-0.3, 0.3), r.Range(-0.3, 0.3)));
+                stops.Add(pb.Tip + pb.Out * 0.22);
+                stops.Add(pb.Tip);
                 List<V2> P = Geo.Resample(Geo.Catmull(stops, 10), 0.05);
-                int heaps = r.Int(1, 3);
-                for (int k = 0; k < heaps; k++)
+                int heaps = r.Int(1, 2);
+                for (int k = 0; k < heaps && P.Count > 24; k++)
                 {
-                    int j = r.Int(0, P.Count - 1);
+                    int j = r.Int(P.Count / 3, 2 * P.Count / 3);
                     var win = P.GetRange(Math.Max(0, j - 2), Math.Min(P.Count, j + 3) - Math.Max(0, j - 2));
                     Geo.TanNorm(win, win.Count / 2, out V2 t, out V2 nn);
-                    var hp = CordLayer.Heap(P[j], t, nn, r.Range(0.25, 0.5), r.Sign(), r);
+                    var hp = CordLayer.Heap(P[j], t, nn, r.Range(0.2, 0.4), r.Sign(), r);
                     var o = new List<V2>(P.GetRange(0, j));
                     o.AddRange(hp);
                     o.AddRange(P.GetRange(j + 1, P.Count - j - 1));
@@ -539,16 +666,19 @@ namespace RimMandrake.MessyConduit.Core
                 }
                 P = Geo.Resample(P, 0.05);
                 CordLayer.Smooth(w, P, 3);
-                if (P.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
+                P[0] = pa.Tip; P[P.Count - 1] = pb.Tip;
+                if (!P.All(q => w.IsWalkable(q.Floor))) continue;
+                p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
+                used.Add(a); used.Add(b);
             }
-            bool lit = isLive(nd.Cell);
-            p.LiveKeys.Add(nd.Cell);
-            for (int k = 0; k < 1 + comp.Count / 7; k++)
-            {
-                CordRng r = CordRng.Of(opt.Seed, "strip", nd.Cell.X, nd.Cell.Z, k);
-                Cell c = comp[r.Int(0, comp.Count - 1)];
-                p.Decals.Add(new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, c.Centre + new V2(r.Range(-0.25, 0.25), r.Range(-0.25, 0.25)), r.Range(-0.8, 0.8), 0.9));
-            }
+            // ---- connectors are printed over the cables; a strip gets a plug in every socket a cable uses
+            p.Decals.AddRange(cons);
+            if (strips)
+                foreach (int k in used.OrderBy(x => x))
+                {
+                    PilePort q = ports[k];
+                    p.Decals.Add(new CordDecal(DecalKind.Plug, q.Tip, Math.Atan2(-q.Out.Z, -q.Out.X), PilePlugScale));
+                }
             return p;
         }
     }

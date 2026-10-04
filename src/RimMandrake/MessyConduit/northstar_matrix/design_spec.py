@@ -328,7 +328,7 @@ def hose_spec(r, k):
             "zoom_root": ZOOM_ROOT["close"], "settings": {}, "build": ops, "view": {"overlay": "none", "select_at": None},
             "expect": {"intrinsic": {"state": state, "visible_width": width, "width_over_wire_ge": 4.0,
                                      "blend": {"Flat": [0, 0], "Plump": [1, 1], "Filling": [0.2, 0.8]}[state],
-                                     "min_bend_radius_ge": 1.2, "couplings_min": 1 + int(math.ceil(dist / 8.0)),
+                                     "min_bend_radius_ge": 1.2, "couplings_min": 2,   # the two end fittings; joiners only at bends (owner review 2026-10-04 B17)
                                      "self_intersections": 0, "unwalkable_points": 0}, "parity": None},
             "shows": ["hose_thicker_than_wire"] + (["hose_flat_vs_plump"] if r["St"] in ("Flat", "Plump") else []),
             "notes": ["hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",

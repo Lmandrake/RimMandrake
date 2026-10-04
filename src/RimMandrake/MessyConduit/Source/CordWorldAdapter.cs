@@ -90,9 +90,23 @@ namespace RimMandrake.MessyConduit
                 CellRect r = th.OccupiedRect();
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
                 m.Hookups.Add(C(parent.parent.Position));
+                ArtInsets(th.def, m);
                 world.Machines.Add(m);
             }
             return world;
+        }
+
+        /// <summary>Where a machine's drawn art stands in from its footprint edge (owner review 2026-10-04 B10): the cord runs on
+        /// that far under the art so it visibly plugs INTO the graphic. Measured from the shipped Core textures: the solar
+        /// collector's panel stops 22 px of 256 above its bottom edge (only its legs reach the edge) = 0.34 cell of 4;
+        /// +0.06 so the plug tucks under the panel. Unlisted machines: their art reaches the edge (0).</summary>
+        public static readonly System.Collections.Generic.Dictionary<string, float[]> InsetsSNEW =
+            new System.Collections.Generic.Dictionary<string, float[]> { { "SolarGenerator", new[] { 0.40f, 0f, 0f, 0f } } };
+
+        private static void ArtInsets(ThingDef d, MachineInfo m)
+        {
+            if (d == null || !InsetsSNEW.TryGetValue(d.defName, out float[] v)) return;
+            m.InsetS = v[0]; m.InsetN = v[1]; m.InsetE = v[2]; m.InsetW = v[3];
         }
 
         private static MachineKind KindOf(CompPower c, bool transmitter)

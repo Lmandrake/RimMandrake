@@ -122,9 +122,23 @@ namespace RimMandrake.MessyConduit.Aerial
         public SpanLink LinkTo(CompAerialAnchor b) => links.FirstOrDefault(l => l.other == b);
 
         /// <summary>The insulator point the wire hangs from (ground-plane coordinates; z is the fake height).</summary>
-        public Vector3 AttachPoint => new Vector3(Position.x + 0.5f, 0f, Position.z + 0.5f + Ext.attachZ);
+        public Vector3 AttachPoint => BasePoint + new Vector3(0f, 0f, Ext.attachZ);
 
-        public Vector3 BasePoint => new Vector3(Position.x + 0.5f, 0f, Position.z + 0.5f);
+        /// <summary>The anchor's foot. A wall-attached anchor (building.isAttachment, the bracket: owner review 2026-10-04 B7)
+        /// is drawn ON the wall by its graphic's per-rotation draw offset, so its foot and insulator move with it.</summary>
+        public Vector3 BasePoint
+        {
+            get
+            {
+                var b = new Vector3(Position.x + 0.5f, 0f, Position.z + 0.5f);
+                if (parent.def.building != null && parent.def.building.isAttachment && parent.def.graphicData != null)
+                {
+                    Vector3 o = parent.def.graphicData.DrawOffsetForRot(parent.Rotation);
+                    b.x += o.x; b.z += o.z;
+                }
+                return b;
+            }
+        }
 
         public static int FactionKey(Thing t) => t.Faction == null ? -1 : t.Faction.loadID;
 

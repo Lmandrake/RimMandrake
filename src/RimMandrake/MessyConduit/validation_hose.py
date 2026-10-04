@@ -1,4 +1,4 @@
-"""validation_hose.py -- Messy Conduit L6 (fire hoses) functional script, beside validation.py / validation_aerial.py.
+"""validation_hose.py -- Messy Conduit L6 (flexible hoses) functional script, beside validation.py / validation_aerial.py.
 
 Design: design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 3 (3.12 northstar angle).
 Owner, 2026-10-02: "The flexible water hoses should be much thicker and stiffer than the wires, much like the fire

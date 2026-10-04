@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Messy Conduit fire hoses, lane L6 (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 3).
+<!-- Messy Conduit flexible hoses, lane L6 (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 3).
      The reel is a plain vanilla Building; the hose is data on its comp (a save names only this def). -->
 <Defs>
 
   <ThingDef ParentName="BuildingBase">
     <defName>RM_HoseReel</defName>
     <label>hose reel</label>
-    <description>A scrap pump hookup with a reel of thick sack-cloth fire hose, stitched like a Jawa robe. Lay the hose out to any cell within reach in one go and reel it back just as fast. The hose lies flat and limp when empty and plumps up round and taut while liquid moves through it.</description>
+    <description>A scrap pump hookup with a reel of thick sack-cloth flexible hose, stitched like a Jawa robe. Lay the hose out to any cell within reach in one go and reel it back just as fast. The hose lies flat and limp when empty and plumps up round and taut while liquid moves through it.</description>
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Hose/Reel_PumpHookup</texPath>

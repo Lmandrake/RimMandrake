@@ -41,6 +41,7 @@
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="HoseSelfTest.cs" />
     <Compile Include="DeterminismChecks.cs" />
+    <Compile Include="ReviewRound1Checks.cs" />
   </ItemGroup>
 
   <ItemGroup>

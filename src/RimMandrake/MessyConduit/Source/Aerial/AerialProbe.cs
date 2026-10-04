@@ -145,7 +145,7 @@ namespace RimMandrake.MessyConduit.Aerial
                     double len = 0;
                     for (int i = 1; i < lay.Pts.Count; i++) len += P2.Dist(lay.Pts[i - 1], lay.Pts[i]);
                     fl.Add("{\"toward\":[" + f.toward.x + "," + f.toward.z + "],\"cutPartner\":" + f.cutPartner + ",\"pts\":" + lay.Pts.Count +
-                           ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + "}");
+                           ",\"dropPts\":" + (comp.DropPoints(a, f)?.Count ?? 0) + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + "}");
                     fallenN++;
                 }
                 PowerNet raw = a.PowerComp?.PowerNet;
@@ -171,7 +171,9 @@ namespace RimMandrake.MessyConduit.Aerial
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
                       ",\"explosionCuts\":" + comp.explosionCuts + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
-                      ",\"topDraws\":" + comp.lastTopDraws + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
+                      ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
+                      ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +
+                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
             sb.Append(",\"groundVerts\":" + SectionLayer_RM_AerialGround.LastPrintedVerts + ",\"groundFallenPrinted\":" + SectionLayer_RM_AerialGround.LastFallenPrinted +
                       ",\"groundShadowsPrinted\":" + SectionLayer_RM_AerialGround.LastShadowsPrinted);
             sb.Append(",\"altitudes\":{\"pawn\":" + F(AltitudeLayer.Pawn.AltitudeFor()) + ",\"pawnState\":" + F(AltitudeLayer.PawnState.AltitudeFor()) +

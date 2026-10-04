@@ -1017,11 +1017,11 @@ class Run(object):
              "0.95 x %s" % mb, [h.get("minBendFlat"), h.get("minBendPlump")])
         need("self_intersections", (0 if not h.get("selfIntersects") else 1) == e["self_intersections"], e["self_intersections"], h.get("selfIntersects"))
         need("unwalkable_points", h.get("unwalkablePoints") == e["unwalkable_points"], e["unwalkable_points"], h.get("unwalkablePoints"))
-        # couplings: both ends + one every 8 cells of laid flat length (HoseMath.Couplings: at < length); also >= the scene's floor
-        fl = h.get("flatLen")
-        exact = 2 + len([k for k in range(1, 200) if 8 * k < fl]) if fl is not None else None
+        # couplings: the two end fittings + one joiner per real bend, none on a straight (owner review 2026-10-04 B17)
+        j = h.get("joints")
+        exact = 2 + j if isinstance(j, int) else None
         need("couplings", h.get("couplings") == exact and (h.get("couplings") or 0) >= e["couplings_min"],
-             {"exact_from_flatLen": exact, "min": e["couplings_min"]}, h.get("couplings"))
+             {"exact_from_joints": exact, "min": e["couplings_min"]}, h.get("couplings"))
         return out
 
     def aerial_compare(self, sc, rec, exp, aer, pg):

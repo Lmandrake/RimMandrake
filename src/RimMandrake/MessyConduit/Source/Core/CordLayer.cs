@@ -37,7 +37,7 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>Broad lateral excursions: length range along the cord (cells), and the small wobble.</summary>
         public double ExcursionLo = 1.2, ExcursionHi = 2.6, Wobble = 0.06;
 
-        /// <summary>The stiff fire-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
+        /// <summary>The stiff flexible-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
         /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
         public static LayParams Hose() => new LayParams
         {

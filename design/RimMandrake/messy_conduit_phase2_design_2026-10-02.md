@@ -1,4 +1,4 @@
-# Messy Conduit — Phase 2 design (1b polish, aerial lines, fire hoses, Northstar fast-track)
+# Messy Conduit — Phase 2 design (1b polish, aerial lines, flexible hoses, Northstar fast-track)
 
 *Design helper for FOUNDRY, 2026-10-02. Status: DESIGN, nothing built. Builds on `messy_conduit_design_2026-10-02.md` (phase 1a as built, §8.13) and `power_poles_and_flexible_pipe_assessment_2026-10-02.md`.*
 
@@ -359,7 +359,7 @@ regression), `netRepairs == 0`; unlink → two nets; a link to a non-player tran
 links; explosion on a span → state `Cut`, two downed-wire ends, live side sparking-registered; tap → nets stay
 distinct, victim energy falls. Visual: matrix axis "aerial" (§4). Not testable: sway motion (proxy §4.7).
 
-## 3. Flexible fire hoses
+## 3. Flexible hoses
 
 **Verdict: the LOOK is MODERATE (~3 d) and buildable now in this mod; the PLUMBING is FlowWorks' and is not
 built.** No pump, hose or ship-tank class exists in `src/` (§3.1). So this section specs the hose **look** as a

@@ -25,7 +25,7 @@ The worked example is `src/RimMandrake/MessyConduit/human_review.py`. Its key sh
 ## Layout: a gallery and a free area
 
 1. **Gallery.** Numbered stations sit in rows, and each row is one family (MessyConduit has floor cords, overhead lines
-   and fire hoses). Inside a row, put stations that differ in ONE thing next to each other: powered, then unpowered,
+   and flexible hoses). Inside a row, put stations that differ in ONE thing next to each other: powered, then unpowered,
    then cut. The eye then compares neighbours, and nobody has to remember a picture from 100 cells away.
 2. **Every station is self-contained.** It has its own battery and its own little grid, so poking one station (cutting
    it, emptying its battery) never changes another. The stations are spaced so that no effect of the mod can reach a

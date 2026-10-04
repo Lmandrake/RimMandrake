@@ -123,14 +123,31 @@
   <ThingDef ParentName="RM_AerialAnchorBase">
     <defName>RM_AerialWallBracket</defName>
     <label>scrap wall bracket</label>
-    <description>A riveted angle-iron bracket with one bottle insulator, bolted against a wall so an overhead wire can start at a building. Stands against the wall its arrow points away from.</description>
+    <description>A riveted angle-iron bracket with one bottle insulator, bolted onto a wall so an overhead wire can start at a building. Place it beside a wall, facing the wall.</description>
+    <!-- Wall attachment the vanilla way (owner review 2026-10-04 B7; copied from Core TorchWallLamp / Odyssey OxygenPump):
+         the bracket occupies the cell IN FRONT of the wall, its rotation points AT the wall (Placeworker_AttachedToWall),
+         it is not an edifice (so it never claims the wall cell) and its graphic is drawn 0.9 cell onto the wall face.
+         CompAerialAnchor.BasePoint adds the same per-rotation offset, so the wire lands on the drawn insulator. -->
     <rotatable>true</rotatable>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0</fillPercent>
+    <terrainAffordanceNeeded IsNull="True" />
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Aerial/WallBracket</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
     </graphicData>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isAttachment>true</isAttachment>
+    </building>
     <statBases>
       <MaxHitPoints>120</MaxHitPoints>
       <WorkToBuild>400</WorkToBuild>
@@ -147,7 +164,7 @@
       <li Class="RimMandrake.MessyConduit.Aerial.CompProperties_AerialAnchor" />
     </comps>
     <placeWorkers>
-      <li>RimMandrake.MessyConduit.Aerial.PlaceWorker_AerialWallBracket</li>
+      <li>Placeworker_AttachedToWall</li>
     </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">

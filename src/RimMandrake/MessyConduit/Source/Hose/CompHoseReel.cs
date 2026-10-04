@@ -13,7 +13,9 @@ namespace RimMandrake.MessyConduit.Hose
         static HoseDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(HoseDefOf));
     }
 
-    public enum HoseEnd { Nozzle, EndCap }
+    /// <summary>What sits on the free end. Open (the default since owner review 2026-10-04 B8): a plain open hose end the
+    /// hose's own width, no nozzle-style fitting. Appended last so saved names keep their meaning.</summary>
+    public enum HoseEnd { Nozzle, EndCap, Open }
 
     public class CompProperties_HoseReel : CompProperties
     {
@@ -32,7 +34,7 @@ namespace RimMandrake.MessyConduit.Hose
     {
         public bool laid;
         public IntVec3 far = IntVec3.Invalid;
-        public HoseEnd end = HoseEnd.Nozzle;
+        public HoseEnd end = HoseEnd.Open;
         /// <summary>The debug/test flow provider's input (gizmo in dev mode, HoseProbe "flow:").</summary>
         public bool debugFlowing;
         public HoseStateMachine sm = new HoseStateMachine();
@@ -72,7 +74,7 @@ namespace RimMandrake.MessyConduit.Hose
             base.PostExposeData();
             Scribe_Values.Look(ref laid, "rmHoseLaid");
             Scribe_Values.Look(ref far, "rmHoseFar", IntVec3.Invalid);
-            Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Nozzle);
+            Scribe_Values.Look(ref end, "rmHoseEnd", HoseEnd.Open);
             Scribe_Values.Look(ref debugFlowing, "rmHoseDebugFlow");
             Scribe_Values.Look(ref sm.State, "rmHoseState", HoseVis.Flat);
             Scribe_Values.Look(ref sm.Since, "rmHoseSince");
@@ -140,10 +142,10 @@ namespace RimMandrake.MessyConduit.Hose
                 };
             yield return new Command_Action
             {
-                defaultLabel = end == HoseEnd.Nozzle ? "Free end: nozzle" : "Free end: end cap",
-                defaultDesc = "Switch what sits on the hose's free end.",
+                defaultLabel = end == HoseEnd.Nozzle ? "Free end: nozzle" : end == HoseEnd.EndCap ? "Free end: end cap" : "Free end: open",
+                defaultDesc = "Switch what sits on the hose's free end: open (plain hose end), nozzle or end cap.",
                 icon = end == HoseEnd.Nozzle ? IconLay : IconEnd,
-                action = () => end = end == HoseEnd.Nozzle ? HoseEnd.EndCap : HoseEnd.Nozzle
+                action = () => end = end == HoseEnd.Open ? HoseEnd.Nozzle : end == HoseEnd.Nozzle ? HoseEnd.EndCap : HoseEnd.Open
             };
             if (Prefs.DevMode && laid)
                 yield return new Command_Toggle

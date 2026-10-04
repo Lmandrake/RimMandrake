@@ -45,16 +45,19 @@ import placer as PL  # noqa: E402  (numpy-free)
 
 OUT = os.path.join(REPO, "Transient", "mc_human_review")
 STYLES = ("StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek")
+# the Mod Settings names (owner review 2026-10-04 B19: labels only, the enum names / saved keys are unchanged)
+LOOK = {"StarWarsJawa": "Scrapper", "StarWars": "Industrial", "ExtensionCord": "Modern", "Cybertek": "Futuristic"}
 REGION = (8, 6, 228, 106)              # x, z, w, h: everything the review owns (quicktest colonists stand near 125,125)
 TAG = "mc_review"
 GOLD, CREAM, TEAL, RUST = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b"
 
 # ------------------------------------------------------------------------------------------------ the gallery
 # Local coords (dx, dz) from the station origin, north up. Battery is 1x2 (rot 0: cells z, z+1); WoodFiredGenerator 2x2.
-ROW_A, ROW_B, ROW_C = 86, 60, 40      # origin z of each row
+ROW_A, ROW_B, ROW_C, ROW_D = 86, 60, 40, 8   # origin z of each row
 A_X = [20 + 24 * i for i in range(6)]
 B_X = [20 + 40 * i for i in range(5)]
 C_X = [20, 48, 76, 104]
+D_X = [20, 50, 82]
 
 
 def line(x0, x1, z):
@@ -66,7 +69,7 @@ def station_list():
 
     def st(n, row, x, z, w, h, title, what, notice, interact, **k):
         d = dict(n=n, row=row, origin=(x, z), size=(w, h), title=title, what=what, notice=notice, interact=interact,
-                 conduit=[], walls=[], rock=[], devs=[], hostile=[], masts=[], links=[], cuts=[], hose=None)
+                 conduit=[], walls=[], rock=[], devs=[], hostile=[], masts=[], links=[], cuts=[], hose=None, hoses=[])
         d.update(k)
         S.append(d)
         return d
@@ -94,14 +97,18 @@ def station_list():
        devs=[("Battery", (1, 3), 0, 1.0), ("Heater", (10, 3), None, None), ("StandingLamp", (4, 6), None, None),
              ("StandingLamp", (8, 6), None, None)])
     st(4, "A", A_X[3], ROW_A, 12, 9, "TANGLED PILE", "a 3x3 block of conduit (9+ cells = a tangle) feeding three lamps and a heater",
-       ["the block becomes one TANGLE: a heap of cord with power strips in it",
-        "power-strip LEDs are lit (net live); every lamp's cord runs out of the pile"],
-       ["empty the battery (or cut the feed at cell 3): the strips go dark", "add conduit cells to the block: the pile grows"],
+       ["the block becomes one TANGLE: a mass of cables plugged into each other",
+        "Scrapper / Industrial / Futuristic: the cables run into MANY + and T junction boxes, every box has cables in it, no power strips",
+        "Modern: power strips, every strip with cables PLUGGED IN (a plug in each used socket), LEDs lit while the net is live",
+        "every lamp's cord runs out of the pile"],
+       ["--style ExtensionCord (Modern) vs StarWars (Industrial): strips vs junction boxes",
+        "Modern: empty the battery (or cut the feed at cell 3): the strip LEDs go dark", "add conduit cells to the block: the pile grows"],
        conduit=line(2, 3, 3) + [(x, z) for x in range(4, 7) for z in range(2, 5)] + line(7, 9, 3),
        devs=[("Battery", (1, 3), 0, 1.0), ("Heater", (10, 3), None, None), ("StandingLamp", (3, 6), None, None),
              ("StandingLamp", (8, 6), None, None), ("StandingLamp", (8, 0), None, None)])
     st(5, "A", A_X[4], ROW_A, 13, 9, "DEVICES + PLUGS", "battery, an in-line power switch, a wood generator (unfuelled), lamps, heater",
-       ["each device gets its own plug; the switch sits in-line", "the generator hooks to the run on two cells",
+       ["each device gets its own plug; the switch sits in-line with NO dark outline round its tile",
+        "the generator hooks to the run on two cells",
         "a lamp 3 cells off the run still gets a cord"],
        ["flick the switch off (select it > toggle): everything past it goes dead", "refuel the generator: nothing changes visually"],
        conduit=line(2, 4, 3) + line(6, 10, 3),
@@ -109,7 +116,8 @@ def station_list():
              ("Heater", (11, 3), None, None), ("StandingLamp", (3, 6), None, None), ("StandingLamp", (10, 0), None, None)])
     st(6, "A", A_X[5], ROW_A, 14, 9, "WALL + ROCK ENTRIES", "a run passing under a steel wall and through a granite block; a branch ending inside the wall",
        ["where the cord meets the wall it goes into a STUB (a hole/grommet), and comes out the other side",
-        "the rock tunnel has rock stubs on both faces", "the branch ending in the wall is a wall terminal"],
+        "the rock tunnel has rock holes on both faces, drawn foreshortened (angled like the rock face), not straight down",
+        "the branch ending in the wall is a wall terminal"],
        ["deconstruct a wall cell: the cord re-plans across the gap", "mine the granite: the tunnel opens"],
        conduit=line(1, 11, 3) + [(2, 4), (2, 5), (3, 5), (4, 5)], walls=[(4, z) for z in range(0, 8)],
        rock=[(x, z) for x in range(7, 10) for z in range(1, 6)],
@@ -118,6 +126,8 @@ def station_list():
     # ---- row B: overhead lines (masts are 4 cells tall; span range 20)
     st(7, "B", B_X[0], ROW_B, 30, 11, "MAST SPAN CHAIN", "battery -> scrap power mast -> mast -> mast -> lamp, two 12-cell overhead spans",
        ["the wires sag between masts and cast a ground shadow", "the far lamp is lit through the air",
+        "the overhead cable is the look's own: thick dark scrap cable (Scrapper), thick BLACK cable (Industrial), thin black power line (Modern), sleek steel (Futuristic)",
+        "the masts change with the look too (a tinted stand-in until each look's own pole art lands)",
         "masts are 4 cells tall; the wire leaves from the insulator at the top"],
        ["select a mast: Link wire / Unlink wire / Re-string gizmos", "build a new mast within 20 cells: it auto-links to the nearest",
         "unpause: spans sway"],
@@ -128,16 +138,18 @@ def station_list():
        ["unlink the second span: that lamp mast goes dark", "build one more lamp mast within range"],
        devs=[("Battery", (1, 4), 0, 1.0)],
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialLampMast", (14, 4)), ("RM_AerialLampMast", (26, 4))], links=[(0, 1), (1, 2)])
-    st(9, "B", B_X[2], ROW_B, 30, 11, "WALL BRACKET", "an overhead wire from a mast to a bracket bolted on a shed wall; floor cord from the bracket to a lamp",
-       ["the bracket stands against the wall (its arrow points away from the wall)", "the wire lands on the bracket's insulator",
-        "a floor cord continues from the bracket to the lamp"],
-       ["deconstruct the wall behind the bracket", "unlink and re-link the span from the mast's gizmo"],
+    st(9, "B", B_X[2], ROW_B, 30, 11, "WALL BRACKET", "an overhead wire from a mast to a bracket bolted ON a shed wall; floor cord from the bracket to a lamp",
+       ["the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it)",
+        "the wire lands on the bracket's insulator", "a floor cord continues from the bracket to the lamp"],
+       ["build another: Architect > Power > scrap wall bracket, point it AT a wall (vanilla wall-attachment placement)",
+        "deconstruct the wall behind the bracket", "unlink and re-link the span from the mast's gizmo"],
        devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (21, 5), None, None)],
        walls=line(12, 16, 3) + [(12, z) for z in range(0, 3)] + [(16, z) for z in range(0, 3)] + line(13, 15, 0),
        conduit=line(15, 20, 4),
-       masts=[("RM_AerialMast", (2, 4)), ("RM_AerialWallBracket", (14, 4))], links=[(0, 1)])
+       masts=[("RM_AerialMast", (2, 4)), ("RM_AerialWallBracket", (14, 4))], links=[(0, 1)])   # bracket faces SOUTH, at the wall
     st(10, "B", B_X[3], ROW_B, 30, 11, "CUT + FALLEN SPAN", "the station-7 chain with the SECOND span cut (as if blown by an explosion)",
-       ["the cut wire has fallen: two downed wires lie on the ground from each mast", "the live downed end sparks; the far lamp is dark",
+       ["the cut wire still hangs from each mast TOP down to the ground, then lies on the ground, in the span's own cable",
+        "the live downed end sparks; the far lamp is dark",
         "the first span still hangs and still carries power"],
        ["select the middle mast > Re-string cut wires: the span goes back up and the lamp relights",
         "god mode: drop an explosion under a span (dev tools) to cut another"],
@@ -150,22 +162,41 @@ def station_list():
        hostile=[("Battery", (2, 4), 0, 1.0), ("PowerConduit", (3, 4)), ("PowerConduit", (4, 4))],
        conduit=[(7, 4), (8, 4)], devs=[("RM_PowerTapClamp", (5, 4), None, None), ("StandingLamp", (10, 5), None, None)])
 
-    # ---- row C: fire hoses (a reel; the hose is laid as data from the reel to a free end)
+    # ---- row C: flexible hoses (a reel; the hose is laid as data from the reel to a free end)
     hose_i = ["select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos",
               "dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)"]
     st(12, "C", C_X[0], ROW_C, 18, 6, "HOSE: FLAT", "a laid hose with nothing flowing through it",
-       ["the hose lies flat and thin", "joiners (couplings) every few cells"], hose_i,
+       ["the hose lies flat and thin", "a straight hose has NO joiner along it; the free end is a plain open end the hose's own width"], hose_i,
        hose=dict(reel=(0, 2), far=(16, 2), state="Flat"))
     st(13, "C", C_X[1], ROW_C, 18, 6, "HOSE: FILLING", "the same hose, flow ON, frozen half-way through filling",
        ["half-plump: the swell is mid-transition", "UNPAUSE and it finishes plumping in ~half a second"], hose_i,
        hose=dict(reel=(0, 2), far=(16, 2), state="Filling"))
     st(14, "C", C_X[2], ROW_C, 18, 6, "HOSE: PLUMP", "flow ON, fully filled",
-       ["full round hose, visibly wider than the flat one", "joiners still visible"], hose_i,
+       ["full round hose, visibly wider than the flat one", "still no joiner on the straight"], hose_i,
        hose=dict(reel=(0, 2), far=(16, 2), state="Plump"))
     st(15, "C", C_X[3], ROW_C, 28, 6, "HOSE: LONG + BEND", "a 26-cell plump hose routed round a wall stub",
        ["the hose bends smoothly round the obstacle (never kinks tighter than the minimum bend)",
-        "several joiners along the length", "it never crosses the wall"], hose_i,
+        "joiners only at the bends: two brass couplings screwed face to face, joining two lengths", "it never crosses the wall"], hose_i,
        walls=[(13, z) for z in range(1, 5)], hose=dict(reel=(0, 2), far=(26, 2), state="Plump"))
+    # ---- row D: hose crossings and parallel runs (owner review 2026-10-04 B18/B20; ruled by card: hoses do NOT branch,
+    # one hose = one line with two ends, a "grid" is hoses crossing or lying side by side). What it does TODAY, shown as is.
+    cross_i = hose_i + ["NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)"]
+    st(16, "D", D_X[0], ROW_D, 20, 20, "HOSE CROSSING", "two plump hoses laid straight across each other at right angles",
+       ["one hose passes cleanly OVER the other, the same way every frame (the newer reel's hose is on top)",
+        "no joiner and no end fitting at the crossing", "the hoses do not route round each other: a hose is not an obstacle to another"],
+       cross_i, hoses=[dict(reel=(0, 10), far=(19, 10), state="Plump"), dict(reel=(10, 0), far=(10, 19), state="Plump")])
+    st(17, "D", D_X[1], ROW_D, 22, 10, "PARALLEL RUNS", "two hoses laid side by side, two cells apart, one flat and one plump",
+       ["each keeps its own lane; where their S-curves meet, one draws over the other cleanly",
+        "flat vs plump side by side: width and shine"],
+       cross_i, hoses=[dict(reel=(0, 3), far=(21, 3), state="Flat"), dict(reel=(0, 5), far=(21, 5), state="Plump")])
+    st(18, "D", D_X[2], ROW_D, 22, 22, "HOSE GRID", "four hoses, two each way, crossing in a 2 x 2 grid",
+       ["four crossings: every one is over/under, with a fixed order (newest on top)",
+        "FINDING to judge: where the S-curve slack of two hoses runs along each other they may overlap for a stretch"],
+       cross_i, hoses=[dict(reel=(0, 6), far=(21, 6), state="Plump"), dict(reel=(0, 15), far=(21, 15), state="Plump"),
+                       dict(reel=(6, 0), far=(6, 21), state="Plump"), dict(reel=(15, 0), far=(15, 21), state="Plump")])
+    for d in S:
+        if d["hose"] and not d["hoses"]:
+            d["hoses"] = [d["hose"]]
     return S
 
 
@@ -221,7 +252,8 @@ SHORT = {1: "full battery, cord to heater + a plugged lamp", 2: "same build, bat
          7: "battery > mast > mast > mast > lamp, overhead", 8: "a power mast feeding two lamp masts",
          9: "wire from a mast to a bracket on a shed wall", 10: "station 7 with the second span CUT",
          11: "clamp drains THEIR grid into our lamp", 12: "laid, nothing flowing", 13: "flow on, frozen half-filled",
-         14: "flow on, fully filled", 15: "26 cells, bends round a wall stub"}   # in-world sub line: one short clause
+         14: "flow on, fully filled", 15: "26 cells, bends round a wall stub", 16: "two hoses crossing: one cleanly over",
+         17: "two hoses side by side", 18: "four hoses crossing in a 2 x 2 grid"}   # in-world sub line: one short clause
 
 
 def label_ops(S, style):
@@ -230,11 +262,12 @@ def label_ops(S, style):
 
     def add(x, z, text, sub="", col=GOLD, size="medium"):
         L.append("%d|%d|%s|%s|%s|%s|%s" % (x, z, text.replace("|", "/"), sub.replace("|", "/"), col, size, TAG))
-    add(86, 104, "MESSY CONDUIT - HUMAN REVIEW", "cable style now: %s   |   game paused, god mode on   |   key sheet: Transient\\mc_human_review\\keysheet.html" % style,
+    add(86, 104, "MESSY CONDUIT - HUMAN REVIEW", "cable look now: %s   |   game paused, god mode on   |   key sheet: Transient\\mc_human_review\\keysheet.html" % LOOK.get(style, style),
         CREAM)
     add(20 + 6, ROW_A + 12, "ROW A - FLOOR CORDS", "stations 1-6", TEAL, "small")
     add(20 + 6, ROW_B + 14, "ROW B - OVERHEAD LINES", "stations 7-11", TEAL, "small")
-    add(20 + 6, ROW_C + 8, "ROW C - FIRE HOSES", "stations 12-15", TEAL, "small")
+    add(20 + 6, ROW_C + 8, "ROW C - FLEXIBLE HOSES", "stations 12-15", TEAL, "small")
+    add(20 + 6, ROW_D + 23, "ROW D - HOSE CROSSINGS", "stations 16-18: crossings and parallel runs", TEAL, "small")
     for s in S:
         x, z = s["origin"]
         w, h = s["size"]
@@ -330,13 +363,14 @@ class Review(object):
                 if h[0] == "Battery":
                     bats.append((g(s, h[1]), h[3]))
             for m in s["masts"]:
-                put(m[0], g(s, m[1]), rot=0 if m[0] == "RM_AerialWallBracket" else None)
+                # the bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall); station 9's wall is south
+                put(m[0], g(s, m[1]), rot=2 if m[0] == "RM_AerialWallBracket" else None)
             for d, c, rot, ch in s["devs"]:
                 put(d, g(s, c), rot=rot)
                 if d == "Battery":
                     bats.append((g(s, c), ch))
-            if s["hose"]:
-                put("RM_HoseReel", g(s, s["hose"]["reel"]))
+            for h in s["hoses"]:
+                put("RM_HoseReel", g(s, h["reel"]))
         for c in FREE["pad_conduit"]:
             put("PowerConduit", c)
         for c in FREE["batteries"]:
@@ -397,27 +431,27 @@ class Review(object):
         B.ap("poll")
         B.ap("set:autoLink=True")                     # the free area behaves as shipped
         # hoses: lay all, flow the plump ones, then the filling one half a transition later
-        hs = [s for s in S if s["hose"]]
-        for s in hs:
-            r, f = g(s, s["hose"]["reel"]), g(s, s["hose"]["far"])
+        hs = [(s, h) for s in S for h in s["hoses"]]
+        for s, h in hs:
+            r, f = g(s, h["reel"]), g(s, h["far"])
             lay = B.hp("lay:%d,%d,%d,%d" % (r + f))
             if not lay.get("success", True) or lay.get("layOk") is False:
                 self.notes.append("station %d hose lay: %s" % (s["n"], json.dumps(lay)[:200]))
         B.ticks(2)
-        for s in hs:
-            if s["hose"]["state"] == "Plump":
-                B.hp("flow:%d,%d=on" % g(s, s["hose"]["reel"]))
+        for s, h in hs:
+            if h["state"] == "Plump":
+                B.hp("flow:%d,%d=on" % g(s, h["reel"]))
         B.ticks(PL.TRANSITION_TICKS - PL.TRANSITION_TICKS // 2 + 5)
-        for s in hs:
-            if s["hose"]["state"] == "Filling":
-                B.hp("flow:%d,%d=on" % g(s, s["hose"]["reel"]))
+        for s, h in hs:
+            if h["state"] == "Filling":
+                B.hp("flow:%d,%d=on" % g(s, h["reel"]))
         B.ticks(PL.TRANSITION_TICKS // 2)
         hc = B.hp("census")
         self.hose_states = {}
-        for s in hs:
-            reel = list(g(s, s["hose"]["reel"]))
-            h = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
-            self.hose_states[s["n"]] = {k: h.get(k) for k in ("state", "blend", "couplings", "pathLen")}
+        for s, h in hs:
+            reel = list(g(s, h["reel"]))
+            x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
+            self.hose_states["%d@%d,%d" % (s["n"], reel[0], reel[1])] = {k: x.get(k) for k in ("state", "blend", "couplings", "pathLen")}
         B.probe("poll")
         self.call("rimworld/pause_game", pause=True)
 
@@ -444,15 +478,18 @@ def keysheet(S, style, live=None):
     os.makedirs(OUT, exist_ok=True)
     md = ["# Messy Conduit - human review key sheet", "",
           "Built by `src/RimMandrake/MessyConduit/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.",
-          "Cable style now: **%s** (one global setting: flip it with Mod Settings > RimMandrake: Messy Conduit > Style, "
-          "or `human_review.py --style <X>`; every station changes at once)." % style, "",
+          "Cable look now: **%s** (one global setting: flip it with Mod Settings > RimMandrake: Messy Conduit > Style, "
+          "or `human_review.py --style <X>`; every station changes at once)." % LOOK.get(style, style), "",
           "Jump the camera: `human_review.py --goto N` (N = station, 0 = whole gallery, F = free area).", "",
           "## Everywhere", "",
           "- Mod Settings > RimMandrake: Messy Conduit: master switch OFF restores vanilla conduit art instantly, ON brings the cords back.",
-          "- Styles: StarWarsJawa, StarWars, ExtensionCord, Cybertek (ExtensionCord also has a colour mode).",
+          "- Looks (Mod Settings name = `--style` value): Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, "
+          "Futuristic = Cybertek. Each look owns its floor cords, its junction pieces, its power poles and its overhead lines. "
+          "Modern also has a colour mode: in 'one colour everywhere' every plug, junction box and wall stub takes that colour.",
           "- Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.",
           "- Power overlay (bottom-right toggle) still shows vanilla connector lines.", ""]
-    for row, name in (("A", "Row A - floor cords"), ("B", "Row B - overhead lines"), ("C", "Row C - fire hoses")):
+    for row, name in (("A", "Row A - floor cords"), ("B", "Row B - overhead lines"), ("C", "Row C - flexible hoses"),
+                      ("D", "Row D - hose crossings and parallel runs (hoses never branch: no T or + pieces, by ruling)")):
         md += ["## " + name, ""]
         for s in [s for s in S if s["row"] == row]:
             md += ["### %d. %s" % (s["n"], s["title"]), "", s["what"], "", "**Notice**", ""] + ["- " + x for x in s["notice"]] + \
@@ -485,14 +522,16 @@ ul{margin:0;padding-left:18px}.what{margin:4px 0;color:var(--muted)}.go{margin:8
 code{color:var(--rust)}.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
 </style></head><body>
 <h1>Messy Conduit &mdash; human review</h1>
-<p class="sub">Cable style now: <b>%s</b>. Game paused, god mode on, clear weather, noon, Peaceful. Jump: <code>human_review.py --goto N</code> (0 = whole gallery, F = free area). Flip every station's look: Mod Settings &rsaquo; RimMandrake: Messy Conduit &rsaquo; Style, or <code>--style StarWars | ExtensionCord | Cybertek | StarWarsJawa</code>.</p>
+<p class="sub">Cable look now: <b>%s</b> (Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, Futuristic = Cybertek). Game paused, god mode on, clear weather, noon, Peaceful. Jump: <code>human_review.py --goto N</code> (0 = whole gallery, F = free area). Flip every station's look: Mod Settings &rsaquo; RimMandrake: Messy Conduit &rsaquo; Style, or <code>--style StarWars | ExtensionCord | Cybertek | StarWarsJawa</code>.</p>
 <div class="box"><b>Everywhere:</b> master switch OFF = vanilla conduit art, ON = cords back, no restart. Unpause (space) for motion: sway, sparks, hoses filling. Power overlay still shows the vanilla connector lines.</div>
 <h2>Row A &mdash; floor cords</h2><div class="grid">%s</div>
 <h2>Row B &mdash; overhead lines</h2><div class="grid">%s</div>
-<h2>Row C &mdash; fire hoses</h2><div class="grid">%s</div>
+<h2>Row C &mdash; flexible hoses</h2><div class="grid">%s</div>
+<h2>Row D &mdash; hose crossings and parallel runs</h2><p class="sub">Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece.</p><div class="grid">%s</div>
 <h2>F &mdash; free build area</h2><div class="box">Open soil east of the hoses. West end: charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>. South edge: steel, components, wood. God mode builds instantly; research is finished. New masts here auto-link (shipped default); gallery masts are over 20 cells away. <span class="go">--goto F</span></div>
-</body></html>""" % (E(style), "".join(c for c, s in zip(cards, S) if s["row"] == "A"),
-                     "".join(c for c, s in zip(cards, S) if s["row"] == "B"), "".join(c for c, s in zip(cards, S) if s["row"] == "C"))
+</body></html>""" % (E(LOOK.get(style, style)), "".join(c for c, s in zip(cards, S) if s["row"] == "A"),
+                     "".join(c for c, s in zip(cards, S) if s["row"] == "B"), "".join(c for c, s in zip(cards, S) if s["row"] == "C"),
+                     "".join(c for c, s in zip(cards, S) if s["row"] == "D"))
     with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)
 

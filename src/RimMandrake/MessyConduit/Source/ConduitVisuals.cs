@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.MessyConduit
@@ -39,6 +40,8 @@ namespace RimMandrake.MessyConduit
                 targets.Add(d);
                 originals[d] = d.graphicData;
             }
+            switchDef = DefDatabase<ThingDef>.GetNamedSilentFail("PowerSwitch");
+            if (switchDef?.graphicData != null) switchOrig = switchDef.graphicData;
             Apply(MessyConduitSettings.enabled);
             Log.Message("[MessyConduit] targets: " + string.Join(", ", TargetNames()) + "; invisible=" + Applied);
         }
@@ -70,12 +73,41 @@ namespace RimMandrake.MessyConduit
                 d.graphic = use.Graphic;
             }
             Applied = invisible;
+            ApplySwitch(invisible);
             if (Current.ProgramState == ProgramState.Playing && Find.Maps != null)
             {
                 foreach (Map map in Find.Maps)
                     foreach (Thing t in map.listerThings.AllThings)
-                        if (targets.Contains(t.def)) t.Notify_ColorChanged();
+                        if (targets.Contains(t.def) || t.def == switchDef) t.Notify_ColorChanged();
             }
+        }
+
+        // ---------------------------------------------------------------- the power switch (owner review 2026-10-04 B3)
+        /// <summary>The vanilla switch's arms run to the very edge of its texture: drawn on bare ground (no conduit under it
+        /// any more) a dark hairline shows round the tile edge. With the cords on, the switch draws our copy of the art
+        /// held inside a 3 px fully transparent margin and clamped, so nothing can sample at the tile edge. Off restores
+        /// vanilla exactly.</summary>
+        public const string SwitchTexPathOurs = "RimMandrake/MessyConduit/PowerSwitch";
+        private static ThingDef switchDef;
+        private static GraphicData switchOrig;
+
+        public static string SwitchTexPath() => switchDef?.graphicData?.texPath;
+
+        private static void ApplySwitch(bool ours)
+        {
+            if (switchDef == null || switchOrig == null) return;
+            GraphicData use = switchOrig;
+            Texture2D on = ContentFinder<Texture2D>.Get(SwitchTexPathOurs, false), off = ContentFinder<Texture2D>.Get(SwitchTexPathOurs + "_Off", false);
+            if (ours && on != null && off != null)
+            {
+                on.wrapMode = TextureWrapMode.Clamp;
+                off.wrapMode = TextureWrapMode.Clamp;
+                use = new GraphicData();
+                use.CopyFrom(switchOrig);
+                use.texPath = SwitchTexPathOurs;
+            }
+            switchDef.graphicData = use;
+            switchDef.graphic = use.Graphic;
         }
 
         /// <summary>For the probe: the texPath each target currently renders with.</summary>

@@ -1,4 +1,4 @@
-// Messy Conduit L6 fire hoses, the Verse-free half (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md
+// Messy Conduit L6 flexible hoses, the Verse-free half (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md
 // section 3). Also compiled by Source/SelfTest (HoseSelfTest.cs): no Verse/Unity here, ever.
 //
 // Owner, 2026-10-02: "The flexible water hoses should be much thicker and stiffer than the wires, much like the
@@ -120,8 +120,11 @@ namespace RimMandrake.MessyConduit.Hose
         public bool FellBack;
         /// <summary>Equal-arc samples of the collapsed pose, the charged pose, and the planned centreline (same count).</summary>
         public List<V2> Flat = new List<V2>(), Plump = new List<V2>(), Centre = new List<V2>();
-        /// <summary>Coupling positions (both ends, then every CouplingSpacing cells along the flat hose).</summary>
+        /// <summary>Coupling positions: the reel end, every joiner, the free end (in that order).</summary>
         public List<V2> Couplings = new List<V2>();
+        /// <summary>Sample indices of the joiners between two lengths: only at real bends of the planned route, never on a
+        /// straight run (owner review 2026-10-04 B17).</summary>
+        public List<int> Joints = new List<int>();
         public double PathLen, FlatLen, PlumpLen, MinBendFlat, MinBendPlump;
     }
 
@@ -228,7 +231,10 @@ namespace RimMandrake.MessyConduit.Hose
             lay.PlumpLen = Geo.Length(lay.Plump);
             lay.MinBendFlat = MinBendRadius(lay.Flat, EndSkip);
             lay.MinBendPlump = MinBendRadius(lay.Plump, EndSkip);
-            lay.Couplings = Couplings(lay.Flat, p.CouplingSpacing);
+            lay.Joints = Joints(lay.Centre, p.CouplingSpacing);
+            lay.Couplings = new List<V2> { lay.Flat[0] };
+            foreach (int j in lay.Joints) lay.Couplings.Add(lay.Flat[j]);
+            lay.Couplings.Add(lay.Flat[lay.Flat.Count - 1]);
             lay.Ok = true;
             return lay;
         }
@@ -408,6 +414,59 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         private static double Orient(V2 a, V2 b, V2 c) => (b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X);
+
+        /// <summary>How much the route turns at sample i, over +-1 cell of arc (radians).</summary>
+        public static double TurnAt(IList<V2> C, double[] s, int i, double half = 1.0)
+        {
+            int a = i, b = i;
+            while (a > 0 && s[i] - s[a] < half) a--;
+            while (b < C.Count - 1 && s[b] - s[i] < half) b++;
+            if (a == i || b == i) return 0;
+            V2 u = C[i] - C[a], v = C[b] - C[i];
+            double cr = u.X * v.Z - u.Z * v.X, dt = u.X * v.X + u.Z * v.Z;
+            return Math.Abs(Math.Atan2(cr, dt));
+        }
+
+        /// <summary>Bend threshold for a joiner (radians, 35 deg over 2 cells of route). PROVISIONAL.</summary>
+        public const double JointTurn = 35 * Math.PI / 180;
+
+        /// <summary>
+        /// Where one hose length is screwed to the next (owner review 2026-10-04 B17: "no connector along a straight
+        /// length"): at the sharpest point of each bend of the PLANNED route (the centreline, not the slack wiggles),
+        /// at least <paramref name="minSpacing"/> cells apart and 1.5 cells clear of either end. A straight hose has none.
+        /// </summary>
+        public static List<int> Joints(IList<V2> C, double minSpacing)
+        {
+            var o = new List<int>();
+            if (C.Count < 5) return o;
+            double[] s = Geo.CumLen(C);
+            double L = s[s.Length - 1];
+            var turn = new double[C.Count];
+            for (int i = 0; i < C.Count; i++) turn[i] = TurnAt(C, s, i);
+            var cand = new List<int>();
+            for (int i = 1; i < C.Count - 1; i++)
+                if (turn[i] >= JointTurn && turn[i] >= turn[i - 1] && turn[i] > turn[i + 1] && s[i] > 1.5 && L - s[i] > 1.5) cand.Add(i);
+            foreach (int i in cand.OrderByDescending(i => turn[i]))
+                if (o.All(j => Math.Abs(s[j] - s[i]) >= Math.Max(2, minSpacing))) o.Add(i);
+            o.Sort();
+            return o;
+        }
+
+        /// <summary>A joiner is TWO couplings face to face, each on its own length, so it reads as two lengths screwed
+        /// tightly together (B9), never as one hose end lying across another. Centres of the forward piece (pointing
+        /// along +d) and the backward piece (pointing along -d) for a joint at J; the brass faces meet at J.</summary>
+        public static void JoinerPoses(V2 J, V2 d, double size, double face, out V2 forward, out V2 backward)
+        {
+            forward = J - d * (face * size);
+            backward = J + d * (face * size);
+        }
+
+        /// <summary>Altitude lift of the hose ranked <paramref name="rank"/> (0 = oldest reel) so crossings draw one hose
+        /// cleanly over the other (B18). Each band holds a hose's own steps (shadow -0.0004 .. fittings +0.001); bands are
+        /// 0.0016 apart and capped at 12 ranks so the top band stays below the next altitude layer (0.0390625 away).</summary>
+        public const double CrossBand = 0.0016;
+        public const int CrossRanks = 12;
+        public static float CrossLift(int rank) => (float)(CrossBand * Math.Max(0, Math.Min(CrossRanks, rank)));
 
         public static List<V2> Couplings(IList<V2> X, double spacing)
         {

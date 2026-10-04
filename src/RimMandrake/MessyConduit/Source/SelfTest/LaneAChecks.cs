@@ -224,7 +224,7 @@ namespace RimMandrake.MessyConduit.SelfTest
                 JsonElement sc = scenes.First(x => x.GetProperty("scene").GetProperty("name").GetString() == nm).GetProperty("scene");
                 CordWorld w = Program.World(sc);
                 HashSet<Cell> live = Program.Live(w, sc);
-                List<LaidPiece> ps = new CordBuilder().Build(w, new BuildOptions(), live.Contains);
+                List<LaidPiece> ps = new CordBuilder().Build(w, new BuildOptions { Pile = PileArt.Strips }, live.Contains);   // LEDs: the modern strip look
                 int lit = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip));
                 int dark = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark));
                 bool wantLit = nm == "tangle";
