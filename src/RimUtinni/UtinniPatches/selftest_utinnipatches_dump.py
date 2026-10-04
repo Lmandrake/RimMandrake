@@ -72,13 +72,13 @@ def main():
         check("shipped defs vs the load-14 dump: all %d present with their labels (skipped %s)" % (checked, skipped), bad == [], bad[:3])
         check("held files are named, not passed (>= 5 held, >= 1 inactive guard)", skipped["held"] >= 5 and skipped["guard inactive"] >= 1, skipped)
         ty, name = next((r[0], r[1]) for r in rows_defs if r[0] == "ThingDef" and not r[3] and r[4] not in [] and r[1] in dump["ThingDef"])
-        d2 = copy.deepcopy(dump)
+        d2 = dict((k, dict(x) if x else x) for k, x in dump.items())
         del d2["ThingDef"][name]
         got = v.dump_presence_findings(rows_defs, d2, active, held)[2]
         check("break: a def dropped from the dump is named (%s)" % name, len(got) == 1 and name in got[0], got)
-        d3 = copy.deepcopy(dump)
+        d3 = dict((k, dict(x) if x else x) for k, x in dump.items())
         lab = next(r for r in rows_defs if r[0] == "ThingDef" and r[2] and r[1] in dump["ThingDef"])
-        d3["ThingDef"][lab[1]]["label"] = "something else"
+        d3["ThingDef"][lab[1]] = dict(d3["ThingDef"][lab[1]], label="something else")
         got = v.dump_presence_findings(rows_defs, d3, active, held)[2]
         check("break: a label that drifted is named (%s)" % lab[1], len(got) == 1 and "label" in got[0], got)
         got = v.dump_presence_findings(rows_defs, d2, active, held + ["*"])[2]
