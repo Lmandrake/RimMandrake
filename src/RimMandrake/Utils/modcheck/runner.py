@@ -492,7 +492,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
                 pass
             # Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup surprise).
-            for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
+            for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust", "AB_MycoticSpores"):   # AB_MycoticSpores = Alpha Biomes' AlphaBiomes.Gas_Mycotic (Cut by nobody, 1.0/120t, FeverWood/TheRot)
                 try:
                     session.call("jawa/set_gas", action="clear", rect="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), gasType=_gas)
                 except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
