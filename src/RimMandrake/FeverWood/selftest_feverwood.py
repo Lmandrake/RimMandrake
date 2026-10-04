@@ -595,7 +595,12 @@ def reds(result):
     return sorted(k for k, (v, _) in result.items() if v == "FAIL")
 
 
-def guards_with(extra_files, leak_text=None):
+CLEAN_FACTION = ("<Defs><FactionDef Name=\"BaseHidden\" Abstract=\"True\"><fixedName>the base</fixedName></FactionDef>"
+                 "<FactionDef><defName>RM_FactionDef_KurrethSwarm</defName><fixedName>the swarm</fixedName><hidden>true</hidden></FactionDef>"
+                 "<FactionDef ParentName=\"BaseHidden\"><defName>Inherits</defName><hidden>true</hidden></FactionDef></Defs>")
+
+
+def guards_with(extra_files, leak_text=None, faction=CLEAN_FACTION):
     """Run ONLY the source_guards chain over a synthetic mod tree: a 12-entry compose file whose entries each
     have an About.xml, plus the Patches/ files in `extra_files`. Proves the two source guards can go red."""
     tmp = tempfile.mkdtemp()
@@ -620,6 +625,9 @@ def guards_with(extra_files, leak_text=None):
         os.makedirs(os.path.join(mod, "Defs", "BiomeDefs"))
         with open(os.path.join(mod, "Defs", "BiomeDefs", "RM_FeverWood.xml"), "w") as fh:
             fh.write("<Defs><BiomeDef><defName>RM_FeverWood</defName><preventGenSteps><li>ScatterShrines</li></preventGenSteps></BiomeDef></Defs>")
+        os.makedirs(os.path.join(mod, "Defs", "FactionDefs"))
+        with open(os.path.join(mod, "Defs", "FactionDefs", "RM_FactionDef_KurrethSwarm.xml"), "w") as fh:
+            fh.write(faction)
         os.makedirs(os.path.join(mod, "Defs", "ThingDefs"))
         with open(os.path.join(mod, "Defs", "ThingDefs", "Things.xml"), "w") as fh:
             fh.write("<Defs>%s</Defs>" % "".join(
@@ -766,6 +774,15 @@ def main():
     leak = guards_with({}, leak_text="canon dianoga tentacles are suckered")
     check("break a Star Wars name in free text reddens its guard only",
           [k for k, v in leak.items() if v == "FAIL"] == ["source_guards.free_text_names_no_canon_and_dianoga_patches_guarded"], leak)
+
+    nameless = guards_with({}, faction=CLEAN_FACTION.replace("<fixedName>the swarm</fixedName>", ""))
+    check("break a hidden faction with no fixedName/factionNameMaker reddens its guard only",
+          [k for k, v in nameless.items() if v == "FAIL"] == ["source_guards.hidden_raider_factions_have_a_name_source"], nameless)
+    orphan = guards_with({}, faction=CLEAN_FACTION.replace('<fixedName>the base</fixedName>', ""))
+    check("break an inherited name source removed from the abstract parent reddens its guard only",
+          [k for k, v in orphan.items() if v == "FAIL"] == ["source_guards.hidden_raider_factions_have_a_name_source"], orphan)
+    found, bad = V.hidden_faction_findings([os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..")])
+    check("every shipped hidden FactionDef under src/ has a name source (%d found)" % found, found >= 5 and not bad, bad)
 
     print()
     if FAILS:
