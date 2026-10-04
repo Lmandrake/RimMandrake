@@ -62,3 +62,32 @@ built and reusable.
 - ⛔ Do not build any of §5/§7/§8a's UNMEASURED mechanisms from reasoning — each needs a
   Desktop/RimSage read first, same posture the harvest spec itself already insists on for its
   own §10.
+
+## Engine check — does the Gauranlen system accept a non-plant host? (FOUNDRY, 2026-10-04, RimSage, decompiled 1.6)
+
+**Yes, structurally — with two hard-coded gates that need a small C# workaround.** MEASURED-SRC:
+
+- `CompTreeConnection : ThingComp` — no `Plant` cast anywhere in it. It works in `CompTick()` (Normal ticker;
+  `Plant_TreeGauranlen` sets `tickerType Normal`), so a Building host **must set `tickerType Normal`**
+  (`BuildingBase` does not; `RUT_GreatboleCore` sets none today).
+- `ThingRequestGroup.DryadSpawner` = "def has `CompProperties_TreeConnection`" (`ThingListGroupHelper.cs:170`),
+  def-category agnostic — so pruning (`WorkGiver_PruneGauranlenTree.PotentialWorkThingsGlobal`), mode change,
+  both Gauranlen alerts and the building-overlay all find a Building host unchanged.
+- `PostSpawnSetup` destroys the host unless Ideology is active — moot (all DLC assumed).
+- **Building penalty off is XML-only:** the loss is `connectionLossDailyPerBuildingDistanceCurve` over
+  `listerArtificialBuildingsForMeditation` within `radiusToBuildingForConnectionStrengthLoss`; give our
+  `CompProperties_TreeConnection` a flat-zero curve (or radius 0). The host itself never counts: a natural
+  thing has `faction == null` and `CountsAsArtificialBuilding` requires a faction.
+- 🔴 **Gate 1 — the connection ritual never offers our host.** `RitualObligationTargetWorker_UnconnectedGauranlenTree.GetTargets`
+  is `listerThings.ThingsOfDef(ThingDefOf.Plant_TreeGauranlen)`. Fix: a filter subclass (or postfix) that
+  enumerates `ThingRequestGroup.DryadSpawner` instead. `RitualOutcomeEffectWorker_ConnectToTree` itself is
+  host-agnostic (`TryGetComp<CompTreeConnection>`).
+- 🔴 **Gate 2 — `RitualPosition_BesideTree.ThingDef => ThingDefOf.Plant_TreeGauranlen`**: ritual positions key
+  on the vanilla def. Same fix shape (subclass or postfix).
+- Cosmetic only: `GauranlenUtility.CocoonAndPodCellValidator` excludes Gauranlen-def cells (our host is
+  Impassable anyway); `Pawn_ConnectionsTracker` gizmo icon is the Gauranlen icon.
+
+⇒ The owner's ruled option (vanilla Gauranlen, building penalty OFF) is **buildable**: XML comp + ticker on the
+host, plus ~2 small C# classes for the two ritual gates. No need to go back to him.
+NEXT: build it in the free Greentide mod (where the 2026-10-03 ruling moves heartwood/core) when its DLL is not
+frozen for a live run; default OFF Mod Settings toggle per §8b.

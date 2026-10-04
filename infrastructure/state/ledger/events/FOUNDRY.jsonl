@@ -2789,3 +2789,9 @@
 {"seat":"FOUNDRY","event":"start","id":"VFET_RETAG_ROWS_NOT_HELD_1","ts":"2026-10-04T08:35:45Z","tsn":1791102945517788438}
 {"seat":"FOUNDRY","event":"close","id":"ANIMAL_TOLERANCES_DONOR_NOMATCH_1","sha":"65180d7e9","reason":"generator guards on def existence; regenerated","ts":"2026-10-04T08:36:02Z","tsn":1791102962327638826}
 {"seat":"FOUNDRY","event":"close","id":"VFET_RETAG_ROWS_NOT_HELD_1","sha":"b5b140267","reason":"forceLoadAfter + unpin landed in source; takes effect on next deploy+load (bar red until then)","ts":"2026-10-04T08:36:02Z","tsn":1791102962860618238}
+{"seat":"FOUNDRY","event":"claim","id":"EVENT_TRACE_PROPS_LIBRARY_1","ts":"2026-10-04T08:41:27Z","tsn":1791103287800633728}
+{"seat":"FOUNDRY","event":"start","id":"EVENT_TRACE_PROPS_LIBRARY_1","ts":"2026-10-04T08:41:28Z","tsn":1791103288311750566}
+{"seat":"FOUNDRY","event":"note","id":"EVENT_TRACE_PROPS_LIBRARY_1","text":"Step 0 spike built offline at 29d533d43: src/RimMandrake/Traces (2 placeholder filth defs, no C#) + first script validation.py (chain spike) + walk. Design doc corrected to the 2026-10-03 repair ruling. NEXT: deploy Traces, run 'modcheck run Traces' on minimal+traces; wall_spike_spawns_on_a_wall_cell decides carrier W vs A, then step 1 (RM_TraceUtility/aging/settings).","ts":"2026-10-04T08:41:42Z","tsn":1791103302654123722}
+{"seat":"FOUNDRY","event":"drop","id":"GREENTIDE_TERROR_REPLACEMENT_1","reason":"stale-drop: design done f10e6d58a; Vurrak built (GREENTIDE_VURRAK_BUILD_1 done, 353c7efeb); Illisk carried by GREENTIDE_ILLISK_BUILD_1","ts":"2026-10-04T08:42:23Z","tsn":1791103343307421411}
+{"seat":"FOUNDRY","event":"claim","id":"GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1","ts":"2026-10-04T08:44:25Z","tsn":1791103465906502001}
+{"seat":"FOUNDRY","event":"start","id":"GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1","ts":"2026-10-04T08:44:26Z","tsn":1791103466437165240}
