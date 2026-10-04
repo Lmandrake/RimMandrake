@@ -246,6 +246,23 @@ def _build_suite():
     suite = Suite("Miasma")
     suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled", "mothersPriceEnabled"]
 
+    def _proof(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_MiasmaProof", method=method, args="current")
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def _kv(text):
+        return dict(m.groups() for m in re.finditer(r"(\w+)=(\S+)", text))
+
+    def _loaded(t, pairs):
+        """Live: every DefType/defName in pairs survived the loader (a def can parse and still be discarded)."""
+        r = t.bridge_call("jawa/get_defs", defs=";".join(pairs), limit=len(pairs) + 1)
+        if not isinstance(r, dict) or r.get("success") is False:
+            _unmeasured(t, "get_defs could not be asked: %s" % str(r)[:160])
+            return
+        missing = r.get("notFound") or [d.get("defName") for d in (r.get("defs") or []) if not d.get("found")]
+        if missing:
+            raise ExpectationFailed("defs discarded or absent live: %s" % missing)
+
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL) via the harness's upstream_failed route."""
         t.upstream_reason = "UNMEASURED: " + why
@@ -299,22 +316,48 @@ def _build_suite():
 
     @suite.chain("nursery_young_free_tier")
     def nursery_young_free_tier(t):
-        with t.component("four_young_def_and_strand", beyond_toggle=True):
+        with t.component("four_young_defs_load", beyond_toggle=True):
             if t.session is None:
                 return
-            _unmeasured(t, "jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
-                             "recede on a free-only tier stranding at least one of them (spawn many), need "
-                             "a live Miasma map with the bridge")
+            _loaded(t, ["PawnKindDef/%s" % y for y in ("RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv")]
+                    + ["ThingDef/%s" % y for y in ("RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv")])
+        with t.component("young_strand_on_recede", beyond_toggle=True):
+            if t.session is None:
+                return
+            _unmeasured(t, "a recede on a free-only tier stranding at least one young (spawn many) needs a live "
+                             "Miasma map; the stranding pool is a map GenStep the bridge cannot regenerate")
             return
 
     @suite.chain("decay_cells")
     def decay_cells(t):
-        with t.component("cell_powers_then_rots", toggle="decayCellsEnabled"):
+        """MIASMA_COVERAGE_GAPS_1: RM_MiasmaProof.ProofDecayCell drives the real comp on the current map:
+        output by feed level, the switch-off arm, and the lifetime digestion (ObserveFuel, what CompTick runs)."""
+        state = {}
+        with t.component("output_falls_with_feed_and_stops_empty", toggle="decayCellsEnabled"):
             if t.session is None:
                 return
-            _unmeasured(t, "a fed RM_DecayCell lighting a lamp, output falling to 0 unfed, and a cell past "
-                             "600 digested swapping to RM_RottingBed need a live map (spawn the cell, refuel, step ticks)")
-            return
+            text = _proof(t, "ProofDecayCell")
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return
+            kv = _kv(text)
+            state.update(kv)
+            try:
+                full, low, empty = float(kv["full"]), float(kv["low"]), float(kv["empty"])
+            except (KeyError, ValueError):
+                raise ExpectationFailed("decay cell proof unreadable: %s" % text[:200])
+            if not (full > low > 0 and empty == 0):
+                raise ExpectationFailed("want full > low > 0 and empty 0: %s" % text[:200])
+        with t.component("switch_off_makes_no_power", toggle="decayCellsEnabled"):
+            if t.session is None:
+                return
+            if state.get("off") != "0":
+                raise ExpectationFailed("decayCellsEnabled off still powers: off=%s" % state.get("off"))
+        with t.component("lifetime_feed_turns_cell_into_rotting_bed", toggle="decayCellsEnabled"):
+            if t.session is None:
+                return
+            if state.get("becameBed") != "True":
+                raise ExpectationFailed("a cell fed its lifetime did not become RM_RottingBed: %s" % state)
 
     @suite.chain("rotting_bed_corpses")
     def rotting_bed_corpses(t):
@@ -377,22 +420,28 @@ def _build_suite():
 
     @suite.chain("ambush_frog_free_tier")
     def ambush_frog_free_tier(t):
-        with t.component("bozzuga_defs_and_hunts", beyond_toggle=True):
+        with t.component("bozzuga_defs_load", beyond_toggle=True):
             if t.session is None:
                 return
-            _unmeasured(t, "jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
-                             "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
-                             "Miasma quicktest map with the bridge")
+            _loaded(t, ["ThingDef/RM_Bozzuga", "PawnKindDef/RM_Bozzuga"])
+        with t.component("bozzuga_hunts", beyond_toggle=True):
+            if t.session is None:
+                return
+            _unmeasured(t, "a bozzuga hunting a karrolun needs both spawned on a Miasma map and a predator-hunt "
+                             "job read over ticks (jawa/pawn_jobs); not wired yet")
             return
 
     @suite.chain("swarm_composter_free_tier")
     def swarm_composter_free_tier(t):
-        with t.component("swarm_karrobel_spawn_and_gate", beyond_toggle=True):
+        with t.component("swarm_karrobel_loam_defs_load", beyond_toggle=True):
             if t.session is None:
                 return
-            _unmeasured(t, "jawa/get_defs foundCount 3 on RM_FeverSwarm/RM_Karrobel/RM_DeltaLoam, "
-                             "both creatures spawning on a free-only Miasma map, and a gated mangal (RM_Thessamor) "
-                             "not spreading where no swarm lives, need a live Miasma quicktest map")
+            _loaded(t, ["ThingDef/RM_FeverSwarm", "ThingDef/RM_Karrobel", "ThingDef/RM_DeltaLoam"])
+        with t.component("mangal_gated_on_swarm", beyond_toggle=True):
+            if t.session is None:
+                return
+            _unmeasured(t, "a gated mangal (RM_Thessamor) not spreading where no swarm lives needs a Miasma map's "
+                             "wild plant pass (worldgen/map gen), which the bridge cannot regenerate")
             return
 
     @suite.chain("flotsam_yard")
@@ -406,13 +455,49 @@ def _build_suite():
 
     @suite.chain("attar_glaze_and_balm")
     def attar_glaze_and_balm(t):
-        with t.component("attar_recipe_glaze_balm", toggle="attarEnabled"):
+        """MIASMA_COVERAGE_GAPS_1: glaze and balm through RM_MiasmaProof on the current map."""
+        with t.component("glaze_adds_beauty_and_only_once", toggle="attarEnabled"):
             if t.session is None:
                 return
-            _unmeasured(t, "RM_MakeAttar resolves on RM_AttarStill, a glazed sculpture's Beauty "
-                             "stat rises by 3, and a balmed pawn's permanent scar fades while no non-permanent "
-                             "injury changes; each needs a live Miasma quicktest map with an artwork and a scarred pawn")
-            return
+            text = _proof(t, "ProofGlaze")
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return
+            kv = _kv(text)
+            try:
+                before, after, off = float(kv["before"]), float(kv["after"]), float(kv["off"])
+            except (KeyError, ValueError):
+                raise ExpectationFailed("glaze proof unreadable: %s" % text[:200])
+            if kv.get("glazable") != "True" or abs(after - before - 3.0) > 0.05 or kv.get("glazableAgain") != "False":
+                raise ExpectationFailed("glaze did not add +3 Beauty once: %s" % text[:200])
+            if abs(off - before) > 0.05:
+                raise ExpectationFailed("attarEnabled off still applies the glaze: %s" % text[:200])
+        with t.component("balm_fades_scar_not_fresh_wound", toggle="attarEnabled"):
+            if t.session is None:
+                return
+            text = _proof(t, "ProofBalm")
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return
+            kv = _kv(text)
+            if kv.get("freshStillThere") != "True" or kv.get("freshBefore") != kv.get("freshAfter"):
+                raise ExpectationFailed("balm touched a non-permanent wound: %s" % text[:200])
+            if kv.get("scarAfter") != "gone":
+                try:
+                    if float(kv["scarAfter"]) >= float(kv["scarBefore"]):
+                        raise ExpectationFailed("balm did not fade the scar: %s" % text[:200])
+                except (KeyError, ValueError):
+                    raise ExpectationFailed("balm proof unreadable: %s" % text[:200])
+        with t.component("attar_recipe_on_still", toggle="attarEnabled"):
+            if t.session is None:
+                return
+            r = t.bridge_call("jawa/get_defs", defs="RecipeDef/RM_MakeAttar", fields="recipeUsers", limit=2)
+            rows = (r or {}).get("defs") or [] if isinstance(r, dict) else []
+            if not rows or not rows[0].get("found", True):
+                raise ExpectationFailed("RM_MakeAttar not loaded: %s" % str(r)[:160])
+            users = str((rows[0].get("fields") or {}).get("recipeUsers"))
+            if "RM_AttarStill" not in users:
+                raise ExpectationFailed("RM_MakeAttar is not made at RM_AttarStill: %s" % users[:160])
 
     return suite
 
