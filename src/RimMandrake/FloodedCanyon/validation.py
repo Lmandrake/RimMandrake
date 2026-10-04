@@ -588,6 +588,34 @@ else:
 
 # --------------------------------------------------------------------------- static (offline)
 
+VANILLA_SOUNDDEF_DIR = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs/SoundDefs"
+
+
+def _tarruq_call_findings(race_xml=None, vanilla_dir=VANILLA_SOUNDDEF_DIR):
+    """CRACKEDLANDS_FIVE_BEATS_AUDIO_1: the hush gate (RM_TarruqHushPatch) silences RM_Tarruq's idle call,
+    so the tarruq must HAVE one -- a soundCall on its adult life stage naming a real Core SoundDef.
+    Red when the call is missing (the gate silences nothing) or names a SoundDef Core does not ship."""
+    if race_xml is None:
+        race_xml = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_IrqitTarruq.xml"), encoding="utf-8").read()
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(race_xml)
+    race = [d for d in root if d.tag == "ThingDef" and (d.findtext("defName") or "") == "RM_Tarruq"]
+    if len(race) != 1:
+        return ["tarruq call: RM_Tarruq ThingDef not found exactly once (found %d)" % len(race)]
+    adult = [li for li in race[0].iter("li") if (li.findtext("def") or "") == "AnimalAdult"]
+    call = (adult[0].findtext("soundCall") or "").strip() if adult else ""
+    if not call:
+        return ["tarruq call: RM_Tarruq's AnimalAdult stage has no soundCall -- the hush gate has nothing to silence"]
+    if not os.path.isdir(vanilla_dir):
+        return []   # UNMEASURED off the Desktop: presence is still enforced above
+    for dp, _, files in os.walk(vanilla_dir):
+        for f in files:
+            if f.endswith(".xml") and ("<defName>%s</defName>" % call) in open(os.path.join(dp, f), encoding="utf-8", errors="replace").read():
+                return []
+    return ["tarruq call: soundCall %s is not a Core SoundDef under %s" % (call, vanilla_dir)]
+
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -623,6 +651,7 @@ def static_checks():
         if p.split("\\")[1] not in dbg:
             bad.append("debug action label for path %r not in RM_FloodedCanyonDebugActions.cs" % p)
     bad.extend(_flora_shape_findings())
+    bad.extend(_tarruq_call_findings())
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad

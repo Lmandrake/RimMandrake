@@ -14,8 +14,8 @@ namespace RimMandrake.FloodedCanyon
     // cries out — DoCall's aggressive path and wound/death sounds are not
     // routed through TryDoCall).
     //
-    // The gate is live now; the call it gates is owed audio (the tarruq ships
-    // with no soundCall of its own yet — CRACKEDLANDS_FIVE_BEATS_AUDIO_1).
+    // The call it gates is vanilla Pawn_Muffalo_Call on the tarruq's juvenile
+    // and adult life stages (RM_IrqitTarruq.xml; CRACKEDLANDS_FIVE_BEATS_AUDIO_1).
     // ════════════════════════════════════════════════════════════════════
     [HarmonyPatch(typeof(Pawn_CallTracker), "TryDoCall")]
     public static class RM_TarruqHushPatch
