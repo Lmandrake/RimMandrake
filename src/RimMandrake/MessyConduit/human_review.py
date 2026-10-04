@@ -127,8 +127,8 @@ def station_list():
     st(7, "B", B_X[0], ROW_B, 30, 11, "MAST SPAN CHAIN", "battery -> scrap power mast -> mast -> mast -> lamp, two 12-cell overhead spans",
        ["the wires sag between masts and cast a ground shadow", "the far lamp is lit through the air",
         "the overhead cable is the look's own: thick dark scrap cable (Scrapper), thick BLACK cable (Industrial), thin black power line (Modern), sleek steel (Futuristic)",
-        "the masts change with the look too (a tinted stand-in until each look's own pole art lands)",
-        "masts are 4 cells tall; the wire leaves from the insulator at the top"],
+        "the poles change with the look too: weathered wood (Scrapper), riveted steel with black insulators (Industrial), grey concrete with a transformer can (Modern), faceted steel with blade insulators (Futuristic)",
+        "masts are 4 cells tall and 2 wide; the wire leaves from the insulator tips on the crossarm"],
        ["select a mast: Link wire / Unlink wire / Re-string gizmos", "build a new mast within 20 cells: it auto-links to the nearest",
         "unpause: spans sway"],
        devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (27, 6), None, None)],
@@ -247,7 +247,7 @@ def layout_check(S):
 
 # ------------------------------------------------------------------------------------------------ labels
 SHORT = {1: "full battery, cord to heater + a plugged lamp", 2: "same build, battery EMPTY",
-         3: "one conduit cell missing: live end / dead end", 4: "9+ conduit cells = a tangle with power strips",
+         3: "one conduit cell missing: live end / dead end", 4: "9+ conduit cells = a tangle",
          5: "switch, generator, lamps: one plug each", 6: "cord stubs into a wall and through rock",
          7: "battery > mast > mast > mast > lamp, overhead", 8: "a power mast feeding two lamp masts",
          9: "wire from a mast to a bracket on a shed wall", 10: "station 7 with the second span CUT",
@@ -271,7 +271,10 @@ def label_ops(S, style):
     for s in S:
         x, z = s["origin"]
         w, h = s["size"]
-        add(x + w // 2, z + h, "%d  %s" % (s["n"], s["title"]), SHORT[s["n"]])
+        sub = SHORT[s["n"]]
+        if s["n"] == 4:   # the pile pieces follow the look: strips only in Modern, junction boxes elsewhere
+            sub += " with power strips" if style == "ExtensionCord" else " with junction boxes"
+        add(x + w // 2, z + h, "%d  %s" % (s["n"], s["title"]), sub)
     fx, fz, fw, fh = FREE["rect"]
     add(fx + fw // 2, fz + fh + 1, "F  FREE BUILD AREA", "steel, components, wood below; charged power pad at the west end - build anything", RUST)
     add(179, 29, "plug in here", "end of the powered conduit (just left)", RUST, "small")
