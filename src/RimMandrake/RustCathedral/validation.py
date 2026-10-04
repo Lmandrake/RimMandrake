@@ -220,7 +220,9 @@ def _build_suite():
         with t.component("namespaced_attitude_def_resolves", beyond_toggle=True):
             for ty, nm in NAMESPACED:
                 short = ty.rsplit(".", 1)[1]
-                r = t.bridge_call("jawa/get_defs", defs="%s/%s" % (short, nm), fields="defName", limit=2)
+                # LIVE 2026-10-03: a custom def type resolves only by its FULL namespaced name (the short one is notFound
+                # though the def is loaded: get_def "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef" finds it).
+                r = t.bridge_call("jawa/get_defs", defs="%s/%s" % (ty, nm), fields="defName", limit=2)
                 if not _live(t):
                     continue
                 if not isinstance(r, dict) or r.get("success") is False:
@@ -294,7 +296,15 @@ def _build_suite():
                 if not f or all(f.get(k) in (None, "") for k in ("wildAnimals", "fishTypes", "forceRockTypes")):
                     _unmeasured(t, "get_defs did not serialise the roster fields: %r" % (list(f)[:6],))
                     return
-                missing = [n for n in want_animals + want_fish + want_rock if n not in blob]
+                # LIVE 2026-10-03: get_defs renders a BiomeAnimalRecord without the animal's name (3 shipped animals read
+                # "missing"); the animals come from jawa/biome_probe, fish and rock rows still from the blob.
+                pr = t.bridge_call("jawa/biome_probe", biomes=BIOME, animals=True, limit=100)
+                brows = (((pr or {}).get("biomes") or [{}])[0].get("animals") or []) if isinstance(pr, dict) else []
+                names = set(a.get("defName") for a in brows)
+                if not names:
+                    _unmeasured(t, "biome_probe returned no roster for %s: %s" % (BIOME, str(pr)[:140]))
+                    return
+                missing = [n for n in want_animals if n not in names] + [n for n in want_fish + want_rock if n not in blob]
                 if missing:
                     raise ExpectationFailed("biome lacks rows the XML ships: %s" % missing)
         with t.component("wild_plants_stay_empty_ruled_zero", beyond_toggle=True):
@@ -326,7 +336,7 @@ def _build_suite():
     @suite.chain("hum_attitude")
     def hum_attitude(t):
         with t.component("attitude_def_targets_this_biome", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs="RM_BiomeAttitudeDef/RM_RustCathedralAttitude", fields="targetBiome,bandThresholds", deep=True, limit=2)
+            r = t.bridge_call("jawa/get_defs", defs="RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude", fields="targetBiome,bandThresholds", deep=True, limit=2)
             if _live(t):
                 rows = (r or {}).get("defs") or []
                 if not isinstance(r, dict) or r.get("success") is False or not rows:
@@ -366,6 +376,10 @@ def _build_suite():
                     _unmeasured(t, "get_defs did not serialise the think tree: %s" % str(r)[:140])
                     return
                 blob = "|".join(_flat(rows[0]["fields"]["thinkRoot"]))
+                if "depth limit reached" in blob and "RM_ThinkNode_ConditionalRoachCleaningEnabled" not in blob:
+                    # LIVE 2026-10-03: get_defs stops at ~3 nodes deep, the toggle node sits below that; not a verdict.
+                    _unmeasured(t, "get_defs cannot read the think tree past its depth limit; the toggle node is below it")
+                    return
                 if "RM_ThinkNode_ConditionalRoachCleaningEnabled" not in blob:
                     raise ExpectationFailed("the roach tree no longer carries the cleaning toggle node (the toggle gates nothing)")
 
