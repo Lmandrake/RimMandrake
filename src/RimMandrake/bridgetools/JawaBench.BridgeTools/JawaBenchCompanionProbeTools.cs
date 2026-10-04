@@ -253,7 +253,12 @@ namespace JawaBench.BridgeTools
                 catch (Exception e)
                 {
                     Exception inner = e.InnerException ?? e;
-                    return Fail("Invoke threw " + inner.GetType().Name + ": " + inner.Message);
+                    // first stack frames too: an NRE inside a proof is otherwise unlocatable (the message is all the caller gets,
+                    // and the log is reset by the runner); capped so a deep trace cannot bloat the reply
+                    string st = inner.StackTrace ?? "";
+                    string[] frames = st.Split('\n');
+                    string top = string.Join(" <- ", frames.Take(6).Select(f => f.Trim()));
+                    return Fail("Invoke threw " + inner.GetType().Name + ": " + inner.Message + (top.Length > 0 ? " | at " + top : ""));
                 }
             });
         }
