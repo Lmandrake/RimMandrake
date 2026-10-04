@@ -4,7 +4,7 @@
      it becomes RM_RottingBed. Cost uses delta loam, delta silt and delta salt: the design's "silt ceramic" has no def
      (MEASURED: no ceramic item in src/), so raw delta silt stands in. Numbers // INVENTED. ART: placeholder vanilla
      wood-fired generator, tinted; the rotting bed's yield (Star Wars Cuisine) is MIASMA_ROTTING_BED_CUISINE_1 and its
-     corpse disposal is MIASMA_ROTTING_BED_CORPSES_1. -->
+     corpse disposal (MIASMA_ROTTING_BED_CORPSES_1) is RM_Building_RottingBed, Source/RM_RottingBed.cs. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DecayCell</defName>
@@ -79,8 +79,9 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_RottingBed</defName>
     <label>rotting bed</label>
-    <description>A spent decay cell gone over to rot: the plates are eaten through and the loam is a warm, stinking mat. It makes no power any more. Something could be grown in it, and something could be put in it to rot down.</description>
-    <thingClass>Building</thingClass>
+    <description>A spent decay cell gone over to rot: the plates are eaten through and the loam is a warm, stinking mat. It makes no power any more. Something could be grown in it, and a corpse laid in it rots down in a few days to bones and, if it was a person, a skull.</description>
+    <thingClass>RimMandrake.Miasma.RM_Building_RottingBed</thingClass>
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Building/Power/WoodFiredGenerator</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -94,6 +95,10 @@
     <rotatable>false</rotatable>
     <size>(2,2)</size>
     <canOverlapZones>false</canOverlapZones>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
     <statBases>
       <MaxHitPoints>150</MaxHitPoints>
       <Flammability>0.3</Flammability>
@@ -101,6 +106,61 @@
     </statBases>
     <building>
       <claimable>true</claimable>
+      <maxItemsInCell>1</maxItemsInCell>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+          <disallowedCategories>
+            <li>CorpsesMechanoid</li>
+          </disallowedCategories>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Important</priority>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+          <disallowedCategories>
+            <li>CorpsesMechanoid</li>
+          </disallowedCategories>
+        </filter>
+      </defaultStorageSettings>
     </building>
+    <modExtensions>
+      <li Class="RimMandrake.Miasma.RM_RottingBedExtension">
+        <bonesPerBodySize>8</bonesPerBodySize>
+        <bonesDef>RM_Bones</bonesDef>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- MIASMA_ROTTING_BED_CORPSES_1: no bone item exists in 1.6 + DLCs (MEASURED 2026-10-03, RimSage). ART: placeholder
+       vanilla skull stack, bleached; own art is an artpipe job. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Bones</defName>
+    <label>bones</label>
+    <description>Clean bones left when a rotting bed has finished with a body. Light, dry and slightly greasy.</description>
+    <graphicData>
+      <texPath>Things/Item/Skull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(225,215,190)</color>
+      <drawSize>(0.7,0.7)</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.4</MarketValue>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
   </ThingDef>
 </Defs>

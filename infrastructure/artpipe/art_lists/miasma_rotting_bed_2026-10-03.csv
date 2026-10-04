@@ -1,0 +1,2 @@
+id,rimflow_item_id,prompt,canvas_w,canvas_h,reference,facings,style_notes,priority,background,channel
+RM_Bones,MIASMA_ROTTING_BED_CORPSES_1,"RimWorld inventory item icon, painterly vanilla-RimWorld art style: a small loose heap of clean dry bones, long bones, ribs and a few knuckle bones, bleached ivory with faint brown loam stains, no skull. Single heap, centered, heavy clean black outline, no background, no shadow.",128,128,,,stack icon; Graphic_StackCount placeholder is the vanilla skull tinted,100,transparent,codex

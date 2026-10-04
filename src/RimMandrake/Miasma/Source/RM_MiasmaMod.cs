@@ -75,6 +75,9 @@ namespace RimMandrake.Miasma
         // MIASMA_DECAY_CELLS_1: the old meter appears on Miasma maps, and built decay cells make power.
         public static bool decayCellsEnabled = true;
         public static float decayCellPowerMultiplier = 1f;
+        // MIASMA_ROTTING_BED_CORPSES_1: a rotting bed rots stored corpses down to bones and skulls.
+        public static bool rottingBedCorpsesEnabled = true;
+        public static float rottingBedRotDays = 3f;
 
         public override void ExposeData()
         {
@@ -84,6 +87,8 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref flotsamAmount, "flotsamAmount", 1f, true);
             Scribe_Values.Look(ref decayCellsEnabled, "decayCellsEnabled", true, true);
             Scribe_Values.Look(ref decayCellPowerMultiplier, "decayCellPowerMultiplier", 1f, true);
+            Scribe_Values.Look(ref rottingBedCorpsesEnabled, "rottingBedCorpsesEnabled", true, true);
+            Scribe_Values.Look(ref rottingBedRotDays, "rottingBedRotDays", 3f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
             Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
@@ -95,10 +100,15 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref attarEnabled, "attarEnabled", true, true);
         }
 
+        private static Vector2 scroll;
+        private static float viewHeight = 1400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Miasma never generates on a new planet. The default "
@@ -194,7 +204,21 @@ namespace RimMandrake.Miasma
                 decayCellPowerMultiplier = list.Slider(decayCellPowerMultiplier, 0.25f, 2f);
             }
 
+            list.GapLine();
+            list.CheckboxLabeled("Rotting bed: corpse disposal",
+                ref rottingBedCorpsesEnabled,
+                "A spent decay cell's rotting bed takes corpses as storage, one per cell, and rots them down one at a "
+                + "time: the body is consumed, its gear drops beside the bed, and it leaves bones and, for a person "
+                + "with a head, a skull that names whose it was. Off: the bed still holds corpses but nothing rots down.");
+            if (rottingBedCorpsesEnabled)
+            {
+                list.Label("  Rot-down time: " + rottingBedRotDays.ToString("0.0") + " days per corpse");
+                rottingBedRotDays = list.Slider(rottingBedRotDays, 0.5f, 10f);
+            }
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
 
         private static string RarityLabel()
