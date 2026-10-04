@@ -54,7 +54,7 @@
         <enabled>false</enabled>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock_MenuIcon</uiIconPath>
+    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock</uiIconPath>  <!-- own landed art; no separate menu-icon art exists -->
     <building>
       <isInert>true</isInert>
       <canPlaceOverWall>false</canPlaceOverWall>
@@ -70,8 +70,8 @@
       <roamerCanOpen>false</roamerCanOpen>
       <blueprintClass>Blueprint_Build</blueprintClass>
       <blueprintGraphicData>
-        <texPath>Things/Building/Ancient/RUT_AncientAirlock_MenuIcon</texPath>
-        <graphicClass>Graphic_Multi</graphicClass>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
         <shaderType>EdgeDetect</shaderType>
         <drawSize>2</drawSize>
       </blueprintGraphicData>
@@ -128,7 +128,7 @@
         <enabled>false</enabled>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock_Large_MenuIcon</uiIconPath>
+    <uiIconPath>Things/Building/Ancient/RUT_AncientAirlock_Large</uiIconPath>  <!-- own landed art; no separate menu-icon art exists -->
     <building>
       <isInert>true</isInert>
       <canPlaceOverWall>false</canPlaceOverWall>
@@ -144,8 +144,8 @@
       <roamerCanOpen>false</roamerCanOpen>
       <blueprintClass>Blueprint_Build</blueprintClass>
       <blueprintGraphicData>
-        <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large_MenuIcon</texPath>
-        <graphicClass>Graphic_Multi</graphicClass>
+        <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
         <shaderType>EdgeDetect</shaderType>
         <drawSize>(2.6, 3.1)</drawSize>
       </blueprintGraphicData>
@@ -194,7 +194,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_JammedAncientAirlock</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>  <!-- landed artpipe art is one rotating sprite (2026-10-03) -->
       <drawSize>2.2</drawSize>
     </graphicData>
     <building>
@@ -226,7 +226,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_JammedAncientAirlock_Large</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>  <!-- landed artpipe art is one rotating sprite (2026-10-03) -->
       <drawSize>(3, 2.4)</drawSize>
     </graphicData>
     <building>
@@ -259,7 +259,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_ForcedAncientAirlock</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>  <!-- landed artpipe art is one rotating sprite (2026-10-03) -->
       <drawSize>2.2</drawSize>
     </graphicData>
     <building>
@@ -291,7 +291,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_ForcedAncientAirlock_Large</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>  <!-- landed artpipe art is one rotating sprite (2026-10-03) -->
       <drawSize>(3, 2.4)</drawSize>
     </graphicData>
     <building>
@@ -327,8 +327,8 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_FrozenEmptyCryptosleepPod</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(1,2)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>  <!-- landed artpipe art is one rotating sprite (2026-10-03) -->
+      <drawSize>(2,2)</drawSize>  <!-- square 256 canvas, pod fills ~0.8 x 0.95 of it: (1,2) would stretch it 2x tall -->
     </graphicData>
     <costList>
       <ChunkSlagSteel>2</ChunkSlagSteel>
