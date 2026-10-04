@@ -545,6 +545,46 @@ def _wait_until(t, predicate, budget, chunk=300):
     return spent
 
 
+def hidden_faction_findings(roots):
+    """(count of hidden non-abstract FactionDefs, [file:defName lacking a name source]) under the given roots. A name source
+    is fixedName or factionNameMaker on the def or any ParentName ancestor found in the same scan. Pure XML read."""
+    defs, order = {}, []
+    for root in roots:
+        for base, dirs, files in os.walk(root):
+            dirs[:] = [d for d in dirs if d not in ("Textures", "Assemblies", "Source", ".git", "__pycache__")]
+            for fn in files:
+                if not fn.endswith(".xml"):
+                    continue
+                path = os.path.join(base, fn)
+                try:
+                    txt = open(path, encoding="utf-8", errors="replace").read()
+                    if "<FactionDef" not in txt:
+                        continue
+                    tree = ET.fromstring(txt.encode("utf-8"))
+                except ET.ParseError:
+                    continue
+                for node in tree.iter("FactionDef"):
+                    rec = (node, fn)
+                    if node.get("Name"):
+                        defs[node.get("Name")] = rec
+                    order.append(rec)
+
+    def named(node, depth=0):
+        if node.findtext("fixedName") or node.find("factionNameMaker") is not None:
+            return True
+        parent = defs.get(node.get("ParentName") or "")
+        return bool(parent) and depth < 10 and named(parent[0], depth + 1)
+
+    found, bad = 0, []
+    for node, fn in order:
+        if node.get("Abstract", "").lower() == "true" or (node.findtext("hidden") or "").strip().lower() != "true":
+            continue
+        found += 1
+        if not named(node):
+            bad.append("%s:%s" % (fn, node.findtext("defName")))
+    return found, bad
+
+
 # ================================================================================ chains
 
 @suite.chain("log_clean")
@@ -587,15 +627,19 @@ def source_guards(t):
         # FactionGenerator.NewGeneratedFaction -> NameGenerator.GenerateName NREs on a FactionDef with neither a
         # factionNameMaker nor a fixedName. The lure creates its hidden factions lazily, so the first raid threw in the
         # real game (found live by ProofRaid, load 14 -- 'NullReferenceException' hid for two loads behind the proof).
-        for rel in (os.path.join("Defs", "FactionDefs", "RM_FactionDef_KurrethSwarm.xml"),
-                    os.path.join("..", "..", "RimStarWars", "Shokk", "Defs", "FactionDefs", "RSW_Shokk_FeraliskBrood.xml")):
-            path = os.path.join(_HERE, rel)
-            if os.path.isfile(path):
-                fd = ET.parse(path).getroot().find("FactionDef")
-                if fd is not None and not (fd.findtext("fixedName") or fd.find("factionNameMaker") is not None):
-                    _fail("%s has no fixedName/factionNameMaker: the lazily created hidden faction NREs in NameGenerator" % rel)
-            elif t.session is not None and rel.startswith("Defs"):
-                _fail("%s missing" % rel)
+        # Every hidden FactionDef we ship, not only ours: this mod's own tree plus (when it sits in the repo layout) all of src/.
+        roots = [_HERE]
+        src_root = os.path.abspath(os.path.join(_HERE, "..", ".."))
+        in_repo = all(os.path.isdir(os.path.join(src_root, d)) for d in ("RimMandrake", "RimStarWars", "RimUtinni"))
+        if in_repo:
+            roots = [src_root]
+        found, bad = hidden_faction_findings(roots)
+        if in_repo and found < 5:
+            _fail("sanity probe: only %d hidden FactionDefs found under src/ (expected the 5 shipped): parse failure" % found)
+        if t.session is not None and not os.path.isfile(os.path.join(_HERE, "Defs", "FactionDefs", "RM_FactionDef_KurrethSwarm.xml")):
+            _fail("Defs/FactionDefs/RM_FactionDef_KurrethSwarm.xml missing")
+        if bad:
+            _fail("hidden FactionDef with no fixedName/factionNameMaker (the lazily created faction NREs in NameGenerator): %s" % bad)
 
     with _comp(t, "no_mayrequire_names_a_folded_standalone_mod", independent=True):
         if t.session is not None:
