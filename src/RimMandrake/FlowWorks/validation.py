@@ -1271,3 +1271,26 @@ def toggle_river_steam(t):
             r = t.bridge_call("jawa/mod_settings_field", typeName=S_RIVER, action="get", field="riverSteamEnabled")
             _expect(str((r or {}).get("value")) == "False" if t._guard() else None,
                     "riverSteamEnabled did not read back False: %r" % (r,))
+
+
+@suite.chain("fluid_identity_recorded")
+def fluid_identity_recorded(t):
+    """LIQUID_BODY_FLUID_IDENTITY_1 step 1 (storage only, behaviour-neutral): after a pulse every wet excavated
+    cell carries a recorded fluid and every natural body has one. Runs on whatever the CURRENT map holds (the
+    earlier chains' channels). Expected-first-fail kept from the item: one ActiveFluid per map, so a second fluid
+    cannot exist yet -- the no-mix bars (a)-(d) arrive with steps 2-3."""
+    with t.component("wet_cells_and_bodies_carry_a_fluid", beyond_toggle=True):
+        _wait(t, PULSE + 10)
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof", method="ProofCensus")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not t._guard():
+            return
+        if not text.startswith("FLUIDID"):
+            t.upstream_reason = "UNMEASURED: ProofCensus gave no answer: %r" % text[:160]
+            t.upstream_failed = True
+            return
+        if " wet 0 |" in text:
+            t.upstream_reason = "UNMEASURED: no wet excavated cell on the current map to census: %s" % text
+            t.upstream_failed = True
+            return
+        _expect("unrecorded 0 |" in text and ":null" not in text, "a wet cell or a body has no recorded fluid: %s" % text)

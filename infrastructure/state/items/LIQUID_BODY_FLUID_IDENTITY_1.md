@@ -23,3 +23,17 @@ Bridge, minimal `flowworks` tier: a water pit and an oil pit, a dry channel dug 
 ## northstar
 State components: fluid per body before/after joining; the old "unconditional BLOCKED (one ActiveFluid per map)" row is promoted to a real check.
 **First script must prove (Q3 no-mix):** (a) per-cell fluid census of the joined component after N pulses — zero cells whose fluid differs from the fluid of the levels that arrived there, and per-fluid level totals equal before/after (no conversion); (b) the meeting boundary is stable across further pulses (no flip, same cells); (c) after draining one side, the other fluid occupies the vacated cells; (d) save/load round-trip of `fluidGrid` and `body.fluid`. Record the expected-first-fail as "today one `ActiveFluid` per map — a second fluid cannot exist" (a ruled-out theory, kept).
+
+## design pass (FOUNDRY builder, Opus, 2026-10-03)
+The spec above stands; this pass orders it so every step is shippable on its own and only one step changes behaviour.
+
+**Step 1: BUILT** (storage, behaviour-neutral). `RM_MapComponent_Excavation.fluidGrid` (byte per cell, 0 = none, else 1 + index into a scribed `fluidPalette` `List<FluidDef>`, cap 254 fluids/map), `FluidAt(c)`, and `SyncFluidIdentity()` run at the end of every pulse and in `FinalizeInit`: stamps `ActiveFluid` on excavated cells with F>0 and no record, clears the record at F=0, gives every body with no fluid `ActiveFluid`. That one call is also the **step-4 save migration**: an old save loads an all-zero grid and every wet cell is stamped. `RM_LiquidBody.fluid` (scribed `fluid`) is set once in `FormBody` from the seed cell's terrain through `RM_FluidIdentity.FluidOfTerrain` (every LiquidDef's terrainSuite -> canalFluid; fallback `RM_Fluid_Water`). Nothing reads either yet, so flow, rendering and the conservation ledger are unchanged. Census: static_call `RimMandrake.FlowWorks.RM_FluidIdentityProof.ProofCensus`; chain `fluid_identity_recorded`.
+
+**Step 2 (next, the behaviour change):** move identity to the WRITERS and delete the sync stamp. Each fillGrid increment knows its source: `ResolveComponent` (recipient takes the donor's fluid: `FluidAt(donor)` for a channel donor, `body.fluid` for a source donor), `ApplyRain` (water; skip a wet non-water cell), `Displace` (credit only cells whose fluid matches), `Building_LiquidDrill` (its yielded canalFluid), the debug fill actions. Then the `PickDonor` filter (skip donor n when r is wet and FluidAt(r) != FluidOf(n)). Keep `SyncFluidIdentity` only as the load-time migration. Selftest first: the pulse is not Verse-free, so the filter goes into `RM_StockMath` as a pure predicate the selftest can drive (the FLOWWORKS_SHARED_SOURCE_STALL_1 pattern).
+
+**Step 3:** retire `ActiveFluid` reader by reader (render/terrain apply, stock capacity per `body.fluid`, drill's one-per-map refusal); `ActiveFluid` survives only as the migration default.
+
+**Risk named:** a FluidDef removed from the mod set leaves a null palette entry after load; `FluidAt` then answers null for those cells and the sync re-stamps them with `ActiveFluid` (a silent conversion). Step 2 must log it once per map instead.
+
+## built so far
+- step 1 + step-4 migration: see the commit closing this note (`git log --grep LIQUID_BODY_FLUID_IDENTITY_1`). Item stays OPEN for steps 2-3 and the verify block.
