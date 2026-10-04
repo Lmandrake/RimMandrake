@@ -342,12 +342,11 @@ PATCH_FILES = ("RUT_ResearchRetag.xml", "RUT_ResearchRetag_Supplement.xml", "RUT
 _TARGET = _re.compile(r'^Defs/ResearchProjectDef\[defName="([^"]+)"\](?:/(\w+))?$')
 SCALARS = ("techLevel", "baseCost", "tab", "researchViewX", "researchViewY")
 REMOVED = "<removed>"
-# 13 VFE Tribals rows (techLevel Neolithic + tab RUT_Tree_Scavenging) that the load-14 dump (2026-10-04T06-29) shows UNPATCHED:
-# it carries techLevel Animal / tab VFET_Basics, the values of a later or overriding patch, while the other ~400 rows held.
-# Pinned so every other row is held to the dump and so the pin cannot rot (known_unheld_rows_are_still_unheld goes red the day
-# they hold). Cause not yet found: VFET_RETAG_ROWS_NOT_HELD_1.
-KNOWN_UNHELD = frozenset("VFET_" + n for n in ("Fire", "Agriculture", "Cultivation", "Medicine", "AnimalHandling", "Mining",
-                                               "Construction", "Furniture", "Tribalwear", "Hunting", "Weapons", "Bow", "Culture"))
+# Rows the dump is KNOWN not to hold, pinned so the rest are still held to it (known_unheld_rows_are_still_unheld goes red
+# the day a pinned row holds). Empty: the 13 VFE Tribals rows pinned here were overridden by Research Reinvented: Stepping
+# Stones' VFET compat patch, fixed by naming it in forceLoadAfter (VFET_RETAG_ROWS_NOT_HELD_1); this bar reads red against
+# any dump from before that About.xml change was deployed and loaded.
+KNOWN_UNHELD = frozenset()
 
 
 def patch_expectations(patch_dir=None):
@@ -447,8 +446,8 @@ def _force_load_after():
 
 @suite.chain("retag_rows_vs_dump")
 def retag_rows_vs_dump(t):
-    """The ~830 retag values and 31 prerequisite removals hold in the dump of a load that ran this mod; the 13 known
-    unheld VFE Tribals rows are pinned; forceLoadAfter names every donor owner. Pure static + dump; same verdict offline."""
+    """The ~830 retag values and 31 prerequisite removals hold in the dump of a load that ran this mod; the known
+    unheld rows (KNOWN_UNHELD) are pinned; forceLoadAfter names every donor owner. Pure static + dump; same verdict offline."""
     exp, targets = patch_expectations()
     rows = _load_rows()
     with t.component("patch_files_and_dump_are_readable", beyond_toggle=True):

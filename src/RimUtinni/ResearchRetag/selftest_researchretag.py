@@ -90,9 +90,21 @@ def main():
         print("UNMEASURED  retag rows vs dump: %s" % e)
     if rows:
         import copy
+        # VFET_RETAG_ROWS_NOT_HELD_1: 13 VFE Tribals rows were overridden by RR Stepping Stones' compat patch until it joined
+        # forceLoadAfter. A dump from before that fix shows ONLY these unheld; the rest of this selftest runs on that dump
+        # with the 13 set to their patched values (the post-fix state), so it stays green on either side of the next load.
+        vfet13 = frozenset("VFET_" + n for n in ("Fire", "Agriculture", "Cultivation", "Medicine", "AnimalHandling", "Mining",
+                                                 "Construction", "Furniture", "Tribalwear", "Hunting", "Weapons", "Bow", "Culture"))
+        raw_bad = v.retag_findings(exp, rows)[2]
+        check("raw dump: nothing but the 13 VFET rows is unheld (%d findings)" % len(raw_bad),
+              all(b.split(".")[0] in vfet13 for b in raw_bad), [b for b in raw_bad if b.split(".")[0] not in vfet13][:3])
+        rows = copy.deepcopy(rows)
+        for (d, f), w in exp.items():
+            if d in vfet13 and d in rows and w != v.REMOVED:
+                rows[d]["fields"][f] = w
         held, checked, bad = v.retag_findings(exp, rows)
-        check("sanity probe: >= 600 expectations, >= 380 targets, 13 pinned unheld rows", len(exp) >= 600 and len(targets) >= 380 and len(v.KNOWN_UNHELD) == 13, (len(exp), len(targets)))
-        check("shipped patches vs the load-14 dump: every checked value holds (%d/%d)" % (held, checked), checked >= 300 and not bad, bad[:3])
+        check("sanity probe: >= 600 expectations, >= 380 targets, no pinned unheld rows", len(exp) >= 600 and len(targets) >= 380 and len(v.KNOWN_UNHELD) == 0, (len(exp), len(targets)))
+        check("shipped patches vs the dump (13 VFET rows at post-fix values): every checked value holds (%d/%d)" % (held, checked), checked >= 300 and not bad, bad[:3])
         check("the 31 prerequisite removals are in the expectations", sum(1 for w in exp.values() if w == v.REMOVED) >= 25, sum(1 for w in exp.values() if w == v.REMOVED))
         check("pinned rows are still unheld", v.unheld_findings(exp, rows) == [], v.unheld_findings(exp, rows))
         check("forceLoadAfter names every owner", v.load_order_findings(targets, rows, v._force_load_after()) == [])
@@ -111,14 +123,14 @@ def main():
         r4[numeric[0]]["fields"]["baseCost"] = float(r4[numeric[0]]["fields"]["baseCost"]) + 1
         check("break: a baseCost off by one is named (numeric compare, %s)" % numeric[0], len(v.retag_findings(exp, r4)[2]) == 1)
         r5 = copy.deepcopy(rows)
-        pin = sorted(v.KNOWN_UNHELD)[0]
+        pin = sorted(vfet13)[0]
         for (d, f), w in exp.items():
             if d == pin and w != v.REMOVED:
                 r5[pin]["fields"][f] = w
-        check("break: a pinned row that now holds is flagged for un-pinning", any("now HOLDS" in g for g in v.unheld_findings(exp, r5)), v.unheld_findings(exp, r5))
+        check("break: a pinned row that now holds is flagged for un-pinning", any("now HOLDS" in g for g in v.unheld_findings(exp, r5, frozenset([pin]))), v.unheld_findings(exp, r5, frozenset([pin])))
         r6 = copy.deepcopy(rows)
         del r6[pin]
-        check("break: a pinned row missing from the dump is flagged", any("not in the dump" in g for g in v.unheld_findings(exp, r6)))
+        check("break: a pinned row missing from the dump is flagged", any("not in the dump" in g for g in v.unheld_findings(exp, r6, frozenset([pin]))))
         some_owner = rows[sorted(targets & set(rows))[40]]["packageId"].lower()
         fla = [x for x in v._force_load_after() if x.lower() != some_owner]
         check("break: an owner dropped from forceLoadAfter is named (%s)" % some_owner,
