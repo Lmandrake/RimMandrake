@@ -827,10 +827,11 @@ window.itemBody = it => {
   };
   const col = (c, g) => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
-    const tip = `${c.label}\n${c.detail}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
+    const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}">
       <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b><span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
+      ${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (target ~128)">${c.ppc} px/cell</i>` : ''}
     </div>`;
   };
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
@@ -856,8 +857,24 @@ window.itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${links}${elsewhere}${rul}${noart}</div>
-    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${canon}</div></div>`;
+    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
 };
+const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
+function scaleBlock(it) {
+  const s = it.scale; if (!s) return '';
+  const size = s.kind === 'plant'
+    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt(s.drawSize[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
+    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt(s.drawSize[0])}×${fmt(s.drawSize[1])}</span> · bodySize ${fmt(s.bodySize)}`;
+  const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
+  const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
+  const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc > 192 ? 'bs-over' : 'bs-ok';
+  const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Owner rule: ~128 px per cell of the draw size; above it buys nothing on screen, below 64 loses detail at max zoom-in. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc > 192 ? 'over 128 target' : 'near 128 target'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
+  const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · scene at 64 px/cell, then on-screen tiers 96 / 32 / 18 px per cell (true size) and ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human + rat, desert terrain · click to enlarge</span></div>${pic}
+    <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
+    <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
+}
+
 window.artPick = (id, g, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
@@ -929,6 +946,17 @@ BIOME_STYLE = """
 .bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
 .mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
+.bs-scale{flex:0 0 auto;width:min-content;min-width:350px;max-width:420px;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
+.bs-schead b{color:#9fe0a8}.bs-schead span{color:#8aa58a}
+.bs-scimg{overflow-x:auto;cursor:zoom-in;margin:3px 0 2px}
+.bs-scimg img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
+.bs-scsize{color:#d8c7a8}
+.bs-scl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-scres b{color:#fff}.bs-scres.bs-low b{color:#e06c6c}.bs-scres.bs-over b{color:#8ac3e8}.bs-scres.bs-ok b{color:#9fe0a8}
+.bs-scsrc{color:#7f8a7f;font-size:10.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bs-scsrc.bs-fallback{color:#e06c6c}
+.bs-set{position:relative}
+.bs-ppc{position:absolute;right:5px;bottom:4px;font-style:normal;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
 /* right-hand pick column: only this row's letters, readable redo/hold */
 .row .ctrl{width:200px}
 .row .opts{flex-wrap:wrap}
@@ -998,8 +1026,68 @@ never casts it. Rows you already ruled on in <b>desert sitting 1</b> are prefill
 prefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
 
 
+SCALE_BIOMES = {"RM_LongShade"}
+SCALE_FACE = ("east", "south", "single", "west", "north")
+
+
+def _img_px(sha: str):
+    from PIL import Image
+    try:
+        return Image.open(L.store_path(sha)).size
+    except Exception:                                       # noqa: BLE001
+        return None
+
+
+def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None, imgdir: Path) -> dict:
+    """In-game size (cells, with its SOURCE) + a true-scale panel of the set the owner picked (else the
+    prefill), and px/cell for every set of the body graphic. See scale_panel.py for the measurement."""
+    import scale_panel as SP
+    size = R.size(row)
+    out = {"status": size["status"], "source": size["source"], "kind": size.get("kind"),
+           "cells": round(size["cells"], 3), "bodySize": size.get("bodySize"), "mesh": size.get("mesh"),
+           "drawSize": size.get("drawSize"), "visualMax": size.get("visualMax"), "quad": size.get("quad")}
+    prim = next((g for g in gitems if g["primary"]), None)
+    if prim is None:
+        out["why"] = "no picture to scale"
+        return out
+    qx = (size.get("drawSize") or [None])[0] if size.get("kind") == "animal" else size.get("quad")
+    sets = []
+    for c in prim["cols"]:
+        f = next((f for f in SCALE_FACE if f in c["faces"] and L.store_has(c["faces"][f])), None)
+        px = _img_px(c["faces"][f]) if f else None
+        c["ppc"] = round(px[0] / qx) if (px and qx) else None
+        c["srcPx"] = list(px) if px else None
+        sets.append((c["letter"], f, px))
+    want = (dec or {}).get("decision") or ""
+    by = "your pick"
+    if not (dec or {}).get("decidedAt") or want not in [c["letter"] for c in prim["cols"]]:
+        want, by = prefill_letter, "prefill"
+    col = next((c for c in prim["cols"] if c["letter"] == want), None) or prim["cols"][0]
+    if col["letter"] != want:
+        by = "first set (no pick, no prefill)"
+    f = next((f for f in SCALE_FACE if f in col["faces"] and L.store_has(col["faces"][f])), None)
+    if not f:
+        out["why"] = f"set {col['letter']} has no archived picture"
+        return out
+    sha = col["faces"][f]
+    stem = re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + sha[:10] + "_" + hashlib.sha1(
+        json.dumps([size.get("drawSize"), size.get("quad"), size.get("mesh"), size.get("color")]).encode()).hexdigest()[:6]
+    comp, full = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png"
+    if comp.exists() and full.exists():
+        from PIL import Image
+        m = {"srcPx": list(Image.open(L.store_path(sha)).size)}
+        m["pxPerCell"] = round(m["srcPx"][0] / qx) if qx else None
+    else:
+        m = SP.render_panel(L.store_get(sha), size, comp, full)
+    out.update({"img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}", "set": col["letter"],
+                "by": by, "face": f, "srcPx": m["srcPx"], "ppc": m["pxPerCell"], "verdict": SP.ppc_verdict(m["pxPerCell"]),
+                "sets": [{"l": l, "ppc": (round(px[0] / qx) if px and qx else None), "px": (px[0] if px else None)}
+                         for l, _f, px in sets]})
+    return out
+
+
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
-                   date: str | None = None, thumb_size: int = 160) -> dict:
+                   date: str | None = None, thumb_size: int = 160, sheet_only: bool = False) -> dict:
     census = json.loads(Path(census_path).read_text())
     b = census["biomes"].get(biome)
     if b is None:
@@ -1023,6 +1111,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     slots = L.scan_def_slots()
     order, fp = load_order()
     rows = b["rows"]
+    scale_res = None
+    if biome in SCALE_BIOMES:             # owner 2026-10-04: "Let's fix just the first sheet."
+        import scale_panel
+        scale_res = scale_panel.Resolver()
     rel, elsewhere, find = _clusters(rows)
     labels = {r["key"]: _human(r) for r in rows}
 
@@ -1163,6 +1255,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                          "note": (x.get("note") or x.get("blanket_said") or "")[:240]}
                         for x in sorted(rul, key=lambda x: x.get("at") or "") if x.get("trust") not in ("prefill",)],
         }
+        if scale_res is not None:
+            item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
         items.append(item)
         prefills[key] = (letter, picks)
         snap_rows[key] = {"subject_key": _stem(key).lower(), "res": (gitems[0]["res"] if gitems else None),
@@ -1240,7 +1334,11 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
 
     # decisions: written when absent, or regenerated while it is still the untouched prefill
     wrote = False
-    if old is None or untouched:
+    if sheet_only:
+        if old is not None and old.get("snapshotId") != snap["snapshotId"]:
+            print(f"WARNING --sheet-only: columns changed (snapshot {old.get('snapshotId')} -> {snap['snapshotId']}) and "
+                  f"{decisions_path.name} was NOT rewritten — its letters may now point at different sets", file=sys.stderr)
+    elif old is None or untouched:
         decisions_path.write_text(json.dumps({
             "sheetId": sheet_id, "posture": "pick-one", "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"],
             "criterion": cfg["criterion"], "biome": biome,
@@ -1272,6 +1370,9 @@ def main(argv=None):
                     help="with --biome: first pull finished artpipe renders into the ledger (art.py backfill artpipe) "
                          "and re-run biome_census.py, so new renders show on the sheets")
     ap.add_argument("--date", help="date stamp in the biome sheet's file name (default today)")
+    ap.add_argument("--sheet-only", action="store_true",
+                    help="with --biome: rewrite the HTML only, never the decisions file — use while a sheet is being "
+                         "reviewed live (an untouched-prefill decisions file is otherwise regenerated)")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
@@ -1290,7 +1391,8 @@ def main(argv=None):
         for k in a.biome:
             keys += json.loads(Path(a.census).read_text())["biome_order"][:3] if k == "first3" else [k]
         for k in keys:
-            r = generate_biome(k, Path(a.census), Path(a.out) if a.out and len(keys) == 1 else None, a.date)
+            r = generate_biome(k, Path(a.census), Path(a.out) if a.out and len(keys) == 1 else None, a.date,
+                               sheet_only=a.sheet_only)
             print(json.dumps(r, indent=1))
         return 0
     if not a.out:
