@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 using Verse.AI;
 
 namespace RimMandrake.Contagion
@@ -190,7 +191,8 @@ namespace RimMandrake.Contagion
         // dropping from canopy height) needs a render seam and is listed as
         // remaining work — this is the behavioural beat.
         // Tell 2 (rattle): every rattler plant throws an air puff each pulse.
-        // Sound and a per-plant shake need assets / a render seam.
+        // Each pulse also plays tellRattleSound at one rattling plant (vanilla
+        // clip, audio ruling 2026-10-03); a per-plant shake needs a render seam.
         private void DoTells(RM_ContagionSkyExtension ext, bool first, int ticksLeft)
         {
             if (!ext.tellSinkers.NullOrEmpty())
@@ -213,13 +215,23 @@ namespace RimMandrake.Contagion
             if (!ext.tellRattlers.NullOrEmpty())
             {
                 List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
+                Thing rattled = null;
+                int seen = 0;
                 for (int i = 0; i < plants.Count; i++)
                 {
                     Thing t = plants[i];
                     if (ext.tellRattlers.Contains(t.def) && Rand.Chance(0.6f))
                     {
                         FleckMaker.ThrowAirPuffUp(t.DrawPos, map);
+                        // reservoir pick: every rattling plant equally likely to carry the sound
+                        seen++;
+                        if (Rand.Chance(1f / seen)) rattled = t;
                     }
+                }
+                // One rattle per pulse (the SoundDef's maxSimultaneous caps it anyway).
+                if (rattled != null && ext.tellRattleSound != null)
+                {
+                    ext.tellRattleSound.PlayOneShot(new TargetInfo(rattled.Position, map));
                 }
             }
         }

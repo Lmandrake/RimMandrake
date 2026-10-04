@@ -45,6 +45,10 @@ namespace RimMandrake.Contagion
 
         // Tell 2: these plants rattle when a Burn is near (RM_Rattlegrope).
         public List<ThingDef> tellRattlers = new List<ThingDef>();
+        // The rattle's sound: one one-shot per tell pulse at a rattling plant.
+        // Vanilla by the 2026-10-03 audio ruling (Ideology LeavesRustle, a
+        // non-sustained plant-rustle folder); null = silent.
+        public SoundDef tellRattleSound;
 
         // Burn damage to a UV-shy native caught in the open, per 250 ticks,
         // before the Mod Settings damage factor.
