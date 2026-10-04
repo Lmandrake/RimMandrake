@@ -1550,12 +1550,10 @@
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
-        <li>r_name-&gt;[firstName] '[nickName]' [lastName]</li>
         <li>maybeHyphen(p=4)-&gt;</li>
         <li>maybeHyphen-&gt;-</li>
         <li>firstName(p=1)-&gt;[NameSandP]</li>
         <li>firstName(p=3)-&gt;[NameSandP]</li>
-        <li>nickName-&gt;[NicknameSandP]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
         <li>lastGenerated-&gt;[NameSandP]</li>
         <li>lastGenerated-&gt;[NameSandP][maybeHyphen][NameSandP]</li>
@@ -1568,10 +1566,6 @@
         <li Class="Rule_File">
           <keyword>NameSandP</keyword>
           <path>RimMandrakeSWNames/SWX/Sand/First</path>
-        </li>
-        <li Class="Rule_File">
-          <keyword>NicknameSandP</keyword>
-          <path>RimMandrakeSWNames/SWX/Sand/Nick</path>
         </li>
       </rulesRaw>
     </rulePack>
