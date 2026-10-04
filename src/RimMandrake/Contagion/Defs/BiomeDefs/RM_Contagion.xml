@@ -161,6 +161,8 @@
         <tellRattlers>
           <li>RM_Rattlegrope</li>
         </tellRattlers>
+        <!-- vanilla Ideology one-shot (audio ruling 2026-10-03: vanilla ships as final) -->
+        <tellRattleSound>LeavesRustle</tellRattleSound>
         <coalescenceDef>RM_Coalescence</coalescenceDef>
         <coalescenceLongBloomTicks>90000</coalescenceLongBloomTicks>
         <coalescenceMtbDays>0.5</coalescenceMtbDays>

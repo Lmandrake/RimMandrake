@@ -58,7 +58,7 @@ The Burn (a Contagion map; the sky engine is gated on the biome extension)
 - With `burnEnabled` off no Burn is ever scheduled. → burn_natural.burn_off_never_schedules
 - `burnFrequency` scales the schedule: at 0.1 no Burn arrives within 285000 ticks (frequency 1 would have fired by 270000). → burn_natural.slow_frequency_defers_burn
 - At `burnFrequency` 4 a natural Burn arrives within 70000 ticks (gap at most 67500). → burn_natural.natural_burn_arrives_on_schedule
-- The forecast: shortly before a Burn the gawpsacks stop and settle as one, rattlegropes puff; `burnTellsEnabled` off removes the tell. → UNCOVERED: the only observable is a Wait job that is indistinguishable from ordinary idling and short-lived flecks; needs a bridge tool reading `RM_MapComponent_ContagionSky` (`NextBurnTick`/`TellsBegun`), follow-up CONTAGION_SKY_STATE_TOOL_1
+- The forecast: shortly before a Burn the gawpsacks stop and settle as one, rattlegropes puff and one rattles audibly each pulse (vanilla LeavesRustle; wiring is static: `selftest_contagion_rattle_sound.py`); `burnTellsEnabled` off removes the tell. → UNCOVERED: the only observable is a Wait job that is indistinguishable from ordinary idling and short-lived flecks; needs a bridge tool reading `RM_MapComponent_ContagionSky` (`NextBurnTick`/`TellsBegun`), follow-up CONTAGION_SKY_STATE_TOOL_1
 - The Bloom is the standing weather (red fog, rain, thunder, ranged accuracy x0.4). → UNCOVERED: the weather's standing frequency is a statistical roll and its look is visual; only the biome table (defs.biome_table_and_roster) is checked
 - The Burn actually tears the cloud open and the sky reads near-white. → UNCOVERED: visual; left to the judge pass (debug_process §4)
 
