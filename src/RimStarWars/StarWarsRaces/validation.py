@@ -295,3 +295,22 @@ def donor_species_sample(t):
             raise ExpectationFailed(
                 "expected %d resolved XenotypeDef rows, got %r (missing %s)"
                 % (len(DONOR_SAMPLE_XENOTYPES), rows, sorted(missing)))
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1 row: every def this mod ships (527: genes, head types, pawnkinds, xenotypes, name
+# rule packs, hediffs, recipes) must be loaded live, with authored scalar fields equal to the XML. MayRequire-guarded
+# defs (VFE Core, pathfinding.framework) are graded by guard group: all absent = that mod inactive (skipped, said),
+# partly absent = a real loss. XenotypeDef labels/descriptions are deliberately rewritten by PawnFlavor's
+# PawnFlavorPhase2_Xenotype.xml, so xenotypes are compared on their non-text fields only.
+from modcheck import shipped_defs  # noqa: E402
+
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"GeneDef": ("label", "biostatCpx", "biostatMet", "displayOrderInCategory"),
+                                       "HeadTypeDef": ("graphicPath", "gender"),
+                                       "PawnKindDef": ("label",),
+                                       "XenotypeDef": ("inheritable", "factionlessGenerationWeight",
+                                                       "canGenerateAsCombatant", "combatPowerFactor"),
+                                       "HediffDef": ("label", "maxSeverity"),
+                                       "RecipeDef": ("label", "jobString")},
+                       sanity=("RSW_RimMandrakeJawa", "RSW_MandrakeJawa", "Head_Bone", "Male_HeavyBoneNormal"),
+                       min_count=500)

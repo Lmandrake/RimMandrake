@@ -30,6 +30,9 @@ XML = """<Defs>
   <ThingDef ParentName="ParentX"><defName>T_One</defName><label>one</label><statBases><Mass>2</Mass></statBases></ThingDef>
   <ThingDef><defName>T_Two</defName><label>two</label><stackLimit>75</stackLimit></ThingDef>
   <RecipeDef><defName>R_Make</defName><label>make one</label><workAmount>800</workAmount><allowMixingIngredients>true</allowMixingIngredients></RecipeDef>
+  <ThingDef MayRequire="Other.Mod"><defName>G_A</defName><label>guarded a</label></ThingDef>
+  <ThingDef MayRequire="other.mod"><defName>G_B</defName><label>guarded b</label></ThingDef>
+  <ThingDef MayRequire="Ludeon.RimWorld.Royalty"><defName>G_Dlc</defName><label>dlc thing</label></ThingDef>
 </Defs>"""
 
 # real mods wired to the helper: (mod folder under src, sanity names, min_count)
@@ -41,6 +44,7 @@ WIRED = [
     ("RimUtinni/UtinniStatues", ("RUT_StatueGrand_Shkaar",), 4),
     ("RimUtinni/ScarlandsLadder", ("RUT_PilgrimCamps", "RUT_ScarlandsLadder", "RUT_PilgrimJournal"), 3),
     ("RimMandrake/Scarlands", ("RM_Warscar", "RM_OldLineTurret", "RM_Chatrak"), 90),
+    ("RimStarWars/StarWarsRaces", ("RSW_RimMandrakeJawa", "RSW_MandrakeJawa", "Head_Bone"), 500),
 ]
 
 
@@ -60,7 +64,8 @@ def make_ext(brk, mod_dir):
         fields = [f for f in str(p.get("fields") or "").split(",") if f]
         rows, missing = [], []
         for n in want:
-            if n not in parsed or ("missing" in brk and n == "T_Two"):
+            if n not in parsed or ("missing" in brk and n == "T_Two") or ("guard_off" in brk and n in ("G_A", "G_B")) \
+                    or ("guard_partial" in brk and n == "G_B") or ("dlc_missing" in brk and n == "G_Dlc"):
                 missing.append(n)
                 continue
             vals = dict((f, parsed[n].get(f)) for f in fields if f in parsed[n])
@@ -131,7 +136,12 @@ def run_real(rel, brk=()):
         return None
     # keyed by "Type/name": names collide across types (Warscar's RM_Chotrix is a ThingDef AND a PawnKindDef)
     parsed = dict(("%s/%s" % (t, n), leaf) for t, n, leaf in shipped_defs.parse(mod_dir))
-    drop = set([sorted(parsed)[0]]) if "missing" in brk else set()
+    guarded = shipped_defs.guards(mod_dir)
+    plain = sorted(k for k in parsed if tuple(k.split("/", 1)) not in guarded)
+    drop = set(plain[:1]) if "missing" in brk else set()
+    if "guard_off" in brk:     # every def under one guard missing = that mod inactive: must stay green
+        g0 = sorted(set(guarded.values()))[0]
+        drop = set("%s/%s" % k for k, g in guarded.items() if g == g0)
 
     def ext(game, tool, p):
         if tool != "jawa/get_defs":
@@ -170,7 +180,17 @@ def main():
         got = shipped_defs.parse(tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    check("parse skips the abstract def and keeps three", [n for _t, n, _l in got] == ["T_One", "T_Two", "R_Make"], got)
+    check("parse skips the abstract def and keeps the rest", [n for _t, n, _l in got] == ["T_One", "T_Two", "R_Make", "G_A", "G_B", "G_Dlc"], got)
+    tmp = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(tmp, "Defs"))
+        with open(os.path.join(tmp, "Defs", "a.xml"), "w") as fh:
+            fh.write(XML)
+        gd = shipped_defs.guards(tmp)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    check("guards(): MayRequire case-folded, a DLC-only guard is not a guard",
+          gd == {("ThingDef", "G_A"): "other.mod", ("ThingDef", "G_B"): "other.mod"}, gd)
     check("parse keeps leaves only (no statBases block)", "statBases" not in got[0][2], got[0][2])
     check("same_value: 800 == 800.0, true == True, 'a' != 'b'",
           shipped_defs.same_value("800", "800.0") and shipped_defs.same_value("true", "True")
@@ -192,6 +212,12 @@ def main():
         check("break %-13s reddens exactly %s" % (brk[0], want), got == sorted(want), "got %s" % got)
         check("break %-13s leaves no component PASSing on a lying tool" % brk[0],
               brk[0] not in ("count_lies", "tool_fails") or all(v != "PASS" for v, _d in res.values()), res)
+    off = run(("guard_off",), fields_by_type=rec)
+    check("a guard whose mod is inactive (all its defs absent) stays green", reds(off) == [], off)
+    part = reds(run(("guard_partial",), fields_by_type=rec))
+    check("a guarded def lost while its guard sibling loaded reddens the loaded component", part == [LOADED], part)
+    dlc = reds(run(("dlc_missing",), fields_by_type=rec))
+    check("a DLC-guarded def missing is a real loss (every DLC is assumed present)", dlc == [LOADED], dlc)
     blind = reds(run(sanity=("NotThere",), fields_by_type=rec))
     check("a sanity name the parse cannot see reddens the loaded component", blind == [LOADED], blind)
     small = reds(run(min_count=10, fields_by_type=rec))
@@ -214,6 +240,10 @@ def main():
                   reds(run_real(rel, ("missing",))) == [LOADED], reds(run_real(rel, ("missing",))))
             check("wired %s: drifted values redden exactly the fields component" % rel,
                   reds(run_real(rel, ("drift",))) == [FIELDS], reds(run_real(rel, ("drift",))))
+            if shipped_defs.guards(mod):
+                off = run_real(rel, ("guard_off",))
+                check("wired %s: one MayRequire mod inactive (its whole guard group absent) stays green" % rel,
+                      reds(off) == [] and all(v == "PASS" for v, _d in off.values()), off)
 
     if FAILS:
         print("\n%d shipped_defs selftest(s) FAILED" % len(FAILS))
