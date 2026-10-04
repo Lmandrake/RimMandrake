@@ -17,9 +17,9 @@ namespace RimMandrake.MessyConduit.SelfTest
     internal static class Program
     {
         private static int checks, fails;
-        private static string dumpDir;
+        internal static string dumpDir;
 
-        private static void Dump(string name, CordWorld w, List<LaidPiece> pieces)
+        internal static void Dump(string name, CordWorld w, List<LaidPiece> pieces)
         {
             var o = new
             {
