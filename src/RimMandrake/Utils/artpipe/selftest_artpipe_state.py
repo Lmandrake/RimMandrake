@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import tempfile
 from pathlib import Path
@@ -45,6 +46,9 @@ def test_collect(tmp: Path):
     st = tmp / "state"
     repo = tmp / "repo"
     (repo / "src").mkdir(parents=True)
+    os.environ["ARTSTORE"] = str(tmp / "artstore")          # never the real store
+    os.environ["ART_SRC_ROOT"] = str(repo / "src")
+    os.environ["ART_LEDGER_DIR"] = str(repo / "infrastructure" / "state" / "art")
     _job(st / "done", "a1", install_to="src/M/Textures/a1.png")
     (st / "done" / "a1.manifest.json").write_text("{}")
     (st / "_artsrc" / "a1").mkdir(parents=True)
@@ -57,6 +61,19 @@ def test_collect(tmp: Path):
     rec = json.loads((st / "collected.jsonl").read_text().splitlines()[0])
     check("collect records job + dest", rec["job_id"] == "a1" and rec["dest"] == "src/M/Textures/a1.png")
     check("collected set sees it", ("a1", "src/M/Textures/a1.png") in AS._collected(st))
+    L = AS._artledger(repo)
+    live = L.Index().live.get(("src/M", "a1.png"), {})
+    check("collect goes through the art ledger (live event, reason artpipe-collect)",
+          live.get("reason") == "artpipe-collect" and live.get("sha") == L.sha256_bytes(b"\x89PNGfake"))
+    L.append({"type": "ruling", "id": "k1", "target": {"sha": live.get("sha")}, "verdict": "keep",
+              "by": "owner", "trust": "ruled"})
+    (st / "_artsrc" / "a1" / "a1.png").write_bytes(b"\x89PNGfake2")
+    try:
+        AS.collect_one(st, repo, "a1", "src/M/Textures/a1.png", dry_run=False)
+        check("collect refuses to replace an owner-kept picture", False)
+    except SystemExit:
+        check("collect refuses to replace an owner-kept picture", out.read_bytes() == b"\x89PNGfake")
+    (st / "_artsrc" / "a1" / "a1.png").write_bytes(b"\x89PNGfake")
     for name, args in (("refuses dest outside src/", ("a1", "Transient/a1.png")),
                        ("refuses ../ escape", ("a1", "src/../x.png")),
                        ("refuses a failed job", ("f1", "src/M/f1.png")),

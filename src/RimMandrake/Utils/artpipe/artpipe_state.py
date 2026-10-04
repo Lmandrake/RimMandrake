@@ -9,8 +9,9 @@
 
 `collect` is how finished art reaches `src/`: the daemon never writes into a
 clone (it leaves `<state>/_artsrc/<id>/<id>.png` + `done/<id>.manifest.json`);
-a seat runs collect IN ITS OWN CLONE, which copies the PNG to the repo-relative
-destination, appends a line to `<state>/collected.jsonl`, and prints the paths
+a seat runs collect IN ITS OWN CLONE, which installs the PNG at the repo-relative
+destination through the art ledger (`artledger.install_file`, reason `artpipe-collect`:
+the displaced picture is archived first, and an owner-kept one is never replaced), appends a line to `<state>/collected.jsonl`, and prints the paths
 to commit. A job JSON may name its destination in an optional `install_to`
 field (repo-relative); otherwise pass `--to`.
 
@@ -165,6 +166,15 @@ def _collected(root: Path) -> set[tuple[str, str]]:
     return out
 
 
+def _artledger(repo: Path):
+    """artledger bound to `repo`'s src/ and ledger (another clone, or a selftest fixture)."""
+    os.environ.setdefault("ART_SRC_ROOT", str(repo / "src"))
+    os.environ.setdefault("ART_LEDGER_DIR", str(repo / "infrastructure" / "state" / "art"))
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "art"))
+    import artledger
+    return artledger
+
+
 def collect_one(root: Path, repo: Path, job_id: str, dest_rel: str, dry_run: bool,
                 allow_failed: bool = False) -> Path:
     dest_rel = dest_rel.lstrip("/")
@@ -179,8 +189,11 @@ def collect_one(root: Path, repo: Path, job_id: str, dest_rel: str, dry_run: boo
                          f"pass --allow-failed to take it anyway")
     if dry_run:
         return dest
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(png, dest)
+    L = _artledger(repo)
+    try:                     # the art ledger is the only writer into Textures (ART_VERSION_WRANGLING_1)
+        L.install_file(dest, png, reason="artpipe-collect", provenance={"kind": "artpipe", "job": job_id})
+    except L.Refused as e:
+        raise SystemExit(f"collect: {job_id} -> {dest_rel} REFUSED by the art ledger: {e}")
     rec = {"job_id": job_id, "dest": dest_rel, "sha256": _sha256(dest),
            "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "clone": str(repo),
            "host": socket.gethostname()}
@@ -211,9 +224,11 @@ def cmd_collect(args) -> int:
         pairs.append((args.job_id, args.to))
     written = [collect_one(root, repo, j, d, args.dry_run, args.allow_failed) for j, d in pairs]
     verb = "would copy" if args.dry_run else "collected"
-    print(f"{verb} {len(written)} file(s); commit with explicit paths:")
+    print(f"{verb} {len(written)} file(s); commit with explicit paths (the art-ledger shard too):")
     for p in written:
         print(f"  {p.relative_to(repo)}")
+    if written and not args.dry_run:
+        print(f"  infrastructure/state/art/events/{_artledger(repo).seat()}.jsonl")
     return 0
 
 
