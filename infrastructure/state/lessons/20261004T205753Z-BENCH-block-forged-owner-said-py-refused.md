@@ -1,0 +1,1 @@
+block_forged_owner_said.py refused --owner-said for text the owner TYPED into a question card's free-text answer and for a mid-turn chat message, the same session (2026-10-03, twice). Record such rulings as 'decision taken by question card; typed' in the note text without the flag.

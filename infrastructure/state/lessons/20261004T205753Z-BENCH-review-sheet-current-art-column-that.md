@@ -1,0 +1,1 @@
+A review-sheet 'current art' column that takes a def's LAST texture path shows the dessicated corpse texture: 65 of 109 desert rows showed corpses and nearly got good art replaced (2026-10-04). Resolve the body graphic by role, never by list position.
