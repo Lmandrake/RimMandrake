@@ -1,0 +1,1 @@
+biome_census.py marks a row NO ART when its def's texPath points at vanilla/donor art, even when artpipe holds finished renders for it by name (6 of 8 Blue Desert 'no art' rows had bluedesert_* renders); art_sheet.py finds them by name, the census does not — trust the sheet's NO-ART list, not census.md's count.
