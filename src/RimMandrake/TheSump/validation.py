@@ -170,6 +170,19 @@ def static_checks():
         bad.append("RM_Kethrel.cs uses Harmony: this assembly has no Harmony reference by design (the render tree names the node class)")
     if "class RM_BiomeWorker_TheSump" not in open(os.path.join(HERE, "Source", "RM_TheSumpBiome.cs"), encoding="utf-8").read():
         bad.append("biome worker class RM_BiomeWorker_TheSump not found")
+    # SUMP_CAPSTAN_TURRET_BUILD_1: the turret def, its two-part art, the class and its proof
+    cap = os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_CapstanTurret.xml")
+    if not os.path.isfile(cap) or "RimMandrake.TheSump.RM_CapstanTurret" not in open(cap, encoding="utf-8").read():
+        bad.append("RM_CapstanTurret def missing or not on its class")
+    for part in ("Base", "Top"):
+        if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "CapstanTurret", "RM_CapstanTurret_%s.png" % part)):
+            bad.append("capstan %s art missing" % part)
+    ccs = open(os.path.join(HERE, "Source", "RM_CapstanTurret.cs"), encoding="utf-8").read()
+    for need in ("class RM_CapstanTurret", "class RM_CapstanTurretProof", "Notify_Teleported", "capstanMaxMass"):
+        if need not in ccs:
+            bad.append("RM_CapstanTurret.cs lacks %s" % need)
+    if "HarmonyLib" in ccs:
+        bad.append("RM_CapstanTurret.cs uses Harmony: this assembly has no Harmony reference")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", MOD + ".md")):
         bad.append("walk missing")
     return bad
@@ -319,6 +332,32 @@ def _build_suite():
         with t.component("permanent_dusk_lock", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_SumpDuskLock/RUT_SumpWeather resolve, but their wiring patch targets the held BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')
+
+    @suite.chain("capstan_turret")
+    def capstan_turret(t):
+        """SUMP_CAPSTAN_TURRET_BUILD_1. RM_CapstanTurretProof.ProofPull builds a turret and a target 9 cells off on
+        any map's open ground, ropes it and reels step by step; "heavy" is a thrumbo (over the mass cap: snaps)."""
+        def proof(kind):
+            if t.session is None:
+                _unmeasured(t, "no bridge session for ProofPull")
+                return None
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheSump.RM_CapstanTurretProof", method="ProofPull", args=kind)
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return None
+            return text
+
+        with t.component("reels_an_enemy_toward_the_turret", toggle="capstanEnabled"):
+            text = proof("Villager")
+            if text is not None:
+                m = re.search(r"roped=True start=([\d.]+) end=([\d.]+)", text)
+                if not m or float(m.group(2)) >= float(m.group(1)) - 2:
+                    raise ExpectationFailed("the target was not pulled several cells in: %s" % text[:200])
+        with t.component("over_mass_target_snaps_the_line", toggle="capstanMaxMass"):
+            text = proof("heavy")
+            if text is not None and ("roped=False" not in text or "snaps=1" not in text):
+                raise ExpectationFailed("a thrumbo did not snap the line: %s" % text[:200])
 
     return suite
 

@@ -12,6 +12,7 @@ Sources: `src/RimMandrake/TheSump/About/About.xml`, `Defs/**`, `Patches/**`, `So
 - Every Mod Settings field (`biomeRarityFactor`, `tarVaultEnabled`, `deepBlackMereEnabled`) round-trips. → settings_roundtrip.*
 - The biome's densities are positive. → biome_wiring.* (UNMEASURED-by-hold: the BiomeDef is held)
 - Deep Black mere, tar vault, moat/fuse post, dig lottery, tar beast, mouse trail, wick garden, dusk lock. → map_mechanics.* (UNMEASURED; the vault def lives in UtinniPatches, several others are held)
+- The capstan turret (SUMP_CAPSTAN_TURRET_BUILD_1) ropes a visible enemy in range and reels it in cell by cell toward itself; a target over the mass or body-size cap snaps the line (message, damage to the turret). → capstan_turret.reels_an_enemy_toward_the_turret, capstan_turret.over_mass_target_snaps_the_line (RM_CapstanTurretProof.ProofPull); downed-colonist rescue pull and the struggle snap → UNCOVERED: no drive yet
 
 ## the walk
 1. [D] `jawa/get_defs` over every deployed def derived from `Defs/**/*.xml` minus the DEPLOY_HOLD globs   # defs_resolve

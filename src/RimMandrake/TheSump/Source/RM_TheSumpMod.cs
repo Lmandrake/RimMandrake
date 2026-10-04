@@ -71,6 +71,16 @@ namespace RimMandrake.TheSump
         public static bool kethrelTakeColonyProperty = false;
         public static float kethrelMoltLoadKg = 30f;
         public static float kethrelHandlingDifficulty = 1f;
+        // SUMP_CAPSTAN_TURRET_BUILD_1: the lasso's numbers (Melee Animation bases) set on the building.
+        public static bool capstanEnabled = true;
+        public static float capstanRange = 10f;
+        public static float capstanReelSpeed = 1f;
+        public static float capstanCooldownSeconds = 20f;
+        public static bool capstanFriendlyPull = true;
+        public static float capstanSnapChance = 0.08f;
+        public static float capstanMaxMass = 150f;
+        public static float capstanMaxBodySize = 2.5f;
+        public static float capstanSnapDamage = 20f;
 
         public override void ExposeData()
         {
@@ -84,6 +94,15 @@ namespace RimMandrake.TheSump
             Scribe_Values.Look(ref kethrelTakeColonyProperty, "kethrelTakeColonyProperty", false, true);
             Scribe_Values.Look(ref kethrelMoltLoadKg, "kethrelMoltLoadKg", 30f, true);
             Scribe_Values.Look(ref kethrelHandlingDifficulty, "kethrelHandlingDifficulty", 1f, true);
+            Scribe_Values.Look(ref capstanEnabled, "capstanEnabled", true, true);
+            Scribe_Values.Look(ref capstanRange, "capstanRange", 10f, true);
+            Scribe_Values.Look(ref capstanReelSpeed, "capstanReelSpeed", 1f, true);
+            Scribe_Values.Look(ref capstanCooldownSeconds, "capstanCooldownSeconds", 20f, true);
+            Scribe_Values.Look(ref capstanFriendlyPull, "capstanFriendlyPull", true, true);
+            Scribe_Values.Look(ref capstanSnapChance, "capstanSnapChance", 0.08f, true);
+            Scribe_Values.Look(ref capstanMaxMass, "capstanMaxMass", 150f, true);
+            Scribe_Values.Look(ref capstanMaxBodySize, "capstanMaxBodySize", 2.5f, true);
+            Scribe_Values.Look(ref capstanSnapDamage, "capstanSnapDamage", 20f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -124,6 +143,26 @@ namespace RimMandrake.TheSump
             kethrelMoltLoadKg = list.Slider(kethrelMoltLoadKg, 10f, 80f);
             list.Label("Molt handling difficulty: " + kethrelHandlingDifficulty.ToString("0.0") + "x");
             kethrelHandlingDifficulty = list.Slider(kethrelHandlingDifficulty, 0f, 2f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Capstan turret ropes and reels", ref capstanEnabled,
+                "Shipped default: ON. A powered capstan turret throws a line at a visible enemy in range and reels it in "
+              + "toward itself. Off: the turret stands idle.");
+            list.Label("Capstan range: " + capstanRange.ToString("0") + " cells");
+            capstanRange = Mathf.Round(list.Slider(capstanRange, 4f, 25f));
+            list.Label("Reel speed: " + capstanReelSpeed.ToStringPercent() + " (one cell every " + (30f / Mathf.Max(0.1f, capstanReelSpeed) / 60f).ToString("0.0") + " s)");
+            capstanReelSpeed = list.Slider(capstanReelSpeed, 0.25f, 4f);
+            list.Label("Cooldown between lines: " + capstanCooldownSeconds.ToString("0") + " s");
+            capstanCooldownSeconds = Mathf.Round(list.Slider(capstanCooldownSeconds, 2f, 120f));
+            list.CheckboxLabeled("Capstan pulls downed colonists to safety", ref capstanFriendlyPull,
+                "Shipped default: ON. With no enemy in range, it ropes a downed colonist in the open and reels them in.");
+            list.Label("Chance per cell that a struggling target snaps the line: " + capstanSnapChance.ToStringPercent());
+            capstanSnapChance = list.Slider(capstanSnapChance, 0f, 0.5f);
+            list.Label("Heaviest it can reel: " + capstanMaxMass.ToString("0") + " kg, body size " + capstanMaxBodySize.ToString("0.0"));
+            capstanMaxMass = Mathf.Round(list.Slider(capstanMaxMass, 30f, 1000f));
+            capstanMaxBodySize = list.Slider(capstanMaxBodySize, 0.5f, 6f);
+            list.Label("Damage to the turret when the line snaps: " + capstanSnapDamage.ToString("0"));
+            capstanSnapDamage = Mathf.Round(list.Slider(capstanSnapDamage, 0f, 100f));
             list.GapLine();
 
             list.Label("This biome's own mechanics — the poured tar moat and fuse-"
