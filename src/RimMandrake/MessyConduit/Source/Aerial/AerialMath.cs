@@ -252,8 +252,7 @@ namespace RimMandrake.MessyConduit.Aerial
         /// </summary>
         public static List<SpanStrand> SpanStrands(P2 baseA, IList<P2> insA, P2 baseB, IList<P2> insB, int seed, int maxStrands)
         {
-            int na = Math.Max(1, insA.Count), nb = Math.Max(1, insB.Count);
-            int count = Math.Max(1, Math.Min(Math.Min(na, nb), Math.Max(1, maxStrands)));
+            int count = StrandCount(insA.Count, insB.Count, maxStrands);
             var list = new List<SpanStrand>(count);
             for (int i = 0; i < count; i++)
             {
@@ -267,6 +266,11 @@ namespace RimMandrake.MessyConduit.Aerial
             }
             return list;
         }
+
+        /// <summary>How many wires a span between anchors with <paramref name="insA"/> and <paramref name="insB"/> insulators
+        /// carries: one per insulator, capped by the fewer end and the "wires per span" setting; never less than one.</summary>
+        public static int StrandCount(int insA, int insB, int maxStrands) =>
+            Math.Max(1, Math.Min(Math.Min(Math.Max(1, insA), Math.Max(1, insB)), Math.Max(1, maxStrands)));
 
         /// <summary>Which of <paramref name="insulators"/> (left to right on the crossarm) strand <paramref name="strand"/> of
         /// <paramref name="count"/> leaves from: one strand takes the middle, two take the outer pair, three take one
@@ -382,6 +386,33 @@ namespace RimMandrake.MessyConduit.Aerial
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
             return lay;
         }
+
+        /// <summary>
+        /// Round 3 (owner 2026-10-04: "If we're going to have three wires connecting between poles, then three wires should be
+        /// laying on the ground when broken by explosion"): a broken span drops EVERY one of its <paramref name="count"/>
+        /// wires. Wire i leaves the insulator the span's strand i used on this anchor (<see cref="InsulatorIndex"/>, the same
+        /// fan as <see cref="SpanStrands"/>), lies toward the break offset sideways by (i - (count-1)/2) x
+        /// <see cref="FallenSpread"/> so the wires lie side by side rather than on top of each other, and gets its own seed
+        /// (its own bow). Each lay is <see cref="LayFallen"/>'s one continuous cable.
+        /// </summary>
+        public static List<FallenLay> LayFallenStrands(IList<P2> tips, P2 basePt, P2 toward, double length, int seed, int count, Func<int, int, bool> walkable)
+        {
+            var r = new List<FallenLay>();
+            int n = Math.Max(1, count);
+            double dist = P2.Dist(basePt, toward);
+            double ux = dist > 1e-6 ? (toward.X - basePt.X) / dist : 1, uz = dist > 1e-6 ? (toward.Z - basePt.Z) / dist : 0;
+            for (int i = 0; i < n; i++)
+            {
+                P2 top = tips.Count > 0 ? tips[InsulatorIndex(i, n, tips.Count)] : basePt;
+                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * FallenSpread;
+                var to = new P2(toward.X - uz * lat, toward.Z + ux * lat);
+                r.Add(LayFallen(top, basePt, to, length, unchecked(seed + 7919 * i), walkable));
+            }
+            return r;
+        }
+
+        /// <summary>Sideways gap between neighbouring fallen wires at the break (cells). PROVISIONAL.</summary>
+        public const double FallenSpread = 0.22;
 
         // ------------------------------------------------------------------ explosion hit test (design 2.6)
         public static double ClosestT(P2 a, P2 b, P2 c)

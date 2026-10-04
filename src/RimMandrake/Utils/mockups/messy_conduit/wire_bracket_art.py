@@ -48,6 +48,12 @@ VERSIONS = ("v2", "v1")          # newest first
 # modern v2 "north" render has its plate at the BOTTOM and its "south" at the TOP, the reverse of the other three looks
 SOURCE = {("modern", "north"): "south", ("modern", "south"): "north"}
 N = 128
+# Round 3 (owner 2026-10-04, station 9: "wall brackets are ALMOST fixed. West, East, South look good. North extends outward
+# from the wall inappropriately, fix perspective"). His "North" is the bracket on a wall's NORTH face: in game it faces
+# SOUTH (it points at its wall), the _south texture, plate at the bottom. RimWorld's camera looks down and north, so an arm
+# sticking out north, away from the viewer, is foreshortened: the _south art is squashed vertically to FORESHORTEN_N of
+# its height (re-centred; the draw offset re-seats the plate on the wall). The other three facings lie across or toward the view and keep full size.
+FORESHORTEN_N = 0.55
 
 
 def find_render(look, facing):
@@ -61,20 +67,21 @@ def find_render(look, facing):
     return None
 
 
-def insulator(im, plate):
-    """Centroid (px, py) of the opaque pixels within 22 px of the extreme opposite the plate."""
+def insulator(im, plate, band=22):
+    """Centroid (px, py) of the opaque pixels within `band` px of the extreme opposite the plate (the band shrinks with
+    a foreshortened texture, so it still reads the insulator, not the arm)."""
     a = im.getchannel("A")
     pts = [(x, y) for y in range(N) for x in range(N) if a.getpixel((x, y)) > 128]
     if not pts:
         raise ValueError("empty render")
     if plate == "left":
-        far = max(p[0] for p in pts); sel = [p for p in pts if p[0] >= far - 22]
+        far = max(p[0] for p in pts); sel = [p for p in pts if p[0] >= far - band]
     elif plate == "right":
-        far = min(p[0] for p in pts); sel = [p for p in pts if p[0] <= far + 22]
+        far = min(p[0] for p in pts); sel = [p for p in pts if p[0] <= far + band]
     elif plate == "top":
-        far = max(p[1] for p in pts); sel = [p for p in pts if p[1] >= far - 22]
+        far = max(p[1] for p in pts); sel = [p for p in pts if p[1] >= far - band]
     else:
-        far = min(p[1] for p in pts); sel = [p for p in pts if p[1] <= far + 22]
+        far = min(p[1] for p in pts); sel = [p for p in pts if p[1] <= far + band]
     return sum(p[0] for p in sel) / float(len(sel)), sum(p[1] for p in sel) / float(len(sel))
 
 
@@ -93,6 +100,21 @@ def plate_edge(im, plate):
     if plate == "right":
         return round(x1 / float(N) - 0.5, 3)
     return round(0.5 - x0 / float(N), 3)
+
+
+def foreshorten_up(im, k):
+    """Squash the opaque art vertically to k of its height, re-centred on the canvas (the per-look draw offset,
+    AerialMath.BracketDrawOffset, then puts its plate edge back on the wall from the re-measured PlateEdge)."""
+    bb = im.getchannel("A").getbbox()
+    if not bb:
+        return im
+    x0, y0, x1, y1 = bb
+    part = im.crop((0, y0, N, y1))
+    h = max(1, int(round((y1 - y0) * k)))
+    part = part.resize((N, h), Image.LANCZOS)
+    out = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    out.alpha_composite(part, (0, (N - h) // 2))
+    return out
 
 
 def cells(px, py):
@@ -117,6 +139,9 @@ def build(check):
                     if plate != WALL_SIDE[f]:          # drawn for the opposite wall: it would lean INTO this one
                         im = ImageOps.flip(im) if f in ("north", "south") else ImageOps.mirror(im)
                         notes.append("%s %s: render plate %s, flipped to %s" % (look, f, plate, WALL_SIDE[f]))
+                    if f == "south":
+                        im = foreshorten_up(im, FORESHORTEN_N)
+                        notes.append("%s south: foreshortened to %.2f of its height" % (look, FORESHORTEN_N))
                     os.makedirs(os.path.join(STY, look), exist_ok=True)
                     artledger.install_image(os.path.join(STY, look, "WallBracket_%s.png" % f), im,
                                             reason="script:src/RimMandrake/Utils/mockups/messy_conduit/wire_bracket_art.py")
@@ -130,7 +155,7 @@ def build(check):
         for f in FACINGS:
             im = Image.open(os.path.join(STY, look, "WallBracket_%s.png" % f)).convert("RGBA")
             plate = WALL_SIDE[f]               # wired textures always carry the plate on the wall side (flipped above)
-            x, z = cells(*insulator(im, plate))
+            x, z = cells(*insulator(im, plate, int(round(22 * FORESHORTEN_N)) if f == "south" else 22))
             e = plate_edge(im, plate)
             rows.append((look, f.capitalize(), x, z, e))
             if f == "east":

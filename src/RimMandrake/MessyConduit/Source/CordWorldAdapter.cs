@@ -93,7 +93,42 @@ namespace RimMandrake.MessyConduit
                 ArtInsets(th.def, m);
                 world.Machines.Add(m);
             }
+            AddTapNodes(map, world);
             return world;
+        }
+
+        /// <summary>Round 3 (owner 2026-10-04): "the power tap should be considered a Node that both power systems now must
+        /// connect with their cables". The clamp is a connector of OUR net (its machine already hooks our conduit when it has a
+        /// connectParent); here it also hooks the conduit cell it bites, or links the foreign transmitter building it bites,
+        /// so THEIR cable runs into the clamp instead of ending beside it as a free sparking end. Draw-only: the power nets
+        /// are untouched (the two grids never merge; CompPowerTap moves the energy).</summary>
+        private static void AddTapNodes(Map map, CordWorld world)
+        {
+            if (Aerial.AerialDefOf.RM_PowerTapClamp == null) return;
+            foreach (Thing th in map.listerThings.ThingsOfDef(Aerial.AerialDefOf.RM_PowerTapClamp))
+            {
+                Aerial.CompPowerTap tap = th.TryGetComp<Aerial.CompPowerTap>();
+                if (tap == null || !th.Spawned) continue;
+                tap.VictimNet(out Thing victim);
+                if (victim == null) continue;
+                string id = "c" + th.thingIDNumber;
+                MachineInfo m = world.Machines.Find(x => x.Id == id);
+                bool add = m == null;
+                if (add)
+                {
+                    m = new MachineInfo { Id = id, Kind = MachineKind.Consumer };
+                    CellRect r = th.OccupiedRect();
+                    m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
+                }
+                Cell vc = C(victim.Position);
+                if (world.IsConduit(vc)) { if (!m.Hookups.Contains(vc)) m.Hookups.Add(vc); }
+                else
+                {
+                    string vid = "t" + victim.thingIDNumber;
+                    if (world.Machines.Exists(x => x.Id == vid) && !m.MachineLinks.Contains(vid)) m.MachineLinks.Add(vid);
+                }
+                if (add && (m.Hookups.Count > 0 || m.MachineLinks.Count > 0)) world.Machines.Add(m);
+            }
         }
 
         /// <summary>Where a machine's drawn art stands in from its footprint edge (owner review 2026-10-04 B10): the cord runs on

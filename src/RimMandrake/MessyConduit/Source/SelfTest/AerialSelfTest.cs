@@ -41,6 +41,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             CanFail();
             Brackets();
             Terminals();
+            Round3();
             Console.WriteLine($"aerial: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -109,6 +110,45 @@ namespace RimMandrake.MessyConduit.SelfTest
             // can fail: the round-1 Scrapper/South insulator (plate-up art) leaned into the wall
             C(!AerialMath.BracketLeansOut(2, new P2(0.004, -0.229)) && !AerialMath.BracketLeansOut(1, new P2(0.3, 0.1)),
               "can fail: the round-1 Scrapper south art (insulator toward the wall) reads as leaning IN");
+        }
+
+        // ------------------------------------------------------------------ round 3 (owner 2026-10-04)
+        private static void Round3()
+        {
+            Dictionary<string, P2> ins = BracketGeometryTable.Build();
+            Dictionary<string, double> edge = BracketGeometryTable.PlateEdge();
+            // how far the art reaches out from its wall: plate edge to insulator, along the normal
+            double Reach(string look, int rot) => edge[look + "/" + Rots[rot]] - AerialMath.Dot(ins[look + "/" + Rots[rot]], AerialMath.WallNormal(rot));
+            var looks = ins.Keys.Select(k => k.Split('/')[0]).Distinct().ToList();
+            var bad = new List<string>();
+            foreach (string look in looks)
+            {
+                // lean sign per facing, north (rot 0) included: the insulator stands out from the wall, never in it
+                for (int rot = 0; rot < 4; rot++)
+                    if (!(Reach(look, rot) > 0.05)) bad.Add(look + "/" + Rots[rot] + " reaches " + Reach(look, rot).ToString("0.00") + " (leans INTO its wall)");
+                // the bracket on a wall's NORTH face (rot South) points away from the camera: foreshortened
+                if (!(Reach(look, 2) < 0.75 * Reach(look, 0))) bad.Add(look + " north-wall bracket reaches " + Reach(look, 2).ToString("0.00") + ", not foreshortened vs the south-wall one " + Reach(look, 0).ToString("0.00"));
+            }
+            C(looks.Count >= 4 && bad.Count == 0, "round 3 brackets: every facing leans OUT, the north-wall one (rot South) foreshortened" + (bad.Count > 0 ? ": " + string.Join("; ", bad) : ""));
+            // can fail: the round-2 Scrapper south art (full-height arm, plate edge 0.375, insulator +0.229) is NOT foreshortened
+            C(!(0.375 + 0.229 < 0.75 * Reach("Scrapper", 0)), "can fail: the round-2 full-length north-wall arm reads as not foreshortened");
+
+            // a broken 3-wire span drops 3 wires on each side, each from its own insulator, side by side, all to the break
+            Func<int, int, bool> open = (x, z) => true;
+            var basePt = new P2(10.5, 10.5);
+            var tips = new List<P2> { new P2(10.1, 13.7), new P2(10.5, 13.8), new P2(10.9, 13.7) };
+            var brk = new P2(16.5, 10.5);
+            int n3 = AerialMath.StrandCount(3, 3, 3);
+            List<FallenLay> three = AerialMath.LayFallenStrands(tips, basePt, brk, 6.3, 42, n3, open);
+            bool fromEach = three.Count == 3 && Enumerable.Range(0, 3).All(i => P2.Dist(three[i].Pts[0], tips[i]) < 1e-9);
+            bool toBreak = three.All(l => P2.Dist(l.Tip, brk) <= 0.3 + 1e-9 && !l.Blocked);
+            double gap = three.Count == 3 ? Math.Min(P2.Dist(three[0].Tip, three[1].Tip), P2.Dist(three[1].Tip, three[2].Tip)) : 0;
+            C(n3 == 3 && fromEach && toBreak && gap > 0.1, "round 3: a broken 3-wire span drops " + three.Count + " wires, one from each insulator, to the break, " + gap.ToString("0.00") + " apart");
+            C(AerialMath.StrandCount(3, 1, 3) == 1 && AerialMath.LayFallenStrands(tips, basePt, brk, 6.3, 42, AerialMath.StrandCount(3, 1, 3), open).Count == 1 &&
+              AerialMath.StrandCount(3, 3, 2) == 2,
+              "fallen wire count = the span's own strand count (mast-bracket 1, wires-per-span setting 2 -> 2)");
+            List<FallenLay> again = AerialMath.LayFallenStrands(tips, basePt, brk, 6.3, 42, 3, open);
+            C(again.Zip(three, (a, b) => a.Pts.Count == b.Pts.Count && a.Pts.Zip(b.Pts, (p, q) => P2.Dist(p, q) < 1e-12).All(v => v)).All(v => v), "three fallen wires deterministic by seed");
         }
 
         // ------------------------------------------------------------------ round 2: local devices across a pole's terminals

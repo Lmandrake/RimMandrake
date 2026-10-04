@@ -227,6 +227,9 @@ namespace RimMandrake.MessyConduit.Core
             return h;
         }
 
+        /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
+        public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
+
         private static LaidPiece LayEdge(CordWorld w, CordGraph g, CordEdge e, string key, bool parallel, BuildOptions opt,
                                          Func<Cell, bool> isLive)
         {
@@ -252,6 +255,10 @@ namespace RimMandrake.MessyConduit.Core
             CordLayer.ProjectOut(w, C);
             double L = Geo.Length(C);
             int n = rr.Int(prm.CordsMin, Math.Max(prm.CordsMin, prm.CordsMax));
+            // round 3 (owner 2026-10-04, station 9: "very odd triple cords going a short distance from the wall to a lamp.
+            // Should just be one cord"): a device's own lead is ONE cord into its one plug; bundles stay between junctions,
+            // stubs and conduit ends. The draw above still runs, so every later seeded value is unchanged.
+            if (DeviceLead(na, nb)) n = 1;
             double slack = rr.Range(prm.SlackLo, prm.SlackHi) * prm.SlackScale;
             double maxExtra = prm.SlackScale <= 0 ? 0 : Math.Min(Math.Max(slack * L, prm.MinExtra * Math.Min(1, prm.SlackScale)), prm.MaxExtra);
             int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
@@ -329,6 +336,10 @@ namespace RimMandrake.MessyConduit.Core
         public const double PlugScale = 0.55, PlugInset = 0.05, StubScale = 0.7, RockHoleX = 0.11;
         /// <summary>B4: the rock hole drawn foreshortened along the cord (art X) as if cut into an angled rock face. PROVISIONAL.</summary>
         public const double RockSquash = 0.6;
+        /// <summary>Round 3 (owner 2026-10-04: wall connectors "need to be angled 'down' more so they face out, not up towards
+        /// nadir"): the wall plate sits on the wall's vertical face, so it is drawn foreshortened along the cord (art X) like
+        /// the rock hole, a narrow plate seen edge-on from above rather than a square looking at the sky. PROVISIONAL.</summary>
+        public const double WallSquash = 0.5;
 
         public struct JunctionPose
         {
@@ -544,7 +555,7 @@ namespace RimMandrake.MessyConduit.Core
                 // the real art's cord runs along its +X into the plate/hole, so +X points INTO the face;
                 // the plate (centred on the canvas) or the hole (+0.11 canvas) sits on the face line
                 if (nd.Type == NodeType.StubWall)
-                    piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale));
+                    piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale) { Squash = WallSquash });
                 else if (nd.Type == NodeType.StubRock)
                     piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale * RockSquash), ang, StubScale) { Squash = RockSquash });
                 else if (nd.Type == NodeType.StubDevice && opt.Pile == PileArt.Strips)

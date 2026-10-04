@@ -45,9 +45,13 @@ namespace RimMandrake.MessyConduit.Aerial
         public int seed;
         /// <summary>thingIDNumber of the partner whose cut span this half belongs to; -1 = the partner is dead.</summary>
         public int cutPartner = -1;
+        /// <summary>How many wires the broken span carried (round 3: every one of them falls). 0 = not recorded (an older
+        /// save): this anchor's own insulator count, capped by the "wires per span" setting.</summary>
+        public int wires;
 
         public void ExposeData()
         {
+            Scribe_Values.Look(ref wires, "wires");
             Scribe_Values.Look(ref toward, "toward");
             Scribe_Values.Look(ref length, "length");
             Scribe_Values.Look(ref seed, "seed");
@@ -149,6 +153,10 @@ namespace RimMandrake.MessyConduit.Aerial
             }
         }
 
+        /// <summary>How many wires the span between these two anchors carries (the same count SpanMesh draws).</summary>
+        public static int WiresBetween(CompAerialAnchor a, CompAerialAnchor b) =>
+            AerialMath.StrandCount(AerialMaterials.InsulatorsFor(a).Count, AerialMaterials.InsulatorsFor(b).Count, AerialSettings.maxStrands);
+
         public static int FactionKey(Thing t) => t.Faction == null ? -1 : t.Faction.loadID;
 
         public AnchorInfo Info() => new AnchorInfo
@@ -184,6 +192,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (plan.Fallen.Any(f => f.Survivor == p.thingIDNumber) && p.Spawned)
                     p.fallen.Add(new FallenCord
                     {
+                        wires = WiresBetween(p, this),
                         toward = Position,
                         length = Vector3.Distance(p.BasePoint, BasePoint) * 1.05f,
                         seed = (int)AerialMath.Hash(p.thingIDNumber, thingIDNumber, 7),
@@ -268,8 +277,8 @@ namespace RimMandrake.MessyConduit.Aerial
             {
                 Vector3 cut = Vector3.Lerp(a.BasePoint, b.BasePoint, Mathf.Clamp01(atT));
                 var cell = new IntVec3(Mathf.FloorToInt(cut.x), 0, Mathf.FloorToInt(cut.z));
-                a.fallen.Add(new FallenCord { toward = cell, length = Vector3.Distance(a.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(a.thingIDNumber, b.thingIDNumber, 11), cutPartner = b.thingIDNumber });
-                b.fallen.Add(new FallenCord { toward = cell, length = Vector3.Distance(b.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(b.thingIDNumber, a.thingIDNumber, 11), cutPartner = a.thingIDNumber });
+                a.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, length = Vector3.Distance(a.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(a.thingIDNumber, b.thingIDNumber, 11), cutPartner = b.thingIDNumber });
+                b.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, length = Vector3.Distance(b.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(b.thingIDNumber, a.thingIDNumber, 11), cutPartner = a.thingIDNumber });
             }
             Changed(a, b);
             return true;

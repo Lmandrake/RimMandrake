@@ -16,8 +16,8 @@ namespace RimMandrake.MessyConduit.Core
         public List<string> Messages = new List<string>();
         /// <summary>Piles (owner review 2026-10-04 B2/B13): connectors in tangles, strips anywhere, cable ends in a pile that
         /// land on no connector port, connectors with fewer than two cables plugged in, rock holes drawn unforeshortened.</summary>
-        public int Piles, PileConnectors, PileJunctions, Strips, PileLooseEnds, PileIdleConnectors, FlatRockHoles;
-        public int Faults => JunctionFaults + PlugFaults + StubFaults + DeadFaults + LiveFaults + PileLooseEnds + PileIdleConnectors + FlatRockHoles;
+        public int Piles, PileConnectors, PileJunctions, Strips, PileLooseEnds, PileIdleConnectors, FlatRockHoles, FlatWallPlates;
+        public int Faults => JunctionFaults + PlugFaults + StubFaults + DeadFaults + LiveFaults + PileLooseEnds + PileIdleConnectors + FlatRockHoles + FlatWallPlates;
     }
 
     public static class CordAudit
@@ -215,6 +215,8 @@ namespace RimMandrake.MessyConduit.Core
             }
             R.Strips = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark));
             R.FlatRockHoles = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubRock && !(d.Squash > 0.3 && d.Squash < 0.85)));
+            // round 3: a wall plate drawn square looks up at the sky; it must be foreshortened like the rock hole
+            R.FlatWallPlates = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubWall && !(d.Squash > 0.3 && d.Squash < 0.85)));
             R.DeadEnds = dead.Count; R.DeadFaults = dbad; R.DeadOffLine = dead;
             R.LiveEnds = liv.Count; R.LiveFaults = lbad; R.LiveArrivalDeg = liv;
             return R;

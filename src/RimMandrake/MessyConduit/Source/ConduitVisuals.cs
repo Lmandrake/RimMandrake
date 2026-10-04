@@ -105,6 +105,11 @@ namespace RimMandrake.MessyConduit
                 use = new GraphicData();
                 use.CopyFrom(switchOrig);
                 use.texPath = SwitchTexPathOurs;
+                // round 3 (owner 2026-10-04: "The wires should go beneath the Power Switch"): vanilla draws the switch with
+                // the Transparent shader (queue 3000, no depth write), the same queue as our cords (plugs 3001), so cords and
+                // plugs painted OVER it whatever their altitude. Cutout writes depth like every other device, so the cords at
+                // Conduits altitude go under it (Core.DrawStack.CordsPaintOver models the rule; SelfTest checks it).
+                if (Core.DrawStack.CordsPaintOver(3000, false, 3000)) use.shaderType = ShaderTypeDefOf.Cutout;
             }
             switchDef.graphicData = use;
             switchDef.graphic = use.Graphic;

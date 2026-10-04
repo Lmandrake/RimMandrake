@@ -154,7 +154,8 @@ namespace RimMandrake.MessyConduit.Aerial
                     double len = 0;
                     for (int i = 1; i < lay.Pts.Count; i++) len += P2.Dist(lay.Pts[i - 1], lay.Pts[i]);
                     fl.Add("{\"toward\":[" + f.toward.x + "," + f.toward.z + "],\"cutPartner\":" + f.cutPartner + ",\"pts\":" + lay.Pts.Count +
-                           ",\"wireStart\":[" + F((float)lay.Pts[0].X) + "," + F((float)lay.Pts[0].Z) + "],\"breakAt\":[" + F(f.toward.x + 0.5f) + "," + F(f.toward.z + 0.5f) + "]" + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + "}");
+                           ",\"wireStart\":[" + F((float)lay.Pts[0].X) + "," + F((float)lay.Pts[0].Z) + "],\"breakAt\":[" + F(f.toward.x + 0.5f) + "," + F(f.toward.z + 0.5f) + "]" + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + ",\"wires\":" + comp.Lays(a, f).Count + ",\"wireStarts\":[" +
+                           string.Join(",", comp.Lays(a, f).Select(w => "[" + F((float)w.Pts[0].X) + "," + F((float)w.Pts[0].Z) + "]")) + "]}");
                     fallenN++;
                 }
                 PowerNet raw = a.PowerComp?.PowerNet;
