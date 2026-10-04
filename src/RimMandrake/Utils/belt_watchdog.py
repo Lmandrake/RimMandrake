@@ -25,7 +25,8 @@ SIGNALS (each prints one line: LEVEL name: detail  -> remedy)
   player_log  Player.log age; repeating-exception-loop detector over the tail (same normalised text N+ times)
   bridge      python.exe probe (WSL cannot reach the bridge): ping, programState, and a MAIN-THREAD call
   foreground  foreground window title vs RimWorld (RimWorld does not render unfocused -> bridge starves)
-  modals      open dialogs from rimworld/get_ui_state that taint runs (naming, ModSettings, message boxes)
+  modals      open dialogs from rimworld/get_ui_state that taint runs (naming, ModSettings, message boxes);
+              WARN while the heartbeat is fresh, WEDGED once one outlives MODAL_WEDGE_BEATS beats or the run stalls
   runner      python processes running a live_queue job / situational_rerun (Windows + WSL)
   heartbeat   .belt_state/heartbeat_*.json (belt_heartbeat.py): stale = runner dead/frozen; finished = run OVER
   run_output  newest Transient/belt_rerun*.txt: a final UNMEASURED/MEASURED line means the run is over
@@ -54,8 +55,8 @@ from game_paths import PLAYER_LOG  # noqa: E402
 TRANSIENT = os.path.join(ROOT, "Transient")
 RESULTS = os.path.join(TRANSIENT, "modcheck", "live_queue_results.jsonl")
 
-OK, INFO, UNKNOWN, STALLED, WEDGED, DEAD = "OK", "INFO", "UNKNOWN", "STALLED", "WEDGED", "DEAD"
-RANK = {OK: 0, INFO: 0, UNKNOWN: 0, STALLED: 1, WEDGED: 2, DEAD: 3}
+OK, INFO, WARN, UNKNOWN, STALLED, WEDGED, DEAD = "OK", "INFO", "WARN", "UNKNOWN", "STALLED", "WEDGED", "DEAD"
+RANK = {OK: 0, INFO: 0, WARN: 0, UNKNOWN: 0, STALLED: 1, WEDGED: 2, DEAD: 3}   # WARN: shown, verdict unchanged
 OVERALL = {0: "HEALTHY", 1: "STALLED", 2: "WEDGED", 3: "DEAD"}
 
 LOG_FROZEN_S = 300          # Player.log silent this long while a run is active = suspicious
@@ -64,6 +65,8 @@ BELT_LOG_SILENT_S = 20 * 60
 RUN_RECENT_S = 3600         # a finished-UNMEASURED run older than this is history, not an alarm
 NOT_RESPONDING_WEDGE_S = 240   # 'Not Responding' this long across watchdog calls = wedged, focused or not
 LOAD_BUDGET_S = 25 * 60     # a cold load is ~15 min (MEASURED 2026-09-07); past this with no bridge = stalled
+MODAL_WEDGE_BEATS = 2       # a modal still open across MORE than this many distinct heartbeats = wedged
+MODAL_FORGET_S = 900        # a modal sighting older than this is a new episode, not persistence
 
 # Known loop signatures -> the remedy that worked (2026-10-03). First match wins.
 KNOWN_LOOPS = [
@@ -178,6 +181,35 @@ def bad_windows(windows):
         if BAD_MODALS.search(t) or w.get("forcePause") or w.get("absorbInputAroundWindow"):
             out.append(t.split(".")[-1])
     return out
+
+
+def modal_persistence(bad, beat_ts, now, state_dir=None):
+    """How many distinct heartbeats the same run-tainting modal(s) have stayed open across, counting this call.
+    Persisted in .belt_state/watchdog_modals.json; a call that sees none of them open (or a sighting older than
+    MODAL_FORGET_S) starts a new episode. beat_ts None (no live heartbeat) counts nothing new.
+    Why: the situational runner closes Dialog_NamePlayerFactionAndSettlement at each chain start, so ONE sighting
+    during a healthy heartbeat is the dialog between its opening and the runner's close, not a wedge (2026-10-03,
+    WEDGED reported with a 12 s heartbeat and suites PASSing)."""
+    import belt_heartbeat
+    p = os.path.join(state_dir or belt_heartbeat.STATE_DIR, "watchdog_modals.json")
+    last = {}
+    try:
+        with open(p, encoding="utf-8") as f:
+            last = json.load(f)
+    except (OSError, ValueError):
+        last = {}
+    beats = []
+    if bad and set(bad) & set(last.get("modals") or []) and now - float(last.get("t") or 0) < MODAL_FORGET_S:
+        beats = list(last.get("beats") or [])
+    if bad and beat_ts is not None and beat_ts not in beats:
+        beats.append(beat_ts)
+    try:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump({"t": now, "modals": sorted(bad or []), "beats": beats if bad else []}, f)
+    except OSError:
+        pass
+    return len(beats)
 
 
 def compose(sigs):
@@ -435,10 +467,21 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         else:
             sigs.append(Sig("bridge", OK, bits + "; main thread %sms" % br.get("main_ms")))
         bad = bad_windows(br.get("windows"))
-        if bad:
-            sigs.append(Sig("modals", WEDGED if run_active else STALLED, "open: %s" % ", ".join(bad),
-                            "close them (jawa/window_list_close action=close typeName=<it>) before any run; "
-                            "results taken with them open are tainted"))
+        fresh = max(live_hb, key=lambda h: float(h.get("ts") or 0)) if live_hb else None
+        n_beats = modal_persistence(bad, float(fresh["ts"]) if fresh else None, now, hb_dir)
+        close = "close them (jawa/window_list_close action=close typeName=<it>) before any run; " \
+                "results taken with them open are tainted"
+        if bad and not run_active:
+            sigs.append(Sig("modals", STALLED, "open: %s" % ", ".join(bad), close))
+        elif bad and fresh and n_beats <= MODAL_WEDGE_BEATS:
+            # the run is beating: the runner closes the naming dialog at each chain start, so a sighting is
+            # transient until it outlives MODAL_WEDGE_BEATS heartbeats
+            sigs.append(Sig("modals", WARN, "open: %s, run progressing (heartbeat %s ago; seen over %d beat%s)" % (
+                ", ".join(bad), _age(fresh["age_s"]), n_beats, "" if n_beats == 1 else "s"),
+                "re-check in 2 min; WEDGED only if it outlives %d heartbeats" % MODAL_WEDGE_BEATS))
+        elif bad:
+            why = ("persisted across %d heartbeats" % n_beats) if fresh else "no fresh heartbeat: run not progressing"
+            sigs.append(Sig("modals", WEDGED, "open: %s (%s)" % (", ".join(bad), why), close))
         elif "windows" in br:
             sigs.append(Sig("modals", OK, "no run-tainting dialog open"))
 

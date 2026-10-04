@@ -111,6 +111,35 @@ def t_gather(tmp):
           w.compose(sigs)[0] == "STALLED" and "game_focus" in w.compose(sigs)[2], w.report(sigs))
     sigs = w.gather(**dict(kw, runners=["win:9 x"], br=dict(br, windows=[{"type": "Verse.Dialog_ModSettings"}])))
     check("ModSettings open during a run -> WEDGED", w.compose(sigs)[0] == "WEDGED", w.report(sigs))
+    # the 2026-10-03 false WEDGED: naming dialog open while the situational rerun beats 12 s ago, suites PASSing
+    os.makedirs(hb, exist_ok=True)
+    hbf = os.path.join(hb, "heartbeat_situational_rerun.json")
+    naming = dict(br, windows=[{"type": "RimWorld.Dialog_NamePlayerFactionAndSettlement", "forcePause": True}])
+    t0 = time.time()
+
+    def modal_at(i):
+        with open(hbf, "w") as f:
+            json.dump({"job": "situational_rerun", "ts": t0 + 30 * i - 12, "step": "suite X",
+                       "step_started": t0 + 30 * i - 20, "step_budget_s": 1500, "finished": False}, f)
+        s_ = w.gather(**dict(kw, runners=["win:9 x"], br=naming, now=t0 + 30 * i))
+        return [s for s in s_ if s.name == "modals"][0], w.compose(s_)[0]
+    m1, v1 = modal_at(0)
+    check("naming dialog during a fresh heartbeat -> WARN, verdict still HEALTHY", m1.level == w.WARN and
+          v1 == "HEALTHY", (m1.line(), v1))
+    m2, _ = modal_at(1)
+    check("still open at the 2nd beat -> WARN", m2.level == w.WARN, m2.line())
+    m3, v3 = modal_at(2)
+    check("open across a 3rd beat (> 2) -> WEDGED", m3.level == w.WEDGED and v3 == "WEDGED" and "3 heartbeats"
+          in m3.detail, (m3.line(), v3))
+    w.gather(**dict(kw, runners=["win:9 x"], now=t0 + 100))
+    m4, _ = modal_at(4)
+    check("a call that saw it closed starts a new episode -> WARN again", m4.level == w.WARN and "1 beat" in
+          m4.detail, m4.line())
+    os.remove(hbf)
+    sigs = w.gather(**dict(kw, runners=["win:9 x"], br=naming))
+    m5 = [s for s in sigs if s.name == "modals"][0]
+    check("modal with a runner but no heartbeat (not progressing) -> WEDGED", m5.level == w.WEDGED and
+          "not progressing" in m5.detail, m5.line())
     sigs = w.gather(**dict(kw, win=dict(game, game=None)))
     check("no game process -> DEAD", w.compose(sigs)[0] == "DEAD")
     with open(log, "w") as f:
