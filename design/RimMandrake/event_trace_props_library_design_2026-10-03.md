@@ -186,7 +186,7 @@ Every row gets a **fresh** and an **aged** def unless marked. Ids: `RM_Trace_<Na
 
 | # | trace | event that leaves it (gameplay) | carrier · render | dictionary / scene placement | lifetime |
 |---|---|---|---|---|---|
-| **T1** | **bolt scar (wall)**: a glassy pit with a radial scorch halo, 3 variants | a ranged hit on a wall whose damageDef is in the "energy" rule set | **W** (fallback A) · ClusterTight, 1 instance offset to the hit face, rotated to `dinfo.Angle` | `PlaceWallScars(door, side, count)`: 2–4 at either side of a door, on the room-facing faces | fresh 10 d → aged; aged persists; **repair to full HP erases it** |
+| **T1** | **bolt scar (wall)**: a glassy pit with a radial scorch halo, 3 variants | a ranged hit on a wall whose damageDef is in the "energy" rule set | **W** (fallback A) · ClusterTight, 1 instance offset to the hit face, rotated to `dinfo.Angle` | `PlaceWallScars(door, side, count)`: 2–4 at either side of a door, on the room-facing faces | fresh 10 d → aged; aged persists; **survives repair** — only deconstruct + rebuild erases it (owner 2026-10-03) |
 | **T2** | scorch bloom (wall): a soot fan rising off the face | Flame/Burn damage on a wall, or a `Fire` dying on a cell adjacent to a wall | W · rotated *away* from the fire | above any brazier, torch or burnt room | fresh 15 d → aged, persists |
 | **T3** | **crawl trail with sense**: a heavy start smudge, a tapering streak, a handprint at the leading end | vanilla `DropBloodSmear` already runs; we add **art only**: retexture `Filth_BloodSmear`'s `CrawlSmear` set as asymmetric (patch `texPath` to our folder) | F directed · vanilla ClusterTight, vanilla rotation | `PlaceCrawl(from, to)`: one instance about every 0.6 cells along the path, heading = segment angle | vanilla 35–40 d; `Filth_DriedBlood` already covers aged |
 | **T4** | drag trail: two parallel heel furrows, or a body-width scrape | TrackGrid drag bit (a crawling pawn on a track surface), plus carrying a downed pawn: **UNMEASURED** whether the carrier's path is recorded; the draft adds a postfix on the carry job | F directed (floor) / G (on a track surface) | `PlaceDrag(from, to, width)` | 20–25 d (matches `RM_Filth_DragMark`) |
@@ -257,10 +257,11 @@ transfer to play.
 - **Fresh → aged** after `ageAfterDays` (per def; default 10). The aged def is darker, lower
   saturation and slightly smaller. Aged wall and equipment traces never expire.
 - **Rain** (`rainWashes`) applies only to fresh outdoor floor traces. Aged ones are "baked in".
-- **Repair erases damage traces on its host**: a wall scar or strike mark goes when its host
-  returns to full HP. This keeps base-building gameplay clean: if you fix it, the history goes.
-  Players who want permanent history can turn it off (§6).
-- **Cleaning**: floor traces are cleanable. Wall traces (W) are cleaned only by repair, and
+- **Damage traces survive repair** (owner ruling 2026-10-03, typed: scars REMAIN after repair — *"How
+  cool would that be?"*): repairing a wall to full HP keeps its scars; only deconstructing and
+  rebuilding the host erases them cleanly. A repair adds a mend plate (T14, reusing the
+  `RUT_MendingWeldPlate` art as the plain mark; the rite gets a fancier variant later — card).
+- **Cleaning**: floor traces are cleanable. Wall traces (W) are erased only by deconstruct + rebuild, and
   whether the clean job reaches a wall cell is UNMEASURED (§2.2).
 - **Absence traces** (T9, T10, T12) grow only while no pawn of any faction steps in the room.
   The first step starts printing into the dust, which is the "someone came back" cue.
@@ -278,7 +279,7 @@ transfer to play.
 | Upkeep traces (T14–T17) | on | |
 | Abandonment accumulation (T9, T10, T12, T13) | on | **affects map dressing at generation** (labelled as such, per CLAUDE.md) |
 | Worn lanes (T11) | on | lives with the TrackGrid settings in CreatureBehaviors |
-| Repair erases damage history | on | |
+| Repair erases damage history | off | owner 2026-10-03: scars remain after repair by default |
 | Days until a trace ages | 10 | slider 2–60 |
 | Trace chance multiplier | 1.0 | 0–2; 0 turns every gameplay hook off and leaves scene placement intact |
 | Max traces per map | 600 | |
@@ -349,7 +350,7 @@ pass bar.
 - A blaster hit on a wall leaves RM_Trace_BoltScar on the hit face     → hook.wall_bolt (spawn wall + shooter, force N shots, count scars ≥1, offset sign matches shooter side)
 - A miss leaves a floor bolt pit                                       → hook.floor_pit
 - A destroyed door under hostile fire becomes RM_BreachedDoorway       → hook.breach
-- Repairing the wall to full erases its scars                          → aging.repair_erases
+- Repairing the wall to full KEEPS its scars; rebuild erases them   → aging.repair_keeps
 - A roofed outer-door room with no visitors accumulates drift/dust     → aging.absence (step 30 d; thickness>1 on wall-adjacent cells)
 - Walking through dust film lays a TrackGrid print with heading        → tracks.dust_prints (pool record at cell, Angle within 45° of walk)
 - Each Mod Settings toggle off removes its effect                      → suite.toggles (one per §6 row)

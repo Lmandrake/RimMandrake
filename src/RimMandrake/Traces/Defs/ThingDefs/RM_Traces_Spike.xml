@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- STEP 0 SPIKE (EVENT_TRACE_PROPS_LIBRARY_1, design §8 step 0). Placeholder art: vanilla
+       textures only. Both defs are deleted once step 1's real RM_Trace_* defs exist. -->
+
+  <!-- Carrier W (design §2.2): a filth spawned ON the wall cell, drawn at BuildingOnTop.
+       UNMEASURED, and what the spike reads: (1) GenSpawn/FilthMaker accepts it on a cell whose
+       edifice is a wall; (2) it draws above the wall mesh; (3) JobDriver_CleanFilth can reach it.
+       Huge cleaning work so a reachable clean job does not erase it inside the spike window. -->
+  <ThingDef>
+    <defName>RM_Trace_SpikeWall</defName>
+    <label>spike wall scar</label>
+    <description>Test placeholder for a wall-face trace (Traces step 0 spike).</description>
+    <thingClass>Filth</thingClass>
+    <category>Filth</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <filth>
+      <disappearsInDays>0</disappearsInDays>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>100000</cleaningWorkToReduceThickness>
+      <placementMask>Natural, Unnatural</placementMask>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_ClusterTight</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/CrawlSmear</texPath>
+      <color>(30, 25, 20, 230)</color>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+    </statBases>
+  </ThingDef>
+
+  <!-- Carrier F directed (design §2.1): ClusterTight, one drawInstance per heading, art points
+       NORTH. Spike reads whether two headings in one cell need the direct override call
+       (FilthMaker thickens rather than adding an instance). -->
+  <ThingDef>
+    <defName>RM_Trace_SpikeFloor</defName>
+    <label>spike floor trace</label>
+    <description>Test placeholder for a directed floor trace (Traces step 0 spike).</description>
+    <thingClass>Filth</thingClass>
+    <category>Filth</category>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <filth>
+      <disappearsInDays>10</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness>
+      <placementMask>Unnatural</placementMask>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_ClusterTight</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/CrawlSmear</texPath>
+      <color>(27, 22, 18, 200)</color>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-5</Beauty>
+      <Cleanliness>-5</Cleanliness>
+    </statBases>
+  </ThingDef>
+</Defs>
