@@ -1103,3 +1103,4 @@
 {"seat":"BENCH","event":"note","id":"GLOOMCAST_WAKE_RIDERS_1","text":"Owner rulings 2026-10-03 (question card): tebbra AND gennok actively follow the gloomcast's shadow (sollak does not); no separate feeding scar - dung is enough.","ts":"2026-10-04T00:26:25Z","tsn":1791073585379350655}
 {"seat":"BENCH","event":"reassign","id":"GLOOMCAST_WAKE_RIDERS_1","to":"FOUNDRY","reason":"Ruled 2026-10-03 (note).","ts":"2026-10-04T00:26:25Z","tsn":1791073585914585898}
 {"seat":"BENCH","event":"note","id":"LONGSHADE_SHADE_EXTRAS_1","text":"Owner 2026-10-03 (card): rule the seven deferred ideas on a keep/cut review sheet; BENCH building it.","ts":"2026-10-04T00:26:26Z","tsn":1791073586449090138}
+{"seat":"BENCH","event":"note","id":"LONGSHADE_SHADE_EXTRAS_1","text":"Review sheet built: D:\\Luke\\dev\\RimMandrake\\Transient\\longshade_extras_review_2026-10-03.html (ed5641505)","ts":"2026-10-04T00:27:10Z","tsn":1791073630743716699}
