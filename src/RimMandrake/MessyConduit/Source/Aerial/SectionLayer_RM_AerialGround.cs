@@ -7,8 +7,8 @@ namespace RimMandrake.MessyConduit.Aerial
 {
     /// <summary>
     /// The aerial lines' static ground layer (design 2.5, 2.6): per section, for every anchor standing in it,
-    ///  * the soft ground SHADOW of each UP span it owns (straight base-to-base, at AltitudeLayer.Shadows) -- what makes a
-    ///    span read as overhead rather than as a cord on the floor;
+    ///  * the soft cast SHADOW of each UP span it owns (AerialMath.SpanShadow: offset by the wire's height, swinging in
+    ///    under the sag; wide and faint, B24) -- what makes a span read as overhead rather than as a cord on the floor;
     ///  * the frayed end (live / dead art) at the break of every FALLEN wire (a span whose far anchor died, or a cut
     ///    half). The wire itself is ONE per-frame cable from the insulator to that break (RM_MapComponent_Aerial, B21).
     /// The span itself is drawn per frame from a cached mesh (RM_MapComponent_Aerial) so it can sway; this layer costs
@@ -18,7 +18,8 @@ namespace RimMandrake.MessyConduit.Aerial
     {
         private CellRect bounds;
         public static int LastPrintedVerts, LastFallenPrinted, LastShadowsPrinted;
-        public const float ShadowWidth = 0.12f;
+        /// <summary>Wide and faint (B24): a soft shadow band under the wires, not a line that reads as a cable.</summary>
+        public const float ShadowWidth = 0.42f;
 
         public SectionLayer_RM_AerialGround(Section section) : base(section)
         {
@@ -48,7 +49,9 @@ namespace RimMandrake.MessyConduit.Aerial
                         {
                             if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                             Vector3 pa = a.BasePoint, pb = l.other.BasePoint;
-                            verts += Ribbon(AerialMaterials.Shadow, new List<P2> { new P2(pa.x, pa.z), new P2(pb.x, pb.z) }, ShadowWidth, shadowY);
+                            // B24: a soft cast shadow that follows the sag, never a straight wire-like line on the ground
+                            List<P2> sh = AerialMath.SpanShadow(new P2(pa.x, pa.z), new P2(pb.x, pb.z), a.Ext.attachZ, l.other.Ext.attachZ, AerialSettings.sag);
+                            verts += Ribbon(AerialMaterials.Shadow, sh, ShadowWidth, shadowY);
                             shadowN++;
                         }
                     if (a.fallen.Count == 0) continue;

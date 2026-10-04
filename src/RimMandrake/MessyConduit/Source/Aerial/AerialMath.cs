@@ -34,8 +34,6 @@ namespace RimMandrake.MessyConduit.Aerial
         public List<int> Linked = new List<int>();
     }
 
-    public struct StrandSpec { public double SagMul, Lateral; }
-
     /// <summary>One span that falls to the floor when its other anchor dies: it lies from Survivor's base
     /// toward the dead anchor's cell (TowardDead).</summary>
     public struct FallenSpec { public int Survivor; public bool TowardDead; }
@@ -99,22 +97,6 @@ namespace RimMandrake.MessyConduit.Aerial
             pts[0] = a;
             pts[n] = b;
             return pts;
-        }
-
-        /// <summary>1..maxStrands strands per span (seeded), each with its own sag x0.9-1.15 and a lateral offset
-        /// of at most 0.04 cell at the insulator.</summary>
-        public static List<StrandSpec> StrandsFor(int seed, int maxStrands)
-        {
-            int max = Math.Max(1, Math.Min(3, maxStrands));
-            int count = 1 + (int)(U(seed, 1) * max);
-            if (count > max) count = max;
-            var list = new List<StrandSpec>(count);
-            for (int i = 0; i < count; i++)
-            {
-                double lat = count == 1 ? 0 : (-0.04 + 0.08 * i / (count - 1));
-                list.Add(new StrandSpec { SagMul = 0.9 + 0.25 * U(seed, 10 + i), Lateral = lat });
-            }
-            return list;
         }
 
         /// <summary>
@@ -203,6 +185,29 @@ namespace RimMandrake.MessyConduit.Aerial
         /// <summary>A span is drawn, damaged and owned by the end with the lower thingIDNumber.</summary>
         public static bool Owns(int self, int other) => self < other;
 
+        // ------------------------------------------------------------------ the cast shadow of a span (owner review B24)
+        /// <summary>
+        /// The ground shadow of a sagging span (owner review 2026-10-04 B24: the old straight base-to-base line read as a
+        /// faint wire on the ground). The wire stands at height h(t) = lerp(hA, hB, t) - sag x |AB| x 4t(1-t) above the
+        /// straight ground line between the pole feet; its shadow falls offset by h(t) x (kx, kz) (a high afternoon sun,
+        /// down and to the right like vanilla building shadows), so it is furthest from the line at the poles and swings in
+        /// under the low middle of the sag. Ends: baseA + hA(kx,kz) and baseB + hB(kx,kz).
+        /// </summary>
+        public static List<P2> SpanShadow(P2 baseA, P2 baseB, double hA, double hB, double sagFactor, double kx = 0.10, double kz = -0.16, double step = 0.5)
+        {
+            double len = P2.Dist(baseA, baseB);
+            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.05, step)));
+            var pts = new List<P2>(n + 1);
+            for (int i = 0; i <= n; i++)
+            {
+                double t = i / (double)n;
+                double h = Math.Max(0, hA + (hB - hA) * t - Math.Max(0, sagFactor) * len * 4 * t * (1 - t));
+                P2 g = P2.Lerp(baseA, baseB, t);
+                pts.Add(new P2(g.X + kx * h, g.Z + kz * h));
+            }
+            return pts;
+        }
+
         // ------------------------------------------------------------------ the despawn gap (design 2.2)
         /// <summary>
         /// An anchor leaves the map. Vanilla rebuilds nets only around the leaving anchor's natural ring, so every
@@ -233,6 +238,34 @@ namespace RimMandrake.MessyConduit.Aerial
             foreach (SpanNetRead s in reads)
                 if (s.State == SpanState.Up && (s.NetA < 0 || s.NetB < 0 || s.NetA != s.NetB)) r.Add(s.Span);
             return r;
+        }
+
+        /// <summary>One strand of a span: its two end points (exactly the insulator tips) and its own sag multiplier.</summary>
+        public struct SpanStrand { public P2 A, B; public int InsA, InsB; public double SagMul; }
+
+        /// <summary>
+        /// The strands of a span (owner review 2026-10-04 B23): ONE wire per insulator, so a span between two poles with
+        /// N insulators each carries N wires (capped by <paramref name="maxStrands"/>, the "wires per span" setting), the
+        /// same count on every span of a chain of like poles; each wire ends EXACTLY at an insulator tip on each pole
+        /// (<paramref name="baseA"/> + insA[i], tips measured from the art: x across the crossarm, z = height). Fewer
+        /// insulators at one end (a wall bracket has one) take <see cref="InsulatorIndex"/>'s spread. Seeded sag only.
+        /// </summary>
+        public static List<SpanStrand> SpanStrands(P2 baseA, IList<P2> insA, P2 baseB, IList<P2> insB, int seed, int maxStrands)
+        {
+            int na = Math.Max(1, insA.Count), nb = Math.Max(1, insB.Count);
+            int count = Math.Max(1, Math.Min(Math.Min(na, nb), Math.Max(1, maxStrands)));
+            var list = new List<SpanStrand>(count);
+            for (int i = 0; i < count; i++)
+            {
+                int ia = InsulatorIndex(i, count, insA.Count), ib = InsulatorIndex(i, count, insB.Count);
+                P2 oa = insA.Count > 0 ? insA[ia] : new P2(0, 0), ob = insB.Count > 0 ? insB[ib] : new P2(0, 0);
+                list.Add(new SpanStrand
+                {
+                    A = new P2(baseA.X + oa.X, baseA.Z + oa.Z), B = new P2(baseB.X + ob.X, baseB.Z + ob.Z),
+                    InsA = ia, InsB = ib, SagMul = 0.9 + 0.25 * U(seed, 10 + i)
+                });
+            }
+            return list;
         }
 
         /// <summary>Which of <paramref name="insulators"/> (left to right on the crossarm) strand <paramref name="strand"/> of

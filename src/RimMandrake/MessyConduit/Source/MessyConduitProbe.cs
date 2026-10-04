@@ -82,6 +82,13 @@ namespace RimMandrake.MessyConduit
                 return "{\"success\":true,\"cmd\":" + J.S(cmd) + ",\"value\":" + J.S(Convert.ToString(fi.GetValue(null), CultureInfo.InvariantCulture)) + "}";
             }
             if (cmd.StartsWith("rect:")) return RectCensus(map, comp, cmd.Substring(5));   // lane E matrix runner
+            if (cmd == "settingscats")                                                       // B27: one Mod Settings entry
+            {
+                var mine = LoadedModManager.ModHandles.Where(m => m.Content?.PackageId == "mandrake.rm.messyconduit").ToList();
+                var listed = mine.Where(m => !m.SettingsCategory().NullOrEmpty()).Select(m => m.SettingsCategory()).ToList();
+                return "{\"success\":true,\"cmd\":\"settingscats\",\"modHandles\":" + mine.Count + ",\"listed\":[" +
+                       string.Join(",", listed.Select(J.S)) + "]}";
+            }
             if (cmd == "styles") return StyleProbe.Report(map, comp);                       // lane C art styles
             if (cmd == "settingsroundtrip") return StyleProbe.SettingsRoundTrip();         // lane C
             return "{\"success\":false,\"error\":\"unknown command " + J.S(cmd).Trim('"') + "\"}";

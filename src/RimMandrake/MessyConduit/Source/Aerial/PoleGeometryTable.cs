@@ -21,18 +21,18 @@ namespace RimMandrake.MessyConduit.Aerial
             return d;
         }
 
-        /// <summary>Insulator centres across the crossarm, left to right (cells from the pole centre), per look/def.</summary>
-        public static Dictionary<string, float[]> Insulators()
+        /// <summary>Insulator TIPS on the crossarm, left to right: (x, z) cells from the cell centre (z = height), per look/def.</summary>
+        public static Dictionary<string, Vector2[]> Insulators()
         {
-            var d = new Dictionary<string, float[]>();
-            d["Scrapper/RM_AerialMast"] = new[] { -0.538f, 0.087f, 0.617f };
-            d["Scrapper/RM_AerialLampMast"] = new[] { -0.684f, 0.012f, 0.736f };
-            d["Industrial/RM_AerialMast"] = new[] { -0.735f, -0.001f, 0.722f };
-            d["Industrial/RM_AerialLampMast"] = new[] { -0.652f, -0.003f, 0.654f };
-            d["Modern/RM_AerialMast"] = new[] { -0.632f, 0.001f, 0.635f };
-            d["Modern/RM_AerialLampMast"] = new[] { -0.609f, -0.007f, 0.602f };
-            d["Futuristic/RM_AerialMast"] = new[] { -0.680f, -0.001f, 0.682f };
-            d["Futuristic/RM_AerialLampMast"] = new[] { -0.722f, 0.000f, 0.721f };
+            var d = new Dictionary<string, Vector2[]>();
+            d["Scrapper/RM_AerialMast"] = new[] { new Vector2(-0.538f, 3.297f), new Vector2(0.158f, 3.172f), new Vector2(0.617f, 3.148f) };
+            d["Scrapper/RM_AerialLampMast"] = new[] { new Vector2(-0.684f, 3.336f), new Vector2(0.051f, 3.305f), new Vector2(0.736f, 3.227f) };
+            d["Industrial/RM_AerialMast"] = new[] { new Vector2(-0.735f, 3.289f), new Vector2(-0.001f, 3.359f), new Vector2(0.722f, 3.266f) };
+            d["Industrial/RM_AerialLampMast"] = new[] { new Vector2(-0.652f, 3.203f), new Vector2(-0.003f, 3.375f), new Vector2(0.654f, 3.203f) };
+            d["Modern/RM_AerialMast"] = new[] { new Vector2(-0.632f, 3.242f), new Vector2(0.001f, 3.367f), new Vector2(0.635f, 3.242f) };
+            d["Modern/RM_AerialLampMast"] = new[] { new Vector2(-0.609f, 3.320f), new Vector2(-0.007f, 3.438f), new Vector2(0.602f, 3.320f) };
+            d["Futuristic/RM_AerialMast"] = new[] { new Vector2(-0.680f, 3.281f), new Vector2(-0.001f, 3.469f), new Vector2(0.682f, 3.281f) };
+            d["Futuristic/RM_AerialLampMast"] = new[] { new Vector2(-0.722f, 3.242f), new Vector2(0.000f, 3.367f), new Vector2(0.721f, 3.242f) };
             return d;
         }
     }

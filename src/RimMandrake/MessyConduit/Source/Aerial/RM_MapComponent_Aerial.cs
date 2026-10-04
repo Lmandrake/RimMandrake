@@ -181,8 +181,9 @@ namespace RimMandrake.MessyConduit.Aerial
         public FallenLay Lay(CompAerialAnchor a, FallenCord f)
         {
             if (lays.TryGetValue(f, out FallenLay l)) return l;
-            Vector3 b = a.BasePoint, t = a.AttachPoint;
-            double[] ins = AerialMaterials.InsulatorsFor(a);
+            Vector3 b = a.BasePoint;
+            List<P2> tips = a.InsulatorTips();
+            P2 top = tips.Count > 0 ? tips[tips.Count / 2] : new P2(a.AttachPoint.x, a.AttachPoint.z);
             PathGrid pg = map.pathing.Normal.pathGrid;
             IntVec3 home = a.Position;
             Func<int, int, bool> walk = (x, z) =>
@@ -191,7 +192,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (!c.InBounds(map)) return false;
                 return c == home || pg.WalkableFast(c);
             };
-            l = AerialMath.LayFallen(new P2(t.x + ins[ins.Length / 2], t.z), new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, walk);
+            l = AerialMath.LayFallen(top, new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, walk);
             lays[f] = l;
             return l;
         }
@@ -372,6 +373,8 @@ namespace RimMandrake.MessyConduit.Aerial
         public int sig, seed;
         public CellRect rect;
         private readonly List<List<P2>> strands = new List<List<P2>>();
+        /// <summary>State read: each strand's end points and insulator indices (B23).</summary>
+        public List<AerialMath.SpanStrand> ends = new List<AerialMath.SpanStrand>();
         private readonly List<double> ts = new List<double>();
         private Vector3[] verts;
         private P2 dir;
@@ -384,21 +387,13 @@ namespace RimMandrake.MessyConduit.Aerial
         public static SpanMesh Build(CompAerialAnchor a, CompAerialAnchor b, float y, int sig)
         {
             var m = new SpanMesh { sig = sig, y = y, seed = RM_MapComponent_Aerial.SpanSeed(a, b) };
-            Vector3 pa = a.AttachPoint, pb = b.AttachPoint;
-            double len = Math.Max(0.01, Vector3.Distance(pa, pb));
-            m.dir = new P2((pb.x - pa.x) / len, (pb.z - pa.z) / len);
-            var n = new P2(-m.dir.Z, m.dir.X);
-            double[] ia = AerialMaterials.InsulatorsFor(a), ib = AerialMaterials.InsulatorsFor(b);
-            List<StrandSpec> specs = AerialMath.StrandsFor(m.seed, AerialSettings.maxStrands);
-            for (int si = 0; si < specs.Count; si++)
-            {
-                // each strand leaves its OWN insulator on the crossarm (fanned along the arm), plus its small lateral
-                StrandSpec s = specs[si];
-                double xa = ia[AerialMath.InsulatorIndex(si, specs.Count, ia.Length)], xb = ib[AerialMath.InsulatorIndex(si, specs.Count, ib.Length)];
-                var A = new P2(pa.x + xa + n.X * s.Lateral, pa.z + n.Z * s.Lateral);
-                var B = new P2(pb.x + xb + n.X * s.Lateral, pb.z + n.Z * s.Lateral);
-                m.strands.Add(AerialMath.SpanCurve(A, B, AerialSettings.sag * s.SagMul));
-            }
+            Vector3 ba = a.BasePoint, bb = b.BasePoint;
+            double len = Math.Max(0.01, Vector3.Distance(ba, bb));
+            m.dir = new P2((bb.x - ba.x) / len, (bb.z - ba.z) / len);
+            // B23: one wire per insulator, each ending exactly on an insulator tip of each pole
+            m.ends = AerialMath.SpanStrands(new P2(ba.x, ba.z), AerialMaterials.InsulatorsFor(a), new P2(bb.x, bb.z), AerialMaterials.InsulatorsFor(b), m.seed, AerialSettings.maxStrands);
+            foreach (AerialMath.SpanStrand s in m.ends)
+                m.strands.Add(AerialMath.SpanCurve(s.A, s.B, AerialSettings.sag * s.SagMul));
             int total = m.strands.Sum(s => s.Count) * 2;
             m.verts = new Vector3[total];
             var uvs = new Vector2[total];

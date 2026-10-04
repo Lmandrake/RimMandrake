@@ -29,6 +29,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             mine = mineFails = 0;
             Curve();
             Strands();
+            Shadow();
             Sway();
             Links();
             Spanning();
@@ -70,15 +71,44 @@ namespace RimMandrake.MessyConduit.SelfTest
 
         private static void Strands()
         {
-            List<StrandSpec> s1 = AerialMath.StrandsFor(12345, 3);
-            List<StrandSpec> s2 = AerialMath.StrandsFor(12345, 3);
-            C(s1.Count >= 1 && s1.Count <= 3, "1..3 strands per span (" + s1.Count + ")");
-            C(s1.Count == s2.Count && s1.Zip(s2, (x, y) => x.SagMul == y.SagMul && x.Lateral == y.Lateral).All(v => v), "strands deterministic by seed");
-            C(s1.All(s => s.SagMul >= 0.9 && s.SagMul <= 1.15 && Math.Abs(s.Lateral) <= 0.0401), "strand sag x0.9-1.15, lateral <= 0.04");
-            C(AerialMath.StrandsFor(777, 1).Count == 1, "max strands 1 -> exactly one strand");
-            var counts = new HashSet<int>();
-            for (int seed = 0; seed < 60; seed++) counts.Add(AerialMath.StrandsFor(seed, 3).Count);
-            C(counts.Count >= 2, "strand count varies by seed (" + string.Join(",", counts) + ")");
+            // B23 (owner review 2026-10-04): one wire per insulator, every wire ends AT an insulator tip, and the count is
+            // the same on every span of a chain. Three masts with the measured Industrial crossarm, a chain of two spans.
+            var ins = new List<P2> { new P2(-0.735, 3.289), new P2(-0.001, 3.359), new P2(0.722, 3.266) };
+            P2[] poles = { new P2(10.5, 10.5), new P2(22.5, 10.5), new P2(34.5, 13.5) };
+            var spans = new List<List<AerialMath.SpanStrand>>();
+            double worst = 0;
+            for (int k = 0; k < 2; k++)
+            {
+                List<AerialMath.SpanStrand> st = AerialMath.SpanStrands(poles[k], ins, poles[k + 1], ins, 100 + k, 3);
+                spans.Add(st);
+                foreach (AerialMath.SpanStrand w in st)
+                {
+                    List<P2> curve = AerialMath.SpanCurve(w.A, w.B, 0.06 * w.SagMul);
+                    double da = ins.Min(o => P2.Dist(curve[0], new P2(poles[k].X + o.X, poles[k].Z + o.Z)));
+                    double db = ins.Min(o => P2.Dist(curve[curve.Count - 1], new P2(poles[k + 1].X + o.X, poles[k + 1].Z + o.Z)));
+                    worst = Math.Max(worst, Math.Max(da, db));
+                }
+            }
+            C(spans.All(st => st.Count == ins.Count) && spans.All(st => st.Select(w => w.InsA).Distinct().Count() == st.Count) && worst < 1e-9,
+              "B23 every span carries one wire per insulator (" + string.Join(",", spans.Select(st => st.Count)) + " of " + ins.Count +
+              "), each wire ending on an insulator tip (worst " + worst.ToString("0.0e0") + ")");
+            List<AerialMath.SpanStrand> toBracket = AerialMath.SpanStrands(poles[0], ins, new P2(14.5, 3.5), new List<P2> { new P2(0.0, -0.23) }, 7, 3);
+            C(toBracket.Count == 1 && P2.Dist(toBracket[0].B, new P2(14.5, 3.27)) < 1e-9, "a span to a one-insulator wall bracket carries one wire, ending on its insulator");
+            C(AerialMath.SpanStrands(poles[0], ins, poles[1], ins, 7, 1).Count == 1 && AerialMath.SpanStrands(poles[0], ins, poles[1], ins, 7, 2).Count == 2,
+              "the wires-per-span setting caps the count");
+            List<AerialMath.SpanStrand> s1 = AerialMath.SpanStrands(poles[0], ins, poles[1], ins, 12345, 3), s2 = AerialMath.SpanStrands(poles[0], ins, poles[1], ins, 12345, 3);
+            C(s1.Zip(s2, (x, y) => x.SagMul == y.SagMul).All(v => v) && s1.All(w => w.SagMul >= 0.9 && w.SagMul <= 1.15), "strand sag x0.9-1.15, deterministic by seed");
+        }
+
+        private static void Shadow()
+        {
+            // B24: the span's ground shadow is a cast shadow under the sag, never the straight base-to-base line that read
+            // as a faint wire: offset at the poles by the wire's height, swinging back toward the line under the low middle
+            var a = new P2(10.5, 10.5); var b = new P2(22.5, 10.5);
+            List<P2> sh = AerialMath.SpanShadow(a, b, 3.2, 3.2, 0.06);
+            double endOff = Math.Abs(sh[0].Z - a.Z), midOff = Math.Abs(sh[sh.Count / 2].Z - a.Z);
+            C(endOff > 0.4 && midOff < endOff - 0.08 && sh.All(p => p.Z <= a.Z + 1e-9),
+              "B24 span shadow is cast (offset " + endOff.ToString("0.00") + " at the poles, " + midOff.ToString("0.00") + " under the sag), not a line between the feet");
         }
 
         private static void Sway()

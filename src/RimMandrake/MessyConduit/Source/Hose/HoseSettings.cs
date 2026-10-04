@@ -98,7 +98,8 @@ namespace RimMandrake.MessyConduit.Hose
         // Harmony: MessyConduitMod's PatchAll(assembly) already applies every [HarmonyPatch] in this assembly.
         public FireHosesMod(ModContentPack content) : base(content) => Settings = GetSettings<HoseSettings>();
 
-        public override string SettingsCategory() => "RimMandrake: Messy Conduit - flexible hoses";
+        /// <summary>B27: empty, so RimWorld lists no separate entry; drawn as a tab of MessyConduitMod's one window.</summary>
+        public override string SettingsCategory() => "";
 
         public override void DoSettingsWindowContents(Rect inRect)
         {

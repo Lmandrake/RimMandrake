@@ -347,6 +347,16 @@ class Review(object):
         B.call("jawa/set_fog", action="unfog", rect=rr)
         B.call("jawa/set_roof_batch", ops="None:" + rr)
 
+    def no_roofs(self):
+        """The shed of station 9 is an enclosed room: vanilla adds it to the Build-roof area and colonists roof it (the
+        frozen Mote_TempRoof then hides the bracket). Keep the region out of Home and Build roof, and unroofed."""
+        rr = "%d,%d,%d,%d" % REGION
+        for area in ("BuildRoof", "Home"):
+            r = self.B.call("jawa/paint_area", area=area, ops=rr, value=False)
+            if not r.get("success", True):
+                self.notes.append("paint_area %s: %s" % (area, json.dumps(r)[:200]))
+        self.B.call("jawa/set_roof_batch", ops="None:" + rr)
+
     def build(self, S, style):
         B = self.B
         B.probe("defaults")
@@ -414,6 +424,7 @@ class Review(object):
         for item, n, c in FREE["stock"]:
             self.call("rimworld/spawn_thing", defName=item, stackCount=n, x=c[0], z=c[1])
         self.call("jawa/map_commit")
+        self.no_roofs()
         B.ticks(1)
         # overhead lines: link by id, then cut
         c0 = B.ap("census")
@@ -439,6 +450,7 @@ class Review(object):
         # (min 30), so a map paused right after the build left the second lamp mast of station 8 dark with the NeedsPower
         # bolt although its net was live. Let every net finish switching on before the map is frozen.
         B.ticks(600)
+        self.no_roofs()            # round 2: colonists had roofed the station-9 shed in those ticks (frozen roof mote)
         B.ap("poll")
         B.ap("set:autoLink=True")                     # the free area behaves as shipped
         # hoses: lay all, flow the plump ones, then the filling one half a transition later
@@ -562,6 +574,8 @@ def main(argv=None):
     ap.add_argument("--style", choices=STYLES, default=None)
     ap.add_argument("--goto", default=None)
     ap.add_argument("--sub", default=None, help="with --goto N: frame only dx,dz,w,h (station-local cells), a close look")
+    ap.add_argument("--shot", default=None, help="with --goto N --sub: the game's own render of that rect (no window focus "
+                                                 "needed) copied to D:\\Luke\\dev\\_rmscratch\\<shot>.png")
     ap.add_argument("--labels", action="store_true")
     ap.add_argument("--clear", action="store_true")
     ap.add_argument("--log", default=os.path.join("Transient", "mc_human_review_build_log_20261004.md"))
@@ -617,6 +631,22 @@ def main(argv=None):
         r = R.goto(S, a.goto, sub)
         st = next((s for s in S if str(s["n"]) == a.goto), None)
         print("framed %s%s: %s (origin %s)" % (a.goto, " sub %s" % sub if sub else "", r.get("success"), st["origin"] if st else "-"))
+        if a.shot and st and sub:
+            import shutil
+            x, z = st["origin"][0] + sub[0], st["origin"][1] + sub[1]
+            R.B.call("jawa/clear_ui", all=True)
+            time.sleep(1.5)
+            res = R.B.call("rimworld/screenshot_cell_rect", x=x, z=z, width=sub[2], height=sub[3], paddingCells=1, fileName=a.shot,
+                           rootSize=max(4.0, max(sub[3], sub[2] * 9.0 / 16.0) / 2.0 + 1.0))
+            src = res.get("filePath") or res.get("path") or res.get("savedPath")
+            for _ in range(20):
+                if src and os.path.exists(src):
+                    break
+                time.sleep(0.5)
+            dst = os.path.join("D:\\Luke\\dev\\_rmscratch", a.shot + ".png") if os.name == "nt" else None
+            if src and dst and os.path.exists(src):
+                shutil.copyfile(src, dst)
+            print("shot %s -> %s" % (a.shot, dst if dst and os.path.exists(dst) else "FAILED %s" % json.dumps(res)[:200]))
     return 0
 
 
