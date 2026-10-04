@@ -22,3 +22,8 @@
 - 14:30 coordinator added T9 (B27: one Mod Settings entry). Diagnosing grey stripes over st.9 bracket (persists with cords off)
 - 14:36 T5 done (one wire per insulator tip, measured x,z per insulator, selftest B23); T6: span shadow now a cast shadow (SpanShadow, wide/faint, selftest B24), non-conduit hookups printed as the look's cable
 - 14:38 T7 pending live probe; T8 deployed-reel switch (stand-in, state read reelGraphic); T9 one Mod Settings entry w/ 3 tabs + header, About rewritten, settingscats probe. Offline 7/7, selftest 420/420, matrix 54/54
+- 14:40 live probes: settingscats listed=['RimMandrake: Messy Conduit'] (3 handles); lamp mast art per look ok (T7); st.8 both lamps on, no bolt; reelGraphic stand-in; hookup cables printed
+- 14:42 visual pass (in-game shots h_*): st.7 one wire per insulator tip, soft cast shadow, lamp hookup now a visible cable; st.9 roofless, wire ends on bracket; hoses: wraps both ends, clean crossings. Residual: E-W spans form X crossings at poles (camera-facing crossarm). Running full plan
+- 14:44 core live run 1: 3 NEW FAILs (B6/B6b lit strips 0, ST2 aerialSpanFollows ExtensionCord false) = checks predating owner rulings B1 (strips Modern-only) and B12 (Modern overhead black); round 1 changed behaviour and never ran core live. Checks aligned to the rulings; rerun
+- 14:47 plan: core 42 PASS (+4 scope), save-load 3/3, aerial 18/18
+- 14:48 aerial s/l 3/3, hose 12/12, hose s/l 3/3; matrix starting (~26 min, background process, notified on exit)
