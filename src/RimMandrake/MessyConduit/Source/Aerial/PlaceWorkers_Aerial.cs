@@ -34,22 +34,6 @@ namespace RimMandrake.MessyConduit.Aerial
         }
     }
 
-    /// <summary>The wall bracket stands against a wall: the cell BEHIND it (its rotation's opposite) must hold a built,
-    /// impassable, non-rock edifice. (No vanilla 1.6 wall-attachment API is used: the bracket is an ordinary 1x1
-    /// building drawn against the wall face.)</summary>
-    public class PlaceWorker_AerialWallBracket : PlaceWorker
-    {
-        public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
-        {
-            IntVec3 behind = loc + rot.Opposite.FacingCell;
-            if (!behind.InBounds(map)) return "Must stand against a wall.";
-            Building ed = behind.GetEdifice(map);
-            if (ed == null || ed.def.passability != Traversability.Impassable || (ed.def.building != null && ed.def.building.isNaturalRock))
-                return "Must stand against a wall (the arrow points away from it).";
-            return AcceptanceReport.WasAccepted;
-        }
-    }
-
     /// <summary>The power-tap clamp must bite another faction's transmitter (conduit, battery, generator ...) on a
     /// cardinal side. Hidden from the architect menu when taps or aerial lines are switched off.</summary>
     public class PlaceWorker_PowerTap : PlaceWorker

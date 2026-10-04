@@ -20,6 +20,9 @@ namespace RimMandrake.MessyConduit.Core
         public List<Cell> Hookups = new List<Cell>();
         /// <summary>Other machines this one connects to directly (a heater on a battery).</summary>
         public List<string> MachineLinks = new List<string>();
+        /// <summary>How far (cells) the machine's drawn art stands in from each footprint edge (S = bottom edge): a cord
+        /// entering that side runs on this far under the art (owner review 2026-10-04 B10). 0 = art reaches the edge.</summary>
+        public double InsetS, InsetN, InsetE, InsetW;
 
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }

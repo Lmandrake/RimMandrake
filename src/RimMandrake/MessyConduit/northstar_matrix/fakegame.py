@@ -203,7 +203,7 @@ class FakeMap(object):
                 f = r["lay"]["flat"]
                 h.update(pathLen=round(f, 3), flatLen=round(f, 3), plumpLen=round(f * 0.98, 3), poseLen=round(f * (1 - 0.02 * eased), 3),
                          straight=round(math.hypot(r["far"][0] - c[0], r["far"][1] - c[1]), 3), minBendFlat=MIN_BEND, minBendPlump=MIN_BEND,
-                         selfIntersects=False, couplings=2 + sum(1 for k in range(1, 100) if 8 * k < f), points=int(f) + 2,
+                         selfIntersects=False, couplings=2, joints=0, points=int(f) + 2,
                          fellBack=False, geometryHash="%016x" % (hash((c, r["far"])) & (2 ** 64 - 1)), unwalkablePoints=0)
             hoses.append(h)
         return {"success": True, "cmd": "census", "transitionTicks": TRANSITION, "minBendSetting": MIN_BEND,

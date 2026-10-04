@@ -219,7 +219,11 @@ STYLE_FILES = {
 }
 SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Aerial/AerialMast", "Aerial/AerialMastTop",
                 "Aerial/AerialLampMast", "Aerial/AerialLampMastTop", "Aerial/WallBracket", "Aerial/TapClamp", "Aerial/SpanShadow"]
-STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap")]
+STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "OpenEnd")]
+# owner review round 1 (2026-10-04): the margin-safe switch (B3) and the extension-cord pieces in every cord colour (B14)
+SHARED_FILES += ["PowerSwitch", "PowerSwitch_Off"]
+STYLE_FILES["ExtensionCord"] += ["Styles/ExtCord/%s/%s" % (c, n) for c in ("Green", "Brown", "Yellow", "Blue")
+                                 for n in ("Plug", "Junction_T", "Junction_X", "StubWall", "StubRock", "EndFrayed_Dead")]
 ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
 
 
@@ -308,11 +312,148 @@ def o5_style_art(rows):
         probs or "%d PNGs sane (4 styles + shared/aerial + staged hose); planted magenta+seam refused=%s" % (n, can_fail))
 
 
+def _band_px(path, xs=(10, 20)):
+    from PIL import Image
+    a = Image.open(path).convert("RGBA").getchannel("A")
+    return max(sum(1 for y in range(a.size[1]) if a.getpixel((x, y)) > 128) for x in xs)
+
+
+OWNER_WORDS = ("fire hoses they use",)
+
+
+def visible_fire_hose(paths):
+    """Case-insensitive 'fire hose' / 'firehose' / 'fire-hose' hits in player- or reviewer-visible text (B20): every line
+    of the given files except C#/Python identifiers. Returns [(path, line_no, text)]."""
+    import re
+    rx = re.compile(r"fire[\s_-]?hoses?", re.I)
+    hits = []
+    for p in paths:
+        try:
+            lines = open(p, encoding="utf-8").read().splitlines()
+        except (OSError, UnicodeDecodeError):
+            continue
+        for i, ln in enumerate(lines, 1):
+            if any(q in ln for q in OWNER_WORDS):
+                continue                         # the owner's verbatim words are quoted, never reworded
+            for m in rx.finditer(ln):
+                pre, post = ln[m.start() - 1:m.start()], ln[m.end():m.end() + 1]
+                if "_" in m.group(0) or (pre and (pre.isalnum() or pre == "_")) or (post and (post.isalnum() or post == "_")):
+                    continue                     # an identifier (FireHosesMod, fire_hose_x), not text
+                hits.append((os.path.relpath(p, REPO), i, ln.strip()[:120]))
+    return hits
+
+
+def fire_hose_sweep_paths():
+    out = []
+    for ext in ("*.cs", "*.xml", "*.py", "*.md", "*.html"):
+        out += [p for p in glob.glob(os.path.join(HERE, "**", ext), recursive=True) if "/obj/" not in p and "/bin/" not in p and "__pycache__" not in p]
+    for rel in ("design/validation_walks/RimMandrake/MessyConduit.md", "design/RimMandrake/northstar_human_review.md",
+                "design/RimMandrake/debug_process.md", "Transient/mc_human_review/KEYSHEET.md", "Transient/mc_human_review/keysheet.html"):
+        p = os.path.join(REPO, rel)
+        if os.path.exists(p):
+            out.append(p)
+    return [p for p in out if not p.endswith("validation.py")]
+
+
+def o6_review_round1(rows):
+    """Owner review round 1 (2026-10-04), the offline half: one load-bearing measurement per art/def bar.
+    B3 switch art margin, B7 bracket is a vanilla wall attachment, B8 hose fittings match the hose band, B14 every
+    extension-cord piece takes its cord colour, B6/B16/B19 per-look pole table current, B20 no visible 'fire hose'."""
+    import colorsys
+    import xml.etree.ElementTree as ET
+    from PIL import Image
+    probs, info = [], []
+    tex = os.path.join(HERE, "Textures", "RimMandrake", "MessyConduit")
+    # B3: the switch art keeps a fully transparent 6 px margin (of 128): nothing can be sampled at the tile edge
+    for n in ("PowerSwitch", "PowerSwitch_Off"):
+        im = Image.open(os.path.join(tex, n + ".png")).convert("RGBA")
+        a = im.getchannel("A")
+        edge = max(a.getpixel((x, y)) for x in range(128) for y in range(128) if x < 6 or y < 6 or x >= 122 or y >= 122)
+        if edge != 0:
+            probs.append("B3 %s: alpha %d inside the 6 px margin" % (n, edge))
+    cv = open(os.path.join(HERE, "Source", "ConduitVisuals.cs"), encoding="utf-8").read()
+    if 'SwitchTexPathOurs = "RimMandrake/MessyConduit/PowerSwitch"' not in cv or "ApplySwitch(invisible)" not in cv:
+        probs.append("B3: ConduitVisuals does not swap the switch art")
+    # B7: the bracket is placed the vanilla way (Core TorchWallLamp): attachment, not an edifice, drawn 0.9 onto the wall
+    root = ET.parse(os.path.join(HERE, "Defs", "Aerial", "RM_AerialAnchors.xml")).getroot()
+    br = next(d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_AerialWallBracket")
+    pw = [li.text for li in br.findall("placeWorkers/li")]
+    gd = br.find("graphicData")
+    offs = {k: gd.findtext("drawOffset" + k) for k in ("North", "South", "East", "West")}
+    want = {"North": "(0,0,0.9)", "South": "(0,0,-0.9)", "East": "(0.9,0,0)", "West": "(-0.9,0,0)"}
+    if br.findtext("building/isAttachment") != "true" or br.findtext("building/isEdifice") != "false" or pw != ["Placeworker_AttachedToWall"] \
+            or offs != want or br.findtext("rotatable") != "true":
+        probs.append("B7 bracket def: attachment=%s edifice=%s placeWorkers=%s offsets=%s" % (
+            br.findtext("building/isAttachment"), br.findtext("building/isEdifice"), pw, offs))
+    if "PlaceWorker_AerialWallBracket" in open(os.path.join(HERE, "Source", "Aerial", "PlaceWorkers_Aerial.cs"), encoding="utf-8").read():
+        probs.append("B7: the old in-front-of-the-wall placeworker is still in the source")
+    # B8: every hose fitting's hose band matches the band constant the code sizes it by (within 2 px of 128)
+    hs = open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
+    import re
+    pb = float(re.search(r"PieceBand = ([0-9.]+)f", hs).group(1))
+    ob = float(re.search(r"OpenBand = ([0-9.]+)f", hs).group(1))
+    for n, b in (("Coupling_Brass", pb), ("EndCap", pb), ("OpenEnd", ob)):
+        px = _band_px(os.path.join(tex, "Hose", n + ".png"))
+        info.append("%s band %d px (code %.0f)" % (n, px, b * 128))
+        if abs(px - b * 128) > 2:
+            probs.append("B8 %s: hose band %d px, code sizes it as %.0f px" % (n, px, b * 128))
+    if "public HoseEnd end = HoseEnd.Open;" not in open(os.path.join(HERE, "Source", "Hose", "CompHoseReel.cs"), encoding="utf-8").read():
+        probs.append("B8: the free end does not default to Open")
+    # B14: the recoloured pieces are current, and their cord pixels carry the cord colour (hue within 15 deg)
+    rc = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "recolor_extcord_pieces.py"), "--check"],
+                        capture_output=True, text=True, timeout=600)
+    if rc.returncode != 0:
+        probs.append("B14: recoloured pieces stale: %s" % rc.stdout.strip()[-200:])
+    ext = os.path.join(tex, "Styles", "ExtCord")
+
+    def hue(rgb):
+        return colorsys.rgb_to_hsv(*[v / 255.0 for v in rgb])[0] * 360
+
+    for c in ("Green", "Brown", "Yellow", "Blue"):
+        st = Image.open(os.path.join(ext, "Strand_%s.png" % c)).convert("RGBA")
+        sp = [p for p in st.getdata() if p[3] > 128]
+        th = hue(tuple(sum(p[i] for p in sp) / len(sp) for i in range(3)))
+        src = Image.open(os.path.join(ext, "Junction_T.png")).convert("RGBA")
+        var = Image.open(os.path.join(ext, c, "Junction_T.png")).convert("RGBA")
+        ch = [q for p, q in zip(src.getdata(), var.getdata()) if p != q and q[3] > 128]
+        if not ch:
+            probs.append("B14 %s: nothing recoloured" % c)
+            continue
+        mh = hue(tuple(sum(q[i] for q in ch) / len(ch) for i in range(3)))
+        d = min(abs(mh - th), 360 - abs(mh - th))
+        if d > 15:
+            probs.append("B14 %s: cord pixels hue %.0f vs cord %.0f" % (c, mh, th))
+    cm = open(os.path.join(HERE, "Source", "CordMaterials.cs"), encoding="utf-8").read()
+    if "public static Material Decal(DecalKind k, int variant)" not in cm or \
+            "CordMaterials.Decal(d.Kind, variant)" not in open(os.path.join(HERE, "Source", "SectionLayer_RM_MessyCords.cs"), encoding="utf-8").read():
+        probs.append("B14: the section layer does not draw pieces per cord variant")
+    # B6/B16/B19: the per-look pole geometry table matches the wired art
+    rp = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_pole_art.py"), "--check"],
+                        capture_output=True, text=True, timeout=600)
+    if rp.returncode != 0:
+        probs.append("B6: pole geometry table stale (re-run wire_pole_art.py)")
+    wired = [ln.split(":")[0] for ln in rp.stdout.splitlines() if "crossarm row" in ln]
+    info.append("real pole art: %s" % (wired or "none yet (tinted stand-ins)"))
+    # B20: no visible 'fire hose' text, and the sweep can see one (sanity probe)
+    hits = visible_fire_hose(fire_hose_sweep_paths())
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
+        f.write("a Fire Hose here\nand fire_hose_id there\n")
+    probe = visible_fire_hose([f.name])
+    os.unlink(f.name)
+    if hits:
+        probs.append("B20: visible 'fire hose' text: %s" % hits[:4])
+    if len(probe) != 1:
+        probs.append("B20 sweep cannot see a planted 'Fire Hose' (%d hits)" % len(probe))
+    row(rows, "O6_review_round1", "PASS" if not probs else "FAIL", "MOD", probs or "; ".join(info))
+
+
 def run_offline():
     rows = []
     o1_files(rows)
     o2_defaults(rows)
     o5_style_art(rows)
+    o6_review_round1(rows)
     o3_csharp_selftest(rows)
     o4_oracle(rows)
     return rows
@@ -1174,7 +1315,7 @@ def offline_rows():
                             % (r.returncode, (r.stdout + r.stderr).strip()[-400:]))
 
 
-OFFLINE_IDS = ["O1_mod_files", "O2_settings_defaults", "O5_style_art_sane", "O3_core_selftest",
+OFFLINE_IDS = ["O1_mod_files", "O2_settings_defaults", "O5_style_art_sane", "O6_review_round1", "O3_core_selftest",
                "O3n_selftest_can_fail", "O4_python_oracle"]
 
 

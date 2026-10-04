@@ -151,12 +151,12 @@ namespace RimMandrake.MessyConduit
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
-                        Material m = CordMaterials.Decal(d.Kind);
+                        Material m = CordMaterials.Decal(d.Kind, variant);
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);
                         float y = face ? faceY + 0.002f : baseY + 0.009f;
                         float aspect = d.Kind == DecalKind.PowerStrip ? 0.5f : 1f;
-                        verts += Quad(m, d.Pos, (float)d.Angle, (float)d.Scale, (float)d.Scale * aspect, y);
+                        verts += Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y);
                     }
                 }
             }

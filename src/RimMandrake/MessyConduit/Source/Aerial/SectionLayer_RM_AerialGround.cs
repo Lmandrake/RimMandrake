@@ -19,7 +19,8 @@ namespace RimMandrake.MessyConduit.Aerial
         private CellRect bounds;
         public static int LastPrintedVerts, LastFallenPrinted, LastShadowsPrinted;
         public const float ShadowWidth = 0.12f;
-        public const float FallenWidth = 0.11f;
+        /// <summary>A fallen cord is the span's own cable lying on the ground (B11), never the floor cord.</summary>
+        public static float FallenWidth => Mathf.Max(0.11f, AerialMaterials.SpanWidth);
 
         public SectionLayer_RM_AerialGround(Section section) : base(section)
         {

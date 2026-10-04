@@ -135,7 +135,9 @@ namespace RimMandrake.MessyConduit
 
         public static BuildOptions BuildOptions()
         {
-            var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20) };
+            var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20),
+                                     // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
+                                     Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
             o.Lay.MaxExtra = Mathf.Clamp(sprawlCap, 2f, 40f);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
@@ -233,7 +235,7 @@ namespace RimMandrake.MessyConduit
             l.CheckboxLabeled("Dense conduit fields become one tangle", ref MessyConduitSettings.tangles);
             l.CheckboxLabeled("Needless conduit stubs become pointless loops", ref MessyConduitSettings.needlessLoops);
             l.Label("Messiness: a dense conduit field of " + MessyConduitSettings.tangleMin + "+ cells becomes one tangle",
-                    tooltip: "Lower = more of a crowded base turns into heaps of cord with power strips on top.");
+                    tooltip: "Lower = more of a crowded base turns into heaps of cord plugged into junction boxes (power strips in the Modern look).");
             MessyConduitSettings.tangleMin = Mathf.RoundToInt(l.Slider(MessyConduitSettings.tangleMin, 6f, 20f));
             l.GapLine();
             l.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref MessyConduitSettings.breakReadout);
@@ -272,10 +274,11 @@ namespace RimMandrake.MessyConduit
         {
             switch (s)
             {
-                case CordStyle.StarWarsJawa: return "Jawa: matte black scrap cable, taped (default)";
-                case CordStyle.ExtensionCord: return "Extension cords: orange, green, brown, yellow, blue, power strips";
-                case CordStyle.Cybertek: return "Cybertek: sleek grey metallic, teal accents";
-                default: return "Star Wars: thick black cable, corrugated steel, coiled";
+                // owner review 2026-10-04 B19: labels only; the enum names and the saved key stay as they were
+                case CordStyle.StarWarsJawa: return "Scrapper: rough, hacked-together scrap cable and crude scrap masts (default)";
+                case CordStyle.ExtensionCord: return "Modern: multi-coloured extension cords and power strips, black power lines";
+                case CordStyle.Cybertek: return "Futuristic: sleek grey metallic cable, teal accents, sleek steel poles";
+                default: return "Industrial: thick black cable and tough industrial steel poles";
             }
         }
 

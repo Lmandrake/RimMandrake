@@ -1,14 +1,14 @@
 # Messy Conduit - human review key sheet
 
 Built by `src/RimMandrake/MessyConduit/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.
-Cable style now: **StarWarsJawa** (one global setting: flip it with Mod Settings > RimMandrake: Messy Conduit > Style, or `human_review.py --style <X>`; every station changes at once).
+Cable look now: **Scrapper** (one global setting: flip it with Mod Settings > RimMandrake: Messy Conduit > Style, or `human_review.py --style <X>`; every station changes at once).
 
 Jump the camera: `human_review.py --goto N` (N = station, 0 = whole gallery, F = free area).
 
 ## Everywhere
 
 - Mod Settings > RimMandrake: Messy Conduit: master switch OFF restores vanilla conduit art instantly, ON brings the cords back.
-- Styles: StarWarsJawa, StarWars, ExtensionCord, Cybertek (ExtensionCord also has a colour mode).
+- Looks (Mod Settings name = `--style` value): Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, Futuristic = Cybertek. Each look owns its floor cords, its junction pieces, its power poles and its overhead lines. Modern also has a colour mode: in 'one colour everywhere' every plug, junction box and wall stub takes that colour.
 - Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.
 - Power overlay (bottom-right toggle) still shows vanilla connector lines.
 
@@ -65,12 +65,15 @@ a 3x3 block of conduit (9+ cells = a tangle) feeding three lamps and a heater
 
 **Notice**
 
-- the block becomes one TANGLE: a heap of cord with power strips in it
-- power-strip LEDs are lit (net live); every lamp's cord runs out of the pile
+- the block becomes one TANGLE: a mass of cables plugged into each other
+- Scrapper / Industrial / Futuristic: the cables run into MANY + and T junction boxes, every box has cables in it, no power strips
+- Modern: power strips, every strip with cables PLUGGED IN (a plug in each used socket), LEDs lit while the net is live
+- every lamp's cord runs out of the pile
 
 **Try**
 
-- empty the battery (or cut the feed at cell 3): the strips go dark
+- --style ExtensionCord (Modern) vs StarWars (Industrial): strips vs junction boxes
+- Modern: empty the battery (or cut the feed at cell 3): the strip LEDs go dark
 - add conduit cells to the block: the pile grows
 
 ### 5. DEVICES + PLUGS
@@ -79,7 +82,7 @@ battery, an in-line power switch, a wood generator (unfuelled), lamps, heater
 
 **Notice**
 
-- each device gets its own plug; the switch sits in-line
+- each device gets its own plug; the switch sits in-line with NO dark outline round its tile
 - the generator hooks to the run on two cells
 - a lamp 3 cells off the run still gets a cord
 
@@ -95,7 +98,7 @@ a run passing under a steel wall and through a granite block; a branch ending in
 **Notice**
 
 - where the cord meets the wall it goes into a STUB (a hole/grommet), and comes out the other side
-- the rock tunnel has rock stubs on both faces
+- the rock tunnel has rock holes on both faces, drawn foreshortened (angled like the rock face), not straight down
 - the branch ending in the wall is a wall terminal
 
 **Try**
@@ -113,6 +116,8 @@ battery -> scrap power mast -> mast -> mast -> lamp, two 12-cell overhead spans
 
 - the wires sag between masts and cast a ground shadow
 - the far lamp is lit through the air
+- the overhead cable is the look's own: thick dark scrap cable (Scrapper), thick BLACK cable (Industrial), thin black power line (Modern), sleek steel (Futuristic)
+- the masts change with the look too (a tinted stand-in until each look's own pole art lands)
 - masts are 4 cells tall; the wire leaves from the insulator at the top
 
 **Try**
@@ -137,16 +142,17 @@ a power mast feeding two scrap lamp masts over the air
 
 ### 9. WALL BRACKET
 
-an overhead wire from a mast to a bracket bolted on a shed wall; floor cord from the bracket to a lamp
+an overhead wire from a mast to a bracket bolted ON a shed wall; floor cord from the bracket to a lamp
 
 **Notice**
 
-- the bracket stands against the wall (its arrow points away from the wall)
+- the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it)
 - the wire lands on the bracket's insulator
 - a floor cord continues from the bracket to the lamp
 
 **Try**
 
+- build another: Architect > Power > scrap wall bracket, point it AT a wall (vanilla wall-attachment placement)
 - deconstruct the wall behind the bracket
 - unlink and re-link the span from the mast's gizmo
 
@@ -156,7 +162,7 @@ the station-7 chain with the SECOND span cut (as if blown by an explosion)
 
 **Notice**
 
-- the cut wire has fallen: two downed wires lie on the ground from each mast
+- the cut wire still hangs from each mast TOP down to the ground, then lies on the ground, in the span's own cable
 - the live downed end sparks; the far lamp is dark
 - the first span still hangs and still carries power
 
@@ -180,7 +186,7 @@ a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained
 - unpause and watch their battery drain
 - Mod Settings > Messy Conduit > taps off: our lamp goes dark
 
-## Row C - fire hoses
+## Row C - flexible hoses
 
 ### 12. HOSE: FLAT
 
@@ -189,7 +195,7 @@ a laid hose with nothing flowing through it
 **Notice**
 
 - the hose lies flat and thin
-- joiners (couplings) every few cells
+- a straight hose has NO joiner along it; the free end is a plain open end the hose's own width
 
 **Try**
 
@@ -217,7 +223,7 @@ flow ON, fully filled
 **Notice**
 
 - full round hose, visibly wider than the flat one
-- joiners still visible
+- still no joiner on the straight
 
 **Try**
 
@@ -231,13 +237,61 @@ a 26-cell plump hose routed round a wall stub
 **Notice**
 
 - the hose bends smoothly round the obstacle (never kinks tighter than the minimum bend)
-- several joiners along the length
+- joiners only at the bends: two brass couplings screwed face to face, joining two lengths
 - it never crosses the wall
 
 **Try**
 
 - select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
 - dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+
+## Row D - hose crossings and parallel runs (hoses never branch: no T or + pieces, by ruling)
+
+### 16. HOSE CROSSING
+
+two plump hoses laid straight across each other at right angles
+
+**Notice**
+
+- one hose passes cleanly OVER the other, the same way every frame (the newer reel's hose is on top)
+- no joiner and no end fitting at the crossing
+- the hoses do not route round each other: a hose is not an obstacle to another
+
+**Try**
+
+- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
+- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
+
+### 17. PARALLEL RUNS
+
+two hoses laid side by side, two cells apart, one flat and one plump
+
+**Notice**
+
+- each keeps its own lane; where their S-curves meet, one draws over the other cleanly
+- flat vs plump side by side: width and shine
+
+**Try**
+
+- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
+- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
+
+### 18. HOSE GRID
+
+four hoses, two each way, crossing in a 2 x 2 grid
+
+**Notice**
+
+- four crossings: every one is over/under, with a fixed order (newest on top)
+- FINDING to judge: where the S-curve slack of two hoses runs along each other they may overlap for a stretch
+
+**Try**
+
+- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
+- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
 
 ## F. Free build area
 

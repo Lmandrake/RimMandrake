@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.MessyConduit.Hose
 {
     /// <summary>
-    /// Fire-hose settings (design 3.10). Their own ModSettings (a third Mod class in this assembly, its own entry
+    /// Flexible-hose settings (design 3.10). Their own ModSettings (a third Mod class in this assembly, its own entry
     /// in the Mod Settings list), like the aerial lines, so the floor-cord settings file is untouched. Static fields
     /// so HoseProbe "set:" and jawa/mod_settings_field can read and write them. Defaults = shipped behaviour.
     /// </summary>
@@ -98,13 +98,13 @@ namespace RimMandrake.MessyConduit.Hose
         // Harmony: MessyConduitMod's PatchAll(assembly) already applies every [HarmonyPatch] in this assembly.
         public FireHosesMod(ModContentPack content) : base(content) => Settings = GetSettings<HoseSettings>();
 
-        public override string SettingsCategory() => "RimMandrake: Messy Conduit - fire hoses";
+        public override string SettingsCategory() => "RimMandrake: Messy Conduit - flexible hoses";
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
             var l = new Listing_Standard();
             l.Begin(inRect);
-            l.CheckboxLabeled("Fire hoses (master switch)", ref HoseSettings.enabled,
+            l.CheckboxLabeled("Flexible hoses (master switch)", ref HoseSettings.enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
                 "Off: hoses are hidden; reels stay and keep their hose ends, so no save breaks.");
             l.Label("Stiffness (smallest bend radius): " + HoseSettings.minBendRadius.ToString("0.0") + " cells");
@@ -117,7 +117,8 @@ namespace RimMandrake.MessyConduit.Hose
             HoseSettings.releaseTicks = Mathf.RoundToInt(l.Slider(HoseSettings.releaseTicks, 100f, 1500f) / 50f) * 50;
             l.Label("Hose length on a reel: " + HoseSettings.maxLength.ToString("0") + " cells");
             HoseSettings.maxLength = Mathf.Round(l.Slider(HoseSettings.maxLength, 8f, 60f));
-            l.Label("Coupling every " + HoseSettings.couplingSpacing + " cells");
+            l.Label("Hose joiners: only at bends, at least " + HoseSettings.couplingSpacing + " cells apart", -1f,
+                (TipSignal?)"Where one hose length is screwed to the next. A straight hose has no joiner; a joiner sits at the sharpest point of a bend.");
             HoseSettings.couplingSpacing = Mathf.RoundToInt(l.Slider(HoseSettings.couplingSpacing, 4f, 16f));
             l.Label("Hose slack: " + HoseSettings.slack.ToString("0.0") + "x");
             HoseSettings.slack = Mathf.Round(l.Slider(HoseSettings.slack, 0f, 2f) * 10f) / 10f;

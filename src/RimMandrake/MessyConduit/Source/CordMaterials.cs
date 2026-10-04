@@ -208,6 +208,33 @@ namespace RimMandrake.MessyConduit
                 ? MaterialPool.MatFrom(new MaterialRequest(stripDark, ShaderDatabase.Transparent) { renderQueue = PieceQueue })
                 : SlotMat(style, "PowerStrip", PieceQueue, new Color(0.42f, 0.40f, 0.40f, 1f), "PowerStripDark");
             decals = d;
+            // B14 (owner review 2026-10-04): in the extension-cord look every connection piece takes its net's cord colour.
+            // The shipped pieces carry ORANGE cord stubs; Styles/ExtCord/<Colour>/<slot> are the recoloured copies
+            // (recolor_extcord_pieces.py). Variant i matches strand variant i (one entry in the single-colour mode).
+            variantDecals = new Dictionary<DecalKind, Material>[0];
+            PieceColors.Clear();
+            if (style == CordStyle.ExtensionCord)
+            {
+                var vd = new List<Dictionary<DecalKind, Material>>();
+                foreach (string p in used)
+                {
+                    string colour = p.Substring(p.LastIndexOf('_') + 1);
+                    var dv = new Dictionary<DecalKind, Material>(d);
+                    if (colour != "Orange")
+                        foreach (var kv in ColourSlots)
+                        {
+                            string vp = StyleDir + "ExtCord/" + colour + "/" + kv.Value;
+                            Texture2D vt = Tex(vp);
+                            if (vt == null) { Missing.Add(vp); continue; }
+                            Color? tint = kv.Key == DecalKind.FrayDead ? new Color(0.62f, 0.58f, 0.55f, 1f) : (Color?)null;
+                            int q = IsFace(kv.Key) ? FaceQueue : PieceQueue;
+                            dv[kv.Key] = MaterialPool.MatFrom(new MaterialRequest(vt, ShaderDatabase.Transparent, tint ?? Color.white) { renderQueue = q });
+                        }
+                    PieceColors.Add(colour);
+                    vd.Add(dv);
+                }
+                variantDecals = vd.ToArray();
+            }
             BuiltKey = CurrentKey();
             Rebuilds++;
         }
@@ -288,6 +315,26 @@ namespace RimMandrake.MessyConduit
         public static bool IsLod(Material m) => m != null && lods.Contains(m);
 
         public static Material Decal(DecalKind k) => decals.TryGetValue(k, out Material m) ? m : null;
+
+        private static Dictionary<DecalKind, Material>[] variantDecals = new Dictionary<DecalKind, Material>[0];
+        /// <summary>State read: the cord colour each piece variant was built for (extension-cord look only).</summary>
+        public static readonly List<string> PieceColors = new List<string>();
+        /// <summary>The extension-cord pieces whose art carries a cord stub, and so must follow the cord colour (B14).</summary>
+        public static readonly Dictionary<DecalKind, string> ColourSlots = new Dictionary<DecalKind, string>
+        {
+            { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" },
+            { DecalKind.StubWall, "StubWall" }, { DecalKind.StubRock, "StubRock" }, { DecalKind.FrayDead, "EndFrayed_Dead" }
+        };
+
+        /// <summary>A piece in its net's cord colour (falls back to the style's own piece).</summary>
+        public static Material Decal(DecalKind k, int variant)
+        {
+            if (variant >= 0 && variant < variantDecals.Length && variantDecals[variant].TryGetValue(k, out Material m)) return m;
+            return Decal(k);
+        }
+
+        /// <summary>The texture behind a piece variant (state read for the probe), or null.</summary>
+        public static string DecalTexName(DecalKind k, int variant) => Decal(k, variant)?.mainTexture?.name;
 
         public static bool IsFace(DecalKind k) => k == DecalKind.StubWall || k == DecalKind.StubRock;
 

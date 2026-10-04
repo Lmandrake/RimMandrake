@@ -1,4 +1,4 @@
-// Messy Conduit L6 (fire hoses) offline checks: the Verse-free half of the hose feature
+// Messy Conduit L6 (flexible hoses) offline checks: the Verse-free half of the hose feature
 // (Source/Hose/HoseMath.cs, the PRODUCTION file, compiled in directly). Design:
 // design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 3. Called from Program.Main.
 // Written red-first (2026-10-02): every case below failed against a stub HoseMath before the real one.
@@ -172,8 +172,28 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(lay.MinBendPlump >= p.MinBendRadius * 0.95, "plump min bend radius " + lay.MinBendPlump.ToString("0.00"));
             C(!HoseMath.SelfIntersects(lay.Flat), "no loops: the flat hose never crosses itself");
             C(lay.Flat.All(q => w.IsWalkable(q.Floor)), "every point on walkable floor");
-            int want = (int)Math.Floor(lay.FlatLen / p.CouplingSpacing) + 2;
-            C(lay.Couplings.Count == want, "couplings at both ends and every " + p.CouplingSpacing + " cells (" + lay.Couplings.Count + " vs " + want + ")");
+            // B17 (owner review 2026-10-04): no joiner on a straight length; joiners only at real bends
+            C(lay.Joints.Count == 0 && lay.Couplings.Count == 2, "straight route: no joiner, only the two end fittings (" + lay.Joints.Count + " joiners)");
+            var ell = new List<V2>();
+            for (int i = 0; i <= 80; i++) ell.Add(new V2(2 + i * 0.1, 5));
+            for (int i = 1; i <= 80; i++) ell.Add(new V2(10, 5 + i * 0.1));
+            var zig = new List<V2>(ell);
+            for (int i = 1; i <= 80; i++) zig.Add(new V2(10 + i * 0.1, 13));
+            List<int> je = HoseMath.Joints(ell, p.CouplingSpacing), jz = HoseMath.Joints(zig, 4);
+            C(je.Count == 1 && V2.Dist(ell[je[0]], new V2(10, 5)) < 0.3, "an L route: exactly one joiner, at the corner (" + je.Count + ")");
+            C(jz.Count == 2 && jz.All(j => HoseMath.TurnAt(zig, Geo.CumLen(zig), j) >= HoseMath.JointTurn), "a Z route: one joiner per bend, each on a bend (" + jz.Count + ")");
+            var straightC = new List<V2>();
+            for (int i = 0; i <= 160; i++) straightC.Add(new V2(2 + i * 0.1, 5 + 0.02 * Math.Sin(i * 0.3)));
+            C(HoseMath.Joints(straightC, 4).Count == 0, "a 16-cell straight (with a hair of wiggle): no joiner");
+            // B9: a joiner is two couplings face to face, their brass faces meeting at the joint
+            HoseMath.JoinerPoses(new V2(5, 5), new V2(1, 0), 0.7, 0.46, out V2 fw, out V2 bw);
+            C(V2.Dist(fw + new V2(1, 0) * (0.46 * 0.7), new V2(5, 5)) < 1e-9 && V2.Dist(bw - new V2(1, 0) * (0.46 * 0.7), new V2(5, 5)) < 1e-9 && fw.X < 5 && bw.X > 5,
+              "joiner: the two couplings sit either side of the joint, faces meeting on it");
+            // B18: crossing hoses draw in a fixed order inside the hose altitude layer
+            bool mono = true;
+            for (int k = 1; k <= HoseMath.CrossRanks; k++) mono &= HoseMath.CrossLift(k) - HoseMath.CrossLift(k - 1) >= 0.0014f;
+            C(mono && HoseMath.CrossLift(HoseMath.CrossRanks) + 0.005f < 0.0390625f && HoseMath.CrossLift(99) == HoseMath.CrossLift(HoseMath.CrossRanks),
+              "crossings: each newer hose a full band (>= its own 0.0014 span) above the older, all inside one altitude layer");
             HoseLay again = HoseMath.Lay(w, a, b, p, 7);
             C(again.Flat.Count == lay.Flat.Count && again.Flat.Zip(lay.Flat, (x, y) => V2.Dist(x, y) < 1e-12).All(x => x), "deterministic per seed");
             List<V2> p0 = HoseMath.Pose(lay, 0, 10000, 30, 1), p1 = HoseMath.Pose(lay, 1, 10000, 30, 1);

@@ -277,6 +277,34 @@ namespace RimMandrake.MessyConduit.Aerial
             return lay;
         }
 
+        /// <summary>
+        /// A cut or orphaned wire still hangs from the pole TOP down to the ground (owner review 2026-10-04 B11): the
+        /// drop runs from the insulator (top, screen z fakes height) to the point where the fallen cord meets the ground,
+        /// bowing a little to one side like a loose cable. Ends are exactly top and ground. Never shorter than the
+        /// straight drop.
+        /// </summary>
+        public static List<P2> FallenDrop(P2 top, P2 ground, int seed, double step = 0.1)
+        {
+            double len = P2.Dist(top, ground);
+            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.02, step)));
+            double ux = len < 1e-9 ? 0 : (ground.X - top.X) / len, uz = len < 1e-9 ? -1 : (ground.Z - top.Z) / len;
+            double nx = -uz, nz = ux, bow = (U(seed, 9) < 0.5 ? -1 : 1) * (0.08 + 0.1 * U(seed, 10));
+            var pts = new List<P2>(n + 1);
+            for (int i = 0; i <= n; i++)
+            {
+                double t = i / (double)n, off = bow * Math.Sin(Math.PI * t) * Math.Min(1, len / 1.5);
+                pts.Add(new P2(top.X + (ground.X - top.X) * t + nx * off, top.Z + (ground.Z - top.Z) * t + nz * off));
+            }
+            return pts;
+        }
+
+        /// <summary>Where a fallen cord's drop meets the ground: the first laid point at least <paramref name="reach"/> from the base.</summary>
+        public static int GroundIndex(List<P2> lay, double reach = 0.35)
+        {
+            for (int i = 1; i < lay.Count; i++) if (P2.Dist(lay[0], lay[i]) >= reach) return i;
+            return lay.Count - 1;
+        }
+
         // ------------------------------------------------------------------ explosion hit test (design 2.6)
         public static double ClosestT(P2 a, P2 b, P2 c)
         {
