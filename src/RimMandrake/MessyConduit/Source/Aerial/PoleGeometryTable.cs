@@ -10,7 +10,14 @@ namespace RimMandrake.MessyConduit.Aerial
         public static Dictionary<string, Vector2> Build()
         {
             var d = new Dictionary<string, Vector2>();
-
+            d["Scrapper/RM_AerialMast"] = new Vector2(2.805f, 3.000f);   // crossarm row 89 of 512
+            d["Scrapper/RM_AerialLampMast"] = new Vector2(3.055f, 3.000f);   // crossarm row 57 of 512
+            d["Industrial/RM_AerialMast"] = new Vector2(2.961f, 3.000f);   // crossarm row 69 of 512
+            d["Industrial/RM_AerialLampMast"] = new Vector2(2.500f, 3.000f);   // crossarm row 128 of 512
+            d["Modern/RM_AerialMast"] = new Vector2(3.156f, 3.000f);   // crossarm row 44 of 512
+            d["Modern/RM_AerialLampMast"] = new Vector2(3.242f, 3.000f);   // crossarm row 33 of 512
+            d["Futuristic/RM_AerialMast"] = new Vector2(2.844f, 3.000f);   // crossarm row 84 of 512
+            d["Futuristic/RM_AerialLampMast"] = new Vector2(2.406f, 3.000f);   // crossarm row 140 of 512
             return d;
         }
     }
