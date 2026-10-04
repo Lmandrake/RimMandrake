@@ -159,6 +159,7 @@ def install(run_id, directory=None, **kw):
     uninstall()
     sink = Sink(run_id, directory, **kw)
     _CURRENT.append(sink)
+    sink.emit("run_start", pid=os.getpid())
     return sink
 
 

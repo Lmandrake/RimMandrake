@@ -58,7 +58,7 @@ en = [e for e in ev if e["ev"] == "call_end"]
 check("8 calls -> 8 starts, 8 ends", len(st) == 8 and len(en) == 8, (len(st), len(en)))
 check("no duplicate req ids", len({e["req"] for e in en}) == 8)
 check("reply_fail classified", [e["outcome"] for e in en].count("reply_fail") == 1)
-check("run_end counts match", ev[-1]["ev"] == "run_end" and ev[-1]["emitted"] == 16 and ev[-1]["dropped"] == 0, ev[-1])
+check("run_end counts match", ev[-1]["ev"] == "run_end" and ev[-1]["emitted"] == 17 and ev[-1]["dropped"] == 0, ev[-1])
 check("end carries latency/t_start/t_end/timeout", all(k in en[0] for k in ("latency_ms", "t_start", "t_end", "timeout", "run_id", "seq")))
 check("per-producer seq strictly increasing", [e["seq"] for e in ev] == sorted(e["seq"] for e in ev) and len({e["seq"] for e in ev}) == len(ev))
 O.uninstall()
@@ -71,7 +71,7 @@ th = threading.Thread(target=lambda: s.call("hangs"), daemon=True)
 th.start()
 time.sleep(0.6)                               # writer flushes the start while the call is still hung
 ev = read(sink.path)
-check("hung call: call_start on disk, no call_end", [e["ev"] for e in ev] == ["call_start"], ev)
+check("hung call: call_start on disk, no call_end", [e["ev"] for e in ev] == ["run_start", "call_start"], ev)
 release.set()
 th.join(5)
 sink.close()
@@ -108,7 +108,7 @@ for i in range(500):
     s.call("x")
 dt = time.monotonic() - t0
 check("500 calls through a stalled sink are not slowed", dt < 2.0, "%.3fs" % dt)
-check("full buffer drops and counts", sink.dropped > 900 and sink.emitted == 1000, (sink.emitted, sink.dropped))
+check("full buffer drops and counts", sink.dropped > 900 and sink.emitted == 1001, (sink.emitted, sink.dropped))
 t0 = time.monotonic()
 sink.close(join_s=1.0)
 check("close() is bounded by join_s even when the writer is stalled", time.monotonic() - t0 < 2.0)
@@ -143,7 +143,7 @@ for i in range(5):
     s.call("x")
 time.sleep(0.6)
 ev = read(sink.path)                          # sink NOT closed == process killed
-check("kill mid-run: partial file parses, has no run_end", len(ev) == 10 and ev[-1]["ev"] != "run_end")
+check("kill mid-run: partial file parses, has no run_end", len(ev) == 11 and ev[-1]["ev"] != "run_end")
 O.uninstall()
 
 if FAILS:
