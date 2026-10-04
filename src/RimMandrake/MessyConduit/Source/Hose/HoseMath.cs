@@ -110,6 +110,9 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>How much plumping changes the look: swelling, straightening, wobble (0 = none).</summary>
         public double PlumpAmount = 1.0;
         public double CouplingSpacing = 8;
+        /// <summary>Round 4: the reel's hose length (cells). The S-curve slack budget is capped so the laid hose never
+        /// reads longer than the hose (infinity = uncapped, the offline default).</summary>
+        public double MaxLength = double.PositiveInfinity;
     }
 
     public sealed class HoseLay
@@ -200,6 +203,7 @@ namespace RimMandrake.MessyConduit.Hose
             CordRng rr = CordRng.Of(seed, "hose");
             double slack = rr.Range(prm.SlackLo, prm.SlackHi) * prm.SlackScale;
             double maxExtra = prm.SlackScale <= 0 ? 0 : Math.Min(Math.Max(slack * L, prm.MinExtra * Math.Min(1, prm.SlackScale)), prm.MaxExtra);
+            maxExtra = Math.Max(0, Math.Min(maxExtra, p.MaxLength / RouteMargin - L));
             List<V2> F = new List<V2>(C);
             if (L > 1.2 && slack > 0)
             {
@@ -217,6 +221,11 @@ namespace RimMandrake.MessyConduit.Hose
                 F = Stiffen(w, C, p.MinBendRadius);
                 lay.FellBack = true;
                 if (!Clear(w, F)) F = Geo.Resample(C, Sample);
+                // round 4: the rounded centreline itself can clip a stub corner in a one-cell zig-zag; the string-pulled
+                // plan (line of sight between its corners) is the last resort, and a hose that still crosses a wall is
+                // not laid at all (the reel retracts it with the reason) rather than drawn through the wall
+                if (!Clear(w, F)) F = Geo.Resample(plan.Points, Sample);
+                if (!Clear(w, F)) { lay.Reason = "no clear route (corners too tight for the hose)"; return lay; }
             }
             int n = Math.Max(8, F.Count);
             lay.Flat = ResampleN(F, n);
@@ -229,9 +238,23 @@ namespace RimMandrake.MessyConduit.Hose
             lay.Plump = P;
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
+            double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
+            lay.Joints = new List<int>();
+            foreach (int j in Joints(lay.Centre, p.CouplingSpacing, half, lay.Flat, lay.Plump))
+            {
+                // round 4 (owner, station 22: "improper connectivity of two pipe segments"): the joiner is a rigid ~2.3-cell
+                // run of brass and cloth, so the hose under it is drawn dead straight along the joiner's own axis; a joint
+                // whose straightened run would touch a wall is dropped rather than drawn bent or clipped
+                List<V2> f = StraightenAt(lay.Flat, j, half), q = StraightenAt(lay.Plump, j, half);
+                if (!Clear(w, f) || !Clear(w, q)) continue;
+                lay.Flat = f;
+                lay.Plump = q;
+                lay.Joints.Add(j);
+            }
+            lay.FlatLen = Geo.Length(lay.Flat);
+            lay.PlumpLen = Geo.Length(lay.Plump);
             lay.MinBendFlat = MinBendRadius(lay.Flat, EndSkip);
             lay.MinBendPlump = MinBendRadius(lay.Plump, EndSkip);
-            lay.Joints = Joints(lay.Centre, p.CouplingSpacing);
             lay.Couplings = new List<V2> { lay.Flat[0] };
             foreach (int j in lay.Joints) lay.Couplings.Add(lay.Flat[j]);
             lay.Couplings.Add(lay.Flat[lay.Flat.Count - 1]);
@@ -267,9 +290,50 @@ namespace RimMandrake.MessyConduit.Hose
             return Geo.Resample(o, prm.SampleStep > 0 ? prm.SampleStep : 0.25);
         }
 
-        private static bool Clear(CordWorld w, List<V2> pts)
+        /// <summary>True when no part of the hose centreline lies over a blocked cell. Round 4 (owner, station 23): testing
+        /// only the 0.25-cell samples let a stiffened hose cut the corner of a one-cell wall stub between two samples (his
+        /// zig-zag maze measured 28 fine samples inside walls); every segment is now walked at 0.05 cell. The first and
+        /// last 0.5 cell are exempt (the reel and the free end may sit on a building's cell).</summary>
+        /// <summary>How far a centreline point may graze into a wall cell (cells): a string-pulled line touching a wall
+        /// corner exactly is not a clip; a hose centre 0.06 inside a wall is (the hose itself is ~0.4 wide).</summary>
+        public const double ClipTolerance = 0.06;
+
+        /// <summary>Depth of q inside a blocked cell (0 when its cell is walkable): distance to the cell's nearest edge.</summary>
+        public static double WallDepth(CordWorld w, V2 q)
         {
-            for (int i = 1; i < pts.Count - 1; i++) if (!w.IsWalkable(pts[i].Floor)) return false;
+            Cell c = q.Floor;
+            if (w.IsWalkable(c)) return 0;
+            double fx = q.X - c.X, fz = q.Z - c.Z;
+            return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz));
+        }
+
+        public static bool Clear(CordWorld w, IList<V2> pts) => Clear(w, pts, 0.5);
+
+        public static bool Clear(CordWorld w, IList<V2> pts, double endSkip)
+        {
+            if (pts.Count < 2) return true;
+            double[] s = Geo.CumLen(pts);
+            double L = s[s.Length - 1];
+            Cell prev = pts[0].Floor;
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double d = s[i] - s[i - 1];
+                int k = Math.Max(1, (int)Math.Ceiling(d / 0.05));
+                for (int j = 0; j <= k; j++)
+                {
+                    double at = s[i - 1] + d * j / k;
+                    V2 q = pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k);
+                    Cell c = q.Floor;
+                    bool ends = at < endSkip || L - at < endSkip;
+                    // a diagonal step between two cells whose shared corner is pinched by walls on BOTH other cells: the
+                    // hose would slip through a zero-width gap between two wall corners (measured in the owner's maze:
+                    // a 43-cell route laid 35 cells long by squeezing between diagonal stubs)
+                    if (!ends && c.X != prev.X && c.Z != prev.Z && !w.IsWalkable(new Cell(c.X, prev.Z)) && !w.IsWalkable(new Cell(prev.X, c.Z)))
+                        return false;
+                    prev = c;
+                    if (!ends && WallDepth(w, q) > ClipTolerance) return false;
+                }
+            }
             return true;
         }
 
@@ -435,7 +499,106 @@ namespace RimMandrake.MessyConduit.Hose
         /// length"): at the sharpest point of each bend of the PLANNED route (the centreline, not the slack wiggles),
         /// at least <paramref name="minSpacing"/> cells apart and 1.5 cells clear of either end. A straight hose has none.
         /// </summary>
-        public static List<int> Joints(IList<V2> C, double minSpacing)
+        public static List<int> Joints(IList<V2> C, double minSpacing) => Joints(C, minSpacing, 0);
+
+        /// <summary>Half the length of a joiner (two couplings face to face plus their cloth wraps), cells, on a hose of
+        /// <paramref name="visible"/> width: brass face to wrap end = 0.49 x fitting size + 0.55 (DrawEnds' Fitting).</summary>
+        public static double JoinerHalf(double visible) => (JoinerFace + 0.03) * FittingSize(visible, PieceBand, CouplingMax) + WrapLength - 0.05;
+
+        /// <summary>Art geometry of the coupling (measured 2026-10-02/04; RM_MapComponent_Hoses draws with these): the
+        /// hose band where the hose enters it, its widest band (canvas fractions) and its brass face (canvas units).</summary>
+        public const double PieceBand = 0.25, CouplingMax = 0.508, JoinerFace = 0.46;
+
+        /// <summary>Most a joiner's run may turn and still count as straight (radians).</summary>
+        public const double JointStraight = 10 * Math.PI / 180;
+
+        /// <summary>
+        /// Round 4 (owner, station 22): the joiners still mark the BENDS (B17: one per real bend, none along a straight
+        /// length), but a rigid joiner cannot sit ON a bend: at the apex its brass lay across the corner while both hose
+        /// lengths bent away from it. Each bend's joiner slides along the route to the nearest place where the next
+        /// 2 x <paramref name="half"/> cells of planned route are straight (turn under JointStraight), clear of both ends
+        /// and of the other joiners; a bend with no straight run near it (within 3 cells) gets none.
+        /// </summary>
+        public static List<int> Joints(IList<V2> C, double minSpacing, double half, params IList<V2>[] drawn)
+        {
+            List<int> bends = BendJoints(C, minSpacing);
+            if (half <= 0) return bends;
+            double[] s = Geo.CumLen(C);
+            double[][] ds = drawn.Select(d => Geo.CumLen(d)).ToArray();
+            double L = s[s.Length - 1];
+            var o = new List<int>();
+            foreach (int b in bends)
+            {
+                int best = -1;
+                double bestD = double.MaxValue;
+                for (int k = 1; k < C.Count - 1; k++)
+                {
+                    double dist = Math.Abs(s[k] - s[b]);
+                    if (dist > 3 || dist >= bestD) continue;
+                    if (s[k] - half < 0.75 || L - s[k] - half < 0.75) continue;
+                    if (o.Any(j => Math.Abs(s[j] - s[k]) < 2 * half + 0.5)) continue;
+                    if (RunTurn(C, s, s[k] - half, s[k] + half) > JointStraight) continue;
+                    // ...and the drawn poses (with their slack S-curves) are nearly straight there too, so laying the run on
+                    // its chord is a small correction, not a new kink
+                    bool bent = false;
+                    for (int q = 0; q < drawn.Length && !bent; q++)
+                        bent = drawn[q].Count != C.Count || RunTurn(drawn[q], ds[q], ds[q][k] - half - 0.5, ds[q][k] + half + 0.5) > JointStraight;
+                    if (bent) continue;
+                    best = k;
+                    bestD = dist;
+                }
+                if (best >= 0) o.Add(best);
+            }
+            o.Sort();
+            return o;
+        }
+
+        /// <summary>Total absolute turning of the polyline between arc positions a and b (radians).</summary>
+        public static double RunTurn(IList<V2> C, double[] s, double a, double b)
+        {
+            double t = 0;
+            for (int i = 1; i < C.Count - 1; i++)
+            {
+                if (s[i] <= a || s[i] >= b) continue;
+                V2 u = C[i] - C[i - 1], v = C[i + 1] - C[i];
+                if (u.Len < 1e-9 || v.Len < 1e-9) continue;
+                t += Math.Abs(Math.Atan2(u.X * v.Z - u.Z * v.X, u.X * v.X + u.Z * v.Z));
+            }
+            return t;
+        }
+
+        /// <summary>The pose with the run [s_j - half, s_j + half] laid on its chord (equal-arc along it), blended back into
+        /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
+        public static List<V2> StraightenAt(IList<V2> P, int j, double half)
+        {
+            var o = new List<V2>(P);
+            if (P.Count < 3 || j <= 0 || j >= P.Count - 1) return o;
+            double[] s = Geo.CumLen(P);
+            double L = s[s.Length - 1], s0 = Math.Max(0, s[j] - half), s1 = Math.Min(L, s[j] + half);
+            V2 a = At(P, s, s0), b = At(P, s, s1);
+            if (s1 - s0 < 1e-6) return o;
+            const double blend = 0.5;
+            for (int i = 1; i < P.Count - 1; i++)
+            {
+                double w = s[i] < s0 ? 1 - (s0 - s[i]) / blend : s[i] > s1 ? 1 - (s[i] - s1) / blend : 1;
+                if (w <= 0) continue;
+                w = w >= 1 ? 1 : w * w * (3 - 2 * w);
+                V2 line = a + (b - a) * ((s[i] - s0) / (s1 - s0));
+                o[i] = P[i] + (line - P[i]) * w;
+            }
+            return o;
+        }
+
+        private static V2 At(IList<V2> P, double[] s, double t)
+        {
+            int k = 0;
+            while (k < s.Length - 2 && s[k + 1] < t) k++;
+            double seg = s[k + 1] - s[k];
+            double u = seg < 1e-12 ? 0 : (t - s[k]) / seg;
+            return P[k] + (P[k + 1] - P[k]) * Geo.Clamp(u, 0, 1);
+        }
+
+        private static List<int> BendJoints(IList<V2> C, double minSpacing)
         {
             var o = new List<int>();
             if (C.Count < 5) return o;
@@ -512,14 +675,47 @@ namespace RimMandrake.MessyConduit.Hose
             if (reel.Contains(target)) return "same cell";
             if (V2.Dist(reel.Centre, target.Centre) > maxLength) return "too far";
             if (!w.IsWalkable(target)) return "target blocked";
-            Cell s = reel.StartCellToward(target);
-            List<Cell> path = CordPlanner.AStar(w, s, target, 20000);
-            if (path == null) return "no route";
-            double len = V2.Dist(reel.Centre, s.Centre);
-            for (int i = 1; i < path.Count; i++) len += V2.Dist(path[i - 1].Centre, path[i].Centre);
-            if (len * 1.08 > maxLength) return "route too long";
+            double len = RouteLength(w, reel, target);
+            if (len < 0) return "no route";
+            if (len * RouteMargin > maxLength) return "route too long";
             return null;
         }
+
+        /// <summary>Hose a route needs beyond its pulled-taut length (slack, bends round corners): 5%.</summary>
+        public const double RouteMargin = 1.05;
+
+        /// <summary>Round 4 (owner, station 23): the length a hose needs from the reel centre to target, or -1 for no
+        /// route. The A* cell path pulled taut (any-angle, never through a wall or a pinched diagonal), from the reel's
+        /// centre. Round 3 summed the cell path's centre-to-centre steps x1.08: a staircase, which over-read the owner's
+        /// zig-zag maze at 48.5 cells where the hose actually lays 35.</summary>
+        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target)
+        {
+            List<V2> p = RoutePulled(w, reel, target);
+            return p == null ? -1 : Geo.Length(p);
+        }
+
+        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target)
+        {
+            Cell s = reel.StartCellToward(target);
+            List<Cell> path = CordPlanner.AStar(w, s, target, 20000);
+            if (path == null) return null;
+            var pts = new List<V2> { reel.Mouth };
+            for (int i = 0; i < path.Count; i++) if (i > 0 || V2.Dist(path[0].Centre, reel.Mouth) > 1e-9) pts.Add(path[i].Centre);
+            var o = new List<V2> { pts[0] };
+            int a = 0;
+            while (a < pts.Count - 1)
+            {
+                int b = a + 1;
+                for (int j = pts.Count - 1; j > a + 1; j--) if (SegmentClear(w, pts[a], pts[j])) { b = j; break; }
+                o.Add(pts[b]);
+                a = b;
+            }
+            return o;
+        }
+
+        /// <summary>True when the straight segment a-b stays out of walls (ClipTolerance) and never slips through a
+        /// pinched diagonal (two wall cells meeting corner to corner).</summary>
+        public static bool SegmentClear(CordWorld w, V2 a, V2 b) => Clear(w, new List<V2> { a, b }, 0);
 
         /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1 (owner, by card 2026-10-04: "reroute within its length; if none exists,
         /// retract to the reel with a visible alert. Never a ghost hose; also enforce length on re-plan."). Run when an
@@ -575,6 +771,14 @@ namespace RimMandrake.MessyConduit.Hose
         public int X0, Z0, W, H;
         public HoseReelRect(int x0, int z0, int w, int h) { X0 = x0; Z0 = z0; W = Math.Max(1, w); H = Math.Max(1, h); }
         public V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
+
+        /// <summary>Round 4 (owner, station 22: "inappropriate connectivity to the hose reel itself"): where the hose leaves
+        /// the reel. On the 2x2 reel that is under the DRUM's front (the art at drawSize 2.8: drum centre u 168/256, just
+        /// above its underside v 165/256), not the footprint centre, which sits under the pump body by its inlet coupling,
+        /// so the hose read as plugged into the pump's inlet. Hidden under the sprite, it shows coming off the drum through
+        /// the gap above the base rail. A 1x1 reel keeps its centre.</summary>
+        public V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
+        public const double ReelDrawSize = 2.8, MouthDX = (168.0 / 256 - 0.5) * ReelDrawSize, MouthDZ = (0.5 - 165.0 / 256) * ReelDrawSize;
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 

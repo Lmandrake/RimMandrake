@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.MessyConduit.Core;
 
 namespace RimMandrake.MessyConduit.Hose
 {
@@ -54,6 +55,8 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1: the last automatic reel-in (saved, so the inspect line survives a load).</summary>
         public string lastRetractReason;
         public int lastRetractTick = -1;
+        /// <summary>Round 4: the hose a too-long route needed (cells) when it was retracted or refused, -1 = not measured.</summary>
+        public float lastRetractNeed = -1f;
         private int portTick = int.MinValue;
 
         /// <summary>The coupled neighbour (null = not connected), re-read at most every 60 ticks or when forced.</summary>
@@ -115,6 +118,7 @@ namespace RimMandrake.MessyConduit.Hose
             Scribe_Values.Look(ref sm.Transitions, "rmHoseTransitions");
             Scribe_Values.Look(ref lastRetractReason, "rmHoseRetractWhy");
             Scribe_Values.Look(ref lastRetractTick, "rmHoseRetractTick", -1);
+            Scribe_Values.Look(ref lastRetractNeed, "rmHoseRetractNeed", -1f);
         }
 
         /// <summary>Null when laid, else why not (also the gizmo's reject message).</summary>
@@ -131,6 +135,7 @@ namespace RimMandrake.MessyConduit.Hose
             far = target;
             laid = true;
             lastRetractReason = null;
+            lastRetractNeed = -1f;
             lastLayReason = null;
             lay = null;
             layKey = null;
@@ -145,13 +150,32 @@ namespace RimMandrake.MessyConduit.Hose
         /// entry. The free-end target is forgotten; the player lays it again.</summary>
         public void Retract(string why)
         {
+            float need = why == "route too long" ? NeedFor(far) : -1f;
             ReelIn();
             lastRetractReason = why;
+            lastRetractNeed = need;
             lastRetractTick = Find.TickManager?.TicksGame ?? 0;
             if (parent.Spawned && parent.Faction == Faction.OfPlayer)
-                Messages.Message("Hose reeled in: " + why + " (an obstacle cut its route and no other route fits the hose).",
+                Messages.Message("Hose reeled in: " + Explain(why, need) + " (an obstacle cut its route and no other route fits the hose).",
                     new LookTargets(parent), MessageTypeDefOf.NegativeEvent, false);
         }
+
+        /// <summary>Round 4 (owner, station 23: "the hose disappeared"): the hose a route to target needs, pulled taut,
+        /// with the route margin (cells), or -1.</summary>
+        public float NeedFor(IntVec3 target)
+        {
+            RM_MapComponent_Hoses comp = parent.Spawned ? parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
+            if (comp == null || !target.IsValid) return -1f;
+            double len = HoseMath.RouteLength(comp.World(), Rect, new Cell(target.x, target.z));
+            return len < 0 ? -1f : (float)(len * HoseMath.RouteMargin);
+        }
+
+        /// <summary>A reason with the numbers that make it readable: "route too long: the way there needs about 36 cells of
+        /// hose, this reel holds 30".</summary>
+        public string Explain(string why, float need) =>
+            why == "route too long" && need > 0
+                ? why + ": the way there needs about " + Mathf.CeilToInt(need) + " cells of hose, this reel holds " + MaxLength.ToString("0")
+                : why;
 
         public void ReelIn()
         {
@@ -186,7 +210,7 @@ namespace RimMandrake.MessyConduit.Hose
                         Find.Targeter.BeginTargeting(tp, t =>
                         {
                             string why = TryLay(t.Cell);
-                            if (why != null) Messages.Message("Cannot lay the hose there: " + why + ".", MessageTypeDefOf.RejectInput, false);
+                            if (why != null) Messages.Message("Cannot lay the hose there: " + Explain(why, why == "route too long" ? NeedFor(t.Cell) : -1f) + ".", MessageTypeDefOf.RejectInput, false);
                         }, caster: (Pawn)null);
                     }
                 };
@@ -226,8 +250,9 @@ namespace RimMandrake.MessyConduit.Hose
         {
             Thing p = parent.Spawned ? Port() : null;
             string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")." : "Not connected: build it beside a pipe or tank.";
-            if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + lastRetractReason + "." : "");
-            return conn + "\nHose laid to " + far + " (" + sm.State.ToString().ToLower() + ").";
+            if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + Explain(lastRetractReason, lastRetractNeed) + "." : "");
+            string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " cells" : "";
+            return conn + "\nHose laid to " + far + len + " (" + sm.State.ToString().ToLower() + ").";
         }
     }
 }
