@@ -62,6 +62,7 @@ Still not proven / likely first-live-run corrections:
      for a live def check by construction.
 """
 from modcheck import Suite, ExpectationFailed
+from modcheck.suite import Precondition
 
 suite = Suite("ResearchRetag")
 suite.toggles = []
@@ -198,6 +199,66 @@ def core_rows_retagged(t):
                     "Core research rows do not match the retag/tab-assign patches: %s"
                     % "; ".join(bad))
         t.screenshot()
+
+
+def own_prereq_graph(mod_dir=None):
+    """{defName: [prerequisites + hiddenPrerequisites]} for this mod's OWN ResearchProjectDefs (XML parse)."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    root_dir = _os.path.join(mod_dir or _os.path.dirname(_os.path.abspath(__file__)), "Defs")
+    graph = {}
+    for root, _dirs, files in sorted(_os.walk(root_dir)):
+        for fn in sorted(files):
+            if fn.endswith(".xml"):
+                for d in _ET.parse(_os.path.join(root, fn)).getroot().findall("ResearchProjectDef"):
+                    if d.get("Abstract", "").lower() != "true" and d.findtext("defName"):
+                        graph[d.findtext("defName").strip()] = [li.text.strip() for tag in ("prerequisites", "hiddenPrerequisites")
+                                                                for li in d.findall(tag + "/li") if li.text]
+    return graph
+
+
+def prereq_findings(graph, known):
+    """(cycles, dangling): a cycle in this mod's own prerequisite graph locks every project on it forever; a
+    prerequisite naming no ResearchProjectDef in the load (`known`, plus our own) is a dead cross-reference."""
+    dangling = sorted("%s -> %s" % (n, p) for n, ps in graph.items() for p in ps if p not in graph and p not in known)
+    cycles, state = [], {}
+
+    def walk(n, path):
+        state[n] = 1
+        for p in graph.get(n, ()):
+            if p in graph:
+                if state.get(p) == 1:
+                    cycles.append(" -> ".join(path[path.index(p):] + [p]) if p in path else "%s -> %s" % (n, p))
+                elif not state.get(p):
+                    walk(p, path + [p])
+        state[n] = 2
+    for n in sorted(graph):
+        if not state.get(n):
+            walk(n, [n])
+    return cycles, dangling
+
+
+@suite.chain("own_prereq_graph_static")
+def own_prereq_graph_static(t):
+    """This mod's 18 ported ResearchProjectDefs: no prerequisite cycle among them, and every prerequisite names a
+    ResearchProjectDef the current load holds (the offline def dump of the live mod set). Pure static: same
+    verdict offline and live."""
+    with t.component("own_prereqs_acyclic_and_resolve", beyond_toggle=True):
+        graph = own_prereq_graph()
+        if len(graph) < 15 or "RR_LateralThinking" not in graph or not any(graph.values()):
+            raise ExpectationFailed("the own-research parse is blind: %d defs" % len(graph))
+        try:
+            import game_paths as _GP
+            from def_diff import iter_live_defs
+            import os as _os
+            known = set(d.get("defName") for d in iter_live_defs(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))
+        except Exception as e:      # no dump on this machine: say so, never pass
+            raise Precondition("no readable def dump for ResearchProjectDef: %s" % e)
+        if len(known) < 200 or "Electricity" not in known:
+            raise Precondition("the def dump's ResearchProjectDef list is blind: %d names" % len(known))
+        cycles, dangling = prereq_findings(graph, known)
+        if cycles or dangling:
+            raise ExpectationFailed("prerequisite cycles %s; prerequisites naming no loaded project %s" % (cycles, dangling))
 
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # ResearchProjectDef baseCost/tab are retagged by this mod's own Patches, so only labels are compared). The Defs/ parse is the list, so a def added later is covered with no edit here.

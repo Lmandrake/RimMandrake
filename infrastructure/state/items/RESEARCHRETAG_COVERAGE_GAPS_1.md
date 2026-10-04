@@ -13,3 +13,4 @@ Each listed behaviour has an asserting component or a stated reason it cannot (U
 
 ## progress 2026-10-03 (r34)
 - Static-free readback wired: `every_shipped_def_reads_back` (shared shipped_defs) covers all 46 shipped defs incl. the 18 ported ResearchProjectDefs and GravForge (loaded + label). baseCost/tab are not compared: this mod retags them on purpose. Still open: the ~264 donor retag rows, prereq cycle/dangling check, forceLoadAfter.
+- Static bar `own_prereq_graph_static` (r34): the 18 own projects have no prerequisite cycle and every prerequisite names a ResearchProjectDef in the current def dump (415 names; clean today). selftest_researchretag reds cycle/dangling/blind.
