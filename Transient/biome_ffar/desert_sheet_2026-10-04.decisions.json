@@ -2,7 +2,7 @@
  "sheetId": "desert_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/desert_sheet_2026-10-04.snapshot.json",
- "snapshotId": "8efc105c094cb399",
+ "snapshotId": "f22208a82306d1d2",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_LongShade",
  "reviewStatus": {
@@ -153,7 +153,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Bantha/BanthaW_j": "E"
+    "swanimals/Bantha/BanthaW_j": "C"
    }
   },
   "RSW_Bokka": {
@@ -243,9 +243,9 @@
    }
   },
   "RSW_Iriaz": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "RSW_IridonianReek": {
    "decision": "A",
@@ -318,8 +318,8 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Nerf/Nerf_j": "C",
-    "swanimals/Nerf/Nerf_m": "D"
+    "swanimals/Nerf/Nerf_j": "B",
+    "swanimals/Nerf/Nerf_m": "C"
    }
   },
   "RSW_Nuna": {
@@ -408,7 +408,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Varactyl/Varactyl_m": "C"
+    "swanimals/Varactyl/Varactyl_m": "B"
    }
   },
   "RSW_Voorpak": {
@@ -451,9 +451,9 @@
    "prefill": "A"
   },
   "RM_Leachmoss": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RM_Maidenbloom": {
    "decision": "A",
@@ -471,19 +471,19 @@
    "prefill": "A"
   },
   "RM_Ultracactus": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RM_Venomvine": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RM_Vorrel": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RSW_DommoTree": {
    "decision": "A",
@@ -506,9 +506,9 @@
    "prefill": "A"
   },
   "RSW_Ultracactus": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RSW_VellaraBloom": {
    "decision": "A",

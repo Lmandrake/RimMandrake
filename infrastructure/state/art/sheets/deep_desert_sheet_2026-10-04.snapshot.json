@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-04T15:23:45-0700",
+ "built": "2026-10-04T15:48:01-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "eeff5234d",
- "loadOrder": "ModsConfig.xml 9 active, modified 2026-10-04 10:55",
+ "census_git_head": "87e6995b6",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -17,7 +17,7 @@
     "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
    "subject_key": "aurrok"
@@ -34,7 +34,7 @@
     "A": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
    "subject_key": "drazzik"
@@ -53,7 +53,7 @@
     "B": "Things/Item/Resource/RM_DuneCrawler"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
+    "A": "IN GAME \u2014 Stillsand",
     "B": "history Stillsand 2026-10-01"
    },
    "res": "Things/Item/Resource/RM_DuneCrawler",
@@ -71,7 +71,7 @@
     "A": "Things/Pawn/Animal/RM_Duumma/RM_Duumma"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
    "subject_key": "duumma"
@@ -94,7 +94,7 @@
     "B": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
+    "A": "IN GAME \u2014 Stillsand",
     "B": "render RM_Gaanok"
    },
    "res": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
@@ -103,259 +103,14 @@
   "RM_Glasscrust": {
    "columns": {
     "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    },
-    "x": {
      "single": "b1730b227eeafc48cabba40e953958e99c36d442ca2085ce378fca0c58640775"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Glasscrust",
-    "B": "Things/Plant/RM_Glasscrust",
-    "C": "Things/Plant/RM_Glasscrust",
-    "D": "Things/Plant/RM_Glasscrust",
-    "E": "Things/Plant/RM_Glasscrust",
-    "F": "Things/Plant/RM_Glasscrust",
-    "G": "Things/Plant/RM_Glasscrust",
-    "H": "Things/Plant/RM_Glasscrust",
-    "I": "Things/Plant/RM_Glasscrust",
-    "J": "Things/Plant/RM_Glasscrust",
-    "K": "Things/Plant/RM_Glasscrust",
-    "L": "Things/Plant/RM_Glasscrust",
-    "M": "Things/Plant/RM_Glasscrust",
-    "N": "Things/Plant/RM_Glasscrust",
-    "O": "Things/Plant/RM_Glasscrust",
-    "P": "Things/Plant/RM_Glasscrust",
-    "Q": "Things/Plant/RM_Glasscrust",
-    "R": "Things/Plant/RM_Glasscrust",
-    "S": "Things/Plant/RM_Glasscrust",
-    "T": "Things/Plant/RM_Glasscrust",
-    "U": "Things/Plant/RM_Glasscrust",
-    "V": "Things/Plant/RM_Glasscrust",
-    "W": "Things/Plant/RM_Glasscrust",
-    "X": "Things/Plant/RM_Glasscrust",
-    "Y": "Things/Plant/RM_Glasscrust",
-    "Z": "Things/Plant/RM_Glasscrust",
-    "a": "Things/Plant/RM_Glasscrust",
-    "b": "Things/Plant/RM_Glasscrust",
-    "c": "Things/Plant/RM_Glasscrust",
-    "d": "Things/Plant/RM_Glasscrust",
-    "e": "Things/Plant/RM_Glasscrust",
-    "f": "Things/Plant/RM_Glasscrust",
-    "g": "Things/Plant/RM_Glasscrust",
-    "h": "Things/Plant/RM_Glasscrust",
-    "i": "Things/Plant/RM_Glasscrust",
-    "j": "Things/Plant/RM_Glasscrust",
-    "k": "Things/Plant/RM_Glasscrust",
-    "l": "Things/Plant/RM_Glasscrust",
-    "m": "Things/Plant/RM_Glasscrust",
-    "n": "Things/Plant/RM_Glasscrust",
-    "o": "Things/Plant/RM_Glasscrust",
-    "p": "Things/Plant/RM_Glasscrust",
-    "q": "Things/Plant/RM_Glasscrust",
-    "r": "Things/Plant/RM_Glasscrust",
-    "s": "Things/Plant/RM_Glasscrust",
-    "t": "Things/Plant/RM_Glasscrust",
-    "u": "Things/Plant/RM_Glasscrust",
-    "v": "Things/Plant/RM_Glasscrust",
-    "w": "Things/Plant/RM_Glasscrust",
-    "x": "_byname"
+    "A": "Things/Plant/RM_Glasscrust"
    },
    "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1",
-    "x": "render RM_Glasscrust"
+    "A": "render RM_Glasscrust"
    },
    "res": "Things/Plant/RM_Glasscrust",
    "subject_key": "glasscrust"
@@ -378,7 +133,7 @@
     "B": "Things/Pawn/Animal/RM_Ikee/RM_Ikee"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
+    "A": "IN GAME \u2014 Stillsand",
     "B": "render RM_Ikee"
    },
    "res": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
@@ -387,521 +142,28 @@
   "RM_KneelOllim": {
    "columns": {
     "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    },
-    "x": {
      "single": "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
     },
-    "y": {
+    "B": {
      "single": "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_KneelOllim",
-    "B": "Things/Plant/RM_KneelOllim",
-    "C": "Things/Plant/RM_KneelOllim",
-    "D": "Things/Plant/RM_KneelOllim",
-    "E": "Things/Plant/RM_KneelOllim",
-    "F": "Things/Plant/RM_KneelOllim",
-    "G": "Things/Plant/RM_KneelOllim",
-    "H": "Things/Plant/RM_KneelOllim",
-    "I": "Things/Plant/RM_KneelOllim",
-    "J": "Things/Plant/RM_KneelOllim",
-    "K": "Things/Plant/RM_KneelOllim",
-    "L": "Things/Plant/RM_KneelOllim",
-    "M": "Things/Plant/RM_KneelOllim",
-    "N": "Things/Plant/RM_KneelOllim",
-    "O": "Things/Plant/RM_KneelOllim",
-    "P": "Things/Plant/RM_KneelOllim",
-    "Q": "Things/Plant/RM_KneelOllim",
-    "R": "Things/Plant/RM_KneelOllim",
-    "S": "Things/Plant/RM_KneelOllim",
-    "T": "Things/Plant/RM_KneelOllim",
-    "U": "Things/Plant/RM_KneelOllim",
-    "V": "Things/Plant/RM_KneelOllim",
-    "W": "Things/Plant/RM_KneelOllim",
-    "X": "Things/Plant/RM_KneelOllim",
-    "Y": "Things/Plant/RM_KneelOllim",
-    "Z": "Things/Plant/RM_KneelOllim",
-    "a": "Things/Plant/RM_KneelOllim",
-    "b": "Things/Plant/RM_KneelOllim",
-    "c": "Things/Plant/RM_KneelOllim",
-    "d": "Things/Plant/RM_KneelOllim",
-    "e": "Things/Plant/RM_KneelOllim",
-    "f": "Things/Plant/RM_KneelOllim",
-    "g": "Things/Plant/RM_KneelOllim",
-    "h": "Things/Plant/RM_KneelOllim",
-    "i": "Things/Plant/RM_KneelOllim",
-    "j": "Things/Plant/RM_KneelOllim",
-    "k": "Things/Plant/RM_KneelOllim",
-    "l": "Things/Plant/RM_KneelOllim",
-    "m": "Things/Plant/RM_KneelOllim",
-    "n": "Things/Plant/RM_KneelOllim",
-    "o": "Things/Plant/RM_KneelOllim",
-    "p": "Things/Plant/RM_KneelOllim",
-    "q": "Things/Plant/RM_KneelOllim",
-    "r": "Things/Plant/RM_KneelOllim",
-    "s": "Things/Plant/RM_KneelOllim",
-    "t": "Things/Plant/RM_KneelOllim",
-    "u": "Things/Plant/RM_KneelOllim",
-    "v": "Things/Plant/RM_KneelOllim",
-    "w": "Things/Plant/RM_KneelOllim",
-    "x": "_byname",
-    "y": "_byname"
+    "B": "Things/Plant/RM_KneelOllim"
    },
    "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1",
-    "x": "render RM_KneelOllim_b",
-    "y": "render RM_KneelOllim"
+    "A": "render RM_KneelOllim_b",
+    "B": "render RM_KneelOllim"
    },
    "res": "Things/Plant/RM_KneelOllim",
    "subject_key": "kneelollim"
   },
   "RM_LightPipeNub": {
-   "columns": {
-    "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_LightPipeNub",
-    "B": "Things/Plant/RM_LightPipeNub",
-    "C": "Things/Plant/RM_LightPipeNub",
-    "D": "Things/Plant/RM_LightPipeNub",
-    "E": "Things/Plant/RM_LightPipeNub",
-    "F": "Things/Plant/RM_LightPipeNub",
-    "G": "Things/Plant/RM_LightPipeNub",
-    "H": "Things/Plant/RM_LightPipeNub",
-    "I": "Things/Plant/RM_LightPipeNub",
-    "J": "Things/Plant/RM_LightPipeNub",
-    "K": "Things/Plant/RM_LightPipeNub",
-    "L": "Things/Plant/RM_LightPipeNub",
-    "M": "Things/Plant/RM_LightPipeNub",
-    "N": "Things/Plant/RM_LightPipeNub",
-    "O": "Things/Plant/RM_LightPipeNub",
-    "P": "Things/Plant/RM_LightPipeNub",
-    "Q": "Things/Plant/RM_LightPipeNub",
-    "R": "Things/Plant/RM_LightPipeNub",
-    "S": "Things/Plant/RM_LightPipeNub",
-    "T": "Things/Plant/RM_LightPipeNub",
-    "U": "Things/Plant/RM_LightPipeNub",
-    "V": "Things/Plant/RM_LightPipeNub",
-    "W": "Things/Plant/RM_LightPipeNub",
-    "X": "Things/Plant/RM_LightPipeNub",
-    "Y": "Things/Plant/RM_LightPipeNub",
-    "Z": "Things/Plant/RM_LightPipeNub",
-    "a": "Things/Plant/RM_LightPipeNub",
-    "b": "Things/Plant/RM_LightPipeNub",
-    "c": "Things/Plant/RM_LightPipeNub",
-    "d": "Things/Plant/RM_LightPipeNub",
-    "e": "Things/Plant/RM_LightPipeNub",
-    "f": "Things/Plant/RM_LightPipeNub",
-    "g": "Things/Plant/RM_LightPipeNub",
-    "h": "Things/Plant/RM_LightPipeNub",
-    "i": "Things/Plant/RM_LightPipeNub",
-    "j": "Things/Plant/RM_LightPipeNub",
-    "k": "Things/Plant/RM_LightPipeNub",
-    "l": "Things/Plant/RM_LightPipeNub",
-    "m": "Things/Plant/RM_LightPipeNub",
-    "n": "Things/Plant/RM_LightPipeNub",
-    "o": "Things/Plant/RM_LightPipeNub",
-    "p": "Things/Plant/RM_LightPipeNub",
-    "q": "Things/Plant/RM_LightPipeNub",
-    "r": "Things/Plant/RM_LightPipeNub",
-    "s": "Things/Plant/RM_LightPipeNub",
-    "t": "Things/Plant/RM_LightPipeNub",
-    "u": "Things/Plant/RM_LightPipeNub",
-    "v": "Things/Plant/RM_LightPipeNub",
-    "w": "Things/Plant/RM_LightPipeNub"
-   },
-   "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1"
-   },
-   "res": "Things/Plant/RM_LightPipeNub",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
    "subject_key": "lightpipenub"
   },
   "RM_Liikka": {
@@ -916,7 +178,7 @@
     "A": "Things/Pawn/Animal/RM_Liikka/RM_Liikka"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Liikka/RM_Liikka",
    "subject_key": "liikka"
@@ -939,265 +201,17 @@
     "B": "Things/Pawn/Animal/RM_Loomma/RM_Loomma"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
+    "A": "IN GAME \u2014 Stillsand",
     "B": "render RM_Loomma"
    },
    "res": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
    "subject_key": "loomma"
   },
   "RM_Ollim": {
-   "columns": {
-    "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RM_Ollim",
-    "B": "Things/Plant/RM_Ollim",
-    "C": "Things/Plant/RM_Ollim",
-    "D": "Things/Plant/RM_Ollim",
-    "E": "Things/Plant/RM_Ollim",
-    "F": "Things/Plant/RM_Ollim",
-    "G": "Things/Plant/RM_Ollim",
-    "H": "Things/Plant/RM_Ollim",
-    "I": "Things/Plant/RM_Ollim",
-    "J": "Things/Plant/RM_Ollim",
-    "K": "Things/Plant/RM_Ollim",
-    "L": "Things/Plant/RM_Ollim",
-    "M": "Things/Plant/RM_Ollim",
-    "N": "Things/Plant/RM_Ollim",
-    "O": "Things/Plant/RM_Ollim",
-    "P": "Things/Plant/RM_Ollim",
-    "Q": "Things/Plant/RM_Ollim",
-    "R": "Things/Plant/RM_Ollim",
-    "S": "Things/Plant/RM_Ollim",
-    "T": "Things/Plant/RM_Ollim",
-    "U": "Things/Plant/RM_Ollim",
-    "V": "Things/Plant/RM_Ollim",
-    "W": "Things/Plant/RM_Ollim",
-    "X": "Things/Plant/RM_Ollim",
-    "Y": "Things/Plant/RM_Ollim",
-    "Z": "Things/Plant/RM_Ollim",
-    "a": "Things/Plant/RM_Ollim",
-    "b": "Things/Plant/RM_Ollim",
-    "c": "Things/Plant/RM_Ollim",
-    "d": "Things/Plant/RM_Ollim",
-    "e": "Things/Plant/RM_Ollim",
-    "f": "Things/Plant/RM_Ollim",
-    "g": "Things/Plant/RM_Ollim",
-    "h": "Things/Plant/RM_Ollim",
-    "i": "Things/Plant/RM_Ollim",
-    "j": "Things/Plant/RM_Ollim",
-    "k": "Things/Plant/RM_Ollim",
-    "l": "Things/Plant/RM_Ollim",
-    "m": "Things/Plant/RM_Ollim",
-    "n": "Things/Plant/RM_Ollim",
-    "o": "Things/Plant/RM_Ollim",
-    "p": "Things/Plant/RM_Ollim",
-    "q": "Things/Plant/RM_Ollim",
-    "r": "Things/Plant/RM_Ollim",
-    "s": "Things/Plant/RM_Ollim",
-    "t": "Things/Plant/RM_Ollim",
-    "u": "Things/Plant/RM_Ollim",
-    "v": "Things/Plant/RM_Ollim",
-    "w": "Things/Plant/RM_Ollim"
-   },
-   "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1"
-   },
-   "res": "Things/Plant/RM_Ollim",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
    "subject_key": "ollim"
   },
   "RM_Oommok": {
@@ -1212,7 +226,7 @@
     "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
    "subject_key": "oommok"
@@ -1235,8 +249,8 @@
     "B": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
-    "B": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
    "subject_key": "qorrax"
@@ -1253,7 +267,7 @@
     "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
    "subject_key": "shademite"
@@ -1270,7 +284,7 @@
     "A": "Things/Pawn/Animal/RM_Siidda/RM_Siidda"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
    "subject_key": "siidda"
@@ -1293,7 +307,7 @@
     "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand",
+    "A": "IN GAME \u2014 Stillsand",
     "B": "render RM_Soorrak"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
@@ -1311,7 +325,7 @@
     "A": "Things/Pawn/Animal/RM_Veessa/RM_Veessa"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
    "subject_key": "veessa"
@@ -1328,7 +342,7 @@
     "A": "Things/Pawn/Animal/RM_Vekka/RM_Vekka"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
    "subject_key": "vekka"
@@ -1345,7 +359,7 @@
     "A": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
    "subject_key": "vozzik"
@@ -1421,7 +435,7 @@
     "H": "swanimals/Gizka/Gizka"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 GizkaArtOverride",
+    "A": "IN GAME \u2014 GizkaArtOverride",
     "B": "render desert_swaca_gizka",
     "C": "render pyrelands_gizka_v1",
     "D": "history GizkaArtOverride 2026-09-14",
@@ -1451,7 +465,7 @@
     "B": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_graniteslug"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
@@ -1486,7 +500,7 @@
     "D": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 GreaterKraytDragonArtOverride",
+    "A": "IN GAME \u2014 GreaterKraytDragonArtOverride",
     "B": "render desertportb_greaterkraytdragon",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
     "D": "donor original mlie.starwarsanimalcollection"
@@ -1509,10 +523,10 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "render RM_Ikee"
    },
    "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
@@ -1526,32 +540,32 @@
      "south": "8be79f2b641421e6e0c502975220eaadcb07e57ac3c4e1a498d8896421f9cbc2"
     },
     "B": {
-     "east": "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
-     "north": "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988",
-     "south": "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4"
-    },
-    "C": {
      "east": "cef15d0ce09b8e8f66e4e7bc145828f80997bf7cd1f430961edb7671bbea0851",
      "north": "4b98fab5564bd239f9dd3240938ac70507dfa568a641e52eecb8eae52b55e558",
      "south": "3916a3f21ab1391666c0f6c7ddf356d1fd756a9c79f467b160b068a8efa8aeb8"
     },
-    "D": {
+    "C": {
      "east": "30cae5accaca8b713286c5afa5bf3c6fa725c9692ac1a96652b112954a48a1e4",
      "north": "dc9f06ae65c91341a93aa25942dc084a168baafca2585c5e701e0c569aa88975",
      "south": "8050c37ed2005a4f4c2d80cf0294ad871c1becde3bac38b9e7ee70b4d16bd34d"
+    },
+    "D": {
+     "east": "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
+     "north": "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988",
+     "south": "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4"
     }
    },
    "graphic_of": {
     "A": "swanimals/KraytDragon/KraytDragon_f",
-    "B": "swanimals/KraytDragon/KraytDragon_f",
-    "C": "swanimals/KraytDragon/KraytDragon_j",
-    "D": "swanimals/KraytDragon/KraytDragon_m"
+    "B": "swanimals/KraytDragon/KraytDragon_j",
+    "C": "swanimals/KraytDragon/KraytDragon_m",
+    "D": "_byname"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
-    "B": "render desertportb_kraytdragon",
-    "C": "shipped, shadowed \u2014 SWBestiary",
-    "D": "shipped, shadowed \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render desertportb_kraytdragon"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "subject_key": "kraytdragon"
@@ -1596,777 +610,41 @@
     "F": "swanimals/Kreetle/Kreetle_j"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 KreetleArtOverride",
+    "A": "IN GAME \u2014 KreetleArtOverride",
     "B": "render desert_swaca_kreetle",
     "C": "render facingrepair_kreetle_v1",
     "D": "history KreetleArtOverride 2026-09-11",
     "E": "donor original mlie.starwarsanimalcollection",
-    "F": "shipped, shadowed \u2014 SWBestiary"
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "subject_key": "kreetle"
   },
   "RSW_LightPipeNub": {
-   "columns": {
-    "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RSW_LightPipeNub",
-    "B": "Things/Plant/RSW_LightPipeNub",
-    "C": "Things/Plant/RSW_LightPipeNub",
-    "D": "Things/Plant/RSW_LightPipeNub",
-    "E": "Things/Plant/RSW_LightPipeNub",
-    "F": "Things/Plant/RSW_LightPipeNub",
-    "G": "Things/Plant/RSW_LightPipeNub",
-    "H": "Things/Plant/RSW_LightPipeNub",
-    "I": "Things/Plant/RSW_LightPipeNub",
-    "J": "Things/Plant/RSW_LightPipeNub",
-    "K": "Things/Plant/RSW_LightPipeNub",
-    "L": "Things/Plant/RSW_LightPipeNub",
-    "M": "Things/Plant/RSW_LightPipeNub",
-    "N": "Things/Plant/RSW_LightPipeNub",
-    "O": "Things/Plant/RSW_LightPipeNub",
-    "P": "Things/Plant/RSW_LightPipeNub",
-    "Q": "Things/Plant/RSW_LightPipeNub",
-    "R": "Things/Plant/RSW_LightPipeNub",
-    "S": "Things/Plant/RSW_LightPipeNub",
-    "T": "Things/Plant/RSW_LightPipeNub",
-    "U": "Things/Plant/RSW_LightPipeNub",
-    "V": "Things/Plant/RSW_LightPipeNub",
-    "W": "Things/Plant/RSW_LightPipeNub",
-    "X": "Things/Plant/RSW_LightPipeNub",
-    "Y": "Things/Plant/RSW_LightPipeNub",
-    "Z": "Things/Plant/RSW_LightPipeNub",
-    "a": "Things/Plant/RSW_LightPipeNub",
-    "b": "Things/Plant/RSW_LightPipeNub",
-    "c": "Things/Plant/RSW_LightPipeNub",
-    "d": "Things/Plant/RSW_LightPipeNub",
-    "e": "Things/Plant/RSW_LightPipeNub",
-    "f": "Things/Plant/RSW_LightPipeNub",
-    "g": "Things/Plant/RSW_LightPipeNub",
-    "h": "Things/Plant/RSW_LightPipeNub",
-    "i": "Things/Plant/RSW_LightPipeNub",
-    "j": "Things/Plant/RSW_LightPipeNub",
-    "k": "Things/Plant/RSW_LightPipeNub",
-    "l": "Things/Plant/RSW_LightPipeNub",
-    "m": "Things/Plant/RSW_LightPipeNub",
-    "n": "Things/Plant/RSW_LightPipeNub",
-    "o": "Things/Plant/RSW_LightPipeNub",
-    "p": "Things/Plant/RSW_LightPipeNub",
-    "q": "Things/Plant/RSW_LightPipeNub",
-    "r": "Things/Plant/RSW_LightPipeNub",
-    "s": "Things/Plant/RSW_LightPipeNub",
-    "t": "Things/Plant/RSW_LightPipeNub",
-    "u": "Things/Plant/RSW_LightPipeNub",
-    "v": "Things/Plant/RSW_LightPipeNub",
-    "w": "Things/Plant/RSW_LightPipeNub"
-   },
-   "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1"
-   },
-   "res": "Things/Plant/RSW_LightPipeNub",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
    "subject_key": "lightpipenub"
   },
   "RSW_Ollim": {
-   "columns": {
-    "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
-     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Plant/RSW_Ollim",
-    "B": "Things/Plant/RSW_Ollim",
-    "C": "Things/Plant/RSW_Ollim",
-    "D": "Things/Plant/RSW_Ollim",
-    "E": "Things/Plant/RSW_Ollim",
-    "F": "Things/Plant/RSW_Ollim",
-    "G": "Things/Plant/RSW_Ollim",
-    "H": "Things/Plant/RSW_Ollim",
-    "I": "Things/Plant/RSW_Ollim",
-    "J": "Things/Plant/RSW_Ollim",
-    "K": "Things/Plant/RSW_Ollim",
-    "L": "Things/Plant/RSW_Ollim",
-    "M": "Things/Plant/RSW_Ollim",
-    "N": "Things/Plant/RSW_Ollim",
-    "O": "Things/Plant/RSW_Ollim",
-    "P": "Things/Plant/RSW_Ollim",
-    "Q": "Things/Plant/RSW_Ollim",
-    "R": "Things/Plant/RSW_Ollim",
-    "S": "Things/Plant/RSW_Ollim",
-    "T": "Things/Plant/RSW_Ollim",
-    "U": "Things/Plant/RSW_Ollim",
-    "V": "Things/Plant/RSW_Ollim",
-    "W": "Things/Plant/RSW_Ollim",
-    "X": "Things/Plant/RSW_Ollim",
-    "Y": "Things/Plant/RSW_Ollim",
-    "Z": "Things/Plant/RSW_Ollim",
-    "a": "Things/Plant/RSW_Ollim",
-    "b": "Things/Plant/RSW_Ollim",
-    "c": "Things/Plant/RSW_Ollim",
-    "d": "Things/Plant/RSW_Ollim",
-    "e": "Things/Plant/RSW_Ollim",
-    "f": "Things/Plant/RSW_Ollim",
-    "g": "Things/Plant/RSW_Ollim",
-    "h": "Things/Plant/RSW_Ollim",
-    "i": "Things/Plant/RSW_Ollim",
-    "j": "Things/Plant/RSW_Ollim",
-    "k": "Things/Plant/RSW_Ollim",
-    "l": "Things/Plant/RSW_Ollim",
-    "m": "Things/Plant/RSW_Ollim",
-    "n": "Things/Plant/RSW_Ollim",
-    "o": "Things/Plant/RSW_Ollim",
-    "p": "Things/Plant/RSW_Ollim",
-    "q": "Things/Plant/RSW_Ollim",
-    "r": "Things/Plant/RSW_Ollim",
-    "s": "Things/Plant/RSW_Ollim",
-    "t": "Things/Plant/RSW_Ollim",
-    "u": "Things/Plant/RSW_Ollim",
-    "v": "Things/Plant/RSW_Ollim",
-    "w": "Things/Plant/RSW_Ollim"
-   },
-   "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1"
-   },
-   "res": "Things/Plant/RSW_Ollim",
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
    "subject_key": "ollim"
   },
   "RSW_Plant_Bloddle": {
    "columns": {
     "A": {
-     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
-    },
-    "B": {
-     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
-    },
-    "C": {
-     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
-    },
-    "D": {
-     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
-    },
-    "E": {
-     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
-    },
-    "F": {
-     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
-    },
-    "G": {
-     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
-    },
-    "H": {
-     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
-    },
-    "I": {
-     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
-    },
-    "J": {
-     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
-    },
-    "K": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "L": {
-     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
-    },
-    "M": {
-     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
-    },
-    "N": {
-     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
-    },
-    "O": {
-     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
-    },
-    "P": {
-     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
-    },
-    "Q": {
-     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
-    },
-    "R": {
-     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
-    },
-    "S": {
-     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
-    },
-    "T": {
-     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
-    },
-    "U": {
-     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
-    },
-    "V": {
-     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
-    },
-    "W": {
-     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
-    },
-    "X": {
-     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
-    },
-    "Y": {
-     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
-    },
-    "Z": {
-     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
-    },
-    "a": {
-     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
-    },
-    "b": {
-     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
-    },
-    "c": {
-     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
-    },
-    "d": {
-     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
-    },
-    "e": {
-     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
-    },
-    "f": {
-     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
-    },
-    "g": {
-     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
-    },
-    "h": {
-     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
-    },
-    "i": {
-     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
-    },
-    "j": {
-     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
-    },
-    "k": {
-     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
-    },
-    "l": {
-     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
-    },
-    "m": {
-     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
-    },
-    "n": {
-     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
-    },
-    "o": {
-     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
-    },
-    "p": {
-     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
-    },
-    "q": {
-     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
-    },
-    "r": {
-     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
-    },
-    "s": {
      "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
-    },
-    "t": {
-     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
-    },
-    "u": {
-     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
-    },
-    "v": {
-     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
-    },
-    "w": {
-     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_Bloddle",
-    "B": "Things/Plant/RSW_Plant_Bloddle",
-    "C": "Things/Plant/RSW_Plant_Bloddle",
-    "D": "Things/Plant/RSW_Plant_Bloddle",
-    "E": "Things/Plant/RSW_Plant_Bloddle",
-    "F": "Things/Plant/RSW_Plant_Bloddle",
-    "G": "Things/Plant/RSW_Plant_Bloddle",
-    "H": "Things/Plant/RSW_Plant_Bloddle",
-    "I": "Things/Plant/RSW_Plant_Bloddle",
-    "J": "Things/Plant/RSW_Plant_Bloddle",
-    "K": "Things/Plant/RSW_Plant_Bloddle",
-    "L": "Things/Plant/RSW_Plant_Bloddle",
-    "M": "Things/Plant/RSW_Plant_Bloddle",
-    "N": "Things/Plant/RSW_Plant_Bloddle",
-    "O": "Things/Plant/RSW_Plant_Bloddle",
-    "P": "Things/Plant/RSW_Plant_Bloddle",
-    "Q": "Things/Plant/RSW_Plant_Bloddle",
-    "R": "Things/Plant/RSW_Plant_Bloddle",
-    "S": "Things/Plant/RSW_Plant_Bloddle",
-    "T": "Things/Plant/RSW_Plant_Bloddle",
-    "U": "Things/Plant/RSW_Plant_Bloddle",
-    "V": "Things/Plant/RSW_Plant_Bloddle",
-    "W": "Things/Plant/RSW_Plant_Bloddle",
-    "X": "Things/Plant/RSW_Plant_Bloddle",
-    "Y": "Things/Plant/RSW_Plant_Bloddle",
-    "Z": "Things/Plant/RSW_Plant_Bloddle",
-    "a": "Things/Plant/RSW_Plant_Bloddle",
-    "b": "Things/Plant/RSW_Plant_Bloddle",
-    "c": "Things/Plant/RSW_Plant_Bloddle",
-    "d": "Things/Plant/RSW_Plant_Bloddle",
-    "e": "Things/Plant/RSW_Plant_Bloddle",
-    "f": "Things/Plant/RSW_Plant_Bloddle",
-    "g": "Things/Plant/RSW_Plant_Bloddle",
-    "h": "Things/Plant/RSW_Plant_Bloddle",
-    "i": "Things/Plant/RSW_Plant_Bloddle",
-    "j": "Things/Plant/RSW_Plant_Bloddle",
-    "k": "Things/Plant/RSW_Plant_Bloddle",
-    "l": "Things/Plant/RSW_Plant_Bloddle",
-    "m": "Things/Plant/RSW_Plant_Bloddle",
-    "n": "Things/Plant/RSW_Plant_Bloddle",
-    "o": "Things/Plant/RSW_Plant_Bloddle",
-    "p": "Things/Plant/RSW_Plant_Bloddle",
-    "q": "Things/Plant/RSW_Plant_Bloddle",
-    "r": "Things/Plant/RSW_Plant_Bloddle",
-    "s": "Things/Plant/RSW_Plant_Bloddle",
-    "t": "Things/Plant/RSW_Plant_Bloddle",
-    "u": "Things/Plant/RSW_Plant_Bloddle",
-    "v": "Things/Plant/RSW_Plant_Bloddle",
-    "w": "Things/Plant/RSW_Plant_Bloddle"
+    "A": "Things/Plant/RSW_Plant_Bloddle"
    },
    "labels": {
-    "A": "render chill_plant_eldspar",
-    "B": "render chill_plant_fuselight",
-    "C": "render chill_plant_ghostpane",
-    "D": "render chill_plant_keelgrass",
-    "E": "render chill_plant_pitchpearl",
-    "F": "render chill_plant_skyharp",
-    "G": "render chill_plant_slackwax",
-    "H": "render chill_plant_stillbloom",
-    "I": "render chill_plant_stonewater",
-    "J": "render chill_plant_tarspool",
-    "K": "render webwork_plant_brimlock",
-    "L": "render feverwood_plant_ammeth",
-    "M": "render feverwood_plant_cistrel",
-    "N": "render feverwood_plant_claithe",
-    "O": "render feverwood_plant_corvath",
-    "P": "render feverwood_plant_halquin",
-    "Q": "render feverwood_plant_maulith",
-    "R": "render feverwood_plant_nubrith",
-    "S": "render feverwood_plant_plennith",
-    "T": "render feverwood_plant_seepril",
-    "U": "render feverwood_plant_skimmel",
-    "V": "render feverwood_plant_sodderel",
-    "W": "render feverwood_plant_varnoth",
-    "X": "render feverwood_plant_wanlith",
-    "Y": "render webwork_plant_brennoth",
-    "Z": "render webwork_plant_dulloth",
-    "a": "render webwork_plant_fellome",
-    "b": "render webwork_plant_grennick",
-    "c": "render webwork_plant_kessaroth",
-    "d": "render webwork_plant_kollavane",
-    "e": "render webwork_plant_norrveth",
-    "f": "render webwork_plant_pellareth",
-    "g": "render webwork_plant_ruddreth",
-    "h": "render webwork_plant_sellith",
-    "i": "render webwork_plant_sorrivel",
-    "j": "render webwork_plant_tavrosk",
-    "k": "render webwork_plant_threllick",
-    "l": "render webwork_plant_varrisk",
-    "m": "render webwork_plant_vessark",
-    "n": "render feverwood_plant_ossagrel",
-    "o": "render feverwood_plant_skethral",
-    "p": "render feverwood_plant_thulvane",
-    "q": "render feverwood_plant_tullick",
-    "r": "render feverwood_plant_verrow",
-    "s": "render desertportb_plant_bloddle",
-    "t": "render desertportb_plant_chakroot_wild",
-    "u": "render desertportb_plant_hubbagourd_wild",
-    "v": "render desertportb_plant_nysyllin_wild",
-    "w": "render rut_furnacecap_plant_v1"
+    "A": "render desertportb_plant_bloddle"
    },
    "res": "Things/Plant/RSW_Plant_Bloddle",
    "subject_key": "plant_bloddle"
@@ -2379,25 +657,25 @@
      "south": "dfd4730c213079542f1516e29add5e2852036cf59ff84055bf691499930ee5c3"
     },
     "B": {
-     "east": "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
-     "north": "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
-     "south": "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6"
-    },
-    "C": {
      "east": "3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82",
      "north": "c46bacb303eb525dd52a91d108072a7283c41c04b37f42faead8dffa4b2e2424",
      "south": "16618daa21c940e2051449148bab890e3694711bd6f35db30bd53f8d48cd0769"
+    },
+    "C": {
+     "east": "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
+     "north": "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
+     "south": "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6"
     }
    },
    "graphic_of": {
     "A": "swanimals/Scurrier/Scurrier_f",
-    "B": "swanimals/Scurrier/Scurrier_f",
-    "C": "swanimals/Scurrier/Scurrier_m"
+    "B": "swanimals/Scurrier/Scurrier_m",
+    "C": "_byname"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
-    "B": "render desert_swaca_scurrier",
-    "C": "shipped, shadowed \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render desert_swaca_scurrier"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
    "subject_key": "scurrier"
@@ -2417,10 +695,10 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
-    "B": "_byname"
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "render RM_Vozzik"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
@@ -2444,7 +722,7 @@
     "B": "swanimals/WarWyrm/WarWyrm"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 SWBestiary",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_warwyrm"
    },
    "res": "swanimals/WarWyrm/WarWyrm",
@@ -2452,5 +730,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "7abf7db89bdb18f3"
+ "snapshotId": "78a5fec1d0539d51"
 }

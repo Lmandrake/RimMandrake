@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-04 15:23
+# Biome flora/fauna art census — 2026-10-04 15:47
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -12,7 +12,13 @@ defs: `RM_LongShade` (75)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 75 | 62 | 13 | 0 | 75 | 34 | 0 | 0 | 14 | 0 |
+| 75 | 62 | 13 | 0 | 71 | 38 | 0 | 0 | 14 | 4 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RM_Leachmoss` (leachmoss) — texPath `Things/Plant/RM_Leachmoss` not in the art ledger (vanilla/donor texture)
+- `RM_Ultracactus` (ultracactus) — texPath `Things/Plant/RM_Ultracactus` not in the art ledger (vanilla/donor texture)
+- `RM_Venomvine` (venomvine) — texPath `Things/Plant/RM_Venomvine` not in the art ledger (vanilla/donor texture)
+- `RM_Vorrel` (vorrel) — texPath `Things/Plant/RM_Vorrel` not in the art ledger (vanilla/donor texture)
 
 ## 2. the Stillsand (`RM_Stillsand`)
 
@@ -22,7 +28,11 @@ defs: `RM_Stillsand` (28)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 28 | 22 | 5 | 1 | 28 | 6 | 0 | 0 | 5 | 0 |
+| 28 | 22 | 5 | 1 | 26 | 8 | 0 | 0 | 5 | 2 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RM_LightPipeNub` (light-pipe nub) — texPath `Things/Plant/RM_LightPipeNub` not in the art ledger (vanilla/donor texture)
+- `RM_Ollim` (ollim) — texPath `Things/Plant/RM_Ollim` not in the art ledger (vanilla/donor texture)
 
 ## 3. the Blue Desert (`RM_BlueDesert`)
 
@@ -32,17 +42,7 @@ defs: `RM_BlueDesert` (20)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20 | 12 | 8 | 0 | 12 | 0 | 0 | 0 | 0 | 8 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_Thunderbeast` — no texPath resolved
-- `RM_Dorrak` (dorrak) — texPath `Things/Pawn/Animal/Thrumbo/Thrumbo` not in the art ledger (vanilla/donor texture)
-- `RM_Krissek` (krissek) — texPath `Things/Pawn/Animal/Warg/Warg` not in the art ledger (vanilla/donor texture)
-- `RM_Vekkit` (vekkit) — texPath `Things/Pawn/Animal/Squirrel/Squirrel` not in the art ledger (vanilla/donor texture)
-- `Vapaad` — no texPath resolved
-- `RM_Chimeglobe` (chimeglobe) — texPath `Things/Plant/RM_Chimeglobe/RM_Chimeglobe` not in the art ledger (vanilla/donor texture)
-- `RM_Glassfern` (glassfern) — texPath `Things/Plant/RM_Glassfern/RM_Glassfern` not in the art ledger (vanilla/donor texture)
-- `RM_Palefloss` (palefloss) — texPath `Things/Plant/RM_Palefloss/RM_Palefloss` not in the art ledger (vanilla/donor texture)
+| 20 | 12 | 8 | 0 | 20 | 0 | 0 | 0 | 0 | 0 |
 
 ## 4. the Abyss (`RM_Abyss`)
 
@@ -52,28 +52,19 @@ defs: `RM_Abyss` (31)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 31 | 21 | 10 | 0 | 10 | 0 | 0 | 0 | 1 | 21 |
+| 31 | 21 | 10 | 0 | 19 | 0 | 0 | 0 | 1 | 12 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_CrepuscularBeetle` — no texPath resolved
 - `AA_Darkbeast` — no texPath resolved
 - `AA_DarkVandal` — no texPath resolved
 - `AA_DuskProwler` — no texPath resolved
-- `AA_DuskRat` — no texPath resolved
 - `AA_Frostling` — no texPath resolved
 - `AA_Murkling` — no texPath resolved
 - `AA_NightAve` — no texPath resolved
 - `AA_Nightling` — no texPath resolved
 - `AA_NightMule` — no texPath resolved
 - `AA_NightRam` — no texPath resolved
-- `AA_ShadowCharger` — no texPath resolved
-- `AA_Thunderox` — no texPath resolved
-- `AB_GiantGamma` — no texPath resolved
-- `AB_GiantSeptimum` — no texPath resolved
-- `AB_GiantStikehr` — no texPath resolved
-- `AB_GlowingGrass` — no texPath resolved
-- `AB_ToxicGamma` — no texPath resolved
-- `AB_WildRadagast` — no texPath resolved
 - `AG_Gamma` — no texPath resolved
 - `AG_Septimum` — no texPath resolved
 
@@ -85,7 +76,7 @@ defs: `RM_Cauldron` (46)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 46 | 29 | 17 | 0 | 29 | 5 | 2 | 0 | 3 | 17 |
+| 46 | 29 | 17 | 0 | 28 | 5 | 2 | 0 | 3 | 18 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_BedBug` — no texPath resolved
@@ -105,6 +96,7 @@ defs: `RM_Cauldron` (46)
 - `GR_Beetlefleet` — no texPath resolved
 - `Silooth` — no texPath resolved
 - `Visceral` — no texPath resolved
+- `RM_TreeMartyr` (martyr tree) — texPath `Things/Plant/RM_TreeMartyr` not in the art ledger (vanilla/donor texture)
 
 **Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher, `Silooth` → Silooth/Legends
 
@@ -140,7 +132,7 @@ defs: `RM_FeverWood` (38)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 38 | 16 | 22 | 0 | 35 | 7 | 0 | 0 | 1 | 3 |
+| 38 | 16 | 22 | 0 | 35 | 8 | 0 | 0 | 1 | 3 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `VFEI2_Megathrips` — no texPath resolved
@@ -155,13 +147,11 @@ defs: `RM_FloodedCanyon` (25)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 25 | 15 | 10 | 0 | 21 | 4 | 0 | 0 | 1 | 4 |
+| 25 | 15 | 10 | 0 | 23 | 4 | 0 | 0 | 1 | 2 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Murkling` — no texPath resolved
-- `RM_Muttavaq` (muttavaq) — texPath `Things/Pawn/Animal/Thrumbo/Thrumbo` not in the art ledger (vanilla/donor texture)
-- `RM_Tarruq` (tarruq) — texPath `Things/Pawn/Animal/Monkey/Monkey` not in the art ledger (vanilla/donor texture)
-- `RM_Uttaqar` (rock troll) — texPath `Animal/RockTroll/RockTroll` not in the art ledger (vanilla/donor texture)
+- `RM_CrackedThornwood` (twisting thornwood) — texPath `Things/Plant/RM_CrackedThornwood` not in the art ledger (vanilla/donor texture)
 
 ## 10. the Slime (`RM_GelatinousSlime`)
 
@@ -171,7 +161,10 @@ defs: `RM_GelatinousSlime` (12)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 12 | 8 | 4 | 0 | 12 | 0 | 0 | 0 | 1 | 0 |
+| 12 | 8 | 4 | 0 | 11 | 0 | 0 | 0 | 1 | 1 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RM_Plant_Bellows` (bellows) — texPath `Things/Plant/Bush` not in the art ledger (vanilla/donor texture)
 
 ## 11. the Greentide (`RM_Greentide`)
 
@@ -181,12 +174,13 @@ defs: `RM_Greentide` (64)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 64 | 32 | 25 | 7 | 61 | 21 | 2 | 0 | 8 | 3 |
+| 64 | 32 | 25 | 7 | 60 | 21 | 2 | 0 | 8 | 4 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_BloodShrimp` — no texPath resolved
 - `Plant_Grass` — no texPath resolved
 - `Plant_TallGrass` — no texPath resolved
+- `RM_YearningFruit` (yearning fruit) — texPath `Things/Plant/RM_YearningFruit` not in the art ledger (vanilla/donor texture)
 
 **Canon, no entry (Wookieepedia title):** `RM_Saava` → Saava, `Plant_Grass` → Grass
 
@@ -208,12 +202,19 @@ defs: `RM_LanternDeeps` (31)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 31 | 19 | 12 | 0 | 28 | 0 | 0 | 0 | 8 | 3 |
+| 31 | 19 | 12 | 0 | 21 | 0 | 0 | 0 | 8 | 10 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `RM_Lanternstone_Sowable` (fast growing lanternstone) — texPath `RM_LanternDeeps/Things/Crystals/LanternstoneMedium` not in the art ledger (vanilla/donor texture)
+- `RM_BrellikBulb` (brellik bulb) — texPath `RM_LanternDeeps/Things/Plant/BrellikBulb` not in the art ledger (vanilla/donor texture)
+- `RM_DeepMycelium` (mycelium) — texPath `RM_LanternDeeps/Things/Plant/Mycelium` not in the art ledger (vanilla/donor texture)
+- `RM_KuvraSpout` (kuvra spout) — texPath `RM_LanternDeeps/Things/Plant/KuvraSpout` not in the art ledger (vanilla/donor texture)
+- `RM_NurrikGill` (nurrik gill) — texPath `RM_LanternDeeps/Things/Plant/NurrikGill` not in the art ledger (vanilla/donor texture)
+- `RM_OsskBramble` (ossk bramble) — texPath `RM_LanternDeeps/Things/Plant/OsskBramble` not in the art ledger (vanilla/donor texture)
 - `RM_PrennaLace` (prenna lace) — texPath `RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown` not in the art ledger (vanilla/donor texture)
-- `RM_TwitchingPuffer` (twitching puffer) — texPath `RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown` not in the art ledger (vanilla/donor texture)
+- `RM_QuorrFern` (quorr fern) — texPath `RM_LanternDeeps/Things/Plant/QuorrFern` not in the art ledger (vanilla/donor texture)
+- `RM_ThrakkCap` (thrakk cap) — texPath `RM_LanternDeeps/Things/Plant/ThrakkCap` not in the art ledger (vanilla/donor texture)
+- `RM_VellokReed` (vellok reed) — texPath `RM_LanternDeeps/Things/Plant/VellokReed` not in the art ledger (vanilla/donor texture)
+- `RM_ZivvitTaper` (zivvit taper) — texPath `RM_LanternDeeps/Things/Plant/ZivvitTaper` not in the art ledger (vanilla/donor texture)
 
 ## 14. the Leaning Scrub (`RM_LeaningScrub`)
 
@@ -223,16 +224,11 @@ defs: `RM_LeaningScrub` (77)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 77 | 58 | 19 | 0 | 70 | 33 | 0 | 0 | 10 | 7 |
+| 77 | 58 | 19 | 0 | 75 | 35 | 0 | 0 | 10 | 2 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `RSW_Vurra` (vurra) — texPath `Things/Pawn/Animal/Terrorworm/TerrorWorm` not in the art ledger (vanilla/donor texture)
-- `Plant_Brambles` — no texPath resolved
-- `RG_Plant_AridGrass` — no texPath resolved
-- `RG_Plant_CreepStern` — no texPath resolved
-- `RG_Plant_CrimsonCushion` — no texPath resolved
-- `RG_Plant_Dervish` — no texPath resolved
-- `RSW_Plant_Nysyllin_Wild` (wild nysyllin plant) — texPath `swplants/Nysillin` not in the art ledger (vanilla/donor texture)
+- `RM_Fuzz` (the fuzz) — texPath `Things/Plant/RM_Fuzz` not in the art ledger (vanilla/donor texture)
 
 ## 15. the Miasma (`RM_Miasma`)
 
@@ -242,23 +238,15 @@ defs: `RM_Miasma` (60)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 60 | 40 | 20 | 0 | 46 | 11 | 0 | 0 | 6 | 14 |
+| 60 | 40 | 20 | 0 | 54 | 16 | 0 | 0 | 6 | 6 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_DecayDrake` — no texPath resolved
 - `AA_Helixien` — no texPath resolved
-- `AA_Lockjaw` — no texPath resolved
 - `AA_RaptorShrimp` — no texPath resolved
 - `AA_Slurrypede` — no texPath resolved
 - `AA_Thermadon` — no texPath resolved
 - `VFEI2_BlackSwarmling` — no texPath resolved
-- `RM_Braskeen` (braskeen) — texPath `Things/Plant/RM_Braskeen/RM_Braskeen` not in the art ledger (vanilla/donor texture)
-- `RM_Brelloch` (brelloch) — texPath `Things/Plant/RM_Brelloch/RM_Brelloch_a` not in the art ledger (vanilla/donor texture)
-- `RM_Immarel` (immarel) — texPath `Things/Plant/RM_Immarel/RM_Immarel_a` not in the art ledger (vanilla/donor texture)
-- `RM_Ismerrow` (ismerrow) — texPath `Things/Plant/RM_Ismerrow/RM_Ismerrow` not in the art ledger (vanilla/donor texture)
-- `RM_Ollamane` (ollamane) — texPath `Things/Plant/RM_Ollamane/RM_Ollamane_a` not in the art ledger (vanilla/donor texture)
-- `RM_Quennath` (quennath) — texPath `Things/Plant/RM_Quennath/RM_Quennath_a` not in the art ledger (vanilla/donor texture)
-- `RM_Thessamor` (thessamor) — texPath `Things/Plant/RM_Thessamor/RM_Thessamor_a` not in the art ledger (vanilla/donor texture)
 
 ## 16. the Sleeping Ice (`RM_NightsideIce`)
 
@@ -284,7 +272,11 @@ defs: `RM_Pyrelands` (18)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 18 | 16 | 2 | 0 | 18 | 7 | 2 | 0 | 3 | 0 |
+| 18 | 16 | 2 | 0 | 16 | 7 | 2 | 0 | 3 | 2 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RM_FE_Plant_EmberGrass` (ember grass) — texPath `Things/Plant/RM_FE_EmberGrass` not in the art ledger (vanilla/donor texture)
+- `RM_FE_Plant_Quickgrass` (quickgrass) — texPath `Things/Plant/RM_FE_Quickgrass` not in the art ledger (vanilla/donor texture)
 
 **Canon, no entry (Wookieepedia title):** `RM_FireHawk` → Firehawk, `RM_FireWasp` → Fire wasp/Legends
 
@@ -380,7 +372,7 @@ defs: `RM_TheForge` (24)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 24 | 14 | 10 | 0 | 11 | 2 | 1 | 0 | 3 | 13 |
+| 24 | 14 | 10 | 0 | 15 | 2 | 1 | 0 | 3 | 9 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Aerofleet` — no texPath resolved
@@ -389,13 +381,9 @@ defs: `RM_TheForge` (24)
 - `AA_Metallovore` — no texPath resolved
 - `LavaSnail` — no texPath resolved
 - `Tibidee` — no texPath resolved
-- `AB_FirevineTree` — no texPath resolved
-- `AB_TinkleGrass` — no texPath resolved
 - `IronScruff_Bindweed` — no texPath resolved
 - `IronScruff_PrimordialGrass` — no texPath resolved
 - `IronScruff_PrimordialTallGrass` — no texPath resolved
-- `Plant_Fireweed` — no texPath resolved
-- `Plant_MagmaCactus` — no texPath resolved
 
 **Canon, no entry (Wookieepedia title):** `Tibidee` → Tibidee
 
@@ -407,16 +395,13 @@ defs: `RM_TheRot` (56)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 56 | 21 | 35 | 0 | 49 | 1 | 1 | 0 | 3 | 7 |
+| 56 | 21 | 35 | 0 | 52 | 1 | 1 | 0 | 3 | 4 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Agaripod` — no texPath resolved
 - `AA_AngelMoth` — no texPath resolved
 - `AA_AnimaColossus` — no texPath resolved
 - `Snoruuk` — no texPath resolved
-- `RM_BlastpodShroom` (kabbrik pod) — texPath `RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown` not in the art ledger (vanilla/donor texture)
-- `RM_Shinecap` (dremmik cap) — texPath `RotSporeKit/Things/Plant/Shinecap/ShinecapGrown` not in the art ledger (vanilla/donor texture)
-- `RM_Skulltop` (vekkra choker) — texPath `RotSporeKit/Things/Plant/Skulltop/Skulltop` not in the art ledger (vanilla/donor texture)
 
 **Canon, no entry (Wookieepedia title):** `Snoruuk` → Snoruuk/Legends
 
@@ -428,18 +413,10 @@ defs: `RM_TheScald` (22)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 22 | 12 | 1 | 9 | 13 | 1 | 0 | 0 | 10 | 9 |
+| 22 | 12 | 1 | 9 | 21 | 1 | 0 | 0 | 10 | 1 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `RM_BladderboilCatch` (bladderboil) — texPath `Things/Item/Resource/RM_BladderboilCatch` not in the art ledger (vanilla/donor texture)
-- `RM_DossCatch` (doss) — texPath `Things/Item/Resource/RM_DossCatch` not in the art ledger (vanilla/donor texture)
-- `RM_EeshCatch` (eesh) — texPath `Things/Item/Resource/RM_EeshCatch` not in the art ledger (vanilla/donor texture)
-- `RM_EkkelCatch` (ekkel) — texPath `Things/Item/Resource/RM_EkkelCatch` not in the art ledger (vanilla/donor texture)
-- `RM_KarrashCatch` (karrash) — texPath `Things/Item/Resource/RM_KarrashCatch` not in the art ledger (vanilla/donor texture)
-- `RM_MuddalCatch` (muddal) — texPath `Things/Item/Resource/RM_MuddalCatch` not in the art ledger (vanilla/donor texture)
 - `RM_Saal` (saal) — texPath `Things/Item/Resource/RM_Saal` not in the art ledger (vanilla/donor texture)
-- `RM_ShullaCatch` (shulla) — texPath `Things/Item/Resource/RM_ShullaCatch` not in the art ledger (vanilla/donor texture)
-- `RM_ThuumCatch` (thuum) — texPath `Things/Item/Resource/RM_ThuumCatch` not in the art ledger (vanilla/donor texture)
 
 ## 29. the Sump (`RM_TheSump`)
 
@@ -449,7 +426,10 @@ defs: `RM_TheSump` (21)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 21 | 11 | 10 | 0 | 21 | 1 | 0 | 0 | 0 | 0 |
+| 21 | 11 | 10 | 0 | 20 | 1 | 0 | 0 | 0 | 1 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RUT_Plant_Wick` (wick-plant) — texPath `Things/Plant/Ambrosia` not in the art ledger (vanilla/donor texture)
 
 ## 30. the Twilight Sea (`RM_TwilightSea`)
 
@@ -472,7 +452,7 @@ defs: `RM_Warscar` (17)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 17 | 15 | 2 | 0 | 12 | 1 | 0 | 0 | 3 | 5 |
+| 17 | 15 | 2 | 0 | 11 | 1 | 0 | 0 | 3 | 6 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Helixien` — no texPath resolved
@@ -480,6 +460,7 @@ defs: `RM_Warscar` (17)
 - `SW_Electricgryllotalpa` — no texPath resolved
 - `SW_Electrictick` — no texPath resolved
 - `SW_Juggernautbeetles` — no texPath resolved
+- `RM_Glower` (the Glowers) — texPath `Things/Plant/RM_Glower` not in the art ledger (vanilla/donor texture)
 
 ## 32. the Wastes (`RM_Wasteland`)
 
@@ -489,12 +470,11 @@ defs: `RM_Wasteland` (21)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 21 | 9 | 12 | 0 | 18 | 1 | 1 | 0 | 2 | 3 |
+| 21 | 9 | 12 | 0 | 19 | 1 | 1 | 0 | 2 | 2 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `Plant_GrayGrass` — no texPath resolved
-- `Plant_Toxipotato` — no texPath resolved
 - `Plant_TreePolux` — no texPath resolved
+- `RM_WastelandScorchedStars` (scorched stars) — texPath `Things/Plant/ScorchedStars` not in the art ledger (vanilla/donor texture)
 
 **Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher
 
@@ -519,26 +499,10 @@ defs: `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 52 | 26 | 13 | 13 | 22 | 8 | 1 | 1 | 16 | 30 |
+| 52 | 26 | 13 | 13 | 39 | 8 | 1 | 1 | 16 | 13 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `ColossusToad` — no texPath resolved
-- `RM_Burrak` (burrak) — texPath `Things/Pawn/Animal/Warg/Warg` not in the art ledger (vanilla/donor texture)
-- `RM_Gorrask` (gorrask) — texPath `Things/Pawn/Animal/Tortoise/Tortoise` not in the art ledger (vanilla/donor texture)
-- `RM_Huldu` (huldu) — texPath `Things/Pawn/Animal/Tortoise/Tortoise` not in the art ledger (vanilla/donor texture)
-- `RM_Ivvol` (ivvol) — texPath `Things/Pawn/Animal/Tortoise/Tortoise` not in the art ledger (vanilla/donor texture)
-- `RM_Karrek` (karrek) — texPath `Things/Pawn/Animal/Cobra/Cobra` not in the art ledger (vanilla/donor texture)
-- `RM_Kirruk` (kirruk) — texPath `Things/Pawn/Animal/Chicken/Chicken` not in the art ledger (vanilla/donor texture)
-- `RM_Loomu` (loomu) — texPath `Things/Pawn/Animal/Tortoise/Tortoise` not in the art ledger (vanilla/donor texture)
-- `RM_Mirrik` (mirrik) — texPath `Things/Pawn/Animal/Spelopede/Spelopede` not in the art ledger (vanilla/donor texture)
-- `RM_Murrin` (murrin) — texPath `Things/Pawn/Animal/Cobra/Cobra` not in the art ledger (vanilla/donor texture)
-- `RM_Sillik` (sillik) — texPath `Things/Pawn/Animal/Squirrel/Squirrel` not in the art ledger (vanilla/donor texture)
-- `RM_Skarrin` (skarrin) — texPath `Things/Pawn/Animal/Cobra/Cobra` not in the art ledger (vanilla/donor texture)
-- `RM_Ssurr` (ssurr) — texPath `Things/Pawn/Animal/Iguana/Iguana` not in the art ledger (vanilla/donor texture)
-- `RM_Tirbak` (tirbak) — texPath `Things/Pawn/Animal/Muffalo/Muffalo` not in the art ledger (vanilla/donor texture)
-- `RM_Vellak` (vellak) — texPath `Things/Pawn/Animal/Dromedary/Dromedary` not in the art ledger (vanilla/donor texture)
-- `RM_Vhakk` (vhakk) — texPath `Things/Pawn/Animal/Alligator/Alligator` not in the art ledger (vanilla/donor texture)
-- `RM_Vizhik` (vizhik) — texPath `Things/Pawn/Animal/Cobra/Cobra` not in the art ledger (vanilla/donor texture)
 - `RM_Duul` (duul) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_HulduCatch` (huldu) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_Ikkal` (ikkal) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
@@ -551,7 +515,6 @@ defs: `RM_WeepingStones` (52)
 - `RM_Ullo` (ullo) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_VizhikCatch` (vizhik) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_Vobbal` (vobbal) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
-- `Plant_Reeds` — no texPath resolved
 
 **Canon, no entry (Wookieepedia title):** `RM_Kirruk` → Kirruk/Legends
 
@@ -561,11 +524,11 @@ defs: `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 911 | 538 | 309 | 64 | 758 | 146 | 12 | 2 | 138 | 153 |
+| 911 | 538 | 309 | 64 | 803 | 160 | 12 | 2 | 138 | 108 |
 
 Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 873.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 233, _artpipe_jobs_anooba 8, _ledger_variants 10562
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 10574
 
 
 **UNMEASURED:**
