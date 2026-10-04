@@ -35,7 +35,6 @@ it, do not hand-patch one row.
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[3]  # repo root, derived (not hardcoded)
 import argparse
 import json
-import shutil
 import sys
 from pathlib import Path
 
@@ -222,6 +221,9 @@ def main():
         print("\nDry run only. Re-run with --apply to copy the KEEP rows into Textures/.")
         return 0
 
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "Utils" / "art"))
+    from artwrite import TextureWriter     # the art ledger is the only writer into Textures/
+    tw = TextureWriter(__file__, quiet=False)
     copied, errors = 0, 0
     for r in rows:
         if not r["kept"]:
@@ -230,10 +232,10 @@ def main():
             print(f"ERROR: {r['job_id']} marked keep but source PNG is missing: {r['src']}", file=sys.stderr)
             errors += 1
             continue
-        r["dest"].parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(r["src"], r["dest"])
-        copied += 1
-    print(f"\nCopied {copied} file(s) into {TEXTURES}. {errors} error(s).")
+        if tw.copy(r["src"], r["dest"]):
+            copied += 1
+    tw.report()
+    print(f"\nInstalled {copied} file(s) into {TEXTURES}. {errors} error(s).")
     return 1 if errors else 0
 
 

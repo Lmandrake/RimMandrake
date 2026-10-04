@@ -332,22 +332,30 @@ class Index:
         self.purged = {}                       # sha -> purge event
         self.snapshots = []
         for ev in self.events:
-            t = ev.get("type")
-            if t == "variant":
-                self.variants[ev["sha"]].append(ev)
-                if ev.get("res"):
-                    self.by_res[ev["res"]].add(ev["sha"])
-            elif t == "ruling":
-                self.rulings.append(ev)
-                tgt = ev.get("target") or {}
-                for s in tgt.get("shas", []) + ([tgt["sha"]] if tgt.get("sha") else []):
-                    self.rulings_by_sha[s].append(ev)
-            elif t == "live":
-                self._fold_live(ev)
-            elif t == "purge":
-                self.purged[ev["sha"]] = ev
-            elif t == "snapshot":
-                self.snapshots.append(ev)
+            self._take(ev)
+
+    def add(self, ev: dict):
+        """Fold one more event in (an install's own appends, without re-reading the shards)."""
+        self.events.append(ev)
+        self._take(ev)
+
+    def _take(self, ev: dict):
+        t = ev.get("type")
+        if t == "variant":
+            self.variants[ev["sha"]].append(ev)
+            if ev.get("res"):
+                self.by_res[ev["res"]].add(ev["sha"])
+        elif t == "ruling":
+            self.rulings.append(ev)
+            tgt = ev.get("target") or {}
+            for s in tgt.get("shas", []) + ([tgt["sha"]] if tgt.get("sha") else []):
+                self.rulings_by_sha[s].append(ev)
+        elif t == "live":
+            self._fold_live(ev)
+        elif t == "purge":
+            self.purged[ev["sha"]] = ev
+        elif t == "snapshot":
+            self.snapshots.append(ev)
 
     def _fold_live(self, ev):
         key = (ev["mod"], ev["rel"])
@@ -372,6 +380,34 @@ class Index:
     def subject_rulings(self, keys: set[str]) -> list[dict]:
         keys = {k.lower() for k in keys}
         return [r for r in self.rulings if (r.get("subject_key") or "").lower() in keys]
+
+
+_IDX: dict = {"sig": None, "idx": None}
+
+
+def _shard_sig() -> tuple:
+    d = ledger_dir() / "events"
+    if not d.is_dir():
+        return (str(d),)
+    return (str(d),) + tuple((f.name, f.stat().st_size, f.stat().st_mtime_ns) for f in sorted(d.glob("*.jsonl")))
+
+
+def cached_index() -> "Index":
+    """An Index reused across installs in one process (a port script installs hundreds of
+    files); rebuilt whenever a shard changed under it (another writer, another ledger dir)."""
+    s = _shard_sig()
+    if _IDX["sig"] != s or _IDX["idx"] is None:
+        _IDX.update(sig=s, idx=Index())
+    return _IDX["idx"]
+
+
+def _absorb(evs: list[dict]):
+    """Fold this process's own appends into the cached Index and re-sign it."""
+    if _IDX["idx"] is None:
+        return
+    for ev in evs:
+        _IDX["idx"].add(ev)
+    _IDX["sig"] = _shard_sig()
 
 
 def subject_key(raw: str) -> str:
@@ -415,7 +451,7 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         installing without an owner decision. REFUSED when the displaced picture is
         protected by an owner keep — only his selection may replace a kept picture.
     """
-    idx = Index()
+    idx = cached_index()
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged by the owner — it cannot be installed")
     if not store_has(sha):
@@ -488,7 +524,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     else:
         live.update(reason=reason)
     w.add(live)
+    added = list(w.buf)
     w.flush()
+    _absorb(added)
     plan["status"] = "installed"
     return plan
 
@@ -542,7 +580,7 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     target = src_root().parent / mod / "Textures" / rel
     if not target.is_file():
         return {"status": "absent", "path": str(target)}
-    idx = Index()
+    idx = cached_index()
     old = sha256_file(target)
     if idx.protected(old) and not owner_said:
         raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words")
@@ -556,6 +594,7 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     if owner_said:
         ev["said"] = owner_said
     append(ev)
+    _absorb([ev])
     return {"status": "retired", "path": str(target), "old": old}
 
 

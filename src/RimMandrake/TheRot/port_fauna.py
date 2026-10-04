@@ -3,13 +3,14 @@
 def closure out of RimStarWars/SWBestiary (BiomesTeamPort) into this free-tier mod as RM_ defs,
 repoints texture / sound paths at this mod, rewrites the franchise-bearing descriptions (sheet
 bans 2 and 7), gives the illoth real 1.6 flight, and deploys the redrawn art.
-Re-runnable: it rewrites Defs/Fauna/*.xml, Textures/RM_TheRot/Fauna and Sounds/RM_TheRot/Fauna.
+Re-runnable: it rewrites Defs/Fauna/*.xml and Sounds/RM_TheRot/Fauna; Textures/RM_TheRot/Fauna is
+written through the art ledger (owner-kept pictures stay; stale ones are retired, archived).
 Run from anywhere:  python3 port_fauna.py
 
 Shared-closure defs the LanternDeeps port also carries get an RM_Rot prefix instead of RM_ (two
 free mods must never declare the same defName). Defs TheRot already owns are reused, not copied.
 """
-import xml.etree.ElementTree as ET, glob, re, os, shutil, subprocess
+import xml.etree.ElementTree as ET, glob, re, os, shutil, subprocess, sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -136,8 +137,13 @@ tex_src = os.path.join(SW, 'Textures'); snd_src = os.path.join(SW, 'Sounds')
 out_defs = os.path.join(HERE, 'Defs', 'Fauna')
 out_tex = os.path.join(HERE, 'Textures', 'RM_TheRot', 'Fauna')
 out_snd = os.path.join(HERE, 'Sounds', 'RM_TheRot', 'Fauna')
-for p in (out_defs, out_tex, out_snd):
+for p in (out_defs, out_snd):
     shutil.rmtree(p, ignore_errors=True); os.makedirs(p)
+# Textures go through the art ledger (ART_VERSION_WRANGLING_1): no rmtree; stale PNGs are
+# retired by tw.sync() after the run, and an owner-kept picture is never overwritten.
+sys.path.insert(0, os.path.join(HERE, '..', 'Utils', 'art'))
+from artwrite import TextureWriter
+tw = TextureWriter(__file__)
 copied = {'tex': 0, 'snd': 0, 'art': 0}
 missing_art = []
 
@@ -152,7 +158,7 @@ def copy_tex(path):
     if os.path.isdir(base):
         os.makedirs(os.path.join(out_tex, rel), exist_ok=True)
         for f in os.listdir(base):
-            shutil.copy2(os.path.join(base, f), os.path.join(out_tex, rel, f)); copied['tex'] += 1
+            tw.copy(os.path.join(base, f), os.path.join(out_tex, rel, f)); copied['tex'] += 1
         return True
     d, b = os.path.split(base)
     if not os.path.isdir(d): return False
@@ -160,7 +166,7 @@ def copy_tex(path):
     if not hits: return False
     os.makedirs(os.path.join(out_tex, os.path.dirname(rel)), exist_ok=True)
     for f in hits:
-        shutil.copy2(os.path.join(d, f), os.path.join(out_tex, os.path.dirname(rel), f)); copied['tex'] += 1
+        tw.copy(os.path.join(d, f), os.path.join(out_tex, os.path.dirname(rel), f)); copied['tex'] += 1
     return True
 
 
@@ -180,7 +186,7 @@ def deploy_art(job):
     for fc in ('south', 'east', 'north'):
         s = os.path.join(ART, '%s_%s' % (job, fc), '%s_%s.png' % (job, fc))
         if os.path.exists(s):
-            shutil.copy2(s, os.path.join(dst, '%s_%s.png' % (d, fc))); copied['art'] += 1
+            tw.copy(s, os.path.join(dst, '%s_%s.png' % (d, fc))); copied['art'] += 1
         else:
             missing_art.append('%s_%s' % (job, fc))
     return 'RM_TheRot/Fauna/Redrawn/%s/%s' % (d, d)
@@ -261,6 +267,7 @@ for grp, ds in groups.items():
     ET.ElementTree(root).write(os.path.join(out_defs, 'RM_TheRot_Fauna_%s.xml' % grp),
                                encoding='utf-8', xml_declaration=True)
 bad = [p for p in glob.glob(out_defs + '/*.xml') if 'RSW_' in open(p, encoding='utf8').read()]
+tw.sync(out_tex); tw.report()
 print('defs', len(seen), 'groups', {g: len(v) for g, v in groups.items()}, 'copied', copied,
       'RSW left in', bad, 'MISSING ART', missing_art)
 print('renamed non-creature:', {k: v for k, v in NEW.items() if k not in CREATURES and k not in RENAME and k not in REUSE and v.startswith('RM_Rot')})
