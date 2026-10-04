@@ -3,3 +3,4 @@
 - 16:16 scale_panel.py resolver+renderer written; art_sheet.py hook (SCALE_BIOMES={RM_LongShade}) + JS/CSS added
 - 16:24 live sheet rebuilt --sheet-only (decisions untouched, sha verified); check_sheet run
 - 16:25 code PUBLISHED 3352eee6c; publishing sheet + scale images + shots
+- 16:25 done; sheet PUBLISHED 3d3aa7c40
