@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Sekkulaath_DianogaGiant.xml                  FEVERWOOD_DIANOGA_GIANT_MAP_1
+
+  With the Star Wars tier loaded, the Fever Wood's sekkulaath IS the dianoga: the six tentacle limbs read as the
+  giant dianoga's, and the juvenile, the tank, the products and the severed flesh say dianoga. The free mod
+  (mandrake.rm.feverwood inside mandrake.rm.biomes) keeps "sekkulaath" and carries no canon text at all.
+  Canon facts, sourced (never from a donor defName):
+    design/RimStarWars/canon_references/dianoga/description.md: seven suckered tentacles, an eyestalk, a toothed
+      mouth, regenerates lost limbs, excellent hearing, omnivorous (fish, bones, refuse).
+    Wookieepedia "Giant dianoga" (Legends, action=parse 2026-10-03): many times larger, several barbed tentacles,
+      a gaping maw of sharp teeth, a giant red eyestalk about as long as its tentacles, killed through it.
+    Wookieepedia "Dianogan tea/Legends": brewed from spleen chemicals, served hot, mildly narcotic, a Muun
+      delicacy, stains lips purple and teeth black. "Dianoga cream-filled donut" (search, 2026-10-03).
+  Guards: every operation is a PatchOperationConditional on the exact node it replaces, so a missing free mod
+  is a silent no-op. Never <Operation MayRequire=...> (inert in 1.6, PATCH_MAYREQUIRE_GUARD_INERT_1).
+  Mod Settings labels stay "sekkulaath" (exempt by the item).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Feeler"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Feeler"]/label</xpath>
+      <value>
+        <label>giant dianoga feeler</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Feeler"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Feeler"]/description</xpath>
+      <value>
+        <description>Thin, blind and slow, one of the giant dianoga's seven suckered tentacles, rising out of a still pool to search the shore after any loud noise. A dianoga hears everything. Harmless on its own; it is the one you see most, and the first sign that something enormous is paying attention.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Snare"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Snare"]/label</xpath>
+      <value>
+        <label>giant dianoga snare</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Snare"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Snare"]/description</xpath>
+      <value>
+        <description>Thick, fast and gripping: a dianoga's tentacles are suckered, and this one shows why. It reaches for whatever wades too close and drags it toward the water. The killer of the six, and the reason nothing drinks at these pools unbothered.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Lash"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Lash"]/label</xpath>
+      <value>
+        <label>giant dianoga lash</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Lash"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Lash"]/description</xpath>
+      <value>
+        <description>Long and barbed. The giant dianoga, many times the size of the trash squids of a city's sewers, carries barbed tentacles, and this limb is why that matters. It never grips; it strikes at maximum reach and withdraws, punishing anyone who lingers at the margin rather than crossing it.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Porter"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Porter"]/label</xpath>
+      <value>
+        <label>giant dianoga porter</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Porter"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Porter"]/description</xpath>
+      <value>
+        <description>More slender and delicate than its kin: a courier, not a hunter. Dianoga eat anything, fish and bones and refuse alike, and this tentacle rises just long enough to set down at the water's edge whatever the giant stripped from its last meal. Shoot it and the pool goes quiet on you forever; it never brings anything again.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Sentinel"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Sentinel"]/label</xpath>
+      <value>
+        <label>giant dianoga sentinel</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Sentinel"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Sentinel"]/description</xpath>
+      <value>
+        <description>Motionless, raised just above the water. It does nothing; it listens. Dianoga have excellent hearing, and while this one is up the whole crown's chorus above falls silent to watch it. That silence is the loudest warning the Fever Wood has.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Bloom"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Bloom"]/label</xpath>
+      <value>
+        <label>giant dianoga eyestalk</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Bloom"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Bloom"]/description</xpath>
+      <value>
+        <description>Vast. It does not reach; it opens. The giant dianoga's toothed maw gapes below, and above it the red eyestalk, as long as any of its tentacles, rises clear of the water. For one long moment the eye beneath the Fever Wood is exposed, and the eyestalk is the only place it can truly be hurt.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Juvenile"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Juvenile"]/label</xpath>
+      <value>
+        <label>dianoga</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Juvenile"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Sekkulaath_Juvenile"]/description</xpath>
+      <value>
+        <description>A young dianoga: a small, dark, seven-tentacled thing with a single eyestalk, kept in tanks because nothing else keeps it. It is not the giant beneath the Fever Wood's pools, not yet, but it is unmistakably kin to it, and everyone who has heard a dianoga hum up close swears they will never mistake the sound again.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/label</xpath>
+      <value>
+        <label>dianoga</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/lifeStages/li[1]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/lifeStages/li[1]/label</xpath>
+      <value>
+        <label>dianoga hatchling</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/lifeStages/li[1]/labelPlural</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="RM_Sekkulaath_Juvenile"]/lifeStages/li[1]/labelPlural</xpath>
+      <value>
+        <labelPlural>dianoga hatchlings</labelPlural>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]/label</xpath>
+      <value>
+        <label>dianoga prison tank</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathSpleenChemicals"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathSpleenChemicals"]/label</xpath>
+      <value>
+        <label>dianoga spleen chemicals</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathSpleenChemicals"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathSpleenChemicals"]/description</xpath>
+      <value>
+        <description>A vial of thick, faintly luminous fluid drained from a captive dianoga's spleen. Brewed, it makes dianogan tea: served hot, mildly narcotic, a delicacy to Muuns, and it stains the drinker's lips purple and teeth black.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathCream"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathCream"]/label</xpath>
+      <value>
+        <label>dianoga cream</label>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathCream"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SekkulaathCream"]/description</xpath>
+      <value>
+        <description>A pale, rich secretion harvested from a fed captive dianoga: the filling of the dianoga cream-filled donut. It spoils quickly, same as any dairy off any animal.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SeveredTentacleFlesh"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_SeveredTentacleFlesh"]/description</xpath>
+      <value>
+        <description>A length of thick, rubbery, suckered flesh, still faintly warm, cut from a tentacle of the giant dianoga beneath the Fever Wood's pools. Dianoga regrow lost limbs, eventually, on the animal, not in the pack. Traders who know the biome pay well for it; it renders into a rich meat and a strange, purple-tinged tea.</description>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
