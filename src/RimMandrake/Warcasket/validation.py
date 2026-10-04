@@ -760,7 +760,7 @@ def settings_roundtrip(t):
             old = _sraw(t, "get", field).get("value")
             if old is None:
                 _fail("%s: get returned no value" % field)
-            new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else str(float(old) + 1.0)
+            new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else (str(int(float(old)) + 1) if ty == "int" else str(float(old) + 1.0))
             try:
                 if not _sraw(t, "set", field, new).get("success"):
                     _fail("%s: set failed" % field)
