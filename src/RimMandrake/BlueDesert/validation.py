@@ -1399,7 +1399,7 @@ def thaw_chain(t):
                               rect="%d,%d,1,1" % (pos.get("x", -1), pos.get("z", -1)))
             for i, st in enumerate(stones):
                 r = t.bridge_call("jawa/ordered_job", pawnId=pawns[i % miners], jobDef="Mine",
-                                  targetAId=st["id"], queue=True, waitTicks=1)
+                                  targetAId=st["id"], queue=True, waitTicks=0)  # waitTicks>0 on a paused clock burns the whole tool timeout (~17 s each; 72 orders = 20 min, LIVE 2026-10-03)
                 if i < miners and not (isinstance(r, dict) and r.get("accepted")):
                     _unmeasured(t, "the first Mine order to miner %d was refused: %r" % (i, r))
         _wait(t, wait)
