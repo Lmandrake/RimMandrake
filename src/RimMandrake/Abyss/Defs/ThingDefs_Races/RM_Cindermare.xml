@@ -8,8 +8,8 @@
 <Defs>
   <ThingDef ParentName="ThingBaseWolf">
     <defName>RM_Cindermare</defName>
-    <label>cindermare</label>
-    <description>A mouthless nightside predator, fourteen eyes, seven to a side, clustered above a damp black hide. It has no bite - it kills by grip, draining the warmth from whatever it holds until the cold itself is the wound. Solitary and untameable; its mane and hide are only ever taken from a kill, never sheared.</description>
+    <label>saevitha</label>
+    <description>A mouthless nightside predator, fourteen eyes, seven to a side, clustered above a damp black hide. It has no bite - it kills by grip, draining the warmth from whatever it holds until the cold itself is the wound. Solitary and untameable; its mane and hide are only ever taken from a kill, never sheared. Of all the black, many-eyed kin it is the one the old tales most often set at a dark master's heel.</description>
     <race>
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
@@ -118,14 +118,14 @@
 
   <PawnKindDef ParentName="AnimalKindBaseWolf">
     <defName>RM_Cindermare</defName>
-    <label>cindermare</label>
+    <label>saevitha</label>
     <labelPlural>cindermares</labelPlural>
     <race>RM_Cindermare</race>
     <combatPower>140</combatPower>
     <ecoSystemWeight>0.35</ecoSystemWeight>
     <lifeStages>
       <li>
-        <label>cindermare foal</label>
+        <label>saevitha foal</label>
         <labelPlural>cindermare foals</labelPlural>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare</texPath>
@@ -179,7 +179,7 @@
   <HediffDef ParentName="InjuryBase">
     <defName>RM_ColdDrain</defName>
     <label>cold-drain wound</label>
-    <description>Flesh drained of warmth by a Cindermare's grip. Aches like frostbite and is slow to heal.</description>
+    <description>Flesh drained of warmth by a saevitha's grip. Aches like frostbite and is slow to heal.</description>
     <hediffClass>Hediff_Injury</hediffClass>
     <comps>
       <li Class="HediffCompProperties_TendDuration">
