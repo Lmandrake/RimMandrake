@@ -139,6 +139,21 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					fillSeen.Add(n);
+					// A body truncated at MaxBodyCells leaves its far cells unindexed, so
+					// contact there re-entered FormBody and re-walked the owned cells into
+					// an overlapping duplicate body. Touching an owned cell means this
+					// region IS that body: index what was found to it and return it.
+					int ownedId;
+					RM_LiquidBody owned;
+					if (cellToBody.TryGetValue(map.cellIndices.CellToIndex(n), out ownedId)
+						&& byId.TryGetValue(ownedId, out owned))
+					{
+						for (int f = 0; f < found.Count; f++)
+						{
+							cellToBody[map.cellIndices.CellToIndex(found[f])] = ownedId;
+						}
+						return owned;
+					}
 					if (owner.IsSourceCell(n))
 					{
 						fillQueue.Add(n);

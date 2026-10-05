@@ -44,7 +44,11 @@ namespace RimMandrake.FlowWorks
 			// longer a reason to drop the job, it is a reason to dig DEEPER.
 			// The water and non-soil gates stand unchanged, and so does the
 			// reason they exist.
-			TerrainDef terrain = c.GetTerrain(pawn.Map);
+			// Top layer (foundation first; not BaseTerrainAt, which reads under a
+			// floor): liquid in a channel sits on the temp layer, and reading it
+			// here silently deleted the designation of any channel that got wet
+			// (rain, a pulse) before a pawn arrived.
+			TerrainDef terrain = pawn.Map.terrainGrid.FoundationAt(c) ?? pawn.Map.terrainGrid.TopTerrainAt(c);
 			byte depth = RM_ExcavationDepth.DepthOfDryTerrain(terrain);
 			bool stale = terrain.IsWater
 				|| c.GetEdifice(pawn.Map) != null

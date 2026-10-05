@@ -63,7 +63,12 @@ namespace RimMandrake.FlowWorks
 				// a pit is a canal cell dug to D=4, so digging deeper IS digging a pit.
 				return "Must designate open ground.";
 			}
-			TerrainDef terrain = c.GetTerrain(Map);
+			// Top layer (foundation first), not GetTerrain: a wet channel carries its liquid on the TEMP
+			// layer (SetTempTerrain), and GetTerrain returns that, so every wet channel
+			// read as "Already water." and could never be deepened. JobDriver_DigCanal
+			// reads the base layer. NOT BaseTerrainAt here: that returns the soil UNDER
+			// a player floor, and would let a floored cell be dug (floor destroyed).
+			TerrainDef terrain = Map.terrainGrid.FoundationAt(c) ?? Map.terrainGrid.TopTerrainAt(c);
 			if (terrain.IsWater)
 			{
 				return "Already water.";

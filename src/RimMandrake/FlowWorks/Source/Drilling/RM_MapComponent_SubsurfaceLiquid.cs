@@ -54,7 +54,7 @@ namespace RimMandrake.FlowWorks.Drilling
 		/// RimMandrakeFlowWorksSettings.liquidDrillingEnabled; whether this
 		/// map HAS anything down there is a fact of the map and does not
 		/// flip when a slider does.</summary>
-		public bool HasYield => rolled && hasYield;
+		public bool HasYield => rolled && hasYield && yieldedLiquid != null;
 
 		public LiquidDef YieldedLiquid => yieldedLiquid;
 
@@ -179,7 +179,7 @@ namespace RimMandrake.FlowWorks.Drilling
 			{
 				return "RM_SubsurfaceUnsurveyed".Translate();
 			}
-			if (!hasYield)
+			if (!hasYield || yieldedLiquid == null)
 			{
 				return "RM_SubsurfaceNoYield".Translate();
 			}
