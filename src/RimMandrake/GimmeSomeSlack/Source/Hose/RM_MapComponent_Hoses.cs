@@ -466,8 +466,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             // 2x2 reel's hose runs on to the drum's axis under the opaque drum (HoseReelRect.Mouth), so nothing is drawn
             // there -- a coupling's body would reach back out past the drum into the gap above the base rail
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            if (!r.Rect.HidesHoseEnd) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
-            else lastReelEndHidden++;
+            // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing east into it (the nozzle faces west)
+            if (r.Rect.HasNozzle) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip, new V2(1, 0), vis, y, wrapTint);
+            else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
             // round 4: the lay drew the hose dead straight over each joiner's run (HoseMath.StraightenAt), so the joiner's
