@@ -225,7 +225,7 @@ def static_findings(srcs):
 
 
 def _kv(t):
-    r = t.bridge_call("jawa/static_call", type=_PROOF, method="ProofShore", args="")
+    r = t.bridge_call("jawa/static_call", type=_PROOF, method="ProofShore", args="go")
     if not t._guard():
         return None, ""
     text = (r or {}).get("result") if isinstance(r, dict) else None

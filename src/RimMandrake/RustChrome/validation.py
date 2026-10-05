@@ -200,7 +200,7 @@ def theme_static_findings(src=None, mod_src=None):
 
 
 def _theme_kv(t):
-    r = t.bridge_call("jawa/static_call", type=_THEME_PROOF, method="ProofTheme", args="")
+    r = t.bridge_call("jawa/static_call", type=_THEME_PROOF, method="ProofTheme", args="go")
     if not t._guard():
         return None, ""
     text = (r or {}).get("result") if isinstance(r, dict) else None

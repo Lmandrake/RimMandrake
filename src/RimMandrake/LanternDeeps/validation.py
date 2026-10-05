@@ -514,7 +514,7 @@ def creep_cleavers(t):
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1)) or float(m.group(3)) <= 0):
             raise ExpectationFailed("the Creep did not close on and engulf the downed body: %r" % res)
     with t.component("cleaver_splits_when_struck", toggle="cleavingEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCleave", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCleave", args="go") or {}).get("result", ""))
         m = re.search(r"before=(\d+) after=(\d+)", res)
         if t._guard() and (not m or int(m.group(2)) <= int(m.group(1))):
             raise ExpectationFailed("no shard walked away: %r" % res)
@@ -527,12 +527,12 @@ def aurora_collapse(t):
     Chorus sound, the dust/sand on screen, a propped roof holding, a galuush blast bringing its roof down."""
     AP = "RimMandrake.LanternDeeps.RM_AuroraCollapseProof"
     with t.component("aurora_brightens_lanternstone", toggle="auroraEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofAurora", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofAurora", args="go") or {}).get("result", ""))
         m = re.search(r"glow=([\d.]+)->([\d.]+)", res)
         if t._guard() and ("active=True" not in res or not m or float(m.group(2)) <= float(m.group(1))):
             raise ExpectationFailed("aurora did not start or did not brighten lanternstone: %r" % res)
     with t.component("roof_warns_before_it_falls", toggle="collapseWarningsEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofCollapse", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofCollapse", args="go") or {}).get("result", ""))
         if t._guard() and "heldForWarning=True" not in res:
             raise ExpectationFailed("the roof was not held for its warning: %r" % res)
 
@@ -551,16 +551,16 @@ def hydrocarbon_wave2(t):
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("slick_lays_fuel", toggle="slickTrailEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSlick", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSlick", args="go") or {}).get("result", ""))
         m = re.search(r"moved=(\d+) fuelCells=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0 or int(m.group(2)) == 0):
             raise ExpectationFailed("no fuel trail: %r" % res)
     with t.component("blinker_flashes", toggle="blinkerFlashEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofBlinker", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofBlinker", args="go") or {}).get("result", ""))
         if t._guard() and "flare=True" not in res:
             raise ExpectationFailed("no flash: %r" % res)
     with t.component("knocker_hears_failing_roof", toggle="knockerAlarmEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofKnocker", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofKnocker", args="go") or {}).get("result", ""))
         m = re.search(r"heard=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0):
             raise ExpectationFailed("the knocker heard nothing: %r" % res)
@@ -581,20 +581,20 @@ def hydrocarbon_wave3(t):
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("hush_hides_and_lunges", toggle="hushHidingEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofHush", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofHush", args="go") or {}).get("result", ""))
         if t._guard() and ("hidden=True" not in res or "second=lunge" not in res):
             raise ExpectationFailed("hush did not hide and lunge: %r" % res)
     with t.component("sippers_drink_light", toggle="sipperDrinkingEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSipper", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSipper", args="go") or {}).get("result", ""))
         m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
             raise ExpectationFailed("the light did not shrink: %r" % res)
     with t.component("tapper_drains_battery", toggle="tapperEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofTapper", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofTapper", args="go") or {}).get("result", ""))
         m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
             raise ExpectationFailed("the battery did not drain: %r" % res)
     with t.component("pooler_smothers_fire", toggle="poolerSmotherEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofPooler", args="") or {}).get("result", ""))
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofPooler", args="go") or {}).get("result", ""))
         if t._guard() and ("fireLeft=False" not in res or "flameHurt=False" not in res):
             raise ExpectationFailed("pooler did not put the fire out unhurt: %r" % res)
