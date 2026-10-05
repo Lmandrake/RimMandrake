@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Varactyl
@@ -25,11 +25,21 @@ Varactyls were very intelligent creatures who long remembered previous riders. T
 Varactyl subspecies included the dwarf varactyl, varactyl venomblade, varactyl preystalker and deathspine varactyl. A breed called the iridescent varactyl was available to be won by patrons of the Star Cluster Casino or Club Vertica Casino. It could have been related to the nos monster on Utapau.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images: CANON (a Dark Kingdom/game CG render with a saddle), LEGENDS (a painted plate, the Revenge of the Sith film frame of Boga with Obi-Wan, and a Galaxies game 'preystalker'). The film frame is the fixed canon-look anchor; all four are one design.
+- **Silhouette**: a big lizard-like quadruped, sprawling, low, with elbows and knees bent out to the sides like a monitor lizard or iguana, a long deep barrel body, a long neck rising to a bird-like head, and a very long thick tail (up to 10 m per the Legends text) held curved up or trailing. Forelegs are long and splayed; in the plate it can rear up on its hind legs with the forelimbs held like arms and a more upright, theropod posture.
+- **Skin**: scaly, pebbled, mid-green to blue-green teal, paler yellow-green on the throat and belly; in the film frame it is darker olive-green with a lighter underside; large rough scales over the shoulders and thighs.
+- **Crest/feathers**: a ruff or mane of long stiff teal-blue to green feathers fanned around the back of the head and neck like a headdress; a ridge of shorter feathery spines (blue and green tipped, with a black-green variant in the game frame) runs from the neck down the spine and along the top of the tail, ending in a feathery tail-tip tuft. Males per the Legends text are duller orange and brown; the images all show the green-blue (female-like) form, so treat green and teal as default.
+- **Head**: a beaked, bird-like head with a hooked, horn-coloured tan-yellow armoured beak plate and brow cap, a wide pinkish mouth, a small eye; the beak looks a little like a cassowary or a parrot's.
+- **Feet**: very large, five-toed (the Legends text), splayed, webbed-looking clinging feet with long curved claws and rough grey-green toe pads; the film frame shows huge feet.
+- **Size**: about horse-sized or larger; Obi-Wan rides it saddled behind the shoulders, a clone trooper reaches only to its elbow.
+- **Disagreement**: Legends says orange-brown males; no image shows one. The prose of 'crests and feather ridges, blue and green' matches the images.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Sprawling lizard body with splayed elbows, long neck, very long thick tail, horse-sized
+- [ ] Green to teal scaly skin, paler yellow-green throat and belly
+- [ ] Ruff of long teal-blue and green feathers around the back of the head and a feathered ridge down spine and tail with a tuft at the tip
+- [ ] Beaked bird-like head with a tan hooked armoured beak plate
+- [ ] Huge five-toed clawed climbing feet
 
 ## Engine limits
 not yet assessed
