@@ -320,6 +320,19 @@ namespace RimMandrake.MessyConduit.Aerial
         /// its run takes a look other than the default, or a Modern conduit cell takes a stored colour or the mix -- or when
         /// the player restyles the run (force). Otherwise it keeps drawing the default, storing nothing.
         /// </summary>
+        /// <summary>
+        /// Round 6 (owner 2026-10-04: "I don't see the standing lamps changing their look when I change the cable"): when a
+        /// run is restyled, a floor lamp hooked to it (its power connection is a member of the run, or it touches one) takes
+        /// the run's new look -- UNLESS the player gave the lamp a look of its own. Stateless rule, nothing extra saved: the
+        /// lamp follows when it wears the look the run had BEFORE the change (an unstyled run's look is the default), or, on a
+        /// Restyle only, when it stores no look (vanilla art); a lamp wearing any other look was styled on purpose (its own
+        /// Restyle gizmo, or built from the menu in a different look) and keeps it. The same rule repaints the lamps of the
+        /// LOSING run of a bridge (restyle false), where an unstyled lamp is left unwritten exactly like an older save's
+        /// conduit (NeedsWrite). A lamp is not a run member: it never bridges runs itself.
+        /// </summary>
+        public static bool LampFollowsRun(string lampLook, string runLookBefore, string defaultLook, bool restyle = true) =>
+            lampLook == null ? restyle : lampLook == (runLookBefore ?? defaultLook);
+
         public static bool NeedsWrite(bool hasStyle, bool isConduit, string look, string colourMode, string defaultLook, bool force)
         {
             if (force || hasStyle) return true;

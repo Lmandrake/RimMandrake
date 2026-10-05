@@ -97,9 +97,25 @@ namespace RimMandrake.MessyConduit.Hose
         public bool? Flowing(CompHoseReel hose, int now) => hose.debugFlowing;
     }
 
+    /// <summary>(c) Round 6, relays: a reel fed by another reel's hose (HoseRelay) passes on what flows in -- its own hose
+    /// carries flow while any feeder's hose does. Says nothing (null) when no feeder flows, so the debug flag still works on
+    /// a relay. Loops are refused at lay time and excluded from FeedersOf, so a flow can never latch round a ring.</summary>
+    public sealed class RelayHoseFlow : IHoseFlowState
+    {
+        public string Name => "relay";
+        public bool? Flowing(CompHoseReel hose, int now)
+        {
+            RM_MapComponent_Hoses comp = hose.parent.Map?.GetComponent<RM_MapComponent_Hoses>();
+            if (comp == null) return null;
+            foreach (CompHoseReel f in comp.FeedersOf(hose))
+                if (f.laid && f.lay != null && f.lastSignal) return true;
+            return null;
+        }
+    }
+
     public static class HoseFlow
     {
-        public static readonly List<IHoseFlowState> Providers = new List<IHoseFlowState> { new FlowWorksPumpFlow(), new DebugHoseFlow() };
+        public static readonly List<IHoseFlowState> Providers = new List<IHoseFlowState> { new FlowWorksPumpFlow(), new RelayHoseFlow(), new DebugHoseFlow() };
 
         public static bool Signal(CompHoseReel hose, int now, out string provider)
         {

@@ -163,7 +163,8 @@ def ground_station(mk, n, x, look):
         "fall back)" % look,
         "the tangle: %s" % ("power strips with plugs in the sockets" if modern else "junction boxes with cables in them") +
         " (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)",
-        "the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark"]
+        "the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark",
+        "the three floor lamps are %s lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)" % look]
        + (["one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their "
            "own and may carry another colour"] if modern else []),
        ["select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)",
@@ -171,7 +172,8 @@ def ground_station(mk, n, x, look):
         "(the larger run wins: here the battery side)", "flick the switch: everything past it goes dark, the cords stay"],
        devs=[("Battery", (0, 3), 0, 1.0), ("Heater", (15, 3), None, None), ("StandingLamp", (2, 6), None, None),
              ("StandingLamp", (10, 6), None, None), ("StandingLamp", (14, 6), None, None)],
-       walls=[(7, z) for z in range(1, 6)], styled=styled, marks=[(12, 1, "cut", "live end | dead end")], look=look, style_station=True)
+       walls=[(7, z) for z in range(1, 6)], styled=styled, marks=[(12, 1, "cut", "live end | dead end")], look=look, style_station=True,
+       lamp_looks={(2, 6): look, (10, 6): look, (14, 6): look})
 
 
 def stations_style(mk):
@@ -196,7 +198,8 @@ def stations_style(mk):
        ["build one conduit onto the end of any run: it joins and keeps that run's colour (nothing reshuffles)",
         "restyle the 'blue' run to random mix from its gizmo, then back: the blue comes back",
         "unpause, rebuild something elsewhere: no run changes colour"],
-       devs=devs, styled=styled, marks=[(-5, z, name, "") for z, _, name in rows], style_station=True)
+       devs=devs, styled=styled, marks=[(-5, z, name, "") for z, _, name in rows], style_station=True,
+       lamp_looks={(14, z): "Modern" for z, _, _ in rows})
     masts, links, walls = [], [], []
     for i, look in enumerate(reversed(LOOKS)):                        # Scrapper on the top row
         z = 1 + 7 * i
@@ -223,7 +226,7 @@ def stations_style(mk):
         d = mk(n, "T", x, 80, b_cells[-1] + 2, 5, title, what, notice, interact, styled=styled, devs=devs,
                actions=[("C", "PowerConduit", act_key, (gap, 0))],
                marks=[(gap, 2, "^ build one conduit here (any look)", "v the build joined these")],
-               gap=gap, style_station=True)
+               gap=gap, style_station=True, lamp_looks={(b_cells[-1] + 1, z): look_of_key(b_key) for z in (4, 0)})
         runs = runs_before_action(d, 0)
         w = bridge_winner(runs)
         d["expect"] = dict(winner=look_of_key(w["keys"][0]), sizes=sorted(r["size"] for r in runs), message=True)
@@ -254,6 +257,7 @@ def stations_style(mk):
        ["before row: deconstruct the marked cell yourself", "build it back in another look: it adopts the bigger half's look"],
        styled=sp_styled, devs=sp_devs, actions=[("D", (7, 0))],
        marks=[(7, 2, "^ deconstruct this cell", "v the build deconstructed it")], style_station=True,
+       lamp_looks={(13, 4): "Industrial", (13, 0): "Industrial"},
        expect=dict(halves=2, look="Industrial"))
     rs = [("C", "PowerConduit", "Scrapper", (c, 2)) for c in range(2, 8)] + [("C", "PowerSwitch", "Scrapper", (8, 2))] + \
          [("C", "PowerConduit", "Scrapper", (c, 2)) for c in range(9, 15)]
@@ -261,11 +265,13 @@ def stations_style(mk):
        "power mast wired into its end and a span to a lamp mast: nothing restyled yet, the button is yours",
        ["before you press anything: every piece is Scrapper, poles and span included"],
        ["select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, "
-        "both poles and the span all change at once; cost and power do not", "pick Modern > random mix: the colours vary piece to piece along "
+        "both poles, the span AND the floor lamp all change at once; cost and power do not",
+        "select the lamp > 'Restyle this lamp' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)",
+        "pick Modern > random mix: the colours vary piece to piece along "
         "the run; restyle again and back: the same colours come back", "unpause: nothing reverts"],
        devs=[("Battery", (0, 2), 1, 1.0), ("StandingLamp", (15, 2), None, None)], styled=rs,
        masts=[("RM_AerialMast", (14, 3), None, "Scrapper"), ("RM_AerialLampMast", (24, 3), None, "Scrapper")], links=[(0, 1)],
-       marks=[(8, 0, "select any piece > Restyle this run", "")], style_station=True)
+       marks=[(8, 0, "select any piece > Restyle this run", "")], style_station=True, lamp_looks={(15, 2): "Scrapper"})
     reels = []
     for i, look in enumerate(reversed(LOOKS)):
         z = 1 + 5 * i
@@ -438,6 +444,7 @@ def station_list():
        cross_i, hoses=[dict(reel=(0, 6), far=(21, 6), state="Plump"), dict(reel=(0, 15), far=(21, 15), state="Plump"),
                        dict(reel=(6, 0), far=(6, 21), state="Plump"), dict(reel=(15, 0), far=(15, 21), state="Plump")])
     stations_round2(st, hose_i)
+    stations_round6(mk, hose_i)
     for d in S:
         if d["hose"] and not d["hoses"]:
             d["hoses"] = [d["hose"]]
@@ -451,6 +458,23 @@ def rect_cells(x, z, w, h):
 def perimeter(x0, z0, x1, z1, gaps=()):
     c = [(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1) if x in (x0, x1) or z in (z0, z1)]
     return [p for p in c if p not in set(gaps)]
+
+
+def stations_round6(mk, hose_i):
+    """Round 6 (owner 2026-10-04: "how does the player go farther? Maybe they place another reel out there to connect to? If
+    so we should show that working."). Three reels 32 cells apart: A's hose is laid onto B's intake, B's onto C's -- 66 cells
+    end to end, beyond one 40-cell hose. Rules: Source/Hose/HoseRelay.cs; live check: validation_hose.py --relay."""
+    mk(42, "G", 160, 172, 70, 6, "RELAY REELS: GOING FARTHER", "three hose reels in a row, 32 cells apart: the first reel's "
+       "hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)",
+       ["each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses",
+        "flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed "
+        "through the relay (there is no real liquid yet: FlowWorks pipes are paper)",
+        "select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'"],
+       hose_i + ["reel in the first hose: the second one drains (nothing feeds it)",
+                 "lay the third reel's hose back onto the first: refused, a chain may not loop back",
+                 "build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on"],
+       hoses=[dict(reel=(0, 2), far=(31, 2), state="Plump"), dict(reel=(32, 2), far=(63, 2), state="Relay")],
+       devs=[("RM_HoseReel", (64, 2), None, None)], region=2)
 
 
 def stations_round2(st, hose_i):
@@ -537,9 +561,9 @@ def stations_round2(st, hose_i):
     st(23, "F", 194, 144, 18, 11, "HOSE MAZE: SHORT WAY WALLED", "station 34's maze; after the hose is laid, a wall is built across the "
        "short (south-east) gap - does the hose re-route the long way, or reel itself in?",
        ["what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length "
-        "(it does: measured offline the long way needs about 25 of the hose's 30 cells), else it winds back onto the reel with a "
+        "(it does: measured offline the long way needs about 25 of the hose's 40 cells), else it winds back onto the reel with a "
         "message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)",
-        "add your own walls to lengthen the way round: past 30 cells the hose reels in (selftest r4: one zig-zag maze needs 36)",
+        "add your own walls to lengthen the way round: past 40 cells (the default since round 6) the hose reels in (selftest r5: the 13x13 spiral needs 73)",
         "if it re-routes, the new path is as clean as station 34's"],
        maze_i + ["deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?"],
        walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_block_wall_hook",
@@ -853,7 +877,7 @@ SHORT_NEW = {1: "Scrapper: plugs, tangle, wall, switch, cut ends", 2: "Industria
              5: "every Modern colour entry, random mix on top", 6: "poles, lamp mast, bracket, spans: one row per look",
              7: "8 Industrial + 4 Modern: the bigger run wins", 8: "5 + 5: the older run wins",
              9: "deconstruct the middle: both halves keep the look", 10: "select any piece > Restyle this run",
-             11: "per look: a laid reel and a reeled-in reel", 12: "built outside the menu: draws the DEFAULT look"}
+             11: "per look: a laid reel and a reeled-in reel", 12: "built outside the menu: draws the DEFAULT look", 42: "a hose laid onto a second reel, and on to a third"}
 
 
 def label_ops(S, style):
@@ -872,7 +896,7 @@ def label_ops(S, style):
     add(120, 182, "MESSY CONDUIT - NORTH GALLERY", "stations 31-41 (were 19-29)   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
     add(32, 174, "ROW E - POWER SHOWPIECES", "stations 31-33", TEAL, "small")
     add(188, 160, "ROW F - HOSE MAZES", "stations 34-35", TEAL, "small")
-    add(30, 218, "ROW G - CHALLENGE CONFIGURATIONS", "stations 36-41: edge, river, roof, spans, hub, nets + save-load", TEAL, "small")
+    add(30, 218, "ROW G - CHALLENGE CONFIGURATIONS", "stations 36-42: edge, river, roof, spans, hub, nets + save-load, relay reels", TEAL, "small")
     for s in S:
         x, z = s["origin"]
         w, h = s["size"]
@@ -1075,6 +1099,8 @@ class Review(object):
                 # the bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall); station 21's wall is south
                 put(m[0], g(s, m[1]), rot=m[2] if len(m) > 2 else None)
             for d, c, rot, ch in s["devs"]:
+                if d == "StandingLamp" and tuple(c) in s.get("lamp_looks", {}):
+                    continue                           # round 6: placed in its look by place_styled()
                 put(d, g(s, c), stuff=STUFFED.get(d), rot=rot)
                 if d == "Battery":
                     bats.append((g(s, c), ch))
@@ -1217,6 +1243,11 @@ class Review(object):
                     self.styled_fail.append((s["n"], d, key, (x, z), r.get("error")))
                 if key.endswith("_Multi"):             # one colour per run: let the adopt rule see the first cell's colour
                     B.ap("cprocess")
+            for c, look in sorted(s.get("lamp_looks", {}).items()):   # round 6: floor lamps in their run's look, by the menu
+                x, z = g(s, c)
+                r = B.ap("cplace:StandingLamp:%s:%d,%d:god" % (look, x, z))
+                if not r.get("success"):
+                    self.styled_fail.append((s["n"], "StandingLamp", look, (x, z), r.get("error")))
             for m in s["masts"]:
                 if len(m) > 3:
                     x, z = g(s, m[1])

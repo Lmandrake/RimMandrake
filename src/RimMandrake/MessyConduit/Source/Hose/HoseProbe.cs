@@ -103,7 +103,9 @@ namespace RimMandrake.MessyConduit.Hose
               .Append(",\"minPlumpDwell\":").Append(HoseSettings.minPlumpDwell)
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
-              .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)
+              .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"relayCouplings\":").Append(comp.lastRelayCouplings)
+              .Append(",\"queues\":{\"hose\":").Append(HoseMaterials.Queue).Append(",\"overhead\":").Append(Aerial.AerialMaterials.OverheadQueue)
+              .Append(",\"spanMat\":").Append(Aerial.AerialMaterials.Span != null ? Aerial.AerialMaterials.Span.renderQueue : -1).Append('}').Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)
               .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
               .Append(",\"hoses\":[");
             bool first = true;
@@ -140,6 +142,9 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"portContact\":[").Append(r.portContact.X).Append(',').Append(r.portContact.Z).Append(']')
                   .Append(",\"footprint\":[").Append(r.Rect.X0).Append(',').Append(r.Rect.Z0).Append(',').Append(r.Rect.W).Append(',').Append(r.Rect.H).Append(']')
                   .Append(",\"start\":[").Append(D(r.Rect.Mouth.X)).Append(',').Append(D(r.Rect.Mouth.Z)).Append(']')
+                  .Append(",\"relayTo\":").Append(RelayPos(comp.RelayOf(r)))
+                  .Append(",\"fedBy\":[").Append(string.Join(",", comp.FeedersOf(r).Select(f => RelayPos(f)))).Append(']')
+                  .Append(",\"endPoint\":").Append(r.laid ? EndPos(comp, r) : "null")
                   .Append(",\"retractReason\":").Append(S(r.lastRetractReason))
                   .Append(",\"retractTick\":").Append(r.lastRetractTick)
                   .Append(",\"look\":").Append(S(HoseMaterials.LookOf(r)))
@@ -176,6 +181,13 @@ namespace RimMandrake.MessyConduit.Hose
             }
             sb.Append("]}");
             return sb.ToString();
+        }
+
+        private static string RelayPos(CompHoseReel r) => r == null ? "null" : "[" + r.parent.Position.x + "," + r.parent.Position.z + "]";
+        private static string EndPos(RM_MapComponent_Hoses comp, CompHoseReel r)
+        {
+            V2 e = comp.EndPoint(r, out _);
+            return "[" + D(e.X) + "," + D(e.Z) + "]";
         }
 
         /// <summary>The reel art printing now: the deployed (laid, empty drum) path when laid and present, else the stored path.</summary>

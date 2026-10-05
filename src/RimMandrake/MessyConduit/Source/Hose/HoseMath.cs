@@ -133,6 +133,19 @@ namespace RimMandrake.MessyConduit.Hose
 
     public static class HoseMath
     {
+        /// <summary>Round 6 (owner 2026-10-04): a reel's hose is 40 cells by default (was 30). The route rule is unchanged: a
+        /// route fits when its taut length x RouteMargin (5%) is within the hose.</summary>
+        public const double DefaultMaxLength = 40;
+        /// <summary>Bumped when the shipped DefaultMaxLength changes; 0 = the files written before round 6 (default 30).</summary>
+        public const int MaxLengthDefaultsVersion = 1;
+        public const double OldDefaultMaxLength = 30;
+
+        /// <summary>A saved hose length under the settings key "maxLength": a file written before round 6 that still holds
+        /// the old shipped default (30) gets the new default; any length the player chose (or a file already written under
+        /// the new default) is kept.</summary>
+        public static double MigrateMaxLength(double saved, int savedDefaultsVersion) =>
+            savedDefaultsVersion < MaxLengthDefaultsVersion && Math.Abs(saved - OldDefaultMaxLength) < 0.01 ? DefaultMaxLength : saved;
+
         // ---------------------------------------------------------------- width rules (measured from the art)
         /// <summary>The wire strand (SectionLayer_RM_MessyCords.StrandWidth 0.11) times Strand_Jawa.png's opaque
         /// band (25 of 32 px rows).</summary>
@@ -721,7 +734,7 @@ namespace RimMandrake.MessyConduit.Hose
         /// path search."). The longest CELL path (8-way steps through cell centres) worth searching for a hose of
         /// maxLength: a route fits when its taut length x RouteMargin is within the hose, and a cell path through a
         /// one-cell zig-zag maze runs up to ~1.3x its taut length (round 4: 44.9 vs 35), so 1.5x + 4 never cuts off a
-        /// route that fits. A 30-cell hose searches cell paths up to 46.9.</summary>
+        /// route that fits. A 40-cell hose (the default since round 6) searches cell paths up to 61.1.</summary>
         public static double SearchLengthBound(double maxLength) => 1.5 * maxLength / RouteMargin + 4;
 
         /// <summary>Unbounded search (no hose length given, or the bounded search found nothing and the reason must be told

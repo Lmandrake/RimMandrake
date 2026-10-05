@@ -130,7 +130,7 @@ namespace RimMandrake.MessyConduit.Aerial
             m = new LookMats { Look = look, Width = WidthOf(look) };
             string own = AerialStyleDir + look + "/SpanWire";
             m.SpanPath = Exists(own) ? own : SpanFallback(look);
-            m.Span = Tiled(m.SpanPath) ?? Tiled(Dir + "Strand_Jawa");
+            m.Span = Tiled(m.SpanPath, null, true) ?? Tiled(Dir + "Strand_Jawa", null, true);
             byLook[look] = m;
             return m;
         }
@@ -252,12 +252,18 @@ namespace RimMandrake.MessyConduit.Aerial
             return t != null && t != BaseContent.BadTex;
         }
 
-        private static Material Tiled(string path, Color? c = null)
+        /// <summary>Round 6: the render queue of everything drawn OVERHEAD (span cable, mast heads) -- above hoses, cords and
+        /// the tap clamp, so a hose lying under a wire is never painted over it (Core.DrawOrder).</summary>
+        public static int OverheadQueue => RimMandrake.MessyConduit.Core.DrawOrder.OverheadQueue(CordMaterials.StrandQueue);
+
+        private static Material Tiled(string path, Color? c = null, bool overhead = false)
         {
             Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
             if (tex == null) return null;
             tex.wrapMode = TextureWrapMode.Repeat;
-            return MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, c ?? Color.white));
+            var req = new MaterialRequest(tex, ShaderDatabase.Transparent, c ?? Color.white);
+            if (overhead) req.renderQueue = OverheadQueue;
+            return MaterialPool.MatFrom(req);
         }
 
         private static Material Plain(string path, Color c)
@@ -276,7 +282,7 @@ namespace RimMandrake.MessyConduit.Aerial
             string key = texPath;
             if (topMats.TryGetValue(key, out Material m)) return m;
             Texture2D tex = ContentFinder<Texture2D>.Get(texPath, true);
-            m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, c));
+            m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, c) { renderQueue = OverheadQueue });
             topMats[key] = m;
             return m;
         }

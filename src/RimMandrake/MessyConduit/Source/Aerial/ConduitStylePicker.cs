@@ -27,7 +27,8 @@ namespace RimMandrake.MessyConduit.Aerial
     ///   * the vanilla floor lamp (StandingLamp, art round 5): same menu/getter/copy/Frame guard, NOT a run member (a lamp
     ///     ends a run); drawn by its ThingStyleDef's own graphic; unstyled (legacy) lamps keep vanilla art;
     ///   * the spawn hook that queues every new run member for the run rule (RM_MapComponent_ConduitRuns);
-    ///   * the free "Restyle this run" gizmo on any member;
+    ///   * the free "Restyle this run" gizmo on any member, and (round 6) "Restyle this lamp" on a floor lamp; a lamp hooked
+    ///     to a run follows the run's Restyle unless it was given its own look (ConduitStyles.LampFollowsRun);
     ///   * the stage-1 copy-carries-style and Frame guard patches extended to these defs (StyleIndex flags).
     /// The cord layer reads <see cref="CellStyles"/> to pick each piece's material.
     /// </summary>
@@ -97,6 +98,8 @@ namespace RimMandrake.MessyConduit.Aerial
         public static bool IsOurs(ThingDef d) => d != null && byDef.ContainsKey(d);
         public static bool IsMember(ThingDef d) => d != null && members.Contains(d);
         public static bool IsConduit(ThingDef d) => IsOurs(d) && ConduitStyles.IsConduitDef(d.defName);
+        /// <summary>A styled floor lamp (registered: it carries the style field). Round 6: gets "Restyle this lamp".</summary>
+        public static bool IsLamp(ThingDef d) => IsOurs(d) && ConduitStyles.IsLampDef(d.defName);
         public static IReadOnlyList<ThingDef> MemberDefs => memberList;
 
         public static ThingStyleDef StyleFor(ThingDef d, string key)
@@ -289,12 +292,41 @@ namespace RimMandrake.MessyConduit.Aerial
         }
 
         // ------------------------------------------------------------------ restyle gizmo
+        /// <summary>Round 6: "Restyle this lamp" on a floor lamp (one piece; a lamp is a machine, not a run member). The four
+        /// looks, plus "match its cable run". A lamp left alone follows its run when the run is restyled
+        /// (ConduitStyles.LampFollowsRun).</summary>
+        public static Command RestyleLampGizmo(Building lamp)
+        {
+            string cur = RawLook(lamp);
+            return new Command_Action
+            {
+                defaultLabel = "Restyle this lamp",
+                defaultDesc = "Give this lamp another look (" + (cur ?? "vanilla") + " now). Art only: it costs nothing and changes nothing else.\n\n" +
+                              "A lamp hooked to a cable run changes look with the run when the run is restyled, unless you give it a different look here.",
+                icon = Icon(lamp.def, cur ?? StylePicker.DefaultLook),
+                action = () =>
+                {
+                    var opts = new List<FloatMenuOption>();
+                    RM_MapComponent_ConduitRuns runs = lamp.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
+                    foreach (string look in AerialStyles.Looks)
+                    {
+                        string k = look;
+                        if (StyleFor(lamp.def, k) == null) continue;
+                        opts.Add(new FloatMenuOption(look + (k == cur ? " (current)" : ""), () => runs?.RestyleLamp(lamp, k, true), Icon(lamp.def, k), Color.white));
+                    }
+                    opts.Add(new FloatMenuOption("Match its cable run", () => runs?.RestyleLamp(lamp, RM_MapComponent_ConduitRuns.LampMatchRun, true)));
+                    Find.WindowStack.Add(new FloatMenu(opts));
+                }
+            };
+        }
+
         public static Command RestyleGizmo(Building b)
         {
             var cmd = new Command_Action
             {
                 defaultLabel = "Restyle this run",
-                defaultDesc = "Repaint this whole run (every conduit cell, switch, pole and bracket connected to it) in another style. Art only: it costs nothing and changes nothing else.",
+                defaultDesc = "Repaint this whole run (every conduit cell, switch, pole and bracket connected to it) in another style. Art only: it costs nothing and changes nothing else.\n\n" +
+                              "Floor lamps hooked to the run change with it, unless a lamp was given a different look of its own.",
                 icon = Icon(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit") ?? b.def, ConduitStyles.Key(RawLook(b) ?? StylePicker.DefaultLook, RawColour(b))),
                 action = () =>
                 {
@@ -397,8 +429,9 @@ namespace RimMandrake.MessyConduit.Aerial
         private static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Building __instance)
         {
             foreach (Gizmo g in __result) yield return g;
-            if (MessyConduitSettings.enabled && __instance.Spawned && __instance.Faction == Faction.OfPlayer && ConduitStylePicker.IsMember(__instance.def))
-                yield return ConduitStylePicker.RestyleGizmo(__instance);
+            if (!MessyConduitSettings.enabled || !__instance.Spawned || __instance.Faction != Faction.OfPlayer) yield break;
+            if (ConduitStylePicker.IsMember(__instance.def)) yield return ConduitStylePicker.RestyleGizmo(__instance);
+            else if (ConduitStylePicker.IsLamp(__instance.def)) yield return ConduitStylePicker.RestyleLampGizmo(__instance);
         }
     }
 
