@@ -31,3 +31,151 @@ Not run in a basic checkout and never blocks one; run only when requested (desig
 - E2. Mod-mod compatibility: other conduit/power-render mods (hidden-conduit, power-grid overlay and wire mods) alongside GimmeSomeSlack -> UNBUILT (no tier or check yet)
 - E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
 - E4. FlowWorks pump hookup: once FlowWorks ships `RM_PumpPortable`, a hose reel next to a running pump reads flowing through `FlowWorksPumpFlow` -> UNBUILT (no pump in FlowWorks yet)
+
+## north star
+state: DRAFT
+validated-hash:
+
+The `state:` line above is authoritative; `design/RimMandrake/north_star_validation_spec.md` defines what each
+state means, and a checklist binds only while that line reads VALIDATED. The hash recorded on validation covers
+this whole section, so any edit afterwards reverts it to DRAFT until he re-validates. Every bar below was first
+drafted by an agent (FOUNDRY helper, 2026-10-05) from his words in this section, for him to cut, reword or keep;
+each bar is one claim a player can check by looking, and where each came from is in the provenance table, never
+in the bar text, because the bar text is the question the judge is asked.
+
+🔑 **A bar for a feature that is not built yet fails until it is built.** That is the bar doing its job, not a
+reason to park it. Motion (sway, whipping ends, spark timing) carries no bar, by his ruling below; the review map
+(`human_review.py`) and the state proxies in `validation.py` cover it.
+
+### the experience  (OWNER'S WORDS — verbatim)
+
+The idea, 2026-10-02 (`design/RimMandrake/messy_conduit_design_2026-10-02.md`, top):
+
+> *"I normally hate how they make conduit invisible, but now that I think about it, Jawa should celebrate that. I
+> almost want to make it weirder like snakey, ropey loose conduit on the floor. Spawn out a design pass to consider
+> how hard it would be to make MESSY CONDUIT, an alternative mod that would make conduit sprawl all over the floor
+> in loose wirey mess like it does in real life."*
+
+The overlay and the nodal ruling, 2026-10-02 (same file, §8):
+
+> *"I had wondered if we could actually have little drawn wires decoratively put over otherwise-invisible-conduits
+> as usual. So the visible wires would only be aesthetic. … We certainly wouldn't want annoying clipping issues."*
+
+> *"… It's just about cords roughly connecting to/from where they belong. Honestly they don't even need to go over
+> where the conduit is... it's really the nodal map of sources, destinations, places where they go into walls,
+> places where they emerge, and then corners that they must traverse. … Perhaps we don't need to show it "over the
+> wall" after all, we just say "it's in there" and show where it comes out/goes in. … But do let's aim for that
+> extra loopy slack look. I'm not going for taught cables. Quite the opposite. Everything is a too-long extension
+> cord."*
+
+> *"Yes, conduit that suddenly ends has a "node" at its terminal point that must be reached by a "broken" cord
+> lying on the ground. Sparking if live, dead if not. … How to handle a "grid of conduit beneath the ground"
+> (ideally a huge tangle of nasty wires and power strips all swirled together terribly)."*
+
+The slack, 2026-10-02 (same file, §8.6), with a photo of an orange extension cord in big loose loops:
+
+> *"Yes, I want it to have much larger excursions that avoid unwalkable areas or even pile up against them. I think
+> you know what I'm wanting."*
+
+Phase 2, 2026-10-02 (`design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md` §0):
+
+> *"… I'd like the powerlines included, swaying in the wind, etc. Much of this won't be Northstar testible, I'll
+> tell you that up front. Movement/animation is not appropriate for Northstar, unfortunately. But throwing up a
+> complex series of well defined power grids and then taking a screenshot to show the various stages of tangling,
+> the power line connections, etc. in a combinatorially useful pattern absolutely IS possible and valuable. … The
+> flexible water hoses should be much thicker and stiffer than the wires, much like the fire hoses they use. And
+> they SHOULD "plump up" when water is flowing through them and "collapse down" when it's not."*
+
+Relay reels, 2026-10-04 (`src/RimMandrake/GimmeSomeSlack/validation_hose.py`, relay section):
+
+> *"So if the hose can only reach 30 cells, how does the player go farther? Maybe they place another reel out there
+> to connect to?"*
+
+Style per build, 2026-10-04 (`design/RimMandrake/messyconduit_style_per_build_design.md`, top):
+
+> *"… A single build menu should allow the player to select between these four art styles for the poles, hose
+> reels, hoses, and cables somehow. … Obviously a single connected run of conduit no matter how large would be a
+> single art style. …"*
+
+Review, 2026-10-05 (`src/RimMandrake/GimmeSomeSlack/Source/Hose/CompHoseReel.cs`, `SetLook`):
+
+> *"reels don't have a choose style option"*
+
+Review, 2026-10-05 — **relayed by FOUNDRY, not his verbatim words; no verbatim text of these is on disk, and he
+replaces this paragraph with his own wording:** the hose joiners must look like brass screwed together; the 2x2
+reel's hose must attach to its brass outlet nozzle; a hose should look deflated unless it carries liquid, has
+somewhere to flow, and is driven by a powered pump.
+
+### must show
+
+**Floor cords — the nodal sprawl**
+- [ ] `conduit_reads_invisible` — a conduit run shows no vanilla conduit pipe; only the loose cords show where
+      power goes.
+- [ ] `cord_lies_slack_in_loops` — a cord between two nodes lies in broad loose loops and excursions, visibly
+      much longer than the straight line between its ends.
+- [ ] `cord_meets_wall_at_its_face` — where conduit runs into a wall, the cord ends at the wall's face, as if it
+      goes in there, and is not drawn across the top of the wall.
+- [ ] `dense_grid_reads_as_tangle` — a dense block of conduit reads as one tangled heap of wires and power strips,
+      not as tidy parallel lines.
+- [ ] `break_live_and_dead_ends_differ` — at a cut in a powered line, the end still on power is visibly
+      distinguishable from the dead end lying limp, at normal zoom.
+
+**Overhead lines**
+- [ ] `overhead_span_above_everything` — an overhead span between masts is drawn above pawns, buildings and laid
+      hoses beneath it, never under them.
+- [ ] `downed_span_lies_on_ground` — after a mast is destroyed or a span is cut, the span lies on the ground as a
+      fallen cord rather than hanging in the air.
+
+**Hoses**
+- [ ] `hose_thicker_stiffer_than_cord` — a laid hose is visibly several times thicker than a power cord and turns
+      in wide curves, never in tight loops.
+- [ ] `hose_plump_when_flowing_flat_when_not` — a hose carrying flow is drawn round and full, and the same kind of
+      hose with no flow is drawn flat.
+- [ ] `hose_plumps_only_from_powered_pump` (change) — a hose coupled to a pump is flat in the BEFORE frame with the
+      pump unpowered and round in the AFTER frame with the pump powered and liquid flowing.
+- [ ] `hose_joiner_reads_brass_screwed_together` — where one hose length meets the next, the joint reads as two
+      brass couplings screwed together, with no gap between them.
+- [ ] `reel_hose_leaves_brass_outlet_nozzle` — a laid hose leaves its reel from the reel's brass outlet nozzle,
+      with a coupling on it, not from under the drum.
+- [ ] `reel_laid_and_wound_look_differ` — a reel with its hose laid out looks different from the same reel with
+      its hose wound in, and the laid hose visibly runs into the reel.
+- [ ] `relay_chain_reads_connected` — a hose that ends on the next reel of a relay chain reads as coupled to it,
+      not as two loose hoses lying side by side.
+
+**Styles**
+- [ ] `four_styles_distinguishable` — Scrapper, Industrial, Modern and Futuristic poles, reels, hoses and cables
+      are distinguishable from each other by looking.
+- [ ] `one_run_one_style` — every piece of one connected conduit run draws in a single style, while two separate
+      runs side by side can draw in different styles.
+- [ ] `reel_offers_choose_style` — a selected hose reel shows a "Choose style" button.
+
+### cannot show
+
+- [ ] `never_taut_straight_cord` — a floor cord pulled taut in a straight line between two nodes.
+- [ ] `never_cord_across_impassable` — a cord or hose drawn across a wall, rock or other impassable cell.
+
+### provenance
+
+Every row: drafted by an agent 2026-10-05 from the quote named; nothing here is his ruling until he validates.
+
+| bar | his words it distils |
+|---|---|
+| `conduit_reads_invisible` | *"little drawn wires decoratively put over otherwise-invisible-conduits"*; *"Jawa should celebrate that"* |
+| `cord_lies_slack_in_loops` | *"Everything is a too-long extension cord."*; *"much larger excursions"* |
+| `cord_meets_wall_at_its_face` | *"we just say "it's in there" and show where it comes out/goes in"* |
+| `dense_grid_reads_as_tangle` | *"a huge tangle of nasty wires and power strips all swirled together terribly"* |
+| `break_live_and_dead_ends_differ` | *"Sparking if live, dead if not."* — worded as a state, since sparks are motion |
+| `overhead_span_above_everything` | *"I'd like the powerlines included"*; *"the power line connections"* |
+| `downed_span_lies_on_ground` | *"a "broken" cord lying on the ground"*, carried to the overhead lines |
+| `hose_thicker_stiffer_than_cord` | *"much thicker and stiffer than the wires, much like the fire hoses they use"* |
+| `hose_plump_when_flowing_flat_when_not` | *"they SHOULD "plump up" when water is flowing through them and "collapse down" when it's not"* |
+| `hose_plumps_only_from_powered_pump` | 2026-10-05 review, relayed (deflated unless liquid + somewhere to flow + powered pump); fails until FlowWorks ships a pump |
+| `hose_joiner_reads_brass_screwed_together` | 2026-10-05 review, relayed (joiners look like brass screwed together) |
+| `reel_hose_leaves_brass_outlet_nozzle` | 2026-10-05 review, relayed (2x2 reel's hose attaches to its brass outlet nozzle) |
+| `reel_laid_and_wound_look_differ` | style-per-build brief: a reel that looks different when its hose is laid out, the hose running into the reel (paraphrased in that design's own text) |
+| `relay_chain_reads_connected` | *"Maybe they place another reel out there to connect to?"* |
+| `four_styles_distinguishable` | *"select between these four art styles for the poles, hose reels, hoses, and cables"* |
+| `one_run_one_style` | *"a single connected run of conduit no matter how large would be a single art style"* |
+| `reel_offers_choose_style` | *"reels don't have a choose style option"* |
+| `never_taut_straight_cord` | *"I'm not going for taught cables. Quite the opposite."* |
+| `never_cord_across_impassable` | *"avoid unwalkable areas or even pile up against them"*; *"We certainly wouldn't want annoying clipping issues."* |
