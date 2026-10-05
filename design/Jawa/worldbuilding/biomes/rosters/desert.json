@@ -726,6 +726,11 @@
       "def": "AA_MatureFleshbeast",
       "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
       "reason": "owner 2026-10-04 Long Shade sheet: \"Remove this, no longer needed\" / \"No longer needed, remove.\" RM_MatureFleshbeast and RSW_MatureFleshbeast defs deleted."
+    },
+    {
+      "def": "AA_DesertAve",
+      "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+      "reason": "owner 2026-10-04 Long Shade sheet: \"no longer needed\". RM_Ossik and RSW_Ossik (+ their eggs) deleted."
     }
   ],
   "fauna": [
@@ -765,13 +770,6 @@
       "def": "Dewback",
       "law": "RULED IN 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 Q8): herd/mount, slowed under the pursuit ban (wraid treatment, spd <=4.4) with the register predator flag MEASURED at wiring; supersedes the 2026-09-09 proxy eviction",
       "note": "weight provisional (BENCH, matches the herd band's 0.2 rows) — only the admission and the slow-down are ruled"
-    },
-    {
-      "action": "keep",
-      "band": "navigator",
-      "commonality": 0.4,
-      "def": "AA_DesertAve",
-      "law": "fast NON-predator = endurance-navigator archetype; ban 3 bans only pursuit predators (prep §2.5 q3: yes)"
     },
     {
       "action": "adjust-keep",

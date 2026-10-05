@@ -180,7 +180,6 @@
            inline from the Utinni patch this pass. Weights carried over
            verbatim from WildAnimals_LongShade.xml's own Add block. -->
       <RM_Bokka>0.5</RM_Bokka>
-      <RM_Ossik>0.4</RM_Ossik>
       <RM_Thurra>0.05</RM_Thurra>
       <RM_Vosska>0.05</RM_Vosska>
       <RM_Khorrak>0.035</RM_Khorrak>

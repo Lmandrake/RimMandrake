@@ -231,7 +231,6 @@
            predators of this biome); this is the rare apex on top of them, not a
            replacement for either. -->
       <RSW_WraidAlpha MayRequire="mandrake.rsw.swbestiary">0.15</RSW_WraidAlpha>  <!-- alpha wraid - THE burst-predator flagship, rare apex -->
-      <RSW_Ossik MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Ossik>  <!-- desert ave - navigator, keep -->
       <RSW_Eopie MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Eopie>  <!-- eopie - herd, keep -->
       <RSW_Hrumph MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Hrumph>  <!-- hrumph - herd, import -->
       <RSW_IridonianReek MayRequire="mandrake.rsw.swbestiary">0.3</RSW_IridonianReek>  <!-- iridonian reek - herd, import -->

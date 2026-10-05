@@ -505,7 +505,7 @@
        RM_ tier, cast inline, not behind the Utinni patch layer. This def
        carries the donor's shadow-follow wiring (RM_ShadowFollowerExtension,
        unchanged) but is otherwise built fresh: vanilla "Bird" body (matching
-       this file's RM_Ossik, not the donor's cross-mod RSW_FlyingAvian) and
+       the since-cut RM_Ossik, not the donor's cross-mod RSW_FlyingAvian) and
        the sheet's own pirrik art (real renders, not a Whisperbird reskin) —
        no flying animation flip-book frames exist for this art, so none are
        declared; "never block flight waiting on frames" (CLAUDE.md) — the
