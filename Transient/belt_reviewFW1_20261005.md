@@ -38,3 +38,5 @@ No significant findings except RM_StockMath.CollectComponent: when a component h
 Build 0 err after all fixes.
 
 ## Marked clean (pass 1, at c984c264f): 26 files with zero significant findings (all except the 10 fixed). Fixed 10 get a fresh full re-read before marking.
+
+## Pass 2: fresh full re-read of the 10 fixed files (opus) -> no significant findings; all 10 marked clean. Low-severity note left: RM_LiquidStock FormBody join checks owner on any neighbour (incl. receded cells); joined cells are indexed but not in body.cells (re-joined after load). 36/36 scoped files CLEAN.
