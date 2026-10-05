@@ -211,41 +211,29 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "PASS": 63,
-        "UNBUILT": 10
+        "PASS": 74
       },
       "not_ok": [],
-      "unbuilt": [
-        "U_fill_fluid_distinct",
-        "U_ladder_state_legible",
-        "U_pawn_height_ladder_legible",
-        "U_pawn_lowers_on_deeper_cell",
-        "U_pawn_rises_on_shallower_cell",
-        "U_pit_covered_invisible",
-        "U_pit_covered_seam_at_max_zoom",
-        "U_pit_trapped_reads_as_trapped",
-        "U_slime_occupant_below_surface",
-        "U_tar_fill_front_lags_water"
-      ],
+      "unbuilt": [],
       "uncovered": []
     },
-    "hash": "fc9f5d5dc62ecaefe362d28253953a452ff299e082c31c87cbffe977d57ade58",
+    "hash": "87feb6a9e40d93019bbe93106771d4a9e635a82242425227608e09f90f3d337d",
     "minor": null,
     "owner_review": null,
-    "refused": "63 live rows PASS but 10 bars UNBUILT, 0 UNCOVERED: U_fill_fluid_distinct, U_ladder_state_legible, U_pawn_height_ladder_legible, U_pawn_lowers_on_deeper_cell, U_pawn_rises_on_shallower_cell, U_pit_covered_invisible, U_pit_covered_seam_at_max_zoom, U_pit_trapped_reads_as_trapped, U_slime_occupant_below_surface, U_tar_fill_front_lags_water",
-    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261005T151609.json",
+    "refused": null,
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261005T162414.json",
     "source": {
-      "assembly_sha256": "598ed6241dc656e3b35ea8ec4c04757395c6ef3d45c8b2de3d5f0feec9eb7922",
+      "assembly_sha256": "548915a83e94813afa316e72ae76916118c6991a77bca368fdb55ce3476922ad",
       "env_running_count": 10,
       "env_running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
-      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T151609.json",
-      "started": "2026-10-05T15:14:00",
-      "ticks_spent": 5247,
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T162414.json",
+      "started": "2026-10-05T16:20:47",
+      "ticks_spent": 9484,
       "tier": "flowworks",
       "verb": "modcheck record"
     },
-    "status": "REFUSED",
-    "ts": 1791238591.1300223
+    "status": "PENDING-OWNER-REVIEW",
+    "ts": 1791242687.3628385
   },
   "GelatinousSlime": {
     "hash": "472b58fa3d442801845240fb21604d3578b222bb6fd78a8d5175dcf3f033d484",
