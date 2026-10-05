@@ -278,6 +278,9 @@ def setup(session, colonists=3, tmpdir=None, max_tiles=40, log=None):
         if sp.get("success") and rows_:
             spawned.append(rows_[0].get("id"))
     close_naming_dialogs(session)
+    # MEASURED 2026-10-05: the Colonist pawn generator spawns pawns carrying old wounds (Frostbite, Bite, Stab scars), which
+    # assert_world then reads as hazard residue. reset() strips every injury (empty baseline) before the proof.
+    reset(session)
     problems = assert_world(session, ruins_too=True)
     if len(spawned) < colonists:
         problems.append("only %d of %d colonists spawned" % (len(spawned), colonists))
