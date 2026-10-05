@@ -1,6 +1,6 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T09:15:31-0700",
+ "built": "2026-10-05T11:22:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -361,17 +361,23 @@
    "columns": {
     "A": {
      "single": "33e4726e38410d45acfca459a1f6bcebaee1e1569204f3aa5d58e4073b092d8e"
+    },
+    "B": {
+     "single": "74cb4deb7367672a13fd4933c0587530987beadac60c3c68d7d4b93c714c76fd"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Ollim"
+    "A": "Things/Plant/RM_Ollim",
+    "B": "Things/Plant/RM_Ollim"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render stillsand_regen_RSW_Ollim_v1"
    },
    "res": "Things/Plant/RM_Ollim",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ollim"
   },
@@ -382,23 +388,25 @@
      "north": "33e801b13a9ad4c425a322c3ea26d2fd7c252fe94fee0cbc0de85d6fe5292120",
      "south": "cf471436e28c9c31cafe7570f754229b7b467b4db571d9a15b9c98bc7f598331"
     },
-    "B": {
+    "C": {
+     "east": "827359f7258db2a77e60bde1143fc98e9598e8cb19e2e09e2fdc1320112fe824",
      "north": "1a39d81a3a7f9bef164328563cbfd525499df28c029d0bc832c1c0d8084be1f8",
      "south": "741d5bf04f41814fcc88bed4d179b6cad70ac59bbfabe0c5b0bf14b167c55b35"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
-    "B": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+    "C": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "render stillsand_regen_RM_Oommok_v2"
+    "C": "render stillsand_regen_RM_Oommok_v2"
    },
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "oommok"
   },
@@ -499,26 +507,28 @@
      "north": "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a",
      "south": "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c"
     },
-    "C": {
+    "D": {
      "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
+     "north": "e07f6bf1812fb724a93ca7d832c63a62d35a4a76084dfdf0a66d31385eefc6c4",
      "south": "fa087c1492f47c1a4bfd8f21fcbd0c59a72d759408c5f3699e5a8abc6c70de8d"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
     "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
-    "C": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+    "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
     "B": "render RM_Soorrak",
-    "C": "render stillsand_regen_RM_Soorrak_v2"
+    "D": "render stillsand_regen_RM_Soorrak_v2"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "soorrak"
   },
@@ -1058,6 +1068,9 @@
     },
     "F": {
      "single": "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25"
+    },
+    "G": {
+     "single": "7e46a06226533de20765e8881bfee6075517ab29eea532cc5a4457b77d731bf8"
     }
    },
    "graphic_of": {
@@ -1066,7 +1079,8 @@
     "C": "Things/Plant/RSW_Plant_Bloddle",
     "D": "Things/Plant/RSW_Plant_Bloddle",
     "E": "Things/Plant/RSW_Plant_Bloddle",
-    "F": "Things/Plant/RSW_Plant_Bloddle"
+    "F": "Things/Plant/RSW_Plant_Bloddle",
+    "G": "Things/Plant/RSW_Plant_Bloddle"
    },
    "labels": {
     "A": "render desertportb_plant_bloddle",
@@ -1074,7 +1088,8 @@
     "C": "render stillsand_regen_RSW_Plant_Bloddle_var1",
     "D": "render stillsand_regen_RSW_Plant_Bloddle_var2",
     "E": "render stillsand_regen_RSW_Plant_Bloddle_var3",
-    "F": "render stillsand_regen_RSW_Plant_Bloddle_var5"
+    "F": "render stillsand_regen_RSW_Plant_Bloddle_var5",
+    "G": "render stillsand_regen_RSW_Plant_Bloddle_var4"
    },
    "res": "Things/Plant/RSW_Plant_Bloddle",
    "reserved": [
@@ -1083,7 +1098,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "bloddle"
   },
@@ -1104,8 +1120,9 @@
      "north": "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
      "south": "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6"
     },
-    "D": {
+    "E": {
      "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
+     "north": "27065f6cabf93b95c4686728998dab9f1d1a540d7c4179f6337dc98c9cd6bf4b",
      "south": "11f20107cbd58557d424e2238370e46ab0370879e13cbb58b61ac550758518ef"
     }
    },
@@ -1113,20 +1130,21 @@
     "A": "swanimals/Scurrier/Scurrier_f",
     "B": "swanimals/Scurrier/Scurrier_m",
     "C": "_byname",
-    "D": "_byname"
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "render desert_swaca_scurrier",
-    "D": "render stillsand_regen_RSW_Scurrier_v2"
+    "E": "render stillsand_regen_RSW_Scurrier_v2"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "scurrier"
   },
@@ -1197,5 +1215,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "6d6f9577f527be48"
+ "snapshotId": "52cd72442425e7df"
 }

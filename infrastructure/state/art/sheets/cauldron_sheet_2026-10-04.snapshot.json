@@ -1,6 +1,6 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-05T09:14:45-0700",
+ "built": "2026-10-05T12:58:47-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,23 @@
      "east": "d3fe789ed08a7895c52a995432a5f2866ed4c0ef5b97539d8e31d221104dc50f",
      "north": "9f358da2f49ed70666cb8edca0496869d35b4e3d80b4b97eed043ac2f3af3fff",
      "south": "44b8d1279abb53d1964c3ff4e3d0f0a8a52232a407a61016b61627681257a529"
+    },
+    "B": {
+     "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
+    "A": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+    "B": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_BedBug_v1"
    },
    "res": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "bedbug"
   },
@@ -31,17 +37,23 @@
      "east": "26a6604f2f9180e3cf604527e42049b5b3aaf3250727cf3cfefbdd681370b89c",
      "north": "b8463b4f36e3b108ff38424ec5a492299d66abb1d8f942681da64fe34f203b0a",
      "south": "9132cd9961b766996d1dc9c04d9cd45f849edddedd2e34b14d6c6ca745161044"
+    },
+    "B": {
+     "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
+    "A": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
+    "B": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_CrystalMit_v1"
    },
    "res": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "crystalmit"
   },

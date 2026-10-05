@@ -1,6 +1,6 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T10:22:31-0700",
+ "built": "2026-10-05T12:58:19-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -292,25 +292,28 @@
      "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
      "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
     },
-    "C": {
-     "east": "cece482e80bf30135073ae5542f439b7e94b25beab5222609d5472ab127edf1a"
+    "D": {
+     "east": "cece482e80bf30135073ae5542f439b7e94b25beab5222609d5472ab127edf1a",
+     "north": "ca1f6642164f4403f6edd00351153c044d60424a6a7b37c8f7664ff724450cee",
+     "south": "d6ab02fbf76b45d84a7896d06e9405c5fcb9ece5b1aa5085bda41d7cf71686ef"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
     "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
-    "C": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
+    "D": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
     "A": "render RM_Ossivel",
     "B": "IN GAME \u2014 BlueDesert",
-    "C": "render bluedesert_Ossivel_v2"
+    "D": "render bluedesert_Ossivel_v2"
    },
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "ossivel"
   },
@@ -587,8 +590,10 @@
     "D": {
      "east": "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
     },
-    "E": {
-     "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81"
+    "G": {
+     "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
+     "north": "4328879aaf0f92e7279612a7c88aa56c33c2f37f4acb545aaff5a0c8190ea712",
+     "south": "0caf52893b2ff2b425444e6d9233ec4974cbabd93908a1e8c3cceb21d421baf5"
     }
    },
    "graphic_of": {
@@ -596,14 +601,14 @@
     "B": "swanimals/Vapaad/Vapaad",
     "C": "swanimals/Vapaad/Vapaad",
     "D": "swanimals/Vapaad/Vapaad",
-    "E": "swanimals/Vapaad/Vapaad"
+    "G": "swanimals/Vapaad/Vapaad"
    },
    "labels": {
     "A": "render bluedesert_Vapaad_v1",
     "B": "render bluedesert_Vapaad_v2",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "D": "render vapaad_canon_v1",
-    "E": "render vapaad_canon_v2"
+    "G": "render vapaad_canon_v2"
    },
    "res": "swanimals/Vapaad/Vapaad",
    "reserved": [
@@ -611,11 +616,13 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "vapaad"
   }
  },
  "sheetId": "blue_desert_sheet_2026-10-04",
- "snapshotId": "b9ce64b402826dc9"
+ "snapshotId": "045e19884be72dee"
 }
