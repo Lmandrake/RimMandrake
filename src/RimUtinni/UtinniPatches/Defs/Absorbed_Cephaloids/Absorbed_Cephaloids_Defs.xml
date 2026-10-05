@@ -391,6 +391,12 @@
 		<tradeTags>
 			<li>AnimalUncommon</li>
 		</tradeTags>
+		<modExtensions>
+			<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "Swimming graphic will be used when half-buried in sand."
+			     RM_SandBuriedGraphicExtension (CreatureBehaviors, folded into mandrake.rm.biomes) draws the lifeStage's swimmingGraphicData
+			     while the thraia rests still on Sand/SoftSand/RM_DeepSand; water swimming stays vanilla. -->
+			<li Class="RimMandrake.CreatureBehaviors.RM_SandBuriedGraphicExtension" MayRequire="mandrake.rm.biomes" />
+		</modExtensions>
 	</ThingDef>
 
 	<PawnKindDef ParentName="AnimalKindBase">
