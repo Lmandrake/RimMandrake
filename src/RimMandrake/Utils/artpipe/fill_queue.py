@@ -52,6 +52,11 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        substituted per job.
     derive_from        optional — id of a FINISHED sibling job (done manifest + _artsrc PNG); every facing
                        of the row is filed as an edit of that accepted render (same individual).
+    owner_note         optional — the owner's verbatim note, carried onto the job as its own field so the
+                       canon gate (canon_check.py) grades against it (wins over canon where they differ).
+    canon_na           optional — Must-show lines (1-based numbers or exact texts; list, or "2;4;5" in CSV)
+                       the canon gate marks n/a for this job and does not count; `canon_na_reason` says why.
+                       Any OTHER unknown row field is WARNED about on stderr, never silently dropped.
     canon_reference    optional — image path(s) to attach as ANATOMY guidance.
                        Defaults to the canon-library entry's images when
                        art/subject.py resolves one for target_def (exact or
@@ -96,6 +101,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -106,6 +112,35 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "art"))
 import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.jsonl
 
 REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h")
+
+# Every row field row_to_jobs/bind_subject reads. Anything else is WARNED about (never silently dropped).
+KNOWN_ROW_FIELDS = frozenset(REQUIRED_ROW_FIELDS) | {
+    "background", "biome_neutral", "biome_register", "canon", "canon_reference", "channel", "derive_from",
+    "drawsize", "facings", "install_to", "no_subject", "oversize_reason", "priority", "reference",
+    "style_notes", "target_def", "target_original", "target_texpath",
+    "owner_note", "canon_na", "canon_na_reason"}
+
+
+def _split_na(v):
+    """canon_na cell -> list of ints / exact texts. A list passes through; a string splits on ';' or '|'
+    (a bare '2,4,5' of digits splits on commas too, since line texts never look like that)."""
+    if v in (None, ""):
+        return []
+    if isinstance(v, (list, tuple)):
+        items = list(v)
+    else:
+        t = str(v).strip()
+        items = re.split(r"[,;|]", t) if re.fullmatch(r"[\d\s,;|]+", t) else re.split(r"[;|]", t)
+    out = []
+    for x in items:
+        if isinstance(x, str):
+            x = x.strip()
+            if not x:
+                continue
+            if x.isdigit():
+                x = int(x)
+        out.append(x)
+    return out
 
 # ARTPIPE_FACING_COHERENCE_1 §2: north/south are derivations of the accepted
 # east master, not fresh prompts — "same individual, same palette, same
@@ -247,6 +282,10 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
     binding = bind_subject(row, no_subject=no_subject, world=world)
+    unknown = sorted(k for k in row if k not in KNOWN_ROW_FIELDS and row[k] not in (None, ""))
+    if unknown:
+        print(f"WARNING: row {row.get('id', '?')!r} has unknown field(s) {unknown} — NOT carried onto the job "
+              f"(typo, or a field fill_queue does not support)", file=sys.stderr)
 
     # A per-row "channel" always wins over --channel, if the row bothers to
     # name one; otherwise every row in this invocation gets --channel's
@@ -376,6 +415,16 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             "created": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
         job.update(binding)
+        if row.get("owner_note") not in (None, ""):
+            on = row["owner_note"]
+            if not isinstance(on, (str, list)):
+                raise ValueError(f"row {base_id!r} owner_note must be a string")
+            job["owner_note"] = on
+        na = _split_na(row.get("canon_na"))
+        if na:
+            job["canon_na"] = na
+            if str(row.get("canon_na_reason") or "").strip():
+                job["canon_na_reason"] = str(row["canon_na_reason"]).strip()
         if row.get("install_to"):
             job["install_to"] = str(row["install_to"]).replace("{facing}", facing or "")
         if explicit_derive:

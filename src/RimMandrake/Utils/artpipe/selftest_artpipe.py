@@ -1000,6 +1000,40 @@ def test_derivation_duplicate_gate_fails_exact_copy_passes_different_image():
            "derive_from_palette_distance" in res_ok, res_ok)
 
 
+def test_fill_queue_carries_owner_note_canon_na_and_warns_on_unknown():
+    """Owner note and canon_na ride onto the job; any other unknown row field is WARNED, never silently dropped."""
+    import io
+    import contextlib
+    row = {"id": "noted", "rimflow_item_id": "SELFTEST_ARTPIPE", "prompt": "a beast", "canvas_w": 64,
+           "canvas_h": 64, "owner_note": "four legs only.", "canon_na": "2;4;5", "canon_na_reason": "subspecies",
+           "bogus_field": "x"}
+    err = io.StringIO()
+    with contextlib.redirect_stderr(err):
+        jobs = fill_queue.row_to_jobs(row, no_subject="selftest fixture")
+    j = jobs[0]
+    ok("fill_queue: owner_note carried onto the job", j.get("owner_note") == "four legs only.", j)
+    ok("fill_queue: canon_na parsed to ints + reason carried",
+       j.get("canon_na") == [2, 4, 5] and j.get("canon_na_reason") == "subspecies", j)
+    ok("fill_queue: unknown field warned (named) on stderr", "bogus_field" in err.getvalue(), err.getvalue())
+    ok("fill_queue: unknown field not carried", "bogus_field" not in j)
+    err2 = io.StringIO()
+    with contextlib.redirect_stderr(err2):
+        fill_queue.row_to_jobs(dict(row, bogus_field="", canon_na="", owner_note=""), no_subject="selftest fixture")
+    ok("fill_queue: no warning when only known fields", "WARNING" not in err2.getvalue(), err2.getvalue())
+    with tempfile.TemporaryDirectory() as td:
+        base = {"id": "x", "rimflow_item_id": "S", "canvas": {"width": 8, "height": 8}, "prompt": "p"}
+        for bad in ({"owner_note": 5}, {"canon_na": "2"}, {"canon_na": [1.5]}, {"canon_na_reason": 3}):
+            pth = Path(td) / "x.json"
+            pth.write_text(json.dumps(dict(base, **bad)))
+            try:
+                common.load_job(pth)
+                ok(f"load_job: rejects {bad}", False)
+            except common.JobError:
+                ok(f"load_job: rejects {bad}", True)
+        pth.write_text(json.dumps(dict(base, owner_note="n", canon_na=[2, "Exact text"], canon_na_reason="r")))
+        ok("load_job: accepts valid owner_note/canon_na", common.load_job(pth)["canon_na"] == [2, "Exact text"])
+
+
 def test_fill_queue_derives_north_south_from_east_master():
     """ARTPIPE_FACING_COHERENCE_1 §2's fill_queue half: a multi-facing row
     with an 'east' facing gets east as the fresh master; north/south carry
@@ -3680,6 +3714,7 @@ def main() -> int:
         test_derived_job_routes_to_failed_naming_the_master,
         test_derived_job_attaches_master_and_skips_reskin_validate_end_to_end,
         test_derivation_duplicate_gate_fails_exact_copy_passes_different_image,
+        test_fill_queue_carries_owner_note_canon_na_and_warns_on_unknown,
         test_fill_queue_derives_north_south_from_east_master,
         test_fill_queue_binds_every_job_to_its_subject,
         test_detector_meter_thresholds,

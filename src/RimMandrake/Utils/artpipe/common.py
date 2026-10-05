@@ -378,6 +378,17 @@ def load_job(path: Path) -> dict:
         if not isinstance(v, int) or isinstance(v, bool) or v <= 0:
             raise JobError(f"{path}: canvas.{k} must be a positive integer, got {v!r}")
 
+    on = job.get("owner_note")
+    if on is not None and not (isinstance(on, str) or (isinstance(on, list) and all(isinstance(x, str) for x in on))):
+        raise JobError(f"{path}: 'owner_note' must be a string (or list of strings)")
+    cna = job.get("canon_na")
+    if cna is not None and not (isinstance(cna, list) and all(
+            (isinstance(x, int) and not isinstance(x, bool)) or (isinstance(x, str) and x.strip()) for x in cna)):
+        raise JobError(f"{path}: 'canon_na' must be a list of Must-show line numbers or exact line texts")
+    cnr = job.get("canon_na_reason")
+    if cnr is not None and not isinstance(cnr, str):
+        raise JobError(f"{path}: 'canon_na_reason' must be a string")
+
     ref = job.get("reference")
     if ref is not None and (not isinstance(ref, str) or not ref):
         raise JobError(f"{path}: 'reference' must be a non-empty string path or null")
