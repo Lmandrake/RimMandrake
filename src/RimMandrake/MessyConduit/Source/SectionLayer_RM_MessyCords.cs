@@ -137,7 +137,7 @@ namespace RimMandrake.MessyConduit
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
                         if (!ripples && !s.OverFace && comp.IsMix(p))
-                            verts += MixRibbons(pts, y, s.S0);              // stage 2: the mix changes colour ALONG the cord
+                            verts += MixRibbons(pts, y, s.S0, StrandWidth, false);   // stage 2: the mix changes colour ALONG the cord
                         else if (!ripples)
                             verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
                                             pts, StrandWidth, y, s.S0, Vector2.zero);
@@ -147,7 +147,9 @@ namespace RimMandrake.MessyConduit
                             var dec = new List<V2>(s.Pts.Count / 3 + 2);
                             for (int i = 0; i < s.Pts.Count; i += 3) dec.Add(s.Pts[i]);
                             if ((s.Pts.Count - 1) % 3 != 0) dec.Add(s.Pts[s.Pts.Count - 1]);
-                            verts += Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
+                            // a mix cord keeps its colours at far zoom too (live 2026-10-04: only the owner colour had a LOD mesh)
+                            verts += comp.IsMix(p) ? MixRibbons(dec, baseY, s.S0, StrandWidth * 0.9f, true)
+                                                   : Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
                             lodDone = true;
                         }
                         k++;
@@ -177,17 +179,20 @@ namespace RimMandrake.MessyConduit
         /// <summary>A Modern "random mix" strand: split where the MixBlock block (and so the colour) changes, each segment in
         /// its own colour's strand, sharing the boundary point and continuing the u coordinate so the weave does not jump.
         /// State read: <see cref="MixSegmentsPrinted"/>.</summary>
-        private int MixRibbons(List<V2> pts, float y, double s0)
+        private int MixRibbons(List<V2> pts, float y, double s0, float width, bool lod)
         {
             int n = 0;
-            foreach (Aerial.ConduitStyles.MixSegment seg in Aerial.ConduitStyles.MixSegments(pts, s0, StrandWidth))
+            foreach (Aerial.ConduitStyles.MixSegment seg in Aerial.ConduitStyles.MixSegments(pts, s0, width))
             {
-                Material m = CordMaterials.StrandG(Aerial.ConduitStyles.Global("Modern", seg.Colour));
-                n += Ribbon(m, pts.GetRange(seg.From, seg.To - seg.From + 1), StrandWidth, y, seg.S0, Vector2.zero);
-                MixSegmentsPrinted++;
+                int g = Aerial.ConduitStyles.Global("Modern", seg.Colour);
+                Material m = lod ? CordMaterials.StrandLodG(g) : CordMaterials.StrandG(g);
+                n += Ribbon(m, pts.GetRange(seg.From, seg.To - seg.From + 1), width, y, seg.S0, Vector2.zero);
+                if (lod) MixLodSegmentsPrinted++; else MixSegmentsPrinted++;
             }
             return n;
         }
+
+        public static int MixLodSegmentsPrinted;
 
         public static int MixSegmentsPrinted;
 

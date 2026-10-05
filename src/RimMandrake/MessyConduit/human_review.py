@@ -1265,7 +1265,10 @@ class Review(object):
             r = {"runs": list(runs.values())}
             if s["n"] == 5:                            # random mix varies along the run: distinct strand textures on the top row
                 zt = s["origin"][1] + 18
-                r["mixStrands"] = sorted({p.get("strandTex") for p in st.get("pieces") or [] if (p.get("owner") or [0, 0])[1] == zt and p.get("strandTex")})
+                # a straight mix run is ONE cord piece whose colour changes along it: read the piece's mixTex (its printed
+                # segments), not strandTex (the piece's single representative material)
+                r["mixStrands"] = sorted({t for p in st.get("pieces") or [] if (p.get("owner") or [0, 0])[1] == zt
+                                          for t in (p.get("mixTex") or [p.get("strandTex")]) if t})
                 if len(r["mixStrands"]) < 2:
                     self.notes.append("station 5: random mix shows %d strand colour(s) along its run" % len(r["mixStrands"]))
             ms = [anchors.get(g(s, m[1])) or {} for m in s["masts"]]
