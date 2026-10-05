@@ -391,7 +391,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Kethevar/RM_Kethevar</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <ingestible>
@@ -453,7 +453,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Lisqueth/RM_Lisqueth</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <ingestible>
