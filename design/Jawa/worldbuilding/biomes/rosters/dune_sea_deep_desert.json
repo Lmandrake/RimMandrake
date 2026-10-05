@@ -723,7 +723,7 @@
       "action": "add",
       "band": "grain-scale",
       "commonality": 0.2,
-      "def": "RM_Liikka",
+      "def": "RM_LikkaLikka",
       "law": "light-eater; filter-feeds sand; BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01)."
     },
     {

@@ -34,3 +34,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - Dewfringe tier move: NO-OP — only RM_Dewfringe exists (no RSW_ twin anywhere); "add a bunch of variants" is art.
 - RENAME RM_Skarrok -> Ski'ra'lim: DONE — defName RM_Skiralim, label ski'ra'lim; texPath kept (owner: accept art). CALL: defNames of RM-only defs renamed (none is cast on a biome the saved planet carries); every renamed def keeps its texPath.
 - RENAME RM_Sollak -> Chorn: DONE — defName RM_Chorn, label/description chorn; texPath kept (owner: keep art).
+- RENAME RM_Liikka -> Likka Likka: DONE — defName RM_LikkaLikka, label/plural/description 'likka likka'; texPath kept; roster row renamed.

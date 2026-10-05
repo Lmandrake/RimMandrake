@@ -338,12 +338,13 @@
   </PawnKindDef>
 
   <!-- ============================================================ -->
-  <!-- 3. RM_Liikka — the light-eater                                 -->
+  <!-- 3. RM_LikkaLikka — the light-eater                                 -->
   <!-- ============================================================ -->
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_Liikka</defName>
-    <label>liikka</label>
+    <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Rename to Likka Likka"): renamed from RM_Liikka / "liikka". texPaths unchanged so the kept art still binds. -->
+    <defName>RM_LikkaLikka</defName>
+    <label>likka likka</label>
     <description>A thumb-sized surface mite whose back is a domed mirror and whose underside is the entire rest of the animal. It is the only creature on the planet that meets the biome's one surplus head-on: its dome meters photons down into photolytic tissue the way the light-pipe nubs do, and it sieves the top centimetre of sand for the glasscrust it grazes. It never drinks. In a biome that hides everything, a traveller sees a scatter of stationary glints that turn out, on the next look, to have moved.</description>
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
@@ -408,10 +409,10 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Liikka</defName>
-    <label>liikka</label>
-    <labelPlural>liikka</labelPlural>
-    <race>RM_Liikka</race>
+    <defName>RM_LikkaLikka</defName>
+    <label>likka likka</label>
+    <labelPlural>likka likka</labelPlural>
+    <race>RM_LikkaLikka</race>
     <combatPower>2</combatPower>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <canArriveManhunter>false</canArriveManhunter>
