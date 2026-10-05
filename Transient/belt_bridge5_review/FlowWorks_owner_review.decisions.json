@@ -1,0 +1,183 @@
+{
+ "posture": "whitelist",
+ "decisions": {
+  "canal_reads_as_dug_channel": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_dry_reads_as_obstacle": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "filled_excavation_reads_as_obstacle": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_partial_fill_distinct": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "fill_tier_legible": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_fill_spreads_along_itself": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_fill_front_watchable": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "tar_fill_front_lags_water": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "canal_holds_only_the_channel": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_reads_as_same_liquid_as_reservoir": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "fill_fluid_distinct": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "depth_and_fill_jointly_legible": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "reservoir_fill_visibly_drops": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "reservoir_shoreline_recedes": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "empty_reservoir_stops_flow": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "reservoir_recharge_progress_visible": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_burning_reads_as_burning_liquid": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_fire_reaches_reservoir": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_fire_persists": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "canal_spent_after_burn": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "slime_reads_as_viscous_not_water": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "slime_occupant_below_surface": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pit_depth_ladder_legible": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pawn_height_ladder_legible": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pawn_lowers_on_deeper_cell": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pawn_rises_on_shallower_cell": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pit_reads_as_hole": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_walls_have_visible_depth": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_not_vanilla_trap": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_reads_at_size": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_occupant_below_floor": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_occupied_distinguishable": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "pit_trapped_reads_as_trapped": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pit_covered_invisible": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "pit_covered_seam_at_max_zoom": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "ladder_state_legible": {
+   "decision": "right",
+   "note": "prefill: state read PASSED live; the LOOK is yours"
+  },
+  "sluice_gate_state_legible": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "spikes_read_distinct": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "never_liquid_on_open_ground": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "never_gravel_path": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "never_full_reservoir_after_heavy_draw": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "never_snared_standing": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  },
+  "never_reads_as_building": {
+   "decision": "",
+   "note": "left open on purpose: only your eyes decide a look bar"
+  }
+ },
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "generated by Transient/belt_bridge5_make_sheet.py; nobody has ruled"
+ }
+}

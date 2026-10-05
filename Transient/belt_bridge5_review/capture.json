@@ -1,0 +1,133 @@
+{
+ "shots": {
+  "X_promoted": {
+   "what": "X scenes: pawn sink strip (z70), two fluids + junction (z74-76), tar/water/viscosity-off races (z79/82/85), cover deck (140,70)",
+   "rect": [
+    128,
+    67,
+    16,
+    21
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162557__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\X_promoted.png"
+  },
+  "P_pits": {
+   "what": "P scenes: 1x1 / trench / 2x2 pits, small vs large occupant; walk-in + ladder (166,100); control (172,100)",
+   "rect": [
+    128,
+    96,
+    47,
+    9
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162558__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\P_pits.png"
+  },
+  "S_ladder": {
+   "what": "S scenes: fill ladder D1..D4 (z60), fill clamp (z64)",
+   "rect": [
+    128,
+    58,
+    11,
+    9
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162558__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\S_ladder.png"
+  },
+  "J_jobs": {
+   "what": "J scenes: open vs roofed cell (180/182,60), fill-in, overflow, dig job (190-200,60)",
+   "rect": [
+    178,
+    57,
+    24,
+    6
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162558__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\J_jobs.png"
+  },
+  "E5_sinks": {
+   "what": "E5 sink scenes: sink on (x200), inner (x210), sink off (x220)",
+   "rect": [
+    198,
+    3,
+    25,
+    28
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162559__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\E5_sinks.png"
+  },
+  "E2_flow": {
+   "what": "E2 flow from bodies: east/north/south arms",
+   "rect": [
+    10,
+    54,
+    12,
+    16
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162559__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\E2_flow.png"
+  },
+  "E3_E4": {
+   "what": "E3 budget (x60), E3b recede (x70), E4 engine (x80)",
+   "rect": [
+    58,
+    140,
+    25,
+    12
+   ],
+   "ok": true,
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\rimbridge_20261005_162559__cell_rect.png",
+   "file": "Transient\\belt_bridge5_review\\E3_E4.png"
+  }
+ },
+ "pawns": [
+  [
+   "Human924",
+   "PlayerColony",
+   166,
+   96
+  ],
+  [
+   "Human927",
+   "PlayerColony",
+   155,
+   88
+  ],
+  [
+   "Human930",
+   "PlayerColony",
+   167,
+   95
+  ],
+  [
+   "Human25254",
+   "PlayerColony",
+   168,
+   100
+  ],
+  [
+   "Human25257",
+   "PlayerColony",
+   166,
+   95
+  ],
+  [
+   "Human25260",
+   "PlayerColony",
+   178,
+   104
+  ]
+ ],
+ "save": {
+  "call": true,
+  "new": [
+   "NS_FlowWorks_Review_20261005.rws"
+  ],
+  "changed": []
+ }
+}
