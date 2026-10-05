@@ -1,0 +1,1 @@
+rm-artpiped loads its code once at start and runs from the FOUNDRY clone: a merged artpipe change (e.g. canon_reference, 87e6995b6) does nothing until foundry's clone has it AND the daemon restarts. It ran 2026-10-03 22:04 code all of 10-04, so every redo that day rendered without canon guidance. After any artpipe change: compare ps lstart vs the commit, restart when queue idle.
