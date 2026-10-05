@@ -50,8 +50,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 -->
 <Defs>
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Horrors (mlie) Terrorworm -> RSW_Vurra. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
-		<defName>RSW_Vurra</defName>
+		<!-- Horrors (mlie) Terrorworm -> RM_Vurra. Donor's HiveMind thinkTreeMain dropped (that mod's own AI framework); default AnimalThingBase think tree applies. Tools verbatim, capacities/groups already vanilla. -->
+		<defName>RM_Vurra</defName>
 		<label>vurra</label>
 		<description>An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Vurras are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt.</description>
 		<statBases>
@@ -115,9 +115,9 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Vurra</defName>
+		<defName>RM_Vurra</defName>
 		<label>vurra</label>
-		<race>RSW_Vurra</race>
+		<race>RM_Vurra</race>
 		<combatPower>50</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
 		<lifeStages>
@@ -148,8 +148,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Cactipine -> RSW_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
-		<defName>RSW_Chikka</defName>
+		<!-- Alpha Animals AA_Cactipine -> RM_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
+		<defName>RM_Chikka</defName>
 		<label>chikka</label>
 		<description>A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates.</description>
 		<statBases>
@@ -216,9 +216,9 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Chikka</defName>
+		<defName>RM_Chikka</defName>
 		<label>chikka</label>
-		<race>RSW_Chikka</race>
+		<race>RM_Chikka</race>
 		<combatPower>30</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
 		<wildGroupSize>
@@ -333,8 +333,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Needlepost -> RSW_Skorra. Same body substitution as Spineroller (QuadrupedAnimalWithPawsAndTail for AA_SentientPlant, AA_Mouth->Teeth). AA_ToxicSting->Scratch. Dropped: CompProperties_LightSustenance, CompProperties_InitialAbility (venom barb ability) - both VEF.AnimalBehaviours, donor framework. -->
-		<defName>RSW_Skorra</defName>
+		<!-- Alpha Animals AA_Needlepost -> RM_Skorra. Same body substitution as Spineroller (QuadrupedAnimalWithPawsAndTail for AA_SentientPlant, AA_Mouth->Teeth). AA_ToxicSting->Scratch. Dropped: CompProperties_LightSustenance, CompProperties_InitialAbility (venom barb ability) - both VEF.AnimalBehaviours, donor framework. -->
+		<defName>RM_Skorra</defName>
 		<label>skorra</label>
 		<description>A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first skorras was overrun soon after. Skorras can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal.</description>
 		<statBases>
@@ -399,9 +399,9 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Skorra</defName>
+		<defName>RM_Skorra</defName>
 		<label>skorra</label>
-		<race>RSW_Skorra</race>
+		<race>RM_Skorra</race>
 		<combatPower>90</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
 		<wildGroupSize>
@@ -434,8 +434,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Wildpawn -> RSW_Durrok. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
-		<defName>RSW_Durrok</defName>
+		<!-- Alpha Animals AA_Wildpawn -> RM_Durrok. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
+		<defName>RM_Durrok</defName>
 		<label>durrok</label>
 		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
 		<statBases>
@@ -514,9 +514,9 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Durrok</defName>
+		<defName>RM_Durrok</defName>
 		<label>durrok</label>
-		<race>RSW_Durrok</race>
+		<race>RM_Durrok</race>
 		<combatPower>120</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
 		<wildGroupSize>
@@ -527,21 +527,21 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>0.7</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>1.5</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn</texPath>
+					<texPath>Things/Pawn/Animal/RM_Durrok/RM_Durrok</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -673,8 +673,8 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_Wildpod -> RSW_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RSW_Durrok. -->
-		<defName>RSW_Mullgoth</defName>
+		<!-- Alpha Animals AA_Wildpod -> RM_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RM_Durrok. -->
+		<defName>RM_Mullgoth</defName>
 		<label>mullgoth</label>
 		<description>A lumbering mass of what looks like decomposing plant matter, in fact a sentient mycoid creature. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
 		<statBases>
@@ -752,30 +752,30 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		</tradeTags>
 	</ThingDef>
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RSW_Mullgoth</defName>
+		<defName>RM_Mullgoth</defName>
 		<label>mullgoth</label>
-		<race>RSW_Mullgoth</race>
+		<race>RM_Mullgoth</race>
 		<combatPower>250</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
 					<drawSize>2.6</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Wildpod/AA_Wildpod</texPath>
+					<texPath>Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth</texPath>
 					<drawSize>3.8</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -967,7 +967,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- Alpha Animals AA_BoulderMit -> RSW_Korrum (was RSW_Bokka until 2026-09-22; see the header). Body already vanilla TurtleLike (matches sibling RSW_Khorrak/RSW_Zhakka/RSW_Vozzik usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RSW_Chikka/RSW_Durrok above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom reference at RSW_Khorrak above (now useMeatFrom>RSW_Korrum). -->
+		<!-- Alpha Animals AA_BoulderMit -> RSW_Korrum (was RSW_Bokka until 2026-09-22; see the header). Body already vanilla TurtleLike (matches sibling RSW_Khorrak/RSW_Zhakka/RSW_Vozzik usage of the same body in this batch); tools/capacities (TurtleBeakAttackTool Bite, HeadAttackTool Blunt) already vanilla, no substitution needed. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic random-stone-chunk harvest, donor framework - matches this batch's standing rule of dropping AnimalProduct comps, e.g. RM_Chikka/RM_Durrok above), VEF.AnimalBehaviours.AnimalStatExtension modExtension (info-card flavor + linked art image, donor framework). butcherProducts (plain vanilla chunk items, not a comp) kept. Donor's own custom SoundDef AA_BouldermitSound (soundWounded/soundAngry) substituted with vanilla Pawn_Megascarab_Wounded/Pawn_Megascarab_Angry, completing the vanilla Megascarab sound family already used donor-side for Death/Call. This closes the batch's own dangling useMeatFrom reference at RSW_Khorrak above (now useMeatFrom>RSW_Korrum). -->
 		<defName>RSW_Korrum</defName>
 		<label>korrum</label>
 		<description>A massive genetically-engineered crab that carries a boulder for a shell. Korrums are placid to the point of indifference, ignoring nearly anything short of a direct attack, and their armor is thick enough that most predators leave them alone rather than bother. Old spacer stories tell of one grown so large it had a whole mountain for a home.</description>
