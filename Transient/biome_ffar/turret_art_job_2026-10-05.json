@@ -1,0 +1,16 @@
+[
+ {
+  "id": "RUT_AncientShieldedTurret_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RUT_AncientShieldedTurret",
+  "prompt": "RimWorld game building sprite, seen from directly above: a scavenged automated gun turret salvaged from a derelict starship, a squat square emplacement wrapped in a battered slab of curved ballistic plating bolted crudely in front, a short twin-barrel gun mount poking out past the plate edge. Weathered dark alloy hull, exposed cabling, rivets, scorch marks, muted amber status light. Ancient-salvage look: old, patched, industrial, matte. One centred object filling most of a square canvas. Not a creature, not organic, no shell or body shapes.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painted RimWorld building sprite, single image, transparent background, no ground shadow. Dark weathered alloy, rust and scorch, muted amber lighting. Owned design, same register as the old-line turret and other ancient salvage.",
+  "owner_note": "Replaces the current texture, which is by coincidence the purged Vhaulk render a25f92f1. Single Graphic_Single used for both building and gun top, drawSize 3x3."
+ }
+]
