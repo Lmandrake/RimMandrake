@@ -346,6 +346,20 @@ namespace RimMandrake.FlowWorks
 			return recipientDepth > donorDepth;
 		}
 
+		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 step 2, Q3 (owner 2026-10-02): fluids never mix. May a donor
+		/// carrying <paramref name="donorFluid"/> give a level to a recipient? A dry recipient (or one with no
+		/// recorded fluid) takes any fluid and so claims the cell; a wet recipient only takes its own fluid.
+		/// An unrecorded donor (null) is permissive, so a save with no identity behaves as before. Only removes
+		/// candidates, so it cannot reintroduce FLOWWORKS_CHANNEL_OSCILLATION_1.</summary>
+		public static bool FluidsCompatible<T>(bool recipientWet, T recipientFluid, T donorFluid) where T : class
+		{
+			if (!recipientWet || recipientFluid == null || donorFluid == null)
+			{
+				return true;
+			}
+			return ReferenceEquals(recipientFluid, donorFluid);
+		}
+
 		/// <summary>FLOWWORKS_SHARED_SOURCE_STALL_1. One pulse component: BFS from
 		/// <paramref name="seed"/> (an excavated cell) through excavated cells,
 		/// collecting adjacent source cells as donors that are never expanded
