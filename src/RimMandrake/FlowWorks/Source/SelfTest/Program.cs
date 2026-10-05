@@ -884,6 +884,28 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_FireMath.AttachChance(false) < 1f, "a free pawn may step out unburned");
             });
 
+            // ── PIT_FILL_EFFECTS_1: drowning only at D=4 for non-swimmers; poison keyed to fill ──
+            Case("FillEffects_drowning_is_superdeep_nonswimmer_and_keyed_to_fill", () =>
+            {
+                float full = RM_FillEffectMath.DrowningPerCheck(4, 4, true, false, false, 1f);
+                Assert(full > 0f, "brimming D=4 drowns a non-swimmer");
+                Assert(1f / full <= 10.5f && 1f / full >= 9.5f, "about ten checks (one in-game hour) to death at brim");
+                AssertClose(RM_FillEffectMath.DrowningPerCheck(1, 4, true, false, false, 1f), full / 4f, "F=1 drowns at a quarter rate");
+                AssertClose(RM_FillEffectMath.DrowningPerCheck(4, 4, true, true, false, 1f), 0f, "a swimmer treads water");
+                AssertClose(RM_FillEffectMath.DrowningPerCheck(4, 4, true, false, true, 1f), 0f, "a flier is not in it");
+                AssertClose(RM_FillEffectMath.DrowningPerCheck(3, 3, false, false, false, 1f), 0f, "never shallower than D=4");
+                AssertClose(RM_FillEffectMath.DrowningPerCheck(0, 4, true, false, false, 1f), 0f, "a dry pit drowns no one");
+            });
+            Case("FillEffects_poison_scales_with_fill_and_resistance", () =>
+            {
+                float full = RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 0f, false);
+                AssertClose(full, 0.01f, "2.4/day at brim is 0.01 per 250-tick check");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(1, 3, 2.4f, 0f, false), full / 3f, "one third full, one third dose");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 0.5f, false), full / 2f, "half resistance, half dose");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 2.4f, 1f, false), 0f, "immune");
+                AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 0f, 0f, false), 0f, "water is not poison");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

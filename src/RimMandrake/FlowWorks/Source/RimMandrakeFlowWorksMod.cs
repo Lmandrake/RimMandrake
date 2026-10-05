@@ -148,6 +148,10 @@ namespace RimMandrake.FlowWorks
         public static float fallDamageMultiplier = 1f;
         // PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL numbers): exposure on/off, temperature coupling, resistance loss rate.
         public static bool pitExposureEnabled = true;
+        // PIT_FILL_EFFECTS_1 (PROVISIONAL rates): drowning at D=4 with any fill (non-swimmers), poison fluid toxin keyed to fill.
+        public static bool pitDrowningEnabled = true;
+        public static float pitDrowningRateMultiplier = 1f;
+        public static bool poisonFillEnabled = true;
         public static float pitTemperatureCoupling = 3f;
         public static float pitResistanceLossMultiplier = 1f;
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
@@ -298,6 +302,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
             Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
             Scribe_Values.Look(ref pitExposureEnabled, "pitExposureEnabled", true);
+            Scribe_Values.Look(ref pitDrowningEnabled, "pitDrowningEnabled", true);
+            Scribe_Values.Look(ref pitDrowningRateMultiplier, "pitDrowningRateMultiplier", 1f);
+            Scribe_Values.Look(ref poisonFillEnabled, "poisonFillEnabled", true);
             Scribe_Values.Look(ref pitTemperatureCoupling, "pitTemperatureCoupling", 3f);
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
@@ -552,6 +559,17 @@ namespace RimMandrake.FlowWorks
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
 
+            list.CheckboxLabeled("A flooded pit drowns whoever cannot swim", ref pitDrowningEnabled,
+                "Any liquid in a superdeep cell drowns a trapped non-swimmer, faster the fuller it is "
+              + "(about an hour when brimming). Swimming creatures tread water. Off: liquid in a pit is harmless.");
+            if (pitDrowningEnabled)
+            {
+                list.Label("Drowning speed: x" + pitDrowningRateMultiplier.ToString("F2"));
+                pitDrowningRateMultiplier = list.Slider(pitDrowningRateMultiplier, 0.1f, 5f);
+            }
+            list.CheckboxLabeled("Poisonous liquid poisons whoever stands in it", ref poisonFillEnabled,
+                "A poison liquid builds up toxins in anyone standing in it, more the fuller the cell. "
+              + "Toxic resistance helps. Off: poison is just another liquid.");
             list.CheckboxLabeled("An open pit wears down whoever is left in it", ref pitExposureEnabled,
                 "An unroofed pit room tracks outdoor temperature faster, and a prisoner left in it gains pit "
               + "exposure and loses recruitment resistance. Off: a pit room behaves like any room.");

@@ -65,6 +65,7 @@ FW_TOGGLES = [
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
     "swaleEnabled",
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
+    "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -1245,6 +1246,75 @@ def toggle_pit_exposure(t):
             _wait(t, 4 * 250)
             if t._guard():
                 _expect(not _has_exposure(pid2), "RM_PitExposure applied while pitExposureEnabled is off")
+
+
+def _fill_fx(t):
+    """PIT_FILL_EFFECTS_1 census: every pawn standing in liquid, with cell fluid, swimmer flag, drown/tox severity."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitFillEffects", method="ProofReport", args="")
+    return str((r or {}).get("result", ""))
+
+
+def _fx_row(report, pid):
+    for row in report.split(" | "):
+        if row.startswith(str(pid) + "@"):
+            return dict(kv.split("=", 1) for kv in row.split(" ")[1:] if "=" in kv)
+    return {}
+
+
+@suite.chain("pit_fill_effects")
+def pit_fill_effects(t):
+    """PIT_FILL_EFFECTS_1 first script (owner Q3): two occupied D=4 cells side by side, water and poison, each
+    applies only its own fluid's effect, read per cell by fluid id; a third (oil) is lit and burns its occupant.
+    Expected first fail before the build: no fluid effect at all (RM_PitDrowning had no writer)."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    a, b, c = pit[2], pit[4], pit[6]
+    _fill_fluid(t, a[0], a[1], 4, "RM_Fluid_Water")
+    _fill_fluid(t, b[0], b[1], 4, "RM_Fluid_Poison")
+    _fill_fluid(t, c[0], c[1], 4, "RM_Fluid_Oil")
+    pa = _spawn_pawn_at(t, "Colonist", a[0], a[1])
+    pb = _spawn_pawn_at(t, "Colonist", b[0], b[1])
+    pc = _spawn_pawn_at(t, "Colonist", c[0], c[1])
+    with t.component("pit_fluid_effects_per_cell", toggle="pitDrowningEnabled"):
+        _wait(t, 4 * 250)
+        rep = _fill_fx(t)
+        ra, rb = _fx_row(rep, pa), _fx_row(rep, pb)
+        if t._guard():
+            _expect(ra.get("fluid") == "RM_Fluid_Water" and float(ra.get("drown", 0)) > 0 and float(ra.get("tox", 0)) == 0,
+                    "water pit: drowning only, got %r" % ra)
+            _expect(rb.get("fluid") == "RM_Fluid_Poison" and float(rb.get("tox", 0)) > 0,
+                    "poison pit: toxic buildup, got %r" % rb)
+    with t.component("oil_pit_burns_occupant", toggle="canalFireEnabled"):
+        _light(t, c[0], c[1])
+        _wait(t, 2 * 250)
+        rc = _fx_row(_fill_fx(t), pc)
+        if t._guard():
+            _expect(rc.get("burning") == "True", "lit oil pit not burning: %r" % rc)
+            r = t.bridge_call("jawa/pawn_health", pawn=pc)
+            _expect("Burn" in json.dumps(r or {}), "occupant of a burning oil pit has no burn")
+
+
+@suite.chain("toggle_pit_fill_effects")
+def toggle_pit_fill_effects(t):
+    """OFF: water at D=4 drowns no one and poison poisons no one."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    _fill_fluid(t, pit[3][0], pit[3][1], 4, "RM_Fluid_Water")
+    _fill_fluid(t, pit[5][0], pit[5][1], 4, "RM_Fluid_Poison")
+    with t.component("pit_drowning_off", toggle="pitDrowningEnabled"):
+        with _setting(t, "pitDrowningEnabled", False):
+            pid = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
+            _wait(t, 4 * 250)
+            _expect(float(_fx_row(_fill_fx(t), pid).get("drown", 0)) == 0 if t._guard() else None,
+                    "drowning with pitDrowningEnabled OFF")
+    with t.component("poison_fill_off", toggle="poisonFillEnabled"):
+        with _setting(t, "poisonFillEnabled", False):
+            pid = _spawn_pawn_at(t, "Colonist", pit[5][0], pit[5][1])
+            _wait(t, 4 * 250)
+            _expect(float(_fx_row(_fill_fx(t), pid).get("tox", 0)) == 0 if t._guard() else None,
+                    "toxin with poisonFillEnabled OFF")
 
 
 @suite.chain("toggle_bottle_loop")
