@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModsConfigData>
+  <version>1.6.4871 rev590</version>
+  <activeMods>
+    <li>brrainz.harmony</li><li>ludeon.rimworld</li><li>ludeon.rimworld.royalty</li><li>ludeon.rimworld.ideology</li><li>ludeon.rimworld.biotech</li><li>ludeon.rimworld.anomaly</li><li>ludeon.rimworld.odyssey</li><li>oskarpotocki.vanillafactionsexpanded.core</li><li>brrainz.rimbridgeserver</li><li>7f.alienworlds</li><li>7f.alienworlds.tidallylocked</li><li>sarg.alphabiomes</li><li>oblitus.mylittleplanet</li><li>mandrake.rm.inhabited</li><li>neronix17.toolbox</li><li>Neronix17.OuterRim.Core</li><li>erdelf.HumanoidAlienRaces</li><li>mandrake.rsw.ionweapons</li><li>mandrake.rsw.droidworks</li>
+    <li>mandrake.rm.flowworks</li><li>mandrake.rut.shipmemory</li><li>mandrake.rm.injections</li><li>mandrake.rut.injections</li><li>rw.mod.simplestairs</li><li>Kutte.Stairs</li><li>mlie.decorativecliffs</li>    <li>mandrake.rm.aftermath</li>
+    <li>mandrake.rm.biomes</li>
+    <li>mandrake.rm.flamestatues</li>
+    <li>mandrake.rm.gimmesomeslack</li>
+    <li>mandrake.rm.gravshiplanding</li>
+    <li>mandrake.rm.keelhoist</li>
+    <li>mandrake.rm.ninefold</li>
+    <li>mandrake.rm.raidredesigner</li>
+    <li>mandrake.rm.rustchrome</li>
+    <li>mandrake.rsw.armoury</li>
+    <li>mandrake.rsw.bacta</li>
+    <li>mandrake.rsw.brainworms</li>
+    <li>mandrake.rsw.gizkastowaway</li>
+    <li>mandrake.rsw.starwarsraces</li>
+    <li>mandrake.rsw.swbestiary</li>
+    <li>mandrake.rut.antiquities</li>
+    <li>mandrake.rut.falllinearrivals</li>
+    <li>mandrake.rut.pawnflavor</li>
+    <li>mandrake.rut.researchretag</li>
+    <li>mandrake.rut.restrainingbolts</li>
+    <li>mandrake.rut.unfinishedline</li>
+    <li>mandrake.rut.utinnistatues</li>
+  <li>mandrake.rm.shipvermin</li><li>mandrake.rut.droidrepairjobs</li></activeMods>
+  <knownExpansions>
+    <li>ludeon.rimworld.royalty</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+  </knownExpansions>
+</ModsConfigData>
