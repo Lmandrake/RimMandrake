@@ -16,3 +16,5 @@ scurrier done
 shyrack done
 strill done
 uvak done
+womprat done
+wraid done

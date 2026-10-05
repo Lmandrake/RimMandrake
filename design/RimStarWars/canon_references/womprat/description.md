@@ -2,10 +2,6 @@
 
 **defName**: `RSW_WompRat` — in-repo label "womp rat"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Womp_rat
 
@@ -33,11 +29,36 @@ Given its repugnant bestial qualities, it therefore may be somewhat surprising f
 The Jundland Wastes womp rat appeared shortly after Imperials arrived on Tatooine, and some have speculated it was a mutated form of the Beggar's Canyon womp rat, affected by chemicals from Imperial waste dumps. Some of its mutations include a larger size, slower reproduction rate, and lower numbers …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Images 1 and 2 are canon (a live-action/practical-style render of a brown womp rat
+sitting up, and a grey-black illustration from a Databank-style book); images 3 and 4 are LEGENDS (a
+golden-furred painting with tusks, and three greenish-tan womp rats on a landspeeder). The
+four show four different colourings; the canon prose ("lumpish gray skin with tufts of spiky black
+hair along the back") fits image 2 best.
+- **Silhouette**: a large, heavy-chested, hunched, rat-like quadruped, with a long naked scaly tail
+  as long as the body or longer. Hindquarters lower, shoulders tall, slung head; image 1 sits up like
+  a kangaroo/rat on its haunches with arms down.
+- **Head**: a long rat-like snout, small dark nose, long upright rounded ears (very large in image 3,
+  tall pointed tufted in image 1), long whiskers, large YELLOW eyes (image 2 and 3 glow amber-yellow;
+  image 1 eyes dull red), prominent long curved incisor fangs jutting upward from the lower jaw (images
+  2, 3, 4), and a pale wispy beard tuft under the chin in image 1.
+- **Hands/feet**: THREE long dark curved claws on each paw (clearly counted in images 2 and 3), thin
+  hairless pads/fingers; forepaws are hand-like.
+- **Coat (images disagree)**: image 2 (canon) = lumpy bare grey-black hide with a stiff mohawk-like
+  ridge of spiky black bristle hair along the spine and thin whiskers; image 1 (canon) = scruffy
+  mottled brown fur with a dark patchy back; image 3 (Legends) = long golden-tan flowing fur; image 4
+  (Legends) = scruffy olive-tan with a dark mane ridge. Prose and the strongest canon art say grey skin
+  + black spiky back tufts; fur length varies by image.
+- **Tail**: long, thin, hairless, pale, ringed/segmented like a rat's tail (image 2 clearest), often
+  curling up.
+- **Size cues**: prose says about two metres; images 4 shows each about the size of the landspeeder
+  roof canopy, meaning bigger than a dog. Image 2 seems dog-pony sized.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Large hunched heavy-shouldered rat-like quadruped, a bit bigger than a big dog
+- [ ] Grey-black lumpy hide with a ridge of stiff spiky black hairs along the spine (canon prose and image 2)
+- [ ] Long snout with whiskers, big yellow eyes, long upright rounded ears, and long curved upward fangs from the lower jaw
+- [ ] Three-clawed hand-like paws with long dark claws
+- [ ] Very long thin hairless ringed pale tail
 
 ## Engine limits
 not yet assessed

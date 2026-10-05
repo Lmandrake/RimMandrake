@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Wraid` — in-repo label "wraid"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Wraid
 
@@ -20,11 +16,31 @@ Despite their ferocious appearance and short temper, they were a popular quarry 
 Their skull plates were rumored to have medical uses, but the market for them was very specific. Wraidskin could be used to make armor such as Cerean wraidskin chestguards, Huttese wraidskin chestguards, Echani wraidskin chestguard, and Huttese wraidskin wristguards.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Both images are canon (video-game renders: a Star Wars: The Old Republic wraid on
+sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind).
+- **Silhouette (loud: the defining trait)**: a HUGE-ARMED ape/gorilla-like knuckle-walker. The two
+  forelegs are enormous, thick, muscular pillars, as thick as the body and far larger than the hind
+  legs, ending in huge fist-like knuckle-pads and a few big curved claws; the animal goes forward on
+  its fists like a gorilla. The hind legs are thin, short and small in comparison and kept folded
+  behind (prose: "two small back legs").
+- **Head**: a huge, low-slung, boxy head -- a blunt, flat-topped, wrinkled helmet-like skull that is
+  nearly as wide as the shoulders, with plated ridged brow bone, a wide horizontal mouth with a row of
+  small sharp teeth (SWTOR) or a mouth that opens to a pink-red tongue (SWG), tiny deep-set eyes
+  (yellow in SWG), no visible neck.
+- **Body**: short, stout, hump-shouldered torso slung low; the head and arms dominate the silhouette.
+- **Skin/colour (images disagree)**: SWTOR = warm saturated orange-gold hide with dark green-brown
+  forearms and olive-yellow scales on the arms and knuckles, tan-orange face; SWG = pinkish-red to
+  maroon, mottled with purple and tan, darker olive-brown legs with tan claws. Prose: pinkish-red.
+  The SWG version fits prose; SWTOR is more orange.
+- **Texture**: tough wrinkled, bumpy and scaly hide with small scales on the arms and head folds.
+- **Size cues**: no scale reference; prose says "large". The head alone is bigger than the hind legs.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Gorilla-like knuckle-walking stance on two enormous pillar-thick forearms with big knuckle-pads and a few big curved claws
+- [ ] Two small thin hind legs, much smaller than the forelegs, kept folded behind
+- [ ] Huge low blocky flat-topped wrinkled head with no visible neck, wide mouth with small sharp teeth and tiny deep-set eyes
+- [ ] Pinkish-red to maroon (prose, SWG) or orange-gold (SWTOR) tough bumpy scaly hide, with darker olive-brown forearms
+- [ ] Short stout hump-shouldered body slung low
 
 ## Engine limits
 not yet assessed
