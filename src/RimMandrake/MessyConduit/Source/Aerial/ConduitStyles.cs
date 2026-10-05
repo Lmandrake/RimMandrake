@@ -191,8 +191,8 @@ namespace RimMandrake.MessyConduit.Aerial
             public int Winner = -1;
             /// <summary>Indices of runs to repaint to (Look, Colour).</summary>
             public readonly List<int> Repaint = new List<int>();
-            /// <summary>The winner is legacy and must first be written for real (the save migration: each cell stores the
-            /// look and colour it was drawing).</summary>
+            /// <summary>The winner is legacy: the run ends in the default look with no stored colour (its own members stay
+            /// unwritten, NeedsWrite; a Modern loser stores plain "Modern" and draws the winner's per-net colour).</summary>
             public bool MaterialiseWinner;
             /// <summary>Two different styles met (the player gets a message naming both).</summary>
             public bool StylesDiffered;
@@ -204,8 +204,8 @@ namespace RimMandrake.MessyConduit.Aerial
         ///   * no neighbouring run: it keeps the style it was built with (none stays none = drawn in the default look);
         ///   * one run: it adopts that run's style whatever the button said;
         ///   * several runs: the largest wins (tie: older), every other run is repainted to it.
-        /// A legacy run (nothing stored) that is built onto by a STYLED piece is written for real first, in the default look
-        /// it draws; an unstyled piece (another mod, a quest) joining only legacy runs writes nothing.
+        /// A legacy run (nothing stored) counts as the default look it draws; an unstyled piece (another mod, a quest) joining
+        /// only legacy runs writes nothing. Which members are actually written is NeedsWrite's call.
         /// </summary>
         public static Plan PlanPlacement(string ownLook, string ownColour, IList<Run> runs, string defaultLook)
         {
@@ -221,7 +221,7 @@ namespace RimMandrake.MessyConduit.Aerial
             {
                 p.MaterialiseWinner = true;
                 p.Look = defaultLook;
-                p.Colour = null;                            // the caller materialises each cell's drawn colour
+                p.Colour = null;                            // no stored colour: the default colour setting draws it
             }
             else { p.Look = win.Look; p.Colour = win.Colour; }
             for (int i = 0; i < runs.Count; i++)
@@ -253,12 +253,57 @@ namespace RimMandrake.MessyConduit.Aerial
         // ------------------------------------------------------------------ colours and materials
         public static int ColourIndex(string c) => Array.IndexOf(Colours, c);
 
-        /// <summary>A mix cell's colour: a fixed hash of its position (stable through save/load, merges and rebuilds).</summary>
+        /// <summary>Length in cells of one cord of a mix run (live 2026-10-04: a per-PIECE colour left a straight 7-cell run one
+        /// colour, because a straight run is one cord piece; the colour must change ALONG the cord).</summary>
+        public const int MixBlock = 3;
+
+        /// <summary>A mix run's colour at a cell: the map is cut into MixBlock x MixBlock blocks and the colour steps by 2 per
+        /// block east and 3 per block north (mod 5), so two blocks side by side NEVER share a colour and any straight run of
+        /// MixBlock + 1 cells shows at least two colours. Pure position: stable through save/load, merges and rebuilds, and it
+        /// never flickers. Negative coordinates floor correctly.</summary>
         public static int MixColourIndex(int x, int z)
         {
-            uint h = unchecked((uint)(x * 73856093) ^ (uint)(z * 19349663));
-            h ^= h >> 13; h = unchecked(h * 2654435761u); h ^= h >> 16;
-            return (int)(h % (uint)Colours.Length);
+            int bx = FloorDiv(x, MixBlock), bz = FloorDiv(z, MixBlock);
+            int c = (bx * 2 + bz * 3) % Colours.Length;
+            return c < 0 ? c + Colours.Length : c;
+        }
+
+        public struct MixSegment { public int From, To, Colour; public double S0; }
+
+        /// <summary>The colour segments of a mix strand (printed by SectionLayer_RM_MessyCords, read by the probe): consecutive
+        /// points in one colour block, a point's colour being its cell's MixColourIndex; the boundary point belongs to both
+        /// segments. S0 is each segment's u start in the ribbon's own units (u = 4 s0 + length / (4 width)), so the weave runs on.</summary>
+        public static List<MixSegment> MixSegments(List<RimMandrake.MessyConduit.Core.V2> pts, double s0, double width)
+        {
+            var res = new List<MixSegment>();
+            if (pts == null || pts.Count < 2) return res;
+            int start = 0;
+            double len = 0, segStart = 0;
+            int col = MixColourIndex((int)Math.Floor(pts[0].X), (int)Math.Floor(pts[0].Z));
+            for (int i = 1; i < pts.Count; i++)
+            {
+                len += RimMandrake.MessyConduit.Core.V2.Dist(pts[i - 1], pts[i]);
+                int c = MixColourIndex((int)Math.Floor(pts[i].X), (int)Math.Floor(pts[i].Z));
+                if (c == col && i < pts.Count - 1) continue;
+                res.Add(new MixSegment { From = start, To = i, Colour = col, S0 = s0 + segStart / (width * 4.0) / 4.0 });
+                start = i; segStart = len; col = c;
+            }
+            return res;
+        }
+
+        private static int FloorDiv(int a, int b) => a >= 0 ? a / b : -((-a + b - 1) / b);
+
+        /// <summary>
+        /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an
+        /// older save's anchors changed): a member with no stored style is written only when what it draws would change --
+        /// its run takes a look other than the default, or a Modern conduit cell takes a stored colour or the mix -- or when
+        /// the player restyles the run (force). Otherwise it keeps drawing the default, storing nothing.
+        /// </summary>
+        public static bool NeedsWrite(bool hasStyle, bool isConduit, string look, string colourMode, string defaultLook, bool force)
+        {
+            if (force || hasStyle) return true;
+            if (look != defaultLook) return true;
+            return isConduit && look == "Modern" && (IsColour(colourMode) || colourMode == Mix);
         }
 
         /// <summary>The number of strand variants a look draws with (all of them, whatever the colour setting).</summary>

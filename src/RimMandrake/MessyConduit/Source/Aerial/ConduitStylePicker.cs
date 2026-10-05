@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimMandrake.MessyConduit.Core;
 using RimWorld;
@@ -249,6 +250,41 @@ namespace RimMandrake.MessyConduit.Aerial
             return g;
         }
 
+        // ------------------------------------------------------------------ placement hint
+        private static IntVec3 hintCell = IntVec3.Invalid;
+        private static int hintFrame = -1;
+        private static string hintText;
+
+        /// <summary>"joins Industrial run" / "bridges Modern + Industrial: Industrial wins" for a cell, or null. Recomputed only
+        /// when the mouse cell changes (or every 30 frames), so a long run costs one flood fill per cell moved.</summary>
+        public static string JoinsHint(Map map, IntVec3 c)
+        {
+            if (c == hintCell && Time.frameCount - hintFrame < 30) return hintText;
+            hintCell = c; hintFrame = Time.frameCount;
+            hintText = null;
+            RM_MapComponent_ConduitRuns runs = map.GetComponent<RM_MapComponent_ConduitRuns>();
+            if (runs == null) return null;
+            var seen = new HashSet<Thing>();
+            var infos = new List<ConduitStyles.Run>();
+            foreach (IntVec3 cell in GenAdj.CellsAdjacentCardinal(c, Rot4.North, IntVec2.One).Concat(new[] { c }))
+            {
+                if (!cell.InBounds(map)) continue;
+                foreach (Thing t in cell.GetThingList(map))
+                {
+                    if (!IsMember(t.def) || seen.Contains(t)) continue;
+                    List<Thing> run = runs.RunOf(t);
+                    seen.UnionWith(run);
+                    infos.Add(RM_MapComponent_ConduitRuns.Info(run));
+                }
+            }
+            if (infos.Count == 0) return null;
+            string Look(ConduitStyles.Run r) => r.Look ?? StylePicker.DefaultLook;
+            var looks = infos.Select(Look).Distinct().ToList();
+            if (infos.Count == 1 || looks.Count == 1) hintText = "joins " + looks[0] + " run";
+            else hintText = "bridges " + string.Join(" + ", looks) + " runs: " + Look(infos[ConduitStyles.Winner(infos)]) + " wins (most conduit)";
+            return hintText;
+        }
+
         // ------------------------------------------------------------------ restyle gizmo
         public static Command RestyleGizmo(Building b)
         {
@@ -300,6 +336,26 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             if (__instance.sourcePrecept != null || !ConduitStylePicker.IsOurs(__instance.PlacingDef as ThingDef)) return;
             __result = ConduitStylePicker.Resolve(__instance) ?? __result;
+        }
+    }
+
+    /// <summary>The placement cursor says what the cell will join (design 2.3: "joins Industrial run", so nothing is a
+    /// surprise): one neighbouring run -> its look; two or more looks -> which one wins (the run with most conduit cells).</summary>
+    [HarmonyPatch(typeof(Designator_Build), nameof(Designator_Build.DrawMouseAttachments))]
+    internal static class Patch_DesignatorBuild_JoinsHint
+    {
+        private static void Postfix(Designator_Build __instance)
+        {
+            try
+            {
+                if (!MessyConduitSettings.enabled || !ConduitStylePicker.IsMember(__instance.PlacingDef as ThingDef)) return;
+                Map map = Find.CurrentMap;
+                IntVec3 c = UI.MouseCell();
+                if (map == null || !c.InBounds(map)) return;
+                string hint = ConduitStylePicker.JoinsHint(map, c);
+                if (hint != null) Widgets.MouseAttachedLabel(hint, 0f, 32f);
+            }
+            catch (Exception ex) { Log.ErrorOnce("[MessyConduit] joins hint: " + ex, 0x5E1E05); }
         }
     }
 

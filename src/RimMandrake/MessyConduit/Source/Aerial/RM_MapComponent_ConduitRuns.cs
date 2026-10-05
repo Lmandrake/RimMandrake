@@ -18,9 +18,9 @@ namespace RimMandrake.MessyConduit.Aerial
     ///   * several (a bridge): the run with the most conduit cells wins, a tie goes to the older run, the others are
     ///     repainted, and the player is told which style won over which;
     ///   * a split (deconstruction, fire, explosion) needs nothing: every member already carries its style.
-    /// A legacy run (an older save: no member stores a style) is written for real only when a styled piece joins or bridges
-    /// it, or it is restyled; each cell then stores the look and colour it was drawing (the save migration of
-    /// CORD_COLOUR_PER_PIECE_1). An unstyled piece joining legacy runs writes nothing.
+    /// A legacy member (an older save's piece, or one built outside the menu: no stored style) is written only when its
+    /// drawing would change (its run takes a non-default look, or a stored Modern colour / the mix) or the run is restyled
+    /// (ConduitStyles.NeedsWrite); otherwise it keeps storing nothing and drawing the default. Loading never runs the rule.
     /// Nothing here is saved: the queue only lives between a spawn and the next tick.
     /// </summary>
     public class RM_MapComponent_ConduitRuns : MapComponent
@@ -29,7 +29,9 @@ namespace RimMandrake.MessyConduit.Aerial
         private readonly HashSet<Thing> pendingSet = new HashSet<Thing>();
         private readonly List<(Thing, Thing)> pendingLinks = new List<(Thing, Thing)>();
         /// <summary>State read (probe "cstyles").</summary>
-        public int processed, adopted, bridges, repainted, materialised, restyles, linkBridges;
+        /// <summary>materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
+        /// because they already draw the run's look.</summary>
+        public int processed, adopted, bridges, repainted, materialised, legacyKept, restyles, linkBridges;
         public string lastMessage;
 
         public RM_MapComponent_ConduitRuns(Map map) : base(map) { }
@@ -184,15 +186,12 @@ namespace RimMandrake.MessyConduit.Aerial
             if (plan.Repaint.Count > 0) Announce(plan, infos, a);
         }
 
-        /// <summary>Materialise a legacy winner, repaint the losers; returns the colour mode the run ends with.</summary>
+        /// <summary>Repaint the losers to the winner's (look, colour mode); returns the colour mode the run ends with. A legacy
+        /// winner is the default look with no stored colour, and its own members are left unwritten (NeedsWrite): a Modern
+        /// loser repainted to it stores plain "Modern" and draws the same per-net colour as the winner's cords.</summary>
         private string Apply(ConduitStyles.Plan plan, List<List<Thing>> runs, List<ConduitStyles.Run> infos)
         {
             string colour = plan.Colour;
-            if (plan.MaterialiseWinner)
-            {
-                Materialise(runs[plan.Winner], plan.Look);
-                colour = Info(runs[plan.Winner]).Colour;
-            }
             foreach (int i in plan.Repaint)
             {
                 foreach (Thing t in runs[i]) Paint(t, plan.Look, colour);
@@ -211,39 +210,17 @@ namespace RimMandrake.MessyConduit.Aerial
                 Messages.Message(lastMessage, new LookTargets(at), MessageTypeDefOf.NeutralEvent, historical: false);
         }
 
-        /// <summary>The save migration: every unstyled member of a legacy run stores the look it draws (the default) and, for
-        /// Modern conduit, the colour its cord was drawing (the legacy per-net pick under the default colour setting).</summary>
-        public void Materialise(List<Thing> run, string look)
+        /// <summary>Paint one member with the run's (look, colour mode). A Mix run's new cells carry the Mix marker. A member
+        /// with no stored style is written only when its drawing would change, or on a Restyle (force) -- so loading, adopting
+        /// or bridging never stamps an older save's pieces that already draw right (live S7/S8 2026-10-04).</summary>
+        private void Paint(Thing t, string look, string colourMode, bool force = false)
         {
-            Dictionary<Cell, int> seeds = null;
-            bool single = MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single;
-            foreach (Thing t in run)
-            {
-                if (StylePicker.RawStyle(t) != null) continue;
-                string colour = null;
-                if (look == "Modern" && ConduitStylePicker.IsConduit(t.def))
-                {
-                    seeds = seeds ?? map.GetComponent<RM_MapComponent_CordGraph>()?.SeedByCell() ?? new Dictionary<Cell, int>();
-                    var c = new Cell(t.Position.x, t.Position.z);
-                    int seed = seeds.TryGetValue(c, out int s) ? s : Fnv(c.X + "," + c.Z);
-                    colour = ConduitStyles.Colours[ConduitStyles.LegacyVariant("Modern", seed, single, MessyConduitSettings.extCordColor)];
-                }
-                if (SetStyle(t, ConduitStyles.KeyForMember(ConduitStylePicker.IsConduit(t.def), look, colour))) materialised++;
-            }
-        }
-
-        /// <summary>The cord graph's seed for a lone cell (ComputeNetSeeds: FNV-1a of the smallest cell token).</summary>
-        private static int Fnv(string tok)
-        {
-            uint h = 2166136261u;
-            foreach (char ch in tok) h = unchecked((h ^ ch) * 16777619u);
-            return unchecked((int)h);
-        }
-
-        /// <summary>Paint one member with the run's (look, colour mode). A Mix run's new cells carry the Mix marker.</summary>
-        private void Paint(Thing t, string look, string colourMode)
-        {
-            if (SetStyle(t, ConduitStyles.KeyForMember(ConduitStylePicker.IsConduit(t.def), look, colourMode))) repainted++;
+            bool conduit = ConduitStylePicker.IsConduit(t.def);
+            bool had = StylePicker.RawStyle(t) != null;
+            if (!ConduitStyles.NeedsWrite(had, conduit, look, colourMode, StylePicker.DefaultLook, force)) { legacyKept++; return; }
+            if (!SetStyle(t, ConduitStyles.KeyForMember(conduit, look, colourMode))) return;
+            repainted++;
+            if (!had) materialised++;
         }
 
         private bool dirtyCords;
@@ -288,7 +265,7 @@ namespace RimMandrake.MessyConduit.Aerial
             else if (!ConduitStyles.TryParseKey(key, out look, out colour)) return 0;
             List<Thing> run = RunOf(t);
             int before = repainted;
-            foreach (Thing m in run) Paint(m, look, colour);
+            foreach (Thing m in run) Paint(m, look, colour, true);
             restyles++;
             Finish();
             int n = repainted - before;
@@ -297,12 +274,5 @@ namespace RimMandrake.MessyConduit.Aerial
             return n;
         }
 
-        /// <summary>The run look of an anchor for the span rule, and its conduit area.</summary>
-        public int AreaOf(Thing t)
-        {
-            int n = 0;
-            foreach (Thing m in RunOf(t)) if (ConduitStylePicker.IsConduit(m.def)) n++;
-            return n;
-        }
     }
 }

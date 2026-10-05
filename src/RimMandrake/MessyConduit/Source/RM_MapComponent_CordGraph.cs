@@ -71,6 +71,11 @@ namespace RimMandrake.MessyConduit
         // ---- stage 2 (per-build style, conduit runs): each piece's material by (style, colour / kind) of its run
         private Dictionary<LaidPiece, int> matIdx = new Dictionary<LaidPiece, int>();
         private HashSet<LaidPiece> legacyPieces = new HashSet<LaidPiece>();
+        private HashSet<LaidPiece> mixPieces = new HashSet<LaidPiece>();
+
+        /// <summary>A piece of a Modern "random mix" run: its strand changes colour along its length (ConduitStyles.MixColourIndex
+        /// per MixBlock block), printed in segments by the section layer.</summary>
+        public bool IsMix(LaidPiece p) => mixPieces.Contains(p);
 
         /// <summary>The flat material index (CordMaterials.StrandG / DecalG) a piece prints with: from the stored style of the
         /// conduit cell it is coloured by (Aerial.ConduitStyles.PieceVariant); a piece with no styled cell is LEGACY and draws
@@ -115,22 +120,11 @@ namespace RimMandrake.MessyConduit
             return true;
         }
 
-        /// <summary>Each cell any piece touches -> that piece's cord-net seed (the legacy colour pick), for materialising a
-        /// legacy run (the stage-2 save migration stores the colour each cell was drawing).</summary>
-        public Dictionary<Cell, int> SeedByCell()
-        {
-            var d = new Dictionary<Cell, int>();
-            foreach (LaidPiece p in pieces)
-                foreach (Cell c in CandidateCells(p))
-                    if (!d.ContainsKey(c)) d[c] = NetSeedOf(p);
-            return d;
-        }
-
-        private void ComputeMaterials(List<LaidPiece> ps)
+        private void ComputeMaterials(List<LaidPiece> ps, Dictionary<Cell, Aerial.CellStyle> cells)
         {
             var next = new Dictionary<LaidPiece, int>();
             var leg = new HashSet<LaidPiece>();
-            Dictionary<Cell, Aerial.CellStyle> cells = Aerial.ConduitStylePicker.CellStyles(map);
+            var mix = new HashSet<LaidPiece>();
             bool single = MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single;
             foreach (LaidPiece p in ps)
             {
@@ -138,10 +132,12 @@ namespace RimMandrake.MessyConduit
                 string look = StyleCellOf(p, cells, out Cell at, out string colour);
                 if (look == null) { next[p] = CordMaterials.LegacyGlobal(seed); leg.Add(p); continue; }
                 int v = Aerial.ConduitStyles.PieceVariant(look, colour, at.X, at.Z, seed, single, MessyConduitSettings.extCordColor);
+                if (look == "Modern" && colour == Aerial.ConduitStyles.Mix) mix.Add(p);
                 next[p] = Aerial.ConduitStyles.Global(look, v);
             }
             matIdx = next;
             legacyPieces = leg;
+            mixPieces = mix;
         }
 
         /// <summary>Union the pieces by the cells they touch (edge ends, node/coil/tangle owner cells); a component's
@@ -197,7 +193,11 @@ namespace RimMandrake.MessyConduit
             LastWorld = world;
             CordBuilder b = builder;
             List<LaidPiece> next;
-            try { next = b.Build(world, MessyConduitSettings.BuildOptions(), c => LiveNow(c)); }
+            BuildOptions opt = MessyConduitSettings.BuildOptions();
+            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
+            // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
+            opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+            try { next = b.Build(world, opt, c => LiveNow(c)); }
             catch (Exception ex)
             {
                 if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[MessyConduit] cord build failed, drawing no cords: " + ex); }
@@ -222,8 +222,8 @@ namespace RimMandrake.MessyConduit
             try { netSeeds = ComputeNetSeeds(next); }
             catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[MessyConduit] net seeds: " + ex, 0x4d43_5345); }
             Dictionary<LaidPiece, int> prevMat = matIdx;
-            try { ComputeMaterials(next); }
-            catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[MessyConduit] run styles: " + ex, 0x4d43_5346); }
+            try { ComputeMaterials(next, styled); }
+            catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[MessyConduit] run styles: " + ex, 0x4d43_5346); }
             // dirty every section whose owned set changed (not just the regenerating one)
             if (Current.ProgramState == ProgramState.Playing)
             {
