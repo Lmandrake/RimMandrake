@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Shyrack` — in-repo label "shyrack"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Legends — https://starwars.fandom.com/wiki/Shyrack/Legends
 
@@ -16,11 +12,34 @@ Shyracks were large, bat-like avian creatures with razor like teeth native to th
 While ungainly and slow-moving with no eyes, shyracks were potentially dangerous pests, especially when they converged as a flock on an intruder. They were native to the Shyrack cave of Korriban and were natural rivals to the feared Tuk'ata.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Both images are LEGENDS (no canon page or image exists). Image 1 is a painting
+(infobox) of one shyrack diving; image 2 is a tiny low-resolution (about 300x123) game still of a
+swarm -- usable only for silhouette.
+- **Silhouette**: a bat/pterosaur-like flier, with a heavy pot-bellied body hanging below two big
+  wings, folded hind legs and a thin pointed tail. Hunched and ungainly rather than sleek,
+  matching "ungainly and slow-moving".
+- **Wings**: large leathery bat-type wings with dark brown-black bone struts and thin purple-pink
+  membrane (image 1); in the swarm still the wings are long with bony ribs and read grey.
+- **Head (loud)**: there are NO EYES -- confirmed: the head is a blunt, wrinkled, domed lump of
+  pinkish-tan skin with deep brow folds, a tiny snout and a mouth with sharp teeth; it looks
+  almost like a pinched face or a fist. Nothing on the front reads as an eye.
+- **Limbs**: no forelegs separate from wings; long thin hind legs hang down ending in large hooked
+  curved dark claws/talons (image 1 shows both feet clutching forward). Tail: thin, sinuous,
+  pinkish, curving up behind.
+- **Colour**: tan to pinkish-flesh body with blue-violet limbs and purple wing membrane
+  (image 1); the Legends text mentions bluish droppings. Palette comes from one painting; no second
+  coloured source.
+- **Size cues**: text says "large"; image 2 shows swarm members each near the size of a person's torso
+  versus the cave rocks, so about man-size bats at most -- not confirmed.
+- **Prose vs images**: prose says "bat-like avian" with razor teeth; the images show bat-like
+  leathery wings, no feathers.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Bat/pterosaur-like flier with a heavy bulbous body and two large leathery bat wings with dark bony struts and purple membrane
+- [ ] Eyeless head: blunt wrinkled domed skin with deep folds and a toothed mouth, no eyes at all
+- [ ] Long thin hind legs with large hooked dark talons
+- [ ] Thin sinuous tail
+- [ ] Tan/pinkish-flesh body with blue-violet limbs
 
 ## Engine limits
 not yet assessed
