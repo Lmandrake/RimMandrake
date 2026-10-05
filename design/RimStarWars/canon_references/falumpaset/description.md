@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Falumpaset
@@ -19,11 +19,21 @@ The falumpaset (plural: falumpaset or falumpasets) was a large mammal native to 
 A breed of falumpaset was also native to the jungle world of Onderon. They were gray in color and had dark strips across their back.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Two images: the CANON infobox (`wookieepedia_canon_1`, a CG render of the Phantom Menace falumpaset) and a LEGENDS painted plate (`wookieepedia_legends_1`, wild herd bellowing at twilight). The two disagree on colour and head, so treat the CG as the film-canon look.
+- **Silhouette**: a huge barrel-bodied, heavy-rumped herbivore on disproportionately long, thick legs, with a long, thick, downward-sloping neck and a smallish head held low; front is lower than the hump-like back, giving a sagging camel/paleo-mammal profile. Short thin tail with a tuft at the tip.
+- **Canon CG colour/skin**: tan to mid-brown hide, finely wrinkled and hairless/short-haired like an elephant or rhino, with scattered dark brown spots/blotches on flanks and back; lighter belly.
+- **Canon CG head**: small head with a droopy, pendulous lip, small round ears, small eyes, a flattened muzzle; no horns or tusks.
+- **Feet**: heavy, splayed, dark-brown stumpy feet with a few blunt claw/toe tips, broad enough to wade swamp; legs darkened toward the lower joint.
+- **Legends plate**: paler pinkish-grey hide with brown speckles, much darker (chocolate) lower legs like stockings with thick pastern joints, calves in the water, and a very large gaping mouth with pink interior and teeth, hippo-like. Calf is a smaller version of the same shape. The Legends text mentions Onderon grey with dark back stripes; the images do not show stripes.
+- **Size**: very large, a body deeper than a person's height, shown towering over birds and tiny swamp creatures.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Barrel body on long thick legs, sloping neck, head carried low
+- [ ] Tan-brown wrinkled hide with scattered dark spots (canon CG look)
+- [ ] Small head with droopy pendulous lip, small ears, no horns
+- [ ] Broad splayed dark feet, darker lower legs
+- [ ] Short thin tail with a small tuft
+- [ ] Huge size relative to a person
 
 ## Engine limits
 not yet assessed

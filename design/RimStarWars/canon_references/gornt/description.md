@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Gornt
@@ -17,11 +17,21 @@ The gornt was a domesticated, omnivorous creature native on the world of Hethar;
 **Biology** A naturally bred gornt would grow to a meter or more long and was supported by four limbs, two small front legs and two large hind legs. Their head had a single horn and their mouths were surrounded by tendrils which they used to eat almost anything. Naturally herbivore, their efficient digestive system could break down most substances into prime nutrients. The meat lasted a long time without spoiling and was nutritious and pleasant tasting. Gornts lived for an average of 6 years, and mated 3 times. Gornt pups, called ayas, were born alive in litters of 2 to 4 and raised by their mothers for the first year.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+The only CANON image (`wookieepedia_canon_1`) is a loaf and slices of gornt MEAT, a dark brown-red, fibrous block. It shows nothing of the animal. Both animal images are LEGENDS (a Databank infobox plate and a Creatures art); they match each other.
+- **Silhouette**: a hunched, wedge-shaped quadruped. The rump and hind legs are tall and massive; the back slopes steeply down to a low, small head carried near the ground. Front legs are much shorter than the hind legs (agrees with the text). The back end rises into a pointed, tapering peak rather than a tail.
+- **Colour/skin**: smooth, slightly pebbled grey-green hide (the colour plate), pale in the line-art plate; folds and creases over the shoulders and haunch. No fur.
+- **Head**: wide, flat, catfish-like head with a broad mouth, small eyes and one small horn nub or ridge on top; long thin whisker-like tendrils (barbels) trail from around the mouth, which the text says it uses to eat. The images show small horn nubs and one on the head, consistent with a single horn.
+- **Limbs**: small clawed forefeet, larger hind feet; thick legs.
+- **Size cue**: about a metre or more long per the text; shown grazing in a forest clearing in herds.
+- Gornt meat (canon image): dark reddish-brown, ropy grain with pale fat lines; relevant only for a butchery/meat texture.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Hunched wedge body: tall massive rump and hind legs, short front legs, back sloping to a low head
+- [ ] Smooth grey-green wrinkled hide, no fur
+- [ ] Wide flat catfish-like head with a small horn nub
+- [ ] Long thin whisker-like tendrils around the mouth
+- [ ] Pointed rear peak, no long tail
+- [ ] Meat item (if made): dark red-brown fibrous block
 
 ## Engine limits
 not yet assessed

@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Mott
@@ -25,11 +25,21 @@ Threat displays to determine dominance was exhibited by both sexes.
 They were very good swimmers, and young often hitched rides on an adult's back. They also had good hearing and a nose horn for rooting out food. Gungans found motts to be good pets even though motts were known for tearing up flower gardens.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images: CANON infobox render (Visual Encyclopedia) and a tiny blurry film-style still of a mott pup in a stampede (canon_2, almost unusable); LEGENDS: a low-res copy of the same CG render with a red eye, and a painted plate of an adult female with her young. They agree.
+- **Silhouette**: a stocky, low-slung, barrel-bodied tapir/rhino-like quadruped with stubby legs, a long level back, a very short stub tail, shoulder height about 1.1 m (matches text), the body lower at the shoulder than at the haunch only slightly.
+- **Colour/pattern (CG render and painting)**: a two-tone coat. Back and rump pale sage-tan/cream-grey, flanks and neck warm orange-rust; white-cream stripes/bands run across the flanks, rump and the upper legs (horizontal stripes on the body, rings on the legs), cream belly, throat and cheeks. The tiny canon_2 still shows an uniform brown-tan young animal without stripes (lower quality, soft).
+- **Skin/fur**: short, thin, smooth, hair-like coat, almost naked skin with fine wrinkles at joints, no mane or long fur.
+- **Head**: a long, drooping, tapir-like snout with a pale muzzle, a thick lower lip, a small blunt horn at the tip of the snout (in the CG render a short horn on the nose and two short pointed ears with a small horn nub or ear tuft at the back of the head); small dark eyes, red in the Legends copy.
+- **Feet**: broad, clawed toes (three or four visible) on each foot, like a tapir's, and a short tail tuft.
+- **Young**: smaller copies of the adult with the same stripes and a short upright snout horn; litters are shown as a line of piglet-sized young.
+- **Disagreement**: text says they have 'skin' and sharp claws and small horns on snouts (images agree); Legends says semi-aquatic (no web or aquatic features shown).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Stocky barrel-bodied, stubby-legged tapir/rhino-like quadruped (about 1.1 m shoulder)
+- [ ] Two-tone coat: sage-tan back, orange-rust flanks, cream belly, with cream bands across flanks, rump and legs
+- [ ] Short smooth hair, near-bare wrinkled skin, no mane
+- [ ] Long drooping snout with a small blunt horn at the tip and short pointed ears
+- [ ] Broad clawed toes, very short tail
 
 ## Engine limits
 not yet assessed

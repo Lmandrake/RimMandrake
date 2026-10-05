@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Shaak
@@ -27,11 +27,21 @@ Shaaks were one of the few species that, if infected with the Blue Shadow Virus,
 A similar species could be found on the planet Alzoc III, with longer fur to suit the frigid climate. To intimidate the local food commissioner, crime lord Tyber Zann killed several prize shaaks so that he would control most of Alzoc III's food market.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images: CANON (Visual Encyclopedia CG render; a watercolour bestiary sketch) and LEGENDS (a painted infobox plate and a cutaway anatomy of a pregnant female). All agree on the shape.
+- **Silhouette**: an enormous, egg- or balloon-shaped body, far larger than its legs; the back is one smooth dome rising from a small neck and sloping to a rounded rear, bulging low in the belly. The animal rests on four thin, short, weak-looking legs hanging from the underside, placed close under the front half; it reads as a giant blob on stilts and carries its head low, grazing nose-down.
+- **Head and neck**: small, long-faced, low-slung head on a short thick neck, a long tapering snout like a young hadrosaur or tapir with a droopy muzzle; small eye ringed with wrinkles; the CG render has a deep red eye (agrees with 'dark red eyes'); small ears or none visible.
+- **Colour/pattern**: brown to orange-tan leathery skin (agree with 'brown leathery skin'), with variants: the CG render has patchy cream and brown marbling, large irregular cream swirls and brown blotches; the sketch has burnt-orange horizontal stripes with pale blue-white dashes along the spine; the plate is sandy-gold with cream dash-like streaks over the shoulder and flank. Treat the marbling or the creamy streaks as the pattern; colour varies by plate.
+- **Skin**: smooth with deep wrinkled folds around the neck and legs, bare hide, no fur, small round spots near the legs.
+- **Legs/feet**: thin tapering legs ending in small, flat three-toed splayed feet with tiny claws or nails, jointed at an odd backward angle.
+- **Cutaway (Legends)**: shows a huge internal cavity packed with several unborn young in separate chambers; not needed for the sprite. Wild shaaks are said (Legends text) to be less bulbous.
+- **Size**: huge: the body is several times the leg height; the plate shows pups at about one-fifth size.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Giant egg-shaped body balanced on four short thin weak-looking legs
+- [ ] Small low-slung head on a short neck with a tapering droopy snout, dark red eye
+- [ ] Brown/orange-tan leathery hide with cream marbling or pale streaks along the back and flank
+- [ ] Small flat splayed three-toed feet
+- [ ] Smooth bare skin with deep neck and leg folds
 
 ## Engine limits
 not yet assessed

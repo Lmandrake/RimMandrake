@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Lava_flea
@@ -21,11 +21,21 @@ As larval crystalline worms, lava fleas would burrow through the dirt undergroun
 The lava flea would then continue digesting rocks and other nutrients, shedding its protective shell with time. The native Mustafarians eventually began using these shells as armor, due to its insulation allowing them to explore the surface of the blistering hot planet. Even their eyes were protected by a nictitating membrane. Lava fleas were also very suitable and efficient mounts due to their natural heat resistance, agility and light weight, able to travel across lava streams and leap distances of up to 30 meters.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Three images: one CANON (a Clone Wars CG render of a Mustafarian riding one) and two LEGENDS (a painted bestiary plate and a game card art). All agree. Canon text says six-legged insect with jumping legs; images show a big domed beetle/flea shape on four to six long jointed legs.
+- **Silhouette**: a squat, domed, egg-shaped or tick-like armoured body perched high on very long, thin, stilt-like jointed legs that splay out wide to the sides like a spider's, belly well off the ground; the body is hump-backed and ends abruptly behind with no tail. Six legs are present (four prominent, two smaller front legs tucked under the face).
+- **Carapace**: smooth, glossy segmented plating like a shield of overlapping dark plates running over the back from the neck, edges ridged; in the Legends plate the back is divided into 3-4 curved plates with fine bristles around the margins (game card).
+- **Colour**: very dark charcoal-black, maroon-purple to brown-black, with a purple or red sheen in the CG render and warm orange rim-light from lava in the paintings; legs the same dark colour, joints knobby, feet tapering to a single pointed claw or a hoof-like pair of blunt toes.
+- **Head**: a bulbous, heavily wrinkled head set low and forward under the carapace, large round glowing orange-pink or red eyes, an elephant-trunk-like segmented proboscis/snout with small curved mandibles at the sides; no antennae visible.
+- **Size cue**: in the CG render a full-size Mustafarian (a tall, thin, humanoid in dark armour) sits on its back with a staff, so the back is about the height of a person's waist to chest while the legs span about twice the body width. The Legends text says it is 4 m tall; the images do not support that. The canon scale (mount) is the one to trust.
+- **Saddle**: the CG render has a saddle and footrests on the back, which belong to the rider rig.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Domed, plated, tick-like dark carapace with no tail, ridged segment edges
+- [ ] Six long thin stilt-like jointed legs splayed wide, body held high off the ground
+- [ ] Charcoal-black to maroon-purple glossy hide with lava-orange rim light
+- [ ] Wrinkled low head with large round red/orange eyes and an elephant-trunk-like proboscis with small mandibles
+- [ ] Leg ends with a pointed claw or a blunt two-toed hoof
+- [ ] Mount sized: a rider sits on its back, back about waist-to-chest height
 
 ## Engine limits
 not yet assessed
