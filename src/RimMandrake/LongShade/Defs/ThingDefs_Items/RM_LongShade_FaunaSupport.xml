@@ -47,38 +47,8 @@
   </ThingDef>
 
 
-	<ThingDef ParentName="EggFertBase">
-		<defName>RM_EggOssikFertilized</defName>
-		<label>ossik egg (fert.)</label>
-		<description>Fertilized ossik egg. If all goes well, it should hatch into a baby ossik.</description>
-		<graphicData>
-			<color>(125,138,97)</color>
-			<drawSize>1.2</drawSize>
-		</graphicData>
-		<statBases>
-			<MarketValue>19.0</MarketValue>
-		</statBases>
-		<comps>
-			<li Class="CompProperties_Hatcher">
-				<hatcherDaystoHatch>7</hatcherDaystoHatch>
-				<hatcherPawn>RM_Ossik</hatcherPawn>
-			</li>
-		</comps>
-	</ThingDef>
 
 
-	<ThingDef ParentName="EggUnfertBase">
-		<defName>RM_EggOssikUnfertilized</defName>
-		<label>ossik egg (unfert.)</label>
-		<description>Unfertilized ossik egg. Edible raw, much better cooked.</description>
-		<graphicData>
-			<color>(125,138,97)</color>
-			<drawSize>1.2</drawSize>
-		</graphicData>
-		<statBases>
-			<MarketValue>15.0</MarketValue>
-		</statBases>
-	</ThingDef>
 
 
 	<ThingDef ParentName="EggFertBase">
