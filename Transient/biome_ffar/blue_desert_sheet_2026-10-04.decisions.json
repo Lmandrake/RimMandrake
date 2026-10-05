@@ -4,10 +4,10 @@
   "decidedCount": 20,
   "decisions": {
     "AA_Thunderbeast": {
-      "at": "2026-10-05T05:56:17.222Z",
+      "at": "2026-10-05T14:27:59.276Z",
       "decidedAt": "2026-10-05T05:55:51.620Z",
       "decision": "A",
-      "note": "Looks good, but needs its other facings. Also needs improved description. Half the size.",
+      "note": "Looks good, but needs its other facings. Also needs improved description. Half the size. Still missing a north facing.",
       "prefill": "hold"
     },
     "RM_Chimeglobe": {
@@ -26,11 +26,17 @@
       "prefill": "A"
     },
     "RM_Dovvik": {
-      "at": "2026-10-05T05:54:07.847Z",
+      "at": "2026-10-05T14:26:43.153Z",
       "decidedAt": "2026-10-05T05:54:07.847Z",
       "decision": "B",
       "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe",
+        "5afdcdfafbba574d4d2ae90438b2adf380f09854c16a3151ecd43efb095c4ad3",
+        "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849"
+      ],
+      "purgeTouched": true
     },
     "RM_Glassfern": {
       "at": "2026-10-05T05:58:25.340Z",
@@ -48,10 +54,17 @@
       "variantsAt": "2026-10-05T05:58:25.340Z"
     },
     "RM_Kethevar": {
-      "at": "2026-10-05T05:58:35.857Z",
+      "at": "2026-10-05T14:37:17.720Z",
       "decision": "A",
       "note": "Add some variants",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-05T14:37:17.720Z"
     },
     "RM_Krissek": {
       "decision": "A",
@@ -59,10 +72,17 @@
       "prefill": "A"
     },
     "RM_Lisqueth": {
-      "at": "2026-10-05T05:58:45.416Z",
+      "at": "2026-10-05T14:37:22.774Z",
       "decision": "A",
       "note": "Add some variants",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-05T14:37:22.774Z"
     },
     "RM_Murrek": {
       "at": "2026-10-05T05:55:04.302Z",
@@ -72,22 +92,23 @@
       "prefill": "A"
     },
     "RM_Ossivel": {
-      "at": "2026-10-04T23:38:19.050Z",
-      "decidedAt": "2026-10-04T23:37:59.142Z",
-      "decision": "redo",
+      "at": "2026-10-05T14:27:05.681Z",
+      "decidedAt": "2026-10-05T14:27:05.681Z",
+      "decision": "B",
       "note": "This looks vaguely lewd and also somewhat humanoid. More alien please.",
       "prefill": "A"
     },
     "RM_Palefloss": {
-      "at": "2026-10-05T05:58:51.068Z",
+      "at": "2026-10-05T14:37:26.890Z",
       "decision": "A",
       "note": "All three are valid variants, keep",
       "prefill": "A",
       "variants": [
+        "A",
         "B",
         "C"
       ],
-      "variantsAt": "2026-10-05T05:58:51.068Z"
+      "variantsAt": "2026-10-05T14:37:26.890Z"
     },
     "RM_Qeshra": {
       "at": "2026-10-04T23:43:38.375Z",
@@ -97,15 +118,22 @@
       "prefill": "A"
     },
     "RM_Utikka": {
-      "at": "2026-10-05T05:56:25.653Z",
+      "at": "2026-10-05T14:27:38.269Z",
       "decidedAt": "2026-10-05T05:56:25.653Z",
       "decision": "B",
       "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6",
+        "086e060adc0fb404fd9b5be01ac9ed63177020c3f2c5337dce8a50fc68f495a0",
+        "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae"
+      ],
+      "purgeTouched": true
     },
     "RM_Vashpuk": {
+      "at": "2026-10-05T14:37:40.806Z",
       "decision": "A",
-      "note": "",
+      "note": "add variants",
       "prefill": "A"
     },
     "RM_Vekkit": {
@@ -114,10 +142,10 @@
       "prefill": "A"
     },
     "RM_Vhaulk": {
-      "at": "2026-10-05T05:57:29.079Z",
-      "decidedAt": "2026-10-04T23:40:17.980Z",
-      "decision": "redo",
-      "note": "I see only A and C, no B. The creature shown in S and N are the same, E is unrelated. Please regenerate E to look like N and S.",
+      "at": "2026-10-05T14:36:29.358Z",
+      "decidedAt": "2026-10-05T14:36:01.841Z",
+      "decision": "D",
+      "note": "Use S & N in option A, and E from option D. Put them together. Purge everything else. ",
       "prefill": "A",
       "purge": [
         "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
@@ -125,16 +153,23 @@
       "purgeTouched": true
     },
     "RM_Virr": {
+      "at": "2026-10-05T14:37:46.400Z",
       "decision": "A",
-      "note": "",
+      "note": "add variants",
       "prefill": "A"
     },
     "RM_Vrisk": {
-      "at": "2026-10-05T05:57:56.463Z",
-      "decidedAt": "2026-10-05T05:57:56.463Z",
-      "decision": "B",
+      "at": "2026-10-05T14:36:52.957Z",
+      "decidedAt": "2026-10-05T14:36:47.721Z",
+      "decision": "D",
       "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5",
+        "6e9f6f848afe411e6e922f9c8423618d2a378f92f29f532b22a6cc3cc3e81c5a",
+        "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c"
+      ],
+      "purgeTouched": true
     },
     "RM_Zhaaz": {
       "decision": "A",
@@ -142,24 +177,30 @@
       "prefill": "A"
     },
     "Vapaad": {
-      "at": "2026-10-05T05:56:39.198Z",
+      "at": "2026-10-05T14:34:14.966Z",
       "decidedAt": "2026-10-05T05:56:39.198Z",
       "decision": "B",
-      "note": "Your sheets need to include the animal descriptions as well for reference. This needs to be made into hydrocarbon-based resolution please.",
-      "prefill": "A"
+      "note": "Ok, so Option B is a FANTASTIC creature to move to the Propane Lakes biome, but it's simply not a vapaad (canon creature). Please look at the canon images and follow them carefully and regenerate, but keep Option B in the Propane Lakes. ",
+      "prefill": "A",
+      "purge": [
+        "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803",
+        "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
+        "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1"
+      ],
+      "purgeTouched": true
     }
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "state": "ruled",
-    "by": "owner (Lukas)",
     "at": "2026-10-04T22:58:51-0700",
-    "evidence": "sidecar writeCount 62 (second sitting); owner said in chat 'Gave more feedback into the updated Blue Desert.'"
+    "by": "owner (Lukas)",
+    "evidence": "sidecar writeCount 62 (second sitting); owner said in chat 'Gave more feedback into the updated Blue Desert.'",
+    "state": "ruled"
   },
-  "savedAt": "2026-10-04T22:58:51-0700",
+  "savedAt": "2026-10-05T07:37:47-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "blue_desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "0a169dd06c1c1b1c",
-  "writeCount": 62
+  "writeCount": 93
 }
