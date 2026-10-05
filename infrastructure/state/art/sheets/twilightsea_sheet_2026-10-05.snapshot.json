@@ -1,8 +1,8 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-04T23:54:54-0700",
+ "built": "2026-10-05T09:00:35-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Aerofleet": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "aerofleet"
   },
   "RM_Aluun": {
@@ -49,6 +52,11 @@
     "C": "render twilightsea_aluun_v2"
    },
    "res": "Things/Pawn/Animal/RM_Aluun/RM_Aluun",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "aluun"
   },
   "RM_AluunCatch": {
@@ -78,6 +86,11 @@
     "C": "render twilightsea_aluun_v2"
    },
    "res": "Things/Plant/AloeVera/AloeVeraC",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "aluuncatch"
   },
   "RM_Hollu": {
@@ -115,6 +128,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Hollu/RM_Hollu",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "hollu"
   },
   "RM_HolluCatch": {
@@ -144,6 +163,11 @@
     "C": "render twilightsea_hollu_v2"
    },
    "res": "Things/Plant/JadePlant/JadePlantB",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "hollucatch"
   },
   "RM_HoolimbrePlant": {
@@ -164,6 +188,10 @@
     "B": "render RM_HoolimbrePlant"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "hoolimbreplant"
   },
   "RM_Kellu": {
@@ -201,6 +229,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Kellu/RM_Kellu",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "kellu"
   },
   "RM_KelluCatch": {
@@ -230,6 +264,11 @@
     "C": "render twilightsea_kellu_v2"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantB",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "kellucatch"
   },
   "RM_Lanternwhale": {
@@ -248,6 +287,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "lanternwhale"
   },
   "RM_Liiru": {
@@ -285,6 +327,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Liiru/RM_Liiru",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "liiru"
   },
   "RM_LiiruCatch": {
@@ -314,6 +362,11 @@
     "C": "render twilightsea_liiru_v2"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraD",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "liirucatch"
   },
   "RM_Loohn": {
@@ -344,6 +397,11 @@
     "C": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Loohn/RM_Loohn",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "loohn"
   },
   "RM_Lunoowa": {
@@ -374,6 +432,11 @@
     "C": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "lunoowa"
   },
   "RM_Murrol": {
@@ -411,6 +474,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Murrol/RM_Murrol",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "murrol"
   },
   "RM_MurrolCatch": {
@@ -440,6 +509,11 @@
     "C": "render twilightsea_murrol_v2"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraB",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "murrolcatch"
   },
   "RM_Niim": {
@@ -476,6 +550,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Niim/RM_Niim",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "niim"
   },
   "RM_NiimCatch": {
@@ -509,6 +589,12 @@
     "D": "render twilightsea_niim_v2"
    },
    "res": "swplants/Bloddle/BloddleA",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "niimcatch"
   },
   "RM_Noolim": {
@@ -539,6 +625,11 @@
     "C": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Noolim/RM_Noolim",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "noolim"
   },
   "RM_NoolimCatch": {
@@ -561,6 +652,10 @@
     "B": "render twilightsea_noolim_v1"
    },
    "res": "Things/Item/ToxicMeat/ToxicMeat_c",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "noolimcatch"
   },
   "RM_NoothelmPlant": {
@@ -581,6 +676,10 @@
     "B": "render RM_NoothelmPlant"
    },
    "res": "Things/Plant/Echeveria/EcheveriaA",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "noothelmplant"
   },
   "RM_Nuudal": {
@@ -618,6 +717,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Nuudal/RM_Nuudal",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "nuudal"
   },
   "RM_NuudalCatch": {
@@ -647,6 +752,11 @@
     "C": "render twilightsea_nuudal_v2"
    },
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "nuudalcatch"
   },
   "RM_Oobo": {
@@ -677,6 +787,11 @@
     "C": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Oobo/RM_Oobo",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "oobo"
   },
   "RM_OoboCatch": {
@@ -699,6 +814,10 @@
     "B": "render twilightsea_oobo_v1"
    },
    "res": "Things/Plant/Echeveria/EcheveriaB",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "oobocatch"
   },
   "RM_Pallu": {
@@ -736,6 +855,12 @@
     "D": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Pallu/RM_Pallu",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "pallu"
   },
   "RM_PalluCatch": {
@@ -765,6 +890,11 @@
     "C": "render twilightsea_pallu_v2"
    },
    "res": "Things/Plant/AloeVera/AloeVeraB",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "pallucatch"
   },
   "RM_SaltBladeTwilight": {
@@ -780,6 +910,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "saltbladetwilight"
   },
   "RM_Tikkarr": {
@@ -810,6 +943,11 @@
     "C": "history TerminalBiomes 2026-10-04"
    },
    "res": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "tikkarr"
   },
   "RM_TikkarrCatch": {
@@ -832,6 +970,10 @@
     "B": "render twilightsea_tikkarr_v1"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantB",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "tikkarrcatch"
   },
   "RM_Weloon": {
@@ -862,6 +1004,11 @@
     "C": "history TerminalBiomes 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Weloon/RM_Weloon",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "weloon"
   },
   "RM_WeloonCatch": {
@@ -884,6 +1031,10 @@
     "B": "render twilightsea_weloon_v1"
    },
    "res": "Things/Plant/Echeveria/EcheveriaD",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "welooncatch"
   },
   "RSW_Faa": {
@@ -902,6 +1053,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "faa"
   },
   "RSW_Lanternwhale": {
@@ -920,6 +1074,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "lanternwhale"
   },
   "RSW_Mee": {
@@ -938,6 +1095,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mee"
   }
  },

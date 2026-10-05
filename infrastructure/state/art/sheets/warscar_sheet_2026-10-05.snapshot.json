@@ -1,8 +1,8 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-04T23:54:55-0700",
+ "built": "2026-10-05T09:00:37-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Helixien": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "helixien"
   },
   "AA_SpinedGow": {
@@ -51,6 +54,11 @@
     "C": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowBaby",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "spinedgow"
   },
   "RG_Rimclaw": {
@@ -89,7 +97,13 @@
     "D": "donor original \u2014 ReGrowth 2"
    },
    "res": "Things/Pawn/Animal/ReGrowth/Rimclaw/BabyRimclaw",
-   "subject_key": "rg_rimclaw"
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "subject_key": "rimclaw"
   },
   "RM_Chatrak": {
    "columns": {
@@ -113,6 +127,10 @@
     "B": "history Scarlands 2026-10-01"
    },
    "res": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "chatrak"
   },
   "RM_Glower": {
@@ -128,6 +146,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Glower",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "glower"
   },
   "RM_Pallbearer": {
@@ -145,6 +166,9 @@
     "A": "IN GAME \u2014 Scarlands"
    },
    "res": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pallbearer"
   },
   "RM_ScarRoach": {
@@ -162,6 +186,9 @@
     "A": "IN GAME \u2014 Scarlands"
    },
    "res": "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "scarroach"
   },
   "RM_ScorchedStars": {
@@ -177,6 +204,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_ScorchedStars",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "scorchedstars"
   },
   "RM_Tetchik": {
@@ -201,6 +231,10 @@
     "B": "history Scarlands 2026-10-01"
    },
    "res": "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "tetchik"
   },
   "RM_Vozzik": {
@@ -209,15 +243,26 @@
      "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
      "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
      "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "B": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
+    "A": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+    "B": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_regen_RSW_Vozzik_v2"
    },
    "res": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "vozzik"
   },
   "RSW_CrystalFairyMole": {
@@ -235,6 +280,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalFairyMole/CrystalFairyMole",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "crystalfairymole"
   },
   "RSW_FoundryBeetle": {
@@ -259,6 +307,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "foundrybeetle"
   },
   "RSW_Korrum": {
@@ -276,6 +328,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Korrum/Korrum",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "korrum"
   },
   "RSW_MegaphoridLarva": {
@@ -293,6 +348,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "megaphoridlarva"
   },
   "RSW_Mynock": {
@@ -315,6 +373,10 @@
     "B": "render desert_swaca_mynock"
    },
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "mynock"
   },
   "RSW_Vozzik": {
@@ -325,6 +387,11 @@
      "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
     },
     "B": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+    },
+    "C": {
      "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
      "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
      "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
@@ -332,13 +399,20 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
-    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render RM_Vozzik"
+    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "C": "render RM_Vozzik"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "vozzik"
   },
   "SW_Electricgryllotalpa": {
@@ -356,7 +430,10 @@
     "A": "IN GAME \u2014 Insectoids 2 - Isopoda geneline"
    },
    "res": "Things/Pawn/Animal/SW_AcidSpittingSpider/SW_AcidSpittingSpiderA",
-   "subject_key": "sw_electricgryllotalpa"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "electricgryllotalpa"
   },
   "SW_Electrictick": {
    "columns": {
@@ -373,7 +450,10 @@
     "A": "IN GAME \u2014 Insectoids 2 - Isopoda geneline"
    },
    "res": "Things/Pawn/Animal/SW_GrenadeBug/SW_GrenadeBug",
-   "subject_key": "sw_electrictick"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "electrictick"
   },
   "SW_Juggernautbeetles": {
    "columns": {
@@ -390,9 +470,12 @@
     "A": "IN GAME \u2014 Insectoids 2 - Isopoda geneline"
    },
    "res": "Things/Pawn/Animal/SW_PraetorianExecutioner/SW_PraetorianExecutionerA",
-   "subject_key": "sw_juggernautbeetles"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "juggernautbeetles"
   }
  },
  "sheetId": "warscar_sheet_2026-10-05",
- "snapshotId": "12abbfaa62e1d10a"
+ "snapshotId": "c7e430c0dcd6a7eb"
 }

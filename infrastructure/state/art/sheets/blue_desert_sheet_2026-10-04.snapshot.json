@@ -1,8 +1,8 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T08:33:51-0700",
+ "built": "2026-10-05T09:01:31-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "15caf5fd7",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
@@ -18,23 +18,30 @@
     },
     "C": {
      "north": "5866c53a7295cca4ec96343575514e321a5a17d38011f72a251158d893dde138"
+    },
+    "D": {
+     "north": "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa",
+     "south": "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
     "B": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "C": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
+    "C": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+    "D": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
    },
    "labels": {
     "A": "render bluedesert_Thunderbeast_v2",
     "B": "IN GAME \u2014 Alpha Animals",
-    "C": "render bluedesert_Thunderbeast_v4"
+    "C": "render bluedesert_Thunderbeast_v4",
+    "D": "render bluedesert_Thunderbeast_v3"
    },
    "res": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "thunderbeast"
   },
@@ -444,7 +451,7 @@
    },
    "labels": {
     "C": "render RM_Vhaulk",
-    "D": "render RM_Vhaulk_v3",
+    "D": "render RM_Vhaulk_v3 \u2014 failed canon check",
     "E": "IN GAME \u2014 BlueDesert",
     "F": "history BlueDesert 2026-09-29"
    },
@@ -469,23 +476,29 @@
     },
     "C": {
      "single": "d7892e29e6342a5b2d429b7dce5c61037e3931be73ef1a77a2f93706c68d5eee"
+    },
+    "D": {
+     "single": "cf280774ef139b04d08a932a00bed9e81fefedef5791b5f721c9088a3802b45f"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Virr/RM_Virr",
     "B": "Things/Plant/RM_Virr/RM_Virr",
-    "C": "Things/Plant/RM_Virr/RM_Virr"
+    "C": "Things/Plant/RM_Virr/RM_Virr",
+    "D": "Things/Plant/RM_Virr/RM_Virr"
    },
    "labels": {
     "A": "IN GAME \u2014 BlueDesert",
     "B": "render RM_Virr_var1",
-    "C": "render RM_Virr_var3"
+    "C": "render RM_Virr_var3",
+    "D": "render RM_Virr_var2"
    },
    "res": "Things/Plant/RM_Virr/RM_Virr",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "virr"
   },

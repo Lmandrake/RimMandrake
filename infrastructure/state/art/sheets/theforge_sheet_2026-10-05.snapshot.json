@@ -1,8 +1,8 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-04T23:54:45-0700",
+ "built": "2026-10-05T09:00:18-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Aerofleet": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "aerofleet"
   },
   "AA_ColossalAerofleet": {
@@ -37,6 +40,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "colossalaerofleet"
   },
   "AA_CrescendoAnole": {
@@ -54,6 +60,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "crescendoanole"
   },
   "AA_Metallovore": {
@@ -71,6 +80,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Metallovore/AA_Metallovore",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "metallovore"
   },
   "AB_FirevineTree": {
@@ -86,6 +98,9 @@
     "A": "IN GAME \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_FirevineTree",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "firevinetree"
   },
   "AB_TinkleGrass": {
@@ -101,6 +116,9 @@
     "A": "IN GAME \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_TinkleGrass",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tinklegrass"
   },
   "IronScruff_Bindweed": {
@@ -121,6 +139,10 @@
     "B": "donor original \u2014 Primordial Geysers"
    },
    "res": "Things/Plants/IronScruff_Bindweed",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ironscruff_bindweed"
   },
   "IronScruff_PrimordialGrass": {
@@ -136,6 +158,9 @@
     "A": "IN GAME \u2014 Primordial Geysers"
    },
    "res": "Things/Plants/IronScruff_PrimordialGrassPlant",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ironscruff_primordialgrass"
   },
   "IronScruff_PrimordialTallGrass": {
@@ -151,6 +176,9 @@
     "A": "IN GAME \u2014 Primordial Geysers"
    },
    "res": "Things/Plants/IronScruff_PrimordialGrassPlant",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ironscruff_primordialtallgrass"
   },
   "LavaSnail": {
@@ -168,6 +196,9 @@
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
    },
    "res": "Things/Pawn/Animal/LavaSnail/LavaSnail",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "lavasnail"
   },
   "Plant_Fireweed": {
@@ -183,7 +214,10 @@
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)"
    },
    "res": "Things/Plant/Fireweed",
-   "subject_key": "plant_fireweed"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "fireweed"
   },
   "Plant_MagmaCactus": {
    "columns": {
@@ -198,7 +232,10 @@
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
    },
    "res": "Things/Plant/MagmaCactus",
-   "subject_key": "plant_magmacactus"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "magmacactus"
   },
   "RM_CinderCrust": {
    "columns": {
@@ -213,6 +250,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_CinderCrust",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cindercrust"
   },
   "RM_Dhokkur": {
@@ -230,6 +270,9 @@
     "A": "IN GAME \u2014 TheForge"
    },
    "res": "Things/Pawn/Animal/RM_Dhokkur/RM_Dhokkur",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "dhokkur"
   },
   "RM_Dhuvvox": {
@@ -247,6 +290,9 @@
     "A": "IN GAME \u2014 TheForge"
    },
    "res": "Things/Pawn/Animal/RM_Dhuvvox/RM_Dhuvvox",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "dhuvvox"
   },
   "RM_FireLavender": {
@@ -262,6 +308,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/FireLavender",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "firelavender"
   },
   "RM_FleetFlier": {
@@ -279,6 +328,9 @@
     "A": "IN GAME \u2014 TheForge"
    },
    "res": "Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "fleetflier"
   },
   "RM_HeatsinkFungus": {
@@ -294,6 +346,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/HeatsinkFungus",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "heatsinkfungus"
   },
   "RM_Jossur": {
@@ -311,6 +366,9 @@
     "A": "IN GAME \u2014 TheForge"
    },
    "res": "Things/Pawn/Animal/RM_Jossur/RM_Jossur",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "jossur"
   },
   "RM_Julmox": {
@@ -328,6 +386,9 @@
     "A": "IN GAME \u2014 TheForge"
    },
    "res": "Things/Pawn/Animal/RM_Julmox/RM_Julmox",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "julmox"
   },
   "RSW_Beldon": {
@@ -338,6 +399,11 @@
      "south": "e9aa92ee266a9726fe6a7ce7464803b69d3302e01f5ffc2beb98e846562b5d55"
     },
     "B": {
+     "east": "f7979ad866c4990b643671f88f327cd9f8029d7b23de380aeb605d5d9c52a2b9",
+     "north": "c2b656d1e6fa133a4d3f4ed897f6839c1903bd4eb63a827bfbc2dd611d4c41ef",
+     "south": "4c50ccd8ca5d9b79787f2885774658c5268915dc08542481b9b7324b26f16dbf"
+    },
+    "C": {
      "east": "ee247eff82ff722d5f309a836ce190a4ec1241d1ce58cd4a185844cdecfc1085",
      "north": "ce73ccff6ca8fbaf9a978cd317d3e0b9f8f3e2588e7c7850b487395feb00cb2a",
      "south": "9f21e1101f9b5c6d2f36772de854927e5082cac51b6b71552a364c7f36f499bd"
@@ -345,13 +411,20 @@
    },
    "graphic_of": {
     "A": "swanimals/Beldon/Beldon",
-    "B": "swanimals/Beldon/BeldonC"
+    "B": "swanimals/Beldon/Beldon",
+    "C": "swanimals/Beldon/BeldonC"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "render canon_beldon_v1",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Beldon/Beldon",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "beldon"
   },
   "RSW_LavaFlea": {
@@ -376,6 +449,10 @@
     "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/LavaFlea/LavaFlea",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "lavaflea"
   },
   "RSW_Maguana": {
@@ -393,6 +470,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "maguana"
   },
   "Tibidee": {
@@ -410,9 +490,12 @@
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Tibidee/Tibidee",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tibidee"
   }
  },
  "sheetId": "theforge_sheet_2026-10-05",
- "snapshotId": "57bc6b4d20a87a1f"
+ "snapshotId": "773d3622053e6aad"
 }

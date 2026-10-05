@@ -1,8 +1,8 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-04T23:54:40-0700",
+ "built": "2026-10-05T09:00:13-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Ashwallow": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Pyrelands"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ashwallow"
   },
   "RM_Barbslinger": {
@@ -39,11 +42,15 @@
      "south": "7e2e72918bd1f92e57e5c6dd1d57174db237a41fc84a1264838cd770a10f7e5a"
     },
     "D": {
+     "north": "68c85de5f21d0fda16ef444b6422587bd86b2ff56ea595ba2cb7a0512cc0a604",
+     "south": "b3e322c82f14641bc2c68e001c6f603bf9db1e3294ef0a2d908121896ee13651"
+    },
+    "E": {
      "east": "1c0ab3f7c7050f41bacf76a7e4bd35d0d77766f442c9c9cefb90c71df57d6b95",
      "north": "d72d6a24a40481d7b6ed3bdff4a6489a4dbb397f5c2b1bcb0442debe59639a97",
      "south": "69c6c56ad5dc1be193865dc285103dc755fb6d120db2cc95f5f1873f9d6b1b75"
     },
-    "E": {
+    "F": {
      "east": "6739f014389c2279c081ff88bb9dbc5d19ba3965c3d71e66ab9f163543a2ae91",
      "north": "2b0e247f3049d7b25fc5ce64faeb59cfaeecbcfe5ee7245a76699f9c32820454",
      "south": "b1f7f2302c72425f159ef2910afd11c24d9a0838d5c2e7f83b0bc1087481ebca"
@@ -54,16 +61,26 @@
     "B": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
     "C": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
     "D": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
-    "E": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+    "E": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+    "F": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
    },
    "labels": {
     "A": "IN GAME \u2014 Pyrelands",
     "B": "render pyrelands_barbslinger_v5",
     "C": "render barbslinger_scorpion_v1",
-    "D": "render pyrelands_barbslinger_v2",
-    "E": "history UtinniPatches 2026-09-20"
+    "D": "render pyrelands_barbslinger_v3",
+    "E": "render pyrelands_barbslinger_v2",
+    "F": "history UtinniPatches 2026-09-20"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "barbslinger"
   },
   "RM_Emberscythe": {
@@ -81,6 +98,9 @@
     "A": "IN GAME \u2014 Pyrelands"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "emberscythe"
   },
   "RM_FE_Plant_EmberGrass": {
@@ -116,6 +136,13 @@
     "E": "render pyre_embergrass_c_v2"
    },
    "res": "Things/Plant/RM_FE_EmberGrass",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "fe_plant_embergrass"
   },
   "RM_FE_Plant_Quickgrass": {
@@ -146,6 +173,12 @@
     "D": "render pyre_quickgrass_b_v1"
    },
    "res": "Things/Plant/RM_FE_Quickgrass",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "fe_plant_quickgrass"
   },
   "RM_FireHawk": {
@@ -289,6 +322,27 @@
     "S": "history UtinniPatches 2026-09-20"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S"
+   ],
    "subject_key": "firehawk"
   },
   "RM_FireWasp": {
@@ -325,6 +379,12 @@
     "D": "history UtinniPatches 2026-09-19"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "firewasp"
   },
   "RM_Flamefang": {
@@ -349,6 +409,10 @@
     "B": "history UtinniPatches 2026-09-19"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "flamefang"
   },
   "RM_FurnaceBeast": {
@@ -371,6 +435,10 @@
     "B": "render FurnaceBeast_south_eyelevel_v1"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "furnacebeast"
   },
   "RM_Sytheclaw": {
@@ -395,6 +463,10 @@
     "B": "history UtinniPatches 2026-09-19"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "sytheclaw"
   },
   "RM_Ullai": {
@@ -412,6 +484,9 @@
     "A": "IN GAME \u2014 Pyrelands"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Ullai/Ullai",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ullai"
   },
   "RSW_Anooba": {
@@ -495,6 +570,19 @@
     "K": "render anooba_toyfig_b2"
    },
    "res": "swanimals/Anooba/Anooba_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
    "subject_key": "anooba"
   },
   "RSW_Dalgo": {
@@ -554,6 +642,15 @@
     "G": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Dalgo/Dalgo",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
    "subject_key": "dalgo"
   },
   "RSW_Gizka": {
@@ -620,6 +717,16 @@
     "H": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Gizka/Gizka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
    "subject_key": "gizka"
   },
   "RSW_Iriaz": {
@@ -636,7 +743,8 @@
     },
     "C": {
      "east": "194f1deddfdebe55eee756e4ca6cb6cce6dcb255fe1384f42e29525cf584e4d4",
-     "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f"
+     "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
+     "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
     },
     "D": {
      "east": "1c5e230d80f6120818341b52a7a274b63a02fd7aed6f484394949ba00804ead9"
@@ -690,6 +798,17 @@
     "I": "history IriazArtOverride 2026-09-18"
    },
    "res": "swanimals/Iriaz/Iriaz",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
    "subject_key": "iriaz"
   },
   "RSW_Nuna": {
@@ -754,6 +873,16 @@
     "H": "history SWBestiary 2026-09-09"
    },
    "res": "swanimals/Nuna/Nuna_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
    "subject_key": "nuna"
   },
   "RSW_Orray": {
@@ -816,6 +945,16 @@
     "H": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Orray/Orray",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
    "subject_key": "orray"
   },
   "RSW_Zeer": {
@@ -826,34 +965,39 @@
      "south": "3fd011f6a52adb2b18d9a784dc61858603d8a03d4d6a61455179398e5558660f"
     },
     "B": {
+     "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+     "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
+     "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
+    },
+    "C": {
      "east": "dbe0e454471a6530262efac1b3a096ac85e9dbb4dc6e2f575c78a55a2c263d32",
      "north": "25c4cbb7fe58d27e490e6d269b28394d69402ed2fb0ceb4a04e517f9fddbfaf9",
      "south": "ae37acfaa7da9df4f8cf87de69e90167cd368749c665bf098d2112881739834a"
     },
-    "C": {
+    "D": {
      "east": "5960814d6a766c839d563066f29b9d15b99e16b1a70f2cf73970b3b39cb14610"
     },
-    "D": {
+    "E": {
      "east": "ee3fd25271cd30015ab07db10d20362dc40d96cc515a022602dac46cfdbb6e08",
      "north": "b72b209a71f3d5e72a52b6f511d0f1d532fc8f1e9d3c4105c50ef59243ec2371",
      "south": "a0357d174d6941afe5c9c0aabd7b8d1519d2c174bb0afc1ee849d41fc30aeafa"
     },
-    "E": {
+    "F": {
      "east": "ece63d10dd3b4a82dcb26dcaf16d897bb44662caf0df6f00173f7884568cd8d0",
      "north": "0b382d5eb4845a0db25b86cb4cfe5508eaef621e376a0be9e2680aae72aa9964",
      "south": "97f08847047fb9ebbcb673e48570a4cbb3d9feeb1792ea7914577f3018bd6784"
     },
-    "F": {
+    "G": {
      "east": "ff3962d86f0b3b971609b579b5841d425f682d6aa0e60279a81dd0418e2e9f8d",
      "north": "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
      "south": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d"
     },
-    "G": {
+    "H": {
      "east": "78762395edf4512b5ddbb4f975a7d8f9efb09976a5843c96d25981b500bbfbc5",
      "north": "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
      "south": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d"
     },
-    "H": {
+    "I": {
      "east": "042237a607981a393462b87c9587b7d52894725901be120fadbbd77ef53f6f9c",
      "north": "b02e70a42b8ea6e80ac29545ddfabedc380e23d0f690893fb9b32be2cb090217",
      "south": "64faa7145d816db15dd1936d2068331c5c170026785d1df6df9a177c64074c01"
@@ -867,22 +1011,35 @@
     "E": "swanimals/Zeer/Zeer",
     "F": "swanimals/Zeer/Zeer",
     "G": "swanimals/Zeer/Zeer",
-    "H": "swanimals/Zeer/Zeer"
+    "H": "swanimals/Zeer/Zeer",
+    "I": "swanimals/Zeer/Zeer"
    },
    "labels": {
     "A": "IN GAME \u2014 ZeerArtOverride",
-    "B": "render desertportb_zeer",
-    "C": "render pyrelands_zeer_v2",
-    "D": "render pyrelands_zeer_v1",
-    "E": "history ZeerArtOverride 2026-09-14",
-    "F": "history ZeerArtOverride 2026-09-17",
-    "G": "history ZeerArtOverride 2026-09-18",
-    "H": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render longshade_rsw_zeer_v1",
+    "C": "render desertportb_zeer",
+    "D": "render pyrelands_zeer_v2",
+    "E": "render pyrelands_zeer_v1",
+    "F": "history ZeerArtOverride 2026-09-14",
+    "G": "history ZeerArtOverride 2026-09-17",
+    "H": "history ZeerArtOverride 2026-09-18",
+    "I": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Zeer/Zeer",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I"
+   ],
    "subject_key": "zeer"
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "4dda7dce8a9547a8"
+ "snapshotId": "92f626aec4b9eb30"
 }

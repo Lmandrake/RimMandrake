@@ -1,8 +1,8 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-04T23:54:19-0700",
+ "built": "2026-10-05T08:59:40-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Dwommo": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "dwommo"
   },
   "RM_Fubbum": {
@@ -42,6 +45,10 @@
     "B": "history GelatinousSlime 2026-10-03"
    },
    "res": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "fubbum"
   },
   "RM_Gappo": {
@@ -59,6 +66,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Gappo/RM_Gappo",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gappo"
   },
   "RM_GappoGreater": {
@@ -76,6 +86,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gappogreater"
   },
   "RM_GappoLesser": {
@@ -93,6 +106,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gappolesser"
   },
   "RM_Gelatid": {
@@ -110,6 +126,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gelatid"
   },
   "RM_Glurro": {
@@ -127,6 +146,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Glurro/RM_Glurro",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "glurro"
   },
   "RM_Plant_Bellows": {
@@ -142,7 +164,10 @@
     "A": "donor original \u2014 Vanilla Textures Expanded"
    },
    "res": "Things/Plant/Bush",
-   "subject_key": "plant_bellows"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "bellows"
   },
   "RM_Plant_Readerbloom": {
    "columns": {
@@ -162,7 +187,11 @@
     "B": "render RM_Readerbloom"
    },
    "res": "Things/Plant/Dandelion",
-   "subject_key": "plant_readerbloom"
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "readerbloom"
   },
   "RM_Plant_SlimeGrass": {
    "columns": {
@@ -182,7 +211,11 @@
     "B": "render RM_SlimeGrass"
    },
    "res": "Things/Plant/Grass",
-   "subject_key": "plant_slimegrass"
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "slimegrass"
   },
   "RM_Plant_Thumbstalk": {
    "columns": {
@@ -202,7 +235,11 @@
     "B": "render RM_Thumbstalk"
    },
    "res": "Things/Plant/Bush",
-   "subject_key": "plant_thumbstalk"
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "thumbstalk"
   },
   "RM_Titanoslime": {
    "columns": {
@@ -219,6 +256,9 @@
     "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "titanoslime"
   }
  },

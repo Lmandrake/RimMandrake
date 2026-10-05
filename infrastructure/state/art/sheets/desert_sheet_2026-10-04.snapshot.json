@@ -1,8 +1,8 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-05T08:34:13-0700",
+ "built": "2026-10-05T09:01:52-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "15caf5fd7",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "JOE_Landopus": {
@@ -191,7 +191,7 @@
     "B": "render ls_regen_RM_Dewfringe_b_v1",
     "C": "render ls_regen_RM_Dewfringe_c_v1",
     "D": "render ls_regen_RM_Dewfringe_d_v1",
-    "E": "render ls_regen_RM_Dewfringe_e_v1",
+    "E": "render ls_regen_RM_Dewfringe_e_v1 \u2014 failed canon check",
     "F": "render ls_regen_RM_Dewfringe_f_v1"
    },
    "res": "Things/Plant/RM_Dewfringe",
@@ -720,7 +720,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
     "B": "IN GAME \u2014 Stillsand",
-    "C": "render stillsand_regen_RM_Qorrax_swimming_v1"
+    "C": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
    "reserved": [
@@ -1173,7 +1173,7 @@
     "A": "swanimals/Bantha/BanthaW",
     "B": "swanimals/Bantha/BanthaW",
     "C": "swanimals/Bantha/BanthaW_j",
-    "D": "_byname",
+    "D": "swanimals/Bantha/BanthaW",
     "E": "_byname",
     "F": "_byname",
     "G": "_byname",
@@ -1186,10 +1186,10 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render doubles_redo_bantha_w_v1",
     "E": "render desert_swaca_bantha",
-    "F": "render longshade_rsw_bantha_v1",
+    "F": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_bantha_v2",
-    "H": "render longshade_rsw_bantha_v3",
-    "I": "render longshade_rsw_bantha_v4"
+    "H": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
+    "I": "render longshade_rsw_bantha_v4 \u2014 failed canon check"
    },
    "res": "swanimals/Bantha/BanthaW",
    "reserved": [
@@ -1246,10 +1246,6 @@
      "north": "26672e3f72b8dd3f1f41e7c67a85bba41fa3be1090706f21361147376e067793",
      "south": "3fb02dba6ffddcba1e799f941a343381b325d6b35ff4346fcb6147173f507d8b"
     },
-    "C": {
-     "north": "28c1eb8f61910b330f07c20580e2584e9f562ea837c13ae3c26b888c5638c065",
-     "south": "b68bdc5712b9d8b6ee1a8f8fba5f41c862a57ae145a90d630d588c7d7f605e07"
-    },
     "D": {
      "east": "78f84d78872e59601c8619f7f8b11b07be2ebfbf81d421d3c501aaf56a67cd9e",
      "north": "202d94c298daed4a360312adb5d5d335904e1f9ee68be5d33ea450ece9c8ee0e",
@@ -1259,21 +1255,26 @@
      "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
      "north": "a47592f78c40e079cce681b721a52b6ad81e9641127f5553eb248168db9becb3",
      "south": "ad9c0c32664157500524be460e4bb074cf8753469f522888735423b3c1ef7ab2"
+    },
+    "F": {
+     "east": "4b8e22cabf9c1678a91f4ba363315183e2bc44e67c645638069b91cc1e045950",
+     "north": "28c1eb8f61910b330f07c20580e2584e9f562ea837c13ae3c26b888c5638c065",
+     "south": "b68bdc5712b9d8b6ee1a8f8fba5f41c862a57ae145a90d630d588c7d7f605e07"
     }
    },
    "graphic_of": {
     "A": "swanimals/Bolotaur/Bolotaur",
     "B": "swanimals/Bolotaur/Bolotaur",
-    "C": "swanimals/Bolotaur/Bolotaur",
     "D": "swanimals/Bolotaur/Bolotaur",
-    "E": "swanimals/Bolotaur/Bolotaur"
+    "E": "swanimals/Bolotaur/Bolotaur",
+    "F": "swanimals/Bolotaur/Bolotaur"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_bolotaur",
-    "C": "render offbiome_bolotaur_v2",
     "D": "history SWBestiary 2026-09-12",
-    "E": "render longshade_rsw_bolotaur_v1"
+    "E": "render longshade_rsw_bolotaur_v1",
+    "F": "render offbiome_bolotaur_v2"
    },
    "res": "swanimals/Bolotaur/Bolotaur",
    "reserved": [
@@ -1281,7 +1282,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "bolotaur"
   },
@@ -1374,7 +1376,7 @@
     "E": "render dewback_toyfig_b",
     "F": "history DewbackArtOverride 2026-09-11",
     "G": "history SWBestiary 2026-09-09",
-    "H": "render longshade_rsw_dewback_v1"
+    "H": "render longshade_rsw_dewback_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
@@ -1444,6 +1446,11 @@
      "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
      "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
      "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
+    },
+    "H": {
+     "east": "aa9d0ab1d5054ef3f7c3cdec779663811fa052358d04c732f25bb40eb6ef04b0",
+     "north": "e88f9a66d31f0841669164a56ebee1e6b8bfbb18f9744760373aa7a5ef571cfa",
+     "south": "d5718381cc41b9dcce1d871324a39c4c4bd01b37da4f7ef4b739719e33fc7441"
     }
    },
    "graphic_of": {
@@ -1453,7 +1460,8 @@
     "D": "swanimals/Eopie/Eopie",
     "E": "swanimals/Eopie/Eopie",
     "F": "swanimals/Eopie/Eopie_j",
-    "G": "swanimals/Eopie/Eopie"
+    "G": "swanimals/Eopie/Eopie",
+    "H": "swanimals/Eopie/Eopie"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1462,7 +1470,8 @@
     "D": "render doubles_redo_eopie_v1",
     "E": "render desert_swaca_eopie",
     "F": "IN GAME \u2014 SWBestiary",
-    "G": "render longshade_rsw_eopie_v1"
+    "G": "render longshade_rsw_eopie_v1 \u2014 failed canon check",
+    "H": "render canon_eopie_v1"
    },
    "res": "swanimals/Eopie/Eopie",
    "reserved": [
@@ -1472,7 +1481,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "eopie"
   },
@@ -1500,7 +1510,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_falumpaset",
-    "C": "render longshade_rsw_falumpaset_v1"
+    "C": "render longshade_rsw_falumpaset_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Falumpaset/Falumpaset",
    "reserved": [
@@ -1617,12 +1627,12 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "render longshade_rsw_frilledgorg_v1",
+    "F": "render longshade_rsw_frilledgorg_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_frilledgorg_v3",
     "H": "render longshade_rsw_frilledgorg_v6",
-    "I": "render longshade_rsw_frilledgorg_v2",
-    "J": "render longshade_rsw_frilledgorg_v4",
-    "K": "render longshade_rsw_frilledgorg_v5"
+    "I": "render longshade_rsw_frilledgorg_v2 \u2014 failed canon check",
+    "J": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
+    "K": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check"
    },
    "res": "swanimals/FrilledGorg/FrilledGorg",
    "reserved": [
@@ -1717,13 +1727,13 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "render longshade_rsw_gorg_v1",
+    "F": "render longshade_rsw_gorg_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_gorg_v3",
-    "H": "render longshade_rsw_gorg_v6",
+    "H": "render longshade_rsw_gorg_v6 \u2014 failed canon check",
     "I": "render longshade_rsw_gorg_swim_v1",
     "J": "render longshade_rsw_gorg_v2",
-    "K": "render longshade_rsw_gorg_v4",
-    "L": "render longshade_rsw_gorg_v5"
+    "K": "render longshade_rsw_gorg_v4 \u2014 failed canon check",
+    "L": "render longshade_rsw_gorg_v5 \u2014 failed canon check"
    },
    "res": "swanimals/Gorg/Gorg",
    "reserved": [
@@ -1912,7 +1922,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_hrumph",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render longshade_rsw_hrumph_v1"
+    "D": "render longshade_rsw_hrumph_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Hrumph/Hrumph",
    "reserved": [
@@ -2412,11 +2422,11 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "render longshade_rsw_longtailgorg_swim_v1",
+    "F": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_longtailgorg_v1",
     "H": "render longshade_rsw_longtailgorg_v2",
     "I": "render longshade_rsw_longtailgorg_v3",
-    "J": "render longshade_rsw_longtailgorg_v4",
+    "J": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
     "K": "render longshade_rsw_longtailgorg_v5",
     "L": "render longshade_rsw_longtailgorg_v6"
    },
@@ -2496,7 +2506,7 @@
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render desertportb_nerf",
-    "E": "render longshade_rsw_nerf_v1"
+    "E": "render longshade_rsw_nerf_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Nerf/Nerf_f",
    "reserved": [
@@ -2662,7 +2672,7 @@
     "A",
     "B"
    ],
-   "subject_key": "plant_chakroot_wild"
+   "subject_key": "chakroot_wild"
   },
   "RSW_Plant_HubbaGourd_Wild": {
    "columns": {
@@ -2686,7 +2696,7 @@
     "A",
     "B"
    ],
-   "subject_key": "plant_hubbagourd_wild"
+   "subject_key": "hubbagourd_wild"
   },
   "RSW_Ronto": {
    "columns": {
@@ -2937,7 +2947,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_sketto",
-    "C": "render longshade_rsw_sketto_v1"
+    "C": "render longshade_rsw_sketto_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Sketto/Sketto",
    "reserved": [
@@ -3007,7 +3017,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_teemuss",
-    "C": "render longshade_rsw_teemuss_v1"
+    "C": "render longshade_rsw_teemuss_v1 \u2014 failed canon check"
    },
    "res": "swanimals/TeeMuss/TeeMuss",
    "reserved": [
@@ -3139,7 +3149,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_uvak",
-    "C": "render longshade_rsw_uvak_v1"
+    "C": "render longshade_rsw_uvak_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Uvak/Uvak",
    "reserved": [
@@ -3263,7 +3273,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_voorpak",
-    "C": "render longshade_rsw_voorpak_v1"
+    "C": "render longshade_rsw_voorpak_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Voorpak/Voorpak",
    "reserved": [
@@ -3380,7 +3390,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_wraid",
-    "C": "render longshade_rsw_wraid_v1"
+    "C": "render longshade_rsw_wraid_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Wraid/Wraid",
    "reserved": [
@@ -3416,7 +3426,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_wraid",
-    "C": "render longshade_rsw_wraid_v1"
+    "C": "render longshade_rsw_wraid_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Wraid/Wraid",
    "reserved": [
@@ -3510,5 +3520,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "3f974c7062682114"
+ "snapshotId": "b2888feaafa08416"
 }

@@ -1,8 +1,8 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T08:34:37-0700",
+ "built": "2026-10-05T09:02:16-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "15caf5fd7",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Aurrok": {
@@ -52,7 +52,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "render stillsand_regen_RM_Drazzik_swimming_v1"
+    "B": "render stillsand_regen_RM_Drazzik_swimming_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
    "reserved": [
@@ -165,10 +165,10 @@
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render stillsand_regen_RM_Glasscrust_var1",
-    "C": "render stillsand_regen_RM_Glasscrust_var2",
+    "C": "render stillsand_regen_RM_Glasscrust_var2 \u2014 failed canon check",
     "D": "render stillsand_regen_RM_Glasscrust_var3",
     "E": "render stillsand_regen_RM_Glasscrust_var4",
-    "F": "render stillsand_regen_RM_Glasscrust_var5"
+    "F": "render stillsand_regen_RM_Glasscrust_var5 \u2014 failed canon check"
    },
    "res": "Things/Plant/RM_Glasscrust",
    "reserved": [
@@ -428,7 +428,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
     "B": "IN GAME \u2014 Stillsand",
-    "C": "render stillsand_regen_RM_Qorrax_swimming_v1"
+    "C": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
    "reserved": [
@@ -935,7 +935,7 @@
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render desertportb_kraytdragon",
-    "E": "render stillsand_regen_RSW_KraytDragon_v2"
+    "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "reserved": [
@@ -981,6 +981,11 @@
      "east": "dc85f8e03d8cdc19debf206a703559c0bcf08badce9b0704ef696f39d3e41eb8",
      "north": "062137f7c37a33b27a3214694fa8d888f3017edca050f582267fc11b7d4a6518",
      "south": "1072144b2279549094eeddeca784fd0709294e2acedf75927de357be3275e9a6"
+    },
+    "H": {
+     "east": "24f8a4abba85a390e5675c7a5a6c0faad088d5d36b4e974a326d1f3dca4e7a80",
+     "north": "23adc329784f9f3a887e839a8a585230793477a14adcc935053c17c5282dce84",
+     "south": "1a5b3c7c7c8ca65328117b3256594fbe07a3bec7ddeb3ad7a90179701eb4da87"
     }
    },
    "graphic_of": {
@@ -990,7 +995,8 @@
     "D": "swanimals/Kreetle/Kreetle",
     "E": "swanimals/Kreetle/Kreetle",
     "F": "swanimals/Kreetle/Kreetle_j",
-    "G": "swanimals/Kreetle/Kreetle"
+    "G": "swanimals/Kreetle/Kreetle",
+    "H": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "A": "IN GAME \u2014 KreetleArtOverride",
@@ -999,7 +1005,8 @@
     "D": "history KreetleArtOverride 2026-09-11",
     "E": "donor original \u2014 mlie.starwarsanimalcollection",
     "F": "IN GAME \u2014 SWBestiary",
-    "G": "render stillsand_regen_RSW_Kreetle_v2"
+    "G": "render stillsand_regen_RSW_Kreetle_v2",
+    "H": "render canon_kreetle_v1"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -1009,7 +1016,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "kreetle"
   },
@@ -1077,7 +1085,7 @@
     "E",
     "F"
    ],
-   "subject_key": "plant_bloddle"
+   "subject_key": "bloddle"
   },
   "RSW_Scurrier": {
    "columns": {
