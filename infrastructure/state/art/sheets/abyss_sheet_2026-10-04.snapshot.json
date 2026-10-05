@@ -1,6 +1,6 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-05T10:22:08-0700",
+ "built": "2026-10-05T14:27:56-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -215,24 +215,33 @@
      "east": "3bdeb176e5688cbcb24dbdeffb90b0f5c379fc8b2739e1bc0fca9df4021e01e5",
      "north": "30e6a0a52db2fef67466185bfa08db238fd5c8d7fc554457c0b1634f85bf44b0",
      "south": "ea86445c2a384dcb57db712119a515d113a50bda7da55f6a64f071ee370710d3"
+    },
+    "F": {
+     "east": "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
+     "north": "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789",
+     "south": "b0b04bf49d8ef03573b89b587a250284f3ecc9bf8e5dcac6c04576f16e1f5a7e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
     "B": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render crags_kessik",
-    "D": "render abyss_kittrik_v1"
+    "D": "render abyss_kittrik_v1",
+    "F": "render gapall_AA_Murkling_v1"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "murkling"
   },
@@ -577,17 +586,23 @@
    "columns": {
     "A": {
      "single": "5e921c5e20a5771e8d10443db5af90f997dd051c7a1c67bae86b84735ab9de99"
+    },
+    "B": {
+     "single": "7bfda23a924d43a7fa24e3c04b4beed610941d937e0dc22961bd1a4852803055"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/AB_GiantStikehr"
+    "A": "Things/Plants/AB_GiantStikehr",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes"
+    "A": "IN GAME \u2014 Alpha Biomes",
+    "B": "render abyss_morkhul_v1"
    },
    "res": "Things/Plants/AB_GiantStikehr",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "giantstikehr"
   },
@@ -664,20 +679,26 @@
     },
     "B": {
      "single": "8fe3a4a54c6f89c8b545e771cf80ce22a99403b5fb46218b50ab9534da9bba17"
+    },
+    "C": {
+     "single": "6d056346bcf41e0d780889996a542c627b74bb5c7d79ea482d5ac281176b20d2"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_WildRadagast",
-    "B": "Things/Plants/AB_WildRadagast"
+    "B": "Things/Plants/AB_WildRadagast",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "donor original \u2014 Alpha Biomes"
+    "B": "donor original \u2014 Alpha Biomes",
+    "C": "render abyss_vettrig_v1"
    },
    "res": "Things/Plants/AB_WildRadagast",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "wildradagast"
   },
@@ -1030,5 +1051,5 @@
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "6b9b0ede24b9110c"
+ "snapshotId": "407fead2162f8255"
 }

@@ -1,6 +1,6 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-05T10:53:46-0700",
+ "built": "2026-10-05T14:28:37-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "79f726107e09de5ea497c6cd29aa7193720d88f0c5a2da6a431de3e1b4bfafab",
      "north": "35089a5429fa1ef9535baddc8c09a05f6bea8d9a6f559f09c7b7e9b94684e79f",
      "south": "e68cc3a30ed579a9230d75a41e250e96434f5233e5a9d85dd4efe048ba004e40"
+    },
+    "B": {
+     "east": "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+     "north": "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+     "south": "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
+    "A": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
+    "B": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_DecayDrake_v1"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "decaydrake"
   },
@@ -31,17 +39,25 @@
      "east": "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18",
      "north": "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
      "south": "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6"
+    },
+    "B": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
+    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+    "B": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Helixien_v1"
    },
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "helixien"
   },
@@ -267,17 +283,25 @@
      "east": "0a0993dcc995c537e15101e5e86927eaa629af354b2c6f31571ab20223d4e15d",
      "north": "9a2b745259804ea605218e645a72169050cceace0c46c7d6efeaa4bf9760f9dc",
      "south": "20a8d38b58ec7b55de116e0e513595413f2d3cf02e1621db96ff5ad36b15a6ae"
+    },
+    "B": {
+     "east": "77e179539ba419d237a9659ab02f925c2d953f73a4fe034e39e4fc8bd86c4afc",
+     "north": "bbcba801a20611cc639362fcb5c64b9af2b45f548b6177ac0112e36ba30e2696",
+     "south": "a7c86877710cd6a35b3cf4d5ba7ccf22776b4b0387c54cf368dadc22c5952c38"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede"
+    "A": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede",
+    "B": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Slurrypede_v1"
    },
    "res": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "slurrypede"
   },
@@ -1746,5 +1770,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "12411f4b8d9aa0d4"
+ "snapshotId": "477bf6fb2d69b4ec"
 }

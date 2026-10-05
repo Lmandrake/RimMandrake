@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-05T11:55:07-0700",
+ "built": "2026-10-05T13:24:17-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -70,6 +70,7 @@
     },
     "B": {
      "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
+     "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c",
      "south": "e42e8d355e4c69dbe3426ef720967601bcdb949eb93f48294defa805f71f8bbe"
     }
    },
@@ -97,7 +98,8 @@
     },
     "B": {
      "east": "beac1fb5a1fdea8f9e2223694e2dfb47d9f3e74158f1bb16d3845716d6d87bab",
-     "north": "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35"
+     "north": "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35",
+     "south": "e8b99406ac09b29fb012a0346dcbb6c8492bbe62e7b8b889fea792f11328c12e"
     }
    },
    "graphic_of": {
@@ -1425,5 +1427,5 @@
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "f4b3ba6707b180d5"
+ "snapshotId": "3207988db8ab1c66"
 }

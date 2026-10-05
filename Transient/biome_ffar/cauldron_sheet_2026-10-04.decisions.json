@@ -2,7 +2,7 @@
  "sheetId": "cauldron_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
- "snapshotId": "8c1dea27c970e440",
+ "snapshotId": "bf3efc4334cd1d10",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Cauldron",
  "reviewStatus": {
@@ -32,9 +32,9 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby": "B",
-    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female": "C",
-    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby": "D"
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby": "C",
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female": "D",
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby": "E"
    }
   },
   "AA_Helixien": {

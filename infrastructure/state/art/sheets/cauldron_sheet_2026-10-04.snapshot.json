@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-05T12:58:47-0700",
+ "built": "2026-10-05T15:00:01-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -13,7 +13,9 @@
      "south": "44b8d1279abb53d1964c3ff4e3d0f0a8a52232a407a61016b61627681257a529"
     },
     "B": {
-     "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d"
+     "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
+     "north": "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
+     "south": "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c"
     }
    },
    "graphic_of": {
@@ -39,7 +41,9 @@
      "south": "9132cd9961b766996d1dc9c04d9cd45f849edddedd2e34b14d6c6ca745161044"
     },
     "B": {
-     "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0"
+     "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
+     "north": "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94",
+     "south": "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00"
     }
    },
    "graphic_of": {
@@ -63,17 +67,25 @@
      "east": "79f726107e09de5ea497c6cd29aa7193720d88f0c5a2da6a431de3e1b4bfafab",
      "north": "35089a5429fa1ef9535baddc8c09a05f6bea8d9a6f559f09c7b7e9b94684e79f",
      "south": "e68cc3a30ed579a9230d75a41e250e96434f5233e5a9d85dd4efe048ba004e40"
+    },
+    "B": {
+     "east": "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+     "north": "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+     "south": "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
+    "A": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
+    "B": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_DecayDrake_v1"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "decaydrake"
   },
@@ -85,16 +97,21 @@
      "south": "e7901ee0d6b722be071c68aebca7707af32a4110824adc4341bb38e985b35217"
     },
     "B": {
+     "east": "6ab810659674d3885d8ffe63fd1eecfef20824a274e13a0b340b59f7e81e5c6c",
+     "north": "df7d17bc033213327c1a6fa6485bfd2ddebff1daeae63b15ed2b5fc1371e1581",
+     "south": "6bcd611a4a74aff828d3e9b89793ccad53a4b303712fba3df4ab61f0d0a5c75f"
+    },
+    "C": {
      "east": "c04cb680ccfef100bfa38965c252915babfe56430a55fab715b00d8f90c18ec8",
      "north": "b28c916b9c4d5bd02539de07abb1b9d2b984066af5c1943a5435ed637d2f5195",
      "south": "ee251b0a55d85bef9b67d7fa172b1c4f25a5b98521e2e2d91351f2dd13396d97"
     },
-    "C": {
+    "D": {
      "east": "7ff4e7b4d532db1e6643557134cf27301ecb195f0d2f09103e8bc594386ce018",
      "north": "e5aac4b8471374432a8886660ab1c671cee784f6f9052f7c01d94a593274bbdf",
      "south": "85af572ba1b0c82e7971e39fb13ee420f5c8e0c23d61a5a81504b196217e46c2"
     },
-    "D": {
+    "E": {
      "east": "a4ddb93ff7a8d1e732fca5017a48313a49da2afbe78491c75a921e87b7d04674",
      "north": "89ea6036368716bbb780cd7cb9bd619ff6ee60fd92dc23e007bbaa38d346964d",
      "south": "1ddd2f062ca2c1e92927e3360a7a7f6ddb336745903e912e7ba4b0a9a8c2b9de"
@@ -102,22 +119,25 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
-    "B": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby",
-    "C": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female",
-    "D": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby"
+    "B": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
+    "C": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby",
+    "D": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female",
+    "E": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_GiantCrownedSilkie_v1",
     "C": "IN GAME \u2014 Alpha Animals",
-    "D": "IN GAME \u2014 Alpha Animals"
+    "D": "IN GAME \u2014 Alpha Animals",
+    "E": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "giantcrownedsilkie"
   },
@@ -127,17 +147,25 @@
      "east": "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18",
      "north": "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
      "south": "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6"
+    },
+    "B": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
+    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+    "B": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Helixien_v1"
    },
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "helixien"
   },
@@ -147,17 +175,25 @@
      "east": "7ef5a80c63613a29d125fbfc2686d7a63eebb57c15a97f0730bbfb8ff039f9f5",
      "north": "477b909d4b575756a025139662a96534912672c0f784d085bcdef602611ea8f6",
      "south": "a4e3fd409a10a5e9d5934b7b54677b736b5eb9c77c237fd87ee33a5a9d197360"
+    },
+    "B": {
+     "east": "599eeebbc85351789ecaab578c250a648a2159448d39c9cf4822674964080027",
+     "north": "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf",
+     "south": "eece65af2cc46106d247c3f17187599c591de4e5ac4c84e8973e273894f481d3"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
+    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_InfectedAerofleet_v1"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "infectedaerofleet"
   },
@@ -167,17 +203,25 @@
      "east": "77717b0fe6f0525405f2b89743ffbd5e6385175adf7d6f8d7fc2978368621ede",
      "north": "7a8e813c4c150191d6e235fee954d07a8d3fafb4f44a422513942a4e396b3312",
      "south": "5287246bc9227b6145daab16830a375b19eaa8652046b1c411f859b588cf2ad4"
+    },
+    "B": {
+     "east": "b29ae17df37836453c164bdbdd5616deba5828f6f8ffe8d6a997b1c06df3af05",
+     "north": "3a21b34afff268bb7a9b3c8fc7c5b1f8aaaddbaaee7752189cc7ac72672cdb5f",
+     "south": "00ee5f3ed023d1c773ec98d5eafc58c3968f4fdfedf01d816713051399b0f574"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug"
+    "A": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug",
+    "B": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_LuciferBug_v1"
    },
    "res": "Things/Pawn/Animal/AA_LuciferBug/AA_LuciferBug",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "luciferbug"
   },
@@ -187,17 +231,25 @@
      "east": "b3c588199eb31bc767e0cbf343d928a7ff150a46a02dfa61b9c454542166172f",
      "north": "ff0e1e9cee9bfeff7354dcc9ff7f58ecee157f0b1a51ab98303e6ba14190fcde",
      "south": "b8d7a633991873bda7f22ba36d71f5d62dc2072a3c6bc9776191d9126b025126"
+    },
+    "B": {
+     "east": "57a293332e475b6b8f74dc5bfab782a5bfa500100f42a2b0d19ff4d910e72767",
+     "north": "8ba2a523828595a6eff2f5086c0edec5085a09190d2eb225123ab0ebbd188b1a",
+     "south": "98a20cc1e67b8f1e77017e73ba53e3eb10fdd60745f22ab9d5d693175c703c7a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"
+    "A": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
+    "B": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_OcularJelly_v1"
    },
    "res": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ocularjelly"
   },
@@ -207,17 +259,25 @@
      "east": "dd3688a832d177e48de59c3bc9af3f7dcdda50f73342d84c03f8ff2959e358a2",
      "north": "701494c16b4df746ca2562ff499b9e5b3bfafdda2954390a18c4537c190979b2",
      "south": "cef5fd1d9ec9ed4959e2acbc35955a405dfe2af858b23c70c723de222c8f76ab"
+    },
+    "B": {
+     "east": "d45640c2775d8a032302826eaaac61e6421ce8ec396516f9eb7c5c220a7917a1",
+     "north": "b3219dad7cdcea7048e5c543bc3ddc413e8c9dcc633c891dd303c8fb3d82f804",
+     "south": "97541fe82283bb41c830b91580232fd0893c2309fdeba9082ad5df5e14ca5acb"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph"
+    "A": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
+    "B": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Plasmorph_v1"
    },
    "res": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "plasmorph"
   },
@@ -237,23 +297,31 @@
      "east": "ab6384fff27e1a94b03029abbf81950a86a342426c220901b31d963573055fed",
      "north": "c813379ca59f16934eb0a8e1e16cdbcc5fe58832dadd1fb5609c592f1722bab9",
      "south": "74d3f4a98849921c0720e68eb11dc63cf3f4fee6ccc02c62644d5139ff92474a"
+    },
+    "D": {
+     "east": "cf3a74e2cea78cfd8001d03d9cba54e409f17566e15c50058b91addec18e40c8",
+     "north": "1f49f70893fdf4f8981ab4f0dfa0b171f31c2e174ff01830f96adae064c9cbaa",
+     "south": "37b2340d40f6b1b47e0c4494be0434a55680d447c41391f766c14c3c93188bd5"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby",
     "B": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_female",
-    "C": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_male"
+    "C": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_male",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
-    "C": "IN GAME \u2014 Alpha Animals"
+    "C": "IN GAME \u2014 Alpha Animals",
+    "D": "render gapall_AA_Radyak_v1"
    },
    "res": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "radyak"
   },
@@ -263,17 +331,25 @@
      "east": "ca076d2da86bbe486c546da898e6a30d847797e635e5288abafb5dc9362e1549",
      "north": "afe150558ab8e4d9476dbfca85e10ca2efa53c75076211d1b9c9386f7b7092fc",
      "south": "2f4b62ac36c07c09455e0364c929f35b5e604939a049d14340bdd5efa4fbdcfa"
+    },
+    "B": {
+     "east": "4da8046f0cdffc9c02c5f71f015fa708302880349ad1138e0c6ddb0d09b05021",
+     "north": "2d9f0edcaa060fe101962bab6037bf1cc2aafce2e01ac1bc29ae4add585bcd55",
+     "south": "560d825ea335c9bd41cb0ad4d47722f2e0bf7ae755290762fd1d58fe3de00d48"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound"
+    "A": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound",
+    "B": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_RipperHound_v1"
    },
    "res": "Things/Pawn/Animal/AA_RipperHound/AA_RipperHound",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ripperhound"
   },
@@ -283,17 +359,25 @@
      "east": "6ed0e7bbff2aafa7eb3a2657631e5329fc6fa29bb3571d69c5c5598cb2a464e1",
      "north": "eba2af7891684abdc647afbd3c3923e51c79feb9acc0d53364086a9933af0089",
      "south": "9dec5e132f577521f6ad3e61682cc23ab58f9ea9e7264e5ae1ccf4db6f809d94"
+    },
+    "B": {
+     "east": "77b4614da6c779fc4cf11ee50f1d78998d94f2a5302388adf705b1a3404fc25d",
+     "north": "7f17b2f4fc08b1f38beb5b6cbc5ba550e53bfec6e86fee51a8842bd21de98c21",
+     "south": "33d2ed6f859b3a40d56defb1a6f6afb24a132444deb46f2060d060da4d70b33b"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor"
+    "A": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
+    "B": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Memes"
+    "A": "IN GAME \u2014 Alpha Memes",
+    "B": "render gapall_AM_Dryad_Corruptor_v1"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "am_dryad_corruptor"
   },
@@ -303,17 +387,25 @@
      "east": "17a51f01e5e43bc5523f119b62c79648be3c8059cc0aefdf1c0a1811da6c6196",
      "north": "41235e566f15eba09fdfeb0ec79ce5500df9dc5ef25071b095fb8e4be35fae1f",
      "south": "770271d7ce8b1da71d032c588ae9651fc51c984485f869bcdd3b8e2a89eed670"
+    },
+    "B": {
+     "east": "4b42c438b76d217e613aca4334007ce23a7a62a1128bb8ced05154aae797b8d3",
+     "north": "376ea56b7ceeb4ab3c61caded70366a3d179c90e2ff8193fc9d5c42bebd06586",
+     "south": "906c7051dddb5f9ce5cbdb9440fcf092926f05d47ed1e30a5cd4032c4ad09f11"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular"
+    "A": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular",
+    "B": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Memes"
+    "A": "IN GAME \u2014 Alpha Memes",
+    "B": "render gapall_AM_Dryad_Ocular_v1"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Ocular/AM_Dryad_Ocular",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "am_dryad_ocular"
   },
@@ -323,17 +415,25 @@
      "east": "125790b7435042f9c9bd29545c2ccf696271dacd951ccab371349147a402014f",
      "north": "c9bf1f7db5a1a5085e4a35375486aaac2858be38ce4c5169ea6ecacb508bb098",
      "south": "915eec50a79164e1088732b384c6c8e7eac1d2b34d8e5dcb044accb29dcef99f"
+    },
+    "B": {
+     "east": "6b077510b1ae0697d24696694eba08d573dbf151c4780a6b51bef159d9a8a901",
+     "north": "40b71112af19bdce064bb92728f83e5c54f49aecc41c37bf364f9738a16ffac6",
+     "south": "d292b376f80428b019367ce7c7a024605425fff1fa5fe54979cea22a439850f6"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous"
+    "A": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
+    "B": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Memes"
+    "A": "IN GAME \u2014 Alpha Memes",
+    "B": "render gapall_AM_Dryad_Tumorous_v1"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "am_dryad_tumorous"
   },
@@ -343,17 +443,25 @@
      "east": "0beaebade447fef66844c563e919c8e7a97729f42d97911c752fa13cd36675e8",
      "north": "34c7a3dfb0fec3ecaf76adc49eb074229161cf6b26025f89949f6da3b499f42a",
      "south": "aa08a14be420ceaa3a443d64fb0f3bc91ccda0df34c4b8669a5eb37feb37146d"
+    },
+    "B": {
+     "east": "15cd4c22ef0553b094931f85cc21e00473270dde5a6aad31e1fa0ecbcee76e82",
+     "north": "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559",
+     "south": "77647aabd55332acb80ffb981e0540e1c971feb6ce332118f317aeec2c1d0871"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
+    "A": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+    "B": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Vanilla Genetics Expanded"
+    "A": "IN GAME \u2014 Vanilla Genetics Expanded",
+    "B": "render gapall_GR_Beetlefleet_v1"
    },
    "res": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gr_beetlefleet"
   },
@@ -1141,5 +1249,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "8c1dea27c970e440"
+ "snapshotId": "bf3efc4334cd1d10"
 }

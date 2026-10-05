@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T11:22:46-0700",
+ "built": "2026-10-05T13:56:44-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -539,30 +539,33 @@
      "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
      "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
     },
-    "B": {
-     "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3"
-    },
     "C": {
      "east": "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
      "north": "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa",
      "south": "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a"
+    },
+    "D": {
+     "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3",
+     "north": "479f5b09e93f7f08c953e4bcd78c419860808cff5ecded5070911bb31ee205ce",
+     "south": "67b953ccfee8d320b24f44a40fead25362827e6ac476ee1da4737766e4ed48f2"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
-    "B": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
-    "C": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+    "C": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "D": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
-    "B": "render longshade_rsw_ulgga_v1",
-    "C": "render RM_Ulgga"
+    "C": "render RM_Ulgga",
+    "D": "render longshade_rsw_ulgga_v1"
    },
    "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "ulgga"
   },
@@ -1215,5 +1218,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "52cd72442425e7df"
+ "snapshotId": "aeea9c9af6fd87be"
 }
