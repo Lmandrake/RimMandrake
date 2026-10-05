@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SURFACE_RIVER_WEIRS_1 — River Works (mandrake.rm.riverworks), slice 1. Same recipe as
+    src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomes.csproj. Build from an ext4 clone with
+      python3 src/RimMandrake/Utils/winbuild.py RiverWorks
+    EnableDefaultCompileItems is false: a new .cs needs a Compile line below or it builds into nothing.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.RiverWorks</AssemblyName>
+    <RootNamespace>RimMandrake.RiverWorks</RootNamespace>
+    <Version>1.0.0</Version>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_RiverMath.cs" />
+    <Compile Include="RM_RiverWorksMod.cs" />
+    <Compile Include="RM_RiverWorks.cs" />
+    <Compile Include="RM_MapComponent_RiverCurrent.cs" />
+    <Compile Include="RM_WorldComponent_SweptAway.cs" />
+    <Compile Include="RM_RiverWorksProof.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
