@@ -1344,6 +1344,73 @@ ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "
                "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
 ROW_TOGGLES["ST1_styles_textures_load"] = "style"
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
+
+# North star (DRAFT, agent-seeded 2026-10-05; design/validation_walks/RimMandrake/GimmeSomeSlack.md `## north star`):
+# which must-show / cannot-show ids each row is evidence for (`shows=`, north_star_validation_spec.md section 2).
+# Every id named here is a row that already exists; no check was added or relaxed to claim a bar. Binds nothing
+# in the floor until the owner validates the section (a DRAFT bar is empty by design).
+ROW_SHOWS = {
+    # offline tier (this suite's offline chain)
+    "O3_core_selftest": ["hose_joiner_reads_brass_screwed_together", "reel_hose_leaves_brass_outlet_nozzle"],
+    "O5_style_art_sane": ["four_styles_distinguishable"],
+    "O6_review_round1": ["hose_joiner_reads_brass_screwed_together"],
+    # core (validation.live_battery: this suite's live chain, and proof_all's core block)
+    "M1_conduit_transparent": ["conduit_reads_invisible"],
+    "M7b_on_again_invisible": ["conduit_reads_invisible"],
+    "B1_rope_settle": ["cord_lies_slack_in_loops", "never_taut_straight_cord"],
+    "M1c_end_pieces": ["cord_meets_wall_at_its_face"],
+    "M2b_no_vertex_unwalkable": ["never_cord_across_impassable"],
+    "B6_tangle_lit_strips": ["dense_grid_reads_as_tangle"],
+    "M8_break_two_ends_live_dead": ["break_live_and_dead_ends_differ"],
+    "B6b_strips_dark_when_dead": ["break_live_and_dead_ends_differ"],
+    "B4_downed_wire_bursts": ["break_live_and_dead_ends_differ"],
+    "ST1_styles_textures_load": ["four_styles_distinguishable"],
+    "ST2_switch_changes_textures": ["four_styles_distinguishable"],
+    # rows only proof_all.py produces (matrix, aerial, hose, relay, carry, style, style-hose blocks)
+    "MX_F00_T0_S0": ["cord_lies_slack_in_loops", "never_taut_straight_cord"],
+    "MX_F21_T5_S1": ["cord_lies_slack_in_loops"],
+    "MX_D15_n1000_S3": ["dense_grid_reads_as_tangle"],
+    "R1_span_altitude_above_pawns_below_blueprints": ["overhead_span_above_everything"],
+    "R2_spans_and_heads_drawn": ["overhead_span_above_everything"],
+    "RL9_overhead_drawn_over_hose": ["overhead_span_above_everything"],
+    "M14b_dead_pole_drops_live_and_dead_cords": ["downed_span_lies_on_ground"],
+    "M15_explosion_cuts_span": ["downed_span_lies_on_ground"],
+    "MX_A04_N3_R12_fallen": ["downed_span_lies_on_ground"],
+    "H2_hose_laid_as_hose_cord": ["hose_thicker_stiffer_than_cord"],
+    "MX_H01_Flat_corner_L14": ["hose_thicker_stiffer_than_cord"],
+    "H9_stiffness_setting": ["hose_thicker_stiffer_than_cord"],
+    "MX_H00_Flat_straight_L6": ["hose_plump_when_flowing_flat_when_not"],
+    "MX_H03_Plump_straight_L14": ["hose_plump_when_flowing_flat_when_not"],
+    "H6_plump_within_transition": ["hose_plump_when_flowing_flat_when_not"],
+    "H8_collapse_after_release": ["hose_plump_when_flowing_flat_when_not"],
+    "MX_H04_Plump_corner_L24": ["hose_joiner_reads_brass_screwed_together"],
+    "MX_H02_Flat_water_L24": ["never_cord_across_impassable"],
+    "R3_laid_out_per_look": ["reel_laid_and_wound_look_differ", "reel_hose_leaves_brass_outlet_nozzle"],
+    "R5_reeled_in_per_look": ["reel_laid_and_wound_look_differ"],
+    "CR6_retract_stored": ["reel_laid_and_wound_look_differ"],
+    "RL3_hose_onto_relay_B": ["relay_chain_reads_connected"],
+    "RL4_relay_B_onward_to_C": ["relay_chain_reads_connected"],
+    "RL8_chain_beyond_one_hose": ["relay_chain_reads_connected"],
+    "R2_built_reels_stored_art": ["four_styles_distinguishable"],
+    "S6_spans_in_pole_look": ["four_styles_distinguishable"],
+    "S9a_two_runs_two_styles": ["one_run_one_style"],
+    "S9b_bridge_largest_wins": ["one_run_one_style"],
+    "S9c_split_keeps_styles": ["one_run_one_style"],
+    "S9d_restyle_and_materials": ["one_run_one_style"],
+    "CR7_no_instant_gizmos_without_devmode": ["reel_offers_choose_style"],   # records the reel's gizmo labels; asserts no label
+}
+# The declared bar nothing can prove yet: a hose plumps only from a powered pump. FlowWorks ships no pump
+# (walk E4), so the row is UNBUILT by design and the bar stays claimed, failing, until the pump exists.
+PUMP_ROW = {"id": "NS_hose_plumps_only_from_powered_pump", "status": "UNBUILT", "class": "MOD",
+            "detail": "UNBUILT: no FlowWorks pump (RM_PumpPortable) to drive a hose; the reel's flow is a DEV gizmo today"}
+ROW_SHOWS[PUMP_ROW["id"]] = ["hose_plumps_only_from_powered_pump"]
+CORE_SHOW_IDS = ["M1_conduit_transparent", "M7b_on_again_invisible", "B1_rope_settle", "M1c_end_pieces",
+                 "M2b_no_vertex_unwalkable", "B6_tangle_lit_strips", "M8_break_two_ends_live_dead",
+                 "B6b_strips_dark_when_dead", "B4_downed_wire_bursts", "ST1_styles_textures_load",
+                 "ST2_switch_changes_textures"]
+OFFLINE_SHOW_IDS = ["O3_core_selftest", "O5_style_art_sane", "O6_review_round1"]
+PROOF_ALL_SHOW_IDS = [r for r in ROW_SHOWS if r not in CORE_SHOW_IDS and r not in OFFLINE_SHOW_IDS
+                      and r != PUMP_ROW["id"]]
 MIRROR_POSIX = "/mnt/d/Luke/dev/RimMandrake"       # read-only origin/main mirror: the offline tier writes exports
 
 
@@ -1355,12 +1422,12 @@ def _report_rows(t, rows, declare=()):
     declare, so toggle coverage is answerable offline."""
     if not t._guard() and not rows:
         for rid in declare:
-            with t.component(rid, toggle=ROW_TOGGLES.get(rid)):
+            with t.component(rid, toggle=ROW_TOGGLES.get(rid), shows=ROW_SHOWS.get(rid)):
                 pass
         return
     for r in rows:
         st = r["status"]
-        with t.component(r["id"], toggle=ROW_TOGGLES.get(r["id"])):
+        with t.component(r["id"], toggle=ROW_TOGGLES.get(r["id"]), shows=ROW_SHOWS.get(r["id"])):
             if t._guard() and st == "FAIL":
                 raise ExpectationFailed("[%s] %s" % (r.get("class"), str(r.get("detail"))[:600]))
         c = t.components[-1]
@@ -1442,7 +1509,7 @@ def live_battery_chain(t):
         ran = t.components[-1] if t.components else None
         if ran is not None and ran.verdict in ("PASS", "FAIL") and ran.surprises is None:
             t.upstream_failed = False        # the rows measured before a crash/abort are still real results
-            _report_rows(t, rows, declare=sorted(ROW_TOGGLES))
+            _report_rows(t, rows, declare=sorted(set(ROW_TOGGLES) | set(CORE_SHOW_IDS)))
     finally:
         if built and t.session is not None:
             try:                             # teardown is absolute: the whole scene (SITE holds every build)
@@ -1450,6 +1517,19 @@ def live_battery_chain(t):
             except Exception:                # noqa: BLE001 - the runner's own sweep still follows
                 pass
             _set_origin(150, 150)
+
+
+@suite.chain("proof_all_only_rows")
+def proof_all_only_rows(t):
+    """North-star coverage for rows that only proof_all.py measures (matrix, aerial, hose, relay, carry, style,
+    style-hose blocks) plus the declared UNBUILT pump bar. This suite's own chains never measure them, so on a live
+    `modcheck run` each records UNMEASURED naming where its measurement lives -- never PASS. 0 ticks."""
+    rows = []
+    if t._guard():
+        rows = [{"id": rid, "status": "UNMEASURED", "class": "HARNESS",
+                 "detail": "measured only by proof_all.py --live (block row); record that result with `modcheck record`"}
+                for rid in PROOF_ALL_SHOW_IDS] + [dict(PUMP_ROW)]
+    _report_rows(t, rows, declare=PROOF_ALL_SHOW_IDS + [PUMP_ROW["id"]])
 
 
 def main(argv=None):
