@@ -10,3 +10,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 
 ## Units
 - Khorrak tier move: DONE — RUT_Desert recast RSW_Khorrak -> RM_Khorrak; RSW_Khorrak def KEPT UNCAST (sole carrier of C# CompMetalEater + its validation proof; deleting would silently kill a built mechanic). Follow-up: port steel diet to RM or rule it dropped.
+- Drazzik tier move: DONE — RSW_Drazzik.xml + RSW_Nizzek.xml deleted (RM_Drazzik/RM_Nizzek/eggs are full copies incl. drum-lure + egg-trap comps); RUT_ExtremeDesert recast to RM_Drazzik; roster json def updated. Art: RM_Drazzik keeps its own art (owner picked A = IN GAME Stillsand); RSW textures left on disk.

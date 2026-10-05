@@ -670,7 +670,7 @@
       "action": "keep",
       "band": "subsurface (depth arm)",
       "commonality": 0.05,
-      "def": "RSW_Drazzik",
+      "def": "RM_Drazzik",
       "law": "the drazzik — the sheet's own drum-lure archetype (RM_CompDrumLure shipped, DRUM_LURE_PREDATOR_BUILD_1) + its egg-trap clutch; bs 2.2, mid-band LEGAL by the depth arm (owner card 2026-09-27 Q7: subsurface passes at any size — annotated in place, the screecher precedent); ->RM_Drazzik with the Q1 tier move"
     },
     {
