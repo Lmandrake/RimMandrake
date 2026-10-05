@@ -2945,3 +2945,10 @@
 {"seat":"FOUNDRY","event":"close","id":"CORD_COLOUR_PER_PIECE_1","sha":"b18d68e40","ts":"2026-10-05T08:45:31Z","tsn":1791189931953917174}
 {"seat":"FOUNDRY","event":"close","id":"MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1","sha":"c955bb884","ts":"2026-10-05T08:45:32Z","tsn":1791189932470473620}
 {"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_HOSE_DEPLOY_DRAG_1","sha":"234620b32","ts":"2026-10-05T08:45:32Z","tsn":1791189933000188145}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy GimmeSomeSlack nozzle/joiner/style gizmo + proof_all","ts":"2026-10-05T15:12:18Z","tsn":1791213138804654550}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-05T15:12:45Z","tsn":1791213165626497876}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-05T15:13:34Z","tsn":1791213214033665058}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-05T15:16:22Z","tsn":1791213382808643876}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-05T15:16:43Z","tsn":1791213403310249918}
+{"seat":"FOUNDRY","event":"file","id":"NORTHSTAR_PROCESS_RETRO_1","title":"Northstar process retro after GimmeSomeSlack goes Green: what worked, update skills, build Python helpers","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-05T15:26:41Z","tsn":1791214001266073277}
+{"seat":"FOUNDRY","event":"block","id":"NORTHSTAR_PROCESS_RETRO_1","reason":"waits on GimmeSomeSlack GREEN (owner validation + sheet view)","ts":"2026-10-05T15:26:51Z","tsn":1791214011768281186}
