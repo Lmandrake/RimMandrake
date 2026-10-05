@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Pufferpig` — in-repo label "Pufferpig"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Puffer_pig
@@ -18,11 +15,21 @@ When frightened, puffer pigs would inflate their bodies to massive proportions w
 Puffer pigs communicated using low squeals.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Three canon images (a 3D render, a sketch sheet, a painting beside Lando); they agree closely. Nothing here looks like a pig.
+- **Silhouette:** a low, fat, rounded, barrel-bodied animal with **short stubby legs** and a big flat blunt head that merges into the body with almost no neck. Thick-set and soft. The painting shows it only waist-high on a crouching man, so it is small (roughly dog-sized; the text says just under 1 m long).
+- **Head:** a broad, smooth, flat-faced head with a heavy downturned mouth line, **two small bulging, heavy-lidded eyes on short fleshy turrets/stalks on top of the head**, usually blue, pale grey-blue or sky-blue irises, giving a sleepy, droopy look. **A short, thick, flexible elephant-trunk-like snout hangs from the middle of the face, curving down and ending in a small slightly flared, finger-like tip** (clear in all three).
+- **Horns and spikes:** **a pair of short, dark, curved horns** (black or deep blue, cone-shaped on a bumpy base) rising from the crown near the eye turrets, plus **a row of small dark conical spikes down the spine**, thinning into a short spiky tail ridge.
+- **Colour and skin:** soft, smooth, thick-skinned hide. `canon_1` is dusty blue-green to grey on the flanks with a cream-tan top; the back and head carry a **cobbled/pebbly pattern of tan blotches** (like a giraffe's or turtle shell's polygons). `canon_2` (watercolour, uninflated) is **orange-amber with darker mottling**. `canon_3` (painting, night) is **pale butter-yellow with an orange-yellow honeycomb pattern on the back**. Colour varies by source, so the safe base is a soft warm tan-yellow to amber with blotchy darker polygons, and cool blue-green appears in the CGI render.
+- **Feet:** tiny, dark, three-toed stubby feet, partly hidden by the body.
+- **Inflation (`canon_2`, left sketch):** inflated, the whole body becomes a huge smooth sphere with the head, horns and small limbs tiny at the front edge. The text's measurements (9 m long, 60 cm high) are inconsistent with this, so treat the sphere as the intended form.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Low, fat, barrel-shaped body on short stubby legs, with a big flat blunt head and almost no neck
+- [ ] Short, thick, flexible trunk-like snout hanging down from the middle of the face
+- [ ] Two small heavy-lidded bulging eyes on short fleshy stalks or turrets on top of the head
+- [ ] Pair of short dark curved horns from the crown and a row of small dark spikes down the spine
+- [ ] Soft thick hide in tan, yellow or amber with a blotchy darker polygon or honeycomb pattern on the back
+- [ ] Tiny dark three-toed feet; dog-sized, not pig-sized
 
 ## Engine limits
 not yet assessed

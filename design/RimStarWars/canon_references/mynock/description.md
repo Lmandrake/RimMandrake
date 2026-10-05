@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Mynock` — in-repo label "mynock"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Mynock
@@ -27,11 +24,20 @@ Some mynocks had yellow eyes, and had shiny spore sacs that could distend. They 
 Mynocks were distantly related to xuvvas. A few (sub)species of mynocks existed, including one that had a normal mouth, rather than a sucker-like one, and another that had blue skin and gave birth to live young. Subspecies of mynocks included the salt mynock and sulfur myno …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images, consistent on body plan, differing on colour. Both pages call it bat-like; the Legends prose adds "manta ray", which the images do not support.
+- **Silhouette:** a bat/pterosaur layout: **a very small body with huge, broad, leathery membrane wings** (wingspan several times the body), each wing with a thumb-claw at the elbow/wrist and ragged, finger-ribbed edges. A **long, thin, whip-like tail** hangs below the body and ends in a small flare or spade (clear in `canon_1`, `legends_1`, `legends_2`).
+- **Head and mouth (the defining face):** a small head with **two bulging stalk-like eyes** (on small knobs/stalks at the sides of the head) and, between them, **a round sucker-disc mouth ringed with short bristle-like spines/cilia**, the centre showing a darker pit with tiny teeth (`canon_1` drawing, `legends_1` painting). `canon_2` (the Empire Strikes Back film frame, upside down on the Falcon cockpit) shows the same round, bristle-fringed sucker mouth with a pale tooth plate inside, bulbous eye on a stalk to the right, and a wrinkled, knobby, dark neck and body. Tell: a ring of short spines around a round mouth, not a normal beak or snout.
+- **Legs:** small, thin, spindly clawed hind legs, tucked up under the body in flight (`legends_1` shows long dangling talon legs); a mynock clings to a ship by its mouth and feet.
+- **Colour disagreement:** `canon_1` is a flat **rust-orange / copper-brown** with darker brown membranes; `canon_2` (live-action) is **dark olive-brown/black wrinkled leathery hide**; `legends_1` is a **pale straw-yellow/cream** body with olive-tan wings and green eyes; `legends_2` shows yellow-green bodies with **blue-grey wing membranes**. The prose says "black-skinned" (Legends) with some having yellow eyes. Trust the film frame for the canonical live-action look (dark brown to black, wrinkled leathery skin) and treat the other colours as artist choice; a colour range from dark brown through copper is safest.
+- **Size:** small, roughly cat- to arm-sized (it is shown clinging to a cable or a ship's engine and is dwarfed by it); no absolute scale.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Small body with huge, broad, ragged leathery bat-like wings, each with a thumb-claw
+- [ ] Round sucker-disc mouth ringed with short bristle-like spines, set between the eyes
+- [ ] Two bulging eyes on small stalks or knobs at the sides of the head
+- [ ] Long thin whip-like tail ending in a small flare
+- [ ] Wrinkled, leathery dark-brown to black skin (copper-brown or paler tones only as variants)
+- [ ] Small thin clawed legs, tucked up in flight or gripping a cable or hull
 
 ## Engine limits
 not yet assessed

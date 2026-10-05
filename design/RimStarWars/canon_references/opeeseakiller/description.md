@@ -2,9 +2,6 @@
 
 **defName**: `RSW_OpeeSeaKiller` — in-repo label "opee sea killer"; (variants: `RSW_OpeeSeaKillerJuv`)
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Opee_sea_killer
@@ -21,11 +18,22 @@ The opee sea killer, sometimes referred to as simply an opee, was a large carniv
 Opees were known to be mouth breeders, with the male opee carrying fertilized eggs inside its mouth for three months–forcing the male to fast until the young were born. From birth, opees could sustain themselves instinctively (and gruesomely). It was not unknown for unhatched opee eggs to be swallowed by colo claw fish, creatures later killed in a grisly manner when the newborn young chewed their way out of the colo's stomach. This could also occur if the colo swallowed young opees alive.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images (3D renders of the TPM creature plus a film frame); all agree closely.
+- **Silhouette:** a stocky, torpedo-shaped crustacean-fish hybrid: a **huge fish-like head** with the mouth taking up most of the front, and a **long segmented armoured back** like a lobster or woodlouse tail: overlapping arched plates (a ridged carapace) narrowing to a pointed rear. Looks like a lobster with a bullfrog-fish head.
+- **Colour:** **reddish-orange to coral-red/brick-pink** skin and plates with greyer, pale blue-grey on the plate edges and underside (`legends_1`), pink-violet in the dark underwater film frame (`legends_2`). Mouth interior **purple-lilac**. Eyes **orange-red** with black slit pupil (text says yellow; the images lean orange-red, `canon_2` closer to amber-yellow).
+- **Mouth:** an enormous, rounded, gaping mouth edged by thick wrinkled lips and **double rows of long, pale cream, pointed conical teeth** (upper and lower, inner and outer rows), visible in `canon_1`. A **long, smooth, pink-mauve, prehensile tongue** with a knobbed tip shoots out of the mouth (`canon_2`, `legends_2` film frame).
+- **Head details:** wrinkled, folded, lumpy skin on the face; bulbous eyes set high on each side; a few short, fleshy stubs or stalks on the crown of the head, from which grow **one to three very long, thin, whip-like antennae, orange-tan at the base, ending in a dark blue-purple lure bulb at the tip** (the antennae are longer than the whole body).
+- **Limbs:** **three pairs of thin, jointed, crab-like walking legs** hanging from the underside of the rear body, each ending in a flat paddle or blunt claw, plus a **pair of broad, fan-shaped pectoral fins** behind the head (finely ribbed, orange-red).
+- **Size:** 20 m long per the text; the film frame shows it dwarfing a submersible.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Huge fish-like head with an enormous gaping mouth and double rows of long pale conical teeth
+- [ ] Long, segmented, arched armour-plated back tapering to a point, like a lobster tail
+- [ ] Reddish-orange/coral-red skin and plates with a purple-lilac mouth interior
+- [ ] Long, thin, whip-like antennae from the top of the head with dark blue-purple lure tips
+- [ ] Three pairs of thin jointed crab-like legs under the rear body plus a pair of broad fan-shaped pectoral fins
+- [ ] Long, smooth, pink-mauve prehensile tongue that can extend far out of the mouth
+- [ ] Bulbous orange-red eyes high on the wrinkled, lumpy face
 
 ## Engine limits
 not yet assessed
