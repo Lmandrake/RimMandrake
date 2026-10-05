@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Gelagrub` — in-repo label "gelagrub"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Gelagrub
 
@@ -25,11 +21,36 @@ When a gelagrub pupated, the adult emerged as a hard-shelled ground creature, no
 Gelagrubs were favored mounts on Felucia and similar worlds because of their ability to protect their riders. Once a rider had sufficiently bonded with a domesticated gelagrub, it treated the rider as an extension of its own body, going out of its way to avoid hazards and using its own natural defenses to protect its rider.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (Databank render with a clone trooper rider); images 2 and 3 are
+LEGENDS (Revenge of the Sith film still, and a painted plate). All three show the LARVAL/mount form.
+- **Silhouette**: a fat, soft, caterpillar/grub-like slug. Long low barrel body, blunt rounded front
+  with NO neck, tapering to a smaller rump. Sized so a full armoured trooper sits on its back like a
+  saddle-beast (roughly dewback/bantha-pony scale, per the riders).
+- **Head/face**: the front end is a bulbous face with a wide, drooping, lipless mouth (open, dark
+  inside) at the bottom and TWO round black eyes stacked vertically on the side of the head (one above
+  the other, per Legends text, confirmed in all three images; they sit on a raised, wrinkled brow
+  mound). Wrinkled leathery folds around the mouth and brow.
+- **Legs**: stubby, thick, soft cylindrical leg-stumps in rows under the belly (canon image shows
+  roughly four/five visible per side, short and blob-ended, not jointed); the body hangs low, almost
+  dragging.
+- **Back/colour**: dark teal-green to grey-green flanks and head, with the back a segmented ridge of
+  glossy, translucent BLUE panels (bright cobalt/electric blue in canon and film images; blue-purple
+  with bright lime-green highlights in the painted plate). Underside and face greener/greyer.
+  Painted plate is far more saturated than the render; canon render is the target.
+- **Texture**: smooth, wet, gelatinous, semi-translucent skin with a glossy sheen over the blue back;
+  wrinkles at the face; no hair, no hard shell (the hard mirrored carapace belongs to the adult form,
+  NOT shown in any image).
+- **Prose vs images**: canon prose says "five pairs of legs" and "dark green with blue splotches";
+  images show dark green with a large contiguous glossy blue segmented back, not scattered
+  splotches. The painted plate adds spiky green dorsal ridges on the flanks -- not seen in canon or film.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Fat soft caterpillar/grub body, blunt headless-looking front with no neck, tapering to a smaller rump
+- [ ] Two round black eyes stacked vertically on the side of the wrinkled brow, above a wide drooping lipless mouth
+- [ ] Rows of short thick soft leg-stumps under a low-hung belly
+- [ ] Dark teal/grey-green skin with a glossy translucent segmented bright-blue back
+- [ ] Smooth wet gelatinous skin, no fur and no hard shell (larval form)
+- [ ] Large enough to carry a mounted armoured humanoid on its back
 
 ## Engine limits
 not yet assessed

@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Faa` — in-repo label "faa scalefish"; (variants: `RSW_FaaJuv`)
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Faa
 
@@ -21,11 +17,35 @@ The faa, or faynaa, as they were known to the Gungan species, were fast-moving, 
 The species' thin frames allowed faa to inhabit thin crevices in underwater rocks, from which they could catch prey that hid in the crags. The deep swamp was also where faa preferred to reproduce, producing up to twelve offspring at a time.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (Jedi Survivor render, "big-mouth faa"); images 2 and 3 are
+LEGENDS (a 3D render, and a pencil-and-wash sketch sheet of a school).
+- **Silhouette**: a deep, tall, laterally compressed head-and-body that is almost all head, tapering
+  abruptly to a thin stalk-like tail peduncle ending in a large paddle/fan tail. Reads as tadpole-
+  or boxfish-like, with the body mass forward.
+- **Head/mouth**: huge downturned, sulking mouth set low at the front, thick fleshy lips, small
+  needle teeth visible in the open canon mouth, a heavy underslung chin; two tiny blue spines/barbels
+  under the chin in the canon image.
+- **Eye**: a single very large, ringed (concentric-banded, tree-ring-like) eye on a raised turret on
+  each side, set high on the head; Legends images show it as a protruding stalk-socket.
+- **Fins**: small round pectoral fins low on the cheek, one small ventral/pelvic nub; the tail is a
+  big fan with radiating dark ribs, orange-white. Dorsal: a low crest along the top of the head.
+- **Colour**: graduated orange (deeper orange on back, paler cream-peach on belly and tail) with
+  vertical BLUE-VIOLET stripes/bands and blue dot-speckle behind the eye, and blue spikes on the
+  brow in the canon render. All three images agree on orange with blue bands.
+- **Texture**: fine small scales visible (Legends render), smooth wet sheen in canon render.
+- **Size cues**: none in images; Legends text says medium size.
+- **Prose vs images**: canon prose says "wide, flat head with a narrow midsection" -- images show a
+  tall, deep head instead of a flat one; trust images (deep, rounded, heavy-lipped head). Legends
+  prose "tall, narrow body, stiff, armoured" matches the Legends renders better. Brow spikes are in
+  the canon render only.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Huge deep head and forward-heavy body tapering to a thin stalk tail ending in a large fan/paddle tail with radiating ribs
+- [ ] Large downturned, thick-lipped mouth set low on the head with small sharp teeth
+- [ ] Very large concentric-ringed eye raised high on the head
+- [ ] Graduated orange body (paler cream-peach belly and tail) with vertical blue-violet stripes and blue speckle
+- [ ] Small pectoral fins low on the cheek; low crest along the top of the head
+- [ ] Blue spikes on the brow and chin (canon render only; optional if sprite is too small)
 
 ## Engine limits
 not yet assessed

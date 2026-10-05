@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Hssiss` — in-repo label "hssiss"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Hssiss
 
@@ -18,11 +14,38 @@ Hssiss inhabited caves, swamps, marshes, and wetlands and were usually at the to
 Dark Lizards were a species of hssiss.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. All four images are canon, but they are four DIFFERENT artists' takes and they
+disagree on colour: (1) infobox colour illustration, (2) comic panel (Ktriss, Great Bogga's pet),
+(3) a dark-scaled painted/rendered hssiss, (4) a painted dark-side-nebula scene. Image 1 is the
+cleanest and matches the prose; use it as the target.
+- **Silhouette**: a heavy, long-bodied lizard like a giant iguana/komodo crossed with a crocodile;
+  low, quadrupedal, sprawling stance with muscular thighs, long thick tail about as long as the
+  body. Image 3 crouches lower and more raptor-like.
+- **Spikes (loud)**: a continuous double row of conical/serrated spikes runs down the back and
+  the whole tail (image 1: spiky segmented ridge, tail ringed with spike rows; image 2: a dark
+  comb of spines down back and tail) and climbs up the neck into a crest of tall spines behind the
+  head -- matching the prose. A few small horn-like spikes sit on the snout and forelimbs.
+- **Head**: wedge-shaped, crocodilian jaws, a row of many sharp teeth (very prominent, bared in
+  images 2 and 4), small eyes (image 1: red-ringed pale eye), small horns/tusk-spikes above the nose
+  and at the jaw corner; pale throat.
+- **Limbs**: strong legs with large, long curved claws on each toe (long pale claws in image 1,
+  black scythe claws in image 3).
+- **Colour (images disagree)**: image 1 and 2 = bright to olive GREEN scaly hide with a pale
+  cream/grey underside, and in image 1 a salmon-red throat/dewlap (image 1 only); image 3 = very dark
+  blue-grey-black scales with a copper/red underbelly; image 4 = dark green with pale cream spines.
+  Prose says green scaly hide -- green is the majority and canon-prose-backed; image 3 is the outlier.
+- **Size cues**: prose says 3 m body plus 1 m tail; the comic panel shows one beside a hutt and a
+  humanoid and it is roughly humanoid-length-plus. Not a giant.
+- **Prose vs images**: tail "stretched up onto their necks" is clearer in images as a spike ridge
+  running from tail tip over the back to the neck. Invisibility/Force abilities are not depicted.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Heavy sprawling quadrupedal lizard (iguana/komodo build) with a thick tail about as long as the body
+- [ ] Double row of conical spikes running from the tail tip along the back and rising into a spiky crest on the neck behind the head
+- [ ] Green scaly hide (olive to bright green) with a paler cream underside
+- [ ] Wedge-shaped crocodilian head with many sharp bared teeth and small horn-spikes on the snout
+- [ ] Large long curved claws on all four feet
+- [ ] Red/salmon throat dewlap (image 1 only; optional)
 
 ## Engine limits
 not yet assessed
