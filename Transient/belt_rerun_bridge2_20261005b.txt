@@ -1,0 +1,15 @@
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 561
+  ok   bland world established (tile 1686, map 3)
+  -- RestrainingBolts
+     !! RestrainingBolts: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 9, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- GravshipLanding
+     !! GravshipLanding: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 10} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl
