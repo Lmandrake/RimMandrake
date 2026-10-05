@@ -34,7 +34,17 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
         return {"ok": False, "error": f"snapshot {snap_path} missing — cannot resolve columns to pictures"}
     snap = json.loads(snap_path.read_text())
     if doc.get("snapshotId") and snap.get("snapshotId") and doc["snapshotId"] != snap["snapshotId"]:
-        return {"ok": False, "error": "decisions were made against a different snapshot of this sheet"}
+        # letters are stable across rebuilds: what matters is that every letter the decisions USE still
+        # names the same pictures as in the snapshot they were made against (found in git history)
+        ruled = L.snapshot_by_id(snap_path, doc["snapshotId"])
+        if ruled is None:
+            return {"ok": False, "error": f"decisions were made against snapshot {doc['snapshotId']}, which is "
+                                          f"neither on disk nor in the git history of {snap_path.name}"}
+        bad = L.letter_mismatches(doc, ruled, snap)
+        if bad:
+            return {"ok": False, "error": "decisions were made against a different snapshot of this sheet and these "
+                                          "letters now name different pictures: "
+                                          + ", ".join(f"{r}:{l}" for r, l in bad[:20])}
     idx = L.Index()
     w = L.Writer({e["id"] for e in idx.events})
     via = str(decisions_path)

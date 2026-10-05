@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-04 23:52
+# Biome flora/fauna art census — 2026-10-05 06:59
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -376,7 +376,7 @@ defs: `RM_WeepingStones` (51)
 
 Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 852.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 254, _artpipe_jobs_anooba 8, _ledger_variants 11135
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 254, _artpipe_jobs_anooba 8, _ledger_variants 11355
 
 
 **UNMEASURED:**

@@ -630,3 +630,61 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep: bo
            "said": owner_said, "via": via, "bytes_removed": removed})
     w.flush()
     return {"sha": sha, "bytes_removed": removed}
+
+
+# ─────────────────────────────────────────── sheet snapshots: stable letters ──
+# A sheet's decisions name COLUMN LETTERS; the snapshot maps row -> letter -> {facing: sha}. A rebuild keeps
+# every letter on the same set (art_sheet._assign_letters), so what must match between the snapshot the owner
+# ruled on and today's is only the letters his decisions actually use.
+
+SHEET_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+
+
+def snapshot_by_id(snap_path: Path, snapshot_id: str | None) -> dict | None:
+    """The snapshot with this snapshotId: the file on disk, else the newest git revision of it that has it."""
+    import subprocess
+    snap_path = Path(snap_path)
+    if not snapshot_id:
+        return None
+    if snap_path.is_file():
+        cur = json.loads(snap_path.read_text())
+        if cur.get("snapshotId") == snapshot_id:
+            return cur
+    try:
+        rel = snap_path.resolve().relative_to(REPO_ROOT).as_posix()
+        revs = subprocess.run(["git", "-C", str(REPO_ROOT), "log", "--format=%H", "--", rel],
+                              capture_output=True, text=True, check=True).stdout.split()
+    except (ValueError, subprocess.CalledProcessError, OSError):
+        return None
+    for h in revs:
+        r = subprocess.run(["git", "-C", str(REPO_ROOT), "show", f"{h}:{rel}"], capture_output=True, text=True)
+        if r.returncode:
+            continue
+        try:
+            s = json.loads(r.stdout)
+        except ValueError:
+            continue
+        if s.get("snapshotId") == snapshot_id:
+            return s
+    return None
+
+
+def decision_letters(v: dict) -> set[str]:
+    """The column letters one row of a decisions file refers to: its decision, extra-graphic picks, variants."""
+    if not isinstance(v, dict):
+        return set()
+    out = {(v.get("decision") or "").strip()} | set((v.get("picks") or {}).values()) | set(v.get("variants") or [])
+    return {x for x in out if isinstance(x, str) and len(x) == 1 and x in SHEET_LETTERS}
+
+
+def letter_mismatches(decisions: dict, ruled: dict, now: dict) -> list[tuple[str, str]]:
+    """(row, letter) pairs whose set differs between the RULED snapshot and NOW, over used letters only.
+    A letter the ruled snapshot never had is not checked (nothing was ruled through it)."""
+    bad = []
+    for row, v in sorted(((decisions or {}).get("decisions") or {}).items()):
+        rc = ((ruled.get("rows") or {}).get(row) or {}).get("columns") or {}
+        nc = ((now.get("rows") or {}).get(row) or {}).get("columns") or {}
+        for l in sorted(decision_letters(v)):
+            if l in rc and rc[l] != nc.get(l):
+                bad.append((row, l))
+    return bad
