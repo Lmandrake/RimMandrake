@@ -778,7 +778,7 @@
   "flora": [
     {
       "commonality": 0.1,
-      "def": "RSW_LightPipeNub",
+      "def": "RM_LightPipeNub",
       "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — dune_sea.md SS4: the region's whole visible flora. ->RM_LightPipeNub with the Q1 tier move (2026-09-27); biosilica harvest item checked at build (Q12)."
     },
     {
@@ -788,7 +788,7 @@
     },
     {
       "commonality": 0.01,
-      "def": "RSW_Ollim",
+      "def": "RM_Ollim",
       "law": "EXTREME_DESERT_SIGNATURE_FLORA_1 (2026-09-20) — deep_desert.md SS4b's shade tree, sparse per the sheets' own \"if the roster looks healthy, it is wrong\" ruling. ->RM_Ollim / RM_OllimWood with the Q1 tier move (2026-09-27)."
     },
     {
