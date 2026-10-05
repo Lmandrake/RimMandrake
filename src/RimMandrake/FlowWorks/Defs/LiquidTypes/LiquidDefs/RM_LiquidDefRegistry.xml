@@ -12,7 +12,8 @@
   water, tar, brine, propane, chemfuel — every one resolving only against
   vanilla Core defs and FlowWorks' own already-shipped terrain/FluidDefs,
   so it loads clean under a minimal mod list with no third-party
-  dependency. Plus four more from SLIME_STREAM_ROWS_1: red/green/white/
+  dependency. Plus reaction liquor (WARSCAR_RAINBOW_POOLS_1, adopting the
+  RM_ReactionLiquor terrain suite), and four more from SLIME_STREAM_ROWS_1: red/green/white/
   yellow slime, each owning its own new always-loaded terrain suite and
   canal FluidDef (no MayRequire gate — see the table's own module comment
   above the slime_* rows for how the previous blocker was solved). Blood
