@@ -18,6 +18,6 @@
   <RM_SubsurfaceYieldReport>Subsurface: {0}, {1} fill-units remaining.</RM_SubsurfaceYieldReport>
   <RM_DrillNeedsOutlet>Needs a dug channel at its outlet — the cell it faces.</RM_DrillNeedsOutlet>
   <RM_DrillLiquidHasNoCanalForm>The liquid below has no canal form and cannot be poured into a channel.</RM_DrillLiquidHasNoCanalForm>
-  <RM_DrillLiquidMismatch>This map's channels already carry {0}; this drill's liquid cannot join them.</RM_DrillLiquidMismatch>
+  <RM_DrillLiquidMismatch>The outlet already holds {0}; this drill's liquid cannot mix with it.</RM_DrillLiquidMismatch>
 
 </LanguageData>

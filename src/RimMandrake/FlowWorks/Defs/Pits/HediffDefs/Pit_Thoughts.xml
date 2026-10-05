@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- PIT_TEMPERATURE_SOFTENING_1. PROVISIONAL numbers and shape - proposal to the owner, not his ruling.
+       Compassionate colonists mind a captive left to roast in an open pit; psychopaths do not (nullifyingTraits).
+       Hard-morality precepts do not yet nullify it (owed once the owner picks the precepts). -->
+  <ThoughtDef>
+    <defName>RM_ExposedPrisoner</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>5</stackLimit>
+    <stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+    <nullifyingTraits>
+      <li>Psychopath</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>prisoner left exposed in a pit</label>
+        <description>We are leaving someone to bake in the bottom of a hole.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

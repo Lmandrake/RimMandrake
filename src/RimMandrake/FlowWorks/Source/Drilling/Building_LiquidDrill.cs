@@ -19,18 +19,9 @@ namespace RimMandrake.FlowWorks.Drilling
 	/// RM_LiquidBody; it spends RM_MapComponent_SubsurfaceLiquid's own,
 	/// separate, non-refilling reserve straight into the grid.
 	///
-	/// 🔑 KNOWN LIMITATION, disclosed rather than hidden: the excavation
-	/// engine carries ONE ActiveFluid per map (RM_MapComponent_Excavation's
-	/// own doc comment, "one per map this pass"). This drill therefore only
-	/// produces while the yielded liquid's canal form equals the map's
-	/// CURRENT active fluid — which is water on every map that has not
-	/// otherwise committed to something else, so drilling fresh water (the
-	/// common case) works out of the box. Drilling a liquid whose canal form
-	/// differs from a map already running a different one produces nothing
-	/// rather than silently mixing two liquids the engine has no model for;
-	/// wiring a drill to CLAIM the map's active fluid the way a natural
-	/// source never has to is real work for whoever ships true multi-fluid
-	/// maps (Phase 7/8), not invented here.
+	/// 🔑 Fluid identity (LIQUID_BODY_FLUID_IDENTITY_1): the drill produces when its outlet is dry (it claims
+	/// the cell for its canal fluid) or already holds that fluid; an outlet holding another fluid is refused,
+	/// because fluids never mix. The old "one ActiveFluid per map" limitation is gone.
 	/// </summary>
 	public class Building_LiquidDrill : Building
 	{
@@ -82,18 +73,21 @@ namespace RimMandrake.FlowWorks.Drilling
 
 			LiquidDef liquid = survey.YieldedLiquid;
 			FluidDef canalFluid = liquid != null ? liquid.canalFluid : null;
-			if (canalFluid == null || excavation.ActiveFluid != canalFluid)
+			if (canalFluid == null)
 			{
-				// Either this liquid has no canal form to feed at all, or the
-				// map's one active fluid is already something else (see the
-				// class doc's disclosed limitation). Either way the reserve
-				// is NOT spent — nothing is produced, nothing is lost.
+				// This liquid has no canal form to feed at all: the reserve is NOT spent.
 				return;
 			}
 
 			IntVec3 outlet = OutletCell;
 			if (!excavation.IsExcavated(outlet))
 			{
+				return;
+			}
+			if (excavation.FillAt(outlet) > 0 && excavation.FluidAt(outlet) != canalFluid)
+			{
+				// Fluids never mix (LIQUID_BODY_FLUID_IDENTITY_1): the outlet already holds another liquid, so the
+				// reserve is not spent. A dry outlet is claimed by this drill's fluid.
 				return;
 			}
 
@@ -128,7 +122,7 @@ namespace RimMandrake.FlowWorks.Drilling
 				return;
 			}
 			pendingUnits -= levels * unitPerLevel;
-			excavation.TrySetDriverFill(outlet, fill + levels);
+			excavation.TrySetDriverFill(outlet, fill + levels, canalFluid);
 		}
 
 		public override string GetInspectString()
@@ -155,9 +149,10 @@ namespace RimMandrake.FlowWorks.Drilling
 					{
 						status += "\n" + "RM_DrillLiquidHasNoCanalForm".Translate();
 					}
-					else if (excavation != null && excavation.ActiveFluid != canalFluid)
+					else if (excavation != null && excavation.FillAt(OutletCell) > 0
+						&& excavation.FluidAt(OutletCell) != null && excavation.FluidAt(OutletCell) != canalFluid)
 					{
-						status += "\n" + "RM_DrillLiquidMismatch".Translate(excavation.ActiveFluid.LabelCap);
+						status += "\n" + "RM_DrillLiquidMismatch".Translate(excavation.FluidAt(OutletCell).LabelCap);
 					}
 				}
 			}

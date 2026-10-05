@@ -56,6 +56,7 @@ SETTINGS = {
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
         "spikesEnabled": True, "spikeDamageMultiplier": 1.0,     # CANAL_BOTTOM_SPIKES_1
+        "pitExposureEnabled": True, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL)
         "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,

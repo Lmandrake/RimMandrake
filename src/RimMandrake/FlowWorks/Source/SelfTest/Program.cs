@@ -711,6 +711,26 @@ namespace RimMandrake.FlowWorks.SelfTest
                 finally { dug.Remove((4, 6)); }
             });
 
+            // ── PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL constants) ──
+            Case("PitExposure_coupling_never_weakens_and_pit_room_needs_half_deep", () =>
+            {
+                Assert(RM_PitExposureMath.Coupling(0.2f) == 1f && RM_PitExposureMath.Coupling(3f) == 3f, "coupling floor 1");
+                Assert(RM_PitExposureMath.IsPitRoom(5, 9) && !RM_PitExposureMath.IsPitRoom(4, 9), "half rounds up");
+                Assert(!RM_PitExposureMath.IsPitRoom(0, 0), "empty room is not a pit room");
+            });
+            Case("PitExposure_severity_rises_exposed_falls_sheltered_clamped", () =>
+            {
+                Assert(RM_PitExposureMath.NextSeverity(0.5f, true) > 0.5f, "rises");
+                Assert(RM_PitExposureMath.NextSeverity(0.5f, false) < 0.5f, "falls");
+                Assert(RM_PitExposureMath.NextSeverity(0.999f, true) == 1f && RM_PitExposureMath.NextSeverity(0.01f, false) == 0f, "clamped");
+            });
+            Case("PitExposure_resistance_falls_faster_with_rate_and_floors_at_zero", () =>
+            {
+                Assert(RM_PitExposureMath.NextResistance(5f, 2f) < RM_PitExposureMath.NextResistance(5f, 1f), "rate scales");
+                Assert(RM_PitExposureMath.NextResistance(5f, 0f) == 5f, "rate 0 is the off dial");
+                Assert(RM_PitExposureMath.NextResistance(0.01f, 1f) == 0f, "floor");
+            });
+
             // ── SUPERDEEP_HOLDER_RETIRE_1: the grid trap rule (owner Q4, pit width) ──
             // PRODUCTION RM_PitTrapMath.cs. The holder model it replaces held ANY pawn on
             // ANY D=4 cell; these cases go red against that model (large pawn in 1x1 / 1x5).

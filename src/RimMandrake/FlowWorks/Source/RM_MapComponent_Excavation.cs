@@ -564,6 +564,8 @@ namespace RimMandrake.FlowWorks
 			}
 			byte f = fillGrid[i] > d ? d : fillGrid[i];
 			byte newD = (byte)(d - 1);
+			// LIQUID_BODY_FLUID_IDENTITY_1 step 2b: the displaced liquid keeps the fluid this cell held.
+			FluidDef cellFluid = FluidAt(c) ?? ActiveFluid;
 			// The F - (D-1) clamp lives in RM_StockMath so the selftest covers the
 			// production arithmetic rather than a copy of it.
 			int displaced = RM_StockMath.DisplacedLevels(d, f);
@@ -593,11 +595,11 @@ namespace RimMandrake.FlowWorks
 				{
 					map.terrainGrid.SetTerrain(c, want);
 				}
-				ApplyFillTerrain(c, ActiveFluid);
+				ApplyFillTerrain(c, cellFluid);
 			}
 			if (displaced > 0)
 			{
-				Displace(c, displaced);
+				Displace(c, displaced, cellFluid);
 			}
 			return newD;
 		}
@@ -630,7 +632,7 @@ namespace RimMandrake.FlowWorks
 		/// The body's stock is in fill-units of volume, so phase 2 converts —
 		/// see <see cref="RM_LiquidStock.CreditLevels"/>.
 		/// </summary>
-		private void Displace(IntVec3 from, int units)
+		private void Displace(IntVec3 from, int units, FluidDef fluid)
 		{
 			if (!RimMandrakeFlowWorksSettings.fillInDisplacementEnabled)
 			{
@@ -674,9 +676,19 @@ namespace RimMandrake.FlowWorks
 					}
 					int ci = map.cellIndices.CellToIndex(c);
 					int room = RM_StockMath.CellRoom(depthGrid[ci], fillGrid[ci]);
+					// Fluids never mix (Q3): only a dry cell (which it then claims) or a same-fluid cell takes the levels;
+					// the rest is the disclosed overflow. The walk still conducts through a foreign cell.
+					if (room > 0 && !RM_StockMath.FluidsCompatible(fillGrid[ci] > 0, FluidAt(c), fluid))
+					{
+						room = 0;
+					}
 					if (room > 0)
 					{
 						int take = room < remaining ? room : remaining;
+						if (fillGrid[ci] == 0)
+						{
+							fluidGrid[ci] = PaletteKey(fluid);
+						}
 						fillGrid[ci] += (byte)take;
 						remaining -= take;
 						credited.Add(c);
@@ -701,10 +713,14 @@ namespace RimMandrake.FlowWorks
 			// The body is the last resort and the reason a fill-in is
 			// REVERSIBLE: liquid you spent digging comes back to the pond you
 			// took it from, in the same fill-units the pulse debited to get it.
-			FluidDef fluid = ActiveFluid;
 			float unitPerLevel = fluid != null ? fluid.volumePerTile : 1f;
 			for (int i = 0; i < sources.Count && remaining > 0; i++)
 			{
+				FluidDef bodyFluid = stock.BodyAt(map, sources[i], this)?.fluid;
+				if (bodyFluid != null && fluid != null && bodyFluid != fluid)
+				{
+					continue;
+				}
 				remaining -= stock.CreditLevels(map, sources[i], remaining, unitPerLevel, this);
 			}
 
@@ -853,6 +869,7 @@ namespace RimMandrake.FlowWorks
 			if (superdeepCellCount > 0)
 			{
 				superdeepTrap.Tick(map, this);
+				RM_PitExposure.Tick(map, this);
 			}
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{
@@ -1295,7 +1312,8 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			FluidDef fluid = ActiveFluid;
+			// Rain is water (step 2b): it lands on a dry cell (claiming it) or a water cell, never on another fluid.
+			FluidDef fluid = RimMandrakeFlowWorks_DefOf.RM_Fluid_Water ?? ActiveFluid;
 			foreach (IntVec3 c in excavatedCells)
 			{
 				int i = map.cellIndices.CellToIndex(c);
@@ -1309,8 +1327,16 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				if (!RM_StockMath.FluidsCompatible(fillGrid[i] > 0, FluidAt(c), fluid))
+				{
+					continue;
+				}
 				int room = depthGrid[i] - fillGrid[i];
 				int add = room < levels ? room : levels;
+				if (fillGrid[i] == 0)
+				{
+					fluidGrid[i] = PaletteKey(fluid);
+				}
 				fillGrid[i] += (byte)add;
 				ApplyFillTerrain(c, fluid);
 			}
@@ -1320,15 +1346,12 @@ namespace RimMandrake.FlowWorks
 
 		private void RenderComponentFill()
 		{
-			FluidDef fluid = ActiveFluid;
-			if (fluid == null)
-			{
-				return;
-			}
+			FluidDef fallback = ActiveFluid;
 			for (int i = 0; i < pulseComponent.Count; i++)
 			{
 				IntVec3 c = pulseComponent[i];
-				if (IsExcavated(c))
+				FluidDef fluid = FluidAt(c) ?? fallback;
+				if (fluid != null && IsExcavated(c))
 				{
 					ApplyFillTerrain(c, fluid);
 				}
@@ -1368,7 +1391,7 @@ namespace RimMandrake.FlowWorks
 		/// path is still standing on.</summary>
 		private void ClearFillTerrain(IntVec3 c)
 		{
-			FluidDef fluid = ActiveFluid;
+			FluidDef fluid = FluidAt(c) ?? ActiveFluid;
 			TerrainDef cur = map.terrainGrid.TempTerrainAt(c);
 			if (cur != null && fluid != null && fluid.OwnsFillTerrain(cur))
 			{
@@ -1415,7 +1438,7 @@ namespace RimMandrake.FlowWorks
 		/// intends to restore it: this engine deliberately keeps no per-driver
 		/// undo stack, because the next pulse may legitimately move that liquid
 		/// somewhere else and a stale undo would resurrect it.</summary>
-		public bool TrySetDriverFill(IntVec3 c, int fill)
+		public bool TrySetDriverFill(IntVec3 c, int fill, FluidDef driverFluid = null)
 		{
 			if (!c.InBounds(map))
 			{
@@ -1435,8 +1458,22 @@ namespace RimMandrake.FlowWorks
 			{
 				fill = d;
 			}
+			// Step 2b: a driver claiming a dry cell stamps its fluid (default: the map's); it cannot pour into a cell
+			// already holding a different fluid (fluids never mix) and returns false so the caller can keep its own behaviour.
+			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
+			if (fill > 0 && !RM_StockMath.FluidsCompatible(fillGrid[i] > 0, FluidAt(c), fluid))
+			{
+				return false;
+			}
+			if (fill > 0 && fillGrid[i] == 0)
+			{
+				fluidGrid[i] = PaletteKey(fluid);
+			}
 			fillGrid[i] = (byte)fill;
-			FluidDef fluid = ActiveFluid;
+			if (fill == 0)
+			{
+				fluidGrid[i] = 0;
+			}
 			if (fluid != null)
 			{
 				ApplyFillTerrain(c, fluid);
