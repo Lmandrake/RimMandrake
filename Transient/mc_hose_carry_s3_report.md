@@ -46,3 +46,17 @@ Status: STARTED Sun Oct  4 23:13:24 PDT 2026
 - validation_hose.py: --carry (CR0-CR6 incl. CR4a/CR4b save/load, CR5b plump, CR5c endKind = SKIP until S4).
 - 23:21:43 selftest_messyconduit 646/646; run_selftests running
 - 23:31:58 run_selftests 177/178 (northstar_matrix/selftest.py, same Transient-PNG failure as S2); committing
+
+## Result
+- PUBLISHED 114c5a6b5 (source + DLL/.srchash built from that exact source + this report). Not deployed, not run live.
+- Status: DONE (live run pending).
+
+## Owed
+- Live: deploy MessyConduit (DLL + NEW Defs/Hose/RM_HoseJobs.xml), then `python.exe validation_hose.py --carry` on a map with
+  >=1 free colonist (scene at x78-114, z58-78; it teleports the first colonist beside the reel). Leaves two saves
+  RM_hosecarry_<stamp>_{dropped,carrying}.rws. Unproven engine assumptions it will test: a toil's tickAction runs every
+  tick for a walking pawn (CarrierStep relies on it); draft ends the forced job (CR3); a resumed driver after load keeps stepping.
+- S4: live drawing (carry still re-lays along the trail per change), endKind (CR5c is SKIP until census has `endKind`),
+  HoseEnds/HoseEvents, animated winder-less auto-retract.
+- S5: HoseJobTuning statics -> HoseSettings page (handling-time slider, wind speed, autoResumeDroppedHose); review stations
+  43-47; CR7 (gizmos without DevMode) row.
