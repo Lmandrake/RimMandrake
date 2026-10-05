@@ -1,0 +1,28 @@
+[
+ {
+  "id": "vapaad_canon_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Vapaad",
+  "target_original": "Vaapad",
+  "prompt": "RimWorld creature sprite: the Vaapad (Sarapin predator). Follow the two attached references, which agree: a hunched, low, dark blue-grey ARCH-shaped body on THREE heavy limbs (tripod), a translucent glowing BLUE ORB slung beneath the arch as the central ball, a dark crown on top holding a cluster of small red/pink eyes, pale highlights where limbs meet the ground. Extrapolate to a full painted RimWorld creature: add a fringe of many thin whip-like tentacles (clearly more than seven) hanging from the orb and body. No wings, no shell plates, no fur, not brown, not glassy hydrocarbon.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert, starlit cold light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own colours (blue-grey, blue orb, red eyes).",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "vaapad",
+  "owner_note": "Try to follow art inspired by the small sprite as well as the MLIE donor art. You can see they seem to agree. Extrapolate from that.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/vaapad/wookieepedia_vaapad.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/vaapad/donor_current_sprite.png"
+  ]
+ }
+]
