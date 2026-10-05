@@ -279,7 +279,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 			<body>Monkey</body>
 			<herdAnimal>false</herdAnimal>
 			<predator>false</predator>
-			<baseBodySize>0.4</baseBodySize>
+			<baseBodySize>0.133</baseBodySize>
 			<baseHealthScale>0.5</baseHealthScale>
 			<baseHungerRate>0.1</baseHungerRate>
 			<foodType>OmnivoreRoughAnimal</foodType>
@@ -312,21 +312,21 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 				<bodyGraphicData>
 					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>1</drawSize>
+					<drawSize>0.333</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>1.25</drawSize>
+					<drawSize>0.417</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_Stareling_east/_north/_south -->
 					<texPath>Things/Pawn/Animal/RSW_Ikee/RSW_Ikee</texPath>
-					<drawSize>1.5</drawSize>
+					<drawSize>0.5</drawSize>
 				</bodyGraphicData>
 			</li>
 		</lifeStages>
