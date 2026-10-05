@@ -1,6 +1,6 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-05T09:16:00-0700",
+ "built": "2026-10-05T10:53:39-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -310,8 +310,9 @@
      "north": "a578c32d3c7a978a3d2f8ebf1d884c9dfdbf3518f0025e9a0a1f826be6a204ed",
      "south": "d6bb408a2bdd678def9425a619677ccd8d6a025f1aa76d1863debbeeadb94e7a"
     },
-    "D": {
+    "E": {
      "east": "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae",
+     "north": "d8aab44d3e687420c9d01d6ecc12f94ac190e6e899e1953f7315f212420d3442",
      "south": "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee"
     }
    },
@@ -319,20 +320,21 @@
     "A": "swanimals/Gloomcast/Gloomcast",
     "B": "swanimals/Gloomcast/Gloomcast",
     "C": "swanimals/Gloomcast/Gloomcast",
-    "D": "swanimals/Gloomcast/Gloomcast"
+    "E": "swanimals/Gloomcast/Gloomcast"
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
     "B": "render RM_Gloomcast",
     "C": "history LongShade 2026-09-27",
-    "D": "render ls_regen_RM_Gloomcast_v1"
+    "E": "render ls_regen_RM_Gloomcast_v1"
    },
    "res": "swanimals/Gloomcast/Gloomcast",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "gloomcast"
   },
@@ -467,17 +469,23 @@
    "columns": {
     "A": {
      "single": "bc06a6e25ded030950d4c98bb0a3dd44dcd17053fbc50fdbf9f20ad9250f29b3"
+    },
+    "B": {
+     "single": "31d3fe4f28279f205954f1c550b0d90015bded66f713a2c4a0fa5a00b2c60a1c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Leachmoss"
+    "A": "Things/Plant/RM_Leachmoss",
+    "B": "Things/Plant/RM_Leachmoss"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render ls_regen_RM_Leachmoss_v1"
    },
    "res": "Things/Plant/RM_Leachmoss",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "leachmoss"
   },
@@ -640,6 +648,9 @@
     },
     "E": {
      "single": "a862a55da538d7527cd8df6e47be0695e3e001a595c9c054b1381b7232b5bd37"
+    },
+    "F": {
+     "single": "3f3b52e45f903bcd23bb3df21d837ba2b288d4485b55369926307ab7351665bb"
     }
    },
    "graphic_of": {
@@ -647,14 +658,16 @@
     "B": "Things/Plant/RM_Pavecrust",
     "C": "Things/Plant/RM_Pavecrust",
     "D": "Things/Plant/RM_Pavecrust",
-    "E": "Things/Plant/RM_Pavecrust"
+    "E": "Things/Plant/RM_Pavecrust",
+    "F": "Things/Plant/RM_Pavecrust"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render ls_regen_RM_Pavecrust_b_v1",
     "C": "render ls_regen_RM_Pavecrust_c_v1",
     "D": "render ls_regen_RM_Pavecrust_d_v1",
-    "E": "render ls_regen_RM_Pavecrust_f_v1"
+    "E": "render ls_regen_RM_Pavecrust_f_v1",
+    "F": "render ls_regen_RM_Pavecrust_e_v1"
    },
    "res": "Things/Plant/RM_Pavecrust",
    "reserved": [
@@ -662,7 +675,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "pavecrust"
   },
@@ -2076,28 +2090,31 @@
      "north": "3b8d72f542d4f869c62051413f939fe603783f0cf5264dbbd891885ce435016c",
      "south": "f37dc90004b383ae016ec8dbdaf997813247a295c73d7d4b6cd37bb3435bda7d"
     },
-    "D": {
-     "east": "cdad847c4e0badffcde0d76d179ec52f696e23358c5d22ee7519bc5d9549c0ae"
+    "E": {
+     "east": "cdad847c4e0badffcde0d76d179ec52f696e23358c5d22ee7519bc5d9549c0ae",
+     "north": "636deb359fdd6445b6ffe2ae78f9ceac68f81df197af0c6dd84b0e5fc9f59c0f",
+     "south": "d03022ac662678b7f188699d46ebc0fc85ae48cbbaec431a2dddbd3cf6610023"
     }
    },
    "graphic_of": {
     "A": "swanimals/Jakobeast/Jakobeast",
     "B": "swanimals/Jakobeast/Jakobeast",
     "C": "swanimals/Jakobeast/Jakobeast_j",
-    "D": "swanimals/Jakobeast/Jakobeast"
+    "E": "swanimals/Jakobeast/Jakobeast"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desertportb_jakobeast",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render longshade_rsw_jakobeast_v1"
+    "E": "render longshade_rsw_jakobeast_v1"
    },
    "res": "swanimals/Jakobeast/Jakobeast",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "jakobeast"
   },
@@ -2775,8 +2792,9 @@
      "north": "ee52b1e929af84d5fb9e7ee2b77d63e1b2126ca3dd7894def8e7079ab190c6cd",
      "south": "05cb88ad0aa971941ca6b2faa9799e490822caa10ef6dcbc1ecb1c08743cacc0"
     },
-    "F": {
+    "G": {
      "east": "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+     "north": "7f34c08daad15a14f06b1a653e3d0d8da38f39962d9904b4e54155b0fc08687d",
      "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
     }
    },
@@ -2786,7 +2804,7 @@
     "C": "swanimals/Runyip/Runyip_Swimming",
     "D": "swanimals/Runyip/Runyip_j",
     "E": "swanimals/Runyip/Runyip_j_Swimming",
-    "F": "swanimals/Runyip/Runyip"
+    "G": "swanimals/Runyip/Runyip"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -2794,7 +2812,7 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "render longshade_rsw_runyip_v1"
+    "G": "render longshade_rsw_runyip_v1"
    },
    "res": "swanimals/Runyip/Runyip",
    "reserved": [
@@ -2803,7 +2821,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "runyip"
   },
@@ -3229,23 +3248,29 @@
     },
     "C": {
      "single": "91f981da6ebde0f1cd11952d245090f6d4703f3bc7c222ee5bd8a98c5950f37f"
+    },
+    "D": {
+     "single": "f462f40a823fa52fdd6d3b01d00cc5a231ed0640faed06a8819c1eb2e7dc2c97"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_VellaraBloom",
     "B": "Things/Plant/RSW_VellaraBloom",
-    "C": "Things/Plant/RSW_VellaraBloom"
+    "C": "Things/Plant/RSW_VellaraBloom",
+    "D": "Things/Plant/RSW_VellaraBloom"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
     "B": "render longshade_rsw_vellarabloom_v1",
-    "C": "render longshade_rsw_vellarabloom_v3"
+    "C": "render longshade_rsw_vellarabloom_v3",
+    "D": "render longshade_rsw_vellarabloom_v2"
    },
    "res": "Things/Plant/RSW_VellaraBloom",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "vellarabloom"
   },
@@ -3416,23 +3441,31 @@
      "east": "f4ce0b1989e319fb4f90231e0b654f2837d90da2b19bc637adcda6d62127a480",
      "north": "154dfe1ebcb4e9e0277b660a36222bb50bcae8f26a23f4365fc04b68a226b9de",
      "south": "b7648045712d84ec47428154d2aa1578fc4f3547456ef83fc0a76c248175956f"
+    },
+    "D": {
+     "east": "861ecde896b523f470eb6f2242463fee787641ba5f37de3e63052aabfd976700",
+     "north": "281ab92155333ea5f918fabaf739d7f957e37935b61aae482c8eeb0daf71abc7",
+     "south": "9edd26a32a2a4e08c24559383fe5c9f45605955df06e66628742c39980ba2920"
     }
    },
    "graphic_of": {
     "A": "swanimals/Wraid/Wraid",
     "B": "swanimals/Wraid/Wraid",
-    "C": "swanimals/Wraid/Wraid"
+    "C": "swanimals/Wraid/Wraid",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_wraid",
-    "C": "render longshade_rsw_wraid_v1 \u2014 failed canon check"
+    "C": "render longshade_rsw_wraid_v1 \u2014 failed canon check",
+    "D": "render longshade_rsw_wraidalpha_v1"
    },
    "res": "swanimals/Wraid/Wraid",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "wraidalpha"
   },
@@ -3520,5 +3553,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "b2888feaafa08416"
+ "snapshotId": "7ae40805cf92baea"
 }
