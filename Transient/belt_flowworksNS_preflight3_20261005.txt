@@ -1,0 +1,18 @@
+PASS       P-L1 10 mods == tier, in order (disk = this load)
+PASS       P-L2 153 log lines scanned, no FlowWorks error
+PASS       P-B1 498 tools; bridge held by FOUNDRY
+PASS       P-B2 map 0 250x250 tile 7303 == sidecar
+PASS       P-B3 all 4 FlowWorks tools registered
+PASS       P-B4 58 fields at shipped defaults
+PASS       P-S1 11 plots match the manifest cell by cell
+PASS       P-S2 4 bodies match
+PASS       P-S3 no excavation, no flow totals, no flood Thing
+PASS       P-E1 Clear, no conditions, incident queue empty
+PASS       P-E2 57 check cells 10..45 C; PermanentSummer
+PASS       P-E3 paused PASS (ticksGame frozen at 35060 over two reads); no_modal PASS (open blocking windows: none); dev_god_mode PASS (dev on); step_rate PASS (meanTickTime 0.0 ms)
+PASS       P-E4 roster empty; autosave off
+PASS       P-E6 loaded RimMandrakeFlowWorks.dll mvid eddbe5cb-0ab1-4785-a5ac-a537cc8f33b9 == deployed; list ordered
+PASS       P-E7 nextPulseTick 35751; step(250) exact, paused
+PASS       P-E8 render profile == sidecar
+PASS       P-E5 mean 45.6 var 7.3
+CLEAN: 17 rows, 0 FAIL, 0 UNMEASURED

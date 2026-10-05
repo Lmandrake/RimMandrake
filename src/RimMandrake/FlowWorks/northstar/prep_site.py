@@ -98,8 +98,10 @@ def build_plot(s, plot, size, authored):
     _ok(s.call("jawa/set_terrain_batch", ops=";".join(ops)), "3", "set_terrain_batch")
     _ok(s.call("jawa/set_roof_batch", ops=rs, roofDef="None"), "3", "set_roof_batch(clear)")
     for x, z in plot["roofed"]:
-        _ok(s.call("jawa/set_roof_batch", ops="%d,%d,1,1" % (x, z), roofDef="RoofConstructed"), "3",
+        _ok(s.call("jawa/set_roof_batch", ops="%d,%d,1,1" % (x, z), roofDef=S.TWIN_ROOF), "3",
             "set_roof_batch(twin)")
+    for x, z in plot.get("supports", ()):
+        _ok(s.call("jawa/spawn_batch", ops="%s:%d,%d" % (S.SUPPORT_THING, x, z), stuff="Steel"), "3", "spawn_batch(support)")
     _ok(s.call("jawa/set_fog", action="unfog", rect=rs), "3", "set_fog")
     s.call("jawa/paint_area", area="Home", ops=rs, value=False)
     return n_halo
@@ -109,6 +111,9 @@ def _wx(w):
     """weather_get returns weather as {'current': 'Clear', ...} live (MEASURED 2026-10-05), a bare name in the fake."""
     x = w.get("weather")
     return x.get("current") if isinstance(x, dict) else x
+
+
+AFTERNOON_TICKS = 35000
 
 
 def environment(s, log):
@@ -129,6 +134,9 @@ def environment(s, log):
         raise Refused("4", "season never reached summer: %s" % mi.get("season"))
     # the outdoor temperature cache only refreshes while ticks run (MEASURED 2026-10-05: seasonalTemp followed the
     # clock at once, cell_temperature stayed at the old value): step a few ticks so step 7 reads the summer value
+    # afternoon: tick 0 of a day is local midnight and a desert night reads ~6 C (MEASURED 2026-10-05, 10 C floor)
+    t = _ok(s.call("jawa/time_clock"), "4", "time_clock")["ticksGame"]
+    _ok(s.call("jawa/time_set_ticks", ticks=int(t) - int(t) % 60000 + AFTERNOON_TICKS), "4", "time_set_ticks(afternoon)")
     if "rimworld/step_game_ticks" in getattr(s, "tools", ()):
         s.call("rimworld/step_game_ticks", ticks=60)
     s.call("jawa/research_bulk", mode="finish_all")
@@ -255,12 +263,22 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
             if bx <= t.get("x", -1) < bx + bw and bz <= t.get("z", -1) < bz + bh:
                 raise Refused("2", "indestructible VoidMonolith at %s,%s inside plot %s: re-roll the map (go_to_main_menu + start_debug_game_ready)"
                               % (t.get("x"), t.get("z"), p["id"]))
+    # 4. environment
+    season = environment(s, log)
     # 3. plots
     authored = {c for p in plots for b in p["bodies"] for c in S.cells(b["rect"])}
     halo = sum(build_plot(s, p, size, authored) for p in plots)
     log("built %d plots; painted %d stray wet/rough halo cell(s) to Soil" % (len(plots), halo))
-    # 4. environment
-    season = environment(s, log)
+    # the clock jump and ticks above can bring mechanoids/animals in (MEASURED 2026-10-05: 4 Mech_* in plot H
+    # after the quadrum jump): sweep once more now that nothing else will tick before the save
+    for q in _ok(s.call("jawa/list_pawns", limit=500), "3", "list_pawns").get("pawns") or []:
+        for fac in ("OutlanderCivil", "TribeCivil", "Empire"):
+            if s.call("jawa/set_pawn_faction", pawn=q.get("id"), faction=fac).get("success"):
+                break
+    _ok(s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False), "3", "destroy_bulk(late sweep)")
+    late = _ok(s.call("jawa/list_pawns", limit=500), "3", "list_pawns").get("pawns") or []
+    if late:
+        raise Refused("3", "pawns survived the late sweep: %s" % [q.get("id") for q in late][:6])
     # 5. settings
     snap, drift = PF.settings_snapshot(s)
     if drift:

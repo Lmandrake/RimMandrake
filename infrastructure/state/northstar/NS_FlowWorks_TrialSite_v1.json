@@ -1,14 +1,14 @@
 {
  "item": "FLOWWORKS_NORTHSTAR_SITE_PREP_1",
  "save": "NS_FlowWorks_TrialSite_v1.rws",
- "built": "2026-10-05T14:25:40",
+ "built": "2026-10-05T14:50:47",
  "seat": "FOUNDRY",
  "contract": {
-  "save_sha256": "172f32c61631f3f557ceda0bb1ee468a76cda5c6ca98eff2df899a50f59f1bb7",
+  "save_sha256": "ecd96de520ad7c4b3bc437c3fa9126d8756a2c3b42ba1f737a0395fe45075f46",
   "game_build": "1.6.4871 rev591",
-  "flowworks_dll_sha256": "1305f2b9ed87d5e05afd9d8fd75c8cf23876ce4b97de2ca2f4ea6763ca025573",
-  "flowworks_srchash_sha256": "14252b19ada02c257de7cc021c005e7f996859391ba3976ebc3f1827867b539e",
-  "defs_hash": "2235c9dfad4905ef483bfdcd3579d95f89b08b12e25dbfc17f1f5864a18513a4",
+  "flowworks_dll_sha256": "598ed6241dc656e3b35ea8ec4c04757395c6ef3d45c8b2de3d5f0feec9eb7922",
+  "flowworks_srchash_sha256": "24a2cb54ef155b7313944ff100dfd136ab123d01393c18f58e863c5a5058d846",
+  "defs_hash": "8d00e78d67e63b98c1772e96e07e3217a25138beba8b483960e86a24f7523db5",
   "settings": {
    "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
     "depthEngineEnabled": "True",
@@ -49,11 +49,14 @@
     "pitSinkPerLevel": "0.3",
     "flowDoorsSealedFromPitEnabled": "True",
     "sluiceLetsBigThroughEnabled": "True",
-    "canalFireEnabled": "ABSENT",
-    "canalBurnDaysPerLevel": "ABSENT",
-    "sourceBurnDaysPerLevel": "ABSENT",
-    "fireFrontSpeedMultiplier": "ABSENT",
-    "sourceFireReach": "ABSENT",
+    "canalFireEnabled": "True",
+    "canalBurnDaysPerLevel": "1",
+    "sourceBurnDaysPerLevel": "5",
+    "fireFrontSpeedMultiplier": "1",
+    "sourceFireReach": "3",
+    "pitDrowningEnabled": "True",
+    "pitDrowningRateMultiplier": "1",
+    "poisonFillEnabled": "True",
     "bottleLoopEnabled": "True",
     "bottleDirtyStageEnabled": "True",
     "tankLoopEnabled": "True",
@@ -74,11 +77,11 @@
  },
  "generation": {
   "mapId": 0,
-  "tile": 25126,
+  "tile": 7303,
   "sizeX": 250,
   "sizeZ": 250,
-  "biome": "TemperateForest",
-  "season": "Summer",
+  "biome": "TropicalRainforest",
+  "season": "PermanentSummer",
   "seed": "UNMEASURED (no bridge read of the world seed)"
  },
  "render_profile": {
@@ -112,7 +115,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "B",
@@ -135,7 +139,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "D",
@@ -170,7 +175,8 @@
     }
    ],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "E",
@@ -205,7 +211,8 @@
      ]
     }
    ],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "F",
@@ -228,7 +235,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "G",
@@ -254,7 +262,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "H",
@@ -276,7 +285,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "R",
@@ -298,12 +308,8 @@
    ],
    "bodies": [],
    "deferred": [],
-   "roofed": [
-    [
-     55,
-     52
-    ]
-   ]
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "K",
@@ -337,7 +343,8 @@
     }
    ],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "C",
@@ -375,7 +382,8 @@
     }
    ],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   },
   {
    "id": "S",
@@ -409,7 +417,8 @@
     }
    ],
    "deferred": [],
-   "roofed": []
+   "roofed": [],
+   "supports": []
   }
  ],
  "bodies": {
@@ -506,61 +515,7 @@
    }
   }
  },
- "despawned": [
-  "Human702",
-  "Human705",
-  "Macaw3217",
-  "Human708",
-  "Squirrel36997",
-  "Boomrat36998",
-  "Rat36999",
-  "Muffalo37000",
-  "Muffalo37001",
-  "Muffalo37002",
-  "Muffalo37003",
-  "Muffalo37004",
-  "Muffalo37005",
-  "Muffalo37006",
-  "Muffalo37007",
-  "Muffalo37008",
-  "Squirrel37009",
-  "Squirrel37010",
-  "Wolverine37011",
-  "Tortoise37012",
-  "Warg37013",
-  "Bluebird37014",
-  "Crow37015",
-  "Crow37016",
-  "Crow37017",
-  "Mink37018",
-  "Tortoise37019",
-  "Squirrel37020",
-  "Mink37021",
-  "Tortoise37022",
-  "Turkey37023",
-  "Squirrel37024",
-  "Boomalope37025",
-  "Boomalope37026",
-  "Boomalope37027",
-  "Raccoon37028",
-  "Quail37029",
-  "Quail37030",
-  "Quail37031",
-  "Quail37032",
-  "Raccoon37033",
-  "Squirrel37034",
-  "Rat37035",
-  "Squirrel37036",
-  "Boomrat37037",
-  "Muffalo37038",
-  "Muffalo37039",
-  "Muffalo37040",
-  "Muffalo37041",
-  "Muffalo37042",
-  "Muffalo37043",
-  "Muffalo37044",
-  "Muffalo37045"
- ],
+ "despawned": [],
  "manifest": {
   "A": {
    "7,7": {
@@ -34204,7 +34159,7 @@
    "55,52": {
     "base": "Soil",
     "temp": "none",
-    "roof": "RoofConstructed",
+    "roof": "none",
     "D": 0,
     "F": 0,
     "things": []

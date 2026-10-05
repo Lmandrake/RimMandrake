@@ -12,3 +12,6 @@
 - [live] 14:5x prep_site rc=0: golden NS_FlowWorks_TrialSite_v1 saved. Fixes: destroy_bulk for pawns (destroy_batch skips pawns), WeatherController lock excluded, weather dict, roof 'None', VoidMonolith pre-check, step 60 ticks for temp cache, ABSENT settings fields (spec newer than loaded DLL)
 - [live] preflight live CLEAN 17 rows (fixes: tier list via resolve_tier incl zoom mod, body cells exempt D/F, autosave>=14d, jawa/prefs autosave=14 set -- RESTORE to 0.25 at release). next: dirty proof
 - [live] dirty proof: rain+stray steel+stray pawn -> P-E1,P-S1,P-E4 refused (cold snap not injected: game_condition param is durationTicks). also plants regrow in plots after ticks (K Brambles, S Grass) -> bars must clear via _prep_plot
+- [live] 14:3x redeployed builder phase6 DLL, rebuilt golden (twin roof RoofRockThick: RoofConstructed collapses; afternoon clock 35000)
+- [live] FOUND: jawa/flowworks_excavation_drive reflection call TrySetDriverFill(c,fill) broke when builder added optional 3rd param FluidDef (S2_fill_clamp F=None, A0 instrument blind). Fixed in JawaBenchFlowWorksTools.cs (pass null). Needs companion rebuild (game down).
+- [live] twin roof collapses always (even w/ wall) -> golden has no roofed twin; plants regrow after ticks, so preflight is one-shot per fresh copy; late pawn sweep (mechs arrive after clock jump). golden rebuilt vs deployed DLL
