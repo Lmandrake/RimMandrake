@@ -40,7 +40,7 @@
   body shape vanilla doesn't already have. No eggs: all four are live-birth
   like RM_Oreclaw in the neighbour file, not egg-layers.
 
-  Art: RM_Sollak/RM_Gennok/RM_Tebbra wired from the ruled "_b" redo renders
+  Art: RM_Chorn/RM_Gennok/RM_Tebbra wired from the ruled "_b" redo renders
   (infrastructure/artpipe/_artsrc/RM_{Sollak,Gennok,Tebbra}_b_{east,north,south}/
   in the main checkout — never committed to this worktree's git history, read
   and copied cross-tree); RM_Dakkra wired from its original KEEP render
@@ -50,9 +50,10 @@
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_Sollak</defName>
-    <label>sollak</label>
-    <description>A leggy, tower-shouldered giant that never hurries and never has to: a standing herd of sollak is its own patch of shade, each animal shading the next, and nothing that lives out on the open sand challenges one on purpose. They cross the widest gaps this desert has by simply outlasting the heat that would kill anything smaller.</description>
+    <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename it Chorn."): renamed from RM_Sollak / "sollak". texPaths unchanged so the kept art still binds. -->
+    <defName>RM_Chorn</defName>
+    <label>chorn</label>
+    <description>A leggy, tower-shouldered giant that never hurries and never has to: a standing herd of chorn is its own patch of shade, each animal shading the next, and nothing that lives out on the open sand challenges one on purpose. They cross the widest gaps this desert has by simply outlasting the heat that would kill anything smaller.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>500</MarketValue>
@@ -115,9 +116,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Sollak</defName>
-    <label>sollak</label>
-    <race>RM_Sollak</race>
+    <defName>RM_Chorn</defName>
+    <label>chorn</label>
+    <race>RM_Chorn</race>
     <combatPower>220</combatPower>
     <ecoSystemWeight>0.6</ecoSystemWeight>
     <wildGroupSize>
