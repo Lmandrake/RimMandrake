@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 6. The flame drawn over a burning liquid cell. It never ticks and has no
+       fuel of its own: RM_LiquidFire (on the excavation component) owns ignition, the front, the burn rate and
+       the harm, and spawns/destroys one of these per burning cell purely for the look. Vanilla's own fire
+       graphic until bespoke burning-liquid art exists (canal_burning_reads_as_burning_liquid is an art bar). -->
+  <ThingDef>
+    <defName>RM_LiquidFlame</defName>
+    <label>burning liquid</label>
+    <description>The surface of a flammable liquid, alight. It burns until the liquid under it is gone.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Ethereal</category>
+    <tickerType>Never</tickerType>
+    <drawerType>RealtimeOnly</drawerType>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <rotatable>false</rotatable>
+    <pathfinderDangerous>true</pathfinderDangerous>
+    <graphicData>
+      <texPath>Things/Special/Fire</texPath>
+      <graphicClass>Graphic_Flicker</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <altitudeLayer>PawnState</altitudeLayer>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(184,136,83,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
