@@ -29,3 +29,6 @@ Status: built offline, selftests green, NOT deployed, NOT run live
 - Everything on screen: coupling face-to-face with the brass inlet at station 42, the straight last stretch, the E/N/S outline ends (N meets the valve wheel / near flange top, S the base foot, E the far flange). Needs deploy at next shutdown + a human_review rebuild of station 42.
 - Note: a stored (not laid) relay offers its coiled hose's dangling nozzle as the S-side outline in 3 looks; reads as plugging into it.
 
+
+## Commits
+- 742e0700e source, selftests, RL3/RL4, generator, this report; e267df858 DLL + .srchash from committed source. Not deployed: deploy_custom_mods.py --mod MessyConduit --apply owed at the next shutdown.
