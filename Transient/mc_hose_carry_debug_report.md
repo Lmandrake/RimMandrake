@@ -29,6 +29,20 @@ CR4b after load: Carrying, carrier kept, pending Deploy kept — the design §11
 CR5: resumed 60 ticks, Laid at (106,68) in 300. CR6: Laid -> Retracting -> Stored in 750 ticks. No new exceptions in Player.log
 (only the pre-existing startup `Default constructor not found for type System.String` def-load line).
 
+### Cycle 2 — regression sweep (fresh map, after 3824a232d)
+`--live` 12/12, `--relay` 9/9, `validation_style_hose.py --live` 6 PASS + R4 UNMEASURED (needs `--save NAME`, by design).
+`--maze` 6 PASS 2 FAIL, reproduced on a second fresh map. Both FAILs were the CHECK, not the mod (no baseline maze
+result was ever committed, so nobody had seen them):
+- M5: the script destroyed the maze walls with `categories="Buildings"`; the bridge refuses that ("Not a ThingCategory:
+  Buildings", valid is `Building`) and removed nothing, so the re-lay correctly read "no route". Fixed to `Building`.
+  Second layer: with walls really gone it still read "no route" because `RM_MapComponent_Hoses.World()` is cached per
+  TICK and M4's check had built it this tick with the walls up; the script now ticks 2 before re-laying (as M1 does after
+  building). Finding for the mod owner: a lay/check in the same tick as a map edit sees the pre-edit world.
+- P1: `build_batch` of `RM_LiquidTank` (FlowWorks, absent on the messyconduit tier) answers `success: true, placed: 0`;
+  the guard read only `success`, so it graded a tank that was never built. Now RECORD/SITE when `placed` is 0 — the
+  branch the script already had for this case. P1 stays unmeasured on this tier (needs FlowWorks loaded).
+Re-run `validation_hose_maze_20261004T235424.json`: 7 PASS + P1 RECORD.
+
 ## Theories (incl. false ones)
 - FALSE (briefed suspicion): CR5's drop-after-pickup was the 30-tick holder check / HoldsReel not matching the work-giver
   job, or the pawn still drafted from CR3. The log shows neither: the job died in SetupToils on load.

@@ -1,0 +1,170 @@
+{
+ "mod": "MessyConduit",
+ "mode": "maze",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T23:53:46",
+ "rows": [
+  {
+   "id": "M1_open_maze_short_route",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "layOk": true,
+    "pathLen": 10.9448,
+    "bbox": [
+     45.5688,
+     86.4979,
+     56.5,
+     87.0438
+    ],
+    "fellBack": false,
+    "minBendFlat": 1.4475,
+    "unwalkablePoints": 0,
+    "lay": null,
+    "viaGap": true
+   }
+  },
+  {
+   "id": "M2_gap_walled_reroutes",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": true,
+    "layOk": true,
+    "pathLen": 25.2937,
+    "bbox": [
+     41.526,
+     86.4883,
+     56.5,
+     89.5001
+    ],
+    "fellBack": false,
+    "minBendFlat": 1.2198,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "relays": 1,
+    "before": 10.9448
+   }
+  },
+  {
+   "id": "M3_length_cap_install",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "route too long",
+    "maxLength": 20
+   }
+  },
+  {
+   "id": "M3b_laid_hose_over_cap_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "pathLen": null,
+    "maxLength": 20,
+    "retractReason": "route too long",
+    "retractTick": 19604,
+    "retracts": 7,
+    "note": "HOSE_BLOCKED_REROUTE_RETRACT_1: a re-plan enforces the cap; expected reeled in, reason 'route too long'"
+   }
+  },
+  {
+   "id": "M4_unreachable_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "state": "Flat",
+    "reelGraphic": null,
+    "retractReason": "no route",
+    "retractTick": 19854,
+    "check": "no route",
+    "relay": null,
+    "retracts": 8,
+    "note": "expected: reeled in at the next 250-tick check, retractReason 'no route'"
+   }
+  },
+  {
+   "id": "M5_walls_removed_recovers",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": true,
+    "layOk": true,
+    "pathLen": 10.9448,
+    "bbox": [
+     45.5688,
+     86.4979,
+     56.5,
+     87.0438
+    ],
+    "lay": null
+   }
+  },
+  {
+   "id": "P1_reel_couples_to_tank",
+   "status": "RECORD",
+   "class": "SITE",
+   "detail": {
+    "tankBuild": {
+     "success": true,
+     "placed": 0,
+     "survived": 0,
+     "lostToLaterOps": 0,
+     "failedCount": 1,
+     "failed": [
+      {
+       "op": "RM_LiquidTank:44,96",
+       "why": "no ThingDef 'RM_LiquidTank'"
+      }
+     ],
+     "displacedCount": 0,
+     "displaced": [],
+     "placeWorkerWarningsCount": 0,
+     "placeWorkerWarnings": [],
+     "qualityIgnoredForDefs": [],
+     "message": "0 placed.",
+     "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+     "things": [],
+     "ticksGame": 19157,
+     "operation": {
+      "OperationId": "op_22d1542f933d43a2961342352e2b583a",
+      "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+      "Status": 2,
+      "Success": true,
+      "StartedAtUtc": "2026-10-05T06:53:47.2009968+00:00",
+      "CompletedAtUtc": "2026-10-05T06:53:47.2345483+00:00",
+      "DurationMs": 33,
+      "Result": null,
+      "HasResult": true,
+      "ResultWasTruncated": false,
+      "Warnings": [],
+      "Error": null,
+      "Metadata": {}
+     }
+    },
+    "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"
+   }
+  },
+  {
+   "id": "P2_lone_reel_not_coupled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "port": null,
+    "portKind": "None"
+   }
+  }
+ ],
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_01_open.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_02_gap_walled.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_04_unreachable.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\ports_01_reel_tank.png"
+ ],
+ "log": []
+}
