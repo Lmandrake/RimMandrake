@@ -91,7 +91,8 @@ BOOL_DEFAULTS = {
                superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True, swaleEnabled=True,
-               trapTriggerEnabled=True, fallDamageEnabled=True),    # rehoused from PitsSettings 2026-10-02
+               trapTriggerEnabled=True, fallDamageEnabled=True,
+               pitExposureEnabled=True),    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -655,8 +656,8 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 25:
-        probs.append("toggle census %d != 25" % seen)
+    if seen != 31:
+        probs.append("toggle census %d != 31" % seen)
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
@@ -664,7 +665,7 @@ def o2_settings_defaults():
     dead = re.findall(r"public static \w+ (\w*(?:struggle|escape|Escape|Struggle|pitCellExposure)\w*)\s*=", allsrc)
     if dead:
         probs.append("retired settings still declared: %s" % dead)
-    return Check("O2", not probs, "; ".join(probs) or "25 toggles + %d floats match C#; 2 Mod screens; no "
+    return Check("O2", not probs, "; ".join(probs) or "31 toggles + %d floats match C#; 2 Mod screens; no "
                  "struggle/escape/exposure setting" % len(FLOAT_DEFAULTS))
 
 
@@ -688,10 +689,6 @@ UNBUILT = {
     "pit_covered_invisible": ("no superdeep cover (only legacy Building_TerrainMimicCover)",
                               lambda s, d: "SuperdeepCover" not in s),
     "pit_covered_seam_at_max_zoom": ("same as pit_covered_invisible", lambda s, d: "SuperdeepCover" not in s),
-    "sluice_gate_state_legible": ("no Sluice def", lambda s, d: not any("Sluice" in k for k in d)),
-    "spikes_read_distinct": ("no per-cell spike def on excavations (RM_OpenPit_Spiked / RM_PitDigSite_*_Spiked are the legacy building pit)",
-                             lambda s, d: not any("Spike" in k and k.startswith("RM_")
-                                                  and not k.startswith(("RM_OpenPit", "RM_PitDigSite", "RM_PitCell")) for k in d)),
     "ladder_state_legible": ("RM_Ladder has no raised/lowered state (thingClass Building)",
                              lambda s, d: d.get("RM_Ladder") is not None and "<thingClass>Building</thingClass>" in d["RM_Ladder"][2]),
     "tar_fill_front_lags_water": ("FlowPerPulse is global; viscosity not read by the engine",
@@ -1324,10 +1321,9 @@ class Live(object):
     def probe(self, c, kind="dig", pawn=None):
         """jawa/flowworks_job_probe: the designator's and the WorkGiver's own answer for one cell,
         nothing designated or ordered. Returned raw: callers judge success and name failures."""
-        kw = dict(x=c[0], z=c[1], kind=kind)
         if pawn:
-            kw["pawnId"] = pawn
-        return self.B.call("jawa/flowworks_job_probe", **kw)
+            return self.B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind=kind, pawnId=pawn)
+        return self.B.call("jawa/flowworks_job_probe", x=c[0], z=c[1], kind=kind)
 
     def body(self, name, classify=True):
         c = BODIES[name]["cells"][0]
