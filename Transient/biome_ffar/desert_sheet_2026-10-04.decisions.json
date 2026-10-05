@@ -20,8 +20,10 @@
       "purgeTouched": true
     },
     "RM_Bokka": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:18:47.646Z",
+      "decidedAt": "2026-10-05T03:18:42.854Z",
+      "decision": "B",
+      "note": "Should live at RimMandrake level",
       "prefill": "A"
     },
     "RM_Dakkra": {
@@ -32,8 +34,9 @@
       "prefill": "A"
     },
     "RM_Dewfringe": {
+      "at": "2026-10-05T03:33:32.255Z",
       "decision": "A",
-      "note": "",
+      "note": "Add a bunch of variants, move to RimMandrake tier",
       "prefill": "A"
     },
     "RM_Gennok": {
@@ -61,43 +64,65 @@
       "purgeTouched": true
     },
     "RM_GreatDevourer": {
+      "at": "2026-10-05T03:21:18.329Z",
       "decision": "A",
-      "note": "",
+      "note": "This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc entry for what to call it properly. Remove the canon association with this animal. Lives at the RSW level (though we're adding to the Star Wars canon ourselves with this one)",
       "prefill": "A"
     },
     "RM_Groundrunner": {
+      "at": "2026-10-05T03:22:41.896Z",
       "decision": "A",
-      "note": "",
+      "note": "See above.",
       "prefill": "A"
     },
     "RM_Jellypot": {
+      "at": "2026-10-05T03:23:31.832Z",
       "decision": "A",
-      "note": "",
+      "note": "See above, belongs at RimMandrake level.",
       "prefill": "A"
     },
     "RM_Khorrak": {
+      "at": "2026-10-05T03:24:32.049Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "note": "See above, belongs at RimMandrake level",
+      "prefill": "A",
+      "purge": [
+        "f543ad9be205860b0bff91eabc40739fb98c84b0c792e9eceb98c11e38484b40",
+        "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
+        "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
+      ],
+      "purgeTouched": true
     },
     "RM_Kudda": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:25:18.886Z",
+      "decidedAt": "2026-10-05T03:25:14.272Z",
+      "decision": "hold",
+      "note": "Just cut this creature. It's dumb.",
       "prefill": "A"
     },
     "RM_Leachmoss": {
-      "decision": "hold",
+      "at": "2026-10-05T03:34:26.417Z",
+      "decidedAt": "2026-10-05T03:34:26.417Z",
+      "decision": "redo",
       "note": "",
       "prefill": "hold"
     },
     "RM_Maidenbloom": {
+      "at": "2026-10-05T03:34:47.286Z",
       "decision": "A",
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-05T03:34:47.286Z"
     },
     "RM_MatureFleshbeast": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:26:07.380Z",
+      "decidedAt": "2026-10-05T03:26:00.765Z",
+      "decision": "hold",
+      "note": "Remove this, no longer needed",
       "prefill": "A"
     },
     "RM_Mirrak": {
@@ -106,18 +131,22 @@
       "prefill": "A"
     },
     "RM_Ommok": {
+      "at": "2026-10-05T03:27:16.168Z",
       "decision": "A",
-      "note": "",
+      "note": "see above",
       "prefill": "A"
     },
     "RM_Ossik": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:27:44.922Z",
+      "decidedAt": "2026-10-05T03:27:42.379Z",
+      "decision": "hold",
+      "note": "no longer needed",
       "prefill": "A"
     },
     "RM_Pavecrust": {
+      "at": "2026-10-05T03:35:04.883Z",
       "decision": "A",
-      "note": "",
+      "note": "add many variants",
       "prefill": "A"
     },
     "RM_Pirrik": {
@@ -141,9 +170,16 @@
       "prefill": "A"
     },
     "RM_Shadespire": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:35:40.434Z",
+      "decidedAt": "2026-10-05T03:35:20.307Z",
+      "decision": "redo",
+      "note": "Make the husk-like fruits a paler color with red ribbing. Add some random spires growing out of the trunk",
+      "prefill": "A",
+      "purge": [
+        "69b8539fe792a1a37ee13d8919e899cf5869b4ad7ddb6a3d56b12d3661cbd24e",
+        "64944ac8ff038ec3c8cc08584a3bd7a61d64f1ba5e6c844a1941879e46989dfc"
+      ],
+      "purgeTouched": true
     },
     "RM_Sippra": {
       "decision": "A",
@@ -199,43 +235,62 @@
       "purgeTouched": true
     },
     "RM_Thurra": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:28:32.410Z",
+      "decidedAt": "2026-10-05T03:28:29.768Z",
+      "decision": "hold",
+      "note": "no longer needed",
       "prefill": "A"
     },
     "RM_TruffleMole": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:29:44.217Z",
+      "decidedAt": "2026-10-05T03:29:44.217Z",
+      "decision": "B",
+      "note": "see above",
       "prefill": "A"
     },
     "RM_Ulgga": {
+      "at": "2026-10-05T03:31:36.983Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "note": "see above",
+      "prefill": "A",
+      "purge": [
+        "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a",
+        "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+        "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
+      ],
+      "purgeTouched": true
     },
     "RM_Ultracactus": {
+      "at": "2026-10-05T03:38:51.802Z",
       "decision": "hold",
-      "note": "",
+      "note": "see above",
       "prefill": "hold"
     },
     "RM_Venomvine": {
-      "decision": "hold",
+      "at": "2026-10-05T03:36:51.415Z",
+      "decidedAt": "2026-10-05T03:36:51.415Z",
+      "decision": "redo",
       "note": "",
       "prefill": "hold"
     },
     "RM_Vorrel": {
-      "decision": "hold",
+      "at": "2026-10-05T03:36:52.161Z",
+      "decidedAt": "2026-10-05T03:36:52.161Z",
+      "decision": "redo",
       "note": "",
       "prefill": "hold"
     },
     "RM_Vosska": {
+      "at": "2026-10-05T03:32:26.866Z",
       "decision": "A",
-      "note": "",
+      "note": "see above",
       "prefill": "A"
     },
     "RM_Vrekka": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:13:01.749Z",
+      "decidedAt": "2026-10-05T03:12:42.127Z",
+      "decision": "redo",
+      "note": "Keep the overall face/mouth part and bony underjaw. Make the legs even snorter and less fit for running. Ambush predator.",
       "prefill": "A"
     },
     "RSW_Bantha": {
@@ -258,8 +313,10 @@
       "purgeTouched": true
     },
     "RSW_Bokka": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:18:38.290Z",
+      "decidedAt": "2026-10-05T03:18:20.809Z",
+      "decision": "B",
+      "note": "Should live at RimMandrake level",
       "prefill": "A"
     },
     "RSW_Bolotaur": {
@@ -312,8 +369,10 @@
       "purgeTouched": true
     },
     "RSW_DommoTree": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:34:06.796Z",
+      "decidedAt": "2026-10-05T03:34:02.881Z",
+      "decision": "hold",
+      "note": "cut this",
       "prefill": "A"
     },
     "RSW_Eopie": {
@@ -388,13 +447,15 @@
       "purgeTouched": true
     },
     "RSW_GreatDevourer": {
+      "at": "2026-10-05T03:21:31.905Z",
       "decision": "A",
-      "note": "",
+      "note": "See above",
       "prefill": "A"
     },
     "RSW_Groundrunner": {
+      "at": "2026-10-05T03:22:34.924Z",
       "decision": "A",
-      "note": "",
+      "note": "Keep art, rename to the Oreclaw, lives in RimMandrake level.",
       "prefill": "A"
     },
     "RSW_Gutkurr": {
@@ -509,8 +570,9 @@
       "purgeTouched": true
     },
     "RSW_Jellypot": {
+      "at": "2026-10-05T03:23:20.223Z",
       "decision": "A",
-      "note": "",
+      "note": "Tint it more green. Rename to Dunejelly.",
       "prefill": "A"
     },
     "RSW_Jimvu": {
@@ -527,9 +589,16 @@
       "purgeTouched": true
     },
     "RSW_Khorrak": {
+      "at": "2026-10-05T03:24:15.288Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "note": "It should produce vacstone chunks.",
+      "prefill": "A",
+      "purge": [
+        "f543ad9be205860b0bff91eabc40739fb98c84b0c792e9eceb98c11e38484b40",
+        "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
+        "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
+      ],
+      "purgeTouched": true
     },
     "RSW_Krykna": {
       "at": "2026-10-05T02:25:01.087Z",
@@ -545,8 +614,10 @@
       "purgeTouched": true
     },
     "RSW_Kudda": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:25:10.421Z",
+      "decidedAt": "2026-10-05T03:25:05.824Z",
+      "decision": "hold",
+      "note": "Just cut this creature. It's dumb.",
       "prefill": "A"
     },
     "RSW_Kwi": {
@@ -581,9 +652,17 @@
       "purgeTouched": true
     },
     "RSW_MatureFleshbeast": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:25:53.952Z",
+      "decidedAt": "2026-10-05T03:25:45.188Z",
+      "decision": "hold",
+      "note": "No longer needed, remove.",
+      "prefill": "A",
+      "purge": [
+        "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7",
+        "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
+        "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c"
+      ],
+      "purgeTouched": true
     },
     "RSW_Nerf": {
       "at": "2026-10-05T02:42:44.396Z",
@@ -629,23 +708,40 @@
       "variantsAt": "2026-10-05T02:43:15.484Z"
     },
     "RSW_Ommok": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:27:10.393Z",
+      "decidedAt": "2026-10-05T03:26:29.583Z",
+      "decision": "B",
+      "note": "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier",
       "prefill": "A"
     },
     "RSW_Ossik": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:27:37.053Z",
+      "decidedAt": "2026-10-05T03:27:34.261Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A",
+      "purge": [
+        "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819",
+        "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
+        "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767"
+      ],
+      "purgeTouched": true
     },
     "RSW_Plant_Chakroot_Wild": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:37:42.027Z",
+      "decidedAt": "2026-10-05T03:37:26.856Z",
+      "decision": "redo",
+      "note": "Examine canon closely, follow it, add variations.",
+      "prefill": "A",
+      "purge": [
+        "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+      ],
+      "purgeTouched": true
     },
     "RSW_Plant_HubbaGourd_Wild": {
+      "at": "2026-10-05T03:37:52.193Z",
       "decision": "A",
-      "note": "",
+      "note": "add variations",
       "prefill": "A"
     },
     "RSW_Ronto": {
@@ -738,8 +834,9 @@
       "purgeTouched": true
     },
     "RSW_SurraGrass": {
+      "at": "2026-10-05T03:36:02.822Z",
       "decision": "A",
-      "note": "",
+      "note": "add variations",
       "prefill": "A"
     },
     "RSW_TeeMuss": {
@@ -756,30 +853,44 @@
       "purgeTouched": true
     },
     "RSW_Thurra": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:28:27.392Z",
+      "decidedAt": "2026-10-05T03:28:24.020Z",
+      "decision": "hold",
+      "note": "no longer needed",
       "prefill": "A"
     },
     "RSW_TruffleMole": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:29:33.405Z",
+      "decidedAt": "2026-10-05T03:28:38.873Z",
+      "decision": "B",
+      "note": "Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.",
       "prefill": "A"
     },
     "RSW_Ulgga": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:31:30.186Z",
+      "decidedAt": "2026-10-05T03:30:13.684Z",
+      "decision": "redo",
+      "note": "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.",
+      "prefill": "A",
+      "purge": [
+        "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a",
+        "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+        "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
+      ],
+      "purgeTouched": true
     },
     "RSW_Ultracactus": {
-      "decision": "hold",
-      "note": "",
+      "at": "2026-10-05T03:38:44.071Z",
+      "decidedAt": "2026-10-05T03:38:00.163Z",
+      "decision": "redo",
+      "note": "This is supposed to be in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a hint of green. Rename this to Ultriss Pad. RimMandrake tier.",
       "prefill": "hold"
     },
     "RSW_Uvak": {
-      "at": "2026-10-05T03:09:14.765Z",
+      "at": "2026-10-05T03:09:22.701Z",
       "decidedAt": "2026-10-05T03:09:09.779Z",
       "decision": "redo",
-      "note": "Follow canon images closely. Beaked ",
+      "note": "Follow canon images closely. Beaked four-legged flier. ",
       "prefill": "A",
       "purge": [
         "28a13db922200f77112d72bc110136bbf04e759012f5e80e83df3f15956c9fe0",
@@ -789,41 +900,81 @@
       "purgeTouched": true
     },
     "RSW_Varactyl": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:10:46.039Z",
+      "decidedAt": "2026-10-05T03:09:55.236Z",
+      "decision": "redo",
+      "note": "Color variations welcome. Follow the canon closely. Long, sinewous ridable beast. Not terrestrial. Keep vibrant coloration.",
       "picks": {
         "swanimals/Varactyl/Varactyl_m": "B"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "ffd6100e6cd84fd108aeae10ac0ea268080b3d4817295099e9d030deecc382b4",
+        "0d199a741d26cbc9eed6b8d6b9e1dab1c4e734906e81e60c2ff27420539eb14d",
+        "2c6b0b81f0f8c6d812f0ed79be9d33fa9889e80657aaf81832fde9b55de5a684"
+      ],
+      "purgeTouched": true
     },
     "RSW_VellaraBloom": {
+      "at": "2026-10-05T03:36:10.326Z",
       "decision": "A",
-      "note": "",
+      "note": "add variations",
       "prefill": "A"
     },
     "RSW_Voorpak": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:11:55.453Z",
+      "decidedAt": "2026-10-05T03:11:14.276Z",
+      "decision": "redo",
+      "note": "Bizarre little furball with bird-like legs. Follow canon closely. Do not make cartoonish. Two antenna-like tufts on head. ",
+      "prefill": "A",
+      "purge": [
+        "b660632fdcdaf338d71cb734e6c8b2edc5097996a0a331a0928c504e5130ed3d",
+        "0f2c3fc58793ae1870b1e67d809b70f50944e63a3c72f9acf8cbdb962bb8a2e6",
+        "f4f121dfc2d25040ef23803edd4bd16dd49fc574bdf9689fb3f8a2ab8913900e"
+      ],
+      "purgeTouched": true
     },
     "RSW_Vosska": {
+      "at": "2026-10-05T03:32:17.798Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "note": "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand",
+      "prefill": "A",
+      "purge": [],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-05T03:31:59.068Z"
     },
     "RSW_Worrt": {
-      "decision": "A",
-      "note": "",
+      "at": "2026-10-05T03:14:49.876Z",
+      "decidedAt": "2026-10-05T03:13:37.733Z",
+      "decision": "redo",
+      "note": "Follow canon closely. NOT a frog. Big yellow verticaly slitted eyes. Two antennae. Frilled gills on face. Long hunched back legs, short front legs, suckered feet. ",
       "picks": {
         "swanimals/Worrt/Worrt_Swimming": "C",
         "swanimals/Worrt/Worrt_j": "D"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "85cdba37080657ec73a2aaffb545fa9047856d94fba3ca17ab103aaee10fc7af",
+        "9712e4e24e8ab98b32091de0dde517cfe4fb2758cf8e19fa32a46add7eb91d91",
+        "153ae21be8519183a063a2be6ea724fe28e9744b3edfd0e49305df8910b5854d"
+      ],
+      "purgeTouched": true
     },
     "RSW_Wraid": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:15:32.724Z",
+      "decidedAt": "2026-10-05T03:15:08.743Z",
+      "decision": "redo",
+      "note": "Follow canon closely, especially enormous head and front limbs and relatively tiny back limbs. Very broad head. ",
+      "prefill": "A",
+      "purge": [
+        "fa325a03bf871c368b6917cac286f4a77245d798d39990d29852efe6d2d68c81",
+        "cc8590378d6c424274722bc85f155244411cc9ed4f684bec7027019fdbcf4053",
+        "2e230da5ae927e65119021a718fbf91102ad80db701576b6ef2784116086e682"
+      ],
+      "purgeTouched": true
     },
     "RSW_WraidAlpha": {
       "at": "2026-10-05T01:12:31.456Z",
@@ -839,22 +990,43 @@
       "purgeTouched": true
     },
     "RSW_Zeer": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
+      "at": "2026-10-05T03:17:03.684Z",
+      "decidedAt": "2026-10-05T03:16:29.047Z",
+      "decision": "redo",
+      "note": "Make it less girrafe like by bulking out the body and slanting it sharply upwards. Follow canon closely. Make it 50% bigger. ",
+      "prefill": "A",
+      "purge": [
+        "a0357d174d6941afe5c9c0aabd7b8d1519d2c174bb0afc1ee849d41fc30aeafa",
+        "ee3fd25271cd30015ab07db10d20362dc40d96cc515a022602dac46cfdbb6e08",
+        "b72b209a71f3d5e72a52b6f511d0f1d532fc8f1e9d3c4105c50ef59243ec2371",
+        "97f08847047fb9ebbcb673e48570a4cbb3d9feeb1792ea7914577f3018bd6784",
+        "ece63d10dd3b4a82dcb26dcaf16d897bb44662caf0df6f00173f7884568cd8d0",
+        "0b382d5eb4845a0db25b86cb4cfe5508eaef621e376a0be9e2680aae72aa9964",
+        "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d",
+        "ff3962d86f0b3b971609b579b5841d425f682d6aa0e60279a81dd0418e2e9f8d",
+        "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
+        "64faa7145d816db15dd1936d2068331c5c170026785d1df6df9a177c64074c01",
+        "042237a607981a393462b87c9587b7d52894725901be120fadbbd77ef53f6f9c",
+        "b02e70a42b8ea6e80ac29545ddfabedc380e23d0f690893fb9b32be2cb090217",
+        "ae37acfaa7da9df4f8cf87de69e90167cd368749c665bf098d2112881739834a",
+        "dbe0e454471a6530262efac1b3a096ac85e9dbb4dc6e2f575c78a55a2c263d32",
+        "25c4cbb7fe58d27e490e6d269b28394d69402ed2fb0ceb4a04e517f9fddbfaf9",
+        "5960814d6a766c839d563066f29b9d15b99e16b1a70f2cf73970b3b39cb14610"
+      ],
+      "purgeTouched": true
     }
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "at": null,
-    "by": null,
-    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
-    "state": "prefill"
+    "state": "ruled",
+    "by": "owner (Lukas)",
+    "at": "2026-10-04T20:38:52-0700",
+    "evidence": "sidecar writeCount 670; owner said in chat 'I just completed the Long Shade \u2014 flora & fauna art.'"
   },
-  "savedAt": "2026-10-04T20:09:15-0700",
+  "savedAt": "2026-10-04T20:38:52-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "f22208a82306d1d2",
-  "writeCount": 450
+  "writeCount": 670
 }
