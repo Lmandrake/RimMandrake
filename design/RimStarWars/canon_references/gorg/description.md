@@ -61,12 +61,23 @@ spiky back resembles variant 4 and its longtail gorg's fluke resembles variant 5
 donor inspiration, not a canon fact. Proposal only, not done: no cosmetic change without the
 owner's word.
 
+### Owner-supplied description (2026-10-04) — image `owner_canon_gorgs_1.webp`
+Film still of Mos Espa market gorgs hanging by their feet (the Gorg-seller). Owner, verbatim: "The hanging creatures are Gorgs.
+They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long
+tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like
+amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY
+variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or
+large, numbering two to four." Longtail kind: "unusually long tails with an odd flat tail spread horizontally." Frilled kind:
+"flared frills along its body." Size: 30% smaller than the shipped gorg. A swimming graphic is wanted.
+
 ## Must show
 - [ ] Every variant: small, squat or newt-like amphibian with a very wide mouth
 - [ ] Variants differ in SHAPE, not only colour (lobed four-eyed head / hammer head / spiky back / fin tail / long tail)
 - [ ] Purple four-eyed variant, if used: violet-purple with teal/cream highlights, two swept-back head lobes, four small eyes
 - [ ] Film variant, if used: long thin tail and dark spots on tan/brown (or green) skin
 - [ ] Webbed or long-toed splayed feet
+- [ ] (owner-supplied 2026-10-04) Two legs only, webbed AND clawed feet; long tongue; smooth slick soft wet skin, NOT scaled or dry; NOT frog-like (amphibious lizard)
+- [ ] (owner-supplied 2026-10-04) Many varied looks: purple wide-wedge heads, narrow shapes, green, spotted, striped; eyes small or large, two to four
 
 ## Engine limits
 - A single-channel tint mask cannot express the purple-with-teal iridescence, the spots, or a
@@ -81,6 +92,7 @@ owner's word.
 - https://starwars.fandom.com/wiki/Gorg/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
+- `owner_canon_gorgs_1.webp` — OWNER-SUPPLIED 2026-10-04: film still, gorgs hanging at the Mos Espa market (source: Facebook CDN link in the Long Shade sheet note)
 - `wookieepedia_canon_1.webp` — CANON page `Gorg`; wiki caption: infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: infobox image. File: `Gorg-WoSW.png` — https://static.wikia.nocookie.net/starwars/images/d/da/Gorg-WoSW.png/revision/latest?cb=20230904021132
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
