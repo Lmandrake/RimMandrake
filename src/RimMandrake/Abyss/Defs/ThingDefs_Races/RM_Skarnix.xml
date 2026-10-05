@@ -8,8 +8,8 @@
 <Defs>
   <ThingDef ParentName="ThingBaseWolf">
     <defName>RM_Skarnix</defName>
-    <label>gekkrith</label>
-    <description>A cat-large ambush stalker of the Abyss, long and low, its narrow head ringed all the way round with small wet eyes so that nothing approaches it unseen from any side. Its hide is the dull black of old obsidian and drinks what little light there is. A gekkrith will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
+    <label>ishvarith</label>
+    <description>A cat-large ambush stalker of the Abyss, long and low, its narrow head ringed all the way round with small wet eyes so that nothing approaches it unseen from any side. Its hide is the dull black of old obsidian and drinks what little light there is. An ishvarith will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
     <race>
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
@@ -78,14 +78,14 @@
 
   <PawnKindDef ParentName="AnimalKindBaseWolf">
     <defName>RM_Skarnix</defName>
-    <label>gekkrith</label>
+    <label>ishvarith</label>
     <labelPlural>skarnixes</labelPlural>
     <race>RM_Skarnix</race>
     <combatPower>65</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <lifeStages>
       <li>
-        <label>gekkrith kit</label>
+        <label>ishvarith kit</label>
         <labelPlural>skarnix kits</labelPlural>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
