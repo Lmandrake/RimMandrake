@@ -524,6 +524,7 @@ namespace RimMandrake.LuminousPigment
         // map scan, not per tick) and correctness-safe either way.
         private static void ApplyClusterBlockToMaps()
         {
+            if (Current.Game == null || Find.Maps == null) return;
             List<Map> maps = Find.Maps;
             for (int i = 0; i < maps.Count; i++)
             {
