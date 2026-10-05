@@ -648,6 +648,32 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_StockMath.FluidsCompatible(true, water, (object)null), "unrecorded donor: legacy permissive");
             });
 
+            // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity: stride = ticksPerTile / water's, rounded, >= 1.
+            Case("Viscosity_stride_from_ticksPerTile", () =>
+            {
+                Assert(RM_StockMath.ViscosityStride(60) == 1, "water moves every pulse");
+                Assert(RM_StockMath.ViscosityStride(1) == 1, "faster than water still moves every pulse");
+                Assert(RM_StockMath.ViscosityStride(180) == 3, "oil 180 -> 3");
+                Assert(RM_StockMath.ViscosityStride(360) == 6, "tar 360 -> 6");
+                Assert(RM_StockMath.ViscosityStride(480) == 8, "slime 480 -> 8");
+                Assert(RM_StockMath.ViscosityStride(89) == 1 && RM_StockMath.ViscosityStride(90) == 2, "rounds half up");
+            });
+
+            Case("Viscosity_tar_moves_one_pulse_in_six_water_every_pulse", () =>
+            {
+                int tar = 0, water = 0;
+                for (long p = 1; p <= 60; p++)
+                {
+                    if (RM_StockMath.FluidMovesThisPulse(p, 360)) tar++;
+                    if (RM_StockMath.FluidMovesThisPulse(p, 60)) water++;
+                }
+                Assert(water == 60, "water gave on " + water + " of 60 pulses");
+                Assert(tar == 10, "tar gave on " + tar + " of 60 pulses, want 10");
+                bool gap = false;
+                for (long p = 1; p <= 5; p++) gap |= !RM_StockMath.FluidMovesThisPulse(p, 360);
+                Assert(gap, "tar moved on every one of 5 consecutive pulses: no lag");
+            });
+
             // FLOWWORKS_SHARED_SOURCE_STALL_1: the production component walk.
             // A 3x1 body (sources at x=3..5, z=5); channel E runs (6..9,5) off the
             // body's east end, channel N runs (5,6..9) off the same corner cell.

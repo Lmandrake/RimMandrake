@@ -94,7 +94,8 @@ BOOL_DEFAULTS = {
                trapTriggerEnabled=True, fallDamageEnabled=True,
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
-               pitDrowningEnabled=True, poisonFillEnabled=True),     # PIT_FILL_EFFECTS_1    # rehoused from PitsSettings 2026-10-02
+               pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
+               viscosityEnabled=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -117,6 +118,39 @@ RETIRED_PIT_DEFS = (["RM_OpenPit_" + n for n in ("Bare", "Spiked", "Oiled", "Poi
 
 # ============================================================================ the pulse oracle
 CARDINAL = [(0, 1), (1, 0), (0, -1), (-1, 0)]   # GenAdj.CardinalDirections: N, E, S, W
+
+
+def _fluid_ticks_per_tile():
+    """FluidDef defName -> ticksPerTile, read from the mod's own FluidDefs (default 60, as FluidDef.cs)."""
+    out = {}
+    for dp, _, fns in os.walk(os.path.join(MOD, "Defs")):
+        for fn in fns:
+            if fn.endswith(".xml"):
+                t = open(os.path.join(dp, fn), encoding="utf-8").read()
+                for m in re.finditer(r"<(?:[\w.]*\.)?FluidDef\b[^>]*>(.*?)</(?:[\w.]*\.)?FluidDef>", t, re.S):
+                    dn = re.search(r"<defName>([^<]+)</defName>", m.group(1))
+                    tp = re.search(r"<ticksPerTile>(\d+)</ticksPerTile>", m.group(1))
+                    if dn:
+                        out[dn.group(1)] = int(tp.group(1)) if tp else 60
+    return out
+
+
+_TPT = {}
+
+
+def viscosity_stride(ticks_per_tile):
+    """Port of RM_StockMath.ViscosityStride: ticksPerTile / water's 60, rounded half up, >= 1."""
+    if ticks_per_tile <= 60:
+        return 1
+    return max(1, (ticks_per_tile + 30) // 60)
+
+
+def fluid_moves(pulse, fluid):
+    """Port of RM_StockMath.FluidMovesThisPulse for a fluid named by defName."""
+    if not _TPT:
+        _TPT.update(_fluid_ticks_per_tile() or {"RM_Fluid_Water": 60})
+    st = viscosity_stride(_TPT.get(fluid, 60))
+    return st <= 1 or pulse % st == 0
 
 
 class PulseOracle(object):
@@ -161,6 +195,13 @@ class PulseOracle(object):
         self.algo = algo                  # "old" = pre-FLOWWORKS_CHANNEL_OSCILLATION_1 engine
         self.drained = 0
         self.credited = 0                 # units sources paid in (limited AND limitless)
+        # LIQUID_BODY_FLUID_IDENTITY_1 + viscosity (2026-10-05): cell -> fluid defName for cells a scene filled
+        # with a NAMED fluid (absent = water, which every older scene is). A wet cell refuses a different
+        # fluid (PickDonor's no-mix filter); a donor of a viscous fluid gives only every Nth pulse
+        # (RM_StockMath.FluidMovesThisPulse over the map's scribed pulseCount, mirrored by pulse_n).
+        self.fluid = {}
+        self.pulse_n = 0
+        self.viscosity = True
         self.key = {}                     # fixed algo: cell -> (dSrc, -dSink), this component
 
     def idx(self, c):
@@ -215,6 +256,11 @@ class PulseOracle(object):
                 fn = self.F[n]
             if fn == 0:
                 continue
+            fl_n = "RM_Fluid_Water" if src else self.fluid.get(n, "RM_Fluid_Water")
+            if self.F.get(r, 0) > 0 and self.fluid.get(r, "RM_Fluid_Water") != fl_n:
+                continue                                     # no-mix (owner Q3)
+            if self.viscosity and not fluid_moves(self.pulse_n, fl_n):
+                continue                                     # viscosity: a viscous donor waits its stride
             if dr <= dn and fn < dn:
                 continue
             if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
@@ -313,6 +359,7 @@ class PulseOracle(object):
                 self.receded.add(best[1])
 
     def pulse(self):
+        self.pulse_n += 1
         self._rain()
         if self.recession:
             self._recede()
@@ -373,8 +420,16 @@ class PulseOracle(object):
                         self.credited += 1
                     else:
                         self.F[d] -= 1
+                    if self.F[r] == 0:                       # first level claims a dry cell for its fluid
+                        fl = "RM_Fluid_Water" if self.is_source(d) else self.fluid.get(d, "RM_Fluid_Water")
+                        if fl == "RM_Fluid_Water":
+                            self.fluid.pop(r, None)
+                        else:
+                            self.fluid[r] = fl
                     self.F[r] += 1
                     moved += 1
+        for c in [c for c in self.fluid if self.F.get(c, 0) == 0]:   # SyncFluidIdentity: F=0 clears the record
+            del self.fluid[c]
 
     def run(self, cells, pulses):
         out = []
@@ -494,7 +549,17 @@ SCENES = {
     # walk-in (own-faction capture ON), then a ladder; and the carve-out-OFF control twin
     "P_walk": dict(cells=[(166, 100)], D=4, phase="P"),
     "P_walk_ctrl": dict(cells=[(172, 100)], D=4, phase="P"),
+    # X: the promoted bars (2026-10-05), after P, before the tail. Dug D=1 here; phase_X deepens the strip
+    # to 1..4 and the race staircases likewise. No body: nothing here is fed, every move is gravity.
+    "X_strip": dict(cells=_run(131, 70, 4, 1, 0), D=1, phase="X"),               # D 1,2,3,4; (130,70) is D=0
+    "X_two": dict(cells=_run(131, 74, 4, 1, 0) + [(134, 75)] + _run(131, 76, 4, 1, 0), D=1, phase="X"),
+    "X_race_tar": dict(cells=_run(131, 79, 4, 1, 0), D=1, phase="X"),
+    "X_race_water": dict(cells=_run(131, 82, 4, 1, 0), D=1, phase="X"),
+    "X_race_off": dict(cells=_run(131, 85, 4, 1, 0), D=1, phase="X"),
+    "X_cover": dict(cells=[(140, 70), (141, 70), (140, 71), (141, 71)], D=4, phase="X"),
 }
+X_WALK = (130, 70)                 # the strip's D=0 end: colonist spawn, hare 0
+X_JUNCTION = (134, 75)             # X_two: one dry D=2 cell between the tar row (z74) and the water row (z76)
 PAWN_SPOTS = {"E7a_fillin": (191, 62), "E7b_overflow": (196, 62), "E8_dig": (200, 62)}
 # P-phase pawns: (scene, the pawn's cell, kind, faction, "small"/"large")
 PIT_MATRIX = [("P_1x1_small", (130, 100), "small"), ("P_1x1_large", (136, 100), "large"),
@@ -662,8 +727,8 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 35:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill
-        probs.append("toggle census %d != 35" % seen)
+    if seen != 36:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity
+        probs.append("toggle census %d != 36" % seen)
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
@@ -689,30 +754,35 @@ def _engine_src():
     return open(os.path.join(SRC, "RM_MapComponent_Excavation.cs"), encoding="utf-8").read()
 
 
-UNBUILT = {
-    "fill_fluid_distinct": ("one activeFluid field per map component",
-                            lambda s, d: "private FluidDef activeFluid;" in s),
-    "pit_covered_invisible": ("no superdeep cover (only legacy Building_TerrainMimicCover)",
-                              lambda s, d: "SuperdeepCover" not in s),
-    "pit_covered_seam_at_max_zoom": ("same as pit_covered_invisible", lambda s, d: "SuperdeepCover" not in s),
-    "ladder_state_legible": ("RM_Ladder has no raised/lowered state (thingClass Building)",
-                             lambda s, d: d.get("RM_Ladder") is not None and "<thingClass>Building</thingClass>" in d["RM_Ladder"][2]),
-    "tar_fill_front_lags_water": ("FlowPerPulse is global; viscosity not read by the engine",
-                                  lambda s, d: "viscosity" not in re.sub(r"//.*", "", _engine_src()).lower()),
-    "pawn_height_ladder_legible": ("no pawn draw offset by depth", lambda s, d: not re.search(r"DepthAt\([^)]*\)[^;\n]*(DrawPos|DrawOffset|drawLoc)", s)),
-    "pawn_lowers_on_deeper_cell": ("same", lambda s, d: not re.search(r"DepthAt\([^)]*\)[^;\n]*(DrawPos|DrawOffset|drawLoc)", s)),
-    "pawn_rises_on_shallower_cell": ("same", lambda s, d: not re.search(r"DepthAt\([^)]*\)[^;\n]*(DrawPos|DrawOffset|drawLoc)", s)),
-    "pit_trapped_reads_as_trapped": ("same (walls above head need the offset)", lambda s, d: not re.search(r"DepthAt\([^)]*\)[^;\n]*(DrawPos|DrawOffset|drawLoc)", s)),
-    "slime_occupant_below_surface": ("same", lambda s, d: not re.search(r"DepthAt\([^)]*\)[^;\n]*(DrawPos|DrawOffset|drawLoc)", s)),
+UNBUILT = {}
+# PROMOTED 2026-10-05 (belt_flowworksC): every bar the register held had a landed feature except viscosity, which
+# was then built (RM_StockMath.FluidMovesThisPulse). Each bar is now a LIVE row reading the running game through
+# RM_PromotionProofs (static_call); O3 asserts each row still exists, so a bar cannot silently fall out of the run.
+PROMOTED = {
+    "pawn_height_ladder_legible": "X1_pawn_height_ladder",     # PIT_DEPTH_DRAW_OFFSET_1
+    "pawn_lowers_on_deeper_cell": "X2_pawn_lowers_walking_in",
+    "pawn_rises_on_shallower_cell": "X3_pawn_rises_walking_out",
+    "pit_trapped_reads_as_trapped": "X4_pit_wall_over_head",
+    "slime_occupant_below_surface": "X5_slime_occupant_below_surface",
+    "fill_fluid_distinct": "X6_two_fluids_distinct",          # LIQUID_BODY_FLUID_IDENTITY_1
+    "tar_fill_front_lags_water": "X7_tar_front_lags_water",   # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity
+    "pit_covered_invisible": "X8_cover_hides_pit",            # PIT_COVER_FALL_REWIRE_1
+    "pit_covered_seam_at_max_zoom": "X9_cover_deck_uniform",
+    "ladder_state_legible": "P4b_ladder_raised_strands",      # LADDER_PRISON_DOOR_1
 }
 
 
 def o3_unbuilt_register():
     s, d = _src_all(), _xml_blocks()
     landed = [bar for bar, (_, pred) in UNBUILT.items() if not pred(s, d)]
+    me = open(os.path.abspath(__file__), encoding="utf-8").read()
+    lost = [b for b, row in PROMOTED.items() if me.count('"%s"' % row) < 2]       # the table + a live L.row
+    both = sorted(set(PROMOTED) & set(UNBUILT))
     # A landed feature is a PROMOTION (stage the bar now), reported, not a failure of the mod.
-    return Check("O3", True, "%d UNBUILT bars registered; FEATURE LANDED, stage now: %s"
-                 % (len(UNBUILT) - len(landed), landed or "none"))
+    return Check("O3", not lost and not both, ("promoted bars with no live row: %s; " % lost if lost else "")
+                 + ("bars both promoted and UNBUILT: %s; " % both if both else "")
+                 + "%d UNBUILT bars registered; FEATURE LANDED, stage now: %s; %d promoted to live rows"
+                 % (len(UNBUILT) - len(landed), landed or "none", len(PROMOTED)))
 
 
 def o4_geometry(bodies=None, scenes=None):
@@ -2143,6 +2213,29 @@ def phase_P(L, args):
                   "ladder spawned %s hasLadder %s; held %s lip %s/%s; ordered out: arrived %s; %s" % (
                       sb.get("success"), r_l.get("hasLadder"), pl.get("held"), pl.get("lipReachable"),
                       pl.get("lipCells"), o_l.get("arrived"), alive(r_l, a)))
+            # P4b (ladder_state_legible, promoted 2026-10-05): the colonist climbs back down, the ladder is RAISED
+            # from outside (RM_CompLadder.raised, the gizmo's own field) -> held, cannot reach the lip, and the
+            # inspect line says so; LOWERED again -> free. Owner Q1: raised, nobody climbs, own people included.
+            o_back = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
+            ok_r, lr, _ = _proof(B, "ProofLadder", "%d,%d,raise" % wc)
+            r_up = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
+            pu = _pit_pawn(r_up, a) or {}
+            o_up = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
+            ok_l, ll, _ = _proof(B, "ProofLadder", "%d,%d,lower" % wc)
+            r_dn = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
+            pd = _pit_pawn(r_dn, a) or {}
+            if not (ok_r and ok_l) or o_back.get("arrived") is not True:
+                L.row("P4b_ladder_raised_strands", False, "HARNESS", "ladder proof %s/%s (%s / %s); back in %s; %s" % (
+                    ok_r, ok_l, lr, ll, o_back.get("arrived"), alive(r_up, a)), status="UNMEASURED")
+            else:
+                L.row("P4b_ladder_raised_strands", lr.get("raised") == "True" and "raised" in lr.get("inspect", "")
+                      and pu.get("held") is True and pu.get("lipReachable") == 0 and o_up.get("canReach") is False
+                      and ll.get("raised") == "False" and "lowered" in ll.get("inspect", "") and pd.get("held") is False
+                      and (pd.get("lipReachable") or 0) > 0, "MOD",
+                      "raised %s (%s): held %s lip %s/%s, ordered out canReach %s | lowered %s (%s): held %s lip %s/%s; %s" % (
+                          lr.get("raised"), lr.get("inspect"), pu.get("held"), pu.get("lipReachable"), pu.get("lipCells"),
+                          o_up.get("canReach"), ll.get("raised"), ll.get("inspect"), pd.get("held"), pd.get("lipReachable"),
+                          pd.get("lipCells"), alive(r_dn, a)))
         finally:
             L.sset(S_FW, "superdeepCapturesOwnFaction", False)
         b, cc = spawn_col("P_walk_ctrl"), SCENES["P_walk_ctrl"]["cells"][0]
@@ -2161,6 +2254,213 @@ def phase_P(L, args):
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
 
+
+
+# ---------------------------------------------------------------------------- phase X (promoted bars; ticks)
+# 2026-10-05 (belt_flowworksC): the ten bars the UNBUILT register held, each a state read of the running game.
+# Every reading is RimMandrake.FlowWorks.RM_PromotionProofs through jawa/static_call (one string arg, one
+# "KEY k=v ..." line back), so a stale DLL fails as "Type not found", never as a quiet pass.
+PROOF_TYPE = "RimMandrake.FlowWorks.RM_PromotionProofs"
+FLUIDID_TYPE = "RimMandrake.FlowWorks.RM_FluidIdentityProof"
+SINK_PER_LEVEL = FLOAT_DEFAULTS["pitSinkPerLevel"]
+FEET_TO_HEAD = 1.0                 # RM_PitDrawMath.HumanlikeFeetToHeadTop (PROVISIONAL)
+TAR, WATER, SLIME = "RM_Fluid_Tar", "RM_Fluid_Water", "RM_Fluid_SlimeGreen"
+
+
+def _proof(B, method, arg, typ=PROOF_TYPE):
+    r = B.call("jawa/static_call", type=typ, method=method, args=arg)
+    txt = str(r.get("result") or r.get("message") or r.get("error") or "")
+    kv = dict(t.split("=", 1) for t in txt.split()[1:] if "=" in t)
+    return r.get("success") is True and not txt.startswith("REFUSED"), kv, txt
+
+
+def _fill_fluid(L, c, f, fluid):
+    ok, _, txt = _proof(L.B, "ProofFillWithFluid", "%d,%d,%d,%s" % (c[0], c[1], f, fluid), typ=FLUIDID_TYPE)
+    ok = ok and txt.startswith("FILLED")
+    if ok and L.o is not None:
+        L.o.set_fill(c, f)
+        if fluid == WATER:
+            L.o.fluid.pop(c, None)
+        else:
+            L.o.fluid[c] = fluid
+    return ok, txt
+
+
+def _fluid_row(L, cells):
+    xs, zs = [c[0] for c in cells], [c[1] for c in cells]
+    ok, kv, txt = _proof(L.B, "ProofFluidRow", "%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 1, max(zs) - min(zs) + 1))
+    out = {}
+    for tok in (txt.split(" ", 3)[3] if ok and txt.count(" ") >= 3 else "").split(";"):
+        if ":" in tok:
+            xz, rest = tok.split(":", 1)
+            x, z = map(int, xz.split(","))
+            d, f, fl, ter = rest.split("/", 3)
+            out[(x, z)] = dict(d=int(d), f=int(f), fluid=fl, terrain=ter)
+    return ok, out, kv
+
+
+def _sink_ok(kv, depth):
+    try:
+        sink, dz = float(kv["sink"]), float(kv["drawDz"])
+    except (KeyError, ValueError):
+        return False
+    return (kv.get("depth") == str(depth) and abs(sink - SINK_PER_LEVEL * depth) < 1e-3 and abs(dz + sink) < 0.05)
+
+
+def _xpulse(L, n):
+    r = L.B.call("jawa/flowworks_pulse", count=n, x=0, z=0, w=0, h=0, includeBodies=False)
+    if not r.get("success"):
+        raise Abort("flowworks_pulse(%d) in phase X failed: %r" % (n, str(r)[:300]))
+
+
+def _level_at(rows, cells):
+    """(index of the one wet cell, total fill, fluids seen) over a staircase."""
+    wet = [i for i, c in enumerate(cells) if rows.get(c, {}).get("f", 0) > 0]
+    return (wet[0] if len(wet) == 1 else wet), sum(rows.get(c, {}).get("f", 0) for c in cells), \
+        sorted({rows[c]["fluid"] for c in cells if c in rows and rows[c]["f"] > 0})
+
+
+def phase_X(L, args):
+    B = L.B
+    with L.step("X_promoted", None):
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        for k in sorted(k for k, sc in SCENES.items() if sc.get("phase") == "X"):
+            L.dig_scene(k)
+        strip = SCENES["X_strip"]["cells"]
+        for i, c in enumerate(strip):              # D=1 dug -> 1,2,3,4 (the race staircases the same)
+            for k in ("X_race_tar", "X_race_water", "X_race_off"):
+                if i:
+                    L.dig(SCENES[k]["cells"][i], i)
+            if i:
+                L.dig(c, i)
+        L.dig(X_JUNCTION, 1)                       # X_two's junction is D=2: both rows give to it by gravity
+
+        # X1 pawn_height_ladder_legible: a hare on D=0..4, read at 0 ticks through the REAL DrawPos.
+        hares, got = [], []
+        for d, c in enumerate([X_WALK] + strip):
+            r = B.call("jawa/spawn_pawn", kindDef="Hare", faction="none", x=c[0], z=c[1], count=1)
+            if not r.get("success"):
+                raise Abort("spawn hare on %s: %r" % (c, r))
+            hares.append((d, r["pawns"][0]["id"]))
+        bad, ok_all = [], True
+        for d, pid in hares:
+            ok, kv, txt = _proof(B, "ProofPawnSink", pid)
+            ok_all &= ok
+            got.append("D%s %s/%s" % (kv.get("depth"), kv.get("sink"), kv.get("drawDz")))
+            if not _sink_ok(kv, d):
+                bad.append("D%d: %s" % (d, txt[:120]))
+        if not ok_all:
+            L.row("X1_pawn_height_ladder", False, "HARNESS", "ProofPawnSink unreadable: %s" % got, status="UNMEASURED")
+        else:
+            L.row("X1_pawn_height_ladder", not bad, "MOD", bad[:3] or "sink/drawDz by depth (0.3/level PROVISIONAL, "
+                  "strictly deeper each step): %s" % "; ".join(got))
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+
+        # X2/X3/X4: a colonist WALKS the strip D0 -> D4 (own faction: the carve-out, no capture) and back.
+        r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=X_WALK[0], z=X_WALK[1], count=1)
+        if not r.get("success"):
+            raise Abort("spawn colonist for X: %r" % r)
+        col = r["pawns"][0]["id"]
+        _, k0, _ = _proof(B, "ProofPawnSink", col)
+        o_in = _order_row(B.call("jawa/order_pawn", pawnId=col, x=strip[-1][0], z=strip[-1][1], waitTicks=PIT_WAIT_IN, draft=True), col)
+        ok4, k4, t4 = _proof(B, "ProofPawnSink", col)
+        o_out = _order_row(B.call("jawa/order_pawn", pawnId=col, x=X_WALK[0], z=X_WALK[1], waitTicks=PIT_WAIT_IN, draft=True), col)
+        ok0, k1, t1 = _proof(B, "ProofPawnSink", col)
+        L.row("X2_pawn_lowers_walking_in", ok4 and o_in.get("arrived") is True and _sink_ok(k0, 0) and _sink_ok(k4, 4), "MOD",
+              "walked D0->D4 arrived %s: sink %s -> %s (drawDz %s) %s" % (o_in.get("arrived"), k0.get("sink"), k4.get("sink"),
+                                                                       k4.get("drawDz"), "" if ok4 else t4))
+        L.row("X3_pawn_rises_walking_out", ok0 and o_out.get("arrived") is True and _sink_ok(k4, 4) and _sink_ok(k1, 0), "MOD",
+              "walked D4->D0 arrived %s: sink %s -> %s (drawDz %s) %s" % (o_out.get("arrived"), k4.get("sink"), k1.get("sink"),
+                                                                       k1.get("drawDz"), "" if ok0 else t1))
+        try:
+            wall = float(k4.get("sink")) / FEET_TO_HEAD
+        except (TypeError, ValueError):
+            wall = None
+        L.row("X4_pit_wall_over_head", ok4 and _sink_ok(k4, 4) and wall is not None and wall >= 1.2 - 1e-6
+              and abs(float(k4.get("wallOverHead") or 0) - wall) < 1e-3, "MOD",
+              "colonist on D=4 drawn %s cells down; wall over crown %s x a person's height (owner: walls 20%% above "
+              "the head, >= 1.2)" % (k4.get("sink"), k4.get("wallOverHead")))
+        B.call("jawa/set_pawn_faction", pawn=col, faction="none")
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+
+        # X5 slime_occupant_below_surface: slime in the D=4 cell does not lift its occupant.
+        okf, tf = _fill_fluid(L, strip[-1], 2, SLIME)
+        r = B.call("jawa/spawn_pawn", kindDef="Hare", faction="none", x=strip[-1][0], z=strip[-1][1], count=1)
+        ok5, k5, t5 = _proof(B, "ProofPawnSink", r["pawns"][0]["id"]) if r.get("success") else (False, {}, r)
+        if not (okf and ok5):
+            L.row("X5_slime_occupant_below_surface", False, "HARNESS", "fill %s (%s); sink %s" % (okf, tf, t5), status="UNMEASURED")
+        else:
+            L.row("X5_slime_occupant_below_surface", _sink_ok(k5, 4) and k5.get("fluid") == SLIME and k5.get("fill") == "2",
+                  "MOD", "D=4 cell holding %s F=%s: occupant drawn %s down (dry D=4: %.2f), drawDz %s" % (
+                      k5.get("fluid"), k5.get("fill"), k5.get("sink"), 4 * SINK_PER_LEVEL, k5.get("drawDz")))
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+
+        # X6 fill_fluid_distinct + X7 tar_fill_front_lags_water (+ X7n the toggle): named fluids, gravity only.
+        two = SCENES["X_two"]["cells"]
+        tar_row, water_row = [c for c in two if c[1] == 74], [c for c in two if c[1] == 76]
+        fills = [_fill_fluid(L, c, 1, TAR) for c in tar_row] + [_fill_fluid(L, c, 1, WATER) for c in water_row]
+        rt, rw, ro = (SCENES[k]["cells"] for k in ("X_race_tar", "X_race_water", "X_race_off"))
+        fills += [_fill_fluid(L, rt[0], 1, TAR), _fill_fluid(L, rw[0], 1, WATER)]
+        if not all(f[0] for f in fills):
+            L.row("X6_two_fluids_distinct", False, "HARNESS", "ProofFillWithFluid: %s" % [f[1] for f in fills if not f[0]][:3],
+                  status="UNMEASURED")
+            return
+        _xpulse(L, 3)
+        _, race3, kv3 = _fluid_row(L, rt + rw)
+        _xpulse(L, 9)
+        okr, rows, kv = _fluid_row(L, two + rt + rw)
+        t3, w3 = _level_at(race3, rt), _level_at(race3, rw)
+        t12, w12 = _level_at(rows, rt), _level_at(rows, rw)
+        L.row("X7_tar_front_lags_water", okr and w3[0] == 3 and t3[0] in (0, 1) and t12[0] == 2 and w12[0] == 3
+              and t12[1] == w12[1] == 1 and t12[2] == [TAR] and w12[2] == [WATER], "MOD",
+              "gravity staircase D1..D4, one level each: after 3 pulses water at step %s, tar at %s; after 12 water %s, "
+              "tar %s (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels %s/%s; pulse %s viscosity %s" % (
+                  w3[0], t3[0], w12[0], t12[0], w12[1], t12[1], kv.get("pulse"), kv.get("viscosity")))
+        tar_f = sum(rows.get(c, {}).get("f", 0) for c in tar_row)
+        wat_f = sum(rows.get(c, {}).get("f", 0) for c in water_row) + rows.get(X_JUNCTION, {}).get("f", 0)
+        wrong = [c for c in tar_row if rows.get(c, {}).get("f") and rows[c]["fluid"] != TAR] + \
+                [c for c in water_row + [X_JUNCTION] if rows.get(c, {}).get("f") and rows[c]["fluid"] != WATER]
+        tt = {rows[c]["terrain"] for c in tar_row if rows.get(c, {}).get("f")}
+        wt = {rows[c]["terrain"] for c in water_row if rows.get(c, {}).get("f")}
+        j = rows.get(X_JUNCTION, {})
+        L.row("X6_two_fluids_distinct", okr and not wrong and tar_f == 4 and wat_f == 4 and j.get("fluid") == WATER
+              and j.get("f") == 1 and len(tt) == 1 and len(wt) == 1 and not (tt & wt)
+              and not any(t.startswith("RM_Channel") for t in tt | wt), "MOD",
+              "tar row %s levels drawn %s | water row+junction %s levels drawn %s | junction %s F=%s (water reached it "
+              "first, one level by gravity; tar refused: no-mix) | wrong-fluid cells %s" % (tar_f, sorted(tt), wat_f, sorted(wt), j.get("fluid"),
+                                                                       j.get("f"), wrong[:3]))
+        okf, tf = _fill_fluid(L, ro[0], 1, TAR)      # filled only now: ON it would still sit at step 0..1
+        L.sset(S_FW, "viscosityEnabled", False)
+        try:
+            _xpulse(L, 3)
+            _, roff, kvo = _fluid_row(L, ro)
+        finally:
+            L.sset(S_FW, "viscosityEnabled", True)
+        toff = _level_at(roff, ro)
+        L.row("X7n_viscosity_off", okf and toff[0] == 3 and toff[2] == [TAR] and kvo.get("viscosity") == "False", "MOD",
+              "viscosityEnabled OFF: a tar staircase moved like water, step %s after 3 pulses (levels %s, %s)" % (
+                  toff[0], toff[1], toff[2]))
+
+        # X8/X9 pit_covered_invisible + seam: a 2x2 woven-scrap deck over a D=4 pit.
+        cov = SCENES["X_cover"]["cells"]
+        sb = B.call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % c for c in cov))
+        reads = [_proof(B, "ProofCover", "%d,%d" % c) for c in cov]
+        if not sb.get("success") or not all(r[0] for r in reads):
+            L.row("X8_cover_hides_pit", False, "HARNESS", "spawn %s; %s" % (sb.get("success"), [r[2] for r in reads][:2]),
+                  status="UNMEASURED")
+            return
+        kvs = [r[1] for r in reads]
+        hide = [k for k in kvs if not (k.get("present") == k.get("covered") == "True" and k.get("sprung") == "False"
+                                       and k.get("depth") == "4" and k.get("matOk") == "True"
+                                       and k.get("printed") == k.get("around") != k.get("cellTerrain"))]
+        L.row("X8_cover_hides_pit", not hide, "MOD", hide[:2] or "4 deck cells over D=4 (%s) print %s, the "
+              "surrounding surface; gives way: %s" % (kvs[0].get("cellTerrain"), kvs[0].get("printed"), kvs[0].get("inspect")))
+        printed = {k.get("printed") for k in kvs}
+        around = {k.get("around") for k in kvs}
+        L.row("X9_cover_deck_uniform", len(printed) == 1 and printed == around, "MOD",
+              "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
+              "still the judge's)" % (sorted(printed), sorted(around)))
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
 
 
 def phase_tail(L, args):
@@ -2224,6 +2524,15 @@ class MockBridge(object):
         "pit_no_veto": ["P1_width_matrix", "P3_walk_in_held"],         # held pawn can still reach / walk out
         "pit_no_fall": ["P3_walk_in_held"],                            # descent event never fires
         "pit_carveout_ignored": ["P5n_own_faction_carveout"],          # own colonists captured anyway
+        # phase X (promoted 2026-10-05): each breaks one landed feature the way a MOD defect would
+        "ladder_raise_ignored": ["P4b_ladder_raised_strands"],         # RM_CompLadder.raised not read by the trap
+        "sink_flat": ["X1_pawn_height_ladder", "X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out",
+                      "X4_pit_wall_over_head", "X5_slime_occupant_below_surface"],   # draw-offset patch not applied
+        "slime_lifts": ["X5_slime_occupant_below_surface"],            # fill raises the occupant
+        "viscosity_ignored": ["X7_tar_front_lags_water"],              # tar flows at water's pace
+        "viscosity_toggle_ignored": ["X7n_viscosity_off"],             # OFF still slows tar
+        "fluids_look_same": ["X6_two_fluids_distinct"],                # one fill terrain for every fluid
+        "cover_shows_hole": ["X8_cover_hides_pit", "X9_cover_deck_uniform"],   # cover prints the pit
     }
 
     def __init__(self, faults=()):
@@ -2251,6 +2560,8 @@ class MockBridge(object):
         self.fill_written = False
         self.mp = {}              # pit model: pawn id -> dict(kind, pos, faction, bs, drafted)
         self.ladders = set()
+        self.raised = set()       # ladders whose RM_CompLadder.raised is set (ProofLadder)
+        self.covers = set()       # cells holding a pit cover (spawn_batch RM_PitCover_*)
         self.descents = []
 
     # ---- pit model (SUPERDEEP_HOLDER_RETIRE_1): the grid trap rule over the oracle's D map
@@ -2271,7 +2582,8 @@ class MockBridge(object):
         c = p["pos"] if c is None else c
         cells = self.pit_cells()
         bs = 0.0 if "pit_holds_any" in self.faults else p["bs"]
-        return pit_held(cells, c, bs, ladder=c in self.ladders, captured=self.captured(p),
+        lad = c in self.ladders and (c not in self.raised or "ladder_raise_ignored" in self.faults)
+        return pit_held(cells, c, bs, ladder=lad, captured=self.captured(p),
                         rule=self.S("superdeepCaptureEnabled") and self.S("ladderRequiredToExitEnabled"))
 
     def comp4(self, c):
@@ -2324,6 +2636,8 @@ class MockBridge(object):
             x, z = map(int, xy.split(",")[:2])
             if d == "RM_Ladder":
                 self.ladders.add((x, z))
+            elif d.startswith("RM_PitCover_"):
+                self.covers.add((x, z))
         return dict(success=True, thingsPlaced=1)
 
     def t_jawa_order_pawn(self, pawnId, x=-1, z=-1, waitTicks=300, draft=True, **kw):
@@ -2359,6 +2673,8 @@ class MockBridge(object):
         o.rain_on = self.S("rainFillsExcavationsEnabled") or "rain_toggle_ignored" in self.faults
         o.rain_per, o.rain_rate = float(self.S("rainFillPerPulse")), self.rain_rate()
         o.roofed = set() if "roof_ignored" in self.faults else set(self.roof)
+        o.viscosity = ("viscosity_ignored" not in self.faults) and (
+            self.S("viscosityEnabled") or "viscosity_toggle_ignored" in self.faults)
 
     def do_pulse(self):
         self.sync()
@@ -2668,6 +2984,76 @@ class MockBridge(object):
                 self.do_pulse()
         return dict(success=True)
 
+    # ---- phase X: jawa/static_call over RM_PromotionProofs / RM_FluidIdentityProof (2026-10-05)
+    def _fill_terrain(self, c):
+        fl = self.o.fluid.get(c, "RM_Fluid_Water")
+        if "fluids_look_same" in self.faults:
+            fl = "RM_Fluid_Water"
+        return "RM_Fill_%s_Brim" % fl.replace("RM_Fluid_", "")
+
+    def t_jawa_static_call(self, type, method, args=""):
+        o = self.o
+        res = None
+        if method == "ProofFillWithFluid":
+            x, z, f, fl = args.split(",")
+            c, f = (int(x), int(z)), int(f)
+            if not o.exc(c) or (o.F.get(c, 0) > 0 and o.fluid.get(c, "RM_Fluid_Water") != fl):
+                res = "REFUSED: %s not excavated or holds another fluid" % (c,)
+            else:
+                o.F[c] = min(f, o.D[c])
+                if fl == "RM_Fluid_Water":
+                    o.fluid.pop(c, None)
+                else:
+                    o.fluid[c] = fl
+                self.fill_written = True
+                res = "FILLED %s F=%d fluid=%s" % (c, o.F[c], fl)
+        elif method == "ProofPawnSink":
+            p = self.mp.get(args)
+            if p is None:
+                res = "REFUSED: no spawned pawn " + args
+            else:
+                c = p["pos"]
+                d, f = o.D.get(c, 0), o.F.get(c, 0)
+                sink = 0.0 if "sink_flat" in self.faults else SINK_PER_LEVEL * d
+                if "slime_lifts" in self.faults:
+                    sink = max(0.0, sink - SINK_PER_LEVEL * f)
+                res = "SINK id=%s cell=%d,%d depth=%d fill=%d fluid=%s sink=%.3f drawDz=%.3f moving=False wallOverHead=%.3f" % (
+                    args, c[0], c[1], d, f, (o.fluid.get(c, "RM_Fluid_Water") if f else "none"), sink, -sink,
+                    SINK_PER_LEVEL * d / FEET_TO_HEAD)
+        elif method == "ProofLadder":
+            x, z, op = args.split(",")
+            c = (int(x), int(z))
+            if c not in self.ladders:
+                res = "LADDER cell=%s present=False raised=None inspect=none" % args
+            else:
+                (self.raised.add if op == "raise" else self.raised.discard if op == "lower" else (lambda _: None))(c)
+                up = c in self.raised
+                res = "LADDER cell=%d,%d present=True raised=%s inspect=%s" % (
+                    c[0], c[1], up, "Ladder_raised:_nobody_can_climb_out." if up else "Ladder_lowered:_your_people_climb")
+        elif method == "ProofCover":
+            x, z = map(int, args.split(","))
+            c = (x, z)
+            ring = [self.terrain_of((x + dx, z + dz)) for dx in (-1, 0, 1) for dz in (-1, 0, 1)
+                    if (dx or dz) and not o.exc((x + dx, z + dz))]
+            around = max(sorted(set(ring)), key=ring.count) if ring else "none"
+            printed = self.terrain_of(c) if "cover_shows_hole" in self.faults else around
+            res = "COVER cell=%d,%d present=%s covered=%s sprung=False depth=%d cellTerrain=%s printed=%s matOk=True around=%s inspect=Gives_way_under_40_kg" % (
+                x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around)
+        elif method == "ProofFluidRow":
+            x, z, w, h = map(int, args.split(","))
+            toks = []
+            for j in range(h):
+                for i in range(w):
+                    c = (x + i, z + j)
+                    f = o.F.get(c, 0)
+                    toks.append("%d,%d:%d/%d/%s/%s" % (c[0], c[1], o.D.get(c, 0), f,
+                                                     (o.fluid.get(c, "RM_Fluid_Water") if f else "none"),
+                                                     self._fill_terrain(c) if f else self.terrain_of(c)))
+            res = "ROW pulse=%d viscosity=%s %s;" % (o.pulse_n, self.S("viscosityEnabled"), ";".join(toks))
+        if res is None:
+            return dict(success=False, message="mock: no static %s.%s" % (type, method))
+        return dict(success=True, method=method, result=res)
+
     def t_jawa_flowworks_set_active_fluid(self, fluidDefName, allowAfterClassification=False):
         if (self.classified or self.fill_written) and not allowAfterClassification and "fluid_switch_allowed" not in self.faults:
             return dict(success=False, refused=True)
@@ -2700,7 +3086,7 @@ class RealBridge(object):
 
 
 FROZEN_BIOMES = ("IceSheet", "SeaIce")   # temp-layer ice the site painter cannot clear (run 6)
-PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "P", "tail")
+PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "P", "X", "tail")
 
 
 def run_live(args, B=None, quiet=False):
@@ -2759,7 +3145,7 @@ def run_live(args, B=None, quiet=False):
     ticks0 = None
     aborted = None
     fns = dict(L=phase_L, site=phase_site, S=phase_S, A=phase_A, B=phase_B, C=phase_C, R=phase_R, J=phase_J,
-               rain=phase_rain, P=phase_P, tail=phase_tail)
+               rain=phase_rain, P=phase_P, X=phase_X, tail=phase_tail)
     try:
         ticks0 = L.eng().get("ticksGame")
         for ph in PHASES:

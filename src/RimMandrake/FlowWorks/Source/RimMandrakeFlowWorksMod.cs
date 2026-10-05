@@ -163,6 +163,9 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors that pass liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
         public static bool sluiceLetsBigThroughEnabled = true;
+        // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY (PROVISIONAL stride = ticksPerTile / 60): a viscous fluid's level
+        // moves only every Nth pulse (tar 6, slime 8, oil 3), so its fill front lags water's.
+        public static bool viscosityEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -313,6 +316,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.3f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
             Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
+            Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -618,6 +622,10 @@ namespace RimMandrake.FlowWorks
                 "A sluice is a cheap gate: people (prisoners and raiders included) and any creature too big "
               + "for a one-wide pit force their way through it. Use a security grate to hold a real "
               + "prisoner. Both pass liquid while closed either way. Off: a sluice holds like an ordinary door.");
+            list.CheckboxLabeled("Thick liquids flow slower than water", ref viscosityEnabled,
+                "Tar, slime and oil creep along a channel: each level waits several pulses before it moves "
+              + "on (oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
+              + "one dug beside it. Off: every liquid flows at water's pace.");
 
             list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,
                 "An armed cover over a pit drops whoever stands on it once their combined mass passes "
