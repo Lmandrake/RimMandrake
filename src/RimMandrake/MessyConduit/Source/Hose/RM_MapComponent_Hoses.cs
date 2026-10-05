@@ -39,6 +39,11 @@ namespace RimMandrake.MessyConduit.Hose
         {
             reels.Remove(r);
             DropMeshes(r);
+            DropCarryCache(r);
+            seenCarry.Remove(r);
+            ends.Remove(r);
+            placedKind.Remove(r);
+            ghosts.RemoveAll(g => g.reel == r);
         }
 
         // ------------------------------------------------------------------ world snapshot for hoses
@@ -215,6 +220,7 @@ namespace RimMandrake.MessyConduit.Hose
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
+                Watch(r, now);
                 // S2, design section 5 b: a carried / wound hose's holder is re-checked every 30 ticks (the RopingTick
                 // pattern) so an end is never held by a pawn that stopped holding it
                 if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
@@ -243,10 +249,54 @@ namespace RimMandrake.MessyConduit.Hose
                         continue;
                     }
                     string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
-                    if (why != null) { r.Retract(why); Retracts++; continue; }
+                    if (why != null)
+                    {
+                        // S4: the cut hose is seen winding back along where it lay (a drawn ghost, no state: the reel is
+                        // already Stored, as ruled), not vanishing in one frame
+                        if (r.lay != null && r.lay.Flat.Count >= 2)
+                            ghosts.Add(new Ghost { reel = r, pts = new List<V2>(r.lay.Flat), start = now, len = Geo.Length(r.lay.Flat) });
+                        r.Retract(why); Retracts++; continue;
+                    }
                     r.layKey = null;
                 }
             }
+        }
+
+        // ------------------------------------------------------------------ S4: free-end kind, events, reel art
+        private readonly Dictionary<CompHoseReel, HoseCarryState> seenCarry = new Dictionary<CompHoseReel, HoseCarryState>();
+        private readonly Dictionary<CompHoseReel, KeyValuePair<int, HoseFreeEnd>> ends = new Dictionary<CompHoseReel, KeyValuePair<int, HoseFreeEnd>>();
+        private readonly Dictionary<CompHoseReel, HoseEndKind> placedKind = new Dictionary<CompHoseReel, HoseEndKind>();
+
+        /// <summary>The reel's free end (design section 7), re-read at most every 60 ticks or when the end moved.</summary>
+        public HoseFreeEnd FreeEndOf(CompHoseReel r)
+        {
+            int now = Find.TickManager?.TicksGame ?? 0;
+            if (ends.TryGetValue(r, out var kv) && now - kv.Key < 60 && kv.Value.Cell == (r.laid ? r.far : IntVec3.Invalid)) return kv.Value;
+            HoseFreeEnd e = HoseEnds.Read(r);
+            ends[r] = new KeyValuePair<int, HoseFreeEnd>(now, e);
+            return e;
+        }
+
+        /// <summary>Per tick: carry-state changes raise HoseEvents (section 10) and reprint the reel's art (the deployed drum
+        /// shows from the moment the end leaves the reel, not only once it is laid).</summary>
+        private void Watch(CompHoseReel r, int now)
+        {
+            HoseCarryState was = seenCarry.TryGetValue(r, out HoseCarryState s) ? s : r.carry;
+            seenCarry[r] = r.carry;
+            bool lying = HoseCarryLoad.IsLaid(r.carry);
+            if (was != r.carry)
+            {
+                if ((was == HoseCarryState.Stored) != (r.carry == HoseCarryState.Stored) && r.parent.Spawned) r.parent.DirtyMapMesh(r.parent.Map);
+                if (HoseCarryLoad.IsLaid(was) && r.carry == HoseCarryState.Carrying) { placedKind.Remove(r); HoseEvents.RaiseLifted(r); }
+                if (!lying) placedKind.Remove(r);
+            }
+            if (!lying) return;
+            bool look = was != r.carry || !placedKind.ContainsKey(r) || (now + r.parent.thingIDNumber) % 60 == 0;
+            if (!look) return;
+            HoseFreeEnd e = FreeEndOf(r);
+            if (placedKind.TryGetValue(r, out HoseEndKind k) && k == e.Kind && was == r.carry) return;
+            placedKind[r] = e.Kind;
+            HoseEvents.RaisePlaced(r, e);
         }
 
         // ------------------------------------------------------------------ draw
@@ -283,6 +333,8 @@ namespace RimMandrake.MessyConduit.Hose
         {
             float y0 = AltitudeLayer.Conduits.AltitudeFor() + Core.DrawOrder.HoseBaseLift;
             lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
+            lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
+            lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -290,14 +342,29 @@ namespace RimMandrake.MessyConduit.Hose
                 // fittings) sits in its own altitude band, ordered by when the reel was built
                 float y = y0 + HoseMath.CrossLift(RankOf(r));
                 DrawFeed(r, y0);
+                // S4 (design section 6): a carried hose is drawn live along the walked trail to the carrier's hand
+                if (r.carry == HoseCarryState.Carrying && r.trail.Count > 0) { DrawCarrying(r, y, lastFar); continue; }
+                if (carryCache.Count > 0) DropCarryCache(r);
                 HoseLay lay = EnsureLay(r);
-                if (lay == null) continue;
+                if (lay == null) { lastDraw[r] = "none"; continue; }
                 PoseInfo pi = Info(r);
                 double amt = HoseSettings.plumpAmount;
                 int T = HoseSettings.Tuning().TransitionTicks;
                 List<V2> pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
                 string key = settled ? (pi.Blend >= 1 ? "P" : "F") + r.layKey + "@" + RankOf(r) : null;
+                List<int> joints = lay.Joints;
+                // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
+                if (r.carry == HoseCarryState.Retracting)
+                {
+                    pts = HoseLive.ClipWound(pts, r.wound, TotalOf(r));
+                    joints = HoseLive.JointsWithin(lay.Joints, pts.Count);
+                    key = null;
+                    lastClipDraws++;
+                    lastDraw[r] = "clip";
+                }
+                else lastDraw[r] = "lay";
+                lastDrawnLen[r] = Geo.Length(pts);
                 meshes.TryGetValue(r, out Cached c);
                 float vis = (float)pi.Visible;
                 float e = (float)pi.Eased;
@@ -323,8 +390,9 @@ namespace RimMandrake.MessyConduit.Hose
                 if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow(0.55f + 0.3f * e), 0);
                 if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, hm.Flat(1f - e), 0);
                 if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, hm.Plump(e, tint), 0);
-                DrawEnds(r, hm, lay, pts, vis, y + 0.001f);
+                DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
             }
+            DrawGhosts(y0);
             // a transitioning hose's meshes live one frame
             for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
             oldFrame.Clear();
@@ -389,7 +457,7 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>Both ends of every hose and both halves of every joiner (B22): a cloth binding wrap ~1.4 x the hose
         /// wide and 0.6 cell long covers the hose-to-fitting transition, then the fitting (sized never to read wider than
         /// the wrap) or, at an open free end, a plain dark mouth. The wrap is drawn over the fitting's hose stub.</summary>
-        private void DrawEnds(CompHoseReel r, HoseLookMats hm, HoseLay lay, List<V2> pts, float vis, float y)
+        private void DrawEnds(CompHoseReel r, HoseLookMats hm, IList<int> joints, List<V2> pts, float vis, float y, bool lying)
         {
             int n = pts.Count;
             Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
@@ -406,7 +474,7 @@ namespace RimMandrake.MessyConduit.Hose
             // axis is that run's chord, not the tangent at one sample
             double step = n > 1 ? Geo.Length(pts) / (n - 1) : 1;
             int m = Math.Max(1, (int)Math.Round(0.8 * HoseMath.JoinerHalf(vis) / Math.Max(1e-6, step)));
-            foreach (int j0 in lay.Joints)
+            foreach (int j0 in joints)
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
@@ -415,7 +483,15 @@ namespace RimMandrake.MessyConduit.Hose
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
-            if (RelayOf(r) != null)
+            // S4 (section 7): a lying end beside a pipe or tank (any faction) couples to it, a brass coupling facing the port
+            HoseFreeEnd fe = lying && r.laid && r.carry != HoseCarryState.Retracting ? FreeEndOf(r) : default(HoseFreeEnd);
+            if (fe.Kind == HoseEndKind.Port)
+            {
+                V2 dp = fe.PortSide.X == 0 && fe.PortSide.Z == 0 ? d1 : new V2(fe.PortSide.X, fe.PortSide.Z);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1] + dp * 0.5, dp, vis, y, wrapTint);
+                lastPortCouplings++;
+            }
+            else if (lying && r.carry != HoseCarryState.Retracting && RelayOf(r) != null)
             {
                 // round 6: a hose feeding a relay reel ends in a brass coupling pointing into the relay. Round 7 (owner,
                 // station 42: "pipe does NOT hook up properly to the next reel station"): its face sits ON the drawn reel
@@ -439,6 +515,157 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         public int lastWrapDraws, lastFeedDraws, lastReelEndHidden, lastRelayCouplings;
+
+        // ------------------------------------------------------------------ S4: live drawing (design section 6)
+        /// <summary>State reads for the probe: how each reel's hose was drawn last frame (none / lay / carry / clip), its drawn
+        /// length (cells), the carried hose's hand point, and per-frame counts.</summary>
+        public readonly Dictionary<CompHoseReel, string> lastDraw = new Dictionary<CompHoseReel, string>();
+        public readonly Dictionary<CompHoseReel, double> lastDrawnLen = new Dictionary<CompHoseReel, double>();
+        public readonly Dictionary<CompHoseReel, V2> lastHand = new Dictionary<CompHoseReel, V2>();
+        public int lastCarryDraws, lastClipDraws, lastGhostDraws, lastPortCouplings, carryPrefixBuilds;
+        public bool lastFar;
+
+        private sealed class CarryCache
+        {
+            public string key;
+            public List<V2> prefix;
+            public V2 corner;
+            public double len;
+            public Mesh flat, shadow;
+        }
+
+        private readonly Dictionary<CompHoseReel, CarryCache> carryCache = new Dictionary<CompHoseReel, CarryCache>();
+        private readonly Dictionary<CompHoseReel, KeyValuePair<string, double>> totals = new Dictionary<CompHoseReel, KeyValuePair<string, double>>();
+
+        private void DropCarryCache(CompHoseReel r)
+        {
+            if (!carryCache.TryGetValue(r, out CarryCache c)) return;
+            if (c.flat != null) UnityEngine.Object.Destroy(c.flat);
+            if (c.shadow != null) UnityEngine.Object.Destroy(c.shadow);
+            carryCache.Remove(r);
+        }
+
+        /// <summary>The trail's pulled length while winding (what WindBy measures `wound` against), cached per lay.</summary>
+        private double TotalOf(CompHoseReel r)
+        {
+            string k = r.layKey ?? "";
+            if (totals.TryGetValue(r, out var kv) && kv.Key == k) return kv.Value;
+            double t = r.TrailLength();
+            totals[r] = new KeyValuePair<string, double>(k, t);
+            return t;
+        }
+
+        /// <summary>Where the carrier holds the end: his interpolated draw position a quarter cell ahead (the rope line's
+        /// pawn.DrawPos, read every frame); the trail's last cell when he is gone (the holder check drops it next).</summary>
+        private V2 Hand(Pawn p, V2 fallback)
+        {
+            if (p == null || !p.Spawned || p.Map != map) return fallback;
+            Vector3 d = p.DrawPos;
+            // a stale tween (ticks stepped with no frame between, measured live 2026-10-05: DrawPos stayed at the grab
+            // cell while the pawn walked 15 cells) must not stretch the hose back across the map: hold it at his cell
+            if (Mathf.Abs(d.x - (p.Position.x + 0.5f)) > 1.6f || Mathf.Abs(d.z - (p.Position.z + 0.5f)) > 1.6f) return fallback;
+            IntVec3 f = p.Rotation.FacingCell;
+            return new V2(d.x + 0.25 * f.x, d.z + 0.25 * f.z);
+        }
+
+        /// <summary>Section 6: the carried hose. The PREFIX (mouth -> walked trail pulled taut, corners rounded) is a cached
+        /// mesh rebuilt only when the trail changes (about once per cell walked); the TAIL (round the last trail cell to the
+        /// carrier's hand) is a few samples rebuilt each frame. Flat pose, no rope settle. LOD at far zoom: coarser samples,
+        /// no shadow, no end piece.</summary>
+        private void DrawCarrying(CompHoseReel r, float y, bool far)
+        {
+            HoseLookMats hm = HoseMaterials.For(r);
+            float vis = (float)HoseMath.VisibleWidth(0, HoseSettings.plumpAmount);
+            float wf = (float)HoseMath.MeshWidthFlat(vis);
+            double step = far ? HoseLive.SampleFar : HoseLive.SampleNear;
+            string key = r.TrailKey() + (far ? "F" : "N") + "@" + RankOf(r) + "|" + HoseSettings.ShapeFingerprint();
+            carryCache.TryGetValue(r, out CarryCache cc);
+            if (cc == null || cc.key != key)
+            {
+                DropCarryCache(r);
+                var t = new HoseTrail(Start(r), double.PositiveInfinity);
+                t.Cells.AddRange(r.TrailCells());
+                List<V2> pulled = t.Pulled(World());
+                cc = new CarryCache { key = key };
+                cc.prefix = HoseLive.Prefix(pulled, HoseSettings.minBendRadius, step, out cc.corner);
+                cc.len = Geo.Length(cc.prefix);
+                if (cc.prefix.Count >= 2)
+                {
+                    cc.flat = Ribbon(cc.prefix, wf, y, 0.37);
+                    if (!far) cc.shadow = Ribbon(Shifted(cc.prefix), vis * 1.15f, y - 0.0004f, 0.11);
+                }
+                carryCache[r] = cc;
+                carryPrefixBuilds++;
+            }
+            V2 hand = Hand(r.carrier, cc.corner);
+            List<V2> tail = HoseLive.Tail(cc.prefix[cc.prefix.Count - 1], cc.corner, hand, step);
+            Mesh tf = Ribbon(tail, wf, y, HoseLive.ContinueS0(0.37, cc.len, wf));
+            Mesh ts = far ? null : Ribbon(Shifted(tail), vis * 1.15f, y - 0.0004f, 0.11);
+            frameMeshes.Add(tf);
+            frameMeshes.Add(ts);
+            Material flat = hm.Flat(1f), sh = HoseMaterials.Shadow(0.55f);
+            if (!far)
+            {
+                if (cc.shadow != null) Graphics.DrawMesh(cc.shadow, Matrix4x4.identity, sh, 0);
+                if (ts != null) Graphics.DrawMesh(ts, Matrix4x4.identity, sh, 0);
+            }
+            if (flat != null)
+            {
+                if (cc.flat != null) Graphics.DrawMesh(cc.flat, Matrix4x4.identity, flat, 0);
+                if (tf != null) Graphics.DrawMesh(tf, Matrix4x4.identity, flat, 0);
+            }
+            var all = new List<V2>(cc.prefix.Count + tail.Count);
+            all.AddRange(cc.prefix);
+            for (int k = 1; k < tail.Count; k++) all.Add(tail[k]);
+            if (!far && all.Count >= 2) DrawEnds(r, hm, NoJoints, all, vis, y + 0.001f, false);
+            lastCarryDraws++;
+            lastDraw[r] = "carry";
+            lastDrawnLen[r] = Geo.Length(all);
+            lastHand[r] = hand;
+        }
+
+        private static readonly List<int> NoJoints = new List<int>();
+
+        private static List<V2> Shifted(List<V2> pts)
+        {
+            var off = new V2(0.03, -0.03);
+            var o = new List<V2>(pts.Count);
+            foreach (V2 p in pts) o.Add(p + off);
+            return o;
+        }
+
+        // A cut hose (HOSE_BLOCKED_REROUTE_RETRACT_1) winding back onto its reel: drawn state only, the reel is Stored.
+        private sealed class Ghost
+        {
+            public CompHoseReel reel;
+            public List<V2> pts;
+            public int start;
+            public double len;
+        }
+
+        private readonly List<Ghost> ghosts = new List<Ghost>();
+        public int GhostCount => ghosts.Count;
+
+        private void DrawGhosts(float y0)
+        {
+            if (ghosts.Count == 0) return;
+            int now = Find.TickManager.TicksGame;
+            float vis = (float)HoseMath.VisibleWidth(0, HoseSettings.plumpAmount);
+            for (int i = ghosts.Count - 1; i >= 0; i--)
+            {
+                Ghost g = ghosts[i];
+                // done, or the reel's hose went out again (a new order): the ghost is gone
+                if (HoseLive.AutoDone(now - g.start, g.len) || !g.reel.parent.Spawned || g.reel.HoseOut) { ghosts.RemoveAt(i); continue; }
+                List<V2> pts = HoseLive.ClipWound(g.pts, HoseLive.AutoWound(now - g.start), g.len);
+                float y = y0 + HoseMath.CrossLift(RankOf(g.reel));
+                HoseLookMats hm = HoseMaterials.For(g.reel);
+                Mesh m = Ribbon(pts, (float)HoseMath.MeshWidthFlat(vis), y, 0.37);
+                frameMeshes.Add(m);
+                if (m != null && hm.Flat(1f) != null) Graphics.DrawMesh(m, Matrix4x4.identity, hm.Flat(1f), 0);
+                if (!lastFar && pts.Count >= 2) DrawEnds(g.reel, hm, NoJoints, pts, vis, y + 0.001f, false);
+                lastGhostDraws++;
+            }
+        }
 
         /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
         /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
@@ -468,7 +695,7 @@ namespace RimMandrake.MessyConduit.Hose
         {
             Graphic g = r.parent.Graphic;
             if (!(g is Graphic_HoseReel gr)) return "stored (graphic class is " + (g?.GetType().Name ?? "null") + ", not Graphic_HoseReel)";
-            if (!r.laid) return "stored";
+            if (r.carry == HoseCarryState.Stored && !r.laid) return "stored";
             return gr.HasDeployed && gr.MatAt(Rot4.North, r.parent) != gr.MatSingle ? "deployed" : "stored (stand-in: Reel_Deployed art missing)";
         }
 

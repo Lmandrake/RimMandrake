@@ -97,6 +97,8 @@
     <Compile Include="Hose\Graphic_HoseReel.cs" />
     <Compile Include="Hose\HoseStyles.cs" />
     <Compile Include="Hose\HoseCarry.cs" />
+    <Compile Include="Hose\HoseLive.cs" />
+    <Compile Include="Hose\HoseEnds.cs" />
     <Compile Include="Hose\Jobs\JobDriver_CarryHoseEnd.cs" />
     <Compile Include="Hose\Jobs\JobDriver_RetractHose.cs" />
     <Compile Include="Hose\Jobs\WorkGiver_HoseOrders.cs" />
