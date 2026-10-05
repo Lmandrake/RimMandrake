@@ -20,7 +20,7 @@ import scenes as S  # noqa: E402
 DEF_ROLE = {v["def"]: k for k, v in S.DEVICE_DEFS.items()}
 CONDUITS = ("PowerConduit", "WaterproofConduit")
 REEL = "RM_HoseReel"
-WIRE_VISIBLE = 0.11 * 25.0 / 32.0          # HoseMath.WireVisibleWidth
+WIRE_VISIBLE = 0.08 * 25.0 / 32.0          # HoseMath.WireVisibleWidth (0.08 strand since cords round 5)
 FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath / HoseSettings defaults
 REEL_W = REEL_H = 2                         # RM_HoseReel is 2x2 (round 3), never rotated: footprint x..x+1, z..z+1 from Position
 ROUTE_SLACK = 1.08                          # HoseMath.CheckInstall: (hop + path) * 1.08 must fit the hose length

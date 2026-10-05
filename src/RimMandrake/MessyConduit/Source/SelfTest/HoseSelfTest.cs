@@ -48,7 +48,8 @@ namespace RimMandrake.MessyConduit.SelfTest
             double wire = HoseMath.WireVisibleWidth;
             double f = HoseMath.VisibleWidth(0, 1), p = HoseMath.VisibleWidth(1, 1);
             C(wire > 0.05 && wire < 0.12, "wire visible width is the strand's band (" + wire.ToString("0.000") + ")");
-            C(f >= 4 * wire && f <= 5.5 * wire, "flat hose is 4-5x a wire (" + (f / wire).ToString("0.00") + "x)");
+            // the hose kept its width when the cord strand thinned 0.11 -> 0.08 (cords round 5): 4.4x the old wire, ~6x today's
+            C(f >= 4 * wire && f <= 7 * wire, "flat hose is 4-7x a wire (" + (f / wire).ToString("0.00") + "x)");
             C(p > f * 1.1, "plump hose is visibly swollen over flat (" + p.ToString("0.000") + " vs " + f.ToString("0.000") + ")");
             C(Math.Abs(HoseMath.VisibleWidth(0.5, 1) - (f + p) / 2) < 1e-9, "visible width blends linearly in the eased blend");
             C(Math.Abs(HoseMath.VisibleWidth(1, 0) - f) < 1e-9, "plump amount 0 = no swelling");

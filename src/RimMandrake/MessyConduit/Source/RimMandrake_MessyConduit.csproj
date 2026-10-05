@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Hose\HoseMath.cs" />
     <Compile Include="Hose\HoseRelay.cs" />
+    <Compile Include="Hose\ReelIntakeGeometry.cs" />
     <Compile Include="Hose\HoseSettings.cs" />
     <Compile Include="Hose\CompHoseReel.cs" />
     <Compile Include="Hose\HoseFlow.cs" />

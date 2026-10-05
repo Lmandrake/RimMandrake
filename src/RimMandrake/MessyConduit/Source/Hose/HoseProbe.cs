@@ -175,6 +175,7 @@ namespace RimMandrake.MessyConduit.Hose
                       .Append(D(lay.Flat.Max(q => q.X))).Append(',').Append(D(lay.Flat.Max(q => q.Z))).Append(']')
                       .Append(",\"centreCells\":[").Append(string.Join(",", lay.Centre.Select(q => "[" + q.Floor.X + "," + q.Floor.Z + "]").Distinct())).Append(']')
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))
+                      .Append(",\"relayEnd\":").Append(RelayEnd(comp, r, lay))
                       .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)));
                 }
                 sb.Append('}');
@@ -188,6 +189,23 @@ namespace RimMandrake.MessyConduit.Hose
         {
             V2 e = comp.EndPoint(r, out _);
             return "[" + D(e.X) + "," + D(e.Z) + "]";
+        }
+
+        /// <summary>Round 7 (station 42): what is DRAWN at a relay end -- the lay's last point, the coupling's axis, the
+        /// signed distance from the relay's edge on the intake side (+ = outside) and whether it lies within that edge,
+        /// and the angle (deg) between the last 0.5 cell of the drawn hose and the axis.</summary>
+        private static string RelayEnd(RM_MapComponent_Hoses comp, CompHoseReel r, HoseLay lay)
+        {
+            V2 e = comp.EndPoint(r, out CompHoseReel relay, out V2? inward);
+            if (relay == null || !inward.HasValue || lay == null) return "null";
+            V2 last = lay.Flat[lay.Flat.Count - 1];
+            double off = HoseRelay.EdgeOffset(relay.Rect, inward.Value, last, out bool within);
+            V2 tail = (last - HoseMath.PointBack(lay.Flat, 0.5)).Norm();
+            double ang = Math.Acos(Math.Max(-1, Math.Min(1, tail.X * inward.Value.X + tail.Z * inward.Value.Z))) * 180 / Math.PI;
+            return "{\"drawnEnd\":[" + D(last.X) + "," + D(last.Z) + "],\"endPoint\":[" + D(e.X) + "," + D(e.Z) + "]" +
+                   ",\"inward\":[" + D(inward.Value.X) + "," + D(inward.Value.Z) + "],\"edgeOffset\":" + D(off) +
+                   ",\"withinEdge\":" + B(within) + ",\"tailAngleDeg\":" + D(ang) + ",\"tolerance\":" + D(HoseRelay.EndTolerance) +
+                   ",\"relayLook\":" + S(HoseMaterials.LookOf(relay)) + ",\"relayArt\":" + S(relay.laid ? "deployed" : "stored") + "}";
         }
 
         /// <summary>The reel art printing now: the deployed (laid, empty drum) path when laid and present, else the stored path.</summary>

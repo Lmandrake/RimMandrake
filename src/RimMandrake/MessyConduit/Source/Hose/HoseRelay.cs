@@ -62,6 +62,62 @@ namespace RimMandrake.MessyConduit.Hose
             return intake.Centre + new V2(d.X * 0.5, d.Z * 0.5);
         }
 
+        /// <summary>Round 7 (owner, station 42: "pipe does NOT hook up properly to the next reel station"): where the hose
+        /// that ends on <paramref name="intake"/> is DRAWN to, and the direction its last stretch and end coupling point
+        /// (into the relay). On a 2x2 reel: from the west, the art's one brass inlet (the coupling's face meets the inlet's
+        /// face, both west cells); from the east, north or south, the place along that cell's half of the edge where the
+        /// drawn reel comes closest to the edge, the coupling's face on the drawn outline (ReelIntakeGeometry, measured
+        /// per look and per art: <paramref name="deployed"/> = the relay has laid its own hose). Always within
+        /// <see cref="EndTolerance"/> of the footprint edge. Any other footprint: the edge midpoint (IntakePoint).</summary>
+        public static V2 DrawnEnd(HoseReelRect relay, Cell intake, string look, bool deployed, out V2 inward)
+        {
+            Cell d = SideInto(relay, intake);
+            inward = new V2(d.X, d.Z);
+            if (relay.W != 2 || relay.H != 2 || (d.X == 0 && d.Z == 0)) return IntakePoint(relay, intake);
+            V2 c = relay.Centre;
+            double perp, depth;
+            if (d.X == 1)       // intake on the WEST side
+            {
+                ReelIntakeGeometry.WestInlet(look, deployed, out perp, out depth);
+                return new V2(relay.X0 - depth, c.Z + perp);
+            }
+            if (d.X == -1)      // EAST
+            {
+                ReelIntakeGeometry.Edge(look, deployed, 0, intake.Z - relay.Z0, out perp, out depth);
+                return new V2(relay.X0 + relay.W + depth, c.Z + perp);
+            }
+            if (d.Z == -1)      // NORTH
+            {
+                ReelIntakeGeometry.Edge(look, deployed, 1, intake.X - relay.X0, out perp, out depth);
+                return new V2(c.X + perp, relay.Z0 + relay.H + depth);
+            }
+            ReelIntakeGeometry.Edge(look, deployed, 2, intake.X - relay.X0, out perp, out depth);   // SOUTH
+            return new V2(c.X + perp, relay.Z0 - depth);
+        }
+
+        /// <summary>How far a drawn relay end may sit from the footprint edge (cells): the reel art overhangs or falls short
+        /// of its 2x2 footprint by up to ~0.3 cell, and the hose ends on the drawing, not in the air beside it.</summary>
+        public const double EndTolerance = 0.35;
+
+        /// <summary>The straight run the hose makes into its end coupling (cells), so the coupling's axis is the intake's.</summary>
+        public const double EndStraight = 0.6;
+
+        /// <summary>Signed distance of <paramref name="p"/> from the relay's edge on the side the hose comes in from (+ =
+        /// outside), and whether p lies within that edge's span (between its corners).</summary>
+        public static double EdgeOffset(HoseReelRect relay, V2 inward, V2 p, out bool withinSpan)
+        {
+            V2 o = new V2(-inward.X, -inward.Z);
+            if (o.X != 0)
+            {
+                double edge = o.X > 0 ? relay.X0 + relay.W : relay.X0;
+                withinSpan = p.Z > relay.Z0 && p.Z < relay.Z0 + relay.H;
+                return (p.X - edge) * o.X;
+            }
+            double ez = o.Z > 0 ? relay.Z0 + relay.H : relay.Z0;
+            withinSpan = p.X > relay.X0 && p.X < relay.X0 + relay.W;
+            return (p.Z - ez) * o.Z;
+        }
+
         /// <summary>Index of the relay a hose whose free end is on <paramref name="far"/> feeds, or -1. self is skipped.</summary>
         public static int RelayOf(Cell far, IList<HoseReelRect> reels, int self)
         {
