@@ -103,7 +103,7 @@ def test_layout():
     broken = [dict(L[0], rect=(1, 1, 8, 3), buffered=S._buffered((1, 1, 8, 3)))] + L[1:]
     check("validate_layout catches a limited plot at the edge", S.validate_layout(broken, (200, 200)) != [])
     m = S.expected_cells(S.plot_by_id(L, "R"), (200, 200))
-    check("manifest marks the rain twin roofed", sum(1 for v in m.values() if v["roof"] != "none") == 1)
+    check("manifest marks no cell roofed (the rain twin is roofed by its bar, not the golden)", sum(1 for v in m.values() if v["roof"] != "none") == 0)
     check("parse_ops expands runs", S.parse_ops("Soil:1,2,3,1;WaterDeep:5,5,1,2") ==
           {(1, 2): "Soil", (2, 2): "Soil", (3, 2): "Soil", (5, 5): "WaterDeep", (5, 6): "WaterDeep"})
 

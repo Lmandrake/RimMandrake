@@ -508,7 +508,7 @@ namespace JawaBench.BridgeTools
 
                 bool fillSet = false;
                 if (setFill >= 0)
-                    fillSet = (bool)type.GetMethod("TrySetDriverFill").Invoke(comp, new object[] { c, setFill });
+                    fillSet = (bool)type.GetMethod("TrySetDriverFill").Invoke(comp, new object[] { c, setFill, null });
                 MethodInfo fillInMethod = type.GetMethod("FillIn", new[] { typeof(IntVec3) });
                 if (fillInLevels > 0 && fillInMethod == null) return Fail("RM_MapComponent_Excavation.FillIn(IntVec3) not found");
                 for (int i = 0; i < fillInLevels; i++)

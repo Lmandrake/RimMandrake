@@ -153,7 +153,10 @@ PLOTS = [
                                           "pit_occupied_distinguishable", "ladder_state_legible"], "bodies": []},
     {"id": "H", "w": 10, "h": 5, "bars": ["pit_depth_ladder_legible"], "bodies": []},
     {"id": "R", "w": 3, "h": 1, "bars": ["toggle:rainFillsExcavationsEnabled"], "bodies": [],
-     "roofed": [(2, 0)]},                       # the deliberate roofed rain twin
+     # The rain twin is NOT roofed in the golden: MEASURED 2026-10-05 a lone roofed cell collapses within ~250
+     # ticks (RoofConstructed AND RoofRockThick, even with a steel wall adjacent), leaving rubble in the plot.
+     # The rain bar roofs its own cell on its working copy, right before the pulse it judges.
+     "roofed": []},
     {"id": "K", "w": 32, "h": 2, "bars": ["toggle:sourceBudgetEnabled"],
      "bodies": [{"name": "K_pond", "terrain": "WaterShallow", "rect": (0, 0, 2, 2), "limitless": False}]},
     {"id": "C", "w": 20, "h": 12, "edge": "west",
@@ -232,6 +235,9 @@ def _place(p, rect):
         "deferred": [dict(d, rect=(x + d["rect"][0], z + d["rect"][1], d["rect"][2], d["rect"][3]))
                      for d in p.get("deferred", ())],
         "roofed": [(x + dx, z + dz) for dx, dz in p.get("roofed", ())],
+        # a roofed cell with no roof holder within range COLLAPSES on the first ticks, thick rock included
+        # (MEASURED 2026-10-05: CollapsedRocks + Filth_RubbleRock): one steel wall in the buffer, north of it, holds it
+        "supports": [(x + dx, z + dz - 1) for dx, dz in p.get("roofed", ())],
     }
 
 
@@ -270,7 +276,8 @@ def plots_from_json(plots):
     out = []
     for p in plots:
         q = dict(p, rect=tuple(p["rect"]), buffered=tuple(p["buffered"]),
-                 roofed=[tuple(c) for c in p.get("roofed", ())])
+                 roofed=[tuple(c) for c in p.get("roofed", ())],
+                 supports=[tuple(c) for c in p.get("supports", ())])
         q["bodies"] = [dict(b, rect=tuple(b["rect"])) for b in p.get("bodies", ())]
         q["deferred"] = [dict(d, rect=tuple(d["rect"])) for d in p.get("deferred", ())]
         out.append(q)
@@ -293,6 +300,12 @@ def rect_str(r):
     return "%d,%d,%d,%d" % tuple(r)
 
 
+# The rain twin's roof. MEASURED 2026-10-05: a lone RoofConstructed cell has no support and COLLAPSES on the first
+# ticks (roof=none, Filth_RubbleBuilding left behind); a thick rock roof never collapses.
+TWIN_ROOF = "RoofConstructed"
+SUPPORT_THING = "Wall"
+
+
 def expected_cells(plot, size):
     """The manifest model for one plot: {(x,z): {base, temp, roof, D, F, things}} over
     footprint + buffer (clipped to the map). Bodies are their terrain, the rain twin is
@@ -304,7 +317,10 @@ def expected_cells(plot, size):
         for c in cells(b["rect"]):
             want[c]["base"] = b["terrain"]
     for c in plot["roofed"]:
-        want[c]["roof"] = "RoofConstructed"
+        want[c]["roof"] = TWIN_ROOF
+    for c in plot.get("supports", ()):
+        if c in want:
+            want[c]["things"] = [SUPPORT_THING]
     return want
 
 

@@ -75,7 +75,10 @@ class FakeFlowWorksGame(MockGame):
             for c, want in S.expected_cells(p, self.size).items():
                 self.terrain[c] = want["base"]
                 self.temp.pop(c, None)
-                self.things.pop(c, None)
+                if want["things"]:
+                    self.things[c] = list(want["things"])      # the roof-support wall
+                else:
+                    self.things.pop(c, None)
                 if want["roof"] == "none":
                     self.roof.pop(c, None)
                 else:
