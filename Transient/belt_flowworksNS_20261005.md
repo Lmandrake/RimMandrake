@@ -10,3 +10,5 @@
 - [live] deployed FlowWorks + JawaBench(81b853a2f201), tier flowworks applied (10 mods). launching
 - [live] map up 250x250 TemperateForest; all new tools registered; running prep_site
 - [live] 14:5x prep_site rc=0: golden NS_FlowWorks_TrialSite_v1 saved. Fixes: destroy_bulk for pawns (destroy_batch skips pawns), WeatherController lock excluded, weather dict, roof 'None', VoidMonolith pre-check, step 60 ticks for temp cache, ABSENT settings fields (spec newer than loaded DLL)
+- [live] preflight live CLEAN 17 rows (fixes: tier list via resolve_tier incl zoom mod, body cells exempt D/F, autosave>=14d, jawa/prefs autosave=14 set -- RESTORE to 0.25 at release). next: dirty proof
+- [live] dirty proof: rain+stray steel+stray pawn -> P-E1,P-S1,P-E4 refused (cold snap not injected: game_condition param is durationTicks). also plants regrow in plots after ticks (K Brambles, S Grass) -> bars must clear via _prep_plot

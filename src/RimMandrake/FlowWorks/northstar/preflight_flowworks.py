@@ -127,12 +127,12 @@ def active_ids(path):
 def expected_tier_list():
     import modset_builder as M
     installed = M.scan()
-    t = M.TIERS[S.TIER]
-    want = list(t["want"]) + [p for p in installed if p.startswith("ludeon.rimworld")] + [M.HARMONY]
-    pids, missing = M.close_over(want, installed)
+    ordered, missing, refusals = M.resolve_tier(S.TIER, installed)     # the exact list --apply writes (incl. the zoom mod)
     if missing:
         raise RuntimeError("tier %s incomplete: %s not installed" % (S.TIER, missing))
-    return M.order(pids, installed)
+    if refusals:
+        raise RuntimeError("tier %s refused: %s" % (S.TIER, refusals))
+    return ordered
 
 
 # ============================================================= offline rows
@@ -479,7 +479,10 @@ def p_s1(s, P, sc):
             bad.append("plot %s: %s" % (plot["id"], msg))
         # D/F: every FOOTPRINT cell, batched (no rect read exists yet, plan 6.3); the buffer is
         # covered by P-S3's map-wide excavatedCellCount == 0 (F <= D, so D=0 implies F=0).
-        pts = S.cells(plot["rect"])
+        # MEASURED 2026-10-05: an authored water body's own cells read D=4 F=4 (the engine's reading of a
+        # painted reservoir, not an excavation): they are P-S2's business (id, cells, stock), not a dirt signal.
+        body_cells = {c for b in plot["bodies"] for c in S.cells(b["rect"])}
+        pts = [c for c in S.cells(plot["rect"]) if c not in body_cells]
         for (x, z), r in zip(pts, s.call_many([("jawa/flowworks_excavation_report", {"x": x, "z": z})
                                                for x, z in pts])):
             if not isinstance(r, dict) or r.get("success") is False:
@@ -574,6 +577,9 @@ def p_e3(s, P, sc, fix=False):
     return row("P-E3", worst, "; ".join("%s %s (%s)" % (p.name, p.status, p.evidence) for p in parts))
 
 
+AUTOSAVE_OFF_DAYS = 14.0
+
+
 def p_e4(s, P, sc):
     pw = _ok(s.call("jawa/list_pawns", limit=500), "list_pawns").get("pawns") or []
     bad = ["map pawns present: %s" % [p.get("id") for p in pw][:5]] if pw else []
@@ -582,8 +588,9 @@ def p_e4(s, P, sc):
     if a is None:
         return row("P-E4", FAIL if bad else UNMEASURED, "; ".join(bad + ["autosave interval unreadable "
                                                                          "(Prefs.xml autosaveIntervalDays)"]))
-    if float(a) > 0:
-        bad.append("autosave every %s day(s) -- the working map must never be saved" % a)
+    if float(a) < AUTOSAVE_OFF_DAYS:      # vanilla offers 0.05..14 days and jawa/prefs refuses 0: 14 is as off as it gets
+        bad.append("autosave every %s day(s) -- the working map must never be saved (want >= %s; jawa/prefs autosaveIntervalDays=14)"
+                   % (a, AUTOSAVE_OFF_DAYS))
     return row("P-E4", FAIL if bad else PASS, "; ".join(bad) or "roster empty; autosave off")
 
 

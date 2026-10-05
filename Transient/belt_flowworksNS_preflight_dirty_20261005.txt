@@ -1,0 +1,21 @@
+PASS       P-L1 10 mods == tier, in order (disk = this load)
+PASS       P-L2 213 log lines scanned, no FlowWorks error
+PASS       P-B1 498 tools; bridge held by FOUNDRY
+PASS       P-B2 map 0 250x250 tile 25126 == sidecar
+PASS       P-B3 all 4 FlowWorks tools registered
+PASS       P-B4 58 fields at shipped defaults
+FAIL       P-S1 plot A: 16,16 things=['Steel']; plot A: 20,20 things=['Human']; plot K: 87,54 things=['Plant_Brambles']; plot S: 236,88 things=['Plant_Grass']
+PASS       P-S2 4 bodies match
+PASS       P-S3 no excavation, no flow totals, no flood Thing
+FAIL       P-E1 weather Rain (rain fills excavations)
+PASS       P-E2 57 check cells 10..45 C; Summer
+PASS       P-E3 paused PASS (ticksGame frozen at 900561 over two reads); no_modal PASS (open blocking windows: none); dev_god_mode PASS (dev on); step_rate PASS (meanTickTime 0.0 ms)
+FAIL       P-E4 map pawns present: ['Human37110']
+PASS       P-E6 loaded RimMandrakeFlowWorks.dll mvid 8c610be7-5445-4169-a0bb-b913546dca24 == deployed; list ordered
+PASS       P-E7 nextPulseTick 900752; step(250) exact, paused
+PASS       P-E8 render profile == sidecar
+PASS       P-E5 mean 67.2 var 46.9
+REFUSED P-S1 (every plot+buffer cell == sidecar manifest (top, temp, roof, things; D/F sampled)): plot A: 16,16 things=['Steel']; plot A: 20,20 things=['Human']; plot K: 87,54 things=['Plant_Brambles']; plot S: 236,88 things=['Plant_Grass']
+REFUSED P-E1 (weather Clear, no GameCondition on the map, incident queue empty): weather Rain (rain fills excavations)
+REFUSED P-E4 (map pawn roster empty; autosave off): map pawns present: ['Human37110']
+DIRTY SITE: 17 rows, 3 FAIL, 0 UNMEASURED
