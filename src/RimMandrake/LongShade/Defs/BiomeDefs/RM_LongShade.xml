@@ -48,10 +48,11 @@
         the whale's commensal, unaffected by this sitting) plus RSW_Dewback.
       - wildPlants: RUT_Vorrel -> RM_Vorrel, MayRequire dropped (moved into this
         mod's own Defs per §7 Q8 — see RM_Vorrel.xml's own header). RM_Leachmoss
-        and RM_Venomvine stay inline (non-Star-Wars, this mod's own). 5 of the
+        and RM_Venomvine stay inline (non-Star-Wars, this mod's own). 4 of the
         6 RSW_-tier rows found in violation of SW_FAUNA_NEVER_IN_RM_TIER_1
         (audited 2026-09-25) — RSW_SurraGrass, RSW_Plant_Chakroot_Wild,
-        RSW_Plant_HubbaGourd_Wild, RSW_VellaraBloom, RSW_DommoTree — ride
+        RSW_Plant_HubbaGourd_Wild, RSW_VellaraBloom (RSW_DommoTree was cut
+        2026-10-05) — ride
         UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd,
         same shape as the wildAnimals rows above.
         🔴 LONGSHADE_RULED_CONTENT_1 Q2/Q6: the 6th, RSW_Ultracactus, LEFT
@@ -231,7 +232,7 @@
       <RM_Maidenbloom>0.15</RM_Maidenbloom>
       <RM_Pavecrust>0.3</RM_Pavecrust>
       <RM_Shadespire>0.05</RM_Shadespire>
-      <!-- The 5 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
+      <!-- The 4 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
     </wildPlants>
