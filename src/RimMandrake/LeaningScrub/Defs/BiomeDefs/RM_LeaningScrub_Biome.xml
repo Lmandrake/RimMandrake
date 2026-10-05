@@ -178,6 +178,8 @@
       <RM_Vissler>0.2</RM_Vissler>
       <RM_Dustflutter>0.5</RM_Dustflutter>
       <RM_Shirrel>0.25</RM_Shirrel>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet: "Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level."): the truffle mole, moved here from the Long Shade; def stays in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_TruffleMole MayRequire="mandrake.rm.biomes">0.5</RM_TruffleMole>
       <RM_Crustweevil>0.6</RM_Crustweevil>
       <RM_Rollbug>0.4</RM_Rollbug>
       <RM_Tikkit>0.5</RM_Tikkit>
