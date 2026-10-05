@@ -1,6 +1,6 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-05T09:01:13-0700",
+ "built": "2026-10-05T09:14:04-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -45,25 +45,28 @@
      "north": "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3",
      "south": "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434"
     },
-    "C": {
-     "east": "999593228fb1299dc2360f59332ecb310bed66a6ccd06cc0f0ddaafc99bab433"
+    "D": {
+     "east": "999593228fb1299dc2360f59332ecb310bed66a6ccd06cc0f0ddaafc99bab433",
+     "north": "0c72dd698cac0623ac06cd5b6fe0c6f7f899cb4263130c91aaf3541ae9cb8463",
+     "south": "7f45e047d517bb9448b03b58a40bd3b73038c1185b6f46240c927388db2aed18"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
     "B": "_byname",
-    "C": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render crags_gruzz",
-    "C": "render abyss_gukkath_v1"
+    "D": "render abyss_gukkath_v1"
    },
    "res": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "darkvandal"
   },
@@ -183,20 +186,27 @@
     "B": {
      "north": "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
      "south": "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a"
+    },
+    "C": {
+     "east": "3bdeb176e5688cbcb24dbdeffb90b0f5c379fc8b2739e1bc0fca9df4021e01e5",
+     "north": "30e6a0a52db2fef67466185bfa08db238fd5c8d7fc554457c0b1634f85bf44b0"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render crags_kessik"
+    "B": "render crags_kessik",
+    "C": "render abyss_kittrik_v1"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "murkling"
   },
@@ -334,28 +344,31 @@
      "north": "d9b9438b9f4ff2c98b232b9e0cad41378cdb709e3aeee12752b32fbaf26d057c",
      "south": "086b23f3faa21e0f4b5e8568730fa0b7b26ec953aff2654f45c93c7165d26cf6"
     },
-    "D": {
-     "east": "e0153e878d9327f41dfeb9f28d46d0137f7c664bdeef0a208a6061d10e637ddd"
+    "E": {
+     "east": "e0153e878d9327f41dfeb9f28d46d0137f7c664bdeef0a208a6061d10e637ddd",
+     "north": "dc2b20ebd34bc647b0ded0c69ddaad956ad87c20c92f78f8b9ac45f19e188aef",
+     "south": "c8bf9ab33e1dfcb7c53d960557315ca71e13a73300b1424b26ae227514a67f99"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
     "B": "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy",
     "C": "_byname",
-    "D": "_byname"
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
     "C": "render crags_vrakk",
-    "D": "render abyss_grothik_v1"
+    "E": "render abyss_grothik_v1"
    },
    "res": "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "nightling"
   },
@@ -385,6 +398,9 @@
      "east": "bd18c6dab66fbd9d30d8144e8bec98576487d1e7d45705491093c263cdc3931b",
      "north": "cf746bc813fd2c711e454b7e27ab9e3f69bcefc5a0653ccf221d1ad2fdb1751f",
      "south": "e71cb54239407c2cf56ea07e2c0861f5c13a2775391c4af02ec2c9d045d1577e"
+    },
+    "F": {
+     "east": "a589c80fe2eb5a0bbab99ccc400a12dca9a828907f4567739c8afc9a34ce2932"
     }
    },
    "graphic_of": {
@@ -392,14 +408,16 @@
     "B": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
     "C": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
     "D": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby",
-    "E": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female"
+    "E": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 ShadowChargerArtOverride",
     "B": "history ShadowChargerArtOverride 2026-09-13",
     "C": "donor original \u2014 Alpha Animals",
     "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "E": "IN GAME \u2014 Alpha Animals",
+    "F": "render abyss_kraddun_v1"
    },
    "res": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
    "reserved": [
@@ -407,7 +425,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "shadowcharger"
   },
@@ -964,5 +983,5 @@
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "f144d30d72f57831"
+ "snapshotId": "304372e33c3b90f7"
 }
