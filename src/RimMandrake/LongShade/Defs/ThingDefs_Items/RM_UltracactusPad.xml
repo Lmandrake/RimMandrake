@@ -26,8 +26,8 @@
 
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_UltracactusPad</defName>
-    <label>ultracactus pad</label>
-    <description>A whole pad cut from an ultracactus, still in its waxy dust-coated rind. Caravans passing through the Long Shade forage these straight off open ground nothing else can use — pale, faintly sweet flesh under a tough skin built to hold what little water it has.</description>
+    <label>cut ultriss pad</label>
+    <description>A whole pad cut from an ultriss plant, still in its waxy dust-coated rind. Caravans passing through the Long Shade forage these straight off open ground nothing else can use — pale, faintly sweet flesh under a tough skin built to hold what little water it has.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/Plant/RM_UltracactusPad</texPath>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_Ultracactus.xml                        LONGSHADE_RULED_CONTENT_1, Q2
+  RM_UltrissPad.xml                        LONGSHADE_RULED_CONTENT_1, Q2
 
   Moved from src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_Ultracactus.xml,
-  renamed RSW_Ultracactus -> RM_Ultracactus / RSW_RawUltracactus ->
+  renamed RSW_Ultracactus -> RM_UltrissPad / RSW_RawUltracactus ->
   RM_RawUltracactus. Q2 ruling (owner, typed): "The ultracactus is not canon,
   I made it." — so it anchors the free tier instead of staying Utinni. Pure
   XML, no C#, no cross-mod references of any kind in the original; the move
@@ -12,17 +12,22 @@
   Art: rswultracactus_v1 and rswrawultracactus_v1 both landed and PASSED
   (infrastructure/artpipe/done/, 2026-09-25) after the "no render found"
   state this file's header used to describe — real renders copied in at
-  Textures/Things/Plant/RM_Ultracactus/RM_Ultracactus_a.png (Graphic_Random
+  Textures/Things/Plant/RM_UltrissPad/RM_Ultracactus_a.png (Graphic_Random
   reads texPath as a folder, same convention RM_Leachmoss's own header
   documents) and Textures/Things/Item/Plant/RM_RawUltracactus.png.
 
 -->
 <Defs>
 
-  <!-- ============== Ultracactus — the open ground's buried canopy ============== -->
+  <!-- ============== Ultriss pad (was "ultracactus") — the open ground's buried canopy ==============
+       LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "This is supposed to be
+       in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a
+       hint of green. Rename this to Ultriss Pad. RimMandrake tier." defName RM_Ultracactus -> RM_UltrissPad,
+       label renamed; wild row moved to RM_Stillsand; RSW_Ultracactus deleted. texPath unchanged (the
+       semi-transparent redo is an art job). -->
   <ThingDef ParentName="PlantBase">
-    <defName>RM_Ultracactus</defName>
-    <label>ultracactus</label>
+    <defName>RM_UltrissPad</defName>
+    <label>ultriss pad</label>
     <description>A broad, flat pad of pale green flesh that keeps almost all of itself under the sand, presenting only a thin rind flush with the ground to take the raking light. Walk across a stand of them and you would register nothing — there is no canopy to see, no shade to stand in, nothing standing proud enough to cast one. It holds the open ground by tolerance rather than strength, ringing every shaded patch just beyond the reach of the thornier things that would otherwise crowd it out, and thinning into the bare pavement past that.</description>
     <statBases>
       <MaxHitPoints>70</MaxHitPoints>
@@ -70,8 +75,8 @@
   <!-- ============== Raw ultracactus — the harvested item ============== -->
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_RawUltracactus</defName>
-    <label>ultracactus pulp</label>
-    <description>Pale, faintly sweet pulp cut from an ultracactus pad. It bruises fast once out of the ground, but nothing else grows this reliably on open sand nobody else can use.</description>
+    <label>ultriss pulp</label>
+    <description>Pale, faintly sweet pulp cut from an ultriss pad. It bruises fast once out of the ground, but nothing else grows this reliably on open sand nobody else can use.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
       <texPath>Things/Item/Plant/RM_RawUltracactus</texPath>

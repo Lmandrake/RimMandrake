@@ -198,7 +198,7 @@
         <growthBoost>0.25</growthBoost>
         <maxPlantsBoosted>12</maxPlantsBoosted>
         <seedPlants>
-          <li>RSW_Ultracactus</li>
+          <li MayRequire="mandrake.rm.biomes">RM_UltrissPad</li>  <!-- was RSW_Ultracactus, retired 2026-10-05 onto the RM_ plant (owner: "Rename this to Ultriss Pad. RimMandrake tier.") -->
         </seedPlants>
         <seedPlantCount>1~3</seedPlantCount>
         <seedPlantGrowth>0.05</seedPlantGrowth>

@@ -51,7 +51,7 @@
       were ALREADY RimMandrake-tier C# (mandrake.rm.creaturebehaviors, a
       loadAfter dependency RM_LongShade already declares), never RSW_-tier,
       so no change was needed there. seedPlants repointed RSW_Ultracactus ->
-      RM_Ultracactus (moved the same pass, Q2).
+      RM_UltrissPad (moved the same pass, Q2).
 -->
 <Defs>
 
@@ -114,7 +114,7 @@
            through the sand, straining the buried canopy and the small life
            grazing it. Anything that slow needs food that cannot run."
            Sand and SoftSand only — the buried canopy it strains is the
-           ultracactus (RM_Ultracactus, fertilityMin 0.05 "so it takes Sand"),
+           ultracactus (RM_UltrissPad, fertilityMin 0.05 "so it takes Sand"),
            and open sand is the one ground in this biome the ultracactus owns
            uncontested. -->
       <li Class="RimMandrake.CreatureBehaviors.RM_FilterFeedExtension">
@@ -146,7 +146,7 @@
         <growthBoost>0.25</growthBoost>
         <maxPlantsBoosted>12</maxPlantsBoosted>
         <seedPlants>
-          <li>RM_Ultracactus</li>
+          <li>RM_UltrissPad</li>
         </seedPlants>
         <seedPlantCount>1~3</seedPlantCount>
         <seedPlantGrowth>0.05</seedPlantGrowth>
