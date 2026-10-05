@@ -2940,3 +2940,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"GIMMESOMESLACK_RENAME_1","ts":"2026-10-05T07:26:55Z","tsn":1791185215790110838}
 {"seat":"FOUNDRY","event":"start","id":"GIMMESOMESLACK_RENAME_1","ts":"2026-10-05T07:26:56Z","tsn":1791185216339438346}
 {"seat":"FOUNDRY","event":"close","id":"GIMMESOMESLACK_RENAME_1","sha":"37a7f8dbb","ts":"2026-10-05T07:40:21Z","tsn":1791186021281780353}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-05T08:45:20Z","tsn":1791189920668090115}
+{"seat":"FOUNDRY","event":"close","id":"HOSE_BLOCKED_REROUTE_RETRACT_1","sha":"5a003c0a4","ts":"2026-10-05T08:45:31Z","tsn":1791189931419610627}
+{"seat":"FOUNDRY","event":"close","id":"CORD_COLOUR_PER_PIECE_1","sha":"b18d68e40","ts":"2026-10-05T08:45:31Z","tsn":1791189931953917174}
+{"seat":"FOUNDRY","event":"close","id":"MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1","sha":"c955bb884","ts":"2026-10-05T08:45:32Z","tsn":1791189932470473620}
+{"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_HOSE_DEPLOY_DRAG_1","sha":"234620b32","ts":"2026-10-05T08:45:32Z","tsn":1791189933000188145}
