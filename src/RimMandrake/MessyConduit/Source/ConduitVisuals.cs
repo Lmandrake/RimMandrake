@@ -171,11 +171,15 @@ namespace RimMandrake.MessyConduit
             Vector3 center = (a + b) / 2f;
             center.y = AltitudeLayer.SmallWire.AltitudeFor();
             Vector3 v = b - a;
-            float len = v.MagnitudeHorizontal(), w = Mathf.Max(0.1f, Aerial.AerialMaterials.SpanWidth * 0.85f);
+            // stage 2: a hookup to a styled run member (a switch) draws that run's cable; unstyled = the default look's, as before
+            string look = Aerial.ConduitStylePicker.RawLook(B) ?? Aerial.ConduitStylePicker.RawLook(A);
+            Aerial.AerialMaterials.LookMats lm = look != null ? Aerial.AerialMaterials.For(look) : null;
+            Material mat = lm?.Span ?? Aerial.AerialMaterials.Span;
+            float len = v.MagnitudeHorizontal(), w = Mathf.Max(0.1f, (lm != null && lm.Span != null ? lm.Width : Aerial.AerialMaterials.SpanWidth) * 0.85f);
             float u = len / (w * 4f);
             // plane corners (-x,-z) (-x,+z) (+x,+z) (+x,-z): the strand tile's u runs ALONG the cable (plane z), v across
             var uvs = new[] { new Vector2(0f, 0f), new Vector2(u, 0f), new Vector2(u, 1f), new Vector2(0f, 1f) };
-            Printer_Plane.PrintPlane(layer, center, new Vector2(w, len), Aerial.AerialMaterials.Span, v.AngleFlat(), false, uvs);
+            Printer_Plane.PrintPlane(layer, center, new Vector2(w, len), mat, v.AngleFlat(), false, uvs);
         }
     }
 }

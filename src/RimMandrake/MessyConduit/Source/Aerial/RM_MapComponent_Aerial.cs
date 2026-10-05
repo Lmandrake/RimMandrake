@@ -161,13 +161,16 @@ namespace RimMandrake.MessyConduit.Aerial
 
         private void ProcessAutoLinks()
         {
+            map.GetComponent<RM_MapComponent_ConduitRuns>()?.ProcessPending();      // a new pole adopts its run's look first
             foreach (CompAerialAnchor a in pendingAuto.ToList())
             {
                 if (!a.Spawned) { pendingAuto.Remove(a); continue; }
                 if (a.Faction == null) continue;                       // build_batch may set the faction a moment later
                 pendingAuto.Remove(a);
                 if (!AerialSettings.enabled || !AerialSettings.autoLink) continue;
-                var others = Anchors.Where(o => o != a).ToList();
+                // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
+                string look = StylePicker.LookOfThing(a.parent);
+                var others = Anchors.Where(o => o != a && StylePicker.LookOfThing(o.parent) == look).ToList();
                 int pick = AerialMath.AutoLinkPick(a.Info(), others.Select(o => o.Info()).ToList(), AerialSettings.Range);
                 if (pick < 0) continue;
                 if (CompAerialAnchor.TryLink(a, others.First(o => o.thingIDNumber == pick).parent) == LinkVerdict.Ok) autoLinks++;
@@ -612,7 +615,7 @@ namespace RimMandrake.MessyConduit.Aerial
             long key = ((long)a.thingIDNumber << 32) ^ (uint)b.thingIDNumber;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), b.Position.GetHashCode());
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialSettings.sag * 1000f) * 7 + AerialSettings.maxStrands);
-            // per-build style: the span's look (AerialStyles.SpanLook) and BOTH poles' looks (their insulator rows)
+            // per-build style: the span's look (AerialMaterials.SpanLookOf) and BOTH poles' looks (their insulator rows)
             AerialMaterials.LookMats lm = AerialMaterials.SpanMats(a, b);
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(lm.Width * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt((AerialMaterials.AttachZ(a) + 7f * AerialMaterials.AttachZ(b)) * 1000f));
@@ -632,7 +635,7 @@ namespace RimMandrake.MessyConduit.Aerial
     public class SpanMesh
     {
         public Mesh mesh;
-        /// <summary>The span's cable (its look's, AerialStyles.SpanLook) and the look it was built in (state read).</summary>
+        /// <summary>The span's cable (its look's, AerialMaterials.SpanLookOf) and the look it was built in (state read).</summary>
         public Material mat;
         public string look;
         public int sig, seed;

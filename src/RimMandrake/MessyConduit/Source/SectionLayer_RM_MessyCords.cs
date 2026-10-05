@@ -94,10 +94,12 @@ namespace RimMandrake.MessyConduit
                 foreach (LaidPiece p in owned)
                 {
                     bool lodDone = false;
-                    // lane C: the piece's strand variant (extension-cord colour / Star Wars cable kind), per net
+                    // stage 2: the piece's material by its run's style and colour / kind (a legacy piece: the default
+                    // look's per-net pick, the same Material as before); lane C's per-variant tally keeps its legacy meaning
+                    int g = comp.MatIndexOf(p);
                     int variant = comp.VariantOf(p);
-                    Material strand = CordMaterials.StrandFor(variant), strandFace = CordMaterials.StrandFaceFor(variant),
-                             strandLod = CordMaterials.StrandLodFor(variant);
+                    Material strand = CordMaterials.StrandG(g), strandFace = CordMaterials.StrandFaceG(g),
+                             strandLod = CordMaterials.StrandLodG(g);
                     if (strand != null) PrintedVariants[variant] = PrintedVariants.TryGetValue(variant, out int pv) ? pv + 1 : 1;
                     foreach (CordStrand s in p.Strands)
                     {
@@ -108,7 +110,7 @@ namespace RimMandrake.MessyConduit
                         // (0 at the pin, 0 everywhere under a roof), uv.z = per-piece phase; the GPU moves it
                         if (RM_MapComponent_CordGraph.ShaderSwayPrints(s))
                         {
-                            Material plant = CordMaterials.StrandPlantFor(variant);
+                            Material plant = CordMaterials.StrandPlantG(g);
                             if (plant != null)
                             {
                                 bool roofed = RM_MapComponent_CordGraph.PinRoofed(Map, s);
@@ -151,7 +153,7 @@ namespace RimMandrake.MessyConduit
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
-                        Material m = CordMaterials.Decal(d.Kind, variant);
+                        Material m = CordMaterials.DecalG(d.Kind, g);
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);
                         float y = face ? faceY + 0.002f : baseY + 0.009f;

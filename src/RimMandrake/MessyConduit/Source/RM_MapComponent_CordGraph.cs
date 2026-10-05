@@ -68,6 +68,82 @@ namespace RimMandrake.MessyConduit
 
         public int NetSeedOf(LaidPiece p) => netSeeds.TryGetValue(p, out int s) ? s : 0;
 
+        // ---- stage 2 (per-build style, conduit runs): each piece's material by (style, colour / kind) of its run
+        private Dictionary<LaidPiece, int> matIdx = new Dictionary<LaidPiece, int>();
+        private HashSet<LaidPiece> legacyPieces = new HashSet<LaidPiece>();
+
+        /// <summary>The flat material index (CordMaterials.StrandG / DecalG) a piece prints with: from the stored style of the
+        /// conduit cell it is coloured by (Aerial.ConduitStyles.PieceVariant); a piece with no styled cell is LEGACY and draws
+        /// the default look's pre-stage-2 per-net pick (CordMaterials.LegacyGlobal), exactly as before.</summary>
+        public int MatIndexOf(LaidPiece p) => matIdx.TryGetValue(p, out int g) ? g : CordMaterials.LegacyGlobal(NetSeedOf(p));
+
+        public bool IsLegacy(LaidPiece p) => !matIdx.ContainsKey(p) || legacyPieces.Contains(p);
+
+        /// <summary>The cell a piece takes its style from, and that cell's stored (look, colour): conduit cells first (they
+        /// carry the Modern colour), then a switch or anchor of the run. Null look = legacy.</summary>
+        public static string StyleCellOf(LaidPiece p, Dictionary<Cell, Aerial.CellStyle> cells, out Cell at, out string colour)
+        {
+            at = p.Owner; colour = null;
+            Aerial.CellStyle best = null;
+            foreach (Cell c in CandidateCells(p))
+            {
+                if (!cells.TryGetValue(c, out Aerial.CellStyle cs)) continue;
+                if (best == null || (cs.Conduit && !best.Conduit)) { best = cs; at = c; }
+                if (best.Conduit) break;
+            }
+            if (best == null) return null;
+            colour = best.Colour;
+            return best.Look;
+        }
+
+        private static IEnumerable<Cell> CandidateCells(LaidPiece p)
+        {
+            yield return p.Owner;
+            if (p.EndA != null && TryCell(p.EndA, out Cell a)) yield return a;
+            if (p.EndB != null && TryCell(p.EndB, out Cell b)) yield return b;
+        }
+
+        public static bool TryCell(string end, out Cell c)
+        {
+            c = default(Cell);
+            int i = end.LastIndexOf(':');
+            string t = i >= 0 ? end.Substring(i + 1) : end;
+            int k = t.IndexOf(',');
+            if (k <= 0) return false;
+            if (!int.TryParse(t.Substring(0, k), out int x) || !int.TryParse(t.Substring(k + 1), out int z)) return false;
+            c = new Cell(x, z);
+            return true;
+        }
+
+        /// <summary>Each cell any piece touches -> that piece's cord-net seed (the legacy colour pick), for materialising a
+        /// legacy run (the stage-2 save migration stores the colour each cell was drawing).</summary>
+        public Dictionary<Cell, int> SeedByCell()
+        {
+            var d = new Dictionary<Cell, int>();
+            foreach (LaidPiece p in pieces)
+                foreach (Cell c in CandidateCells(p))
+                    if (!d.ContainsKey(c)) d[c] = NetSeedOf(p);
+            return d;
+        }
+
+        private void ComputeMaterials(List<LaidPiece> ps)
+        {
+            var next = new Dictionary<LaidPiece, int>();
+            var leg = new HashSet<LaidPiece>();
+            Dictionary<Cell, Aerial.CellStyle> cells = Aerial.ConduitStylePicker.CellStyles(map);
+            bool single = MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single;
+            foreach (LaidPiece p in ps)
+            {
+                int seed = NetSeedOf(p);
+                string look = StyleCellOf(p, cells, out Cell at, out string colour);
+                if (look == null) { next[p] = CordMaterials.LegacyGlobal(seed); leg.Add(p); continue; }
+                int v = Aerial.ConduitStyles.PieceVariant(look, colour, at.X, at.Z, seed, single, MessyConduitSettings.extCordColor);
+                next[p] = Aerial.ConduitStyles.Global(look, v);
+            }
+            matIdx = next;
+            legacyPieces = leg;
+        }
+
         /// <summary>Union the pieces by the cells they touch (edge ends, node/coil/tangle owner cells); a component's
         /// seed is a stable FNV hash of its smallest cell token -- pure geometry, no vanilla PowerNet (which is not
         /// built yet while a loaded map's sections first regenerate).</summary>
@@ -145,13 +221,16 @@ namespace RimMandrake.MessyConduit
             Dictionary<LaidPiece, int> prevSeeds = netSeeds;
             try { netSeeds = ComputeNetSeeds(next); }
             catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[MessyConduit] net seeds: " + ex, 0x4d43_5345); }
+            Dictionary<LaidPiece, int> prevMat = matIdx;
+            try { ComputeMaterials(next); }
+            catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[MessyConduit] run styles: " + ex, 0x4d43_5346); }
             // dirty every section whose owned set changed (not just the regenerating one)
             if (Current.ProgramState == ProgramState.Playing)
             {
                 var keys = new HashSet<IntVec2>(nextBy.Keys);
                 keys.UnionWith(prevBy.Keys);
                 foreach (IntVec2 s in keys)
-                    if (Sig(prevBy, s, prevSeeds) != Sig(nextBy, s, netSeeds)) DirtySection(s);
+                    if (Sig(prevBy, s, prevSeeds, prevMat) != Sig(nextBy, s, netSeeds, matIdx)) DirtySection(s);
             }
         }
 
@@ -174,9 +253,10 @@ namespace RimMandrake.MessyConduit
 
         /// <summary>A section's owned-set signature: piece keys, geometry, and (lane C) the net seed, so a net that
         /// merges or splits reprints the sections whose cords change colour even when their geometry did not.</summary>
-        private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s, Dictionary<LaidPiece, int> seeds) =>
+        private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s, Dictionary<LaidPiece, int> seeds, Dictionary<LaidPiece, int> mats) =>
             d.TryGetValue(s, out List<LaidPiece> l)
-                ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash() + "#" + (seeds.TryGetValue(p, out int v) ? v : 0)))
+                ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash() + "#" + (seeds.TryGetValue(p, out int v) ? v : 0) +
+                                                  "%" + (mats.TryGetValue(p, out int g) ? g : -1)))
                 : "";
 
         private bool LiveNow(Cell c)
@@ -282,7 +362,7 @@ namespace RimMandrake.MessyConduit
         private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
         private Mesh hiMesh;
         /// <summary>Per strand variant (lane C): one whip mesh and one sway mesh each, drawn with that variant's material.</summary>
-        private readonly Mesh[] floorMeshes = new Mesh[8], faceMeshes = new Mesh[8], rippleMeshes = new Mesh[8];
+        private readonly Mesh[] floorMeshes = new Mesh[16], faceMeshes = new Mesh[16], rippleMeshes = new Mesh[16];
         private readonly List<Vector3> mv = new List<Vector3>();
         private readonly List<Vector2> mu = new List<Vector2>();
         private readonly List<int> mt = new List<int>();
@@ -382,7 +462,8 @@ namespace RimMandrake.MessyConduit
             float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift;
             bool whip = MessyConduitSettings.whip && MessyConduitSettings.breakReadout;
             // ---- B3 whipping live tails (floor)
-            int nv = Mathf.Clamp(CordMaterials.VariantCount, 1, floorMeshes.Length);
+            // stage 2: one mesh per flat material index (every look's strands), each piece in its own run's material
+            int nv = Mathf.Clamp(CordMaterials.GlobalCount, 1, floorMeshes.Length);
             int cap = MaxSparkingEnds * 3;
             for (int v = 0; v < nv; v++)
             {
@@ -391,7 +472,7 @@ namespace RimMandrake.MessyConduit
                 foreach (LaidPiece p in pieces)
                 {
                     if (WhipDraws >= cap) break;
-                    if (nv > 1 && VariantOf(p) != v) continue;
+                    if (nv > 1 && MatIndexOf(p) != v) continue;
                     foreach (CordStrand s in p.Strands)
                     {
                         if (s.WhipA <= 0 && s.WhipB <= 0) continue;
@@ -408,7 +489,7 @@ namespace RimMandrake.MessyConduit
                             List<V2> bent = CordMotion.Whip(tail, now, seed, 0.12);
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
                             WhipDraws++;
-                            Material fray = CordMaterials.Decal(DecalKind.FrayLive);
+                            Material fray = CordMaterials.DecalG(DecalKind.FrayLive, v);
                             if (fray != null)
                             {
                                 V2 d = bent[bent.Count - 1] - bent[Math.Max(0, bent.Count - 3)];
@@ -420,7 +501,7 @@ namespace RimMandrake.MessyConduit
                         }
                     }
                 }
-            Flush(ref floorMeshes[v], CordMaterials.StrandFor(v));
+            Flush(ref floorMeshes[v], CordMaterials.StrandG(v));
             }
             // ---- B7 sway of lifted pieces (wall-hanging tails), CPU path, game-time clock
             float wind = map.windManager.WindSpeed;
@@ -433,7 +514,7 @@ namespace RimMandrake.MessyConduit
             foreach (LaidPiece p in pieces)
                 foreach (CordStrand s in p.Strands)
                 {
-                    if (nv > 1 && VariantOf(p) != v) continue;
+                    if (nv > 1 && MatIndexOf(p) != v) continue;
                     if (!s.Lifted || !SwaysNow(map, s)) continue;
                     if (!view.Contains(CordWorldAdapter.I(s.Pts[0].Floor))) continue;
                     List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * MessyConduitSettings.swayAmplitude, wind);
@@ -446,7 +527,7 @@ namespace RimMandrake.MessyConduit
                     SwayDraws++;
                 }
             SwayVerts += mv.Count;
-            Flush(ref faceMeshes[v], CordMaterials.StrandFaceFor(v) ?? CordMaterials.StrandFor(v));
+            Flush(ref faceMeshes[v], CordMaterials.StrandFaceG(v) ?? CordMaterials.StrandG(v));
             }
             SwayHash = h;
             // ---- optional floor ripple (default off): unroofed plain floor strands on screen, game-time clock
@@ -457,7 +538,7 @@ namespace RimMandrake.MessyConduit
                     mv.Clear(); mu.Clear(); mt.Clear();
                     foreach (LaidPiece p in pieces)
                     {
-                        if (nv > 1 && VariantOf(p) != v) continue;
+                        if (nv > 1 && MatIndexOf(p) != v) continue;
                         int si = 0;
                         foreach (CordStrand s in p.Strands)
                         {
@@ -475,7 +556,7 @@ namespace RimMandrake.MessyConduit
                         }
                     }
                     RippleVerts += mv.Count;
-                    Flush(ref rippleMeshes[v], CordMaterials.StrandFor(v));
+                    Flush(ref rippleMeshes[v], CordMaterials.StrandG(v));
                 }
             RippleHash = rh;
             // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)

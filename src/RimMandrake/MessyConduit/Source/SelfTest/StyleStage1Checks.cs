@@ -68,13 +68,15 @@ namespace RimMandrake.MessyConduit.SelfTest
 
         private static void Spans()
         {
+            // stage 2 replaced stage 1's "older pole" stand-in with the run rule (ConduitStyles.SpanLook); with equal run areas
+            // it is the same older-wins tie-break, which is what this stage-1 check still pins (areas: StyleStage2Checks)
             string D = "Scrapper";
-            bool same = AerialStyles.SpanLook("Modern", 50, "Modern", 10, D) == "Modern";
-            bool older = AerialStyles.SpanLook("Industrial", 10, "Futuristic", 50, D) == "Industrial" && AerialStyles.SpanLook("Futuristic", 50, "Industrial", 10, D) == "Industrial";
-            bool legacy = AerialStyles.SpanLook(null, 5, null, 9, "Modern") == "Modern" && AerialStyles.SpanLook(null, 5, "Futuristic", 9, "Modern") == "Modern"
-                          && AerialStyles.SpanLook(null, 9, "Futuristic", 5, "Modern") == "Futuristic";
-            Check(same && older && legacy, "spans: one look -> that look; two looks -> the OLDER pole's (lower id), whichever end asks; an unstyled pole counts as the default look");
-            Check(AerialStyles.SpanLook("Industrial", 10, "Futuristic", 50, D) != "Futuristic", "can fail: a newer-pole-wins rule would draw this span Futuristic");
+            bool same = ConduitStyles.SpanLook("Modern", 0, 50, "Modern", 0, 10, D) == "Modern";
+            bool older = ConduitStyles.SpanLook("Industrial", 0, 10, "Futuristic", 0, 50, D) == "Industrial" && ConduitStyles.SpanLook("Futuristic", 0, 50, "Industrial", 0, 10, D) == "Industrial";
+            bool legacy = ConduitStyles.SpanLook(null, 0, 5, null, 0, 9, "Modern") == "Modern" && ConduitStyles.SpanLook(null, 0, 5, "Futuristic", 0, 9, "Modern") == "Modern"
+                          && ConduitStyles.SpanLook(null, 0, 9, "Futuristic", 0, 5, "Modern") == "Futuristic";
+            Check(same && older && legacy, "spans: one look -> that look; two looks, equal runs -> the OLDER side's, whichever end asks; an unstyled pole counts as the default look");
+            Check(ConduitStyles.SpanLook("Industrial", 0, 10, "Futuristic", 0, 50, D) != "Futuristic", "can fail: a newer-pole-wins rule would draw this span Futuristic");
         }
 
         private static void Picker()

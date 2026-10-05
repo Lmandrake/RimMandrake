@@ -69,6 +69,10 @@
     <Compile Include="Aerial\AerialStyles.cs" />
     <Compile Include="Aerial\StylePicker.cs" />
     <Compile Include="Aerial\StyleProbeAerial.cs" />
+    <Compile Include="Aerial\ConduitStyles.cs" />
+    <Compile Include="Aerial\ConduitStylePicker.cs" />
+    <Compile Include="Aerial\RM_MapComponent_ConduitRuns.cs" />
+    <Compile Include="Aerial\ConduitStyleProbe.cs" />
     <Compile Include="Aerial\AerialPowerPatch.cs" />
     <Compile Include="Aerial\CompAerialAnchor.cs" />
     <Compile Include="Aerial\CompPowerTap.cs" />

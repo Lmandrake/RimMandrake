@@ -50,6 +50,8 @@
     <Compile Include="..\Aerial\PoleGeometryTable.cs" />
     <Compile Include="..\Aerial\AerialStyles.cs" />
     <Compile Include="StyleStage1Checks.cs" />
+    <Compile Include="..\Aerial\ConduitStyles.cs" />
+    <Compile Include="StyleStage2Checks.cs" />
     <Compile Include="..\Hose\HoseStyles.cs" />
     <Compile Include="StyleStage3Checks.cs" />
   </ItemGroup>

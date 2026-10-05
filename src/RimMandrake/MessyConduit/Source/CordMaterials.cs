@@ -59,10 +59,8 @@ namespace RimMandrake.MessyConduit
         /// strand, end pieces over strand, face pieces (wall/rock stubs, hanging tails) last.</summary>
         public static int StrandQueue, ShadowQueue, PieceQueue, FaceQueue;
 
-        public static readonly string[] ExtCordColors = { "Orange", "Green", "Brown", "Yellow", "Blue" };
-        public static readonly string[] StarWarsKinds = { "BlackRubber", "CorrugatedSteel", "CoiledBlack" };
-        /// <summary>Star Wars per-net pick weights (out of 10): thick black rubber most, steel and coiled rarer.</summary>
-        private static readonly int[] StarWarsWeights = { 6, 2, 2 };
+        public static readonly string[] ExtCordColors = Aerial.ConduitStyles.Colours;
+        public static readonly string[] StarWarsKinds = Aerial.ConduitStyles.IndustrialKinds;
 
         static CordMaterials()
         {
@@ -74,6 +72,7 @@ namespace RimMandrake.MessyConduit
             FaceQueue = q + 2;
             Highlight = MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent, new Color(1f, 0.85f, 0.35f, 0.42f)) { renderQueue = FaceQueue + 1 });
             Build();
+            BuildAll();
         }
 
         public static string Family(CordStyle s)
@@ -203,10 +202,7 @@ namespace RimMandrake.MessyConduit
             d[DecalKind.FrayLive] = SlotMat(style, "EndFrayed_Live", PieceQueue);
             // phase 1b B6: LEDs dark when the net is dead. Until PowerStrip_Lit/_Dark art lands (artpipe), the
             // dark strip is the strip tinted down.
-            Texture2D stripDark = Tex(Dir + "PowerStrip_Dark");
-            d[DecalKind.PowerStripDark] = stripDark != null
-                ? MaterialPool.MatFrom(new MaterialRequest(stripDark, ShaderDatabase.Transparent) { renderQueue = PieceQueue })
-                : SlotMat(style, "PowerStrip", PieceQueue, new Color(0.42f, 0.40f, 0.40f, 1f), "PowerStripDark");
+            d[DecalKind.PowerStripDark] = StripDarkMat(style, true);
             decals = d;
             // B14 (owner review 2026-10-04): in the extension-cord look every connection piece takes its net's cord colour.
             // The shipped pieces carry ORANGE cord stubs; Styles/ExtCord/<Colour>/<slot> are the recoloured copies
@@ -239,6 +235,122 @@ namespace RimMandrake.MessyConduit
             Rebuilds++;
         }
 
+        /// <summary>The dark (dead net) power strip: the look's own PowerStrip_Off art where it exists (Modern,
+        /// Styles/ExtCord/PowerStrip_Off, art stage 2026-10-04), else a root PowerStrip_Dark, else the strip tinted down.</summary>
+        private static Material StripDarkMat(CordStyle style, bool record)
+        {
+            Texture2D own = style == CordStyle.StarWarsJawa ? null : Tex(StyleDir + Family(style) + "/PowerStrip_Off");
+            Texture2D stripDark = own ?? Tex(Dir + "PowerStrip_Dark");
+            if (stripDark != null)
+            {
+                if (record) SlotPaths["PowerStripDark"] = own != null ? StyleDir + Family(style) + "/PowerStrip_Off" : Dir + "PowerStrip_Dark";
+                return MaterialPool.MatFrom(new MaterialRequest(stripDark, ShaderDatabase.Transparent) { renderQueue = PieceQueue });
+            }
+            return SlotMat(style, "PowerStrip", PieceQueue, new Color(0.42f, 0.40f, 0.40f, 1f), "PowerStripDark", record);
+        }
+
+        // ------------------------------------------------------------------ stage 2: every look's materials, built once
+        // (design 5 stage 2: "build the cord materials for all four styles once at start-up; the cord layer picks a piece's
+        // material by (style, colour or kind) instead of by the global setting"). Flat index g = ConduitStyles.Global(look,
+        // variant). Every Material comes from MaterialPool with the SAME request the default-look set above uses, so a legacy
+        // piece drawn through g gets the very Material object it drew before stage 2 (StyleProbe "cstyles" checks it).
+        private static Material[] gStrand = new Material[0], gFace = new Material[0], gLod = new Material[0], gPlant = new Material[0];
+        private static Dictionary<DecalKind, Material>[] gDecals = new Dictionary<DecalKind, Material>[0];
+        /// <summary>State read: the strand texture path of each flat index; every slot path that fell back or is missing.</summary>
+        public static string[] GlobalStrandPaths = new string[0];
+        public static readonly List<string> GlobalMissing = new List<string>();
+
+        public static CordStyle StyleOfLook(string look)
+        {
+            switch (look)
+            {
+                case "Industrial": return CordStyle.StarWars;
+                case "Modern": return CordStyle.ExtensionCord;
+                case "Futuristic": return CordStyle.Cybertek;
+                default: return CordStyle.StarWarsJawa;
+            }
+        }
+
+        /// <summary>The strand path of (look, variant) whatever the colour setting.</summary>
+        public static string StrandPathOf(string look, int variant)
+        {
+            switch (look)
+            {
+                case "Industrial": return StyleDir + "StarWars/Strand_" + StarWarsKinds[Mathf.Clamp(variant, 0, StarWarsKinds.Length - 1)];
+                case "Modern": return StyleDir + "ExtCord/Strand_" + ExtCordColors[Mathf.Clamp(variant, 0, ExtCordColors.Length - 1)];
+                case "Futuristic": return StyleDir + "Cybertek/Strand";
+                default: return Dir + "Strand_Jawa";
+            }
+        }
+
+        public static void BuildAll()
+        {
+            int n = Aerial.ConduitStyles.GlobalCount;
+            gStrand = new Material[n]; gFace = new Material[n]; gLod = new Material[n]; gPlant = new Material[n];
+            gDecals = new Dictionary<DecalKind, Material>[n];
+            GlobalStrandPaths = new string[n];
+            GlobalMissing.Clear();
+            for (int g = 0; g < n; g++)
+            {
+                Aerial.ConduitStyles.FromGlobal(g, out string look, out int v);
+                CordStyle style = StyleOfLook(look);
+                string path = StrandPathOf(look, v);
+                Texture2D tex = Tex(path);
+                if (tex == null) { GlobalMissing.Add(path); path = Dir + "Strand_Jawa"; tex = Tex(path); }
+                GlobalStrandPaths[g] = path;
+                if (tex != null)
+                {
+                    tex.wrapMode = TextureWrapMode.Repeat;
+                    gStrand[g] = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = StrandQueue });
+                    gFace[g] = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = FaceQueue });
+                    gPlant[g] = PlantMat(tex);
+                    if (!lodCache.TryGetValue(tex, out Material lod))
+                    {
+                        lod = new Material(gStrand[g]) { name = "RM_MessyCords_StrandLod_" + tex.name };
+                        lodCache[tex] = lod;
+                        lods.Add(lod);
+                    }
+                    gLod[g] = lod;
+                }
+                var d = new Dictionary<DecalKind, Material>();
+                d[DecalKind.Plug] = SlotMat(style, "Plug", PieceQueue, null, null, false);
+                d[DecalKind.JunctionTape] = SlotMat(style, "Junction_T", PieceQueue, null, null, false);
+                d[DecalKind.JunctionTin] = SlotMat(style, "Junction_X", PieceQueue, null, null, false);
+                d[DecalKind.StubWall] = SlotMat(style, "StubWall", FaceQueue, null, null, false);
+                d[DecalKind.StubRock] = SlotMat(style, "StubRock", FaceQueue, null, null, false);
+                d[DecalKind.PowerStrip] = SlotMat(style, "PowerStrip", PieceQueue, null, null, false);
+                d[DecalKind.FrayDead] = SlotMat(style, "EndFrayed_Dead", PieceQueue, new Color(0.62f, 0.58f, 0.55f, 1f), null, false);
+                d[DecalKind.FrayLive] = SlotMat(style, "EndFrayed_Live", PieceQueue, null, null, false);
+                d[DecalKind.PowerStripDark] = StripDarkMat(style, false);
+                if (look == "Modern" && ExtCordColors[v] != "Orange")
+                    foreach (var kv in ColourSlots)
+                    {
+                        string vp = StyleDir + "ExtCord/" + ExtCordColors[v] + "/" + kv.Value;
+                        Texture2D vt = Tex(vp);
+                        if (vt == null) { GlobalMissing.Add(vp); continue; }
+                        Color? tint = kv.Key == DecalKind.FrayDead ? new Color(0.62f, 0.58f, 0.55f, 1f) : (Color?)null;
+                        d[kv.Key] = MaterialPool.MatFrom(new MaterialRequest(vt, ShaderDatabase.Transparent, tint ?? Color.white) { renderQueue = IsFace(kv.Key) ? FaceQueue : PieceQueue });
+                    }
+                gDecals[g] = d;
+            }
+        }
+
+        public static int GlobalCount => gStrand.Length;
+        public static Material StrandG(int g) => g >= 0 && g < gStrand.Length ? gStrand[g] ?? Strand : Strand;
+        public static Material StrandFaceG(int g) => g >= 0 && g < gFace.Length ? gFace[g] ?? StrandFace : StrandFace;
+        public static Material StrandLodG(int g) => g >= 0 && g < gLod.Length ? gLod[g] ?? StrandLod : StrandLod;
+        public static Material StrandPlantG(int g) => g >= 0 && g < gPlant.Length ? gPlant[g] ?? StrandPlant : StrandPlant;
+        public static Material DecalG(DecalKind k, int g) =>
+            g >= 0 && g < gDecals.Length && gDecals[g] != null && gDecals[g].TryGetValue(k, out Material m) ? m : Decal(k);
+
+        /// <summary>The flat index a LEGACY piece draws with: the default look, its pre-stage-2 per-net variant.</summary>
+        public static int LegacyGlobal(int netSeed)
+        {
+            string look = Aerial.AerialMaterials.LookOf(MessyConduitSettings.style);
+            return Aerial.ConduitStyles.Global(look, Aerial.ConduitStyles.LegacyVariant(look, netSeed,
+                MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single, MessyConduitSettings.extCordColor));
+        }
+
         private static Texture2D Tex(string path)
         {
             Texture2D t = ContentFinder<Texture2D>.Get(path, reportFailure: false);
@@ -246,18 +358,18 @@ namespace RimMandrake.MessyConduit
         }
 
         /// <summary>The family's piece, or the Jawa root piece when the family has none (recorded).</summary>
-        private static Material SlotMat(CordStyle s, string slot, int queue, Color? color = null, string key = null)
+        private static Material SlotMat(CordStyle s, string slot, int queue, Color? color = null, string key = null, bool record = true)
         {
             string path = SlotPath(s, slot);
             Texture2D tex = Tex(path);
             if (tex == null && s != CordStyle.StarWarsJawa)
             {
-                Fallbacks.Add(key ?? slot);
+                if (record) Fallbacks.Add(key ?? slot);
                 path = SlotPath(CordStyle.StarWarsJawa, slot);
                 tex = Tex(path);
             }
-            SlotPaths[key ?? slot] = tex == null ? null : path;
-            if (tex == null) { Missing.Add(path); return null; }
+            if (record) SlotPaths[key ?? slot] = tex == null ? null : path;
+            if (tex == null) { if (record) Missing.Add(path); else GlobalMissing.Add(path); return null; }
             return MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, color ?? Color.white) { renderQueue = queue });
         }
 
@@ -297,15 +409,8 @@ namespace RimMandrake.MessyConduit
         {
             int n = strandV.Length;
             if (n <= 1) return 0;
-            uint h = unchecked((uint)netSeed * 2654435761u);
-            h ^= h >> 15;
-            if (MessyConduitSettings.style == CordStyle.StarWars && n == StarWarsWeights.Length)
-            {
-                int r = (int)(h % 10u), acc = 0;
-                for (int i = 0; i < n; i++) { acc += StarWarsWeights[i]; if (r < acc) return i; }
-                return 0;
-            }
-            return (int)(h % (uint)n);
+            // one rule, kept in the Verse-free ConduitStyles (stage 2 draws legacy pieces through it as well)
+            return Mathf.Clamp(Aerial.ConduitStyles.LegacyVariant(Aerial.AerialMaterials.LookOf(MessyConduitSettings.style), netSeed, false, 0), 0, n - 1);
         }
 
         public static Material StrandFor(int v) => v >= 0 && v < strandV.Length ? strandV[v] : Strand;
