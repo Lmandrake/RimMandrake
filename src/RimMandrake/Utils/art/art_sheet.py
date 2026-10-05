@@ -816,6 +816,7 @@ window.itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
+  const variants = new Set(d.variants || []);
   const cell = (c, f) => {
     const s = c.faces[f];
     if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
@@ -828,23 +829,28 @@ window.itemBody = it => {
   const col = (c, g) => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
     const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
-    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}">
-      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b><span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+    const vr = variants.has(c.letter);
+    const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
+    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
+      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
-      ${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (target ~128)">${c.ppc} px/cell</i>` : ''}
+      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
       <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
       <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
   const sec = (g, i) => {
-    const main = g.cols.filter(c => !c.near_of), near = g.cols.filter(c => c.near_of);
+    /* Every set in LETTER order, so the letters read contiguously (owner, Vhaulk note 2026-10-04: "I see only
+       A and C, no B"). A near-duplicate keeps its place and its letter as a narrow stub that expands in place. */
+    const ordered = g.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
+    const stub = c => `<details class="bs-nearstub"${d.decision === c.letter || picks[g.key] === c.letter || variants.has(c.letter) ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
     const many = it.graphics.length > 1;
     const cur = g.primary ? d.decision : picks[g.key];
     const head = many ? `<div class="bs-gh" title="${esc(g.res || 'renders matched by name, not bound to a texture path')}"><b>${esc(g.role)}</b>${g.res ? ` <span class="sub">${esc(g.res.split('/').pop())}</span>` : ''} · ${g.primary ? 'buttons on the right' : `click a set · picked <b>${esc(cur || 'nothing')}</b>`}</div>` : '';
     const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
     return `<div class="bs-g">${head}${prior}
-      <div class="bs-strip">${main.map(c => col(c, g)).join('')}${near.length ? `<details class="bs-near"><summary>+${near.length} near-duplicate</summary><div class="bs-strip">${near.map(c => col(c, g)).join('')}</div></details>` : ''}</div></div>`;
+      <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('')}</div></div>`;
   };
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
@@ -852,11 +858,16 @@ window.itemBody = it => {
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
   const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
   const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
+  const ds = it.desc || {};
+  const dtext = ds.description || '';
+  const desc = !ds.def ? `<div class="bs-desc sub">in-game description: UNMEASURED — no ThingDef of this row in the live def dump</div>`
+    : dtext.length > 260 ? `<details class="bs-desc" title="${esc(ds.source)}"><summary><b>${esc(ds.label)}</b> — <span class="bs-dclamp">${esc(dtext)}</span></summary></details>`
+    : `<div class="bs-desc" title="${esc(ds.source)}"><b>${esc(ds.label)}</b> — ${esc(dtext || '(the def has no description)')}</div>`;
   const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
   return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${links}${elsewhere}${rul}${noart}</div>
+    ${desc}${links}${elsewhere}${rul}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
@@ -867,14 +878,26 @@ function scaleBlock(it) {
     : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt(s.drawSize[0])}×${fmt(s.drawSize[1])}</span> · bodySize ${fmt(s.bodySize)}`;
   const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
   const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
-  const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc > 192 ? 'bs-over' : 'bs-ok';
-  const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Owner rule: ~128 px per cell of the draw size; above it buys nothing on screen, below 64 loses detail at max zoom-in. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc > 192 ? 'over 128 target' : 'near 128 target'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
-  const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · scene at 64 px/cell, then on-screen tiers 96 / 32 / 18 px per cell (true size) and ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
-  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human + rat, on the biome ground · click to enlarge</span></div>${pic}
+  const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
+  const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Enhanced zoom (owner, 2026-10-04) resolves 128–256 px per cell of the draw size; below 128 reads soft at max zoom, below 64 loses detail. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc < 120 ? 'soft at max zoom' : s.ppc > 256 ? 'above 256 max zoom' : 'in the 128–256 zoom range'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
+  const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · max zoom ${s.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18 px/cell, each also ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}
     <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
     <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
 }
 
+const LETTER_ORDER = "%LETTERS%";
+const NEAR_BITS = %NEAR%;
+window.artToggleVariant = (id, letter) => {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  const s = new Set(rec.variants || []);
+  if (s.has(letter)) s.delete(letter); else s.add(letter);
+  rec.variants = [...s].sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
+  rec.variantsAt = new Date().toISOString();
+  queue(id); patchRow(id); paintCounts();
+};
 window.artPick = (id, g, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
@@ -884,7 +907,7 @@ window.artPick = (id, g, letter) => {
   queue(id); patchRow(id); paintCounts();
 };
 document.addEventListener('click', e => {
-  if (e.target.closest('.ac-purge')) return;
+  if (e.target.closest('.ac-purge') || e.target.closest('.bs-var')) return;
   const p = e.target.closest('[data-pick-l]');
   if (p) {
     e.preventDefault(); e.stopPropagation();
@@ -908,10 +931,10 @@ BIOME_STYLE = """
 .bs-meta{flex:0 0 300px;min-width:0}
 .bs-meta .effect{font-size:12px}
 .bs-r{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bs-content{flex:1;min-width:0;display:flex;gap:10px;align-items:flex-start}
+.bs-content{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
 @media (max-width:1450px){.bs-body{display:block}.bs-meta{margin-bottom:4px}
   .bs-cell,.bs-cell .ac-thumb{width:72px;height:72px;flex-basis:72px}}
-.bs-graphics{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
+.bs-graphics{flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
 .bs-g{max-width:100%;min-width:0}
 .bs-gh{font-size:12px;color:#d8c7a8;margin:2px 0}
 .bs-strip{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
@@ -930,8 +953,24 @@ BIOME_STYLE = """
 .bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
 .bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
 .bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
-.bs-near{font-size:11px;color:var(--dim);align-self:center}
-.bs-near[open]{flex-basis:100%}
+.bs-nearstub{align-self:stretch}
+.bs-nearstub>summary{list-style:none;cursor:pointer;height:100%;min-height:60px;box-sizing:border-box;width:58px;border:1px dashed #3d4653;border-radius:6px;padding:3px;font-size:10.5px;color:var(--dim);display:flex;flex-direction:column;gap:2px;line-height:1.25}
+.bs-nearstub>summary::-webkit-details-marker{display:none}
+.bs-nearstub>summary b{font-size:13px;color:var(--accent)}
+.bs-nearstub[open]{display:flex;gap:4px}.bs-nearstub[open]>summary{width:auto;min-height:0;height:auto}
+.bs-nearstub[open]>summary .sub{display:none}
+.bs-nearof{color:#9fb3c8;font-size:10.5px}
+.bs-foot{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;justify-content:space-between;margin-top:3px;width:0;min-width:100%}
+.bs-var{font-size:10.5px;padding:1px 7px;border-radius:4px;border:1px solid #2f4a35;background:#0f1612;color:#7fae86;cursor:pointer;opacity:.75}
+.bs-var:hover{opacity:1}.bs-var.on{background:#2f7a45;color:#fff;border-color:#5ac37f;opacity:1}
+.bs-set.bs-isvar{border-style:dashed;border-color:#5ac37f}
+.bs-desc{font-size:12px;line-height:1.4;color:#d8cdb8;margin:4px 0;padding:3px 6px;border-left:3px solid #6a5a3a;background:#15120d}
+.bs-desc b{color:#e8d6a8}
+details.bs-desc>summary{cursor:pointer;list-style:none}
+details.bs-desc>summary::-webkit-details-marker{display:none}
+details.bs-desc:not([open]) .bs-dclamp{display:-webkit-inline-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;vertical-align:top}
+details.bs-desc:not([open])>summary::after{content:" ▸ more";color:#e8b64c;font-size:11px}
+details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size:11px}
 .bs-canonp{flex:0 0 300px;border:1px solid #5a4a2a;background:#14110c;border-radius:6px;padding:3px 5px}
 .bs-chead span{color:#e8b64c}.bs-chead b{color:#e8b64c}
 .bs-cimgs{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0}
@@ -946,17 +985,18 @@ BIOME_STYLE = """
 .bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
 .mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
-.bs-scale{flex:0 0 auto;width:min-content;min-width:350px;max-width:420px;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
-.bs-schead b{color:#9fe0a8}.bs-schead span{color:#8aa58a}
+.bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
+.bs-schead b{color:#9fe0a8;flex:none}.bs-schead span{color:#8aa58a}
 .bs-scimg{overflow-x:auto;cursor:zoom-in;margin:3px 0 2px}
 .bs-scimg img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
 .bs-scsize{color:#d8c7a8}
 .bs-scl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bs-scres b{color:#fff}.bs-scres.bs-low b{color:#e06c6c}.bs-scres.bs-over b{color:#8ac3e8}.bs-scres.bs-ok b{color:#9fe0a8}
+.bs-scale>.bs-scl,.bs-scale>.bs-scsrc,.bs-scale>.bs-head{width:0;min-width:100%;box-sizing:border-box}
+.bs-scres b{color:#fff}.bs-scres.bs-low b{color:#e06c6c}.bs-scres.bs-mid b{color:#e8b64c}.bs-scres.bs-over b{color:#8ac3e8}.bs-scres.bs-ok b{color:#9fe0a8}
 .bs-scsrc{color:#7f8a7f;font-size:10.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .bs-scsrc.bs-fallback{color:#e06c6c}
 .bs-set{position:relative}
-.bs-ppc{position:absolute;right:5px;bottom:4px;font-style:normal;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
+.bs-ppc{font-style:normal;white-space:nowrap;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
 /* right-hand pick column: only this row's letters, readable redo/hold */
 .row .ctrl{width:200px}
 .row .opts{flex-wrap:wrap}
@@ -1031,6 +1071,7 @@ prefill. Nothing installs from this sheet: your picks become ledger rulings, the
 # Sand), Ice.png (Blue Desert terrain Ice). The dump carries no terrain colour, so these are texture means.
 SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172)}
 SCALE_FACE = ("east", "south", "single", "west", "north")
+SCALE_RENDER_VERSION = 5   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
 
 
 def _img_px(sha: str):
@@ -1074,16 +1115,19 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
         return out
     sha = col["faces"][f]
     stem = re.sub(r"[^A-Za-z0-9_]", "_", row["key"]) + "_" + sha[:10] + "_" + hashlib.sha1(
-        json.dumps([size.get("drawSize"), size.get("quad"), size.get("mesh"), size.get("color")]).encode()).hexdigest()[:6]
-    comp, full = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png"
-    if comp.exists() and full.exists():
-        from PIL import Image
-        m = {"srcPx": list(Image.open(L.store_path(sha)).size)}
-        m["pxPerCell"] = round(m["srcPx"][0] / qx) if qx else None
-    else:
+        json.dumps([SCALE_RENDER_VERSION, SP.TERRAIN, size.get("drawSize"), size.get("quad"), size.get("mesh"),
+                    size.get("color")]).encode()).hexdigest()[:6]
+    comp, full, mj = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png", imgdir / f"scale_{stem}.json"
+    try:
+        m = json.loads(mj.read_text()) if comp.exists() and full.exists() else None
+    except (OSError, ValueError):
+        m = None
+    if m is None:
         m = SP.render_panel(L.store_get(sha), size, comp, full)
+        mj.write_text(json.dumps(m))
     out.update({"img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}", "set": col["letter"],
                 "by": by, "face": f, "srcPx": m["srcPx"], "ppc": m["pxPerCell"], "verdict": SP.ppc_verdict(m["pxPerCell"]),
+                "zoomPpc": m.get("zoomPpc"), "zoomFitted": m.get("zoomFitted"), "zoomCropped": m.get("zoomCropped"), "zoomFullPpc": m.get("zoomFullPpc"),
                 "sets": [{"l": l, "ppc": (round(px[0] / qx) if px and qx else None), "px": (px[0] if px else None)}
                          for l, _f, px in sets]})
     return out
@@ -1120,6 +1164,14 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         if SCALE_BIOMES[biome]:
             scale_panel.set_terrain(SCALE_BIOMES[biome])
         scale_res = scale_panel.Resolver()
+    # the in-game label + description on every row (owner, Vapaad note 2026-10-04: "Your sheets need to include
+    # the animal descriptions as well for reference") — from the live dump, post-patch
+    try:
+        import scale_panel
+        desc_res = scale_res or scale_panel.Resolver()
+    except Exception as e:                                  # noqa: BLE001
+        print(f"WARNING: no def dump for descriptions ({e}) — rows say UNMEASURED", file=sys.stderr)
+        desc_res = None
     rel, elsewhere, find = _clusters(rows)
     labels = {r["key"]: _human(r) for r in rows}
 
@@ -1260,6 +1312,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                          "note": (x.get("note") or x.get("blanket_said") or "")[:240]}
                         for x in sorted(rul, key=lambda x: x.get("at") or "") if x.get("trust") not in ("prefill",)],
         }
+        item["desc"] = desc_res.describe(r) if desc_res is not None else {}
         if scale_res is not None:
             item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
         items.append(item)
@@ -1333,7 +1386,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         "options": opts, "groupLabel": "group", "media": True,
         "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
     }
-    render = '<script id="RENDER">' + BIOME_BODY + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
+    render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
     out_html.parent.mkdir(parents=True, exist_ok=True)
     out_html.write_text(_fill_template(cfg, ordered, render, cfg["title"]))
 
