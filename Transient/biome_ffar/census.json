@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-04T23:15:31-0700",
- "git_head": "a91be293e",
+ "generated": "2026-10-04T23:27:57-0700",
+ "git_head": "fd43623d8",
  "inputs": {
-  "ledger_events": 44830,
-  "ledger_variants": 11118,
+  "ledger_events": 44840,
+  "ledger_variants": 11123,
   "load_order": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
-  "artpipe_state": "searched 17439 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 17456 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -15,10 +15,10 @@
   "hawkbat": 1,
   "bantha": 3,
   "anooba": 3,
-  "stoneback": 2,
-  "_canon_index_defnames": 255,
+  "stoneback": 1,
+  "_canon_index_defnames": 254,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 11118
+  "_ledger_variants": 11123
  },
  "biome_order": [
   "RM_LongShade",
@@ -68,7 +68,7 @@
      "defName": "RM_LongShade",
      "ours": true,
      "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-     "rows_here": 75
+     "rows_here": 70
     }
    ],
    "rows": [
@@ -90,7 +90,7 @@
        "biome_def": "RM_LongShade"
       }
      ],
-     "label": "landopus",
+     "label": "thraia",
      "defNames": [
       "JOE_Landopus"
      ],
@@ -304,14 +304,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Bokka",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Bokka / RSW_Bokka",
-       "in_this_biome": true
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [],
      "art": {
       "resources": [
@@ -321,8 +314,7 @@
         "joined_by": "def",
         "in_ledger": true,
         "subjects": [
-         "RM_Bokka",
-         "RSW_Bokka"
+         "RM_Bokka"
         ],
         "live": {
          "mod": "src/RimStarWars/SWBestiary",
@@ -473,6 +465,111 @@
        "row": null
       }
      ],
+     "noncanon_twin": []
+    },
+    {
+     "key": "RM_Dunejelly",
+     "kind": "fauna",
+     "port": "RM_Dunejelly",
+     "donors": [],
+     "pairing": {},
+     "placements": [
+      {
+       "as_written": "RM_Dunejelly",
+       "commonality": 0.7,
+       "source": "inline",
+       "layer": "inline_RM",
+       "patch_mod": null,
+       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
+       "may_require": null,
+       "biome_def": "RM_LongShade"
+      }
+     ],
+     "label": "dunejelly",
+     "defNames": [
+      "RM_Dunejelly"
+     ],
+     "commonality_max": 0.7,
+     "canon": {
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
+      "ruled": false,
+      "wookieepedia": null,
+      "canon_missing_entry": false
+     },
+     "twins": [],
+     "artpipe_state_jobs": [],
+     "art": {
+      "resources": [
+       {
+        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+        "role": "body",
+        "joined_by": "def",
+        "in_ledger": true,
+        "subjects": [
+         "RM_Dunejelly"
+        ],
+        "live": {
+         "mod": "src/RimStarWars/SWBestiary",
+         "label": "IN GAME \u2014 SWBestiary",
+         "faces": {
+          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+         },
+         "winner_by_load_order": true
+        },
+        "versions": [
+         {
+          "kind": "live",
+          "label": "IN GAME \u2014 SWBestiary",
+          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
+          "date": "2026-09-11",
+          "faces": {
+           "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+           "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+           "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render desertportb_jellypot",
+          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
+          "date": "2026-09-27",
+          "faces": {
+           "east": "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
+           "north": "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899",
+           "south": "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8"
+          },
+          "near_dup_of": null
+         }
+        ],
+        "prior_selection": {
+         "sheet": "desert_sitting1_2026-10-04",
+         "decision": "A",
+         "note": "",
+         "prefill": "A",
+         "changed_from_prefill": false,
+         "picked_label": "IN GAME \u2014 SWBestiary",
+         "picked_faces": {
+          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+         },
+         "saved_at": "2026-10-04T08:59:16-0700"
+        }
+       }
+      ],
+      "n_versions": 2,
+      "has_art": true,
+      "basis": "ledger",
+      "live_res": 1,
+      "in_game": 1
+     },
+     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -712,12 +809,10 @@
      ],
      "commonality_max": 0.5,
      "canon": {
-      "entry": "design/RimStarWars/canon_references/greatdevourer",
-      "match": "dir_name",
-      "images": [
-       "design/RimStarWars/canon_references/greatdevourer/wookieepedia_canon_1.webp"
-      ],
-      "has_must_show": true,
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -777,237 +872,6 @@
       "in_game": 1
      },
      "ledger_rulings": [
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_Groundrunner",
-     "kind": "fauna",
-     "port": "RM_Groundrunner",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Groundrunner",
-       "commonality": 0.5,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "groundrunner",
-     "defNames": [
-      "RM_Groundrunner"
-     ],
-     "commonality_max": 0.5,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Groundrunner",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Groundrunner / RSW_Groundrunner",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Groundrunner"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Groundrunner"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/LongShade",
-         "label": "IN GAME \u2014 LongShade",
-         "faces": {
-          "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
-          "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
-          "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 48b217923d 2026-10-02: Wire 105 finished artpipe renders into their defs' texPaths (49 skipped, see log); belt reports",
-          "date": "2026-10-02",
-          "faces": {
-           "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
-           "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
-           "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 1,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_Jellypot",
-     "kind": "fauna",
-     "port": "RM_Jellypot",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Jellypot",
-       "commonality": 0.7,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "jellypot",
-     "defNames": [
-      "RM_Jellypot"
-     ],
-     "commonality_max": 0.7,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Jellypot",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Jellypot / RSW_Jellypot",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "desertportb_jellypot",
-      "longshade_rsw_jellypot_v1"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Jellypot",
-         "RSW_Jellypot"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
-          "date": "2026-09-11",
-          "faces": {
-           "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-           "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-           "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render desertportb_jellypot",
-          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
-          "date": "2026-09-27",
-          "faces": {
-           "east": "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
-           "north": "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899",
-           "south": "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": {
-         "sheet": "desert_sitting1_2026-10-04",
-         "decision": "A",
-         "note": "",
-         "prefill": "A",
-         "changed_from_prefill": false,
-         "picked_label": "IN GAME \u2014 SWBestiary",
-         "picked_faces": {
-          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-         },
-         "saved_at": "2026-10-04T08:59:16-0700"
-        }
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
       {
        "verdict": "keep",
        "by": "agent",
@@ -1118,205 +982,6 @@
       "in_game": 1
      },
      "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_Kudda",
-     "kind": "fauna",
-     "port": "RM_Kudda",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Kudda",
-       "commonality": 0.2,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "kudda",
-     "defNames": [
-      "RM_Kudda"
-     ],
-     "commonality_max": 0.2,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Kudda",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Kudda / RSW_Kudda",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Kudda"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Kudda/RM_Kudda",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Kudda"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/LongShade",
-         "label": "IN GAME \u2014 LongShade",
-         "faces": {
-          "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
-          "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
-          "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
-           "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
-           "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Kudda",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "83b719b83fb3ba1676b6e75dfa62b24c2559cb1e27739e0d55f82ae7233eff53",
-           "north": "db6b01cf6b48acde356e6aabd7aeaf7bd48153724ffeae12c735e5f3bcf88e54",
-           "south": "0c8402881b9cc9428b3a936b2b81f9a6756f347a3534c26d175dfe3ee31b0ab5"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_MatureFleshbeast",
-     "kind": "fauna",
-     "port": "RM_MatureFleshbeast",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_MatureFleshbeast",
-       "commonality": 0.5,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "mature fleshbeast",
-     "defNames": [
-      "RM_MatureFleshbeast"
-     ],
-     "commonality_max": 0.5,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_MatureFleshbeast",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_MatureFleshbeast / RSW_MatureFleshbeast",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_MatureFleshbeast"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_MatureFleshbeast/RM_MatureFleshbeast",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_MatureFleshbeast"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/LongShade",
-         "label": "IN GAME \u2014 LongShade",
-         "faces": {
-          "east": "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
-          "north": "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c",
-          "south": "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 48b217923d 2026-10-02: Wire 105 finished artpipe renders into their defs' texPaths (49 skipped, see log); belt reports",
-          "date": "2026-10-02",
-          "faces": {
-           "east": "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
-           "north": "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c",
-           "south": "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 1,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "redo",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
      "noncanon_twin": []
     },
     {
@@ -1503,15 +1168,15 @@
      "noncanon_twin": []
     },
     {
-     "key": "RM_Ossik",
+     "key": "RM_Oreclaw",
      "kind": "fauna",
-     "port": "RM_Ossik",
+     "port": "RM_Oreclaw",
      "donors": [],
      "pairing": {},
      "placements": [
       {
-       "as_written": "RM_Ossik",
-       "commonality": 0.4,
+       "as_written": "RM_Oreclaw",
+       "commonality": 0.5,
        "source": "inline",
        "layer": "inline_RM",
        "patch_mod": null,
@@ -1520,11 +1185,11 @@
        "biome_def": "RM_LongShade"
       }
      ],
-     "label": "ossik",
+     "label": "oreclaw",
      "defNames": [
-      "RM_Ossik"
+      "RM_Oreclaw"
      ],
-     "commonality_max": 0.4,
+     "commonality_max": 0.5,
      "canon": {
       "entry": null,
       "match": null,
@@ -1534,34 +1199,25 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Ossik",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Ossik / RSW_Ossik",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Ossik"
-     ],
+     "twins": [],
+     "artpipe_state_jobs": [],
      "art": {
       "resources": [
        {
-        "res": "Things/Pawn/Animal/RM_Ossik/RM_Ossik",
+        "res": "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner",
         "role": "body",
         "joined_by": "def",
         "in_ledger": true,
         "subjects": [
-         "RM_Ossik"
+         "RM_Oreclaw"
         ],
         "live": {
          "mod": "src/RimMandrake/LongShade",
          "label": "IN GAME \u2014 LongShade",
          "faces": {
-          "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
-          "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-          "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
+          "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
+          "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
+          "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
          },
          "winner_by_load_order": true
         },
@@ -1569,24 +1225,12 @@
          {
           "kind": "live",
           "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
+          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 48b217923d 2026-10-02: Wire 105 finished artpipe renders into their defs' texPaths (49 skipped, see log); belt reports",
+          "date": "2026-10-02",
           "faces": {
-           "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
-           "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-           "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Ossik",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
-           "north": "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767",
-           "south": "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819"
+           "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
+           "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
+           "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
           },
           "near_dup_of": null
          }
@@ -1594,7 +1238,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 1,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -2369,107 +2013,6 @@
      "noncanon_twin": []
     },
     {
-     "key": "RM_Thurra",
-     "kind": "fauna",
-     "port": "RM_Thurra",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Thurra",
-       "commonality": 0.05,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "thurra",
-     "defNames": [
-      "RM_Thurra"
-     ],
-     "commonality_max": 0.05,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Thurra",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Thurra / RSW_Thurra",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Thurra"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Thurra/RM_Thurra",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Thurra"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/LongShade",
-         "label": "IN GAME \u2014 LongShade",
-         "faces": {
-          "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
-          "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
-          "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
-           "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
-           "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Thurra",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "e3dbd0226bc38f132307b352c36ec19b7202b68097b37b8022d42a73fd7ed8be",
-           "north": "93baf55460506694bc18710a1de9f20d50995219539dba2876d42baff4923a64",
-           "south": "0e97b9ed73a76baad2b937861950eb2aec39c95710f43f28396d584fcd632c99"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
      "key": "RM_TruffleMole",
      "kind": "fauna",
      "port": "RM_TruffleMole",
@@ -3114,112 +2657,6 @@
        "ts": "2026-10-04T08:26:04-0700",
        "via": "Transient/art_doubles_compare_2026-10-04.decisions.json",
        "row": "swanimals/Bantha/BanthaW_j"
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_Bokka",
-     "kind": "fauna",
-     "port": "RSW_Bokka",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Bokka",
-     "layer": "Star Wars twin of RM_Bokka (not cast in this biome)",
-     "label": "bokka",
-     "defNames": [
-      "RSW_Bokka"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Bokka",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Bokka / RM_Bokka",
-       "in_this_biome": true
-      },
-      {
-       "defName": "RM_Ssurr",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Iguana/Dessicated_Iguana",
-       "in_this_biome": false
-      }
-     ],
-     "artpipe_state_jobs": [],
-     "art": {
-      "resources": [
-       {
-        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Bokka",
-         "RSW_Bokka"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
-          "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
-          "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
-          "date": "2026-09-11",
-          "faces": {
-           "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
-           "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
-           "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RSW_Stoneback",
-          "detail": "2026-09-23 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 STONEBACK_BOKKA_ART_STANDARD_1",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "eafc5f0e96822ed379d91db612a1b8bcd33d33ad28c338ea22c0dbcfb27437a6",
-           "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
-           "south": "9225dd365647e53b48cdadbd2c8c25eb2950f5b5e030a02900b6e3de95f6d2f7"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "keeps_name",
-       "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
       }
      ],
      "noncanon_twin": []
@@ -4990,18 +4427,16 @@
      "placements": [],
      "twin_row_of": "RM_GreatDevourer",
      "layer": "Star Wars twin of RM_GreatDevourer (not cast in this biome)",
-     "label": "great devourer",
+     "label": "sarlacc seeker",
      "defNames": [
       "RSW_GreatDevourer"
      ],
      "commonality_max": null,
      "canon": {
-      "entry": "design/RimStarWars/canon_references/greatdevourer",
-      "match": "index_defname",
-      "images": [
-       "design/RimStarWars/canon_references/greatdevourer/wookieepedia_canon_1.webp"
-      ],
-      "has_must_show": true,
+      "entry": null,
+      "match": null,
+      "images": [],
+      "has_must_show": false,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -5058,112 +4493,6 @@
        }
       ],
       "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": [
-      "RM_GreatDevourer"
-     ]
-    },
-    {
-     "key": "RSW_Groundrunner",
-     "kind": "fauna",
-     "port": "RSW_Groundrunner",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Groundrunner",
-     "layer": "Star Wars twin of RM_Groundrunner (not cast in this biome)",
-     "label": "groundrunner",
-     "defNames": [
-      "RSW_Groundrunner"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Groundrunner",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Groundrunner / RM_Groundrunner",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Groundrunner"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Groundrunner"
-        ],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals Retextured",
-          "detail": "load index 462 (last loaded, wins) \u00b7 ks.aaretextured \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RSW_Groundrunner in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "a9e20d76c56129b6fd7db02b882672bf4e86e1f3a58158dde0a2e18eceef0d8d",
-           "north": "69a410bed9ec65a3d329c7ddf415ccaa6595635ff869feb18ae178a63102123b",
-           "south": "a1c3f4e0a06ca9cf5c9c0d136f6f036a372065397db66a641fcc4f99bbbb21cf"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Groundrunner",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
-           "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
-           "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "donor",
-          "label": "donor original \u2014 Alpha Animals",
-          "detail": "load index 404 (shadowed by a later mod) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RSW_Groundrunner in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "17b9fe717e4e2e007769b4fe7c48e9f9c4094f6a7830e4d6b6de321e38d2ffd7",
-           "north": "ca8b3fcfac8b2ce495ceef5d010c4dd6efdb97956559468fa0bedea9fb002fab",
-           "south": "63240c09348dca437ed9ec19c1d84efaa847821efe3398bbe830c853e5c4212e"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -5259,10 +4588,12 @@
          {
           "kind": "artpipe",
           "label": "render longshade_rsw_gutkurr_v1",
-          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
-           "east": "1f9d8801be5270b102b035cef964cde6a417edb96058586e3a3ba95ac198d3c3"
+           "east": "1f9d8801be5270b102b035cef964cde6a417edb96058586e3a3ba95ac198d3c3",
+           "north": "aec9eb58e5a5da076f991d9aa2fb7074c27bfac9227fc486fa4f442192431456",
+           "south": "60b55bf5fc28c96072e62b8b246c591206bb0b062d204af94d4d7bd1fd3678dd"
           },
           "near_dup_of": null
          },
@@ -5407,6 +4738,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_horax_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "b9bbefe1d432fc0b3f46f82876e70b29a1ac9488e17d00f6e4322f82226001a6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_horax",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5458,7 +4799,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -5569,6 +4910,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_hrumph_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "dad8444da393832763ccfeb7e4c96e89be64d4adbe60084a2b1427f61ec59be2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_hrumph",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5643,7 +4994,7 @@
         }
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -6461,136 +5812,6 @@
      "noncanon_twin": []
     },
     {
-     "key": "RSW_Jellypot",
-     "kind": "fauna",
-     "port": "RSW_Jellypot",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Jellypot",
-     "layer": "Star Wars twin of RM_Jellypot (not cast in this biome)",
-     "label": "jellypot",
-     "defNames": [
-      "RSW_Jellypot"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Jellypot",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Jellypot / RM_Jellypot",
-       "in_this_biome": true
-      },
-      {
-       "defName": "RM_Mirrik",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Spelopede/Dessicated_Spelopede",
-       "in_this_biome": false
-      }
-     ],
-     "artpipe_state_jobs": [
-      "desertportb_jellypot",
-      "longshade_rsw_jellypot_v1"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Jellypot",
-         "RSW_Jellypot"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier",
-          "date": "2026-09-11",
-          "faces": {
-           "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-           "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-           "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render desertportb_jellypot",
-          "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
-          "date": "2026-09-27",
-          "faces": {
-           "east": "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
-           "north": "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899",
-           "south": "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": {
-         "sheet": "desert_sitting1_2026-10-04",
-         "decision": "A",
-         "note": "",
-         "prefill": "A",
-         "changed_from_prefill": false,
-         "picked_label": "IN GAME \u2014 SWBestiary",
-         "picked_faces": {
-          "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
-          "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
-          "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
-         },
-         "saved_at": "2026-10-04T08:59:16-0700"
-        }
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
      "key": "RSW_Jimvu",
      "kind": "fauna",
      "port": "RSW_Jimvu",
@@ -6982,98 +6203,6 @@
        "row": null
       }
      ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_Kudda",
-     "kind": "fauna",
-     "port": "RSW_Kudda",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Kudda",
-     "layer": "Star Wars twin of RM_Kudda (not cast in this biome)",
-     "label": "kudda",
-     "defNames": [
-      "RSW_Kudda"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Kudda",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Kudda / RM_Kudda",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Kudda"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Kudda"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
-          "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
-          "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
-           "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
-           "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Kudda",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "83b719b83fb3ba1676b6e75dfa62b24c2559cb1e27739e0d55f82ae7233eff53",
-           "north": "db6b01cf6b48acde356e6aabd7aeaf7bd48153724ffeae12c735e5f3bcf88e54",
-           "south": "0c8402881b9cc9428b3a936b2b81f9a6756f347a3534c26d175dfe3ee31b0ab5"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -7473,98 +6602,6 @@
       },
       {
        "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_MatureFleshbeast",
-     "kind": "fauna",
-     "port": "RSW_MatureFleshbeast",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_MatureFleshbeast",
-     "layer": "Star Wars twin of RM_MatureFleshbeast (not cast in this biome)",
-     "label": "mature fleshbeast",
-     "defNames": [
-      "RSW_MatureFleshbeast"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_MatureFleshbeast",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_MatureFleshbeast / RM_MatureFleshbeast",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_MatureFleshbeast"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_MatureFleshbeast"
-        ],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals",
-          "detail": "load index 404 (last loaded, wins) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RSW_MatureFleshbeast in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "f1670b5aaed94d1e0e5ba547d5794771fd8c8b3428c3b304333280a78cc6fea7",
-           "north": "5cf5d982a7c08af9430c443ef2678f2343f24fd2d7f065408c404a8ceae5b81c",
-           "south": "21e37f4534af6d5aa695811aea9f39b2a296ddc0d6be580c4169d6a35347fc21"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_MatureFleshbeast",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
-           "north": "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c",
-           "south": "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "redo",
        "by": "agent",
        "trust": "prefill",
        "ts": "2026-10-04T08:03:11-0700",
@@ -8164,111 +7201,6 @@
          }
         ],
         "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_Ossik",
-     "kind": "fauna",
-     "port": "RSW_Ossik",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Ossik",
-     "layer": "Star Wars twin of RM_Ossik (not cast in this biome)",
-     "label": "ossik",
-     "defNames": [
-      "RSW_Ossik"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Ossik",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Ossik / RM_Ossik",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Ossik"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Ossik"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
-          "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-          "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
-           "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-           "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Ossik",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
-           "north": "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767",
-           "south": "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": {
-         "sheet": "desert_sitting1_2026-10-04",
-         "decision": "A",
-         "note": "",
-         "prefill": "A",
-         "changed_from_prefill": false,
-         "picked_label": "IN GAME \u2014 SWBestiary",
-         "picked_faces": {
-          "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
-          "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-          "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
-         },
-         "saved_at": "2026-10-04T08:59:16-0700"
-        }
        }
       ],
       "n_versions": 2,
@@ -9466,111 +8398,6 @@
        "row": null
       }
      ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_Thurra",
-     "kind": "fauna",
-     "port": "RSW_Thurra",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Thurra",
-     "layer": "Star Wars twin of RM_Thurra (not cast in this biome)",
-     "label": "thurra",
-     "defNames": [
-      "RSW_Thurra"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Thurra",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Thurra / RM_Thurra",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Thurra"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Thurra"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
-          "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
-          "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
-           "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
-           "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Thurra",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "e3dbd0226bc38f132307b352c36ec19b7202b68097b37b8022d42a73fd7ed8be",
-           "north": "93baf55460506694bc18710a1de9f20d50995219539dba2876d42baff4923a64",
-           "south": "0e97b9ed73a76baad2b937861950eb2aec39c95710f43f28396d584fcd632c99"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": {
-         "sheet": "desert_sitting1_2026-10-04",
-         "decision": "A",
-         "note": "",
-         "prefill": "A",
-         "changed_from_prefill": false,
-         "picked_label": "IN GAME \u2014 SWBestiary",
-         "picked_faces": {
-          "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
-          "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
-          "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
-         },
-         "saved_at": "2026-10-04T08:59:16-0700"
-        }
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -11754,77 +10581,6 @@
      "noncanon_twin": []
     },
     {
-     "key": "RSW_DommoTree",
-     "kind": "flora",
-     "port": "RSW_DommoTree",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RSW_DommoTree",
-       "commonality": 0.06,
-       "source": "patch",
-       "layer": "patch",
-       "patch_mod": "mandrake.rut.patches",
-       "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_LongShade.xml",
-       "may_require": null,
-       "biome_def": "RM_LongShade"
-      }
-     ],
-     "label": "dommo tree",
-     "defNames": [
-      "RSW_DommoTree"
-     ],
-     "commonality_max": 0.06,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [],
-     "artpipe_state_jobs": [
-      "rsw_dommotree_v1"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Plant/RSW_DommoTree",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_DommoTree"
-        ],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 mandrake.rsw.swbestiary \u00b7 loose PNG in the game's mod folders \u00b7 1 of 1 random variants \u00b7 bound: texPath of RSW_DommoTree in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "single": "d712e68d6e7839a5abd1efa77dab48ea9ee165efe6dbd02dd4dbddd9d4cd55a3"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 1,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
      "key": "RSW_Plant_Chakroot_Wild",
      "kind": "flora",
      "port": "RSW_Plant_Chakroot_Wild",
@@ -12260,17 +11016,17 @@
     }
    ],
    "summary": {
-    "twin_rows": 14,
-    "rows": 75,
-    "fauna": 62,
-    "flora": 13,
+    "twin_rows": 7,
+    "rows": 70,
+    "fauna": 58,
+    "flora": 12,
     "fish": 0,
-    "with_art": 75,
+    "with_art": 70,
     "no_art": 0,
-    "canon_entry": 38,
+    "canon_entry": 37,
     "canon_missing_entry": 0,
     "noncanon_twin": 0,
-    "any_twin": 14,
+    "any_twin": 7,
     "prior_selection_rows": 40
    }
   },
@@ -12405,14 +11161,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Drazzik",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Drazzik / RSW_Drazzik",
-       "in_this_biome": true
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "RM_Drazzik",
       "stillsand_regen_RM_Drazzik_swimming_v1"
@@ -12451,6 +11200,18 @@
           "near_dup_of": null
          }
         ],
+        "prior_selection": null
+       },
+       {
+        "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming",
+        "role": "swimming",
+        "joined_by": "def",
+        "in_ledger": false,
+        "subjects": [
+         "RM_Drazzik"
+        ],
+        "live": null,
+        "versions": [],
         "prior_selection": null
        }
       ],
@@ -12634,117 +11395,6 @@
            "east": "69f9d4e4593eab31cc968fd7f4482c3b259021fabd5b2aacf60fb5a35eff86b7",
            "north": "051ecf84cc3aae9444f51cb9b2b4a5dc49200235ec72843438189cf1dddf883b",
            "south": "7d8a03db1fbf0a5b7f5e9c744c5657be30a2f5f9e01e09c9d6d06b519099dc40"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "redo",
-       "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_Ikee",
-     "kind": "fauna",
-     "port": "RM_Ikee",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Ikee",
-       "commonality": 0.15,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
-       "may_require": null,
-       "biome_def": "RM_Stillsand"
-      }
-     ],
-     "label": "drageye",
-     "defNames": [
-      "RM_Ikee"
-     ],
-     "commonality_max": 0.15,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Ikee",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Ikee / RSW_Ikee",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Ikee",
-      "stillsand_regen_RSW_Ikee_v2"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Ikee"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/Stillsand",
-         "label": "IN GAME \u2014 Stillsand",
-         "faces": {
-          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 Stillsand",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-           "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-           "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Ikee",
-          "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 CONTAGION_BEDAZZLE_SITTING_1",
-          "date": "2026-09-28",
-          "faces": {
-           "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
-           "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
-           "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
           },
           "near_dup_of": null
          }
@@ -13718,79 +12368,6 @@
      "noncanon_twin": []
     },
     {
-     "key": "RSW_Drazzik",
-     "kind": "fauna",
-     "port": "RSW_Drazzik",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Drazzik",
-     "layer": "Star Wars twin of RM_Drazzik (not cast in this biome)",
-     "label": "drazzik",
-     "defNames": [
-      "RSW_Drazzik"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Drazzik",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Drazzik / RM_Drazzik",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Drazzik",
-      "stillsand_regen_RM_Drazzik_swimming_v1"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_SandLion/AA_SandLion",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Drazzik",
-         "RSW_SandLion"
-        ],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals",
-          "detail": "load index 404 (last loaded, wins) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RSW_Drazzik in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "b547882f66da5930fff269f50858099203f11721ccc583a6310dae418d7bd676",
-           "north": "113e8122f4e6f59f50cecbd052e9dcac6f6a2df903924a659b8fde534cb24909",
-           "south": "fe1bfc38c8aaf8933adde698ecd898b3faae27a1a5c437799bdd9538eac44606"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 1,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
      "key": "RSW_Gizka",
      "kind": "fauna",
      "port": "RSW_Gizka",
@@ -14307,14 +12884,23 @@
      "port": "RSW_Ikee",
      "donors": [],
      "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Ikee",
-     "layer": "Star Wars twin of RM_Ikee (not cast in this biome)",
+     "placements": [
+      {
+       "as_written": "RSW_Ikee",
+       "commonality": 0.15,
+       "source": "patch",
+       "layer": "patch",
+       "patch_mod": "mandrake.rut.patches",
+       "file": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+       "may_require": null,
+       "biome_def": "RM_Stillsand"
+      }
+     ],
      "label": "ikee",
      "defNames": [
       "RSW_Ikee"
      ],
-     "commonality_max": null,
+     "commonality_max": 0.15,
      "canon": {
       "entry": null,
       "match": null,
@@ -14324,14 +12910,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RM_Ikee",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Ikee / RM_Ikee",
-       "in_this_biome": true
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "RM_Ikee",
       "stillsand_regen_RSW_Ikee_v2"
@@ -15894,7 +14473,7 @@
     }
    ],
    "summary": {
-    "twin_rows": 5,
+    "twin_rows": 3,
     "rows": 28,
     "fauna": 22,
     "flora": 5,
@@ -15904,8 +14483,8 @@
     "canon_entry": 8,
     "canon_missing_entry": 0,
     "noncanon_twin": 0,
-    "any_twin": 5,
-    "prior_selection_rows": 2
+    "any_twin": 3,
+    "prior_selection_rows": 3
    }
   },
   "RM_BlueDesert": {
@@ -16506,12 +15085,22 @@
            "south": "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render bluedesert_Ossivel_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -17522,7 +16111,6 @@
       "RM_Lisqueth",
       "RM_Lisqueth_var1",
       "RM_Lisqueth_var2",
-      "RM_Lisqueth_var2.worker_last_message",
       "RM_Lisqueth_var3"
      ],
      "art": {
@@ -26789,14 +25377,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Nizzek",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Chicken/Dessicated_Chicken",
-       "in_this_biome": false
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "RM_Gawpsack"
      ],
@@ -29165,7 +27746,7 @@
     "canon_entry": 0,
     "canon_missing_entry": 1,
     "noncanon_twin": 1,
-    "any_twin": 10,
+    "any_twin": 9,
     "prior_selection_rows": 0
    }
   },
@@ -97081,7 +95662,7 @@
      "defName": "RM_WeepingStones",
      "ours": true,
      "file": "src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml",
-     "rows_here": 52
+     "rows_here": 51
     }
    ],
    "rows": [
@@ -97453,117 +96034,6 @@
      "noncanon_twin": []
     },
     {
-     "key": "RM_Ikee",
-     "kind": "fauna",
-     "port": "RM_Ikee",
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "RM_Ikee",
-       "commonality": 0.1,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml",
-       "may_require": "mandrake.rm.biomes",
-       "biome_def": "RM_WeepingStones"
-      }
-     ],
-     "label": "drageye",
-     "defNames": [
-      "RM_Ikee"
-     ],
-     "commonality_max": 0.1,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RSW_Ikee",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RM_Ikee / RSW_Ikee",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Ikee",
-      "stillsand_regen_RSW_Ikee_v2"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Ikee"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/Stillsand",
-         "label": "IN GAME \u2014 Stillsand",
-         "faces": {
-          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 Stillsand",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-           "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-           "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Ikee",
-          "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 CONTAGION_BEDAZZLE_SITTING_1",
-          "date": "2026-09-28",
-          "faces": {
-           "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
-           "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
-           "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "redo",
-       "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
      "key": "RM_Ivvol",
      "kind": "fauna",
      "port": "RM_Ivvol",
@@ -97793,14 +96263,7 @@
       },
       "canon_missing_entry": true
      },
-     "twins": [
-      {
-       "defName": "RSW_Nizzek",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Chicken/Chicken",
-       "in_this_biome": false
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "weepingstones2_kirruk"
      ],
@@ -97812,8 +96275,7 @@
         "joined_by": "def",
         "in_ledger": true,
         "subjects": [
-         "RM_Kirruk",
-         "RSW_Nizzek"
+         "RM_Kirruk"
         ],
         "live": null,
         "versions": [
@@ -98001,14 +96463,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Jellypot",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Spelopede/Dessicated_Spelopede",
-       "in_this_biome": false
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "weepingstones2_mirrik"
      ],
@@ -98359,14 +96814,7 @@
       "wookieepedia": null,
       "canon_missing_entry": false
      },
-     "twins": [
-      {
-       "defName": "RSW_Bokka",
-       "relation": "tier_twin_shared_texpath",
-       "evidence": "shares texPath Things/Pawn/Animal/Iguana/Dessicated_Iguana",
-       "in_this_biome": false
-      }
-     ],
+     "twins": [],
      "artpipe_state_jobs": [
       "weepingstones2_ssurr"
      ],
@@ -99965,121 +98413,6 @@
        "verdict": "keep",
        "by": "agent",
        "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RSW_Ikee",
-     "kind": "fauna",
-     "port": "RSW_Ikee",
-     "donors": [],
-     "pairing": {},
-     "placements": [],
-     "twin_row_of": "RM_Ikee",
-     "layer": "Star Wars twin of RM_Ikee (not cast in this biome)",
-     "label": "ikee",
-     "defNames": [
-      "RSW_Ikee"
-     ],
-     "commonality_max": null,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [
-      {
-       "defName": "RM_Ikee",
-       "relation": "tier_twin_same_stem",
-       "evidence": "RSW_Ikee / RM_Ikee",
-       "in_this_biome": true
-      }
-     ],
-     "artpipe_state_jobs": [
-      "RM_Ikee",
-      "stillsand_regen_RSW_Ikee_v2"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RSW_Ikee"
-        ],
-        "live": {
-         "mod": "src/RimStarWars/SWBestiary",
-         "label": "IN GAME \u2014 SWBestiary",
-         "faces": {
-          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 SWBestiary",
-          "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-           "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-           "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Ikee",
-          "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 CONTAGION_BEDAZZLE_SITTING_1",
-          "date": "2026-09-28",
-          "faces": {
-           "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
-           "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
-           "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": {
-         "sheet": "desert_sitting1_2026-10-04",
-         "decision": "A",
-         "note": "",
-         "prefill": "A",
-         "changed_from_prefill": false,
-         "picked_label": "IN GAME \u2014 SWBestiary",
-         "picked_faces": {
-          "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
-          "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
-          "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
-         },
-         "saved_at": "2026-10-04T08:59:16-0700"
-        }
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "redo",
-       "by": "owner",
-       "trust": "legacy-unresolved",
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
@@ -102815,35 +101148,35 @@
     }
    ],
    "summary": {
-    "twin_rows": 1,
-    "rows": 52,
-    "fauna": 26,
+    "twin_rows": 0,
+    "rows": 51,
+    "fauna": 25,
     "flora": 13,
     "fish": 13,
-    "with_art": 52,
+    "with_art": 51,
     "no_art": 0,
     "canon_entry": 8,
     "canon_missing_entry": 1,
     "noncanon_twin": 1,
-    "any_twin": 16,
+    "any_twin": 12,
     "prior_selection_rows": 3
    }
   }
  },
  "totals": {
-  "twin_rows": 35,
-  "rows": 911,
-  "fauna": 538,
-  "flora": 309,
+  "twin_rows": 25,
+  "rows": 905,
+  "fauna": 533,
+  "flora": 308,
   "fish": 64,
-  "with_art": 911,
+  "with_art": 905,
   "no_art": 0,
-  "canon_entry": 162,
+  "canon_entry": 161,
   "canon_missing_entry": 12,
   "noncanon_twin": 4,
-  "any_twin": 138,
-  "prior_selection_rows": 118,
-  "distinct_species": 873
+  "any_twin": 124,
+  "prior_selection_rows": 119,
+  "distinct_species": 859
  },
  "unmapped_patch_targets": {
   "RUT_Abyss": 26,
@@ -102852,8 +101185,8 @@
   "RUT_Cauldron": 28,
   "RUT_Contagion": 21,
   "RUT_CrackedLands": 25,
-  "RUT_Desert": 61,
-  "RUT_ExtremeDesert": 17,
+  "RUT_Desert": 56,
+  "RUT_ExtremeDesert": 16,
   "RUT_FeverWood": 18,
   "RUT_FuelSnows": 9,
   "RUT_Greentide": 47,

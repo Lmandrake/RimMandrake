@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-04 23:14
+# Biome flora/fauna art census — 2026-10-04 23:27
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -6,23 +6,23 @@ Columns: **rows** = species rows (donor + our port merged) · **art** = rows wit
 
 ## 1. the Long Shade (`RM_LongShade`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 34, patch mandrake.rut.patches 41
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 30, patch mandrake.rut.patches 40
 
-defs: `RM_LongShade` (75)
+defs: `RM_LongShade` (70)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 75 | 62 | 13 | 0 | 75 | 38 | 0 | 0 | 14 | 0 |
+| 70 | 58 | 12 | 0 | 70 | 37 | 0 | 0 | 7 | 0 |
 
 ## 2. the Stillsand (`RM_Stillsand`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20, patch mandrake.rut.patches 8
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 19, patch mandrake.rut.patches 9
 
 defs: `RM_Stillsand` (28)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 28 | 22 | 5 | 1 | 28 | 8 | 0 | 0 | 5 | 0 |
+| 28 | 22 | 5 | 1 | 28 | 8 | 0 | 0 | 3 | 0 |
 
 ## 3. the Blue Desert (`RM_BlueDesert`)
 
@@ -74,7 +74,7 @@ defs: `RM_Contagion` (35)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 35 | 22 | 13 | 0 | 35 | 0 | 1 | 1 | 10 | 0 |
+| 35 | 22 | 13 | 0 | 35 | 0 | 1 | 1 | 9 | 0 |
 
 **Canon, no entry (Wookieepedia title):** `RM_Peeper` → Peeper
 
@@ -356,13 +356,13 @@ defs: `RM_Webwork` (23)
 
 ## 34. the Weeping Stones (`RM_WeepingStones`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 44, patch mandrake.rut.patches 8
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 43, patch mandrake.rut.patches 8
 
-defs: `RM_WeepingStones` (52)
+defs: `RM_WeepingStones` (51)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 52 | 26 | 13 | 13 | 52 | 8 | 1 | 1 | 16 | 0 |
+| 51 | 25 | 13 | 13 | 51 | 8 | 1 | 1 | 12 | 0 |
 
 **Canon, no entry (Wookieepedia title):** `RM_Kirruk` → Kirruk/Legends
 
@@ -372,11 +372,11 @@ defs: `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 911 | 538 | 309 | 64 | 911 | 162 | 12 | 4 | 138 | 0 |
+| 905 | 533 | 308 | 64 | 905 | 161 | 12 | 4 | 124 | 0 |
 
-Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 873.
+Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 859.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 11118
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 254, _artpipe_jobs_anooba 8, _ledger_variants 11123
 
 
 **UNMEASURED:**
