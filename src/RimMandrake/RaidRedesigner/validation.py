@@ -253,7 +253,7 @@ def _src_with_proj():
 
 
 def _kv(t, method):
-    r = t.bridge_call("jawa/static_call", type=_PROOF, method=method, args="")
+    r = t.bridge_call("jawa/static_call", type=_PROOF, method=method, args="go")
     if not t._guard():
         return None, ""
     text = (r or {}).get("result") if isinstance(r, dict) else None
