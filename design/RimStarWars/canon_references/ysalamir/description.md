@@ -2,9 +2,6 @@
 
 **defName**: `SWPotF_RaceDef_ysalamir` — in-repo label "ysalamir" (canon name: ysalamiri); no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Ysalamiri
@@ -21,11 +18,20 @@ Ysalamiri sank their claws into the Olbio trees on which they lived and drew nut
 Ysalamiri did not actually negate the Force; since all existence was infused with Force energy, this would not be possible. Rather, they projected a bubble inside which users were unable to exert any influence over the Force. A single bubble measured up to 10 meters in diameter; large groups of ysalamiri could extend their collective bubble by kilometers, but only in great numbers.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images. The canon image is a stylised sculpture, not a living animal, so the Legends paintings carry the real anatomy.
+- **`canon_1` (Rebels frame, Thrawn's office sculptures):** a **green-grey/khaki sculpted lizard** standing on its hind legs, with a long curling tail and a **sail-like crest of flat, banded dorsal ribs (a stepped fin) running along the back**, a long flat crocodile-like snout full of zigzag jagged teeth, a flat head with **a row of round knobs on top that read as the "four eyes"** (two bumps are clearly visible), forelimbs held out with three-clawed hands. Stylised, geometric, with plated segments; green, brown and yellow per the text.
+- **`legends_1` (painting):** a **gold-tan to amber-orange climbing lizard** clinging to a tree trunk. **A long, flat, broad, almost duck-billed or triangular snout/head** with wide-set, small eyes (two visible on each side, one pair larger), a **short, fleshy ear-flap or frill behind each eye**, a **slim body with a long tail**, and a **row of dark oval spots/dashes down the spine and flanks and along the tail**. The legs are lizard-like with **big, hooked, curved claws that dig into the bark**. Throat loose and wrinkled. The pose is upright, climbing head-up.
+- **`legends_2` (painting, Myrkr):** several **bronze/golden-green, plump, smooth-skinned lizards** wrapped around a tree trunk, with a **long, thin, curling prehensile tail**, a rounded blunt head, small eyes, short limbs with small claws, the body folded flat to the bark; a faint dark ridge or flap along the back. More plump and salamander-like than `legends_1`.
+- **`legends_3` (sketch, with a blue-skinned humanoid):** a **tan-yellow lizard** with darker banding, **draped on a shoulder**, long snout, small horn-like bumps on the brow, a long banded tail wrapping around the arm: shows it is pet-sized.
+- **Disagreement:** `canon_1` is a stylised, **green, finned, toothy** sculpture; the Legends paintings are **golden, smooth, tree-dwelling, toothless-looking lizards**. Trust the Legends paintings for a living animal and `canon_1` only for the "four eyes" detail; the paintings show only two eyes plus a small second pair at most, so the "four-eyed" count is not clear in any of them.
+- **Size:** 50 cm per the Legends text; `legends_3` shows it at roughly the size of a forearm.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Slim, lizard-like body with a long, thin, prehensile tail that curls
+- [ ] Flat, broad, wedge-shaped snout and head with small eyes (four-eyed in canon text; clear in no image) and short ear-flaps
+- [ ] Large, hooked, curved claws that grip tree bark
+- [ ] Golden-tan to amber skin (Legends) with a row of dark oval spots down the back, flanks and tail
+- [ ] Climbing or clinging pose on a tree trunk, small pet size (about 50 cm)
 
 ## Engine limits
 not yet assessed

@@ -14,3 +14,8 @@ opeeseakiller done
 pufferpig done
 sandoaquamonster done
 shirotrap done
+sketto done
+urusai done
+voorpak done
+worrt done
+ysalamir done

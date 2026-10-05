@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Sketto` — in-repo label "sketto"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Sketto
@@ -25,11 +22,19 @@ Sketto tended to swarm with others of their kind to suck the blood of sleeping l
 In 32 BBY, during the Boonta Eve Classic podrace a group of skettos that inhabited a cave, fled from one of the cave exits to escape an explosion caused by the podracer Ratts Tyerell crashing his Podracer into a pillar of stone.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Three images: a canon prop photo (a stuffed sketto from Dok-Ondar's shop on Batuu) and two Legends watercolour sheets. Same overall shape, very different colour.
+- **Silhouette:** a small, lean, **dragonfly-like reptile**: a slim, elongated body, a long thin neck and a small, pointed head, **four narrow, long, translucent insect-like wings** (two forewings and two hindwings, held up and back or beating), and a **very long, thin, whip-like tail, about as long as the rest of the animal or longer** that ends in a small tuft or fan of feather-like fins in the Legends art. Text: four powerful legs, prehensile tail, wingspan up to 1 m.
+- **Head:** a small, narrow, wedge or beak-shaped head with a wide mouth packed with fangs and **two long curved fangs/tusks pointing down from the upper jaw** (strong in both Legends images, hinted in the canon prop where the open mouth shows curved fangs). Eyes are large and orange-red in the Legends art and small in the prop.
+- **Limbs:** four thin, spindly, insect-like legs with long curved claws, tucked under the body in flight; in the canon prop two of them grip a dead branch, with small clawed hands.
+- **Colour disagreement:** canon prop (`canon_1`) is **pale cream-pink bare skin** with a lightly banded tan-striped tail and **amber-brown, veined wing membranes**: it looks like a dried or taxidermied specimen. Legends (`legends_1`, `legends_2`) is a **yellow-green/olive and pale-blue** body with horizontal banding on the tail, **translucent pale blue and yellow wings with dark veins and blotches**. Prose gives no colour. Use the prop for skin texture and wing placement and the Legends sheets for the wing, tail-tuft and fang shapes. Treat the colouring as unsettled.
+- **Size:** 1 m long at most; the swarm in `legends_2` shows many tiny insect prey beside them.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Slim, lean body with a long thin neck and a small narrow wedge-shaped head
+- [ ] Four narrow, long, translucent insect-like wings (two pairs), veined
+- [ ] Very long thin whip-like tail, as long as the body or longer, ending in a small tuft or fan
+- [ ] Mouth full of fangs with two long curved tusk-like fangs hanging from the upper jaw
+- [ ] Four thin spindly clawed legs, held tucked under the body in flight
 
 ## Engine limits
 not yet assessed

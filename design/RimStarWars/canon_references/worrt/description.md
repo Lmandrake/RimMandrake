@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Worrt` — in-repo label "worrt"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Worrt
@@ -21,11 +18,21 @@ The worrt was an amphibious creature native to Tatooine, though they could also 
 Worrts could, with great difficulty, be trained as housepets. Jabba Desilijic Tiure kept a number of worrts as pest control, exploiting the creature's lightning-quick tongue. The worrt counted the native ibian among its prey. Worrt venom tasted like tricopper and was strong enough to kill a bantha.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images, very consistent: a big warty toad.
+- **Silhouette:** a squat, fat, **toad- or frog-like body, hunched forward with the weight on long, thin, powerful forelimbs** (the text's "dexterous forelimbs"), with a huge round belly and the hind legs folded away. The arms are long and spidery with large, long-fingered, splayed hands (very long, tapering fingers with rounded tips in `canon_1`).
+- **Head:** a broad, flat head, no visible neck, with **a very wide, thick-lipped, downturned toad mouth** (a heavy pouty upper lip in `canon_1`), two small nostrils, and **large bulging eyes on top, ringed with heavy lids**: orange-red in `canon_1`, amber/yellow-green in `canon_2` and `legends_1` and `legends_2`, vertical-slit pupils in the 3D renders. Between the eyes is a **ridged, grooved patch or brow plate** (banded folds, `canon_1` and `canon_2`).
+- **Palps:** **two long, thin, curved stalk-like cranial palps (antennae) rise from the top of the head**, bending outward, with small knobbed tips in `canon_1`.
+- **Spikes and skin:** a **crest of conical horn-like spikes around the top and sides of the head, over the shoulders and down the arms and back**: orange-brown in `canon_1`, tan to rose in `canon_2`, grey-brown in `legends_1` and `legends_2`. The skin is **warty, bumpy and rough everywhere**, with small raised tubercles.
+- **Colour disagreement:** `canon_1` is **olive-green with a yellow-ochre belly and orange-brown spikes**; `canon_2` is **rosy brown to dusty pink-tan with tan warts**; `legends_1` (the film puppet) is **tan-brown**; `legends_2` is **grey-brown**. The text says "brown, warty skin", and the belly turns bright yellow when full. So brown is the baseline; olive-green and rose-tan are the render variants, and a yellow belly is a state change.
+- **Size:** 1.5 m tall per the text; it looks bigger than a human torso in the puppet shot.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Squat, toad-like body hunched forward, supported on long, thin, strong forelimbs with big long-fingered hands
+- [ ] Very wide, thick-lipped, downturned mouth in a broad flat head with no neck
+- [ ] Large bulging heavy-lidded eyes (orange, amber or yellow-green) with a ridged brow patch between them
+- [ ] Two long, thin, curved palp stalks rising from the top of the head
+- [ ] Row of conical horn-like spikes around the head, over the shoulders and down the arms
+- [ ] Rough warty skin, brown as a baseline (olive-green and rose-tan variants), with a big round belly that can show bright yellow when full
 
 ## Engine limits
 not yet assessed

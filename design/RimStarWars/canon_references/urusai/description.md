@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Urusai` — in-repo label "urusai"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Urusai
@@ -25,11 +22,22 @@ With a wingspan of two meters, a hefty weight of forty-three kilograms, and a li
 They formed a symbiotic relationship with Sarlaccs (specifically with the gigantic females) - urusai clean the teeth and tentacles of the female Sarlacc while the female Sarlacc offers up killed food to her flying reptavian custodians, which also may nest near her.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images from the Wildlife/Wonders-of-Star-Wars-style sheets (watercolour and ink); the canon pair are small cropped details (an urusai cleaning a sarlacc), the Legends pair are the clear views. Judge shape from `legends_1` and `legends_2`.
+- **Silhouette (`legends_1`, upright display pose):** a **thin, tubular, fleshy body, snake- or worm-like below and rising upright**, with a **tail that spreads into a wide, flat, fan-shaped, webbed foot-like paddle** at the base, edged with small claw-like spikes (bright yellow, thin-skinned). The animal balances upright on this tail fan (mating display per the text). Short, stubby, human-like clawed hands on small arms at the chest.
+- **Four wings:** **two large rear wings and two smaller front wings**, all broad, thin, leathery, scalloped and spiky, **with talon-like claws along the outer edges** and large **dark blue concentric eye-spot rings** on a white and pale-blue membrane with yellow rims (`legends_1`). In flight/at rest (`legends_2`) the wings fold as a large yellow, green-veined, spiky-edged diamond or heart shape with the long tail fan trailing. Matches the text: blue and yellow, white underside, talons on the wing edges.
+- **Body and head:** the torso is a smooth, bulging, egg-shaped belly, **pale blue with darker blue dots** (`legends_1`), with a pale cream throat; the body is hairless, with soft bare skin. **The head is small and blue, jowly, with a short curved beak and a red eye**, held up on a short neck.
+- **Colour:** yellow, blue and white. Yellow on the tail fan and wing rims; blue on the belly, head, eye-spots and spots; white or cream on the underside and wing centres. Canon sheets (`canon_1`, `canon_2`) show the same palette in duller form: cream-yellow, pimpled, wormy tail and blue-white wings.
+- **Canon pair:** `canon_1` shows an urusai in a sarlacc's tentacle-and-nest scene, wings narrow and folded, its tail wrapping like a thick pimpled tentacle; `canon_2` shows one clinging head-down to a sarlacc tooth. Their anatomy agrees but is mostly hidden.
+- **Disagreement:** the text (canon) says "jowly, beaked face with red eyes", "fan-shaped tail with spikes and white underside" and four wings: images agree. The Legends text says females have two wings, males four; the images show four.
+- **Size:** 2 m wingspan, 43 kg (Legends text); no scale object in the images.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Four broad, leathery, scalloped wings (two larger rear, two smaller front) with talon-like claws along the outer edges
+- [ ] Wings white or pale blue with large dark blue concentric eye-spot rings and yellow rims
+- [ ] Tail that spreads into a flat, fan-shaped, spiked paddle with a white underside
+- [ ] Small jowly blue head with a short beak and red eyes
+- [ ] Smooth bare skin, bulging pale-blue belly with darker blue dots
+- [ ] Overall yellow, blue and white palette
 
 ## Engine limits
 not yet assessed
