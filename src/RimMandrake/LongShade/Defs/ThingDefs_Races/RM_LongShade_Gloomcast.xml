@@ -185,7 +185,7 @@
       <body>RM_GloomcastBody</body>
       <predator>false</predator>
       <herdAnimal>false</herdAnimal> <!-- solitary — "a megafauna IS a mobile shade patch, the only one that exists" (desert.md §4c) -->
-      <baseBodySize>16.0</baseBodySize>
+      <baseBodySize>24</baseBodySize>
       <baseHealthScale>12.0</baseHealthScale>
       <baseHungerRate>2.2</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
@@ -234,7 +234,7 @@
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
           <!-- GLOOMCAST OWN ART 2026-10-02: own 3-facing render (artpipe RM_Gloomcast_{north,east,south}, downscaled 1024->512); the old ochre body tint is dropped because the colour is baked in. Dessicated sprite is still the Horax-derived copy. -->
-          <drawSize>2.2</drawSize>
+          <drawSize>3.3</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,-0.2)</offset>
@@ -242,13 +242,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast_Dessicated</texPath>
-          <drawSize>2.2</drawSize>
+          <drawSize>3.3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
-          <drawSize>6.4</drawSize>
+          <drawSize>9.6</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
             <offset>(0,0,-0.25)</offset>
@@ -256,13 +256,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast_Dessicated</texPath>
-          <drawSize>6.4</drawSize>
+          <drawSize>9.6</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
-          <drawSize>8.8</drawSize>
+          <drawSize>13.2</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
             <offset>(0,0,-0.3)</offset>
@@ -270,7 +270,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast_Dessicated</texPath>
-          <drawSize>8.8</drawSize>
+          <drawSize>13.2</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
