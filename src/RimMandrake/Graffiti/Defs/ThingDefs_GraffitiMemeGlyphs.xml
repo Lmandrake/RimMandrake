@@ -51,10 +51,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Cannibal</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -80,10 +76,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_MaleSupremacy</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -109,10 +101,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FemaleSupremacy</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -138,10 +126,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Nudism</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -167,10 +151,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Inhuman</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>
@@ -196,10 +176,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_PainIsVirtue</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -229,10 +205,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Loyalist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -262,10 +234,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Guilty</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -298,10 +266,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Raider</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -327,10 +291,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Blindsight</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -357,10 +317,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Darkness</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -387,10 +343,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Tunneler</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -417,10 +369,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Rancher</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -446,10 +394,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_AnimalPersonhood</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -476,10 +420,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_NaturePrimacy</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -506,10 +446,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_TreeConnection</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -536,10 +472,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HumanPrimacy</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -565,10 +497,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Supremacist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -597,10 +525,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Collectivist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -630,10 +554,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Individualist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -660,10 +580,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Proselytizer</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
@@ -689,10 +605,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Transhumanist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>
@@ -719,10 +631,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_FleshPurity</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -748,10 +656,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_HighLife</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
@@ -777,10 +681,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Bloodfeeding</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -806,10 +706,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Ritualist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -841,10 +737,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Glyph_Shipborn</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-1</Beauty>
