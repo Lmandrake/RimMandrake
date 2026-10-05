@@ -988,7 +988,12 @@ def lane_a_live(B, rows, log):
     # B8 LOD by zoom
     cam = B.call("rimworld/get_camera_state")
     B.call("rimworld/set_camera_zoom", rootSize=58)
+    # HARNESS (proof_all run 1, 2026-10-05): the camera eases to a new root over several frames; 3 motion reads (~0.75 s)
+    # caught it at "Middle" (lodFarNow false). Read until the zoom has arrived (<= 5 s), then judge exactly as before.
+    t_z = time.time()
     f1 = motion(B, 3)
+    while f1.get("zoom") != "Furthest" and time.time() - t_z < 5.0:
+        f1 = motion(B, 2)
     shot_far = shot(B, "p1b_04_far_zoom_lod", (SITE[0] - 10, SITE[1] - 10, SITE[2] + 20, SITE[3] + 20), log, pad=0)
     # LEARNED run 1b-1: frame_cell_rect moves the camera but keeps a Furthest zoom; set the root back explicitly
     B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)

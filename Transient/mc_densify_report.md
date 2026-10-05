@@ -30,3 +30,9 @@ started
 ## Live
 - game killed, winbuild OK, deployed, MessyConduit folder -> D:\Luke\dev\_rmscratch\retired_mods, tier gimmesomeslack (10 active), bridge up 14s
 - Player.log: 3x carried old Messy Conduit settings over (all three files) PASS
+- Mod Settings: probe settingscats -> ["RimMandrake: Gimme Some Slack"], 3 mod handles (P2 now asserts it)
+- run1 (--no-shots): offline gate 26.8s (C2 accepted), P1-P3 PASS
+- run1 result: 144 rows, 137 PASS / 6 FAIL / 1 RECORD (maze P1: RM_LiquidTank absent on tier), wall 589 s (~10 min, state-only)
+  * FAIL MX_F51/F54/F56 + core M2b (unwalkable vertices): INSTRUMENT drift -- the live probe counted round-2 (cord under machine art) and round-4 (socket on a wall plate, loose wire from it) end runs that the offline SelfTest trims by design (Program.TrimUnderArt). Fix: one rule CordAudit.TrimUnderArt shared by SelfTest + probe, with WallMount face depths. SelfTest 679/679.
+  * FAIL B8 LOD: harness timing -- camera eases zoom; read at Middle. Fix: poll until Furthest (<=5 s), same predicate.
+  * FAIL SL2: REAL MOD DEFECT -- RimMandrake.GimmeSomeSlack.Aerial.RM_MapComponent_ConduitRuns written into the save (same class as the 2026-10-02 CordGraph defect; stage-2 component never got the ExposeComponents skip). Fixed: Patch_Map_ExposeComponents_SkipConduitRuns. Second hit = curDriver JobDriver_CarryHoseEnd of the pawn staged CARRYING: accepted by hose_carry_design s11; SL2 counts it apart, capped at the carrying pawns.

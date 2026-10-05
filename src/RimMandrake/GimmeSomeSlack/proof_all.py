@@ -482,8 +482,22 @@ class Proof(object):
         hits = {k: blob.count(k.encode()) for k in ("GimmeSomeSlack", "RM_MapComponent_Aerial", "RM_MapComponent_Hoses",
                                                     "RM_MapComponent_CordGraph", "MessyConduit", "rmHoseState")}
         styles = {l: blob.count(("RM_HoseReel_%s" % l).encode()) for l in VSH.LOOKS}
-        ctx = [blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:] for i in V._find_all(blob, b"GimmeSomeSlack")][:3]
-        sl2 = all(hits[k] == 0 for k in hits if k != "rmHoseState") and hits["rmHoseState"] >= 1 and all(v >= 1 for v in styles.values())
+        # A pawn CARRYING a hose at save time has his job deep-saved by vanilla, driver class included: hose_carry_design
+        # 2026-10-04 section 11 ("the pawn's job is deep-saved by vanilla and resumes at its toil index"; mod removal: "Accepted,
+        # same class as M9"). Those hits are counted apart and capped at the pawns the staging left carrying (SL4); every other
+        # occurrence of our namespace is a fault (found live 2026-10-05: RM_MapComponent_ConduitRuns written as a map component).
+        expected, offending = 0, []
+        for i in V._find_all(blob, b"GimmeSomeSlack"):
+            if blob[max(0, i - 40):i].endswith(b'<curDriver Class="RimMandrake.') and blob[i:i + 30].startswith(b"GimmeSomeSlack.Hose.Jobs."):
+                expected += 1
+            else:
+                offending.append(blob[max(0, i - 120):i + 60].decode("utf-8", "replace").strip()[-160:])
+        carrying = 1 if (carry.get("reel2_staged") or {}).get("carry") == "Carrying" else 0
+        hits["GimmeSomeSlack"] = len(offending)
+        hits["carryJobDriver(expected)"] = expected
+        ctx = offending[:3]
+        sl2 = all(hits[k] == 0 for k in hits if k not in ("rmHoseState", "carryJobDriver(expected)")) and expected <= carrying \
+            and hits["rmHoseState"] >= 1 and all(v >= 1 for v in styles.values())
         self.row("save_load", "SL2_save_names_no_class_of_ours", "PASS" if sl2 else "FAIL", "MOD",
                  {"counts": hits, "hoseReelStylesInSave": styles, "first": ctx})
         ld = B.call("rimworld/load_game", saveName=name)

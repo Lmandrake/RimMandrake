@@ -155,7 +155,8 @@ namespace RimMandrake.GimmeSomeSlack
                     total += s.Pts.Count;
                     foreach (V2 q in s.Pts) { bx0 = Math.Min(bx0, q.X); bz0 = Math.Min(bz0, q.Z); bx1 = Math.Max(bx1, q.X); bz1 = Math.Max(bz1, q.Z); }
                     if (s.OverFace || w == null) continue;
-                    for (int i = 1; i < s.Pts.Count - 1; i++) if (!w.IsWalkable(s.Pts[i].Floor)) bad++;
+                    List<V2> tq = CordAudit.TrimUnderArt(w, s.Pts);            // the SelfTest's floor rule, one instrument
+                    for (int i = 1; i < tq.Count - 1; i++) if (!w.IsWalkable(tq[i].Floor)) bad++;
                 }
             }
             F("pieces", mine.Count.ToString());
@@ -427,10 +428,11 @@ namespace RimMandrake.GimmeSomeSlack
                         strands++;
                         if (s.FellBack) fell++;
                         if (s.OverFace) continue;
-                        for (int i = 1; i < s.Pts.Count - 1; i++)
+                        List<V2> q = CordAudit.TrimUnderArt(w, s.Pts);         // the SelfTest's floor rule, one instrument
+                        for (int i = 1; i < q.Count - 1; i++)
                         {
                             vtx++;
-                            if (!w.IsWalkable(s.Pts[i].Floor)) bad++;
+                            if (!w.IsWalkable(q[i].Floor)) bad++;
                         }
                     }
                 }
