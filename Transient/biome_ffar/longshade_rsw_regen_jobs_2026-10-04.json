@@ -1,0 +1,1734 @@
+[
+ {
+  "id": "longshade_rsw_bantha_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bantha",
+  "target_original": "Bantha",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on the canon imagery, the very wide slit mouth, the extremely long shaggy hair, that reaches to the ground, and the enormous curled horns. Variants of various colors are welcome.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make the mouth small, the hair short, or the horns small or straight.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bantha",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_herd_screencap.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_bantha_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bantha",
+  "target_original": "Bantha",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on the canon imagery, the very wide slit mouth, the extremely long shaggy hair, that reaches to the ground, and the enormous curled horns. Variants of various colors are welcome.\" THIS VARIANT: colour variant, shaggy coat in pale cream-white; every anatomical canon feature unchanged. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: change anatomy; only the colour varies.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bantha",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_bantha_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bantha",
+  "target_original": "Bantha",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on the canon imagery, the very wide slit mouth, the extremely long shaggy hair, that reaches to the ground, and the enormous curled horns. Variants of various colors are welcome.\" THIS VARIANT: colour variant, shaggy coat in grey-blue slate; every anatomical canon feature unchanged. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: change anatomy; only the colour varies.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bantha",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_bantha_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bantha",
+  "target_original": "Bantha",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on the canon imagery, the very wide slit mouth, the extremely long shaggy hair, that reaches to the ground, and the enormous curled horns. Variants of various colors are welcome.\" THIS VARIANT: colour variant, shaggy coat in sandy tan-gold; every anatomical canon feature unchanged. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: change anatomy; only the colour varies.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bantha",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_bolotaur_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bolotaur",
+  "target_original": "Bolotaur",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on canon description. Longer neck. Longer tail. Not chubby.Distinct fangs.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it chubby, short-necked, short-tailed or blunt-toothed.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bolotaur",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bolotaur/bolotaur_wookieepedia_1.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bolotaur/bolotaur_wookieepedia_2.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_clodhopper_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Clodhopper",
+  "target_original": "Clodhopper",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Truly alien creature, do not turn into a bird. Ignore the \"avian\" description, they don't look anything like a bird. Four legged. Wingless. Travel in large groups. Bizarre jointed mouth part ending in an extended beak at the end of a fleshy appendage.  Follow canon.\" Shown as part of a large herd species (single individual in sprite). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a bird, feathered wings, a bird beak on a bird head, or only two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "clodhopper",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/clodhopper/wookieepedia_fieldguide.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_dewback_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Dewback",
+  "target_original": "Dewback",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Almost done. The head must be MUCH bigger (see canon with riders). Otherwise great green beaded skin. Make it huge and ridable.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a small head; keep the beaded green skin.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "dewback",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dewback/wookieepedia_kenobi_screencap.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dewback/wookieepedia_infobox.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_eopie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Eopie",
+  "target_original": "Eopie",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Option D is almost there. See canon. Neck is straight forward and long before slender head ending in strange trunk. C and D are too equine.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it equine: no horse or camel head, no short neck.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "eopie",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/eopie/wookieepedia_infobox.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/eopie/wookieepedia_screencap.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_falumpaset_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Falumpaset",
+  "target_original": "Falumpaset",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Focus on that jutting overly long neck and round hostile mouth with jowels. Canon redo.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: give it a short neck or a small or snout-like mouth.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "falumpaset",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/falumpaset/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/falumpaset/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_feralgrazer_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FeralGrazer",
+  "target_original": "Grazer",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Grotesquely swollen, bloated, round creatures with downward-pointing wide mouths for constant eating. Rolls of fat. Tough leathery hide with wart-like patterns on back end. See canon.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it lean, muscular, upright-mouthed or smooth-skinned.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.25,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "grazer",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/grazer/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: purple with a wide wedge-shaped head, four small eyes, teal and cream highlights. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: narrow-bodied slick green with dark spots and a very long red tongue. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: pale cream-green with bold brown stripes, two large eyes, wide toothy grin. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: mottled dark and mid green with a broad hammer-shaped head and eyes at the corners. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v5",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: peach-tan with a lavender spiky dorsal ridge, three eyes, orange-yellow clawed toes. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_v6",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: purple-violet with darker spots and a narrow head, two tiny eyes, tongue lolling. A distinct individual look; all share the gorg anatomy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs. Size: 30% smaller than the shipped gorg (drawSize 0.75 -> 0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gorg_swim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "target_original": "Gorg;Chuba",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well.\" THIS VARIANT: SWIMMING graphic: the gorg seen swimming, body stretched, limbs trailing, tongue out; use the purple wedge-headed look. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: purple, wide wedge head, tail very long and tipped with a flat horizontal paddle fin. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: green with dark spots, very long tail ending in a broad flat horizontal spread. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: tan-ochre with brown stripes, long thin tail flaring into a flat horizontal fan. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: teal-blue slick skin, four eyes, long tail with a flat horizontal paddle. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v5",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: orange-yellow with purple spots, long tail with horizontal flat blade. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_v6",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: olive-green narrow head, two large eyes, extremely long tail with a flat horizontal spread. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; a round normal tail. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_longtailgorg_swim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LongtailGorg",
+  "target_original": "LongtailGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four. Make it 30% smaller. Swimming graphic is encouraged as well. This kind has unusually long tails with an odd flat tail spread horizontally.\" THIS VARIANT: SWIMMING graphic: seen swimming, long tail with its flat horizontal spread trailing behind. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin. Size: 30% smaller than shipped (0.53).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.53,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: purple with wide-wedge head and flared frills along the flanks. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: green with pale spots and ruffled gill-like frills. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: striped orange and cream, wide frills fanning along the back. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: lavender and teal, small frills, large eyes. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v5",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: speckled brown-green with long soft frills, three eyes. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_frilledgorg_v6",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "target_original": "FrilledGorg;Gorg",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Canon: (owner-supplied film still attached as first reference) The hanging creatures are Gorgs. They are many and varied in appearance. Some are purple with wide-wedge-shaped heads. Others are narrow shaped. All have long tongues. They are amphibian. They have webbed and clawed feet front and back, two legs. They do NOT look like frogs, more like amphibious lizards with smooth slick skin. Purple, green, spotted, striped, they have many and varied appearances. Generate MANY variations of this for assessment. All of them are small The frilled version (this one) has flared frills along its body. Make sure it looks soft and wet, NOT scaled or dry. Eyes can be small or large, numbering two to four.\" THIS VARIANT: deep violet with bright yellow frill edges, four small eyes. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a frog; scaled or dry skin; more or fewer than two legs.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gorg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_nl_gorgs1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_gutkurr_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gutkurr",
+  "target_original": "Gutkurr",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Assess canon. Powerful hind legs. Insectoid. Smaller grabbing arms. Bipedal. Top-side shell.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a mammal or smooth lizard; it needs the top-side shell and insectoid build.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "gutkurr",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gutkurr/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/gutkurr/wookieepedia_canon_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_horax_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Horax",
+  "target_original": "Horax",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"MUST include the distinctive facial Y-shaped bone fixture. Read canon description.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: omit the Y-shaped bone fixture on the face.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 6.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "horax",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/horax/wookieepedia_infobox_cw_horax.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/horax/wookieepedia_battle_horax.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_hrumph_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hrumph",
+  "target_original": "Hrumph",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon closely. Four distinctive horns in unusual pattern. Unusual coloration. Chest is much thicker than hind quarters.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: use a generic horn pattern or even body mass.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.25,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "hrumph",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hrumph/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hrumph/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hrumph/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_iriaz_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Iriaz",
+  "target_original": "Iriaz",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Clawed feet, green, yellow dapples. two long black horns. Thin whip-like tail. Follow canon closely.  Three fear-facing body thorns on back, black, matching horns on head.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: give it a thick tail or more or fewer horns/thorns.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.3,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "iriaz",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/iriaz/wookieepedia_cutmodel.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/iriaz/wookieepedia_wotc_card.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_iridonianreek_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_IridonianReek",
+  "target_original": "Reek;Iridonian Reek",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Three VERY large facial horns: one up-thrusting over face, two forward-facing on either side of face. Follow canon images closely. Warty red hide on neck and above torso, grey elsewhere . Extremely thick hide. Angry expression.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make the hide thin or the face calm.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "iridonianreek",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/iridonianreek/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/iridonianreek/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/iridonianreek/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_jakobeast_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Jakobeast",
+  "target_original": "Jakobeast",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon images closely. Enormous forward-curved tusks along mouth extrema. Two backward-facing ribbed horns. Tiger-like face. Strange triangular-claw-like hooves along feet, black. Long puffy feline tail.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: use round hooves or a short tail.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "jakobeast",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jakobeast/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jakobeast/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_jamel_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Jamel",
+  "target_original": "Jamel;Jamul",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Must be dull yellow. Almost avian head with huge red hard bill. Follow canon images closely. Short sail along back. Almost tadpole-like tail fins top and bottom. Camel-like bodyplan, very thick in the middle, spindly legs.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: colour it anything but dull yellow; give it a mammal head.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "jamel",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jamel/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jamel/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jamel/wookieepedia_canon_3.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_jimvu_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Jimvu",
+  "target_original": "Jimvu",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Note purple blue violet dull yellow coloration, bird-like beak.  Follow canon image closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: drift from the canon colours or a bird-like beak.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "jimvu",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/jimvu/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_krykna_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Krykna",
+  "target_original": "Krykna",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon image closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: deviate from the canon images.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "krykna",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/krykna/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/krykna/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/krykna/wookieepedia_canon_4.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_kwi_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kwi",
+  "target_original": "Kwi",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"MUST be blue with the canonical striping. Follow canon art closely. Strangely forward-facing eyes.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: colour it anything but blue; omit the canonical stripes; give it side eyes.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "kwi",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kwi/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kwi/wookieepedia_canon_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_nerf_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Nerf",
+  "target_original": "Nerf",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Must have two short forward-facing horns and two enormous downward-curving forward horns. Follow canon closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: omit either horn pair.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "nerf",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nerf/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nerf/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nerf/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_chakroot_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "target_original": "Chak-root",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Examine canon closely, follow it, add variations.\" Canon: a red root forked into three stubby legs with greenish tips, topped by a feathery parsley-like green leaf crown. Replace the old tan mandrake-like root. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "chak_root",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/chak_root/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_chakroot_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "target_original": "Chak-root",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Examine canon closely, follow it, add variations.\" THIS VARIANT: a smaller young plant. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "chak_root",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/chak_root/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_chakroot_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "target_original": "Chak-root",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Examine canon closely, follow it, add variations.\" THIS VARIANT: a larger older plant with deeper red root. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "chak_root",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/chak_root/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_chakroot_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "target_original": "Chak-root",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Examine canon closely, follow it, add variations.\" THIS VARIANT: a plant with a darker orange-red root and fuller leaf crown. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "chak_root",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/chak_root/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_hubbagourd_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_HubbaGourd_Wild",
+  "target_original": "Hubba gourd",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: a ripe orange-gold warty ribbed gourd. Keep the style of the existing art (vines and leaves around a gourd). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "hubba_gourd",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hubba_gourd/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_hubbagourd_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_HubbaGourd_Wild",
+  "target_original": "Hubba gourd",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: a smaller paler yellow-green gourd. Keep the style of the existing art (vines and leaves around a gourd). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "hubba_gourd",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hubba_gourd/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_hubbagourd_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_HubbaGourd_Wild",
+  "target_original": "Hubba gourd",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: a larger darker russet gourd with lots of vine. Keep the style of the existing art (vines and leaves around a gourd). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "hubba_gourd",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hubba_gourd/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_ronto_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Ronto",
+  "target_original": "Ronto",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon closely. Enormous. Unusual neck kink near top is required. Rideable.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: omit the kink near the top of the neck; make it small.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "ronto",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/ellingson_concept_art.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/mos_eisley_street.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/suns_of_fortune_enraged.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_runyip_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Runyip",
+  "target_original": "Runyip",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Note canon's wide mouth and characteristic stripes. Follow canon imagery closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: give it a small mouth or omit the stripes.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "runyip",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/runyip/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/runyip/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_shaak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shaak",
+  "target_original": "Shaak",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow very unusual canon images closely. Bodyplan almost like a tick. very powerful back legs, much weaker/smaller front legs, relatively tiny head. 50% bigger.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a cow or buffalo; a normal-sized head; strong front legs. Size: 50% bigger than shipped (drawSize 1.25 -> 1.9).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.9,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "shaaks",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shaaks/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shaaks/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shaaks/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_shyrack_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shyrack",
+  "target_original": "Shyrack",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow the canon image very closely. The SWBestiary version wasn't too bad as a very coarse approximation. VERY strange creature, very alien and non terrestrial. Appear in great numbers. Flyer.\" It is a flyer that appears in great numbers; show it airborne with wings out. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a terrestrial look; a bat in the Earth sense.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "shyrack",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_skalder_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Skalder",
+  "target_original": "Skalder",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow the canon description very closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.8,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "skalders",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/skalders/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/skalders/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_sketto_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "target_original": "Sketto",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon image closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "sketto",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_surragrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_SurraGrass",
+  "target_original": "Surra grass",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: Variation 1: a taller clump with golden seed heads. Keep the style of the existing art (green-gold arching grass tuft). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_surragrass_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_SurraGrass",
+  "target_original": "Surra grass",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: Variation 2: a low dense tuft, more blue-green. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_surragrass_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_SurraGrass",
+  "target_original": "Surra grass",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: Variation 3: a dry straw-yellow sparse clump with a few withered blades. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_teemuss_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_TeeMuss",
+  "target_original": "Tee Muss",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Eyes wide out on side of head but looking forward, with ears extending just beyond that to the back. Two upward-facing tusks protruding from mouth. Flared nostrils. Follow canon closely.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: put the eyes on the front of the face; omit the tusks.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "teemuss",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/teemuss/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_ulgga_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ulgga",
+  "target_original": "Ulgga;RSW_Ulgga",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.\" Keep the existing look: a segmented armoured sand-worm with tusks and a plated back; this is a re-render at twice the size and detail. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Size: twice as big (drawSize 4.1 -> 8.2); lives in the extreme desert at RimMandrake tier.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 8.2,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ]
+ },
+ {
+  "id": "longshade_rsw_ultracactus_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ultracactus",
+  "target_original": "Ultracactus;RSW_Ultracactus",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"This is supposed to be in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a hint of green. Rename this to Ultriss Pad. RimMandrake tier.\" Existing art is a flat opaque green pad; make it semi-transparent, mostly pale and clear with only a hint of green. Renamed Ultriss Pad, RimMandrake tier. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_uvak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Uvak",
+  "target_original": "Uvak",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon images closely. Beaked four-legged flier.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw anything but a four-legged beaked flier.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "uvak",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_3.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_varactyl_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Varactyl",
+  "target_original": "Varactyl",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Color variations welcome. Follow the canon closely. Long, sinewous ridable beast. Not terrestrial. Keep vibrant coloration.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it stocky; keep the vibrant colour.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "varactyl",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_varactyl_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Varactyl",
+  "target_original": "Varactyl",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Color variations welcome. Follow the canon closely. Long, sinewous ridable beast. Not terrestrial. Keep vibrant coloration.\" THIS VARIANT: colour variant: blue-teal with gold crest; anatomy unchanged. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "varactyl",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_varactyl_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Varactyl",
+  "target_original": "Varactyl",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Color variations welcome. Follow the canon closely. Long, sinewous ridable beast. Not terrestrial. Keep vibrant coloration.\" THIS VARIANT: colour variant: emerald green with red crest; anatomy unchanged. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "varactyl",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/varactyl/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_vellarabloom_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_VellaraBloom",
+  "target_original": "Vellara bloom",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: a bright magenta-red bloom cluster. Keep the style of the existing art (flower cluster over blue-green spiky leaves). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_vellarabloom_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_VellaraBloom",
+  "target_original": "Vellara bloom",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: an orange-yellow bloom cluster. Keep the style of the existing art (flower cluster over blue-green spiky leaves). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_vellarabloom_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_VellaraBloom",
+  "target_original": "Vellara bloom",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"add variations\" THIS VARIANT: a pink and violet bloom cluster. Keep the style of the existing art (flower cluster over blue-green spiky leaves). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.5,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow."
+ },
+ {
+  "id": "longshade_rsw_voorpak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Voorpak",
+  "target_original": "Voorpak",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Bizarre little furball with bird-like legs. Follow canon closely. Do not make cartoonish. Two antenna-like tufts on head.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it cartoonish.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "voorpak",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/voorpak/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/voorpak/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/voorpak/wookieepedia_legends_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_worrt_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Worrt",
+  "target_original": "Worrt",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon closely. NOT a frog. Big yellow verticaly slitted eyes. Two antennae. Frilled gills on face. Long hunched back legs, short front legs, suckered feet.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a plain frog.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "worrt",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/worrt/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/worrt/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/worrt/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_wraid_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Wraid",
+  "target_original": "Wraid",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Follow canon closely, especially enormous head and front limbs and relatively tiny back limbs. Very broad head.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "wraid",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/wraid/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/wraid/wookieepedia_canon_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_wraidalpha_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_WraidAlpha",
+  "target_original": "Wraid",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"See Canon and try again. What you had before was a generic hunting lizard. Focus on the strange disproportionate limb sizes and huge head.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: draw a generic hunting lizard.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.2,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "wraid",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/wraid/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/wraid/wookieepedia_canon_2.webp"
+  ]
+ },
+ {
+  "id": "longshade_rsw_zeer_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Zeer",
+  "target_original": "Zeer",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Make it less girrafe like by bulking out the body and slanting it sharply upwards. Follow canon closely. Make it 50% bigger.\" LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding. Do NOT: make it giraffe-like. Size: 50% bigger (drawSize 2.0 -> 3.0).",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "zeer",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/zeer/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/zeer/wookieepedia_exhibition.jpg"
+  ]
+ },
+ {
+  "id": "longshade_rsw_jellypot_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Jellypot",
+  "target_original": "Jellypot;RSW_Jellypot",
+  "prompt": "OWNER BRIEF, verbatim (it overrides canon wherever they conflict): \"Tint it more green. Rename to Dunejelly.\" Keep the existing design (a round jelly dome with a small brown face) re-rendered painterly with the dome tinted more green. Renamed Dunejelly, RimMandrake tier. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show below are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.75,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "arid desert, harsh twin-sun light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (no biome grade). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ]
+ }
+]
