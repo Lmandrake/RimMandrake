@@ -1,0 +1,413 @@
+[
+ {
+  "shot": "s4_00_reel_stored_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_00_reel_stored_001920.png",
+  "state": {
+   "carry": "Stored",
+   "trail": 0,
+   "pulled": 0,
+   "far": [
+    -1000,
+    -1000
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "none",
+    "len": 0,
+    "hand": null,
+    "reelArt": "stored"
+   },
+   "carrier": null,
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 22,
+    "far": false,
+    "placed": 32,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_01_carry_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_01_carry_001920.png",
+  "state": {
+   "carry": "Carrying",
+   "trail": 4,
+   "pulled": 2.9665,
+   "far": [
+    -1000,
+    -1000
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "carry",
+    "len": 3.8456,
+    "hand": [
+     87.2454,
+     69.9954
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    86,
+    69
+   ],
+   "live": {
+    "carryDraws": 1,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 25,
+    "far": false,
+    "placed": 32,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_02_carry_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_02_carry_001920.png",
+  "state": {
+   "carry": "Carrying",
+   "trail": 8,
+   "pulled": 8.2402,
+   "far": [
+    -1000,
+    -1000
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "carry",
+    "len": 8.447,
+    "hand": [
+     90.7304,
+     73.4804
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    90,
+    73
+   ],
+   "live": {
+    "carryDraws": 1,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 29,
+    "far": false,
+    "placed": 32,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_03_carry_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_03_carry_001920.png",
+  "state": {
+   "carry": "Carrying",
+   "trail": 12,
+   "pulled": 12.8454,
+   "far": [
+    -1000,
+    -1000
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "carry",
+    "len": 13.0691,
+    "hand": [
+     94.7235,
+     75.4976
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    94,
+    75
+   ],
+   "live": {
+    "carryDraws": 1,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 33,
+    "far": false,
+    "placed": 32,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_04_carry_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_04_carry_001920.png",
+  "state": {
+   "carry": "Carrying",
+   "trail": 16,
+   "pulled": 16.9444,
+   "far": [
+    -1000,
+    -1000
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "carry",
+    "len": 17.2976,
+    "hand": [
+     98.8254,
+     74.4183
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    98,
+    74
+   ],
+   "live": {
+    "carryDraws": 1,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 37,
+    "far": false,
+    "placed": 32,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_05_dropped_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_05_dropped_001920.png",
+  "state": {
+   "carry": "Dropped",
+   "trail": 16,
+   "pulled": 16.9444,
+   "far": [
+    98,
+    74
+   ],
+   "wound": 0,
+   "endKind": "Free",
+   "draw": {
+    "mode": "lay",
+    "len": 18.0256,
+    "hand": [
+     98.8254,
+     74.4183
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": null,
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 37,
+    "far": false,
+    "placed": 33,
+    "lifted": 1
+   }
+  }
+ },
+ {
+  "shot": "s4_06_laid_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_06_laid_001920.png",
+  "state": {
+   "carry": "Laid",
+   "trail": 22,
+   "pulled": 24.8838,
+   "far": [
+    104,
+    68
+   ],
+   "wound": 0,
+   "endKind": "Free",
+   "draw": {
+    "mode": "lay",
+    "len": 25.7028,
+    "hand": [
+     104.5,
+     68.5
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": null,
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 0,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 44,
+    "far": false,
+    "placed": 34,
+    "lifted": 2
+   }
+  }
+ },
+ {
+  "shot": "s4_07_winding_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_07_winding_001920.png",
+  "state": {
+   "carry": "Retracting",
+   "trail": 22,
+   "pulled": 24.8838,
+   "far": [
+    104,
+    68
+   ],
+   "wound": 6,
+   "endKind": "None",
+   "draw": {
+    "mode": "clip",
+    "len": 19.5053,
+    "hand": [
+     104.5,
+     68.5
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    84,
+    70
+   ],
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 1,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 44,
+    "far": false,
+    "placed": 34,
+    "lifted": 2
+   }
+  }
+ },
+ {
+  "shot": "s4_08_winding_more_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_08_winding_more_001920.png",
+  "state": {
+   "carry": "Retracting",
+   "trail": 22,
+   "pulled": 24.8838,
+   "far": [
+    104,
+    68
+   ],
+   "wound": 13.32,
+   "endKind": "None",
+   "draw": {
+    "mode": "clip",
+    "len": 11.9444,
+    "hand": [
+     104.5,
+     68.5
+    ],
+    "reelArt": "deployed"
+   },
+   "carrier": [
+    84,
+    70
+   ],
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 1,
+    "ghostDraws": 0,
+    "ghosts": 0,
+    "portCouplings": 0,
+    "prefixBuilds": 44,
+    "far": false,
+    "placed": 34,
+    "lifted": 2
+   }
+  }
+ },
+ {
+  "shot": "s4_09_cut_autoretract_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_09_cut_autoretract_001920.png",
+  "state": {
+   "carry": "Stored",
+   "trail": 0,
+   "pulled": 0,
+   "far": [
+    104,
+    68
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "none",
+    "len": 26.3131,
+    "hand": [
+     104.5,
+     68.5
+    ],
+    "reelArt": "stored"
+   },
+   "carrier": null,
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 0,
+    "ghostDraws": 1,
+    "ghosts": 1,
+    "portCouplings": 0,
+    "prefixBuilds": 44,
+    "far": false,
+    "placed": 35,
+    "lifted": 2
+   }
+  }
+ },
+ {
+  "shot": "s4_10_cut_autoretract_later_001920",
+  "file": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\mc_hose_carry_s4\\s4_10_cut_autoretract_later_001920.png",
+  "state": {
+   "carry": "Stored",
+   "trail": 0,
+   "pulled": 0,
+   "far": [
+    104,
+    68
+   ],
+   "wound": 0,
+   "endKind": "None",
+   "draw": {
+    "mode": "none",
+    "len": 26.3131,
+    "hand": [
+     104.5,
+     68.5
+    ],
+    "reelArt": "stored"
+   },
+   "carrier": null,
+   "live": {
+    "carryDraws": 0,
+    "clipDraws": 0,
+    "ghostDraws": 1,
+    "ghosts": 1,
+    "portCouplings": 0,
+    "prefixBuilds": 44,
+    "far": false,
+    "placed": 35,
+    "lifted": 2
+   }
+  }
+ }
+]
