@@ -831,6 +831,29 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true, false, false, true, 2), "sluice rule off: holds like a door");
             });
 
+            // ── PIT_DEPTH_DRAW_OFFSET_1: pawns sink with D; D=4 lip is 1.2x a person (owner's 20 %) ──
+            Case("PitDraw_sink_is_monotonic_in_depth_and_superdeep_clears_head_by_20pct", () =>
+            {
+                float k = RM_PitDrawMath.DefaultSinkPerLevel;
+                for (int d = 0; d < 4; d++)
+                    Assert(RM_PitDrawMath.SinkFor(d + 1, k) > RM_PitDrawMath.SinkFor(d, k), "deeper draws lower at D=" + (d + 1));
+                AssertClose(RM_PitDrawMath.SinkFor(0, k), 0f, "surface: no sink");
+                AssertClose(RM_PitDrawMath.SinkFor(9, k), RM_PitDrawMath.SinkFor(4, k), "clamped at superdeep");
+                Assert(RM_PitDrawMath.WallOverHeadRatio(4, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) >= 1.2f - 1e-4f, "D=4 wall >= 1.2x head");
+                Assert(RM_PitDrawMath.WallOverHeadRatio(3, k, RM_PitDrawMath.HumanlikeFeetToHeadTop) < 1f, "D=3 does not bury a person");
+                AssertClose(RM_PitDrawMath.SinkFor(4, 0f), 0f, "per-level 0 is the off dial");
+            });
+            Case("PitDraw_rises_and_lowers_smoothly_between_cells", () =>
+            {
+                float k = 0.3f;
+                AssertClose(RM_PitDrawMath.SinkBetween(0, 4, 0f, k), 0f, "start of step: still at the lip");
+                AssertClose(RM_PitDrawMath.SinkBetween(0, 4, 0.5f, k), 0.6f, "half way down");
+                AssertClose(RM_PitDrawMath.SinkBetween(4, 0, 1f, k), 0f, "climbed out");
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 0.5f, 1.0f, 0.5f), 0.5f, "progress projects onto the step");
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 1.5f, 1.5f, -3f, -3f), 0f, "clamped low");
+                AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
