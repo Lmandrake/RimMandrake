@@ -103,38 +103,51 @@ namespace RimMandrake.MessyConduit.SelfTest
             Check(noBridge.Repaint.Count == 0, "can fail: a single run touched by nothing new is never repainted");
         }
 
+        /// <summary>Pairs of pieces that share a node and have the same colour.</summary>
+        private static int MixClashes(List<KeyValuePair<string, string[]>> ps, Dictionary<string, int> col)
+        {
+            int n = 0;
+            for (int i = 0; i < ps.Count; i++)
+                for (int j = i + 1; j < ps.Count; j++)
+                    if (ps[i].Value.Intersect(ps[j].Value).Any() && col[ps[i].Key] == col[ps[j].Key]) n++;
+            return n;
+        }
+
         private static void Colours()
         {
             Check(ConduitStyles.RunColour(new[] { "Blue", "Blue", null }) == "Blue" && ConduitStyles.RunColour(new[] { "Blue", "Green" }) == ConduitStyles.Mix &&
                   ConduitStyles.RunColour(new[] { "Blue", ConduitStyles.Mix }) == ConduitStyles.Mix && ConduitStyles.RunColour(new string[] { null, null }) == null,
                   "run colour: one colour -> that colour; two colours or any mix cell -> mix; nothing stored -> none");
             var line = Enumerable.Range(0, 12).Select(x => ConduitStyles.PieceVariant("Modern", ConduitStyles.Mix, 40 + x, 70, 12345, false, 0)).ToList();
-            Check(line.Distinct().Count() >= 3, $"random mix (owner: 'a mixture of colours inside the run'): 12 cells of one mix run show {line.Distinct().Count()} colours");
-            // live 2026-10-04 (S9d): a straight 7-cell mix run printed ONE colour (a straight run is one cord piece). The mix now
-            // changes colour along the cord by MixBlock blocks; two blocks side by side never share a colour
-            bool adj = true;
-            for (int bx = -6; bx < 6; bx++)
-                for (int bz = -6; bz < 6; bz++)
+            Check(line.Distinct().Count() >= 3, $"random mix fallback cell hash (before pieces are known): 12 cells show {line.Distinct().Count()} colours");
+            // round 5 (owner 2026-10-04, station 5): REVERTS the round-4 3-cell-block change along a cord. Each mix piece, node to
+            // node, is ONE colour; colours vary piece to piece and pieces sharing a node differ where 5 colours allow.
+            KeyValuePair<string, string[]> P(string k, string a, string b) => new KeyValuePair<string, string[]>(k, new[] { a, b });
+            // a tree of degree <= 3 (battery - J1 - J2 - lamp, spurs off J1 and J2): every piece has <= 4 node neighbours < 5 colours
+            var tree = new List<KeyValuePair<string, string[]>> { P("e:0,0|5,0", "0,0", "5,0"), P("e:5,0|9,0", "5,0", "9,0"), P("e:9,0|14,0", "9,0", "14,0"),
+                                                                  P("e:5,0|5,4", "5,0", "5,4"), P("e:9,0|9,4", "9,0", "9,4") };
+            Dictionary<string, int> tc = ConduitStyles.MixPieceColours(tree);
+            Check(tc.Count == 5 && MixClashes(tree, tc) == 0 && tc.Values.Distinct().Count() >= 2,
+                  $"mix per piece: a 5-piece nodal tree -> {tc.Values.Distinct().Count()} colours, {MixClashes(tree, tc)} pieces sharing a node with the same colour (want 0)");
+            var shuffled = tree.AsEnumerable().Reverse().ToList();
+            Check(ConduitStyles.MixPieceColours(shuffled).OrderBy(kv => kv.Key).SequenceEqual(tc.OrderBy(kv => kv.Key)),
+                  "mix per piece: the colours do not depend on the order the pieces are listed (rebuild / save-load stable)");
+            // a 4x4 node grid (24 pieces, + nodes): the colours spread through the whole array, almost no clashes
+            var grid = new List<KeyValuePair<string, string[]>>();
+            for (int x = 0; x < 4; x++)
+                for (int z = 0; z < 4; z++)
                 {
-                    int c0 = ConduitStyles.MixColourIndex(bx * ConduitStyles.MixBlock, bz * ConduitStyles.MixBlock);
-                    adj &= c0 != ConduitStyles.MixColourIndex((bx + 1) * ConduitStyles.MixBlock, bz * ConduitStyles.MixBlock)
-                           && c0 != ConduitStyles.MixColourIndex(bx * ConduitStyles.MixBlock, (bz + 1) * ConduitStyles.MixBlock) && c0 >= 0 && c0 < 5;
+                    if (x < 3) grid.Add(P($"g:{x},{z}>", $"{x},{z}", $"{x + 1},{z}"));
+                    if (z < 3) grid.Add(P($"g:{x},{z}^", $"{x},{z}", $"{x},{z + 1}"));
                 }
-            int worst = int.MaxValue;
-            for (int x0 = -20; x0 < 20; x0++)
-            {
-                var hx = Enumerable.Range(0, ConduitStyles.MixBlock + 1).Select(i => ConduitStyles.MixColourIndex(x0 + i, 7)).Distinct().Count();
-                var hz = Enumerable.Range(0, ConduitStyles.MixBlock + 1).Select(i => ConduitStyles.MixColourIndex(7, x0 + i)).Distinct().Count();
-                worst = Math.Min(worst, Math.Min(hx, hz));
-            }
-            Check(adj && worst >= 2, $"mix along a cord: neighbouring blocks always differ; every straight run of {ConduitStyles.MixBlock + 1} cells (either axis, negative cells too) shows >= {worst} colours");
-            var pts = Enumerable.Range(0, 29).Select(i => new RimMandrake.MessyConduit.Core.V2(66.5 + i * 0.25, 149.5)).ToList();   // a 7-cell straight cord, x 66..73
-            List<ConduitStyles.MixSegment> segs = ConduitStyles.MixSegments(pts, 0.3, 0.11);
-            bool joined = segs.Count >= 2 && segs[0].From == 0 && segs[segs.Count - 1].To == pts.Count - 1 &&
-                          segs.Zip(segs.Skip(1), (p, q) => p.To == q.From && p.Colour != q.Colour && q.S0 > p.S0).All(b => b);
-            Check(joined && segs.Select(g => g.Colour).Distinct().Count() >= 2,
-                  $"mix strand: one straight cord over 7 cells prints {segs.Count} segments in {segs.Select(g => g.Colour).Distinct().Count()} colours, contiguous (shared boundary point, u running on)");
-            Check(ConduitStyles.MixSegments(pts.Take(3).ToList(), 0, 0.11).Count == 1, "can fail: a cord inside one block is one segment (no needless splits)");
+            Dictionary<string, int> gc = ConduitStyles.MixPieceColours(grid);
+            Check(gc.Values.Distinct().Count() >= 4 && MixClashes(grid, gc) <= 2,
+                  $"mix per piece: a 4x4 nodal grid of 24 pieces shows {gc.Values.Distinct().Count()} colours, {MixClashes(grid, gc)} clashes (want >= 4, <= 2)");
+            var planted = tc.ToDictionary(kv => kv.Key, kv => 0);
+            Check(MixClashes(tree, planted) > 0, "can fail: a planted all-one-colour tree is reported as clashing");
+            // a straight run between two nodes is one piece: one colour along its whole length (no per-cell change)
+            var one = ConduitStyles.MixPieceColours(new[] { P("e:66,149|73,149", "66,149", "73,149") });
+            Check(one.Count == 1 && one.Values.All(c => c >= 0 && c < 5), "mix per piece: a straight node-to-node cord gets exactly one colour");
             var uniform = Enumerable.Range(0, 12).Select(x => ConduitStyles.PieceVariant("Modern", "Brown", 40 + x, 70, x * 7919, false, 0)).Distinct().ToList();
             Check(uniform.Count == 1 && uniform[0] == ConduitStyles.ColourIndex("Brown"), "a single-colour run is that colour on every cell whatever its cord net seed");
             Check(ConduitStyles.PieceVariant("Modern", "Brown", 1, 1, 5, true, 4) != ConduitStyles.ColourIndex("Blue"),

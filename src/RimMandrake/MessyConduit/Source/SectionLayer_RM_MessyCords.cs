@@ -20,8 +20,9 @@ namespace RimMandrake.MessyConduit
     public class SectionLayer_RM_MessyCords : SectionLayer
     {
         private CellRect bounds;
-        public const float StrandWidth = 0.11f;
-        public const float ShadowWidth = 0.17f;
+        /// <summary>Round 5 (owner 2026-10-04, station 4: "need to make the wires thinner"): 0.11 -> 0.08, shadow 0.17 -> 0.13.</summary>
+        public const float StrandWidth = 0.08f;
+        public const float ShadowWidth = 0.13f;
         public const float FaceLift = 0.01f;
         public static int LastPrintedVerts;
         /// <summary>Shader-path sway weight scale: vertex alpha = 255 x weight x this x strength (a plant's top carries
@@ -136,9 +137,8 @@ namespace RimMandrake.MessyConduit
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
-                        if (!ripples && !s.OverFace && comp.IsMix(p))
-                            verts += MixRibbons(pts, y, s.S0, StrandWidth, false);   // stage 2: the mix changes colour ALONG the cord
-                        else if (!ripples)
+                        // round 5: a random-mix piece is ONE colour node to node (its material index), like any other piece
+                        if (!ripples)
                             verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
                                             pts, StrandWidth, y, s.S0, Vector2.zero);
                         if (MessyConduitSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
@@ -147,9 +147,8 @@ namespace RimMandrake.MessyConduit
                             var dec = new List<V2>(s.Pts.Count / 3 + 2);
                             for (int i = 0; i < s.Pts.Count; i += 3) dec.Add(s.Pts[i]);
                             if ((s.Pts.Count - 1) % 3 != 0) dec.Add(s.Pts[s.Pts.Count - 1]);
-                            // a mix cord keeps its colours at far zoom too (live 2026-10-04: only the owner colour had a LOD mesh)
-                            verts += comp.IsMix(p) ? MixRibbons(dec, baseY, s.S0, StrandWidth * 0.9f, true)
-                                                   : Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
+                            // a mix piece's far-zoom strand is its own single colour too (round 5), so far and near agree
+                            verts += Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
                             lodDone = true;
                         }
                         k++;
@@ -175,26 +174,6 @@ namespace RimMandrake.MessyConduit
             LastLodSubMeshes = lodN;
             LastFullSubMeshes = fullN;
         }
-
-        /// <summary>A Modern "random mix" strand: split where the MixBlock block (and so the colour) changes, each segment in
-        /// its own colour's strand, sharing the boundary point and continuing the u coordinate so the weave does not jump.
-        /// State read: <see cref="MixSegmentsPrinted"/>.</summary>
-        private int MixRibbons(List<V2> pts, float y, double s0, float width, bool lod)
-        {
-            int n = 0;
-            foreach (Aerial.ConduitStyles.MixSegment seg in Aerial.ConduitStyles.MixSegments(pts, s0, width))
-            {
-                int g = Aerial.ConduitStyles.Global("Modern", seg.Colour);
-                Material m = lod ? CordMaterials.StrandLodG(g) : CordMaterials.StrandG(g);
-                n += Ribbon(m, pts.GetRange(seg.From, seg.To - seg.From + 1), width, y, seg.S0, Vector2.zero);
-                if (lod) MixLodSegmentsPrinted++; else MixSegmentsPrinted++;
-            }
-            return n;
-        }
-
-        public static int MixLodSegmentsPrinted;
-
-        public static int MixSegmentsPrinted;
 
         private void Grow(double x, double z)
         {

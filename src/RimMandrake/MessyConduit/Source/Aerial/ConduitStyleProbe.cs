@@ -175,9 +175,8 @@ namespace RimMandrake.MessyConduit.Aerial
                     if (same) legacySame++;
                 }
                 var decals = p.Decals.Select(d => TexName(CordMaterials.DecalG(d.Kind, g))).Where(n => n != null).Distinct();
-                // a mix piece's strand colours along its length (the segments the section layer prints)
-                var mixTex = cg.IsMix(p) ? p.Strands.Where(x => !x.OverFace).SelectMany(x => ConduitStyles.MixSegments(x.Pts, x.S0, SectionLayer_RM_MessyCords.StrandWidth))
-                    .Select(sg => TexName(CordMaterials.StrandG(ConduitStyles.Global("Modern", sg.Colour)))).Distinct().OrderBy(x => x).ToList() : new List<string>();
+                // round 5: a mix piece is ONE colour node to node; mixTex is the one strand texture it prints (kept for the readers)
+                var mixTex = cg.IsMix(p) ? new List<string> { TexName(CordMaterials.StrandG(g)) } : new List<string>();
                 pieces.Add("{\"key\":" + S(p.Key) + ",\"owner\":[" + p.Owner.X + "," + p.Owner.Z + "],\"strands\":" + p.Strands.Count + ",\"g\":" + g + ",\"look\":" + S(look) +
                            ",\"variant\":" + variant + ",\"legacy\":" + B(leg) + (leg ? ",\"legacySameMaterials\":" + B(same) : "") +
                            ",\"mix\":" + B(cg.IsMix(p)) + ",\"mixTex\":[" + string.Join(",", mixTex.Select(S)) + "]" + ",\"strandTex\":" + S(TexName(CordMaterials.StrandG(g))) + ",\"decalTex\":[" + string.Join(",", decals.Select(S)) + "]}");
@@ -202,7 +201,7 @@ namespace RimMandrake.MessyConduit.Aerial
             // ---- every look's strand textures (what a run of that look may print)
             var lookStrands = AerialStyles.Looks.Select(look =>
                 S(look) + ":[" + string.Join(",", Enumerable.Range(0, ConduitStyles.VariantsOf(look)).Select(v => S(TexName(CordMaterials.StrandG(ConduitStyles.Global(look, v)))))) + "]");
-            return AerialProbe.Ok(cmd, "\"mixSegmentsPrinted\":" + SectionLayer_RM_MessyCords.MixSegmentsPrinted + ",\"mixLodSegmentsPrinted\":" + SectionLayer_RM_MessyCords.MixLodSegmentsPrinted + ",\"defaultLook\":" + S(StylePicker.DefaultLook) + ",\"defaultKey\":" + S(ConduitStylePicker.DefaultKey(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit"))) +
+            return AerialProbe.Ok(cmd, "\"defaultLook\":" + S(StylePicker.DefaultLook) + ",\"defaultKey\":" + S(ConduitStylePicker.DefaultKey(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit"))) +
                 ",\"missingStyleDefs\":[" + string.Join(",", ConduitStylePicker.Missing.Select(S)) + "],\"notStylable\":[" + string.Join(",", ConduitStylePicker.NotStylable.Select(S)) + "]" +
                 ",\"globalMissing\":[" + string.Join(",", CordMaterials.GlobalMissing.Select(S)) + "],\"lookStrands\":{" + string.Join(",", lookStrands) + "}" +
                 ",\"counters\":{\"processed\":" + runs.processed + ",\"adopted\":" + runs.adopted + ",\"bridges\":" + runs.bridges + ",\"linkBridges\":" + runs.linkBridges +

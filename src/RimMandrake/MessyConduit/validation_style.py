@@ -328,6 +328,8 @@ SWITCH = (X0 + 12, ZR)                               # a Modern switch at the en
 SPLIT = (X0 + 5, ZR)                                 # deconstructed: halves X0+2..4 and X0+6..12
 ZF = Z0 + 32
 LINE_F = [(X0 + 2 + i, ZF) for i in range(4)]        # a build-mode Futuristic line (blueprint -> frame -> building)
+MIX_SPUR = [(X0 + 9, ZR + 1 + i) for i in range(3)]  # S9d round 5: a 3-cell Modern mix spur off the right half -> a T node,
+                                                     # so the mix run has >= 3 node-to-node pieces (a 2-cell spur is pruned)
 ZL = Z0 + 35
 LEGACY = [(X0 + 2 + i, ZL) for i in range(8)]       # S10: unstyled, built outside the menu
 
@@ -405,6 +407,7 @@ def s9_runs(B, rows, res):
            "meaning": "PASS = deconstructing the middle leaves two runs, each still Industrial"})
     # ---- S9d: restyle the right half to Modern random mix; the left half is untouched; a build-mode Futuristic line
     rs = B.ap("crestyle:%d,%d:Modern_Mix" % right[1])
+    sp = B.ap("cline:PowerConduit:Modern_Mix:%d,%d:%d,%d:god" % (MIX_SPUR[0] + MIX_SPUR[-1]))
     fl = B.ap("cline:PowerConduit:Futuristic:%d,%d:%d,%d:build" % (LINE_F[0] + LINE_F[-1]))
     fb = B.ap("cfinishbuild")
     B.ticks(3)
@@ -414,26 +417,33 @@ def s9_runs(B, rows, res):
     l_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Industrial" for c in left)
     f_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Futuristic" for c in LINE_F)
     pb, pn = _piece_look_bad(st)
-    # owner 2026-10-04: "random" = a MIXTURE of colours inside the run. LEARNED live 2026-10-04: a straight 7-cell run is
-    # ONE cord piece, so a per-piece colour printed a single colour (Strand_Blue); the mix now changes along the cord
-    right_pieces = [p for p in st.get("pieces") or [] if tuple(p["owner"]) in set(right) and p.get("strands")]
-    right_tex = {t for p in right_pieces for t in (p.get("mixTex") or [p.get("strandTex")])}
+    # owner round 5 (2026-10-04, station 5): "Each run from one node to another stays a single color, but it varies through
+    # the whole nodal array" -- REVERTS round 4's colour change along a cord. Each mix piece prints ONE strand colour; the
+    # pieces of the mix run (with the spur: >= 3 pieces around a T node) show >= 2 colours between them
+    mix_cells = set(right) | set(MIX_SPUR)
+    right_pieces = [p for p in st.get("pieces") or [] if tuple(p["owner"]) in mix_cells and p.get("strands")]
+    piece_tex = [p.get("strandTex") for p in right_pieces if p.get("mix")]
+    right_tex = set(t for t in piece_tex if t)
+    uniform = all(len(p.get("mixTex") or []) == 1 and p["mixTex"][0] == p.get("strandTex") for p in right_pieces if p.get("mix"))
     mix_flag = all(p.get("mix") for p in right_pieces if (mem.get(tuple(p["owner"])) or {}).get("def") != "PowerSwitch")
+    sp_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Modern_Mix" for c in MIX_SPUR)
     printed = st.get("printedTex") or {}
     unprinted = sorted({p.get("strandTex") for p in st.get("pieces") or [] if p.get("strands")} - set(printed))
-    # LEARNED live 2026-10-04: a straight run is ONE cord piece, so this scene has 3 strand pieces (left Industrial half, right
-    # mix half, the Futuristic line); the first version demanded >= 4 and failed on a correct scene
-    mixed_ok = len([t for t in right_tex if t and t.startswith("Strand_")]) >= 2 and mix_flag and all(t in printed for t in right_tex if t)
-    # far zoom: every mix colour also has its LOD mesh (live 2026-10-04: only the owner colour had one)
+    # LEARNED live 2026-10-04: a straight run is ONE cord piece; this scene has the left Industrial half, the mix pieces and
+    # the Futuristic line
+    mixed_ok = len(piece_tex) >= 3 and len([t for t in right_tex if t.startswith("Strand_")]) >= 2 and uniform and mix_flag and sp_ok and \
+        all(t in printed for t in right_tex)
+    # far zoom: every mix piece colour also has its LOD mesh (the LOD strand is the piece's own single colour)
     lod_on = any(k.endswith("(lod)") for k in printed)
-    lod_missing = sorted(t for t in right_tex if t and (t + "(lod)") not in printed) if lod_on else []
+    lod_missing = sorted(t for t in right_tex if (t + "(lod)") not in printed) if lod_on else []
     mixed_ok = mixed_ok and not lod_missing
     V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 3 and not pb and not unprinted and mixed_ok else "FAIL", "MOD",
           {"restyle": rs, "build": {"line": fl.get("success"), "finish": fb}, "rightColours": sorted(x for x in right_tex if x), "pieceBad": pb[:6],
            "unprintedStrands": unprinted, "printedTex": printed, "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"),
-           "mixSegmentsPrinted": st.get("mixSegmentsPrinted"),
-           "conds": {"restyle": bool(rs.get("success")), "right": r_ok, "left": l_ok, "futuristic": f_ok, "piecesChecked": pn, "mixed": mixed_ok, "lodMissing": lod_missing},
-           "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern) and the mixed run prints >= 2 Modern colours along its cords, build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
+           "mixPieceTex": piece_tex, "spur": sp.get("success"),
+           "conds": {"restyle": bool(rs.get("success")), "right": r_ok, "left": l_ok, "futuristic": f_ok, "piecesChecked": pn, "mixPieces": len(piece_tex),
+                     "eachPieceOneColour": uniform, "spurMix": sp_ok, "mixed": mixed_ok, "lodMissing": lod_missing},
+           "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern); each mix piece node to node is ONE colour and the run's >= 3 pieces show >= 2 colours (round 5), build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
     out["st"] = st
     res["stage2_before"] = st
     return out
