@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    AA_Thunderbeast as a Blue Desert native (owner, Blue Desert art sheet 2026-10-04:
+    picked render v2, "Looks good, but needs its other facings. Also needs improved
+    description. Half the size."). Donor: Alpha Animals (sarg.alphaanimals).
+    * Art: our own sprites at Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/ (a path the
+      donor does not use, so nothing depends on load order). East + south only until the
+      queued v3 north lands; Graphic_Multi draws a missing north from south.
+    * Half the size: baseBodySize 1.5 -> 0.75, every lifeStage drawSize halved.
+    * Guarded with PatchOperationFindMod — MayRequire on an <Operation> is ignored by 1.6.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Thunderbeast"]/description</xpath>
+          <value><description>A thunderbeast of the Blue Desert, and nothing like the swine-shaped beasts of warmer worlds. Its hide is a pale, chalky white veined with ice-blue, and it bleeds a thin yellow hydrocarbon fluid that smells of solvent and never quite freezes. There is no water in it: it runs on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life, and the charge it carries is built up across stacked plates of hydrocarbon-soaked tissue rather than any nerve a terrestrial creature would recognise.\n\nIt is slow and placid until provoked, then it discharges its stored current in long, crackling arcs at anything that threatens it, and a slaughtered thunderbeast still unsettles the weather around it. Predators give it a wide berth.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="AA_Thunderbeast"]/race/baseBodySize</xpath>
+          <value><baseBodySize>0.75</baseBodySize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.75</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[1]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>0.75</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>1</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.25</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Thunderbeast"]/lifeStages/li[3]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>1.25</drawSize></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
