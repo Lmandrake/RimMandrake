@@ -1032,6 +1032,12 @@ namespace RimMandrake.FlowWorks
 					{
 						fillGrid[map.cellIndices.CellToIndex(donor)] -= 1;
 					}
+					if (fillGrid[ri] == 0)
+					{
+						// First level into a dry cell claims it for the donor's fluid (step 2: identity at the writer).
+						byte key = PaletteKey(DonorFluid(donor, IsSourceCell(donor)) ?? ActiveFluid);
+						fluidGrid[ri] = key;
+					}
 					fillGrid[ri] += 1;
 					moved++;
 				}
@@ -1215,6 +1221,11 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				// LIQUID_BODY_FLUID_IDENTITY_1 step 2: fluids never mix (owner Q3).
+				if (!RM_StockMath.FluidsCompatible(fillGrid[map.cellIndices.CellToIndex(r)] > 0, FluidAt(r), DonorFluid(n, source)))
+				{
+					continue;
+				}
 				if (depthR <= dn && fn < dn)
 				{
 					continue; // neither deeper than the donor nor brimming
@@ -1238,6 +1249,13 @@ namespace RimMandrake.FlowWorks
 			}
 			return best;
 		}
+		/// <summary>The fluid a donor cell would give: its body's for a source, the cell's own record otherwise.</summary>
+		private FluidDef DonorFluid(IntVec3 n, bool source)
+		{
+			return source ? stock.BodyAt(map, n, this)?.fluid : FluidAt(n);
+		}
+
+
 
 		// ── rain (ruling 25) ──────────────────────────────────────────────
 

@@ -629,6 +629,25 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
+            // LIQUID_BODY_FLUID_IDENTITY_1 step 2 (fluids never mix, owner Q3).
+            Case("FluidsCompatible_wet_cell_refuses_a_different_fluid", () =>
+            {
+                var water = new object();
+                var oil = new object();
+                Assert(RM_StockMath.FluidsCompatible(true, water, water), "same fluid flows");
+                Assert(!RM_StockMath.FluidsCompatible(true, water, oil), "oil may not enter a water cell");
+                Assert(!RM_StockMath.FluidsCompatible(true, oil, water), "water may not enter an oil cell");
+            });
+
+            Case("FluidsCompatible_dry_or_unrecorded_cells_take_any_fluid", () =>
+            {
+                var water = new object();
+                var oil = new object();
+                Assert(RM_StockMath.FluidsCompatible(false, water, oil), "a dry cell is claimed by the first fluid");
+                Assert(RM_StockMath.FluidsCompatible(true, (object)null, oil), "wet but unrecorded: legacy permissive");
+                Assert(RM_StockMath.FluidsCompatible(true, water, (object)null), "unrecorded donor: legacy permissive");
+            });
+
             // FLOWWORKS_SHARED_SOURCE_STALL_1: the production component walk.
             // A 3x1 body (sources at x=3..5, z=5); channel E runs (6..9,5) off the
             // body's east end, channel N runs (5,6..9) off the same corner cell.

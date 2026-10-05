@@ -37,3 +37,6 @@ The spec above stands; this pass orders it so every step is shippable on its own
 
 ## built so far
 - step 1 + step-4 migration: see the commit closing this note (`git log --grep LIQUID_BODY_FLUID_IDENTITY_1`). Item stays OPEN for steps 2-3 and the verify block.
+
+## step 2a BUILT (FOUNDRY builder, 2026-10-05)
+`RM_StockMath.FluidsCompatible` (pure; null = permissive) is the `PickDonor` no-mix filter; the pulse stamps the donor's fluid (source: `body.fluid`) on a recipient's first level (identity at the pulse writer). Behaviour-neutral until a second fluid exists (one `ActiveFluid` per map). Selftest cases in `Source/SelfTest/Program.cs` (not runnable here: no dotnet in WSL; DLL builds clean). STILL OWED: writers other than the pulse (`ApplyRain` skip wet non-water, `Displace` same-fluid credit, drill, debug fills), step 3 reader retirement, the unified-null-palette log, the bridge verify. Item stays open.
