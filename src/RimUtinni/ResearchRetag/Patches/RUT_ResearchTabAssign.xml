@@ -6711,4 +6711,20 @@
     </match>
   </Operation>
 
+  <!-- RESEARCHRETAG_HEARTH_VFET_OVERLAP_1: VFE Tribals rows landed in RUT_Tree_Hearth at native (3,1.4)/(4,1.4), 0.05 from
+       VAE_CasualWear/VAE_FormalWear (1.35). Moved to y 3.5, clear of every node in columns 3 and 4 (capture 2026-10-05T22-44-27Z). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/researchViewY</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/researchViewY</xpath>
+      <value><researchViewY>3.5</researchViewY></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/researchViewY</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/researchViewY</xpath>
+      <value><researchViewY>3.5</researchViewY></value>
+    </match>
+  </Operation>
 </Patch>
