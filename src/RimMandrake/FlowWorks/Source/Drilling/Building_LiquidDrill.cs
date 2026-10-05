@@ -46,7 +46,23 @@ namespace RimMandrake.FlowWorks.Drilling
 		/// <summary>The cell this drill pours into — the one cell its
 		/// footprint faces, so rotating the drill at placement chooses the
 		/// outlet the same way a turret's rotation chooses its facing.</summary>
-		public IntVec3 OutletCell => Position + Rotation.FacingCell;
+		public IntVec3 OutletCell => OutletFor(Position, Rotation, def.size);
+
+		/// <summary>The cell just past the footprint's facing edge. Position +
+		/// FacingCell is only outside the footprint for a 1x1: for the 2x2
+		/// RM_LiquidDrill it lands INSIDE the drill in every rotation
+		/// (GenAdj.AdjustForRotation), so the drill poured under itself.</summary>
+		public static IntVec3 OutletFor(IntVec3 pos, Rot4 rot, IntVec2 size)
+		{
+			CellRect r = GenAdj.OccupiedRect(pos, rot, size);
+			switch (rot.AsInt)
+			{
+				case 0: return new IntVec3(pos.x, 0, r.maxZ + 1);
+				case 1: return new IntVec3(r.maxX + 1, 0, pos.z);
+				case 2: return new IntVec3(pos.x, 0, r.minZ - 1);
+				default: return new IntVec3(r.minX - 1, 0, pos.z);
+			}
+		}
 
 		public override void TickRare()
 		{
@@ -174,7 +190,7 @@ namespace RimMandrake.FlowWorks.Drilling
 				return true;
 			}
 			RM_MapComponent_Excavation engine = map.GetComponent<RM_MapComponent_Excavation>();
-			IntVec3 outlet = loc + rot.FacingCell;
+			IntVec3 outlet = Building_LiquidDrill.OutletFor(loc, rot, (checkingDef as ThingDef)?.size ?? IntVec2.One);
 			if (engine == null || !engine.IsExcavated(outlet))
 			{
 				return "RM_DrillNeedsOutlet".Translate();

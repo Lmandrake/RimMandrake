@@ -167,6 +167,12 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				if (map.terrainGrid.UnderTerrainAt(c) != null)
+				{
+					// A floor is laid here. BaseTerrainAt reads the ground UNDER it, and
+					// SetTerrain of a non-layerable rung would silently destroy the floor.
+					continue;
+				}
 				int r = Rung(props, map.terrainGrid.BaseTerrainAt(c));
 				if (r < 0 || r >= props.ladder.Count - 1)
 				{

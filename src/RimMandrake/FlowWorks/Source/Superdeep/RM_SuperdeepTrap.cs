@@ -41,7 +41,10 @@ namespace RimMandrake.FlowWorks
 
 		public static RM_MapComponent_Excavation EngineOf(Map map)
 		{
-			return map?.GetComponent<RM_MapComponent_Excavation>();
+			// Cached: this sits under the CanReach / PawnCanOpen / TryEnterNextPathCell
+			// hooks, ahead of the SuperdeepCellCount early-out, and GetComponent walks
+			// every map component on every call.
+			return RM_SuperdeepShooting.EngineFor(map);
 		}
 
 		public static bool RuleOn =>
@@ -343,6 +346,12 @@ namespace RimMandrake.FlowWorks
 
 		public void ExposeData()
 		{
+			if (Scribe.mode == LoadSaveMode.Saving && jumpers != null)
+			{
+				// Tick prunes only while superdeep cells exist; a discarded pawn left
+				// here would save as an unresolvable reference.
+				jumpers.RemoveWhere(p => p == null || p.Destroyed);
+			}
 			Scribe_Collections.Look(ref jumpers, "jumpers", LookMode.Reference);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{

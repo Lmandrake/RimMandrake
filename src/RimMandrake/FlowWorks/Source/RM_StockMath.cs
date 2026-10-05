@@ -417,6 +417,17 @@ namespace RimMandrake.FlowWorks
 					}
 				}
 			}
+			// Cap hit: cells still queued were marked visited but never added.
+			// Un-mark them so a later seed picks them up as their own component;
+			// left marked, they were skipped as seeds and starved on every pulse.
+			while (queue.Count > 0)
+			{
+				T left = queue.Dequeue();
+				if (isExcavated(left))
+				{
+					visitedExcavated.Remove(left);
+				}
+			}
 		}
 	}
 }

@@ -48,6 +48,13 @@ namespace RimMandrake.FlowWorks
 				des.Delete();
 				return false;
 			}
+			// Pit model 3.8: never fill a cell in on top of someone. The designator
+			// checks this only at designation time; a pawn can fall or walk in later.
+			// Temporary, so the designation is kept.
+			if (c.GetFirstPawn(pawn.Map) != null)
+			{
+				return false;
+			}
 			return pawn.CanReserve(c, 1, -1, ReservationLayerDefOf.Floor, forced);
 		}
 

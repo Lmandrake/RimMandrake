@@ -113,16 +113,17 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			List<IntVec3> cells = room.Cells is List<IntVec3> l ? l : new List<IntVec3>(room.Cells);
-			int total = cells.Count;
+			// Room.Cells is an iterator in 1.6: size-gate on CellCount before walking,
+			// never copy the room into a list (this runs every 120 ticks per room).
+			int total = room.CellCount;
 			if (total == 0 || total > 400)
 			{
 				return;
 			}
 			int deep = 0;
-			for (int i = 0; i < total; i++)
+			foreach (IntVec3 c in room.Cells)
 			{
-				if (eng.IsSuperdeepExcavation(cells[i]))
+				if (eng.IsSuperdeepExcavation(c))
 				{
 					deep++;
 				}
