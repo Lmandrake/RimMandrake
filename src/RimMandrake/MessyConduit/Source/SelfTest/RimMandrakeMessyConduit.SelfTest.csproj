@@ -62,6 +62,8 @@
     <Compile Include="StyleStage3Checks.cs" />
     <Compile Include="..\Hose\HoseCarry.cs" />
     <Compile Include="HoseCarryChecks.cs" />
+    <Compile Include="..\Hose\HoseLive.cs" />
+    <Compile Include="HoseLiveChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>

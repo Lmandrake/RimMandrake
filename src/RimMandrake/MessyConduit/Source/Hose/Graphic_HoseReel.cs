@@ -8,7 +8,8 @@ namespace RimMandrake.MessyConduit.Hose
     /// the sibling "Reel_Deployed" art (empty drum, hose entering the reel) while it is laid. A SWAP, not an overlay: the two
     /// drawings do not share a pixel-exact outline (measured 2026-10-04: 10% of the stored silhouette falls outside the
     /// deployed one), so drawing one over the other leaves a rim of the stored coils showing. CompHoseReel dirties the map
-    /// mesh when the hose is laid or reeled in. Missing deployed art = the stored art stands in.
+    /// mesh when the hose is laid or reeled in. Missing deployed art = the stored art stands in. Carry stage S4: the drum shows
+    /// deployed from the moment a colonist takes the end (Carrying / Retracting too); RM_MapComponent_Hoses reprints on that change.
     /// </summary>
     public class Graphic_HoseReel : Graphic_Single
     {
@@ -30,7 +31,7 @@ namespace RimMandrake.MessyConduit.Hose
         public bool HasDeployed => deployed != null;
 
         public override Material MatAt(Rot4 rot, Thing thing = null) =>
-            deployed != null && thing is ThingWithComps tw && tw.GetComp<CompHoseReel>() is CompHoseReel r && r.laid ? deployed : mat;
+            deployed != null && thing is ThingWithComps tw && tw.GetComp<CompHoseReel>() is CompHoseReel r && (r.laid || r.carry != HoseCarryState.Stored) ? deployed : mat;
 
         public override Material MatSingleFor(Thing thing) => MatAt(Rot4.North, thing);
 

@@ -95,5 +95,40 @@ namespace RimMandrake.MessyConduit.Hose
             kind = cands[pick].Kind;
             return things[pick];
         }
+
+        /// <summary>Carry stage S4 (design section 7): the pipe/tank, of ANY faction, beside a hose's free end at
+        /// <paramref name="end"/> (the same rule as the reel side, the end cell treated as a 1x1 reel). A thing standing ON the
+        /// end cell counts too (a hose pushed into a tank's footprint couples to it). Null = none.</summary>
+        public static Thing FindAt(Map map, IntVec3 end, Thing exclude, out Cell side, out HosePortKind kind)
+        {
+            side = new Cell(0, 0);
+            kind = HosePortKind.None;
+            if (map == null || !end.InBounds(map)) return null;
+            var rect = new HoseReelRect(end.x, end.z, 1, 1);
+            var things = new List<Thing>();
+            var cands = new List<HosePortCandidate>();
+            foreach (Thing t in end.GetThingList(map))
+                if (t != exclude && Classify(t) != HosePortKind.None) { kind = Classify(t); return t; }
+            foreach (Cell pc in rect.Perimeter())
+            {
+                var c = new IntVec3(pc.X, 0, pc.Z);
+                if (!c.InBounds(map)) continue;
+                List<Thing> l = c.GetThingList(map);
+                for (int i = 0; i < l.Count; i++)
+                {
+                    Thing t = l[i];
+                    if (t == exclude || things.Contains(t)) continue;
+                    HosePortKind k = Classify(t);
+                    if (k == HosePortKind.None) continue;
+                    CellRect rc = t.OccupiedRect();
+                    things.Add(t);
+                    cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
+                }
+            }
+            int pick = HosePortRule.Pick(rect, cands, out side, out _);
+            if (pick < 0) return null;
+            kind = cands[pick].Kind;
+            return things[pick];
+        }
     }
 }

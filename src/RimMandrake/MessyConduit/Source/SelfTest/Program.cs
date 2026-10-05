@@ -72,6 +72,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             ReviewRound6Checks.Run();      // owner code round 6 (2026-10-04): ReviewRound6Checks.cs
             ReviewRound7Checks.Run();      // owner review round 7 (2026-10-04, station 42 relay hookup): ReviewRound7Checks.cs
             HoseCarryChecks.Run();         // colonist-carried hose S1 (2026-10-04): HoseCarryChecks.cs + ../Hose/HoseCarry.cs
+            HoseLiveChecks.Run();          // colonist-carried hose S4 live drawing (2026-10-04): HoseLiveChecks.cs + ../Hose/HoseLive.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
             StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs
