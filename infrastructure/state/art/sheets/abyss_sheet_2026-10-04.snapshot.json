@@ -1,8 +1,8 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-04T23:53:23-0700",
+ "built": "2026-10-05T08:33:32-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "15caf5fd7",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_CrepuscularBeetle": {
@@ -11,15 +11,26 @@
      "east": "df0ccdae53d03160cba71d3a1f0c974bcf2449b0b8e720070356e6936047ac32",
      "north": "ff46d845dc24c983b8d6f3d25dc39a68f2602ea10faca8ce80e2004fbd915006",
      "south": "ec262bc8b2df782f6381958dc14795fbc8122e8e515c47ec48b3920ffb83ae55"
+    },
+    "B": {
+     "east": "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
+     "north": "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66",
+     "south": "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle"
+    "A": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_brekkugar"
    },
    "res": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "crepuscularbeetle"
   },
   "AA_DarkVandal": {
@@ -28,15 +39,26 @@
      "east": "0fc871afa9cf00a7621bc2932d66be6a11269e803e317143fc958fd7675a9010",
      "north": "408f6351e8d6db5fe577ea5bdd856821a68fbde76efa313db2f6d1cc45362a00",
      "south": "d622bd7c5096b07854f28a1ff8d12c581c6a838dbb292316b0a9ba1afd2501ec"
+    },
+    "B": {
+     "east": "2d295fdf25b6e3f67ba7a3b46abf8614e0fcb376825a7e512bd4da17cca87cd7",
+     "north": "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3",
+     "south": "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar"
+    "A": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_gruzz"
    },
    "res": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "darkvandal"
   },
   "AA_Darkbeast": {
@@ -45,15 +67,26 @@
      "east": "b38eb31bb2229067103df0e2eab0baa0a1fe29ed24f0d9194a254ecaaa8564ab",
      "north": "6644cbbca8f687820de3615ca7ff97357cc72ee9e6d2a2c3a73f001ce1f6e9ab",
      "south": "17b07f618aa69bc49b9decf364d74e33c61b888a6ce7466b9cde5aecabea76c2"
+    },
+    "B": {
+     "east": "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
+     "north": "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2",
+     "south": "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast"
+    "A": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_ulkhorr"
    },
    "res": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "darkbeast"
   },
   "AA_DuskProwler": {
@@ -62,15 +95,26 @@
      "east": "7f46e9e80eb05ec1c1c44b0ee357b9f2de8237e9965139ce6323e2c1b2a51469",
      "north": "0bae711ba531c02496322d66b06b587fb442eb4d3c9542155e9072561a596674",
      "south": "c7cc8c89f59a22f7ea9ae515953e26ac6f6079a641041c41337d7992a2b996c3"
+    },
+    "B": {
+     "east": "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
+     "north": "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834",
+     "south": "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler"
+    "A": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_shekkur"
    },
    "res": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "duskprowler"
   },
   "AA_DuskRat": {
@@ -95,6 +139,11 @@
     "B": "render RM_DuskRat"
    },
    "res": "Things/Pawn/Animal/AA_DuskRat/AA_DuskRat",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "duskrat"
   },
   "AA_Frostling": {
@@ -112,6 +161,10 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Frostling/AA_Frostling",
+   "reserved": [
+    "A"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "frostling"
   },
   "AA_Murkling": {
@@ -120,15 +173,25 @@
      "east": "85bc84e3401fc513d587ae135ce8c098e6780f9bc644404a343be96e3f68566b",
      "north": "57a098473d73479a1631bd5c19637093c5b06311ed2444aec8443217f27539cd",
      "south": "d7fd05f1d4332745962b8a99dc3a2ff309d02f35caf9a227d04aae00c83fee0c"
+    },
+    "B": {
+     "north": "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
+     "south": "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest"
+    "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_kessik"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "murkling"
   },
   "AA_NightAve": {
@@ -153,6 +216,11 @@
     "B": "donor original \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_NightAve/AA_NightAve",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "nightave"
   },
   "AA_NightMule": {
@@ -171,19 +239,40 @@
      "east": "d69be278dc0df45489ebca5e7d9590b100093fa1cb785ea3bca23161e2b8738b",
      "north": "aeb2c419cd52d085c6f9508dd0233cece5dbd10f530c66fe4569ab4ff020f51b",
      "south": "707b7122039dbf41935aacc1d1613f0e7f67d4609344fe5284f92b3c4788c6bd"
+    },
+    "D": {
+     "east": "2e412a2788a488f1a74dd1dd03ff79573f390875b6f44a68697ad73e00ed63bd",
+     "north": "8ef33639e2fb5c34862c4cd2e6629703f4a6f8d567bb5483a8e2fff39ce76759",
+     "south": "697b455c5e162c6e8f29a4f529d3ed615bc41bc3bf719de5bc2a1e9a0a104e88"
+    },
+    "E": {
+     "east": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+     "north": "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089",
+     "south": "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_NightMule/AA_NightMule",
     "B": "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby",
-    "C": "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female"
+    "C": "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
-    "C": "IN GAME \u2014 Alpha Animals"
+    "C": "IN GAME \u2014 Alpha Animals",
+    "D": "render abyss_gaddrum_v1",
+    "E": "render crags_hulggarok"
    },
    "res": "Things/Pawn/Animal/AA_NightMule/AA_NightMule",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "nightmule"
   },
   "AA_NightRam": {
@@ -192,15 +281,34 @@
      "east": "a5dad2903717f3b9a567522f9b08f119943d7ae6ec1a15f9d22eadd5f1d4f376",
      "north": "41cea2aa7d48811a43747d5b6ca9f5835c8eaae815ddaca254c3b24919e841f9",
      "south": "f81e579cd34e4ee0a4ca58d93e99cac7b4d0e32f980a68ed42e473276c69c683"
+    },
+    "B": {
+     "east": "9bab78f4014826a77d285f784a155fefcda474a5b3f528d8ffb556c6efe3622c",
+     "north": "c232382992e9e7bbabba8b6ee38a1a06ac55b6ecd0d12d241b152f88d2df0a94",
+     "south": "4fd87209f7f40168b8d52ef8b79c8dc1bb3d2560a4af53de15323caed64b809a"
+    },
+    "C": {
+     "east": "86e01fc989af3c3a88eab789ba730441effbbcfb49cac18e20a3f32b453c811f",
+     "north": "23ddc95e6bb277bd86fa97a760604cca0bacde7f22f36e38925925a0d9888953",
+     "south": "add388e498126c854541374dc4fa715dffcc1676cff81f982dc74b93d1b7df37"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_NightRam/AA_NightRam"
+    "A": "Things/Pawn/Animal/AA_NightRam/AA_NightRam",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render abyss_dugrath_v1",
+    "C": "render crags_dhukk"
    },
    "res": "Things/Pawn/Animal/AA_NightRam/AA_NightRam",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "nightram"
   },
   "AA_Nightling": {
@@ -214,17 +322,29 @@
      "east": "17535f7ff69fbd21fe89aa32c33749d9d62bf90d4c0f9723617df394a4fc938f",
      "north": "8eac723655e8434ac876264f6ee3661bae8bdd5770fd066ff42f107438143c5c",
      "south": "73c21b53250a5a2ed7442fd3558f0979b8000f812df51ceb9ad7d698aa62bb82"
+    },
+    "C": {
+     "east": "82eb980c2cfbe0177f81c55a2ea485eb38b39bab9a9cbac66a5098dcbef2b9b3",
+     "north": "d9b9438b9f4ff2c98b232b9e0cad41378cdb709e3aeee12752b32fbaf26d057c",
+     "south": "086b23f3faa21e0f4b5e8568730fa0b7b26ec953aff2654f45c93c7165d26cf6"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
-    "B": "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy"
+    "B": "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "IN GAME \u2014 Alpha Animals"
+    "B": "IN GAME \u2014 Alpha Animals",
+    "C": "render crags_vrakk"
    },
    "res": "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "nightling"
   },
   "AA_ShadowCharger": {
@@ -270,6 +390,13 @@
     "E": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "shadowcharger"
   },
   "AA_Thunderox": {
@@ -298,6 +425,11 @@
      "east": "78bf4c1ea6cb5fec01d4f4a407eb917d284bbb1df6bdf15bd3a5db944258a5ca",
      "north": "55707de54cf8d7765809feb57022a1fcf902d9078acea050923d36a50c2518fc",
      "south": "80d8696fd6d286c0cefa9bdff1b4440808d7987bd32d61d8daeddb90856635b3"
+    },
+    "F": {
+     "east": "639be484caa31a3b70975f39f8e9e550d06abd22a0f0e11babfb46851ab8d290",
+     "north": "fcb0ac094474f201a1339e3b216b46dbca86e8b7500865e19f8af537ff05227a",
+     "south": "10d2ed265fa4cbfcf2bdb8edbb69125a2957f69f32247b712271564cee72b5d1"
     }
    },
    "graphic_of": {
@@ -305,16 +437,26 @@
     "B": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female",
     "C": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male",
     "D": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male",
-    "E": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male"
+    "E": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
     "C": "IN GAME \u2014 ThunderoxArtOverride",
     "D": "history ThunderoxArtOverride 2026-09-13",
-    "E": "donor original \u2014 Alpha Animals"
+    "E": "donor original \u2014 Alpha Animals",
+    "F": "render abyss_bragmor_v1"
    },
    "res": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_baby",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "thunderox"
   },
   "AB_GiantGamma": {
@@ -335,21 +477,34 @@
     "B": "donor original \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_GiantGamma",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "giantgamma"
   },
   "AB_GiantSeptimum": {
    "columns": {
     "A": {
      "single": "34fb7824c3e47f3e889eb9f0da8bb2b91d51656b08b1443951cbe9b95e960cb9"
+    },
+    "B": {
+     "single": "b32b0f4919cfd40a7a3556970466a0ad550ab9ff366f82f1667cbd4a077ff599"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/AB_GiantSeptimum"
+    "A": "Things/Plants/AB_GiantSeptimum",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes"
+    "A": "IN GAME \u2014 Alpha Biomes",
+    "B": "render abyss_elderskeddra_v1"
    },
    "res": "Things/Plants/AB_GiantSeptimum",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "giantseptimum"
   },
   "AB_GiantStikehr": {
@@ -365,21 +520,45 @@
     "A": "IN GAME \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_GiantStikehr",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "giantstikehr"
   },
   "AB_GlowingGrass": {
    "columns": {
     "A": {
      "single": "1186ed29384449d3acd7e81c93b2c67d8685b847c4c22d5715d4d58c6d1e44f1"
+    },
+    "B": {
+     "single": "946606a4c20f4e7308ac314e3ccac8ff5448f4686b779513a75f86dd7cef5e79"
+    },
+    "C": {
+     "single": "12cf0e47faafb608a022e21b3a25673b32dacbb4411bf4152d04e73ec58c9973"
+    },
+    "D": {
+     "single": "fc4a2b5a332b3c3d5c09628c9556160a65bac7a69e2e0eb77ca231bfb89f1a17"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/AB_GlowingGrass"
+    "A": "Things/Plants/AB_GlowingGrass",
+    "B": "Things/Plants/AB_GlowingGrass",
+    "C": "Things/Plants/AB_GlowingGrass",
+    "D": "Things/Plants/AB_GlowingGrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes"
+    "A": "IN GAME \u2014 Alpha Biomes",
+    "B": "render abyss_glowinggrass_a_v1",
+    "C": "render abyss_glowinggrass_b_v1",
+    "D": "render abyss_glowinggrass_c_v1"
    },
    "res": "Things/Plants/AB_GlowingGrass",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "glowinggrass"
   },
   "AB_ToxicGamma": {
@@ -389,17 +568,27 @@
     },
     "B": {
      "single": "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
+    },
+    "C": {
+     "single": "d14c1da69d5c406668e4dbf4fd6e86fa3e6176b4dd9e5c1570e11ccd4b5223ae"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_ToxicGamma",
-    "B": "Things/Plants/AB_ToxicGamma"
+    "B": "Things/Plants/AB_ToxicGamma",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "donor original \u2014 Alpha Biomes"
+    "B": "donor original \u2014 Alpha Biomes",
+    "C": "render abyss_blightbulgra_v1"
    },
    "res": "Things/Plants/AB_ToxicGamma",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "toxicgamma"
   },
   "AB_WildRadagast": {
@@ -420,6 +609,10 @@
     "B": "donor original \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_WildRadagast",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "wildradagast"
   },
   "AG_Gamma": {
@@ -435,6 +628,9 @@
     "A": "IN GAME \u2014 Alpha Genes"
    },
    "res": "Things/Plant/AG_Gamma",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ag_gamma"
   },
   "AG_Septimum": {
@@ -450,6 +646,9 @@
     "A": "IN GAME \u2014 Alpha Genes"
    },
    "res": "Things/Plant/AG_Septimum",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ag_septimum"
   },
   "RM_Cindermare": {
@@ -465,6 +664,9 @@
     "A": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cindermare"
   },
   "RM_Drokattak": {
@@ -473,15 +675,25 @@
      "east": "6449f17e40c8944f3fdf0538265de095c3f12b667eabc86704babf3627cb382b",
      "north": "ceff22603c2afa5740d11af3ddce326f5d263b1e5d96e5fff7db3adafdd1ad68",
      "south": "164caae6729eb68c94f7fad726f30d0017a8407e5802753d10dd590342ebc8eb"
+    },
+    "B": {
+     "east": "eea0e6fa6835948227444ea2b2c1afaa9a9a09108045f11f5cef4ec776b4951d",
+     "south": "92a6ecf4387639f7357bb6b3c13d98832b52c97a143e64fb30ee779dec919862"
     }
    },
    "graphic_of": {
-    "A": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak"
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak"
    },
    "labels": {
-    "A": "IN GAME \u2014 Abyss"
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_drokattak_v2"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "drokattak"
   },
   "RM_Durrgak": {
@@ -499,6 +711,9 @@
     "A": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "durrgak"
   },
   "RM_Etchcap": {
@@ -514,6 +729,9 @@
     "A": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Plant/Etchcap",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "etchcap"
   },
   "RM_Gharrek": {
@@ -531,6 +749,9 @@
     "A": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gharrek"
   },
   "RM_Krizzak": {
@@ -583,21 +804,38 @@
     "F": "render RM_Krizzak_Flying_5"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "krizzak"
   },
   "RM_Skarnix": {
    "columns": {
     "A": {
      "single": "df1fd5ceaa9a4fc6492a22bda5bad01978e1d478b599e2c627cfb1ffdf4e424d"
+    },
+    "B": {
+     "east": "28ba46d60d16a11fe07edbed7df9e4df5449f0a5127d77928d11a3979bb62342"
     }
    },
    "graphic_of": {
-    "A": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix"
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Abyss"
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_gekkrith_v1"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "skarnix"
   },
   "RM_Summ": {
@@ -622,6 +860,10 @@
     "B": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "summ"
   },
   "RM_Vosska": {
@@ -646,6 +888,11 @@
     "B": "render RM_Vosska"
    },
    "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "vosska"
   },
   "RM_Wickwood": {
@@ -661,6 +908,9 @@
     "A": "IN GAME \u2014 Abyss"
    },
    "res": "RM_Abyss/Things/Plant/RM_Wickwood",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "wickwood"
   }
  },

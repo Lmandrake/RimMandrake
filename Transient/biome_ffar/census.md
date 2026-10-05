@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-05 06:59
+# Biome flora/fauna art census — 2026-10-05 08:32
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -32,17 +32,17 @@ defs: `RM_BlueDesert` (20)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 20 | 12 | 8 | 0 | 20 | 0 | 0 | 0 | 0 | 0 |
+| 20 | 12 | 8 | 0 | 20 | 1 | 0 | 0 | 0 | 0 |
 
 ## 4. the Abyss (`RM_Abyss`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 27
 
-defs: `RM_Abyss` (31)
+defs: `RM_Abyss` (27)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 31 | 21 | 10 | 0 | 31 | 0 | 0 | 0 | 0 | 0 |
+| 27 | 17 | 10 | 0 | 27 | 0 | 0 | 0 | 0 | 0 |
 
 ## 5. the Cauldron (`RM_Cauldron`)
 
@@ -372,11 +372,11 @@ defs: `RM_WeepingStones` (51)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 906 | 534 | 308 | 64 | 906 | 161 | 12 | 4 | 116 | 0 |
+| 902 | 530 | 308 | 64 | 902 | 162 | 12 | 4 | 116 | 0 |
 
-Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 852.
+Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 849.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 254, _artpipe_jobs_anooba 8, _ledger_variants 11355
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 11384
 
 
 **UNMEASURED:**

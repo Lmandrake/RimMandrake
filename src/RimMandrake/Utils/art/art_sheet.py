@@ -769,6 +769,9 @@ def _fkey(c: dict) -> tuple:
     return tuple(sorted(c["faces"].items()))
 
 
+OVERRIDES = Path(__file__).resolve().parent / "sheet_row_overrides.json"
+
+
 def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
     """Artpipe render families whose job name carries one of WORDS (word-bounded, >= 4 chars) or is one of
     EXACT (artpipe_state_jobs). Corpse/mote/mask/filth jobs are not body art and never join."""
@@ -1260,7 +1263,14 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         print(f"WARNING: no def dump for descriptions ({e}) — rows say UNMEASURED", file=sys.stderr)
         desc_res = None
     rel, elsewhere, find = _clusters(rows)
-    labels = {r["key"]: _human(r) for r in rows}
+    # per-row overrides (sheet_row_overrides.json): the NEW in-game name of a donor row being ported, and extra
+    # artpipe job families (new renders filed under another name, legacy crags_* sets) to show on that row
+    _ov = (json.loads(OVERRIDES.read_text()) if OVERRIDES.is_file() else {}).get(biome, {})
+    for r in rows:
+        o = _ov.get(r["key"])
+        if o:
+            r["artpipe_state_jobs"] = sorted(set(r.get("artpipe_state_jobs") or []) | set(o.get("jobs") or []))
+    labels = {r["key"]: (f"{_ov[r['key']]['new_label']} (new name; was {r['key']})" if r["key"] in _ov and _ov[r["key"]].get("new_label") else _human(r)) for r in rows}
 
     census_canon = {cr["key"]: (cr.get("canon") or {}).get("entry") for bb in census["biomes"].values()
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
