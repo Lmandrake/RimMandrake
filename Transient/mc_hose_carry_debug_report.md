@@ -1,0 +1,38 @@
+# Hose carry live debug — 2026-10-04
+
+Goal: `validation_hose.py --carry` green (FLOWWORKS_HOSE_DEPLOY_DRAG_1, S3 follow-up).
+
+## Starting state
+Run 20261004T233651 (DLL from 3fd249d54): CR0-CR3, CR4a, CR5b PASS; FAIL CR4b, CR5, CR6.
+
+## Cycles
+
+### Cycle 0 — read Player.log of the failing run (no code change)
+One root cause for all three FAILs. Loading `RM_hosecarry_..._carrying`:
+`Exception in SetupToils for pawn Maffrand driver=JobDriver_CarryHoseEnd (toilIndex=4)` — NRE in
+`GenGrid.Standable` <- `JobDriver_CarryHoseEnd.WalkEndMode()` <- `MakeNewToils`. Vanilla runs SetupToils at load
+BEFORE the pawn is spawned, so `pawn.Map` is null; `WalkEndMode()` (and `SetDownTicks()`) were evaluated while
+BUILDING the toils (`Toils_Goto.Goto(DestInd, WalkEndMode())`, `Toils_General.Wait(SetDownTicks())`).
+Consequences: the job ended Errored -> `OnFinish` read Errored + order-still-mine as "unreachable" -> `DropCarry(keepPending:false)`
+-> CR4b saw Dropped/pending None. Then the error-recover JobDriver_Wait also NRE'd ("pawn is now jobless").
+- CR5 FAIL was a cascade: pending None, so the work path had no order to resume (Dropped->Carrying->Dropped was the
+  pre-save resume then the load drop).
+- CR6 FAIL was a cascade: the pawn was left jobless/broken by the failed error-recover job, so the retract job never ran.
+
+### Cycle 1 — fix: read the map when the toil STARTS, not when toils are built
+`JobDriver_CarryHoseEnd`: the walk toil is a custom toil whose initAction picks the end mode and calls
+`pather.StartPath` (same as Toils_Goto, minus the construction-time read); the set-down Wait sets
+`ticksLeftThisToil`/`defaultDuration` from `SetDownTicks()` in its initAction (vanilla assigns ticksLeft from
+defaultDuration before initAction, RimSage `JobDriver.TryActuallyStartNextToil`); `WalkEndMode` returns Touch if
+`pawn.Map` is null. Selftests 646/646. Live run `validation_hose_carry_20261004T234240.json`: **9 PASS, 1 SKIP (CR5c, S4)**.
+CR4b after load: Carrying, carrier kept, pending Deploy kept — the design §11 path (the saved driver resumes at its toil).
+CR5: resumed 60 ticks, Laid at (106,68) in 300. CR6: Laid -> Retracting -> Stored in 750 ticks. No new exceptions in Player.log
+(only the pre-existing startup `Default constructor not found for type System.String` def-load line).
+
+## Theories (incl. false ones)
+- FALSE (briefed suspicion): CR5's drop-after-pickup was the 30-tick holder check / HoldsReel not matching the work-giver
+  job, or the pawn still drafted from CR3. The log shows neither: the job died in SetupToils on load.
+- FALSE: CR6 retract toils/WindBy/reachability broken. Untouched code passed once the pawn's job tracker was not wrecked.
+- No check changed. CR4b's check (Carrying or Dropped, trail kept, pending Deploy kept) already matched §11.
+
+## Result

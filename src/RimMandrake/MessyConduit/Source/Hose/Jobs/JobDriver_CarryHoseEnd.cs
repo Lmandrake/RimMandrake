@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
@@ -108,10 +109,13 @@ namespace RimMandrake.MessyConduit.Hose.Jobs
             return true;
         }
 
+        /// <summary>Read when the toil STARTS, never while the toils are built: after a load SetupToils runs before the pawn
+        /// is spawned (pawn.Map null; live CR4b 2026-10-04: an NRE here errored the resumed job and the finish action
+        /// cleared the order).</summary>
         private PathEndMode WalkEndMode()
         {
             CompHoseReel r = Reel;
-            if (r == null || !Dest.IsValid) return PathEndMode.Touch;
+            if (r == null || !Dest.IsValid || pawn.Map == null) return PathEndMode.Touch;
             if (r.IsBringBack(Dest)) return PathEndMode.Touch;
             return Dest.Standable(pawn.Map) ? PathEndMode.OnCell : PathEndMode.Touch;   // water, a tank side, a relay intake
         }
@@ -161,7 +165,15 @@ namespace RimMandrake.MessyConduit.Hose.Jobs
             this.FailOn(() => Reel.carry == HoseCarryState.Retracting || (Reel.carry == HoseCarryState.Carrying && Reel.carrier != pawn));
             AddFinishAction(OnFinish);
 
-            Toil walk = Toils_Goto.Goto(DestInd, WalkEndMode());
+            // the end mode is chosen when the walk starts (a Goto built with it would read the map inside SetupToils)
+            Toil walk = ToilMaker.MakeToil("RM_CarryHoseWalk");
+            walk.initAction = () =>
+            {
+                PathEndMode pe = WalkEndMode();
+                if (pe == PathEndMode.OnCell && pawn.Position == Dest) { pawn.jobs.curDriver.ReadyForNextToil(); return; }
+                pawn.pather.StartPath(Dest, pe);
+            };
+            walk.defaultCompleteMode = ToilCompleteMode.PatherArrival;
             walk.AddPreTickAction(Step);
             walk.FailOn(() => !CarryingIt);
 
@@ -204,7 +216,9 @@ namespace RimMandrake.MessyConduit.Hose.Jobs
             yield return walk;
 
             // 4. set it down / couple it, then 5. finish
-            Toil setDown = Toils_General.Wait(SetDownTicks(), DestInd);
+            Toil setDown = Toils_General.Wait(HoseJobTuning.setDownTicks, DestInd);
+            Action waitInit = setDown.initAction;
+            setDown.initAction = () => { waitInit?.Invoke(); ticksLeftThisToil = setDown.defaultDuration = SetDownTicks(); };   // couple or plain, read at start (the bar reads defaultDuration)
             setDown.AddPreTickAction(Step);
             setDown.FailOn(() => !CarryingIt);
             setDown.WithProgressBarToilDelay(DestInd);
