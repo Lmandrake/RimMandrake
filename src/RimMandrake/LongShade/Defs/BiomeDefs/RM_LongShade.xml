@@ -56,7 +56,7 @@
         UtinniPatches/Patches/WildAnimals_LongShade.xml as a PatchOperationAdd,
         same shape as the wildAnimals rows above.
         🔴 LONGSHADE_RULED_CONTENT_1 Q2/Q6: the 6th, RSW_Ultracactus, LEFT
-        that patch instead and is now inline as RM_Ultracactus — Q2 ruling
+        that patch instead and is now inline as RM_UltrissPad — Q2 ruling
         (owner, typed): "The ultracactus is not canon, I made it." RM_Dewfringe
         (new, Q6) and its harvest RM_DewfringeSprig are inline too, growth
         gated to shade-boundary cells by RM_Patch_DewfringeWildSpawnGate.cs
@@ -222,7 +222,7 @@
       <RM_Leachmoss>1.5</RM_Leachmoss>  <!-- leachmoss: the fertile ground's fastest claimant, DESERT_LEACHMOSS_BUILD_1. -->
       <RM_Vorrel>0.1</RM_Vorrel>  <!-- the cycle plant, moved+renamed from RUT_Vorrel per §7 Q8, this mod's own def now, no MayRequire needed. Working name, see RM_Vorrel.xml's own header. -->
       <RM_Venomvine>0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
-      <RM_Ultracactus>0.8</RM_Ultracactus>  <!-- LONGSHADE_RULED_CONTENT_1 Q2: moved inline, weight carried over verbatim from the Utinni patch's Add block. "The ultracactus is not canon, I made it." -->
+      <!-- RM_UltrissPad (was RM_Ultracactus) moved to RM_Stillsand 2026-10-05, LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner: "supposed to be in the most extreme desert"). The gloomcast still seeds it in its wake and RM_UltracactusPad is still this biome's foragedFood — mechanics, not wild casting; left for the owner. -->
       <RM_Dewfringe>0.4</RM_Dewfringe>  <!-- LONGSHADE_RULED_CONTENT_1 Q6: new shade-boundary rim plant, growth gated to the rim by RM_Patch_DewfringeWildSpawnGate.cs — this weight only matters where the C# gate already says yes. -->
       <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the three owner-kept plant fills (RM_LongShade_FillPlants.xml). -->
       <RM_Maidenbloom>0.15</RM_Maidenbloom>

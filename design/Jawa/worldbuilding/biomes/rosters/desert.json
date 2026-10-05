@@ -756,6 +756,11 @@
       "def": "RM_Vosska",
       "disposition": "move:RM_Stillsand",
       "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand\". RSW_Vosska retired onto RM_Vosska; sand-swimmer fields added."
+    },
+    {
+      "def": "RM_UltrissPad",
+      "disposition": "move:RM_Stillsand",
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"This is supposed to be in the most extreme desert ... Rename this to Ultriss Pad. RimMandrake tier.\" RSW_Ultracactus deleted; RM_Ultracactus renamed RM_UltrissPad."
     }
   ],
   "fauna": [
@@ -1070,11 +1075,6 @@
       "commonality": 1.5,
       "def": "RM_Leachmoss",
       "law": "DESERT_LEACHMOSS_BUILD_1 (2026-09-20) — the moss half of §4b's \"shade plants, which defend\". Highest weight in the roster by design (desert_shade_plants_design.md §2b): fertilityMin 0.5 keeps it to Gravel/Soil, so it never competes with the ultracactus for sand."
-    },
-    {
-      "commonality": 0.8,
-      "def": "RSW_Ultracactus",
-      "law": "DESERT_SIGNATURE_FLORA_1 (2026-09-20) — §4b/§7's signature plant, the buried canopy holding the open ground. RULED OURS 2026-09-27 (owner, typed: 'The ultracactus is not canon, I made it.') -> RM_Ultracactus, anchoring the free tier; its pad is the standalone foragedFood (Q3)."
     },
     {
       "commonality": 0.6,

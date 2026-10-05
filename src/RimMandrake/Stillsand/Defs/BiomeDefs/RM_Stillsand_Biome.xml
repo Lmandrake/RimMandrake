@@ -217,6 +217,8 @@
       <!-- STILLSAND_BEDAZZLE_CONTENT_1 fill-out flora. The hourbloom is event output only. -->
       <RM_KneelOllim>0.008</RM_KneelOllim>
       <RM_Glasscrust>0.15</RM_Glasscrust>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): the ultriss pad (was the Long Shade's ultracactus) — "supposed to be in the most extreme desert". Def lives in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_UltrissPad MayRequire="mandrake.rm.biomes">0.8</RM_UltrissPad>
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
     <allowedPackAnimals>

@@ -805,6 +805,12 @@
       "commonality": 0,
       "def": "RM_Hourbloom",
       "law": "The anhydrobiotic bloom's plant def. Never map-resident: output of a bloom incident only (RM_IncidentWorker_BloomBurst bloomPlant). BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01); the incident that names it is not wired."
+    },
+    {
+      "action": "add",
+      "commonality": 0.8,
+      "def": "RM_UltrissPad",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"This is supposed to be in the most extreme desert ... Rename this to Ultriss Pad. RimMandrake tier.\" RSW_Ultracactus deleted; RM_Ultracactus renamed RM_UltrissPad."
     }
   ],
   "flora_purged": [
