@@ -1,0 +1,232 @@
+[
+ {
+  "id": "abyss_sesserith_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Sesserith",
+  "target_original": [
+   "AA_Nightling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the sesserith, one of the Abyss's black, many-eyed family of creatures, our own invention. A lean, long-skulled night hunter on six narrow legs, black as the crags, with a double row of small pale eyes down each side of its head. Its back bristles with loose barbed spines that it shakes off in a rattling spray as it lunges, and whatever they stick in, it follows down. Like all the black, many-eyed things of the Abyss, it seems less evolved than made, as if some old and patient cruelty once had the shaping of it. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: pale bone-white eyes. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_olumetha_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Olumetha",
+  "target_original": [
+   "AA_NightRam"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the olumetha, one of the Abyss's black, many-eyed family of creatures, our own invention. A broad, low grazer, black-hided, with a heavy wedge of fused plates for a brow and a band of small dull eyes beneath it. It crops glow-grass by night with its head down, and if cornered it does not turn: it drives the plated wedge forward and keeps driving. Herders say its line was bred long ago to serve masters who prized obedience above everything. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: dull amber eyes. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_aveluthia_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Aveluthia",
+  "target_original": [
+   "AA_NightMule"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the aveluthia, one of the Abyss's black, many-eyed family of creatures, our own invention. A tall, patient pack beast with a long sloping back, broad splayed feet for loose obsidian scree and a black hide of thick wrinkled folds, its long head set with many small, sleepy eyes. Nothing in the crags carries more, and it walks the Dark without a lamp. Old tales say the dark-robed masters who once ruled here bred it to bear their burdens, and it still bows its head to a hard voice. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: sleepy moss-green eyes. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.2,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_lirrith_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Lirrith",
+  "target_original": [
+   "AA_Murkling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the lirrith, one of the Abyss's black, many-eyed family of creatures, our own invention. A small, quick black scavenger that runs in chattering packs, its narrow head beaded with eyes. It hums to its kin through a fluted crest on its snout, too low for human ears, and a pack can strip a carcass or a careless camp's stores in the time it takes to light a lamp. Its bite festers, and the crag-tellers say that is no accident of nature. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: beaded teal eyes, the snout crest a faint teal glow. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_moravatha_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Moravatha",
+  "target_original": [
+   "AA_CrepuscularBeetle"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the moravatha, one of the Abyss's black, many-eyed family of creatures, our own invention. A huge, slow, many-legged grazer under a domed black carapace as long as a cart, a ring of small glassy eyes set round its blunt head. It wakes when the Dark thickens and hardly sleeps. The crags' old masters broke it to the yoke, and a moravatha will still haul all night without complaint, as if it remembered whose it was. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: glassy oxblood-red eyes, faint oxblood sheen on the plate edges. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_sirathia_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Sirathia",
+  "target_original": [
+   "AA_ShadowCharger"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the sirathia, one of the Abyss's black, many-eyed family of creatures, our own invention. A rangy black grazer with two long back-swept horns, a stiff bristle ridge down its spine and a crescent of eyes across its narrow face. Placid most of the year, the females charge and lock horns in the breeding season. Colonists ride it for speed and keep it for rich milk and meat; the riders who first bred it, the stories say, rode it to war under a darker banner. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: pale-gold horns and pale-gold eyes. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_velessith_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Velessith",
+  "target_original": [
+   "AA_Thunderox"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the velessith, one of the Abyss's black, many-eyed family of creatures, our own invention. A heavy, shaggy grazer in a coat of matted black fur, a stump of a horn on its brow and a cluster of small eyes peering out from under the shag. It fills its deep chest to bray at the first prickle of a coming Witchfire storm; herders still listen for it. Kept for milk, fur and meat, it heals faster than almost anything that grazes: a gift, some say, from whoever first bent its blood. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: frost-white eyes and frost-white fur tips. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.6,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_ossumatha_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ossumatha",
+  "target_original": [
+   "AA_DarkVandal"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the ossumatha, one of the Abyss's black, many-eyed family of creatures, our own invention. A squat slab of black muscle that roots through the grit in groups with a shovel-shaped lower jaw, a row of tiny eyes glinting above it. Harm one and the whole group turns at once; an ossumatha rampage has ended more than one careless camp. Its rage is so complete and so quickly shared that the old stories call it a weapon someone once made and then lost. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: tiny dusky-pink eyes. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.6,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_ysvaltha_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ysvaltha",
+  "target_original": [
+   "AA_DuskProwler"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the ysvaltha, one of the Abyss's black, many-eyed family of creatures, our own invention. Something bred for killing rather than born to it: long, narrow and black, its slender head pricked all over with small cold eyes, with muscular spring-blades folded along its back that fling it forward faster than the eye can follow and open as it strikes. The dark masters who made it are long gone; their hounds were hunted almost to nothing, and few who see one see it twice. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: cold arterial-red eyes and blade edges. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.6,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ },
+ {
+  "id": "abyss_nevarithia_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Nevarithia",
+  "target_original": [
+   "AA_Darkbeast"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type.\" RimWorld creature sprite, painterly: the nevarithia, one of the Abyss's black, many-eyed family of creatures, our own invention. A great hunched black beast grown through with dark iron spines that are not bone, a mass of dim eyes crowded along its brow. It carries a knot of the Dark with it wherever it walks, a moving patch no lamp can reach, and lets the whole of it loose only when it dies. It is the oldest and strangest of the black, many-eyed kin, and the likeliest to have been made by those who mastered the dark. The body is BLACK (deep matte black hide, plates or fur, read by a cool rim light), and the head carries MANY eyes, arranged symmetrically on both sides, clearly visible at game zoom. Its single accent colour: dim sickly yellow-green eyes and seams. No recognisable Earth animal; one lineage with its kin, each with its own silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.6,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family law (owner 2026-10-05): black body, many eyes; palette variety comes from each creature's own accent colour and silhouette.",
+  "owner_note": "Those new smooth names are for Abyss creatures of the black style with multiple eyes uniquely. The 'possibly of Sith origin' type."
+ }
+]

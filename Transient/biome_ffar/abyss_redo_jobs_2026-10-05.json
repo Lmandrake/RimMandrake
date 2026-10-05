@@ -14,7 +14,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: ash-grey hide and bone-white spines, faint cyan eye-glow.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "sesserith",
-  "authored_description": "A lean, long-skulled night hunter that runs on six narrow legs. Its back bristles with loose barbed spines that it shakes off in a rattling spray as it lunges, and whatever they stick in, it follows down. It hunts only in the Dark and reads the crags with a row of small pale eyes along each side of its head.",
+  "authored_description": "A lean, long-skulled night hunter on six narrow legs, black as the crags, with a double row of small pale eyes down each side of its head. Its back bristles with loose barbed spines that it shakes off in a rattling spray as it lunges, and whatever they stick in, it follows down. Like all the black, many-eyed things of the Abyss, it seems less evolved than made, as if some old and patient cruelty once had the shaping of it.",
   "target_original": "AA_Nightling",
   "facings": [
    "east",
@@ -41,7 +41,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: slate-blue plates over a moss-olive hide.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "olumetha",
-  "authored_description": "A broad, low grazer with a heavy wedge of fused plates for a brow. It crops glow-grass by night with its head down, and if cornered it does not turn: it drives the plated wedge forward and keeps driving.",
+  "authored_description": "A broad, low grazer, black-hided, with a heavy wedge of fused plates for a brow and a band of small dull eyes beneath it. It crops glow-grass by night with its head down, and if cornered it does not turn: it drives the plated wedge forward and keeps driving. Herders say its line was bred long ago to serve masters who prized obedience above everything.",
   "target_original": "AA_NightRam",
   "facings": [
    "east",
@@ -68,7 +68,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: dusty tan folds with rust-red creases.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "aveluthia",
-  "authored_description": "A tall, patient pack beast with a long sloping back built to carry, broad splayed feet for loose obsidian scree and a hide of thick wrinkled folds. It gives little milk and no wool, but nothing in the crags carries more, and it walks the Dark without a lamp.",
+  "authored_description": "A tall, patient pack beast with a long sloping back, broad splayed feet for loose obsidian scree and a black hide of thick wrinkled folds, its long head set with many small, sleepy eyes. Nothing in the crags carries more, and it walks the Dark without a lamp. Old tales say the dark-robed masters who once ruled here bred it to bear their burdens, and it still bows its head to a hard voice.",
   "target_original": "AA_NightMule",
   "facings": [
    "east",
@@ -95,7 +95,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: mottled ochre and charcoal, the snout crest a pale green glow.",
   "owner_note": "Needs full regen and new description and name.",
   "authored_label": "lirrith",
-  "authored_description": "A small, quick scavenger that runs in chattering packs. It hums to its kin through a fluted crest on its snout, too low for human ears, and a pack can strip a carcass, or a careless camp's stores, in the time it takes to light a lamp. Its bite festers.",
+  "authored_description": "A small, quick black scavenger that runs in chattering packs, its narrow head beaded with eyes. It hums to its kin through a fluted crest on its snout, too low for human ears, and a pack can strip a carcass or a careless camp's stores in the time it takes to light a lamp. Its bite festers, and the crag-tellers say that is no accident of nature.",
   "target_original": "AA_Murkling",
   "facings": [
    "east",
@@ -122,7 +122,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: lacquered oxblood plates with bronze edges.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "moravatha",
-  "authored_description": "A huge, slow, many-legged grazer under a domed carapace of overlapping plates, as long as a cart. It wakes when the Dark thickens and hardly sleeps, and the crags' old people broke it to the yoke: a moravatha will haul all night without complaint.",
+  "authored_description": "A huge, slow, many-legged grazer under a domed black carapace as long as a cart, a ring of small glassy eyes set round its blunt head. It wakes when the Dark thickens and hardly sleeps. The crags' old masters broke it to the yoke, and a moravatha will still haul all night without complaint, as if it remembered whose it was.",
   "target_original": "AA_CrepuscularBeetle",
   "facings": [
    "east",
@@ -149,7 +149,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: smoke-grey coat, pale-gold horns.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "sirathia",
-  "authored_description": "A rangy grazer with two long, back-swept horns and a ridge of stiff bristle down its spine. Placid most of the year, the females charge and lock horns in the breeding season. Colonists ride it for its speed and keep it for rich milk and plenty of meat.",
+  "authored_description": "A rangy black grazer with two long back-swept horns, a stiff bristle ridge down its spine and a crescent of eyes across its narrow face. Placid most of the year, the females charge and lock horns in the breeding season. Colonists ride it for speed and keep it for rich milk and meat; the riders who first bred it, the stories say, rode it to war under a darker banner.",
   "target_original": "AA_ShadowCharger",
   "facings": [
    "east",
@@ -176,7 +176,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: peat-brown shag with frost-white tips.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "velessith",
-  "authored_description": "A heavy, shaggy grazer with a short stump of a horn and a deep chest that it fills to bray at the first prickle of a coming Witchfire storm; herders still listen for it. Kept for thick milk, warm fur and meat, it heals faster than almost anything else that grazes.",
+  "authored_description": "A heavy, shaggy grazer in a coat of matted black fur, a stump of a horn on its brow and a cluster of small eyes peering out from under the shag. It fills its deep chest to bray at the first prickle of a coming Witchfire storm; herders still listen for it. Kept for milk, fur and meat, it heals faster than almost anything that grazes: a gift, some say, from whoever first bent its blood.",
   "target_original": "AA_Thunderox",
   "facings": [
    "east",
@@ -203,7 +203,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: burnt sienna hide, dusty-pink snout and jaw.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "ossumatha",
-  "authored_description": "A squat slab of muscle that roots through the grit in groups for buried fungus with its shovel-shaped lower jaw. Harm one and the whole group turns on you at once; an ossumatha rampage has ended more than one careless camp.",
+  "authored_description": "A squat slab of black muscle that roots through the grit in groups with a shovel-shaped lower jaw, a row of tiny eyes glinting above it. Harm one and the whole group turns at once; an ossumatha rampage has ended more than one careless camp. Its rage is so complete and so quickly shared that the old stories call it a weapon someone once made and then lost.",
   "target_original": "AA_DarkVandal",
   "facings": [
    "east",
@@ -230,7 +230,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: gunmetal hide with arterial-red blade edges.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "ysvaltha",
-  "authored_description": "Something bred for killing rather than born to it: long-bodied and narrow, with muscular spring-blades folded along its back that fling it forward faster than the eye can follow and open as it strikes. Old hunts drove it almost to nothing; few who see one see it twice.",
+  "authored_description": "Something bred for killing rather than born to it: long, narrow and black, its slender head pricked all over with small cold eyes, with muscular spring-blades folded along its back that fling it forward faster than the eye can follow and open as it strikes. The dark masters who made it are long gone; their hounds were hunted almost to nothing, and few who see one see it twice.",
   "target_original": "AA_DuskProwler",
   "facings": [
    "east",
@@ -257,7 +257,7 @@
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: matte iron-black spines, sickly yellow-green seams in a dark ash hide.",
   "owner_note": "Needs whole new description and name and graphics",
   "authored_label": "nevarithia",
-  "authored_description": "A great hunched beast whose body is grown through with dark iron spines that are not bone. It carries a knot of the Dark with it wherever it walks, a moving patch no lamp can reach, and lets the whole of it loose only when it dies. Most hunters leave it alone for that reason.",
+  "authored_description": "A great hunched black beast grown through with dark iron spines that are not bone, a mass of dim eyes crowded along its brow. It carries a knot of the Dark with it wherever it walks, a moving patch no lamp can reach, and lets the whole of it loose only when it dies. It is the oldest and strangest of the black, many-eyed kin, and the likeliest to have been made by those who mastered the dark.",
   "target_original": "AA_Darkbeast",
   "facings": [
    "east",
@@ -354,7 +354,7 @@
  {
   "id": "abyss_bulgra_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_Selitha",
+  "target_def": "RM_GlowGlobe",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics, but great idea. Make twice as big.\" RimWorld plant sprite, painterly: the selitha, our own invented Abyss plant. A low plant: a short curved stem with a few broad dark leaves at its foot, carrying one big round translucent globe glowing softly from within. Drawn twice as large in the frame as a shrub (owner: twice as big).",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -365,7 +365,7 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: cold blue-white globe glow over charcoal-green leaves.",
   "owner_note": "Needs whole new description and name and graphics, but great idea. Make twice as big.",
-  "authored_label": "selitha",
+  "authored_label": "glow globe",
   "authored_description": "A low plant that grows a single round glowing globe the size of a melon on a short curved stem, soft-lit from within like a paper lantern. Colonists set them out as lamps. Nobody eats one twice: the flesh of the globe is deeply poisonous.",
   "target_original": "AG_Gamma",
   "queued_as": {
@@ -376,7 +376,7 @@
  {
   "id": "abyss_greatbulgra_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_GreatSelitha",
+  "target_def": "RM_GiantGlowGlobe",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics to match the other gamma plant. Should feature the large glowing globe concept, not just a glowing mushroom. BRIGHT.\" RimWorld plant sprite, painterly: the great selitha, our own invented Abyss plant. The giant form of the selitha, matching it: a thick twisted dark trunk lifting one HUGE round globe that glows BRIGHT, a brilliant lamp, clearly the brightest thing in the frame, light spilling at its rim. A large glowing globe, not a mushroom cap.",
   "canvas_w": 512,
   "canvas_h": 512,
@@ -387,8 +387,8 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: brilliant blue-white globe on a charcoal trunk.",
   "owner_note": "Needs whole new description and name and graphics to match the other gamma plant. Should feature the large glowing globe concept, not just a glowing mushroom. BRIGHT.",
-  "authored_label": "great selitha",
-  "authored_description": "The wild giant of the selitha: a thick, twisted trunk lifting one huge glowing globe higher than a man, so bright it lights a farm-plot around it like a sunlamp. Light-shy plants and fungus should be kept well away from it.",
+  "authored_label": "giant glow globe",
+  "authored_description": "The wild giant of the glow globe: a thick, twisted trunk lifting one huge glowing globe higher than a man, so bright it lights a farm-plot around it like a sunlamp. Light-shy plants and fungus should be kept well away from it.",
   "target_original": "AB_GiantGamma",
   "queued_as": {
    "id": "abyss_greatbulgra_v1",
@@ -398,7 +398,7 @@
  {
   "id": "abyss_blightbulgra_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_BlightSelitha",
+  "target_def": "RM_SicklyGlowMushroom",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics, but I like the sickly growing mushroom.\" RimWorld plant sprite, painterly: the blight selitha, our own invented Abyss plant. Keep the sickly, swelling, growing-mushroom look of the attached reference (the owner likes it): a swollen mushrooming mass of lumpy glowing globes crowding up from one base, sickly and spore-hazed. Redraw it as our own plant, not a copy.",
   "canvas_w": 512,
   "canvas_h": 512,
@@ -409,8 +409,8 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: bilious green glow, bruised-mauve skin.",
   "owner_note": "Needs whole new description and name and graphics, but I like the sickly growing mushroom.",
-  "authored_label": "blight selitha",
-  "authored_description": "A sickly kin of the selitha that grows not one clean globe but a swollen, mushrooming mass of them, glowing a dim bilious green. It lights the ground beneath it with a sour darklight and fouls the air with spores.",
+  "authored_label": "sickly glow mushroom",
+  "authored_description": "A sickly kin of the glow globe that grows not one clean globe but a swollen, mushrooming mass of them, glowing a dim bilious green. It lights the ground beneath it with a sour darklight and fouls the air with spores.",
   "target_original": "AB_ToxicGamma",
   "canon_reference": [
    "/mnt/d/Luke/dev/_artstore/a7/a7d9159f4e2020838855fbd40e920c0cdf572514377c76b4420110de8d07404d.png"
@@ -423,7 +423,7 @@
  {
   "id": "abyss_skeddra_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_Navessith",
+  "target_def": "RM_FibreStalk",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics\" RimWorld plant sprite, painterly: the navessith, our own invented Abyss plant. A tall stiff shrub-sized plant of stacked ridged stalk segments, each joint ending in a whorl of narrow blade-leaves.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -434,7 +434,7 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: verdigris segments, rust-red blade whorls.",
   "owner_note": "Needs whole new description and name and graphics",
-  "authored_label": "navessith",
+  "authored_label": "fibre stalk",
   "authored_description": "A tall, stiff plant built of stacked ridged segments, each ending in a whorl of narrow blades. Its stalks yield a tough, glossy fibre that weaves into hard-wearing cloth.",
   "target_original": "AG_Septimum",
   "queued_as": {
@@ -445,7 +445,7 @@
  {
   "id": "abyss_elderskeddra_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_ElderNavessith",
+  "target_def": "RM_GiantFibreStalk",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics. Twice as big.\" RimWorld plant sprite, painterly: the elder navessith, our own invented Abyss plant. The ancient giant of the navessith: a massive column of stacked ridged segments, weathered and thick, crowned with a heavy drooping flowering head. Fills the frame (owner: twice as big).",
   "canvas_w": 512,
   "canvas_h": 512,
@@ -456,8 +456,8 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: weathered grey-green column, pale violet flowering crown.",
   "owner_note": "Needs whole new description and name and graphics. Twice as big.",
-  "authored_label": "elder navessith",
-  "authored_description": "A navessith grown to an enormous age: a column of ridged segments as thick as a man and twice as tall, crowned with a heavy flowering head. Its fibres are too old and hard to work.",
+  "authored_label": "giant fibre stalk",
+  "authored_description": "A fibre stalk grown to an enormous age: a column of ridged segments as thick as a man and twice as tall, crowned with a heavy flowering head. Its fibres are too old and hard to work.",
   "target_original": "AB_GiantSeptimum",
   "queued_as": {
    "id": "abyss_elderskeddra_v1",
@@ -467,7 +467,7 @@
  {
   "id": "abyss_morkhul_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_Oruthia",
+  "target_def": "RM_TreeMushroom",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics. Four times as big.\" RimWorld plant sprite, painterly: the oruthia, our own invented Abyss plant. A towering giant fungus: a tall stalk hardened into ridged wood like a tree trunk, a broad wide cap glowing faintly from its underside gills. Huge: fills the frame top to bottom (owner: four times as big).",
   "canvas_w": 512,
   "canvas_h": 512,
@@ -478,7 +478,7 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: ash-white woody stalk, dull gold cap glow.",
   "owner_note": "Needs whole new description and name and graphics. Four times as big.",
-  "authored_label": "oruthia",
+  "authored_label": "tree mushroom",
   "authored_description": "A towering fungus whose stalk has hardened into true wood, crowned with a broad cap that glows faintly through the drifting dark. Felled, it yields timber; standing, it is the nearest thing the Abyss has to a forest.",
   "target_original": "AB_GiantStikehr",
   "queued_as": {
@@ -489,7 +489,7 @@
  {
   "id": "abyss_vettrig_v1",
   "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
-  "target_def": "RM_Amaretha",
+  "target_def": "RM_GlowberryBush",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics. Try again on capturing the little glowing berries look.\" RimWorld plant sprite, painterly: the amaretha, our own invented Abyss plant. A low twisting shrub of black wiry stems hung with many clusters of SMALL round berries, each berry a tiny distinct glowing bead of light: the little glowing berries are the whole point and must read clearly at game zoom.",
   "canvas_w": 256,
   "canvas_h": 256,
@@ -500,7 +500,7 @@
   "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
   "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Owner, verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" This subject's own palette anchor: black wire stems, warm rose-orange glowing berries.",
   "owner_note": "Needs whole new description and name and graphics. Try again on capturing the little glowing berries look.",
-  "authored_label": "amaretha",
+  "authored_label": "glowberry bush",
   "authored_description": "A low, twisting shrub of black wiry stems hung with clusters of small berries that glow like embers held in the hand. The berries are good to eat, and give a little light to pick them by.",
   "target_original": "AB_WildRadagast",
   "queued_as": {

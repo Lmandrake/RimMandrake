@@ -9,8 +9,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Drokattak</defName>
-    <label>drokattak</label>
-    <description>A heavy, low-slung night hunter with powerful forequarters, a short broad muzzle crowded with small glinting eyes, and a hide as black as the crags, sheened with bruise-purple. Its back is a crown of long sensory quills, banded black and violet, that fan from neck to haunch. In the Dark it hunts by feel, its quills picking up the tremor of anything moving; before it lunges and pins, it raises them in a clattering hackle. It does not throw them, and it does not chase far.</description>
+    <label>ombrathia</label>
+    <description>A heavy, low-slung night hunter with powerful forequarters, a short broad muzzle crowded with small glinting eyes, and a hide as black as the crags, sheened with bruise-purple. Its back is a crown of long sensory quills, banded black and violet, that fan from neck to haunch. In the Dark it hunts by feel, its quills picking up the tremor of anything moving; before it lunges and pins, it raises them in a clattering hackle. It does not throw them, and it does not chase far. The crag-tellers count it among the black, many-eyed kin, and say its line was bred by the dark-robed masters of old as their hunting hound.</description>
     <statBases>
       <MoveSpeed>4.2</MoveSpeed>
       <MarketValue>480</MarketValue>
@@ -113,7 +113,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Drokattak</defName>
-    <label>drokattak</label>
+    <label>ombrathia</label>
     <race>RM_Drokattak</race>
     <combatPower>170</combatPower>
     <ecoSystemWeight>0.9</ecoSystemWeight>
