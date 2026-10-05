@@ -581,7 +581,7 @@ SELFTEST_ROSTER = (
     REPO_ROOT / "src/RimStarWars/OrrayArtOverride/Textures",
     REPO_ROOT / "src/RimStarWars/ZeerArtOverride/Textures",
     REPO_ROOT / "src/RimUtinni/GreenGooArtOverride/Textures",
-    REPO_ROOT / "src/RimUtinni/MantistanisArtOverride/Textures",
+    REPO_ROOT / "src/RimMandrake/Utils/art_check_fixtures/MantistanisTextures",
     REPO_ROOT / "src/RimStarWars/SWBestiary/Textures/swanimals/Bolotaur",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Item/Resource",
