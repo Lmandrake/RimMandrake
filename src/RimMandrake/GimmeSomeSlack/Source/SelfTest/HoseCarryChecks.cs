@@ -256,9 +256,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
             // a walked detour: north past the stub's top and far east before coming back down to the end
             var walk = new List<Cell>();
-            Cell cur = new Cell(11, 13);
+            Cell cur = new Cell(10, 12);   // the mouth's cell: the 2x2 reel's hose starts at its west outlet nozzle
             walk.Add(cur);
-            foreach (var (x, z) in new[] { (11, 22), (30, 22), (36, 13) })
+            foreach (var (x, z) in new[] { (10, 22), (30, 22), (36, 13) })
                 while (cur.X != x || cur.Z != z)
                 {
                     cur = new Cell(cur.X + Math.Sign(x - cur.X), cur.Z + Math.Sign(z - cur.Z));
@@ -268,7 +268,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             double maxZ = walked.Ok ? walked.Flat.Max(q => q.Z) : 0, plannedMaxZ = today.Flat.Max(q => q.Z);
             Check(walked.Ok && HoseMath.Clear(w, walked.Flat) && Math.Abs(walked.Flat[walked.Flat.Count - 1].X - b.X) < 1e-6 && Math.Abs(walked.Flat[walked.Flat.Count - 1].Z - b.Z) < 1e-6,
                 "row6 LayAlong lays a walked trail clear of the wall and ends at the end cell (ok " + walked.Ok + ", reason " + walked.Reason + ")");
-            Check(maxZ > 21 && maxZ > plannedMaxZ + 2, "row6 the walked hose follows the walk north to z~22 (" + maxZ.ToString("0.0") + "), the planned one does not (" + plannedMaxZ.ToString("0.0") + ")");
+            // the apex is the rounded corner of a walk to z 22; starting at the nozzle (west edge) it lands ~20.5, still 7 cells above the planned route
+            Check(maxZ > 20 && maxZ > plannedMaxZ + 2, "row6 the walked hose follows the walk north to z~22 (" + maxZ.ToString("0.0") + "), the planned one does not (" + plannedMaxZ.ToString("0.0") + ")");
             // can-fail: laying the walk's END alone (what a re-plan would do) does not follow the walk, and a non-empty trail is
             // not the planned geometry
             Check(Hash(walked) != Hash(today), "row6 can-fail: a walked trail is not laid as the planned route");

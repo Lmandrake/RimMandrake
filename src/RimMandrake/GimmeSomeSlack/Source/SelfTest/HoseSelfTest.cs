@@ -456,10 +456,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 new Cell(10, 7), new Cell(3, 7) };
             for (int z = 2; z <= 7; z++) owner.Add(new Cell(2, z));
             var sp = new HoseShapeParams { MaxLength = 30 };
-            // the hose leaves the 2x2 reel under its drum (east half, front), inside the footprint, not at the pump-side centre
+            // the hose leaves the 2x2 reel at its brass outlet nozzle (west side), inside the footprint, not at the centre
             V2 m0 = reel.Mouth, c0 = reel.Centre;
-            C(reel.Contains(m0.Floor) && m0.X > c0.X + 0.3 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
-                "r4 reel: the hose leaves the 2x2 reel under its drum, drum side (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
+            C(reel.Contains(m0.Floor) && m0.X < c0.X - 0.9 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
+                "r4 reel: the hose leaves the 2x2 reel at its outlet nozzle, west side (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
             // station 22: the short way out fits a 30-cell hose and is laid clear of every wall
             CordWorld w = StationMaze(null);
             double r22 = HoseMath.RouteLength(w, reel, far);
