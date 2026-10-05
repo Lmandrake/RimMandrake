@@ -429,6 +429,7 @@
 
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_SandSquid -> RM_Ommok. Body AA_Squid substituted with vanilla Monkey (HeadAttackTool/Teeth confirmed present; Monkey carries no 'Arms' group tag on its Shoulder/Arm parts, so the tentacle tool is left UNGROUPED - always usable - rather than pointed at a group that resolves to nothing). Bite tool's AA_Mouth group remapped -> Teeth. Dropped: VEF.AnimalBehaviours.CompProperties_TerrainChanger (donor framework). -->
+		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): moved to the Miasma and shrunk by half (baseBodySize 2 -> 1, every lifestage drawSize x0.5); RSW_Ommok retired onto this def. -->
 		<defName>RM_Ommok</defName>
 		<label>ommok</label>
 		<description>Despite the name, the ommok is a genetically modified creature combining cephalopod and cone-snail traits, bred as cattle for worlds too dry to support ordinary livestock. It tolerates extreme water deprivation and grazes in slow-moving herds across open sand.</description>
@@ -464,7 +465,7 @@
 			<body>Monkey</body>
 			<herdAnimal>false</herdAnimal>
 			<predator>false</predator>
-			<baseBodySize>2.00</baseBodySize>
+			<baseBodySize>1</baseBodySize>
 			<baseHealthScale>1.0</baseHealthScale>
 			<baseHungerRate>0.05</baseHungerRate>
 			<foodType>VegetarianRoughAnimal</foodType>
@@ -495,19 +496,19 @@
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
-					<drawSize>1.5</drawSize>
+					<drawSize>0.75</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
-					<drawSize>2.7</drawSize>
+					<drawSize>1.35</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
-					<drawSize>3.5</drawSize>
+					<drawSize>1.75</drawSize>
 				</bodyGraphicData>
 			</li>
 		</lifeStages>
