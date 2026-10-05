@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-05T08:33:06-0700",
- "git_head": "15caf5fd7",
+ "generated": "2026-10-05T08:58:44-0700",
+ "git_head": "e89d7621a",
  "inputs": {
-  "ledger_events": 45516,
-  "ledger_variants": 11384,
+  "ledger_events": 45722,
+  "ledger_variants": 11455,
   "load_order": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
-  "artpipe_state": "searched 18242 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 18219 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -18,7 +18,7 @@
   "stoneback": 1,
   "_canon_index_defnames": 255,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 11384
+  "_ledger_variants": 11455
  },
  "biome_order": [
   "RM_LongShade",
@@ -1518,7 +1518,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -1564,7 +1564,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -2195,6 +2195,18 @@
            "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render doubles_redo_bantha_w_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ART_VERSION_WRANGLING_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "02443102a6ce72bd206b04f7483861249fabc269c37aa61eac3dac568104e8f3",
+           "north": "384288d3bedda0a0b0924f825f7d7be2695bbd5aef7c8f28b9bbf22f986085e9",
+           "south": "2d7d9221c9f80b42cb795c21835e8ad588e441ce22dbf1fedabf2472186e4b84"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": {
@@ -2273,7 +2285,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -2437,7 +2449,8 @@
           "date": "2026-09-19",
           "faces": {
            "north": "28c1eb8f61910b330f07c20580e2584e9f562ea837c13ae3c26b888c5638c065",
-           "south": "b68bdc5712b9d8b6ee1a8f8fba5f41c862a57ae145a90d630d588c7d7f605e07"
+           "south": "b68bdc5712b9d8b6ee1a8f8fba5f41c862a57ae145a90d630d588c7d7f605e07",
+           "east": "4b8e22cabf9c1678a91f4ba363315183e2bc44e67c645638069b91cc1e045950"
           },
           "near_dup_of": null
          },
@@ -2747,7 +2760,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_dewback_v1",
+          "label": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -2990,7 +3003,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_eopie_v1",
+          "label": "render longshade_rsw_eopie_v1 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -3009,6 +3022,18 @@
            "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
            "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
            "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_eopie_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "aa9d0ab1d5054ef3f7c3cdec779663811fa052358d04c732f25bb40eb6ef04b0",
+           "north": "e88f9a66d31f0841669164a56ebee1e6b8bfbb18f9744760373aa7a5ef571cfa",
+           "south": "d5718381cc41b9dcce1d871324a39c4c4bd01b37da4f7ef4b739719e33fc7441"
           },
           "near_dup_of": null
          }
@@ -3100,7 +3125,7 @@
         }
        }
       ],
-      "n_versions": 9,
+      "n_versions": 10,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -3233,7 +3258,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_falumpaset_v1",
+          "label": "render longshade_rsw_falumpaset_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -3528,7 +3553,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v1",
+          "label": "render longshade_rsw_frilledgorg_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -3562,7 +3587,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v2",
+          "label": "render longshade_rsw_frilledgorg_v2 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -3572,7 +3597,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v4",
+          "label": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -3584,7 +3609,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v5",
+          "label": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -3863,7 +3888,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v1",
+          "label": "render longshade_rsw_gorg_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -3887,7 +3912,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v6",
+          "label": "render longshade_rsw_gorg_v6 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -3919,7 +3944,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v4",
+          "label": "render longshade_rsw_gorg_v4 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -3931,7 +3956,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v5",
+          "label": "render longshade_rsw_gorg_v5 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -4627,7 +4652,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_hrumph_v1",
+          "label": "render longshade_rsw_hrumph_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -6208,7 +6233,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "label": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -6256,7 +6281,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_v4",
+          "label": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -8022,7 +8047,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_sketto_v1",
+          "label": "render longshade_rsw_sketto_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -8187,7 +8212,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_teemuss_v1",
+          "label": "render longshade_rsw_teemuss_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -8335,7 +8360,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_uvak_v1",
+          "label": "render longshade_rsw_uvak_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -8680,7 +8705,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_voorpak_v1",
+          "label": "render longshade_rsw_voorpak_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -9074,7 +9099,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_wraid_v1",
+          "label": "render longshade_rsw_wraid_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -9223,7 +9248,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_wraid_v1",
+          "label": "render longshade_rsw_wraid_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -9602,7 +9627,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render ls_regen_RM_Dewfringe_e_v1",
+          "label": "render ls_regen_RM_Dewfringe_e_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -10843,7 +10868,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Drazzik_swimming_v1",
+          "label": "render stillsand_regen_RM_Drazzik_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -10868,7 +10893,7 @@
         "versions": [
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Drazzik_swimming_v1",
+          "label": "render stillsand_regen_RM_Drazzik_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -11437,7 +11462,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -11483,7 +11508,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -13167,6 +13192,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render canon_kreetle_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "24f8a4abba85a390e5675c7a5a6c0faad088d5d36b4e974a326d1f3dca4e7a80",
+           "north": "23adc329784f9f3a887e839a8a585230793477a14adcc935053c17c5282dce84",
+           "south": "1a5b3c7c7c8ca65328117b3256594fbe07a3bec7ddeb3ad7a90179701eb4da87"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history KreetleArtOverride 2026-09-11",
           "detail": "1dfd4b36f3 2026-09-11: ART_REGEN_WAVE1_WIRE_IN_1: wire 5 SW-canon creature art redos (Kreetle, Horax, Fambaa, Dragonsnake, Zakkeg)",
@@ -13254,7 +13291,7 @@
         }
        }
       ],
-      "n_versions": 7,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -13773,7 +13810,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Glasscrust_var2",
+          "label": "render stillsand_regen_RM_Glasscrust_var2 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -13803,7 +13840,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render stillsand_regen_RM_Glasscrust_var5",
+          "label": "render stillsand_regen_RM_Glasscrust_var5 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -14454,6 +14491,17 @@
          },
          {
           "kind": "artpipe",
+          "label": "render bluedesert_Thunderbeast_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "north": "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa",
+           "south": "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render bluedesert_Thunderbeast_v2",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-04",
@@ -14467,7 +14515,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -15293,7 +15341,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render RM_Vhaulk_v3",
+          "label": "render RM_Vhaulk_v3 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-04",
           "faces": {
@@ -16657,12 +16705,22 @@
            "single": "d7892e29e6342a5b2d429b7dce5c61037e3931be73ef1a77a2f93706c68d5eee"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Virr_var2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "cf280774ef139b04d08a932a00bed9e81fefedef5791b5f721c9088a3802b45f"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -18028,12 +18086,24 @@
            "single": "f18f1e42b57674ca155a37bede987207067aa9a023c8a09b7712e8d913acbf34"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_cindermare_facings_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "96f3b4854d40d83092e6ba6f9888a98d9588ad9c67bdc9c6456f8f77e7d760ed",
+           "north": "254a19a87376a4799a203813f4d650b77264aec2ea851f509f46e43593dc2bae",
+           "south": "87b43e5abb73010bf61c7456ccf4bee8bbce59974943e6a6ecb655a8693c8cf5"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -18136,7 +18206,8 @@
           "date": "2026-10-05",
           "faces": {
            "east": "eea0e6fa6835948227444ea2b2c1afaa9a9a09108045f11f5cef4ec776b4951d",
-           "south": "92a6ecf4387639f7357bb6b3c13d98832b52c97a143e64fb30ee779dec919862"
+           "south": "92a6ecf4387639f7357bb6b3c13d98832b52c97a143e64fb30ee779dec919862",
+           "north": "07855160f0c4aef77cec6773b94a1142b6fb34c6ecfd47cea0aea8f0e0750688"
           },
           "near_dup_of": null
          }
@@ -18481,11 +18552,72 @@
          "RM_Krizzak"
         ],
         "live": null,
-        "versions": [],
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render RM_Krizzak_Flying_1",
+          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_KRIZZAK_BUILD_1",
+          "date": "2026-10-01",
+          "faces": {
+           "east": "7a3f6baca8c358fca6b0c7db6d76bdf937ca852f70147dfc19307a8c66141345",
+           "north": "3d8a4b2da1d78b048d020a60980a722846c4a36e18bf1b24d91a9be93d9d9b6a",
+           "south": "dc6cfbd21bf92576cc37e4a60a3e3383e5dde7e9c05642dec2b10a85b66b6c7e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Krizzak_Flying_2",
+          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_KRIZZAK_BUILD_1",
+          "date": "2026-10-01",
+          "faces": {
+           "east": "30329c8b75d25d12e6ffec668a68a61f6853befbb9ddb2b64b28786050633fc1",
+           "north": "276c913485f82d24f1b6bc9bec0f43512099ac69ba581ab90bfe4d96ab464743",
+           "south": "7d2f2094d485829c127e6ffbc9e002672bbc0799b67f571fc2f8b47410d68b30"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Krizzak_Flying_3",
+          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_KRIZZAK_BUILD_1",
+          "date": "2026-10-01",
+          "faces": {
+           "east": "bf786344d718338fd832f2ab403267e7862c27eed3b1994692da5378589f1b9f",
+           "north": "aa9ad30dfef4006f2e8313e0d879425074227f7f28b0a916ba522be478fb07b4",
+           "south": "864fabeb4c735f0dde3d1eca93de855910fe77c204519cc6d129f61b292c2188"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Krizzak_Flying_4",
+          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_KRIZZAK_BUILD_1",
+          "date": "2026-10-01",
+          "faces": {
+           "east": "56dce893da34b6ae453ac8e983f996b44ad24612acebff1db1f0a16d37c0761c",
+           "north": "5d86f3468e5be47ecf3d2094c480c20d69094da275bd6e32413eafec2db62e7a",
+           "south": "0544a44c8454c9a7c48c5311e4b72ace7319de894c2922187f14b32333b81e6d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Krizzak_Flying_5",
+          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_KRIZZAK_BUILD_1",
+          "date": "2026-10-01",
+          "faces": {
+           "east": "8015a012571e4aadaf185c2dfae2ebe685e24c91f599500319b464029b8e1ee3",
+           "north": "265debbe7a7ee6186324765b5ceb52a2740d58b2524e4f7a07dbf6a7f72cff98",
+           "south": "2945156e32b1124d0c137e0ef04008ed82b6c2269a364e16c367f087bbf34ca0"
+          },
+          "near_dup_of": null
+         }
+        ],
         "prior_selection": null
        }
       ],
-      "n_versions": 6,
+      "n_versions": 11,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -19077,7 +19209,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render abyss_glowinggrass_b_v1",
+          "label": "render abyss_glowinggrass_b_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -19605,12 +19737,32 @@
            "single": "ef342d8975d29f07b2913883bea3962fbd65b191e65cbc047ea8f8befbc80a10"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_etchcap_c_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "56cdcc20834766a34da12d09f985b55c21acd7612382867d2a1b7c6dcd940efa"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_etchcap_b_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "ec32ed94ceadc7e09895b50e6f5ea7447e68478f490cb30dcc242fd74bd937fd"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -21947,6 +22099,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render rot_wildpod_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+           "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+           "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history WildpodArtOverride 2026-09-13",
           "detail": "cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)",
@@ -21997,7 +22161,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -22684,6 +22848,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render canon_kinrath_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "66640308151aca479ad48034514a4e1fd10bb0b5c96d366634bf52dd5f80761a",
+           "north": "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0",
+           "south": "7b03cf3076b405e5b8beebf0f4156dd3d4b46f56f5c34461d281bb1699b3228b"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history KinrathArtOverride 2026-09-13",
           "detail": "cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)",
@@ -22711,7 +22887,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -27403,12 +27579,22 @@
            "single": "f96230d2d72b629dd52d7e0da3985b8a17d7a403342bb7d5ab29692327d7435e"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_rustpuff_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "0de2d53cf0edb6f7890d110137b4736cdafe457297ce97b05580af63fdf92081"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -29090,7 +29276,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "label": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -29138,7 +29324,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_v4",
+          "label": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -32449,6 +32635,18 @@
            "south": "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_cancell_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "f06b4b74efad7d965e74b673c5dc70e23e77b44ddd9fe091a2dc53d85fb5601d",
+           "north": "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790",
+           "south": "7bf4d8fbe05e6458d98f3b7bc644cd6c4e3aa2103db463e0aeefa50222bd5b4c"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -32466,7 +32664,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -32783,6 +32981,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render codexcal_mantrap_r4",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render mantrap_improve_a",
           "detail": "2026-09-09 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-09-09",
@@ -32895,7 +33103,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 12,
+      "n_versions": 13,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -34198,12 +34406,22 @@
            "single": "2441d440350e9a05deeb2f44467ede646ec450d351b1ff7ffd9b1be3f883425c"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render twistingthornweed_v1_r2",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ART_REGEN_FLORA_WAVE1_QUEUE_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "17eceb1e8c16ae696ed58907dc2b96debc7935a45bd5846256814c171205dfc1"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -36190,6 +36408,18 @@
            "south": "e9aa92ee266a9726fe6a7ce7464803b69d3302e01f5ffc2beb98e846562b5d55"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_beldon_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "f7979ad866c4990b643671f88f327cd9f8029d7b23de380aeb605d5d9c52a2b9",
+           "north": "c2b656d1e6fa133a4d3f4ed897f6839c1903bd4eb63a827bfbc2dd611d4c41ef",
+           "south": "4c50ccd8ca5d9b79787f2885774658c5268915dc08542481b9b7324b26f16dbf"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -36253,7 +36483,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -37206,7 +37436,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_falumpaset_v1",
+          "label": "render longshade_rsw_falumpaset_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -37895,6 +38125,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "canon_hawkbat_v1",
+      "gapbs_RSW_Hawkbat_juv_v1",
       "hawkbat_v1"
      ],
      "art": {
@@ -37927,6 +38158,18 @@
            "east": "0bb53f50e818c6a580e0a41055e78df4e06720c020bd15e0e97153fc6cbe9dcc",
            "north": "ec6f18d180242f266b89e12c6853eef8758217837e9bbdc13fccff72eaa88e54",
            "south": "d9f99592a4ac558dd830abd769eecbbb96419afbe4963a5b4a268f6c637aa82c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_hawkbat_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "eefdc184e0cf4835d7a64288d3ae8a08044502cb383be9ba457793793a1b786c",
+           "north": "0e30c9f82de94bf2cc3c5f758eda6673bb579a31f25e79f905c0428010042fd5",
+           "south": "480039bb2a2745e2bc26a020f1f25d1eeda0a85cd6882a05749147f7fb9f0473"
           },
           "near_dup_of": null
          },
@@ -38041,7 +38284,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 6,
+      "n_versions": 7,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -38289,6 +38532,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render canon_kinrath_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "66640308151aca479ad48034514a4e1fd10bb0b5c96d366634bf52dd5f80761a",
+           "north": "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0",
+           "south": "7b03cf3076b405e5b8beebf0f4156dd3d4b46f56f5c34461d281bb1699b3228b"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history KinrathArtOverride 2026-09-13",
           "detail": "cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)",
@@ -38316,7 +38571,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -39102,6 +39357,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_RSW_PekoPeko_male_v1",
       "pekopeko_toyfig_b",
       "pekopeko_v1"
      ],
@@ -40235,12 +40491,24 @@
            "south": "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_swarmling_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+           "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
+           "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -49460,12 +49728,42 @@
            "single": "a3acdbc5bdc39b73e49b2a4d5c38d34d9dea66656bc78f3bb8c645d470cdc107"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render mycelium_a_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "8f73f198c94d170903c91ef3881653523b98beec42d73afedd07de8d137a344b"
+          },
+          "near_dup_of": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+         },
+         {
+          "kind": "artpipe",
+          "label": "render mycelium_b_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render mycelium_c_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -49604,6 +49902,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render lanternstonemedium_c_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "e4d801d366cb4584633fecc7d95be169f55215c0f63b2ae1824db7253bac25e4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render lanternstonemedium_a_v1",
           "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
           "date": "2026-09-18",
@@ -49616,7 +49924,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -51794,6 +52102,18 @@
            "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render doubles_redo_bantha_w_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ART_VERSION_WRANGLING_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "02443102a6ce72bd206b04f7483861249fabc269c37aa61eac3dac568104e8f3",
+           "north": "384288d3bedda0a0b0924f825f7d7be2695bbd5aef7c8f28b9bbf22f986085e9",
+           "south": "2d7d9221c9f80b42cb795c21835e8ad588e441ce22dbf1fedabf2472186e4b84"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": {
@@ -51872,7 +52192,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -52638,6 +52958,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render rot_wildpawn_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+           "north": "30701f14ee3cf3cc4dab1baf04925f4073ea028e45cc2066646bfa900506c05a",
+           "south": "00da96559e313294c38004a2733c93f78ce8accfb92d5b68ff35eea5e1514f40"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "donor",
           "label": "donor original \u2014 1541721856",
           "detail": "load index -1 (not in the measured load order) \u00b7 1541721856 \u00b7 loose PNG in the game's mod folders",
@@ -52662,7 +52994,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -52811,7 +53143,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_eopie_v1",
+          "label": "render longshade_rsw_eopie_v1 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -52830,6 +53162,18 @@
            "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
            "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
            "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_eopie_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "aa9d0ab1d5054ef3f7c3cdec779663811fa052358d04c732f25bb40eb6ef04b0",
+           "north": "e88f9a66d31f0841669164a56ebee1e6b8bfbb18f9744760373aa7a5ef571cfa",
+           "south": "d5718381cc41b9dcce1d871324a39c4c4bd01b37da4f7ef4b739719e33fc7441"
           },
           "near_dup_of": null
          }
@@ -52921,7 +53265,7 @@
         }
        }
       ],
-      "n_versions": 9,
+      "n_versions": 10,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -53195,7 +53539,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v1",
+          "label": "render longshade_rsw_frilledgorg_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -53229,7 +53573,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v2",
+          "label": "render longshade_rsw_frilledgorg_v2 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -53239,7 +53583,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v4",
+          "label": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -53251,7 +53595,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v5",
+          "label": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -53770,7 +54114,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v1",
+          "label": "render longshade_rsw_gorg_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -53794,7 +54138,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v6",
+          "label": "render longshade_rsw_gorg_v6 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -53826,7 +54170,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v4",
+          "label": "render longshade_rsw_gorg_v4 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -53838,7 +54182,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v5",
+          "label": "render longshade_rsw_gorg_v5 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -55044,6 +55388,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render canon_kreetle_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "24f8a4abba85a390e5675c7a5a6c0faad088d5d36b4e974a326d1f3dca4e7a80",
+           "north": "23adc329784f9f3a887e839a8a585230793477a14adcc935053c17c5282dce84",
+           "south": "1a5b3c7c7c8ca65328117b3256594fbe07a3bec7ddeb3ad7a90179701eb4da87"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history KreetleArtOverride 2026-09-11",
           "detail": "1dfd4b36f3 2026-09-11: ART_REGEN_WAVE1_WIRE_IN_1: wire 5 SW-canon creature art redos (Kreetle, Horax, Fambaa, Dragonsnake, Zakkeg)",
@@ -55131,7 +55487,7 @@
         }
        }
       ],
-      "n_versions": 7,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -55424,7 +55780,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "label": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -55472,7 +55828,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_longtailgorg_v4",
+          "label": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
@@ -56446,6 +56802,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render rot_wildpod_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+           "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+           "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history WildpodArtOverride 2026-09-13",
           "detail": "cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)",
@@ -56496,7 +56864,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -58311,7 +58679,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_sketto_v1",
+          "label": "render longshade_rsw_sketto_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -58996,7 +59364,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_voorpak_v1",
+          "label": "render longshade_rsw_voorpak_v1 \u2014 failed canon check",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-05",
           "faces": {
@@ -59161,6 +59529,18 @@
            "south": "637445a48157eb8beabfa0e7f5459f098001e0bb90f367620b727643ff0ecaa3"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_vulptex_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "a46904d7b44a134cdc5a583adb94c6e81701ca89bc08131985f0e8dc4f56ab6e",
+           "north": "ae92389e5a404e3a012a177d42942694af71de413cda9b29065337f6756eb4b4",
+           "south": "53f0ce8abf53773a909c4aed04fa220605100571f8b42581ca0b3968c69dafe1"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": {
@@ -59179,7 +59559,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -59805,7 +60185,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "brambles_v1"
+      "brambles_v1",
+      "gapbs_Plant_Brambles_v1"
      ],
      "art": {
       "resources": [
@@ -59960,7 +60341,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "creepstern_v1"
+      "creepstern_v1",
+      "gapbs_RG_Plant_CreepStern_v1"
      ],
      "art": {
       "resources": [
@@ -60038,7 +60420,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "crimsoncushion_v1"
+      "crimsoncushion_v1",
+      "gapbs_RG_Plant_CrimsonCushion_v1"
      ],
      "art": {
       "resources": [
@@ -60116,7 +60499,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "dervish_v1"
+      "dervish_v1",
+      "gapbs_RG_Plant_Dervish_v1"
      ],
      "art": {
       "resources": [
@@ -61726,6 +62110,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render codexcal_mantrap_r4",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render mantrap_improve_a",
           "detail": "2026-09-09 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-09-09",
@@ -61838,7 +62232,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 12,
+      "n_versions": 13,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -66334,12 +66728,24 @@
            "south": "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_swarmling_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+           "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
+           "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -68262,6 +68668,18 @@
            "south": "582e578f0bbfea1ed15774cfa1970f1ffce405237b2f319470503016b8428165"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_wampa_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "e64862a4879bcacccd3846a30e271e10c040534e3a6d4b72a77aad1857099be3",
+           "north": "281e4251a54530e4fc5b60754b456147441f5a3f03480046ff936d10b8807497",
+           "south": "415af8fe2c222bc1647065f9166ef34f32ecbe506146b6a0c1e9976444de67ce"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -68301,7 +68719,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -68675,6 +69093,17 @@
          },
          {
           "kind": "artpipe",
+          "label": "render pyrelands_barbslinger_v3",
+          "detail": "2026-09-14 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 PYRELANDS_FACING_REGRESSION_1",
+          "date": "2026-09-14",
+          "faces": {
+           "north": "68c85de5f21d0fda16ef444b6422587bd86b2ff56ea595ba2cb7a0512cc0a604",
+           "south": "b3e322c82f14641bc2c68e001c6f603bf9db1e3294ef0a2d908121896ee13651"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render pyrelands_barbslinger_v2",
           "detail": "2026-09-13 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-09-13",
@@ -68701,7 +69130,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -69148,11 +69577,132 @@
          "RM_FireHawk"
         ],
         "live": null,
-        "versions": [],
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_v2_1",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-25",
+          "faces": {
+           "east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
+           "north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
+           "south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_v2_2",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-25",
+          "faces": {
+           "east": "4c0f57a61eb46b1a9ed242cce8a60030e4919f99938284decd4ac6b0ca66276b",
+           "north": "3e21e343fbc1aa8b2bd7ecfbd9802106f357e92db61603a4ce3101edaede9840",
+           "south": "3e52403b15d551ef3e0e2bf00f04be70354febc5211d747632cfec3f6d4a430f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_v2_3",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-25",
+          "faces": {
+           "east": "dbae4bdc10ae3c702b9c23033a96e1f0418c219ff82540cfeb4886f9df5e9338",
+           "north": "252b2f6aa58577cc10549b8d83d96c71ede54036fd25c43c66bd5023b14b5829",
+           "south": "11fde2cfba52548d4512f064efb94a487532bf54f9b6cf0fbd2691dead398a05"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_v2_4",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-25",
+          "faces": {
+           "east": "7071d460b1c592bc99c091b7411acc5e15baabbe4752195c0cdab037b1f13e22",
+           "north": "479dac28994e8ea03496da5ba4abee5030237572b979c121b05b82b826d3f585",
+           "south": "dd16d965285703af5759f3b6b9cee6a90a4c9d8a372fca9e38bd602c101ddf13"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_v2_5",
+          "detail": "2026-09-25 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-25",
+          "faces": {
+           "east": "2e25e4c541156c8d519d610f0523115f87025c10ab721117afe65b441f35cf5f",
+           "north": "fc29e18d36c76d0d772e5184c24271bdd623382bdde38fd930c72a9d44ab5609",
+           "south": "3d4cfc8204d50162390e6ade881006eb9837e79fcadf60f627b3b72edf327229"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_1",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "17886c37d3fa6ee7d26a4d67f097634c293c543f1083e639e260d026d2386a5d",
+           "north": "bf634e7328a93e4d22a60e70a54615e9f18d7bfdb277140cd3611da7fdbc07c3",
+           "south": "88e12af7baa3965f07aff771311a52832752aaead2b5e016225273f9ce7f4762"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "c1b4e32fac9003ca1cef2befa5239ce7af48be81fab5e9e2e1bc241a49d5c753",
+           "north": "7fe620ffc53a97c381cab278f5261e0f3c1e488a64aec6aabeac92376ed04b3a",
+           "south": "9ec1cd4818e3a425d42fd2ad022040a78c2f623db8d6416e3003f7e18cf48e43"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_3",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "65161659b9d39ed362e6f7628c6a7f3d10af17b468df6ad0c09dc97ad9865d16",
+           "north": "d153962b1552d2d98d075580eeb8f578f3b37cfe1ebc1f7d9e958d80fdc0ce74",
+           "south": "8c49d529b7c7c541bb40c09a38354d09a2c06d0b0795978167fb8cf63b97f04a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_4",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "a3a13634de06b087981fc9f7eb46b78b5cf21b06454f346fe9f30ea94617fdfa",
+           "north": "d1b5f79f41ff8c2c436e07552c509e981accd81d2276a894ff4ab8a1bc5c3992",
+           "south": "d22e9d450800fe075d4c3527cdbb5110428e98c7058f31b6e92e90dbfcf715f1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rut_firehawk_flying_5",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FIREHAWK_FLIGHT_BEHAVIOR_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "d3253c60356579f24de598caa428fa2c4103627ea309b027526caf33c4ddc6fd",
+           "north": "d965d30f4f1c7883b2df9ef5e400df65da7d72b757ea9d56c0f9b4a544066fa6",
+           "south": "1be0dd0e54766a813f472ca97d1c717043d817adb14253ef733cbad063c4ca24"
+          },
+          "near_dup_of": null
+         }
+        ],
         "prior_selection": null
        }
       ],
-      "n_versions": 19,
+      "n_versions": 29,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -75554,6 +76104,18 @@
            "south": "e9aa92ee266a9726fe6a7ce7464803b69d3302e01f5ffc2beb98e846562b5d55"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_beldon_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "f7979ad866c4990b643671f88f327cd9f8029d7b23de380aeb605d5d9c52a2b9",
+           "north": "c2b656d1e6fa133a4d3f4ed897f6839c1903bd4eb63a827bfbc2dd611d4c41ef",
+           "south": "4c50ccd8ca5d9b79787f2885774658c5268915dc08542481b9b7324b26f16dbf"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -75617,7 +76179,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -76018,7 +76580,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "firevinetree_v1"
+      "firevinetree_v1",
+      "gapbs_AB_FirevineTree_v1"
      ],
      "art": {
       "resources": [
@@ -76112,6 +76675,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_AB_TinkleGrass_v1",
       "tinklegrass_v1"
      ],
      "art": {
@@ -76552,6 +77116,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_Plant_MagmaCactus_v1",
       "magmacactus_v1"
      ],
      "art": {
@@ -77418,12 +77983,24 @@
            "east": "0663191015852bf12257ed76ef4b273844981b3ff6f31ac05265cc774e06d6e4"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_mycoidcolossus_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
+           "south": "fa17e986b743fc7336232a3d7f8e46d05a882e21e7b8a8e22b6f7f26246ee67b",
+           "north": "df051ef03180f8084fc7d04d5e9598b34ac5251a47f67256b766f82fdc9fdd6e"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -78689,6 +79266,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render rot_wildpawn_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+           "north": "30701f14ee3cf3cc4dab1baf04925f4073ea028e45cc2066646bfa900506c05a",
+           "south": "00da96559e313294c38004a2733c93f78ce8accfb92d5b68ff35eea5e1514f40"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "donor",
           "label": "donor original \u2014 1541721856",
           "detail": "load index -1 (not in the measured load order) \u00b7 1541721856 \u00b7 loose PNG in the game's mod folders",
@@ -78713,7 +79302,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -78829,6 +79418,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render rot_wildpod_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+           "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+           "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history WildpodArtOverride 2026-09-13",
           "detail": "cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)",
@@ -78879,7 +79480,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -79388,12 +79989,22 @@
            "single": "a3dff28387f7c532ce16f5c599e00674d6aaa4e1ecf8e822fe275da55ee7aa24"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_agarilux_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "6a13e4ba32b3017611486004af91dbea012afeaaa69bce7a69d54c1625cee432"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -79515,12 +80126,22 @@
            "single": "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_agariluxprime_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "20fc1470b444ec8b3b0050d9b3d6810e33ddb253bcf1a349cf2dbf5838bdc461"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -80849,6 +81470,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render rut_agelesscap_v1",
+          "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_GUARDIAN_GROVES_1",
+          "date": "2026-09-17",
+          "faces": {
+           "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render rut_liveingredient_agelesscap_v1",
           "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_GUARDIAN_GROVES_1",
           "date": "2026-09-17",
@@ -80861,7 +81492,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -80939,12 +81570,32 @@
            "single": "9115df0f8b6b673edef479f9ab88e122b4024d830286f5c2188af359203213e6"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render arpeau_a_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "9a2e82d816619b9dc7d9bd80f6155471cfc18c4c620f7b7c35ef70be77bf69ee"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render arpeau_b_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "1a81d3239607ee1900babf8c90c5385288fcfeafc623cb1926d4f18dfa1466ee"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -81132,12 +81783,22 @@
            "single": "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_bleedingtooth_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "2e3b178567790f3745be8c38d85db696548c1944d673346680f6bbc3cefc4cf1"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -81571,6 +82232,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render rut_euphoriccrown_v1",
+          "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_GUARDIAN_GROVES_1",
+          "date": "2026-09-17",
+          "faces": {
+           "single": "a76e757b2141d8e1ef909e90c50df071c32361b7776652d75705aeabec41eef1"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render rut_liveingredient_euphoriccrown_v1",
           "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_GUARDIAN_GROVES_1",
           "date": "2026-09-17",
@@ -81583,7 +82254,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -81969,12 +82640,42 @@
            "single": "58480c528d3498ec0070fa1d7caa11823b681c79f994a7806ab8354e657c095e"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render greyladygrown_a_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render greyladygrown_b_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "cff7c32a8a830d328c7e5c510d59f98352da501c90bac3ba6c2b52d46ef5d2cf"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render greyladygrown_c_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "b02bc9e2464a1f47c2e6c5c27a5dbe1d44dcac98ef25a0a2031f30a0a13c7976"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -82182,12 +82883,32 @@
            "single": "ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render nuitae_a_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "705f39d048cb95aeaea888397ffcfcbe0b4eb36c589e98e3571b69474e7c6c7f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render nuitae_b_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CAVERNS_PARITY_BUILD_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "7681fca44051478ba0e7f936a0906875d89deebac7a62371119a53c7425fea17"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -82299,6 +83020,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render rot_paletree_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "9f4aab8cfdb8b5dcd9a82f17dfa564b4d2c9200685a7f08b1f3f5858d3ff60ac"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render rut_paletree_v1",
           "detail": "2026-09-17 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_PALE_TREE_1",
           "date": "2026-09-17",
@@ -82311,7 +83042,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -82395,12 +83126,22 @@
            "single": "72d3ad9a630f2ad58ba9a56edcf67cf62a8f80e45598400024623acafd7c2006"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_pusmelon_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -82610,12 +83351,22 @@
            "single": "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_sagecrust_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -82941,12 +83692,22 @@
            "single": "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_violetwimple_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "e972e8af905027810d917263fb40ba0325ac114d4ec62e4f8ca08c41dced65dd"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -83055,12 +83816,22 @@
            "single": "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render rot_wrinklecap_v2",
+          "detail": "2026-09-19 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ROT_FLORA_FAUNA_VERDICTS_1",
+          "date": "2026-09-19",
+          "faces": {
+           "single": "9ffbe202c53ff667a1a82398abf04756258a1443f960955b6304ad3de57a73d3"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -85342,6 +86113,16 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render ambrosia_v2",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FLORA_LEGIBILITY_BAR_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "donor",
           "label": "donor original \u2014 Vanilla Textures Expanded",
           "detail": "load index -1 (not in the measured load order) \u00b7 vanillaexpanded.vtexe \u00b7 loose PNG in the game's mod folders \u00b7 1 of 1 random variants \u00b7 bound: texPath of Plant_Ambrosia in live DefDump capture 2026-10-04T17-39-06Z",
@@ -85355,7 +86136,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -87132,6 +87913,16 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render ambrosia_v2",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FLORA_LEGIBILITY_BAR_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "donor",
           "label": "donor original \u2014 Vanilla Textures Expanded",
           "detail": "load index -1 (not in the measured load order) \u00b7 vanillaexpanded.vtexe \u00b7 loose PNG in the game's mod folders \u00b7 1 of 1 random variants \u00b7 bound: texPath of Plant_Ambrosia in live DefDump capture 2026-10-04T17-39-06Z",
@@ -87145,7 +87936,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -92686,6 +93477,18 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render canon_borcatu_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
+           "north": "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
+           "south": "799fafa69e2ce8147b2816f7a61ff7579ebe3dd019dda5daca3cd62362d9cf0c"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "git",
           "label": "history SWBestiary 2026-09-12",
           "detail": "c8b696e323 2026-09-12: MLIE_FAUNA_ABSORPTION_1: port Boma, Borcatu, CanCell (86 -> 83 remaining)",
@@ -92701,7 +93504,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -93588,6 +94391,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_Plant_GrayGrass_v1",
       "graygrass_v1"
      ],
      "art": {
@@ -93674,6 +94478,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_Plant_Toxipotato_v1",
       "toxipotato_v1"
      ],
      "art": {
@@ -98151,6 +98956,18 @@
            "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render doubles_redo_bantha_w_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ART_VERSION_WRANGLING_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "02443102a6ce72bd206b04f7483861249fabc269c37aa61eac3dac568104e8f3",
+           "north": "384288d3bedda0a0b0924f825f7d7be2695bbd5aef7c8f28b9bbf22f986085e9",
+           "south": "2d7d9221c9f80b42cb795c21835e8ad588e441ce22dbf1fedabf2472186e4b84"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": {
@@ -98229,7 +99046,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -98706,7 +99523,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_dewback_v1",
+          "label": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -98949,7 +99766,7 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_eopie_v1",
+          "label": "render longshade_rsw_eopie_v1 \u2014 failed canon check",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-10-04",
           "faces": {
@@ -98968,6 +99785,18 @@
            "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
            "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
            "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render canon_eopie_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "aa9d0ab1d5054ef3f7c3cdec779663811fa052358d04c732f25bb40eb6ef04b0",
+           "north": "e88f9a66d31f0841669164a56ebee1e6b8bfbb18f9744760373aa7a5ef571cfa",
+           "south": "d5718381cc41b9dcce1d871324a39c4c4bd01b37da4f7ef4b739719e33fc7441"
           },
           "near_dup_of": null
          }
@@ -99059,7 +99888,7 @@
         }
        }
       ],
-      "n_versions": 9,
+      "n_versions": 10,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -99194,6 +100023,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render canon_fanback_v1",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 CANON_CREATURE_REGEN_1",
+          "date": "2026-09-18",
+          "faces": {
+           "east": "0aac66f6be3e80476891730fbe6176576351ad0ac28982e7884ebeb07149439f",
+           "north": "eec53efa7c79c6d5b757922f650c5075beaa2de4d79749490fcfbdbd7cad1f32",
+           "south": "08653d01a8b0ecb06d0e291cd6949fab181ad0ce5032461ee75f7e4eb7bdce6f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render fanback_toyfig_a",
           "detail": "2026-09-13 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
           "date": "2026-09-13",
@@ -99250,7 +100091,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -101131,6 +101972,16 @@
           "near_dup_of": null
          },
          {
+          "kind": "artpipe",
+          "label": "render ambrosia_v2",
+          "detail": "2026-09-18 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 FLORA_LEGIBILITY_BAR_1",
+          "date": "2026-09-18",
+          "faces": {
+           "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
+          },
+          "near_dup_of": null
+         },
+         {
           "kind": "donor",
           "label": "donor original \u2014 Vanilla Textures Expanded",
           "detail": "load index -1 (not in the measured load order) \u00b7 vanillaexpanded.vtexe \u00b7 loose PNG in the game's mod folders \u00b7 1 of 1 random variants \u00b7 bound: texPath of Plant_Ambrosia in live DefDump capture 2026-10-04T17-39-06Z",
@@ -101144,7 +101995,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -101187,6 +102038,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "gapbs_Plant_Reeds_v1",
       "reeds_v1"
      ],
      "art": {

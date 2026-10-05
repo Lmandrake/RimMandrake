@@ -1,8 +1,8 @@
 {
  "biome": "RM_GreySea",
- "built": "2026-10-04T23:54:26-0700",
+ "built": "2026-10-05T08:59:50-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_BrineCrown": {
@@ -18,6 +18,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Echeveria/EcheveriaA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brinecrown"
   },
   "RM_Brinecomb": {
@@ -33,6 +36,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brinecomb"
   },
   "RM_Corrik": {
@@ -48,6 +54,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Corrik/RM_Corrik",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "corrik"
   },
   "RM_CruciblePod": {
@@ -63,6 +72,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cruciblepod"
   },
   "RM_CubicSculpture": {
@@ -78,6 +90,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/JadePlant/JadePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cubicsculpture"
   },
   "RM_Essarn": {
@@ -100,6 +115,10 @@
     "B": "render greysea_essarn_v1"
    },
    "res": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "essarn"
   },
   "RM_EssarnCatch": {
@@ -122,6 +141,10 @@
     "B": "render greysea_essarn_v1"
    },
    "res": "Things/Item/ToxicMeat/ToxicMeat_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "essarncatch"
   },
   "RM_Fessk": {
@@ -144,6 +167,10 @@
     "B": "render greysea_fessk_v1"
    },
    "res": "Things/Pawn/Animal/RM_Fessk/RM_Fessk",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "fessk"
   },
   "RM_GlassVeilKelp": {
@@ -159,6 +186,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "glassveilkelp"
   },
   "RM_Grusk": {
@@ -174,6 +204,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Grusk/RM_Grusk",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "grusk"
   },
   "RM_GruskCatch": {
@@ -189,6 +222,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Item/RM_GreySea/RM_SeaCatchItem",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gruskcatch"
   },
   "RM_Haarn": {
@@ -204,6 +240,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Haarn/RM_Haarn",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "haarn"
   },
   "RM_HaarnCatch": {
@@ -219,6 +258,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Echeveria/EcheveriaA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "haarncatch"
   },
   "RM_Hessal": {
@@ -234,6 +276,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Hessal/RM_Hessal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "hessal"
   },
   "RM_HessalCatch": {
@@ -249,6 +294,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "hessalcatch"
   },
   "RM_Hoarstock": {
@@ -264,6 +312,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Echeveria/EcheveriaA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "hoarstock"
   },
   "RM_Immu": {
@@ -279,6 +330,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Immu/RM_Immu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "immu"
   },
   "RM_ImmuCatch": {
@@ -294,6 +348,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "immucatch"
   },
   "RM_Karrud": {
@@ -309,6 +366,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karrud"
   },
   "RM_KarrudCatch": {
@@ -324,6 +384,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karrudcatch"
   },
   "RM_Maalu": {
@@ -339,6 +402,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Maalu/RM_Maalu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "maalu"
   },
   "RM_MaaluCatch": {
@@ -354,6 +420,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/JadePlant/JadePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "maalucatch"
   },
   "RM_Masonmat": {
@@ -369,6 +438,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "masonmat"
   },
   "RM_Milkwell": {
@@ -384,6 +456,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "milkwell"
   },
   "RM_MosaicFanPalm": {
@@ -399,6 +474,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mosaicfanpalm"
   },
   "RM_Mournweft": {
@@ -414,6 +492,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mournweft"
   },
   "RM_Murkblush": {
@@ -429,6 +510,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/JadePlant/JadePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "murkblush"
   },
   "RM_Neverset": {
@@ -444,6 +528,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "neverset"
   },
   "RM_Nissik": {
@@ -459,6 +546,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nissik"
   },
   "RM_NissikCatch": {
@@ -474,6 +564,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Item/RM_GreySea/RM_SeaCatchItem",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nissikcatch"
   },
   "RM_Oomal": {
@@ -489,6 +582,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "oomal"
   },
   "RM_OomalCatch": {
@@ -504,6 +600,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "oomalcatch"
   },
   "RM_Orruhmu": {
@@ -528,6 +627,10 @@
     "B": "render RM_Orruhmu_b"
    },
    "res": "Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "orruhmu"
   },
   "RM_Otheska": {
@@ -550,6 +653,10 @@
     "B": "render greysea_otheska_v1"
    },
    "res": "Things/Pawn/Animal/RM_Otheska/RM_Otheska",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "otheska"
   },
   "RM_Reefback": {
@@ -568,6 +675,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "reefback"
   },
   "RM_Sallik": {
@@ -583,6 +693,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Sallik/RM_Sallik",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sallik"
   },
   "RM_SallikCatch": {
@@ -598,6 +711,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantB",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sallikcatch"
   },
   "RM_SaltBladeGrey": {
@@ -613,6 +729,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "saltbladegrey"
   },
   "RM_SaltChimneyVine": {
@@ -628,6 +747,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantB",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "saltchimneyvine"
   },
   "RM_Saltswoon": {
@@ -643,6 +765,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/JadePlant/JadePlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "saltswoon"
   },
   "RM_Sorruth": {
@@ -664,6 +789,10 @@
     "B": "render greysea_sorruth_v1"
    },
    "res": "Things/Pawn/Animal/RM_Sorruth/RM_Sorruth",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "sorruth"
   },
   "RM_SorruthCatch": {
@@ -685,6 +814,10 @@
     "B": "render greysea_sorruth_v1"
    },
    "res": "Things/Item/ToxicMeat/ToxicMeat_b",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "sorruthcatch"
   },
   "RM_SpherePlant": {
@@ -700,6 +833,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantA",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sphereplant"
   },
   "RM_Thollim": {
@@ -715,6 +851,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Thollim/RM_Thollim",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thollim"
   },
   "RM_ThollimCatch": {
@@ -730,6 +869,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Item/RM_GreySea/RM_SeaCatchItem",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thollimcatch"
   },
   "RSW_Reefback": {
@@ -748,6 +890,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "reefback"
   }
  },

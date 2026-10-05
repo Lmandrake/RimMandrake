@@ -1,8 +1,8 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-04T23:54:17-0700",
+ "built": "2026-10-05T08:59:39-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Murkling": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "murkling"
   },
   "RM_CrackedThornwood": {
@@ -35,6 +38,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_CrackedThornwood",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "crackedthornwood"
   },
   "RM_Harrovaq": {
@@ -50,6 +56,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Harrovaq/RM_Harrovaq",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "harrovaq"
   },
   "RM_Luqqim": {
@@ -65,6 +74,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Luqqim/RM_Luqqim",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "luqqim"
   },
   "RM_Muttavaq": {
@@ -94,6 +106,11 @@
     "C": "render RM_Muttavaq"
    },
    "res": "Things/Pawn/Animal/Thrumbo/Thrumbo",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "muttavaq"
   },
   "RM_Nabbuq": {
@@ -109,6 +126,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Nabbuq/RM_Nabbuq",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nabbuq"
   },
   "RM_Ommok": {
@@ -133,6 +153,10 @@
     "B": "render RM_Ommok"
    },
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ommok"
   },
   "RM_Ruqqal": {
@@ -148,6 +172,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Ruqqal/RM_Ruqqal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ruqqal"
   },
   "RM_Sevvuq": {
@@ -163,6 +190,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Sevvuq/RM_Sevvuq",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sevvuq"
   },
   "RM_Tarruq": {
@@ -187,6 +217,10 @@
     "B": "render RM_Tarruq"
    },
    "res": "Things/Pawn/Animal/Monkey/Monkey",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "tarruq"
   },
   "RM_TwistingThorngrass": {
@@ -202,21 +236,33 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_TwistingThorngrass",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "twistingthorngrass"
   },
   "RM_TwistingThornweed": {
    "columns": {
     "A": {
      "single": "2441d440350e9a05deeb2f44467ede646ec450d351b1ff7ffd9b1be3f883425c"
+    },
+    "B": {
+     "single": "17eceb1e8c16ae696ed58907dc2b96debc7935a45bd5846256814c171205dfc1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_TwistingThornweed"
+    "A": "Things/Plant/RM_TwistingThornweed",
+    "B": "Things/Plant/RM_TwistingThornweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render twistingthornweed_v1_r2"
    },
    "res": "Things/Plant/RM_TwistingThornweed",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "twistingthornweed"
   },
   "RM_Uttaqar": {
@@ -248,6 +294,11 @@
     "C": "render RM_Uttaqar"
    },
    "res": "Animal/RockTroll/RockTroll",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "uttaqar"
   },
   "RM_Veqma": {
@@ -263,6 +314,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Veqma",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "veqma"
   },
   "RM_Zennaq": {
@@ -278,6 +332,9 @@
     "A": "IN GAME \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_Zennaq/RM_Zennaq",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "zennaq"
   },
   "RSW_CanCell": {
@@ -286,15 +343,26 @@
      "east": "97a030819d2a629c7419b54f806a768020bdd2baa16445ee19106bd4cdeb23c1",
      "north": "5b23c42aad8a407ecf29e7948a69b2d52a42cd8106ad4a81c62f356e825bd430",
      "south": "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf"
+    },
+    "B": {
+     "east": "f06b4b74efad7d965e74b673c5dc70e23e77b44ddd9fe091a2dc53d85fb5601d",
+     "north": "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790",
+     "south": "7bf4d8fbe05e6458d98f3b7bc644cd6c4e3aa2103db463e0aeefa50222bd5b4c"
     }
    },
    "graphic_of": {
-    "A": "swanimals/CanCell/CanCell"
+    "A": "swanimals/CanCell/CanCell",
+    "B": "swanimals/CanCell/CanCell"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render canon_cancell_v1"
    },
    "res": "swanimals/CanCell/CanCell",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "cancell"
   },
   "RSW_Convor": {
@@ -326,6 +394,11 @@
     "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Convor/Convor",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "convor"
   },
   "RSW_Creature_Mantrap": {
@@ -336,36 +409,39 @@
      "south": "d08be7051362c4dd382545e6acacffe179cab08b8e4509c30c2bd04c66f824a5"
     },
     "B": {
-     "single": "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca"
+     "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
     },
     "C": {
-     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
+     "single": "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca"
     },
     "D": {
-     "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
+     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
     },
     "E": {
-     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
+     "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
     },
     "F": {
-     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
+     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
     },
     "G": {
-     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
+     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
     },
     "H": {
-     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
+     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
     },
     "I": {
-     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
+     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
     },
     "J": {
-     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
+     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
     },
     "K": {
-     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
+     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
     },
     "L": {
+     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
+    },
+    "M": {
      "single": "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305"
     }
    },
@@ -381,23 +457,40 @@
     "I": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
     "J": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
     "K": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "L": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
+    "L": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+    "M": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render mantrap_improve_a",
-    "C": "render mantrap_improve_a_r2",
-    "D": "render mantrap_improve_a_r7",
-    "E": "render mantrap_improve_b",
-    "F": "render mantrap_improve_b_r2",
-    "G": "render mantrap_improve_b_r3",
-    "H": "render mantrap_improve_b_r4",
-    "I": "render mantrap_improve_b_r5",
-    "J": "render mantrap_improve_b_r6",
-    "K": "render mantrap_improve_b_r7",
-    "L": "render mantrap_improve_b_r8"
+    "B": "render codexcal_mantrap_r4",
+    "C": "render mantrap_improve_a",
+    "D": "render mantrap_improve_a_r2",
+    "E": "render mantrap_improve_a_r7",
+    "F": "render mantrap_improve_b",
+    "G": "render mantrap_improve_b_r2",
+    "H": "render mantrap_improve_b_r3",
+    "I": "render mantrap_improve_b_r4",
+    "J": "render mantrap_improve_b_r5",
+    "K": "render mantrap_improve_b_r6",
+    "L": "render mantrap_improve_b_r7",
+    "M": "render mantrap_improve_b_r8"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M"
+   ],
    "subject_key": "creature_mantrap"
   },
   "RSW_Gornt": {
@@ -415,6 +508,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Gornt/Gornt",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gornt"
   },
   "RSW_MutagenicNorphea": {
@@ -432,6 +528,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mutagenicnorphea"
   },
   "RSW_SandLeaper": {
@@ -449,6 +548,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sandleaper"
   },
   "RSW_SandPillar": {
@@ -466,6 +568,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sandpillar"
   },
   "RSW_Woolamander": {
@@ -483,6 +588,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Woolamander/Woolamander",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "woolamander"
   },
   "RUT_EmperorVulture": {
@@ -500,6 +608,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "emperorvulture"
   },
   "RUT_SealedSleeper": {
@@ -517,9 +628,12 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sealedsleeper"
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "bbc220a36ed1678c"
+ "snapshotId": "d63c082e293adc25"
 }

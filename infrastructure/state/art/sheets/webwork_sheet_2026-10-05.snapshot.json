@@ -1,8 +1,8 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-04T23:54:59-0700",
+ "built": "2026-10-05T09:00:41-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_TookeTrap_Wild": {
@@ -18,7 +18,10 @@
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swplants/TookeTrap",
-   "subject_key": "plant_tooketrap_wild"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "tooketrap_wild"
   },
   "RM_Brennoth": {
    "columns": {
@@ -38,6 +41,10 @@
     "B": "render webwork_plant_brennoth"
    },
    "res": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "brennoth"
   },
   "RM_Brimlock": {
@@ -58,6 +65,10 @@
     "B": "render webwork_plant_brimlock"
    },
    "res": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "brimlock"
   },
   "RM_Cravvet": {
@@ -82,6 +93,10 @@
     "B": "render RM_Cravvet_v2"
    },
    "res": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "cravvet"
   },
   "RM_Dulloth": {
@@ -102,6 +117,10 @@
     "B": "render webwork_plant_dulloth"
    },
    "res": "Things/Plant/RM_Dulloth/RM_Dulloth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "dulloth"
   },
   "RM_Fellome": {
@@ -122,6 +141,10 @@
     "B": "render webwork_plant_fellome"
    },
    "res": "Things/Plant/RM_Fellome/RM_Fellome_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "fellome"
   },
   "RM_Grennick": {
@@ -142,6 +165,10 @@
     "B": "render webwork_plant_grennick"
    },
    "res": "Things/Plant/RM_Grennick/RM_Grennick_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "grennick"
   },
   "RM_Kessaroth": {
@@ -162,6 +189,10 @@
     "B": "render webwork_plant_kessaroth"
    },
    "res": "Things/Plant/RM_Kessaroth/RM_Kessaroth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "kessaroth"
   },
   "RM_Kollavane": {
@@ -182,6 +213,10 @@
     "B": "render webwork_plant_kollavane"
    },
    "res": "Things/Plant/RM_Kollavane/RM_Kollavane_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "kollavane"
   },
   "RM_Norrveth": {
@@ -202,6 +237,10 @@
     "B": "render webwork_plant_norrveth"
    },
    "res": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "norrveth"
   },
   "RM_Ollathrix": {
@@ -219,6 +258,9 @@
     "A": "IN GAME \u2014 Webwork"
    },
    "res": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ollathrix"
   },
   "RM_Pellareth": {
@@ -239,6 +281,10 @@
     "B": "render webwork_plant_pellareth"
    },
    "res": "Things/Plant/RM_Pellareth/RM_Pellareth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "pellareth"
   },
   "RM_Quarrok": {
@@ -270,6 +316,11 @@
     "C": "render RM_Quarrok_v2"
    },
    "res": "Things/Pawn/Animal/RM_Quarrok/RM_Quarrok",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "quarrok"
   },
   "RM_Ruddreth": {
@@ -290,6 +341,10 @@
     "B": "render webwork_plant_ruddreth"
    },
    "res": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ruddreth"
   },
   "RM_Sellith": {
@@ -310,6 +365,10 @@
     "B": "render webwork_plant_sellith"
    },
    "res": "Things/Plant/RM_Sellith/RM_Sellith_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "sellith"
   },
   "RM_Sivvern": {
@@ -341,6 +400,11 @@
     "C": "render RM_Sivvern_v2"
    },
    "res": "Things/Pawn/Animal/RM_Sivvern/RM_Sivvern",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "sivvern"
   },
   "RM_Skennet": {
@@ -372,6 +436,11 @@
     "C": "render RM_Skennet_v2"
    },
    "res": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "skennet"
   },
   "RM_Sorrivel": {
@@ -392,6 +461,10 @@
     "B": "render webwork_plant_sorrivel"
    },
    "res": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "sorrivel"
   },
   "RM_Tavrosk": {
@@ -412,6 +485,10 @@
     "B": "render webwork_plant_tavrosk"
    },
    "res": "Things/Plant/RM_Tavrosk/RM_Tavrosk_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "tavrosk"
   },
   "RM_Threllick": {
@@ -432,6 +509,10 @@
     "B": "render webwork_plant_threllick"
    },
    "res": "Things/Plant/RM_Threllick/RM_Threllick_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "threllick"
   },
   "RM_Varrisk": {
@@ -452,6 +533,10 @@
     "B": "render webwork_plant_varrisk"
    },
    "res": "Things/Plant/RM_Varrisk/RM_Varrisk_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "varrisk"
   },
   "RM_Vennick": {
@@ -476,6 +561,10 @@
     "B": "render RM_Vennick_v2"
    },
    "res": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "vennick"
   },
   "RM_Vessark": {
@@ -496,6 +585,10 @@
     "B": "render webwork_plant_vessark"
    },
    "res": "Things/Plant/RM_Vessark/RM_Vessark_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "vessark"
   }
  },

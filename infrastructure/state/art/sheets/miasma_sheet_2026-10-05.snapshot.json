@@ -1,8 +1,8 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-04T23:54:38-0700",
+ "built": "2026-10-05T09:00:10-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_DecayDrake": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "decaydrake"
   },
   "AA_Helixien": {
@@ -37,6 +40,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "helixien"
   },
   "AA_Lockjaw": {
@@ -111,6 +117,20 @@
     "L": "render lockjaw_improve_b_r2"
    },
    "res": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
    "subject_key": "lockjaw"
   },
   "AA_Mantrap": {
@@ -121,36 +141,39 @@
      "south": "2fda8da744610a0213d1817de758a8bcf8ea25d5325d0bb32add0c537fdd3b18"
     },
     "B": {
-     "single": "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca"
+     "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
     },
     "C": {
-     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
+     "single": "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca"
     },
     "D": {
-     "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
+     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
     },
     "E": {
-     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
+     "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
     },
     "F": {
-     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
+     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
     },
     "G": {
-     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
+     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
     },
     "H": {
-     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
+     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
     },
     "I": {
-     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
+     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
     },
     "J": {
-     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
+     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
     },
     "K": {
-     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
+     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
     },
     "L": {
+     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
+    },
+    "M": {
      "single": "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305"
     }
    },
@@ -166,23 +189,40 @@
     "I": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "J": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "K": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "L": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"
+    "L": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+    "M": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render mantrap_improve_a",
-    "C": "render mantrap_improve_a_r2",
-    "D": "render mantrap_improve_a_r7",
-    "E": "render mantrap_improve_b",
-    "F": "render mantrap_improve_b_r2",
-    "G": "render mantrap_improve_b_r3",
-    "H": "render mantrap_improve_b_r4",
-    "I": "render mantrap_improve_b_r5",
-    "J": "render mantrap_improve_b_r6",
-    "K": "render mantrap_improve_b_r7",
-    "L": "render mantrap_improve_b_r8"
+    "B": "render codexcal_mantrap_r4",
+    "C": "render mantrap_improve_a",
+    "D": "render mantrap_improve_a_r2",
+    "E": "render mantrap_improve_a_r7",
+    "F": "render mantrap_improve_b",
+    "G": "render mantrap_improve_b_r2",
+    "H": "render mantrap_improve_b_r3",
+    "I": "render mantrap_improve_b_r4",
+    "J": "render mantrap_improve_b_r5",
+    "K": "render mantrap_improve_b_r6",
+    "L": "render mantrap_improve_b_r7",
+    "M": "render mantrap_improve_b_r8"
    },
    "res": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M"
+   ],
    "subject_key": "mantrap"
   },
   "AA_RaptorShrimp": {
@@ -214,6 +254,11 @@
     "C": "donor original \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "raptorshrimp"
   },
   "AA_Slurrypede": {
@@ -231,6 +276,9 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "slurrypede"
   },
   "AA_Thermadon": {
@@ -262,6 +310,11 @@
     "C": "donor original \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "thermadon"
   },
   "RM_Aphreen": {
@@ -277,6 +330,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Aphreen/RM_Aphreen_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "aphreen"
   },
   "RM_Bozzuga": {
@@ -301,6 +357,10 @@
     "B": "history Miasma 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "bozzuga"
   },
   "RM_Braskeen": {
@@ -321,6 +381,10 @@
     "B": "render miasma_braskeen_open"
    },
    "res": "Things/Plant/RM_Braskeen/RM_Braskeen",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "braskeen"
   },
   "RM_Brelloch": {
@@ -336,6 +400,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brelloch"
   },
   "RM_CrimsonOpeeJuv": {
@@ -354,6 +421,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "crimsonopeejuv"
   },
   "RM_FeverSwarm": {
@@ -369,6 +439,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "feverswarm"
   },
   "RM_Ilbareen": {
@@ -389,6 +462,10 @@
     "B": "render miasma_ilbareen_dead"
    },
    "res": "Things/Plant/RM_Ilbareen/RM_Ilbareen_live",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ilbareen"
   },
   "RM_Immarel": {
@@ -404,6 +481,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Immarel/RM_Immarel_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "immarel"
   },
   "RM_Ismerrow": {
@@ -434,6 +514,12 @@
     "D": "render miasma_ismerrow_d"
    },
    "res": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "ismerrow"
   },
   "RM_Karravel": {
@@ -449,6 +535,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Pawn/Animal/RM_Karravel/RM_Karravel",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karravel"
   },
   "RM_Karrimeth": {
@@ -464,6 +553,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karrimeth"
   },
   "RM_Karrobel": {
@@ -479,6 +571,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karrobel"
   },
   "RM_Karrolun": {
@@ -494,6 +589,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "karrolun"
   },
   "RM_Nemreth": {
@@ -514,6 +612,10 @@
     "B": "render miasma_nemreth"
    },
    "res": "Things/Plant/RM_Nemreth/RM_Nemreth_a",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "nemreth"
   },
   "RM_Nogtyl": {
@@ -529,6 +631,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Nogtyl",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nogtyl"
   },
   "RM_Nyssolet": {
@@ -544,6 +649,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Nyssolet/RM_Nyssolet_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nyssolet"
   },
   "RM_Ollamane": {
@@ -559,6 +667,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ollamane"
   },
   "RM_Ommok": {
@@ -583,6 +694,10 @@
     "B": "render RM_Ommok"
    },
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ommok"
   },
   "RM_Ommolyn": {
@@ -598,6 +713,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Ommolyn/RM_Ommolyn_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ommolyn"
   },
   "RM_Pallasheen": {
@@ -613,6 +731,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Pallasheen/RM_Pallasheen_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pallasheen"
   },
   "RM_Quennath": {
@@ -628,6 +749,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "quennath"
   },
   "RM_ReefbackJuv": {
@@ -646,6 +770,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "reefbackjuv"
   },
   "RM_RustNipperJuv": {
@@ -664,6 +791,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "rustnipperjuv"
   },
   "RM_Sarrash": {
@@ -679,6 +809,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Sarrash/RM_Sarrash_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sarrash"
   },
   "RM_ShaleGorgerJuv": {
@@ -697,6 +830,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "shalegorgerjuv"
   },
   "RM_SiltLampreyJuv": {
@@ -715,6 +851,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "siltlampreyjuv"
   },
   "RM_Thessamor": {
@@ -730,6 +869,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Thessamor/RM_Thessamor_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thessamor"
   },
   "RM_ThornbackColoJuv": {
@@ -748,6 +890,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thornbackcolojuv"
   },
   "RM_Thrannock": {
@@ -763,6 +908,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Thrannock/RM_Thrannock_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thrannock"
   },
   "RM_Ullavess": {
@@ -778,6 +926,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Ullavess/RM_Ullavess_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ullavess"
   },
   "RM_Vellamine": {
@@ -793,6 +944,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Vellamine/RM_Vellamine_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "vellamine"
   },
   "RM_Velluric": {
@@ -808,6 +962,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Velluric/RM_Velluric_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "velluric"
   },
   "RM_Wessaline": {
@@ -823,6 +980,9 @@
     "A": "IN GAME \u2014 Miasma"
    },
    "res": "Things/Plant/RM_Wessaline/RM_Wessaline_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "wessaline"
   },
   "RSW_AaroxisDendoria": {
@@ -847,6 +1007,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "aaroxisdendoria"
   },
   "RSW_Anooba": {
@@ -930,6 +1094,19 @@
     "K": "render anooba_toyfig_b2"
    },
    "res": "swanimals/Anooba/Anooba_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
    "subject_key": "anooba"
   },
   "RSW_Blarth": {
@@ -954,6 +1131,10 @@
     "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Blarth/Blarth",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "blarth"
   },
   "RSW_Blixus": {
@@ -978,6 +1159,10 @@
     "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Blixus/Blixus",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "blixus"
   },
   "RSW_Bogwing": {
@@ -995,6 +1180,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Bogwing/Bogwing",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "bogwing"
   },
   "RSW_CrestedDragon": {
@@ -1019,6 +1207,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "cresteddragon"
   },
   "RSW_FaaJuv": {
@@ -1037,6 +1229,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "faajuv"
   },
   "RSW_Grank": {
@@ -1075,6 +1270,12 @@
     "D": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Grank/Grank",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "grank"
   },
   "RSW_LaaJuv": {
@@ -1093,6 +1294,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Laa/Laa",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "laajuv"
   },
   "RSW_MarshHaunt": {
@@ -1117,6 +1321,10 @@
     "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/MarshHaunt/MarshHaunt",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "marshhaunt"
   },
   "RSW_MeeJuv": {
@@ -1135,6 +1343,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "meejuv"
   },
   "RSW_OpeeSeaKillerJuv": {
@@ -1153,6 +1364,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "opeeseakillerjuv"
   },
   "RSW_PodWorm": {
@@ -1170,6 +1384,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "podworm"
   },
   "RSW_Runyip": {
@@ -1180,21 +1397,25 @@
      "south": "0db9f1e981eb6e09d4c8b4e55009e28e6bc11e4f3dafd334f9fb48e134e43820"
     },
     "B": {
+     "east": "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+     "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
+    },
+    "C": {
      "east": "b7183440ee99134015bf3dc0ad0067b70d9d0e5a0ef34e0dce0c58e5b345a05d",
      "north": "09f42584602e2be5452f174e29a71891d1a1917541992cb33a01c0b1ec12cb39",
      "south": "25888e5bc73588461568f1da194cc423be4b24d0db98d6b7ad3ada935197dc1b"
     },
-    "C": {
+    "D": {
      "east": "8eaac9428a94122709810b08e6c65f74e7ac737706789439d94559292fef1fef",
      "north": "e5448b9390471027a1d4e08a37b09d2c2d6285113c74a7292319a1b380a8c1c8",
      "south": "97a71f8b6c44c031f13c6ac3eafc58a1a22363ab6db1036d358a03366b9cce84"
     },
-    "D": {
+    "E": {
      "east": "24606d6427b8f159e82df20745b4e7b1a37ca469a923244dd32170b221463e26",
      "north": "ff64a17ff834b22e45898b520dc7dc687ea693cd6873f04e61489399b5e442fe",
      "south": "1f93381d0af41b63853f1a4ed4df317410ac0df191e07aa5e0637649c5e55c54"
     },
-    "E": {
+    "F": {
      "east": "805acd616fb4c08567a0e1aa9b2d3b2f7700318b1998d251de1293313f39a20b",
      "north": "ee52b1e929af84d5fb9e7ee2b77d63e1b2126ca3dd7894def8e7079ab190c6cd",
      "south": "05cb88ad0aa971941ca6b2faa9799e490822caa10ef6dcbc1ecb1c08743cacc0"
@@ -1203,18 +1424,28 @@
    "graphic_of": {
     "A": "swanimals/Runyip/Runyip",
     "B": "swanimals/Runyip/Runyip",
-    "C": "swanimals/Runyip/Runyip_Swimming",
-    "D": "swanimals/Runyip/Runyip_j",
-    "E": "swanimals/Runyip/Runyip_j_Swimming"
+    "C": "swanimals/Runyip/Runyip",
+    "D": "swanimals/Runyip/Runyip_Swimming",
+    "E": "swanimals/Runyip/Runyip_j",
+    "F": "swanimals/Runyip/Runyip_j_Swimming"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_runyip",
-    "C": "IN GAME \u2014 SWBestiary",
+    "B": "render longshade_rsw_runyip_v1",
+    "C": "render desertportb_runyip",
     "D": "IN GAME \u2014 SWBestiary",
-    "E": "IN GAME \u2014 SWBestiary"
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Runyip/Runyip",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "runyip"
   },
   "RSW_RustNipperJuv": {
@@ -1233,6 +1464,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "rustnipperjuv"
   },
   "RSW_Shiro": {
@@ -1271,6 +1505,12 @@
     "D": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Shiro/Shiro",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "shiro"
   },
   "RSW_SiltLampreyJuv": {
@@ -1289,6 +1529,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "siltlampreyjuv"
   },
   "RSW_Vornskyr": {
@@ -1327,6 +1570,12 @@
     "D": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Vornskyr/Vornskyr",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "vornskyr"
   },
   "RSW_Whisperbird": {
@@ -1372,6 +1621,13 @@
     "E": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "whisperbird"
   },
   "RSW_YobshrimpJuv": {
@@ -1390,6 +1646,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "yobshrimpjuv"
   },
   "RSW_Zakkeg": {
@@ -1428,6 +1687,12 @@
     "D": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Zakkeg/Zakkeg",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "zakkeg"
   },
   "VFEI2_BlackSwarmling": {
@@ -1445,7 +1710,10 @@
     "A": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
-   "subject_key": "vfei2_blackswarmling"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "blackswarmling"
   },
   "VFEI2_Swarmling": {
    "columns": {
@@ -1453,18 +1721,29 @@
      "east": "3b2744dc3779c7e4a6114fa09b773e9b7f4f78f47b6dbe64e1f9369d7ebb2505",
      "north": "049d3244175b4f8a2cb55bd9193ac02c3993d6be75b7abcba687392bdd641ca8",
      "south": "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
+    },
+    "B": {
+     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+     "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
+     "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Swarmling/Swarmling"
+    "A": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "B": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
-    "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2"
+    "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
+    "B": "render rot_swarmling_v2"
    },
    "res": "Things/Pawn/Animal/Swarmling/Swarmling",
-   "subject_key": "vfei2_swarmling"
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "swarmling"
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "2c7f61de9df105f7"
+ "snapshotId": "d0dc418212b92203"
 }

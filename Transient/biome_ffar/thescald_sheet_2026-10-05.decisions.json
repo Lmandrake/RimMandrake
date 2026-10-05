@@ -2,7 +2,7 @@
  "sheetId": "thescald_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/thescald_sheet_2026-10-05.snapshot.json",
- "snapshotId": "7366738371d2e86a",
+ "snapshotId": "3e970bb2e9f3ce82",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_TheScald",
  "reviewStatus": {

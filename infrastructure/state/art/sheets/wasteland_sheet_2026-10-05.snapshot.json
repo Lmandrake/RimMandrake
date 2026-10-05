@@ -1,8 +1,8 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-04T23:54:57-0700",
+ "built": "2026-10-05T09:00:39-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_GrayGrass": {
@@ -18,7 +18,10 @@
     "A": "IN GAME \u2014 ludeon.rimworld.biotech"
    },
    "res": "Things/Plant/Graygrass",
-   "subject_key": "plant_graygrass"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "graygrass"
   },
   "Plant_Toxipotato": {
    "columns": {
@@ -33,7 +36,10 @@
     "A": "IN GAME \u2014 regrowth.botr.core"
    },
    "res": "Things/Plant/RG_Toxipotato",
-   "subject_key": "plant_toxipotato"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "toxipotato"
   },
   "Plant_TreePolux": {
    "columns": {
@@ -48,7 +54,10 @@
     "A": "IN GAME \u2014 regrowth.botr.core"
    },
    "res": "Things/Plant/RG_PoluxTree",
-   "subject_key": "plant_treepolux"
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "treepolux"
   },
   "RM_Boilbulb": {
    "columns": {
@@ -63,6 +72,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_Boilbulb",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "boilbulb"
   },
   "RM_Cinderfelt": {
@@ -78,6 +90,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_Cinderfelt",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cinderfelt"
   },
   "RM_DosimeterLawn": {
@@ -93,6 +108,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/DosimeterLawn",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "dosimeterlawn"
   },
   "RM_Pusberry": {
@@ -108,6 +126,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_Pusberry",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pusberry"
   },
   "RM_Scumgrass": {
@@ -123,6 +144,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_Scumgrass",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "scumgrass"
   },
   "RM_TallScumgrass": {
@@ -138,6 +162,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_TallScumgrass",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tallscumgrass"
   },
   "RM_VaultRoot": {
@@ -153,6 +180,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/VaultRoot",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "vaultroot"
   },
   "RM_Wartshrub": {
@@ -168,6 +198,9 @@
     "A": "IN GAME \u2014 Wasteland"
    },
    "res": "Things/Plant/RM_Wartshrub",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "wartshrub"
   },
   "RM_WastelandScorchedStars": {
@@ -183,6 +216,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/ScorchedStars",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "wastelandscorchedstars"
   },
   "RSW_BloodletterPetrel": {
@@ -207,6 +243,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "bloodletterpetrel"
   },
   "RSW_Borcatu": {
@@ -217,6 +257,11 @@
      "south": "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868"
     },
     "B": {
+     "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
+     "north": "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
+     "south": "799fafa69e2ce8147b2816f7a61ff7579ebe3dd019dda5daca3cd62362d9cf0c"
+    },
+    "C": {
      "east": "cbce7196dc1359bf1905654a474076f29c10502c0cbbc69bd97fb0de2a7985c0",
      "north": "ebe0d0b2a0045cefb4367c51f98387a2796e96c74bf4d956578a254356df5f38",
      "south": "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb"
@@ -224,13 +269,20 @@
    },
    "graphic_of": {
     "A": "swanimals/Borcatu/Borcatu",
-    "B": "swanimals/Borcatu/Borcatu"
+    "B": "swanimals/Borcatu/Borcatu",
+    "C": "swanimals/Borcatu/Borcatu"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-12"
+    "B": "render canon_borcatu_v1",
+    "C": "history SWBestiary 2026-09-12"
    },
    "res": "swanimals/Borcatu/Borcatu",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "borcatu"
   },
   "RSW_Excretor": {
@@ -255,6 +307,10 @@
     "B": "render desertportb_feralnerf"
    },
    "res": "swanimals/FeralNerf/FeralNerf",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "excretor"
   },
   "RSW_FleeceSpider": {
@@ -279,6 +335,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "fleecespider"
   },
   "RSW_Maligoat": {
@@ -310,6 +370,11 @@
     "C": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "maligoat"
   },
   "RSW_Sacapillar": {
@@ -327,6 +392,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sacapillar"
   },
   "RSW_Screecher": {
@@ -351,6 +419,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "screecher"
   },
   "RUT_BrineBattery": {
@@ -368,6 +440,9 @@
     "A": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brinebattery"
   },
   "VAEWaste_Megatardi": {
@@ -404,9 +479,15 @@
     "D": "history UtinniPatches 2026-09-11"
    },
    "res": "Things/Pawn/Animal/Megatardi/Megatardi",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "vaewaste_megatardi"
   }
  },
  "sheetId": "wasteland_sheet_2026-10-05",
- "snapshotId": "adc5fe59cbff151d"
+ "snapshotId": "cf61f18b2673f956"
 }

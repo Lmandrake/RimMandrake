@@ -2,7 +2,7 @@
  "sheetId": "nightsideice_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/nightsideice_sheet_2026-10-05.snapshot.json",
- "snapshotId": "1a583268b4a5ca91",
+ "snapshotId": "62d9e15003db5f5e",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_NightsideIce",
  "reviewStatus": {
@@ -27,7 +27,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Wampa/Wampa_j": "B"
+    "swanimals/Wampa/Wampa_j": "C"
    }
   },
   "Tauntaun": {

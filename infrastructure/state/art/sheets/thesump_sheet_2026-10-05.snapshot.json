@@ -1,8 +1,8 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-04T23:54:52-0700",
+ "built": "2026-10-05T09:00:33-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Brindeth": {
@@ -18,6 +18,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brindeth"
   },
   "RM_Brommet": {
@@ -35,6 +38,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_Brommet/RM_Brommet",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brommet"
   },
   "RM_Dorvel": {
@@ -50,6 +56,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "dorvel"
   },
   "RM_Dredgel": {
@@ -74,6 +83,10 @@
     "B": "render RM_Dredgel"
    },
    "res": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "dredgel"
   },
   "RM_Gulveth": {
@@ -91,6 +104,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gulveth"
   },
   "RM_Kethrel": {
@@ -129,6 +145,12 @@
     "D": "render RM_Kethrel_Stage3"
    },
    "res": "Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "kethrel"
   },
   "RM_Korveth": {
@@ -144,6 +166,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "korveth"
   },
   "RM_Mirrelin": {
@@ -159,6 +184,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mirrelin"
   },
   "RM_Pallick": {
@@ -174,6 +202,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Pallick/RM_Pallick_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pallick"
   },
   "RM_Skarrid": {
@@ -191,6 +222,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "skarrid"
   },
   "RM_Skellarn": {
@@ -208,6 +242,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "skellarn"
   },
   "RM_Skelver": {
@@ -223,6 +260,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Skelver/RM_Skelver_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "skelver"
   },
   "RM_Soffeth": {
@@ -238,6 +278,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "soffeth"
   },
   "RM_SumpMouse": {
@@ -255,6 +298,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sumpmouse"
   },
   "RM_Thrummel": {
@@ -272,6 +318,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thrummel"
   },
   "RM_ThrummelBroodmother": {
@@ -289,6 +338,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thrummelbroodmother"
   },
   "RM_ThrummelWarden": {
@@ -306,6 +358,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thrummelwarden"
   },
   "RM_Tolleth": {
@@ -321,6 +376,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tolleth"
   },
   "RM_Velloch": {
@@ -336,6 +394,9 @@
     "A": "IN GAME \u2014 TheSump"
    },
    "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "velloch"
   },
   "RSW_Hssiss": {
@@ -360,6 +421,10 @@
     "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Hssiss/Hssiss",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "hssiss"
   },
   "RUT_Plant_Wick": {
@@ -368,21 +433,31 @@
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
     },
     "B": {
+     "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
+    },
+    "C": {
      "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Ambrosia",
-    "B": "Things/Plant/Ambrosia"
+    "B": "Things/Plant/Ambrosia",
+    "C": "Things/Plant/Ambrosia"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "donor original \u2014 Vanilla Textures Expanded"
+    "B": "render ambrosia_v2",
+    "C": "donor original \u2014 Vanilla Textures Expanded"
    },
    "res": "Things/Plant/Ambrosia",
-   "subject_key": "plant_wick"
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "subject_key": "wick"
   }
  },
  "sheetId": "thesump_sheet_2026-10-05",
- "snapshotId": "b7749c4a1b2da636"
+ "snapshotId": "510550e340f7c58b"
 }

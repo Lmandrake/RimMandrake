@@ -1,8 +1,8 @@
 {
  "biome": "RM_TheChill",
- "built": "2026-10-04T23:54:43-0700",
+ "built": "2026-10-05T09:00:16-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_ChillStillbloom": {
@@ -18,6 +18,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Stillbloom/RM_Stillbloom",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "chillstillbloom"
   },
   "RM_Eldspar": {
@@ -33,6 +36,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Eldspar/RM_Eldspar",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "eldspar"
   },
   "RM_Fessu": {
@@ -48,6 +54,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "fessu"
   },
   "RM_FessuCatch": {
@@ -63,6 +72,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "fessucatch"
   },
   "RM_Fuselight": {
@@ -78,6 +90,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Fuselight/RM_Fuselight",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "fuselight"
   },
   "RM_Ghostpane": {
@@ -93,6 +108,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Ghostpane/RM_Ghostpane",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ghostpane"
   },
   "RM_Heemin": {
@@ -115,6 +133,10 @@
     "B": "render propanelake_heemin_v1"
    },
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "heemin"
   },
   "RM_HeeminCatch": {
@@ -137,6 +159,10 @@
     "B": "render propanelake_heemin_v1"
    },
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "heemincatch"
   },
   "RM_Hesuun": {
@@ -152,6 +178,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "hesuun"
   },
   "RM_Iliss": {
@@ -167,6 +196,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "iliss"
   },
   "RM_IlissCatch": {
@@ -182,6 +214,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ilisscatch"
   },
   "RM_Keelgrass": {
@@ -197,6 +232,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Keelgrass/RM_Keelgrass",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "keelgrass"
   },
   "RM_Krellik": {
@@ -212,6 +250,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "krellik"
   },
   "RM_KrellikCatch": {
@@ -227,6 +268,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "krellikcatch"
   },
   "RM_Oddu": {
@@ -242,6 +286,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "oddu"
   },
   "RM_OdduCatch": {
@@ -257,6 +304,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "odducatch"
   },
   "RM_Oovanam": {
@@ -279,6 +329,10 @@
     "B": "render propanelake_oovanam_v1"
    },
    "res": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "oovanam"
   },
   "RM_OovanamCatch": {
@@ -301,6 +355,10 @@
     "B": "render propanelake_oovanam_v1"
    },
    "res": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "oovanamcatch"
   },
   "RM_Oovu": {
@@ -316,6 +374,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "oovu"
   },
   "RM_OovuCatch": {
@@ -331,6 +392,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "oovucatch"
   },
   "RM_Pitchpearl": {
@@ -346,6 +410,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Pitchpearl/RM_Pitchpearl",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pitchpearl"
   },
   "RM_Skyharp": {
@@ -361,6 +428,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Skyharp/RM_Skyharp",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "skyharp"
   },
   "RM_Slackwax": {
@@ -376,6 +446,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Slackwax/RM_Slackwax",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "slackwax"
   },
   "RM_Stonewater": {
@@ -391,6 +464,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Stonewater/RM_Stonewater",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "stonewater"
   },
   "RM_Tarnn": {
@@ -406,6 +482,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tarnn"
   },
   "RM_TarnnCatch": {
@@ -421,6 +500,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tarnncatch"
   },
   "RM_Tarspool": {
@@ -436,6 +518,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Plant/RM_Tarspool/RM_Tarspool",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tarspool"
   },
   "RM_Zhiil": {
@@ -451,6 +536,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "zhiil"
   },
   "RM_ZhiilCatch": {
@@ -466,6 +554,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "zhiilcatch"
   }
  },

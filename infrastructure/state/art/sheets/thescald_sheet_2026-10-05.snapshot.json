@@ -1,8 +1,8 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-04T23:54:50-0700",
+ "built": "2026-10-05T09:00:31-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Bladderboil": {
@@ -27,6 +27,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "bladderboil"
   },
   "RM_BladderboilCatch": {
@@ -64,6 +68,13 @@
     "E": "render scaldfloor_bladderboil"
    },
    "res": "Things/Item/Resource/RM_BladderboilCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "bladderboilcatch"
   },
   "RM_Crowncarpet": {
@@ -72,38 +83,52 @@
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
     },
     "B": {
-     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
+     "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
     },
     "C": {
-     "single": "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8"
+     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
     },
     "D": {
-     "single": "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4"
+     "single": "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8"
     },
     "E": {
-     "single": "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80"
+     "single": "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4"
     },
     "F": {
+     "single": "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80"
+    },
+    "G": {
      "single": "1484602934bc731c7065583197b1c25a3df4dcdee02c903301ddc7f85bbe08e7"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Ambrosia",
     "B": "Things/Plant/Ambrosia",
-    "C": "_byname",
+    "C": "Things/Plant/Ambrosia",
     "D": "_byname",
     "E": "_byname",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "donor original \u2014 Vanilla Textures Expanded",
-    "C": "render deepfire_crowncarpet_c",
-    "D": "render deepfire_crowncarpet_d",
-    "E": "render deepfire_crowncarpet_a",
-    "F": "render deepfire_crowncarpet_b"
+    "B": "render ambrosia_v2",
+    "C": "donor original \u2014 Vanilla Textures Expanded",
+    "D": "render deepfire_crowncarpet_c",
+    "E": "render deepfire_crowncarpet_d",
+    "F": "render deepfire_crowncarpet_a",
+    "G": "render deepfire_crowncarpet_b"
    },
    "res": "Things/Plant/Ambrosia",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
    "subject_key": "crowncarpet"
   },
   "RM_Doss": {
@@ -128,6 +153,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Doss/RM_Doss",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "doss"
   },
   "RM_DossCatch": {
@@ -160,6 +189,12 @@
     "D": "render scaldfloor_doss"
    },
    "res": "Things/Item/Resource/RM_DossCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "dosscatch"
   },
   "RM_Eesh": {
@@ -184,6 +219,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "eesh"
   },
   "RM_EeshCatch": {
@@ -216,6 +255,12 @@
     "D": "render scaldfloor_eesh"
    },
    "res": "Things/Item/Resource/RM_EeshCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "eeshcatch"
   },
   "RM_Ekkel": {
@@ -240,6 +285,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "ekkel"
   },
   "RM_EkkelCatch": {
@@ -272,6 +321,12 @@
     "D": "render scaldfloor_ekkel"
    },
    "res": "Things/Item/Resource/RM_EkkelCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "ekkelcatch"
   },
   "RM_ElderSando": {
@@ -290,6 +345,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "eldersando"
   },
   "RM_Karrash": {
@@ -314,6 +372,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Karrash/RM_Karrash",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "karrash"
   },
   "RM_KarrashCatch": {
@@ -346,6 +408,12 @@
     "D": "render scaldfloor_karrash"
    },
    "res": "Things/Item/Resource/RM_KarrashCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "karrashcatch"
   },
   "RM_Muddal": {
@@ -370,6 +438,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Muddal/RM_Muddal",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "muddal"
   },
   "RM_MuddalCatch": {
@@ -402,6 +474,12 @@
     "D": "render scaldfloor_muddal"
    },
    "res": "Things/Item/Resource/RM_MuddalCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "muddalcatch"
   },
   "RM_Noohm": {
@@ -432,6 +510,11 @@
     "C": "history TerminalBiomes 2026-09-25"
    },
    "res": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "noohm"
   },
   "RM_Saal": {
@@ -447,6 +530,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Item/Resource/RM_Saal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "saal"
   },
   "RM_ScaldWalker": {
@@ -464,6 +550,9 @@
     "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "scaldwalker"
   },
   "RM_Shulla": {
@@ -494,6 +583,11 @@
     "C": "history TerminalBiomes 2026-09-25"
    },
    "res": "Things/Pawn/Animal/RM_Shulla/RM_Shulla",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "shulla"
   },
   "RM_ShullaCatch": {
@@ -531,6 +625,13 @@
     "E": "render scald_shulla_v1"
    },
    "res": "Things/Item/Resource/RM_ShullaCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "shullacatch"
   },
   "RM_Thuum": {
@@ -555,6 +656,10 @@
     "B": "history TerminalBiomes 2026-09-26"
    },
    "res": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "thuum"
   },
   "RM_ThuumCatch": {
@@ -587,6 +692,12 @@
     "D": "render scaldfloor_thuum"
    },
    "res": "Things/Item/Resource/RM_ThuumCatch",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "thuumcatch"
   },
   "RSW_ElderSando": {
@@ -605,6 +716,9 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "eldersando"
   },
   "RSW_SandoAquaMonster": {
@@ -623,9 +737,12 @@
     "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sandoaquamonster"
   }
  },
  "sheetId": "thescald_sheet_2026-10-05",
- "snapshotId": "7366738371d2e86a"
+ "snapshotId": "3e970bb2e9f3ce82"
 }

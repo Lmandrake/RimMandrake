@@ -1,8 +1,8 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-04T23:54:41-0700",
+ "built": "2026-10-05T09:00:14-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "GR_Mecharat": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 Vanilla Genetics Expanded"
    },
    "res": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gr_mecharat"
   },
   "RM_CathedralRoach": {
@@ -37,6 +40,9 @@
     "A": "IN GAME \u2014 RustCathedral"
    },
    "res": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cathedralroach"
   },
   "RM_CoolantEelCatch": {
@@ -59,6 +65,10 @@
     "B": "render RM_CoolantEel"
    },
    "res": "Things/Item/Fish/Dogfish",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "coolanteelcatch"
   },
   "RM_LivingBolt": {
@@ -76,6 +86,9 @@
     "A": "IN GAME \u2014 RustCathedral"
    },
    "res": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "livingbolt"
   },
   "RSW_Vozzik": {
@@ -86,6 +99,11 @@
      "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
     },
     "B": {
+     "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+     "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+     "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+    },
+    "C": {
      "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
      "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
      "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
@@ -93,16 +111,23 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
-    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render RM_Vozzik"
+    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "C": "render RM_Vozzik"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "vozzik"
   }
  },
  "sheetId": "rustcathedral_sheet_2026-10-05",
- "snapshotId": "ba0c5b22225c5a95"
+ "snapshotId": "59dc9d397f2d4975"
 }

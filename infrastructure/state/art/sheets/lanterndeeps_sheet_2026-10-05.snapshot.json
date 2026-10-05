@@ -1,8 +1,8 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-04T23:54:28-0700",
+ "built": "2026-10-05T08:59:56-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "2ba7e2593",
+ "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Blinker": {
@@ -20,6 +20,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "blinker"
   },
   "RM_BloodropMoth": {
@@ -37,6 +40,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "bloodropmoth"
   },
   "RM_BovineBeetle": {
@@ -54,6 +60,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "bovinebeetle"
   },
   "RM_BrellikBulb": {
@@ -69,6 +78,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "brellikbulb"
   },
   "RM_Candler": {
@@ -86,6 +98,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "candler"
   },
   "RM_Chiller": {
@@ -103,6 +118,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Chiller/Chiller",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "chiller"
   },
   "RM_Cleaver": {
@@ -120,21 +138,45 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "cleaver"
   },
   "RM_DeepMycelium": {
    "columns": {
     "A": {
      "single": "a3acdbc5bdc39b73e49b2a4d5c38d34d9dea66656bc78f3bb8c645d470cdc107"
+    },
+    "B": {
+     "single": "8f73f198c94d170903c91ef3881653523b98beec42d73afedd07de8d137a344b"
+    },
+    "C": {
+     "single": "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd"
+    },
+    "D": {
+     "single": "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/Mycelium"
+    "A": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "B": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "C": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "D": "RM_LanternDeeps/Things/Plant/Mycelium"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render mycelium_a_v1",
+    "C": "render mycelium_b_v1",
+    "D": "render mycelium_c_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "deepmycelium"
   },
   "RM_Drifter": {
@@ -152,6 +194,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Drifter/Drifter",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "drifter"
   },
   "RM_FacetMothLarvae": {
@@ -169,6 +214,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "facetmothlarvae"
   },
   "RM_Gembug": {
@@ -186,6 +234,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "gembug"
   },
   "RM_GlowSlug": {
@@ -203,6 +254,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "glowslug"
   },
   "RM_Knocker": {
@@ -220,6 +274,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Knocker/Knocker",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "knocker"
   },
   "RM_KuvraSpout": {
@@ -235,6 +292,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/KuvraSpout",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "kuvraspout"
   },
   "RM_Lanternstone_Sowable": {
@@ -243,18 +303,28 @@
      "single": "5405bc03c34f26d83d5e6d9f49a8470c8d5b83da299726ed711f7584fd619111"
     },
     "B": {
+     "single": "e4d801d366cb4584633fecc7d95be169f55215c0f63b2ae1824db7253bac25e4"
+    },
+    "C": {
      "single": "d83ac8fabcadb48530542ae13571f5d7dc15859fc75feb79c47276a4d135ef0c"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
-    "B": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
+    "B": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
+    "C": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render lanternstonemedium_a_v1"
+    "B": "render lanternstonemedium_c_v1",
+    "C": "render lanternstonemedium_a_v1"
    },
    "res": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "lanternstone_sowable"
   },
   "RM_Megapleura": {
@@ -272,6 +342,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "megapleura"
   },
   "RM_MossBeetleLarvae": {
@@ -289,6 +362,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "mossbeetlelarvae"
   },
   "RM_NurrikGill": {
@@ -304,6 +380,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "nurrikgill"
   },
   "RM_OsskBramble": {
@@ -319,6 +398,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/OsskBramble",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "osskbramble"
   },
   "RM_Pooler": {
@@ -336,6 +418,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "pooler"
   },
   "RM_PrennaLace": {
@@ -351,6 +436,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "prennalace"
   },
   "RM_QuorrFern": {
@@ -366,6 +454,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "quorrfern"
   },
   "RM_ShatterjawBeetle": {
@@ -383,6 +474,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "shatterjawbeetle"
   },
   "RM_Shoal": {
@@ -400,6 +494,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "shoal"
   },
   "RM_Sipper": {
@@ -417,6 +514,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "sipper"
   },
   "RM_Slick": {
@@ -434,6 +534,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Slick/Slick",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "slick"
   },
   "RM_Tapper": {
@@ -451,6 +554,9 @@
     "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "tapper"
   },
   "RM_ThrakkCap": {
@@ -466,21 +572,57 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/ThrakkCap",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "thrakkcap"
   },
   "RM_TwitchingPuffer": {
    "columns": {
     "A": {
      "single": "df997c12f65024f99b4fa420fe477bbc9667d698559641f52cf58b0f081157ad"
+    },
+    "B": {
+     "single": "074246c6fca0c0a026bb9747a26bcbe36474230ad67a47b6025a632996dba59d"
+    },
+    "C": {
+     "single": "ebab863d05bdab245bb5a5b45b2437f2503b56cf004c71b3f0abea1826478459"
+    },
+    "D": {
+     "single": "bcb7fb1afc1b6564de7e93543de10f661091adaecfc3166cb646dd5a67c7d447"
+    },
+    "E": {
+     "single": "a5ee471cc6c1f2f577ea263f01f896303f108afd108e0d1f9352e518fba121d5"
+    },
+    "F": {
+     "single": "bc6b4ac3e55b17d8c03cbec14c2136f36441ebcf9c31908a831eb37c33d88ed8"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown"
+    "A": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render twitchingpuffer_grown_v1",
+    "C": "render twitchingpuffer_harvested_v1",
+    "D": "render twitchingpuffer_harvested_v2",
+    "E": "render twitchingpuffer_immature_v1",
+    "F": "render twitchingpuffer_tendrils_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "twitchingpuffer"
   },
   "RM_VellokReed": {
@@ -496,6 +638,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "vellokreed"
   },
   "RM_ZivvitTaper": {
@@ -511,6 +656,9 @@
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "zivvittaper"
   },
   "RSW_BloodropMoth": {
@@ -535,6 +683,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "bloodropmoth"
   },
   "RSW_BovineBeetle": {
@@ -566,6 +718,11 @@
     "C": "history SWBestiary 2026-09-18"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "bovinebeetle"
   },
   "RSW_FacetMothLarvae": {
@@ -590,6 +747,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "facetmothlarvae"
   },
   "RSW_Gembug": {
@@ -614,6 +775,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "gembug"
   },
   "RSW_GlowSlug": {
@@ -638,6 +803,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "glowslug"
   },
   "RSW_Megapleura": {
@@ -662,6 +831,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "megapleura"
   },
   "RSW_MossBeetleLarvae": {
@@ -686,6 +859,10 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "mossbeetlelarvae"
   },
   "RSW_ShatterjawBeetle": {
@@ -710,9 +887,13 @@
     "B": "history SWBestiary 2026-09-11"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "shatterjawbeetle"
   }
  },
  "sheetId": "lanterndeeps_sheet_2026-10-05",
- "snapshotId": "262b9ae3820a0393"
+ "snapshotId": "9314c44a9f6fb7c7"
 }

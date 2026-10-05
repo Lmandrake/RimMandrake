@@ -28,6 +28,7 @@ from pathlib import Path
 import artledger as L
 
 ARTPIPE = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe")
+LEGACY_ARTPIPE = Path(os.environ.get("ARTPIPE_LEGACY_DIR") or "/mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe")
 BUNDLES = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures")
 CENSUS_CSV = L.REPO_ROOT / "Transient" / "art_census_desert_2026-10-04.csv"
 CANON = L.REPO_ROOT / "design" / "RimStarWars" / "canon_references"
@@ -234,6 +235,12 @@ def step_artpipe(budget=480):
     w = L.Writer()
     n0 = len(w.known)
     dirs = sorted(p for p in src.iterdir() if p.is_dir())
+    # renders from before the 2026-10-02 state move still sit under the old in-repo root (454 on 2026-10-05, e.g. the
+    # owner-ruled rot_wildpawn_v2): ingest those the current root lacks, so no finished render stays off the sheets
+    legacy = LEGACY_ARTPIPE / "_artsrc"
+    have = {d.name for d in dirs}
+    if legacy.is_dir():
+        dirs += sorted(p for p in legacy.iterdir() if p.is_dir() and p.name not in have)
     n = 0
     for i, d in enumerate(dirs):
         p = _main_png(d)
@@ -244,7 +251,7 @@ def step_artpipe(budget=480):
         if sha in _purged():
             continue
         man = {}
-        mf = ARTPIPE / "done" / f"{d.name}.json"
+        mf = (ARTPIPE if d.parent == src else LEGACY_ARTPIPE) / "done" / f"{d.name}.json"
         if mf.exists():
             try:
                 man = json.loads(mf.read_text())
