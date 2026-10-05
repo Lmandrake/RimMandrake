@@ -122,7 +122,7 @@ def stage2_style_names():
             names.append("%s_%s" % (d, l))
             if l == "Modern":
                 names += ["%s_Modern_%s" % (d, c) for c in COLOURS + ["Mix"]]
-    return names + ["PowerSwitch_%s" % l for l in LOOKS]
+    return names + ["PowerSwitch_%s" % l for l in LOOKS] + ["StandingLamp_%s" % l for l in LOOKS]
 
 
 def s0b_offline(rows):
@@ -136,15 +136,17 @@ def s0b_offline(rows):
         probs.append("stage-2 style defs: missing %s extra %s" % (sorted(want - set(styles)), sorted(set(styles) - want)))
     for n, e in styles.items():
         has_g = e.find("graphicData") is not None
-        if n.startswith("PowerSwitch_"):
+        if n.startswith("PowerSwitch_") or n.startswith("StandingLamp_"):
             tp = e.findtext("graphicData/texPath") or ""
             if not os.path.exists(os.path.join(TEX, tp + ".png")):
-                probs.append("%s: switch art missing %s" % (n, tp))
+                probs.append("%s: art missing %s" % (n, tp))
+            if n.startswith("StandingLamp_") and tp != "RimMandrake/MessyConduit/Styles/%s/StandingLamp" % n.split("_", 1)[1]:
+                probs.append("%s: lamp must draw its own look's art, got %s" % (n, tp))
         elif has_g:
             probs.append("%s: a conduit style must be a marker (a graphic would make the conduit visible)" % n)
     pt = os.path.join(HERE, "Patches", "RM_ConduitStyleable.xml")
     patch = open(pt, encoding="utf-8").read() if os.path.exists(pt) else ""
-    for d in ("PowerConduit", "PowerSwitch"):
+    for d in ("PowerConduit", "PowerSwitch", "StandingLamp"):
         if 'defName="%s"]/comps/li[@Class="CompProperties_Styleable"]' % d not in patch or "PatchOperationConditional" not in patch:
             probs.append("patch: %s lacks the guarded CompProperties_Styleable add" % d)
     if 'defName="WaterproofConduit"' in patch:
@@ -154,6 +156,8 @@ def s0b_offline(rows):
     need += ["Styles/%s/EndFrayed_Live.png" % f for f in ("StarWars", "ExtCord", "Cybertek")] + ["Styles/ExtCord/PowerStrip_Off.png"]
     need += ["Styles/ExtCord/Strand_%s.png" % c for c in COLOURS] + ["Styles/StarWars/Strand_%s.png" % k for k in ("BlackRubber", "CorrugatedSteel", "CoiledBlack")]
     need += ["Styles/Cybertek/Strand.png", "Strand_Jawa.png"]
+    # art round 5: the floor lamp per look, the power-tap clamp per look (Scrapper = root Aerial/TapClamp)
+    need += ["Styles/%s/StandingLamp.png" % l for l in LOOKS] + ["Aerial/TapClamp.png"] + ["Aerial/Styles/%s/TapClamp.png" % l for l in LOOKS[1:]]
     miss = [f for f in need if not os.path.exists(os.path.join(TEX, "RimMandrake", "MessyConduit", f))]
     info["artChecked"] = len(need)
     if miss:
@@ -163,7 +167,7 @@ def s0b_offline(rows):
         for f in fs:
             if f.endswith(".xml") and "Defs" in dp:
                 t = open(os.path.join(dp, f), encoding="utf-8", errors="replace").read()
-                if re.search(r"<StyleCategoryDef[\s>]", t) and re.search(r"(PowerConduit|WaterproofConduit|PowerSwitch)_(Scrapper|Industrial|Modern|Futuristic)", t):
+                if re.search(r"<StyleCategoryDef[\s>]", t) and re.search(r"(PowerConduit|WaterproofConduit|PowerSwitch|StandingLamp)_(Scrapper|Industrial|Modern|Futuristic)", t):
                     hits += 1
     if hits:
         probs.append("%d StyleCategoryDef files list stage-2 styles" % hits)
