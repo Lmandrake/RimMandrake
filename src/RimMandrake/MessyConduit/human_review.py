@@ -185,9 +185,12 @@ def stations_style(mk):
     for z, key, _ in rows:
         styled += [("C", "PowerConduit", key, c) for c in line(2, 13, z)]
         devs += [("Battery", (0, z), 1, 1.0), ("StandingLamp", (14, z), None, None)]
-    mk(5, "S", 142, 8, 16, 19, "MODERN: EVERY COLOUR ENTRY", "seven Modern runs, one per entry of the conduit build menu: "
+    # round 5 (owner: "Each run from one node to another stays a single color, but it varies through the whole nodal array"):
+    # the mix row (top, z 18) gets two 3-cell spurs up (a 2-cell spur is pruned), so it is a nodal array of 5 pieces
+    styled += [("C", "PowerConduit", "Modern_Mix", (x, z)) for x in (5, 9) for z in (19, 20, 21)]
+    mk(5, "S", 142, 8, 16, 23, "MODERN: EVERY COLOUR ENTRY", "seven Modern runs, one per entry of the conduit build menu: "
        "random mix, one colour per run, orange, green, brown, yellow, blue (top to bottom)",
-       ["random mix (top): the colours CHANGE along the run, cell by cell (a mixture inside ONE run)",
+       ["random mix (top, with two spurs up): each cord from one node to the next is ONE colour; the colours vary piece to piece through the run",
         "one colour per run: a single colour picked at random when it was built, the same along the whole run",
         "each single-colour run: that colour on every strand, plug, junction and wall stub (orange uses the shipped pieces)"],
        ["build one conduit onto the end of any run: it joins and keeps that run's colour (nothing reshuffles)",
@@ -258,7 +261,7 @@ def stations_style(mk):
        "power mast wired into its end and a span to a lamp mast: nothing restyled yet, the button is yours",
        ["before you press anything: every piece is Scrapper, poles and span included"],
        ["select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, "
-        "both poles and the span all change at once; cost and power do not", "pick Modern > random mix: the colours vary along "
+        "both poles and the span all change at once; cost and power do not", "pick Modern > random mix: the colours vary piece to piece along "
         "the run; restyle again and back: the same colours come back", "unpause: nothing reverts"],
        devs=[("Battery", (0, 2), 1, 1.0), ("StandingLamp", (15, 2), None, None)], styled=rs,
        masts=[("RM_AerialMast", (14, 3), None, "Scrapper"), ("RM_AerialLampMast", (24, 3), None, "Scrapper")], links=[(0, 1)],
@@ -1263,14 +1266,15 @@ class Review(object):
                 runs.setdefault(m.get("run"), {}).setdefault(m.get("rawStyle"), 0)
                 runs[m.get("run")][m.get("rawStyle")] += 1
             r = {"runs": list(runs.values())}
-            if s["n"] == 5:                            # random mix varies along the run: distinct strand textures on the top row
-                zt = s["origin"][1] + 18
-                # a straight mix run is ONE cord piece whose colour changes along it: read the piece's mixTex (its printed
-                # segments), not strandTex (the piece's single representative material)
-                r["mixStrands"] = sorted({t for p in st.get("pieces") or [] if (p.get("owner") or [0, 0])[1] == zt
-                                          for t in (p.get("mixTex") or [p.get("strandTex")]) if t})
-                if len(r["mixStrands"]) < 2:
-                    self.notes.append("station 5: random mix shows %d strand colour(s) along its run" % len(r["mixStrands"]))
+            if s["n"] == 5:                            # random mix (round 5): one colour per piece, varying piece to piece
+                mixp = [p for p in st.get("pieces") or [] if p.get("mix") and p.get("strands")]
+                r["mixStrands"] = sorted({p.get("strandTex") for p in mixp if p.get("strandTex")})
+                r["mixPieces"] = len(mixp)
+                nonuni = [p.get("key") for p in mixp if len(p.get("mixTex") or []) != 1 or p["mixTex"][0] != p.get("strandTex")]
+                if len(mixp) < 3 or len(r["mixStrands"]) < 2:
+                    self.notes.append("station 5: random mix has %d pieces in %d colour(s) (want >= 3 pieces, >= 2 colours)" % (len(mixp), len(r["mixStrands"])))
+                if nonuni:
+                    self.notes.append("station 5: %d mix piece(s) not a single colour" % len(nonuni))
             ms = [anchors.get(g(s, m[1])) or {} for m in s["masts"]]
             if ms:
                 r["anchors"] = [(m.get("def"), m.get("rawStyle"), (m.get("graphicPath") or "").split("/")[-2:]) for m in ms]

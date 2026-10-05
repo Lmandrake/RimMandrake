@@ -68,6 +68,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs
             ReviewRound3Checks.Run();      // owner human review round 3 (2026-10-04): ReviewRound3Checks.cs
             ReviewRound4Checks.Run();      // owner human review round 4 (2026-10-04): ReviewRound4Checks.cs
+            ReviewRound5Checks.Run();      // owner human review round 5 (2026-10-04): ReviewRound5Checks.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
             StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs
@@ -242,7 +243,14 @@ namespace RimMandrake.MessyConduit.SelfTest
                 {
                     List<V2> q = TrimUnderArt(w, s.Pts);
                     V2 a = q[0], z = q[q.Count - 1];
-                    bool okA = g.CordEdges().Any(e => (V2.Dist(e.PA, a) < 0.45 && V2.Dist(e.PB, z) < 0.45) || (V2.Dist(e.PB, a) < 0.45 && V2.Dist(e.PA, z) < 0.45));
+                    // round 5: a junction end sits ArmTuck x JunctionScale out on its arm; a pile end plugs into a port INSIDE the pile
+                    bool At(CordEdge e, bool atA, V2 pt)
+                    {
+                        CordNode nd = g.Nodes[atA ? e.A : e.B];
+                        if (nd.Type == NodeType.Tangle && nd.Cells != null) return nd.Cells.Any(c => V2.Dist(c.Centre, pt) < 0.75);
+                        return V2.Dist(atA ? e.PA : e.PB, pt) < 0.45 + CordBuilder.ArmTuck * (CordBuilder.JunctionScale - 1);
+                    }
+                    bool okA = g.CordEdges().Any(e => (At(e, true, a) && At(e, false, z)) || (At(e, false, a) && At(e, true, z)));
                     if (!okA) detached++;
                 }
             Check(detached == 0, $"{name}: {detached} laid strands do not start and end at their edge's two nodes");

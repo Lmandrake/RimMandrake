@@ -2,6 +2,7 @@
 // (design/RimMandrake/messyconduit_style_per_build_design.md section 2, owner decisions 2026-10-04).
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RimMandrake.MessyConduit.Aerial
 {
@@ -16,7 +17,8 @@ namespace RimMandrake.MessyConduit.Aerial
     /// the Modern cord colour is picked per run in the build menu: one entry per colour, "multicolour" (one random colour
     /// per run, the look the old Mixed setting drew) and "random mix" (a MIXTURE of colours inside the run). Card
     /// CORD_COLOUR_PER_PIECE_1: the colour is stored per cord piece (the conduit cell's style def carries it; a mix run's
-    /// cells carry the Mix marker and each cell's colour is a fixed hash of its position), a merge keeps the larger run's.
+    /// cells carry the Mix marker; each cord piece of it, node to node, is one colour, varying piece to piece -- round 5),
+    /// a merge keeps the larger run's.
     /// </summary>
     public static class ConduitStyles
     {
@@ -253,45 +255,49 @@ namespace RimMandrake.MessyConduit.Aerial
         // ------------------------------------------------------------------ colours and materials
         public static int ColourIndex(string c) => Array.IndexOf(Colours, c);
 
-        /// <summary>Length in cells of one cord of a mix run (live 2026-10-04: a per-PIECE colour left a straight 7-cell run one
-        /// colour, because a straight run is one cord piece; the colour must change ALONG the cord).</summary>
-        public const int MixBlock = 3;
-
-        /// <summary>A mix run's colour at a cell: the map is cut into MixBlock x MixBlock blocks and the colour steps by 2 per
-        /// block east and 3 per block north (mod 5), so two blocks side by side NEVER share a colour and any straight run of
-        /// MixBlock + 1 cells shows at least two colours. Pure position: stable through save/load, merges and rebuilds, and it
-        /// never flickers. Negative coordinates floor correctly.</summary>
-        public static int MixColourIndex(int x, int z)
+        /// <summary>
+        /// Round 5 (owner 2026-10-04, station 5: "the multi-color should not have the colors change randomly along their length.
+        /// Each run from one node to another stays a single color, but it varies through the whole nodal array"): the round-4
+        /// 3x3-block colour change ALONG a cord is reverted. Every cord piece of a Modern "random mix" run (one node to the next)
+        /// is ONE colour, and the colours vary piece to piece. Input: each mix piece's key (stable, from its geometry) and the
+        /// node tokens it touches ("x,z"). Pieces are coloured in ordinal key order: a piece starts at a hash of its key and
+        /// steps to the first colour no already-coloured piece sharing one of its nodes has, so neighbouring pieces differ
+        /// wherever the 5 colours allow. Pure function of the stored cells (the pieces are rebuilt identically from them), so
+        /// it survives save/load and never flickers.
+        /// </summary>
+        public static Dictionary<string, int> MixPieceColours(IEnumerable<KeyValuePair<string, string[]>> pieces)
         {
-            int bx = FloorDiv(x, MixBlock), bz = FloorDiv(z, MixBlock);
-            int c = (bx * 2 + bz * 3) % Colours.Length;
-            return c < 0 ? c + Colours.Length : c;
-        }
-
-        public struct MixSegment { public int From, To, Colour; public double S0; }
-
-        /// <summary>The colour segments of a mix strand (printed by SectionLayer_RM_MessyCords, read by the probe): consecutive
-        /// points in one colour block, a point's colour being its cell's MixColourIndex; the boundary point belongs to both
-        /// segments. S0 is each segment's u start in the ribbon's own units (u = 4 s0 + length / (4 width)), so the weave runs on.</summary>
-        public static List<MixSegment> MixSegments(List<RimMandrake.MessyConduit.Core.V2> pts, double s0, double width)
-        {
-            var res = new List<MixSegment>();
-            if (pts == null || pts.Count < 2) return res;
-            int start = 0;
-            double len = 0, segStart = 0;
-            int col = MixColourIndex((int)Math.Floor(pts[0].X), (int)Math.Floor(pts[0].Z));
-            for (int i = 1; i < pts.Count; i++)
+            var list = pieces.Where(kv => kv.Key != null).GroupBy(kv => kv.Key).Select(gr => gr.First()).OrderBy(kv => kv.Key, StringComparer.Ordinal).ToList();
+            var res = new Dictionary<string, int>();
+            var atNode = new Dictionary<string, List<int>>();
+            int n = Colours.Length;
+            foreach (KeyValuePair<string, string[]> kv in list)
             {
-                len += RimMandrake.MessyConduit.Core.V2.Dist(pts[i - 1], pts[i]);
-                int c = MixColourIndex((int)Math.Floor(pts[i].X), (int)Math.Floor(pts[i].Z));
-                if (c == col && i < pts.Count - 1) continue;
-                res.Add(new MixSegment { From = start, To = i, Colour = col, S0 = s0 + segStart / (width * 4.0) / 4.0 });
-                start = i; segStart = len; col = c;
+                var taken = new HashSet<int>();
+                string[] nodes = kv.Value ?? new string[0];
+                foreach (string t in nodes)
+                    if (t != null && atNode.TryGetValue(t, out List<int> l)) foreach (int c in l) taken.Add(c);
+                uint h = 2166136261u;
+                foreach (char ch in kv.Key) h = unchecked((h ^ ch) * 16777619u);
+                int start = (int)(h % (uint)n), pick = start;
+                for (int k = 0; k < n; k++) { int c = (start + k) % n; if (!taken.Contains(c)) { pick = c; break; } }
+                res[kv.Key] = pick;
+                foreach (string t in nodes.Where(x => x != null).Distinct())
+                {
+                    if (!atNode.TryGetValue(t, out List<int> l)) atNode[t] = l = new List<int>();
+                    l.Add(pick);
+                }
             }
             return res;
         }
 
-        private static int FloorDiv(int a, int b) => a >= 0 ? a / b : -((-a + b - 1) / b);
+        /// <summary>A mix cell's colour before its piece is known (a fixed hash of the position): only a fallback, the
+        /// cord graph replaces it per piece with <see cref="MixPieceColours"/>.</summary>
+        public static int MixCellColour(int x, int z)
+        {
+            uint h = unchecked((uint)(x * 73856093) ^ (uint)(z * 19349663));
+            return (int)(h % (uint)Colours.Length);
+        }
 
         /// <summary>
         /// Minimal writes (live 2026-10-04, S8/S7: an unstyled mast auto-linked to a Scrapper run got Scrapper WRITTEN, so an
@@ -371,7 +377,7 @@ namespace RimMandrake.MessyConduit.Aerial
 
         /// <summary>
         /// The strand variant one cord piece draws with, from the style of the conduit cell it is coloured by:
-        ///   * Modern: the stored colour; a Mix cell's position hash; no stored colour (legacy or plain "Modern") -> the
+        ///   * Modern: the stored colour; a Mix piece's own colour (MixPieceColours; the cell hash only as a fallback); no stored colour (legacy or plain "Modern") -> the
         ///     legacy per-net pick under the default colour setting, exactly what it drew before stage 2;
         ///   * Industrial: the cable kind stays a per-cord-net pick (the owner chose colour per run for Modern only);
         ///   * Scrapper / Futuristic: their one strand.
@@ -381,7 +387,7 @@ namespace RimMandrake.MessyConduit.Aerial
             if (look == "Modern")
             {
                 if (IsColour(colour)) return ColourIndex(colour);
-                if (colour == Mix) return MixColourIndex(x, z);
+                if (colour == Mix) return MixCellColour(x, z);
             }
             return LegacyVariant(look, netSeed, singleColour, singleIndex);
         }

@@ -73,8 +73,8 @@ namespace RimMandrake.MessyConduit
         private HashSet<LaidPiece> legacyPieces = new HashSet<LaidPiece>();
         private HashSet<LaidPiece> mixPieces = new HashSet<LaidPiece>();
 
-        /// <summary>A piece of a Modern "random mix" run: its strand changes colour along its length (ConduitStyles.MixColourIndex
-        /// per MixBlock block), printed in segments by the section layer.</summary>
+        /// <summary>A piece of a Modern "random mix" run. Round 5: it is ONE colour from node to node (ConduitStyles.MixPieceColours,
+        /// already in its material index), the colours varying piece to piece; the static and moving layers both draw that.</summary>
         public bool IsMix(LaidPiece p) => mixPieces.Contains(p);
 
         /// <summary>The flat material index (CordMaterials.StrandG / DecalG) a piece prints with: from the stored style of the
@@ -134,6 +134,19 @@ namespace RimMandrake.MessyConduit
                 int v = Aerial.ConduitStyles.PieceVariant(look, colour, at.X, at.Z, seed, single, MessyConduitSettings.extCordColor);
                 if (look == "Modern" && colour == Aerial.ConduitStyles.Mix) mix.Add(p);
                 next[p] = Aerial.ConduitStyles.Global(look, v);
+            }
+            // round 5: a mix piece's colour is its own, one per piece node to node, neighbours differing (MixPieceColours)
+            if (mix.Count > 0)
+            {
+                string Tok(string end) { int i = end.LastIndexOf(':'); return i >= 0 ? end.Substring(i + 1) : end; }
+                // the colour key is the piece's endpoint key (before the first '#'): a live/dead flip or a re-lay keeps the colour
+                string CKey(LaidPiece p) { string k = p.Key ?? (p.Owner.X + "," + p.Owner.Z); int h = k.IndexOf('#'); return h > 0 ? k.Substring(0, h) : k; }
+                var input = mix.Select(p => new KeyValuePair<string, string[]>(CKey(p),
+                    p.EndA != null || p.EndB != null ? new[] { p.EndA != null ? Tok(p.EndA) : null, p.EndB != null ? Tok(p.EndB) : null }
+                                                     : new[] { p.Owner.X + "," + p.Owner.Z })).ToList();
+                Dictionary<string, int> col = Aerial.ConduitStyles.MixPieceColours(input);
+                foreach (LaidPiece p in mix)
+                    if (col.TryGetValue(CKey(p), out int c)) next[p] = Aerial.ConduitStyles.Global("Modern", c);
             }
             matIdx = next;
             legacyPieces = leg;

@@ -108,7 +108,7 @@ namespace RimMandrake.MessyConduit.Core
                     double armErr = arms.Min(a => AngDiff(a, Ang(e - nd.Pos)));
                     V2 arm = Dir(arms.OrderBy(a => AngDiff(a, Ang(e - nd.Pos))).First());
                     double arrive = AngDiff(Ang(e - PointBack(q, 0.12)), Ang(-arm));
-                    if (r < 0.3 || r > 0.5 || armErr > 8 * Deg || arrive > 20 * Deg)
+                    if (r < CordBuilder.ArmTuck * CordBuilder.JunctionScale - 0.12 || r > CordBuilder.ArmTuck * CordBuilder.JunctionScale + 0.1 || armErr > 8 * Deg || arrive > 20 * Deg)   // round 5: arms scale with the box
                     {
                         jbad++;
                         jmsg.Add($"{nd.Cell} cord end r={r:0.00} armErr={armErr / Deg:0}deg arrive={arrive / Deg:0}deg");

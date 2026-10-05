@@ -154,6 +154,12 @@ namespace RimMandrake.MessyConduit.Core
                     full.Append(g.Nodes[v].Type).Append(',');
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
+                foreach (VId v in new[] { e.A, e.B })
+                    if (g.Nodes[v].Type == NodeType.Tangle && g.Nodes[v].Cells != null)
+                    {
+                        full.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
+                        foreach (Cell c in g.Nodes[v].Cells) full.Append(';').Append(c.X).Append(',').Append(c.Z);
+                    }
                 full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell));
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
@@ -300,8 +306,8 @@ namespace RimMandrake.MessyConduit.Core
                 for (int k = 0; k < e.Knots.Count; k++)
                     P = CordLayer.SpliceLoop(w, P, e.Knots[k], CordRng.Of(opt.Seed, "knot", key, i, k), 0.28 + 0.06 * i);
                 // every end arrives the way its art expects (junction arm, plug, stub, conduit end)
-                P = AttachEnd(w, g, e, true, P, i, n);
-                P = AttachEnd(w, g, e, false, P, i, n);
+                P = AttachEnd(w, g, e, true, P, i, n, opt);
+                P = AttachEnd(w, g, e, false, P, i, n, opt);
                 // terminal ends: dead = limp curl; live = straight (sparks come from the registry)
                 if (na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
                 if (nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
@@ -346,7 +352,12 @@ namespace RimMandrake.MessyConduit.Core
         // Geometry of the shipped art, measured from the PNGs in canvas units (1 = the decal's side):
         // Junction_Tape is a T whose arms (art +X, -X, -Z) meet 0.152 above the canvas centre;
         // Junction_Tin is a centred 4-arm cross. Wall plates and rock holes: WallMount (round 4).
-        public const double JunctionScale = 1.0, TapeAnchorZ = 0.152, ArmTuck = 0.40;
+        // Round 5 (owner 2026-10-04, station 4: "T and + power junctions look very poor quality: need to make the wires thinner,
+        // and ensure the junction box connectors are thicker to cover them. Make + and T connectors be relatively the same
+        // central size/center"): the boxes are drawn 1.15x (round-5 brick art, af013af66: arms 18-28 px of 128 -> 0.16-0.25
+        // cells thick over a 0.08 wire), T and + at the SAME scale with their arm-meeting point on the node; the art draws
+        // both as one brick, same size and centre (T = the X shifted up TapeAnchorZ).
+        public const double JunctionScale = 1.15, TapeAnchorZ = 0.152, ArmTuck = 0.40;
         public const double PlugScale = 0.55, PlugInset = 0.05;
 
         public struct JunctionPose
@@ -419,7 +430,7 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>Reshape one end of a laid strand so it arrives where and how the end's art expects:
         /// into a junction arm's tip along the arm, onto the plug point heading into the machine, onto
         /// a stub face heading into it, or straight out of a conduit end.</summary>
-        private static List<V2> AttachEnd(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n)
+        private static List<V2> AttachEnd(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n, BuildOptions opt)
         {
             VId v = atA ? e.A : e.B;
             CordNode nd = g.Nodes[v];
@@ -429,7 +440,11 @@ namespace RimMandrake.MessyConduit.Core
             if (nd.Type == NodeType.Junction && !nd.IsBlob && v.IsCellish)
             {
                 V2 a = ArmDir(g, e, atA);
-                target = nd.Pos + a * ArmTuck + Side(a) * (lat * 0.03);
+                // the bigger round-5 box: tuck out along the arm, but never past the far node (or the middle, when the far node is a junction that tucks too); never shorter than before
+                CordNode far = g.Nodes[atA ? e.B : e.A];
+                double fd = V2.Dist(nd.Pos, far.Pos), limit = far.Type == NodeType.Junction && !far.IsBlob ? 0.46 * fd : fd - 0.05;
+                double tuck = Math.Min(ArmTuck * JunctionScale, Math.Max(ArmTuck, limit));
+                target = nd.Pos + a * tuck + Side(a) * (lat * 0.03);
                 arrive = -a;
             }
             else if (nd.IsMachine && nd.Machine != null)
@@ -450,6 +465,16 @@ namespace RimMandrake.MessyConduit.Core
                 }
                 target = basePos + Side(nd.Into) * (lat * 0.03);
                 arrive = nd.Into;
+            }
+            else if (nd.Type == NodeType.Tangle && nd.Cells != null)
+            {
+                // round 5: the cord runs on into the pile and plugs into one of its connectors' ports, along that port
+                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true));
+                if (ports.Count == 0) return P;
+                PilePort q = EntryPort(ports, atA ? e.PA : e.PB);
+                target = q.Tip + Side(q.Out) * (lat * 0.02);
+                arrive = -q.Out;
+                straight = 0.22;
             }
             else if (nd.Type == NodeType.Terminal)
             {
@@ -567,6 +592,17 @@ namespace RimMandrake.MessyConduit.Core
                 V2 into = Snap4(tip - a);
                 piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - into * (PlugScale * 0.25), Math.Atan2(into.Z, into.X), PlugScale));
             }
+            else if (nd.Type == NodeType.Tangle && opt.PileFor(nd.Cell) == PileArt.Strips)
+            {
+                // round 5: a cord entering a strip pile plugs into its socket like the pile's own cables
+                foreach (CordStrand s in piece.Strands)
+                {
+                    V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                    V2 a = atStart ? s.Pts[Math.Min(s.Pts.Count - 1, 1)] : s.Pts[Math.Max(0, s.Pts.Count - 2)];
+                    V2 into = (t - a).Norm();
+                    piece.Decals.Add(new CordDecal(DecalKind.Plug, t, Math.Atan2(into.Z, into.X), PilePlugScale));
+                }
+            }
             else if (nd.Type == NodeType.Terminal)
             {
                 bool liveEnd = isLive(nd.Cell);
@@ -663,6 +699,55 @@ namespace RimMandrake.MessyConduit.Core
             return ports;
         }
 
+        /// <summary>Pile connector box scale (round 5: thicker boxes over thinner wires) and the jitter that breaks the grid
+        /// (owner 2026-10-04: "an unwelcome grid-like nature to the joining boxes sitting on the pile. Should be more randomly
+        /// aligned"): each box is moved up to <see cref="PileJitter"/> off its cell centre, turned to any angle and scaled
+        /// within <see cref="PileScaleLo"/>..<see cref="PileScaleHi"/> of <see cref="PileJunctionScale"/>.</summary>
+        public const double PileJunctionScale = 1.05, PileJitter = 0.32, PileScaleLo = 0.82, PileScaleHi = 1.12;
+
+        /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
+        /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
+        public static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit)
+        {
+            List<Cell> comp = nd.Cells;
+            bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
+            CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
+            var cells = new List<Cell>(comp);
+            for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
+            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(3, 1 + comp.Count / 2);
+            var cons = new List<CordDecal>();
+            foreach (Cell c in cells)
+            {
+                if (cons.Count >= want) break;
+                // irregular, never a grid: off-centre, any angle, a little bigger or smaller (round 5)
+                V2 at = c.Centre + new V2(rc.Range(-PileJitter, PileJitter), rc.Range(-PileJitter, PileJitter));
+                double ang = rc.Range(0, 2 * Math.PI), sc = rc.Range(PileScaleLo, PileScaleHi);
+                CordDecal d;
+                if (strips) d = new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, at, ang, StripScale * sc);
+                else d = new CordDecal(rc.Chance(0.5) ? DecalKind.JunctionTin : DecalKind.JunctionTape, at, ang, PileJunctionScale * sc);
+                var one = new List<CordDecal> { d };
+                if (PortsOf(one).Any(q => !w.IsWalkable(q.Tip.Floor))) continue;
+                // keep boxes apart: a box whose centre lands within 0.45 of another reads as a stack, not a scatter
+                if (cons.Any(o => V2.Dist(o.Pos, at) < 0.45)) continue;
+                cons.Add(d);
+            }
+            return cons;
+        }
+
+        /// <summary>The pile port a cord ENTERING the pile plugs into (round 5, station 1: "the cable entering the mass does not
+        /// join with the rest"): the port whose lead-out point (tip + out x 0.22) is nearest the cord's arrival point.</summary>
+        public static PilePort EntryPort(List<PilePort> ports, V2 from)
+        {
+            PilePort best = ports[0];
+            double bd = double.MaxValue;
+            foreach (PilePort q in ports)
+            {
+                double d = V2.Dist(q.Tip + q.Out * 0.22, from);
+                if (d < bd) { bd = d; best = q; }
+            }
+            return best;
+        }
+
         /// <summary>
         /// A pile (owner review 2026-10-04 B2/B13): a mass of cables PLUGGED INTO each other. Every cable of the heap
         /// starts and ends on a connector's port, so no connector lies unused and no cable end lies loose. Star Wars,
@@ -676,23 +761,7 @@ namespace RimMandrake.MessyConduit.Core
             bool lit = isLive(nd.Cell);
             p.LiveKeys.Add(nd.Cell);
             bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
-            // ---- connectors on distinct cells of the pile
-            CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
-            var cells = new List<Cell>(comp);
-            for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
-            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(3, 1 + comp.Count / 2);
-            var cons = new List<CordDecal>();
-            foreach (Cell c in cells)
-            {
-                if (cons.Count >= want) break;
-                V2 at = c.Centre + new V2(rc.Range(-0.1, 0.1), rc.Range(-0.1, 0.1));
-                CordDecal d;
-                if (strips) d = new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, at, rc.Int(0, 1) * Math.PI / 2 + rc.Range(-0.25, 0.25), StripScale);
-                else d = new CordDecal(rc.Chance(0.5) ? DecalKind.JunctionTin : DecalKind.JunctionTape, at, rc.Int(0, 3) * Math.PI / 2, 0.8);
-                var one = new List<CordDecal> { d };
-                if (PortsOf(one).Any(q => !w.IsWalkable(q.Tip.Floor))) continue;
-                cons.Add(d);
-            }
+            List<CordDecal> cons = PileConnectors(w, nd, opt, lit);
             List<PilePort> ports = PortsOf(cons);
             // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
