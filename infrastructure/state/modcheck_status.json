@@ -227,31 +227,29 @@
     "components": {
       "counts": {
         "PASS": 143,
-        "RECORD": 1
+        "SKIP": 1
       },
-      "not_ok": [
-        "P1_reel_couples_to_tank"
-      ],
+      "not_ok": [],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "36986812c77a3019cde29913c349f0fd64edee6a1af1fa3a10cc1b7fc19b14b9",
+    "hash": "c63d7aab544ebb1cf43c011d16641f834c86d82af7f25178fdf1aed260abf024",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261005T013803.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261005T085243.json",
     "source": {
-      "assembly_sha256": "ca97871247858b225fea139cac5433685ea68a82464a0be4793b16a2aa32f3be",
+      "assembly_sha256": "ba1346705e8c651a675f32182ca451055e2d54fd89ecf39fc0c610a657805ef4",
       "env_running_count": 10,
       "env_running_sha256": "9fa295b6624d40cc57158fd5e39b2473cbf0255211534e6183c473a4f2f88851",
-      "result": "src/RimMandrake/GimmeSomeSlack/northstar/proof_all_20261005T013803.json",
-      "started": "2026-10-05T01:28:07",
+      "result": "src/RimMandrake/GimmeSomeSlack/northstar/proof_all_20261005T085243.json",
+      "started": "2026-10-05T08:42:20",
       "ticks_spent": null,
       "tier": "gimmesomeslack",
       "verb": "modcheck record"
     },
-    "status": "RED",
-    "ts": 1791189508.3175662
+    "status": "DRAFT-CHECKLIST",
+    "ts": 1791215574.2791522
   },
   "GizkaStowaway": {
     "hash": "d4b64ec4ccf124e60142b5bf862549017790fd056cb5371d344347974090a692",
