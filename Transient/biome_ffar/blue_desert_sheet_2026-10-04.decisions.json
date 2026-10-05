@@ -4,16 +4,21 @@
   "decidedCount": 20,
   "decisions": {
     "AA_Thunderbeast": {
-      "at": "2026-10-04T23:38:41.687Z",
-      "decidedAt": "2026-10-04T23:38:41.687Z",
-      "decision": "redo",
-      "note": "",
+      "at": "2026-10-05T05:56:17.222Z",
+      "decidedAt": "2026-10-05T05:55:51.620Z",
+      "decision": "A",
+      "note": "Looks good, but needs its other facings. Also needs improved description. Half the size.",
       "prefill": "hold"
     },
     "RM_Chimeglobe": {
+      "at": "2026-10-05T05:58:16.426Z",
       "decision": "A",
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-05T05:58:16.426Z"
     },
     "RM_Dorrak": {
       "decision": "A",
@@ -21,23 +26,31 @@
       "prefill": "A"
     },
     "RM_Dovvik": {
-      "at": "2026-10-04T23:37:04.606Z",
-      "decidedAt": "2026-10-04T23:36:36.344Z",
-      "decision": "redo",
+      "at": "2026-10-05T05:54:07.847Z",
+      "decidedAt": "2026-10-05T05:54:07.847Z",
+      "decision": "B",
       "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
       "prefill": "A"
     },
     "RM_Glassfern": {
-      "at": "2026-10-04T23:42:36.375Z",
+      "at": "2026-10-05T05:58:25.340Z",
       "decidedAt": "2026-10-04T23:42:36.375Z",
       "decision": "B",
       "note": "Keep B & C as valid variants.",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "49c80e23debcaec53455882319587b1fcb38f79f5057e1d7786927d6cb0bcd48"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-05T05:58:25.340Z"
     },
     "RM_Kethevar": {
-      "at": "2026-10-04T23:42:57.833Z",
+      "at": "2026-10-05T05:58:35.857Z",
       "decision": "A",
-      "note": "Finally a really good one.",
+      "note": "Add some variants",
       "prefill": "A"
     },
     "RM_Krissek": {
@@ -46,14 +59,15 @@
       "prefill": "A"
     },
     "RM_Lisqueth": {
-      "at": "2026-10-04T23:43:07.379Z",
+      "at": "2026-10-05T05:58:45.416Z",
       "decision": "A",
-      "note": "Again, good.",
+      "note": "Add some variants",
       "prefill": "A"
     },
     "RM_Murrek": {
-      "at": "2026-10-04T23:37:46.463Z",
-      "decision": "A",
+      "at": "2026-10-05T05:55:04.302Z",
+      "decidedAt": "2026-10-05T05:55:04.302Z",
+      "decision": "C",
       "note": "Give it a yellower hue due to the hydrocarbon blood",
       "prefill": "A"
     },
@@ -65,10 +79,15 @@
       "prefill": "A"
     },
     "RM_Palefloss": {
-      "at": "2026-10-04T23:43:18.672Z",
+      "at": "2026-10-05T05:58:51.068Z",
       "decision": "A",
       "note": "All three are valid variants, keep",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-05T05:58:51.068Z"
     },
     "RM_Qeshra": {
       "at": "2026-10-04T23:43:38.375Z",
@@ -78,9 +97,9 @@
       "prefill": "A"
     },
     "RM_Utikka": {
-      "at": "2026-10-04T23:39:14.417Z",
-      "decidedAt": "2026-10-04T23:38:48.309Z",
-      "decision": "redo",
+      "at": "2026-10-05T05:56:25.653Z",
+      "decidedAt": "2026-10-05T05:56:25.653Z",
+      "decision": "B",
       "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
       "prefill": "A"
     },
@@ -95,11 +114,15 @@
       "prefill": "A"
     },
     "RM_Vhaulk": {
-      "at": "2026-10-04T23:40:57.808Z",
+      "at": "2026-10-05T05:57:29.079Z",
       "decidedAt": "2026-10-04T23:40:17.980Z",
       "decision": "redo",
       "note": "I see only A and C, no B. The creature shown in S and N are the same, E is unrelated. Please regenerate E to look like N and S.",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+      ],
+      "purgeTouched": true
     },
     "RM_Virr": {
       "decision": "A",
@@ -107,9 +130,9 @@
       "prefill": "A"
     },
     "RM_Vrisk": {
-      "at": "2026-10-04T23:41:35.760Z",
-      "decidedAt": "2026-10-04T23:41:35.760Z",
-      "decision": "redo",
+      "at": "2026-10-05T05:57:56.463Z",
+      "decidedAt": "2026-10-05T05:57:56.463Z",
+      "decision": "B",
       "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
       "prefill": "A"
     },
@@ -119,9 +142,9 @@
       "prefill": "A"
     },
     "Vapaad": {
-      "at": "2026-10-04T23:39:58.067Z",
-      "decidedAt": "2026-10-04T23:39:58.067Z",
-      "decision": "redo",
+      "at": "2026-10-05T05:56:39.198Z",
+      "decidedAt": "2026-10-05T05:56:39.198Z",
+      "decision": "B",
       "note": "Your sheets need to include the animal descriptions as well for reference. This needs to be made into hydrocarbon-based resolution please.",
       "prefill": "A"
     }
@@ -130,13 +153,13 @@
   "reviewStatus": {
     "state": "ruled",
     "by": "owner (Lukas)",
-    "at": "2026-10-04T16:43:39-0700",
-    "evidence": "sidecar writeCount 43, savedBy review-sheet-sidecar; owner said in chat 'Blue desert sheet processed.'"
+    "at": "2026-10-04T22:58:51-0700",
+    "evidence": "sidecar writeCount 62 (second sitting); owner said in chat 'Gave more feedback into the updated Blue Desert.'"
   },
-  "savedAt": "2026-10-04T16:43:39-0700",
+  "savedAt": "2026-10-04T22:58:51-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "blue_desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "4a3c4f2fb0916499",
-  "writeCount": 43
+  "writeCount": 62
 }
