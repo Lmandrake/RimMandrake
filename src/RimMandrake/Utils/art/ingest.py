@@ -77,7 +77,20 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
                     pev.pop("raw_verdict", None)
                     if not dry_run and w.add(pev):
                         out["rulings"] += 1
-        elif dec and decided:
+        # kept variants: extra columns the owner marked as valid in-game variants of the pick
+        if srow and decided:
+            for vl in sorted(set(v.get("variants") or [])):
+                if vl in cols and vl != dec:
+                    vev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, vl, v.get("variantsAt") or v.get("at")),
+                           "target": {"shas": sorted({s for s in cols[vl].values() if s}), "column": vl,
+                                      "row": row, "variant_of": dec},
+                           "verdict": "keep", "by": "owner", "said": note, "note": note,
+                           "at": v.get("variantsAt") or v.get("at"), "trust": "ruled", "via": via,
+                           "subject_key": srow.get("subject_key", ""), "source_file": via,
+                           "evidence": "sidecar savedBy/writeCount" if plumbed else "reviewStatus ruled"}
+                    if not dry_run and w.add(vev):
+                        out["rulings"] += 1
+        if dec and decided and not (srow and dec):
             out["unresolved"].append(row)
         for sha in v.get("purge") or []:
             if dry_run:
