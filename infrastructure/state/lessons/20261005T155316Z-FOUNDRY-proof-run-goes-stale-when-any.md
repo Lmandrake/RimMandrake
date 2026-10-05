@@ -1,0 +1,1 @@
+A proof run goes STALE when any mod-folder file changes except validation.py/human_review.py/northstar/ (filing a review/ folder or a helper .py in the mod did it): finish every mod-folder edit BEFORE the proof you will record. SL4 reads UNMEASURED when a fresh map yields <2 free colonists; re-run, it is a staging flake not a mod defect.
