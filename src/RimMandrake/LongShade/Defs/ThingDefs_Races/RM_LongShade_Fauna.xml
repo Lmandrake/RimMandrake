@@ -43,6 +43,11 @@
       refs were ALREADY dangling (Alpha Animals donor defNames this repo never
       ported) — dropped rather than carried forward broken into a new tier.
 
+  🔴 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (2026-10-05): kudda, ossik, thurra and
+  mature fleshbeast were CUT (defs deleted); jellypot/groundrunner renamed
+  RM_Dunejelly/RM_Oreclaw; ommok (Miasma), truffle mole (Leaning Scrub), ulgga
+  and vosska (Stillsand) are cast elsewhere but their defs stay in this file.
+
   Art: every texPath below is unchanged from the RSW_ file it moved from — no
   art job filed by this item for these 13; several still point at "TEMP
   PLACEHOLDER" donor textures or an unrendered RM_<Name>/RM_<Name> path,
