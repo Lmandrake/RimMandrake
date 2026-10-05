@@ -49,4 +49,13 @@
 
 
 ## Build / selftests / commits
-_pending_
+- MessyConduit C# selftest 572/573: every hose check passes (new r5: st11 axis x2, st34 owner maze x2, spiral, 250x250
+  bound); the 1 failure is `nodal: junction art does not fit its cords`, from the cord agent's uncommitted CordBuilder work.
+- run_selftests.py 172/177; failures unrelated (northstar_matrix C2 pre-existing, MandrakePatches, ledger_lint,
+  StarWarsPatches semantics, UtinniPatches dump).
+- winbuild: 0 errors, built from a `git archive` of the committed source (the shared tree carries the cord agent's dirty
+  Core files); DLL + .srchash committed. Not deployed.
+- Commits: d7fb73e3a (source, selftests, this report), 8c8c5fe76 (DLL). Both on origin/main.
+- Unproven live: the lamp head with the new per-look art at night/noon, the hose vanishing under the drum on all four reel
+  looks (the axis is measured off the art, not seen in game), and the in-game retract message at station 34.
+
