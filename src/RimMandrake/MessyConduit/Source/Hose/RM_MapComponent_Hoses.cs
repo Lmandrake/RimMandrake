@@ -237,10 +237,11 @@ namespace RimMandrake.MessyConduit.Hose
                     else { frameMeshes.Add(fm); frameMeshes.Add(pm); frameMeshes.Add(sm); }
                 }
                 Color tint = Tint(r);
+                HoseLookMats hm = HoseMaterials.For(r);      // stage 3: the hose draws in its REEL's look
                 if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow(0.55f + 0.3f * e), 0);
-                if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, HoseMaterials.Flat(1f - e), 0);
-                if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, HoseMaterials.Plump(e, tint), 0);
-                DrawEnds(r, lay, pts, vis, y + 0.001f);
+                if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, hm.Flat(1f - e), 0);
+                if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, hm.Plump(e, tint), 0);
+                DrawEnds(r, hm, lay, pts, vis, y + 0.001f);
             }
             // a transitioning hose's meshes live one frame
             for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
@@ -306,13 +307,14 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>Both ends of every hose and both halves of every joiner (B22): a cloth binding wrap ~1.4 x the hose
         /// wide and 0.6 cell long covers the hose-to-fitting transition, then the fitting (sized never to read wider than
         /// the wrap) or, at an open free end, a plain dark mouth. The wrap is drawn over the fitting's hose stub.</summary>
-        private void DrawEnds(CompHoseReel r, HoseLay lay, List<V2> pts, float vis, float y)
+        private void DrawEnds(CompHoseReel r, HoseLookMats hm, HoseLay lay, List<V2> pts, float vis, float y)
         {
             int n = pts.Count;
-            Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f) * new Color(0.86f, 0.80f, 0.70f, 1f);   // aged cloth, not white
+            Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
+            if (HoseStyles.AgedClothWrap(hm.look)) wrapTint *= new Color(0.86f, 0.80f, 0.70f, 1f);   // aged cloth, not white (Scrapper only)
             // reel end: a brass coupling whose face meets the reel, pointing into it
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
+            Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
             // round 4: the lay drew the hose dead straight over each joiner's run (HoseMath.StraightenAt), so the joiner's
@@ -323,19 +325,19 @@ namespace RimMandrake.MessyConduit.Hose
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
-                Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], d, vis, y, wrapTint);
-                Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], -d, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], d, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], -d, vis, y, wrapTint);
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
-            if (r.end == HoseEnd.Nozzle) Fitting(HoseMaterials.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
-            else if (r.end == HoseEnd.EndCap) Fitting(HoseMaterials.EndCapBare, EndCapMax, -0.10, -0.15, pts[n - 1], d1, vis, y, wrapTint);
+            if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
+            else if (r.end == HoseEnd.EndCap) Fitting(hm, hm.EndCapBare, EndCapMax, -0.10, -0.15, pts[n - 1], d1, vis, y, wrapTint);
             else
             {
                 V2 e = pts[n - 1];
                 // the wrap runs right to the cut (it hides the hose's square end), the dark bore sits on its outer face
-                Wrap(e - d1 * (HoseMath.WrapLength / 2 - 0.02), d1, vis, y + 0.0002f, wrapTint);
-                PieceXZ(HoseMaterials.Mouth, e - d1 * (0.10 * vis), d1, 0.30f * vis, 0.86f * vis, y + 0.0003f, Color.white);
+                Wrap(hm, e - d1 * (HoseMath.WrapLength / 2 - 0.02), d1, vis, y + 0.0002f, wrapTint);
+                PieceXZ(hm.Mouth, e - d1 * (0.10 * vis), d1, 0.30f * vis, 0.86f * vis, y + 0.0003f, Color.white);
             }
         }
 
@@ -352,14 +354,15 @@ namespace RimMandrake.MessyConduit.Hose
             var touch = new Cell(r.portContact.X - r.portSide.X, r.portContact.Z - r.portSide.Z);
             HosePortRule.Feed(touch, r.portSide, out V2 from, out V2 to, out V2 coupling);
             float vis = (float)HoseMath.VisibleWidth(0, HoseSettings.plumpAmount);
-            Material m = HoseMaterials.Flat(1f);
+            HoseLookMats hm = HoseMaterials.For(r);
+            Material m = hm.Flat(1f);
             if (m == null) return;
             V2 d = (to - from).Norm();
             Mesh feed = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, (float)HoseMath.MeshWidthFlat(vis), y - 0.0008f, 0.37);
             frameMeshes.Add(feed);
             Graphics.DrawMesh(feed, Matrix4x4.identity, m, 0);
-            if (HoseMaterials.CouplingBare != null)
-                Piece(HoseMaterials.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);
+            if (hm.CouplingBare != null)
+                Piece(hm.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);
             lastFeedDraws++;
         }
 
@@ -375,18 +378,18 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
         /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
-        private void Fitting(Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint)
+        private void Fitting(HoseLookMats hm, Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint)
         {
             float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand);
             V2 c = end + d * (centreOff * size);
             Piece(m, c, d, size, y);
             V2 brass = c + d * (brassFrom * size);
-            Wrap(brass + d * (0.05 - HoseMath.WrapLength / 2), d, vis, y + 0.0002f, wrapTint);
+            Wrap(hm, brass + d * (0.05 - HoseMath.WrapLength / 2), d, vis, y + 0.0002f, wrapTint);
         }
 
-        private void Wrap(V2 centre, V2 d, float vis, float y, Color tint)
+        private void Wrap(HoseLookMats hm, V2 centre, V2 d, float vis, float y, Color tint)
         {
-            PieceXZ(HoseMaterials.Binding, centre, d, (float)HoseMath.WrapLength, (float)HoseMath.WrapWidth(vis) / BindBand, y, tint);
+            PieceXZ(hm.Binding, centre, d, (float)HoseMath.WrapLength, (float)HoseMath.WrapWidth(vis) / BindBand, y, tint);
             lastWrapDraws++;
         }
 
@@ -439,41 +442,93 @@ namespace RimMandrake.MessyConduit.Hose
         }
     }
 
+    /// <summary>One look's hose materials (per-build style stage 3): strands, binding wrap, coupling, nozzle, end cap and open
+    /// mouth from that look's folder (HoseStyles.PathFor); the strand shadow is shared. A piece missing from a look's
+    /// folder falls back to Scrapper's and is listed in <see cref="HoseMaterials.Missing"/> (a config error, logged once).</summary>
+    public sealed class HoseLookMats
+    {
+        public string look;
+        public Texture2D flatTex, plumpTex;
+        public Material Binding, Mouth, CouplingBare, NozzleBare, EndCapBare;
+        /// <summary>State read: piece name -> the texture path actually loaded (a fallback reads as Scrapper's path).</summary>
+        public readonly Dictionary<string, string> paths = new Dictionary<string, string>();
+        internal readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
+
+        public Material Flat(float alpha) => HoseMaterials.Get(this, flatTex, 1, alpha, Color.white);
+        public Material Plump(float alpha, Color tint) => HoseMaterials.Get(this, plumpTex, 2, alpha, tint);
+    }
+
     [StaticConstructorOnStartup]
     public static class HoseMaterials
     {
-        private const string Dir = "RimMandrake/MessyConduit/Hose/";
-        private static readonly Texture2D flatTex, plumpTex, shadowTex;
-        public static readonly Material Binding, Mouth, CouplingBare, NozzleBare, EndCapBare;
-        private static readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
+        private static readonly Texture2D shadowTex;
+        private static readonly Dictionary<long, Material> shadowPool = new Dictionary<long, Material>();
+        private static readonly Dictionary<string, HoseLookMats> byLook = new Dictionary<string, HoseLookMats>();
+        /// <summary>State read: look/piece pairs whose art was missing (drawn with Scrapper's piece instead).</summary>
+        public static readonly List<string> Missing = new List<string>();
         public static readonly int Queue;
+        /// <summary>Scrapper's set: the fallback for any look that cannot be resolved.</summary>
+        public static readonly HoseLookMats Scrapper;
 
         static HoseMaterials()
         {
-            flatTex = Tiled("Strand_Flat");
-            plumpTex = Tiled("Strand_Plump");
-            shadowTex = Tiled("Strand_Shadow");
             Queue = CordMaterials.StrandQueue + 3;
-            Binding = Piece("Binding");
-            CouplingBare = Piece("Coupling_Bare");
-            NozzleBare = Piece("Nozzle_Bare");
-            EndCapBare = Piece("EndCap_Bare");
-            Mouth = Piece("Mouth");
+            shadowTex = Tiled(HoseStyles.PathFor(HoseStyles.Scrapper, HoseStyles.SharedShadow), true);
+            Scrapper = Build(HoseStyles.Scrapper, null);
+            foreach (string l in Aerial.AerialStyles.Looks)
+                if (l != HoseStyles.Scrapper) Build(l, Scrapper);
+            foreach (string m in Missing) Log.Error("[MessyConduit] hose style art missing (Scrapper piece drawn instead): " + m);
         }
 
-        public static bool Installed => flatTex != null && plumpTex != null;
-
-        private static Texture2D Tiled(string n)
+        private static HoseLookMats Build(string look, HoseLookMats fallback)
         {
-            Texture2D t = ContentFinder<Texture2D>.Get(Dir + n, reportFailure: true);
+            var s = new HoseLookMats { look = look };
+            bool report = fallback == null;
+            s.flatTex = TexOr(s, "Strand_Flat", true, report, fallback?.flatTex);
+            s.plumpTex = TexOr(s, "Strand_Plump", true, report, fallback?.plumpTex);
+            s.Binding = PieceOr(s, "Binding", report, fallback?.Binding);
+            s.CouplingBare = PieceOr(s, "Coupling_Bare", report, fallback?.CouplingBare);
+            s.NozzleBare = PieceOr(s, "Nozzle_Bare", report, fallback?.NozzleBare);
+            s.EndCapBare = PieceOr(s, "EndCap_Bare", report, fallback?.EndCapBare);
+            s.Mouth = PieceOr(s, "Mouth", report, fallback?.Mouth);
+            byLook[look] = s;
+            return s;
+        }
+
+        private static Texture2D TexOr(HoseLookMats s, string piece, bool tiled, bool report, Texture2D fb)
+        {
+            string p = HoseStyles.PathFor(s.look, piece);
+            Texture2D t = tiled ? Tiled(p, report) : ContentFinder<Texture2D>.Get(p, reportFailure: report);
+            if (t != null) { s.paths[piece] = p; return t; }
+            if (fb != null) { Missing.Add(s.look + "/" + piece); s.paths[piece] = HoseStyles.PathFor(HoseStyles.Scrapper, piece); }
+            return fb;
+        }
+
+        private static Material PieceOr(HoseLookMats s, string piece, bool report, Material fb)
+        {
+            string p = HoseStyles.PathFor(s.look, piece);
+            Texture2D t = ContentFinder<Texture2D>.Get(p, reportFailure: report);
+            if (t != null) { s.paths[piece] = p; return MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Transparent) { renderQueue = Queue }); }
+            if (fb != null) { Missing.Add(s.look + "/" + piece); s.paths[piece] = HoseStyles.PathFor(HoseStyles.Scrapper, piece); }
+            return fb;
+        }
+
+        /// <summary>The materials of one look (an unknown look draws Scrapper's).</summary>
+        public static HoseLookMats For(string look) => look != null && byLook.TryGetValue(look, out HoseLookMats s) ? s : Scrapper;
+
+        /// <summary>The look a reel's hose draws in: the reel's own (stored style, or the default look for a legacy reel).</summary>
+        public static string LookOf(CompHoseReel r) =>
+            HoseStyles.HoseLook(r?.parent == null ? null : Aerial.StylePicker.LookOfThing(r.parent), Aerial.StylePicker.DefaultLook);
+
+        public static HoseLookMats For(CompHoseReel r) => For(LookOf(r));
+
+        public static bool Installed => Scrapper?.flatTex != null && Scrapper.plumpTex != null;
+
+        private static Texture2D Tiled(string p, bool report)
+        {
+            Texture2D t = ContentFinder<Texture2D>.Get(p, reportFailure: report);
             if (t != null) t.wrapMode = TextureWrapMode.Repeat;
             return t;
-        }
-
-        private static Material Piece(string n)
-        {
-            Texture2D t = ContentFinder<Texture2D>.Get(Dir + n, reportFailure: true);
-            return t == null ? null : MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Transparent) { renderQueue = Queue });
         }
 
         private static readonly Dictionary<Material, Dictionary<int, Material>> tinted = new Dictionary<Material, Dictionary<int, Material>>();
@@ -489,14 +544,17 @@ namespace RimMandrake.MessyConduit.Hose
             return t;
         }
 
-        /// <summary>Alpha quantised to 1/20 so the cross-fade reuses a handful of pooled materials.</summary>
-        private static Material Get(Texture2D tex, int slot, float alpha, Color tint, int queue)
+        /// <summary>Alpha quantised to 1/20 so the cross-fade reuses a handful of pooled materials (one pool per look).</summary>
+        internal static Material Get(HoseLookMats s, Texture2D tex, int slot, float alpha, Color tint) =>
+            Get(s?.pool ?? shadowPool, tex, slot, alpha, tint);
+
+        private static Material Get(Dictionary<long, Material> pool, Texture2D tex, int slot, float alpha, Color tint)
         {
             if (tex == null) return null;
             int a = Mathf.Clamp(Mathf.RoundToInt(alpha * 20f), 0, 20);
             long key = ((long)slot << 40) ^ ((long)a << 32) ^ (long)(tint.r * 255) << 16 ^ (long)(tint.g * 255) << 8 ^ (long)(tint.b * 255);
             if (pool.TryGetValue(key, out Material m)) return m;
-            m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, new Color(tint.r, tint.g, tint.b, a / 20f)) { renderQueue = queue });
+            m = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, new Color(tint.r, tint.g, tint.b, a / 20f)) { renderQueue = Queue });
             pool[key] = m;
             return m;
         }
@@ -504,9 +562,7 @@ namespace RimMandrake.MessyConduit.Hose
         // B18: every hose material shares ONE render queue, so altitude alone orders them: a crossing hose (its own
         // altitude band, HoseMath.CrossLift) and all its fittings draw over the hose beneath, never interleaved. Within a
         // hose the shadow / flat / plump / fittings order is kept by their small altitude steps.
-        public static Material Flat(float alpha) => Get(flatTex, 1, alpha, Color.white, Queue);
-        public static Material Plump(float alpha, Color tint) => Get(plumpTex, 2, alpha, tint, Queue);
-        public static Material Shadow(float alpha) => Get(shadowTex, 3, alpha, Color.white, Queue);
+        public static Material Shadow(float alpha) => Get(shadowPool, shadowTex, 3, alpha, Color.white);
     }
 
     /// <summary>Keeps RM_MapComponent_Hoses out of the save (as the cord graph and aerial components): every

@@ -94,6 +94,8 @@ namespace RimMandrake.MessyConduit.Hose
             sb.Append("{\"success\":true,\"cmd\":\"census\",\"tick\":").Append(now)
               .Append(",\"enabled\":").Append(B(HoseSettings.enabled))
               .Append(",\"texturesInstalled\":").Append(B(HoseMaterials.Installed))
+              .Append(",\"defaultLook\":").Append(S(Aerial.StylePicker.DefaultLook))
+              .Append(",\"styleArtMissing\":[").Append(string.Join(",", HoseMaterials.Missing.Select(S))).Append(']')
               .Append(",\"wireVisibleWidth\":").Append(D(HoseMath.WireVisibleWidth))
               .Append(",\"minBendSetting\":").Append(D(HoseSettings.minBendRadius))
               .Append(",\"transitionTicks\":").Append(HoseSettings.transitionTicks)
@@ -140,6 +142,12 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"start\":[").Append(D(r.Rect.Mouth.X)).Append(',').Append(D(r.Rect.Mouth.Z)).Append(']')
                   .Append(",\"retractReason\":").Append(S(r.lastRetractReason))
                   .Append(",\"retractTick\":").Append(r.lastRetractTick)
+                  .Append(",\"look\":").Append(S(HoseMaterials.LookOf(r)))
+                  .Append(",\"rawStyle\":").Append(S(Aerial.StylePicker.RawStyle(r.parent)?.defName))
+                  .Append(",\"style\":").Append(S(r.parent.StyleDef?.defName))
+                  .Append(",\"reelState\":").Append(S(RM_MapComponent_Hoses.ReelGraphic(r)))
+                  .Append(",\"reelTex\":").Append(S(ReelTex(r)))
+                  .Append(",\"hoseTex\":{").Append(string.Join(",", HoseMaterials.For(r).paths.OrderBy(kv => kv.Key).Select(kv => S(kv.Key) + ":" + S(kv.Value)))).Append('}')
                   .Append(",\"history\":[").Append(string.Join(",", r.history.Select(h => "[" + h.Key + "," + S(h.Value.ToString()) + "]"))).Append(']');
                 if (lay != null)
                 {
@@ -168,6 +176,14 @@ namespace RimMandrake.MessyConduit.Hose
             }
             sb.Append("]}");
             return sb.ToString();
+        }
+
+        /// <summary>The reel art printing now: the deployed (laid, empty drum) path when laid and present, else the stored path.</summary>
+        private static string ReelTex(CompHoseReel r)
+        {
+            Graphic g = r.parent.Graphic;
+            if (!(g is Graphic_HoseReel gr)) return g?.path;
+            return r.laid && gr.DeployedPath != null ? gr.DeployedPath : gr.path;
         }
 
         private static string S(string s) => s == null ? "null" : "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n").Replace("\r", "") + "\"";

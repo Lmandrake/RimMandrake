@@ -41,6 +41,8 @@
     </costList>
     <comps>
       <li Class="RimMandrake.MessyConduit.Hose.CompProperties_HoseReel" />
+      <!-- per-build style (stage 3): the look picked on the build button, see RM_HoseReelStyles.xml -->
+      <li Class="CompProperties_Styleable" />
     </comps>
   </ThingDef>
 
