@@ -552,11 +552,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Half the length of a joiner (two couplings face to face plus their cloth wraps), cells, on a hose of
         /// <paramref name="visible"/> width: brass face to wrap end = 0.49 x fitting size + 0.55 (DrawEnds' Fitting).</summary>
-        public static double JoinerHalf(double visible) => (JoinerFace + 0.03) * FittingSize(visible, PieceBand, CouplingMax) + WrapLength - 0.05;
+        public static double JoinerHalf(double visible) => (JoinerMesh + 0.03) * FittingSize(visible, PieceBand, CouplingMax) + WrapLength - 0.05;
 
         /// <summary>Art geometry of the coupling (measured 2026-10-02/04; RM_MapComponent_Hoses draws with these): the
         /// hose band where the hose enters it, its widest band (canvas fractions) and its brass face (canvas units).</summary>
         public const double PieceBand = 0.25, CouplingMax = 0.508, JoinerFace = 0.46;
+        /// <summary>Centre offset (x fitting size) of each half of a JOINER. Owner 2026-10-05: the brass must look screwed together, not two
+        /// couplings with a dark gap between them. Measured on Coupling_Bare.png (128px): the claw shoulder sits at u 105, the threaded
+        /// stub's tip at u 122, so (105/128 - 0.5) = 0.32 puts the two shoulders against each other at the joint and the stubs overlap
+        /// (mirrored, so they coincide) instead of standing apart. JoinerFace stays for an end coupling meeting a port or the reel.</summary>
+        public const double JoinerMesh = 0.33;
 
         /// <summary>Most a joiner's run may turn and still count as straight (radians).</summary>
         public const double JointStraight = 10 * Math.PI / 180;

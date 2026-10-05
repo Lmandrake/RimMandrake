@@ -440,7 +440,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// narrower than the hose. validation.py O6 re-measures these from the PNGs.</summary>
         public const float PieceBand = (float)HoseMath.PieceBand;
         /// <summary>The coupling's brass face, canvas units along +X (measured 2026-10-02: 0.46).</summary>
-        public const double JoinerFace = HoseMath.JoinerFace;
+        public const double JoinerFace = HoseMath.JoinerFace, JoinerMesh = HoseMath.JoinerMesh;
         /// <summary>Widest opaque band of each fitting (canvas fraction of 128 px; measured 2026-10-04, validation.py O6
         /// re-measures): Coupling_Brass 65, Nozzle 48, EndCap 44.</summary>
         public const float CouplingMax = (float)HoseMath.CouplingMax, NozzleMax = 0.375f, EndCapMax = 0.344f;
@@ -478,8 +478,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], d, vis, y, wrapTint);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], -d, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerMesh, -0.03, pts[j], d, vis, y, wrapTint);
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerMesh, -0.03, pts[j], -d, vis, y, wrapTint);
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
