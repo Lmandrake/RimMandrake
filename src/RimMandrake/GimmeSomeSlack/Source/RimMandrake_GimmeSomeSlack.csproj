@@ -1,0 +1,140 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Gimme Some Slack (mandrake.rm.gimmesomeslack), design/RimMandrake/messy_conduit_design_2026-10-02.md.
+    Core/ is Verse-free and is ALSO compiled by Source/SelfTest/ (net8.0) against the Python
+    oracle; SelfTest/ itself is a separate project and deliberately absent below.
+    EnableDefaultCompileItems is false: a new .cs file needs its own Compile line here.
+
+    Build: python3 src/RimMandrake/Utils/winbuild.py GimmeSomeSlack
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeGimmeSomeSlack</AssemblyName>
+    <RootNamespace>RimMandrake.GimmeSomeSlack</RootNamespace>
+    <Version>0.1.0</Version>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <!-- Verse-free core (also compiled by SelfTest) -->
+  <ItemGroup>
+    <Compile Include="Core\CordMath.cs" />
+    <Compile Include="Core\CordWorld.cs" />
+    <Compile Include="Core\CordGraph.cs" />
+    <Compile Include="Core\CordPlanner.cs" />
+    <Compile Include="Core\CordLayer.cs" />
+    <Compile Include="Core\CordBuilder.cs" />
+    <Compile Include="Core\CordAudit.cs" />
+    <Compile Include="Core\CordMotion.cs" />
+    <Compile Include="Core\WallMount.cs" />
+    <Compile Include="Core\DrawOrder.cs" />
+    <Compile Include="Core\LegacyName.cs" />
+  </ItemGroup>
+
+  <!-- game side: power-network adapter, map component, drawer, settings, probe -->
+  <ItemGroup>
+    <Compile Include="GimmeSomeSlackDefOf.cs" />
+    <Compile Include="GimmeSomeSlackMod.cs" />
+    <Compile Include="ConduitVisuals.cs" />
+    <Compile Include="CordMaterials.cs" />
+    <Compile Include="StyleProbe.cs" />
+    <Compile Include="CordWorldAdapter.cs" />
+    <Compile Include="RM_MapComponent_CordGraph.cs" />
+    <Compile Include="SectionLayer_RM_MessyCords.cs" />
+    <Compile Include="GimmeSomeSlackProbe.cs" />
+  </ItemGroup>
+
+  <!-- aerial power lines, lane B / L5 (design phase2 section 2): AerialMath.cs is Verse-free and ALSO compiled by SelfTest -->
+  <ItemGroup>
+    <Compile Include="Aerial\AerialMath.cs" />
+    <Compile Include="Aerial\AerialDefOf.cs" />
+    <Compile Include="Aerial\AerialSettings.cs" />
+    <Compile Include="Aerial\AerialMaterials.cs" />
+    <Compile Include="Aerial\PoleGeometryTable.cs" />
+    <Compile Include="Aerial\BracketGeometryTable.cs" />
+    <Compile Include="Aerial\AerialStyles.cs" />
+    <Compile Include="Aerial\StylePicker.cs" />
+    <Compile Include="Aerial\StyleProbeAerial.cs" />
+    <Compile Include="Aerial\ConduitStyles.cs" />
+    <Compile Include="Aerial\ConduitStylePicker.cs" />
+    <Compile Include="Aerial\RM_MapComponent_ConduitRuns.cs" />
+    <Compile Include="Aerial\ConduitStyleProbe.cs" />
+    <Compile Include="Aerial\AerialPowerPatch.cs" />
+    <Compile Include="Aerial\CompAerialAnchor.cs" />
+    <Compile Include="Aerial\CompPowerTap.cs" />
+    <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
+    <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
+    <Compile Include="Aerial\SectionLayer_RM_AerialGround.cs" />
+    <Compile Include="Aerial\AerialProbe.cs" />
+  </ItemGroup>
+
+  <!-- fire hoses, lane D / L6 (design phase2 section 3): Hose\HoseMath.cs is Verse-free and ALSO compiled by SelfTest -->
+  <ItemGroup>
+    <Compile Include="Hose\HoseMath.cs" />
+    <Compile Include="Hose\HoseRelay.cs" />
+    <Compile Include="Hose\ReelIntakeGeometry.cs" />
+    <Compile Include="Hose\HoseSettings.cs" />
+    <Compile Include="Hose\CompHoseReel.cs" />
+    <Compile Include="Hose\HoseFlow.cs" />
+    <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
+    <Compile Include="Hose\HoseProbe.cs" />
+    <Compile Include="Hose\HosePorts.cs" />
+    <Compile Include="Hose\Graphic_HoseReel.cs" />
+    <Compile Include="Hose\HoseStyles.cs" />
+    <Compile Include="Hose\HoseCarry.cs" />
+    <Compile Include="Hose\HoseLive.cs" />
+    <Compile Include="Hose\HoseEnds.cs" />
+    <Compile Include="Hose\Jobs\JobDriver_CarryHoseEnd.cs" />
+    <Compile Include="Hose\Jobs\JobDriver_RetractHose.cs" />
+    <Compile Include="Hose\Jobs\WorkGiver_HoseOrders.cs" />
+    <Compile Include="Hose\Jobs\FloatMenuOptionProvider_Hose.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

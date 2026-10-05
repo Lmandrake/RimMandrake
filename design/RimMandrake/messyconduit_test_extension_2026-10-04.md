@@ -13,7 +13,7 @@ CONSULT workstream of the MessyConduit round-2 review. Docs only; no src edits.
 
 ## 1. What the mod does today (verified from code)
 
-Read from `src/RimMandrake/MessyConduit/Source/` and `Defs/` on 2026-10-04 (foundry clone at `08895c0c1`), not from
+Read from `src/RimMandrake/GimmeSomeSlack/Source/` and `Defs/` on 2026-10-04 (foundry clone at `08895c0c1`), not from
 the design docs.
 
 **Ground cords (the core).** Vanilla `PowerConduit` / `WaterproofConduit` are drawn invisible (transparent conduit
@@ -57,7 +57,7 @@ Draining }` with hysteresis (`transitionTicks` 30, `releaseTicks` 500, `minPlump
 Tint by contents, fill wobble, couplings every 8 cells. The reel does NOT join static pipes or tanks today (owner
 round 2).
 
-**Settings.** Three tabs (Cables, Overhead lines, Flexible hoses): 24 core fields (`MessyConduitMod.cs`), 11 aerial
+**Settings.** Three tabs (Cables, Overhead lines, Flexible hoses): 24 core fields (`GimmeSomeSlackMod.cs`), 11 aerial
 (`AerialSettings.cs`), 13 hose (`HoseSettings.cs`), each with a master switch.
 
 ## 2. Tests we run today
@@ -73,7 +73,7 @@ round 2).
 | `northstar_matrix/run_live.py` | places the 109 design scenes on a 226x100 region, census per scene vs oracle, ON/OFF screenshots + contact sheets. Last two runs (`matrix_live_20261004T1152.json`): 122 rows, **121 PASS, 1 SKIP** | 122 |
 | `human_review.py` | not a test: 18 numbered stations (row A floor cords 1-6, B overhead 7-11, C hoses 12-15, D hose crossings 16-18) + a free area, calm world, in-world labels, key sheet; `--style X` flips the ONE global style | 18 stations |
 
-What all of this shares: every verdict is a **state read** through a probe (`MessyConduitProbe`, `AerialProbe`,
+What all of this shares: every verdict is a **state read** through a probe (`GimmeSomeSlackProbe`, `AerialProbe`,
 `HoseProbe`) on a scene built for the test. Pixels are judged only by the owner. Style is tested as a global switch
 (ST2: printed meshes carry only the chosen style's textures), never as a per-object property, because there is none
 yet.

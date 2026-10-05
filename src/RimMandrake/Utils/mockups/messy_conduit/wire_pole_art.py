@@ -6,7 +6,7 @@
 Artpipe jobs messyconduit_{mast,lampmast}_{scrapper,industrial,modern,futuristic}_v2 render a 256x512 transparent pole,
 base at the bottom, drawn by the defs at drawSize (2,4) with drawOffset (0,0,1.5): 128 px per cell, pixel row r (0 = top)
 sits at z = 3.5 - r/128 cells above the cell centre, column 128 is the cell centre. For each render this
-  * copies it unchanged to Textures/RimMandrake/MessyConduit/Aerial/Styles/<Look>/<AerialMast|AerialLampMast>.png,
+  * copies it unchanged to Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/<Look>/<AerialMast|AerialLampMast>.png,
   * CROPS its top 128 rows into <...>Top.png (256x128, the overlay drawn above pawns; same pixels so alignment is exact;
     the code draws it 2x1 cells centred at topOffsetZ = 3.5 - 64/128 = 3.0),
   * MEASURES the insulator tips: topmost opaque row inside the two outer-insulator column bands (10-30% and 70-90% of
@@ -126,7 +126,7 @@ def table_src(rows):
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RimMandrake.MessyConduit.Aerial
+namespace RimMandrake.GimmeSomeSlack.Aerial
 {
     public static class PoleGeometryTable
     {

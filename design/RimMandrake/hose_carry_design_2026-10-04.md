@@ -35,7 +35,7 @@ Consequences, all binding on the build:
 
 ## 1. What exists today (measured from source, 2026-10-04)
 
-Files: `src/RimMandrake/MessyConduit/Source/Hose/` (`CompHoseReel.cs` 278 lines, `RM_MapComponent_Hoses.cs` 710,
+Files: `src/RimMandrake/GimmeSomeSlack/Source/Hose/` (`CompHoseReel.cs` 278 lines, `RM_MapComponent_Hoses.cs` 710,
 `HoseMath.cs` 980, `HoseRelay.cs`, `HosePorts.cs`, `HoseFlow.cs`, `HoseProbe.cs`, `HoseSettings.cs`, `HoseStyles.cs`).
 
 - **Laid state is DATA on the reel, two fields**: `CompHoseReel.laid` (bool) and `far` (IntVec3, the free-end cell),
@@ -388,7 +388,7 @@ sequential; 4 and 5 can run in parallel after 3.
 
 | stage | owns (writes) | ends with | model / size |
 |---|---|---|---|
-| **S1 core** | NEW `Source/Hose/HoseCarry.cs` (state enum, transition table, `HoseTrail` append/truncate/pull/stretch — Verse-free), NEW `Source/SelfTest/HoseCarryChecks.cs`, `Source/SelfTest/Program.cs` (one Run line), SelfTest csproj | `selftest_messyconduit.py` green incl. rows 1-5 | Sonnet, 0.5 d |
+| **S1 core** | NEW `Source/Hose/HoseCarry.cs` (state enum, transition table, `HoseTrail` append/truncate/pull/stretch — Verse-free), NEW `Source/SelfTest/HoseCarryChecks.cs`, `Source/SelfTest/Program.cs` (one Run line), SelfTest csproj | `selftest_gimmesomeslack.py` green incl. rows 1-5 | Sonnet, 0.5 d |
 | **S2 reel state** | `CompHoseReel.cs` (fields, Scribe, legacy read, the five order methods, gizmos: player orders + `DEV:` gating), `HoseMath.cs` (ADD `LayAlong` only), `RM_MapComponent_Hoses.cs` (EnsureLay keyed on trail; validity tick hook), `HoseProbe.cs` (verbs + census), main csproj Compile lines | builds; selftest row 6; DEV instant lay still lays; the player gizmos place orders (nothing executes them yet); `validation_hose.py --live/--maze/--relay` unchanged-green | Opus, 1 d |
 | **S3 jobs** | NEW `Defs/Hose/RM_HoseJobs.xml`, NEW `Source/Hose/Jobs/{JobDriver_CarryHoseEnd,JobDriver_RetractHose,WorkGiver_HoseOrders,FloatMenuOptionProvider_Hose}.cs`, main csproj | live CR1-CR6 pass with the hose drawn as an instant re-lay on each trail change (ugly but correct) | Opus, 1 d |
 | **S4 live drawing** | `RM_MapComponent_Hoses.cs` (DrawCarrying prefix+tail, retract clip, LOD), NEW `Source/Hose/HoseEnds.cs` (endKind derivation, water/port free end, `FreeEnd` accessor, `HoseEvents`), `HosePorts.cs` (free-end port find) | the carry reads live on screen; endKind in the probe; CR5 `Water` row | Sonnet, 0.75 d |

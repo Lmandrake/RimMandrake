@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gimme Some Slack per-build styles, stage 1 (design/RimMandrake/messyconduit_style_per_build_design.md, architecture B,
+     owner 2026-10-04): one ThingStyleDef per anchor x look, named <AnchorDef>_<Look> (AerialStyles.StyleDefName). The
+     style rides the engine's own per-building style field (CompStyleable on RM_AerialAnchorBase): blueprint, frame, building,
+     minified and save all carry it, and Thing.Graphic draws the style's graphicData. The build button's menu picks it
+     (StylePicker). No StyleCategoryDef lists these, so no ideoligion can hand them out.
+     The bracket's per-facing draw offsets below are placeholders: StylePicker overwrites them at startup with
+     AerialMath.BracketDrawOffset from the measured BracketGeometryTable (one source of truth). -->
+<Defs>
+
+  <ThingStyleDef>
+    <defName>RM_AerialMast_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialLampMast_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/AerialLampMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialWallBracket_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Scrapper/WallBracket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialMast_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialLampMast_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/AerialLampMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialWallBracket_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Industrial/WallBracket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialMast_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialLampMast_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/AerialLampMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialWallBracket_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Modern/WallBracket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialMast_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialLampMast_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/AerialLampMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+  <ThingStyleDef>
+    <defName>RM_AerialWallBracket_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/Styles/Futuristic/WallBracket</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
+    </graphicData>
+  </ThingStyleDef>
+
+</Defs>

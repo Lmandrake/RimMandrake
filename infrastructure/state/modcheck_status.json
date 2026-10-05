@@ -223,6 +223,39 @@
     "status": "REFUSED",
     "ts": 1790978033.4199028
   },
+  "GimmeSomeSlack": {
+    "components": {
+      "counts": {
+        "PASS": 121,
+        "SKIP": 1
+      },
+      "not_ok": [],
+      "unbuilt": [],
+      "uncovered": []
+    },
+    "hash": "8a8a6a00ba47f943cfb4ad0c3f41a8b0bd266ec3e0fc0c5c6bfa3ea11a1d8a5b",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "renamed_from": {
+      "old": "MessyConduit",
+      "ts": 1791185553.087625,
+      "why": "GIMMESOMESLACK_RENAME_1: owner renamed MessyConduit to Gimme Some Slack 2026-10-04"
+    },
+    "run_id": "MessyConduit/northstar_matrix/run_live.py@mc_matrix_rec5_20261004.json",
+    "source": {
+      "assembly_sha256": "2ca22f18ec1df0c86df3ec31d0520740b15db1fa1b6e5c9285d8d951b85f3558",
+      "env_running_count": 9,
+      "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
+      "result": "Transient/mc_matrix_rec5_20261004.json",
+      "started": "2026-10-04T14:55:17",
+      "ticks_spent": 1157,
+      "tier": "messyconduit",
+      "verb": "modcheck record"
+    },
+    "status": "GREEN",
+    "ts": 1791151298.651931
+  },
   "GizkaStowaway": {
     "hash": "d4b64ec4ccf124e60142b5bf862549017790fd056cb5371d344347974090a692",
     "minor": null,
@@ -314,34 +347,6 @@
     },
     "status": "RED",
     "ts": 1791120150.0919027
-  },
-  "MessyConduit": {
-    "components": {
-      "counts": {
-        "PASS": 121,
-        "SKIP": 1
-      },
-      "not_ok": [],
-      "unbuilt": [],
-      "uncovered": []
-    },
-    "hash": "8a8a6a00ba47f943cfb4ad0c3f41a8b0bd266ec3e0fc0c5c6bfa3ea11a1d8a5b",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "MessyConduit/northstar_matrix/run_live.py@mc_matrix_rec5_20261004.json",
-    "source": {
-      "assembly_sha256": "2ca22f18ec1df0c86df3ec31d0520740b15db1fa1b6e5c9285d8d951b85f3558",
-      "env_running_count": 9,
-      "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "Transient/mc_matrix_rec5_20261004.json",
-      "started": "2026-10-04T14:55:17",
-      "ticks_spent": 1157,
-      "tier": "messyconduit",
-      "verb": "modcheck record"
-    },
-    "status": "GREEN",
-    "ts": 1791151298.651931
   },
   "Miasma": {
     "hash": "5e1e3d8b8202ef48e832ee6f24c363894eb9ce8de3b3fe8ce3a1be5356749785",

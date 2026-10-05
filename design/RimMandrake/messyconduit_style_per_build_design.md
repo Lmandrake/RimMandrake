@@ -103,7 +103,7 @@ Conduit is vanilla `PowerConduit` and `WaterproofConduit`, made invisible by thi
 things. They are drawn every rebuild by `RM_MapComponent_CordGraph` from the conduit grid, and nothing about them is
 saved. The cord graph already groups its pieces into connected nets: `ComputeNetSeeds` unions pieces by the cells they
 touch. It already gives each net one colour or cable kind (`CordMaterials.VariantFor(netSeed)`). Today the **style** is
-one global value for every net (`MessyConduitSettings.style`, read in `CordMaterials.Build` and
+one global value for every net (`GimmeSomeSlackSettings.style`, read in `CordMaterials.Build` and
 `AerialMaterials.Build`). Pole art is changed by **editing the shared ThingDef's graphic** (`AerialMaterials.ApplyPoles`),
 so every pole on every map always looks the same.
 
@@ -175,7 +175,7 @@ It stays, with a narrower job:
 
 ## 4. Art: what each style needs, what exists
 
-Paths are under `Textures/RimMandrake/MessyConduit/` and were listed on disk 2026-10-04. "Fallback" means the code
+Paths are under `Textures/RimMandrake/GimmeSomeSlack/` and were listed on disk 2026-10-04. "Fallback" means the code
 already draws a stand-in from another style.
 
 | Piece | Scrapper | Industrial | Modern | Futuristic |

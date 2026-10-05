@@ -15,7 +15,7 @@ this mod shine! The flexible water hoses should be much thicker and stiffer than
 hoses they use. And they SHOULD "plump up" when water is flowing through them and "collapse down" when it's not."*
 
 **What this quote settles** (each is his word, not an inference):
-- Aerial power lines are **IN this mod** (`mandrake.rm.messyconduit`), not a separate mod. This answers the
+- Aerial power lines are **IN this mod** (`mandrake.rm.gimmesomeslack`), not a separate mod. This answers the
   "split it out as `mandrake.rm.aeriallines`?" fork the assessment (§3.2) left open: same mod, own settings
   toggle. It also **reverses** the "Overhead spans: NOT ADVISABLE" row of the phase-1 design (§8.0, §8.3, §8.10
   phase 4): that verdict was about spans *draped over floor objects*; an aerial span drawn above everything is
@@ -28,7 +28,7 @@ hoses they use. And they SHOULD "plump up" when water is flowing through them an
 **Read for this pass:** `messy_conduit_design_2026-10-02.md` (all; §8.13 as built),
 `power_poles_and_flexible_pipe_assessment_2026-10-02.md`, the live README and the polish log
 (`Transient/messy_conduit_live_20261002/README.md`, `Transient/belt_messyconduit_polish_20261002.md`), the walk
-`design/validation_walks/RimMandrake/MessyConduit.md`, `debug_process.md` §0-1, `north_star_validation_spec.md`
+`design/validation_walks/RimMandrake/GimmeSomeSlack.md`, `debug_process.md` §0-1, `north_star_validation_spec.md`
 §1-4b, `modcheck/bland_world.py`, the MessyConduit source tree (read, not edited), and the FlowWorks facts listed
 in §3.1 (from a subagent read of `src/RimMandrake/FlowWorks` and the three FlowWorks design docs). Engine facts in
 §2 come from a RimSage read of decompiled 1.6 (a subagent; marked VERIFIED/UNVERIFIED per line).
@@ -47,7 +47,7 @@ in §3.1 (from a subagent read of `src/RimMandrake/FlowWorks` and the three Flow
 
 ### 1.1 What 1a already shipped (do NOT rebuild)
 
-Read off `src/RimMandrake/MessyConduit/Source` at `09a832f6d` plus the polish pass in flight
+Read off `src/RimMandrake/GimmeSomeSlack/Source` at `09a832f6d` plus the polish pass in flight
 (`Transient/belt_messyconduit_polish_20261002.md`):
 
 | piece | where | state |
@@ -64,7 +64,7 @@ Read off `src/RimMandrake/MessyConduit/Source` at `09a832f6d` plus the polish pa
 ### 1.2 The 1b task list (ordered; each a builder-sized unit)
 
 Every task: Verse-free logic goes in `Source/Core/` with a `SelfTest/Program.cs` check that **fails first**
-(debug_process §0); Verse glue in the component/layer; each new setting added to `MessyConduitMod.cs`, the
+(debug_process §0); Verse glue in the component/layer; each new setting added to `GimmeSomeSlackMod.cs`, the
 `SHIPPED` table in `validation.py` (O2) and the settings table in the design doc in the same commit.
 
 | # | task | files | builder | days | done when |
@@ -78,7 +78,7 @@ Every task: Verse-free logic goes in `Source/Core/` with a `SelfTest/Program.cs`
 | B7 | **Sway — lifted spans only** (§1.5): lamp climbs, wall-terminal hanging tails, trunk wraps if phase 3 lands. Strand material for lifted pieces built with `ShaderDatabase.CutoutPlant` so `WindManager` registers it; vertex alpha = sway weight (0 at pins, rising to the free end or span middle), UV z = per-cord phase; **0 under a roof**. Floor cords never sway (optional "floor ripple" setting, default OFF). | `SectionLayer_RM_MessyCords.cs` (a second sub-mesh per lifted piece), `CordMaterials.cs`, `Core/CordBuilder.cs` (`LaidPiece.Lifted` + per-vertex weight) | Opus | 1 (+1 CPU fallback) | probe `sway`: material shader name == CutoutPlant, registered in `WindManager.plantMaterials` (reflection read), lifted vertex alpha max > 0, roofed lifted vertex alpha == 0 |
 | B8 | **LOD.** A second decimated sub-mesh (1 strand, every 3rd point, no decals); switch on `Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far` by setting `LayerSubMesh.disabled`. | `SectionLayer_RM_MessyCords.cs` | Sonnet | 0.5 | probe reports which set is enabled at two zoom levels |
 | B9 | **Gravship cutscene guard** (risk 14): hide the layer while `WorldComponent_GravshipController.CutsceneInProgress`. | `SectionLayer_RM_MessyCords.Visible` | Sonnet | 0.1 | read the member name in RimSage first; UNVERIFIED until then |
-| B10 | **Settings completion**: tangle size threshold (6-20, default 9; feeds `Reduce(tangleMin)`), whip on/off, downed-wire bursts on/off, sparks only with power overlay, max sparking ends (8-48, default 24), sway on/off, floor ripple (default off), LOD on/off. | `MessyConduitMod.cs`, `validation.py` SHIPPED | Sonnet | 0.25 | O2 green |
+| B10 | **Settings completion**: tangle size threshold (6-20, default 9; feeds `Reduce(tangleMin)`), whip on/off, downed-wire bursts on/off, sparks only with power overlay, max sparking ends (8-48, default 24), sway on/off, floor ripple (default off), LOD on/off. | `GimmeSomeSlackMod.cs`, `validation.py` SHIPPED | Sonnet | 0.25 | O2 green |
 | B11 | **Art for 1b** (§1.4). | artpipe | — | queue | artpipe_state find first |
 
 **Order and parallelism:** B1 alone touches `CordLayer.cs` (do it first, Opus). B2 and B6 share `CordBuilder.cs`
@@ -138,7 +138,7 @@ anyone who builds an anchor); low on the rest.
 
 Same mod, own master toggle **"Aerial power lines"**. Turning it off removes the anchors from the architect menu
 and hides spans; it never deletes a placed anchor (anchors are real buildings and are saved). Namespace
-`RimMandrake.MessyConduit.Aerial`; defs `RM_Aerial*`.
+`RimMandrake.GimmeSomeSlack.Aerial`; defs `RM_Aerial*`.
 
 ### 2.1 Engine facts (RimSage, decompiled 1.6, this pass)
 
@@ -382,7 +382,7 @@ FlowWorks owes before a real hose can drive it.
 
 ### 3.2 The kit API (no compile-time dependency either way)
 
-`RimMandrake.MessyConduit.Kit.HoseKit` (public static, Verse types only):
+`RimMandrake.GimmeSomeSlack.Kit.HoseKit` (public static, Verse types only):
 
 ```
 int  HoseKit.Register(Map map, IntVec3 endA, Rot4 faceA, IntVec3 endB, Rot4 faceB, float maxLength, string styleId)
@@ -393,7 +393,7 @@ void HoseKit.Unregister(Map map, int hoseId)
 ```
 
 FlowWorks calls it through delegates resolved once with
-`AccessTools.Method("RimMandrake.MessyConduit.Kit.HoseKit:SetFlow")` etc.; a null lookup (Messy Conduit absent)
+`AccessTools.Method("RimMandrake.GimmeSomeSlack.Kit.HoseKit:SetFlow")` etc.; a null lookup (Messy Conduit absent)
 falls back to FlowWorks' own plain line. MessyConduit never references FlowWorks. The kit saves nothing: the
 hose owner (FlowWorks' `RM_HoseSpool`, which saves its own endpoints) re-registers on `SpawnSetup`/load, and the
 look is deterministic from (endpoints, seed), so it comes back identical.
@@ -604,7 +604,7 @@ line scene with the master switch OFF (expects vanilla conduit art, 0 cords).
 
 ### 4.3 Scene spec JSON (generator output, runner input)
 
-`src/RimMandrake/MessyConduit/matrix/scenes.json`, emitted by `gen_matrix.py` (offline, deterministic, committed
+`src/RimMandrake/GimmeSomeSlack/matrix/scenes.json`, emitted by `gen_matrix.py` (offline, deterministic, committed
 with its own hash so a run can name the spec it ran):
 
 ```json
@@ -653,7 +653,7 @@ with its own hash so a run can name the spec it ran):
 ### 4.4 Runner
 
 `validation.py --matrix [--groups floor,density,aerial,hose,controls] [--only ID…]` (the same functional script;
-`debug_process.md` §0 wants one script per mod), with helpers in `src/RimMandrake/MessyConduit/matrix/`:
+`debug_process.md` §0 wants one script per mod), with helpers in `src/RimMandrake/GimmeSomeSlack/matrix/`:
 `gen_matrix.py` (offline), `stage.py` (bridge ops per scene), `sheet.py` (contact sheet + image sanity).
 
 1. **Preflight (offline, 0 ticks):** spec hash, pairwise coverage re-check, parity census for every scene via the
@@ -748,7 +748,7 @@ min bend radius ≥ 1.2, no self-intersections, coupling count; **M19** (A3) tap
 
 ### 4.9 North star seed (DRAFT, for the owner to validate)
 
-Add a `## north star` section to `design/validation_walks/RimMandrake/MessyConduit.md` with `state: DRAFT` and
+Add a `## north star` section to `design/validation_walks/RimMandrake/GimmeSomeSlack.md` with `state: DRAFT` and
 empty `validated-hash:`. `### the experience` holds only his typed words (the nodal ruling's "everything is a
 too-long extension cord", the edge-case paragraph, and today's quote). Seeded `### must show` (distilled, no new
 claims; each claimed by matrix scenes via `shows=`):
@@ -786,7 +786,7 @@ kit call.
 | **L4 render** | Opus | `SectionLayer_RM_MessyCords.cs`, `CordMaterials.cs` | B7 sway (shader path + CPU fallback shared with spans), B8 LOD, B9 cutscene guard | 2 |
 | **L5 aerial** | Opus (A1 1-3), Sonnet (rest) | new `Aerial/*`, `Core/SpanGeometry.cs`, `Defs/Aerial/*` | A1 (3.5) → A2 (2.5; step 9 waits for L2) → A3 if ruled (1.5) | 6-7.5 |
 | **L6 hose look** | Sonnet | new `Kit/HoseKit.cs`, `Core/HoseState.cs`, `RM_MapComponent_Hoses.cs`, `SectionLayer_RM_Hoses.cs`, debug hose def | §3.11 steps 2-4 (step 1 is L1's) | 2 |
-| **L7 harness** | Sonnet | `MessyConduitProbe.cs`, `MessyConduitMod.cs` (all settings), `validation.py`, new `matrix/*`, the walk file, `SelfTest/Program.cs` matrix-oracle mode, **the csproj** | matrix generator, runner, sheet, image sanity; every probe op the other lanes need (they expose public counters; L7 wires the ops); B10 settings; M10-M20 rows; north-star DRAFT seed | 3 |
+| **L7 harness** | Sonnet | `GimmeSomeSlackProbe.cs`, `GimmeSomeSlackMod.cs` (all settings), `validation.py`, new `matrix/*`, the walk file, `SelfTest/Program.cs` matrix-oracle mode, **the csproj** | matrix generator, runner, sheet, image sanity; every probe op the other lanes need (they expose public counters; L7 wires the ops); B10 settings; M10-M20 rows; north-star DRAFT seed | 3 |
 | **L8 art** | — | artpipe queue | 1b (6) + aerial (6 ids; the wall bracket has 3 facings) + hose (8) = 20 ids, filed day 0 after `artpipe_state.py find` | queue |
 
 Shared-file rules: only L7 edits the probe, the settings class, `validation.py` and the csproj (others hand it

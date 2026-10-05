@@ -9,7 +9,7 @@ presented tilemap to assess what things look like, act like, etc. It should be s
 explore, and see the various key combinations to understand what it looks/acts like."* Layout chosen by question card:
 **gallery plus free area**.
 
-The worked example is `src/RimMandrake/MessyConduit/human_review.py`. Its key sheet is written to
+The worked example is `src/RimMandrake/GimmeSomeSlack/human_review.py`. Its key sheet is written to
 `Transient/mc_human_review/` (`KEYSHEET.md` and `keysheet.html`).
 
 ## What it is, and what it is not
