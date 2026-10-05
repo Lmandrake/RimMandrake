@@ -361,13 +361,13 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "LanternDeeps@1791234245",
+    "run_id": "LanternDeeps@1791235182",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/LanternDeeps_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791234245.6669924
+    "ts": 1791235182.6462698
   },
   "LeaningScrub": {
     "hash": "706669909fd3ae7093e7301c5a667e5e3b27beeaf21a05d3072e2dbb671c2ef7",
@@ -447,13 +447,13 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "RaidRedesigner@1791234245",
+    "run_id": "RaidRedesigner@1791235182",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/RaidRedesigner_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791234245.702218
+    "ts": 1791235182.5838046
   },
   "ResearchRetag": {
     "hash": "d6ebca2e7edbe7d63a9e1a06e8ea19cc9026e78a0ae98307b8c54a8a02f9dfb1",
@@ -499,13 +499,13 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "RustChrome@1791234245",
+    "run_id": "RustChrome@1791235182",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/RustChrome_summary.json",
       "verb": "situational_rerun"
     },
-    "status": "RED",
-    "ts": 1791234245.7122965
+    "status": "DRAFT-CHECKLIST",
+    "ts": 1791235182.5862195
   },
   "SWBestiary": {
     "hash": "97fe8af6cc7f6f1ecb994b8711ce99c660e42926234fc44b0cd19e4ffc9e4279",
@@ -534,17 +534,17 @@
     "ts": 1791234245.8442025
   },
   "SeaShores": {
-    "hash": "d16d37b6e77f84cd8a61831f71064dafca23a42b709e9a2b24df1d59c7d40c2d",
+    "hash": "0d5e720465e1fb1923243364ed04da4cfbb5fef36c70a76810f04cb75effe6ac",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "SeaShores@1791234245",
+    "run_id": "SeaShores@1791235182",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/SeaShores_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791234245.8604705
+    "ts": 1791235182.6093428
   },
   "ShipMemory": {
     "hash": "8239c11711e1ae72136a8e35e20a2cb2819363f8db1e0ad7b37057b1ffe11d0f",
