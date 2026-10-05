@@ -576,6 +576,16 @@
       "def": "RSW_TruffleMole",
       "disposition": "move:LongShade",
       "reason": "RULED 2026-09-27 (Long Shade sitting card, Q6/Q4): ONE home, the Long Shade — 'desert & extreme desert' was a CANDIDATE set per the owner's 2026-09-22 correction; the Stillsand's sterile sand has nothing buried for a burrower to eat"
+    },
+    {
+      "def": "RSW_Vozzik",
+      "disposition": "move:RM_RustCathedral",
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Stillsand sheet: \"This should be moved to the Rust Cathedral Biome.\" Cast via UtinniPatches/Patches/WildAnimals_RustCathedral.xml."
+    },
+    {
+      "def": "RM_Vozzik",
+      "disposition": "move:RM_Warscar",
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Stillsand sheet: \"This should go into the Warscar.\" Cast inline in RM_Warscar.xml."
     }
   ],
   "fauna": [
@@ -644,13 +654,6 @@
       "def": "AA_BoulderMit",
       "law": "passes R22: bs 4.0, spd 1.0 (MEASURED); slow dormant-looking giant (prep §1.2)",
       "note": "ban 3 mineralized-look eye test owed — see confidence"
-    },
-    {
-      "action": "keep",
-      "band": "giant",
-      "commonality": 0.0005,
-      "def": "RSW_Vozzik",
-      "law": "the vozzik (port of AA_TetraSlug): bs 5.0, spd 0.6 (MEASURED); barely-moving alien giant (prep §1.2); ->RM_Vozzik with the Q1 tier move (2026-09-27)"
     },
     {
       "action": "keep",

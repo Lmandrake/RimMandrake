@@ -247,6 +247,12 @@
       "commonality": 0.5,
       "def": "GR_Mecharat",
       "law": "owner review 2026-09 (round2 move mapping): rust cathedral and mechanoid dungeons"
+    },
+    {
+      "action": "add",
+      "commonality": 0.0005,
+      "def": "RSW_Vozzik",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Stillsand sheet: \"This should be moved to the Rust Cathedral Biome.\" Cast via UtinniPatches/Patches/WildAnimals_RustCathedral.xml."
     }
   ],
   "fish": {

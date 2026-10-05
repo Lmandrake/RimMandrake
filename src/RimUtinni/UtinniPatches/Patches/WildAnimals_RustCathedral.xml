@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WildAnimals_RustCathedral.xml             UtinniPatches — new file 2026-10-05
+
+  Puts the Star Wars-tier cast onto RM_RustCathedral. RimMandrake may not name
+  an RSW_ def (§7 Q11), so the Star Wars cast reaches the RM_ biome through this
+  Utinni patch layer — same shape as WildAnimals_Warscar.xml.
+
+  LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Stillsand sheet, on
+  RSW_Vozzik): "Please regenerate to make it obviously entirely synthetic. This
+  should be moved to the Rust Cathedral Biome." The voltmaw leaves the Stillsand
+  (its RUT_ExtremeDesert row was removed the same pass) and lives here. Weight
+  carried over verbatim from that row (giant-rare 0.0005); PROVISIONAL. The
+  synthetic regeneration is an art job, not done here.
+
+  ⚠️ A patch that matches nothing logs nothing — validate with
+  skills/rimworld-modding/scripts/validate_patch.py.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/BiomeDef[defName="RM_RustCathedral"]/wildAnimals</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_RustCathedral"]/wildAnimals</xpath>
+        <value>
+          <RSW_Vozzik>0.0005</RSW_Vozzik>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>
