@@ -794,7 +794,7 @@
       "action": "keep",
       "band": "ambush-small",
       "commonality": 0.7,
-      "def": "RSW_Jellypot",
+      "def": "RM_Dunejelly",
       "law": "sits-and-waits — \"own a shadow\" predator in one def (prep §2.2); spd 1.65 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Jellypot to the already-ported, already-wired RSW_ name (RUT_Desert)"
     },
     {

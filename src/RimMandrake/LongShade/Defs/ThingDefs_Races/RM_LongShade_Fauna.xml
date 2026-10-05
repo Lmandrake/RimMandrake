@@ -611,9 +611,10 @@
 
 
   <ThingDef ParentName="BaseInsect">
-    <defName>RM_Jellypot</defName>
-    <label>jellypot</label>
-    <description>Named the jellypot for its ability to produce insect jelly in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not seem capable of breeding in captivity.</description>
+    <defName>RM_Dunejelly</defName>
+    <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Tint it more green. Rename to Dunejelly." / "belongs at RimMandrake level"): renamed from RM_Jellypot / "jellypot"; RSW_Jellypot retired onto this def. texPath unchanged so the owner-kept art still binds; the green tint is an art job. -->
+    <label>dunejelly</label>
+    <description>Called the dunejelly for the insect jelly it produces in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not seem capable of breeding in captivity.</description>
     <statBases>
       <MoveSpeed>1.65</MoveSpeed>
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>
@@ -694,9 +695,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Jellypot</defName>
-    <label>jellypot</label>
-    <race>RM_Jellypot</race>
+    <defName>RM_Dunejelly</defName>
+    <label>dunejelly</label>
+    <race>RM_Dunejelly</race>
     <combatPower>15</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <ecoSystemWeight>0.20</ecoSystemWeight>
