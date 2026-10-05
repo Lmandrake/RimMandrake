@@ -192,7 +192,7 @@
       <herdAnimal>true</herdAnimal>
       <predator>false</predator>
       <packAnimal>true</packAnimal>
-      <baseBodySize>2.4</baseBodySize>
+      <baseBodySize>3.6</baseBodySize>
       <baseHealthScale>1.6</baseHealthScale>
       <baseHungerRate>0.45</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
@@ -231,19 +231,19 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
-          <drawSize>1.4</drawSize>
+          <drawSize>2.1</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>3</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gennok/RM_Gennok</texPath>
-          <drawSize>2.6</drawSize>
+          <drawSize>3.9</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
