@@ -211,10 +211,14 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "PASS": 63,
-        "UNBUILT": 12
+        "FAIL": 2,
+        "PASS": 61,
+        "UNBUILT": 10
       },
-      "not_ok": [],
+      "not_ok": [
+        "P4_ladder_frees",
+        "P5n_own_faction_carveout"
+      ],
       "unbuilt": [
         "U_fill_fluid_distinct",
         "U_ladder_state_legible",
@@ -225,29 +229,27 @@
         "U_pit_covered_seam_at_max_zoom",
         "U_pit_trapped_reads_as_trapped",
         "U_slime_occupant_below_surface",
-        "U_sluice_gate_state_legible",
-        "U_spikes_read_distinct",
         "U_tar_fill_front_lags_water"
       ],
       "uncovered": []
     },
-    "hash": "ba4ac9337e472f06dff385c5f58b75f9bfaafce75e036e71587ba15115ad81ba",
+    "hash": "fc9f5d5dc62ecaefe362d28253953a452ff299e082c31c87cbffe977d57ade58",
     "minor": null,
     "owner_review": null,
-    "refused": "63 live rows PASS but 12 bars UNBUILT, 0 UNCOVERED: U_fill_fluid_distinct, U_ladder_state_legible, U_pawn_height_ladder_legible, U_pawn_lowers_on_deeper_cell, U_pawn_rises_on_shallower_cell, U_pit_covered_invisible, U_pit_covered_seam_at_max_zoom, U_pit_trapped_reads_as_trapped, U_slime_occupant_below_surface, U_sluice_gate_state_legible, U_spikes_read_distinct, U_tar_fill_front_lags_water",
-    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261002T145340.json",
+    "refused": null,
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261005T145357.json",
     "source": {
-      "assembly_sha256": "0e0bdf1791f573689bf18e5909262436b3b441bc4306ea83cc709fee5484190e",
-      "env_running_count": 9,
-      "env_running_sha256": "e1e98d233056fa12fa22ed7bb3e2694edee39f05fbb3c89150fc5ea6b57c42d2",
-      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261002T145340.json",
-      "started": "2026-10-02T14:50:59",
-      "ticks_spent": 5364,
+      "assembly_sha256": "598ed6241dc656e3b35ea8ec4c04757395c6ef3d45c8b2de3d5f0feec9eb7922",
+      "env_running_count": 10,
+      "env_running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T145357.json",
+      "started": "2026-10-05T14:51:49",
+      "ticks_spent": 5255,
       "tier": "flowworks",
       "verb": "modcheck record"
     },
-    "status": "REFUSED",
-    "ts": 1790978033.4199028
+    "status": "RED",
+    "ts": 1791237440.1472776
   },
   "GelatinousSlime": {
     "hash": "472b58fa3d442801845240fb21604d3578b222bb6fd78a8d5175dcf3f033d484",
