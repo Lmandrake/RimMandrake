@@ -20,6 +20,8 @@ namespace RimMandrake.WeepingStones
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{
+			// WEEPINGSTONES_STOCK_JOB_LOOP_1: orders built without a count carry -1, which StartCarryThing rejects (Invalid count)
+			if (job.count < 1) job.count = 1;
 			return pawn.Reserve(Stock, job, 1, 1, null, errorOnFailed);
 		}
 
