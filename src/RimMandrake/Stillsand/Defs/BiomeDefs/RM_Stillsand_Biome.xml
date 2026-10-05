@@ -202,6 +202,8 @@
       <RM_Duumma>0.08</RM_Duumma>
       <RM_Veessa>0.1</RM_Veessa>
       <RM_Loomma>0.05</RM_Loomma>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level." The ulgga, moved here from the Long Shade; def stays in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_Ulgga MayRequire="mandrake.rm.biomes">0.015</RM_Ulgga>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

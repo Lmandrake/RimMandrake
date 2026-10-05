@@ -36,32 +36,6 @@ result is behaviourally identical, without porting the abstract chain.
 		</stuffProps>
 	</ThingDef>
 
-	<ThingDef ParentName="LeatherBase">
-		<defName>RSW_BlackChitin</defName>
-		<label>black insect chitin</label>
-		<description>Hard overlapping scales of insectoid chitin. Exceptionally durable in combat, but a poor defense against weather.</description>
-		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
-		<graphicData>
-			<texPath>Things/Item/Resource/AA_Chitin</texPath>
-			<graphicClass>Graphic_StackCount</graphicClass>
-			<color>(66,57,60)</color>
-		</graphicData>
-		<statBases>
-			<MarketValue>4.2</MarketValue>
-			<StuffPower_Armor_Sharp>1.75</StuffPower_Armor_Sharp>
-			<StuffPower_Armor_Blunt>0.54</StuffPower_Armor_Blunt>
-			<StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
-			<StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
-		</statBases>
-		<stuffProps>
-			<color>(26,12,16)</color>
-			<commonality>0.001</commonality>
-			<statFactors>
-				<MaxHitPoints>1.5</MaxHitPoints>
-				<Beauty>1.7</Beauty>
-			</statFactors>
-		</stuffProps>
-	</ThingDef>
 
 	<ThingDef ParentName="LeatherBase">
 		<defName>RSW_InsectChitin</defName>
@@ -118,40 +92,6 @@ result is behaviourally identical, without porting the abstract chain.
 
 
 
-	<ThingDef ParentName="EggUnfertBase">
-		<defName>RSW_TuskcoilEggUnfertilized</defName>
-		<label>ulgga egg (unfert.)</label>
-		<description>Unfertilized ulgga egg. Edible raw, much better cooked.</description>
-		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
-		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
-			<color>(126,113,117)</color>
-		</graphicData>
-		<tradeability>Sellable</tradeability>
-		<statBases>
-			<MarketValue>9.0</MarketValue>
-		</statBases>
-	</ThingDef>
 
-	<ThingDef ParentName="EggFertBase">
-		<defName>RSW_TuskcoilEggFertilized</defName>
-		<label>ulgga egg (fert.)</label>
-		<description>Fertilized ulgga egg. If all goes well, it should hatch into a ulgga.</description>
-		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
-		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
-			<color>(126,113,117)</color>
-		</graphicData>
-		<tradeability>None</tradeability>
-		<statBases>
-			<MarketValue>9.0</MarketValue>
-		</statBases>
-		<comps>
-			<li Class="CompProperties_Hatcher">
-				<hatcherDaystoHatch>45</hatcherDaystoHatch>
-				<hatcherPawn>RSW_Ulgga</hatcherPawn>
-			</li>
-		</comps>
-	</ThingDef>
 
 </Defs>
