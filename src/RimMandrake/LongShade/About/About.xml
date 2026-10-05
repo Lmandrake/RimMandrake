@@ -51,7 +51,7 @@ RM_Dewfringe (new, Q6 — a shade-boundary rim plant, growth confined to the
 rim by its own small Harmony patch). It also ships the def of RM_UltrissPad (the
 ultriss pad, Q2: "not canon, I made it"), cast in the Stillsand since 2026-10-05.
 Its foragedFood is a real standalone
-item, RM_UltracactusPad (Q3), closing the same inert-forage gap
+item, RM_DewfringeSprig (the shade-rim harvest), closing the same inert-forage gap
 DESERT_FORAGEDFOOD_INERT_1 fixed one tier down. Five more Star Wars-tier wild
 plants (mandrake.rsw.swbestiary, MayRequire-guarded) stay wired inline at
 their existing weights, same shape as every other RimMandrake biome mod's
