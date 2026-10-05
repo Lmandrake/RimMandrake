@@ -190,7 +190,7 @@
            (sollak/gennok/tebbra/dakkra), RM_LongShade_Fillers.xml. Commonalities
            follow the same size-vs-rarity pyramid as the rest of this list —
            sollak is the only one of the four over bs 2. -->
-      <RM_Sollak>0.1</RM_Sollak>
+      <RM_Chorn>0.1</RM_Chorn>
       <RM_Gennok>0.3</RM_Gennok>
       <RM_Tebbra>0.6</RM_Tebbra>
       <RM_Dakkra>0.05</RM_Dakkra>
@@ -209,7 +209,7 @@
       <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the four owner-kept animal fills
            (RM_LongShade_Fills.xml). Weights are first values: rare ambusher, common
            small scavenger/rim-grazer, ash-answerer. -->
-      <RM_Skarrok>0.05</RM_Skarrok>
+      <RM_Skiralim>0.05</RM_Skiralim>
       <RM_Vrekka>0.4</RM_Vrekka>
       <RM_Sippra>0.5</RM_Sippra>
       <RM_Tazzok>0.3</RM_Tazzok>
