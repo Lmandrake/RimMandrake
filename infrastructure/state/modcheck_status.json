@@ -226,35 +226,32 @@
   "GimmeSomeSlack": {
     "components": {
       "counts": {
-        "PASS": 121,
-        "SKIP": 1
+        "PASS": 143,
+        "RECORD": 1
       },
-      "not_ok": [],
+      "not_ok": [
+        "P1_reel_couples_to_tank"
+      ],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "8a8a6a00ba47f943cfb4ad0c3f41a8b0bd266ec3e0fc0c5c6bfa3ea11a1d8a5b",
+    "hash": "36986812c77a3019cde29913c349f0fd64edee6a1af1fa3a10cc1b7fc19b14b9",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "renamed_from": {
-      "old": "MessyConduit",
-      "ts": 1791185553.087625,
-      "why": "GIMMESOMESLACK_RENAME_1: owner renamed MessyConduit to Gimme Some Slack 2026-10-04"
-    },
-    "run_id": "MessyConduit/northstar_matrix/run_live.py@mc_matrix_rec5_20261004.json",
+    "run_id": "GimmeSomeSlack/proof_all.py@proof_all_20261005T013803.json",
     "source": {
-      "assembly_sha256": "2ca22f18ec1df0c86df3ec31d0520740b15db1fa1b6e5c9285d8d951b85f3558",
-      "env_running_count": 9,
-      "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "Transient/mc_matrix_rec5_20261004.json",
-      "started": "2026-10-04T14:55:17",
-      "ticks_spent": 1157,
-      "tier": "messyconduit",
+      "assembly_sha256": "ca97871247858b225fea139cac5433685ea68a82464a0be4793b16a2aa32f3be",
+      "env_running_count": 10,
+      "env_running_sha256": "9fa295b6624d40cc57158fd5e39b2473cbf0255211534e6183c473a4f2f88851",
+      "result": "src/RimMandrake/GimmeSomeSlack/northstar/proof_all_20261005T013803.json",
+      "started": "2026-10-05T01:28:07",
+      "ticks_spent": null,
+      "tier": "gimmesomeslack",
       "verb": "modcheck record"
     },
-    "status": "GREEN",
-    "ts": 1791151298.651931
+    "status": "RED",
+    "ts": 1791189508.3175662
   },
   "GizkaStowaway": {
     "hash": "d4b64ec4ccf124e60142b5bf862549017790fd056cb5371d344347974090a692",
