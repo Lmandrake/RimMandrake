@@ -18,3 +18,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - CUT Ossik: DONE — RM_Ossik (+RM_EggOssik*) and RSW_Ossik (+RSW_SandstriderEgg*) deleted; rows out of RM_LongShade + RUT_Desert; desert.json AA_DesertAve -> cut:.
 - CUT Thurra: DONE — RM_Thurra and RSW_Thurra deleted; rows out of RM_LongShade + RUT_Desert; desert.json AA_Gigantelope -> cut:.
 - CUT RSW_DommoTree: DONE — def deleted from RSW_DesertPortMisc_Plants.xml; rows out of WildAnimals_LongShade.xml (patch, validate_patch OK) and RUT_Desert.
+- CUT RM_Ikee: DONE — RM_Ikee.xml deleted; rows out of RM_Stillsand + RM_WeepingStones (no replacement there: RM tier can't name RSW_, owner ruled no second home); RM_PreciousCave_Seep's ikee element removed; RSW_Ikee (the kept one) re-added to RM_Stillsand via WildAnimals_Stillsand.xml at the cut row's 0.15 (validate_patch OK).

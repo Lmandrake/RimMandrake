@@ -52,14 +52,18 @@
   own Add block — which targets RM_Stillsand, the free tier — drops the six
   rows that RM_Stillsand now carries natively instead.
 
-  7 wildAnimals rows remain, all mandrake.rsw.swbestiary (our own RSW_
+  🔴 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (2026-10-05): RM_Ikee was cut as a
+  duplicate and RSW_Ikee came back into the Add block below (0.15) — the
+  ikee's six-row note above is history for that one row.
+
+  8 wildAnimals rows remain, all mandrake.rsw.swbestiary (our own RSW_
   ports) — every one of them genuinely canon (§2a) or explicitly deferred
   (qorrax, owner art-review pending). RSW_Kreetle STAYS (Q6: "kreetle ONE
   home, the Stillsand" — this doc's own §7 recommendation to cut it was
   reversed by the card):
     RSW_Kreetle 0.2, RSW_WarWyrm 0.2, RSW_KraytDragon 0.15,
     RSW_GraniteSlug 0.1, RSW_Scurrier 0.1, RSW_Gizka 0.01,
-    RSW_GreaterKraytDragon 0.001
+    RSW_GreaterKraytDragon 0.001, RSW_Ikee 0.15
 
   RM_Qorrax (renamed from JOE_Cephalope) is NOT patched here any more: its ThingDef moved
   inline into the RM mod (STILLSAND_BEDAZZLE_CONTENT_1, Q1) and RM_Stillsand's own wildAnimals
@@ -98,6 +102,7 @@
           <RSW_Scurrier>0.1</RSW_Scurrier>
           <RSW_Gizka>0.01</RSW_Gizka>
           <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
+          <RSW_Ikee>0.15</RSW_Ikee>  <!-- back in 2026-10-05: RM_Ikee was cut as its duplicate (owner, Stillsand sheet: "duplicate, remove"); the RSW_ ikee, the Jawas' cute pet, is the one kept. Weight = the cut RM_Ikee row's. -->
         </value>
       </match>
     </match>

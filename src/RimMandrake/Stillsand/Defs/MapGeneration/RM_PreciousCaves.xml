@@ -52,11 +52,7 @@
         <count>1</count>
         <place>back</place>
       </li>
-      <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
-        <kind>RM_Ikee</kind>
-        <count>1~2</count>
-        <place>any</place>
-      </li>
+      <!-- RM_Ikee element removed 2026-10-05: the RM_ ikee was cut as a duplicate of RSW_Ikee (owner, Stillsand sheet: "duplicate, remove"); this RM-tier def may not name the RSW_ one. -->
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
 
