@@ -166,7 +166,6 @@
       <RSW_Scurrier MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Scurrier>  <!-- scurrier - grain-scale, adjust-keep -->
       <RSW_Gizka MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Gizka>  <!-- gizka - grain-scale, keep -->
       <RSW_GreaterKraytDragon MayRequire="mandrake.rsw.swbestiary">0.001</RSW_GreaterKraytDragon>  <!-- greater krayt dragon - giant, keep -->
-      <RSW_Vozzik MayRequire="mandrake.rsw.swbestiary">0.0005</RSW_Vozzik>  <!-- tetra slug - giant, keep -->
       <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import row
            (rosters/dune_sea_deep_desert.json "fauna", owner review 2026-09, commonality
            0.5), wired for the first time. -->
