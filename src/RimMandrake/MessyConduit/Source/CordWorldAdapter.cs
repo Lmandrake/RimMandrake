@@ -91,6 +91,7 @@ namespace RimMandrake.MessyConduit
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
                 m.Hookups.Add(C(parent.parent.Position));
                 ArtInsets(th.def, m);
+                SetWallHome(th, m);
                 world.Machines.Add(m);
             }
             AddTapNodes(map, world);
@@ -129,6 +130,16 @@ namespace RimMandrake.MessyConduit
                 }
                 if (add && (m.Hookups.Count > 0 || m.MachineLinks.Count > 0)) world.Machines.Add(m);
             }
+        }
+
+        /// <summary>Round 4: a wall-mounted device's cord ends under the wall it hangs on (MachineInfo.HasHome) -- the same wall
+        /// vanilla's PowerConnectionMaker.TryConnectToAnyPowerNet measures a wall attachment's connection from.</summary>
+        public static void SetWallHome(Thing th, MachineInfo m)
+        {
+            if (th?.def?.building == null || !th.def.building.isAttachment || !th.Spawned) return;
+            Thing wall = GenConstruct.GetWallAttachedTo(th);
+            if (wall == null) return;
+            m.HasHome = true; m.HomeX = wall.Position.x; m.HomeZ = wall.Position.z;
         }
 
         /// <summary>Where a machine's drawn art stands in from its footprint edge (owner review 2026-10-04 B10): the cord runs on

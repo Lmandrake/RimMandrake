@@ -37,19 +37,42 @@ namespace RimMandrake.MessyConduit.Aerial
             d["Scrapper/East"] = 0.453;
             d["Scrapper/West"] = 0.453;
             d["Scrapper/North"] = 0.344;
-            d["Scrapper/South"] = 0.172;
+            d["Scrapper/South"] = -0.086;
             d["Industrial/East"] = 0.453;
             d["Industrial/West"] = 0.453;
             d["Industrial/North"] = 0.359;
-            d["Industrial/South"] = 0.180;
+            d["Industrial/South"] = -0.016;
             d["Modern/East"] = 0.492;
             d["Modern/West"] = 0.492;
             d["Modern/North"] = 0.391;
-            d["Modern/South"] = 0.172;
+            d["Modern/South"] = -0.039;
             d["Futuristic/East"] = 0.336;
             d["Futuristic/West"] = 0.336;
             d["Futuristic/North"] = 0.258;
-            d["Futuristic/South"] = 0.117;
+            d["Futuristic/South"] = 0.000;
+            return d;
+        }
+
+        /// <summary>The plate's thickness along the wall normal, cells (0 = no plate drawn: the north-face cut, round 4).</summary>
+        public static Dictionary<string, double> PlateDepth()
+        {
+            var d = new Dictionary<string, double>();
+            d["Scrapper/East"] = 0.141;
+            d["Scrapper/West"] = 0.141;
+            d["Scrapper/North"] = 0.094;
+            d["Scrapper/South"] = 0.000;
+            d["Industrial/East"] = 0.141;
+            d["Industrial/West"] = 0.141;
+            d["Industrial/North"] = 0.234;
+            d["Industrial/South"] = 0.000;
+            d["Modern/East"] = 0.102;
+            d["Modern/West"] = 0.102;
+            d["Modern/North"] = 0.109;
+            d["Modern/South"] = 0.000;
+            d["Futuristic/East"] = 0.070;
+            d["Futuristic/West"] = 0.070;
+            d["Futuristic/North"] = 0.086;
+            d["Futuristic/South"] = 0.000;
             return d;
         }
     }

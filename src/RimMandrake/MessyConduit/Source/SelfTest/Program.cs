@@ -67,6 +67,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             HoseSelfTest.Run(Check);       // lane D (L6 flexible hoses): HoseSelfTest.cs + ../Hose/HoseMath.cs
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs
             ReviewRound3Checks.Run();      // owner human review round 3 (2026-10-04): ReviewRound3Checks.cs
+            ReviewRound4Checks.Run();      // owner human review round 4 (2026-10-04): ReviewRound4Checks.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
@@ -193,7 +194,14 @@ namespace RimMandrake.MessyConduit.SelfTest
         /// in the strand still fails them.</summary>
         internal static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
         {
-            bool In(V2 p) => w.Machines.Any(m => p.X >= m.X0 && p.X < m.X0 + m.W && p.Z >= m.Z0 && p.Z < m.Z0 + m.H);
+            // round 4: a cord into a wall/rock face runs on PastFaceDepth under the wall by design (CordBuilder.PastFace)
+            bool PastFace(V2 p)
+            {
+                if (w.IsWalkable(p.Floor)) return false;
+                double fx = p.X - Math.Floor(p.X), fz = p.Z - Math.Floor(p.Z);
+                return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz)) <= CordBuilder.PastFaceDepth + 0.005;
+            }
+            bool In(V2 p) => PastFace(p) || w.Machines.Any(m => p.X >= m.X0 && p.X < m.X0 + m.W && p.Z >= m.Z0 && p.Z < m.Z0 + m.H);
             int a = 0, b = pts.Count - 1;
             while (a < b && In(pts[a])) a++;
             while (b > a && In(pts[b])) b--;

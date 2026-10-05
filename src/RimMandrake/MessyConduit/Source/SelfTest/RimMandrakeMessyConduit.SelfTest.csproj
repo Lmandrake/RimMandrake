@@ -34,6 +34,7 @@
     <Compile Include="..\Core\CordBuilder.cs" />
     <Compile Include="..\Core\CordAudit.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
+    <Compile Include="..\Core\WallMount.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="LaneAChecks.cs" />
     <Compile Include="..\Aerial\AerialMath.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="DeterminismChecks.cs" />
     <Compile Include="ReviewRound1Checks.cs" />
     <Compile Include="ReviewRound3Checks.cs" />
+    <Compile Include="ReviewRound4Checks.cs" />
   </ItemGroup>
 
   <ItemGroup>

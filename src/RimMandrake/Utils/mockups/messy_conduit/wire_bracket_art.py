@@ -54,6 +54,16 @@ N = 128
 # sticking out north, away from the viewer, is foreshortened: the _south art is squashed vertically to FORESHORTEN_N of
 # its height (re-centred; the draw offset re-seats the plate on the wall). The other three facings lie across or toward the view and keep full size.
 FORESHORTEN_N = 0.55
+# Round 4 (owner 2026-10-04, typed: "North-facing bracket (screenshot) still improperly placed, more perspective needed. I took a
+# second screenshot to show what a north-facing torch looks like mounted on the wall. The connector really should be barely
+# visible at all."): a bracket on a wall's NORTH face is behind the wall from RimWorld's camera; like the vanilla wall torch
+# (only its flame shows over the wall's top edge) only the INSULATOR may show. The _south texture is cut just under its
+# insulator (the plate, drawn face-on, can never be seen on that face) and drawn with the cut line on the wall's top edge
+# (AerialMath.BracketInset). KEEP_S = the fraction of the foreshortened opaque height kept from the top, judged by eye per look
+# on the wired textures (insulator end / plate start), 2026-10-04; Futuristic's flat disc insulator keeps a little of its
+# stem so the wire's attach point (the insulator centroid) stands over the wall edge (selftest review4 brackets).
+KEEP_S = {"scrapper": 0.31, "industrial": 0.49, "modern": 0.43, "futuristic": 0.52}
+FADE = 2                                       # px of alpha ramp at the cut, so it reads as going behind the wall top
 
 
 def find_render(look, facing):
@@ -117,6 +127,45 @@ def foreshorten_up(im, k):
     return out
 
 
+def keep_top(im, frac):
+    """Keep the top `frac` of the opaque art (rows from the bbox top), fading the last FADE rows to nothing."""
+    bb = im.getchannel("A").getbbox()
+    if not bb:
+        return im
+    y0, y1 = bb[1], bb[3]
+    cut = y0 + int(round((y1 - y0) * frac))
+    out = im.copy()
+    px = out.load()
+    for y in range(cut - FADE, N):
+        k = 0.0 if y >= cut else (cut - y) / float(FADE + 1)
+        for x in range(N):
+            r, g, b, a = px[x, y]
+            px[x, y] = (r, g, b, int(a * k))
+    return out
+
+
+def plate_depth(im, plate):
+    """The plate's thickness along the wall normal, cells: the run of rows/columns from the wall side whose opaque extent
+    is at least 0.6 of the widest (the plate is the widest part of a bracket; the arm and insulator are narrower)."""
+    a = im.getchannel("A")
+    if plate in ("top", "bottom"):
+        prof = [sum(1 for x in range(N) if a.getpixel((x, y)) > 128) for y in range(N)]
+    else:
+        prof = [sum(1 for y in range(N) if a.getpixel((x, y)) > 128) for x in range(N)]
+    idx = [i for i, v in enumerate(prof) if v > 0]
+    if not idx:
+        return 0.0
+    order = idx if plate in ("top", "left") else idx[::-1]
+    top = max(prof)
+    run = 0
+    for i in order:
+        if prof[i] >= 0.6 * top:
+            run += 1
+        elif run:
+            break
+    return round(run / float(N), 3)
+
+
 def cells(px, py):
     return round((px + 0.5) / N - 0.5, 3), round(0.5 - (py + 0.5) / N, 3)
 
@@ -140,8 +189,8 @@ def build(check):
                         im = ImageOps.flip(im) if f in ("north", "south") else ImageOps.mirror(im)
                         notes.append("%s %s: render plate %s, flipped to %s" % (look, f, plate, WALL_SIDE[f]))
                     if f == "south":
-                        im = foreshorten_up(im, FORESHORTEN_N)
-                        notes.append("%s south: foreshortened to %.2f of its height" % (look, FORESHORTEN_N))
+                        im = keep_top(foreshorten_up(im, FORESHORTEN_N), KEEP_S[lk])
+                        notes.append("%s south: foreshortened to %.2f of its height, cut under its insulator (keep %.2f)" % (look, FORESHORTEN_N, KEEP_S[lk]))
                     os.makedirs(os.path.join(STY, look), exist_ok=True)
                     artledger.install_image(os.path.join(STY, look, "WallBracket_%s.png" % f), im,
                                             reason="script:src/RimMandrake/Utils/mockups/messy_conduit/wire_bracket_art.py")
@@ -157,9 +206,10 @@ def build(check):
             plate = WALL_SIDE[f]               # wired textures always carry the plate on the wall side (flipped above)
             x, z = cells(*insulator(im, plate, int(round(22 * FORESHORTEN_N)) if f == "south" else 22))
             e = plate_edge(im, plate)
-            rows.append((look, f.capitalize(), x, z, e))
+            dp = 0.0 if f == "south" else plate_depth(im, plate)    # south: no plate drawn (cut away, round 4)
+            rows.append((look, f.capitalize(), x, z, e, dp))
             if f == "east":
-                rows.append((look, "West", -x, z, e))
+                rows.append((look, "West", -x, z, e, dp))
         notes.append("%s: wired %s" % (look, ", ".join("%s (%.2f,%.2f)" % (r[1], r[2], r[3]) for r in rows if r[0] == look)))
     return rows, notes, stale
 
@@ -167,6 +217,7 @@ def build(check):
 def table_src(rows):
     body = "\n".join('            d["%s/%s"] = new P2(%.3f, %.3f);' % r[:4] for r in rows)
     edges = "\n".join('            d["%s/%s"] = %.3f;' % (r[0], r[1], r[4]) for r in rows)
+    depths = "\n".join('            d["%s/%s"] = %.3f;' % (r[0], r[1], r[5]) for r in rows)
     return '''// GENERATED by src/RimMandrake/Utils/mockups/messy_conduit/wire_bracket_art.py -- do not edit by hand.
 // Wall bracket geometry per Look/rotation, measured from each look's own per-facing art (cells; x east, z north). Absent =
 // the look has no art of its own yet (tinted stand-in, def attachZ). Verse-free: the SelfTest compiles this file.
@@ -191,9 +242,17 @@ namespace RimMandrake.MessyConduit.Aerial
 %s
             return d;
         }
+
+        /// <summary>The plate's thickness along the wall normal, cells (0 = no plate drawn: the north-face cut, round 4).</summary>
+        public static Dictionary<string, double> PlateDepth()
+        {
+            var d = new Dictionary<string, double>();
+%s
+            return d;
+        }
     }
 }
-''' % (body, edges)
+''' % (body, edges, depths)
 
 
 def main(argv):

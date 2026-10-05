@@ -118,6 +118,28 @@ namespace RimMandrake.MessyConduit.Aerial
         private static readonly Dictionary<ThingDef, string> origTops = new Dictionary<ThingDef, string>();
         private static readonly Dictionary<ThingDef, string> tops = new Dictionary<ThingDef, string>();
 
+        /// <summary>Round 4 (owner 2026-10-04: "Light controls present on light mast, but no illumination present"): where each
+        /// look's lamp-mast BULB is, (x, z) cells from the cell centre, read off its AerialLampMast.png (256x512 drawn 2x4,
+        /// graphic top at z 3.5: z = 3.5 - row/128, x = (col - 128)/128). The lit head is drawn there while the glower glows,
+        /// so the lamp reads as lit even at noon, when the glow grid's light is invisible outdoors (vanilla lamps alike).</summary>
+        public static readonly Dictionary<string, Vector2> LampHead = new Dictionary<string, Vector2>
+        {
+            { "Scrapper", new Vector2(0.64f, 2.06f) }, { "Industrial", new Vector2(0.56f, 2.06f) },
+            { "Modern", new Vector2(0.65f, 2.63f) }, { "Futuristic", new Vector2(0.60f, 2.53f) }
+        };
+
+        private static readonly Dictionary<int, Material> glowByColour = new Dictionary<int, Material>();
+
+        /// <summary>The additive head glow in the glower's own colour (cached per colour; darklight stays blue).</summary>
+        public static Material HeadGlow(Color c)
+        {
+            if (Glow == null) return null;
+            int key = ((int)(c.r * 255) << 16) | ((int)(c.g * 255) << 8) | (int)(c.b * 255);
+            if (!glowByColour.TryGetValue(key, out Material m))
+                glowByColour[key] = m = MaterialPool.MatFrom(new MaterialRequest(Glow.mainTexture, ShaderDatabase.MoteGlow, c));
+            return m;
+        }
+
         public static string TopPathFor(ThingDef d) => d != null && tops.TryGetValue(d, out string p) ? p : null;
 
         /// <summary>Per-look pole geometry, measured from each look's own art when it lands (128x512 canvas drawn 1x4 cells,
@@ -155,13 +177,15 @@ namespace RimMandrake.MessyConduit.Aerial
         private static readonly string[] RotNames = { "North", "East", "South", "West" };
         public static readonly Dictionary<string, P2> BracketTable = BracketGeometryTable.Build();
         public static readonly Dictionary<string, double> BracketPlateEdge = BracketGeometryTable.PlateEdge();
+        public static readonly Dictionary<string, double> BracketPlateDepth = BracketGeometryTable.PlateDepth();
 
         /// <summary>Round 2 (owner 2026-10-04): the look's per-facing bracket draw offset, plate on the wall's outer edge
         /// (AerialMath.BracketDrawOffset); null = no measured art (the def's own offsets stand).</summary>
         public static Vector3? BracketDrawOffset(string look, int rot)
         {
             if (!BracketPlateEdge.TryGetValue(look + "/" + RotNames[rot & 3], out double e)) return null;
-            P2 o = AerialMath.BracketDrawOffset(rot, e);
+            BracketPlateDepth.TryGetValue(look + "/" + RotNames[rot & 3], out double dp);
+            P2 o = AerialMath.BracketDrawOffset(rot, e, dp);
             return new Vector3((float)o.X, 0f, (float)o.Z);
         }
 

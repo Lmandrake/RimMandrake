@@ -112,9 +112,11 @@
       <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
       <li Class="RimMandrake.MessyConduit.Aerial.CompProperties_AerialAnchor" />
       <li Class="CompProperties_Flickable" />
+      <!-- round 4 (owner 2026-10-04: "no illumination present"): the vanilla StandingLamp's own radius and colour; the lit
+           bulb at the head is drawn by RM_MapComponent_Aerial.DrawLitHead while this glows (visible at noon, too) -->
       <li Class="CompProperties_Glower">
-        <glowRadius>9</glowRadius>
-        <glowColor>(214,148,94,0)</glowColor>
+        <glowRadius>12</glowRadius>
+        <glowColor>(217,217,208,0)</glowColor>
         <colorPickerEnabled>true</colorPickerEnabled>
         <darklightToggle>true</darklightToggle>
       </li>

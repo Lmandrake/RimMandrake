@@ -24,6 +24,13 @@ namespace RimMandrake.MessyConduit.Core
         /// entering that side runs on this far under the art (owner review 2026-10-04 B10). 0 = art reaches the edge.</summary>
         public double InsetS, InsetN, InsetE, InsetW;
 
+        /// <summary>Round 4 (owner 2026-10-04, station 19: "power cables connected to wall devices should just go up to and
+        /// beneath the wall that contains the device, not stop short (such as lights), same rule as other powered devices"):
+        /// a wall-mounted device (building.isAttachment: wall lamp, wall bracket) is drawn ON its wall, so its cord ends at
+        /// the CENTRE of that wall cell, beneath the wall, instead of the footprint centroid. HasHome false = the centroid.</summary>
+        public bool HasHome;
+        public int HomeX, HomeZ;
+
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
 

@@ -90,11 +90,12 @@ namespace RimMandrake.MessyConduit.SelfTest
                     if (!ins.TryGetValue(key, out P2 i) || !edge.TryGetValue(key, out double e)) { bad.Add(key + " missing"); continue; }
                     n++;
                     P2 nrm = AerialMath.WallNormal(rot), t = new P2(-nrm.Z, nrm.X);
-                    P2 off = AerialMath.BracketDrawOffset(rot, e);
+                    double dp = BracketGeometryTable.PlateDepth()[key];
+                    P2 off = AerialMath.BracketDrawOffset(rot, e, dp);
                     double plateWorld = AerialMath.Dot(off, nrm) + e;                        // along the normal, from the cell centre
                     double insWorld = AerialMath.Dot(off, nrm) + AerialMath.Dot(i, nrm);
                     if (!AerialMath.BracketLeansOut(rot, i)) bad.Add(key + " leans INTO the wall (insulator " + i + ")");
-                    if (Math.Abs(plateWorld - (0.5 + AerialMath.BracketPlateInset)) > 1e-9) bad.Add(key + " plate edge at " + plateWorld.ToString("0.000") + ", not the wall's outer edge");
+                    if (Math.Abs(plateWorld - (0.5 + AerialMath.BracketInset(rot, dp))) > 1e-9) bad.Add(key + " plate edge at " + plateWorld.ToString("0.000") + ", not the wall's outer edge");
                     if (insWorld >= 0.5) bad.Add(key + " insulator buried in the wall (" + insWorld.ToString("0.00") + ")");
                     if (insWorld <= -0.5) bad.Add(key + " insulator past its own cell (" + insWorld.ToString("0.00") + ")");
                     if (Math.Abs(AerialMath.Dot(off, t)) > 1e-12) bad.Add(key + " draw offset slides along the wall");
@@ -105,7 +106,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(AerialMath.WallNormal(0).Z == 1 && AerialMath.WallNormal(1).X == 1 && AerialMath.WallNormal(2).Z == -1 && AerialMath.WallNormal(3).X == -1,
               "wall normal: N +z, E +x, S -z, W -x");
             // N/S at the outer edge, not the centre: the graphic centre stands OUT of the wall cell, not 0.9 onto it
-            double sOff = AerialMath.Dot(AerialMath.BracketDrawOffset(2, 0.32), AerialMath.WallNormal(2));
+            double sOff = AerialMath.Dot(AerialMath.BracketDrawOffset(2, 0.32, 0), AerialMath.WallNormal(2));
             C(sOff < 0.45, "a south bracket's graphic is drawn " + sOff.ToString("0.00") + " toward its wall (was 0.9: the wall's centre)");
             // can fail: the round-1 Scrapper/South insulator (plate-up art) leaned into the wall
             C(!AerialMath.BracketLeansOut(2, new P2(0.004, -0.229)) && !AerialMath.BracketLeansOut(1, new P2(0.3, 0.1)),

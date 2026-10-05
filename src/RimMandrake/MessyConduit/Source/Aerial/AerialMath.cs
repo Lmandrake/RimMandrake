@@ -302,9 +302,26 @@ namespace RimMandrake.MessyConduit.Aerial
         }
 
         // ------------------------------------------------------------------ the wall bracket (owner round 2, 2026-10-04)
-        /// <summary>How far the bracket plate's wall-side extreme reaches past the wall's outer face INTO the wall (cells):
-        /// enough that the plate visibly sits ON the wall edge, never so much that the bracket reads as buried. PROVISIONAL.</summary>
-        public const double BracketPlateInset = 0.12;
+        /// <summary>How far the bracket art's wall-side extreme reaches past the wall's outer face INTO the wall (cells), per face
+        /// (round 4, owner 2026-10-04: plates "should look mounted ON the wall"; "do they extend OUT of the wall? If so, it's not
+        /// right"; the north-face bracket "really should be barely visible at all", like the vanilla wall torch). The wall face
+        /// model is Core.WallMount (measured from his station-9 shot):
+        ///   rot North: on the wall's visible SOUTH face: the whole plate inside the face band (at least its own depth, min 0.12)
+        ///   rot East/West: on a side face seen edge-on: the whole plate inside the wall's edge bevel (same rule, max 0.18)
+        ///   rot South: on the hidden NORTH face: the art is cut under its insulator; the cut line sits just under the wall's top
+        ///              edge, so only the insulator shows over the wall, the way a wall torch's flame does.</summary>
+        public static double BracketInset(int rot, double plateDepth)
+        {
+            switch (rot & 3)
+            {
+                case 2: return NorthFaceCutInset;
+                case 0: return Math.Min(Math.Max(0.12, plateDepth + 0.02), RimMandrake.MessyConduit.Core.WallMount.SouthBand - 0.02);
+                default: return Math.Min(Math.Max(0.12, plateDepth + 0.01), RimMandrake.MessyConduit.Core.WallMount.SideBevel);
+            }
+        }
+
+        /// <summary>rot South: how far under the wall's top edge the cut line of the insulator-only art sits (cells).</summary>
+        public const double NorthFaceCutInset = 0.03;
 
         /// <summary>Unit normal from the bracket's cell toward its wall. rot = RimWorld Rot4.AsInt (0 N, 1 E, 2 S, 3 W): a
         /// wall-attached bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall).</summary>
@@ -323,12 +340,12 @@ namespace RimMandrake.MessyConduit.Aerial
 
         /// <summary>The bracket graphic's draw offset from its cell centre: along the wall normal only, so the plate's
         /// wall-side extreme (<paramref name="plateEdge"/>, cells from the graphic centre toward the wall, measured from the
-        /// art) lands <see cref="BracketPlateInset"/> past the wall's outer face (which is 0.5 from the cell centre). The arm
+        /// art) lands <see cref="BracketInset"/> past the wall's outer face (which is 0.5 from the cell centre). The arm
         /// and insulator then stand over the bracket's own cell, out from the wall.</summary>
-        public static P2 BracketDrawOffset(int rot, double plateEdge)
+        public static P2 BracketDrawOffset(int rot, double plateEdge, double plateDepth)
         {
             P2 n = WallNormal(rot);
-            double d = 0.5 + BracketPlateInset - plateEdge;
+            double d = 0.5 + BracketInset(rot, plateDepth) - plateEdge;
             return new P2(n.X * d, n.Z * d);
         }
 
