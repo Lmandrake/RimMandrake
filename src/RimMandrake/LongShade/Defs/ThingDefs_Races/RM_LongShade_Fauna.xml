@@ -1078,9 +1078,10 @@
 		     infrastructure/artpipe/pending/ under RM_Groundrunner_{east,north,south},
 		     not yet rendered) — intentionally magenta until that job clears. BLOCKED,
 		     art owed. Never repoint back at AA_ art to hide the magenta. -->
-		<defName>RM_Groundrunner</defName>
-		<label>groundrunner</label>
-		<description>A strange chimera between a bear and mole, groundrunners were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
+		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename to the Oreclaw, lives in RimMandrake level."): renamed from RM_Groundrunner / "groundrunner"; RSW_Groundrunner retired onto this def. texPaths unchanged so the kept art binds. -->
+		<defName>RM_Oreclaw</defName>
+		<label>oreclaw</label>
+		<description>A strange chimera between a bear and mole, oreclaws were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
 		<statBases>
 			<MoveSpeed>3.00</MoveSpeed>
 			<ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -1200,9 +1201,9 @@
 	</ThingDef>
 
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RM_Groundrunner</defName>
-		<race>RM_Groundrunner</race>
-		<label>groundrunner</label>
+		<defName>RM_Oreclaw</defName>
+		<race>RM_Oreclaw</race>
+		<label>oreclaw</label>
 		<combatPower>350</combatPower>
 		<ecoSystemWeight>0.2</ecoSystemWeight>
 		<alternateGraphicChance>1</alternateGraphicChance>
