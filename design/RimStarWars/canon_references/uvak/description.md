@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Uvak` — in-repo label "uvak"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Uvak
 
@@ -18,11 +14,39 @@ Adari Vaal had inherited an uvak named Nink from her Neshtovar husband after he 
 Each uvak was capable of carrying a maximum of two Human-sized individuals. The uvak were also capable of flying for long distances across landmasses and oceans by tapping into a jetstream current in Kesh's upper atmosphere. However, long-distance travel between Keshtah Minor and the other continents Alanciar and Eshkrene was considered by many Keshiri and Sith alike to be very dangerous if not impossible. While uvak were known to live on Keshtah Minor and Alanciar, they did not live on the polar continent of Eshkrene in the planet's South Pole due to its harsh and frozen environment.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. All four images are canon, all comic or painted art (Lost Tribe of the Sith / Dark
+Horse comics) by different artists, so palette varies widely.
+- **Silhouette**: a wyvern-like flying mount. A heavy muscular reptilian body on two strong hind
+  legs and two forelegs (quadruped on the ground), a long thick tapering tail, a long mobile neck,
+  and a large bat-style wing on each side attached at the shoulders.
+- **Head (loud)**: a distinctive BIRD-LIKE head: a long deep hooked or blunt beak like a raven or
+  toucan, with a huge gaping red mouth; a rounded skull, small spikes along the crest and brow,
+  and ONE round eye on each side of the head (the painting in image 3 shows a pale emerald/teal eye
+  and a crest/brow plate; prose says emerald eyes). Beak is long and thick, and the mouth is lined
+  with red. Image 2 gives the clearest beak profile (raven-like).
+- **Wings**: leathery bat-style membrane over long finger bones, a pointed upper arm ridge;
+  large enough to carry two riders (wing extends well beyond the body).
+- **Feet**: heavily scaled four-toed paws ending in long curved dark talons.
+- **Skin**: covered in fine overlapping scales (pebbled, ridged); in image 1 and 3 the skin is a grainy,
+  warty-textured dark hide.
+- **Colour (images disagree)**: image 1 = near-black charcoal body with red-orange wing
+  membrane; image 2 (stable) = mixed -- purple adults and pink/red/grey/lilac babies and juveniles;
+  image 3 = grey-blue head and neck, dark charcoal body, pink-brown wing; image 4 = pale
+  blue-grey and pink wing membranes. No single colour: choose a base of dark grey with reddish
+  membrane (images 1, 3) and treat purple/pink/blue as variants.
+- **Age cues**: juveniles (image 2) are small, thin, long-tailed, big-eyed, and very bat/pterodactyl-
+  like, with big wings relative to body; adults are heavy and broad.
+- **Size cues**: bigger than a human; carries one or two riders (images 1 and 3).
+- **Prose vs images**: prose "sharp beaks" confirmed; images add the wide red gaping mouth. Prose says
+  one set of emerald eyes on the front of the head -- images show eyes at the side.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Wyvern body: heavy scaled reptilian torso, strong legs with four-toed dark talons, long thick tapering tail, long neck
+- [ ] Large bat-style leathery wings with visible finger-bone ribs, wingspan well beyond the body
+- [ ] Bird-like head with a long thick hooked or blunt raven-like beak and a wide red mouth interior
+- [ ] Round eye (emerald/pale teal) on the side of the head, brow ridge and small head spikes
+- [ ] Dark grey or charcoal pebbled scaly hide with red-orange to pink wing membrane
+- [ ] Larger than a human, saddle-sized back (one to two riders)
 
 ## Engine limits
 not yet assessed

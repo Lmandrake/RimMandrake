@@ -15,3 +15,4 @@ qormot done
 scurrier done
 shyrack done
 strill done
+uvak done
