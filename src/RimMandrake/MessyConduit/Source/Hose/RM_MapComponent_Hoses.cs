@@ -87,8 +87,8 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         // ------------------------------------------------------------------ lay
-        /// <summary>The hose leaves the reel under its drum (HoseReelRect.Mouth, round 4), hidden by the sprite, so it shows
-        /// coming off the drum; the round-4 deployed art paints no hose of its own.</summary>
+        /// <summary>The hose leaves the reel at its drum's axis (HoseReelRect.Mouth, round 5), hidden by the sprite, so it shows
+        /// coming off the drum; the deployed art paints no hose of its own.</summary>
         public static V2 Start(CompHoseReel r) => r.Rect.Mouth;
 
         public HoseLay EnsureLay(CompHoseReel r)
@@ -200,7 +200,7 @@ namespace RimMandrake.MessyConduit.Hose
         private void DrawAll()
         {
             float y0 = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
-            lastWrapDraws = lastFeedDraws = 0;
+            lastWrapDraws = lastFeedDraws = lastReelEndHidden = 0;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -312,9 +312,12 @@ namespace RimMandrake.MessyConduit.Hose
             int n = pts.Count;
             Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
             if (HoseStyles.AgedClothWrap(hm.look)) wrapTint *= new Color(0.86f, 0.80f, 0.70f, 1f);   // aged cloth, not white (Scrapper only)
-            // reel end: a brass coupling whose face meets the reel, pointing into it
+            // reel end: a 1x1 reel's hose ends in a brass coupling whose face meets the reel, pointing into it. Round 5: the
+            // 2x2 reel's hose runs on to the drum's axis under the opaque drum (HoseReelRect.Mouth), so nothing is drawn
+            // there -- a coupling's body would reach back out past the drum into the gap above the base rail
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
+            if (!r.Rect.HidesHoseEnd) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
+            else lastReelEndHidden++;
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
             // round 4: the lay drew the hose dead straight over each joiner's run (HoseMath.StraightenAt), so the joiner's
@@ -341,7 +344,7 @@ namespace RimMandrake.MessyConduit.Hose
             }
         }
 
-        public int lastWrapDraws, lastFeedDraws;
+        public int lastWrapDraws, lastFeedDraws, lastReelEndHidden;
 
         /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
         /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,

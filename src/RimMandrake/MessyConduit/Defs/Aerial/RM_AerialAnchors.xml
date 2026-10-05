@@ -117,8 +117,8 @@
       <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
       <li Class="RimMandrake.MessyConduit.Aerial.CompProperties_AerialAnchor" />
       <li Class="CompProperties_Flickable" />
-      <!-- round 4 (owner 2026-10-04: "no illumination present"): the vanilla StandingLamp's own radius and colour; the lit
-           bulb at the head is drawn by RM_MapComponent_Aerial.DrawLitHead while this glows (visible at noon, too) -->
+      <!-- round 4: the vanilla StandingLamp's own radius and colour. Round 5 (owner: "like ordinary lights, not frozen bright
+           sparkles ... the same as the wall lights"): nothing else, exactly as vanilla WallLamp; the head is the look's art -->
       <li Class="CompProperties_Glower">
         <glowRadius>12</glowRadius>
         <glowColor>(217,217,208,0)</glowColor>

@@ -38,6 +38,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             Reel2x2();
             Replan();
             Round4();
+            Round5();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -386,8 +387,12 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(reel.StartCellToward(new Cell(20, 10)) == new Cell(11, 10), "2x2: the planner starts from the reel cell nearest the target");
             // round 4: the route is measured pulled taut from the hose's mouth under the drum (9.11 cells to (20.5, 11.5))
             // x RouteMargin = 9.56; "too far" still measures from the centre (9.51)
-            C(HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 9.53) == "route too long" && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 9.6) == null,
-                "2x2: route length counts the run from the drum mouth (" + HoseMath.RouteLength(w, reel, new Cell(20, 11)).ToString("0.000") + ")");
+            // round 5: the mouth is the drum's axis (nearer the target than the centre here), so the straight run is exactly
+            // mouth -> target; "too far" still measures from the centre
+            double rl = HoseMath.RouteLength(w, reel, new Cell(20, 11)), md = V2.Dist(reel.Mouth, new Cell(20, 11).Centre);
+            C(Math.Abs(rl - md) < 1e-6 && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), md * HoseMath.RouteMargin - 0.02) != null
+                && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), Math.Max(md * HoseMath.RouteMargin, V2.Dist(reel.Centre, new Cell(20, 11).Centre)) + 0.01) == null,
+                "2x2: route length counts the run from the drum mouth (" + rl.ToString("0.000") + " = " + md.ToString("0.000") + ")");
             HoseLay l = HoseMath.Lay(w, reel.Centre, new Cell(20, 11).Centre, new HoseShapeParams(), 5);
             C(l.Ok && V2.Dist(l.Flat[0], reel.Centre) < 1e-6, "2x2: the laid hose starts exactly at the reel centre");
         }
@@ -452,8 +457,8 @@ namespace RimMandrake.MessyConduit.SelfTest
             var sp = new HoseShapeParams { MaxLength = 30 };
             // the hose leaves the 2x2 reel under its drum (east half, front), inside the footprint, not at the pump-side centre
             V2 m0 = reel.Mouth, c0 = reel.Centre;
-            C(reel.Contains(m0.Floor) && m0.X > c0.X + 0.3 && m0.Z < c0.Z - 0.2 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
-                "r4 reel: the hose leaves the 2x2 reel under its drum (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
+            C(reel.Contains(m0.Floor) && m0.X > c0.X + 0.3 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
+                "r4 reel: the hose leaves the 2x2 reel under its drum, drum side (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
             // station 22: the short way out fits a 30-cell hose and is laid clear of every wall
             CordWorld w = StationMaze(null);
             double r22 = HoseMath.RouteLength(w, reel, far);
@@ -507,6 +512,123 @@ namespace RimMandrake.MessyConduit.SelfTest
                 "r4 joiners: an L-bend's joiner sits on the straight beside the corner (" + (ll.Joints.Count > 0 ? V2.Dist(ll.Centre[ll.Joints[0]], apex).ToString("0.0") : "none") + " cells from the apex), not across it");
             Console.WriteLine($"  hose r4: st22 route {r22:0.0} laid {l22.FlatLen:0.0}; st23 route {r23:0.0} laid {l23.FlatLen:0.0}; owner maze route {ro:0.0} (40-cell lay {lo.FlatLen:0.0}); slack cap {tight.FlatLen:0.0}/21; joiners st22 {l22.Joints.Count} st23 {l23.Joints.Count} owner {lo.Joints.Count} (bends {HoseMath.Joints(l22.Centre, 8).Count}/{HoseMath.Joints(l23.Centre, 8).Count}/{HoseMath.Joints(lo.Centre, 8).Count})");
             C(tight.Ok && tight.FlatLen <= 21 + 1e-6 && tight.PlumpLen <= 21 + 1e-6, "r4 slack cap: a 21-cell hose on a " + r22.ToString("0.0") + "-cell route lays " + tight.FlatLen.ToString("0.0"));
+        }
+
+        /// <summary>A square spiral maze, n x n (wall spiral, one-cell corridor), set 2 cells in from the world's edge. The
+        /// way in is the gap at the outer ring's west end; the reel (1x1) sits at the corridor's innermost dead end (the
+        /// cell farthest from the way in), and the free end is 2 cells outside the gap.</summary>
+        public static CordWorld Spiral(int n, out HoseReelRect reel, out Cell exit)
+        {
+            const int O = 2;
+            var w = Open(n + 2 * O, n + 2 * O);
+            var walls = new HashSet<Cell>();
+            int x = 0, z = n - 1, k = 0;
+            var dirs = new[] { new Cell(1, 0), new Cell(0, -1), new Cell(-1, 0), new Cell(0, 1) };
+            var lens = new List<int> { n - 1, n - 1, n - 1 };
+            for (int L = n - 3; L > 0; L -= 2) { lens.Add(L); lens.Add(L); }
+            walls.Add(new Cell(x, z));
+            foreach (int L in lens)
+            {
+                Cell d = dirs[k++ % 4];
+                for (int i = 0; i < L; i++) { x += d.X; z += d.Z; walls.Add(new Cell(x, z)); }
+            }
+            foreach (Cell c in walls) w.SetBlocked(new Cell(c.X + O, c.Z + O), BlockKind.Wall);
+            exit = new Cell(O - 2, n - 2 + O);
+            // the innermost dead end: the walkable maze cell farthest (BFS) from the way in
+            var dist = new Dictionary<Cell, int> { [new Cell(O, n - 2 + O)] = 0 };
+            var q = new Queue<Cell>(dist.Keys);
+            Cell far = new Cell(O, n - 2 + O);
+            while (q.Count > 0)
+            {
+                Cell c = q.Dequeue();
+                if (dist[c] > dist[far]) far = c;
+                foreach (Cell d in dirs)
+                {
+                    Cell nb = c + d;
+                    if (nb.X < O || nb.Z < O || nb.X >= O + n || nb.Z >= O + n || !w.IsWalkable(nb) || dist.ContainsKey(nb)) continue;
+                    dist[nb] = dist[c] + 1;
+                    q.Enqueue(nb);
+                }
+            }
+            reel = new HoseReelRect(far.X, far.Z, 1, 1);
+            return w;
+        }
+
+        // ------------------------------------------------------------------ round 5 (owner 2026-10-04)
+        private static void Round5()
+        {
+            string perf;
+            // station 11: the hose ends at the reel drum's axis, under the opaque drum, never below it
+            var reel = new HoseReelRect(6 + SX, 5 + SZ, 2, 2);
+            V2 m = reel.Mouth, c = reel.Centre;
+            C(reel.Contains(m.Floor) && Math.Abs(m.Z - c.Z) < 0.1 && m.X - c.X > 0.45 && m.X - c.X < 0.7 && HoseReelRect.DrumBelowAxis > 0.4
+                && reel.HidesHoseEnd && !new HoseReelRect(4, 4, 1, 1).HidesHoseEnd,
+                "r5 st11: the hose aims at the drum's axis (" + (m.X - c.X).ToString("0.00") + ", " + (m.Z - c.Z).ToString("0.00") + " from the centre; drum reaches "
+                + HoseReelRect.DrumBelowAxis.ToString("0.00") + " below it) and no reel-end fitting is drawn on the 2x2 reel");
+            // a hose laid south from the reel: its first sample is the mouth, so its end sits at the axis, not below the drum
+            CordWorld ow = Open(30, 30);
+            var r2 = new HoseReelRect(10, 20, 2, 2);
+            HoseLay ls = HoseMath.Lay(ow, r2.Mouth, new V2(11.5, 6.5), new HoseShapeParams { MaxLength = 30 }, 4);
+            C(ls.Ok && V2.Dist(ls.Flat[0], r2.Mouth) < 1e-6 && ls.Flat[0].Z > r2.Centre.Z - HoseReelRect.DrumBelowAxis + 0.3,
+                "r5 st11: a hose laid south starts at the axis (" + ls.Flat[0].Z.ToString("0.00") + "), " + HoseReelRect.DrumBelowAxis.ToString("0.00") + " above the drum's underside");
+
+            // station 34 (old 22) with the owner's walls, read cell for cell off 20261004210108_1.jpg: the north-east gap
+            // shut by (12,8) and (11,9) (a pinched diagonal), the south way out of the west corridor by (3,2), the south-east
+            // corridor by (10,1..3). The one way left runs out the chamber's west door, north, round the far west side, along
+            // the bottom and up and over (10,1..3) to the south-east gap.
+            var owner = new List<Cell> { new Cell(12, 8), new Cell(11, 9), new Cell(3, 2), new Cell(10, 1), new Cell(10, 2), new Cell(10, 3) };
+            for (int z = 3; z <= 8; z++) owner.Add(new Cell(2, z));
+            CordWorld w = StationMaze(owner);
+            var far = new Cell(16 + SX, 2 + SZ);
+            double bounded = HoseMath.RouteLength(w, reel, far, 30);
+            int expB = HoseMath.LastRouteExpanded;
+            double unb = HoseMath.RouteLength(w, reel, far);
+            int expU = HoseMath.LastRouteExpanded;
+            List<Cell> old20k = CordPlanner.AStar(w, reel.StartCellToward(far), far, 20000);
+            string why = HoseMath.CheckReplan(w, reel, far, 30, false, null);
+            C(bounded > 0 && Math.Abs(bounded - unb) < 1e-9 && old20k != null && why == "route too long" && unb * HoseMath.RouteMargin > 30
+                && Math.Ceiling(unb * HoseMath.RouteMargin) >= 33 && Math.Ceiling(unb * HoseMath.RouteMargin) <= 35,
+                "r5 st34: the owner's maze is FOUND (taut " + unb.ToString("0.0") + " cells, x" + HoseMath.RouteMargin + " = " + (unb * HoseMath.RouteMargin).ToString("0.0")
+                + "; the game said 34) and is longer than the 30-cell hose -> 'route too long', the length rule, not the search");
+            C(HoseMath.CheckInstall(w, reel, far, 36) == null, "r5 st34: a 36-cell hose (Mod Settings) takes the owner's maze");
+
+            // the spiral: every route within the hose's length is found, however winding; the search stays inside the
+            // (2 x bound + 1)^2 square round the reel
+            var rows = new List<string>();
+            bool allFound = true, bounds = true;
+            foreach (int turns in new[] { 7, 9, 11, 13 })
+            {
+                CordWorld sw = Spiral(turns, out HoseReelRect sr, out Cell ex);
+                double full = HoseMath.RouteLength(sw, sr, ex);
+                int fe = HoseMath.LastRouteExpanded;
+                if (full < 0) { allFound = false; rows.Add(turns + "x" + turns + ": NO ROUTE"); continue; }
+                double hose = Math.Ceiling(full * HoseMath.RouteMargin) + 1;
+                double got = HoseMath.RouteLength(sw, sr, ex, hose);
+                int ge = HoseMath.LastRouteExpanded;
+                double lim = HoseMath.SearchLengthBound(hose);
+                if (got < 0 || Math.Abs(got - full) > 1e-6 || HoseMath.CheckInstall(sw, sr, ex, hose) != null) allFound = false;
+                if (ge > Math.Pow(2 * Math.Ceiling(lim) + 3, 2) || HoseMath.LastRouteCapped) bounds = false;
+                if (HoseMath.CheckInstall(sw, sr, ex, hose - 3) != "route too long") allFound = false;
+                rows.Add(turns + "x" + turns + ": route " + full.ToString("0.0") + ", hose " + hose + " found it in " + ge + " expansions (unbounded " + fe + ")");
+            }
+            C(allFound && bounds, "r5 spiral: every spiral maze (7x7 to 13x13) is found by a hose just long enough and refused 'route too long' by one 3 cells shorter; " + string.Join("; ", rows));
+            // performance bound: a 250x250 open map with the free end walled into a box -- the bounded search stops inside
+            // its square, the unbounded one (telling "no route" from "too long") at RouteMaxExpand
+            CordWorld big = Open(250, 250);
+            for (int x = 139; x <= 141; x++) for (int z = 124; z <= 126; z++) if (x != 140 || z != 125) big.SetBlocked(new Cell(x, z), BlockKind.Wall);
+            var br = new HoseReelRect(120, 124, 2, 2);
+            var sw0 = System.Diagnostics.Stopwatch.StartNew();
+            double bb = HoseMath.RouteLength(big, br, new Cell(140, 125), 30);
+            int bexp = HoseMath.LastRouteExpanded;
+            long bms = sw0.ElapsedMilliseconds;
+            sw0.Restart();
+            string bwhy = HoseMath.CheckInstall(big, br, new Cell(140, 125), 30);
+            int uexp = HoseMath.LastRouteExpanded;
+            long ums = sw0.ElapsedMilliseconds;
+            C(bb < 0 && bexp <= Math.Pow(2 * Math.Ceiling(HoseMath.SearchLengthBound(30)) + 3, 2) && bwhy == "no route" && uexp <= HoseMath.RouteMaxExpand + 1,
+                "r5 bound: a boxed-in free end on a 250x250 map: the 30-cell hose's search opens " + bexp + " cells (" + bms + " ms), the no-route check " + uexp + " (" + ums + " ms)");
+            perf = "boxed target 250x250: bounded " + bexp + " cells " + bms + " ms, unbounded " + uexp + " cells " + ums + " ms";
+            Console.WriteLine("  hose r5: " + perf + "; st34 owner maze taut " + unb.ToString("0.0") + " (needs " + Math.Ceiling(unb * HoseMath.RouteMargin) + "), bounded search " + expB + " expansions, unbounded " + expU + "; spiral " + string.Join("; ", rows));
         }
 
         // ------------------------------------------------------------------ HOSE_BLOCKED_REROUTE_RETRACT_1 (owner card 2026-10-04)
