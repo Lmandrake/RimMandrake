@@ -69,6 +69,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             ReviewRound3Checks.Run();      // owner human review round 3 (2026-10-04): ReviewRound3Checks.cs
             ReviewRound4Checks.Run();      // owner human review round 4 (2026-10-04): ReviewRound4Checks.cs
             ReviewRound5Checks.Run();      // owner human review round 5 (2026-10-04): ReviewRound5Checks.cs
+            ReviewRound6Checks.Run();      // owner code round 6 (2026-10-04): ReviewRound6Checks.cs
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
             StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs

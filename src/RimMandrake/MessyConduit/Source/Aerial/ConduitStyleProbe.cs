@@ -19,6 +19,7 @@ namespace RimMandrake.MessyConduit.Aerial
     ///                                textures the rect's RM_MessyCords section meshes actually hold
     ///   cplace:def:key:x,z:god|build | cline:def:key:x0,z0:x1,z1:god|build | cfinishbuild | cprocess | cclearpicks
     ///   crestyle:x,z:key             the gizmo's own call | cdeconstruct:x,z   a member destroyed as by deconstruction
+    ///   clamp:x,z:<Look>|MatchRun    round 6: a floor lamp's own Restyle gizmo call (cstyles lists "lamps")
     /// </summary>
     public static class ConduitStyleProbe
     {
@@ -47,6 +48,14 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (t == null) return AerialProbe.Fail(cmd, "no run member there");
                 int n = runs.RestyleRun(t, p[1], false);
                 return AerialProbe.Ok(cmd, "\"changed\":" + n + ",\"message\":" + S(runs.lastMessage));
+            }
+            if (cmd.StartsWith("clamp:"))             // round 6: clamp:x,z:<Look>|MatchRun -- the lamp's own Restyle gizmo call
+            {
+                string[] p = cmd.Substring(6).Split(':');
+                Thing t = Cell(p[0]).GetThingList(map).FirstOrDefault(x => ConduitStylePicker.IsLamp(x.def));
+                if (t == null) return AerialProbe.Fail(cmd, "no styled floor lamp there");
+                bool changed = runs.RestyleLamp(t, p[1], false);
+                return AerialProbe.Ok(cmd, "\"changed\":" + B(changed) + ",\"rawStyle\":" + S(StylePicker.RawStyle(t)?.defName) + ",\"message\":" + S(runs.lastMessage));
             }
             if (cmd.StartsWith("cdeconstruct:"))
             {
@@ -156,6 +165,24 @@ namespace RimMandrake.MessyConduit.Aerial
                        ",\"rawStyle\":" + S(StylePicker.RawStyle(t)?.defName) + ",\"look\":" + S(look) + ",\"colour\":" + S(colour) +
                        ",\"run\":" + runOf[t] + ",\"runArea\":" + runArea[runOf[t]] + (drawn != null ? ",\"drawnTex\":" + S(drawn) : "") + "}";
             }).ToList();
+            // ---- round 6: floor lamps in the rect, the run each is hooked to and the art it draws
+            var lampRows = new List<string>();
+            foreach (string dn in ConduitStyles.LampDefs)
+            {
+                ThingDef ld = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
+                if (ld == null) continue;
+                foreach (Thing l in map.listerThings.ThingsOfDef(ld))
+                {
+                    if (!rect.Contains(l.Position)) continue;
+                    List<Thing> lr = runs.RunOfLamp(l);
+                    string drawn;
+                    try { drawn = l.Graphic?.path; } catch (Exception ex) { drawn = "ERR " + ex.GetType().Name; }
+                    lampRows.Add("{\"id\":" + l.thingIDNumber + ",\"x\":" + l.Position.x + ",\"z\":" + l.Position.z + ",\"rawStyle\":" + S(StylePicker.RawStyle(l)?.defName) +
+                                 ",\"look\":" + S(ConduitStylePicker.RawLook(l)) + ",\"run\":" + (lr == null ? "null" : lr[0].thingIDNumber.ToString()) +
+                                 ",\"runLook\":" + S(lr == null ? null : RM_MapComponent_ConduitRuns.Info(lr).Look ?? StylePicker.DefaultLook) +
+                                 ",\"drawnPath\":" + S(drawn) + ",\"lit\":" + B(l.TryGetComp<CompGlower>()?.Glows ?? false) + "}");
+                }
+            }
             // ---- pieces owned in the rect
             var pieces = new List<string>();
             int legacy = 0, legacySame = 0;
@@ -205,7 +232,9 @@ namespace RimMandrake.MessyConduit.Aerial
                 ",\"missingStyleDefs\":[" + string.Join(",", ConduitStylePicker.Missing.Select(S)) + "],\"notStylable\":[" + string.Join(",", ConduitStylePicker.NotStylable.Select(S)) + "]" +
                 ",\"globalMissing\":[" + string.Join(",", CordMaterials.GlobalMissing.Select(S)) + "],\"lookStrands\":{" + string.Join(",", lookStrands) + "}" +
                 ",\"counters\":{\"processed\":" + runs.processed + ",\"adopted\":" + runs.adopted + ",\"bridges\":" + runs.bridges + ",\"linkBridges\":" + runs.linkBridges +
-                ",\"repainted\":" + runs.repainted + ",\"materialised\":" + runs.materialised + ",\"legacyKept\":" + runs.legacyKept + ",\"restyles\":" + runs.restyles + ",\"pending\":" + runs.PendingCount + "}" +
+                ",\"repainted\":" + runs.repainted + ",\"materialised\":" + runs.materialised + ",\"legacyKept\":" + runs.legacyKept + ",\"restyles\":" + runs.restyles + ",\"pending\":" + runs.PendingCount +
+                ",\"lampsFollowed\":" + runs.lampsFollowed + ",\"lampsKeptOwn\":" + runs.lampsKeptOwn + ",\"lampRestyles\":" + runs.lampRestyles + "}" +
+                ",\"lamps\":[" + string.Join(",", lampRows) + "]" +
                 ",\"lastMessage\":" + S(runs.lastMessage) + ",\"switchPaths\":{" + string.Join(",", ConduitStylePicker.SwitchPaths.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" +
                 ",\"members\":[" + string.Join(",", rows) + "],\"pieces\":[" + string.Join(",", pieces) + "],\"legacyPieces\":" + legacy + ",\"legacySameMaterials\":" + legacySame +
                 ",\"printedTex\":{" + string.Join(",", printed.OrderBy(kv => kv.Key).Select(kv => S(kv.Key) + ":" + kv.Value)) + "}");

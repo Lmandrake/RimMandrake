@@ -125,7 +125,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 tex = ContentFinder<Texture2D>.Get(path, false);
             }
             // above every cord material (strands 3000, plugs 3001, wall faces 3002): the clamp sits ON the meeting cables
-            m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = Mathf.Max(3004, CordMaterials.FaceQueue + 2) });
+            m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = Core.DrawOrder.TapClampQueue(CordMaterials.StrandQueue) });
             tapMats[look] = m;
             TapPaths[look] = m == null ? null : path;
             return m;
@@ -541,8 +541,8 @@ namespace RimMandrake.MessyConduit.Aerial
             return m;
         }
 
-        public static float SpanAltitude => AltitudeLayer.PawnState.AltitudeFor(5f);
-        public static float TopAltitude => AltitudeLayer.PawnState.AltitudeFor(4f);
+        public static float SpanAltitude => AltitudeLayer.PawnState.AltitudeFor(Core.DrawOrder.SpanInc);
+        public static float TopAltitude => AltitudeLayer.PawnState.AltitudeFor(Core.DrawOrder.TopInc);
 
         // Round 5 (owner 2026-10-04: "Make the lamps on the lamp masts like ordinary lights, not frozen bright sparkles. Make
         // them the same as the wall lights normally used."): no lit-head sprite. Like vanilla WallLamp / StandingLamp the mast

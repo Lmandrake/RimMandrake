@@ -43,6 +43,7 @@
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
     <Compile Include="Core\WallMount.cs" />
+    <Compile Include="Core\DrawOrder.cs" />
   </ItemGroup>
 
   <!-- game side: power-network adapter, map component, drawer, settings, probe -->
@@ -85,6 +86,7 @@
   <!-- fire hoses, lane D / L6 (design phase2 section 3): Hose\HoseMath.cs is Verse-free and ALSO compiled by SelfTest -->
   <ItemGroup>
     <Compile Include="Hose\HoseMath.cs" />
+    <Compile Include="Hose\HoseRelay.cs" />
     <Compile Include="Hose\HoseSettings.cs" />
     <Compile Include="Hose\CompHoseReel.cs" />
     <Compile Include="Hose\HoseFlow.cs" />

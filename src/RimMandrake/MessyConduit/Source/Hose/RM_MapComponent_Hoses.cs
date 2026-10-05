@@ -86,6 +86,63 @@ namespace RimMandrake.MessyConduit.Hose
             return HoseMath.CheckInstall(World(), r.Rect, new Cell(target.x, target.z), r.MaxLength);
         }
 
+        // ------------------------------------------------------------------ relays (round 6, HoseRelay)
+        /// <summary>The reels in thing-id order (the relay tie-break) with their footprints.</summary>
+        private List<CompHoseReel> Ordered(out List<HoseReelRect> rects)
+        {
+            var o = new List<CompHoseReel>(reels);
+            o.Sort((a, b) => a.parent.thingIDNumber.CompareTo(b.parent.thingIDNumber));
+            rects = new List<HoseReelRect>(o.Count);
+            foreach (CompHoseReel r in o) rects.Add(r.Rect);
+            return o;
+        }
+
+        /// <summary>The reel whose intake this reel's laid hose ends on (null = a free end).</summary>
+        public CompHoseReel RelayOf(CompHoseReel r)
+        {
+            if (r == null || !r.laid || !r.far.IsValid) return null;
+            return RelayAt(r, new Cell(r.far.x, r.far.z));
+        }
+
+        /// <summary>The reel (other than r) that has <paramref name="c"/> as an intake cell, or null.</summary>
+        public CompHoseReel RelayAt(CompHoseReel r, Cell c)
+        {
+            List<CompHoseReel> o = Ordered(out List<HoseReelRect> rects);
+            int i = HoseRelay.RelayOf(c, rects, o.IndexOf(r));
+            return i < 0 ? null : o[i];
+        }
+
+        /// <summary>The reel whose FOOTPRINT holds the cell (other than r), or null: the player clicked onto a relay.</summary>
+        public CompHoseReel ReelCovering(CompHoseReel r, IntVec3 c)
+        {
+            foreach (CompHoseReel o in reels) if (o != r && o.Rect.Contains(new Cell(c.x, c.z))) return o;
+            return null;
+        }
+
+        /// <summary>Reels feeding r (their hose ends on r's intake), in thing-id order, loops excluded.</summary>
+        public List<CompHoseReel> FeedersOf(CompHoseReel r)
+        {
+            var o = new List<CompHoseReel>();
+            foreach (CompHoseReel f in Ordered(out _))
+                if (f != r && RelayOf(f) == r && !Loops(f, r)) o.Add(f);
+            return o;
+        }
+
+        /// <summary>Would a hose from <paramref name="from"/> into <paramref name="to"/> close a loop?</summary>
+        public bool Loops(CompHoseReel from, CompHoseReel to)
+        {
+            List<CompHoseReel> o = Ordered(out _);
+            return HoseRelay.WouldLoop(o.IndexOf(from), o.IndexOf(to), i => { CompHoseReel n = RelayOf(o[i]); return n == null ? -1 : o.IndexOf(n); });
+        }
+
+        /// <summary>Where r's hose ends: on a relay's intake edge, else its free-end cell's centre.</summary>
+        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay)
+        {
+            relay = RelayOf(r);
+            var far = new Cell(r.far.x, r.far.z);
+            return relay != null ? HoseRelay.IntakePoint(relay.Rect, far) : far.Centre;
+        }
+
         // ------------------------------------------------------------------ lay
         /// <summary>The hose leaves the reel at its drum's axis (HoseReelRect.Mouth, round 5), hidden by the sprite, so it shows
         /// coming off the drum; the deployed art paints no hose of its own.</summary>
@@ -94,13 +151,14 @@ namespace RimMandrake.MessyConduit.Hose
         public HoseLay EnsureLay(CompHoseReel r)
         {
             if (!r.laid || !r.far.IsValid) return null;
-            string key = r.parent.Position + ">" + r.far + "|" + HoseSettings.ShapeFingerprint();
+            V2 end = EndPoint(r, out CompHoseReel relay);
+            string key = r.parent.Position + ">" + r.far + (relay != null ? "R" + relay.parent.thingIDNumber : "") + "|" + HoseSettings.ShapeFingerprint();
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             HoseShapeParams sp = HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
-            HoseLay lay = HoseMath.Lay(w, Start(r), new V2(r.far.x + 0.5, r.far.z + 0.5), sp, r.Seed);
+            HoseLay lay = HoseMath.Lay(w, Start(r), end, sp, r.Seed);
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
@@ -199,8 +257,8 @@ namespace RimMandrake.MessyConduit.Hose
 
         private void DrawAll()
         {
-            float y0 = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
-            lastWrapDraws = lastFeedDraws = lastReelEndHidden = 0;
+            float y0 = AltitudeLayer.Conduits.AltitudeFor() + Core.DrawOrder.HoseBaseLift;
+            lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -333,7 +391,14 @@ namespace RimMandrake.MessyConduit.Hose
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
-            if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
+            if (RelayOf(r) != null)
+            {
+                // round 6: a hose feeding a relay reel ends in a brass coupling whose face meets the relay's edge (as the
+                // feed coupling on a pipe or tank): the chain reads as connected, not as a hose end lying beside a reel
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], d1, vis, y, wrapTint);
+                lastRelayCouplings++;
+            }
+            else if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
             else if (r.end == HoseEnd.EndCap) Fitting(hm, hm.EndCapBare, EndCapMax, -0.10, -0.15, pts[n - 1], d1, vis, y, wrapTint);
             else
             {
@@ -344,7 +409,7 @@ namespace RimMandrake.MessyConduit.Hose
             }
         }
 
-        public int lastWrapDraws, lastFeedDraws, lastReelEndHidden;
+        public int lastWrapDraws, lastFeedDraws, lastReelEndHidden, lastRelayCouplings;
 
         /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
         /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
@@ -475,7 +540,7 @@ namespace RimMandrake.MessyConduit.Hose
 
         static HoseMaterials()
         {
-            Queue = CordMaterials.StrandQueue + 3;
+            Queue = Core.DrawOrder.HoseQueue(CordMaterials.StrandQueue);
             shadowTex = Tiled(HoseStyles.PathFor(HoseStyles.Scrapper, HoseStyles.SharedShadow), true);
             Scrapper = Build(HoseStyles.Scrapper, null);
             foreach (string l in Aerial.AerialStyles.Looks)

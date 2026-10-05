@@ -25,7 +25,7 @@ namespace RimMandrake.MessyConduit.Hose
 
     /// <summary>
     /// A hose reel / pump hookup (design 3.6): a plain vanilla Building carrying this comp. The laid hose is DATA on
-    /// the reel (its free end cell and end piece), never per-cell things, so laying 30 cells is one click and a save
+    /// the reel (its free end cell and end piece), never per-cell things, so laying 40 cells is one click and a save
     /// names only our def (walk M9: a mod-less load drops the reel with vanilla's missing-def error). The look is
     /// recomputed from (reel, end, seed) after a load. The flat/plump state machine is saved here, so a load keeps
     /// the state. A COMP, not a Building subclass, for the same save reason as the aerial anchors.
@@ -130,6 +130,18 @@ namespace RimMandrake.MessyConduit.Hose
             // CheckInstall answers null for a valid target: a `?? "no hose component"` here turned every valid lay
             // into a refusal (live lane F 2026-10-02: H2 "lay1: no hose component" while H1b's check read ok)
             if (comp == null) return "no hose component";
+            // round 6, relays: aimed at another reel (its footprint or an intake cell), the hose ends on that reel's intake
+            // nearest this reel's mouth; a chain may not loop back
+            CompHoseReel relay = comp.ReelCovering(this, target);
+            if (relay != null)
+            {
+                CordWorld w = comp.World();
+                if (!HoseRelay.TryIntake(relay.Rect, Rect.Mouth, c => w.InBounds(c) && w.IsWalkable(c) && !Rect.Contains(c), out Cell intake))
+                    return "the other reel has no free side to couple to";
+                target = new IntVec3(intake.X, 0, intake.Z);
+            }
+            else relay = comp.RelayAt(this, new Cell(target.x, target.z));
+            if (relay != null && comp.Loops(this, relay)) return "that reel already feeds this one (a chain may not loop back)";
             string why = comp.CheckInstall(this, target);
             if (why != null) return why;
             far = target;
@@ -171,7 +183,7 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         /// <summary>A reason with the numbers that make it readable: "route too long: the way there needs about 36 cells of
-        /// hose, this reel holds 30".</summary>
+        /// hose, this reel holds 40".</summary>
         public string Explain(string why, float need) =>
             why == "route too long" && need > 0
                 ? why + ": the way there needs about " + Mathf.CeilToInt(need) + " cells of hose, this reel holds " + MaxLength.ToString("0")
@@ -202,7 +214,9 @@ namespace RimMandrake.MessyConduit.Hose
                 yield return new Command_Action
                 {
                     defaultLabel = "Lay hose",
-                    defaultDesc = "Run the hose out to a cell up to " + MaxLength.ToString("0") + " cells away. Laid at once; reel it back in just as fast.",
+                    defaultDesc = "Run the hose out to a cell up to " + MaxLength.ToString("0") + " cells away. Laid at once; reel it back in just as fast.\n\n" +
+                                  "To go farther, build another hose reel out in the field and lay this hose onto it: the hose couples to that reel's side, " +
+                                  "and that reel lays its own " + MaxLength.ToString("0") + "-cell hose onward. Whatever flows into a relay reel flows on through its hose.",
                     icon = IconLay,
                     action = () =>
                     {
@@ -249,10 +263,16 @@ namespace RimMandrake.MessyConduit.Hose
         public override string CompInspectStringExtra()
         {
             Thing p = parent.Spawned ? Port() : null;
-            string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")." : "Not connected: build it beside a pipe or tank.";
+            RM_MapComponent_Hoses comp = parent.Spawned ? parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
+            List<CompHoseReel> feeders = comp?.FeedersOf(this) ?? new List<CompHoseReel>();
+            string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")."
+                        : feeders.Count > 0 ? "Relay: fed by the hose from the reel at " + feeders[0].parent.Position + (feeders.Count > 1 ? " (+" + (feeders.Count - 1) + " more)" : "") + "."
+                        : "Not connected: build it beside a pipe or tank, or lay another reel's hose onto it.";
             if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + Explain(lastRetractReason, lastRetractNeed) + "." : "");
             string len = lay != null ? ", " + lay.FlatLen.ToString("0") + " of " + MaxLength.ToString("0") + " cells" : "";
-            return conn + "\nHose laid to " + far + len + " (" + sm.State.ToString().ToLower() + ").";
+            CompHoseReel relay = comp?.RelayOf(this);
+            string to = relay != null ? "the relay reel at " + relay.parent.Position : far.ToString();
+            return conn + "\nHose laid to " + to + len + " (" + sm.State.ToString().ToLower() + ").";
         }
     }
 }

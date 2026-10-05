@@ -32,6 +32,9 @@ namespace RimMandrake.MessyConduit.Aerial
         /// <summary>materialised = writes onto a member that stored no style; legacyKept = unstyled members left unwritten
         /// because they already draw the run's look.</summary>
         public int processed, adopted, bridges, repainted, materialised, legacyKept, restyles, linkBridges;
+        /// <summary>Round 6: lamps repainted because their run was restyled / lamps that kept a look of their own / lamp
+        /// Restyle gizmo uses.</summary>
+        public int lampsFollowed, lampsKeptOwn, lampRestyles;
         public string lastMessage;
 
         public RM_MapComponent_ConduitRuns(Map map) : base(map) { }
@@ -139,6 +142,74 @@ namespace RimMandrake.MessyConduit.Aerial
             return info;
         }
 
+        // ------------------------------------------------------------------ floor lamps (round 6)
+        /// <summary>The floor lamps hooked to a run: its power connection (CompPower.connectParent, which is also where the
+        /// lamp's plug cord runs) is a run member, or the lamp stands on / beside a member cell. Thing-id order.</summary>
+        public List<Thing> LampsOf(List<Thing> run)
+        {
+            var set = new HashSet<Thing>(run);
+            var cells = new HashSet<IntVec3>();
+            foreach (Thing m in run) foreach (IntVec3 c in m.OccupiedRect().Cells) cells.Add(c);
+            var o = new List<Thing>();
+            foreach (string dn in ConduitStyles.LampDefs)
+            {
+                ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
+                if (d == null) continue;
+                foreach (Thing l in map.listerThings.ThingsOfDef(d))
+                {
+                    Thing parent = l.TryGetComp<CompPower>()?.connectParent?.parent;
+                    bool hooked = parent != null && set.Contains(parent);
+                    if (!hooked)
+                        foreach (IntVec3 c in l.OccupiedRect().Cells)
+                        {
+                            if (cells.Contains(c)) { hooked = true; break; }
+                            foreach (IntVec3 dd in GenAdj.CardinalDirections) if (cells.Contains(c + dd)) { hooked = true; break; }
+                            if (hooked) break;
+                        }
+                    if (hooked) o.Add(l);
+                }
+            }
+            o.Sort((p, q) => p.thingIDNumber.CompareTo(q.thingIDNumber));
+            return o;
+        }
+
+        /// <summary>The run a lamp is hooked to (via its power connection), or null.</summary>
+        public List<Thing> RunOfLamp(Thing lamp)
+        {
+            Thing parent = lamp.TryGetComp<CompPower>()?.connectParent?.parent;
+            if (parent != null && ConduitStylePicker.IsMember(parent.def)) return RunOf(parent);
+            foreach (IntVec3 c in GenAdj.CellsAdjacentCardinal(lamp).Concat(lamp.OccupiedRect().Cells))
+            {
+                if (!c.InBounds(map)) continue;
+                foreach (Thing t in c.GetThingList(map)) if (ConduitStylePicker.IsMember(t.def)) return RunOf(t);
+            }
+            return null;
+        }
+
+        /// <summary>The lamp's own "Restyle this lamp" (one piece: a lamp is a machine, not a run member). key = a look, or
+        /// <see cref="LampMatchRun"/> = take the look of the run it is hooked to (back to following it).</summary>
+        public const string LampMatchRun = "MatchRun";
+
+        public bool RestyleLamp(Thing lamp, string key, bool message)
+        {
+            if (lamp == null || !lamp.Spawned || !ConduitStyles.IsLampDef(lamp.def.defName)) return false;
+            ProcessPending();
+            string look = key;
+            if (key == LampMatchRun)
+            {
+                List<Thing> run = RunOfLamp(lamp);
+                look = run == null ? null : Info(run).Look ?? StylePicker.DefaultLook;
+                if (look == null) { lastMessage = "This lamp is not hooked to a cable run."; return false; }
+            }
+            if (!AerialStyles.IsLook(look)) return false;
+            bool changed = SetStyle(lamp, look);
+            lampRestyles++;
+            Finish();
+            lastMessage = "Restyled this lamp to " + look + (key == LampMatchRun ? " (its run's look)" : "") + ".";
+            if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.SilentInput, historical: false);
+            return changed;
+        }
+
         // ------------------------------------------------------------------ the rules
         private void Place(Thing x)
         {
@@ -194,7 +265,13 @@ namespace RimMandrake.MessyConduit.Aerial
             string colour = plan.Colour;
             foreach (int i in plan.Repaint)
             {
+                List<Thing> lamps = LampsOf(runs[i]);            // round 6: the loser's lamps, read before it is repainted
                 foreach (Thing t in runs[i]) Paint(t, plan.Look, colour);
+                foreach (Thing l in lamps)
+                {
+                    if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), infos[i].Look, StylePicker.DefaultLook, restyle: false)) { lampsKeptOwn++; continue; }
+                    if (SetStyle(l, plan.Look)) lampsFollowed++;
+                }
                 bridges++;
             }
             return colour;
@@ -264,12 +341,23 @@ namespace RimMandrake.MessyConduit.Aerial
             if (key == ConduitStyles.Key("Modern", ConduitStyles.Multi)) { look = "Modern"; colour = ConduitStyles.Colours[Rand.Range(0, ConduitStyles.Colours.Length)]; }
             else if (!ConduitStyles.TryParseKey(key, out look, out colour)) return 0;
             List<Thing> run = RunOf(t);
+            string lookBefore = Info(run).Look;
+            List<Thing> lamps = LampsOf(run);
             int before = repainted;
             foreach (Thing m in run) Paint(m, look, colour, true);
+            // round 6: the floor lamps hooked to the run follow it, unless the player styled a lamp on purpose
+            int lampsChanged = 0, lampsKept = 0;
+            foreach (Thing l in lamps)
+            {
+                if (!ConduitStyles.LampFollowsRun(ConduitStylePicker.RawLook(l), lookBefore, StylePicker.DefaultLook)) { lampsKept++; continue; }
+                if (SetStyle(l, look)) { lampsChanged++; lampsFollowed++; }
+            }
+            lampsKeptOwn += lampsKept;
             restyles++;
             Finish();
             int n = repainted - before;
-            lastMessage = "Restyled this run (" + run.Count + " pieces, " + n + " changed) to " + ConduitStylePicker.Label(ConduitStyles.Key(look, colour)) + ".";
+            lastMessage = "Restyled this run (" + run.Count + " pieces, " + n + " changed) to " + ConduitStylePicker.Label(ConduitStyles.Key(look, colour)) +
+                          (lamps.Count > 0 ? "; lamps on it: " + lampsChanged + " changed" + (lampsKept > 0 ? ", " + lampsKept + " kept their own look" : "") : "") + ".";
             if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(t), MessageTypeDefOf.SilentInput, historical: false);
             return n;
         }

@@ -23,8 +23,12 @@ namespace RimMandrake.MessyConduit.Hose
         public static int releaseTicks = 500;
         /// <summary>Hysteresis: least ticks a hose stays plump.</summary>
         public static int minPlumpDwell = 600;
-        /// <summary>Hose length on a reel, cells.</summary>
-        public static float maxLength = 30f;
+        /// <summary>Hose length on a reel, cells. Default 40 since round 6 (owner 2026-10-04: "I think the hose should go 40
+        /// cells by itself already though, by default"); HoseMath.DefaultMaxLength is the one number.</summary>
+        public static float maxLength = (float)HoseMath.DefaultMaxLength;
+        /// <summary>Which shipped default the saved maxLength was written under (0 = before round 6, when it was 30). Same
+        /// "maxLength" key as ever; HoseMath.MigrateMaxLength lifts an untouched old default to the new one.</summary>
+        public static int maxLengthDefaults = HoseMath.MaxLengthDefaultsVersion;
         public static int couplingSpacing = 8;
         /// <summary>Scales the S-curve slack.</summary>
         public static float slack = 1f;
@@ -45,7 +49,13 @@ namespace RimMandrake.MessyConduit.Hose
             Scribe_Values.Look(ref transitionTicks, "transitionTicks", 30);
             Scribe_Values.Look(ref releaseTicks, "releaseTicks", 500);
             Scribe_Values.Look(ref minPlumpDwell, "minPlumpDwell", 600);
-            Scribe_Values.Look(ref maxLength, "maxLength", 30f);
+            Scribe_Values.Look(ref maxLength, "maxLength", (float)HoseMath.DefaultMaxLength);
+            Scribe_Values.Look(ref maxLengthDefaults, "maxLengthDefaults", 0);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                maxLength = (float)HoseMath.MigrateMaxLength(maxLength, maxLengthDefaults);
+                maxLengthDefaults = HoseMath.MaxLengthDefaultsVersion;
+            }
             Scribe_Values.Look(ref couplingSpacing, "couplingSpacing", 8);
             Scribe_Values.Look(ref slack, "slack", 1f);
             Scribe_Values.Look(ref tintByContents, "tintByContents", true);
@@ -62,7 +72,7 @@ namespace RimMandrake.MessyConduit.Hose
             transitionTicks = 30;
             releaseTicks = 500;
             minPlumpDwell = 600;
-            maxLength = 30f;
+            maxLength = (float)HoseMath.DefaultMaxLength;
             couplingSpacing = 8;
             slack = 1f;
             tintByContents = true;

@@ -12,6 +12,7 @@ RimMandrake.MessyConduit.Hose.HoseProbe (jawa/mod_settings_field), never from sc
     python.exe validation_hose.py --save-load NAME         # H10: hose, its end and its state survive save/load
     python.exe validation_hose.py --removal-check NAME     # H11: a save WITH a laid hose on a tier WITHOUT the mod
     python.exe validation_hose.py --maze                   # M1-M6 + P1-P2: path solving in a spiral maze, reel ports
+    python.exe validation_hose.py --relay                  # RL1-RL9 (round 6): a chain of relay reels past one hose's reach
 
 The maze walk (owner, round 2, 2026-10-04: "make the hose solve a complex path (like a spiral through a simple maze
 with two options, then 'build' a wall to block the obvious solution so we can see if it changes to go the other way...
@@ -471,6 +472,92 @@ def run_removal_check(args):
     return res
 
 
+# ---------------------------------------------------------------------------------------------------- round 6: relays
+# Owner 2026-10-04: "So if the hose can only reach 30 cells, how does the player go farther? Maybe they place another reel
+# out there to connect to? If so we should show that working." Three 2x2 reels 32 cells apart in a row (A, B, C); A's hose
+# is laid ONTO B's footprint, B's onto C's. Predictions from the code (HoseRelay, ReviewRound6Checks), to be confirmed live:
+#   * RL2: one 40-cell hose cannot reach C from A ("too far"); RL3/RL4: aimed at a reel, the hose ends on that reel's
+#     intake (relayTo = that reel, far = an intake cell, endPoint on the reel's edge), each hose under its own cap.
+#   * RL5: closing the ring (C onto A) is refused. RL6: flow into A plumps A's hose, B reads it through the "relay"
+#     provider and plumps too. RL7: A's flow off -> B drains after the release window (no latch).
+#   * RL9: the draw-order fix is live: span material queue == overhead queue > hose queue.
+# FlowWorks has no liquid yet: "working" = connection accepted, both hoses laid and plump, chain shown connected.
+RX0, RZ0 = 20, 100
+SITE_R = (RX0 - 2, RZ0 - 3, 82, 10)
+RA, RB, RC = (RX0, RZ0), (RX0 + 32, RZ0), (RX0 + 64, RZ0)
+
+
+def run_relay(args):
+    B = H()
+    rows = []
+    res = {"mod": V.MOD, "mode": "relay", "script": "validation_hose.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    d = B.hp("defaults")
+    if not d.get("success"):
+        V.row(rows, "RL0_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "hose probe dead"
+        return res
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE_R, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE_R)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE_R)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % SITE_R)
+    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [RA, RB, RC]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(2)
+    a, c = B.hose(RA)
+    b, _ = B.hose(RB)
+    cc, _ = B.hose(RC)
+    V.row(rows, "RL1_reels_built", "PASS" if a and b and cc else "FAIL", "SITE", {"build": br.get("success"), "maxLength": a.get("maxLength")})
+    if not (a and b and cc):
+        res["aborted"] = "reels missing"
+        return res
+    one = B.hp("check:%d,%d,%d,%d" % (RA + (RC[0] - 1, RC[1])))
+    V.row(rows, "RL2_one_hose_cannot_reach", "PASS" if one.get("reason") in ("too far", "route too long") else "FAIL", "MOD",
+          {"reason": one.get("reason"), "maxLength": a.get("maxLength")})
+
+    def laid_into(src, dst, name):
+        lay = B.hp("lay:%d,%d,%d,%d" % (src + dst))          # aimed at the relay's own south-west footprint cell
+        B.ticks(2)
+        h, _ = B.hose(src)
+        rel = h.get("relayTo")
+        far = h.get("far") or [0, 0]
+        ep = h.get("endPoint") or [0, 0]
+        intake = far[0] in (dst[0] - 1, dst[0] + 2) and dst[1] <= far[1] <= dst[1] + 1 or \
+            far[1] in (dst[1] - 1, dst[1] + 2) and dst[0] <= far[0] <= dst[0] + 1
+        on_edge = abs(ep[0] - dst[0]) < 1e-3 or abs(ep[0] - (dst[0] + 2)) < 1e-3 or abs(ep[1] - dst[1]) < 1e-3 or abs(ep[1] - (dst[1] + 2)) < 1e-3
+        ok = lay.get("success") and h.get("layOk") and rel == list(dst) and intake and on_edge and (h.get("pathLen") or 99) <= (h.get("maxLength") or 0)
+        V.row(rows, name, "PASS" if ok else "FAIL", "MOD",
+              dict(_pick(h, "relayTo", "far", "endPoint", "pathLen", "flatLen", "maxLength", "layOk"), reason=lay.get("reason"), intake=intake, onEdge=on_edge))
+        return h
+
+    ha = laid_into(RA, RB, "RL3_hose_onto_relay_B")
+    hb = laid_into(RB, RC, "RL4_relay_B_onward_to_C")
+    loop = B.hp("check:%d,%d,%d,%d" % (RC + RA))
+    lay_loop = B.hp("lay:%d,%d,%d,%d" % (RC + RA))
+    V.row(rows, "RL5_ring_refused", "PASS" if not lay_loop.get("success") and "loop" in (lay_loop.get("reason") or "") else "FAIL", "MOD",
+          {"lay": lay_loop.get("reason"), "check": loop.get("reason")})
+    B.hp("flow:%d,%d=on" % RA)
+    B.ticks(120)
+    a, c = B.hose(RA)
+    b, _ = B.hose(RB)
+    V.row(rows, "RL6_flow_passes_through", "PASS" if a.get("state") == "Plump" and b.get("state") == "Plump" and b.get("provider") == "relay"
+          and (c.get("relayCouplings") or 0) >= 2 and b.get("fedBy") == [list(RA)] else "FAIL", "MOD",
+          {"A": _pick(a, "state", "provider", "signal"), "B": _pick(b, "state", "provider", "signal", "fedBy"), "relayCouplings": c.get("relayCouplings")})
+    B.hp("flow:%d,%d=off" % RA)
+    B.ticks((c.get("releaseTicks") or 500) + (c.get("minPlumpDwell") or 600) + 200)
+    a, _ = B.hose(RA)
+    b, _ = B.hose(RB)
+    V.row(rows, "RL7_no_latch", "PASS" if a.get("state") == "Flat" and b.get("state") == "Flat" else "FAIL", "MOD",
+          {"A": _pick(a, "state", "provider"), "B": _pick(b, "state", "provider")})
+    span = RC[0] - RA[0]
+    V.row(rows, "RL8_chain_beyond_one_hose", "PASS" if span > (a.get("maxLength") or 0) and ha.get("layOk") and hb.get("layOk") else "FAIL", "MOD",
+          {"span": span, "maxLength": a.get("maxLength"), "pathA": ha.get("pathLen"), "pathB": hb.get("pathLen")})
+    q = c.get("queues") or {}
+    V.row(rows, "RL9_overhead_drawn_over_hose", "PASS" if q.get("overhead", 0) > q.get("hose", 1e9) and q.get("spanMat") == q.get("overhead") else "FAIL",
+          "MOD", q)
+    return res
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -478,6 +565,7 @@ def main(argv=None):
     ap.add_argument("--save-load", default=None, metavar="NAME")
     ap.add_argument("--removal-check", default=None, metavar="NAME")
     ap.add_argument("--maze", action="store_true")
+    ap.add_argument("--relay", action="store_true")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.save_load:
@@ -486,6 +574,8 @@ def main(argv=None):
         res = run_removal_check(a)
     elif a.maze:
         res = run_maze(a)
+    elif a.relay:
+        res = run_relay(a)
     elif a.live:
         res = run_live(a)
     else:

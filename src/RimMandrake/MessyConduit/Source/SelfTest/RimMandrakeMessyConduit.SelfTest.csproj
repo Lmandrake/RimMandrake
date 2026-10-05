@@ -41,6 +41,9 @@
     <Compile Include="..\Aerial\BracketGeometryTable.cs" />
     <Compile Include="AerialSelfTest.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
+    <Compile Include="..\Hose\HoseRelay.cs" />
+    <Compile Include="..\Core\DrawOrder.cs" />
+    <Compile Include="ReviewRound6Checks.cs" />
     <Compile Include="HoseSelfTest.cs" />
     <Compile Include="DeterminismChecks.cs" />
     <Compile Include="ReviewRound1Checks.cs" />

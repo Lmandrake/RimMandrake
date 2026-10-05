@@ -69,7 +69,7 @@ check(in_range and crosses >= 10 and fogged and roofed and not through and (ax, 
 
 # ---------------------------------------------------------------------------------------------- style per build
 N_CHECKS = 4
-new = [s for s in S if not s["old_n"]]
+new = [s for s in S if not s["old_n"] and s["n"] <= 12]      # 42 (round 6 relay reels) is a later addition, not the style gallery
 old = [s for s in S if s["old_n"]]
 check([s["n"] for s in new] == list(range(1, 13)) and all(s.get("style_station") for s in new) and
       [s["n"] - s["old_n"] for s in old] == [HR.OLD_OFFSET] * len(old) and [s["old_n"] for s in old] == list(range(1, 30)),
