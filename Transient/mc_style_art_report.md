@@ -79,8 +79,8 @@ already swaps (`Reel_PumpHookup` / `Reel_Deployed`); a coil overlay would be ext
 
 ## Owed / weak
 
-- Weakest piece: **Modern live frayed end** (`Styles/ExtCord/EndFrayed_Live.png`): orange cord fine, but the strands read
-  pale and blurry with no hot glow; a regen is the first redo if the owner agrees.
+- Modern live frayed end was regenerated once more (second render read pale with no glow); the installed third render has
+  hot glowing tips. Still the smallest-reading live end of the three at true size.
 - Scrapper laid reel: not touched (hose round 4 owns `Hose/Reel_Deployed.png`'s pale-strip rework).
 - Coil overlay layer (design sec. 4 two-layer reel): not drawn, see sec. 4.
 - Per-style overhead span wire: optional per the design, not drawn.
