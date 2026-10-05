@@ -1,0 +1,1 @@
+fill_queue accepts a per-facing job whose prompt says 'three facings' (or 'all facings'); the daemon refuses it later as bad_job_file and every derived facing then fails master_failed. 18+35 Long Shade jobs died that way 2026-10-05. Never write facing-set words into a per-facing prompt; run common.load_job on job files before queuing (filename must equal the job id).
