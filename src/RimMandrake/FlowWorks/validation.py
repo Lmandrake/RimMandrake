@@ -37,6 +37,7 @@ Conventions:
     frames are unavailable the component FAILS rather than hand the judge one frame.
   * A setting that is not the subject of a component is restored in `finally` by `_setting`.
 """
+import json
 import os
 import time
 from contextlib import contextmanager
@@ -1174,6 +1175,32 @@ def toggle_superdeep_shooting(t):
     with t.component("shooting_rule_off", toggle="superdeepShootingRuleEnabled"):
         with _setting(t, "superdeepShootingRuleEnabled", False):
             _wait(t, PULSE)
+
+
+@suite.chain("toggle_pit_exposure")
+def toggle_pit_exposure(t):
+    # PIT_TEMPERATURE_SOFTENING_1: a pawn left on an unroofed uncovered D=4 cell gains the RM_PitExposure
+    # hediff every 250 ticks; the toggle off must stop it. The hediff is read through jawa/pawn_health
+    # (payload substring, since the row shape is not pinned); UNMEASURED-tolerant via t._guard().
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+
+    def _has_exposure(pid):
+        r = t.bridge_call("jawa/pawn_health", pawn=pid)
+        return "RM_PitExposure" in json.dumps(r or {})
+
+    with t.component("pit_exposure_on", toggle="pitExposureEnabled"):
+        pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
+        _wait(t, 4 * 250)
+        if t._guard():
+            _expect(_has_exposure(pid), "pawn left on an open D=4 cell gained no RM_PitExposure after 4 intervals")
+    with t.component("pit_exposure_off", toggle="pitExposureEnabled"):
+        with _setting(t, "pitExposureEnabled", False):
+            pid2 = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
+            _wait(t, 4 * 250)
+            if t._guard():
+                _expect(not _has_exposure(pid2), "RM_PitExposure applied while pitExposureEnabled is off")
 
 
 @suite.chain("toggle_bottle_loop")
