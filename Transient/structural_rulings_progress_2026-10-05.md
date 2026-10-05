@@ -17,3 +17,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - CUT MatureFleshbeast: DONE — RM_MatureFleshbeast (+RM_MatureFleshbeastBody, RM_JellyfishTentacle) and RSW_MatureFleshbeast.xml (+RSW_TentacledQuadrupedEyeless, RSW_JellyfishTentacle) deleted; rows out of RM_LongShade + RUT_Desert; desert.json AA_MatureFleshbeast -> cut:. Note: 3 artpipe jobs may still be queued for RM_MatureFleshbeast.
 - CUT Ossik: DONE — RM_Ossik (+RM_EggOssik*) and RSW_Ossik (+RSW_SandstriderEgg*) deleted; rows out of RM_LongShade + RUT_Desert; desert.json AA_DesertAve -> cut:.
 - CUT Thurra: DONE — RM_Thurra and RSW_Thurra deleted; rows out of RM_LongShade + RUT_Desert; desert.json AA_Gigantelope -> cut:.
+- CUT RSW_DommoTree: DONE — def deleted from RSW_DesertPortMisc_Plants.xml; rows out of WildAnimals_LongShade.xml (patch, validate_patch OK) and RUT_Desert.

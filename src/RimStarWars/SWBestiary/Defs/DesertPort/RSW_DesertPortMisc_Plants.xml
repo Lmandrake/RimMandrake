@@ -227,39 +227,6 @@ five rows above, loudly commented at its own site.
 		</plant>
 	</ThingDef>
 
-	<ThingDef ParentName="TreeBase">
-		<defName>RSW_DommoTree</defName>
-		<label>dommo tree</label>
-		<description>A whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections. Lures animals and colonists alike.</description>
-		<descriptionHyperlinks>
-			<ThingDef>WoodLog</ThingDef>
-		</descriptionHyperlinks>
-		<!-- DESERT_PORT_PLACEHOLDER_ART_1: landed artpipe render RSW_DommoTree -->
-		<graphicData>
-			<texPath>Things/Plant/RSW_DommoTree</texPath>
-			<graphicClass>Graphic_Random</graphicClass>
-			<shadowData>
-				<volume>(0.18, 0.3, 0.15)</volume>
-			</shadowData>
-		</graphicData>
-		<altitudeLayer>BuildingOnTop</altitudeLayer>
-		<statBases>
-			<Beauty>2</Beauty>
-			<BeautyOutdoors>2</BeautyOutdoors>
-			<Nutrition>2</Nutrition>
-		</statBases>
-		<plant>
-			<growDays>14</growDays>
-			<harvestWork>550</harvestWork>
-			<harvestYield>25</harvestYield>
-			<wildClusterRadius>10</wildClusterRadius>
-			<wildClusterWeight>11</wildClusterWeight>
-			<visualSizeRange>2.1~3</visualSizeRange>
-			<choppedThingDef IsNull="True"/>
-			<smashedThingDef IsNull="True"/>
-		</plant>
-		<ingestible/>
-	</ThingDef>
 
 	<ThingDef ParentName="PlantBase">
 		<!-- ReGrowth 2 Plant_Brambles (ParentName RG_BramblesBase, abstract) -> RSW_Thornscrub. No comps/modExtensions on the donor - a plain wild plant, ported whole. -->
