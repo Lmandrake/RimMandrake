@@ -660,7 +660,7 @@
 		<!-- LONGSHADE_RULED_CONTENT_1, Q1 tier move: RSW_Khorrak -> RM_Khorrak (was Alpha Animals AA_Terramorph, ported RSW_-tier 2026-09-20). The RSW-tier steel-diet comp (RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater) and its useMeatFrom (RSW_Korrum, an SW-tier creature staying in the Utinni layer) are DROPPED moving to this tier — both are cross-mod references the free RM_LongShade mod cannot carry. Stats/body/tools are unchanged; the khorrak eats VegetarianRoughAnimal like any other RM-tier grazer instead of steel. Mechanic simplification, same shape as every other donor-framework drop this cast already took on the way in. -->
 		<defName>RM_Khorrak</defName>
 		<label>khorrak</label>
-		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into a hardened alloy otherwise found only in asteroids. The transmutation is slow, so a khorrak needs long stretches parked among mined steel to do its work.</description>
+		<description>A strange crustacean bred for one purpose: mineral processing. The khorrak feeds on iron compounds, chemically working them into vacstone, a dense stone otherwise found only in asteroids. The transmutation is slow: every few days a khorrak sheds a chunk of vacstone where it rests.</description>
 		<statBases>
 			<MoveSpeed>1.8</MoveSpeed>
 			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
@@ -711,6 +711,18 @@
 			<soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
 			<soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
 		</race>
+		<comps>
+			<li Class="CompProperties_Spawner">
+				<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "It should produce vacstone chunks." Vanilla CompSpawner (precedent on a pawn: AA_Eyeling, Ikee_Tuning.xml). ChunkVacstone is Odyssey (all DLC assumed). One chunk per 4-6 days; spawnMaxAdjacent keeps a resting khorrak from piling them. -->
+				<thingToSpawn>ChunkVacstone</thingToSpawn>
+				<spawnCount>1</spawnCount>
+				<spawnIntervalRange>240000~360000</spawnIntervalRange>
+				<spawnMaxAdjacent>2</spawnMaxAdjacent>
+				<writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+				<showMessageIfOwned>false</showMessageIfOwned>
+				<saveKeysPrefix>khorrakVacstone</saveKeysPrefix>
+			</li>
+		</comps>
 		<tradeTags>
 			<li>AnimalUncommon</li>
 		</tradeTags>
