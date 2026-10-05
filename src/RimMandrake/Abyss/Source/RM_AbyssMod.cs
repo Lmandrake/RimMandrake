@@ -65,6 +65,8 @@ namespace RimMandrake.Abyss
         // ABYSS_SOUNDSCAPE_BUILD_1: silence by default, sound comes in gusts; the Dark muffles those sounds. Soundscape off = the vanilla fog wind (restart).
         public static bool gustSoundscapeEnabled = true;
         public static bool darkMuffleEnabled = true;
+        // ABYSS_DARK_MUFFLE_ALL_SOUNDS_1: the Dark also muffles every map sound (gunshots, footsteps, calls), via one Harmony postfix on Sample.Update. Needs darkMuffleEnabled too. Safe mid-game.
+        public static bool darkMuffleAllSounds = true;
         // ABYSS_FREE_CRYPTID_1 (RM_AbyssCryptid.cs): rumor-sites, the exchange, the clear pocket around nothing, the whisper, the dream.
         public static bool cryptidSignsEnabled = true;
 
@@ -93,6 +95,7 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref foldDiscoveryByWatching, "foldDiscoveryByWatching", true, true);
             Scribe_Values.Look(ref gustSoundscapeEnabled, "gustSoundscapeEnabled", true, true);
             Scribe_Values.Look(ref darkMuffleEnabled, "darkMuffleEnabled", true, true);
+            Scribe_Values.Look(ref darkMuffleAllSounds, "darkMuffleAllSounds", true, true);
             Scribe_Values.Look(ref cryptidSignsEnabled, "cryptidSignsEnabled", true, true);
         }
 
@@ -169,6 +172,8 @@ namespace RimMandrake.Abyss
                 "On: the Dark is silent; each gust lands as an impact, gharrek gill-fans rustle after it, falling grain ticks on stone, and a lamp a krizzak is eating clatters. Off: the ordinary fog wind (after a restart) and none of these.");
             list.CheckboxLabeled("The Dark swallows those sounds", ref darkMuffleEnabled,
                 "On: the gust sounds come through muffled while the camera looks into the Dark and sharp over a warm clear pocket. Off: always sharp. Safe mid-game.");
+            list.CheckboxLabeled("The Dark swallows EVERY map sound", ref darkMuffleAllSounds,
+                "On: gunshots, footsteps, animal calls and every other sound placed on an Abyss map are muffled by the Dark at the camera, not only the Abyss's own. Needs the setting above. Off: only the Abyss's own sounds. Safe mid-game.");
 
             list.CheckboxLabeled("Abyss: cryptid signs", ref cryptidSignsEnabled,
                 "On: people whisper of visitors who come for the Dark, and are never seen. New maps may carry extra rings and "
@@ -201,6 +206,7 @@ namespace RimMandrake.Abyss
         public RM_AbyssMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_AbyssSettings>();
+            new HarmonyLib.Harmony("mandrake.rm.abyss").PatchAll();
         }
 
         public override string SettingsCategory()

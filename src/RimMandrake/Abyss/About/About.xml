@@ -6,7 +6,11 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li><packageId>brrainz.harmony</packageId><displayName>Harmony</displayName><downloadUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</downloadUrl></li>
+  </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>sarg.alphabiomes</li>
     <li>sarg.alphaanimals</li>
     <li>sarg.alphagenes</li>

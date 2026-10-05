@@ -508,6 +508,20 @@ def soundscape_check():
             bad.append("Mod Settings lacks " + needle)
     if 'Compile Include="RM_AbyssSoundscape.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
         bad.append("RM_AbyssSoundscape.cs not in csproj")
+    hook = os.path.join(src, "RM_AbyssSoundHook.cs")
+    if not os.path.exists(hook):
+        bad.append("ABYSS_DARK_MUFFLE_ALL_SOUNDS_1: RM_AbyssSoundHook.cs missing")
+    else:
+        h = open(hook).read()
+        for needle in ("typeof(Sample), nameof(Sample.Update)", "AudioLowPassFilter", "RM_Abyss", "darkMuffleAllSounds"):
+            if needle not in h:
+                bad.append("sound hook lacks " + needle)
+    if 'Compile Include="RM_AbyssSoundHook.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_AbyssSoundHook.cs not in csproj")
+    if "brrainz.harmony" not in open(os.path.join(HERE, "About", "About.xml")).read():
+        bad.append("About.xml lacks the harmony dependency")
+    if mod.count("darkMuffleAllSounds") < 3:
+        bad.append("Mod Settings lacks darkMuffleAllSounds")
     return bad
 
 

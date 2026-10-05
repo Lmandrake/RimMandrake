@@ -5,10 +5,9 @@
     src/RimMandrake/GelatinousSlime/Source/RM_GelatinousSlime.csproj — copy
     that header if this one goes stale.
 
-    NO HARMONY REFERENCE, DELIBERATELY. The only hook this mod uses is a
-    vanilla extension point (BiomeWorker, ModSettings). Nothing here patches
-    an engine method, so nothing here breaks on a game update that renames
-    one. About.xml carries no brrainz.harmony dependency either.
+    ONE HARMONY PATCH (ABYSS_DARK_MUFFLE_ALL_SOUNDS_1): RM_AbyssSoundHook.cs, a
+    postfix on Sample.Update. 0Harmony is Private=false (game supplies it).
+    Everything else is a vanilla extension point.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Abyss\Source\RM_Abyss.csproj -c Release
@@ -55,8 +54,13 @@
     <Compile Include="RM_MapComponentShipCover.cs" />
     <Compile Include="RM_AbyssLight.cs" />
     <Compile Include="RM_AbyssSoundscape.cs" />
+    <Compile Include="RM_AbyssSoundHook.cs" />
     <Compile Include="RM_AbyssCryptid.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -65,6 +69,14 @@
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AudioModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine">
