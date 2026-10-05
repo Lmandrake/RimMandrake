@@ -104,7 +104,7 @@
     <race>
       <body>RSW_Gorg</body>
       <baseHungerRate>0.10</baseHungerRate>
-      <baseBodySize>0.3</baseBodySize>
+      <baseBodySize>0.21</baseBodySize>
       <baseHealthScale>0.35</baseHealthScale>
       <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
       <trainability>None</trainability>
@@ -197,37 +197,37 @@
         <label>gorgling</label>
         <bodyGraphicData>
           <texPath>swanimals/Gorg/Gorg_j</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.525</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>swanimals/Gorg/Gorg_j_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.525</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gorg/Gorg_j_Dessicated</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.525</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gorg/Gorg</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.7</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
           <texPath>swanimals/Gorg/Gorg_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.7</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gorg/Gorg_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.7</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gorg/Gorg</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>1.05</drawSize>
           <shadowData>
             <volume>(0.3, 0.4, 0.3)</volume>
             <offset>(0,0,0.0)</offset>
@@ -236,11 +236,11 @@
         <swimmingGraphicData>
           <texPath>swanimals/Gorg/Gorg_Swimming</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>1.5</drawSize>
+          <drawSize>1.05</drawSize>
         </swimmingGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Gorg/Gorg_Dessicated</texPath>
-          <drawSize>1.5</drawSize>
+          <drawSize>1.05</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
