@@ -211,7 +211,7 @@ def sheets(outdir):
         C = 260
         sh = Image.new("RGB", (2 * C + 340, len(rels) * (C + 10) + 30), (34, 28, 22))
         d = ImageDraw.Draw(sh)
-        d.text((10, 8), "round 5 %s: BEFORE (left) | AFTER (right); small = true size at 128 px/cell" % name, fill=(240, 220, 180))
+        d.text((10, 8), "round 5 %s: BEFORE (left) | AFTER (right); small = 64 px thumbnail (in-game scale for a 1-cell piece at 64 px/cell)" % name, fill=(240, 220, 180))
         for i, rel in enumerate(rels):
             y = 30 + i * (C + 10)
             r = subprocess.run(["git", "-C", REPO, "show", "HEAD:%s/%s.png" % (rel_tex, rel)], capture_output=True)
@@ -227,9 +227,10 @@ def sheets(outdir):
                 k = min((C - 8) / im.width, (C - 8) / im.height)
                 big = resize(im, round(im.width * k), round(im.height * k))
                 sh.paste(big, (x + 4 + (C - 4 - big.width) // 2, y + (C - big.height) // 2), big)
-                small = im if max(im.size) <= 64 else resize(im, max(1, im.width // 2), max(1, im.height // 2))
+                f = 64.0 / max(im.size)
+                small = resize(im, max(1, round(im.width * f)), max(1, round(im.height * f)))
                 d.rectangle((x + C + 2, y, x + C + 66, y + 66), fill=(112, 90, 66))
-                sh.paste(small.crop((0, 0, 64, 64)), (x + C + 2, y), small.crop((0, 0, 64, 64)))
+                sh.paste(small, (x + C + 2, y), small)
             d.text((2 * C + 150, y + 4), "\n".join(rel.split("/")), fill=(240, 220, 180))
         sh.save(os.path.join(outdir, "round5_%s.png" % name))
         print("sheet", os.path.join(outdir, "round5_%s.png" % name))
