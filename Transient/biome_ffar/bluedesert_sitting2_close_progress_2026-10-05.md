@@ -23,6 +23,11 @@ Diffed against the committed decisions (8792def2b). Changed rows (Vapaad exclude
 - RM_Vhaulk D: east 07fbf467; north/south stay A (already live).
 - RM_Kethevar, RM_Lisqueth: A,B,C,D -> `Things/Plant/X/X/X_{a..d}.png`; def graphicClass Graphic_Single -> Graphic_Random (RM_BlueDesertFlora.xml); old single `X.png` retired through `artledger.retire` (reason retire-duplicate: bytes identical to X_a.png). art guard: 0 unledgered.
 - validate_patch: 0 errors; selftest_bluedesert ALL OK. Not deployed.
-## 3 regen jobs — pending
-## 4 def edits / items — pending
+## 3 regen jobs — DONE (7 filed, `Transient/biome_ffar/bluedesert_sitting3_jobs_2026-10-05.json`)
+- `artpipe_state.py find`: no existing Vashpuk/Virr variants (only the one live render each); Thunderbeast v3 south+north had FAILED `master_failed` — `failed/bluedesert_Thunderbeast_v2_east.*` (a later failed re-run, 21:13) shadowed the done master whose PNG is exactly the owner's pick (8fc8cdd1). Moved that failed pair aside as `*.stale_2026-10-05` in `D:\Luke\dev\_artpipe\failed\`.
+- bluedesert_Thunderbeast_v4_north (derive from v2_east; south already exists in set A), RM_Vashpuk_var1-3, RM_Virr_var1-3 (derive from the live render). owner_note verbatim. No canon entries exist for these (invented species).
+## 4 def edits / items — DONE
+- RM_Kethevar / RM_Lisqueth graphicClass -> Graphic_Random (step 2). No other mechanical def edit in his new notes (Thunderbeast size/description was sitting 1).
+- OWED when the variant renders land and he picks them: RM_Vashpuk / RM_Virr -> Graphic_Random + install. Recorded as a note on BIOME_FLORAFAUNA_ART_REVIEW_1; no new item.
+- Deploy still HELD (same reasons as sitting 1).
 ## 5 commits — pending
