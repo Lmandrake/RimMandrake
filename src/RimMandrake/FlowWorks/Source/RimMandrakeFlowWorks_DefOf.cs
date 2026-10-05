@@ -29,9 +29,8 @@ namespace RimMandrake.FlowWorks
 		public static FluidDef RM_Fluid_Water;
 
 		/// <summary>Phase 7's roster entry, his ruling "tar needs the
-		/// viscosity most of all" -- not yet wired to any source/driver
-		/// selection UI, but reachable via <c>ActiveFluid =</c> the way
-		/// debug tooling and a selftest already reach RM_Fluid_Water.</summary>
+		/// viscosity most of all". A tar pond's body takes it from its terrain;
+		/// debug fills name it directly (RM_FluidIdentityProof.ProofFillWithFluid).</summary>
 		public static FluidDef RM_Fluid_Tar;
 
 		public static ThingDef RM_FluidCanalFlood;

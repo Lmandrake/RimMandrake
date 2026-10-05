@@ -47,6 +47,24 @@ namespace RimMandrake.FlowWorks
 	/// "FLUIDID wet N | recorded R | unrecorded U | fluids [a,b] | bodies [id:fluid,...]".</summary>
 	public static class RM_FluidIdentityProof
 	{
+		/// <summary>Debug/bridge fill with a NAMED fluid (static_call, one string): "x,z,fill,FluidDefName".
+		/// Routes through the driver API, so the no-mix rule refuses a cell holding another fluid.</summary>
+		public static string ProofFillWithFluid(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+			if (ex == null) return "REFUSED: no excavation component on the current map";
+			string[] p = (arg ?? "").Split(',');
+			if (p.Length != 4 || !int.TryParse(p[0], out int x) || !int.TryParse(p[1], out int z) || !int.TryParse(p[2], out int fill))
+				return "REFUSED: arg must be x,z,fill,FluidDefName";
+			FluidDef fluid = DefDatabase<FluidDef>.GetNamedSilentFail(p[3].Trim());
+			if (fluid == null) return "REFUSED: no FluidDef " + p[3];
+			IntVec3 c = new IntVec3(x, 0, z);
+			if (!ex.TrySetDriverFill(c, fill, fluid))
+				return "REFUSED: " + c + " not excavated or holds another fluid (" + (ex.FluidAt(c)?.defName ?? "none") + ")";
+			return "FILLED " + c + " F=" + ex.FillAt(c) + " fluid=" + (ex.FluidAt(c)?.defName ?? "none");
+		}
+
 		public static string ProofCensus()
 		{
 			Map map = Find.CurrentMap;

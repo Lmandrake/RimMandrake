@@ -61,7 +61,32 @@ namespace RimMandrake.FlowWorks
                 + " tempTerrain=" + (map.terrainGrid.TempTerrainAt(c)?.defName ?? "none")
                 + " | MAP excavatedCells=" + ex.ExcavatedCellCount
                 + " overflowDestroyedTotal=" + ex.OverflowDestroyedTotal.ToString("F1")
-                + " activeFluid=" + (ex.ActiveFluid?.defName ?? "NULL"));
+                + " cellFluid=" + (ex.FluidAt(c)?.defName ?? "none")
+                + " defaultFluid=" + (ex.ActiveFluid?.defName ?? "NULL"));
+        }
+
+        // LIQUID_BODY_FLUID_IDENTITY_1 step 3: debug fills name their fluid (a second fluid on one map
+        // used to be impossible). Pick a fluid, then click excavated cells to fill them to the brim.
+        [DebugAction(CAT, "Fill excavated cell with fluid...",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void FillWithFluid()
+        {
+            List<DebugMenuOption> list = new List<DebugMenuOption>();
+            foreach (FluidDef fluid in DefDatabase<FluidDef>.AllDefsListForReading)
+            {
+                FluidDef f = fluid;
+                list.Add(new DebugMenuOption(f.defName, DebugMenuOptionMode.Tool, delegate
+                {
+                    Map map = Find.CurrentMap;
+                    IntVec3 c = UI.MouseCell();
+                    RM_MapComponent_Excavation ex = map?.GetComponent<RM_MapComponent_Excavation>();
+                    if (ex == null || !c.InBounds(map)) return;
+                    bool ok = ex.TrySetDriverFill(c, ex.DepthAt(c), f);
+                    Log.Message("[RMFlowWorksDebug] FILL_FLUID " + c + " " + f.defName + " -> " + (ok ? "ok" : "REFUSED")
+                        + " F=" + ex.FillAt(c) + " fluid=" + (ex.FluidAt(c)?.defName ?? "none"));
+                }));
+            }
+            Find.WindowStack.Add(new Dialog_DebugOptionListLister(list));
         }
 
         [DebugAction(CAT, "Report cell (RAW)",

@@ -57,8 +57,8 @@ namespace RimMandrake.FlowWorks
 		public bool truncated;
 
 		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 step 1: which liquid this body is, set ONCE in FormBody from its
-		/// base terrain (LiquidDef.terrainSuite -> canalFluid, fallback water) and sticky like `limitless`. Stored
-		/// only in this pass; readers still use the map's ActiveFluid until step 3 retires it.</summary>
+		/// base terrain (LiquidDef.terrainSuite -> canalFluid, fallback water) and sticky like `limitless`. Capacity,
+		/// refill, recession and the source debit unit all read it (step 3).</summary>
 		public FluidDef fluid;
 
 		public RM_LiquidBody()
