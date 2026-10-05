@@ -381,7 +381,7 @@ def run_maze(args):
     hl, _ = B.hose(PLONE)
     # build_batch answers success with placed 0 for an unknown def (FlowWorks absent on this tier, live 2026-10-04)
     if not bt.get("success") or not bt.get("placed"):
-        V.row(rows, "P1_reel_couples_to_tank", "RECORD", "SITE", {"tankBuild": bt, "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"})
+        V.row(rows, "P1_reel_couples_to_tank", "SKIP", "SITE", {"tankBuild": bt, "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"})
     else:
         V.row(rows, "P1_reel_couples_to_tank", "PASS" if hp_.get("port") == "RM_LiquidTank" and hp_.get("portKind") == "Tank"
               and hp_.get("portSide") == [1, 0] and (c.get("feedDraws") or 0) >= 1 else "FAIL", "MOD",
