@@ -19,7 +19,11 @@ a value not measured says FALLBACK.
 
 RENDERING follows the image_scaling skill: the FULL texture canvas maps onto the draw quad (that is
 what the engine does — margins included), downscaled BOX in premultiplied alpha (≈ GPU mipmap),
-composited over desert terrain colour (art_zoom_sim.BG), at the on-screen per-cell ladder 96/32/18.
+composited over the biome's ground colour. The PRIMARY view is a max-zoom scene at 128–256 px per cell
+(the art near its native resolution) with the vanilla human beside it at the same scale: the owner plays
+with enhanced-zoom mods, so vanilla's 96 px/cell ceiling does not hold (owner, 2026-10-04: "Please don't
+down-resolve the imagery so badly"). Normal play (32 px/cell) is a small secondary; 18 lives only in the
+click-to-enlarge strip.
 
 The human is the vanilla colonist composed exactly as the engine does it: Naked_Male_south and
 Male_Average_Normal_south (both 128² on the 1.5-cell humanlike mesh), the head raised by BodyTypeDef
@@ -53,7 +57,8 @@ def set_terrain(rgb):
 
 DB = Path(GP.DUMP_ROOT) / "defs.sqlite"
 VANILLA_TEX = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core")
-TIERS = [(96, "zoomed in"), (32, "normal play"), (18, "zoomed out")]
+TIERS = [(32, "normal play"), (18, "zoomed out")]   # secondary tiers (full strip only)
+ZOOM_MIN, ZOOM_MAX = 128, 256   # primary scene px/cell: the art near native, clamped
 SCENE_PPC = 64            # the human-for-scale scene: RimWorld's own 64 px per cell texture ratio
 OWNER_PPC = 128           # owner ruling (image_scaling skill): canvas = drawSize×128 → next pow2
 LOW_PPC = 64              # below this, detail is lost at max zoom-in
@@ -207,6 +212,16 @@ class Resolver:
         return sorted(set(hits))
 
     # ── public ──
+    def describe(self, row: dict) -> dict:
+        """The in-game label + description the player reads: ThingDef label/description from the LIVE dump
+        (post-inheritance, post-patch). {} when no def of the row is in the dump."""
+        for n in [row["key"]] + [x for x in (row.get("defNames") or []) if x != row["key"]]:
+            td = self._def(n, "ThingDef")
+            if td:
+                return {"def": n, "label": td.get("label") or "", "description": (td.get("description") or "").strip(),
+                        "source": f"live def dump {self.captured[:10]} · ThingDef {n}"}
+        return {}
+
     def size(self, row: dict) -> dict:
         names = [row["key"]] + [n for n in (row.get("defNames") or []) if n != row["key"]]
         for n in names:
@@ -389,41 +404,50 @@ def _art_quads(art, size, ppc):
     return [(spr, 0.5 - dx / 2, 0.5 + dy / 2)]
 
 
-def _scene(art, size, ppc, f):
-    """human | rat | subject on the cell grid, all at ppc px per cell, over terrain."""
+def _extent(quads, ppc, rat_on):
+    """(cells above row 0, cells below row 0, subject x origin, total cells wide) — a drawSize larger than one cell
+    overhangs its cell on every side (it is centred on it), so the scene grows DOWN and right as well as up."""
     import math
+    above = max(0.5 + HUMAN_MESH / 2 + HEAD_OFFSET_Y, 0.5 + RAT_DRAW / 2, max(t for _, _, t in quads), 1.0)
+    below = max(0.0, -min(t - im.height / ppc for im, _, t in quads))
+    left = max(0.0, -min(x for _, x, _ in quads))
+    sx0 = (2.0 if rat_on else 1.0) + left
+    right = max(sx0 + 1.0, max(sx0 + x + im.width / ppc for im, x, _ in quads))
+    return math.ceil(above - 1e-6), math.ceil(below - 1e-6), sx0, math.ceil(right - 1e-6)
+
+
+def _scene(art, size, ppc, f, rat_on=True):
+    """human | rat | subject on the cell grid, all at ppc px per cell, over terrain (rat_on=False: human | subject)."""
     from PIL import Image, ImageDraw
     hum, hm, hoff = human_sprite(ppc)
     rat = _tint(_premul_resize(_vanilla("Rat_east"), round(RAT_DRAW * ppc), round(RAT_DRAW * ppc)), RAT_COLOR)
     quads = _art_quads(art, size, ppc)
-    left = -min(0.0, min(x for _, x, _ in quads))
-    subj_w = max(1.0, max(x + im.width / ppc for im, x, _ in quads) + left)
-    top = max(0.5 + HUMAN_MESH / 2 + HEAD_OFFSET_Y, 0.5 + RAT_DRAW / 2, max(t for _, _, t in quads), 1.0)
-    nh = math.ceil(top - 1e-6)
-    sx0 = 2.0 + left
-    total_w = math.ceil(sx0 + subj_w - 1e-6)
-    lab = 13
-    W, H = round(total_w * ppc), round(nh * ppc) + lab
+    na, nb, sx0, total_w = _extent(quads, ppc, rat_on)
+    lab = 13 if ppc < 100 else 18
+    W, H = round(total_w * ppc), round((na + nb) * ppc) + lab
     sc = Image.new("RGBA", (W, H), TERRAIN + (255,))
     d = ImageDraw.Draw(sc)
     base = H - lab
 
-    def Y(c):
-        return round(base - c * ppc)
+    def Y(c):                       # c in cells above row 0's bottom edge
+        return round(base - (c + nb) * ppc)
     line = tuple(max(0, c - 26) for c in TERRAIN) + (255,)
     for i in range(total_w + 1):
         d.line([(round(i * ppc), 0), (round(i * ppc), base)], fill=line)
-    for j in range(nh + 1):
+    for j in range(-nb, na + 1):
         d.line([(0, Y(j)), (W, Y(j))], fill=line)
     sc.alpha_composite(hum, (round((0.5 - HUMAN_MESH / 2) * ppc), Y(0.5 + HUMAN_MESH / 2) - hoff))
-    sc.alpha_composite(rat, (round((1.5 - RAT_DRAW / 2) * ppc), Y(0.5 + RAT_DRAW / 2)))
+    if rat_on:
+        sc.alpha_composite(rat, (round((1.5 - RAT_DRAW / 2) * ppc), Y(0.5 + RAT_DRAW / 2)))
     for im, x, t in quads:
         sc.alpha_composite(im, (round((sx0 + x) * ppc), Y(t)))
     d.rectangle([0, base, W, H], fill=(18, 16, 13, 255))
     if ppc >= 44:
-        d.text((2, base), "human", font=f, fill=(200, 190, 170))
-        d.text((round(1.0 * ppc) + 2, base), "rat", font=f, fill=(200, 190, 170))
-        d.text((round(2.0 * ppc) + 2, base), "this", font=f, fill=(232, 182, 76))
+        lf = _font(14) if ppc >= 100 else f
+        d.text((2, base), "human", font=lf, fill=(200, 190, 170))
+        if rat_on:
+            d.text((round(1.0 * ppc) + 2, base), "rat", font=lf, fill=(200, 190, 170))
+        d.text((round(max(sx0 - 0.0, 1.0 if not rat_on else 2.0) * ppc) + 2, base), "this", font=lf, fill=(232, 182, 76))
         return sc
     return sc.crop((0, 0, W, base))
 
@@ -465,58 +489,92 @@ def _strip(parts, f, bg=(18, 16, 13, 255), gap=10, lab=13):
     return out
 
 
-COMPACT_H = 150     # px: the in-row panel's picture height budget (row is ~200 px)
-COMPACT_SCENE_W = 200   # px: widest in-row scene before its px/cell drops below 32
-TILE_W = 104        # px: the 96/cell tile is centre-cropped to this — still 1:1 on-screen pixels
+ZOOM_W, ZOOM_H = 640, 440     # px: the in-row max-zoom scene's budget (human | subject)
+NORMAL_PPC = 32               # the small secondary scene: normal play
+
+
+def _cells(art, size, rat_on):
+    """(cells tall, cells wide) of a scene, independent of ppc."""
+    na, nb, _sx0, w = _extent(_art_quads(art, size, 64), 64, rat_on)
+    return na + nb, w
+
+
+def zoom_ppc(native, top_cells, w_cells, wmax=ZOOM_W, hmax=ZOOM_H):
+    """(ppc, fitted): the art near native, clamped 128–256; shrunk only when the scene cannot fit the budget."""
+    want = int(min(ZOOM_MAX, max(ZOOM_MIN, native or ZOOM_MIN)))
+    fit = int(min((hmax - 18) / top_cells, wmax / w_cells))
+    return (want, False) if want <= fit else (max(24, fit), True)
+
+
+def _crop_scene(sc, art, size, ppc):
+    """The max-zoom scene cut to the row budget: from the left edge (the human stays in view), vertically centred
+    on row 1 (the human's middle and the subject's cell); the label strip is kept."""
+    from PIL import Image
+    na, nb, _sx0, _w = _extent(_art_quads(art, size, ppc), ppc, False)
+    lab = 13 if ppc < 100 else 18
+    base = sc.height - lab
+    w, hwin = min(sc.width, ZOOM_W), min(base, ZOOM_H - lab)
+    yc = base - (1.0 + nb) * ppc
+    y0 = int(max(0, min(base - hwin, yc - hwin / 2)))
+    out = Image.new("RGBA", (w, hwin + lab))
+    out.paste(sc.crop((0, y0, w, y0 + hwin)), (0, 0))
+    out.paste(sc.crop((0, base, w, sc.height)), (0, hwin))
+    return out
 
 
 def render_panel(art_bytes: bytes, size: dict, out_png: Path, full_png: Path) -> dict:
-    """Two PNGs. FULL (click-to-zoom): the scene at 64 px/cell, then the subject alone at the on-screen
-    ladder 96/32/18 px/cell at TRUE size, with 32 and 18 again ×4 nearest. COMPACT (in the row): the
-    scene at 32 px/cell = normal play (shrunk only if it cannot fit, and then labelled), the subject at
-    96 px/cell = max zoom-in (centre crop, 1:1), and at 18 px/cell = zoomed out."""
-    import math
+    """Two PNGs. COMPACT (in the row): human | subject at MAX ZOOM — the art near native resolution,
+    128–256 px per cell (shrunk only if the subject is too big for the row, and then labelled) — plus a
+    small normal-play scene (human · rat · subject at 32 px/cell). FULL (click-to-enlarge): the max-zoom
+    scene never shrunk, then normal play 32 and zoomed-out 18, each also ×4 nearest."""
     from PIL import Image
     art = Image.open(BytesIO(art_bytes)).convert("RGBA")
-    f = _font(10)
-    parts = [(f"scene {SCENE_PPC}px/cell", _scene(art, size, SCENE_PPC, f))]
-    for t, lab in TIERS:
-        tile = _tier_tile(art, size, t)
-        parts.append((f"{t}/cell {lab}", tile))
-        if t != 96:
-            parts.append((f"{t} ×4 nearest", tile.resize((tile.width * 4, tile.height * 4), Image.NEAREST)))
-    full = _strip(parts, _font(12), gap=16, lab=16)
+    f = _font(11)
+    quad_x = size["drawSize"][0] if size["kind"] == "animal" else size["quad"]
+    native = round(art.width / quad_x) if quad_x else None
+    top, w = _cells(art, size, False)
+    zfull, _ = zoom_ppc(native, top, w, 10 ** 6, 10 ** 6)
+    zppc, fitted = zoom_ppc(native, top, w)
+    parts = [(f"max zoom {zfull} px/cell — human | this", _scene(art, size, zfull, f, rat_on=False))]
+    for t_, lab in TIERS:
+        tile = _scene(art, size, t_, f) if t_ == NORMAL_PPC else _tier_tile(art, size, t_)
+        parts.append((f"{t_}/cell {lab}", tile))
+        parts.append((f"{t_} ×4 nearest", tile.resize((tile.width * 4, tile.height * 4), Image.NEAREST)))
+    full = _strip(parts, _font(13), gap=16, lab=18)
     full_png.parent.mkdir(parents=True, exist_ok=True)
     full.convert("RGB").save(full_png, optimize=True)
-    # compact: how many cells tall / wide is the scene?
-    qs = _art_quads(art, size, 8)
-    top_cells = math.ceil(max(0.5 + HUMAN_MESH / 2 + HEAD_OFFSET_Y, max(t for _, _, t in qs), 1.0) - 1e-6)
-    left = -min(0.0, min(x for _, x, _ in qs))
-    w_cells = math.ceil(2.0 + left + max(1.0, max(x + im.width / 8 for im, x, _ in qs) + left) - 1e-6)
-    sppc = min(32, int((COMPACT_H - 13) / top_cells), int(COMPACT_SCENE_W / w_cells))
-    scene = _scene(art, size, sppc, f)
-    parts = [((f"human·rat·this @32/cell = normal play" if sppc == 32 else f"human·rat·this @{sppc}/cell (shrunk)"), scene)]
-    t96, cropped = _crop_centre(_tier_tile(art, size, 96), TILE_W, max(scene.height, 96))
-    parts.append(("96/cell" + (" crop" if cropped else ""), t96))
-    t18, c18 = _crop_centre(_tier_tile(art, size, 18), TILE_W, max(scene.height, 96))
-    parts.append(("18/cell", t18))
-    comp = _strip(parts, f, gap=8)
+    # never down-resolve below the art's own px/cell (or 128): a subject too big for the row at that scale is
+    # CROPPED around the human and the subject's base, not shrunk — the whole of it is the normal-play scene
+    floor_ppc = min(native or ZOOM_MIN, ZOOM_MIN)
+    cropped = fitted and zppc < floor_ppc
+    if cropped:
+        zppc, fitted = floor_ppc, False
+    zoom = _scene(art, size, zppc, f, rat_on=False)
+    if cropped:
+        zoom = _crop_scene(zoom, art, size, zppc)
+    normal = _scene(art, size, NORMAL_PPC, f)
+    note = " (cropped, not shrunk — click for whole)" if cropped else ""
+    if fitted:
+        note = (f" (art's native is {native} — no detail lost)" if native and zppc >= native
+                else " (shrunk to fit the row — click for full)")
+    comp = _strip([((f"max zoom · {zppc} px/cell" + note), zoom),
+                   ("normal play · 32/cell", normal)], f, gap=10, lab=15)
     comp.convert("RGB").save(out_png, optimize=True)
-    quad_x = size["drawSize"][0] if size["kind"] == "animal" else size["quad"]
-    return {"srcPx": list(art.size), "pxPerCell": round(art.width / quad_x) if quad_x else None,
-            "scenePpc": sppc, "compactPx": list(comp.size), "fullPx": list(full.size)}
+    return {"srcPx": list(art.size), "pxPerCell": native, "zoomPpc": zppc, "zoomFitted": bool(fitted and not (native and zppc >= native)), "zoomCropped": bool(cropped),
+            "zoomFullPpc": zfull, "compactPx": list(comp.size), "fullPx": list(full.size)}
 
 
 def ppc_verdict(ppc):
+    """Against the enhanced-zoom range (owner, 2026-10-04): 128–256 px/cell is what max zoom resolves."""
     if ppc is None:
         return ""
-    if ppc >= OWNER_PPC * 1.5:
-        return "above the 128/cell knee — extra pixels buy nothing on screen"
-    if ppc >= OWNER_PPC * 0.75:
-        return "at the 128/cell target"
+    if ppc > ZOOM_MAX:
+        return "above 256/cell — beyond even enhanced max zoom"
+    if ppc >= OWNER_PPC * 0.95:
+        return "in the 128–256/cell range enhanced zoom resolves"
     if ppc >= LOW_PPC:
-        return "below 128/cell target, above the 64 floor"
-    return "BELOW 64/cell — detail lost at max zoom-in"
+        return "below 128/cell — soft at enhanced max zoom"
+    return "BELOW 64/cell — detail lost when zoomed in"
 
 
 if __name__ == "__main__":
