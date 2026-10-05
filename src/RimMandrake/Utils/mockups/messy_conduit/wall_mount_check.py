@@ -28,9 +28,9 @@ from PIL import Image, ImageDraw
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-MOD = os.path.join(REPO, "src", "RimMandrake", "MessyConduit")
+MOD = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
 SRC = os.path.join(MOD, "Source")
-TEX = os.path.join(MOD, "Textures", "RimMandrake", "MessyConduit")
+TEX = os.path.join(MOD, "Textures", "RimMandrake", "GimmeSomeSlack")
 OUT = os.path.join(REPO, "Transient", "mc_aerial_r4")
 SHOTS = os.path.join(REPO, "Transient", "mc_owner_shots_r4")
 PX = 133                       # px per cell, as in his screenshot

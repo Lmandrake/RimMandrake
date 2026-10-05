@@ -21,7 +21,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-TEX = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Hose")
+TEX = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Hose")
 DEPLOYED = os.path.join(TEX, "Reel_Deployed.png")
 
 WRAP = (122, 148, 213, 179)      # x0, y0, x1, y1 (exclusive) of the wrap round the drum's underside

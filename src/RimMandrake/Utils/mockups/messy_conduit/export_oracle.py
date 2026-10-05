@@ -26,7 +26,7 @@ import tricky  # noqa: E402
 from scene import gap_scene, nodal_scene  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-DEFAULT_OUT = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Source", "SelfTest", "oracle_scenes.json")
+DEFAULT_OUT = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Source", "SelfTest", "oracle_scenes.json")
 
 
 def scene_json(sc):

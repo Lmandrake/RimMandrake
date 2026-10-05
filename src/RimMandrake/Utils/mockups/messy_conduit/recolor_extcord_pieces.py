@@ -19,7 +19,7 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-EXT = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Styles", "ExtCord")
+EXT = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Styles", "ExtCord")
 SLOTS = ["Plug", "Junction_T", "Junction_X", "StubWall", "StubRock", "EndFrayed_Dead"]
 COLOURS = ["Green", "Brown", "Yellow", "Blue"]
 

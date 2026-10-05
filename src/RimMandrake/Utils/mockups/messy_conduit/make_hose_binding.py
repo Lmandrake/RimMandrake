@@ -20,7 +20,7 @@ import os
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-H = os.path.join(HERE, "..", "..", "..", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Hose")
+H = os.path.join(HERE, "..", "..", "..", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Hose")
 SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc/messyconduit_hose_binding_v1/messyconduit_hose_binding_v1.png"
 X0, X1, Y0, Y1 = 22, 104, 12, 52
 BARE_FROM = {"Coupling_Brass": 58, "EndCap": 44, "Nozzle": 42}   # first brass column, judged on a 3x enlargement

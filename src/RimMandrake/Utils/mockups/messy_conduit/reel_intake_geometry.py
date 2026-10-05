@@ -22,8 +22,8 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-MOD = os.path.join(REPO, "src", "RimMandrake", "MessyConduit")
-TEX = os.path.join(MOD, "Textures", "RimMandrake", "MessyConduit", "Hose")
+MOD = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
+TEX = os.path.join(MOD, "Textures", "RimMandrake", "GimmeSomeSlack", "Hose")
 OUT = os.path.join(MOD, "Source", "Hose", "ReelIntakeGeometry.cs")
 LOOKS = [("Scrapper", ""), ("Industrial", "Styles/Industrial/"), ("Modern", "Styles/Modern/"), ("Futuristic", "Styles/Futuristic/")]
 ARTS = ["Reel_PumpHookup", "Reel_Deployed"]   # index 0 = stored (hose reeled in), 1 = deployed (hose laid)

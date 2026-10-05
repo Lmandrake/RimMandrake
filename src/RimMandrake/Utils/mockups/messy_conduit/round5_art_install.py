@@ -31,7 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "art"))
 sys.path.insert(0, HERE)
-TEX = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit")
+TEX = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack")
 R = "/mnt/d/Luke/dev/_rmscratch/mc_r5"
 RAW, IN, CONF = R + "/raw", R + "/in", R + "/conf"
 REASON = "script:src/RimMandrake/Utils/mockups/messy_conduit/round5_art_install.py"

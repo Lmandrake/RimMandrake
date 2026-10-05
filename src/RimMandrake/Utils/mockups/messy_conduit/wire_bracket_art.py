@@ -32,8 +32,8 @@ import artledger  # noqa: E402  the only sanctioned writer into Textures (ART_VE
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-MOD = os.path.join(REPO, "src", "RimMandrake", "MessyConduit")
-STY = os.path.join(MOD, "Textures", "RimMandrake", "MessyConduit", "Aerial", "Styles")
+MOD = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack")
+STY = os.path.join(MOD, "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial", "Styles")
 TABLE = os.path.join(MOD, "Source", "Aerial", "BracketGeometryTable.cs")
 ARTPIPE = "/mnt/d/Luke/dev/_artpipe"
 LOOKS = {"scrapper": "Scrapper", "industrial": "Industrial", "modern": "Modern", "futuristic": "Futuristic"}
