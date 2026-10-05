@@ -1,0 +1,148 @@
+{
+ "mod": "MessyConduit",
+ "mode": "relay",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T22:04:25",
+ "rows": [
+  {
+   "id": "RL1_reels_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "build": true,
+    "maxLength": 40
+   }
+  },
+  {
+   "id": "RL2_one_hose_cannot_reach",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "too far",
+    "maxLength": 40
+   }
+  },
+  {
+   "id": "RL3_hose_onto_relay_B",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     52,
+     100
+    ],
+    "far": [
+     51,
+     101
+    ],
+    "endPoint": [
+     52,
+     101.5
+    ],
+    "pathLen": 30.4347,
+    "flatLen": 31.5404,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true
+   }
+  },
+  {
+   "id": "RL4_relay_B_onward_to_C",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "relayTo": [
+     84,
+     100
+    ],
+    "far": [
+     83,
+     101
+    ],
+    "endPoint": [
+     84,
+     101.5
+    ],
+    "pathLen": 30.4347,
+    "flatLen": 30.7686,
+    "maxLength": 40,
+    "layOk": true,
+    "reason": null,
+    "intake": true,
+    "onEdge": true
+   }
+  },
+  {
+   "id": "RL5_ring_refused",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lay": "that reel already feeds this one (a chain may not loop back)",
+    "check": "too far"
+   }
+  },
+  {
+   "id": "RL6_flow_passes_through",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Plump",
+     "provider": "debug",
+     "signal": true
+    },
+    "B": {
+     "state": "Plump",
+     "provider": "relay",
+     "signal": true,
+     "fedBy": [
+      [
+       20,
+       100
+      ]
+     ]
+    },
+    "relayCouplings": 4
+   }
+  },
+  {
+   "id": "RL7_no_latch",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "A": {
+     "state": "Flat",
+     "provider": "debug"
+    },
+    "B": {
+     "state": "Flat",
+     "provider": "debug"
+    }
+   }
+  },
+  {
+   "id": "RL8_chain_beyond_one_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "span": 64,
+    "maxLength": 40,
+    "pathA": 30.4347,
+    "pathB": 30.4347
+   }
+  },
+  {
+   "id": "RL9_overhead_drawn_over_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hose": 2903,
+    "overhead": 3005,
+    "spanMat": 3005
+   }
+  }
+ ]
+}
