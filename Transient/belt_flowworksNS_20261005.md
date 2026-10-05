@@ -1,0 +1,5 @@
+# FlowWorks northstar notes 2026-10-05
+
+- [start] skeleton created
+- [prep] offline preflight: P-O2 fails 1/31 toggle (pitExposureEnabled); P-O3 deploy drift; P-O4 list diff; P-O5 no golden yet. selftest 88/88 pass
+- [prep] added toggle_pit_exposure chain (validation.py) -> P-O2 PASS 31/31 toggles. bridge held by FOUNDRY (belt suite rerun) at 21:xx
