@@ -1,6 +1,6 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-05T09:16:29-0700",
+ "built": "2026-10-05T10:53:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -1398,6 +1398,7 @@
     },
     "B": {
      "east": "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+     "north": "7f34c08daad15a14f06b1a653e3d0d8da38f39962d9904b4e54155b0fc08687d",
      "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
     },
     "C": {
@@ -1745,5 +1746,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "d0dc418212b92203"
+ "snapshotId": "12411f4b8d9aa0d4"
 }

@@ -1,6 +1,6 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-05T09:14:04-0700",
+ "built": "2026-10-05T10:22:08-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -16,20 +16,28 @@
      "east": "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
      "north": "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66",
      "south": "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3"
+    },
+    "C": {
+     "east": "3b32d5f26558a0eb054f6032140306228da21387233b32b65d7a13ca7675a65a",
+     "north": "8616db266a8bce751c2e27f0ba9cc62187a1f1be70ddf1de95d113762b36d360",
+     "south": "3b29ec96b2345e979e57b4488ff10170f00cf4e3621deff9cf2a6a76ba6721fa"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render crags_brekkugar"
+    "B": "render crags_brekkugar",
+    "C": "render abyss_tarrgun_v1"
    },
    "res": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "crepuscularbeetle"
   },
@@ -81,20 +89,28 @@
      "east": "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
      "north": "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2",
      "south": "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5"
+    },
+    "C": {
+     "east": "1bf696adebcf2f33ccf7314506b3d62d9eb905d8db963a8bca0bcfaa2cddc19b",
+     "north": "b96a2d9b1b357e0da7db8e49a8742cb258820f0396f3d904db193fa0b318f136",
+     "south": "e69c51bd35d4174518bef23f82db8a8154dc461082885517d791b5c1af6c2bc9"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render crags_ulkhorr"
+    "B": "render crags_ulkhorr",
+    "C": "render abyss_ugrothar_v1"
    },
    "res": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "darkbeast"
   },
@@ -109,20 +125,28 @@
      "east": "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
      "north": "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834",
      "south": "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70"
+    },
+    "C": {
+     "east": "87295b02b80da6917aab4b9b18d312d3d2ffea087429977267550544ea806dff",
+     "north": "c2ff6378b62690ba866ed976d6b3665aa904953fff586804effb6cbb59ebdc40",
+     "south": "a530da4c04785a9d081eb8329f05de5e37bb59f6af802c902ddbe679857cad11"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render crags_shekkur"
+    "B": "render crags_shekkur",
+    "C": "render abyss_rakketh_v1"
    },
    "res": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "duskprowler"
   },
@@ -187,26 +211,28 @@
      "north": "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
      "south": "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a"
     },
-    "C": {
+    "D": {
      "east": "3bdeb176e5688cbcb24dbdeffb90b0f5c379fc8b2739e1bc0fca9df4021e01e5",
-     "north": "30e6a0a52db2fef67466185bfa08db238fd5c8d7fc554457c0b1634f85bf44b0"
+     "north": "30e6a0a52db2fef67466185bfa08db238fd5c8d7fc554457c0b1634f85bf44b0",
+     "south": "ea86445c2a384dcb57db712119a515d113a50bda7da55f6a64f071ee370710d3"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
     "B": "_byname",
-    "C": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render crags_kessik",
-    "C": "render abyss_kittrik_v1"
+    "D": "render abyss_kittrik_v1"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "murkling"
   },
@@ -399,8 +425,10 @@
      "north": "cf746bc813fd2c711e454b7e27ab9e3f69bcefc5a0653ccf221d1ad2fdb1751f",
      "south": "e71cb54239407c2cf56ea07e2c0861f5c13a2775391c4af02ec2c9d045d1577e"
     },
-    "F": {
-     "east": "a589c80fe2eb5a0bbab99ccc400a12dca9a828907f4567739c8afc9a34ce2932"
+    "G": {
+     "east": "a589c80fe2eb5a0bbab99ccc400a12dca9a828907f4567739c8afc9a34ce2932",
+     "north": "d877bc6f7256eefb728e7a691b7c72a89a1445a66769dead9e0ba0237b05cee1",
+     "south": "aa9e2e74f6486385387349359831e3725c79040f25b7f408a0d92570211cac64"
     }
    },
    "graphic_of": {
@@ -409,7 +437,7 @@
     "C": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
     "D": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby",
     "E": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female",
-    "F": "_byname"
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 ShadowChargerArtOverride",
@@ -417,7 +445,7 @@
     "C": "donor original \u2014 Alpha Animals",
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals",
-    "F": "render abyss_kraddun_v1"
+    "G": "render abyss_kraddun_v1"
    },
    "res": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
    "reserved": [
@@ -426,7 +454,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "shadowcharger"
   },
@@ -680,17 +709,23 @@
    "columns": {
     "A": {
      "single": "beb6a0ec03214687863832c9383972785618ed5a251a3d3e9d8b0ce0c02096ee"
+    },
+    "B": {
+     "single": "732f654aaf1d927d57c2c3675b78930831bb30aaab27fd7652b59c547485f741"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/AG_Septimum"
+    "A": "Things/Plant/AG_Septimum",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Genes"
+    "A": "IN GAME \u2014 Alpha Genes",
+    "B": "render abyss_skeddra_v1"
    },
    "res": "Things/Plant/AG_Septimum",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ag_septimum"
   },
@@ -967,21 +1002,33 @@
    "columns": {
     "A": {
      "single": "79956fefc23ea22ea42d39f840fb7a2554df287cbaa5f43fbf2a131a338981f1"
+    },
+    "B": {
+     "single": "9504eb4a9240412494f89855ca6dce3cf91ab961da9291c3b08f85822e2fb81b"
+    },
+    "C": {
+     "single": "c3203c8a09293ffb0d6728641732333da054f10aa428b8c9af311438b5b95edb"
     }
    },
    "graphic_of": {
-    "A": "RM_Abyss/Things/Plant/RM_Wickwood"
+    "A": "RM_Abyss/Things/Plant/RM_Wickwood",
+    "B": "RM_Abyss/Things/Plant/RM_Wickwood",
+    "C": "RM_Abyss/Things/Plant/RM_Wickwood"
    },
    "labels": {
-    "A": "IN GAME \u2014 Abyss"
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_wickwood_b_v1",
+    "C": "render abyss_wickwood_c_v1"
    },
    "res": "RM_Abyss/Things/Plant/RM_Wickwood",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "wickwood"
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "304372e33c3b90f7"
+ "snapshotId": "6b9b0ede24b9110c"
 }

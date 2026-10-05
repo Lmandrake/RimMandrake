@@ -1,6 +1,6 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T09:14:21-0700",
+ "built": "2026-10-05T10:22:31-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -22,26 +22,42 @@
     "D": {
      "north": "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa",
      "south": "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a"
+    },
+    "E": {
+     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
+     "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
+     "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
+    },
+    "F": {
+     "east": "09ea0a49cc844b15badce028738b38c2c4120aeecd8ffc26102ef4bf34e10bd0",
+     "north": "3d47e4cd574d6ccc4155dff45f708ed9f356201d4f1c245149d0387b719f4edb",
+     "south": "19c0fa186245ff23eae8bbc484c9d4426bd0a19445567a25c967e3b67e5b5a55"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
     "B": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
     "C": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "D": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
+    "D": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+    "E": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+    "F": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
    },
    "labels": {
     "A": "render bluedesert_Thunderbeast_v2",
     "B": "IN GAME \u2014 Alpha Animals",
     "C": "render bluedesert_Thunderbeast_v4",
-    "D": "render bluedesert_Thunderbeast_v3"
+    "D": "render bluedesert_Thunderbeast_v3",
+    "E": "render bluedesert_Thunderbeast_v2 \u2014 failed canon check",
+    "F": "render bluedesert_AA_Thunderbeast_v1"
    },
    "res": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "thunderbeast"
   },
@@ -275,20 +291,26 @@
      "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
      "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
      "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
+    },
+    "C": {
+     "east": "cece482e80bf30135073ae5542f439b7e94b25beab5222609d5472ab127edf1a"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
-    "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
+    "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
+    "C": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
     "A": "render RM_Ossivel",
-    "B": "IN GAME \u2014 BlueDesert"
+    "B": "IN GAME \u2014 BlueDesert",
+    "C": "render bluedesert_Ossivel_v2"
    },
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "ossivel"
   },
