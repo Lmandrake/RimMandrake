@@ -148,11 +148,6 @@
       "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.0) not in the designed positional cast"
     },
     {
-      "def": "AA_MatureFleshbeast",
-      "disposition": "homeless-reserve",
-      "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 2.0) not in the designed positional cast"
-    },
-    {
       "def": "AA_MeadowAve",
       "disposition": "homeless-reserve",
       "reason": "cast discipline under §5 small-steady populations: not in the designed cast"
@@ -745,7 +740,7 @@
     {
       "def": "RM_TruffleMole",
       "disposition": "move:RM_LeaningScrub",
-      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.\" Cast in RM_LeaningScrub_Biome.xml; RSW_TruffleMole retired onto RM_TruffleMole. (No roster file carries RM_LeaningScrub.)"
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.\" Cast in RM_LeaningScrub_Biome.xml; RSW_TruffleMole retired onto RM_TruffleMole. Roster row in arid_shrubland.json (RUT_AridShrubland is the Leaning Scrub's twin)."
     },
     {
       "def": "RM_Ulgga",

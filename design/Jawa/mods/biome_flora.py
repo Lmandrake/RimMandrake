@@ -111,10 +111,9 @@ FAMILIES = {
                      # Plant_Chakroot_Wild->RSW_Plant_Chakroot_Wild, Plant_HubbaGourd_Wild->
                      # RSW_Plant_HubbaGourd_Wild, AB_Aaklac->RSW_VellaraBloom, each at its
                      # old weight; AB_DessertTree's successor RSW_SweetbarkTree landed in the
-                     # same commit. Five more are this planet's own built flora:
+                     # same commit. Four more are this planet's own built flora:
                      # RM_Leachmoss + RM_Venomvine (§4b's shade pair, DESERT_LEACHMOSS_BUILD_1
-                     # / VENOMVINE_CONTACT_VENOM_BUILD_1), RSW_Ultracactus
-                     # (DESERT_SIGNATURE_FLORA_1) and RUT_Vorrel
+                     # / VENOMVINE_CONTACT_VENOM_BUILD_1) and RUT_Vorrel
                      # (DESERT_STAGGERSEED_BUILD_1, working name).
     # 🔴 LONGSHADE_RM_MOD_BUILD_1 (2026-09-24): the RUT_Desert def above is now
     # FROZEN (src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Desert.xml's own
@@ -130,11 +129,11 @@ FAMILIES = {
     # this dict" per the module docstring): 'RSW_Dunegrass' and
     # 'RSW_SweetbarkTree' two lines below do not exist as defs anywhere in the
     # repo (MEASURED via grep, 2026-09-24). The live RUT_Desert.xml/RM_LongShade.xml
-    # wildPlants block casts 'RSW_SurraGrass' and 'RSW_DommoTree' instead — this
+    # wildPlants block casts 'RSW_SurraGrass' instead (RSW_DommoTree was cut 2026-10-05) — this
     # dict and rosters/desert.json are stale by those two names. Real fix belongs
     # in the roster + a regenerate, which needs defs.sqlite (UNMEASURED on this
     # box); flagged, not silently patched around its own edit-here ban.
-    'RM_Leachmoss': 1.5, 'RSW_Ultracactus': 0.8, 'RSW_Dunegrass': 0.6,
+    'RM_Leachmoss': 1.5, 'RSW_Dunegrass': 0.6,
     'RSW_Plant_Chakroot_Wild': 0.3, 'RM_Venomvine': 0.25,
     'RSW_Plant_HubbaGourd_Wild': 0.2, 'RSW_VellaraBloom': 0.12,
     'RUT_Vorrel': 0.1, 'RSW_SweetbarkTree': 0.06},
@@ -214,13 +213,14 @@ FAMILIES = {
  'B. the mycoid and fire massif': {
   'RUT_ExtremeDesert': {   # 3,969 tiles · 3 plants — OWNED def, no operation emitted.
                             # Plant_Bloddle rewired to our own RSW_Plant_Bloddle at
-                            # `fda35ff14`; RSW_LightPipeNub and RSW_Ollim are this biome's
+                            # `fda35ff14`; RM_LightPipeNub and RM_Ollim (RSW_ twins retired 2026-10-05) are this biome's
                             # named signature flora (EXTREME_DESERT_SIGNATURE_FLORA_1,
                             # dune_sea.md SS4 / deep_desert.md SS4b), deliberately sparse.
                             # AB_GiantStikehr removed 2026-09-20 on the owner's eye ("The
                             # giant mushroom seems misplaced") — it is a Abyss
                             # organism by Alpha Biomes' own description and is carried there.
-    'RSW_LightPipeNub': 0.1, 'RSW_Plant_Bloddle': 0.05, 'RSW_Ollim': 0.01},
+    'RM_LightPipeNub': 0.1, 'RSW_Plant_Bloddle': 0.05, 'RM_Ollim': 0.01,
+    'RM_UltrissPad': 0.8},   # moved from the Long Shade 2026-10-05 (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1)
   'RM_TheRot': {   # 2,204 tiles · 30 plants — was AB_MycoticJungle. 18 of the fungi
                      # below were BMT_ (Biomes! Caverns donor) until Caverns retired;
                      # renamed to their RUT_ ports 2026-09-19 (CUT_FALLOUT_GENERATED_DATA_1,

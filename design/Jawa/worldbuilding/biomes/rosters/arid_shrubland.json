@@ -354,7 +354,7 @@
     {
       "def": "BMT_TruffleMole",
       "disposition": "homeless-reserve",
-      "reason": "Earth-nameable on sight (a mole) — recognizability (ban 10)"
+      "reason": "Earth-nameable on sight (a mole) — recognizability (ban 10); superseded 2026-10-05: the truffle mole (RM_TruffleMole) now lives here — see fauna"
     },
     {
       "def": "Behemoth",
@@ -1236,6 +1236,12 @@
       "commonality": 0.5,
       "def": "VAEWaste_Hydra",
       "law": "owner review 2026-09 (round2 move mapping): venomvine patch predator"
+    },
+    {
+      "action": "import",
+      "commonality": 0.5,
+      "def": "RM_TruffleMole",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.\" Cast inline in RM_LeaningScrub_Biome.xml (MayRequire mandrake.rm.biomes), weight carried from the Long Shade. Not wired into RUT_AridShrubland."
     }
   ],
   "fish": {
