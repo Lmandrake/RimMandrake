@@ -15,7 +15,7 @@ D/F primitive), so every component here drives the depth/fill primitive:
   `jawa/canal_dig` is a stub that ALWAYS FAILS (ruling 24) and is never called here.
 
 WIRED, NOT GREEN. Every must-show and cannot-show bar of the VALIDATED walk is claimed by a
-component via `shows=`, and all 25 Mod Settings toggles are covered. Nothing here has run
+component via `shows=`, and every toggle in `suite.toggles` is covered (pitDepthDrawOffsetEnabled has no chain yet). Nothing here has run
 live: every predicate below is UNMEASURED until the baseline run
 (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1). Expected today (plan section 1): the state half of the
 canal/stock bars passes, about two thirds of the visual bars come back NO until art and the
@@ -49,7 +49,8 @@ suite = Suite("FlowWorks")
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
-# 25 boolean toggles: 24 in RimMandrakeFlowWorksSettings, 1 in RiverSteamSettings. PIT_LEGACY_CODE_RETIRE_1
+# 34 boolean toggles: 33 in RimMandrakeFlowWorksSettings, 1 in RiverSteamSettings (pitDepthDrawOffsetEnabled, also in
+# the FlowWorks class, is the one setting with no chain yet). PIT_LEGACY_CODE_RETIRE_1
 # (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
 # escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
 FW_TOGGLES = [
@@ -63,7 +64,7 @@ FW_TOGGLES = [
     "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
-    "swaleEnabled",
+    "swaleEnabled", "pitExposureEnabled",
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
     "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
 ]
@@ -374,7 +375,7 @@ def plot_A_dug_channel(t):
             _expect("RM_Channel_Empty" in str(r), "terrain at the dug cell is not RM_Channel_Empty: %r" % r)
         _frame(t, cells[0][0], z, 8, 1)
     with t.component("canal_dry_obstacle_look", shows=["canal_dry_reads_as_obstacle"]):
-        # ruled pathCost 30 for a dry D=1 cell (build program Phase 5); shipped 6 is a known FAIL
+        # ruled pathCost 30 for a dry D=1 cell (build program Phase 5, ruling 17)
         r = t.bridge_call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty")
         if t._guard():
             _expect("\"pathCost\":30" in str(r).replace(" ", ""),
@@ -452,8 +453,8 @@ def plot_C_limitless_canal(t):
 
 @suite.chain("plot_C2_tar_and_fluids")
 def plot_C2_tar_and_fluids(t):
-    """Tar vs water fill front, and the two-fluids-side-by-side bar. Both are expected to FAIL today:
-    the depth engine has no viscosity and `ActiveFluid` is one FluidDef per map (plan section 1)."""
+    """Tar vs water fill front (FluidDef.ticksPerTile: tar 360 vs water 60), and the two-fluids-side-by-side
+    bar (fluid identity is per cell via ProofFillWithFluid, so one map holds both)."""
     x0, z0 = _prep_plot(t, "T")
     try:
         _plot_C2_body(t, x0, z0)
@@ -480,11 +481,17 @@ def _plot_C2_body(t, x0, z0):
             wet = sum(1 for _, f in _state(t, cells) if (f or 0) >= 1)
             _expect(wet < len(cells), "tar wet front reached all %d cells: no viscosity lag" % len(cells))
     with t.component("two_fluids_side_by_side", shows=["fill_fluid_distinct"]):
-        # needs two fluids on ONE map; ActiveFluid is one FluidDef per map (the setter changes the
-        # map's fluid, it cannot give two bodies different fluids) -> cannot be staged yet.
-        if t._guard():
-            raise ExpectationFailed("BLOCKED: per-body fluid unbuilt; two fluids cannot share a map")
-        _frame(t, x0, z0 + 2, 22, 10)
+        # Per-body fluid identity is built (RM_FluidIdentity / ProofFillWithFluid names the fluid per
+        # cell), so two fluids share one map: a tar run and a water run, dug side by side and filled
+        # to the same tier, and the frame shows they read differently.
+        tar_run = _line(x0 + 4, z0 + 2, 6)
+        water_run = _line(x0 + 4, z0 + 4, 6)
+        _dig_run(t, tar_run + water_run, 1)
+        for x, z in tar_run:
+            _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
+        for x, z in water_run:
+            _fill_fluid(t, x, z, 1, "RM_Fluid_Water")
+        _frame(t, x0 + 4, z0 + 2, 6, 3)
 
 
 @suite.chain("plot_D_limited_pond")
@@ -665,15 +672,19 @@ def plot_G_pit(t):
         _expect_state(t, pit, depth=4, what="pit")
         _frame(t, *shot)
     with t.component("pit_not_vanilla_trap", shows=["pit_not_vanilla_trap", "never_reads_as_building"]):
-        # offline-checkable half: no FlowWorks def borrows the vanilla spike-trap art
+        # offline-checkable half: no FlowWorks def draws the vanilla spike-trap art as its texPath.
+        # RM_Ladder is exempt: it borrows that sheet as a declared placeholder (ladder art is owner-gated),
+        # and it is a ladder, not the pit. A comment that merely names the path is not a hit.
+        import xml.etree.ElementTree as ET
         ddir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Defs")
         hits = []
         for root, _, files in os.walk(ddir):
             for fn in files:
                 if fn.endswith(".xml"):
-                    txt = open(os.path.join(root, fn), encoding="utf-8").read()
-                    if "Things/Building/Security/TrapSpikeArmed" in txt:
-                        hits.append(fn)
+                    for d in ET.parse(os.path.join(root, fn)).getroot():
+                        tp = d.findtext("graphicData/texPath") or d.findtext("texturePath") or ""
+                        if tp == "Things/Building/Security/TrapSpikeArmed" and d.findtext("defName") != "RM_Ladder":
+                            hits.append(fn)
         _expect(not hits, "defs still point at the vanilla TrapSpikeArmed art: %s" % sorted(set(hits)))
         _frame(t, *shot)
     with t.component("pit_captures_hostile", toggle="superdeepCaptureEnabled",
@@ -1281,8 +1292,7 @@ def _fx_row(report, pid):
 @suite.chain("pit_fill_effects")
 def pit_fill_effects(t):
     """PIT_FILL_EFFECTS_1 first script (owner Q3): two occupied D=4 cells side by side, water and poison, each
-    applies only its own fluid's effect, read per cell by fluid id; a third (oil) is lit and burns its occupant.
-    Expected first fail before the build: no fluid effect at all (RM_PitDrowning had no writer)."""
+    applies only its own fluid's effect, read per cell by fluid id; a third (oil) is lit and burns its occupant."""
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
@@ -1436,8 +1446,7 @@ def toggle_river_steam(t):
 def fluid_identity_recorded(t):
     """LIQUID_BODY_FLUID_IDENTITY_1 step 1 (storage only, behaviour-neutral): after a pulse every wet excavated
     cell carries a recorded fluid and every natural body has one. Runs on whatever the CURRENT map holds (the
-    earlier chains' channels). Expected-first-fail kept from the item: one ActiveFluid per map, so a second fluid
-    cannot exist yet -- the no-mix bars (a)-(d) arrive with steps 2-3."""
+    earlier chains' channels); UNMEASURED when the map holds no wet excavated cell."""
     with t.component("wet_cells_and_bodies_carry_a_fluid", beyond_toggle=True):
         _wait(t, PULSE + 10)
         r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof", method="ProofCensus")
