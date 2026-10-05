@@ -147,13 +147,15 @@ namespace RimMandrake.MessyConduit.Hose
             savedDefaultsVersion < MaxLengthDefaultsVersion && Math.Abs(saved - OldDefaultMaxLength) < 0.01 ? DefaultMaxLength : saved;
 
         // ---------------------------------------------------------------- width rules (measured from the art)
-        /// <summary>The wire strand (SectionLayer_RM_MessyCords.StrandWidth 0.11) times Strand_Jawa.png's opaque
-        /// band (25 of 32 px rows).</summary>
-        public const double WireVisibleWidth = 0.11 * 25.0 / 32.0;
+        /// <summary>The wire strand (SectionLayer_RM_MessyCords.StrandWidth, 0.08 since cords round 5) times
+        /// Strand_Jawa.png's opaque band (25 of 32 px rows). Read only by the width-ratio checks and the probe
+        /// (widthOverWire); no route clearance uses it (the hose clears walls by its own centreline, HoseMath.Clear).</summary>
+        public const double WireVisibleWidth = 0.08 * 25.0 / 32.0;
         /// <summary>Opaque band of the staged strips Textures/.../Hose/Strand_Flat.png (rows 2-60 of 64) and
         /// Strand_Plump.png (rows 1-62), measured 2026-10-02 (lane C cropped the v2 art to fill the strip).</summary>
         public const double FlatBand = 59.0 / 64.0, PlumpBand = 62.0 / 64.0;
-        /// <summary>Visible width collapsed (4.4 wires) and the extra a full plump adds at plump amount 1 (to 5.4 wires).</summary>
+        /// <summary>Visible width collapsed (0.38 cell: 6.1 of today's 0.08 wires, 4.4 of the pre-round-5 0.11 ones) and the
+        /// extra a full plump adds at plump amount 1 (0.465 cell).</summary>
         public const double FlatVisible = 0.38, PlumpExtra = 0.085;
 
         public static double VisibleWidth(double eased, double plumpAmount) => FlatVisible + PlumpExtra * Math.Max(0, plumpAmount) * Geo.Clamp(eased, 0, 1);
@@ -199,11 +201,16 @@ namespace RimMandrake.MessyConduit.Hose
         /// settle with the stiff hose parameters (LayParams.Hose, few gentle S-curves, no loops), then stiffen to
         /// the minimum bend radius. Plump = the same samples pulled Straighten() toward the centreline.
         /// </summary>
-        public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed)
+        /// <param name="endInward">Round 7 (relay, owner station 42): when set, the hose's last
+        /// HoseRelay.EndStraight cells run dead straight along this unit direction into <paramref name="b"/>, so the end
+        /// coupling sits on the receiving reel's inlet axis instead of the last bend's tangent.</param>
+        public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null)
         {
             var lay = new HoseLay();
-            CordPlan plan = CordPlanner.Plan(w, a, b, new List<KeyValuePair<V2, WaypointKind>>());
+            V2 bPlan = endInward.HasValue ? b - endInward.Value * HoseRelay.EndStraight : b;
+            CordPlan plan = CordPlanner.Plan(w, a, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
             if (!plan.Ok) { lay.Reason = "no route"; return lay; }
+            if (endInward.HasValue) plan.Points.Add(b);
             List<V2> C = CordPlanner.RoundCorners(plan.Points, Math.Max(0.45, p.MinBendRadius));
             CordLayer.ProjectOut(w, C);
             C[0] = a;
@@ -249,6 +256,12 @@ namespace RimMandrake.MessyConduit.Hose
             P = ResampleN(Stiffen(w, P, p.MinBendRadius), n);
             if (!Clear(w, P)) P = new List<V2>(lay.Flat);
             lay.Plump = P;
+            if (endInward.HasValue)
+            {
+                lay.Flat = StraightenEnd(lay.Flat, b, endInward.Value, HoseRelay.EndStraight);
+                lay.Centre = StraightenEnd(lay.Centre, b, endInward.Value, HoseRelay.EndStraight);
+                lay.Plump = StraightenEnd(lay.Plump, b, endInward.Value, HoseRelay.EndStraight);
+            }
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
             double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
@@ -582,6 +595,35 @@ namespace RimMandrake.MessyConduit.Hose
 
         /// <summary>The pose with the run [s_j - half, s_j + half] laid on its chord (equal-arc along it), blended back into
         /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
+        /// <summary>Round 7: the last <paramref name="straight"/> cells of P laid on the line into <paramref name="end"/> along
+        /// <paramref name="inward"/> (blended back over 0.5 cell), the end exactly at <paramref name="end"/>.</summary>
+        public static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight)
+        {
+            var o = new List<V2>(P);
+            if (P.Count < 2) return o;
+            double[] s = Geo.CumLen(P);
+            double L = s[s.Length - 1];
+            const double blend = 0.5;
+            for (int i = 1; i < P.Count; i++)
+            {
+                double back = L - s[i];
+                double w = back <= straight ? 1 : back < straight + blend ? 1 - (back - straight) / blend : 0;
+                if (w <= 0) continue;
+                w = w >= 1 ? 1 : w * w * (3 - 2 * w);
+                V2 line = end - inward * Math.Min(back, straight + blend);
+                o[i] = P[i] + (line - P[i]) * w;
+            }
+            o[P.Count - 1] = end;
+            return o;
+        }
+
+        /// <summary>The point <paramref name="back"/> cells of arc before P's last point (interpolated).</summary>
+        public static V2 PointBack(IList<V2> P, double back)
+        {
+            double[] s = Geo.CumLen(P);
+            return At(P, s, Math.Max(0, s[s.Length - 1] - back));
+        }
+
         public static List<V2> StraightenAt(IList<V2> P, int j, double half)
         {
             var o = new List<V2>(P);

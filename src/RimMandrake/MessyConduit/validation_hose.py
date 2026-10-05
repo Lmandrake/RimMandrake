@@ -477,7 +477,8 @@ def run_removal_check(args):
 # out there to connect to? If so we should show that working." Three 2x2 reels 32 cells apart in a row (A, B, C); A's hose
 # is laid ONTO B's footprint, B's onto C's. Predictions from the code (HoseRelay, ReviewRound6Checks), to be confirmed live:
 #   * RL2: one 40-cell hose cannot reach C from A ("too far"); RL3/RL4: aimed at a reel, the hose ends on that reel's
-#     intake (relayTo = that reel, far = an intake cell, endPoint on the reel's edge), each hose under its own cap.
+#     intake (relayTo = that reel, far = an intake cell), each hose under its own cap, and (round 7) the DRAWN end meets
+#     the reel: lay end == endPoint, within 0.35 cell of the intake-side edge, straight into it, on the west brass inlet.
 #   * RL5: closing the ring (C onto A) is refused. RL6: flow into A plumps A's hose, B reads it through the "relay"
 #     provider and plumps too. RL7: A's flow off -> B drains after the release window (no latch).
 #   * RL9: the draw-order fix is live: span material queue == overhead queue > hose queue.
@@ -524,10 +525,23 @@ def run_relay(args):
         ep = h.get("endPoint") or [0, 0]
         intake = far[0] in (dst[0] - 1, dst[0] + 2) and dst[1] <= far[1] <= dst[1] + 1 or \
             far[1] in (dst[1] - 1, dst[1] + 2) and dst[0] <= far[0] <= dst[0] + 1
-        on_edge = abs(ep[0] - dst[0]) < 1e-3 or abs(ep[0] - (dst[0] + 2)) < 1e-3 or abs(ep[1] - dst[1]) < 1e-3 or abs(ep[1] - (dst[1] + 2)) < 1e-3
-        ok = lay.get("success") and h.get("layOk") and rel == list(dst) and intake and on_edge and (h.get("pathLen") or 99) <= (h.get("maxLength") or 0)
+        # round 7 (owner, station 42: "pipe does NOT hook up properly to the next reel station"): what is DRAWN must meet
+        # the relay -- the lay's last point IS the end point, it lies within the tolerance (0.35 cell) of the footprint
+        # edge on the intake side and inside that edge, and the last 0.5 cell runs along the intake axis (< 3 deg). From
+        # the west (this station) the end is the art's brass inlet: its height (relay centre z +-0.15), face outside the edge.
+        re_ = h.get("relayEnd") or {}
+        de = re_.get("drawnEnd") or [0, 0]
+        tol = re_.get("tolerance") or 0.35
+        inward = re_.get("inward") or [0, 0]
+        on_edge = bool(re_) and abs(de[0] - ep[0]) < 1e-3 and abs(de[1] - ep[1]) < 1e-3 and \
+            abs(re_.get("edgeOffset") if re_.get("edgeOffset") is not None else 99) <= tol and re_.get("withinEdge") is True and \
+            (re_.get("tailAngleDeg") if re_.get("tailAngleDeg") is not None else 99) < 3
+        west_inlet = inward != [1, 0] or (abs(de[1] - (dst[1] + 1)) < 0.15 and dst[0] - tol < de[0] < dst[0])
+        ok = lay.get("success") and h.get("layOk") and rel == list(dst) and intake and on_edge and west_inlet and \
+            (h.get("pathLen") or 99) <= (h.get("maxLength") or 0)
         V.row(rows, name, "PASS" if ok else "FAIL", "MOD",
-              dict(_pick(h, "relayTo", "far", "endPoint", "pathLen", "flatLen", "maxLength", "layOk"), reason=lay.get("reason"), intake=intake, onEdge=on_edge))
+              dict(_pick(h, "relayTo", "far", "endPoint", "pathLen", "flatLen", "maxLength", "layOk"), reason=lay.get("reason"), intake=intake,
+                   onEdge=on_edge, westInlet=west_inlet, relayEnd=re_))
         return h
 
     ha = laid_into(RA, RB, "RL3_hose_onto_relay_B")

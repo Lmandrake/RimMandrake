@@ -135,12 +135,21 @@ namespace RimMandrake.MessyConduit.Hose
             return HoseRelay.WouldLoop(o.IndexOf(from), o.IndexOf(to), i => { CompHoseReel n = RelayOf(o[i]); return n == null ? -1 : o.IndexOf(n); });
         }
 
-        /// <summary>Where r's hose ends: on a relay's intake edge, else its free-end cell's centre.</summary>
-        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay)
+        /// <summary>Where r's hose ends: on a relay, the drawn reel's inlet / outline at its intake side (HoseRelay.DrawnEnd,
+        /// round 7), else its free-end cell's centre.</summary>
+        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay) => EndPoint(r, out relay, out _);
+
+        /// <summary>As EndPoint; <paramref name="inward"/> = the direction the hose's last stretch and coupling point
+        /// into the relay (null at a free end).</summary>
+        public V2 EndPoint(CompHoseReel r, out CompHoseReel relay, out V2? inward)
         {
             relay = RelayOf(r);
+            inward = null;
             var far = new Cell(r.far.x, r.far.z);
-            return relay != null ? HoseRelay.IntakePoint(relay.Rect, far) : far.Centre;
+            if (relay == null) return far.Centre;
+            V2 e = HoseRelay.DrawnEnd(relay.Rect, far, HoseMaterials.LookOf(relay), relay.laid, out V2 d);
+            inward = d;
+            return e;
         }
 
         // ------------------------------------------------------------------ lay
@@ -151,14 +160,15 @@ namespace RimMandrake.MessyConduit.Hose
         public HoseLay EnsureLay(CompHoseReel r)
         {
             if (!r.laid || !r.far.IsValid) return null;
-            V2 end = EndPoint(r, out CompHoseReel relay);
-            string key = r.parent.Position + ">" + r.far + (relay != null ? "R" + relay.parent.thingIDNumber : "") + "|" + HoseSettings.ShapeFingerprint();
+            V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
+            // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key
+            string key = r.parent.Position + ">" + r.far + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + "|" + HoseSettings.ShapeFingerprint();
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             HoseShapeParams sp = HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
-            HoseLay lay = HoseMath.Lay(w, Start(r), end, sp, r.Seed);
+            HoseLay lay = HoseMath.Lay(w, Start(r), end, sp, r.Seed, inward);
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
@@ -393,9 +403,14 @@ namespace RimMandrake.MessyConduit.Hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
             if (RelayOf(r) != null)
             {
-                // round 6: a hose feeding a relay reel ends in a brass coupling whose face meets the relay's edge (as the
-                // feed coupling on a pipe or tank): the chain reads as connected, not as a hose end lying beside a reel
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], d1, vis, y, wrapTint);
+                // round 6: a hose feeding a relay reel ends in a brass coupling pointing into the relay. Round 7 (owner,
+                // station 42: "pipe does NOT hook up properly to the next reel station"): its face sits ON the drawn reel
+                // (the west brass inlet face to face, or the outline on the other sides; HoseRelay.DrawnEnd) and its axis
+                // is the intake's, not the hose's last bend. Drawn in the hose band, under the reel sprite, so the reel's
+                // own inlet overlaps the joint, never the other way round.
+                EndPoint(r, out _, out V2? inward);
+                V2 dIn = inward ?? d1;
+                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[n - 1], dIn, vis, y, wrapTint);
                 lastRelayCouplings++;
             }
             else if (r.end == HoseEnd.Nozzle) Fitting(hm, hm.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
