@@ -28,6 +28,15 @@ namespace RimMandrake.Pyrelands
     /// </summary>
     public class RM_JobDriver_Burrow : JobDriver
     {
+        // Persisted: a closure local resets to -1 on save/load and the safety cap never fires.
+        private int startTick = -1;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref startTick, "burrowStartTick", -1);
+        }
+
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             // Nothing reserved: burrowing is self-directed animal behaviour,
@@ -47,8 +56,7 @@ namespace RimMandrake.Pyrelands
 
             Toil hide = ToilMaker.MakeToil("RM_BurrowWait");
             hide.defaultCompleteMode = ToilCompleteMode.Never;
-            int startTick = -1;
-            hide.initAction = () => startTick = Find.TickManager.TicksGame;
+            hide.initAction = () => { if (startTick < 0) startTick = Find.TickManager.TicksGame; };
             hide.tickAction = () =>
             {
                 Map map = pawn.Map;
