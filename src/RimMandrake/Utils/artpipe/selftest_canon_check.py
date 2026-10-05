@@ -115,6 +115,26 @@ def test_grade():
        j2["prompt"].count(canon_check.CORRECTIONS_HEAD) == 1 and j2["canon_retry"] == 2)
 
 
+def test_canon_na():
+    job = dict(OWNER_JOB, canon_na=[2, "pale blue body"], canon_na_reason="subspecies differs")
+    job["owner_note"] = ["Line one.", "Pale blue body.", "Line three."]
+    job["canon_na"] = [2, "line three."]
+    spec = canon_check.gather(job, use_subject=False)
+    mv = MockVision(reply("pass", "fail", "fail"))
+    v = canon_check.grade(Path("/x/r.png"), spec, vision=mv)
+    ok("canon_na: marked lines forced n/a with reason, not counted",
+       v["verdict"] == "PASS" and v["score"] == "1/1" and v["na"] == 2
+       and v["lines"][1]["verdict"] == "na" and "subspecies differs" in v["lines"][1]["reason"], v)
+    ok("canon_na: prompt tells the grader which lines", "marked N/A" in mv.calls[0]["prompt"])
+    ok("canon_na: owner_note field is used as the lines (not the prompt)", spec["lines"][0] == "Line one.")
+    try:
+        canon_check.grade(Path("/x/r.png"), canon_check.gather(dict(job, canon_na=[99]), use_subject=False),
+                          vision=MockVision(reply("pass", "pass", "pass")))
+        ok("canon_na: unmatched mark raises", False)
+    except canon_check.CanonCheckError:
+        ok("canon_na: unmatched mark raises", True)
+
+
 def _ctx(vision, tmp: Path):
     slots = queue.Queue()
     slots.put(0)
@@ -228,7 +248,7 @@ def test_cli():
 
 
 def main():
-    for t in (test_parsing, test_resolve_and_gather, test_grade, test_gate_in_process, test_daemon_end_to_end,
+    for t in (test_parsing, test_resolve_and_gather, test_grade, test_canon_na, test_gate_in_process, test_daemon_end_to_end,
               test_cli):
         try:
             t()

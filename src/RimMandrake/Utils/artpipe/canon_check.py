@@ -161,7 +161,8 @@ def gather(job: dict, use_subject: bool = True) -> dict | None:
     """-> spec {kind: canon|owner, slug, lines, brief, engine_limits, images, owner_note, facing, prompt}, or None."""
     owner = owner_note_lines(job)
     slug, how = resolve_slug(job, use_subject)
-    base = {"facing": job.get("facing"), "prompt": (job.get("prompt") or "")[:3000], "owner_note": owner}
+    base = {"na_marks": job.get("canon_na") or [], "na_reason": str(job.get("canon_na_reason") or "").strip(),
+            "facing": job.get("facing"), "prompt": (job.get("prompt") or "")[:3000], "owner_note": owner}
     if slug:
         secs = _sections((CANON_ROOT / slug / "description.md").read_text(errors="replace"))
         lines = must_show_lines(secs.get("must show", ""))
@@ -179,6 +180,29 @@ def gather(job: dict, use_subject: bool = True) -> dict | None:
 
 
 # ──────────────────────────────────────────────────────────── grade ──
+
+def resolve_na(spec: dict) -> dict[int, str]:
+    """canon_na marks (1-based line number or exact/substring line text) -> {line index: reason}."""
+    out = {}
+    reason = spec.get("na_reason") or "owner marked n/a for this job"
+    for m in spec.get("na_marks") or []:
+        idx = None
+        if isinstance(m, int) and not isinstance(m, bool):
+            idx = m if 1 <= m <= len(spec["lines"]) else None
+        else:
+            t = str(m).strip().lower()
+            for i, line in enumerate(spec["lines"], 1):
+                if line.strip().lower() == t:
+                    idx = i
+                    break
+            if idx is None:
+                hits = [i for i, line in enumerate(spec["lines"], 1) if t and t in line.lower()]
+                idx = hits[0] if len(hits) == 1 else None
+        if idx is None:
+            raise CanonCheckError(f"canon_na {m!r} matches no single Must-show line (have {len(spec['lines'])})")
+        out[idx] = reason
+    return out
+
 
 def build_prompt(spec: dict) -> str:
     n_canon = len(spec["images"])
@@ -208,6 +232,10 @@ def build_prompt(spec: dict) -> str:
     head = "MUST SHOW (canon acceptance lines)" if spec["kind"] == "canon" else "OWNER NOTE (acceptance lines)"
     p.append(head + " — grade every line, by its number:\n"
              + "\n".join(f"{i}. {line}" for i, line in enumerate(spec["lines"], 1)))
+    na = resolve_na(spec)
+    if na:
+        p.append("Lines the owner marked N/A for this job (answer 'na' for them; do not judge): "
+                 + ", ".join(str(i) for i in sorted(na)))
     p.append("Reply with JSON only: {\"lines\":[{\"n\":<line number>,\"verdict\":\"pass\"|\"fail\"|\"na\","
              "\"reason\":\"<one line: what you see in the render>\"}...],\"summary\":\"<one sentence>\"}.")
     return "\n\n".join(p) + "\n"
@@ -282,6 +310,8 @@ def grade(render: Path, spec: dict, vision=None, **vision_kw) -> dict:
     images = [Path(render)] + [Path(p) for p in spec["images"]]
     text = vision(build_prompt(spec), images, **vision_kw)
     rows, summary = parse_answer(text, spec["lines"])
+    for i, why in resolve_na(spec).items():
+        rows[i - 1] = dict(rows[i - 1], verdict="na", reason=f"n/a by canon_na: {why}", canon_na=True)
     graded = [r for r in rows if r["verdict"] != "na"]
     passed = sum(r["verdict"] == "pass" for r in graded)
     failed = [r for r in graded if r["verdict"] == "fail"]
@@ -414,6 +444,8 @@ def main(argv=None) -> int:
             tag = f"{r['status'].upper()} {r.get('note') or ''}".strip()
         print(f"{r['id']}: {tag}")
         for line in c.get("lines", []):
+            if line.get("canon_na"):
+                print(f"    - n/a {line['line'][:70]} — {line['reason'][:100]}")
             if line["verdict"] == "fail":
                 print(f"    ✗ {line['line'][:90]} — {line['reason'][:140]}")
     if a.json_out:
