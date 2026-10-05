@@ -192,15 +192,15 @@
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "at": "2026-10-04T22:58:51-0700",
+    "state": "ruled",
     "by": "owner (Lukas)",
-    "evidence": "sidecar writeCount 62 (second sitting); owner said in chat 'Gave more feedback into the updated Blue Desert.'",
-    "state": "ruled"
+    "at": "2026-10-05T07:37:47-0700",
+    "evidence": "sidecar writeCount 93 (next sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Done with blue desert.'"
   },
   "savedAt": "2026-10-05T07:37:47-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "blue_desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
-  "snapshotId": "0a169dd06c1c1b1c",
+  "snapshotId": "03503bba1df3f583",
   "writeCount": 93
 }
