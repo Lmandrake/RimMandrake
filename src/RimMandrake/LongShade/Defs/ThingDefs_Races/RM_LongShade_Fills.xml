@@ -15,8 +15,9 @@
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_Skarrok</defName>
-    <label>skarrok</label>
+    <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Accept art, but renake to Ski'ra'lim"): renamed from RM_Skarrok / "skarrok". texPaths unchanged so the kept art still binds. -->
+    <defName>RM_Skiralim</defName>
+    <label>ski'ra'lim</label>
     <description>A pale, plated raptor-lizard with a hooked beak, a flaring crest of orange spines and long folded wings whose vanes blush coral at the edges. It roosts on the shaded face of standing rock, then falls onto whatever surfaces at the rim below: one strike with dark, hooked talons, one glide back into the shadow. Its long banded tail ends in a fan of coloured feathers that steers it in the drop.</description>
     <statBases>
       <MoveSpeed>5.0</MoveSpeed>
@@ -100,9 +101,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Skarrok</defName>
-    <label>skarrok</label>
-    <race>RM_Skarrok</race>
+    <defName>RM_Skiralim</defName>
+    <label>ski'ra'lim</label>
+    <race>RM_Skiralim</race>
     <combatPower>90</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <wildGroupSize>1</wildGroupSize>
