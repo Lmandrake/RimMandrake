@@ -2981,3 +2981,14 @@
 {"seat":"FOUNDRY","event":"verify","id":"FLOWWORKS_NORTHSTAR_BASELINE_RUN_1","result":"fail","config":"flowworks-minimal","evidence":"src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T145357.json","sha":"db2f05c21","ts":"2026-10-05T21:57:37Z","tsn":1791237457277231713}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-05T21:57:56Z","tsn":1791237476571615211}
 {"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_NORTHSTAR_SITE_PREP_1","sha":"73d377946ff8f01e1fd6a39d38fd513f8c61e465","ts":"2026-10-05T21:57:57Z","tsn":1791237477082632794}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"flowworks pit rows + def dump recapture","ts":"2026-10-05T22:00:19Z","tsn":1791237619188778422}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_DARK_MUFFLE_ALL_SOUNDS_1","ts":"2026-10-05T22:01:43Z","tsn":1791237703339314024}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_DARK_MUFFLE_ALL_SOUNDS_1","ts":"2026-10-05T22:01:43Z","tsn":1791237703929554164}
+{"seat":"FOUNDRY","event":"note","id":"ABYSS_DARK_MUFFLE_ALL_SOUNDS_1","text":"built at 02bc5e5b7; only criterion left is joint listening session","ts":"2026-10-05T22:01:56Z","tsn":1791237716262627426}
+{"seat":"FOUNDRY","event":"claim","id":"SARLACC_SEEKER_ROOTING_1","ts":"2026-10-05T22:02:44Z","tsn":1791237764259196837}
+{"seat":"FOUNDRY","event":"start","id":"SARLACC_SEEKER_ROOTING_1","ts":"2026-10-05T22:02:44Z","tsn":1791237764885120655}
+{"seat":"FOUNDRY","event":"note","id":"SARLACC_SEEKER_ROOTING_1","text":"built ef25016e8: items 1,2,3(seep-gated) done; item 4 (merge two Stage-I defs) + any non-seep placement remain owner judgment","ts":"2026-10-05T22:02:54Z","tsn":1791237774781874482}
+{"seat":"FOUNDRY","event":"claim","id":"ALPHA_ANIMAL_PORTS_REHOME_1","ts":"2026-10-05T22:03:26Z","tsn":1791237806466286188}
+{"seat":"FOUNDRY","event":"start","id":"ALPHA_ANIMAL_PORTS_REHOME_1","ts":"2026-10-05T22:03:27Z","tsn":1791237807117522872}
+{"seat":"FOUNDRY","event":"note","id":"ALPHA_ANIMAL_PORTS_REHOME_1","text":"818c513d9: renamed all five; Wildpawn/Wildpod art copied from TheRot into SWBestiary RM_Durrok/RM_Mullgoth (ledgered). Chikka/Skorra/Vurra donor swaps blocked: no art exists","ts":"2026-10-05T22:05:53Z","tsn":1791237953388485239}
+{"seat":"FOUNDRY","event":"close","id":"FLOWWORKS_PIT_PAWN_ROWS_RED_1","sha":"b222e43f1e70cf1d3eae404e5ac29660af87ad98","reason":"Harness, not Source: P pits filled by phase_rain's rain -> P_walk colonist drowned (PIT_FILL_EFFECTS_1 working); control colonist killed by fleshbeasts while idle; P3 counted map-wide descents. Fixed in validation_v2 phase_P; live 151609 63P/0F/10 UNBUILT; modcheck record REFUSED (unbuilt bars only).","ts":"2026-10-05T22:17:01Z","tsn":1791238621068723241}
