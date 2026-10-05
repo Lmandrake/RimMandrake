@@ -157,7 +157,6 @@
            Scarlands (0.05), which he called "excellent" for it. ⛔ The arid biomes he
            listed were the CANDIDATE set, not an assignment: a shared habitat class is NOT
            an in-game reason to multi-home an animal. Do not re-add either here. -->
-      <RSW_Kudda MayRequire="mandrake.rsw.swbestiary">0.3</RSW_Kudda>  <!-- needleroll - grain-scale, adjust-keep -->
       <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kreetle>  <!-- kreetle - grain-scale, keep -->
       <RSW_WarWyrm MayRequire="mandrake.rsw.swbestiary">0.2</RSW_WarWyrm>  <!-- war wyrm - giant, keep -->
       <RSW_KraytDragon MayRequire="mandrake.rsw.swbestiary">0.15</RSW_KraytDragon>  <!-- krayt dragon - giant, keep -->

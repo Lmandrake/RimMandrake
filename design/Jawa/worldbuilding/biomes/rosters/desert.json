@@ -716,6 +716,11 @@
       "def": "Vulptex",
       "disposition": "homeless-reserve",
       "reason": "cast discipline under §5 small-steady populations: stat-passing predator (spd 3.1) not in the designed positional cast"
+    },
+    {
+      "def": "RSW_Kudda",
+      "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+      "reason": "owner 2026-10-04 Long Shade sheet: \"Just cut this creature. It's dumb.\" RM_Kudda and RSW_Kudda defs deleted."
     }
   ],
   "fauna": [
@@ -868,13 +873,6 @@
       "commonality": 0.1,
       "def": "Iriaz",
       "law": "SW herd herbivore, spd 4.0 non-predator (MEASURED)"
-    },
-    {
-      "action": "keep",
-      "band": "grain",
-      "commonality": 0.2,
-      "def": "RSW_Kudda",
-      "law": "the kudda (port of AA_Needleroll) — light-feeder, non-pursuit (MEASURED spd 2.5). RULED 2026-09-27 (LONGSHADE_DESIGN_SITTING_1 card): ONE home, the Long Shade — the Stillsand row cut the same sitting; ->RM_Kudda with the Q1 tier move"
     },
     {
       "action": "keep",
