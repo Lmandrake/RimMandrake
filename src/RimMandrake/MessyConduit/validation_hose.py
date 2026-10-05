@@ -13,6 +13,7 @@ RimMandrake.MessyConduit.Hose.HoseProbe (jawa/mod_settings_field), never from sc
     python.exe validation_hose.py --removal-check NAME     # H11: a save WITH a laid hose on a tier WITHOUT the mod
     python.exe validation_hose.py --maze                   # M1-M6 + P1-P2: path solving in a spiral maze, reel ports
     python.exe validation_hose.py --relay                  # RL1-RL9 (round 6): a chain of relay reels past one hose's reach
+    python.exe validation_hose.py --carry                  # CR1-CR6 (carry S3): a real colonist deploys, drops, resumes, retracts
 
 The maze walk (owner, round 2, 2026-10-04: "make the hose solve a complex path (like a spiral through a simple maze
 with two options, then 'build' a wall to block the obvious solution so we can see if it changes to go the other way...
@@ -572,6 +573,181 @@ def run_relay(args):
     return res
 
 
+# ============================================================================ CR1-CR6: the colonist-carried hose (S3)
+# hose_carry_design_2026-10-04.md section 13. One scene, one REAL colonist, real jobs (RM_CarryHoseEnd / RM_RetractHose
+# given through WorkGiver_HoseOrders.JobFor by the probe's startjob verb), every row a state read through HoseProbe.
+# Predictions from the code, to be confirmed or killed live:
+#   * CR1: the forced job walks to the reel, waits 45 ticks (grab), then the reel reads Carrying with this pawn as carrier.
+#   * CR2: jogging ~13 ticks/cell, 60 ticks add ~4 cells; the trail's last cell is the pawn's cell (or the one he just left).
+#   * CR3: drafting ends the job InterruptForced (vanilla Drafted setter) -> finish action -> Dropped at his cell, order KEPT.
+#   * CR4: a save while Dropped round-trips exactly; a save while Carrying comes back Carrying (driver resumed at its toil)
+#     or Dropped (holder check), never Laid-without-trail.
+#   * CR5: undrafted, the UNFORCED WorkGiver path takes the kept order: back to the dropped end, carry on, Laid at the target.
+#     Plump with the DEV flow on. endKind (Water etc.) is S4's: that row is SKIP until the census carries it.
+#   * CR6: a Retract order: walk back to the reel, Retracting, Stored within length/3 s + 300 ticks of winding.
+CX0, CZ0 = 80, 60
+CSITE = (CX0 - 2, CZ0 - 2, 36, 20)
+CREEL = (CX0 + 2, CZ0 + 8)
+CTARGET = (CX0 + 26, CZ0 + 8)        # 24 cells out, open floor
+CSTAND = (CX0 + 5, CZ0 + 8)          # where the colonist is staged, beside the reel
+
+
+def _near(a, b, d=1):
+    return a is not None and b is not None and max(abs(a[0] - b[0]), abs(a[1] - b[1])) <= d
+
+
+def _carry_view(h):
+    t = h.get("trail") or {}
+    return {"carry": h.get("carry"), "carrier": (h.get("carrier") or {}).get("id"), "far": h.get("far"),
+            "trailCount": t.get("count"), "trailLast": t.get("last"), "pulled": t.get("pulled"),
+            "pending": h.get("pending"), "pendingAt": h.get("pendingAt"), "wound": h.get("wound"), "state": h.get("state")}
+
+
+def _poll(B, pred, max_ticks, step=30):
+    """Step the game `step` ticks at a time until pred(hose) holds; returns (hose, ticks waited, seen carry states)."""
+    waited, seen, h = 0, [], {}
+    while True:
+        h, _ = B.hose(CREEL)
+        if h.get("carry") not in seen:
+            seen.append(h.get("carry"))
+        if pred(h) or waited >= max_ticks:
+            return h, waited, seen
+        B.ticks(step)
+        waited += step
+
+
+def _save_reload(B, name):
+    before = V._saves_stat()
+    if name + ".rws" in before:
+        return False, {"error": "%s.rws exists" % name}
+    B.call("rimworld/save_game", saveName=name)
+    time.sleep(3.0)
+    after = V._saves_stat()
+    new = sorted(set(after) - set(before))
+    changed = sorted(n for n in before if n in after and after[n] != before[n])
+    if new != [name + ".rws"] or changed:
+        return False, {"new": new, "changed": changed}
+    B.call("rimworld/load_game", saveName=name)
+    ok, waited = V._wait_playing(B)
+    if not ok:
+        return False, {"state": waited}
+    B.call("rimworld/frame_cell_rect", x=CSITE[0], z=CSITE[1], width=CSITE[2], height=CSITE[3], paddingCells=1)
+    time.sleep(1.0)
+    return True, {"saved": name + ".rws", "loadSeconds": waited}
+
+
+def run_carry(args):
+    B = H()
+    rows = []
+    res = {"mod": V.MOD, "mode": "carry", "script": "validation_hose.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    stamp = time.strftime("%Y%m%d%H%M%S")
+    d = B.hp("defaults")
+    if not d.get("success"):
+        V.row(rows, "CR0_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "hose probe dead"
+        return res
+    # ---------------------------------------------------------------- scene: a reel and one real colonist beside it
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % CSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % CSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % CSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % CSITE)
+    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [CREEL]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.call("rimworld/frame_cell_rect", x=CSITE[0], z=CSITE[1], width=CSITE[2], height=CSITE[3], paddingCells=1)
+    B.ticks(2)
+    h0, _ = B.hose(CREEL)
+    col = B.hp("colonists")
+    pawns = [p for p in col.get("pawns") or [] if not p.get("downed")]
+    if not h0 or not pawns:
+        V.row(rows, "CR0_scene", "FAIL", "SITE", {"reel": bool(h0), "build": br, "colonists": col})
+        res["aborted"] = "no reel or no colonist"
+        return res
+    pid = pawns[0]["id"]
+    if pawns[0].get("drafted"):
+        B.hp("pawn:%d=undraft" % pid)
+    tp = B.hp("pawn:%d=tp:%d,%d" % ((pid,) + CSTAND))
+    V.row(rows, "CR0_scene", "PASS" if tp.get("success") else "FAIL", "HARNESS", {"pawn": tp.get("pawn"), "reel": CREEL})
+
+    # ---------------------------------------------------------------- CR1: order Deploy -> a real colonist carries it
+    o = B.hp("order:%d,%d=deploy:%d,%d" % (CREEL + CTARGET))
+    sj = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
+    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600)
+    V.row(rows, "CR1_deploy_carrying", "PASS" if h.get("carry") == "Carrying" and (h.get("carrier") or {}).get("id") == pid else "FAIL",
+          "MOD", {"order": o, "startjob": sj, "ticks": waited, "seen": seen, "hose": _carry_view(h)})
+
+    # ---------------------------------------------------------------- CR2: the trail grows behind him
+    a = h
+    B.ticks(60)
+    b, _ = B.hose(CREEL)
+    ta, tb = (a.get("trail") or {}), (b.get("trail") or {})
+    ppos = (b.get("carrier") or {}).get("pos")
+    V.row(rows, "CR2_trail_follows_walk", "PASS" if (tb.get("count") or 0) > (ta.get("count") or 0) and _near(tb.get("last"), ppos)
+          and b.get("layOk") else "FAIL", "MOD", {"before": _carry_view(a), "after": _carry_view(b), "pawnPos": ppos})
+
+    # ---------------------------------------------------------------- CR3: draft him mid-walk -> dropped at his cell, order kept
+    dr = B.hp("pawn:%d=draft" % pid)
+    B.ticks(35)   # past one 30-tick holder check, should the finish action not have fired
+    c, _ = B.hose(CREEL)
+    pc = B.hp("colonists")
+    me = next((p for p in pc.get("pawns") or [] if p["id"] == pid), {})
+    V.row(rows, "CR3_draft_drops_end", "PASS" if c.get("carry") == "Dropped" and _near(c.get("far"), me.get("pos"))
+          and c.get("pending") == "Deploy" and c.get("carrier") is None else "FAIL", "MOD",
+          {"draft": (dr.get("pawn") or {}).get("drafted"), "pawn": me, "hose": _carry_view(c)})
+
+    # ---------------------------------------------------------------- CR4a: save/load while Dropped
+    keys = ("carry", "far", "trailCount", "trailLast", "pending", "pendingAt")
+    va = {k: _carry_view(c)[k] for k in keys}
+    ok, det = _save_reload(B, "RM_hosecarry_%s_dropped" % stamp)
+    c2, _ = B.hose(CREEL) if ok else ({}, None)
+    vb = {k: _carry_view(c2)[k] for k in keys} if ok else None
+    V.row(rows, "CR4a_save_load_dropped", "PASS" if ok and va == vb else "FAIL", "MOD", {"io": det, "before": va, "after": vb})
+    if not ok:
+        res["aborted"] = "save/load failed"
+        return res
+
+    # ---------------------------------------------------------------- CR5: undraft -> the WorkGiver path resumes, Laid at the target
+    B.hp("pawn:%d=undraft" % pid)
+    sj = B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
+    how = "work"
+    if not sj.get("success"):
+        sj2 = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
+        how = {"work": sj, "forced": sj2}
+    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600)
+    resumed = h.get("carry") == "Carrying"
+    # CR4b: save/load while Carrying (taken here, mid-resume)
+    vc = _carry_view(h)
+    ok, det = _save_reload(B, "RM_hosecarry_%s_carrying" % stamp)
+    hl, _ = B.hose(CREEL) if ok else ({}, None)
+    vl = _carry_view(hl)
+    good = ok and resumed and vl["carry"] in ("Carrying", "Dropped") and (vl["trailCount"] or 0) > 0 and vl["pending"] == "Deploy"
+    V.row(rows, "CR4b_save_load_carrying", "PASS" if good else "FAIL", "MOD", {"io": det, "before": vc, "after": vl})
+    if ok and hl.get("carry") == "Dropped":
+        B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
+    h, waited2, seen2 = _poll(B, lambda x: x.get("carry") == "Laid", 1200)
+    V.row(rows, "CR5_resume_laid_at_target", "PASS" if resumed and h.get("carry") == "Laid" and tuple(h.get("far") or ()) == CTARGET
+          and h.get("pending") == "None" and h.get("layOk") else "FAIL", "MOD",
+          {"startjob": how, "resumeTicks": waited, "layTicks": waited2, "seen": seen + seen2, "hose": _carry_view(h)})
+    B.hp("flow:%d,%d=on" % CREEL)
+    B.ticks(120)
+    hp_, _ = B.hose(CREEL)
+    V.row(rows, "CR5b_laid_hose_plumps", "PASS" if hp_.get("state") == "Plump" else "FAIL", "MOD", _pick(hp_, "state", "provider", "signal"))
+    B.hp("flow:%d,%d=off" % CREEL)
+    V.row(rows, "CR5c_end_kind", "PASS" if hp_.get("endKind") == "Free" else ("SKIP" if "endKind" not in hp_ else "FAIL"), "MOD",
+          {"endKind": hp_.get("endKind"), "note": "endKind is stage S4"})
+
+    # ---------------------------------------------------------------- CR6: Retract -> Retracting -> Stored
+    length = (h.get("trail") or {}).get("pulled") or 24
+    o = B.hp("order:%d,%d=retract" % CREEL)
+    sj = B.hp("startjob:%d,%d=forced;%d" % (CREEL + (pid,)))
+    budget = int(length / 3.0 * 60 + 300 + 30 * length)   # winding + the walk back to the reel
+    h, waited, seen = _poll(B, lambda x: x.get("carry") == "Stored", budget)
+    V.row(rows, "CR6_retract_stored", "PASS" if "Retracting" in seen and h.get("carry") == "Stored" and h.get("pending") == "None"
+          else "FAIL", "MOD", {"order": o, "startjob": sj, "ticks": waited, "budget": budget, "seen": seen, "hose": _carry_view(h)})
+    res["saves"] = ["RM_hosecarry_%s_dropped.rws" % stamp, "RM_hosecarry_%s_carrying.rws" % stamp]
+    return res
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -580,6 +756,7 @@ def main(argv=None):
     ap.add_argument("--removal-check", default=None, metavar="NAME")
     ap.add_argument("--maze", action="store_true")
     ap.add_argument("--relay", action="store_true")
+    ap.add_argument("--carry", action="store_true")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.save_load:
@@ -590,6 +767,8 @@ def main(argv=None):
         res = run_maze(a)
     elif a.relay:
         res = run_relay(a)
+    elif a.carry:
+        res = run_carry(a)
     elif a.live:
         res = run_live(a)
     else:

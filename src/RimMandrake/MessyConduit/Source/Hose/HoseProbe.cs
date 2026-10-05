@@ -20,6 +20,8 @@ namespace RimMandrake.MessyConduit.Hose
     /// the PLAYER's order exactly as the gizmos do; settrail:rx,rz=laid|dropped;x,z;x,z;... stages a walked trail (review map
     /// station 44); gizmos:rx,rz lists the reel's gizmo labels under the CURRENT dev-mode flag (CR7). lay/reelin stay the
     /// instant staging verbs and work with dev mode off.
+    /// Carry stage S3: colonists | pawn:id=draft|undraft|tp:x,z|stop | startjob:rx,rz=forced|work;pawnId (the reel's pending
+    /// order as a real job for that colonist, through WorkGiver_HoseOrders.JobFor).
     /// </summary>
     public static class HoseProbe
     {
@@ -57,6 +59,8 @@ namespace RimMandrake.MessyConduit.Hose
                 fi.SetValue(null, v);
                 return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
             }
+            if (cmd == "colonists") return Colonists(map);
+            if (cmd.StartsWith("pawn:")) return PawnVerb(map, cmd);
             int colon = cmd.IndexOf(':');
             if (colon < 0) return "{\"success\":false,\"error\":\"unknown command\",\"cmd\":" + S(cmd) + "}";
             string verb = cmd.Substring(0, colon), arg = cmd.Substring(colon + 1), val = null;
@@ -123,6 +127,22 @@ namespace RimMandrake.MessyConduit.Hose
                 case "clearhist":
                     r.history.Clear();
                     return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
+                case "startjob":
+                {
+                    // S3 (CR rows): startjob:rx,rz=forced;<pawnId> | work;<pawnId>. Takes the reel's PENDING order (place it with
+                    // order: first) through the WorkGiver's own JobFor, exactly as a colonist would; forced = the right-click
+                    // path (drafted pawns too), work = the unforced WorkGiver checks (allowed area, forbidden, Danger.Some).
+                    string[] parts = (val ?? "").Split(';');
+                    bool forced = parts[0] != "work";
+                    Pawn p = parts.Length > 1 ? PawnById(map, parts[1]) : null;
+                    if (p == null) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"no such pawn on this map\"}";
+                    Verse.AI.Job j = Jobs.WorkGiver_HoseOrders.JobFor(p, r, forced, out string jwhy);
+                    if (j == null) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"reason\":" + S(jwhy) + "}";
+                    j.playerForced = forced;
+                    bool took = p.jobs.TryTakeOrderedJob(j, Verse.AI.JobTag.Misc);
+                    return "{\"success\":" + B(took) + ",\"cmd\":" + S(cmd) + ",\"job\":" + S(j.def.defName) + ",\"curJob\":" + S(p.CurJobDef?.defName) +
+                           ",\"pending\":" + S(r.pending.ToString()) + ",\"pendingAt\":" + Pos(r.pendingAt) + "}";
+                }
             }
             return "{\"success\":false,\"error\":\"unknown verb\",\"cmd\":" + S(cmd) + "}";
         }
@@ -229,6 +249,52 @@ namespace RimMandrake.MessyConduit.Hose
             }
             sb.Append("]}");
             return sb.ToString();
+        }
+
+        // ---------------------------------------------------------------- S3 scene verbs: real colonists for the CR rows
+        private static Pawn PawnById(Map map, string id)
+        {
+            if (!int.TryParse(id.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n)) return null;
+            return map.mapPawns.AllPawnsSpawned.FirstOrDefault(p => p.thingIDNumber == n);
+        }
+
+        private static string PawnJson(Pawn p) =>
+            "{\"id\":" + p.thingIDNumber + ",\"name\":" + S(p.LabelShort) + ",\"pos\":" + Pos(p.Position) + ",\"drafted\":" + B(p.Drafted) +
+            ",\"downed\":" + B(p.Downed) + ",\"job\":" + S(p.CurJobDef?.defName) + ",\"forced\":" + B(p.CurJob?.playerForced ?? false) +
+            ",\"driver\":" + S(p.jobs?.curDriver?.GetType().Name) + ",\"toil\":" + (p.jobs?.curDriver?.CurToilIndex ?? -1) + "}";
+
+        /// <summary>colonists: every free colonist on this map with position, draft, job and toil.</summary>
+        private static string Colonists(Map map) =>
+            "{\"success\":true,\"cmd\":\"colonists\",\"tick\":" + Find.TickManager.TicksGame + ",\"pawns\":[" +
+            string.Join(",", map.mapPawns.FreeColonistsSpawned.Select(PawnJson)) + "]}";
+
+        /// <summary>pawn:&lt;id&gt;=draft|undraft|tp:x,z|stop. draft/undraft go through the real Drafted setter (which ends a
+        /// player-interruptible job: the CR3 interrupt); tp places the pawn for staging; stop ends his job InterruptForced.</summary>
+        private static string PawnVerb(Map map, string cmd)
+        {
+            string arg = cmd.Substring(5), val = "";
+            int eq = arg.IndexOf('=');
+            if (eq >= 0) { val = arg.Substring(eq + 1); arg = arg.Substring(0, eq); }
+            Pawn p = PawnById(map, arg);
+            if (p == null) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"no such pawn on this map\"}";
+            if (val == "draft" || val == "undraft")
+            {
+                if (p.drafter == null) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"pawn cannot be drafted\"}";
+                p.drafter.Drafted = val == "draft";
+            }
+            else if (val.StartsWith("tp:"))
+            {
+                int[] t = Ints(val.Substring(3));
+                var c = new IntVec3(t[0], 0, t[1]);
+                if (!c.InBounds(map) || !c.Standable(map)) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"cell not standable\"}";
+                p.jobs?.StopAll();
+                p.pather?.StopDead();
+                p.Position = c;
+                p.Notify_Teleported(true, true);
+            }
+            else if (val == "stop") p.jobs?.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);
+            else if (val.Length > 0) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"pawn verb must be draft|undraft|tp:x,z|stop\"}";
+            return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"pawn\":" + PawnJson(p) + "}";
         }
 
         private static string Pos(IntVec3 c) => c.IsValid ? "[" + c.x + "," + c.z + "]" : "null";
