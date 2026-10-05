@@ -19,6 +19,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             Bridge();
             Split();
             Colours();
+            Writes();
             Materials();
             Spans();
         }
@@ -109,10 +110,49 @@ namespace RimMandrake.MessyConduit.SelfTest
                   "run colour: one colour -> that colour; two colours or any mix cell -> mix; nothing stored -> none");
             var line = Enumerable.Range(0, 12).Select(x => ConduitStyles.PieceVariant("Modern", ConduitStyles.Mix, 40 + x, 70, 12345, false, 0)).ToList();
             Check(line.Distinct().Count() >= 3, $"random mix (owner: 'a mixture of colours inside the run'): 12 cells of one mix run show {line.Distinct().Count()} colours");
+            // live 2026-10-04 (S9d): a straight 7-cell mix run printed ONE colour (a straight run is one cord piece). The mix now
+            // changes colour along the cord by MixBlock blocks; two blocks side by side never share a colour
+            bool adj = true;
+            for (int bx = -6; bx < 6; bx++)
+                for (int bz = -6; bz < 6; bz++)
+                {
+                    int c0 = ConduitStyles.MixColourIndex(bx * ConduitStyles.MixBlock, bz * ConduitStyles.MixBlock);
+                    adj &= c0 != ConduitStyles.MixColourIndex((bx + 1) * ConduitStyles.MixBlock, bz * ConduitStyles.MixBlock)
+                           && c0 != ConduitStyles.MixColourIndex(bx * ConduitStyles.MixBlock, (bz + 1) * ConduitStyles.MixBlock) && c0 >= 0 && c0 < 5;
+                }
+            int worst = int.MaxValue;
+            for (int x0 = -20; x0 < 20; x0++)
+            {
+                var hx = Enumerable.Range(0, ConduitStyles.MixBlock + 1).Select(i => ConduitStyles.MixColourIndex(x0 + i, 7)).Distinct().Count();
+                var hz = Enumerable.Range(0, ConduitStyles.MixBlock + 1).Select(i => ConduitStyles.MixColourIndex(7, x0 + i)).Distinct().Count();
+                worst = Math.Min(worst, Math.Min(hx, hz));
+            }
+            Check(adj && worst >= 2, $"mix along a cord: neighbouring blocks always differ; every straight run of {ConduitStyles.MixBlock + 1} cells (either axis, negative cells too) shows >= {worst} colours");
+            var pts = Enumerable.Range(0, 29).Select(i => new RimMandrake.MessyConduit.Core.V2(66.5 + i * 0.25, 149.5)).ToList();   // a 7-cell straight cord, x 66..73
+            List<ConduitStyles.MixSegment> segs = ConduitStyles.MixSegments(pts, 0.3, 0.11);
+            bool joined = segs.Count >= 2 && segs[0].From == 0 && segs[segs.Count - 1].To == pts.Count - 1 &&
+                          segs.Zip(segs.Skip(1), (p, q) => p.To == q.From && p.Colour != q.Colour && q.S0 > p.S0).All(b => b);
+            Check(joined && segs.Select(g => g.Colour).Distinct().Count() >= 2,
+                  $"mix strand: one straight cord over 7 cells prints {segs.Count} segments in {segs.Select(g => g.Colour).Distinct().Count()} colours, contiguous (shared boundary point, u running on)");
+            Check(ConduitStyles.MixSegments(pts.Take(3).ToList(), 0, 0.11).Count == 1, "can fail: a cord inside one block is one segment (no needless splits)");
             var uniform = Enumerable.Range(0, 12).Select(x => ConduitStyles.PieceVariant("Modern", "Brown", 40 + x, 70, x * 7919, false, 0)).Distinct().ToList();
             Check(uniform.Count == 1 && uniform[0] == ConduitStyles.ColourIndex("Brown"), "a single-colour run is that colour on every cell whatever its cord net seed");
             Check(ConduitStyles.PieceVariant("Modern", "Brown", 1, 1, 5, true, 4) != ConduitStyles.ColourIndex("Blue"),
                   "can fail: the global single-colour setting (Blue) no longer overrides a run's stored colour");
+        }
+
+        private static void Writes()
+        {
+            // live 2026-10-04 (S7/S8): an unstyled mast auto-linked into a Scrapper run had Scrapper WRITTEN. A member with no
+            // stored style is written only when its drawing would change, or on a Restyle
+            const string D = "Scrapper";
+            bool keep = !ConduitStyles.NeedsWrite(false, false, "Scrapper", null, D, false) && !ConduitStyles.NeedsWrite(false, true, "Scrapper", null, D, false)
+                        && !ConduitStyles.NeedsWrite(false, true, "Modern", null, "Modern", false);
+            bool write = ConduitStyles.NeedsWrite(false, false, "Industrial", null, D, false) && ConduitStyles.NeedsWrite(false, true, "Modern", "Blue", "Modern", false)
+                         && ConduitStyles.NeedsWrite(false, true, "Modern", ConduitStyles.Mix, "Modern", false) && ConduitStyles.NeedsWrite(false, false, "Scrapper", null, D, true)
+                         && ConduitStyles.NeedsWrite(true, false, "Scrapper", null, D, false);
+            Check(keep, "legacy kept: an unstyled pole / cell joining a default-look run (or a Modern run with no stored colour) stores nothing");
+            Check(write, "can fail: a non-default look, a stored Modern colour or mix, a Restyle, or an already-styled member IS written");
         }
 
         /// <summary>The pre-stage-2 CordMaterials.VariantFor, copied verbatim as the reference (n = strands the global set had).</summary>

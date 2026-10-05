@@ -307,7 +307,10 @@ def run_live(args):
 
     # ---------------------------------------------------------------- S7: save / load (stage 1 masts, then S9's read)
     if args.save:
-        res["save"] = _save_load(B, rows, args.save, st)
+        # LEARNED live 2026-10-04: S9's site clear destroys anchors that stood in SITE2 (e.g. at 63,154 and 79,154), so
+        # comparing against the stage-1 read taken BEFORE S9 reported them as "changed by the load". Read again just
+        # before saving: the comparison is then load-only.
+        res["save"] = _save_load(B, rows, args.save, B.ap("styles"))
         s9_after_load(B, rows, s9, s10)
     else:
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
@@ -411,13 +414,19 @@ def s9_runs(B, rows, res):
     l_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Industrial" for c in left)
     f_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Futuristic" for c in LINE_F)
     pb, pn = _piece_look_bad(st)
-    right_tex = {p.get("strandTex") for p in st.get("pieces") or [] if tuple(p["owner"]) in set(right)}
+    # owner 2026-10-04: "random" = a MIXTURE of colours inside the run. LEARNED live 2026-10-04: a straight 7-cell run is
+    # ONE cord piece, so a per-piece colour printed a single colour (Strand_Blue); the mix now changes along the cord
+    right_pieces = [p for p in st.get("pieces") or [] if tuple(p["owner"]) in set(right) and p.get("strands")]
+    right_tex = {t for p in right_pieces for t in (p.get("mixTex") or [p.get("strandTex")])}
+    mix_flag = all(p.get("mix") for p in right_pieces if (mem.get(tuple(p["owner"])) or {}).get("def") != "PowerSwitch")
     printed = st.get("printedTex") or {}
     unprinted = sorted({p.get("strandTex") for p in st.get("pieces") or [] if p.get("strands")} - set(printed))
-    V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 4 and not pb and not unprinted else "FAIL", "MOD",
+    mixed_ok = len([t for t in right_tex if t and t.startswith("Strand_")]) >= 2 and mix_flag and all(t in printed for t in right_tex if t)
+    V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 4 and not pb and not unprinted and mixed_ok else "FAIL", "MOD",
           {"restyle": rs, "build": {"line": fl.get("success"), "finish": fb}, "rightColours": sorted(x for x in right_tex if x), "pieceBad": pb[:6],
            "unprintedStrands": unprinted, "printedTex": printed, "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"),
-           "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern), build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
+           "mixSegmentsPrinted": st.get("mixSegmentsPrinted"),
+           "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern) and the mixed run prints >= 2 Modern colours along its cords, build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
     out["st"] = st
     res["stage2_before"] = st
     return out

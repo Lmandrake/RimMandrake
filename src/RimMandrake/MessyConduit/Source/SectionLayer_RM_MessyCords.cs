@@ -136,7 +136,9 @@ namespace RimMandrake.MessyConduit
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
-                        if (!ripples)
+                        if (!ripples && !s.OverFace && comp.IsMix(p))
+                            verts += MixRibbons(pts, y, s.S0);              // stage 2: the mix changes colour ALONG the cord
+                        else if (!ripples)
                             verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
                                             pts, StrandWidth, y, s.S0, Vector2.zero);
                         if (MessyConduitSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
@@ -171,6 +173,23 @@ namespace RimMandrake.MessyConduit
             LastLodSubMeshes = lodN;
             LastFullSubMeshes = fullN;
         }
+
+        /// <summary>A Modern "random mix" strand: split where the MixBlock block (and so the colour) changes, each segment in
+        /// its own colour's strand, sharing the boundary point and continuing the u coordinate so the weave does not jump.
+        /// State read: <see cref="MixSegmentsPrinted"/>.</summary>
+        private int MixRibbons(List<V2> pts, float y, double s0)
+        {
+            int n = 0;
+            foreach (Aerial.ConduitStyles.MixSegment seg in Aerial.ConduitStyles.MixSegments(pts, s0, StrandWidth))
+            {
+                Material m = CordMaterials.StrandG(Aerial.ConduitStyles.Global("Modern", seg.Colour));
+                n += Ribbon(m, pts.GetRange(seg.From, seg.To - seg.From + 1), StrandWidth, y, seg.S0, Vector2.zero);
+                MixSegmentsPrinted++;
+            }
+            return n;
+        }
+
+        public static int MixSegmentsPrinted;
 
         private void Grow(double x, double z)
         {

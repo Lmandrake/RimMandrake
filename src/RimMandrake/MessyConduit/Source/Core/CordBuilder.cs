@@ -106,6 +106,11 @@ namespace RimMandrake.MessyConduit.Core
         public int TangleMin = CordGraph.TangleMin;
         /// <summary>Strips (ExtensionCord) or junction boxes (every other style) in piles and at device stubs.</summary>
         public PileArt Pile = PileArt.Junctions;
+        /// <summary>Per-build style stage 2: the pile art of the RUN at a cell (strips in a Modern run, junction boxes in every
+        /// other), null where the cell stores no style (then <see cref="Pile"/>, the default look's).</summary>
+        public Func<Cell, PileArt?> PileAt;
+
+        public PileArt PileFor(Cell c) => PileAt?.Invoke(c) ?? Pile;
     }
 
     /// <summary>
@@ -149,7 +154,7 @@ namespace RimMandrake.MessyConduit.Core
                     full.Append(g.Nodes[v].Type).Append(',');
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
-                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.Pile);
+                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell));
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
                 if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && CorridorHash(w, old) == old.CorridorHash)
@@ -592,7 +597,7 @@ namespace RimMandrake.MessyConduit.Core
                     piece.Decals.Add(plate);
                     hole = WallMount.Socket(plate);
                 }
-                else if (nd.Type == NodeType.StubDevice && opt.Pile == PileArt.Strips)
+                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) == PileArt.Strips)
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
                     piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
@@ -670,7 +675,7 @@ namespace RimMandrake.MessyConduit.Core
             List<Cell> comp = nd.Cells;
             bool lit = isLive(nd.Cell);
             p.LiveKeys.Add(nd.Cell);
-            bool strips = opt.Pile == PileArt.Strips;
+            bool strips = opt.PileFor(nd.Cell) == PileArt.Strips;
             // ---- connectors on distinct cells of the pile
             CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
             var cells = new List<Cell>(comp);
