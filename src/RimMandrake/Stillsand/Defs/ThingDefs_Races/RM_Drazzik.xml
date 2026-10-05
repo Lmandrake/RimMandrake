@@ -3,8 +3,7 @@
   RM_Drazzik.xml                          RimMandrake — STILLSAND_RULED_CONTENT_1
 
   Q1 tier move (2026-09-27 sitting, RATIFIED): the drazzik (+ its egg-trap clutch +
-  its hatchling) leaves the Utinni patch (RSW_Drazzik.xml/RSW_Nizzek.xml, both
-  unchanged and still wired into the frozen RUT_ExtremeDesert.xml twin) for a native,
+  its hatchling) leaves the Utinni patch for a native,
   franchise-free copy here — invented content, the biome's own drum-lure archetype,
   no Star Wars IP (Q11a).
 
@@ -14,9 +13,11 @@
   defended by depth, not size. Annotated in place per the screecher precedent;
   nothing evicted (§7 Q7, ratified).
 
-  MECHANIC 1 (the lure) and MECHANIC 2 (the egg-trap clutch) are read verbatim from
-  DRUM_LURE_PREDATOR_BUILD_1's own RSW_Drazzik.xml — see that file's header for the
-  full design account. Both comp/hediff dependencies are RimMandrake.CreatureBehaviors
+  MECHANIC 1 (the lure) and MECHANIC 2 (the egg-trap clutch) were read verbatim from
+  DRUM_LURE_PREDATOR_BUILD_1's RSW_Drazzik.xml (deleted 2026-10-05,
+  LONGSHADE_SHEET_STRUCTURAL_RULINGS_1: owner "Belongs at the RimMandrake level" — this
+  is now the only drazzik, and RUT_ExtremeDesert casts it too; git history holds the
+  original design account). Both comp/hediff dependencies are RimMandrake.CreatureBehaviors
   (RM_CompProperties_DrumLure, RM_DrumLureLured/RM_DrumLureSubmersion hediffs) — a
   RimMandrake-tier assembly already, not Star-Wars-tier, so no gating is needed; this
   mod's own RM_MirrorGiant already carries an unguarded RimMandrake.CreatureBehaviors
