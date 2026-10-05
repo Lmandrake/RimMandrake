@@ -439,11 +439,27 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     return jobs
 
 
+class InvalidJob(ValueError):
+    """Generated job fails common.load_job — refused before filing."""
+
+
 def write_job(job: dict, pending_dir: Path, active_dir: Path, done_dir: Path,
               failed_dir: Path, dry_run: bool) -> None:
     taken = common.id_taken(job["id"], pending_dir, active_dir, done_dir, failed_dir)
     if taken:
         raise DuplicateJobId(f"{job['id']} already exists at {taken}")
+
+    # Run the daemon's own validation (common.load_job, incl. the facing-
+    # contradiction check) BEFORE anything reaches pending/, so a bad prompt
+    # is refused at filing instead of as bad_job_file days later.
+    import tempfile
+    with tempfile.TemporaryDirectory() as _td:
+        _tmp = Path(_td) / f"{job['id']}.json"
+        _tmp.write_text(json.dumps(job, indent=2, sort_keys=True) + "\n")
+        try:
+            common.load_job(_tmp)
+        except common.JobError as exc:
+            raise InvalidJob(f"{job['id']} refused at filing (daemon would reject it): {exc}")
 
     dest = pending_dir / f"{job['id']}.json"
     if dry_run:
@@ -549,6 +565,8 @@ def main(argv=None) -> int:
                 filed += 1
             except DuplicateJobId as exc:
                 duplicates.append(str(exc))
+            except InvalidJob as exc:
+                errors.append(str(exc))
 
     for msg in errors:
         print(f"ERROR skipped row: {msg}", file=sys.stderr)
