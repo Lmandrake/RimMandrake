@@ -217,6 +217,7 @@
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_SandProwler -> RSW_Vosska -> LONGSHADE_RULED_CONTENT_1 Q1 tier move -> RM_Vosska. Dropped: VEF.AnimalBehaviours.CompProperties_GraphicByTerrain (sand-camouflage/burrow visual swap, donor framework) and <renderTree>VEF_GraphicByTerrainRenderTree; the burrow-and-strike AI is lost with them, stats/body/predator role stay. leatherDef corrected Leather_RaptorPlates -> Leather_Bear this pass: the donor name was never a real def in this repo (grep confirms no ThingDef anywhere defines Leather_RaptorPlates) — a pre-existing dangling reference, fixed in passing per "correctness outranks seat ownership" rather than carried forward into a new tier. -->
 
+		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): moved to the Stillsand to swim in the sand; RSW_Vosska retired onto this def. -->
 		<defName>RM_Vosska</defName>
 		<label>vosska</label>
 		<description>A genetic amalgamation of big-cat, shark and sand skink, bred as a ferocious hunter for desert worlds. The vosska can move through loose sand almost as easily as open ground, letting it close on prey from ambush. Dense soils are too firm for it to work through.</description>
@@ -281,6 +282,9 @@
 			<manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
 			<lifeExpectancy>18</lifeExpectancy>
 			<gestationPeriodDays>10</gestationPeriodDays>
+			<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner: "move to our custom extreme desert biome to swim in the sand"): sand-swimmer wiring, same vanilla fields RM_Qorrax uses — RM_DeepSand carries the Water tag, so waterSeeker + the PawnKindDef's Water speed factor apply on it. No swimming graphic yet (art owed); without one the grounded body draws. -->
+			<waterSeeker>true</waterSeeker>
+			<waterCellCost>1</waterCellCost>
 			<lifeStageAges>
 				<li><def>AnimalBaby</def><minAge>0</minAge></li>
 				<li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
@@ -301,6 +305,12 @@
 		<race>RM_Vosska</race>
 		<combatPower>275</combatPower>
 		<ecoSystemWeight>0.3</ecoSystemWeight>
+		<moveSpeedFactorByTerrainTag>
+			<li>
+				<key>Water</key>
+				<value>2.0</value>
+			</li>
+		</moveSpeedFactorByTerrainTag>
 		<lifeStages>
 			<li>
 				<label>vosska cub</label>
