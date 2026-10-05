@@ -19,10 +19,9 @@
   native with ComfyTemperatureMax -11 takes heatstroke above -1C (butane's
   boiling point) and dies of it, which fires its RM_*Charge hediff below.
 
-  Art: PLACEHOLDER texPaths reusing vanilla shipped art (Thrumbo/Warg/Squirrel)
-  with a grey tint, same "recolored placeholder, no new art" idiom
-  RUT_Placeholder_SumpMouse/RM_Emberscythe already use — bespoke sprites are
-  QUEUED via fill_queue.py (art_lists/blue_desert_life.csv), not landed yet.
+  Art: bespoke sprites at Things/Pawn/Animal/RM_<Name>/RM_<Name> (owner's pick,
+  Blue Desert sheet 2026-10-04), installed through the art ledger; the art carries
+  its own colour, so no tint. Desiccated graphics still borrow vanilla.
   Palette: biome_palette_anchors.json `the_blue_desert` family — dorrak
   darkest, vekkit one step lighter, krissek mid-grey at rest so its halo
   (RM_KrissekHalo, see EffecterDefs) is the only colour it ever has (§8).
@@ -150,10 +149,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dorrak/RM_Dorrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
-          <color>(58,60,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
@@ -162,10 +160,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dorrak/RM_Dorrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.35</drawSize>
-          <color>(58,60,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
@@ -174,10 +171,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Thrumbo/Thrumbo</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dorrak/RM_Dorrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.8</drawSize>
-          <color>(58,60,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
@@ -302,10 +298,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Krissek/RM_Krissek</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-          <color>(90,92,95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -314,10 +309,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Krissek/RM_Krissek</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.05</drawSize>
-          <color>(90,92,95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -326,10 +320,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Warg</texPath>
+          <texPath>Things/Pawn/Animal/RM_Krissek/RM_Krissek</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
-          <color>(90,92,95)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -437,10 +430,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vekkit/RM_Vekkit</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
-          <color>(120,122,126)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -449,10 +441,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vekkit/RM_Vekkit</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.75</drawSize>
-          <color>(120,122,126)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -461,10 +452,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Squirrel/Squirrel</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vekkit/RM_Vekkit</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(120,122,126)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
