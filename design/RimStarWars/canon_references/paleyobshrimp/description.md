@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Yobshrimp` — in-repo label "pale yobshrimp"; (variants: `RSW_YobshrimpJuv`)
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Yobshrimp
 
@@ -17,11 +13,32 @@ A yobshrimp was a carnivorous crustacean native to the shallow waters of Naboo, 
 They sometimes lived inside the gills of the tee, and were eaten from them by laa. They were natural competitors with yobcrabs and were the common prey of the blarth and the predatory scalefish.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Only ONE usable image. Image 1 (canon, infobox) is a PHOTO OF A PLATED FOOD DISH
+(Yobshrimp Noodle Salad at Docking Bay 7, Batuu: cooked peeled pink shrimp on glass noodles) --
+it shows only what cooked, shelled yobshrimp look like as food (curled, pale pink-cream, no shell,
+no claws, no head). It is NOT a reference for the living animal; do not use it for sprites.
+Image 2 (LEGENDS, infobox sketch of several yobshrimp) is the only live-animal evidence.
+- **Silhouette (Legends)**: a small crab/crayfish-like crustacean. A flat, pointed, wedge-shaped
+  carapace that tapers to a sharp forward rostrum like a spear-point or a swordfish bill, held low.
+- **Limbs**: eight short walking legs, bristly and segmented, under the body. TWO very long
+  pincer-arms rise up and back over the carapace, each a long jointed arm ending in a huge
+  scissor-like claw whose two blades are long, thin and sharp (claws as long as the whole body).
+- **Face**: a bright green eye with a round pupil and, on short stalks, a pair of small green
+  bead-like feelers with bulb tips; two long thin whip antennae trail back from the face, many
+  times the body length (swirling in the water).
+- **Colour**: purple and lilac shell with dark violet mottling and small raised bumps/speckles,
+  paler lilac belly; green eyes. Painted against green water.
+- **Size cues**: none; "tiny" in canon prose (lives in fish gills), so shown small.
+- **Prose vs images**: canon prose is only "tiny creature"; Legends text says "clawed carnivorous
+  crustacean" -- the sketch matches the claws, but nothing in prose mentions the swordlike snout.
+  Single-source evidence: one artist's sheet, so treat details as moderately confident.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Small flat wedge-shaped carapace tapering to a sharp pointed forward snout/rostrum
+- [ ] Two very long jointed arms ending in huge thin scissor claws, raised up and back over the body
+- [ ] Short bristly walking legs under the body, crab-like stance
+- [ ] Purple/lilac mottled shell with paler belly and bright green stalked eyes
+- [ ] Two long thin whip antennae trailing back behind the head
 
 ## Engine limits
 not yet assessed

@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Strill` — in-repo label "strill"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Strill
 
@@ -19,11 +15,34 @@ Strills were a species of highly intelligent, carnivorous mammals native to the 
 Strills had gold-colored eyes, gray tongues, and sharp claws. Their wide mouths were filled with sharp fangs, perfectly adapted for a carnivorous diet and powerful en …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Both images are LEGENDS (the canon page has no image, only "thick brown fur in
+winter"). Image 1 is a comic painting of a strill stalking in front of a Mandalorian; image 2 is
+a pencil sketch of Lord Mirdalan sitting. They show two different looks.
+- **LOUD DISAGREEMENT with Legends prose**: the prose says "six-legged" with "thick gold or gray-tan
+  fur", "gold eyes", and skin folds forming gliding membranes between the legs. NEITHER image shows
+  six legs, gold fur, or wing membranes. Image 1 shows a four-limbed, bare-skinned, brown
+  creature; image 2 shows a pit-bull-like dog. The canon fur claim (thick brown winter fur) is
+  also not shown. Appearance therefore rests on weak, mutually inconsistent art.
+- **Image 1 (comic)**: a low-slung, hunched, muscular quadruped like a bulldog-hyena with a thick
+  short neck and a huge head; hairless/leathery tan-brown skin with loose pleats and folds
+  all down the sides and back; two small hornlike ear fins; four large curved ivory fangs
+  jutting from a wide dark red mouth; round glossy black eyes; thick clawed forepaws; a very long
+  thin whip tail coiled up and over its back.
+- **Image 2 (sketch)**: a squat dog, like a mastiff or pit bull, sitting upright with a drooping
+  floppy ear, a wide fanged jaw with the tongue hanging out, loose skin folds draped over the
+  haunches and a thin tail rising; reads as a dog in pyjamas. Single pencil sketch, no colour.
+- **Colour**: brown to tan/rosy-brown skin (image 1); no colour in image 2.
+- **Size cues**: prose says about a metre long; image 1 shows it about waist-high-ish to a standing
+  Mandalorian, rather bigger.
+- **Reading**: the one consistent thing is loose folds of leathery skin, fangs, a long thin whip tail.
+  Fur, six legs and glide-wing membranes are text-only.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Low, muscular, hunched dog/bulldog-like predator with a big head and wide fanged mouth
+- [ ] Loose leathery skin folds along flanks and haunches
+- [ ] Very long thin whip-like tail
+- [ ] Brown to tan colouring (canon prose: thick brown winter fur; Legends prose: gold or grey-tan)
+- [ ] Six legs, fur and glide membranes are text-only and not shown in either image -- not required until a better image exists
 
 ## Engine limits
 not yet assessed

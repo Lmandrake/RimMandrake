@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Lylek` — in-repo label "lylek"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Lylek
 
@@ -27,11 +23,37 @@ Few creatures were able to survive on the stifling, arid surface of Ryloth; the 
 In addition to their viciousness and strength, the lyleks' tail tentacle was also tipped with a poisonous barb. The poison itself was not deadly, but it was disabling enough to prevent most creatures from escaping.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (a small colour illustration on a parchment map page, captioned
+"the most fearsome of all beasts on Ryloth"); images 2, 3 and 4 are LEGENDS (a detailed painting,
+a comic panel, and a nest-site map tile). Image 4 is a top-down terrain tile (red rock, pale bone-
+coloured nest) with no creature in it -- UNUSABLE for appearance.
+- **Silhouette**: a tall, spidery, many-limbed insectoid that stands high on long stilt legs. A
+  compact flattened torso slung between four to six spear-like walking legs (four long stiff
+  stilts in the painting, angled out like tripod stakes), with a raised front body and two pincer-
+  arms held up like a mantis.
+- **Head**: a small wedge/dragon-like head on a short upright neck, a gaping toothed round mouth;
+  the painting shows what reads as THREE heads/knobs at the top -- the central maw plus two
+  head-like pincer-tips on arm stalks held up beside it, each a spiked blob with a small red
+  eye. These are the pincers/claws, not extra heads, but they look like heads. (Prose: "spiked
+  pincers and powerful mandibles with a pair of tentacles near them".)
+- **Tentacles (loud)**: TWO long thin, dark, smooth whip-like tentacles with pale underside whip
+  out from the shoulders/front of the torso and curl in big loops through the air and on the ground;
+  they are much longer than the body (Legends text: poisonous barb tip, not visible).
+- **Carapace**: ridged, spiky, leaf-like plates stacked over the back, shoulders and legs, all
+  jagged; underbelly paler, softer and scaly.
+- **Colour**: green throughout -- olive/moss green (Legends painting), brighter yellow-green (comic),
+  mid dark green (canon plate); pale grey-cream underside and joints; tentacles darker brown-black.
+  Eyes small and red.
+- **Size cues**: comic shows it towering over armed adult humans and flinging them; "tall beasts".
+- **Prose vs images**: matches -- spiked carapace, pincers, tentacles. The queen/hive are not shown
+  in any image.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Tall spidery insectoid on long stiff spear-like stilt legs, compact torso slung low between them
+- [ ] Jagged ridged carapace of spiked leaf-like plates in olive to moss green, with a paler soft underbelly
+- [ ] Small spiked wedge head with a toothed round maw and small red eyes
+- [ ] Two spiked pincer-arms held up beside the head (they read as extra heads)
+- [ ] Two long thin dark whip-like tentacles with pale undersides looping out from the shoulders, longer than the body
 
 ## Engine limits
 not yet assessed

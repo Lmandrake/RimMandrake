@@ -8,3 +8,10 @@ klorslug done
 krykna done
 laascalefish done
 meescalefish done
+lylek done
+neebray done
+paleyobshrimp done
+qormot done
+scurrier done
+shyrack done
+strill done

@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Neebray` — in-repo label "neebray"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Neebray
 
@@ -21,11 +17,35 @@ Neebray were flying, limbless creatures which varied greatly in size and habitat
 **Characteristics** On the moon Rugosa, tiny baby neebray flew among the coral forests of the moon's long-dried-up ocean beds as a stop along their interstellar voyage. A moderately large variety had translucent wings, and could be found on a Rishi moon. The gigantic neebray manta lived in the vacuum of space, feeding on stellar gases. They used the Kaliida Nebula as nesting grounds. They also used Veil Nebula as feeding ground, feeding on its stellar gases.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Images 1, 2 and 3 are canon (a baby neebray CGI render; an adult manta illustration
+in a nebula; Yoda holding a baby on Rugosa); image 4 is LEGENDS (the Revenge of the Sith film
+shot of giant neebray flying over Kaliida Nebula). Two life stages look quite different.
+- **Baby (images 1, 3) -- the ground-world form**: a small, tadpole-like body with a big blunt head
+  and no limbs at all, smooth chubby body tapering to a small tail; TWO big translucent butterfly/
+  fish-like WINGS on the sides (pale blue-green to blue, finely speckled/shimmering, dark rusty-red
+  rim bones), plus two small matching tail fins at the rear. Head: a wide downturned mouth with
+  tiny white teeth and a CLUSTER of large round yellow-gold eyes with black pupils (three to
+  four visible, bulging over the top and sides of the head). Body: rusty maroon-red head and
+  back, tan-brown belly. Bird-sized (sits on Yoda's hand).
+- **Adult manta (images 2, 4) -- space form**: a huge flattened manta-ray/pterosaur shape with a very
+  wide pair of wings (wingspan many times body length), a deep head with a gaping toothed mouth and
+  a red inner mouth/tongue; a small cluster of orange eyes on the brow; four-to-six long thin whip
+  tendrils trailing below the jaw/body and a pair of smaller tail fins. Colour in canon art: white-
+  pink to pale grey body with translucent pink-tan wings against red nebula; the film still shows
+  them red-brown silhouettes with glowing red throats.
+- **LOUD DISAGREEMENT**: prose says "six large eyes" -- images show 3-4 big eyes on a baby and a handful
+  of small orange eyes on the adult; prose says "flat limbless bodies" -- the baby is a chubby
+  tadpole-body, not flat. Trust the images: adults flat and manta-like, babies rounded.
+- **Adult extras**: a long tendril from the underside of the jaw (prose, matches the thin tendrils).
+- **Size cues**: baby = bird-sized (on a palm); adult = gigantic, dwarfs starships in space.
+- **For RimWorld**: a Tatooine/ground creature is the BABY form (bird-sized, pink-red and translucent-winged).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Limbless chubby tadpole-like body with a big blunt head, a downturned toothy mouth and a cluster of large round yellow-gold eyes (baby form)
+- [ ] Two large translucent speckled blue-green wings with dark red rim bones, plus two small matching rear tail fins
+- [ ] Rusty maroon-red head and back with a tan-brown paler belly
+- [ ] No legs or arms at all
+- [ ] Adult form (if used): very wide manta wings, gaping toothed mouth, thin whip tendrils below the jaw
 
 ## Engine limits
 not yet assessed
