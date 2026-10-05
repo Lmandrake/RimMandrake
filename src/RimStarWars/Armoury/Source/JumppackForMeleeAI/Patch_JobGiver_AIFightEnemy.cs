@@ -13,76 +13,33 @@ namespace JumppackForMeleeAI;
 [HarmonyPatch(typeof(JobGiver_AIFightEnemy), "TryGiveJob")]
 public static class Patch_JobGiver_AIFightEnemy
 {
-    [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+    // ARMOURY_JUMPPACK_INVALID_IL_1: the old transpiler injected IL into
+    // TryGiveJob and threw InvalidProgramException on first JIT, so the patch
+    // never applied. A Postfix has no IL to get wrong. It swaps the vanilla
+    // result (melee attack / shooting-position goto / wait) for a jump job
+    // when GetJunpPack* offers one. PROVISIONAL: ranged also fires after vanilla's
+    // cover/wait decision rather than before it as the transpiler did.
+    [HarmonyPostfix]
+    private static void Postfix(Pawn pawn, ref Job __result)
     {
-        // LOCAL, not a static field: Harmony re-runs every transpiler on a
-        // target method whenever any mod adds a further patch to it later
-        // (ordinary for JobGiver_AIFightEnemy.TryGiveJob, which combat/AI
-        // mods routinely touch). A static counter left at 2 from the first
-        // run would skip the melee injection entirely on the second run AND
-        // disable the "< 2" failure warning below that exists to catch
-        // exactly this.
-        int patchCount = 0;
-        List<CodeInstruction> list = instructions.ToList();
-        MethodInfo isMeleeAttackGetter = AccessTools.Method(typeof(VerbProperties), "get_IsMeleeAttack");
-        MethodInfo localTargetInfoImplicit = AccessTools.Method(typeof(LocalTargetInfo), "op_Implicit", new[] { typeof(Thing) });
-        for (int i = 0; i < list.Count; i++)
+        if (__result == null || pawn?.mindState?.enemyTarget == null || pawn.Map == null)
         {
-            if (patchCount == 0)
-            {
-                if (list[i].opcode == OpCodes.Callvirt && (MethodInfo)list[i].operand == isMeleeAttackGetter)
-                {
-                    patchCount++;
-                    Label label = generator.DefineLabel();
-                    CodeInstruction popInstruction = new CodeInstruction(OpCodes.Pop);
-                    popInstruction.labels.Add(label);
-                    list.InsertRange(i + 2, new[]
-                    {
-                        new CodeInstruction(OpCodes.Ldarg_1),
-                        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_JobGiver_AIFightEnemy), nameof(GetJunpPackMelee))),
-                        new CodeInstruction(OpCodes.Dup),
-                        new CodeInstruction(OpCodes.Brfalse_S, label),
-                        new CodeInstruction(OpCodes.Ret),
-                        popInstruction
-                    });
-                }
-            }
-            else if (list[i].opcode == OpCodes.Call && (MethodInfo)list[i].operand == localTargetInfoImplicit)
-            {
-                patchCount++;
-                Label label2 = generator.DefineLabel();
-                CodeInstruction popInstruction2 = new CodeInstruction(OpCodes.Pop);
-                popInstruction2.labels.Add(label2);
-                // BUG FIX: this op_Implicit call is mid-expression for
-                // `verb.CanHitTarget(enemyTarget)` — list[i-2]/list[i-1] already
-                // pushed [verb, enemyTarget] onto the stack before we get here.
-                // The old code inserted its Call/Dup/Brfalse/Ret AT i, which made
-                // "Call GetJunpPackRanged" consume enemyTarget as its Pawn argument
-                // (wrong value, wrong type) and left "verb" sitting under the
-                // return value at Ret — an invalid stack depth that fails to JIT
-                // (InvalidProgramException) the first time TryGiveJob runs for ANY
-                // pawn, for both branches. Inserting at i-2 (before those two
-                // loads) keeps the stack empty at the injection point, matching
-                // the melee block above, and Ldarg_1 must be pushed before the
-                // Call so GetJunpPackRanged receives the actual pawn.
-                list.InsertRange(i - 2, new[]
-                {
-                    new CodeInstruction(OpCodes.Ldarg_1),
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_JobGiver_AIFightEnemy), nameof(GetJunpPackRanged))),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Brfalse_S, label2),
-                    new CodeInstruction(OpCodes.Ret),
-                    popInstruction2
-                });
-                break;
-            }
+            return;
         }
-        if (patchCount < 2)
+        JobDef def = __result.def;
+        Job jump = null;
+        if (def == JobDefOf.AttackMelee)
         {
-            Log.Warning("[JumppackForMeleeAI]Patch_JobGiver_AIFightEnemy failed!");
+            jump = GetJunpPackMelee(pawn);
         }
-        return list;
+        else if (def == JobDefOf.Goto || def == JobDefOf.Wait_Combat)
+        {
+            jump = GetJunpPackRanged(pawn);
+        }
+        if (jump != null)
+        {
+            __result = jump;
+        }
     }
 
     public static Job GetJunpPackMelee(Pawn pawn)
