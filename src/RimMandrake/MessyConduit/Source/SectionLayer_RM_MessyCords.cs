@@ -156,7 +156,9 @@ namespace RimMandrake.MessyConduit
                         bool face = CordMaterials.IsFace(d.Kind);
                         float y = face ? faceY + 0.002f : baseY + 0.009f;
                         float aspect = d.Kind == DecalKind.PowerStrip ? 0.5f : 1f;
-                        verts += Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y);
+                        verts += d.Cropped
+                            ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)
+                            : Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y);
                     }
                 }
             }
@@ -232,14 +234,14 @@ namespace RimMandrake.MessyConduit
         }
 
         /// <summary>A decal quad centred on p, its +X (the art's long axis) turned to angle (radians, CCW).</summary>
-        private int Quad(Material mat, V2 p, float angle, float sx, float sz, float y)
+        private int Quad(Material mat, V2 p, float angle, float sx, float sz, float y, float u0 = 0f, float u1 = 1f, float v0 = 0f, float v1 = 1f)
         {
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
             if (start + 4 > MaxMeshVerts) return 0;
             float ca = Mathf.Cos(angle), sa = Mathf.Sin(angle);
             Vector2[] corners = { new Vector2(-sx, -sz), new Vector2(-sx, sz), new Vector2(sx, sz), new Vector2(sx, -sz) };
-            Vector2[] uv = { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) };
+            Vector2[] uv = { new Vector2(u0, v0), new Vector2(u0, v1), new Vector2(u1, v1), new Vector2(u1, v0) };
             for (int i = 0; i < 4; i++)
             {
                 float x = corners[i].x / 2f, z = corners[i].y / 2f;

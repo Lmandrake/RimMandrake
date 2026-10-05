@@ -42,6 +42,7 @@
     <Compile Include="Core\CordBuilder.cs" />
     <Compile Include="Core\CordAudit.cs" />
     <Compile Include="Core\CordMotion.cs" />
+    <Compile Include="Core\WallMount.cs" />
   </ItemGroup>
 
   <!-- game side: power-network adapter, map component, drawer, settings, probe -->

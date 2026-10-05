@@ -324,7 +324,7 @@ namespace RimMandrake.MessyConduit.Aerial
         public override void MapComponentUpdate()
         {
             AerialProbe.Service(map, this);
-            lastSpanDraws = lastSwayDraws = lastTopDraws = lastGlowDraws = lastDropDraws = 0;
+            lastSpanDraws = lastSwayDraws = lastTopDraws = lastGlowDraws = lastDropDraws = lastLitHeads = 0;
             if (!AerialSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
             float wind = map.windManager.WindSpeed;
@@ -340,6 +340,7 @@ namespace RimMandrake.MessyConduit.Aerial
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(top.mainTexture != null ? top.mainTexture.width / 128f : 1f, 1f, 1f)), top, 0);
                     lastTopDraws++;
                 }
+                if (a.def == AerialDefOf.RM_AerialLampMast && view.Contains(a.Position)) DrawLitHead(a);
                 foreach (SpanLink l in a.links)
                 {
                     if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
@@ -424,7 +425,7 @@ namespace RimMandrake.MessyConduit.Aerial
                     P2 tip = tips[Mathf.Clamp(term[d.thingIDNumber], 0, tips.Count - 1)];
                     long key = ((long)a.thingIDNumber << 32) ^ (uint)d.thingIDNumber;
                     dropUsed.Add(key);
-                    Vector3 c = d.TrueCenter();
+                    Vector3 c = DeviceHome(d);
                     int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
                                                  Gen.HashCombineInt(Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f), d.Rotation.AsInt));
                     if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
@@ -446,11 +447,30 @@ namespace RimMandrake.MessyConduit.Aerial
                 }
         }
 
-        /// <summary>The device's drawn extent (its footprint united with its graphic rect), in which the drop runs under it.</summary>
+        /// <summary>Where a device's drop starts: its centroid, or (round 4, owner 2026-10-04 station 19: cords to wall devices
+        /// "should just go up to and beneath the wall that contains the device") the centre of the wall a wall-mounted device
+        /// hangs on, beneath that wall.</summary>
+        public static Vector3 DeviceHome(Thing d)
+        {
+            if (d.def.building != null && d.def.building.isAttachment && d.Spawned)
+            {
+                Thing wall = GenConstruct.GetWallAttachedTo(d);
+                if (wall != null) return wall.Position.ToVector3Shifted();
+            }
+            return d.TrueCenter();
+        }
+
+        /// <summary>The device's drawn extent (its footprint united with its graphic rect, and the wall a wall-mounted device
+        /// hangs on), in which the drop runs under it.</summary>
         public static bool InDeviceArt(Thing d, P2 p)
         {
             CellRect r = d.OccupiedRect();
             if (p.X >= r.minX && p.X <= r.maxX + 1 && p.Z >= r.minZ && p.Z <= r.maxZ + 1) return true;
+            if (d.def.building != null && d.def.building.isAttachment && d.Spawned)
+            {
+                Thing wall = GenConstruct.GetWallAttachedTo(d);
+                if (wall != null && p.X >= wall.Position.x && p.X <= wall.Position.x + 1 && p.Z >= wall.Position.z && p.Z <= wall.Position.z + 1) return true;
+            }
             if (d.Graphic == null) return false;
             Vector3 g = d.TrueCenter() + d.Graphic.DrawOffset(d.Rotation);
             Vector2 sz = d.Graphic.drawSize;
@@ -496,6 +516,26 @@ namespace RimMandrake.MessyConduit.Aerial
 
         public static float SpanAltitude => AltitudeLayer.PawnState.AltitudeFor(5f);
         public static float TopAltitude => AltitudeLayer.PawnState.AltitudeFor(4f);
+
+        /// <summary>State read: lamp-mast heads drawn lit on the last frame.</summary>
+        public int lastLitHeads;
+
+        /// <summary>Round 4: a lamp mast whose glower glows (powered, switched on) draws a lit bulb at its head, in its glow colour.</summary>
+        private void DrawLitHead(CompAerialAnchor a)
+        {
+            CompGlower g = a.parent.TryGetComp<CompGlower>();
+            if (g == null || !g.Glows) return;
+            if (!AerialMaterials.LampHead.TryGetValue(AerialMaterials.Look, out Vector2 h)) h = AerialMaterials.LampHead["Scrapper"];
+            Color c = g.GlowColor.ToColor;
+            float mx = Mathf.Max(c.r, Mathf.Max(c.g, c.b), 0.01f);
+            c = new Color(c.r / mx, c.g / mx, c.b / mx, 1f);
+            Material m = AerialMaterials.HeadGlow(c);
+            if (m == null) return;
+            var pos = new Vector3(a.Position.x + 0.5f + h.x, TopAltitude + 0.01f, a.Position.z + 0.5f + h.y);
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(0.9f, 1f, 0.9f)), m, 0);
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(0.35f, 1f, 0.35f)), AerialMaterials.HeadGlow(Color.white), 0);
+            lastLitHeads++;
+        }
 
         private void DrawFallenGlow()
         {

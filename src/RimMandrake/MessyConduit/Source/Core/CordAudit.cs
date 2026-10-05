@@ -27,11 +27,11 @@ namespace RimMandrake.MessyConduit.Core
         // (1 = the decal's full side), independent of the builder (CordBuilder keeps its own copies):
         //   Junction_Tape: a T, arms along art +X, -X and -Z; the arms meet 0.152 above the canvas centre.
         //   Junction_Tin:  a cross, four arms, meeting at the centre.
-        //   StubWall: cord along -X into a plate centred on the canvas.  StubRock: hole centred at +0.11 X.
+        //   StubWall / StubRock: placed and judged by WallMount (round 4).
         //   Plug: cord along -X, the head's face at +0.46 X.
         private static readonly double[] TapeArms = { 0, Math.PI, -Math.PI / 2 };
         private static readonly double[] TinArms = { 0, Math.PI / 2, Math.PI, -Math.PI / 2 };
-        private const double TapeAnchorZ = 0.152, PlugFace = 0.46, RockHoleX = 0.11;
+        private const double TapeAnchorZ = 0.152, PlugFace = 0.46;
 
         internal static double AngDiff(double a, double b)
         {
@@ -144,7 +144,8 @@ namespace RimMandrake.MessyConduit.Core
                 }
             }
             R.PlugEnds = pn; R.PlugFaults = pbad; R.Messages.AddRange(pmsg);
-            // (3) wall/rock stubs: the art's cord runs along the cord into the face, the plate/hole on the face
+            // (3) wall/rock stubs (round 4, WallMount): the plate/hole lies along the cord, starts at the face line and is
+            //     mounted ON the wall (OnFace): nothing on the open floor, nothing deeper than its face allows
             int sbad = 0, sn = 0;
             foreach (CordNode nd in g.Nodes.Values.Where(n => n.Type == NodeType.StubWall || n.Type == NodeType.StubRock))
             {
@@ -152,11 +153,17 @@ namespace RimMandrake.MessyConduit.Core
                 DecalKind k = nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock;
                 CordDecal? d = decals.Where(x => x.Kind == k).OrderBy(x => V2.Dist(x.Pos, nd.Face)).Cast<CordDecal?>().FirstOrDefault();
                 if (d == null) { sbad++; continue; }
-                V2 anchor = d.Value.Pos + Dir(d.Value.Angle) * ((k == DecalKind.StubRock ? RockHoleX : 0) * d.Value.ScaleX);
-                if (AngDiff(d.Value.Angle, Ang(nd.Into)) > 3 * Deg || V2.Dist(anchor, nd.Face) > 0.1)
+                WallMount.DepthSpan(d.Value, nd.Face, nd.Into, out double near, out double far);
+                double lateral = Math.Abs((d.Value.Pos.X - nd.Face.X) * nd.Into.Z - (d.Value.Pos.Z - nd.Face.Z) * nd.Into.X);
+                if (AngDiff(d.Value.Angle, Ang(nd.Into)) > 3 * Deg || near > 0.05 || lateral > 0.1)
                 {
                     sbad++;
-                    R.Messages.Add($"stub {nd.Cell} angle {d.Value.Angle / Deg:0} want {Ang(nd.Into) / Deg:0}, anchor {V2.Dist(anchor, nd.Face):0.00} off the face");
+                    R.Messages.Add($"stub {nd.Cell} angle {d.Value.Angle / Deg:0} want {Ang(nd.Into) / Deg:0}, starts {near:0.00} past the face, {lateral:0.00} off its line");
+                }
+                if (!WallMount.OnFace(d.Value, nd.Face, nd.Into))
+                {
+                    if (k == DecalKind.StubWall) R.FlatWallPlates++; else R.FlatRockHoles++;
+                    R.Messages.Add($"stub {nd.Cell} {k} not ON its {WallMount.FaceOf(nd.Into)} face: depth {near:0.00}..{far:0.00}, allowed 0..{WallMount.MaxDepth(WallMount.FaceOf(nd.Into)):0.00}");
                 }
             }
             R.Stubs = sn; R.StubFaults = sbad;
@@ -214,9 +221,6 @@ namespace RimMandrake.MessyConduit.Core
                 if (idle > 0) R.Messages.Add($"{p.Key}: {idle} of {cons.Count} connectors with < 2 cables plugged in");
             }
             R.Strips = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark));
-            R.FlatRockHoles = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubRock && !(d.Squash > 0.3 && d.Squash < 0.85)));
-            // round 3: a wall plate drawn square looks up at the sky; it must be foreshortened like the rock hole
-            R.FlatWallPlates = ps.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubWall && !(d.Squash > 0.3 && d.Squash < 0.85)));
             R.DeadEnds = dead.Count; R.DeadFaults = dbad; R.DeadOffLine = dead;
             R.LiveEnds = liv.Count; R.LiveFaults = lbad; R.LiveArrivalDeg = liv;
             return R;

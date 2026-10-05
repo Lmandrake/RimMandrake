@@ -183,7 +183,12 @@ namespace RimMandrake.MessyConduit.Aerial
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +
-                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
+                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount +
+                      ",\"litHeads\":" + comp.lastLitHeads);
+            // round 4: is each lamp mast powered and glowing (owner: "no illumination present")
+            sb.Append(",\"lampMasts\":[" + string.Join(",", comp.Anchors.Where(a => a.def == AerialDefOf.RM_AerialLampMast).Select(a =>
+                "{\"id\":" + a.thingIDNumber + ",\"powerOn\":" + B(a.parent.TryGetComp<CompPowerTrader>()?.PowerOn ?? false) +
+                ",\"glows\":" + B(a.parent.TryGetComp<CompGlower>()?.Glows ?? false) + ",\"glowRadius\":" + F(a.parent.TryGetComp<CompGlower>()?.GlowRadius ?? 0f) + "}")) + "]");
             sb.Append(",\"groundVerts\":" + SectionLayer_RM_AerialGround.LastPrintedVerts + ",\"groundFallenPrinted\":" + SectionLayer_RM_AerialGround.LastFallenPrinted +
                       ",\"groundShadowsPrinted\":" + SectionLayer_RM_AerialGround.LastShadowsPrinted);
             sb.Append(",\"altitudes\":{\"pawn\":" + F(AltitudeLayer.Pawn.AltitudeFor()) + ",\"pawnState\":" + F(AltitudeLayer.PawnState.AltitudeFor()) +

@@ -86,10 +86,10 @@ namespace RimMandrake.MessyConduit.SelfTest
             List<LaidPiece> pr = br.Build(wr, new BuildOptions(), c => true);
             ArtFitResult rr = CordAudit.ArtFit(br.Graph, pr, c => true);
             int holes = pr.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.StubRock));
-            Check(holes >= 2 && rr.FlatRockHoles == 0 && rr.StubFaults == 0, $"B4: {holes} rock holes, {rr.FlatRockHoles} drawn flat (nadir), {rr.StubFaults} off the face");
+            Check(holes >= 2 && rr.FlatRockHoles == 0 && rr.StubFaults == 0, $"B4: {holes} rock holes, {rr.FlatRockHoles} not mounted ON the rock face, {rr.StubFaults} off the face");
             var flat = pr.Select(p => new LaidPiece { Key = p.Key, EndA = p.EndA, EndB = p.EndB, Strands = p.Strands,
                 Decals = p.Decals.Select(d => d.Kind == DecalKind.StubRock ? new CordDecal(d.Kind, d.Pos, d.Angle, d.Scale) : d).ToList() }).ToList();
-            Check(CordAudit.ArtFit(br.Graph, flat, c => true).FlatRockHoles == holes, "can fail: planted flat rock holes not counted");
+            Check(CordAudit.ArtFit(br.Graph, flat, c => true).FlatRockHoles == holes, "can fail: planted square (unforeshortened) rock holes not counted");
 
             // ---- B10: the solar panel: the cord runs on under the art (inset 0.4 on its bottom edge)
             var ws = new CordWorld(24, 16);
@@ -106,7 +106,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             Check(ends.Count > 0 && depth >= 0.38, $"B10: cords into the solar panel end {depth:0.00} cell inside its bottom edge (want >= 0.38: under the panel art, not at its legs)");
             Check(rsol.PlugFaults == 0, $"B10: {rsol.PlugFaults} plug faults at the inset machine");
             if (rsol.PlugFaults > 0) Console.WriteLine("  " + string.Join("; ", rsol.Messages));
-            Console.WriteLine($"  review1: rock holes {holes} (squash {CordBuilder.RockSquash}); solar cord depth {depth:0.00}");
+            Console.WriteLine($"  review1: rock holes {holes} (on-face rule WallMount); solar cord depth {depth:0.00}");
         }
     }
 }

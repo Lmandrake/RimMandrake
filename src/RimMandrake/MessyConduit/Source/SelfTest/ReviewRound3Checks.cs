@@ -45,10 +45,10 @@ namespace RimMandrake.MessyConduit.SelfTest
             List<CordDecal> plates = ps.SelectMany(p => p.Decals).Where(d => d.Kind == DecalKind.StubWall).ToList();
             ArtFitResult r = CordAudit.ArtFit(b.Graph, ps, c => true);
             Check(plates.Count >= 2 && r.FlatWallPlates == 0 && r.StubFaults == 0,
-                  $"wall: {plates.Count} wall plates, {r.FlatWallPlates} drawn flat (looking at the sky), {r.StubFaults} off the face");
+                  $"wall: {plates.Count} wall plates, {r.FlatWallPlates} not mounted ON the wall, {r.StubFaults} off the face");
             var flat = ps.Select(p => new LaidPiece { Key = p.Key, EndA = p.EndA, EndB = p.EndB, Strands = p.Strands,
-                Decals = p.Decals.Select(d => d.Kind == DecalKind.StubWall ? new CordDecal(d.Kind, d.Pos, d.Angle, d.Scale) : d).ToList() }).ToList();
-            Check(CordAudit.ArtFit(b.Graph, flat, c => true).FlatWallPlates == plates.Count, "can fail: planted square wall plates are counted");
+                Decals = p.Decals.Select(d => d.Kind == DecalKind.StubWall ? new CordDecal(d.Kind, d.Pos - new V2(Math.Cos(d.Angle), Math.Sin(d.Angle)) * 0.18, d.Angle, d.Scale) { Squash = 0.5 } : d).ToList() }).ToList();
+            Check(CordAudit.ArtFit(b.Graph, flat, c => true).FlatWallPlates == plates.Count, "can fail: planted round-3 plates (centred on the face line, half on the floor) are counted");
             List<LaidPiece> leads = ps.Where(p => (p.EndA ?? "").StartsWith("consumer") || (p.EndB ?? "").StartsWith("consumer") ||
                                                   (p.EndA ?? "").StartsWith("battery") || (p.EndB ?? "").StartsWith("battery")).ToList();
             Check(leads.Count >= 2 && leads.All(p => p.Strands.Count == 1),
@@ -92,7 +92,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             var bt2 = new CordBuilder();
             List<LaidPiece> pt2 = bt2.Build(t2, new BuildOptions(), c => true);
             Check(pt2.Sum(p => p.Ends.Count) > 0, "can fail: a tap that is not a node of THEIR graph leaves a free sparking end on their conduit");
-            Console.WriteLine($"  review3: wall plates {plates.Count} (squash {CordBuilder.WallSquash}); leads {leads.Count}; tap pieces {intoTap}; bundle probe {bundles}");
+            Console.WriteLine($"  review3: wall plates {plates.Count} (on-face rule WallMount); leads {leads.Count}; tap pieces {intoTap}; bundle probe {bundles}");
         }
     }
 }

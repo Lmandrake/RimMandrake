@@ -655,21 +655,5 @@ namespace RimMandrake.MessyConduit.Core
             }
             return P;
         }
-
-        /// <summary>The broken end that hangs out of a wall terminal's hole and droops down the face
-        /// (screen-down = -Z in game coordinates), nodal.draw_stubs.</summary>
-        public static List<V2> HangingTail(V2 hole, V2 into)
-        {
-            var side = new V2(-into.Z, into.X);
-            var down = new V2(0, -1);
-            V2 a = hole - side * 0.08;
-            var o = new List<V2>(16);
-            for (int i = 0; i < 16; i++)
-            {
-                double t = i / 15.0;
-                o.Add(a - side * (0.14 * t + 0.03 * Math.Sin(t * 4)) + down * (0.36 * Math.Pow(t, 1.3)));
-            }
-            return o;
-        }
     }
 }

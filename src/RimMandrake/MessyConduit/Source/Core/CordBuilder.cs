@@ -25,7 +25,11 @@ namespace RimMandrake.MessyConduit.Core
         public double Squash;
         /// <summary>A live fray that rides the whipping tail: printed statically only with whip off.</summary>
         public bool OnWhip;
-        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; }
+        /// <summary>Round 4: the art sub-rectangle printed (u along art X, v along art Z); U1 = 0 means the whole canvas. A wall
+        /// plate prints only its plate, never the art's own curl of cord (WallMount).</summary>
+        public double U0, U1, V0, V1;
+        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; }
+        public bool Cropped => U1 > 0;
         public double ScaleX => Scale * (Squash > 0 ? Squash : 1);
     }
 
@@ -309,6 +313,11 @@ namespace RimMandrake.MessyConduit.Core
                 // these points lie inside the machine's own footprint by design.
                 if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine);
                 if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine);
+                // round 4: a cord into a wall/rock face runs on under the wall to just past the face line, so it meets the
+                // plate (drawn inside the wall from the face, WallMount) with no strip of bare floor between; the wall hides
+                // the overrun. Appended after the floor rule like IntoArt: these points lie in the wall cell by design.
+                P = PastFace(P, true, na);
+                P = PastFace(P, false, nb);
                 piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle });
                 laid += Geo.Length(P);
             }
@@ -331,15 +340,9 @@ namespace RimMandrake.MessyConduit.Core
         // ---------------------------------------------------------------- art fit (polish pass 2026-10-02)
         // Geometry of the shipped art, measured from the PNGs in canvas units (1 = the decal's side):
         // Junction_Tape is a T whose arms (art +X, -X, -Z) meet 0.152 above the canvas centre;
-        // Junction_Tin is a centred 4-arm cross; StubRock's hole is centred +0.11 along X.
+        // Junction_Tin is a centred 4-arm cross. Wall plates and rock holes: WallMount (round 4).
         public const double JunctionScale = 1.0, TapeAnchorZ = 0.152, ArmTuck = 0.40;
-        public const double PlugScale = 0.55, PlugInset = 0.05, StubScale = 0.7, RockHoleX = 0.11;
-        /// <summary>B4: the rock hole drawn foreshortened along the cord (art X) as if cut into an angled rock face. PROVISIONAL.</summary>
-        public const double RockSquash = 0.6;
-        /// <summary>Round 3 (owner 2026-10-04: wall connectors "need to be angled 'down' more so they face out, not up towards
-        /// nadir"): the wall plate sits on the wall's vertical face, so it is drawn foreshortened along the cord (art X) like
-        /// the rock hole, a narrow plate seen edge-on from above rather than a square looking at the sky. PROVISIONAL.</summary>
-        public const double WallSquash = 0.5;
+        public const double PlugScale = 0.55, PlugInset = 0.05;
 
         public struct JunctionPose
         {
@@ -472,6 +475,9 @@ namespace RimMandrake.MessyConduit.Core
 
         public static V2 Centroid(MachineInfo m) => new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
 
+        /// <summary>Where a machine's cord ends: its wall cell's centre for a wall-mounted device (round 4), else the centroid.</summary>
+        public static V2 Home(MachineInfo m) => m.HasHome ? new V2(m.HomeX + 0.5, m.HomeZ + 0.5) : Centroid(m);
+
         private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m)
         {
             if (P.Count < 2) return P;
@@ -484,9 +490,34 @@ namespace RimMandrake.MessyConduit.Core
             for (int i = 1; i <= k1; i++) ext.Add(tip + (pre - tip) * (i / (double)k1));
             for (double d = 0.05; d < CentroidApproach - 0.02; d += 0.05) ext.Add(pre + into * d);
             ext.Add(c);
+            if (m.HasHome)
+            {
+                // on from the device's own cell straight into its wall, ending under the wall's centre
+                V2 h = Home(m);
+                double d2 = V2.Dist(c, h);
+                int k2 = Math.Max(1, (int)Math.Ceiling(d2 / 0.05));
+                for (int i = 1; i <= k2; i++) ext.Add(c + (h - c) * (i / (double)k2));
+            }
             var o = new List<V2>(P);
             if (atStart) { ext.Reverse(); o.InsertRange(0, ext); }
             else o.AddRange(ext);
+            return o;
+        }
+
+        public const double PastFaceDepth = 0.03;
+
+        private static List<V2> PastFace(List<V2> P, bool atStart, CordNode nd)
+        {
+            if (P.Count < 2 || !(nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock) || nd.Into.Len < 0.5) return P;
+            V2 tip = atStart ? P[0] : P[P.Count - 1];
+            V2 to = nd.Face + nd.Into * PastFaceDepth;
+            double along = (to.X - tip.X) * nd.Into.X + (to.Z - tip.Z) * nd.Into.Z;
+            if (along <= 0.005) return P;
+            var o = new List<V2>(P);
+            int k = Math.Max(1, (int)Math.Ceiling(along / 0.04));
+            var ext = new List<V2>();
+            for (int i = 1; i <= k; i++) ext.Add(tip + nd.Into * (along * i / k));
+            if (atStart) { ext.Reverse(); o.InsertRange(0, ext); } else o.AddRange(ext);
             return o;
         }
 
@@ -552,12 +583,15 @@ namespace RimMandrake.MessyConduit.Core
             {
                 double ang = Math.Atan2(nd.Into.Z, nd.Into.X);
                 V2 hole = nd.Face + nd.Into * 0.04;
-                // the real art's cord runs along its +X into the plate/hole, so +X points INTO the face;
-                // the plate (centred on the canvas) or the hole (+0.11 canvas) sits on the face line
-                if (nd.Type == NodeType.StubWall)
-                    piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale) { Squash = WallSquash });
-                else if (nd.Type == NodeType.StubRock)
-                    piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale * RockSquash), ang, StubScale) { Squash = RockSquash });
+                // round 4 (owner 2026-10-04: "They should look mounted ON the wall"): the plate / hole is drawn INSIDE the wall
+                // cell, on the face it belongs to, cropped to the plate (WallMount): the visible south face shows it whole in
+                // its band; an edge-on side face or the hidden north face shows a thin strip. Nothing lands on the open floor.
+                if (nd.Type == NodeType.StubWall || nd.Type == NodeType.StubRock)
+                {
+                    CordDecal plate = WallMount.EntryDecal(nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock, nd.Face, nd.Into);
+                    piece.Decals.Add(plate);
+                    hole = WallMount.Socket(plate);
+                }
                 else if (nd.Type == NodeType.StubDevice && opt.Pile == PileArt.Strips)
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
@@ -569,7 +603,7 @@ namespace RimMandrake.MessyConduit.Core
                     piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * 0.2, ang, 0.6));
                 if (nd.WallTerminal)
                 {
-                    var tail = CordLayer.HangingTail(hole, nd.Into);
+                    var tail = WallMount.LooseWire(hole, nd.Face, nd.Into);
                     var sw = new double[tail.Count];
                     for (int k = 0; k < sw.Length; k++) sw[k] = Math.Pow(k / (double)(sw.Length - 1), 1.3);
                     piece.Strands.Add(new CordStrand { Pts = tail, OverFace = true, S0 = 0.3, Lifted = true, SwayW = sw });
