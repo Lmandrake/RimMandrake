@@ -288,6 +288,13 @@ class FakeFlowWorksGame(MockGame):
             if str(p.get("categories")) in ("All", "Pawn"):
                 self.pawns = [q for q in self.pawns if not (x <= q["x"] < x + w and z <= q["z"] < z + h)]
             return r
+        if tool == "jawa/set_pawn_faction":
+            return {"success": True, "after": p.get("faction")}
+        if tool == "jawa/destroy_bulk":
+            n = len(self.pawns)
+            if not p.get("dryRun", True):
+                self.pawns = []
+            return {"success": True, "matchedCount": n}
         if tool == "rimworld/save_game":
             path = os.path.join(self.saves_dir, p["saveName"] + ".rws")
             with open(path, "w", encoding="utf-8") as f:
