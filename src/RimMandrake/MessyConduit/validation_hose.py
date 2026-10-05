@@ -367,8 +367,11 @@ def run_maze(args):
 
     # M5: walls removed -> lay it again; it takes the short route
     for cell in (g, b, FILLER):
-        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % cell, categories="Buildings")
+        # "Building" (ThingCategory): "Buildings" is refused ("Not a ThingCategory") and removed nothing (live 2026-10-04)
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % cell, categories="Building")
     B.call("jawa/map_commit")
+    # one tick: RM_MapComponent_Hoses.World() is cached per tick, and M4's check built it THIS tick with the walls standing
+    B.ticks(2)
     l5 = B.hp("lay:%d,%d,%d,%d" % (R + T))
     B.ticks(RELAY_TICKS)
     h5, _ = B.hose(R)
@@ -378,7 +381,8 @@ def run_maze(args):
     # P1/P2: reel ports (owner, round 2: "the Hose Reel can also connect to ... pipe-friendly buildings (like tanks)")
     hp_, _ = B.hose(PREEL)
     hl, _ = B.hose(PLONE)
-    if not bt.get("success"):
+    # build_batch answers success with placed 0 for an unknown def (FlowWorks absent on this tier, live 2026-10-04)
+    if not bt.get("success") or not bt.get("placed"):
         V.row(rows, "P1_reel_couples_to_tank", "RECORD", "SITE", {"tankBuild": bt, "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"})
     else:
         V.row(rows, "P1_reel_couples_to_tank", "PASS" if hp_.get("port") == "RM_LiquidTank" and hp_.get("portKind") == "Tank"
