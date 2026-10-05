@@ -1,0 +1,42 @@
+# Messy Conduit — per-build style, STAGE 2 (conduit runs) report
+
+Status: BUILT offline, committed and pushed (7c0c8b87a source, df9836b50 DLL+.srchash from committed source). NOT deployed, NOT run live.
+
+## 1. Spec read-out
+- Run = conduit cells + power switches + masts/lamp masts/brackets touching them (same cell or cardinal neighbour) + their spans. Machines/batteries end a run. Hidden conduit is not styled and not a member.
+- Rules: adopt neighbour run; bridge -> run with the MOST conduit cells wins, tie -> older run (lowest member thingID); loser repainted, message names both styles; split keeps styles (nothing to do); free "Restyle this run" gizmo; auto-link only to a same-look anchor.
+- Modern colour per run from the conduit build menu: random mix (a mixture inside the run), multicolour (one random colour per run = today's Mixed look), each single colour. Mod Setting keeps only the default.
+- Legacy (no stored style) draws the default look exactly as before; written for real the first time the run is built onto / bridged / restyled (that write is the save migration, it stores the colour the cell was drawing).
+## 2. Code map (what exists)
+- Stage 1: AerialStyles (Verse-free rules), StylePicker (menu, getter, copy, legacy StyleDef getter, Frame guard), 12 anchor ThingStyleDefs.
+- Cords: CordMaterials builds ONE set for the global style (strandV per variant + decals); RM_MapComponent_CordGraph.VariantOf(piece) = VariantFor(net seed); SectionLayer prints by that variant; DrawMotion loops variants (arrays of 8).
+- Switch: ConduitVisuals swaps PowerSwitch def graphic to root art; CompFlickable.CurrentGraphic builds the _Off graphic from def.graphicData (so per-style switch art needs a Building_PowerSwitch.Graphic postfix).
+- Engine (RimSage): Thing.Graphic uses StyleDef only when StyleDef.Graphic != null, so a style def with no graphicData is a pure marker (conduit stays invisible). ThingStyleDef.PostLoad returns early with no graphicData -> no UIIcon; menu icons supplied by us.
+## 3. Design as built
+- CONCURRENT PEER (resolved): a stage-3 (hose reel) agent is editing this same clone right now (uncommitted HoseStyles.cs, StyleStage3Checks.cs, edits to StylePicker.cs, both csproj, SelfTest/Program.cs). Stage 2 therefore leaves StylePicker.cs untouched and adds its own files; the shared csproj/Program.cs lines are one-line additions. The peer committed stage 3 (8cc77b906, bd6a04d3a) mid-pass, so nothing of theirs rides in these commits.
+- `Source/Aerial/ConduitStyles.cs` (Verse-free, selftested): naming (conduit keys Look | Modern_<Colour> | Modern_Mix; switch keys = 4 looks), Components (flood fill), Winner (largest conduit area, tie older), RunColour, PlanPlacement (adopt / bridge / materialise legacy winner), SpanLook (run rule), flat material index (look, variant) -> g, LegacyVariant (the pre-stage-2 per-net pick, moved here verbatim), PieceVariant.
+- Modern colour storage: concrete colour = style def `<Def>_Modern_<Colour>`; random mix = `<Def>_Modern_Mix` with each cell's colour a fixed hash of its position; multicolour (menu) resolves to a concrete random colour at designate time and the adopt rule makes the run uniform; plain `<Def>_Modern` / no style = legacy colour by the default setting per cord net.
+## 4. Selftests
+- `Source/SelfTest/StyleStage2Checks.cs` (24 checks, each property with a can-fail): naming (24 style defs), runs/flood fill (gap, bridge, battery is no link), bridge (area beats age; tie -> older; one-run adopt; Mix merge keeps the larger run's colour; legacy rules), split keeps styles, colours (mix shows >=3 colours over 12 cells; single colour ignores net seed and the global setting), materials (flat index round trip; 3200 legacy cases choose the same strand as the verbatim pre-stage-2 VariantFor), spans (larger run wins).
+- Stage 1's span check now calls ConduitStyles.SpanLook with equal areas (the tie case = the old older-pole rule); AerialStyles.SpanLook deleted.
+- selftest_messyconduit.py: 553/553.
+- Also built: `Aerial/ConduitStylePicker.cs` (registry of 24 style defs, conduit menu: 4 looks + Modern random mix / one colour per run / 5 colours; switch menu 4 looks; designator getter; switch on/off drawn per look via Building_PowerSwitch.Graphic postfix, legacy switch keeps today's art; spawn hook; Restyle gizmo; TryLink -> bridge check). `Aerial/RM_MapComponent_ConduitRuns.cs` (queue, flood fill, adopt / bridge / materialise legacy = the save migration storing each cell's drawn colour, RestyleRun). Stage 1's copy + Frame guard reach the new defs through StyleIndex flags; StylePicker.cs untouched.
+- Cords: CordMaterials.BuildAll() builds every look's strands + decals once (10 flat indices); the section layer and the motion meshes print each piece by `MatIndexOf(piece)`; legacy pieces use `LegacyGlobal` = the pre-stage-2 pick, same MaterialPool requests -> same Material objects. Modern's dark strip now uses Styles/ExtCord/PowerStrip_Off (new art); live frayed ends per look were already wired by slot name and now follow each piece's look in the motion layer too. Switch hookup cable draws its run's span cable.
+- Auto-link links only same-look anchors; AerialMaterials.SpanLookOf uses the run rule (each side measured without the span).
+- Settings screen says "Default style ..."; colour radios read "Default Modern colour"; keys unchanged.
+- Patches/RM_ConduitStyleable.xml: PatchOperationConditional adds CompProperties_Styleable to PowerConduit (inherited by WaterproofConduit) and PowerSwitch only if absent. Deploy dry-run lists Defs/Aerial/RM_ConduitStyles.xml and the Patches file.
+
+## 5. Build
+- winbuild MessyConduit: 0 errors (built 3x; final from committed source 7c0c8b87a).
+- run_selftests.py: 174/177; the 3 failures are the pre-existing ones from stage 1 (northstar_matrix C2 dirty live shots, StarWarsPatches semantics in the parallel run, UtinniPatches dump).
+- validation_style.py --offline: S0 PASS, S0b (24 stage-2 defs, marker conduit styles, guarded patch, 22 art files, no StyleCategoryDef) PASS.
+## 6. Live checks written (not run)
+`python.exe src\RimMandrake\MessyConduit\validation_style.py --live --save MC_STYLE2_<date>` (map with a free colonist, Electricity researched, messyconduit tier). New probe verbs (AerialProbe channel): cstyles[:rect] | cplace | cline | cfinishbuild | cprocess | cclearpicks | crestyle:x,z:key | cdeconstruct:x,z.
+- S9a two runs (Industrial 6, Modern orange 3 + Modern switch) store their styles, cords print their look; S9b Futuristic bridge -> all Industrial incl. switch, message names both; S9c deconstruct middle -> two Industrial runs; S9d Restyle right half to Modern mix (left untouched), build-mode Futuristic line keeps style, every piece prints its run's look and the section meshes hold every piece's strand; S9e after save/load every cell style and piece material identical.
+- S10 legacy line via jawa/build_batch: no style stored, nothing materialised on processing, every piece chooses the SAME Material objects as the pre-stage-2 default set (material identity instead of a screenshot hash).
+- S6 changed: auto-link no longer strings mixed-look spans, so S6 now requires mixedLook == 0.
+## 7. Unproven / what is left
+- Unproven live: everything in section 6; the menu click itself; the guarded patch actually applying (startup log warns if a def is not stylable); the switch on/off art per look; Messages text; that a saved style field is skipped harmlessly with the mod removed (design 6, removal check).
+- Known gaps: pile art (strips vs junction boxes) still follows the DEFAULT look, not each run (CordBuilder plans piles with one global option); no "joins Industrial run" cursor text; every conduit now carries CompStyleable, so saves gain a null style entry per conduit (loads unchanged); a legacy switch keeps the Scrapper art until its run is written for real.
+- Review map (human_review.py row 1: one station per style + a bridge station) not done.
+- Stage 3 (hose reels) was built in parallel by another pass (8cc77b906); nothing in stage 2 touches Hose files.
