@@ -303,6 +303,26 @@ class World:
             self._index = L.Index()
         return self._index
 
+    # ── the game's own defs and textures (gametex.py; cached outside the repo) ──
+    def live_texpaths(self, names) -> list[str]:
+        if "gt" not in self._c:
+            try:
+                import gametex
+                dt = gametex.deftex()
+                self._c["gt"] = dt["defs"]
+                self._c["dump_capture"] = Path(dt["capture"]).name
+            except (SystemExit, Exception) as e:          # noqa: BLE001
+                self._c["gt"] = {}
+                self._c["dump_capture"] = f"UNMEASURED ({e})"
+        return sorted({t for n in names for t in (self._c["gt"].get(n) or {}).get("tex", [])})
+
+    def game_roots_text(self) -> str:
+        try:
+            import gametex
+            return gametex.searched_text()
+        except (SystemExit, Exception) as e:              # noqa: BLE001
+            return f"UNMEASURED ({e})"
+
     # ── identity ──
     def identify(self, name: str, extra_originals=()) -> tuple[str, dict]:
         """(our defName, {original name: evidence}). NAME may be ours or an original (donor defName)."""
@@ -385,6 +405,10 @@ def resolve_art(name: str, world: World | None = None, originals=()) -> dict:
     w = world or World()
     ours, orig = w.identify(name, originals)
     tps = sorted(w.tex_by_def.get(ours, set()) | {tp for o in orig for tp in w.tex_by_def.get(o, set())})
+    tex_from = "our src defs"
+    if not tps:                    # a donor def (AA_, AB_, vanilla): the LIVE def dump knows what the game draws
+        tps = w.live_texpaths([ours] + list(orig))
+        tex_from = f"live DefDump {w._c.get('dump_capture', '?')}"
     cols, seen = [], set()
 
     def add(c):
@@ -446,10 +470,13 @@ def resolve_art(name: str, world: World | None = None, originals=()) -> dict:
                 add({"confidence": "name-matched", "kind": "render", "ref": fam, "res": None, "role": _role(fam),
                      "jobs": fams[fam], "evidence": f"job id token {k!r} ({src})"})
                 break
-    searched = {"texPaths": tps, "ledger": f"{len(idx.by_res)} texPaths in the art ledger",
+    searched = {"texPaths": tps, "texPaths from": tex_from,
+                "ledger": f"{len(idx.by_res)} texPaths in the art ledger (incl. game copies ingested by gametex.py)",
                 "job records read": w._c.get("jobs_read", 0), "job records carrying a target": len(jt),
                 "collected bindings": len(w.collected), "render families": len(fams),
                 "name keys (whole-token)": keys, "artpipe": str(w.artpipe)}
+    if tps and not any(c["confidence"] == "bound" for c in cols):
+        searched["game roots"] = w.game_roots_text()
     if not w.artpipe.is_dir():
         searched["UNMEASURED"] = f"artpipe state dir {w.artpipe} absent — renders not searched"
     return {"subject": ours, "originals": orig, "texpaths": tps, "columns": cols, "searched": searched}

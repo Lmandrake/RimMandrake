@@ -85,7 +85,7 @@ def main(argv=None) -> int:
 
     # ---------------- sanity probe (must find known-present things)
     probe = {"bluedesert_ render families": sum(1 for f in fams if f.lower().startswith("bluedesert_")),
-             "desert_swaca_wraid family": int("desert_swaca_wraid" in fams),
+             "pyrelands_anooba_v1 family": int("pyrelands_anooba_v1" in fams),   # was desert_swaca_wraid: every desert_swaca_* _artsrc dir is gone (done/ records remain), 2026-10-04
              "canon dir 'wraid'": int("wraid" in canon_dirs),
              "anooba name-join families": len(name_join(["anooba"])),
              "census rows": sum(len(b["rows"]) for b in C["biomes"].values())}

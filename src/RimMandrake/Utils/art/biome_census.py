@@ -86,6 +86,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import artledger as L  # noqa: E402
 import art_sheet as A  # noqa: E402
+import subject as S_  # noqa: E402
 
 REPO = L.REPO_ROOT
 SRC = REPO / "src"
@@ -488,6 +489,7 @@ def main(argv=None):
     idx = L.Index()
     slots = L.scan_def_slots()
     lorder, lfp = A.load_order()
+    SW = S_.World(index=idx)
     tex_by_def = defaultdict(set)
     for tp, ss in slots.items():
         for s in ss:
@@ -540,6 +542,11 @@ def main(argv=None):
             for y, ev in sorted(tex_twins.get(dn, ())):
                 if y in cidx and (CANON / cidx[y]).is_dir():
                     return dict(canon_info(CANON / cidx[y], "texpath_twin"), base=f"{cidx[y]} (shares its texture)")
+        # last: the one resolver (subject.py) — INDEX defNames, own-line defNames, variant-stripped, twins
+        sc = S_.resolve_canon(defnames[0], SW, originals=defnames[1:])
+        if sc["match"] != "none" and sc["slug"] and (CANON / sc["slug"]).is_dir():
+            out = canon_info(CANON / sc["slug"], f"subject:{sc['match']}")
+            return dict(out, base=sc["slug"]) if sc["match"] == "base-species" else out
         return None
 
     # shared-texpath twins
@@ -690,6 +697,9 @@ def main(argv=None):
             for dn in r["defNames"]:
                 texs |= tex_by_def.get(dn, set())
             joined = "def"
+            if not texs:                  # donor/vanilla def: what the game draws, from the live (post-patch) dump
+                texs = set(SW.live_texpaths(r["defNames"]))
+                joined = "live-def-dump"
             if not texs:
                 pat = re.compile(rf"(^|/){re.escape(stem(k))}(_[a-z]{{1,2}})?$", re.I)
                 texs = {rr for rr in all_res if pat.search(rr)}
@@ -713,10 +723,20 @@ def main(argv=None):
             nv = sum(len(x["versions"]) for x in res_list)
             st = stem(k).lower()
             r["artpipe_state_jobs"] = sorted(set(ajobs.get(st, [])) | {j for d in r["donors"] for j in ajobs.get(stem(d).lower(), [])})
-            # A2a/A2b: renders found by name are art (name-matched), never NO ART
+            # A2a/A2b: renders found by name are art (name-matched), never NO ART. Name matching goes through
+            # subject.py (whole-token, never prefix-only) so the census and the sheet resolve the row ONE way.
+            searched = None
+            if not nv:
+                sa = S_.resolve_art(k, SW, originals=r["donors"])
+                fams = sorted({c["ref"] for c in sa["columns"] if c["kind"] in ("render", "job") and c["role"] == "body"})
+                r["artpipe_state_jobs"] = sorted(set(r["artpipe_state_jobs"]) | set(fams))
+                searched = S_.describe_none(sa["searched"]) if not sa["columns"] and not r["artpipe_state_jobs"] else None
             basis = "ledger" if nv else ("name-matched" if r["artpipe_state_jobs"] else "none")
             r["art"] = {"resources": res_list, "n_versions": nv, "has_art": basis != "none", "basis": basis,
-                        "live_res": sum(1 for x in res_list if x["live"])}
+                        "live_res": sum(1 for x in res_list if x["live"]),
+                        "in_game": sum(1 for x in res_list for v in x["versions"] if v["label"].startswith("IN GAME"))}
+            if searched:
+                r["art"]["searched"] = searched
             keys = {L.subject_key(x) for x in r["defNames"]}
             r["ledger_rulings"] = [{"verdict": x.get("verdict"), "by": x.get("by"), "trust": x.get("trust"),
                                     "ts": x.get("ts"), "via": x.get("via"),
@@ -759,8 +779,8 @@ def main(argv=None):
         if noart:
             def why(r):
                 rs_ = [x["res"] for x in r["art"]["resources"]]
-                return (f" — texPath `{rs_[0]}` not in the art ledger (vanilla/donor texture)" if rs_
-                        else " — no texPath resolved")
+                return (f" — texPath `{rs_[0]}` not in the art ledger and no copy in any game root" if rs_
+                        else " — no texPath resolved") + (f" ({r['art']['searched']})" if r["art"].get("searched") else "")
             md.append("**NO ART** (no picture set of ours in the ledger):")
             md += [f"- `{r['key']}`" + (f" ({r['label']})" if r["label"] else "") + why(r) for r in noart]
             md.append("")
