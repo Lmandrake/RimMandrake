@@ -47,6 +47,11 @@
       <li>PlaceWorker_NotUnderRoof</li>
       <li>RimMandrake.MessyConduit.Aerial.PlaceWorker_AerialRange</li>
     </placeWorkers>
+    <comps>
+      <!-- per-build style (design messyconduit_style_per_build_design.md, architecture B): the engine's own style field,
+           carried blueprint -> frame -> building -> minified -> save. Looks: Defs/Aerial/RM_AerialStyles.xml -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="RM_AerialAnchorBase">

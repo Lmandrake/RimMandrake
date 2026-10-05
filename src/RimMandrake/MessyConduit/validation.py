@@ -468,6 +468,10 @@ def o6_review_round1(rows):
         probs.append("B6: pole geometry table stale (re-run wire_pole_art.py)")
     wired = [ln.split(":")[0] for ln in rp.stdout.splitlines() if "crossarm row" in ln]
     info.append("real pole art: %s" % (wired or "none yet (tinted stand-ins)"))
+    # per-build style stage 1: the 12 pole style defs, their art on disk, no ideo category lists them, no shared-def edit
+    rs = subprocess.run([sys.executable, os.path.join(HERE, "validation_style.py"), "--offline"], capture_output=True, text=True, timeout=300)
+    if rs.returncode != 0:
+        probs.append("style stage 1 (validation_style.py --offline): %s" % rs.stdout.strip()[-200:])
     # B7 round 2: the wall bracket's per-look, per-facing art and its measured insulator table are current
     rb = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_bracket_art.py"), "--check"],
                         capture_output=True, text=True, timeout=600)
