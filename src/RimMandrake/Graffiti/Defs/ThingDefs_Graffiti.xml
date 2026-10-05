@@ -75,10 +75,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-15</Beauty>
@@ -111,10 +107,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Scratches</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-8</Beauty>
@@ -137,10 +129,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_TallyMarks</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -163,10 +151,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_WarningGlyph</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -202,10 +186,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_A</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -228,10 +208,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_B</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -254,10 +230,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Tag_C</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-6</Beauty>
@@ -280,10 +252,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_A</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -310,10 +278,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_ThrowUp_B</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -337,10 +301,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_CrossOut</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-7</Beauty>
@@ -377,10 +337,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Crown</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -408,10 +364,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Gear</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -438,10 +390,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Stencil_Fist</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-4</Beauty>
@@ -467,10 +415,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Flyer</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-3</Beauty>
@@ -496,10 +440,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_Paste_Wanted</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-5</Beauty>
@@ -534,10 +474,6 @@
     <graphicData>
       <graphicClass>Graphic_Random</graphicClass>
       <texPath>Things/Filth/Art/RM_Graffiti_SigilFrame_Halo</texPath>
-      <linkType>CornerFiller</linkType>
-      <linkFlags>
-        <li>Wall</li>
-      </linkFlags>
     </graphicData>
     <statBases>
       <Beauty>-2</Beauty>

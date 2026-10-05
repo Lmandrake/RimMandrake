@@ -54,8 +54,9 @@ run, so every live claim below is UNMEASURED until a trial records it.
    `raidExitTaggingEnabled` and `autoCleanProtectionEnabled` are missing. That is a floor gap.
 5. **Painted marks land on the standable floor cell beside the wall, not in the wall.**
    `GraffitiJobUtility.TryFindWallMarkCell` picks a standable cell that has a full-fillage edifice
-   cardinal to it. The graphic is `CornerFiller` linked to walls. So `mark_sits_on_the_wall` is a real
-   test of the art and link setup, not a formality.
+   cardinal to it. The graphic is an unlinked `Graphic_Random` that draws the whole motif on that floor cell
+   (the old `CornerFiller` wall link drew a 3.5% atlas crop and was removed by GRAFFITI_LINKED_MARK_FIX_1). So
+   `mark_sits_on_the_wall` tests the mark's cell, not a wall-face draw.
 6. **Marks are filth, and colonists clean filth.** Cleaning, rain wash (`rainWashes=true`) and
    going-over (`Filth_Mark.MakeMark` destroys a rival def at the same cell) can all remove evidence
    between paint and shutter. This is a site-prep problem (§3).
