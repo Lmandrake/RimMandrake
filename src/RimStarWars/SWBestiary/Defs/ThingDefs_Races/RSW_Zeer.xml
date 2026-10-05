@@ -81,7 +81,7 @@
     </comps>
     <race>
       <body>QuadrupedAnimalWithHoovesAndHorn</body>
-      <baseBodySize>3.0</baseBodySize>
+      <baseBodySize>4.5</baseBodySize>
       <baseHealthScale>2.0</baseHealthScale>
       <baseHungerRate>0.8</baseHungerRate>
       <foodType>VegetarianRoughAnimal, DendrovoreAnimal</foodType>
@@ -161,7 +161,7 @@
         <labelPlural>zeer calves</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Zeer/Zeer</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
             <offset>(0,0,-0.2)</offset>
@@ -169,13 +169,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>1.5</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Zeer/Zeer</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>3</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
             <offset>(0,0,-0.25)</offset>
@@ -183,13 +183,13 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Zeer/Zeer</texPath>
-          <drawSize>4.0</drawSize>
+          <drawSize>6</drawSize>
           <shadowData>
             <volume>(1, 0.8, 0.5)</volume>
             <offset>(0,0,-0.5)</offset>
@@ -197,7 +197,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Zeer/Zeer_Dessicated</texPath>
-          <drawSize>4.0</drawSize>
+          <drawSize>6</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

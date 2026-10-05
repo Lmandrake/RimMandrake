@@ -40,3 +40,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - SIZE RSW_Gorg: DONE — -30% (bodySize 0.3->0.21; drawSizes x0.7)
 - SIZE RSW_LongtailGorg: DONE — -30% (bodySize 0.6->0.42; drawSizes x0.7)
 - SIZE RSW_Shaak: DONE — +50% (bodySize 2->3; drawSizes x1.5)
+- SIZE RSW_Zeer: DONE — +50% (bodySize 3->4.5; drawSizes x1.5)
