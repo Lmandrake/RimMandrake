@@ -30,8 +30,8 @@
     wildAnimals/wildPlants: transplanted from BiomeCast_Ashkarr.xml /
     BiomeFlora_Ashkarr.xml against rosters/abyss.json — "the donor roster
     IS the population" per the sheet's own ruling (SS4), the 13-species nocturnal
-    transplanted family plus the Frostling (moved back here from the Propane Lakes'
-    sheet, per that sheet's own Owed note).
+    transplanted family. Dusk rat, frostling, night ave and sand prowler (vosska)
+    cut by the owner 2026-10-05 (Abyss sheet, twin cut ruled by question card).
 
     NOT this pass's scope: the Unveiling as its own rare WeatherDef; the darkbeast,
     the Dark-folding mechanism, gust-wind variability (all C#, SS Owed); Lightfall
@@ -114,7 +114,6 @@
            so the fix raises the grain already here, same shape as the Gizka fix in
            Pyrelands (ECOSYSTEM_PYRAMID_LAW_1's first application): the two existing
            small residents become more common, no megafauna cut. -->
-      <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>
       <RM_Cindermare MayRequire="mandrake.rm.biomes">0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: free-tier predators, same rows as RM_Abyss -->
       <RM_Skarnix MayRequire="mandrake.rm.biomes">0.09</RM_Skarnix>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
@@ -123,14 +122,11 @@
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
       <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
       <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
-      <AA_NightAve MayRequire="sarg.alphaanimals">0.2</AA_NightAve>  <!-- night ave - medium, keep -->
       <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
       <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
       <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
       <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
       <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
-      <AA_SandProwler MayRequire="sarg.alphaanimals">0.075</AA_SandProwler>  <!-- sand prowler - medium-pred, keep -->
-      <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
       <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
     </wildAnimals>
     <coastalWildAnimals />
