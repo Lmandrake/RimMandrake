@@ -256,7 +256,6 @@
       <RSW_Krykna MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Krykna>  <!-- krykna - ambush-small, keep -->
       <RSW_Runyip MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Runyip>  <!-- runyip - herd, import -->
       <RSW_Voorpak MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
-      <RSW_Thurra MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Thurra>  <!-- gigantelope - herd, keep -->
       <RSW_Vosska MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Vosska>  <!-- sand prowler - ambush-burrow, keep -->
       <RM_Khorrak MayRequire="mandrake.rm.biomes">0.035</RM_Khorrak>  <!-- terramorph - ambush-flat, keep -->
       <RSW_Ommok MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Ommok>  <!-- sand squid - subsurface-slow, keep -->

@@ -38,7 +38,7 @@
   matching this same file's RM_Vosska/RM_Ulgga precedent of never pulling in
   a cross-mod BodyDef) — no new BodyDef authored, none of the four needs a
   body shape vanilla doesn't already have. No eggs: all four are live-birth
-  like RM_Thurra/RM_Groundrunner in the neighbour file, not egg-layers.
+  like RM_Groundrunner in the neighbour file, not egg-layers.
 
   Art: RM_Sollak/RM_Gennok/RM_Tebbra wired from the ruled "_b" redo renders
   (infrastructure/artpipe/_artsrc/RM_{Sollak,Gennok,Tebbra}_b_{east,north,south}/
