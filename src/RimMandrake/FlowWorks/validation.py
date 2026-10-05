@@ -15,7 +15,7 @@ D/F primitive), so every component here drives the depth/fill primitive:
   `jawa/canal_dig` is a stub that ALWAYS FAILS (ruling 24) and is never called here.
 
 WIRED, NOT GREEN. Every must-show and cannot-show bar of the VALIDATED walk is claimed by a
-component via `shows=`, and every toggle in `suite.toggles` is covered (pitDepthDrawOffsetEnabled has no chain yet). Nothing here has run
+component via `shows=`, and every toggle in `suite.toggles` is covered. Nothing here has run
 live: every predicate below is UNMEASURED until the baseline run
 (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1). Expected today (plan section 1): the state half of the
 canal/stock bars passes; visual bars whose art is still borrowed may come back NO from the
@@ -48,8 +48,8 @@ suite = Suite("FlowWorks")
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
-# 34 boolean toggles: 33 in RimMandrakeFlowWorksSettings, 1 in RiverSteamSettings (pitDepthDrawOffsetEnabled, also in
-# the FlowWorks class, is the one setting with no chain yet). PIT_LEGACY_CODE_RETIRE_1
+# Boolean toggles: all in RimMandrakeFlowWorksSettings except 1 in RiverSteamSettings; every one has a chain
+# (pitDepthDrawOffsetEnabled: toggle_pit_depth_draw, 2026-10-05). PIT_LEGACY_CODE_RETIRE_1
 # (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
 # escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
 FW_TOGGLES = [
@@ -1275,6 +1275,42 @@ def toggle_pit_exposure(t):
             _wait(t, 4 * 250)
             if t._guard():
                 _expect(not _has_exposure(pid2), "RM_PitExposure applied while pitExposureEnabled is off")
+
+
+def _pawn_sink(t, pid):
+    """PIT_DEPTH_DRAW_OFFSET_1: RM_PromotionProofs.ProofPawnSink reads the pawn's REAL DrawPos through the Harmony
+    postfix: 'SINK id=.. depth=D .. sink=S drawDz=dz .. enabled=b'. Returns the key=value dict ({} if refused)."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PromotionProofs", method="ProofPawnSink",
+                      args=str(pid))
+    txt = str((r or {}).get("result", ""))
+    if not txt.startswith("SINK"):
+        return {}
+    return dict(kv.split("=", 1) for kv in txt.split()[1:] if "=" in kv)
+
+
+@suite.chain("toggle_pit_depth_draw")
+def toggle_pit_depth_draw(t):
+    # PIT_DEPTH_DRAW_OFFSET_1: a pawn standing on a D=4 cell is drawn sunk (drawDz < 0); with the toggle off the
+    # postfix must leave DrawPos at the cell centre (drawDz ~ 0). UNMEASURED-tolerant via t._guard().
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    with _setting(t, "superdeepCaptureEnabled", False):
+        with t.component("pit_depth_draw_on", toggle="pitDepthDrawOffsetEnabled"):
+            pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
+            _wait(t, 30)
+            if t._guard():
+                kv = _pawn_sink(t, pid)
+                _expect(kv.get("depth") == "4" and float(kv.get("drawDz", "0")) < -0.05,
+                        "pawn on a D=4 cell not drawn sunk: %s" % kv)
+        with t.component("pit_depth_draw_off", toggle="pitDepthDrawOffsetEnabled"):
+            with _setting(t, "pitDepthDrawOffsetEnabled", False):
+                pid2 = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
+                _wait(t, 30)
+                if t._guard():
+                    kv = _pawn_sink(t, pid2)
+                    _expect(kv.get("depth") == "4" and abs(float(kv.get("drawDz", "9"))) < 0.05,
+                            "pawn drawn sunk while pitDepthDrawOffsetEnabled is off: %s" % kv)
 
 
 def _fill_fx(t):
