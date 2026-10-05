@@ -15,8 +15,9 @@
         The new worker's placement ranges are [INVENTED], same footing as the
         sibling Gelatinous Slime/Flooded Canyon mods' own worker ranges.
 
-    Everything else — texture, terrain, weather, diseases, wildAnimals (all 14
-    Alpha Animals rows), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
+    Everything else — texture, terrain, weather, diseases, wildAnimals (the Alpha Animals rows;
+    dusk rat, frostling and night ave cut and the vosska removed by the owner's
+    Abyss sheet 2026-10-05), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
     is the twin's content unchanged. Zero RSW_/SW_/RUT_ rows exist in the
     twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
     Cindermare and Skarnix are invented, not canon, so they ship inline here as RM_Cindermare/RM_Skarnix
@@ -24,7 +25,7 @@
 
     ⚠️ NOT donor-free: terrain/texture and all 8 wildPlants entries carry no
     MayRequire (inherited from the twin, not this build's scope to fix) — see
-    About.xml for the disclosure. The 14 wildAnimals rows keep their original
+    About.xml for the disclosure. The Alpha Animals wildAnimals rows keep their original
     MayRequire="sarg.alphaanimals" gate and degrade gracefully without it.
   -->
 
@@ -103,19 +104,15 @@
       <RM_Summ>0.01</RM_Summ>  <!-- ABYSS_DONOR_BEASTS_FREED_1: storm giant, a rare passing terror (also comes down in Witchfire storms); this biome only -->
       <RM_Cindermare>0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: grip-drain solitary predator; rarer than the skarnix; this biome only -->
       <RM_Skarnix>0.09</RM_Skarnix>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: firelight-averse ambush stalker; this biome only -->
-      <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
       <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
       <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
-      <AA_NightAve MayRequire="sarg.alphaanimals">0.2</AA_NightAve>  <!-- night ave - medium, keep -->
       <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
       <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
       <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
       <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
       <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
-      <RM_Vosska MayRequire="mandrake.rm.biomes">0.075</RM_Vosska>  <!-- sand prowler - medium-pred, keep -->
-      <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
       <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
     </wildAnimals>
     <coastalWildAnimals />

@@ -145,6 +145,26 @@
       "def": "Rat",
       "disposition": "cut:owner card Earth-five + ubiquity §9",
       "reason": "Earth five — appears nowhere (owner card 2026-09-09); the sheet's 'vanilla Rat at 0.101 rides the dusk-rat ruling' resolves as: the dusk rat keeps the niche and the name-joke, the vanilla Rat goes. Register shows no live crags residency (MEASURED) — the 0.101 sits in the donor XML; the generator's wholesale replace removes it"
+    },
+    {
+      "def": "AA_NightAve",
+      "disposition": "cut:owner Abyss sheet 2026-10-05",
+      "reason": "cut: owner, Abyss sheet 2026-10-05: \"cut. no longer needed.\" (RM_Abyss only)"
+    },
+    {
+      "def": "AA_SandProwler",
+      "disposition": "cut:owner Abyss sheet 2026-10-05",
+      "reason": "cut: owner, Abyss sheet 2026-10-05, of RM_Vosska: \"doesn't belong here.\" Its home is the Stillsand (RM_Vosska); removed from RM_Abyss only"
+    },
+    {
+      "def": "AA_DuskRat",
+      "disposition": "cut:owner Abyss sheet 2026-10-05",
+      "reason": "cut: owner, Abyss sheet 2026-10-05: \"No longer needed, cut.\" (RM_Abyss only)"
+    },
+    {
+      "def": "AA_Frostling",
+      "disposition": "cut:owner Abyss sheet 2026-10-05",
+      "reason": "cut: owner, Abyss sheet 2026-10-05: \"cut. no longer needed.\" (RM_Abyss only)"
     }
   ],
   "fauna": [
@@ -168,13 +188,6 @@
       "commonality": 0.5,
       "def": "AA_NightMule",
       "law": "donor family §4 (nightmule) — the domestic line; legal here at −10 °C median (MEASURED §0), unlike the nightside"
-    },
-    {
-      "action": "keep",
-      "band": "medium",
-      "commonality": 0.2,
-      "def": "AA_NightAve",
-      "law": "donor family §4 (night ave)"
     },
     {
       "action": "keep",
@@ -220,31 +233,10 @@
     },
     {
       "action": "keep",
-      "band": "medium-pred",
-      "commonality": 0.075,
-      "def": "AA_SandProwler",
-      "law": "donor family §4 (sand prowler); terrain-hiding graphic (register special, MEASURED)"
-    },
-    {
-      "action": "keep",
-      "band": "small",
-      "commonality": 0.5,
-      "def": "AA_DuskRat",
-      "law": "§4 owner's ruling: the dusk rat stays, the art goes — behavior-named exemption (§6 ban 8); sprite is a placeholder in violation until redo"
-    },
-    {
-      "action": "keep",
       "band": "medium",
       "commonality": 0.005,
       "def": "AA_Darkbeast",
       "law": "§4 owner's ruling: wears a trailing halo of Dark — EM particle interaction; kept at trace, the moving knot of blindness"
-    },
-    {
-      "action": "import",
-      "band": "medium-pred",
-      "commonality": 0.05,
-      "def": "AA_Frostling",
-      "law": "sheet Owed: owner 2026-09-06 moved the Frostling back from the propane lakes — the Nightling's polar cousin; spd 6.0 pred (MEASURED) legal — crags carry no speed ban"
     },
     {
       "action": "import",
