@@ -204,6 +204,8 @@
       <RM_Loomma>0.05</RM_Loomma>
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level." The ulgga, moved here from the Long Shade; def stays in mandrake.rm.longshade (same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
       <RM_Ulgga MayRequire="mandrake.rm.biomes">0.015</RM_Ulgga>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet): "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand". The vosska, moved here from the Long Shade; sand-swimmer fields added on its def. Weight carried over verbatim; PROVISIONAL. -->
+      <RM_Vosska MayRequire="mandrake.rm.biomes">0.05</RM_Vosska>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

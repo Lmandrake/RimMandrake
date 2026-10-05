@@ -763,6 +763,12 @@
       "commonality": 0.015,
       "def": "RM_Ulgga",
       "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.\" RSW_Ulgga retired onto RM_Ulgga."
+    },
+    {
+      "action": "add",
+      "commonality": 0.05,
+      "def": "RM_Vosska",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand\". RSW_Vosska retired onto RM_Vosska; sand-swimmer fields added."
     }
   ],
   "fish": {

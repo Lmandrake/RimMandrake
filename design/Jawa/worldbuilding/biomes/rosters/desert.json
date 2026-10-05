@@ -751,6 +751,11 @@
       "def": "RM_Ulgga",
       "disposition": "move:RM_Stillsand",
       "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.\" RSW_Ulgga retired onto RM_Ulgga."
+    },
+    {
+      "def": "RM_Vosska",
+      "disposition": "move:RM_Stillsand",
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand\". RSW_Vosska retired onto RM_Vosska; sand-swimmer fields added."
     }
   ],
   "fauna": [
@@ -896,13 +901,6 @@
       "commonality": 0.1,
       "def": "Iriaz",
       "law": "SW herd herbivore, spd 4.0 non-predator (MEASURED)"
-    },
-    {
-      "action": "keep",
-      "band": "ambush-burrow",
-      "commonality": 0.05,
-      "def": "AA_SandProwler",
-      "law": "sand-burrow ambush is legal off pavement (§4: \"some sand burrowing is possible wherever sand exists\"); ban 6 covers pavement only; spd 4.0 < 4.5"
     },
     {
       "action": "keep",
