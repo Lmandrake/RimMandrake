@@ -1,6 +1,6 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-10-05T09:16:25-0700",
+ "built": "2026-10-05T12:59:32-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -1091,7 +1091,9 @@
      "south": "c56f2a1c9ccce5cda1acb87efd772cf424696da40a1e565bbacb3ce01a23c67a"
     },
     "D": {
-     "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec"
+     "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec",
+     "north": "d636eff2bdbc00feb04893601a3ca70a03aefeeb978e6634c1ae8be9516abd4f",
+     "south": "83de19e5b2f24752d9ae91bddbdcac23009f2f41120d6f65c73a8e61685e0b05"
     },
     "E": {
      "east": "6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f"
@@ -1142,7 +1144,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render longshade_rsw_frilledgorg_v1 \u2014 failed canon check",
     "C": "render longshade_rsw_frilledgorg_v3",
-    "D": "render longshade_rsw_frilledgorg_v6",
+    "D": "render longshade_rsw_frilledgorg_v6 \u2014 failed canon check",
     "E": "render longshade_rsw_frilledgorg_v2 \u2014 failed canon check",
     "F": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
     "G": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check",
@@ -1266,10 +1268,14 @@
      "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470"
     },
     "E": {
-     "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7"
+     "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7",
+     "north": "ff1cab119cdf98680dc7e333ef3c4688b292a68c6da8518c9b56618650846340",
+     "south": "8c8a9d168927e52480bf538c4f52d2099331b75d6c9df9c8298bfcbfc1a003f5"
     },
     "F": {
-     "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd"
+     "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd",
+     "north": "f81090ac86b87ec86bf5347e070ad770d99f991a9c7114a79a60c34d89789a9b",
+     "south": "deb5fdde6d0a24d33e53c747c909d2f44ecfd92b0dc63de3018188ae3ec7400a"
     },
     "G": {
      "east": "db6ad9689f8e4f5f2ad6774b31e17f20935c42e9ec25237b85d052f186fa472c",
@@ -1319,8 +1325,8 @@
     "B": "render longshade_rsw_gorg_v1 \u2014 failed canon check",
     "C": "render longshade_rsw_gorg_v3",
     "D": "render longshade_rsw_gorg_v6 \u2014 failed canon check",
-    "E": "render longshade_rsw_gorg_swim_v1",
-    "F": "render longshade_rsw_gorg_v2",
+    "E": "render longshade_rsw_gorg_swim_v1 \u2014 failed canon check",
+    "F": "render longshade_rsw_gorg_v2 \u2014 failed canon check",
     "G": "render longshade_rsw_gorg_v4 \u2014 failed canon check",
     "H": "render longshade_rsw_gorg_v5 \u2014 failed canon check",
     "I": "render desert_swaca_gorg",
@@ -2200,7 +2206,9 @@
      "south": "d14febcd87b6864c51d944166b286f15878fc205f4e31a0ea15189e49aaef565"
     },
     "B": {
-     "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+     "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098",
+     "north": "19a6998371371a26d2d68cbdaf4c6d911a3326592f5148a9181a080874899da9",
+     "south": "378c4963f7f1480933ca2b6bec3258efde4655d9a66b80092b5a44ed11def412"
     },
     "C": {
      "east": "e44bbd8d49bd9ff34577d5307db941a71ad42570061a175ed60c18bbee37fbfa",
@@ -2227,7 +2235,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 RontoArtOverride",
-    "B": "render longshade_rsw_ronto_v1",
+    "B": "render longshade_rsw_ronto_v1 \u2014 failed canon check",
     "C": "render desert_swaca_ronto",
     "D": "history RontoArtOverride 2026-09-11",
     "E": "donor original \u2014 mlie.starwarsanimalcollection"
@@ -2276,6 +2284,7 @@
     },
     "C": {
      "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
+     "north": "27065f6cabf93b95c4686728998dab9f1d1a540d7c4179f6337dc98c9cd6bf4b",
      "south": "11f20107cbd58557d424e2238370e46ab0370879e13cbb58b61ac550758518ef"
     },
     "D": {
@@ -2701,5 +2710,5 @@
   }
  },
  "sheetId": "leaningscrub_sheet_2026-10-05",
- "snapshotId": "1d1048d080e6e8d3"
+ "snapshotId": "a67c22bdea193c12"
 }

@@ -1,6 +1,6 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-05T09:16:48-0700",
+ "built": "2026-10-05T11:55:10-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "9dc34259f7b1180e99a0afbd93e610b8998ef26f753dd7ad6d4eacca7f55ccec",
      "north": "3c5f4bf93143b60ec28904cac52d1c62ce570d58fd8ee9ed64d54df36d43ed73",
      "south": "4fcd2aee3f27f696e7f19658b262f2e8e6876c17f917e1a8d013cfe22ee1ab38"
+    },
+    "B": {
+     "east": "38ce595b807676cab54949e4572239c4da8a90e58497227402b682d40ad5bd7f",
+     "north": "6d5726f85c98bb09c171bcb1eaf9b3b424b89ba151c21a1b61f80b3152811894",
+     "south": "f045586140575cc9339b867a82e20eb2600cc84956ba67b37da624ce3a529af6"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet"
+    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Aerofleet_v1"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "aerofleet"
   },
@@ -1102,5 +1110,5 @@
   }
  },
  "sheetId": "twilightsea_sheet_2026-10-05",
- "snapshotId": "b2175f295ae4e0b5"
+ "snapshotId": "f32691c041c0b145"
 }

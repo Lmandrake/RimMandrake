@@ -1,6 +1,6 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-05T10:53:39-0700",
+ "built": "2026-10-05T12:59:24-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -189,7 +189,7 @@
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render ls_regen_RM_Dewfringe_b_v1",
-    "C": "render ls_regen_RM_Dewfringe_c_v1",
+    "C": "render ls_regen_RM_Dewfringe_c_v1 \u2014 failed canon check",
     "D": "render ls_regen_RM_Dewfringe_d_v1",
     "E": "render ls_regen_RM_Dewfringe_e_v1 \u2014 failed canon check",
     "F": "render ls_regen_RM_Dewfringe_f_v1"
@@ -1121,17 +1121,26 @@
      "east": "7afe1a0c35ba8d0a967309c8c02fb30b540189b67c2418cf255bf18335147aa6",
      "north": "06ffd88629cd92c50165421fb5b515c558009b2c0a77a57fd3c4759bc2a78f7f",
      "south": "11ff60d86cceff0c7a49ebe967b03ef3095c21e6dae0f778f3d30100e3be8a00"
+    },
+    "C": {
+     "east": "61fc7707d5341e7e742e3dd061ebe4721cd2206857a6c5d6fee20bd5a5345d33",
+     "north": "8ef4ae825e27296a8ab443b096bf85dda3fa42f697fe446d0feb4541fdb7498b",
+     "south": "fcaece0a714db520f68e71218aa44d22d42d43b9b43c95f9d3302bdfa4804d6b"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka"
+    "A": "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka",
+    "C": "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka"
    },
    "labels": {
-    "A": "IN GAME \u2014 LongShade"
+    "A": "IN GAME \u2014 LongShade",
+    "C": "render ls_regen_RM_Vrekka_v1"
    },
    "res": "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "vrekka"
   },
@@ -1607,9 +1616,6 @@
      "north": "520b9529573a86fae16ae22e880bea0aee3423be3aa45d1ad1d3257478ed7b4e",
      "south": "c56f2a1c9ccce5cda1acb87efd772cf424696da40a1e565bbacb3ce01a23c67a"
     },
-    "H": {
-     "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec"
-    },
     "I": {
      "east": "6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f"
     },
@@ -1620,6 +1626,11 @@
     },
     "K": {
      "east": "55679c277b67fb6c05138c045871ab36ae4fb38c84b1777fad80871bdf5eac93"
+    },
+    "M": {
+     "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec",
+     "north": "d636eff2bdbc00feb04893601a3ca70a03aefeeb978e6634c1ae8be9516abd4f",
+     "south": "83de19e5b2f24752d9ae91bddbdcac23009f2f41120d6f65c73a8e61685e0b05"
     }
    },
    "graphic_of": {
@@ -1630,10 +1641,10 @@
     "E": "swanimals/FrilledGorg/FrilledGorg_j_Swimming",
     "F": "swanimals/FrilledGorg/FrilledGorg",
     "G": "swanimals/FrilledGorg/FrilledGorg",
-    "H": "swanimals/FrilledGorg/FrilledGorg",
     "I": "swanimals/FrilledGorg/FrilledGorg",
     "J": "swanimals/FrilledGorg/FrilledGorg",
-    "K": "swanimals/FrilledGorg/FrilledGorg"
+    "K": "swanimals/FrilledGorg/FrilledGorg",
+    "M": "swanimals/FrilledGorg/FrilledGorg"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1643,10 +1654,10 @@
     "E": "IN GAME \u2014 SWBestiary",
     "F": "render longshade_rsw_frilledgorg_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_frilledgorg_v3",
-    "H": "render longshade_rsw_frilledgorg_v6",
     "I": "render longshade_rsw_frilledgorg_v2 \u2014 failed canon check",
     "J": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
-    "K": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check"
+    "K": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check",
+    "M": "render longshade_rsw_frilledgorg_v6 \u2014 failed canon check"
    },
    "res": "swanimals/FrilledGorg/FrilledGorg",
    "reserved": [
@@ -1660,7 +1671,9 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L",
+    "M"
    ],
    "subject_key": "frilledgorg"
   },
@@ -1706,12 +1719,6 @@
      "north": "46816f531940eb563b42cfaaef050f29a4d46f507cf68e9bd37e1c0217edc843",
      "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470"
     },
-    "I": {
-     "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7"
-    },
-    "J": {
-     "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd"
-    },
     "K": {
      "east": "db6ad9689f8e4f5f2ad6774b31e17f20935c42e9ec25237b85d052f186fa472c",
      "north": "cfd0064b8d598a8fd496b73215276f118777ba690466da8e598ccca18db07510",
@@ -1719,6 +1726,16 @@
     },
     "L": {
      "east": "e4bb1cc09df37068bd8d917806f806df22624d153f98e197e381d6d7d8ef775a"
+    },
+    "N": {
+     "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7",
+     "north": "ff1cab119cdf98680dc7e333ef3c4688b292a68c6da8518c9b56618650846340",
+     "south": "8c8a9d168927e52480bf538c4f52d2099331b75d6c9df9c8298bfcbfc1a003f5"
+    },
+    "O": {
+     "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd",
+     "north": "f81090ac86b87ec86bf5347e070ad770d99f991a9c7114a79a60c34d89789a9b",
+     "south": "deb5fdde6d0a24d33e53c747c909d2f44ecfd92b0dc63de3018188ae3ec7400a"
     }
    },
    "graphic_of": {
@@ -1730,10 +1747,10 @@
     "F": "swanimals/Gorg/Gorg",
     "G": "swanimals/Gorg/Gorg",
     "H": "swanimals/Gorg/Gorg",
-    "I": "swanimals/Gorg/Gorg",
-    "J": "swanimals/Gorg/Gorg",
     "K": "swanimals/Gorg/Gorg",
-    "L": "swanimals/Gorg/Gorg"
+    "L": "swanimals/Gorg/Gorg",
+    "N": "swanimals/Gorg/Gorg",
+    "O": "swanimals/Gorg/Gorg"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1744,10 +1761,10 @@
     "F": "render longshade_rsw_gorg_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_gorg_v3",
     "H": "render longshade_rsw_gorg_v6 \u2014 failed canon check",
-    "I": "render longshade_rsw_gorg_swim_v1",
-    "J": "render longshade_rsw_gorg_v2",
     "K": "render longshade_rsw_gorg_v4 \u2014 failed canon check",
-    "L": "render longshade_rsw_gorg_v5 \u2014 failed canon check"
+    "L": "render longshade_rsw_gorg_v5 \u2014 failed canon check",
+    "N": "render longshade_rsw_gorg_swim_v1 \u2014 failed canon check",
+    "O": "render longshade_rsw_gorg_v2 \u2014 failed canon check"
    },
    "res": "swanimals/Gorg/Gorg",
    "reserved": [
@@ -1762,7 +1779,10 @@
     "I",
     "J",
     "K",
-    "L"
+    "L",
+    "M",
+    "N",
+    "O"
    ],
    "subject_key": "gorg"
   },
@@ -2737,8 +2757,10 @@
      "north": "76f2bd397e3089ffb178f5c5f0e7b54e8c0b9208b9041f3f78334c8c1c80a6c2",
      "south": "9387757385a47e0a4324c69b443e07fddbe7b35191db91622375634bb455688f"
     },
-    "E": {
-     "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+    "F": {
+     "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098",
+     "north": "19a6998371371a26d2d68cbdaf4c6d911a3326592f5148a9181a080874899da9",
+     "south": "378c4963f7f1480933ca2b6bec3258efde4655d9a66b80092b5a44ed11def412"
     }
    },
    "graphic_of": {
@@ -2746,14 +2768,14 @@
     "B": "swanimals/Ronto/Ronto",
     "C": "swanimals/Ronto/Ronto",
     "D": "swanimals/Ronto/Ronto",
-    "E": "swanimals/Ronto/Ronto"
+    "F": "swanimals/Ronto/Ronto"
    },
    "labels": {
     "A": "IN GAME \u2014 RontoArtOverride",
     "B": "render desert_swaca_ronto",
     "C": "history RontoArtOverride 2026-09-11",
     "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "render longshade_rsw_ronto_v1"
+    "F": "render longshade_rsw_ronto_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Ronto/Ronto",
    "reserved": [
@@ -2761,7 +2783,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "ronto"
   },
@@ -3458,7 +3481,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render desert_swaca_wraid",
     "C": "render longshade_rsw_wraid_v1 \u2014 failed canon check",
-    "D": "render longshade_rsw_wraidalpha_v1"
+    "D": "render longshade_rsw_wraidalpha_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Wraid/Wraid",
    "reserved": [
@@ -3553,5 +3576,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "7ae40805cf92baea"
+ "snapshotId": "d0fcde965b1db653"
 }

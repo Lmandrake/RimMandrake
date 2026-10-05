@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-05T09:16:38-0700",
+ "built": "2026-10-05T11:55:02-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "9dc34259f7b1180e99a0afbd93e610b8998ef26f753dd7ad6d4eacca7f55ccec",
      "north": "3c5f4bf93143b60ec28904cac52d1c62ce570d58fd8ee9ed64d54df36d43ed73",
      "south": "4fcd2aee3f27f696e7f19658b262f2e8e6876c17f917e1a8d013cfe22ee1ab38"
+    },
+    "B": {
+     "east": "38ce595b807676cab54949e4572239c4da8a90e58497227402b682d40ad5bd7f",
+     "north": "6d5726f85c98bb09c171bcb1eaf9b3b424b89ba151c21a1b61f80b3152811894",
+     "south": "f045586140575cc9339b867a82e20eb2600cc84956ba67b37da624ce3a529af6"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet"
+    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Aerofleet_v1"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "aerofleet"
   },
@@ -31,17 +39,23 @@
      "east": "c00fd4857030848f817dc0cf86a01f358f37161b090b4c0ddf52eaab25b5c94c",
      "north": "1957521f470a489daa158804a08d13e0628b15559a804982a5d08e01a2f1361e",
      "south": "027b4353985d32139b8ec18a241083a53f8bd59698bc37f0e69fdd1028f21582"
+    },
+    "B": {
+     "east": "7351fe52604da46eb8248ed9c547d2ca608f4ba10d8eda0575d11249c29ec212"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal"
+    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_ColossalAerofleet_v1"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet_Colossal",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "colossalaerofleet"
   },
@@ -51,17 +65,23 @@
      "east": "d34f7a0d7a1864ab80e7c0e0fbbd19ed96decbd2f92cdba238acd3199fba5187",
      "north": "1b13258b490ef70d79c38d4a0994dc2322427aa6ecf20f1c8657a932b7811359",
      "south": "90400475f4eecf8bdf190751b96d0f1ee86dd47bdb9acc83ffccc19239ed4b7e"
+    },
+    "B": {
+     "east": "ee24fbcc7b1f31615984f67b876adb328c74b3da5fcd838fe648eb6480436712"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole"
+    "A": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
+    "B": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_CrescendoAnole_v1"
    },
    "res": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "crescendoanole"
   },
@@ -497,5 +517,5 @@
   }
  },
  "sheetId": "theforge_sheet_2026-10-05",
- "snapshotId": "773d3622053e6aad"
+ "snapshotId": "684233af8f7f4c2a"
 }
