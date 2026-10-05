@@ -1,0 +1,1469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>the Wastes — flora & fauna art</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. script#CONFIG   the brief, posture, criterion, options
+    2. script#ITEMS   the rows
+    3. (optional) script#RENDER                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+ "sheetId": "wasteland_sheet_2026-10-05",
+ "title": "the Wastes \u2014 flora & fauna art",
+ "subtitle": "21 rows \u00b7 1 canon \u00b7 0 linked \u00b7 1 prefilled from desert sitting 1 \u00b7 0 NO ART YET \u00b7 IN GAME judged on ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list)",
+ "briefHtml": "<p><b>the Wastes<\/b> \u2014 every flora and fauna row of this biome (21 rows), one row per species. Each row shows\n<b>every picture we hold<\/b> for it: <b>IN GAME<\/b> (blue frame) is what the game draws now; <b>shipped, shadowed<\/b> is a copy losing\nthe load-order race; <b>render<\/b> columns are artpipe outputs (newest first); <b>history<\/b> columns are earlier states of our files\nfrom git; <b>donor original<\/b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);\nhover a set's header for where it came from.<\/p>\n<p><b>Pick, per row, the column the game should show<\/b> (letter buttons, or click a column's header). A row with a second graphic\n(swimming, flying) shows it as its own strip \u2014 click a column header there to pick for it. <b>\u2715<\/b> on a non-live picture rejects and\npurges it for good. The note box is the most useful control on the row: say what is wrong, and a redo is written from it.<\/p>\n<p><b>Canon rows<\/b> show the canon-library reference images and the entry's <b>Must show<\/b> list beside the pictures. A canon creature and\nour own (franchise-free) stand-in for it are <b>separate rows<\/b>, each judged on its own, but grouped together under one coloured band\nwith a <b>related<\/b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome\nnever casts it. Rows you already ruled on in <b>desert sitting 1<\/b> are prefilled with that pick and say so\n(green line naming the set). The counter separates rows <b>you<\/b> decided from rows still holding the agent's\nprefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.<\/p>",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "invented": [
+  "Renders are joined to a row by its NAME (defName stem, label, artpipe job names) when nothing binds them to a texture path; such columns say 'found by NAME' and could belong to a namesake.",
+  "Related links come from the census's twin detection (same stem, shared texture, or a 'copied from' comment) \u2014 a name match, not a ruling that the two are the same creature.",
+  "Where you have no pick and no keep, the prefill trusts a commit message citing your approval (\u26a0), else what the game shows now; a row with only name-found renders is prefilled to the newest render (\u26a0)."
+ ],
+ "posture": {
+  "mode": "pick-one",
+  "explain": "Each row: pick the ONE set the game should show (and one per extra graphic). The winner goes into the owning mod and the loser is archived \u2014 nothing installs until you see that plan. \u2715 on a picture = reject + PURGE."
+ },
+ "options": [
+  {
+   "key": "A",
+   "label": "A",
+   "hotkey": "1",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "B",
+   "label": "B",
+   "hotkey": "2",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "C",
+   "label": "C",
+   "hotkey": "3",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "D",
+   "label": "D",
+   "hotkey": "4",
+   "color": "#5ac37f",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "redo",
+   "label": "redo",
+   "hotkey": "r",
+   "color": "#e8b64c",
+   "counts": "out",
+   "bulk": false
+  },
+  {
+   "key": "hold",
+   "label": "hold",
+   "hotkey": "h",
+   "color": "#98a2b3",
+   "counts": "out"
+  }
+ ],
+ "groupLabel": "group",
+ "media": true,
+ "decisionsFile": "wasteland_sheet_2026-10-05.decisions.json",
+ "decisionsPath": "/home/mandrake/rm/bench/Transient/biome_ffar/wasteland_sheet_2026-10-05.decisions.json",
+ "sheetPath": "/home/mandrake/rm/bench/Transient/biome_ffar/wasteland_sheet_2026-10-05.html"
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[{"id": "RSW_BloodletterPetrel", "kind": "fauna", "label": "Bloodletter petrel", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.7 \u00b7 2 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "invented creature \u2014 searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel", "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "c98b9cc79b22fc9811786f892a13dade5804f805581d53ffd2de4f013de599e1", "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c", "south": "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)", "winner": true, "also": ["history SWBestiary 2026-09-18 \u2014 3f891c5c74 2026-09-18: CAVERNS_ARTOVERRIDE_REHOME_1: ten ArtOverride mods rehomed into SWBestiary and retired"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "git", "faces": {"east": "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043", "north": "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932", "south": "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89"}, "label": "history SWBestiary 2026-09-11", "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "letter": "B", "purgeable": true, "short": "history 2026-09-11 \u00b7 SWBestiary"}]}], "thumbs": {"c98b9cc79b22fc9811786f892a13dade5804f805581d53ffd2de4f013de599e1": "img/c98b9cc79b22fc981178.webp", "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c": "img/52cfaa849811e8f707c9.webp", "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff": "img/df16fb690b530d90cb77.webp", "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043": "img/fa208fd2a3949fb89762.webp", "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932": "img/2d6dacbdf25d538d24dd.webp", "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89": "img/67eeeaf7f49d27582ec5.webp"}, "canon": null, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: BloodletterPetrel, RSW_BloodletterPetrel", "rulings": [], "desc": {"def": "RSW_BloodletterPetrel", "label": "bloodletter petrel", "description": "Uniquely adapted amongst the other wild creatures in polluted environments. Rather than feeding off potentially toxic flesh or plant matter, it instead prefers to feed off the blood of its prey.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_BloodletterPetrel"}, "group": "Fauna"}, {"id": "RSW_Borcatu", "kind": "fauna", "label": "Borcatu", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.7 \u00b7 2 picture set(s)", "tier": "canon", "tierText": "canon Star Wars creature (has a canon-library entry)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "swanimals/Borcatu/Borcatu", "res": "swanimals/Borcatu/Borcatu", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "fc74e123c6ce3d922aacd3094edb655f6cfee62dbff64851cef56360a2a01b90", "north": "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620", "south": "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)", "winner": true, "also": ["history SWBestiary 2026-09-13 \u2014 cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "git", "faces": {"east": "cbce7196dc1359bf1905654a474076f29c10502c0cbbc69bd97fb0de2a7985c0", "north": "ebe0d0b2a0045cefb4367c51f98387a2796e96c74bf4d956578a254356df5f38", "south": "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb"}, "label": "history SWBestiary 2026-09-12", "detail": "c8b696e323 2026-09-12: MLIE_FAUNA_ABSORPTION_1: port Boma, Borcatu, CanCell (86 -> 83 remaining)", "also": ["donor original \u2014 mlie.starwarsanimalcollection \u2014 load index 297 (shadowed by a later mod) \u00b7 mlie.starwarsanimalcollection \u00b7 AssetBundle extract"], "letter": "B", "purgeable": true, "short": "history 2026-09-12 \u00b7 SWBestiary"}]}], "thumbs": {"fc74e123c6ce3d922aacd3094edb655f6cfee62dbff64851cef56360a2a01b90": "img/fc74e123c6ce3d922aac.webp", "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620": "img/0daef52061f87844f764.webp", "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868": "img/a5961deed028ddc5029b.webp", "cbce7196dc1359bf1905654a474076f29c10502c0cbbc69bd97fb0de2a7985c0": "img/cbce7196dc1359bf1905.webp", "ebe0d0b2a0045cefb4367c51f98387a2796e96c74bf4d956578a254356df5f38": "img/ebe0d0b2a0045cefb436.webp", "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb": "img/cfe0943317c341b76099.webp"}, "canon": {"dir": "design/RimStarWars/canon_references/borcatu", "brief": "**The two candidate images disagree sharply, and this is the important finding\nfor this creature** \u2014 same species, two incompatible body plans:\n\n- The **1994 *Creatures of the Galaxy* illustration** (the original,\n  higher-canon-weight source) shows a **pangolin/armadillo-like creature**:\n  a body covered in large, overlapping, pointed scales (a pinecone/artichoke\n  texture), a long tapering snout with visible whiskers, small stubby\n  clawed legs, and a short spiked tail. Grayscale line art, no color given.\n- The **2015 Disney Infinity 3.0 toy-figure render** (low-poly, stylized)\n  shows a completely different animal: a **reddish-brown, mottled quadruped**\n  with a cat/boar-like face (fangs visible, pale claws/toes, pale eyes), tall\n  pointed ears or horns, and a long spiked quill or horn projecting\n  backward off the haunches/tail \u2014 no scale texture at all, smooth mottled\n  hide instead.\n\nThese are not two angles of the same design \u2014 the scaled pangolin-esque body\nand the smooth-hided mottled quadruped cannot both be \"the\" borcatu. Given the\npage's near-total absence of descriptive text, there is no tiebreaker in\ncanon prose either.\n\n**The current donor sprite** (`donor_current_sprite.png`) is mottled\nreddish-brown with a spiky tail, pointed ears, and clawed feet \u2014 it tracks\nthe *Disney Infinity* render reasonably closely (same color family, same\nspiked tail, same general silhouette) and is the closer of the two candidate\ndesigns. A reviewer should be aware the 1994 original sourcebook art (scaled,\npangolin-like) looked nothing like either the donor sprite or the Disney\nInfinity figure.", "must": "- [ ] Reddish-brown mottled body colouring, not scaled pangolin-grey\n- [ ] Cat/boar-like fanged face\n- [ ] Tall pointed ears (or horn-like projections)\n- [ ] Long spiked quill/horn projecting backward off the haunches/tail\n- [ ] Smooth mottled hide, not overlapping pointed pangolin-style scales", "ruling": "**RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`\n\n> \"Appears to be a very rare creature reference image-wise. Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore.\"", "base": "", "imgs": ["img/bd63e6bbc5ac5d82e212.webp", "img/d0cf2815a6a378cb8c19.webp"]}, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Borcatu, RSW_Borcatu; artpipe jobs on record: borcatu_v1, canon_borcatu_v1", "rulings": [{"at": "2026-09-14", "verdict": "1", "trust": "legacy-unresolved", "sheet": "2026-09-13_canon_review_decisions", "note": "Appears to be a very rare creature reference image-wise. Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore."}, {"at": "2026-09-20", "verdict": "replace", "trust": "legacy-unresolved", "sheet": "2026-09-20_port_swac_2026-09-20", "note": "Owner blanket ruling 2026-09-20: replace applied to every row."}], "desc": {"def": "RSW_Borcatu", "label": "Borcatu", "description": "Borcatu were small, bad-tempered scavengers originally found on the planet of Escabar. Borcatu had a scaly, thick hide which may have evolved to help resist sandstorms. They also have sharp teeth, claws and quills to defend themselves. They had a vicious temperament, biting anyone who came near them, and often fighting and cannibalizing one another when no other food source was available. Their hardiness resulted in them spreading to various world as 'stowaways' and adapting quite successfully to a wide range of habitats.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_Borcatu"}, "group": "Fauna"}, {"id": "RUT_BrineBattery", "kind": "fauna", "label": "Brine battery", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.1 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery", "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c", "north": "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284", "south": "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03"}, "label": "IN GAME \u2014 UtinniPatches", "detail": "load index 554 (last loaded, wins) \u00b7 bytes from 005e58854a 2026-10-03: ART: wire 17 surviving renders for 6 pink subjects (Ilbareen, Zakkro, Brine Battery, Greentide ant + carapace wall, Kris", "winner": true, "also": ["history UtinniPatches 2026-10-03 \u2014 005e58854a 2026-10-03: ART: wire 17 surviving renders for 6 pink subjects (Ilbareen, Zakkro, Brine Battery, Greentide ant + carapace wall, Kris"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 UtinniPatches"}]}], "thumbs": {"197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c": "img/197136bb300de71fcb8a.webp", "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284": "img/61f78e3a7e7429379753.webp", "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03": "img/0356ecf65292ef77cae6.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: BrineBattery, RUT_BrineBattery", "rulings": [], "desc": {"def": "RUT_BrineBattery", "label": "brine battery", "description": "A squat, rubbery-shelled animal that never leaves its pool \u2014 hypersaline water over a mineral bed is half a voltaic cell already, and this thing is the half that moves. It sits at the deepest point like a fitted lid, feeding on the same gradient it draws its charge from, and everyone in the Wasteland who has ever reached into a promising pool for the wrong reason has a story about the other half.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RUT_BrineBattery"}, "group": "Fauna"}, {"id": "RSW_Excretor", "kind": "fauna", "label": "Excretor", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.15 \u00b7 2 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "invented creature \u2014 searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own", "flags": [], "prefillShort": "your earlier pick (desert sitting 1): IN GAME \u2014 SWBestiary", "prefill": "A", "prefillWhy": "your earlier pick (desert sitting 1): IN GAME \u2014 SWBestiary", "prefillSource": "sit1", "contested": false, "inferred": false, "prefillPicks": {}, "graphics": [{"key": "swanimals/FeralNerf/FeralNerf", "res": "swanimals/FeralNerf/FeralNerf", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": {"text": "your desert sitting 1 pick is set A here (IN GAME \u00b7 SWBestiary)", "note": "", "was": "desert sitting 1 recorded: A \u2014 IN GAME \u2014 SWBestiary"}, "cols": [{"kind": "live", "faces": {"east": "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb", "north": "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629", "south": "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 7e302ad7a2 2026-09-17: MLIE_FAUNA_ABSORPTION_1 Pass 8: port FeralNerf, Nerf, FrilledGorg (71 -> 68 remaining)", "winner": true, "also": ["history SWBestiary 2026-09-17 \u2014 7e302ad7a2 2026-09-17: MLIE_FAUNA_ABSORPTION_1 Pass 8: port FeralNerf, Nerf, FrilledGorg (71 -> 68 remaining)", "donor original \u2014 mlie.starwarsanimalcollection \u2014 load index 297 (shadowed by a later mod) \u00b7 mlie.starwarsanimalcollection \u00b7 AssetBundle extract"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "artpipe", "faces": {"east": "2dae2ceca927e04a59cc0226ee6d424cb4bac28b22630fe135e67a4cc84f357e", "north": "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9", "south": "a94174bdc57b18382386baf919cd6baf2b2f53c2381166f766161d78466266e6"}, "label": "render desertportb_feralnerf", "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1", "prompt": "RimWorld creature sprite, painterly vanilla-RimWorld animal art style: the Star Wars canon feral nerf -- Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to ha", "letter": "B", "purgeable": true, "short": "render 2026-09-20 \u00b7 desertportb_feralnerf"}]}], "thumbs": {"e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb": "img/e409971715490635a7d5.webp", "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629": "img/429708aa40b47773a57b.webp", "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880": "img/69045ee348ece520f9ce.webp", "2dae2ceca927e04a59cc0226ee6d424cb4bac28b22630fe135e67a4cc84f357e": "img/2dae2ceca927e04a59cc.webp", "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9": "img/901d8f737fbdf2530c37.webp", "a94174bdc57b18382386baf919cd6baf2b2f53c2381166f766161d78466266e6": "img/a94174bdc57b18382386.webp"}, "canon": null, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Excretor, RSW_Excretor", "rulings": [], "desc": {"def": "RSW_Excretor", "label": "excretor", "description": "A heavy-set, antlered grazer that browses the ruined ground everything else avoids, its body slowly concentrating the metals and salts it can't excrete any other way. Left to its own rhythm it sheds the concentrate as dense, layered pellets every few weeks \u2014 which makes a kept herd less a herd and more a slow, patient refinery that happens to also breathe.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_Excretor"}, "group": "Fauna"}, {"id": "RSW_Maligoat", "kind": "fauna", "label": "Kroffa", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.4 \u00b7 3 picture set(s) across 2 graphics", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "invented creature \u2014 searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {"swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale": "C"}, "graphics": [{"key": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale", "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505", "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092", "south": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 9fa637b8e5 2026-09-11: Wire ART_REGEN_WAVE4 art into 7 creatures: Ronto/Anooba/Dewback (SW-canon) + Grithe/Kroffa/Grutt/Puffmite (reimagined)", "winner": true, "also": ["history SWBestiary 2026-09-18 \u2014 3f891c5c74 2026-09-18: CAVERNS_ARTOVERRIDE_REHOME_1: ten ArtOverride mods rehomed into SWBestiary and retired"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "git", "faces": {"east": "bec987be0727cd32568a92cc4c7141557fcff1d6beb6f75bda1a5bda511bfe30", "north": "2fbe31dd9e27a9b1eb4c6af3ee32b7e8005dd903302d4b610f383a863aee351a", "south": "a5a789a64e3fcb4ce6242e5060d2a6fe6c92cb3a1f287152030195005384cc43"}, "label": "history SWBestiary 2026-09-11", "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "letter": "B", "purgeable": true, "short": "history 2026-09-11 \u00b7 SWBestiary"}]}, {"key": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale", "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale", "role": "body", "primary": false, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "git", "faces": {"east": "1ecae74132eed9577805ee01e10d0a2ad7eed6c2cb339d8bfc84db0ef642952b", "north": "7e948ac1c419651e4bb9b8dd749f8fa15a86def298b4c30812fcce0807f5db3e", "south": "058011fd38ebd48c32545ed38328c6078493dbc3376b19aeb3fb73347198b285"}, "label": "history SWBestiary 2026-09-11", "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "letter": "C", "purgeable": true, "short": "history 2026-09-11 \u00b7 SWBestiary"}]}], "thumbs": {"6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505": "img/6e4e9f389620412ad1f3.webp", "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092": "img/6da16d919f5e3def81de.webp", "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573": "img/091517b19af2d6ffef2e.webp", "bec987be0727cd32568a92cc4c7141557fcff1d6beb6f75bda1a5bda511bfe30": "img/bec987be0727cd32568a.webp", "2fbe31dd9e27a9b1eb4c6af3ee32b7e8005dd903302d4b610f383a863aee351a": "img/2fbe31dd9e27a9b1eb4c.webp", "a5a789a64e3fcb4ce6242e5060d2a6fe6c92cb3a1f287152030195005384cc43": "img/a5a789a64e3fcb4ce624.webp", "1ecae74132eed9577805ee01e10d0a2ad7eed6c2cb339d8bfc84db0ef642952b": "img/1ecae74132eed9577805.webp", "7e948ac1c419651e4bb9b8dd749f8fa15a86def298b4c30812fcce0807f5db3e": "img/7e948ac1c419651e4bb9.webp", "058011fd38ebd48c32545ed38328c6078493dbc3376b19aeb3fb73347198b285": "img/058011fd38ebd48c3254.webp"}, "canon": null, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Maligoat, RSW_Maligoat", "rulings": [], "desc": {"def": "RSW_Maligoat", "label": "kroffa", "description": "A hardy, squat six-legged herbivore built for wasteland grazing. Its broad, low-slung barrel body rides on three pairs of short thick legs, hide overlapping in tough plates rather than fur, and its blunt insectile face works small mandible-like mouthparts around a pair of thick backward-curling horns. Docile enough to farm, and its milk is prized despite - or because of - how little the animal itself resembles anything back home.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_Maligoat"}, "group": "Fauna"}, {"id": "VAEWaste_Megatardi", "kind": "fauna", "label": "Megatardi", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.18 \u00b7 4 picture set(s)", "tier": "donor", "tierText": "a donor mod's def, not one of ours", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Pawn/Animal/Megatardi/Megatardi", "res": "Things/Pawn/Animal/Megatardi/Megatardi", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3", "north": "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7", "south": "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee"}, "label": "IN GAME \u2014 UtinniPatches", "detail": "load index 554 (last loaded, wins) \u00b7 bytes from 1135036ce2 2026-09-20: art: zero the sub-visible export halo across 241 of our facing sprites", "winner": true, "also": ["history UtinniPatches 2026-09-20 \u2014 1135036ce2 2026-09-20: art: zero the sub-visible export halo across 241 of our facing sprites"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 UtinniPatches"}, {"kind": "artpipe", "faces": {"south": "a6852f208b6536f55d7e51f05a58513c4a3266e923d70da35614eaf15f1c2d63"}, "label": "render facingrepair_megatardi_v1", "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ART_FACING_REPAIR_WAVE_1", "prompt": "RimWorld creature sprite, seen from directly in front at eye level: eyes, face and chest toward the camera, standing in a natural stance facing the viewer, painterly vanilla-RimWorld animal art style: a massive, slow, six-legged tardigrade-", "letter": "B", "purgeable": true, "short": "render 2026-09-20 \u00b7 facingrepair_megatardi_v1"}, {"kind": "git", "faces": {"east": "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166", "north": "9469a6d8a42985ecd9c5ebb9c51b55bff9a2efaef34c2f734fc1452333b7702c", "south": "ac5cb0278c1d783c2274ffae91627a946c40ed3ac7c18e45d11f05ae53f9a8bd"}, "label": "history UtinniPatches 2026-09-11", "detail": "21721c6a4c 2026-09-11: ART_REGEN_WAVE2_WIRE_IN_1: wire 4 creature art redos (Frostmite, Spidercat, Insectomorph, Megatardi)", "near_of": "A", "letter": "C", "purgeable": true, "short": "history 2026-09-11 \u00b7 UtinniPatches"}, {"kind": "git", "faces": {"east": "6ef846a310960a6adae1d3256523218f792da74ec3d446824b66a7b78bc8ad5f", "north": "b564e443de1d0c2216eb39b9daf384d62f453946b5c7e1db538c2f55824e918f", "south": "04aed4596b4bc40af6e5ad8e6d20e651b58ce29808d4d53aa6b500f06b62614f"}, "label": "history UtinniPatches 2026-09-11", "detail": "5ad48a0786 2026-09-11: STAT_NORM_WAVE2_RETIRE_1: port Cephaloids/VE Succulents/VAE Waste's Megatardi, verify+retire 6 more", "also": ["donor original \u2014 Vanilla Animals Expanded \u2014 Waste Animals \u2014 load index -1 (not in the measured load order) \u00b7 vanillaexpanded.vaewaste \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of VAEWaste_Megatardi in live DefDump capture 2026-10-04T17-39-06Z"], "letter": "D", "purgeable": true, "short": "history 2026-09-11 \u00b7 UtinniPatches"}]}], "thumbs": {"69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3": "img/69f99d2a5914e428e50c.webp", "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7": "img/26d5a858d5a4cbe29e5b.webp", "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee": "img/4e2801f96feec93e9e2e.webp", "a6852f208b6536f55d7e51f05a58513c4a3266e923d70da35614eaf15f1c2d63": "img/a6852f208b6536f55d7e.webp", "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166": "img/e729ec86d22bdbfda9dc.webp", "9469a6d8a42985ecd9c5ebb9c51b55bff9a2efaef34c2f734fc1452333b7702c": "img/9469a6d8a42985ecd9c5.webp", "ac5cb0278c1d783c2274ffae91627a946c40ed3ac7c18e45d11f05ae53f9a8bd": "img/ac5cb0278c1d783c2274.webp", "6ef846a310960a6adae1d3256523218f792da74ec3d446824b66a7b78bc8ad5f": "img/6ef846a310960a6adae1.webp", "b564e443de1d0c2216eb39b9daf384d62f453946b5c7e1db538c2f55824e918f": "img/b564e443de1d0c2216eb.webp", "04aed4596b4bc40af6e5ad8e6d20e651b58ce29808d4d53aa6b500f06b62614f": "img/04aed4596b4bc40af6e5.webp"}, "canon": null, "letters": ["A", "B", "C", "D"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: VAEWaste_Megatardi; artpipe jobs on record: vaewaste_megatardi_v1", "rulings": [], "desc": {"def": "VAEWaste_Megatardi", "label": "megatardi", "description": "The Megatardi is a massive and curious creature, mutated from its tiny tardigrade origins to become a behemoth of the wasteland. Though slow and blind, it requires very little sustenance to survive and can consume even the most toxic wastepacks. With its six legs, the Megatardi is an impressive sight, and its gentle nature makes it a popular pack animal among those brave enough to venture into the polluted world. Though it is easily tamed, the Megatardi is not without its dangers. Upon its death, it releases a cloud of toxic gas, making it a potential hazard for anyone nearby. Despite this, the Megatardi remains a valuable asset for those willing to take on the challenges of the polluted wasteland.", "source": "live def dump 2026-10-04 \u00b7 ThingDef VAEWaste_Megatardi"}, "group": "Fauna"}, {"id": "RSW_FleeceSpider", "kind": "fauna", "label": "Puffmite", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.7 \u00b7 2 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "invented creature \u2014 searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider", "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b", "north": "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07", "south": "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from 9fa637b8e5 2026-09-11: Wire ART_REGEN_WAVE4 art into 7 creatures: Ronto/Anooba/Dewback (SW-canon) + Grithe/Kroffa/Grutt/Puffmite (reimagined)", "winner": true, "also": ["history SWBestiary 2026-09-18 \u2014 3f891c5c74 2026-09-18: CAVERNS_ARTOVERRIDE_REHOME_1: ten ArtOverride mods rehomed into SWBestiary and retired"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "git", "faces": {"east": "4829fb13730337b300f86d452cc6991ab6eeda3c52d27b1b0eefb7ccaafa8bb7", "north": "fbb7f0ab1e343d2b3594cc52e556ee2fe7399a7d1eac4e5ce846df852d3d4176", "south": "ecd0608f9463d5da066bf8e64c2bbcbab37d3e89d4bb2bb5703ea365603fca70"}, "label": "history SWBestiary 2026-09-11", "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "letter": "B", "purgeable": true, "short": "history 2026-09-11 \u00b7 SWBestiary"}]}], "thumbs": {"36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b": "img/36e746ed820761ac0f23.webp", "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07": "img/c723d4a37b3313ffe352.webp", "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df": "img/cdb417dcc45554753e1a.webp", "4829fb13730337b300f86d452cc6991ab6eeda3c52d27b1b0eefb7ccaafa8bb7": "img/4829fb13730337b300f8.webp", "fbb7f0ab1e343d2b3594cc52e556ee2fe7399a7d1eac4e5ce846df852d3d4176": "img/fbb7f0ab1e343d2b3594.webp", "ecd0608f9463d5da066bf8e64c2bbcbab37d3e89d4bb2bb5703ea365603fca70": "img/ecd0608f9463d5da066b.webp"}, "canon": null, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: FleeceSpider, RSW_FleeceSpider", "rulings": [], "desc": {"def": "RSW_FleeceSpider", "label": "puffmite", "description": "A filament-tufted, faintly bioluminescent tiny arachnid, its crystalline hairs catching what little light reaches the caverns it favors. Harmless and easily fed from whatever scraps hit the floor, it has become a popular pet among cavern-dwellers despite - or because of - how little it resembles anything found on the surface.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_FleeceSpider"}, "group": "Fauna"}, {"id": "RSW_Sacapillar", "kind": "fauna", "label": "Sacapillar", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.5 \u00b7 1 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "invented creature \u2014 searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar", "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4", "north": "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3", "south": "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "winner": true, "also": ["history SWBestiary 2026-09-11 \u2014 a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}]}], "thumbs": {"02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4": "img/02e358ac7c776b4f21f6.webp", "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3": "img/51f16aec1daf0713a717.webp", "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab": "img/5af4172be7a2db67b748.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RSW_Sacapillar, Sacapillar", "rulings": [], "desc": {"def": "RSW_Sacapillar", "label": "sacapillar", "description": "Timid by nature, this larva-like bug has a large thorax filled with putrescent gasses, allowing it to move about and escape attackers while barely touching the ground. It releases these gasses when attacked, often allowing it to escape unharmed. The gasses it contains also permit it to carry large loads, and many colonies in polluted areas use them as ridable pack animals.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_Sacapillar"}, "group": "Fauna"}, {"id": "RSW_Screecher", "kind": "fauna", "label": "Screecher", "effect": "fauna \u00b7 added by the mandrake.rut.patches layer \u00b7 commonality 0.4 \u00b7 2 picture set(s)", "tier": "sw", "tierText": "Star Wars tier (RSW_), no canon-library entry", "canonTag": "not canon-linked \u2014 Wookieepedia's 'screecher' is a Kirtania rain-forest animal stub with no appearance; RSW_Screecher is a mod pollution corvid \u2014 not linked to it", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher", "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher", "role": "body", "primary": true, "facings": ["south", "east", "north"], "prior": null, "cols": [{"kind": "live", "faces": {"east": "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020", "north": "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f", "south": "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1"}, "label": "IN GAME \u2014 SWBestiary", "detail": "load index 606 (last loaded, wins) \u00b7 bytes from cea007c3aa 2026-09-13: Art-review platform: install every gate-passed render awaiting verdict (95 stems)", "winner": true, "also": ["history SWBestiary 2026-09-18 \u2014 3f891c5c74 2026-09-18: CAVERNS_ARTOVERRIDE_REHOME_1: ten ArtOverride mods rehomed into SWBestiary and retired"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 SWBestiary"}, {"kind": "git", "faces": {"east": "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd", "north": "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96", "south": "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02"}, "label": "history SWBestiary 2026-09-11", "detail": "a72757b9d4 2026-09-11: BMT_FAUNA_ABSORPTION_1: port 68 biomesteam.* creatures to RSW_/SWBestiary tier", "letter": "B", "purgeable": true, "short": "history 2026-09-11 \u00b7 SWBestiary"}]}], "thumbs": {"329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020": "img/329ba0809e745b9e1533.webp", "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f": "img/30cb690ac5a38186a3b7.webp", "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1": "img/4350b5daca9bda496cf7.webp", "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd": "img/ab46fe0c651e32f57c14.webp", "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96": "img/0907a668426b54cbcee1.webp", "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02": "img/aa1c394b6c20be424ce9.webp"}, "canon": null, "letters": ["A", "B"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RSW_Screecher, Screecher", "rulings": [], "desc": {"def": "RSW_Screecher", "label": "screecher", "description": "Mutated by pollution, this corvid has gained the ability to stun its prey using its cries while it attacks. It tends to hunt in packs.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RSW_Screecher"}, "group": "Fauna"}, {"id": "RM_Boilbulb", "kind": "flora", "label": "Boilbulb", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.1 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_Boilbulb", "res": "Things/Plant/RM_Boilbulb", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_Boilbulb \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a": "img/36d60b1bb7ae0e995ae1.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Boilbulb, RM_Boilbulb; artpipe jobs on record: RM_Boilbulb", "rulings": [], "desc": {"def": "RM_Boilbulb", "label": "boilbulb", "description": "A ground bulb swollen into a blistered dome, mineral-crusted at the base, faintly warm to the hand. A forage staple for the wretched-many cast and a processed-food input for colonists.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_Boilbulb"}, "group": "Flora"}, {"id": "RM_Cinderfelt", "kind": "flora", "label": "Cinderfelt", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.02 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_Cinderfelt", "res": "Things/Plant/RM_Cinderfelt", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_Cinderfelt \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4": "img/523d5fd7647073f46920.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Cinderfelt, RM_Cinderfelt; artpipe jobs on record: RM_Cinderfelt", "rulings": [], "desc": {"def": "RM_Cinderfelt", "label": "cinderfelt", "description": "A felt-grey mat that grows only on fresh ash fall. After every storm the flats grow a grey pelt, and where the felt is thickest, the fall was heaviest \u2014 which is where the survey, and the dose, is. Fast-growing, short-lived; it dies as the fall compacts.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_Cinderfelt"}, "group": "Flora"}, {"id": "RM_DosimeterLawn", "kind": "flora", "label": "Dosimeter lawn", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.15 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/DosimeterLawn", "res": "Things/Plant/DosimeterLawn", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a": "img/65d3fe6a30830eb67050.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": ["RUT_DosimeterLawn (tier twin same stem)"], "noArt": false, "noArtWhy": "searched by graphic and by name: DosimeterLawn, RM_DosimeterLawn", "rulings": [], "desc": {"def": "RM_DosimeterLawn", "label": "dosimeter lawn", "description": "A low mat of sickly, unnervingly vivid moss-lichen. It grows thickest over the hottest ground -- locals read its color and density as a rough gauge of what's buried beneath, and camp where it refuses to grow at all.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_DosimeterLawn"}, "group": "Flora"}, {"id": "Plant_GrayGrass", "kind": "flora", "label": "Plant gray grass", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.35 \u00b7 1 picture set(s)", "tier": "donor", "tierText": "a donor mod's def, not one of ours", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/Graygrass", "res": "Things/Plant/Graygrass", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "donor", "faces": {"single": "f1100d8f36f9c7bb9c4fbdeba42c9ff291d5932f7164065532561a810d2138f4"}, "winner": true, "label": "IN GAME \u2014 ludeon.rimworld.biotech", "detail": "load index 7 (last loaded, wins) \u00b7 ludeon.rimworld.biotech \u00b7 AssetBundle extract \u00b7 bound: texPath of Plant_GrayGrass in live DefDump capture 2026-10-04T17-39-06Z", "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 ludeon.rimworld.biotech"}]}], "thumbs": {"f1100d8f36f9c7bb9c4fbdeba42c9ff291d5932f7164065532561a810d2138f4": "img/f1100d8f36f9c7bb9c4f.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Plant_GrayGrass; artpipe jobs on record: graygrass_v1", "rulings": [], "desc": {"def": "Plant_GrayGrass", "label": "ashskal", "description": "Gray grass refers to a variety of species of wild toxin-adapted grass. It grows anywhere there is minimally-fertile polluted ground and the climate isn't overwhelming hostile.", "source": "live def dump 2026-10-04 \u00b7 ThingDef Plant_GrayGrass"}, "group": "Flora"}, {"id": "Plant_Toxipotato", "kind": "flora", "label": "Plant toxipotato", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.2 \u00b7 1 picture set(s)", "tier": "donor", "tierText": "a donor mod's def, not one of ours", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RG_Toxipotato", "res": "Things/Plant/RG_Toxipotato", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "donor", "faces": {"single": "7f908f2aeff1f4f5dd70916e139166f2fbc4718884f39b84a851784d91fc39a3"}, "winner": true, "label": "IN GAME \u2014 regrowth.botr.core", "detail": "load index 439 (last loaded, wins) \u00b7 regrowth.botr.core \u00b7 AssetBundle extract \u00b7 bound: texPath of Plant_Toxipotato in live DefDump capture 2026-10-04T17-39-06Z", "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 regrowth.botr.core"}]}], "thumbs": {"7f908f2aeff1f4f5dd70916e139166f2fbc4718884f39b84a851784d91fc39a3": "img/7f908f2aeff1f4f5dd70.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Plant_Toxipotato; artpipe jobs on record: toxipotato_v1", "rulings": [], "desc": {"def": "Plant_Toxipotato", "label": "toxipotato plant", "description": "A genetically-engineered variant of potato adapted for growing in polluted areas. Compared to regular potatoes, toxipotatoes take less time to grow but yield a meager harvest of food. When eaten raw, they have a high chance of causing food poisoning. In spite of this, they have saved many settlers from starvation after toxic events.", "source": "live def dump 2026-10-04 \u00b7 ThingDef Plant_Toxipotato"}, "group": "Flora"}, {"id": "Plant_TreePolux", "kind": "flora", "label": "Plant tree polux", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.1 \u00b7 1 picture set(s)", "tier": "donor", "tierText": "a donor mod's def, not one of ours", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RG_PoluxTree", "res": "Things/Plant/RG_PoluxTree", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "donor", "faces": {"single": "d9d4182f04ce7437a9f09bf32386040ca939222072d75c98e35591c674de7dd8"}, "winner": true, "label": "IN GAME \u2014 regrowth.botr.core", "detail": "load index 439 (last loaded, wins) \u00b7 regrowth.botr.core \u00b7 AssetBundle extract \u00b7 bound: texPath of Plant_TreePolux in live DefDump capture 2026-10-04T17-39-06Z", "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 regrowth.botr.core"}]}], "thumbs": {"d9d4182f04ce7437a9f09bf32386040ca939222072d75c98e35591c674de7dd8": "img/d9d4182f04ce7437a9f0.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Plant_TreePolux", "rulings": [], "desc": {"def": "Plant_TreePolux", "label": "polux tree", "description": "After generations of exposure, these trees have evolved to metabolize pollutants. By drawing pollutants from the ground through wide root networks, they slowly clean polluted terrain in their vicinity. However, they cannot do this if buildings are constructed over their roots.\n\nUnlike most methods of cleaning polluted terrain, polux trees do not create toxic wastepacks.", "source": "live def dump 2026-10-04 \u00b7 ThingDef Plant_TreePolux"}, "group": "Flora"}, {"id": "RM_Pusberry", "kind": "flora", "label": "Pusberry", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.2 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_Pusberry", "res": "Things/Plant/RM_Pusberry", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_Pusberry \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9": "img/f76c776d09ca5af727e9.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: Pusberry, RM_Pusberry; artpipe jobs on record: RM_Pusberry", "rulings": [], "desc": {"def": "RM_Pusberry", "label": "pusberry", "description": "A small tree whose pale berries sit in weeping, wax-sealed sockets \u2014 it walls its fruit off from its own sap the way the boilhide walls off poison. Edible once processed; raw is a lesson.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_Pusberry"}, "group": "Flora"}, {"id": "RM_WastelandScorchedStars", "kind": "flora", "label": "Scorched stars", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.3 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/ScorchedStars", "res": "Things/Plant/ScorchedStars", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "donor", "faces": {"single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"}, "winner": true, "label": "IN GAME \u2014 RimMandrake: Baroque Biomes", "detail": "load index 605 (last loaded, wins) \u00b7 mandrake.rm.biomes \u00b7 loose PNG in the game's mod folders \u00b7 1 of 2 random variants \u00b7 bound: texPath of RM_WastelandScorchedStars in live DefDump capture 2026-10-04T17-39-06Z", "also": ["donor original \u2014 RimUtinni Patches (Jawa campaign) \u2014 load index 554 (shadowed by a later mod) \u00b7 mandrake.rut.patches \u00b7 loose PNG in the game's mod folders \u00b7 1 of 2 random variants \u00b7 bound: texPath of RM_WastelandScorchedStars in live DefDump capture 2026-10-04T17-39-06Z"], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 RimMandrake: Baroque Biomes"}]}], "thumbs": {"f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873": "img/f86624c57933080b24a9.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RM_WastelandScorchedStars, WastelandScorchedStars", "rulings": [], "desc": {"def": "RM_WastelandScorchedStars", "label": "scorched stars", "description": "Rounder cacti covered in sharp spines. They are often said to look like a burnt star.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_WastelandScorchedStars"}, "group": "Flora"}, {"id": "RM_Scumgrass", "kind": "flora", "label": "Scumgrass", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 1.2 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_Scumgrass", "res": "Things/Plant/RM_Scumgrass", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_Scumgrass \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489": "img/29a646c56199eeee8452.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RM_Scumgrass, Scumgrass; artpipe jobs on record: RM_Scumgrass", "rulings": [], "desc": {"def": "RM_Scumgrass", "label": "scumgrass", "description": "A wiry tussock of grease-slicked grass that grows where cleaner plants die \u2014 dull grey-green blades with an oily sheen, tips crusted white with salt. The biome's default green: sparse but firmly rooted, and grazing animals eat it without complaint.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_Scumgrass"}, "group": "Flora"}, {"id": "RM_TallScumgrass", "kind": "flora", "label": "Tall scumgrass", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.8 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_TallScumgrass", "res": "Things/Plant/RM_TallScumgrass", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_TallScumgrass \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9": "img/79f5e3fe985c926fa419.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RM_TallScumgrass, TallScumgrass; artpipe jobs on record: RM_TallScumgrass", "rulings": [], "desc": {"def": "RM_TallScumgrass", "label": "tall scumgrass", "description": "The same wiry, grease-slicked grass where the ground is richest \u2014 which here means worst. Waist-high, sight-blocking, salt crust heavier at the tips.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_TallScumgrass"}, "group": "Flora"}, {"id": "RM_VaultRoot", "kind": "flora", "label": "Vault-root tree", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.08 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/VaultRoot", "res": "Things/Plant/VaultRoot", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b": "img/ae7c0cf983c8d371a239.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": ["RUT_VaultRoot (tier twin same stem)"], "noArt": false, "noArtWhy": "searched by graphic and by name: RM_VaultRoot, VaultRoot", "rulings": [], "desc": {"def": "RM_VaultRoot", "label": "vault-root tree", "description": "A squat, gnarled tree whose swollen trunk is seamed with dull metallic veins -- it has spent decades sequestering what it drinks out of the ground into itself. Prospectors call felling one \"opening the vault,\" and know exactly what that name is warning them about.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_VaultRoot"}, "group": "Flora"}, {"id": "RM_Wartshrub", "kind": "flora", "label": "Wartshrub", "effect": "flora \u00b7 in this biome's own roster \u00b7 commonality 0.08 \u00b7 1 picture set(s)", "tier": "ours", "tierText": "our own design (franchise-free RM_/RUT_)", "canonTag": "", "flags": [], "prefillShort": "what the game shows now (no pick of yours)", "prefill": "A", "prefillWhy": "no resolvable keep of yours \u2014 prefilled to what the game shows now", "prefillSource": "inferred", "contested": true, "inferred": true, "prefillPicks": {}, "graphics": [{"key": "Things/Plant/RM_Wartshrub", "res": "Things/Plant/RM_Wartshrub", "role": "body", "primary": true, "facings": ["single"], "prior": null, "cols": [{"kind": "live", "faces": {"single": "b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6"}, "label": "IN GAME \u2014 Wasteland", "detail": "load index 605 (last loaded, wins) \u00b7 bytes from bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + ", "winner": true, "also": ["render RM_Wartshrub \u2014 2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 WASTELAND_BEDAZZLE_SITTING_1", "history Wasteland 2026-09-29 \u2014 bcb3570e55 2026-09-29: WASTELAND_RULED_CONTENT_1: full RM_ Wasteland survivor cast \u2014 8 donor ports, 3 new species + Grimewing flyer, 6 flora + "], "letter": "A", "purgeable": false, "short": "IN GAME \u00b7 Wasteland"}]}], "thumbs": {"b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6": "img/b8155d39c8f24fab602f.webp"}, "canon": null, "letters": ["A"], "related": [], "elsewhere": [], "noArt": false, "noArtWhy": "searched by graphic and by name: RM_Wartshrub, Wartshrub; artpipe jobs on record: RM_Wartshrub", "rulings": [], "desc": {"def": "RM_Wartshrub", "label": "wartshrub", "description": "A knee-high shrub whose bark is one continuous wart-field \u2014 sequestration in miniature, locking what it drinks into its galls. Galls harvestable as a low-grade chemical/fuel input.", "source": "live def dump 2026-10-04 \u00b7 ThingDef RM_Wartshrub"}, "group": "Flora"}]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<script id="RENDER">
+/* Layout (owner complaint 2026-10-04, "poorly constructed"): one compact strip per graphic. Each picture
+   set is a card whose facings sit SIDE BY SIDE; cards wrap across the width, so a row is about one
+   thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
+   the right show only this row's letters. */
+const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
+window.itemBody = it => {
+  const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
+  const purge = new Set(d.purge || []);
+  const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
+  const variants = new Set(d.variants || []);
+  const cell = (c, f) => {
+    const s = c.faces[f];
+    if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
+    const t = it.thumbs[s];
+    if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
+    const p = purge.has(s);
+    const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="reject + PURGE: delete this picture from the art store so it never appears again" onclick="event.stopPropagation();artTogglePurge('${it.id}','${s}')">${p ? '✕ purging' : '✕'}</button>` : '';
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${FACE_ABBR[f] ? `<span class="bs-face">${FACE_ABBR[f]}</span>` : ''}${btn}</div>`;
+  };
+  const col = (c, g) => {
+    const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
+    const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
+    const vr = variants.has(c.letter);
+    const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
+    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
+      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
+      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
+    </div>`;
+  };
+  const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
+      <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
+      <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
+  const sec = (g, i) => {
+    /* Every set in LETTER order, so the letters read contiguously (owner, Vhaulk note 2026-10-04: "I see only
+       A and C, no B"). A near-duplicate keeps its place and its letter as a narrow stub that expands in place. */
+    const ordered = g.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
+    const stub = c => `<details class="bs-nearstub"${d.decision === c.letter || picks[g.key] === c.letter || variants.has(c.letter) ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
+    const many = it.graphics.length > 1;
+    const cur = g.primary ? d.decision : picks[g.key];
+    const head = many ? `<div class="bs-gh" title="${esc(g.res || 'renders matched by name, not bound to a texture path')}"><b>${esc(g.role)}</b>${g.res ? ` <span class="sub">${esc(g.res.split('/').pop())}</span>` : ''} · ${g.primary ? 'buttons on the right' : `click a set · picked <b>${esc(cur || 'nothing')}</b>`}</div>` : '';
+    const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
+    return `<div class="bs-g">${head}${prior}
+      <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('')}</div></div>`;
+  };
+  const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
+  const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
+  const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
+  const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
+  const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
+  const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
+  const ds = it.desc || {};
+  const dtext = ds.description || '';
+  const desc = !ds.def ? `<div class="bs-desc sub">in-game description: UNMEASURED — no ThingDef of this row in the live def dump</div>`
+    : dtext.length > 260 ? `<details class="bs-desc" title="${esc(ds.source)}"><summary><b>${esc(ds.label)}</b> — <span class="bs-dclamp">${esc(dtext)}</span></summary></details>`
+    : `<div class="bs-desc" title="${esc(ds.source)}"><b>${esc(ds.label)}</b> — ${esc(dtext || '(the def has no description)')}</div>`;
+  const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
+  return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
+    <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
+    <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
+    ${desc}${links}${elsewhere}${rul}${noart}</div>
+    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
+};
+const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
+function scaleBlock(it) {
+  const s = it.scale; if (!s) return '';
+  const size = s.kind === 'plant'
+    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt(s.drawSize[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
+    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt(s.drawSize[0])}×${fmt(s.drawSize[1])}</span> · bodySize ${fmt(s.bodySize)}`;
+  const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
+  const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
+  const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
+  const res = s.img ? `<div class="bs-scl bs-scres ${vcls}" title="${esc(s.verdict)}. Enhanced zoom (owner, 2026-10-04) resolves 128–256 px per cell of the draw size; below 128 reads soft at max zoom, below 64 loses detail. Shown: set ${esc(s.set)} (${esc(s.by)}, ${esc(s.face)} facing).">set <b>${esc(s.set)}</b> · ${s.srcPx[0]}px ÷ ${fmt(q)} = <b>${s.ppc} px/cell</b> <span class="sub">${s.ppc < 64 ? 'below 64 floor' : s.ppc < 120 ? 'soft at max zoom' : s.ppc > 256 ? 'above 256 max zoom' : 'in the 128–256 zoom range'} · ${esc(s.by)}</span></div>` : `<div class="sub">${esc(s.why || '')}</div>`;
+  const pic = s.img ? `<div class="bs-scimg" data-zoom="${s.full}" data-cap="${esc(it.label)} · set ${esc(s.set)} · max zoom ${s.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18 px/cell, each also ×4 nearest"><img src="${s.img}" alt=""></div>` : '';
+  return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}
+    <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
+    <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
+}
+
+const LETTER_ORDER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const NEAR_BITS = 10;
+window.artToggleVariant = (id, letter) => {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  const s = new Set(rec.variants || []);
+  if (s.has(letter)) s.delete(letter); else s.add(letter);
+  rec.variants = [...s].sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
+  rec.variantsAt = new Date().toISOString();
+  queue(id); patchRow(id); paintCounts();
+};
+window.artPick = (id, g, letter) => {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.picks = Object.assign({}, it.prefillPicks || {}, rec.picks || {});
+  rec.picks[g] = letter; rec.decidedAt = new Date().toISOString();
+  queue(id); patchRow(id); paintCounts();
+};
+document.addEventListener('click', e => {
+  if (e.target.closest('.ac-purge') || e.target.closest('.bs-var')) return;
+  const p = e.target.closest('[data-pick-l]');
+  if (p) {
+    e.preventDefault(); e.stopPropagation();
+    if (p.dataset.pickPrimary === '1') setDecision(p.dataset.pickId, p.dataset.pickL);
+    else window.artPick(p.dataset.pickId, p.dataset.pickG, p.dataset.pickL);
+    return;
+  }
+  const j = e.target.closest('[data-jump]');
+  if (j) {
+    e.preventDefault(); e.stopPropagation();
+    const node = document.querySelector(`.row[data-id="${cssEsc(j.dataset.jump)}"]`);
+    if (node) { node.scrollIntoView({ block: 'center' }); node.classList.add('bs-flash'); setTimeout(() => node.classList.remove('bs-flash'), 1500); }
+    else alert('That row is hidden by the current filter.');
+  }
+}, true);
+
+window.artRepaint = id => {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);
+  const it = byId.get(id);
+  if (node && it) node.outerHTML = window.itemBody(it);
+};
+window.artTogglePurge = (id, sha) => {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  const s = new Set(rec.purge || []);
+  if (s.has(sha)) s.delete(sha); else s.add(sha);
+  rec.purge = [...s]; rec.purgeTouched = true;
+  queue(id); patchRow(id); paintCounts();
+};
+addEventListener('DOMContentLoaded', () => {
+  /* A decision click is recorded as decidedAt, so a row touched ONLY to purge or annotate
+     never turns its prefill into a ruling at ingest (art_sheet.py docstring). */
+  const orig = window.setDecision;
+  if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
+    orig(id, key, opts);
+    if (DEC[id]) { DEC[id].decidedAt = new Date().toISOString(); queue(id); }
+  };
+  /* The template's patchRow repaints only the buttons; the picked-column frame and the purge
+     marks live in the row body, so repaint that too (also covers undo/redo). */
+  const origPatch = window.patchRow;
+  if (typeof origPatch === 'function') window.patchRow = function (id) { origPatch(id); window.artRepaint(id); };
+});
+/* Column letters are per row: the pick buttons show only the letters this row has (template hook). */
+window.itemOptions = it => OPTS.filter(o => !(o.key.length === 1 && /[A-Za-z]/.test(o.key)) || (it.letters || []).includes(o.key));
+</script>
+<style>
+.ac-grid{display:flex;gap:8px;overflow-x:auto;padding:6px 0 4px;align-items:flex-start}
+.ac-col{flex:0 0 auto;width:132px;border:1px solid var(--line);border-radius:6px;padding:4px;background:#0f1216}
+.ac-col.ac-facings{width:44px;border:none;background:none}
+.ac-col.ac-win{border-color:var(--info)}
+.ac-col.ac-picked{border-color:var(--ok);box-shadow:0 0 0 2px #5ac37f55}
+.ac-col.ac-artpipe .ac-head{color:#d9b8ff}.ac-col.ac-git .ac-head{color:#9fb3c8}.ac-col.ac-donor .ac-head{color:#e8b64c}
+.ac-head{font-size:11px;line-height:1.25;height:2.6em;overflow:hidden;color:var(--ink)}
+.ac-head b{font-size:13px;color:var(--accent)}
+.ac-cell{position:relative;height:124px;display:flex;align-items:center;justify-content:center;margin:2px 0}
+.ac-flabel{font-size:11px;color:var(--dim);writing-mode:vertical-rl}
+.ac-gap{color:#3a4250;font-size:20px}
+.ac-thumb{width:120px;height:120px;flex:0 0 120px}
+.ac-purge{position:absolute;top:2px;right:2px;font-size:10px;padding:0 4px;border-radius:3px;border:1px solid #5a2a2a;background:#1a0f0f;color:#e06c6c;cursor:pointer;opacity:.55}
+.ac-purge:hover,.ac-purge.on{opacity:1}
+.ac-purge.on{background:#e06c6c;color:#000}
+.ac-purged .ac-thumb{outline:3px solid #e06c6c;opacity:.45}
+.ac-detail{font-size:10.5px;color:var(--dim);height:3.9em;overflow:hidden;line-height:1.3}
+.ac-also,.ac-near,.ac-masks,.ac-canon{font-size:11.5px;color:var(--dim);margin-top:4px}
+.ac-canon-imgs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0}
+.ac-brief pre{white-space:pre-wrap;font:inherit;color:#c3cad6;margin:2px 0 6px;max-height:16em;overflow:auto}
+.ac-rulings{font-size:11.5px;margin:4px 0}
+.ac-r{color:#c3cad6}.ac-t-flawed-sheet{text-decoration:line-through;color:#8a7070}
+.ac-t-prefill{color:#5f6b7a}
+.ac-canoncol{width:300px;background:#14110c;border-color:#5a4a2a}
+.ac-canoncol .ac-head{color:#e8b64c}
+.ac-cthumb{width:136px;height:136px;flex:0 0 136px}
+.ac-vb{max-height:9em!important}
+.ac-nocanon{width:170px;font-size:11.5px}
+.ac-flawed{font-size:12px;margin:4px 0;padding:3px 6px;border-left:3px solid #b07a3a;background:#1a140c;color:#d8c7a8}
+.ac-ctx{font-size:11.5px;color:var(--dim);margin:2px 0}
+</style>
+
+<style>
+.bs-body{display:flex;gap:14px;align-items:flex-start}
+.bs-meta{flex:0 0 300px;min-width:0}
+.bs-meta .effect{font-size:12px}
+.bs-r{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-content{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+@media (max-width:1450px){.bs-body{display:block}.bs-meta{margin-bottom:4px}
+  .bs-cell,.bs-cell .ac-thumb{width:72px;height:72px;flex-basis:72px}}
+.bs-graphics{flex:1 1 340px;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
+.bs-g{max-width:100%;min-width:0}
+.bs-gh{font-size:12px;color:#d8c7a8;margin:2px 0}
+.bs-strip{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
+.bs-set{border:1px solid var(--line);border-radius:6px;padding:3px;background:#0f1216;max-width:100%}
+.bs-set.ac-win{border-color:var(--info)}
+.bs-set.ac-picked{border-color:var(--ok);box-shadow:0 0 0 2px #5ac37f66}
+.bs-head{display:flex;gap:5px;align-items:baseline;font-size:11px;line-height:1.3;height:1.35em;overflow:hidden;color:var(--ink);width:0;min-width:100%;box-sizing:border-box;padding:0 2px}
+.bs-head span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bs-head b{font-size:13px;color:var(--accent)}
+.bs-head i{font-style:normal;flex:none}
+.bs-set.ac-artpipe .bs-head span{color:#d9b8ff}.bs-set.ac-git .bs-head span{color:#9fb3c8}.bs-set.ac-donor .bs-head span{color:#e8b64c}
+.bs-set.ac-win .bs-head span{color:#8ac3e8;font-weight:600}
+.bs-pick{cursor:pointer}.bs-set:hover{border-color:#3d4653}.bs-set.ac-picked:hover{border-color:var(--ok)}
+.bs-faces{display:flex;gap:3px;cursor:default}
+.bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
+.bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
+.bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
+.bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
+.bs-nearstub{align-self:stretch}
+.bs-nearstub>summary{list-style:none;cursor:pointer;height:100%;min-height:60px;box-sizing:border-box;width:58px;border:1px dashed #3d4653;border-radius:6px;padding:3px;font-size:10.5px;color:var(--dim);display:flex;flex-direction:column;gap:2px;line-height:1.25}
+.bs-nearstub>summary::-webkit-details-marker{display:none}
+.bs-nearstub>summary b{font-size:13px;color:var(--accent)}
+.bs-nearstub[open]{display:flex;gap:4px}.bs-nearstub[open]>summary{width:auto;min-height:0;height:auto}
+.bs-nearstub[open]>summary .sub{display:none}
+.bs-nearof{color:#9fb3c8;font-size:10.5px}
+.bs-foot{display:flex;flex-wrap:wrap;gap:3px 6px;align-items:center;justify-content:space-between;margin-top:3px;width:0;min-width:100%}
+.bs-var{font-size:10.5px;padding:1px 7px;border-radius:4px;border:1px solid #2f4a35;background:#0f1612;color:#7fae86;cursor:pointer;opacity:.75}
+.bs-var:hover{opacity:1}.bs-var.on{background:#2f7a45;color:#fff;border-color:#5ac37f;opacity:1}
+.bs-set.bs-isvar{border-style:dashed;border-color:#5ac37f}
+.bs-desc{font-size:12px;line-height:1.4;color:#d8cdb8;margin:4px 0;padding:3px 6px;border-left:3px solid #6a5a3a;background:#15120d}
+.bs-desc b{color:#e8d6a8}
+details.bs-desc>summary{cursor:pointer;list-style:none}
+details.bs-desc>summary::-webkit-details-marker{display:none}
+details.bs-desc:not([open]) .bs-dclamp{display:-webkit-inline-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;vertical-align:top}
+details.bs-desc:not([open])>summary::after{content:" ▸ more";color:#e8b64c;font-size:11px}
+details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size:11px}
+.bs-canonp{flex:0 0 300px;border:1px solid #5a4a2a;background:#14110c;border-radius:6px;padding:3px 5px}
+.bs-chead span{color:#e8b64c}.bs-chead b{color:#e8b64c}
+.bs-cimgs{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0}
+.bs-cthumb{width:68px;height:68px;flex:0 0 68px}
+.bs-must{font-size:11.5px;color:#c3cad6;max-height:112px;overflow:auto}
+.bs-must pre{white-space:pre-wrap;font:inherit;margin:1px 0 4px}
+.bs-must summary{cursor:pointer;color:var(--dim)}
+.bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
+.bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
+.bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
+.bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
+.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
+.mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
+.row.bs-flash{outline:3px solid #e8b64c}
+.bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
+.bs-schead b{color:#9fe0a8;flex:none}.bs-schead span{color:#8aa58a}
+.bs-scimg{overflow-x:auto;cursor:zoom-in;margin:3px 0 2px}
+.bs-scimg img{display:block;max-width:none;width:auto;height:auto;image-rendering:pixelated}
+.bs-scsize{color:#d8c7a8}
+.bs-scl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-scale>.bs-scl,.bs-scale>.bs-scsrc,.bs-scale>.bs-head{width:0;min-width:100%;box-sizing:border-box}
+.bs-scres b{color:#fff}.bs-scres.bs-low b{color:#e06c6c}.bs-scres.bs-mid b{color:#e8b64c}.bs-scres.bs-over b{color:#8ac3e8}.bs-scres.bs-ok b{color:#9fe0a8}
+.bs-scsrc{color:#7f8a7f;font-size:10.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.bs-scsrc.bs-fallback{color:#e06c6c}
+.bs-set{position:relative}
+.bs-ppc{font-style:normal;white-space:nowrap;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
+/* right-hand pick column: only this row's letters, readable redo/hold */
+.row .ctrl{width:200px}
+.row .opts{flex-wrap:wrap}
+.row .opts button{flex:0 0 auto;min-width:30px;padding:3px 0}
+.row .opts button[data-set="redo"]{margin-left:auto}
+.row .opts button[data-set="redo"],.row .opts button[data-set="hold"]{flex:1 1 40%;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .opts button[data-set="redo"]{order:98}.row .opts button[data-set="hold"]{order:99}
+.row .opts::after{content:"";order:97;flex-basis:100%;height:0}
+@media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:56px;height:56px;flex-basis:56px}}
+</style>
+
+<!-- ══ FILL IN #3 (optional) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  rec.decidedAt = new Date().toISOString();      // a human act: prefilled vs yours is countable
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  /* window.itemOptions(it) -> option list for THIS row (default: all). A sheet whose options
+     differ per row (column letters) shows only the ones that row has. */
+  const rowOpts = (window.itemOptions && window.itemOptions(it)) || OPTS;
+  const opts = rowOpts.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    /* an option with bulk:false gets no "all X" button (e.g. per-row column letters, where
+       the same key means a different picture on every row) */
+    const bulk = OPTS.filter(op => op.bulk !== false).map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0, yours = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1;
+      const d = decOf(it.id);
+      if (d.decidedAt || isOverride(it.id) || prefillOf(it) == null) yours++; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${yours}</b>/${total} decided by you`
+    + (decided - yours ? ` · <b>${decided - yours}</b> still the agent's prefill` : '')
+    + ` · <b>${total - decided}</b> empty`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+</body>
+</html>
