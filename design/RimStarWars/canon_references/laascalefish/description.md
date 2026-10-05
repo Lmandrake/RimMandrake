@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Laa` — in-repo label "laa scalefish"; (variants: `RSW_LaaJuv`)
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Laa
 
@@ -21,11 +17,33 @@ The laa was a scalefish native to the oceans of Naboo.
 Its own predators included sees and opee sea killers.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (a live-action/CGI fish, "Fantailed Laa"); images 2 and 3 are
+LEGENDS (a 3D render and an ink-and-wash sheet showing laa eating a yobshrimp).
+- **LOUD DISAGREEMENT on colour**: canon prose says orange and peach; the canon image is TEAL/blue-
+  green on the back with a pale peach-cream belly and a RED lip, with orange-red speckle on the
+  back. Legends render: teal-green with orange bars; Legends sketch: green with orange-red stripes.
+  So the images give teal-green + peach belly + orange markings, NOT mostly orange. Trust images.
+- **Silhouette**: a chunky, deep-bellied fish with a very large long swept-back tail and caudal fin,
+  tall pointed dorsal and big wing-like pectoral fins; the body is a rounded pot-belly in front, tapering
+  into a slim tail root.
+- **Snout/mouth**: an elongated, forward-pointing, protruding snout with thick fleshy pucker lips
+  (kissing-mouth look), pale peach, the lips redder in the canon image; the head dips down.
+- **Antennae (the signature)**: TWO long thin whip filaments -- one rises from the top of the head/
+  dorsal and trails back behind the body, one hangs from under the chin/lower jaw and trails with a
+  small orange glowing bulb lure at its end (canon and Legends renders). Legends text: bulb on the
+  dorsal; images put the bulb on the lower filament.
+- **Eyes**: large round eyes (blue-black with pale ring in canon; yellow in the Legends sketch;
+  prose says yellow); a few small spikes/barbs over the snout and brow.
+- **Fins**: big translucent-veined tail fin, the upper lobe darker teal and the lower lobe pale
+  cream; large dark pectoral fin; small ventral fins.
+- **Size**: no cue; small fish by context (eats yobshrimp).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Deep rounded fish body with a very large swept-back fan tail, upper lobe dark teal and lower lobe pale cream
+- [ ] Long forward-pointing snout with thick pale pucker lips (red-tinted in canon)
+- [ ] Two long thin whip filaments, one trailing from the top of the head and one dangling from the chin ending in a small glowing orange bulb
+- [ ] Teal/blue-green back with orange-red speckles or bars, pale peach-cream belly
+- [ ] Large round eye and big wing-like pectoral fin
 
 ## Engine limits
 not yet assessed

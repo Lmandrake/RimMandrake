@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Mee` — in-repo label "mee scalefish"; (variants: `RSW_MeeJuv`)
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Mee
 
@@ -19,11 +15,33 @@ The mee, also known as a daggert, was a poisonous scalefish native to the waters
 **Biology and appearance** Mee, sometimes referred to as daggerts, were poisonous and herbivorous scalefish native to the oceans of the Mid Rim planet Naboo but were also found on one of Naboo's moons, Ohma-D'un, and the Outer Rim planet Aquilaris. The typical mee possessed a rotund though vertically flat body, with black-and-yellow scales and poisonous spines that protruded from its centerline. Its diagonal striping served as camouflage, allowing it to blend into sea grasses and reeds. Larger varieties of mee known as jumbo daggerts existed in the core of Naboo and were considered much rarer than their surface counterparts.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (rendered mee, infobox); images 2, 3 and 4 are LEGENDS (an ink
+sketch of one mee, a school of mee hunted by otta, and a tee eating a school of mee). Canon
+and Legends agree closely, so this is a stable design.
+- **Silhouette**: a tall, laterally flattened, DIAMOND/angelfish-like disc body, round at the front
+  and sharply forked at the rear into two long wispy tail streamers (upper and lower lobes tipped
+  blue in the canon render). Deeper than long.
+- **Colour/pattern**: bright golden-yellow body with broad dark brown-black diagonal bars (3-4 slanted
+  stripes) and an honeycomb/hexagonal scale texture; tail tips blue (canon) or dark (Legends);
+  yellow-and-brown tiger bars match the Legends text "black-and-yellow".
+- **The spine (loud)**: ONE very long thin dark needle spine runs straight back horizontally along
+  the centreline from behind the gill to well past the tail -- longer than the body -- in the canon
+  render (dark red-brown, tapering), and in the Legends sketches as two or three long thin swept-back
+  spines with blue tips. Prose says "poisonous spine(s) from its centerline": images confirm.
+- **Face**: blunt, near-vertical face with a tiny downturned mouth and thick lower lip, a red-ringed
+  yellow eye, three thin blue-and-cream whisker/barbel-like filaments across the cheek (canon
+  render), a small dark bump or crest on the brow.
+- **Size cues**: tiny, school fish: palm-sized, shown hunted in schools beside much larger otta and tee.
+- **Prose vs images**: canon prose mentions "hundreds of razor teeth" for Koboh mee -- teeth are not
+  visible in the canon image but a Legends tee-feeding panel shows the swarm with tiny teeth. No
+  disagreement on colour.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Tall flat diamond/angelfish body, rounded front, deeply forked tail with two long wispy streamers
+- [ ] Golden-yellow body with 3-4 broad dark brown diagonal bars and hexagonal scale texture
+- [ ] One very long thin dark needle spine running back along the centreline, longer than the body
+- [ ] Blunt vertical face, tiny downturned mouth, red-ringed yellow eye, thin blue-cream whisker filaments across the cheek
+- [ ] Blue-tipped tail streamers (canon)
 
 ## Engine limits
 not yet assessed

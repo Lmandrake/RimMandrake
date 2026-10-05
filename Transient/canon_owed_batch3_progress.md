@@ -1,0 +1,10 @@
+bogwing done
+faascalefish done
+gelagrub done
+greatdevourer done
+hssiss done
+jakobeast done
+klorslug done
+krykna done
+laascalefish done
+meescalefish done

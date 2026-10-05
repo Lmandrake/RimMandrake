@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Bogwing` — in-repo label "bogwing"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Bogwing
 
@@ -21,11 +17,35 @@ During the Galactic War between the Galactic Republic and the reconstituted Sith
 There were two races of bogwings: the greater bogwing and the lesser bogwing. They both fed on small creatures dwelling in the canopy, but the greater bogwing fed in the upper levels, while the lesser bogwing fed on the lower levels where it avoided larger predators such as the jubba bird.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (Bogwing-TVE, Clone Wars-era 3D render); images 2 and 3 are
+LEGENDS (a painted plate, and a film-style CGI still of a bogwing in flight in Dagobah trees).
+- **Silhouette**: a pterosaur-like flier. Tiny slim body, small bird-like head with a short pointed
+  beak (not toothy), thin long neck, and enormous narrow membrane wings, each longer than the whole
+  body, swept up and back to sharp points (canon render: wings held high in a V).
+- **Tail**: a very long, thin, straight whip tail trailing behind, roughly body-plus-neck length or
+  more, tapering to a point.
+- **Limbs**: spindly. Two long thin hind legs with large splayed 3-toed talons (the grabbing feet);
+  two thin forelimbs/arms with clawed hands hang below the wing root (wing membrane is separate from
+  the arms in the canon render).
+- **Colour**: canon render = teal/blue-green back, neck and legs with a pale grey-mauve belly and
+  brown-mauve wing membrane with dark green leading-edge bones; one round yellow-orange eye. The
+  Legends plate is grey-green and darker; the CGI still is mottled olive/moss-yellow with a red-ringed
+  eye, i.e. swamp-camouflage. Palette is NOT consistent across images: teal-and-mauve (canon) vs
+  olive/grey (Legends) -- the canon image rules.
+- **Texture**: smooth scaleless skin, faint dark banding on the tail and body; membranous wings.
+- **Size cues**: no scale reference in any image; prose says it can lift nine times its own weight, so
+  the body is small and light (not a giant), wingspan large relative to body.
+- **Prose vs images**: prose says only "reptavian, flying"; images agree it is wyvern/pterosaur-like
+  and give the beak, whip tail and huge wings. Nothing contradicts. Greater vs lesser race: no image
+  distinguishes them.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Two huge narrow membrane wings, each longer than the body, pointed tips, brown-mauve membrane with dark bone edges
+- [ ] Tiny slim body with long thin neck and small bird-like head with short pointed beak and one round yellow-orange eye
+- [ ] Very long thin straight whip tail trailing well behind the body
+- [ ] Spindly hind legs ending in large splayed 3-toed talons, held down/forward
+- [ ] Teal/blue-green back and limbs over a pale grey-mauve belly (canon colouring), smooth scaleless skin
+- [ ] Reads as a pterosaur-like light flier, not a feathered bird or a bat
 
 ## Engine limits
 not yet assessed

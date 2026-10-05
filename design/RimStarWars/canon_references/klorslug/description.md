@@ -2,10 +2,6 @@
 
 **defName**: `RSW_Klorslug` — in-repo label "k'lor'slug"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
-
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/K%27lor%27slug
 
@@ -19,11 +15,38 @@ K'lor'slugs were dangerous vermiforms native to the swamps of Noe'ha'on. They we
 **Biology and Appearance** K'lor'slugs were large worm-like creatures that possessed a serpentine body propelled by many dangerously-edged legs. The mouth was a gaping circular maw filled with concentric rings of teeth.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Viewed 2026-10-04. Image 1 is canon (a comic panel: a k'lor'slug crushing Jango-era Mandalorian
+armour); images 2-4 are LEGENDS (a painted plate, a concept painting, an SWTOR kitchen render).
+The images split into TWO very different looks -- the canon and Legends versions do not match.
+- **Canon (image 1)**: ORANGE-RED (not pink -- the prose says pink; trust the image, with the
+  caveat that comic colouring varies) tubular, segmented, centipede/caterpillar body, thick and
+  ringed, studded with small blunt bumps/spikes. The front rears up and holds 4+ pairs of
+  thick multi-jointed limbs with big pale-tan curved claws like a mantis/lobster. The head is
+  a round blunt mouth-disc: a circular maw ringed with large pale conical teeth and wrinkled lips,
+  with a pair of small dark eyes above it. Back half stays low on stubby clawed legs.
+- **Legends concept (image 3)**: a dark RED-and-purple armoured thing with the same plan: segmented
+  ringed body, a hunched front raised up with the toothed circular maw hidden among spiky ridges,
+  and 8-10 long curved glassy blue-violet CLAWS (translucent, glossy, sword-like) along the sides. A
+  long banded tail ends in a bulb with small spikes.
+- **Legends SWTOR (image 4)**: the same red-banded, many-clawed body lying dead and long (longer
+  than a counter), segmented back plates, 6-8 long steel-blue claws along each side, a tapering
+  tail with ringed segmentation -- the clearest picture of the whole body plan.
+- **Image 2 (Legends plate)**: shows a pale bony angler-fish-like creature on a beach and a huge
+  armoured segmented crustacean limb in the foreground -- caption says k'lor'slug faces a Kirithin;
+  it is NOT obvious which is the k'lor'slug (the armoured brown segmented body with clawed limb
+  appears to be it); treat as ambiguous, low-confidence evidence.
+- **Size cues**: the canon panel shows it wrapping around a grown humanoid (body about humanoid
+  height when reared); the SWTOR render lies longer than a kitchen counter, roughly 2-3 m.
+- **Prose vs images**: "pink, tubular beasts, suction cup-like mouths and sharp teeth, clawed
+  multilimbed" -- tubular, clawed and multilimbed and toothed circular mouth are confirmed;
+  pink is not (orange-red in canon art, deep red in Legends).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Long thick tubular segmented worm/centipede body with a ringed banded back
+- [ ] Round circular maw with concentric/ringed sharp teeth at a blunt front end
+- [ ] Many thick limbs ending in large curved claws (pale tan in canon art, glassy blue-violet in Legends)
+- [ ] Orange-red body (canon art) with small blunt bumps/spikes on the segments
+- [ ] Rears up in front on its claw limbs, back end low with a tapering tail
 
 ## Engine limits
 not yet assessed
