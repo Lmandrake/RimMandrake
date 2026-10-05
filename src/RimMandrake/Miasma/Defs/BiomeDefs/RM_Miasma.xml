@@ -253,6 +253,8 @@
       <RM_Karrolun>1.2</RM_Karrolun>  <!-- karrolun - the harvest; the arthropod industry's actual target -->
       <!-- MIASMA_AMBUSH_FROG_REMAKE_1: bozzuga - root-maze ambusher, eats scuttlers and stranded young; one home (this biome only) -->
       <RM_Bozzuga>0.3</RM_Bozzuga>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet: "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier"): the ommok, moved here from the Long Shade (def stays in mandrake.rm.longshade's RM_LongShade_Fauna.xml, same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
+      <RM_Ommok MayRequire="mandrake.rm.biomes">0.025</RM_Ommok>
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->

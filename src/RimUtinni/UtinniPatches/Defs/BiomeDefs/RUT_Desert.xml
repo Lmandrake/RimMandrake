@@ -258,7 +258,6 @@
       <RSW_Voorpak MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Voorpak>  <!-- voorpak - ambush-small, keep -->
       <RSW_Vosska MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Vosska>  <!-- sand prowler - ambush-burrow, keep -->
       <RM_Khorrak MayRequire="mandrake.rm.biomes">0.035</RM_Khorrak>  <!-- terramorph - ambush-flat, keep -->
-      <RSW_Ommok MayRequire="mandrake.rsw.swbestiary">0.025</RSW_Ommok>  <!-- sand squid - subsurface-slow, keep -->
       <RSW_Ulgga MayRequire="mandrake.rsw.swbestiary">0.015</RSW_Ulgga>  <!-- mammoth worm - subsurface-slow, keep -->
       <RSW_Horax MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Horax>  <!-- horax - megafauna, import; interim stand-in, complemented (not replaced) by RSW_ShadeWhale below, COMMISSION_LEDGER_CLEANUP_1 -->
       <!-- COMMISSION_LEDGER_CLEANUP_1 (desert sheet): desert.md §4c/§10's actual

@@ -436,6 +436,12 @@
       "commonality": 0.5,
       "def": "MarshHaunt",
       "law": "owner review 2026-09 (round2 move mapping): Maisma | PLACED: the_miasma (homeless disposition sitting, frozen 2026-09-10)"
+    },
+    {
+      "action": "add",
+      "commonality": 0.025,
+      "def": "RM_Ommok",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier\". RSW_Ommok retired onto RM_Ommok."
     }
   ],
   "fish": {
