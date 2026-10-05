@@ -178,6 +178,39 @@ def s0b_offline(rows):
 
 
 # ============================================================================ live
+def prepare_site(B, rect, rows, rid):
+    """Make a site's cells independent of the quicktest map's random terrain (roofed ruins, rock, plants, non-soil floor).
+    Clear everything, Soil, unfog, remove roof, then READ BACK: any roof or any thing still standing in the rect is an
+    environmental block and is recorded UNMEASURED (never a mod FAIL). Returns True when the site is ready."""
+    r = "%d,%d,%d,%d" % tuple(rect)
+    why = []
+    for tool, kw in (("jawa/destroy_batch", {"rects": r, "categories": "All"}),
+                     ("jawa/set_terrain_batch", {"ops": "Soil:" + r}),
+                     ("jawa/set_fog", {"action": "unfog", "rect": r}),
+                     ("jawa/set_roof_batch", {"ops": "None:" + r})):
+        res = B.call(tool, **kw)
+        if isinstance(res, dict) and res.get("success") is False:
+            why.append("%s refused: %s" % (tool, str(res)[:160]))
+    B.ticks(2)
+    roof = B.call("jawa/get_roof_batch", rects=r) or {}
+    roofs = [x for x in (roof.get("roofs") or []) if x not in (None, "None")]
+    if roofs:
+        why.append("roof still present over the site: %s" % roofs)
+    elif roof.get("success") is False:
+        why.append("get_roof_batch unreadable: %s" % str(roof)[:160])
+    lt = B.call("jawa/list_things", rect=r, limit=20) or {}
+    # only terrain-type blockers count (a quicktest colonist may stand on the site; list_things' pawn/category fields are unproven)
+    left = [d for d in ((t.get("defName") or t.get("def") or t.get("label") or "") for t in (lt.get("things") or []))
+            if re.search(r"Granite|Sandstone|Limestone|Marble|Slate|Rock|Chunk|Plant_|Tree|Bush|Grass|Ruin", str(d))]
+    if left:
+        why.append("rock/plants/ruins still standing in the site: %s" % left[:8])
+    if why:
+        V.row(rows, rid, "UNMEASURED", "SITE", {"rect": list(rect), "blocked": why,
+              "meaning": "the quicktest terrain still blocks the site after clearing; this is environmental, not a mod result"})
+        return False
+    return True
+
+
 def _A():
     import validation_aerial as VA
     return VA.A()
@@ -201,9 +234,9 @@ def run_live(args):
         res["aborted"] = "aerial probe dead"
         return res
     B.ap("clearpicks")
-    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
-    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE)
-    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
+    if not (prepare_site(B, SITE, rows, "S_site_ready") & prepare_site(B, SITE2, rows, "S9_site_ready")):
+        res["aborted"] = "site not ready (terrain)"
+        return res
     B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
     B.ticks(2)
 

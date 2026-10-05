@@ -164,9 +164,10 @@ def run_live(args):
         res["aborted"] = "probe dead"
         return res
     A.ap("clearpicks")
-    A.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
-    A.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE)
-    A.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE)
+    import validation_style as VS
+    if not VS.prepare_site(A, SITE, rows, "R_site_ready"):
+        res["aborted"] = "site not ready (terrain)"
+        return res
     A.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
     A.ticks(2)
 
