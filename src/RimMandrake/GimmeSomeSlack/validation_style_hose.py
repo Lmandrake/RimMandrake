@@ -217,7 +217,7 @@ def run_live(args):
     # ---------------------------------------------------------------- R4: save / load while laid out
     if args.save:
         _save_load(A, H, rows, args.save, c)
-    else:
+    elif not V.SHARED:               # SHARED: R4 is proof_all's SL3 over the session's one save (doc section 2)
         V.row(rows, "R4_save_load_laid", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
 
     # ---------------------------------------------------------------- R5: reel each back in: stored art again, look kept

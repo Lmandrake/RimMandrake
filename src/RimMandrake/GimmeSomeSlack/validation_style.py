@@ -349,7 +349,7 @@ def run_live(args):
         # before saving: the comparison is then load-only.
         res["save"] = _save_load(B, rows, args.save, B.ap("styles"))
         s9_after_load(B, rows, s9, s10)
-    else:
+    elif not V.SHARED:               # SHARED: S7 + S9e are proof_all's SL3 over the session's one save (doc section 2)
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
         V.row(rows, "S9e_runs_save_load", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
     return res

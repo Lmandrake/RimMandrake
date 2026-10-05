@@ -1,73 +1,74 @@
-# Messy Conduit - human review key sheet
+# Gimme Some Slack - human review key sheet
 
-## Old station -> new station
+## Old station -> new station (densified 2026-10-05)
 
-Every station of the previous map kept its exact cells and contents; only its number moved (+12). The new style stations are 1-12. The style gallery took the free area's old place in the south-east, so the free area moved to the north band.
+Owner 2026-10-05: *"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."* Plan: `design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md` section 4. 47 stations -> 33: fifteen cut or merged, one new HOSE STATES station, the rest renumbered in order. Stations 1-12 kept their numbers; the default-look survivors moved into one column west of the style gallery; the north gallery kept its cells.
 
-| old | new | station |
+| old (47-station map) | new | station |
 |---|---|---|
-| 1 | **13** | POWERED LINE |
-| 2 | **14** | UNPOWERED LINE |
-| 3 | **15** | CUT LINE |
-| 4 | **16** | TANGLED PILE |
-| 5 | **17** | DEVICES + PLUGS |
-| 6 | **18** | WALL + ROCK ENTRIES |
-| 7 | **19** | MAST SPAN CHAIN |
-| 8 | **20** | LAMP MASTS |
-| 9 | **21** | WALL BRACKET |
-| 10 | **22** | CUT + FALLEN SPAN |
-| 11 | **23** | POWER TAP |
-| 12 | **24** | HOSE: FLAT |
-| 13 | **25** | HOSE: FILLING |
-| 14 | **26** | HOSE: PLUMP |
-| 15 | **27** | HOSE: LONG + BEND |
-| 16 | **28** | HOSE CROSSING |
-| 17 | **29** | PARALLEL RUNS |
-| 18 | **30** | HOSE GRID |
-| 19 | **31** | POLE CLUSTER |
-| 20 | **32** | ELECTRIC ROOM |
-| 21 | **33** | OVER THE UNKNOWN |
-| 22 | **34** | HOSE MAZE: TWO ROUTES |
-| 23 | **35** | HOSE MAZE: SHORT WAY WALLED |
-| 24 | **36** | MAP EDGE |
-| 25 | **37** | RIVER CROSSING |
-| 26 | **38** | ROOF BOUNDARY |
-| 27 | **39** | LONG SPAN + DIAGONALS |
-| 28 | **40** | CONVERGING HUB |
-| 29 | **41** | NETS SIDE BY SIDE + HALF-BUILT |
-| new | **1** | GROUND CORDS: SCRAPPER |
-| new | **2** | GROUND CORDS: INDUSTRIAL |
-| new | **3** | GROUND CORDS: MODERN |
-| new | **4** | GROUND CORDS: FUTURISTIC |
-| new | **5** | MODERN: EVERY COLOUR ENTRY |
-| new | **6** | OVERHEAD: FOUR LOOKS |
-| new | **7** | MERGE: BIGGER RUN WINS |
-| new | **8** | MERGE: A TIE |
-| new | **9** | SPLIT KEEPS THE LOOK |
-| new | **10** | RESTYLE THIS RUN (yours) |
-| new | **11** | HOSE REELS: FOUR LOOKS |
-| new | **12** | OLDER SAVE: NO STORED LOOK |
-| new | **42** | RELAY REELS: GOING FARTHER |
-| new | **43** | DEPLOY BY HAND |
-| new | **44** | DROPPED HALFWAY |
-| new | **45** | INTO THE POND |
-| new | **46** | ON THEIR TANK |
-| new | **47** | WIND IT IN |
-| F (south-east) | **F** (north band, west) | free build area |
-| - | **M** (north band) | art-slot board |
+| 1 | **1** | GROUND CORDS: SCRAPPER |
+| 2 | **2** | GROUND CORDS: INDUSTRIAL |
+| 3 | **3** | GROUND CORDS: MODERN |
+| 4 | **4** | GROUND CORDS: FUTURISTIC |
+| 5 | **5** | MODERN: EVERY COLOUR ENTRY |
+| 6 | **6** | OVERHEAD: FOUR LOOKS |
+| 7 | **7** | MERGE: BIGGER RUN WINS |
+| 8 | **8** | MERGE: A TIE |
+| 9 | **9** | SPLIT KEEPS THE LOOK |
+| 10 | **10** | RESTYLE THIS RUN (yours) |
+| 11 | **11** | HOSE REELS: FOUR LOOKS |
+| 12 | **12** | OLDER SAVE: NO STORED LOOK |
+| 13 | **-** | removed -> covered by 1-4 (doc l.165 'powered line': the ground-cord stations) |
+| 14 | **-** | removed -> covered by 1-4 (doc l.166 'unpowered line' (veto point): weakest distinct question; the matrix P=dead scenes cover it in state) |
+| 15 | **-** | removed -> covered by 1-4 (doc l.167 'cut line': their missing cell, live + dead end) |
+| 16 | **-** | removed -> covered by 1-4, 19 (doc l.168 'tangled pile': their 3x3 tangle; the electric room) |
+| 17 | **-** | removed -> covered by 1-4, 18 (doc l.169 'devices + plugs': their switch + three plugged devices; the pole cluster) |
+| 18 | **13** | WALL + ROCK ENTRIES |
+| 19 | **-** | removed -> covered by 6, 10 (doc l.171 'mast chain': OVERHEAD: FOUR LOOKS has battery > mast > mast > lamp mast > wall bracket in all four looks; RESTYLE THIS RUN has a span) |
+| 20 | **-** | removed -> covered by 6, 10 (doc l.171 'lamp masts': as the mast chain) |
+| 21 | **-** | removed -> covered by 6, 10 (doc l.171 'wall bracket': as the mast chain) |
+| 22 | **14** | CUT + FALLEN SPAN |
+| 23 | **15** | POWER TAP |
+| 24 | **-** | merged into 16 (doc l.173 'flat': HOSE STATES, three parallel hoses) |
+| 25 | **-** | merged into 16 (doc l.173 'filling': HOSE STATES) |
+| 26 | **-** | merged into 16 (doc l.173 'plump': HOSE STATES) |
+| 27 | **-** | removed -> covered by 21, 22, 29, 32 (doc l.174 'long + bend': the maze bends, the relay's length, the pond) |
+| 28 | **-** | removed -> covered by 17 (doc l.175 'crossing': the hose grid has four crossings with the same over/under question) |
+| 29 | **-** | merged into 16 (doc l.173 'parallel': its question (lanes, one over the other) is the same picture) |
+| 30 | **17** | HOSE GRID |
+| 31 | **18** | POLE CLUSTER |
+| 32 | **19** | ELECTRIC ROOM |
+| 33 | **20** | OVER THE UNKNOWN |
+| 34 | **21** | HOSE MAZE: TWO ROUTES |
+| 35 | **22** | HOSE MAZE: SHORT WAY WALLED |
+| 36 | **23** | MAP EDGE |
+| 37 | **24** | RIVER CROSSING |
+| 38 | **25** | ROOF BOUNDARY |
+| 39 | **26** | LONG SPAN + DIAGONALS |
+| 40 | **27** | CONVERGING HUB |
+| 41 | **28** | NETS SIDE BY SIDE + HALF-BUILT |
+| 42 | **29** | RELAY REELS: GOING FARTHER |
+| 43 | **30** | DEPLOY BY HAND, THEN WIND IT IN |
+| 44 | **31** | DROPPED HALFWAY |
+| 45 | **32** | INTO THE POND |
+| 46 | **33** | ON THEIR TANK |
+| 47 | **-** | merged into 30 (doc l.180 'wind it in': the deploy card now says 'after he lays it, press Retract'; same reel and pawn, the reverse action) |
+| new | **16** | HOSE STATES |
+| F | **F** | free build area (unchanged) |
+| M | **M** | art-slot board (unchanged; now carries a note) |
 
-Built by `src/RimMandrake/MessyConduit/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.
+Built by `src/RimMandrake/GimmeSomeSlack/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.
 
-**This map reviews the per-build style design** (`design/RimMandrake/messyconduit_style_per_build_design.md`, your decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-11 are built through that machinery and stand side by side in four looks. `--style` (Mod Settings 'Default style') now only sets the DEFAULT look, which station 12 and every older station 13-41 draw because they store no look. Default look now: **Scrapper**.
+**This map reviews the per-build style design** (`design/RimMandrake/messyconduit_style_per_build_design.md`, your decisions of 2026-10-04): the look is picked on the build button and stored on each piece. Stations 1-11 are built through that machinery and stand side by side in four looks. `--style` (Mod Settings 'Default style') now only sets the DEFAULT look, which station 12 and every station 13-33 draw because they store no look. Default look now: **Scrapper**.
 
-Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-12; 0 = whole south region; N0 = north gallery 31-41; M = art board; F = free area).
+Jump the camera: `human_review.py --goto N` (N = station; S0 = style gallery 1-12; 0 = whole south region; N0 = north gallery 18-33; M = art board; F = free area).
 
 ## Everywhere
 
 - Build menu: clicking a conduit, switch, pole, lamp mast, wall bracket or hose reel button opens a menu of four looks (Scrapper, Industrial, Modern, Futuristic); conduit adds the Modern colour entries (random mix, one colour per run, orange, green, brown, yellow, blue). The button remembers your last pick.
 - 'Restyle this run' sits on any selected conduit, switch or pole: it repaints the whole run (art only, free).
 - A run = connected conduit cells + switches + the poles and brackets wired into them. Batteries and machines end a run. Joining two runs of different looks: the run with more conduit cells wins; a tie goes to the older run.
-- Mod Settings > RimMandrake: Messy Conduit: master switch OFF restores vanilla conduit art instantly.
+- Mod Settings > RimMandrake: Gimme Some Slack: master switch OFF restores vanilla conduit art instantly.
 - Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.
 
 ## Row S - one look per station (style gallery, south-east)
@@ -90,6 +91,10 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 - select any conduit or the switch: the 'Restyle this run' gizmo repaints the whole run (art only)
 - build one conduit into the gap from the menu in ANOTHER look: it joins the run and takes the run's look (the larger run wins: here the battery side)
 - flick the switch: everything past it goes dark, the cords stay
+
+**Note**
+
+- U_motion_look (moved off the live proof 2026-10-05): UNPAUSE and judge the LOOK of motion here: the cord's whip, the live end's drip / spark rhythm, the sway in the wind. Motion is not a Northstar bar; state proxies cover the state, so only your eye judges this.
 
 ### 2. GROUND CORDS: INDUSTRIAL
 
@@ -267,89 +272,12 @@ conduit, a switch, a lamp, a power mast with a span to a lamp mast and a laid ho
 
 **Try**
 
-- `human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-41 change; stations 1-11 do NOT
+- `human_review.py --style Cybertek` (or Mod Settings): this set and stations 13-33 change; stations 1-11 do NOT
 - build one conduit onto it from the menu: the run's look is written for real now (the save migration)
 
-## Row A - floor cords
+## Row A - floor cords (default look)
 
-### 13. POWERED LINE (was 1)
-
-battery (full) -> conduit -> heater, plus a lamp plugged in from 3 cells away
-
-**Notice**
-
-- no conduit graphic at all: only a loose, too-long cord lying between the nodes
-- the plug cord from the lamp curls over to the run; the plug head sits at the lamp
-- the cord ends in a plug at the heater and at the battery
-
-**Try**
-
-- select the battery: the whole net's cords highlight
-- open the power overlay (bottom-right): vanilla connector lines still draw
-- unpause: the cord sways a little in the wind
-
-### 14. UNPOWERED LINE (was 2)
-
-the same build, battery EMPTY
-
-**Notice**
-
-- the cord looks identical to station 13: power state changes nothing on an intact cord
-- the lamp and heater are off (compare with 13)
-
-**Try**
-
-- god mode: right-click the battery > dev: set charge, or drag a cord from station 13's grid over
-
-### 15. CUT LINE (was 3)
-
-powered line with ONE conduit cell missing in the middle (cell 6)
-
-**Notice**
-
-- two cut ends: the battery side end is LIVE (sparks when unpaused), the far end is DEAD and lies limp
-- no cord bridges the gap
-- the far lamp and heater are off; the near lamp is on
-
-**Try**
-
-- unpause at 1x: watch the live end spark
-- build one conduit into the gap (god mode = instant): the cord rejoins
-- deconstruct another conduit cell: a new pair of ends appears
-
-### 16. TANGLED PILE (was 4)
-
-a 3x3 block of conduit (9+ cells = a tangle) feeding three lamps and a heater
-
-**Notice**
-
-- the block becomes one TANGLE: a mass of cables plugged into each other
-- Scrapper / Industrial / Futuristic: the cables run into MANY + and T junction boxes, every box has cables in it, no power strips
-- Modern: power strips, every strip with cables PLUGGED IN (a plug in each used socket), LEDs lit while the net is live
-- every lamp's cord runs out of the pile
-
-**Try**
-
-- --style ExtensionCord (Modern) vs StarWars (Industrial): strips vs junction boxes
-- Modern: empty the battery (or cut the feed at cell 3): the strip LEDs go dark
-- add conduit cells to the block: the pile grows
-
-### 17. DEVICES + PLUGS (was 5)
-
-battery, an in-line power switch, a wood generator (unfuelled), lamps, heater
-
-**Notice**
-
-- each device gets its own plug; the switch sits in-line with NO dark outline round its tile
-- the generator hooks to the run on two cells
-- a lamp 3 cells off the run still gets a cord
-
-**Try**
-
-- flick the switch off (select it > toggle): everything past it goes dead
-- refuel the generator: nothing changes visually
-
-### 18. WALL + ROCK ENTRIES (was 6)
+### 13. WALL + ROCK ENTRIES (was 18)
 
 a run passing under a steel wall and through a granite block; a branch ending inside the wall
 
@@ -365,60 +293,11 @@ a run passing under a steel wall and through a granite block; a branch ending in
 - deconstruct a wall cell: the cord re-plans across the gap
 - mine the granite: the tunnel opens
 
-## Row B - overhead lines
+## Row B - overhead lines (default look)
 
-### 19. MAST SPAN CHAIN (was 7)
+### 14. CUT + FALLEN SPAN (was 22)
 
-battery -> scrap power mast -> mast -> mast -> lamp, two 12-cell overhead spans
-
-**Notice**
-
-- the wires sag between masts and cast a ground shadow
-- the far lamp is lit through the air
-- the overhead cable is the look's own: thick dark scrap cable (Scrapper), thick BLACK cable (Industrial), thin black power line (Modern), sleek steel (Futuristic)
-- the poles change with the look too: weathered wood (Scrapper), riveted steel with black insulators (Industrial), grey concrete with a transformer can (Modern), faceted steel with blade insulators (Futuristic)
-- masts are 4 cells tall and 2 wide; the wire leaves from the insulator tips on the crossarm
-
-**Try**
-
-- select a mast: Link wire / Unlink wire / Re-string gizmos
-- build a new mast within 20 cells: it auto-links to the nearest
-- unpause: spans sway
-
-### 20. LAMP MASTS (was 8)
-
-a power mast feeding two scrap lamp masts over the air
-
-**Notice**
-
-- each lamp mast is a light AND an anchor: its head shows a lit bulb while powered and switched on (round 4; daylight hides the glow itself at noon, as for any vanilla lamp), radius 12 like a standing lamp
-- the wire runs mast to lamp mast to lamp mast
-
-**Try**
-
-- unlink the second span: that lamp mast goes dark
-- build one more lamp mast within range
-
-### 21. WALL BRACKET (was 9)
-
-an overhead wire from a mast to a bracket bolted ON a shed wall, feeding a lamp INSIDE the shed
-
-**Notice**
-
-- the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it); the look's own art per facing
-- three spare brackets show the other facings: on the shed's west, east and south walls (outside, unlinked)
-- the wire ENDS on the bracket's insulator; nothing lies on the ground outside
-- the power goes through the wall into the shed (a conduit under the wall) and lights the lamp inside
-
-**Try**
-
-- build another: Architect > Power > scrap wall bracket, point it AT a wall (vanilla wall-attachment placement)
-- deconstruct the wall behind the bracket
-- unlink and re-link the span from the mast's gizmo
-
-### 22. CUT + FALLEN SPAN (was 10)
-
-the station-19 chain with the SECOND span cut (as if blown by an explosion)
+battery -> power mast -> mast -> mast -> lamp, two 12-cell overhead spans, the SECOND span cut (as if blown by an explosion)
 
 **Notice**
 
@@ -431,7 +310,7 @@ the station-19 chain with the SECOND span cut (as if blown by an explosion)
 - select the middle mast > Re-string cut wires: the span goes back up and the lamp relights
 - god mode: drop an explosion under a span (dev tools) to cut another
 
-### 23. POWER TAP (was 11)
+### 15. POWER TAP (was 23)
 
 a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained one-way into our lamp (right)
 
@@ -444,80 +323,22 @@ a power-tap clamp biting ANOTHER faction's grid (left, hostile battery), drained
 **Try**
 
 - unpause and watch their battery drain
-- Mod Settings > Messy Conduit > taps off: our lamp goes dark
+- Mod Settings > Gimme Some Slack > taps off: our lamp goes dark
 
-## Row C - flexible hoses
-
-### 24. HOSE: FLAT (was 12)
-
-a laid hose with nothing flowing through it
-
-**Notice**
-
-- the hose lies flat and thin
-- a straight hose has NO joiner along it; the free end is a plain open end the hose's own width
-
-**Try**
-
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
-
-### 25. HOSE: FILLING (was 13)
-
-the same hose, flow ON, frozen half-way through filling
-
-**Notice**
-
-- half-plump: the swell is mid-transition
-- UNPAUSE and it finishes plumping in ~half a second
-
-**Try**
-
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
-
-### 26. HOSE: PLUMP (was 14)
-
-flow ON, fully filled
-
-**Notice**
-
-- full round hose, visibly wider than the flat one
-- still no joiner on the straight
-
-**Try**
-
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
-
-### 27. HOSE: LONG + BEND (was 15)
-
-a 24-cell plump hose routed round a wall stub
-
-**Notice**
-
-- the hose bends smoothly round the obstacle (never kinks tighter than the minimum bend)
-- joiners only at the bends: two brass couplings screwed face to face, joining two lengths
-- it never crosses the wall
-
-**Try**
-
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
-
-## Row D - hose crossings and parallel runs
+## Row C - flexible hoses: states, lanes and crossings
 
 Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece.
 
-### 28. HOSE CROSSING (was 16)
+### 16. HOSE STATES (new)
 
-two plump hoses laid straight across each other at right angles
+three hoses laid side by side, two cells apart (top to bottom): FLAT (nothing flowing), FILLING (flow on, frozen half-way through filling), PLUMP (flow on, fully filled)
 
 **Notice**
 
-- one hose passes cleanly OVER the other, the same way every frame (the newer reel's hose is on top)
-- no joiner and no end fitting at the crossing
-- the hoses do not route round each other: a hose is not an obstacle to another
+- flat: the hose lies flat and thin; a straight hose has NO joiner along it; the free end is a plain open end the hose's own width
+- filling: half-plump, the swell is mid-transition; UNPAUSE and it finishes plumping in ~half a second
+- plump: a full round hose, visibly wider than the flat one; still no joiner on the straight
+- lanes: each hose keeps its own lane; where their S-curves meet, one draws over the other cleanly (the newer reel's on top)
 
 **Try**
 
@@ -525,22 +346,7 @@ two plump hoses laid straight across each other at right angles
 - dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
 - NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
 
-### 29. PARALLEL RUNS (was 17)
-
-two hoses laid side by side, two cells apart, one flat and one plump
-
-**Notice**
-
-- each keeps its own lane; where their S-curves meet, one draws over the other cleanly
-- flat vs plump side by side: width and shine
-
-**Try**
-
-- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
-- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
-- NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)
-
-### 30. HOSE GRID (was 18)
+### 17. HOSE GRID (was 30)
 
 four hoses, two each way, crossing in a 2 x 2 grid
 
@@ -559,7 +365,7 @@ four hoses, two each way, crossing in a 2 x 2 grid
 
 Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, a span over a hidden stone block.
 
-### 31. POLE CLUSTER (was 19)
+### 18. POLE CLUSTER (was 31)
 
 one power pole with a wide mix of devices: some right beside it (lamp, heater, sun lamp, mini-turret, two batteries), some reached by conduit runs (stove, hi-tech research bench, TV), a walk-in freezer with an in-wall cooler and wall lamps inside and out, and a lamp mast fed over the air
 
@@ -578,7 +384,7 @@ one power pole with a wide mix of devices: some right beside it (lamp, heater, s
 - deconstruct the pole: every adjacent hookup falls; the conduit-fed devices keep their cords
 - build another lamp right beside the pole: does it pick a free terminal?
 
-### 32. ELECTRIC ROOM (was 20)
+### 19. ELECTRIC ROOM (was 32)
 
 a walled workshop crammed with powered devices joined by messy conduit (with a tangle), and three power poles carrying a line OVER it: west pole outside, middle pole inside the room, east pole outside
 
@@ -596,7 +402,7 @@ a walled workshop crammed with powered devices joined by messy conduit (with a t
 - roof the room (Architect > Structure > Build roof, god mode): the middle pole is now under a roof - its spans should be cut (roof cut) and drop
 - switch looks (--style): the whole room changes at once
 
-### 33. OVER THE UNKNOWN (was 21)
+### 20. OVER THE UNKNOWN (was 33)
 
 two power poles carrying power OVER a solid granite block that lies hidden under fog of war and overhead mountain: the wire runs off into the unknown and emerges on the other side
 
@@ -617,7 +423,7 @@ two power poles carrying power OVER a solid granite block that lies hidden under
 
 Two routes out of a small maze, then the short one walled off after laying. validation_hose.py owns the pass/fail; this map shows it.
 
-### 34. HOSE MAZE: TWO ROUTES (was 22)
+### 21. HOSE MAZE: TWO ROUTES (was 34)
 
 a hose laid from a reel deep inside a small walled maze to a free end outside; two ways out: the short one (south-east gap) and a longer one (north-east gap)
 
@@ -633,15 +439,15 @@ a hose laid from a reel deep inside a small walled maze to a free end outside; t
 - dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
 - reel it in and lay it again to the same free end: does it pick the same route?
 
-### 35. HOSE MAZE: SHORT WAY WALLED (was 23)
+### 22. HOSE MAZE: SHORT WAY WALLED (was 35)
 
-station 34's maze; after the hose is laid, a wall is built across the short (south-east) gap - does the hose re-route the long way, or reel itself in?
+station 21's maze; after the hose is laid, a wall is built across the short (south-east) gap - does the hose re-route the long way, or reel itself in?
 
 **Notice**
 
 - what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length (it does: measured offline the long way needs about 25 of the hose's 40 cells), else it winds back onto the reel with a message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)
 - add your own walls to lengthen the way round: past 40 cells (the default since round 6) the hose reels in (selftest r5: the 13x13 spiral needs 73)
-- if it re-routes, the new path is as clean as station 34's
+- if it re-routes, the new path is as clean as station 21's
 
 **Try**
 
@@ -654,7 +460,7 @@ station 34's maze; after the hose is laid, a wall is built across the short (sou
 
 Built to make visible bugs show: map edge, water, roof edge, longest/odd spans, a full pole, neighbouring nets, half-built work and save-load.
 
-### 36. MAP EDGE (was 24)
+### 23. MAP EDGE (was 36)
 
 poles and cords at the map's north-east corner: a pole IN the corner cell, poles on the top and right edge cells, and floor runs lying along both edges
 
@@ -662,14 +468,14 @@ poles and cords at the map's north-east corner: a pole IN the corner cell, poles
 
 - the cords' loose curls must not draw off the map (nothing hanging past the edge, nothing cut off with a hard line)
 - the corner pole's wires and shadow stay on the map
-- no red errors (open the debug log: none mentioning MessyConduit)
+- no red errors (open the debug log: none mentioning GimmeSomeSlack)
 
 **Try**
 
 - pan the camera to the edge: is anything drawn in the black past the map?
 - deconstruct the corner pole: both its spans drop
 
-### 37. RIVER CROSSING (was 25)
+### 24. RIVER CROSSING (was 37)
 
 a river (chest-deep moving water, shallow banks): an overhead span from bank to bank, and a floor run fording the shallow end in waterproof conduit
 
@@ -685,7 +491,7 @@ a river (chest-deep moving water, shallow banks): an overhead span from bank to 
 - unpause: the river flows; does the cord on the water move with it (it should not)?
 - deconstruct one waterproof conduit cell in the river: the cut ends lie in water - do they still spark?
 
-### 38. ROOF BOUNDARY (was 26)
+### 25. ROOF BOUNDARY (was 38)
 
 a roofed steel room: an overhead span passes OVER its roof, a floor run goes in under the wall, and a pole standing INSIDE under the roof tries to link out
 
@@ -702,7 +508,7 @@ a roofed steel room: an overhead span passes OVER its roof, a floor run goes in 
 - build a roof over the east pole (god mode): its span drops (roof cut)
 - remove the room's roof: link the inside pole from its gizmo
 
-### 39. LONG SPAN + DIAGONALS (was 27)
+### 26. LONG SPAN + DIAGONALS (was 39)
 
 four chains: a span of EXACTLY the longest length (20), one cell too long (21, refused), a 45-degree diagonal chain, an odd-angle span, and a very short span (3 cells)
 
@@ -719,7 +525,7 @@ four chains: a span of EXACTLY the longest length (20), one cell too long (21, r
 - select a mast > Link wire to the 21-cell partner: the message says too far
 - Mod Settings: raise the longest span to 25: then link it
 
-### 40. CONVERGING HUB (was 28)
+### 27. CONVERGING HUB (was 40)
 
 a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH pole trying to link (refused: full), and three lamps plus a heater right beside the hub
 
@@ -735,7 +541,7 @@ a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH po
 - unlink one spoke, then link the NE pole: it takes the freed slot
 - deconstruct the hub: four spans drop at once
 
-### 41. NETS SIDE BY SIDE + HALF-BUILT (was 29)
+### 28. NETS SIDE BY SIDE + HALF-BUILT (was 41)
 
 three separate powered nets two cells apart; two nets end to end with a one-cell gap that is a conduit BLUEPRINT; a half-built run (conduit, then blueprints, a pole blueprint, a lamp blueprint)
 
@@ -752,7 +558,7 @@ three separate powered nets two cells apart; two nets end to end with a one-cell
 - save, load, compare (this is the save-load station)
 - --style ExtensionCord for the colour checks
 
-### 42. RELAY REELS: GOING FARTHER
+### 29. RELAY REELS: GOING FARTHER (was 42)
 
 three hose reels in a row, 32 cells apart: the first reel's hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)
 
@@ -770,22 +576,25 @@ three hose reels in a row, 32 cells apart: the first reel's hose is laid onto th
 - lay the third reel's hose back onto the first: refused, a chain may not loop back
 - build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on
 
-### 43. DEPLOY BY HAND
+### 30. DEPLOY BY HAND, THEN WIND IT IN (was 43)
 
-a hose reel with a Deploy order 24 cells out and one idle colonist beside it (UNPAUSE: nothing else is ordered)
+a hose reel with a Deploy order 24 cells out and one idle colonist beside it (UNPAUSE: nothing else is ordered); after he lays it, press Retract
 
 **Notice**
 
 - the colonist walks to the reel, picks up the hose end and walks it out: the hose unrolls behind him along his walk
 - he sets the end down at the order's cell and the hose lies there, coupled
 - the hose is never longer than his walk: it does not jump out to the target
+- after he lays it, press Retract on the reel: he winds the hose back along its route to the reel
+- the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once
+- it ends Stored: no hose on the ground, the reel's drum full
 
 **Try**
 
 - select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-- draft him mid-walk: the end drops where he stands (see station 44)
+- draft him mid-walk: the end drops where he stands (see station 31)
 
-### 44. DROPPED HALFWAY
+### 31. DROPPED HALFWAY (was 44)
 
 a reel whose hose end was dropped 14 cells out (an interrupted carry)
 
@@ -799,7 +608,7 @@ a reel whose hose end was dropped 14 cells out (an interrupted carry)
 - select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 - Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there
 
-### 45. INTO THE POND
+### 32. INTO THE POND (was 45)
 
 a reel 10 cells from a pond, its hose laid into the water
 
@@ -812,7 +621,7 @@ a reel 10 cells from a pond, its hose laid into the water
 
 - select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 
-### 46. ON THEIR TANK
+### 33. ON THEIR TANK (was 46)
 
 a hose coupled to another faction's liquid tank
 
@@ -825,29 +634,19 @@ a hose coupled to another faction's liquid tank
 
 - select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 
-### 47. WIND IT IN
-
-a laid 30-cell hose and one idle colonist beside the reel
-
-**Notice**
-
-- press Retract on the reel (UNPAUSE first): the colonist winds the hose back along its route to the reel
-- the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once
-- it ends Stored: no hose on the ground, the reel's drum full
-
-**Try**
-
-- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
-
 ## Expected refusals (shown on purpose)
 
-- 38 (was 26): the pole inside the roofed room is refused (Roofed).
-- 39 (was 27): the 21-cell pair is refused (OutOfRange).
-- 40 (was 28): the fifth pole is refused (FullA: the hub's 4 slots are used).
+- 25 ROOF BOUNDARY (was 38): link 0-2 is refused (Roofed).
+- 26 LONG SPAN + DIAGONALS (was 39): link 2-3 is refused (OutOfRange).
+- 27 CONVERGING HUB (was 40): link 0-5 is refused (FullA).
 
 ## M. Art-slot board: which per-look pieces still fall back
 
 Computed from the files on disk at the paths the shipped code reads, so it shrinks as art lands. In world (north band, `--goto M`) the board lists only the rows that are not all 'own'.
+
+**Note**
+
+- U_style_missing_art (moved off the live proof 2026-10-05): per-family EndFrayed_Live / PowerStrip / StrandShadow art does not exist; those slots fall back to the Jawa (Scrapper) pieces. Judge whether the fallback reads acceptably in each look; it is taste, not a Northstar bar.
 
 | piece | Scrapper | Industrial | Modern | Futuristic |
 |---|---|---|---|---|

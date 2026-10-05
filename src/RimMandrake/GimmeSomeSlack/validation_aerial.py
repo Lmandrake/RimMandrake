@@ -147,7 +147,7 @@ def run_live(args):
     c0 = B.ap("census")
     ap0 = anchors_by_pos(c0)
     ok = all(p in ap0 for p in (M1, M2, M3, HMAST)) and (bs.get("storedEnergyAfter") or 0) > 0
-    V.row(rows, "A0_scene_built", "PASS" if ok else "FAIL", "SITE",
+    V.hrow(rows, "A0_scene_built", "PASS" if ok else "FAIL", "SITE",
           {"walls": b_w.get("survived"), "roof": roof.get("success"), "battery": bat_id, "stored": bs.get("storedEnergyAfter"),
            "masts": b_m.get("survived"), "lamp": b_l.get("survived"), "hostileMast": b_h.get("survived"), "anchors": sorted(ap0)})
     if not ok:
@@ -204,6 +204,8 @@ def run_live(args):
     al = c2.get("altitudes") or {}
     alt_ok = al and al["pawn"] < al["pawnState"] < al["top"] < al["span"] < al["blueprint"] < al["weather"]
     V.row(rows, "R1_span_altitude_above_pawns_below_blueprints", "PASS" if alt_ok else "FAIL", "MOD", al)
+    # KEPT although the consolidation doc proposed cutting it "if MX_A's census row reads R2's fields (verify)": verified
+    # 2026-10-05, run_live.aerial_compare reads spans_up/cut/fallen/pole_live/anchors, never spanDraws/topDraws/spanMeshes.
     V.row(rows, "R2_spans_and_heads_drawn", "PASS" if c2.get("spanDraws", 0) >= 2 and c2.get("topDraws", 0) >= 3 and c2.get("spanMeshes", 0) >= 2 else "FAIL",
           "MOD", {k: c2.get(k) for k in ("spanDraws", "topDraws", "spanMeshes", "groundVerts")})
     res["screenshots"].append(B.shot("aerial_01_lines_up", (AX0 - 1, AZ0 + 1, 30, 10)))
@@ -359,8 +361,9 @@ def run_live(args):
     # non-destroyable thing ..." -- the harness's own clear, not the mod (same exclusion validation_hose.py has).
     site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
     errs = [e for e in errs if e not in site]
-    V.row(rows, "AZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
-          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrorsExcluded": len(site)})
+    if not V.SHARED:                 # SHARED: proof_all's one run-end Z over the whole session (doc section 2 "Log budget")
+        V.row(rows, "AZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
+              {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrorsExcluded": len(site)})
     B.ap("defaults")
     res["log"] = log
     res["sceneIds"] = {"m1": i1, "m3": i3, "hostileMast": ih, "battery": bat_id, "hostileBattery": hb_id}
