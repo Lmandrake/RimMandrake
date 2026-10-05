@@ -50,8 +50,8 @@
       <li><plant>RUT_PaleTree</plant><top>None</top></li>
       <li><plant>RUT_PaleMoss</plant><top>None</top></li>
       <li><plant>RUT_DyingCreep</plant><top>None</top></li>                 <!-- hard call 3 -->
-      <li><plant>RSW_Ollim</plant><top>None</top></li>
-      <li><plant>RSW_LightPipeNub</plant><top>None</top></li>
+      <li><plant>RM_Ollim</plant><top>None</top></li>
+      <li><plant>RM_LightPipeNub</plant><top>None</top></li>
       <li><plant>RUT_SweetlineTree</plant><top>None</top></li>
       <li><plant>RUT_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
       <li><plant>RUT_TreeMartyr</plant><top>None</top></li>

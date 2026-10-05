@@ -57,9 +57,10 @@
     — glass-nub light-pipes (dune_sea.md SS4) and the ollim, deep_desert.md SS4b's
     "tree that grows to cast shade" (final name, owner ruling this item; superseded
     the "Silverbole"/"Silverpan" working names) — are now authored
-    (RSW_LightPipeNub, RSW_Ollim, RSW_ExtremeDesertSignatureFlora.xml) and wired
-    into wildPlants below. Their art (plus RSW_OllimWood's) rendered and was
-    deployed 2026-09-24 — real, non-placeholder art on all three defs.
+    and wired into wildPlants below — since 2026-10-05 as the RM_ defs
+    RM_LightPipeNub/RM_Ollim (mandrake.rm.stillsand); the RSW_ copies were
+    deleted (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner: "belongs in
+    RimMandrake level").
 
     NOT this pass's scope: the sarlacc (deep_desert.md Owed, its own item); the
     megafauna filter-feeders (both sheets' SS4/SS10, new-art owed); the
@@ -205,8 +206,8 @@
            ONLY wildPlant here — the two rows below are this biome's own named signature
            flora (dune_sea.md SS4, deep_desert.md SS4b), sparse per the sheets' own
            "if the roster looks healthy, it is wrong" ruling. -->
-      <RSW_LightPipeNub MayRequire="mandrake.rsw.swbestiary">0.1</RSW_LightPipeNub>  <!-- light-pipe nub - the dune sea's whole visible biome, dune_sea.md SS4 -->
-      <RSW_Ollim MayRequire="mandrake.rsw.swbestiary">0.01</RSW_Ollim>  <!-- ollim - deep_desert.md SS4b's shade tree, final name per EXTREME_DESERT_SIGNATURE_FLORA_1 -->
+      <RM_LightPipeNub MayRequire="mandrake.rm.biomes">0.1</RM_LightPipeNub>  <!-- light-pipe nub - the dune sea's whole visible biome, dune_sea.md SS4 -->
+      <RM_Ollim MayRequire="mandrake.rm.biomes">0.01</RM_Ollim>  <!-- ollim - deep_desert.md SS4b's shade tree, final name per EXTREME_DESERT_SIGNATURE_FLORA_1 -->
     </wildPlants>
     <wildPlantRegrowDays>35</wildPlantRegrowDays>
 
