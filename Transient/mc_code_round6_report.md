@@ -43,3 +43,7 @@ Built offline. NOT deployed (no --apply), NOT run live (main window holds the br
 
 - lamps, relay, draw order, length: code written; building
 - human_review: lamps in style stations 1-5, 7-10 placed styled (lamp_looks -> cplace StandingLamp:<look>); station 12 kept unstyled; new station 42 RELAY REELS at (160,172) region 2. selftest_human_review 24/24 (scope of 'new' limited to 1-12).
+
+## Commits
+- 9de0f9200 source, selftests, human_review, validation_hose --relay, this report
+- 96d984aca DLL + .srchash from committed source (both on origin/main). Owed: deploy_custom_mods.py --mod MessyConduit --apply at the next shutdown.
