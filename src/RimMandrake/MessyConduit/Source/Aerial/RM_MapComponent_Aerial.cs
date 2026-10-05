@@ -327,7 +327,7 @@ namespace RimMandrake.MessyConduit.Aerial
         public override void MapComponentUpdate()
         {
             AerialProbe.Service(map, this);
-            lastSpanDraws = lastSwayDraws = lastTopDraws = lastGlowDraws = lastDropDraws = lastLitHeads = 0;
+            lastSpanDraws = lastSwayDraws = lastTopDraws = lastGlowDraws = lastDropDraws = 0;
             if (!AerialSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
             float wind = map.windManager.WindSpeed;
@@ -343,7 +343,6 @@ namespace RimMandrake.MessyConduit.Aerial
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(top.mainTexture != null ? top.mainTexture.width / 128f : 1f, 1f, 1f)), top, 0);
                     lastTopDraws++;
                 }
-                if (a.def == AerialDefOf.RM_AerialLampMast && view.Contains(a.Position)) DrawLitHead(a);
                 foreach (SpanLink l in a.links)
                 {
                     if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
@@ -523,25 +522,9 @@ namespace RimMandrake.MessyConduit.Aerial
         public static float SpanAltitude => AltitudeLayer.PawnState.AltitudeFor(5f);
         public static float TopAltitude => AltitudeLayer.PawnState.AltitudeFor(4f);
 
-        /// <summary>State read: lamp-mast heads drawn lit on the last frame.</summary>
-        public int lastLitHeads;
-
-        /// <summary>Round 4: a lamp mast whose glower glows (powered, switched on) draws a lit bulb at its head, in its glow colour.</summary>
-        private void DrawLitHead(CompAerialAnchor a)
-        {
-            CompGlower g = a.parent.TryGetComp<CompGlower>();
-            if (g == null || !g.Glows) return;
-            Vector2 h = AerialMaterials.LampHeadFor(a);
-            Color c = g.GlowColor.ToColor;
-            float mx = Mathf.Max(c.r, Mathf.Max(c.g, c.b), 0.01f);
-            c = new Color(c.r / mx, c.g / mx, c.b / mx, 1f);
-            Material m = AerialMaterials.HeadGlow(c);
-            if (m == null) return;
-            var pos = new Vector3(a.Position.x + 0.5f + h.x, TopAltitude + 0.01f, a.Position.z + 0.5f + h.y);
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(0.9f, 1f, 0.9f)), m, 0);
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(0.35f, 1f, 0.35f)), AerialMaterials.HeadGlow(Color.white), 0);
-            lastLitHeads++;
-        }
+        // Round 5 (owner 2026-10-04: "Make the lamps on the lamp masts like ordinary lights, not frozen bright sparkles. Make
+        // them the same as the wall lights normally used."): no lit-head sprite. Like vanilla WallLamp / StandingLamp the mast
+        // is its look's art plus a CompGlower, and the light is the glow grid's alone.
 
         private void DrawFallenGlow()
         {

@@ -194,8 +194,7 @@ namespace RimMandrake.MessyConduit.Aerial
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +
-                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount +
-                      ",\"litHeads\":" + comp.lastLitHeads);
+                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
             // round 4: is each lamp mast powered and glowing (owner: "no illumination present")
             sb.Append(",\"lampMasts\":[" + string.Join(",", comp.Anchors.Where(a => a.def == AerialDefOf.RM_AerialLampMast).Select(a =>
                 "{\"id\":" + a.thingIDNumber + ",\"powerOn\":" + B(a.parent.TryGetComp<CompPowerTrader>()?.PowerOn ?? false) +

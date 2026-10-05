@@ -35,7 +35,7 @@ namespace RimMandrake.MessyConduit.Aerial
         public static Material FrayDead;
         public static string SpanPath, BuiltKey = "", Look = "Scrapper";
         /// <summary>Span ribbon width (cells) for the look: Star Wars cable is thick, modern and Cybertek lines thin. PROVISIONAL.</summary>
-        public static float SpanWidth = 0.17f;
+        public static float SpanWidth = 0.10f;
 
         static AerialMaterials() { Build(); }
 
@@ -72,7 +72,7 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             switch (look)
             {
-                case "Industrial": return 0.17f;
+                case "Industrial": return 0.10f;   // round 5 (owner: "Make the industrial black cables for the poles narrower: they are extremely thick right now"): 0.17 -> 0.10
                 case "Scrapper": return 0.14f;
                 default: return 0.095f;
             }
@@ -175,29 +175,6 @@ namespace RimMandrake.MessyConduit.Aerial
             }
         }
 
-        /// <summary>Round 4 (owner 2026-10-04: "Light controls present on light mast, but no illumination present"): where each
-        /// look's lamp-mast BULB is, (x, z) cells from the cell centre, read off its AerialLampMast.png (256x512 drawn 2x4,
-        /// graphic top at z 3.5: z = 3.5 - row/128, x = (col - 128)/128). The lit head is drawn there while the glower glows,
-        /// so the lamp reads as lit even at noon, when the glow grid's light is invisible outdoors (vanilla lamps alike).</summary>
-        public static readonly Dictionary<string, Vector2> LampHead = new Dictionary<string, Vector2>
-        {
-            { "Scrapper", new Vector2(0.64f, 2.06f) }, { "Industrial", new Vector2(0.56f, 2.06f) },
-            { "Modern", new Vector2(0.65f, 2.63f) }, { "Futuristic", new Vector2(0.60f, 2.53f) }
-        };
-
-        public static Vector2 LampHeadFor(CompAerialAnchor a) => LampHead.TryGetValue(LookOf(a), out Vector2 h) ? h : LampHead["Scrapper"];
-
-        private static readonly Dictionary<int, Material> glowByColour = new Dictionary<int, Material>();
-
-        /// <summary>The additive head glow in the glower's own colour (cached per colour; darklight stays blue).</summary>
-        public static Material HeadGlow(Color c)
-        {
-            if (Glow == null) return null;
-            int key = ((int)(c.r * 255) << 16) | ((int)(c.g * 255) << 8) | (int)(c.b * 255);
-            if (!glowByColour.TryGetValue(key, out Material m))
-                glowByColour[key] = m = MaterialPool.MatFrom(new MaterialRequest(Glow.mainTexture, ShaderDatabase.MoteGlow, c));
-            return m;
-        }
 
         /// <summary>Per-look pole geometry, measured from each look's own art (PoleGeometryTable, generated): insulator height
         /// (attachZ) and the centre of the cropped top overlay (topOffsetZ), cells above the cell centre. Key "Look/defName".</summary>

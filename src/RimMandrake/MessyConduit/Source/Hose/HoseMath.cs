@@ -675,7 +675,10 @@ namespace RimMandrake.MessyConduit.Hose
             if (reel.Contains(target)) return "same cell";
             if (V2.Dist(reel.Centre, target.Centre) > maxLength) return "too far";
             if (!w.IsWalkable(target)) return "target blocked";
-            double len = RouteLength(w, reel, target);
+            // round 5: the search is bounded by the hose's length, so any route that fits is found however winding; only
+            // when none is within reach does an unbounded search tell "too long" (a way exists) from "no route"
+            double len = RouteLength(w, reel, target, maxLength);
+            if (len < 0) len = RouteLength(w, reel, target);
             if (len < 0) return "no route";
             if (len * RouteMargin > maxLength) return "route too long";
             return null;
@@ -684,20 +687,21 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>Hose a route needs beyond its pulled-taut length (slack, bends round corners): 5%.</summary>
         public const double RouteMargin = 1.05;
 
-        /// <summary>Round 4 (owner, station 23): the length a hose needs from the reel centre to target, or -1 for no
-        /// route. The A* cell path pulled taut (any-angle, never through a wall or a pinched diagonal), from the reel's
-        /// centre. Round 3 summed the cell path's centre-to-centre steps x1.08: a staircase, which over-read the owner's
-        /// zig-zag maze at 48.5 cells where the hose actually lays 35.</summary>
-        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target)
+        /// <summary>Round 4 (owner, station 23): the length a hose needs from the reel to target, or -1 for no route. The
+        /// cell route pulled taut (any-angle, never through a wall or a pinched diagonal), from the reel's mouth. Round 3
+        /// summed the cell path's centre-to-centre steps x1.08: a staircase, which over-read the owner's zig-zag maze at
+        /// 48.5 cells where the hose actually lays 35. maxLength (the hose) bounds the search (RouteCells); without it the
+        /// search runs to <see cref="RouteMaxExpand"/>.</summary>
+        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1)
         {
-            List<V2> p = RoutePulled(w, reel, target);
+            List<V2> p = RoutePulled(w, reel, target, maxLength);
             return p == null ? -1 : Geo.Length(p);
         }
 
-        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target)
+        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1)
         {
             Cell s = reel.StartCellToward(target);
-            List<Cell> path = CordPlanner.AStar(w, s, target, 20000);
+            List<Cell> path = RouteCells(w, s, target, maxLength > 0 ? SearchLengthBound(maxLength) : -1);
             if (path == null) return null;
             var pts = new List<V2> { reel.Mouth };
             for (int i = 0; i < path.Count; i++) if (i > 0 || V2.Dist(path[0].Centre, reel.Mouth) > 1e-9) pts.Add(path[i].Centre);
@@ -711,6 +715,86 @@ namespace RimMandrake.MessyConduit.Hose
                 a = b;
             }
             return o;
+        }
+
+        /// <summary>Round 5 (owner, station 34: "when challenged by a complex path it gave up and reeled in. Needs a longer
+        /// path search."). The longest CELL path (8-way steps through cell centres) worth searching for a hose of
+        /// maxLength: a route fits when its taut length x RouteMargin is within the hose, and a cell path through a
+        /// one-cell zig-zag maze runs up to ~1.3x its taut length (round 4: 44.9 vs 35), so 1.5x + 4 never cuts off a
+        /// route that fits. A 30-cell hose searches cell paths up to 46.9.</summary>
+        public static double SearchLengthBound(double maxLength) => 1.5 * maxLength / RouteMargin + 4;
+
+        /// <summary>Unbounded search (no hose length given, or the bounded search found nothing and the reason must be told
+        /// apart): every cell of a 300x300 map, enough for any map a colony plays on.</summary>
+        public const int RouteMaxExpand = 90000;
+
+        /// <summary>State read: cells the last RouteCells expanded, and whether it ran out of budget.</summary>
+        public static int LastRouteExpanded;
+        public static bool LastRouteCapped;
+
+        /// <summary>The hose's own route search (round 5). Round 4 used the cord planner's A* with a flat 20000-expansion cap,
+        /// which is no bound on length at all: on a big open map a hard route spent it and read as "no route". This is the
+        /// same A* (8-way, no corner cutting, ExtraCost for water and trees) with the search bounded by LENGTH: a node
+        /// whose path length plus straight-line remainder exceeds lengthBound is never opened, so every route within the
+        /// bound is found and the search never leaves the (2 x bound + 1)^2 square round the reel. lengthBound &lt;= 0 =
+        /// unbounded, capped at RouteMaxExpand.</summary>
+        public static List<Cell> RouteCells(CordWorld w, Cell start, Cell goal, double lengthBound)
+        {
+            LastRouteExpanded = 0;
+            LastRouteCapped = false;
+            if (start == goal) return new List<Cell> { start };
+            bool Ok(Cell c) => c == start || c == goal || w.IsWalkable(c);
+            double H(Cell c)
+            {
+                int dx = Math.Abs(c.X - goal.X), dz = Math.Abs(c.Z - goal.Z);
+                return Math.Max(dx, dz) + 0.414 * Math.Min(dx, dz);
+            }
+            int cap = lengthBound > 0 ? (int)Math.Min(RouteMaxExpand, Math.Pow(2 * Math.Ceiling(lengthBound) + 3, 2)) : RouteMaxExpand;
+            var g = new Dictionary<Cell, double> { [start] = 0 };
+            var len = new Dictionary<Cell, double> { [start] = 0 };
+            var came = new Dictionary<Cell, Cell>();
+            var open = new SortedSet<(double f, double g, Cell c)>(Comparer<(double f, double g, Cell c)>.Create((x, y) =>
+            {
+                int k = x.f.CompareTo(y.f);
+                if (k != 0) return k;
+                k = x.g.CompareTo(y.g);
+                return k != 0 ? k : x.c.CompareTo(y.c);
+            }));
+            open.Add((H(start), 0, start));
+            while (open.Count > 0)
+            {
+                var top = open.Min;
+                open.Remove(top);
+                Cell c = top.c;
+                if (c == goal)
+                {
+                    var path = new List<Cell> { c };
+                    while (came.TryGetValue(c, out Cell p)) { c = p; path.Add(c); }
+                    path.Reverse();
+                    return path;
+                }
+                if (top.g > g[c] + 1e-12) continue;
+                if (++LastRouteExpanded > cap) { LastRouteCapped = true; return null; }
+                foreach (Cell d in Cell.Dirs8)
+                {
+                    Cell q = c + d;
+                    if (!w.InBounds(q) || !Ok(q)) continue;
+                    if (d.X != 0 && d.Z != 0 && !(Ok(new Cell(c.X + d.X, c.Z)) && Ok(new Cell(c.X, c.Z + d.Z)))) continue;
+                    double step = d.X != 0 && d.Z != 0 ? 1.414 : 1.0;
+                    double nl = len[c] + step;
+                    if (lengthBound > 0 && nl + H(q) > lengthBound) continue;
+                    double ng = top.g + step + w.ExtraCost(q);
+                    if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
+                    {
+                        if (g.TryGetValue(q, out double o2)) open.Remove((o2 + H(q), o2, q));
+                        g[q] = ng;
+                        len[q] = nl;
+                        came[q] = c;
+                        open.Add((ng + H(q), ng, q));
+                    }
+                }
+            }
+            return null;
         }
 
         /// <summary>True when the straight segment a-b stays out of walls (ClipTolerance) and never slips through a
@@ -772,13 +856,18 @@ namespace RimMandrake.MessyConduit.Hose
         public HoseReelRect(int x0, int z0, int w, int h) { X0 = x0; Z0 = z0; W = Math.Max(1, w); H = Math.Max(1, h); }
         public V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
 
-        /// <summary>Round 4 (owner, station 22: "inappropriate connectivity to the hose reel itself"): where the hose leaves
-        /// the reel. On the 2x2 reel that is under the DRUM's front (the art at drawSize 2.8: drum centre u 168/256, just
-        /// above its underside v 165/256), not the footprint centre, which sits under the pump body by its inlet coupling,
-        /// so the hose read as plugged into the pump's inlet. Hidden under the sprite, it shows coming off the drum through
-        /// the gap above the base rail. A 1x1 reel keeps its centre.</summary>
+        /// <summary>Where the hose leaves the reel. Round 5 (owner, station 11: "the hoses should aim to the mid-point of the
+        /// reel wheel, so you can't see the end of the hose peeking through below the reel"): on the 2x2 reel the hose
+        /// ends at the DRUM's axis, read off all four looks' Reel_Deployed art at drawSize 2.8 (axle bolt v 124/256, drum
+        /// between the flanges u 118-245, centre u 180/256), so the hose disappears under the opaque drum; its end and
+        /// its reel-end fitting are never drawn (RM_MapComponent_Hoses.DrawEnds). Round 4 had it just above the drum's
+        /// underside (u 168, v 165), where its end showed through the gap above the base rail. A 1x1 reel keeps its centre.</summary>
         public V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
-        public const double ReelDrawSize = 2.8, MouthDX = (168.0 / 256 - 0.5) * ReelDrawSize, MouthDZ = (0.5 - 165.0 / 256) * ReelDrawSize;
+        public const double ReelDrawSize = 2.8, MouthDX = (180.0 / 256 - 0.5) * ReelDrawSize, MouthDZ = (0.5 - 124.0 / 256) * ReelDrawSize;
+        /// <summary>The drum's half-height below its axis (art: underside v 165/256), cells: the hose end must sit above it.</summary>
+        public const double DrumBelowAxis = (165.0 - 124.0) / 256 * ReelDrawSize;
+        /// <summary>True when the reel's own art hides the hose end (the 2x2 reel's drum): no reel-end fitting is drawn.</summary>
+        public bool HidesHoseEnd => W == 2 && H == 2;
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 

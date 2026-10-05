@@ -103,7 +103,7 @@ namespace RimMandrake.MessyConduit.Hose
               .Append(",\"minPlumpDwell\":").Append(HoseSettings.minPlumpDwell)
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
-              .Append(",\"feedDraws\":").Append(comp.lastFeedDraws)
+              .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)
               .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
               .Append(",\"hoses\":[");
             bool first = true;
