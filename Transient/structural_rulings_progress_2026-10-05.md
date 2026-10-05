@@ -45,3 +45,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - SIZE RSW_Ikee: DONE — x1/3 (bodySize 0.4->0.133; drawSizes 1/1.25/1.5 -> 0.333/0.417/0.5)
 - SIZE RSW_WarWyrm: DONE — +50% (bodySize 15->22.5; drawSizes x1.5)
 - SIZE RM_DuneCrawler: DONE — x1/3 — it is a catch ITEM (RM_SandCatches.xml), not a pawn: graphicData drawSize 1 -> 0.33
+- DOC: LongShade About.xml fauna list, RM_LongShade.xml + RM_LongShade_Fauna.xml headers corrected for the cuts/moves/renames.

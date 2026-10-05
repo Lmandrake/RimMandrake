@@ -38,17 +38,19 @@ retired and deleted, since "glitter-bird" is descriptive English, not canon
 Star Wars IP (Q11a), and so belongs cast inline here rather than behind the
 Utinni patch layer. Native wild fauna: JOE_Landopus, RM_Qorrax (renamed from
 JOE_Cephalope; its def lives in mandrake.rm.stillsand, so the row is guarded
-MayRequire="mandrake.rm.stillsand"), plus RM_Bokka, RM_Ossik, RM_Kudda,
-RM_Thurra, RM_Vosska, RM_Khorrak, RM_Ommok, RM_Ulgga, RM_Dunejelly,
-RM_TruffleMole, RM_GreatDevourer, RM_Oreclaw, RM_MatureFleshbeast,
-RM_Gloomcast (the former shade whale, RULED name — Q5), RM_Chorn, RM_Gennok,
+MayRequire="mandrake.rm.stillsand"), plus RM_Bokka, RM_Khorrak, RM_Dunejelly,
+RM_GreatDevourer, RM_Oreclaw, RM_Gloomcast (the former shade whale, RULED name — Q5), RM_Chorn, RM_Gennok,
 RM_Tebbra, RM_Dakkra, RM_Pirrik and RM_Mirrak (the false-shadow ambusher,
-LONGSHADE_BEDAZZLE_MECHANICS_1). Native flora: RM_Vorrel (the desert's
+LONGSHADE_BEDAZZLE_MECHANICS_1). This mod also ships the defs of four animals
+cast elsewhere since the 2026-10-04 sheet: RM_Ommok (the Miasma), RM_TruffleMole
+(the Leaning Scrub), RM_Ulgga and RM_Vosska (the Stillsand). Native flora: RM_Vorrel (the desert's
 cycle plant, moved and renamed here from mandrake.rut.ashkarrflora per §7 Q8),
 RM_Leachmoss and RM_Venomvine (mandrake.rm.environmentalhazards,
-MayRequire-guarded), RM_UltrissPad (Q2: "not canon, I made it") and
+MayRequire-guarded) and
 RM_Dewfringe (new, Q6 — a shade-boundary rim plant, growth confined to the
-rim by its own small Harmony patch). Its foragedFood is a real standalone
+rim by its own small Harmony patch). It also ships the def of RM_UltrissPad (the
+ultriss pad, Q2: "not canon, I made it"), cast in the Stillsand since 2026-10-05.
+Its foragedFood is a real standalone
 item, RM_UltracactusPad (Q3), closing the same inert-forage gap
 DESERT_FORAGEDFOOD_INERT_1 fixed one tier down. Five more Star Wars-tier wild
 plants (mandrake.rsw.swbestiary, MayRequire-guarded) stay wired inline at
