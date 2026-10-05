@@ -157,7 +157,8 @@ namespace RimMandrake.FlowWorks
 				found.Count,
 				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
 			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
-			FluidDef fluid = owner.ActiveFluid;
+			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: capacity is the body's OWN fluid's, never the map's.
+			FluidDef fluid = body.fluid;
 			body.capacity = RM_StockMath.BodyCapacity(
 				found.Count,
 				fluid != null ? fluid.canalCellsPerSourceCell : DefaultCanalCellsPerSourceCell,
@@ -200,7 +201,7 @@ namespace RimMandrake.FlowWorks
 			// flat 1 would let a viscous liquid with volumePerTile above 1 pass
 			// the check and then fail the debit, which reads as a source that
 			// stutters rather than one that is empty.
-			FluidDef fluid = owner.ActiveFluid;
+			FluidDef fluid = body.fluid ?? owner.ActiveFluid;
 			float unit = fluid != null ? fluid.volumePerTile : 1f;
 			return RM_StockMath.CanSupply(body.limitless, body.stock, unit);
 		}
@@ -295,10 +296,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			FluidDef fluid = owner.ActiveFluid;
+			// LIQUID_BODY_FLUID_IDENTITY_1 step 3: refill and recession read each body's own fluid;
+			// ActiveFluid survives only as the default for a body a save left unstamped.
 			for (int b = 0; b < bodies.Count; b++)
 			{
 				RM_LiquidBody body = bodies[b];
+				FluidDef fluid = body.fluid ?? owner.ActiveFluid;
 				if (body.limitless)
 				{
 					// Ruling 16's other half: a limitless body never runs down,

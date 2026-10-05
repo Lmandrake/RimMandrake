@@ -48,9 +48,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 step 1. Per-cell liquid identity beside D and F: 0 = none, else
 		/// 1 + an index into <see cref="fluidPalette"/>. A pit is not an RM_LiquidBody (its component is re-found
-		/// every pulse), so identity has to live per cell. This pass only RECORDS it (SyncFluidIdentity stamps the
-		/// map's ActiveFluid where F &gt; 0 and clears where F == 0); the no-mix filter in PickDonor and the retirement
-		/// of ActiveFluid at every reader are steps 2-3 of the item.</summary>
+		/// every pulse), so identity has to live per cell. Every writer stamps the fluid it pours (steps 2-3); the
+		/// PickDonor no-mix filter reads it. ActiveFluid survives only as the default SyncFluidIdentity stamps on a
+		/// wet cell a save left unrecorded (the step-4 migration).</summary>
 		private byte[] fluidGrid;
 
 		private List<FluidDef> fluidPalette = new List<FluidDef>();
@@ -292,6 +292,36 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1's named risk: a FluidDef removed from the mod set loads as a null
+		/// palette entry, FluidAt answers null for its cells, and the sync would re-stamp them with ActiveFluid —
+		/// a silent conversion. This makes it loud, once per map load, and zeroes those records so the
+		/// re-stamp that follows is the disclosed migration rather than an accident.</summary>
+		private void ReportLostPaletteFluids()
+		{
+			if (fluidPalette == null || fluidGrid == null || !fluidPalette.Contains(null))
+			{
+				return;
+			}
+			int cells = 0;
+			for (int i = 0; i < fluidGrid.Length; i++)
+			{
+				int k = fluidGrid[i];
+				if (k > 0 && k <= fluidPalette.Count && fluidPalette[k - 1] == null)
+				{
+					fluidGrid[i] = 0;
+					cells++;
+				}
+			}
+			int lost = 0;
+			foreach (FluidDef f in fluidPalette)
+			{
+				if (f == null) lost++;
+			}
+			Log.Warning("[RimMandrake.FlowWorks] " + lost + " fluid(s) recorded in this save no longer exist in the "
+				+ "loaded mod set; " + cells + " wet excavated cell(s) held them and are re-stamped as "
+				+ (ActiveFluid?.defName ?? "null") + ". This is a conversion caused by the mod list, not by flow.");
+		}
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -350,6 +380,7 @@ namespace RimMandrake.FlowWorks
 				stock = new RM_LiquidStock();
 			}
 			stock.RebuildIndex(map);
+			ReportLostPaletteFluids();
 			SyncFluidIdentity();
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the
@@ -1036,7 +1067,9 @@ namespace RimMandrake.FlowWorks
 						// A failed debit must NOT move liquid — a transfer that
 						// happens after its debit failed is precisely the silent
 						// leak the ledger below exists to catch.
-						if (!stock.TryDebit(map, donor, ActiveFluid != null ? ActiveFluid.volumePerTile : 1f, this))
+						// Step 3: the debit unit is the SOURCE BODY's fluid, never the map's.
+						FluidDef sourceFluid = DonorFluid(donor, true) ?? ActiveFluid;
+						if (!stock.TryDebit(map, donor, sourceFluid != null ? sourceFluid.volumePerTile : 1f, this))
 						{
 							break;
 						}
