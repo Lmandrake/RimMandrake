@@ -1001,6 +1001,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 	</PawnKindDef>
 
 	<ThingDef ParentName="AnimalThingBase">
+		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: khorrak "belongs at RimMandrake level"): RM_Khorrak (mandrake.rm.longshade) is now the ONLY khorrak cast anywhere; RUT_Desert was recast onto it. This RSW_ def is UNCAST and kept only because it is the sole carrier of the C# steel diet (CompProperties_MetalEater) and its live proof (SWBestiary validation.py metal_eater_seeks_its_metal); retire it once that mechanic is ported to the RM tier or ruled dropped. -->
 		<!-- Alpha Animals AA_Terramorph -> RSW_Khorrak. useMeatFrom AA_BoulderMit repointed to this batch's own port of it, RSW_Korrum (renamed from RSW_Bokka 2026-09-22, STONEBACK_DEFNAME_COLLISION_1 — that defName belongs to the BiomesTeam bokka). The steel diet is REBUILT in our own C# (PORTED_BEAST_MECHANICS_REBUILD_1, owner 2026-09-20 "Rebuild in our c#."): RimMandrake.StarWars.SWBestiary.CompProperties_MetalEater below replaces VEF.AnimalBehaviours.CompProperties_EatWeirdFood, same nutrition/stack-bite/auto-dig numbers, measured from the donor's source. The donor's slow steel-to-AA_SkySteel conversion (CompProperties_NearbyEffecter) is replaced by a vanilla CompSpawner shedding ChunkVacstone (owner 2026-10-04, LONGSHADE_SHEET_STRUCTURAL_RULINGS_1). -->
 		<defName>RSW_Khorrak</defName>
 		<label>khorrak</label>
