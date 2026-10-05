@@ -328,10 +328,11 @@
     </BodyDef>
 
 
+	<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet: "Rename to Thraia"): label renamed landopus -> thraia. defName JOE_Landopus KEPT on purpose — RUT_Desert (the biome the canonical savegame's planet carries) casts it, so a defName change could drop saved pawns. -->
 	<ThingDef ParentName="AnimalThingBase">
 		<defName>JOE_Landopus</defName>
-		<label>landopus</label>
-		<description>Despite the name, this bad-tempered creature evolved from squid and has eight tentacles and two arms. The landopus has a venomous bite and a full load of its deadly neurotoxin will kill a healthy adult human in a minute or less.</description>
+		<label>thraia</label>
+		<description>A bad-tempered, sand-coloured land squid with eight long, slender tentacles ringed with odd blue circles, two arms, and a wicked parrot-like beak tucked within. The thraia waits half-buried in the sand; a full load of its deadly neurotoxin will kill a healthy adult human in a minute or less.</description>
 		<statBases>
 			<MoveSpeed>1.8</MoveSpeed>
 			<MarketValue>50</MarketValue>
@@ -394,8 +395,8 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>JOE_Landopus</defName>
-		<label>landopus</label>
-		<labelPlural>landopodes</labelPlural>
+		<label>thraia</label>
+		<labelPlural>thraia</labelPlural>
 		<race>JOE_Landopus</race>
 		<combatPower>5</combatPower>
 		<ecoSystemWeight>0.1</ecoSystemWeight>

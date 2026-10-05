@@ -174,7 +174,7 @@
       <Sandstorm MayRequire="Ludeon.RimWorld.Odyssey">4</Sandstorm>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <JOE_Landopus MayRequire="mandrake.rut.patches">0.5</JOE_Landopus>  <!-- landopus - small ambush predator, this biome's own native fauna -->
+      <JOE_Landopus MayRequire="mandrake.rut.patches">0.5</JOE_Landopus>  <!-- thraia (was "landopus", renamed 2026-10-05) - small ambush predator, this biome's own native fauna -->
       <RM_Qorrax MayRequire="mandrake.rm.biomes">0.5</RM_Qorrax>  <!-- qorrax (was JOE_Cephalope, LONGSHADE_BEDAZZLE_CONTENT_1 part 3, Q7 ratified) - sand burrower & swimmer, this biome's own native fauna -->
       <!-- LONGSHADE_RULED_CONTENT_1 Q1/Q5: the 14 invented-name rows, moved
            inline from the Utinni patch this pass. Weights carried over
