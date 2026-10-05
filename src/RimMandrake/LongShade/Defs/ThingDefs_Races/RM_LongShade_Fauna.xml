@@ -302,6 +302,10 @@
 		<tradeTags>
 			<li>AnimalFighter</li>
 		</tradeTags>
+		<modExtensions>
+			<!-- VOSSKA_SANDSWIM_GRAPHIC_WIRING_1: swimmingGraphicData is drawn while the vosska rests still on sand (see RM_Drazzik, thraia). -->
+			<li Class="RimMandrake.CreatureBehaviors.RM_SandBuriedGraphicExtension" MayRequire="mandrake.rm.biomes" />
+		</modExtensions>
 	</ThingDef>
 
 	<PawnKindDef ParentName="AnimalKindBase">
@@ -323,6 +327,10 @@
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
+				<swimmingGraphicData>
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+					<drawSize>1.8</drawSize>
+				</swimmingGraphicData>
 			</li>
 			<li>
 				<label>vosska juvenile</label>
@@ -330,12 +338,20 @@
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
+				<swimmingGraphicData>
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+					<drawSize>2</drawSize>
+				</swimmingGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska</texPath>
 					<drawSize>3.5</drawSize>
 				</bodyGraphicData>
+				<swimmingGraphicData>
+					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+					<drawSize>3.5</drawSize>
+				</swimmingGraphicData>
 			</li>
 		</lifeStages>
 	</PawnKindDef>
