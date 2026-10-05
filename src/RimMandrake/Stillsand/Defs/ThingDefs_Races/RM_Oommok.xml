@@ -129,7 +129,7 @@
       <body>QuadrupedAnimalWithHooves</body>
       <predator>false</predator>
       <herdAnimal>false</herdAnimal>
-      <baseBodySize>18.0</baseBodySize>
+      <baseBodySize>36</baseBodySize>
       <baseHealthScale>20.0</baseHealthScale>
       <baseHungerRate>0.4</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
@@ -183,21 +183,21 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>3.0</drawSize>
+          <drawSize>6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>5.0</drawSize>
+          <drawSize>10</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Oommok/RM_Oommok</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>7.5</drawSize>
+          <drawSize>15</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
