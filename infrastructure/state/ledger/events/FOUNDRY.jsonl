@@ -2937,3 +2937,5 @@
 {"seat":"FOUNDRY","event":"file","id":"HOSE_BLOCKED_REROUTE_RETRACT_1","title":"Hose blocked route: reroute within length else retract with alert; enforce length on re-plan","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-10-04T22:48:58Z","tsn":1791154138922118118}
 {"seat":"FOUNDRY","event":"file","id":"CORD_COLOUR_PER_PIECE_1","title":"Store Modern cord colour per piece; merge keeps larger run's colour; save migration","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-10-04T22:48:59Z","tsn":1791154139671193119}
 {"seat":"FOUNDRY","event":"note","id":"HOSE_BLOCKED_REROUTE_RETRACT_1","text":"Implemented offline at 5a003c0a4 (DLL c40ee658a, placers 7f3a09ec7): CheckReplan = install test; reroute within length else Retract + message + Alert_HoseRetracted; selftest Replan 7/7. Owed: deploy + live maze M3b/M4 walk.","ts":"2026-10-04T23:10:48Z","tsn":1791155448212359727}
+{"seat":"FOUNDRY","event":"claim","id":"GIMMESOMESLACK_RENAME_1","ts":"2026-10-05T07:26:55Z","tsn":1791185215790110838}
+{"seat":"FOUNDRY","event":"start","id":"GIMMESOMESLACK_RENAME_1","ts":"2026-10-05T07:26:56Z","tsn":1791185216339438346}

@@ -15,7 +15,7 @@ R = "/mnt/d/Luke/dev/_rmscratch/mc_r6"
 HOMES = "/mnt/d/Luke/dev/_rmscratch/mc_r5/homes"
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
 CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
-HOSE = os.path.join(REPO, "src/RimMandrake/MessyConduit/Textures/RimMandrake/MessyConduit/Hose")
+HOSE = os.path.join(REPO, "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Hose")
 
 BASE = ("RimWorld game sprite, seen from directly above (top-down, as RimWorld draws buildings and items), hand-painted "
         "painterly style with crisp detail and a thin dark outline, like RimWorld's own shipping art. One object only. "

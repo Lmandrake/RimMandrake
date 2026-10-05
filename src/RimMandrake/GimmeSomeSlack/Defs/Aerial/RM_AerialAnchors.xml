@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gimme Some Slack aerial power lines (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2).
+     Pole art is per look (Textures/.../Aerial/Styles/<Look>/): 256x512 stout renders drawn 2x4 cells, base on the cell.
+     The Top overlay is the cropped top 128 rows (drawn 2x1 above pawns). attachZ/topOffsetZ come from the per-look
+     PoleGeometryTable, measured from each PNG's insulator tips by Utils/mockups/messy_conduit/wire_pole_art.py;
+     the attachZ/topOffsetZ below apply only when a look has no art of its own.
+     AerialLampMast glow is the lamp; WallBracket and TapClamp are separate art. -->
+<Defs>
+
+  <MapMeshFlagDef>
+    <defName>RM_AerialLines</defName>
+  </MapMeshFlagDef>
+
+  <ThingDef Name="RM_AerialAnchorBase" ParentName="BuildingBase" Abstract="True">
+    <!-- plain Building: the anchor logic is a comp so a save never names a C# class of ours (walk M9b) -->
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <fillPercent>0.15</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <designationCategory>Power</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <researchPrerequisites><li>Electricity</li></researchPrerequisites>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsPower</li></thingCategories>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <repairEffect>Repair</repairEffect>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Mass>8</Mass>
+    </statBases>
+    <costList>
+      <Steel>25</Steel>
+    </costList>
+    <placeWorkers>
+      <li>PlaceWorker_NotUnderRoof</li>
+      <li>RimMandrake.GimmeSomeSlack.Aerial.PlaceWorker_AerialRange</li>
+    </placeWorkers>
+    <comps>
+      <!-- per-build style (design messyconduit_style_per_build_design.md, architecture B): the engine's own style field,
+           carried blueprint -> frame -> building -> minified -> save. Looks: Defs/Aerial/RM_AerialStyles.xml -->
+      <li Class="CompProperties_Styleable" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AerialAnchorBase">
+    <defName>RM_AerialMast</defName>
+    <label>scrap power mast</label>
+    <description>A bent length of scrap pipe with a crooked crossarm and bottle insulators. Overhead wires strung between masts carry power across open ground, over walls and over roofed rooms, as if the masts stood side by side. The mast itself must stand under open sky.</description>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/AerialMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+    <uiIconScale>0.9</uiIconScale>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension">
+        <maxLinks>4</maxLinks>
+        <attachZ>2.66</attachZ>
+        <insulatorSpread>0.4</insulatorSpread>
+        <topTexPath>RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop</topTexPath>
+        <topOffsetZ>2.33</topOffsetZ>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AerialAnchorBase">
+    <defName>RM_AerialLampMast</defName>
+    <label>scrap lamp mast</label>
+    <description>A scrap power mast with a salvaged lamp head on a bent arm. Carries overhead wires like any mast and lights the ground around it.</description>
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/AerialLampMast</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
+      <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
+    </graphicData>
+    <costList>
+      <Steel>35</Steel>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <transmitsPower>true</transmitsPower>
+        <basePowerConsumption>60</basePowerConsumption>
+        <!-- round 3 (owner 2026-10-04: "standard lighting controls"): the vanilla StandingLamp's controls, copied from Core -->
+        <powerUpgrades>
+          <li>
+            <researchProject>ColoredLights</researchProject>
+            <factor>0.5</factor>
+          </li>
+        </powerUpgrades>
+      </li>
+      <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
+      <li Class="CompProperties_Flickable" />
+      <!-- round 4: the vanilla StandingLamp's own radius and colour. Round 5 (owner: "like ordinary lights, not frozen bright
+           sparkles ... the same as the wall lights"): nothing else, exactly as vanilla WallLamp; the head is the look's art -->
+      <li Class="CompProperties_Glower">
+        <glowRadius>12</glowRadius>
+        <glowColor>(217,217,208,0)</glowColor>
+        <colorPickerEnabled>true</colorPickerEnabled>
+        <darklightToggle>true</darklightToggle>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_GlowRadius</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension">
+        <maxLinks>3</maxLinks>
+        <attachZ>2.3</attachZ>
+        <topTexPath>RimMandrake/GimmeSomeSlack/Aerial/AerialLampMastTop</topTexPath>
+        <topOffsetZ>2.15</topOffsetZ>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AerialAnchorBase">
+    <defName>RM_AerialWallBracket</defName>
+    <label>scrap wall bracket</label>
+    <description>A riveted angle-iron bracket with one bottle insulator, bolted onto a wall so an overhead wire can start at a building. Place it beside a wall, facing the wall.</description>
+    <!-- Wall attachment the vanilla way (owner review 2026-10-04 B7; copied from Core TorchWallLamp / Odyssey OxygenPump):
+         the bracket occupies the cell IN FRONT of the wall, its rotation points AT the wall (Placeworker_AttachedToWall),
+         it is not an edifice (so it never claims the wall cell). The 0.9 offsets below apply only to a look with no art of
+         its own: a look with art gets per-facing offsets that put its plate on the wall's OUTER edge (round 2,
+         AerialMath.BracketDrawOffset).
+         CompAerialAnchor.BasePoint adds the same per-rotation offset, so the wire lands on the drawn insulator. -->
+    <rotatable>true</rotatable>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0</fillPercent>
+    <terrainAffordanceNeeded IsNull="True" />
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/Aerial/WallBracket</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <drawOffsetNorth>(0,0,0.9)</drawOffsetNorth>
+      <drawOffsetSouth>(0,0,-0.9)</drawOffsetSouth>
+      <drawOffsetWest>(-0.9,0,0)</drawOffsetWest>
+      <drawOffsetEast>(0.9,0,0)</drawOffsetEast>
+      <damageData><enabled>false</enabled></damageData>
+    </graphicData>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isAttachment>true</isAttachment>
+    </building>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>15</Steel>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_AerialAnchor" />
+    </comps>
+    <placeWorkers>
+      <li>Placeworker_AttachedToWall</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.AerialAnchorExtension">
+        <maxLinks>2</maxLinks>
+        <attachZ>0.27</attachZ>
+        <insulatorSpread>0</insulatorSpread>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PowerTapClamp</defName>
+    <label>power-tap clamp</label>
+    <description>A heavy rusted crocodile clamp with copper jaws, bitten onto someone else's power line, with one of our cords taped to its handle. It quietly drains their grid into ours, one way: the two grids never merge, and their lights brown out on their own. Must bite another faction's conduit or power building, and needs our own cable within reach to bring the power home.</description>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <designationCategory>Power</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <researchPrerequisites><li>Electricity</li></researchPrerequisites>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <!-- round 2 (owner 2026-10-04): the clamp is drawn per frame BITING the victim's line (RM_MapComponent_Aerial.DrawTaps,
+         turned toward its line, sparks while it draws power); the building itself draws nothing, the icon is the clamp -->
+    <graphicData>
+      <texPath>RimMandrake/GimmeSomeSlack/ConduitTransparent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <uiIconPath>RimMandrake/GimmeSomeSlack/Aerial/TapClamp</uiIconPath>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>300</WorkToBuild>
+      <Flammability>0.3</Flammability>
+      <Mass>3</Mass>
+    </statBases>
+    <costList>
+      <Steel>10</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <!-- EXACTLY CompPowerTrader: ThingDef.ConnectToPower requires that class, and a connector never joins a net by
+           adjacency (a transmitter here would merge the two grids). Negative consumption makes PowerNet count it as a
+           power source; CompPowerTap writes the real output every tick. -->
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>-1</basePowerConsumption>
+        <showPowerNeededIfOff>false</showPowerNeededIfOff>
+      </li>
+      <li Class="RimMandrake.GimmeSomeSlack.Aerial.CompProperties_PowerTap" />
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.GimmeSomeSlack.Aerial.PlaceWorker_PowerTap</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>

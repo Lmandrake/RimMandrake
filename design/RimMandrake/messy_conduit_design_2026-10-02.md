@@ -6,7 +6,7 @@ Spawn out a design pass to consider how hard it would be to make MESSY CONDUIT, 
 make conduit sprawl all over the floor in loose wirey mess like it does in real life."*
 
 Status: PHASE 1a BUILT 2026-10-02 (owner chat go-ahead; build pause lifted for this mod), item
-`MESSY_CONDUIT_MOD_1`. Mod: `src/RimMandrake/MessyConduit` (`mandrake.rm.messyconduit`). The model is the **nodal
+`MESSY_CONDUIT_MOD_1`. Mod: `src/RimMandrake/GimmeSomeSlack` (`mandrake.rm.gimmesomeslack`). The model is the **nodal
 cord model** (§8.2): conduit reduced to a node graph, one too-long extension cord per edge planned over the floor,
 buried conduit never drawn. What 1a built and where it departs from this design: §8.13.
 
@@ -249,8 +249,8 @@ Invisible Conduit.
 ## 5. Naming, packaging, settings, north star
 
 **Naming.**
-- packageId `mandrake.rm.messyconduit`, folder `src/RimMandrake/MessyConduit`, C# namespace
-  `RimMandrake.MessyConduit`, prefix `RM_` (`SectionLayer_RM_MessyCords`, `RM_MessyConduitExtension`,
+- packageId `mandrake.rm.gimmesomeslack`, folder `src/RimMandrake/GimmeSomeSlack`, C# namespace
+  `RimMandrake.GimmeSomeSlack`, prefix `RM_` (`SectionLayer_RM_MessyCords`, `RM_MessyConduitExtension`,
   `RM_MapComponent_CordGraph`).
 - It is franchise-free and is a public-use mod.
 - Hard dependency: Harmony (one prefix, for hookup wires, §8.1). No DLC dependency needed, though Odyssey's
@@ -274,8 +274,8 @@ Invisible Conduit.
 
 Defaults equal the shipped behaviour, and all-off degrades to vanilla.
 
-**First functional script** (`debug_process.md` §2): `src/RimMandrake/MessyConduit/validation.py` plus the
-walk `design/validation_walks/RimMandrake/MessyConduit.md`.
+**First functional script** (`debug_process.md` §2): `src/RimMandrake/GimmeSomeSlack/validation.py` plus the
+walk `design/validation_walks/RimMandrake/GimmeSomeSlack.md`.
 
 `## must be true` lines, each with a cheap state read:
 1. The cord graph of the current map exists (`RM_MapComponent_CordGraph`) and its node census matches a
@@ -991,12 +991,12 @@ census, connected-only cords, the gap, geometry, determinism under unrelated edi
 
 ### 8.13 Phase 1a as built (2026-10-02)
 
-**Where it lives.** `src/RimMandrake/MessyConduit/`: `Source/Core/` (Verse-free: `CordWorld` snapshot, `CordGraph`
+**Where it lives.** `src/RimMandrake/GimmeSomeSlack/`: `Source/Core/` (Verse-free: `CordWorld` snapshot, `CordGraph`
 reduction, `CordPlanner` A* + string-pull + corner rounding, `CordLayer` slack, `CordBuilder` per-edge cache);
 `CordWorldAdapter` (map -> `CordWorld`, the only power-specific piece, so hoses or suspended wires can reuse the
 core with their own adapter); `RM_MapComponent_CordGraph`; `SectionLayer_RM_MessyCords`; `ConduitVisuals` (+ the
-hookup-wire prefix); settings; `MessyConduitProbe` (the functional script's state-read channel). Offline oracle
-parity: `Source/SelfTest/` compiles `Core/` against `export_oracle.py`'s scenes (`selftest_messyconduit.py`).
+hookup-wire prefix); settings; `GimmeSomeSlackProbe` (the functional script's state-read channel). Offline oracle
+parity: `Source/SelfTest/` compiles `Core/` against `export_oracle.py`'s scenes (`selftest_gimmesomeslack.py`).
 
 **Departures from the design above, each chosen after the engine said so:**
 - **The conduit texture swap is C#, not an XML patch.** An XML `texPath` replace can only be undone by a restart;

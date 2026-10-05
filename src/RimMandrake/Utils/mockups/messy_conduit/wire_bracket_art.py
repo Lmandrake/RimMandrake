@@ -8,7 +8,7 @@ The bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall) a
 the wall. Which side of a render the PLATE is on (the wall side) was judged by eye per render (PLATE below): the "east"
 renders all put the plate on the LEFT, i.e. the wall to the WEST, so the in-game _east texture is the MIRRORED render and
 west (the game's own mirror of east) is the render as drawn. For each look with art this
-  * writes Textures/RimMandrake/MessyConduit/Aerial/Styles/<Look>/WallBracket_{north,east,south}.png,
+  * writes Textures/RimMandrake/GimmeSomeSlack/Aerial/Styles/<Look>/WallBracket_{north,east,south}.png,
   * MEASURES the insulator: the centroid of the opaque pixels within 22 px of the extreme far from the plate,
   * regenerates Source/Aerial/BracketGeometryTable.cs: the insulator's offset from the graphic centre per Look/rotation
     (cells; x east, z north; 128 px per cell), west = east mirrored.
@@ -223,7 +223,7 @@ def table_src(rows):
 // the look has no art of its own yet (tinted stand-in, def attachZ). Verse-free: the SelfTest compiles this file.
 using System.Collections.Generic;
 
-namespace RimMandrake.MessyConduit.Aerial
+namespace RimMandrake.GimmeSomeSlack.Aerial
 {
     public static class BracketGeometryTable
     {

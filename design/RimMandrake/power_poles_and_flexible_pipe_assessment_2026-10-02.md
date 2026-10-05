@@ -109,7 +109,7 @@ from the repo (not decompiled; source as published, which may differ from the sh
 
 Context the verdict depends on: Messy Conduit is a **visual overlay on vanilla conduits** (a custom
 `SectionLayer` printer, saves nothing, changes no power behaviour; planned
-`mandrake.rm.messyconduit`), and its doc rates "overhead spans between poles" **NOT ADVISABLE for
+`mandrake.rm.gimmesomeslack`), and its doc rates "overhead spans between poles" **NOT ADVISABLE for
 phase 1-3** because a span over walls and furniture has no correct occlusion. Epicguru's mod is the
 counter-evidence: it draws every span at `AltitudeLayer.Skyfaller`, **on top of everything**, and has
 shipped that way since 1.2. For a wire that really is overhead, "above everything except weather"
@@ -215,8 +215,8 @@ too?" has an existing answer for the *plumbing*: FlowWorks. What is new is that 
 Not a fourth mod on day one. A separately loadable library costs a packageId, an About.xml, a
 load-order rule and a settings screen before it has a second consumer. Instead:
 
-1. **Messy Conduit (`mandrake.rm.messyconduit`, `RM_`, franchise-free)** ships the cord kit as a
-   public namespace (e.g. `RimMandrake.MessyConduit.Cords`): the nodal planner (walkable-cell path,
+1. **Messy Conduit (`mandrake.rm.gimmesomeslack`, `RM_`, franchise-free)** ships the cord kit as a
+   public namespace (e.g. `RimMandrake.GimmeSomeSlack.Cords`): the nodal planner (walkable-cell path,
    slack, pile-against-walls settle), the strand mesh printer, strand **material sets** (Jawa matte
    black, ribbed hose, ...), the break readout (sparks / limp ends), and a small two-endpoint link
    interface (endpoints, polyline, HP, on-cut). The floor-conduit overlay is its first consumer. It

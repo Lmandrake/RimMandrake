@@ -2,7 +2,7 @@
 """Wire the artpipe Messy Conduit art families into the mod's Textures (lane C, 2026-10-02).
 
 Source: D:\\Luke\\dev\\_artpipe\\_artsrc\\<job id>\\<job id>.png (finished jobs; item MESSY_CONDUIT_MOD_1).
-Destination: src/RimMandrake/MessyConduit/Textures/RimMandrake/MessyConduit/...
+Destination: src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/...
 
 Naming scheme (one folder per family, slot names fixed so CordMaterials maps slot -> file):
   Styles/<Family>/Strand[_<Variant>].png   128x32, tiles along u
@@ -26,7 +26,7 @@ from PIL import Image
 
 SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc"
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../.."))
-TEX = os.path.join(REPO, "src/RimMandrake/MessyConduit/Textures/RimMandrake/MessyConduit")
+TEX = os.path.join(REPO, "src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack")
 J = "RM_MessyConduit_"
 
 # (job id, dest relative to TEX, kind, canvas)

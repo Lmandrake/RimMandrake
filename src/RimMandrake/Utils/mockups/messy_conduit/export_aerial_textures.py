@@ -3,7 +3,7 @@
 
 Placeholders until the artpipe jobs RM_MessyConduit_Jawa_AerialMast / _AerialMastTop / _AerialLampMast /
 _WallBracket / _TapClamp finish; the swap is dropping the finished PNGs over these same paths
-(src/RimMandrake/MessyConduit/Textures/RimMandrake/MessyConduit/Aerial/). Spans reuse Strand_Jawa (no new art).
+(src/RimMandrake/GimmeSomeSlack/Textures/RimMandrake/GimmeSomeSlack/Aerial/). Spans reuse Strand_Jawa (no new art).
 
 Geometry contract with the C# (Building_AerialAnchor / AerialAnchorExtension, RM_AerialAnchors.xml):
   * AerialMast / AerialLampMast: 128x256 drawn at drawSize (1,2), drawOffset z +0.5 -> the canvas covers the
