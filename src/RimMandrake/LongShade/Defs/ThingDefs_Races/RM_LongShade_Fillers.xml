@@ -354,7 +354,7 @@
          Wraid reuse) since the free tier can't carry a cross-mod BodyDef. -->
     <defName>RM_Dakkra</defName>
     <label>dakkra</label>
-    <description>A close, low ambusher that lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing in the open can match. The burst runs it hot fast — it has to reach shade again before its own heat catches up, or the same speed that let it hunt starts to fail it.</description>
+    <description>A close, low ambusher that lies coiled in a shadow patch waiting for something to overextend, then bursts out at a speed nothing in the open can match. The burst runs it hot fast — it has to reach shade again before its own heat catches up, or the same speed that let it hunt starts to fail it. A row of fins runs down its back and a smaller fan tips its tail; at rest it flares them wide to dump heat into the shade, and folds them flat the instant it runs.</description>
     <statBases>
       <MoveSpeed>4.6</MoveSpeed>
       <MarketValue>380</MarketValue>
@@ -454,18 +454,29 @@
     <combatPower>160</combatPower>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <wildGroupSize>1~1</wildGroupSize>
+    <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: fins (and the tail-tip fan) flare at rest to shed heat, fold down when running.
+         Vanilla 1.6 stationaryGraphicData (Pawn.DrawNonHumanlikeStationaryGraphic: spawned and not pather.Moving) draws RM_Dakkra_rest;
+         bodyGraphicData (fins down) draws while moving and on the corpse. No C#. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra</texPath>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest</texPath>
+          <drawSize>1.0</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra</texPath>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest</texPath>
+          <drawSize>1.5</drawSize>
+        </stationaryGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -476,6 +487,10 @@
             <offset>(0,0,-0.2)</offset>
           </shadowData>
         </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest</texPath>
+          <drawSize>2.0</drawSize>
+        </stationaryGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>
