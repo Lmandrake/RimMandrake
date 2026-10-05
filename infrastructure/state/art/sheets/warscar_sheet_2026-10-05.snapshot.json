@@ -1,6 +1,6 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-05T09:16:50-0700",
+ "built": "2026-10-05T14:28:41-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18",
      "north": "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
      "south": "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6"
+    },
+    "B": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
+    "A": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
+    "B": "Things/Pawn/Animal/AA_Helixien/AA_Helixien"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Helixien_v1"
    },
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "helixien"
   },
@@ -41,23 +49,31 @@
      "east": "6ca13b2bf90882376f7755ef2eab261cd81a7de17c7dd10b8f65a31c2106cc21",
      "north": "7176865f64104bf3164eaabafcdc10ddf4905c493cde77a5e5b097f68ed77769",
      "south": "20985bae10a68c9fdae067165b364107a676c8e61032cfd08a6d83e9b433f726"
+    },
+    "D": {
+     "east": "7fc95113a6a928ae8548d84c6d984b25aa5d6c54a9f0f3cedb0b3df0fede8728",
+     "north": "cfb420c936c95d693413757cee639dcf019cfd3e3a0ba06a1d306065e82bf584",
+     "south": "f00a2881ebd8c3792a4c9da4fa8661d32d37a00b3494f34322f1719471c7ea8a"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowBaby",
     "B": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale",
-    "C": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale"
+    "C": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
-    "C": "IN GAME \u2014 Alpha Animals"
+    "C": "IN GAME \u2014 Alpha Animals",
+    "D": "render gapall_AA_SpinedGow_v1"
    },
    "res": "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowBaby",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "spinedgow"
   },

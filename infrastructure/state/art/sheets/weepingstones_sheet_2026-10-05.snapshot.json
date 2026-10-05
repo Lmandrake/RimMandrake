@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-05T12:26:44-0700",
+ "built": "2026-10-05T15:00:16-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -11,17 +11,25 @@
      "east": "7e33869926145896c7833e7e609a66074066552b8cc455ab687fef12a84199a9",
      "north": "84d6fc6ef32439de02368ad62af558ae2ff5ff88a179fb05484a76b209a78e94",
      "south": "0dafafcfc8cf6ce869b5275591ab981b280f5f13463d86ba24c6e83b5cde2175"
+    },
+    "B": {
+     "east": "c7f04b9819c03cf16e8ee0e69735ea8b52e14f24213defe52b2619c29fa5eeb4",
+     "north": "c199e1f328ec5ab8471489a67eedcf835c33c3004c30906764edac3d4c43b898",
+     "south": "0ecf600f9aba7d7979622f607e48ee1f2a42ed7d3125bb03317995629c498c1b"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/ColossusToad/ColossusToad"
+    "A": "Things/Pawn/Animal/ColossusToad/ColossusToad",
+    "B": "Things/Pawn/Animal/ColossusToad/ColossusToad"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
+    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "B": "render gapall_ColossusToad_v1"
    },
    "res": "Things/Pawn/Animal/ColossusToad/ColossusToad",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "colossustoad"
   },

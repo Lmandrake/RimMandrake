@@ -1,6 +1,6 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-05T09:16:05-0700",
+ "built": "2026-10-05T14:28:29-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "85bc84e3401fc513d587ae135ce8c098e6780f9bc644404a343be96e3f68566b",
      "north": "57a098473d73479a1631bd5c19637093c5b06311ed2444aec8443217f27539cd",
      "south": "d7fd05f1d4332745962b8a99dc3a2ff309d02f35caf9a227d04aae00c83fee0c"
+    },
+    "B": {
+     "east": "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
+     "north": "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789",
+     "south": "b0b04bf49d8ef03573b89b587a250284f3ecc9bf8e5dcac6c04576f16e1f5a7e"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest"
+    "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_AA_Murkling_v1"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "murkling"
   },
@@ -635,5 +643,5 @@
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "d63c082e293adc25"
+ "snapshotId": "589131f78b2c5381"
 }
