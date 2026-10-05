@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Yobshrimp
@@ -17,11 +17,19 @@ A yobshrimp was a carnivorous crustacean native to the shallow waters of Naboo, 
 They sometimes lived inside the gills of the tee, and were eaten from them by laa. They were natural competitors with yobcrabs and were the common prey of the blarth and the predatory scalefish.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is a photograph of Yobshrimp Noodle Salad (cooked, peeled, pink-orange curled shrimp in glass noodles with peppers and herbs), so it shows only that cooked shrimp are pale pink-orange and curl in a C shape. It tells nothing about the living creature. The LEGENDS infobox (`wookieepedia_legends_1`) is a painted illustration of the live animal, and is the only appearance evidence.
+- **Form (Legends plate)**: a small crustacean with a flat, wedge-shaped shell/carapace drawn out to a long sharp pointed rostrum at the front, short stalked eyes carrying round bright green eyeballs, and two long thin whip-like antennae trailing from the head; the plate shows both antennae curling and drooping, like a prawn's.
+- **Colour**: lilac-purple to violet shell and legs, with darker purple or maroon spots and warty bumps along the shell edges and claws, and pale pink-white highlights; the background is aqua-green water or sand.
+- **Limbs**: four to five pairs of thin, jointed walking legs ending in small hooked claws, spread out like a crab's; and two much larger raised front arms of long, thin, spiky, pincer-like claws held up and forward, with flat blade-like scissors and thorn-like projections (they read like long swords or antlers), the biggest part of the silhouette.
+- **Size**: the Legends text says a delicacy served as a live cocktail, so small; the plate gives no scale, and the prose calls them 'tiny' (canon). The huge claws are stylised.
+- **Disagreement**: the canon text calls them tiny creatures (the cooked photo is ordinary pink-orange prawn shape); the Legends plate shows purple, crab-like, long-clawed animals; two different looks. Not enough evidence to pick the correct live colour; the plate is the only painting.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Small crustacean: wedge-shaped shell drawn to a long sharp pointed rostrum, stalked green eyes, two long trailing antennae
+- [ ] Lilac-purple shell and legs with dark purple bumps and spots
+- [ ] Several pairs of thin hooked-clawed walking legs
+- [ ] Two raised long spiky pincer-claw arms
+- [ ] Cooked form (food item only): pale pink-orange C-curled peeled shrimp
 
 ## Engine limits
 not yet assessed

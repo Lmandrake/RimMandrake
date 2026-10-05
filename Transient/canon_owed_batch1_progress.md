@@ -16,3 +16,6 @@ runyip done
 shaaks done
 skalders done
 teemuss done
+varactyl done
+woolamander done
+yobshrimp done
