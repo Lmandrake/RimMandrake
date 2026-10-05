@@ -2,7 +2,7 @@
  "sheetId": "abyss_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/abyss_sheet_2026-10-04.snapshot.json",
- "snapshotId": "5e588a103d3bc93f",
+ "snapshotId": "972285c71ff7a180",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Abyss",
  "reviewStatus": {
@@ -13,24 +13,24 @@
  },
  "decisions": {
   "AA_CrepuscularBeetle": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_Darkbeast": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_DarkVandal": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_DuskProwler": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_DuskRat": {
    "decision": "A",
@@ -38,44 +38,59 @@
    "prefill": "A"
   },
   "AA_Frostling": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_Murkling": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_NightAve": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_Nightling": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B"
+   }
   },
   "AA_NightMule": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby": "B",
+    "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female": "C"
+   }
   },
   "AA_NightRam": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_ShadowCharger": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby": "D",
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female": "E"
+   }
   },
   "AA_Thunderox": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female": "B",
+    "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male": "C"
+   }
   },
   "RM_Cindermare": {
    "decision": "A",
@@ -126,44 +141,44 @@
    "prefill": "A"
   },
   "AB_GiantGamma": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AB_GiantSeptimum": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AB_GiantStikehr": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AB_GlowingGrass": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AB_ToxicGamma": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AB_WildRadagast": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AG_Gamma": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AG_Septimum": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Etchcap": {
    "decision": "A",

@@ -2,7 +2,7 @@
  "sheetId": "cauldron_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
- "snapshotId": "607f7aaaf818ea99",
+ "snapshotId": "0cfc4cd815bf19d6",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Cauldron",
  "reviewStatus": {
@@ -13,79 +13,88 @@
  },
  "decisions": {
   "AA_BedBug": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_CrystalMit": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_DecayDrake": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_GiantCrownedSilkie": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby": "B",
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female": "C",
+    "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby": "D"
+   }
   },
   "AA_Helixien": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_InfectedAerofleet": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_LuciferBug": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_OcularJelly": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_Plasmorph": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AA_Radyak": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/AA_Radyak/AA_Radyak_female": "B",
+    "Things/Pawn/Animal/AA_Radyak/AA_Radyak_male": "C"
+   }
   },
   "AA_RipperHound": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AM_Dryad_Corruptor": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AM_Dryad_Ocular": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "AM_Dryad_Tumorous": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "GR_Beetlefleet": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Eskith": {
    "decision": "A",
@@ -151,14 +160,21 @@
    "prefill": "A"
   },
   "Silooth": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "swanimals/Silooth/Silooth_j": "B"
+   }
   },
   "Visceral": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A",
+   "picks": {
+    "Things/Pawn/Animal/Visceral/VisceralBaby": "B",
+    "Things/Pawn/Animal/Visceral/VisceralTeen": "C"
+   }
   },
   "RM_BloodBouquet": {
    "decision": "A",
@@ -226,9 +242,9 @@
    "prefill": "A"
   },
   "RM_TreeMartyr": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Tsevrix": {
    "decision": "A",
@@ -236,9 +252,9 @@
    "prefill": "A"
   },
   "RM_TwistingThornwood": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Xithess": {
    "decision": "A",
