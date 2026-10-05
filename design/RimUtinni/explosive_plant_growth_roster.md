@@ -286,8 +286,8 @@ Everything that soaks and is neither dry-adapted, contaminated, slime-fed, fire-
 | RUT_PaleTree | (our def, RotSporeKit) — the_rot new_defs 'pale tree' | anima reskin; R-G5 exempt (ritual pacing, not botany) |
 | RUT_PaleMoss | (our def) | grows only under the pale tree; exempt with it |
 | **RUT_DyingCreep** | (our def, `RUT_DyingCreep.xml`) — the creep pushed uphill | 'a tongue of red Contagion-creep… within hours it blackens and dies' — growDays 0.1. R-G5's under-a-day clause exempts it, and the carve-out says an exempt plant never soaks. Contaminated by fiction, but it has no charge to rupture with: it is already dying on arrival. Moved here from the 2026-09-20 `BURST?` group (hard call, listed) |
-| RSW_Ollim | (our def, `RSW_ExtremeDesertSignatureFlora.xml`) | 400-day bone-white deep-desert tree grown 'where the faintest hint of buried moisture fed a single cell' — its identity is the opposite of fast growth; deep_desert.md HARD BAN 4 in plant form |
-| RSW_LightPipeNub | (our def) | 'not a leaf and it has never been one' — silica glass; no water metabolism |
+| RM_Ollim | (our def, `RM_Stillsand_SignatureFlora.xml`; RSW_ twin retired 2026-10-05) | 400-day bone-white deep-desert tree grown 'where the faintest hint of buried moisture fed a single cell' — its identity is the opposite of fast growth; deep_desert.md HARD BAN 4 in plant form |
+| RM_LightPipeNub | (our def) | 'not a leaf and it has never been one' — silica glass; no water metabolism |
 | (new) glass-nub light-pipe flora / silverbole | dune_sea new_defs | deep-desert signature flora; HARD BAN 4 |
 | AB_GiantStikehr | dune_sea + deep_desert, abyss | 'dry standing form' — a drought form that stands, not spends; 🄸 hoarder reading (see hard call 1) |
 | RUT_SweetlineTree | (our def, AshkarrFlora) — arid_shrubland new_defs | 'a single ancient giant, centuries old, growing only where the moisture-light trade balances exactly' — as the ollim: its identity is balance, not surge |

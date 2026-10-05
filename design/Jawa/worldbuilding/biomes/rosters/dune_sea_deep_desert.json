@@ -569,13 +569,13 @@
     },
     {
       "def": "RSW_Kudda",
-      "disposition": "move:LongShade",
-      "reason": "RULED 2026-09-27 (Long Shade sitting card, Q6/Q2): ONE home, the Long Shade — the Stillsand row (0.3, port of AA_Needleroll) cut; both bedazzle docs' keep-both recommendation overridden"
+      "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+      "reason": "owner 2026-10-04 Long Shade sheet: \"Just cut this creature. It's dumb.\" RM_Kudda and RSW_Kudda defs deleted; it has no home anywhere."
     },
     {
-      "def": "RSW_TruffleMole",
-      "disposition": "move:LongShade",
-      "reason": "RULED 2026-09-27 (Long Shade sitting card, Q6/Q4): ONE home, the Long Shade — 'desert & extreme desert' was a CANDIDATE set per the owner's 2026-09-22 correction; the Stillsand's sterile sand has nothing buried for a burrower to eat"
+      "def": "RM_TruffleMole",
+      "disposition": "move:RM_LeaningScrub",
+      "reason": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.\" RSW_TruffleMole retired onto RM_TruffleMole; its one home is the Leaning Scrub (arid_shrubland.json)."
     },
     {
       "def": "RSW_Vozzik",
