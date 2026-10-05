@@ -13,7 +13,7 @@ RimMandrake.MessyConduit.Hose.HoseProbe (jawa/mod_settings_field), never from sc
     python.exe validation_hose.py --removal-check NAME     # H11: a save WITH a laid hose on a tier WITHOUT the mod
     python.exe validation_hose.py --maze                   # M1-M6 + P1-P2: path solving in a spiral maze, reel ports
     python.exe validation_hose.py --relay                  # RL1-RL9 (round 6): a chain of relay reels past one hose's reach
-    python.exe validation_hose.py --carry                  # CR1-CR6 (carry S3): a real colonist deploys, drops, resumes, retracts
+    python.exe validation_hose.py --carry                  # CR1-CR7 (carry S3/S5): a real colonist deploys, drops, resumes, retracts
 
 The maze walk (owner, round 2, 2026-10-04: "make the hose solve a complex path (like a spiral through a simple maze
 with two options, then 'build' a wall to block the obvious solution so we can see if it changes to go the other way...
@@ -748,6 +748,23 @@ def run_carry(args):
     h, waited, seen = _poll(B, lambda x: x.get("carry") == "Stored", budget)
     V.row(rows, "CR6_retract_stored", "PASS" if "Retracting" in seen and h.get("carry") == "Stored" and h.get("pending") == "None"
           else "FAIL", "MOD", {"order": o, "startjob": sj, "ticks": waited, "budget": budget, "seen": seen, "hose": _carry_view(h)})
+    # ---------------------------------------------------------------- CR7: no instant Lay / Reel in without dev mode
+    # (owner ruling: the instant gizmos are DEV-ONLY with NO setting that restores them). Read the gizmo labels with dev mode
+    # forced off, then forced on (control: the DEV: gizmos must exist then, or the off-reading proves nothing), then restore.
+    was = B.hp("devmode:%d,%d=read" % CREEL).get("devMode")
+    B.hp("devmode:%d,%d=off" % CREEL)
+    off = B.hp("gizmos:%d,%d" % CREEL)
+    B.hp("devmode:%d,%d=on" % CREEL)
+    on = B.hp("gizmos:%d,%d" % CREEL)
+    B.hp("devmode:%d,%d=%s" % (CREEL + ("on" if was else "off",)))
+    lo = [str(x) for x in (off.get("labels") or [])]
+    lon = [str(x) for x in (on.get("labels") or [])]
+    bad = [x for x in lo if "Lay hose" in x or "Reel in" in x]
+    control = [x for x in lon if "Lay hose" in x or "Reel in" in x]
+    V.row(rows, "CR7_no_instant_gizmos_without_devmode",
+          "PASS" if off.get("success") and off.get("devMode") is False and lo and not bad and control else "FAIL", "MOD",
+          {"devModeOff_labels": lo, "offending": bad, "devModeOn_labels": lon, "control_found_in_devmode": control,
+           "devModeBefore": was})
     res["saves"] = ["RM_hosecarry_%s_dropped.rws" % stamp, "RM_hosecarry_%s_carrying.rws" % stamp]
     return res
 

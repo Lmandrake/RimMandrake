@@ -47,6 +47,12 @@ Every station of the previous map kept its exact cells and contents; only its nu
 | new | **10** | RESTYLE THIS RUN (yours) |
 | new | **11** | HOSE REELS: FOUR LOOKS |
 | new | **12** | OLDER SAVE: NO STORED LOOK |
+| new | **42** | RELAY REELS: GOING FARTHER |
+| new | **43** | DEPLOY BY HAND |
+| new | **44** | DROPPED HALFWAY |
+| new | **45** | INTO THE POND |
+| new | **46** | ON THEIR TANK |
+| new | **47** | WIND IT IN |
 | F (south-east) | **F** (north band, west) | free build area |
 | - | **M** (north band) | art-slot board |
 
@@ -77,6 +83,7 @@ one compact floor build in the Scrapper look: full battery, a 3x3 tangle, a run 
 - every cord, plug, junction, wall stub, cut end and the switch is Scrapper art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
+- the three floor lamps are Scrapper lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
 
 **Try**
 
@@ -93,6 +100,7 @@ one compact floor build in the Industrial look: full battery, a 3x3 tangle, a ru
 - every cord, plug, junction, wall stub, cut end and the switch is Industrial art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
+- the three floor lamps are Industrial lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
 
 **Try**
 
@@ -109,6 +117,7 @@ one compact floor build in the Modern look (menu entry 'Modern: one colour per r
 - every cord, plug, junction, wall stub, cut end and the switch is Modern art (the art board M says which pieces still fall back)
 - the tangle: power strips with plugs in the sockets (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
+- the three floor lamps are Modern lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
 - one colour along the whole run (built with 'one colour per run'); the 2 cells past the gap are a run of their own and may carry another colour
 
 **Try**
@@ -126,6 +135,7 @@ one compact floor build in the Futuristic look: full battery, a 3x3 tangle, a ru
 - every cord, plug, junction, wall stub, cut end and the switch is Futuristic art (the art board M says which pieces still fall back)
 - the tangle: junction boxes with cables in them (KNOWN GAP, stage 2: the pile's pieces still follow the DEFAULT look, not the run's)
 - the battery side of the gap sparks when unpaused (live end), the far side lies limp (dead end); the far lamp is dark
+- the three floor lamps are Futuristic lamps (round 6: built in their run's look; 'Restyle this run' repaints them too)
 
 **Try**
 
@@ -139,7 +149,7 @@ seven Modern runs, one per entry of the conduit build menu: random mix, one colo
 
 **Notice**
 
-- random mix (top): the colours CHANGE along the run, cell by cell (a mixture inside ONE run)
+- random mix (top, with two spurs up): each cord from one node to the next is ONE colour; the colours vary piece to piece through the run
 - one colour per run: a single colour picked at random when it was built, the same along the whole run
 - each single-colour run: that colour on every strand, plug, junction and wall stub (orange uses the shipped pieces)
 
@@ -223,8 +233,9 @@ a Scrapper run (battery, conduit, an in-line switch, a lamp) with a power mast w
 
 **Try**
 
-- select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, both poles and the span all change at once; cost and power do not
-- pick Modern > random mix: the colours vary along the run; restyle again and back: the same colours come back
+- select ANY piece (a conduit cell, the switch, either pole) > 'Restyle this run' > pick a look: the cords, the switch, both poles, the span AND the floor lamp all change at once; cost and power do not
+- select the lamp > 'Restyle this lamp' > another look: it keeps that look through the next run restyle ('Match its cable run' undoes it)
+- pick Modern > random mix: the colours vary piece to piece along the run; restyle again and back: the same colours come back
 - unpause: nothing reverts
 
 ## Row U - hose reels per look, and an older save (style gallery)
@@ -628,8 +639,8 @@ station 34's maze; after the hose is laid, a wall is built across the short (sou
 
 **Notice**
 
-- what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length (it does: measured offline the long way needs about 25 of the hose's 30 cells), else it winds back onto the reel with a message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)
-- add your own walls to lengthen the way round: past 30 cells the hose reels in (selftest r4: one zig-zag maze needs 36)
+- what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length (it does: measured offline the long way needs about 25 of the hose's 40 cells), else it winds back onto the reel with a message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)
+- add your own walls to lengthen the way round: past 40 cells (the default since round 6) the hose reels in (selftest r5: the 13x13 spiral needs 73)
 - if it re-routes, the new path is as clean as station 34's
 
 **Try**
@@ -740,6 +751,93 @@ three separate powered nets two cells apart; two nets end to end with a one-cell
 - god mode: build the gap blueprint (or unpause and let colonists build): nets merge, the dark lamp lights
 - save, load, compare (this is the save-load station)
 - --style ExtensionCord for the colour checks
+
+### 42. RELAY REELS: GOING FARTHER
+
+three hose reels in a row, 32 cells apart: the first reel's hose is laid onto the second reel, whose own hose is laid onto the third (66 cells end to end; one hose holds 40)
+
+**Notice**
+
+- each hose ends in a brass coupling on the NEXT reel's side: the chain reads connected, not two loose hoses
+- flow into the first reel (dev gizmo, on): its hose plumps, and the second reel's hose plumps too -- it is fed through the relay (there is no real liquid yet: FlowWorks pipes are paper)
+- select the middle reel: 'Relay: fed by the hose from the reel at ...'; each hose shows its own 'N of 40 cells'
+
+**Try**
+
+- select the reel: Lay hose / Reel in hose / Free end nozzle-endcap gizmos
+- dev mode: the reel's 'DEV: flow through hose' gizmo toggles water flow (there is no pump yet)
+- reel in the first hose: the second one drains (nothing feeds it)
+- lay the third reel's hose back onto the first: refused, a chain may not loop back
+- build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on
+
+### 43. DEPLOY BY HAND
+
+a hose reel with a Deploy order 24 cells out and one idle colonist beside it (UNPAUSE: nothing else is ordered)
+
+**Notice**
+
+- the colonist walks to the reel, picks up the hose end and walks it out: the hose unrolls behind him along his walk
+- he sets the end down at the order's cell and the hose lies there, coupled
+- the hose is never longer than his walk: it does not jump out to the target
+
+**Try**
+
+- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- draft him mid-walk: the end drops where he stands (see station 44)
+
+### 44. DROPPED HALFWAY
+
+a reel whose hose end was dropped 14 cells out (an interrupted carry)
+
+**Notice**
+
+- the open end lies on the ground at the end of the hose; the hose is drawn only as far as it was walked
+- select the reel: 'Move hose end' and 'Retract hose' are offered; no colonist is carrying anything
+
+**Try**
+
+- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+- Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there
+
+### 45. INTO THE POND
+
+a reel 10 cells from a pond, its hose laid into the water
+
+**Notice**
+
+- the hose end lies in the water, not on the bank
+- select the reel: inspect reads 'intake in ...' (it is drawing from the pond)
+
+**Try**
+
+- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+
+### 46. ON THEIR TANK
+
+a hose coupled to another faction's liquid tank
+
+**Notice**
+
+- a brass coupling sits on THEIR tank where the hose ends
+- select the reel or the tank: inspect names their faction
+
+**Try**
+
+- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
+
+### 47. WIND IT IN
+
+a laid 30-cell hose and one idle colonist beside the reel
+
+**Notice**
+
+- press Retract on the reel (UNPAUSE first): the colonist winds the hose back along its route to the reel
+- the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once
+- it ends Stored: no hose on the ground, the reel's drum full
+
+**Try**
+
+- select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant 'DEV:' ones appear only with dev mode on
 
 ## Expected refusals (shown on purpose)
 
