@@ -323,7 +323,9 @@ def stations_round2(st, hose_i):
     st(23, "F", 194, 144, 18, 11, "HOSE MAZE: SHORT WAY WALLED", "station 22's maze; after the hose is laid, a wall is built across the "
        "short (south-east) gap - does the hose re-route the long way, or reel itself in?",
        ["what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length "
-        "(about 29 of 30 cells), else it winds back onto the reel with a message and an alert (HOSE_BLOCKED_REROUTE_RETRACT_1)",
+        "(it does: measured offline the long way needs about 25 of the hose's 30 cells), else it winds back onto the reel with a "
+        "message and an alert saying how many cells the way round needs (HOSE_BLOCKED_REROUTE_RETRACT_1)",
+        "add your own walls to lengthen the way round: past 30 cells the hose reels in (selftest r4: one zig-zag maze needs 36)",
         "if it re-routes, the new path is as clean as station 22's"],
        maze_i + ["deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?"],
        walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_block_wall_hook",
