@@ -1,0 +1,1662 @@
+[
+ {
+  "id": "RM_Vhaulk_v3_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "2/4",
+   "passed": 2,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Pale white-blue armor has yellow seam accents and a translucent lower-flank window revealing pale yellow contents."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The domed plated shell and squat projecting legs strongly resemble terrestrial tortoise anatomy despite the absent head."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "fail",
+     "reason": "Fine frost texture and a readable silhouette are present, but the armor looks opaque and stony, lacks fractal or pleated structure, and the yellow accent is muted rather than luminous."
+    }
+   ],
+   "summary": "The sprite meets the palette and isolation requirements but falls short of the wholly alien anatomy and luminous structured-glass quality.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/RM_Vhaulk_v3_east/RM_Vhaulk_v3_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:51:55Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Dovvik_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected because it showed the beast eating a plant.",
+     "verdict": "na",
+     "reason": "This describes a previous rejection, not a visual requirement for this render."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be verified visually in this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The pale white-blue body appears translucent, with pale yellow accents visible within seams, joints and the curled proboscis."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The stout legs, broad feet and long trunk create recognizable elephant-like Earth-animal anatomy despite the alien surface structure."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props, ground or feeding activity."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted blue-white glassy plates, pleated structures, luminous yellow accents and fine surface detail produce a clean, readable painterly silhouette."
+    }
+   ],
+   "summary": "The glassy rendering and isolated presentation pass, but the elephant-like anatomy violates the nonterrestrial requirement.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Dovvik_v2_east/bluedesert_Dovvik_v2_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:51:59Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Dovvik_v2_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected because it showed the beast eating a plant.",
+     "verdict": "na",
+     "reason": "Historical rejection context is not a visual requirement."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Pale white-blue translucent plates show pale yellow accents along seams, joints and inside the curled proboscis."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The overlapping armored back and splayed, footed limbs read as recognizable terrestrial armored-quadruped anatomy."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props, ground or feeding interaction."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted tinted-glass plates, layered pleating, luminous yellow accents and fine surface texture form a readable painted silhouette."
+    }
+   ],
+   "summary": "The sprite meets the palette, isolation and glassy finish requirements, but its armored quadruped anatomy undermines the required wholly alien appearance.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Dovvik_v2_north/bluedesert_Dovvik_v2_north.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:51:55Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Dovvik_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected because it showed the beast eating a plant.",
+     "verdict": "na",
+     "reason": "This describes a previous rejection, not a visual requirement for this render."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and the plateau habitat cannot be established from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The body is translucent pale white-blue, with pale yellow accents visible along seams, joints and internal channels."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The broad torso, paired arm-like side limbs and two separated footed legs create a recognizable humanoid body plan."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props, ground or feeding interaction."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glassy surfaces, layered pleats, luminous yellow accents and fine painted detail form a clean, readable silhouette."
+    }
+   ],
+   "summary": "The render meets the palette, isolation and glassy finish requirements, but its humanoid limb arrangement fails the alien-anatomy requirement.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Dovvik_v2_south/bluedesert_Dovvik_v2_south.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:16Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Thunderbeast_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Pale icy blue-white plates appear slightly translucent, with pale yellow glowing accents in seams, cracks and joints."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The barrel torso, four articulated legs, broad feet and projecting head form a recognizable armored terrestrial quadruped silhouette."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, without plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glassy plates, layered angular structure, luminous yellow seams and fine surface texture create a clean painterly silhouette."
+    }
+   ],
+   "summary": "The sprite meets the material, color, isolation and finish requirements, but its recognizable terrestrial quadruped anatomy fails the alien-body requirement.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Thunderbeast_v2_east/bluedesert_Thunderbeast_v2_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:18Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Thunderbeast_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Pale white-blue, translucent-looking plates have pale yellow illumination along seams and internal cracks."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "Broad shoulder-like masses and long paired limbs with splayed, finger-like ends create a recognizable gorilla-like silhouette."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glassy plates, layered crystalline structure, fine surface texture and luminous yellow accents form a readable silhouette."
+    }
+   ],
+   "summary": "The glassy palette and surface treatment succeed, but the gorilla-like anatomy violates the requirement for wholly alien form.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Thunderbeast_v2_south/bluedesert_Thunderbeast_v2_south.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:20Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Utikka_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected: it was drawn eating plants and was neither hydrocarbon-pale nor non-terrestrial.",
+     "verdict": "na",
+     "reason": "This describes the rejection history of a previous attempt, not a visual requirement."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The fused plates are pale white-blue and translucent, with pale yellow light tracing seams and limb joints."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "Irregular crystalline plates and numerous fine trailing limbs form alien anatomy without a recognizable Earth-animal head or humanoid shape."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props, ground or eating behavior."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Layered crystalline plates have frosted glass surfaces, fine internal texture, luminous yellow seams and a readable pointed silhouette."
+    }
+   ],
+   "summary": "The sprite passes all visually assessable requirements; history, biochemistry and habitat are not visually verifiable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Utikka_v2_east/bluedesert_Utikka_v2_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:34Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Utikka_v2_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected: it was drawn eating plants and was neither hydrocarbon-pale nor non-terrestrial.",
+     "verdict": "na",
+     "reason": "This describes a previous rejection, not a visual requirement for this render."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biology and plateau habitat cannot be established visually from the isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Frosted white-blue plates appear slightly translucent, with pale yellow light tracing seams and limb joints."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "The layered crystalline body and fine curling appendages show no clearly recognizable Earth-animal anatomy; the head is hidden in this rear view."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Glassy frosted plates form a repeating pleated structure, with luminous yellow accents, delicate surface texture and a readable silhouette."
+    }
+   ],
+   "summary": "The north-facing sprite passes all assessable visual requirements; historical context and biochemical habitat claims are not visually assessable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Utikka_v2_north/bluedesert_Utikka_v2_north.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:34Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Utikka_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 2,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "Previous attempt was rejected: it was drawn eating plants and was neither hydrocarbon-pale nor non-terrestrial.",
+     "verdict": "na",
+     "reason": "This describes the rejection history of a previous attempt, not a visual requirement."
+    },
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The body is pale white-blue and frostily translucent, with pale yellow light tracing plate seams and limb junctions."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "Layered crystalline plates and numerous fine curling limbs form an alien silhouette without a recognizable Earth-animal head or humanoid shape."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props, ground, or eating activity."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glasslike plates form a layered, pleated structure with luminous yellow accents, fine surface texture, and a readable silhouette."
+    }
+   ],
+   "summary": "The render passes all applicable visual requirements; rejection history and biochemical habitat context are not visually gradable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Utikka_v2_south/bluedesert_Utikka_v2_south.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:36Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v1_north",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon chemistry and plateau habitat cannot be established visually from an isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The frosted white-and-blue body and tentacles appear translucent, with pale yellow internal channels and seam accents."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "The rounded, many-tentacled form has no recognisable terrestrial head, humanoid anatomy or suggestive shape."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "Only the creature is visible; there are no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Glassy frosted surfaces, branching internal structure, luminous yellow accents and fine painted detail support a readable alien silhouette."
+    }
+   ],
+   "summary": "The sprite passes all visually assessable requirements; its chemistry and habitat are not visually verifiable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vapaad_v2_east/bluedesert_Vapaad_v2_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:49Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v2_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The frosted white-and-blue body and translucent tentacles contain pale yellow internal streaks and seam accents."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "The patterned dome and numerous curling tentacles form an alien silhouette without a recognisable Earth-animal head or humanoid anatomy."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "Only the creature is present, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Glassy blue surfaces, branching frost patterns, pale yellow luminous accents and fine painted detail support a readable silhouette."
+    }
+   ],
+   "summary": "The render meets the visible acceptance requirements; its chemistry and habitat are not visually verifiable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vapaad_v2_north/bluedesert_Vapaad_v2_north.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:53Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vapaad_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "The frosted white-and-blue body appears translucent, with pale yellow internal channels, seam accents and glowing eyes."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "pass",
+     "reason": "The rounded, pleated body and radiating tendrils have no recognisable terrestrial head, humanoid anatomy or suggestive shape."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature is alone, with no visible plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Glassy blue-white surfaces, intricate branching folds, luminous yellow accents and a readable radial silhouette deliver the requested alien-glass quality."
+    }
+   ],
+   "summary": "The render passes all visually assessable requirements; its hydrocarbon biology and habitat are not visually verifiable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vapaad_v2_south/bluedesert_Vapaad_v2_south.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:52:52Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vrisk_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "3/4",
+   "passed": 3,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from the isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "pass",
+     "reason": "Frosted white-blue translucent membranes show pale yellow accents along structural ridges and joins."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The large veined upper wing and smaller lower wing form a recognisable insect-like wing arrangement despite the eyeless, tapered prow."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Glassy blue membranes, branching frost detail, pale yellow vein accents and a readable silhouette convey the requested painted alien-glass quality."
+    }
+   ],
+   "summary": "The palette, isolation and glassy finish pass, but the recognisable insect-like wing anatomy conflicts with the nonterrestrial requirement.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vrisk_v2_east/bluedesert_Vrisk_v2_east.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:53:07Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vrisk_v2_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "2/4",
+   "passed": 2,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "fail",
+     "reason": "The tissue is translucent pale blue-white, but veins and joints lack clearly visible pale-yellow blood accents."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The paired large upper wings and smaller lower wings form a recognisable terrestrial butterfly silhouette, despite the eyeless prow."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glasslike membranes, branching surface detail, luminous blue edging and a readable silhouette deliver the requested visual quality."
+    }
+   ],
+   "summary": "The sprite achieves the frosted-glass finish but fails the alien-anatomy requirement and lacks clear pale-yellow blood accents.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vrisk_v2_north/bluedesert_Vrisk_v2_north.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:53:25Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "bluedesert_Vrisk_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "2/4",
+   "passed": 2,
+   "graded": 4,
+   "na": 1,
+   "kind": "owner",
+   "slug": null,
+   "slug_via": "",
+   "lines": [
+    {
+     "line": "BLUE DESERT FAUNA RULE (owner, 2026-10-04): this is HYDROCARBON-based life on a hydrocarbon-ice plateau.",
+     "verdict": "na",
+     "reason": "Hydrocarbon biochemistry and plateau habitat cannot be established visually from this isolated sprite."
+    },
+    {
+     "line": "Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showing as accents at seams, joints, glands and the inside of cracks.",
+     "verdict": "fail",
+     "reason": "The body and membranes are translucent white-blue, but discernible pale yellow blood accents are missing."
+    },
+    {
+     "line": "It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, reptile, bird, fish or insect head, no humanoid or suggestive shape.",
+     "verdict": "fail",
+     "reason": "The paired upper and lower wings around a narrow central body form recognisable butterfly-like anatomy, despite the absence of eyes or a distinct head."
+    },
+    {
+     "line": "The creature is ALONE in the sprite: absolutely no plants, no flora, no food, no props, no ground, never eating, holding or beside a plant.",
+     "verdict": "pass",
+     "reason": "The creature appears alone, with no plants, food, props or ground."
+    },
+    {
+     "line": "Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a really good one', 'again, good') work because they are glassy, frosted, tinted-glass bodies with a fractal or pleated structure, one strong luminous accent colour, fine believable surface detail and a clean readable silhouette; bring that same alien-glass painterly natural-history quality to this animal.",
+     "verdict": "pass",
+     "reason": "Frosted glassy membranes, branching surface detail and luminous blue edges create a clean, readable painted silhouette."
+    }
+   ],
+   "summary": "The sprite achieves the frosted glass quality and isolation, but lacks yellow blood accents and retains recognisable butterfly-like anatomy.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/bluedesert_Vrisk_v2_south/bluedesert_Vrisk_v2_south.png",
+   "canon_images": [],
+   "ts": "2026-10-05T03:53:11Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_DUM_v1_east",
+  "status": "already",
+  "check": {
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_infobox.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_reddish_clonewars.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_with_wrench.png"
+   ],
+   "graded": 6,
+   "kind": "canon",
+   "lines": [
+    {
+     "line": "Wide flared cone-shaped head, much wider than the body beneath it",
+     "reason": "Wide, flat flared cone head extends well beyond the narrow torso.",
+     "verdict": "pass"
+    },
+    {
+     "line": "One large black photoreceptor centred under the brim",
+     "reason": "One dark round photoreceptor sits beneath the front brim, visible in profile.",
+     "verdict": "pass"
+    },
+    {
+     "line": "Two long thin whip antennae rising from the crown",
+     "reason": "Two long, thin curved antennae rise from the crown.",
+     "verdict": "pass"
+    },
+    {
+     "line": "Rust-brown/copper weathered plating tint",
+     "reason": "Plating is weathered rust-brown with copper highlights and dark seams.",
+     "verdict": "pass"
+    },
+    {
+     "line": "Long thin arms hanging clear of the body, ending in three-fingered claws",
+     "reason": "Long slender arms hang clear of the torso, ending past the hips in three-fingered claws.",
+     "verdict": "pass"
+    },
+    {
+     "line": "Long legs with prominent ball knee-joints and broad flat splayed feet",
+     "reason": "Long separated legs have pronounced round knee joints and flat feet with splayed toes.",
+     "verdict": "pass"
+    }
+   ],
+   "model": "gpt-6.1-sol",
+   "na": 0,
+   "passed": 6,
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_DUM_v1_east/desert_gap_DUM_v1_east.png",
+   "score": "6/6",
+   "slug": "droid_dum_pit",
+   "slug_via": "named in style_notes",
+   "status": "graded",
+   "summary": "The east-facing render satisfies all six visual requirements and preserves the spindly pit-droid silhouette.",
+   "ts": "2026-10-05T03:46:39Z",
+   "verdict": "PASS"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_DUM_v1_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 1,
+   "kind": "canon",
+   "slug": "droid_dum_pit",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Wide flared cone-shaped head, much wider than the body beneath it",
+     "verdict": "pass",
+     "reason": "The wide, low flared cone head extends far beyond the narrow torso."
+    },
+    {
+     "line": "One large black photoreceptor centred under the brim",
+     "verdict": "na",
+     "reason": "The front photoreceptor is hidden in this north-facing rear view."
+    },
+    {
+     "line": "Two long thin whip antennae rising from the crown",
+     "verdict": "pass",
+     "reason": "Two long, thin, slightly curved antennae rise from the crown."
+    },
+    {
+     "line": "Rust-brown/copper weathered plating tint",
+     "verdict": "pass",
+     "reason": "The plating is weathered copper and rust-brown with darker joints."
+    },
+    {
+     "line": "Long thin arms hanging clear of the body, ending in three-fingered claws",
+     "verdict": "pass",
+     "reason": "Long thin arms hang clear of the torso, with three-fingered claws extending below the hips."
+    },
+    {
+     "line": "Long legs with prominent ball knee-joints and broad flat splayed feet",
+     "verdict": "pass",
+     "reason": "Long separated legs have conspicuous round knee joints and flat, broadly splayed feet."
+    }
+   ],
+   "summary": "The render meets all visible requirements; the front-facing photoreceptor cannot be assessed from behind.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_DUM_v1_north/desert_gap_DUM_v1_north.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_infobox.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_reddish_clonewars.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_dum_pit/wookieepedia_with_wrench.png"
+   ],
+   "ts": "2026-10-05T03:53:27Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_Destroyer_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "3/3",
+   "passed": 3,
+   "graded": 3,
+   "na": 2,
+   "kind": "canon",
+   "slug": "droid_droideka",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Deployed (upright) form only \u2014 arched dorsal shell, spherical lower body, three splayed clawed legs",
+     "verdict": "pass",
+     "reason": "Upright deployed silhouette has an arched dorsal shell, rounded spherical belly, and three splayed legs ending in pointed hooked claws."
+    },
+    {
+     "line": "Three red photoreceptors on the head/stalk assembly",
+     "verdict": "na",
+     "reason": "Red photoreceptors are visible at the head tip, but the east profile obscures the full arrangement needed to verify all three."
+    },
+    {
+     "line": "Two arm-mounted cannons held out to the sides",
+     "verdict": "pass",
+     "reason": "Two articulated cannon arms are visible, overlapping in profile, each ending in paired forward-pointing barrels."
+    },
+    {
+     "line": "Dark bronze-brown (bronzium) plating, not white/light grey",
+     "verdict": "pass",
+     "reason": "Plating is dark bronze-brown with near-black weathering."
+    },
+    {
+     "line": "Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizontal bar, single long sniper barrel, pale green-grey body with yellow trim",
+     "verdict": "na",
+     "reason": "The requested subject is the standard deployed droideka; Sharpshooter-specific features do not apply."
+    }
+   ],
+   "summary": "The standard deployed droideka passes the visible anatomy, armament, and palette requirements; the full photoreceptor count is obscured in this east view.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_Destroyer_v1_east/desert_gap_Destroyer_v1_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_cutaway.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_deployed_in_show.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_infobox_deployed.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_sharpshooter.png"
+   ],
+   "ts": "2026-10-05T03:54:41Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_Destroyer_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "FAIL",
+   "score": "4/5",
+   "passed": 4,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_droideka",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Deployed (upright) form only \u2014 arched dorsal shell, spherical lower body, three splayed clawed legs",
+     "verdict": "pass",
+     "reason": "Deployed form shows an arched dorsal shell, rounded spherical belly, and three splayed legs ending in pointed claws."
+    },
+    {
+     "line": "Three red photoreceptors on the head/stalk assembly",
+     "verdict": "pass",
+     "reason": "Three red photoreceptors are visible across the small head on its stalk assembly."
+    },
+    {
+     "line": "Two arm-mounted cannons held out to the sides",
+     "verdict": "pass",
+     "reason": "Two arm-mounted cannons extend to the sides, each with paired barrels."
+    },
+    {
+     "line": "Dark bronze-brown (bronzium) plating, not white/light grey",
+     "verdict": "pass",
+     "reason": "Plating is dark bronze-brown with near-black recesses and weathering."
+    },
+    {
+     "line": "Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizontal bar, single long sniper barrel, pale green-grey body with yellow trim",
+     "verdict": "fail",
+     "reason": "Rounded shell, three small eyes, paired side cannons, and bronze plating contradict the specified Sharpshooter shield, two-eye bar, sniper barrel, and green-grey/yellow palette."
+    }
+   ],
+   "summary": "The render satisfies the standard deployed droideka requirements but fails the Sharpshooter variant requirement.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_Destroyer_v1_south/desert_gap_Destroyer_v1_south.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_cutaway.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_deployed_in_show.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_infobox_deployed.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_droideka/wookieepedia_sharpshooter.png"
+   ],
+   "ts": "2026-10-05T03:53:41Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_FX7_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_fx7",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Legless, tapered vertical cylinder body, widest at a flared circular base pedestal",
+     "verdict": "pass",
+     "reason": "Legless cylindrical body narrows upward and stands on a wide, flared circular pedestal."
+    },
+    {
+     "line": "Steel blue-grey plating, not neutral grey",
+     "verdict": "pass",
+     "reason": "Plating reads as muted steel blue-grey, with blue visible on the turret, rings, and base beneath weathering."
+    },
+    {
+     "line": "Dense vertical ribbing over the lower body (the folded arm bundle)",
+     "verdict": "pass",
+     "reason": "Many closely packed vertical jointed rods sheath the lower body as folded arms."
+    },
+    {
+     "line": "Stack of horizontal banded rings near the top, capped by a small domed sensor turret",
+     "verdict": "pass",
+     "reason": "Several horizontal bands stack beneath a small domed turret with a side-facing sensor."
+    },
+    {
+     "line": "At least one clawed instrument arm projecting past the body's outline",
+     "verdict": "pass",
+     "reason": "Two thin jointed arms project beyond the right outline and terminate in clawed instruments."
+    }
+   ],
+   "summary": "The east-facing render satisfies all five FX-7 visual requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_FX7_v1_east/desert_gap_FX7_v1_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx7.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx9_series_infobox.png"
+   ],
+   "ts": "2026-10-05T03:53:41Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_FX7_v1_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_fx7",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Legless, tapered vertical cylinder body, widest at a flared circular base pedestal",
+     "verdict": "pass",
+     "reason": "Legless cylindrical body narrows upward from a broad, flared circular pedestal."
+    },
+    {
+     "line": "Steel blue-grey plating, not neutral grey",
+     "verdict": "pass",
+     "reason": "Plating reads as muted steel blue-grey, with warm weathering and cool blue highlights."
+    },
+    {
+     "line": "Dense vertical ribbing over the lower body (the folded arm bundle)",
+     "verdict": "pass",
+     "reason": "Dense, long vertical ribs and visible joints sheath the lower body."
+    },
+    {
+     "line": "Stack of horizontal banded rings near the top, capped by a small domed sensor turret",
+     "verdict": "pass",
+     "reason": "Several horizontal upper rings terminate in a small domed turret."
+    },
+    {
+     "line": "At least one clawed instrument arm projecting past the body's outline",
+     "verdict": "pass",
+     "reason": "Thin jointed arms project beyond the left outline and end in clawed instruments."
+    }
+   ],
+   "summary": "The north-facing render satisfies all five visible FX-7 acceptance requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_FX7_v1_north/desert_gap_FX7_v1_north.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx7.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx9_series_infobox.png"
+   ],
+   "ts": "2026-10-05T03:53:57Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_FX7_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_fx7",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Legless, tapered vertical cylinder body, widest at a flared circular base pedestal",
+     "verdict": "pass",
+     "reason": "Legless cylindrical body narrows upward from a wide, flared circular pedestal."
+    },
+    {
+     "line": "Steel blue-grey plating, not neutral grey",
+     "verdict": "pass",
+     "reason": "Plating reads as muted steel blue-grey, with cool blue highlights."
+    },
+    {
+     "line": "Dense vertical ribbing over the lower body (the folded arm bundle)",
+     "verdict": "pass",
+     "reason": "Dense, long vertical jointed ribs sheath the lower body as folded arms."
+    },
+    {
+     "line": "Stack of horizontal banded rings near the top, capped by a small domed sensor turret",
+     "verdict": "pass",
+     "reason": "Horizontal rings stack beneath a small domed turret with a visible circular sensor."
+    },
+    {
+     "line": "At least one clawed instrument arm projecting past the body's outline",
+     "verdict": "pass",
+     "reason": "Two thin jointed arms project beyond the right outline and end in clawed instruments."
+    }
+   ],
+   "summary": "The south-facing render satisfies all five FX-7 visual requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_FX7_v1_south/desert_gap_FX7_v1_south.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx7.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_fx7/wookieepedia_fx9_series_infobox.png"
+   ],
+   "ts": "2026-10-05T03:53:53Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_GNK_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_gnk",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)",
+     "verdict": "pass",
+     "reason": "Stacked rectangular body blocks widen below the upper block and carry knobs, dials, vents, and bolt rows."
+    },
+    {
+     "line": "Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet",
+     "verdict": "pass",
+     "reason": "Two short ribbed bellows legs end in flat, angular grey feet that splay outward."
+    },
+    {
+     "line": "No head, no arms, no lens, no neck \u2014 only an indicator panel as the \"face\"",
+     "verdict": "pass",
+     "reason": "No separate head, arms, lens, or neck; the recessed indicator panel provides the only face."
+    },
+    {
+     "line": "Lit indicator panel with green/red or amber/orange lamps",
+     "verdict": "pass",
+     "reason": "The visible recessed panel contains lit green, red, and amber lamps."
+    },
+    {
+     "line": "Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body",
+     "verdict": "pass",
+     "reason": "The body is scuffed warm grey-tan, with cooler, darker grey feet."
+    }
+   ],
+   "summary": "The east-facing render satisfies all five canon visual requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_GNK_v1_east/desert_gap_GNK_v1_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_canon_databank.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_clonewars_renown.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_legends_promo.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_mos_espa.jpg"
+   ],
+   "ts": "2026-10-05T03:54:07Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_GNK_v1_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "4/4",
+   "passed": 4,
+   "graded": 4,
+   "na": 1,
+   "kind": "canon",
+   "slug": "droid_gnk",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)",
+     "verdict": "pass",
+     "reason": "Stacked rectangular body blocks widen toward the lower body, with bolted rear panels, vents, and small mechanical fittings."
+    },
+    {
+     "line": "Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet",
+     "verdict": "pass",
+     "reason": "Two short, clearly ribbed bellows legs end in flat, angular, outward-splayed grey feet."
+    },
+    {
+     "line": "No head, no arms, no lens, no neck \u2014 only an indicator panel as the \"face\"",
+     "verdict": "pass",
+     "reason": "The crate-bodied silhouette has no head, arms, lens, or neck; its front face is hidden in this rear view."
+    },
+    {
+     "line": "Lit indicator panel with green/red or amber/orange lamps",
+     "verdict": "na",
+     "reason": "The upper-front indicator panel and its lamps cannot be seen from this north-facing rear view."
+    },
+    {
+     "line": "Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body",
+     "verdict": "pass",
+     "reason": "The body is weathered warm grey-tan, with distinctly cooler, darker grey feet."
+    }
+   ],
+   "summary": "The north-facing render satisfies every visible requirement; front indicator lighting cannot be assessed.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_GNK_v1_north/desert_gap_GNK_v1_north.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_canon_databank.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_clonewars_renown.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_legends_promo.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_mos_espa.jpg"
+   ],
+   "ts": "2026-10-05T03:54:16Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_GNK_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_gnk",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)",
+     "verdict": "pass",
+     "reason": "Stacked rectangular housing broadens below the top, with a projecting seam rim, dial, vents, and bolted panels."
+    },
+    {
+     "line": "Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet",
+     "verdict": "pass",
+     "reason": "Two short, clearly ribbed bellows legs end in flat, angular grey feet splayed outward."
+    },
+    {
+     "line": "No head, no arms, no lens, no neck \u2014 only an indicator panel as the \"face\"",
+     "verdict": "pass",
+     "reason": "No head, arms, neck, or optical lens; the circular fitting reads as a mechanical dial beside the indicator panel."
+    },
+    {
+     "line": "Lit indicator panel with green/red or amber/orange lamps",
+     "verdict": "pass",
+     "reason": "The recessed front panel shows illuminated green, red, and amber lamps."
+    },
+    {
+     "line": "Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body",
+     "verdict": "pass",
+     "reason": "The body is weathered warm grey-tan, with distinctly cooler, darker grey feet."
+    }
+   ],
+   "summary": "The south-facing render satisfies all five canon visual requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_GNK_v1_south/desert_gap_GNK_v1_south.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_canon_databank.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_clonewars_renown.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_legends_promo.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_gnk/wookieepedia_mos_espa.jpg"
+   ],
+   "ts": "2026-10-05T03:54:34Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_MSE_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "6/6",
+   "passed": 6,
+   "graded": 6,
+   "na": 0,
+   "kind": "canon",
+   "slug": "droid_mse",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt",
+     "verdict": "pass",
+     "reason": "Dark matte near-black plating forms a sloped wedge body above a wider flat skirt."
+    },
+    {
+     "line": "No eyes/photoreceptor visible anywhere \u2014 deliberately blank face",
+     "verdict": "pass",
+     "reason": "No eyes or photoreceptor are visible; the front is blank."
+    },
+    {
+     "line": "Wide, low silhouette much wider than tall (0.54 m by 0.25 m proportions)",
+     "verdict": "pass",
+     "reason": "The chassis is broad and low, clearly much wider than tall."
+    },
+    {
+     "line": "Two comb-like sensor stalk arrays visible on the rear roof",
+     "verdict": "pass",
+     "reason": "Two distinct comb-like groups of dark sensor stalks rise from the rear roof."
+    },
+    {
+     "line": "Polished silver-grey trim strip along the base lip",
+     "verdict": "pass",
+     "reason": "A reflective silver-grey trim strip runs along the base lip."
+    },
+    {
+     "line": "Wheel bulge visible in the east/profile view",
+     "verdict": "pass",
+     "reason": "Dark wheel bulges visibly protrude beneath the skirt in profile."
+    }
+   ],
+   "summary": "The east-facing render satisfies all six visual acceptance lines.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_MSE_v1_east/desert_gap_MSE_v1_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_interior.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse6_infobox.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse_series_group.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_on_mandalore.png"
+   ],
+   "ts": "2026-10-05T03:54:37Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_MSE_v1_north",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 1,
+   "kind": "canon",
+   "slug": "droid_mse",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt",
+     "verdict": "pass",
+     "reason": "Dark near-black plating forms a tapered wedge above a wider flat skirt."
+    },
+    {
+     "line": "No eyes/photoreceptor visible anywhere \u2014 deliberately blank face",
+     "verdict": "pass",
+     "reason": "The visible rear panel is blank, with no eyes or photoreceptor anywhere."
+    },
+    {
+     "line": "Wide, low silhouette much wider than tall (0.54 m by 0.25 m proportions)",
+     "verdict": "pass",
+     "reason": "The broad, low chassis reads as substantially wider than tall."
+    },
+    {
+     "line": "Two comb-like sensor stalk arrays visible on the rear roof",
+     "verdict": "pass",
+     "reason": "Two separate comb-like arrays of dark cylindrical stalks rise from the rear roof."
+    },
+    {
+     "line": "Polished silver-grey trim strip along the base lip",
+     "verdict": "pass",
+     "reason": "A bright silver-grey trim strip follows the base lip."
+    },
+    {
+     "line": "Wheel bulge visible in the east/profile view",
+     "verdict": "na",
+     "reason": "This north-facing view cannot establish the wheel bulge required in the east/profile view."
+    }
+   ],
+   "summary": "The north-facing render satisfies all applicable visual requirements; the profile wheel requirement is not assessable.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_MSE_v1_north/desert_gap_MSE_v1_north.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_interior.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse6_infobox.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse_series_group.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_on_mandalore.png"
+   ],
+   "ts": "2026-10-05T03:54:51Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_MSE_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "5/5",
+   "passed": 5,
+   "graded": 5,
+   "na": 1,
+   "kind": "canon",
+   "slug": "droid_mse",
+   "slug_via": "named in style_notes",
+   "lines": [
+    {
+     "line": "Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt",
+     "verdict": "pass",
+     "reason": "Dark matte near-black plating forms a sloped wedge above a wider flat skirt."
+    },
+    {
+     "line": "No eyes/photoreceptor visible anywhere \u2014 deliberately blank face",
+     "verdict": "pass",
+     "reason": "The blank front panel has no eyes or photoreceptor; the red strip reads as a lightbar."
+    },
+    {
+     "line": "Wide, low silhouette much wider than tall (0.54 m by 0.25 m proportions)",
+     "verdict": "pass",
+     "reason": "The chassis reads as broad and low, with width substantially exceeding body height."
+    },
+    {
+     "line": "Two comb-like sensor stalk arrays visible on the rear roof",
+     "verdict": "pass",
+     "reason": "Two separate comb-like arrays of dark upright stalks sit on the rear roof."
+    },
+    {
+     "line": "Polished silver-grey trim strip along the base lip",
+     "verdict": "pass",
+     "reason": "A bright silver-grey trim strip runs along the base lip."
+    },
+    {
+     "line": "Wheel bulge visible in the east/profile view",
+     "verdict": "na",
+     "reason": "This is the south-facing view; the required east/profile wheel bulge cannot be assessed."
+    }
+   ],
+   "summary": "The south-facing sprite passes all applicable visual requirements.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/desert_gap_MSE_v1_south/desert_gap_MSE_v1_south.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_interior.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse6_infobox.png",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_mse_series_group.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/droid_mse/wookieepedia_on_mandalore.png"
+   ],
+   "ts": "2026-10-05T03:54:52Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_Muckraker_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "desert_gap_Muckraker_v1_south",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "longshade_rsw_bantha_v1_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "7/7",
+   "passed": 7,
+   "graded": 7,
+   "na": 0,
+   "kind": "canon",
+   "slug": "bantha",
+   "slug_via": "target_canon",
+   "lines": [
+    {
+     "line": "Heavyset, shaggy, long-haired quadruped body",
+     "verdict": "pass",
+     "reason": "Heavyset body is draped in long, shaggy fur reaching the ground; legs are concealed by the coat."
+    },
+    {
+     "line": "Pair of large, tightly-curled, ram-like spiraling horns",
+     "verdict": "pass",
+     "reason": "Two large pale ram-like horns are visible, with a tight spiral on the near horn and the far horn partly obscured."
+    },
+    {
+     "line": "Hanging beard-like fringe of fur at the chin/chest",
+     "verdict": "pass",
+     "reason": "A long beard-like fringe hangs from the chin and chest to the ground."
+    },
+    {
+     "line": "A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (as in `wookieepedia_infobox.jpg`)",
+     "verdict": "pass",
+     "reason": "The visible muzzle has a wide, flat horizontal mouth slit beneath a broad, blunt nose, consistent with the reference in profile."
+    },
+    {
+     "line": "Body coat dark brown to near-black",
+     "verdict": "pass",
+     "reason": "The body coat is dark brown with near-black shading."
+    },
+    {
+     "line": "Horns pale ivory/tan/cream, contrasting against the dark coat",
+     "verdict": "pass",
+     "reason": "The horns are pale ivory and tan, contrasting clearly with the dark coat."
+    },
+    {
+     "line": "Fully fur-covered body with no bare skin visible",
+     "verdict": "pass",
+     "reason": "Long fur covers the body completely, with no exposed body skin visible."
+    }
+   ],
+   "summary": "The east-facing sprite meets all seven visual requirements, including ground-length shag, enormous curled horns, and the flattened slit mouth.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/longshade_rsw_bantha_v1_east/longshade_rsw_bantha_v1_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_herd_screencap.jpg"
+   ],
+   "ts": "2026-10-05T03:55:08Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "longshade_rsw_bantha_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "graded",
+   "verdict": "PASS",
+   "score": "6/6",
+   "passed": 6,
+   "graded": 6,
+   "na": 1,
+   "kind": "canon",
+   "slug": "bantha",
+   "slug_via": "target_canon",
+   "lines": [
+    {
+     "line": "Heavyset, shaggy, long-haired quadruped body",
+     "verdict": "pass",
+     "reason": "Heavyset body has dense, extremely long shaggy fur reaching the ground; legs are largely concealed."
+    },
+    {
+     "line": "Pair of large, tightly-curled, ram-like spiraling horns",
+     "verdict": "pass",
+     "reason": "Two large, ridged ram-like horns curl tightly, with the farther horn partly obscured."
+    },
+    {
+     "line": "Hanging beard-like fringe of fur at the chin/chest",
+     "verdict": "pass",
+     "reason": "A long beard-like fringe hangs from the chin down toward the ground."
+    },
+    {
+     "line": "A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (as in `wookieepedia_infobox.jpg`)",
+     "verdict": "na",
+     "reason": "The east-facing profile shows a horizontal mouth slit, but cannot establish its full frontal width or the nose's breadth."
+    },
+    {
+     "line": "Body coat dark brown to near-black",
+     "verdict": "pass",
+     "reason": "The coat is pale cream-white, as explicitly required by the owner's color-variant override."
+    },
+    {
+     "line": "Horns pale ivory/tan/cream, contrasting against the dark coat",
+     "verdict": "pass",
+     "reason": "Horns are pale ivory/tan; the owner's cream-white coat override supersedes the dark-coat contrast requirement."
+    },
+    {
+     "line": "Fully fur-covered body with no bare skin visible",
+     "verdict": "pass",
+     "reason": "Fur covers the body completely, with no visible bare body skin."
+    }
+   ],
+   "summary": "The cream-white variant meets the visible anatomical requirements; frontal mouth width cannot be assessed from this facing.",
+   "model": "gpt-6.1-sol",
+   "render": "/mnt/d/Luke/dev/_artpipe/_artsrc/longshade_rsw_bantha_v2_east/longshade_rsw_bantha_v2_east.png",
+   "canon_images": [
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/wookieepedia_infobox.jpg",
+    "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bantha/official_concept_art_olivera.jpg"
+   ],
+   "ts": "2026-10-05T03:55:16Z"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "messyconduit_bracket_modern_v2_east",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "messyconduit_bracket_modern_v2_north",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "messyconduit_bracket_modern_v2_south",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ },
+ {
+  "id": "messyconduit_hose_binding_v1",
+  "status": "checked",
+  "check": {
+   "status": "skipped",
+   "reason": "no canon entry and no owner note"
+  },
+  "dir": "done"
+ }
+]
