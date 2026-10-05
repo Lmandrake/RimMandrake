@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-05T06:59:51-0700",
- "git_head": "6772566b4",
+ "generated": "2026-10-05T08:33:06-0700",
+ "git_head": "15caf5fd7",
  "inputs": {
-  "ledger_events": 45395,
-  "ledger_variants": 11355,
+  "ledger_events": 45516,
+  "ledger_variants": 11384,
   "load_order": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
-  "artpipe_state": "searched 17903 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 18242 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -16,9 +16,9 @@
   "bantha": 3,
   "anooba": 3,
   "stoneback": 1,
-  "_canon_index_defnames": 254,
+  "_canon_index_defnames": 255,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 11355
+  "_ledger_variants": 11384
  },
  "biome_order": [
   "RM_LongShade",
@@ -12188,7 +12188,16 @@
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "hold",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Vosska"
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -14406,7 +14415,10 @@
      "artpipe_state_jobs": [
       "bluedesert_AA_Thunderbeast_v1",
       "bluedesert_Thunderbeast_v2",
-      "bluedesert_Thunderbeast_v3"
+      "bluedesert_Thunderbeast_v2_east.json.stale_2026-10-05",
+      "bluedesert_Thunderbeast_v2_east.manifest.json.stale_2026-10-05",
+      "bluedesert_Thunderbeast_v3",
+      "bluedesert_Thunderbeast_v4"
      ],
      "art": {
       "resources": [
@@ -14432,6 +14444,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render bluedesert_Thunderbeast_v4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "north": "5866c53a7295cca4ec96343575514e321a5a17d38011f72a251158d893dde138"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render bluedesert_Thunderbeast_v2",
           "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-04",
@@ -14445,7 +14467,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -14482,6 +14504,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:02-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "AA_Thunderbeast"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:23-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "AA_Thunderbeast"
       }
      ],
@@ -14639,24 +14669,12 @@
            "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
           },
           "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render bluedesert_dovvik",
-          "detail": "2026-09-24 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BLUEDESERT_DESIGN_SITTING_1",
-          "date": "2026-09-24",
-          "faces": {
-           "east": "5afdcdfafbba574d4d2ae90438b2adf380f09854c16a3151ecd43efb095c4ad3",
-           "north": "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849",
-           "south": "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe"
-          },
-          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 1,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -14669,6 +14687,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:02-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Dovvik"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:23-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Dovvik"
       }
      ],
@@ -14879,6 +14905,14 @@
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Murrek"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Murrek"
       }
      ],
      "noncanon_twin": []
@@ -14935,9 +14969,9 @@
          "mod": "src/RimMandrake/BlueDesert",
          "label": "IN GAME \u2014 BlueDesert",
          "faces": {
-          "east": "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
-          "north": "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8",
-          "south": "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece"
+          "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
+          "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
+          "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
          },
          "winner_by_load_order": true
         },
@@ -14945,24 +14979,24 @@
          {
           "kind": "live",
           "label": "IN GAME \u2014 BlueDesert",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 6a843cdd65 2026-09-29: BLUEDESERT_RULED_CONTENT_1: full Blue Desert ruled cast \u2014 depth four + bedazzle four + blue ice + roster rewire + donor ",
-          "date": "2026-09-29",
+          "detail": "load index 605 (last loaded, wins)",
+          "date": "",
           "faces": {
-           "east": "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
-           "north": "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8",
-           "south": "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece"
+           "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
+           "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
+           "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
           },
           "near_dup_of": null
          },
          {
           "kind": "artpipe",
-          "label": "render bluedesert_Ossivel_v3",
-          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
-          "date": "2026-10-05",
+          "label": "render RM_Ossivel",
+          "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BLUEDESERT_BEDAZZLE_SITTING_1",
+          "date": "2026-09-28",
           "faces": {
-           "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
-           "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
-           "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
+           "east": "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
+           "north": "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8",
+           "south": "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece"
           },
           "near_dup_of": null
          }
@@ -14991,6 +15025,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Ossivel"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Ossivel"
       }
      ],
@@ -15065,24 +15107,12 @@
            "south": "5333d045c2d9c1a5c42b9c4b32598de374f6659cbc1ffb0154b982720094a7c2"
           },
           "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render bluedesert_utikka",
-          "detail": "2026-09-24 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BLUEDESERT_DESIGN_SITTING_1",
-          "date": "2026-09-24",
-          "faces": {
-           "east": "086e060adc0fb404fd9b5be01ac9ed63177020c3f2c5337dce8a50fc68f495a0",
-           "north": "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae",
-           "south": "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6"
-          },
-          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 1,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -15095,6 +15125,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Utikka"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Utikka"
       }
      ],
@@ -15234,7 +15272,7 @@
          "mod": "src/RimMandrake/BlueDesert",
          "label": "IN GAME \u2014 BlueDesert",
          "faces": {
-          "east": "52a04e887f25fb0350cd73e969b3dbc3ec22828b2f5c059df080d5eb792af2ae",
+          "east": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f",
           "north": "98eb9382c55693cdbab802d055ec5a232e24032f304bb437fd54af972c060d9e",
           "south": "9ee9f4991ad004935efbdaf947bc563b579b578dbd5456a6def7d9f39e849ff9"
          },
@@ -15247,7 +15285,7 @@
           "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 6a843cdd65 2026-09-29: BLUEDESERT_RULED_CONTENT_1: full Blue Desert ruled cast \u2014 depth four + bedazzle four + blue ice + roster rewire + donor ",
           "date": "2026-09-29",
           "faces": {
-           "east": "52a04e887f25fb0350cd73e969b3dbc3ec22828b2f5c059df080d5eb792af2ae",
+           "east": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f",
            "north": "98eb9382c55693cdbab802d055ec5a232e24032f304bb437fd54af972c060d9e",
            "south": "9ee9f4991ad004935efbdaf947bc563b579b578dbd5456a6def7d9f39e849ff9"
           },
@@ -15260,16 +15298,6 @@
           "date": "2026-10-04",
           "faces": {
            "east": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Vhaulk_v2",
-          "detail": "2026-09-29 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BLUEDESERT_BEDAZZLE_SITTING_1",
-          "date": "2026-09-29",
-          "faces": {
-           "east": "52a04e887f25fb0350cd73e969b3dbc3ec22828b2f5c059df080d5eb792af2ae"
           },
           "near_dup_of": "IN GAME \u2014 BlueDesert"
          },
@@ -15284,6 +15312,17 @@
            "south": "9ee9f4991ad004935efbdaf947bc563b579b578dbd5456a6def7d9f39e849ff9"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "git",
+          "label": "history BlueDesert 2026-09-29",
+          "detail": "6a843cdd65 2026-09-29: BLUEDESERT_RULED_CONTENT_1: full Blue Desert ruled cast \u2014 depth four + bedazzle four + blue ice + roster rewire + donor ",
+          "date": "2026-09-29",
+          "faces": {
+           "north": "98eb9382c55693cdbab802d055ec5a232e24032f304bb437fd54af972c060d9e",
+           "south": "9ee9f4991ad004935efbdaf947bc563b579b578dbd5456a6def7d9f39e849ff9"
+          },
+          "near_dup_of": "IN GAME \u2014 BlueDesert"
          }
         ],
         "prior_selection": null
@@ -15310,6 +15349,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Vhaulk"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Vhaulk"
       }
      ],
@@ -15367,7 +15414,7 @@
          "label": "IN GAME \u2014 BlueDesert",
          "faces": {
           "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
-          "north": "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c",
+          "north": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256",
           "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
          },
          "winner_by_load_order": true
@@ -15376,36 +15423,12 @@
          {
           "kind": "live",
           "label": "IN GAME \u2014 BlueDesert",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 6a843cdd65 2026-09-29: BLUEDESERT_RULED_CONTENT_1: full Blue Desert ruled cast \u2014 depth four + bedazzle four + blue ice + roster rewire + donor ",
-          "date": "2026-09-29",
+          "detail": "load index 605 (last loaded, wins)",
+          "date": "",
           "faces": {
            "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
-           "north": "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c",
+           "north": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256",
            "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render bluedesert_Vrisk_v2",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
-          "date": "2026-10-04",
-          "faces": {
-           "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
-           "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1",
-           "north": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render bluedesert_vrisk",
-          "detail": "2026-09-24 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BLUEDESERT_DESIGN_SITTING_1",
-          "date": "2026-09-24",
-          "faces": {
-           "east": "6e9f6f848afe411e6e922f9c8423618d2a378f92f29f532b22a6cc3cc3e81c5a",
-           "north": "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c",
-           "south": "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5"
           },
           "near_dup_of": null
          }
@@ -15413,7 +15436,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 1,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -15426,6 +15449,14 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Vrisk"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:26-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Vrisk"
       }
      ],
@@ -15537,18 +15568,22 @@
      ],
      "commonality_max": 0.5,
      "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
+      "entry": "design/RimStarWars/canon_references/vaapad",
+      "match": "index_defname",
+      "images": [
+       "design/RimStarWars/canon_references/vaapad/wookieepedia_vaapad.jpg"
+      ],
+      "has_must_show": true,
+      "ruled": true,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
       "bluedesert_Vapaad_v1",
-      "bluedesert_Vapaad_v2"
+      "bluedesert_Vapaad_v2",
+      "vapaad_canon_v1",
+      "vapaad_canon_v2"
      ],
      "art": {
       "resources": [
@@ -15569,6 +15604,26 @@
            "east": "cd24a5ce520a4695da85bf15023f4d8105a66b54977fe9c388258a647666c1ac",
            "north": "b8c53700fa5cce53c94548c7bab72bc799334a6d783f9a078b490335541ae7a6",
            "south": "39b0c64d52dac7d974485db77bab17eb114d45a0917c863d7db90ddfdee597a5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render vapaad_canon_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render vapaad_canon_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81"
           },
           "near_dup_of": null
          },
@@ -15600,7 +15655,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -15721,6 +15776,22 @@
        "ts": "2026-10-04T23:11:41-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Chimeglobe"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:23-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Chimeglobe"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:23-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Chimeglobe"
       }
      ],
      "noncanon_twin": []
@@ -15821,6 +15892,22 @@
        "ts": "2026-10-04T23:11:41-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Glassfern"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:24-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Glassfern"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:24-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Glassfern"
       }
      ],
      "noncanon_twin": []
@@ -15874,20 +15961,13 @@
         "subjects": [
          "RM_Kethevar"
         ],
-        "live": {
-         "mod": "src/RimMandrake/BlueDesert",
-         "label": "IN GAME \u2014 BlueDesert",
-         "faces": {
-          "single": "b3ab0eb0b078b740bf3ecc51029983f033db908a2d95f9dd7d21b6931cd10f69"
-         },
-         "winner_by_load_order": true
-        },
+        "live": null,
         "versions": [
          {
-          "kind": "live",
-          "label": "IN GAME \u2014 BlueDesert",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 5da96df3e8 2026-10-03: Blue Desert: four admitted flora (qeshra, kethevar, lisqueth, vashpuk) with roe and char-lace, setting-gated; winbuild f",
-          "date": "2026-10-03",
+          "kind": "donor",
+          "label": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+          "detail": "load index 605 (last loaded, wins) \u00b7 mandrake.rm.biomes \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RM_Kethevar in live DefDump capture 2026-10-04T17-39-06Z",
+          "date": "",
           "faces": {
            "single": "b3ab0eb0b078b740bf3ecc51029983f033db908a2d95f9dd7d21b6931cd10f69"
           },
@@ -15930,7 +16010,7 @@
       "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
-      "live_res": 1,
+      "live_res": 0,
       "in_game": 1
      },
      "ledger_rulings": [
@@ -15940,6 +16020,38 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Kethevar"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Kethevar"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Kethevar"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Kethevar"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Kethevar"
       }
      ],
@@ -15994,20 +16106,13 @@
         "subjects": [
          "RM_Lisqueth"
         ],
-        "live": {
-         "mod": "src/RimMandrake/BlueDesert",
-         "label": "IN GAME \u2014 BlueDesert",
-         "faces": {
-          "single": "b88fb3d6a9dd7fdf6b60d9ed0249909478226c463cb7f0e7a3733faef923a93b"
-         },
-         "winner_by_load_order": true
-        },
+        "live": null,
         "versions": [
          {
-          "kind": "live",
-          "label": "IN GAME \u2014 BlueDesert",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 5da96df3e8 2026-10-03: Blue Desert: four admitted flora (qeshra, kethevar, lisqueth, vashpuk) with roe and char-lace, setting-gated; winbuild f",
-          "date": "2026-10-03",
+          "kind": "donor",
+          "label": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+          "detail": "load index 605 (last loaded, wins) \u00b7 mandrake.rm.biomes \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of RM_Lisqueth in live DefDump capture 2026-10-04T17-39-06Z",
+          "date": "",
           "faces": {
            "single": "b88fb3d6a9dd7fdf6b60d9ed0249909478226c463cb7f0e7a3733faef923a93b"
           },
@@ -16050,7 +16155,7 @@
       "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
-      "live_res": 1,
+      "live_res": 0,
       "in_game": 1
      },
      "ledger_rulings": [
@@ -16060,6 +16165,38 @@
        "trust": "ruled",
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Lisqueth"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Lisqueth"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Lisqueth"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Lisqueth"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Lisqueth"
       }
      ],
@@ -16179,6 +16316,30 @@
        "ts": "2026-10-04T23:11:42-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Palefloss"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Palefloss"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Palefloss"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Palefloss"
       }
      ],
      "noncanon_twin": []
@@ -16277,6 +16438,14 @@
        "ts": "2026-10-04T23:11:03-0700",
        "via": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
        "row": "RM_Qeshra"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Qeshra"
       }
      ],
      "noncanon_twin": []
@@ -16315,7 +16484,10 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Vashpuk"
+      "RM_Vashpuk",
+      "RM_Vashpuk_var1",
+      "RM_Vashpuk_var2",
+      "RM_Vashpuk_var3"
      ],
      "art": {
       "resources": [
@@ -16345,18 +16517,57 @@
            "single": "cb6a1766878f7a911651bd7acda5b5dfd40b5756a5e55ff3e01c934fb373cbed"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Vashpuk_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "c836301b1a36a817ed12d3b032f9fd504e7f0af5e30ec2b8d05a9997f208192f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Vashpuk_var2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "9e4f8f0bac150872c1667589681f2a9d2fdc18887b5a254d832a181854844df9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Vashpuk_var3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "6444c5bc81d7608034fed82930ac3a770987fbef8e1741e638f6a5595acfda05"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:25-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Vashpuk"
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -16393,7 +16604,10 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Virr"
+      "RM_Virr",
+      "RM_Virr_var1",
+      "RM_Virr_var2",
+      "RM_Virr_var3"
      ],
      "art": {
       "resources": [
@@ -16423,12 +16637,32 @@
            "single": "ab92e2a1bc2be5f955c888a1edd6f0c4e453aa15bc9143709ba6603151491df5"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Virr_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "5003d5e26f06a4ac520bbb496a1dca31954ce537dcbf2a03328c68f3f99ae7fa"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Virr_var3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "d7892e29e6342a5b2d429b7dce5c61037e3931be73ef1a77a2f93706c68d5eee"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -16442,6 +16676,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:40:26-0700",
+       "via": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+       "row": "RM_Virr"
       }
      ],
      "noncanon_twin": []
@@ -16455,7 +16697,7 @@
     "fish": 0,
     "with_art": 20,
     "no_art": 0,
-    "canon_entry": 0,
+    "canon_entry": 1,
     "canon_missing_entry": 0,
     "noncanon_twin": 0,
     "any_twin": 0,
@@ -16473,7 +16715,7 @@
      "defName": "RM_Abyss",
      "ours": true,
      "file": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
-     "rows_here": 31
+     "rows_here": 27
     }
    ],
    "rows": [
@@ -16559,6 +16801,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_CrepuscularBeetle"
       }
      ],
      "noncanon_twin": []
@@ -16653,6 +16903,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Darkbeast"
       }
      ],
      "noncanon_twin": []
@@ -16739,6 +16997,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_DarkVandal"
       }
      ],
      "noncanon_twin": []
@@ -16825,208 +17091,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "AA_DuskRat",
-     "kind": "fauna",
-     "port": null,
-     "donors": [],
-     "pairing": {},
-     "placements": [
+      },
       {
-       "as_written": "AA_DuskRat",
-       "commonality": 1.5,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
-       "may_require": "sarg.alphaanimals",
-       "biome_def": "RM_Abyss"
-      }
-     ],
-     "label": null,
-     "defNames": [
-      "AA_DuskRat"
-     ],
-     "commonality_max": 1.5,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [],
-     "artpipe_state_jobs": [
-      "RM_DuskRat"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_DuskRat/AA_DuskRat",
-        "role": "body",
-        "joined_by": "live-def-dump",
-        "in_ledger": true,
-        "subjects": [],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals",
-          "detail": "load index 404 (last loaded, wins) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of AA_DuskRat in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "ce22e9c6365ec35fef948d980ab220c5e42c556498b5a9e73fb3eee02a038805",
-           "north": "61c021697572178174d4a4fc10e552bf70545514a7d73119b789fb2f45a340d8",
-           "south": "e4325a29780a9c1e66c3ee9ee385168074b7909d4275772d0f7421551f444809"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_DuskRat",
-          "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_FREE_TIER_BODY_1",
-          "date": "2026-10-01",
-          "faces": {
-           "east": "986daa6687694c60e7b595e3d191098afeaef2be34d7ffa69bfdcdfb9c502453",
-           "north": "4f5f459787645dc0edfb6669d930f908e5d76ccafa7b84b57ffcd64ff73fea3d",
-           "south": "8a0e46ac9f78a30ff09165656952aae2f4af1fe1440fcd834b79ac9f98b65611"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "replace-donor",
+       "verdict": "redo",
        "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "AA_Frostling",
-     "kind": "fauna",
-     "port": null,
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "AA_Frostling",
-       "commonality": 0.05,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
-       "may_require": "sarg.alphaanimals",
-       "biome_def": "RM_Abyss"
-      }
-     ],
-     "label": null,
-     "defNames": [
-      "AA_Frostling"
-     ],
-     "commonality_max": 0.05,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [],
-     "artpipe_state_jobs": [],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_Frostling/AA_Frostling",
-        "role": "body",
-        "joined_by": "live-def-dump",
-        "in_ledger": true,
-        "subjects": [],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals",
-          "detail": "load index 404 (last loaded, wins) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of AA_Frostling in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "19a29b09627a19b20dfe64889f82dfbdc791a8eaef8e43c57048a00dc52654bf",
-           "north": "cd174509000fef81815eaf9dde46f193dc68c0d726a823d5785d16cde1c3ef0d",
-           "south": "ae99459e8bc8577c055232cadf101808914c2e2cc154a57b826c6c259afb3f8a"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 1,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "replace-donor",
-       "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
-      },
-      {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_DuskProwler"
       }
      ],
      "noncanon_twin": []
@@ -17064,7 +17136,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Murkling_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -17113,104 +17187,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
-      }
-     ],
-     "noncanon_twin": []
-    },
-    {
-     "key": "AA_NightAve",
-     "kind": "fauna",
-     "port": null,
-     "donors": [],
-     "pairing": {},
-     "placements": [
-      {
-       "as_written": "AA_NightAve",
-       "commonality": 0.2,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
-       "may_require": "sarg.alphaanimals",
-       "biome_def": "RM_Abyss"
-      }
-     ],
-     "label": null,
-     "defNames": [
-      "AA_NightAve"
-     ],
-     "commonality_max": 0.2,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [],
-     "artpipe_state_jobs": [],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/AA_NightAve/AA_NightAve",
-        "role": "body",
-        "joined_by": "live-def-dump",
-        "in_ledger": true,
-        "subjects": [],
-        "live": null,
-        "versions": [
-         {
-          "kind": "donor",
-          "label": "IN GAME \u2014 Alpha Animals Retextured",
-          "detail": "load index 462 (last loaded, wins) \u00b7 ks.aaretextured \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of AA_NightAve in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "af1ec37e4fd0982c11ae581ea18a1fedbcf163cbfc3005dfff38a86472b6bf4a",
-           "north": "8efafe4613e3015fbd93a5ed159e4f7426ea3e80cd4af69f414debfa32dbc0b4",
-           "south": "44571a7b4f100dc50cd8e153f4a88181b8898dc6208cd15f0526bda7bdfbf888"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "donor",
-          "label": "donor original \u2014 Alpha Animals",
-          "detail": "load index 404 (shadowed by a later mod) \u00b7 sarg.alphaanimals \u00b7 loose PNG in the game's mod folders \u00b7 bound: texPath of AA_NightAve in live DefDump capture 2026-10-04T17-39-06Z",
-          "date": "",
-          "faces": {
-           "east": "30e9b2c87604d5078b7b121cab64a7ae46bd62bae1a2421a26600f238edc594a",
-           "north": "61e943d40e85ec071ef07791dbf0758be08b3b095c01b7d15d67ea2f29b9bb91",
-           "south": "835352d90829d2f0b6ff235a208e915d33a4ae8058c944b1c36ffab23e9c67d1"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 2,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 0,
-      "in_game": 1
-     },
-     "ledger_rulings": [
-      {
-       "verdict": "replace-donor",
-       "by": "owner",
-       "trust": "legacy-unresolved",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
       },
       {
-       "verdict": "keep",
-       "by": "agent",
-       "trust": "prefill",
-       "ts": "2026-10-04T08:03:11-0700",
-       "via": null,
-       "row": null
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Murkling"
       }
      ],
      "noncanon_twin": []
@@ -17320,6 +17304,22 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Nightling"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Nightling"
       }
      ],
      "noncanon_twin": []
@@ -17460,6 +17460,30 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_NightMule"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_NightMule"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_NightMule"
       }
      ],
      "noncanon_twin": []
@@ -17546,6 +17570,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_NightRam"
       }
      ],
      "noncanon_twin": []
@@ -17713,6 +17745,30 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_ShadowCharger"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_ShadowCharger"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_ShadowCharger"
       }
      ],
      "noncanon_twin": []
@@ -17880,6 +17936,30 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Thunderox"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Thunderox"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Thunderox"
       }
      ],
      "noncanon_twin": []
@@ -17902,7 +17982,7 @@
        "biome_def": "RM_Abyss"
       }
      ],
-     "label": "cindermare",
+     "label": "saevitha",
      "defNames": [
       "RM_Cindermare"
      ],
@@ -17917,7 +17997,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "abyss_cindermare_facings_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -17965,6 +18047,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Cindermare"
       }
      ],
      "noncanon_twin": []
@@ -17987,7 +18077,7 @@
        "biome_def": "RM_Abyss"
       }
      ],
-     "label": "drokattak",
+     "label": "ombrathia",
      "defNames": [
       "RM_Drokattak"
      ],
@@ -18003,7 +18093,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Drokattak"
+      "RM_Drokattak",
+      "abyss_drokattak_v2"
      ],
      "art": {
       "resources": [
@@ -18037,18 +18128,38 @@
            "south": "164caae6729eb68c94f7fad726f30d0017a8407e5802753d10dd590342ebc8eb"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_drokattak_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "eea0e6fa6835948227444ea2b2c1afaa9a9a09108045f11f5cef4ec776b4951d",
+           "south": "92a6ecf4387639f7357bb6b3c13d98832b52c97a143e64fb30ee779dec919862"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Drokattak"
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -18069,7 +18180,7 @@
        "biome_def": "RM_Abyss"
       }
      ],
-     "label": "durrgak",
+     "label": "sorter",
      "defNames": [
       "RM_Durrgak"
      ],
@@ -18130,7 +18241,16 @@
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Durrgak"
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -18392,7 +18512,7 @@
        "biome_def": "RM_Abyss"
       }
      ],
-     "label": "skarnix",
+     "label": "ishvarith",
      "defNames": [
       "RM_Skarnix"
      ],
@@ -18455,6 +18575,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Skarnix"
       }
      ],
      "noncanon_twin": []
@@ -18574,114 +18702,24 @@
       "live_res": 2,
       "in_game": 2
      },
-     "ledger_rulings": [],
-     "noncanon_twin": []
-    },
-    {
-     "key": "RM_Vosska",
-     "kind": "fauna",
-     "port": "RM_Vosska",
-     "donors": [],
-     "pairing": {},
-     "placements": [
+     "ledger_rulings": [
       {
-       "as_written": "RM_Vosska",
-       "commonality": 0.075,
-       "source": "inline",
-       "layer": "inline_RM",
-       "patch_mod": null,
-       "file": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml",
-       "may_require": "mandrake.rm.biomes",
-       "biome_def": "RM_Abyss"
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Summ"
+      },
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Summ"
       }
      ],
-     "label": "vosska",
-     "defNames": [
-      "RM_Vosska"
-     ],
-     "commonality_max": 0.075,
-     "canon": {
-      "entry": null,
-      "match": null,
-      "images": [],
-      "has_must_show": false,
-      "ruled": false,
-      "wookieepedia": null,
-      "canon_missing_entry": false
-     },
-     "twins": [],
-     "artpipe_state_jobs": [
-      "RM_Vosska",
-      "stillsand_RM_Vosska_sandswim_v1"
-     ],
-     "art": {
-      "resources": [
-       {
-        "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
-        "role": "body",
-        "joined_by": "def",
-        "in_ledger": true,
-        "subjects": [
-         "RM_Vosska"
-        ],
-        "live": {
-         "mod": "src/RimMandrake/LongShade",
-         "label": "IN GAME \u2014 LongShade",
-         "faces": {
-          "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
-          "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
-          "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
-         },
-         "winner_by_load_order": true
-        },
-        "versions": [
-         {
-          "kind": "live",
-          "label": "IN GAME \u2014 LongShade",
-          "detail": "load index 605 (last loaded, wins) \u00b7 bytes from 502b24794c 2026-09-23: DESERT_PORT_PLACEHOLDER_ART_1: wire the remaining 13 species' already-generated art, fix surra grass",
-          "date": "2026-09-23",
-          "faces": {
-           "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
-           "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
-           "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render stillsand_RM_Vosska_sandswim_v1",
-          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
-          "date": "2026-10-05",
-          "faces": {
-           "east": "74078e9d6dd26c74dcfd835d00d070167e6c44662411cb5811b734ce1b7cf136",
-           "north": "ff1c2fc7c7077f1a45c24bf3379f2917958b2cba516e3cd9da4078f7f7fc3181",
-           "south": "b92f64772e59e128889fb0fa54c9ceb964da5b836b34790696caa0f115d10da8"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render RM_Vosska",
-          "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
-          "date": "2026-09-30",
-          "faces": {
-           "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
-           "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
-           "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
-          },
-          "near_dup_of": null
-         }
-        ],
-        "prior_selection": null
-       }
-      ],
-      "n_versions": 3,
-      "has_art": true,
-      "basis": "ledger",
-      "live_res": 1,
-      "in_game": 1
-     },
-     "ledger_rulings": [],
      "noncanon_twin": []
     },
     {
@@ -19002,6 +19040,9 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "abyss_glowinggrass_a_v1",
+      "abyss_glowinggrass_b_v1",
+      "abyss_glowinggrass_c_v1",
       "glowinggrass_v1"
      ],
      "art": {
@@ -19023,12 +19064,42 @@
            "single": "1186ed29384449d3acd7e81c93b2c67d8685b847c4c22d5715d4d58c6d1e44f1"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_glowinggrass_a_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "946606a4c20f4e7308ac314e3ccac8ff5448f4686b779513a75f86dd7cef5e79"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_glowinggrass_b_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "12cf0e47faafb608a022e21b3a25673b32dacbb4411bf4152d04e73ec58c9973"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render abyss_glowinggrass_c_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ABYSS_SHEET_DONOR_PORT_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "fc4a2b5a332b3c3d5c09628c9556160a65bac7a69e2e0eb77ca231bfb89f1a17"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -19364,6 +19435,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AG_Gamma"
       }
      ],
      "noncanon_twin": []
@@ -19448,6 +19527,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AG_Septimum"
       }
      ],
      "noncanon_twin": []
@@ -19486,7 +19573,9 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Etchcap"
+      "RM_Etchcap",
+      "abyss_etchcap_b_v1",
+      "abyss_etchcap_c_v1"
      ],
      "art": {
       "resources": [
@@ -19527,7 +19616,16 @@
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "keep",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Etchcap"
+      }
+     ],
      "noncanon_twin": []
     },
     {
@@ -19564,7 +19662,9 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Wickwood"
+      "RM_Wickwood",
+      "abyss_wickwood_b_v1",
+      "abyss_wickwood_c_v1"
      ],
      "art": {
       "resources": [
@@ -19605,17 +19705,26 @@
       "live_res": 1,
       "in_game": 1
      },
-     "ledger_rulings": [],
+     "ledger_rulings": [
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "RM_Wickwood"
+      }
+     ],
      "noncanon_twin": []
     }
    ],
    "summary": {
     "twin_rows": 0,
-    "rows": 31,
-    "fauna": 21,
+    "rows": 27,
+    "fauna": 17,
     "flora": 10,
     "fish": 0,
-    "with_art": 31,
+    "with_art": 27,
     "no_art": 0,
     "canon_entry": 0,
     "canon_missing_entry": 0,
@@ -19672,7 +19781,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_BedBug_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -19766,7 +19877,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_CrystalMit_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -19860,7 +19973,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_DecayDrake_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -19946,7 +20061,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_GiantCrownedSilkie_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20109,7 +20226,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Helixien_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20195,7 +20314,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_InfectedAerofleet_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20289,7 +20410,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_LuciferBug_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20367,7 +20490,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_OcularJelly_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20453,7 +20578,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Plasmorph_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20547,7 +20674,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Radyak_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20679,7 +20808,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_RipperHound_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20765,7 +20896,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AM_Dryad_Corruptor_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20859,7 +20992,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AM_Dryad_Ocular_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -20953,7 +21088,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AM_Dryad_Tumorous_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -21047,7 +21184,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_GR_Beetlefleet_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -22619,7 +22758,9 @@
       "canon_missing_entry": true
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Silooth_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -22720,7 +22861,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Visceral_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -23965,7 +24108,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_TreeMartyr_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -29885,7 +30030,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_VFEI2_Megathrips_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -29979,7 +30126,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_HydenockTree_Wild_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -30063,7 +30212,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_JoganTree_Wild_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -31796,7 +31947,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Murkling_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -31845,6 +31998,14 @@
        "ts": "2026-10-04T08:03:11-0700",
        "via": null,
        "row": null
+      },
+      {
+       "verdict": "redo",
+       "by": "owner",
+       "trust": "ruled",
+       "ts": "2026-10-05T07:27:43-0700",
+       "via": "../../../../Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+       "row": "AA_Murkling"
       }
      ],
      "noncanon_twin": []
@@ -33463,7 +33624,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_CrackedThornwood_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -34950,7 +35113,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Plant_Bellows_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -39503,7 +39668,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RSW_Skorra_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -40771,7 +40938,9 @@
       "canon_missing_entry": true
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_Grass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -40855,7 +41024,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_TallGrass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -42434,7 +42605,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_YearningFruit_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49192,7 +49365,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_BrellikBulb_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49261,7 +49436,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_DeepMycelium_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49330,7 +49507,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_KuvraSpout_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49479,7 +49658,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_NurrikGill_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49548,7 +49729,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_OsskBramble_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49617,7 +49800,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_PrennaLace_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49686,7 +49871,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_QuorrFern_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49755,7 +49942,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_ThrakkCap_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49899,7 +50088,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_VellokReed_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -49968,7 +50159,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_ZivvitTaper_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -51926,7 +52119,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RSW_Chikka_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -58252,7 +58447,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RSW_Skorra_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -59077,7 +59274,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RSW_Vurra_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -60214,7 +60413,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Fuzz_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -61088,7 +61289,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_DecayDrake_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -61174,7 +61377,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Helixien_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -61819,7 +62024,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Slurrypede_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -62225,7 +62432,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_FeverSwarm_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -62301,7 +62510,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Karravel_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -62377,7 +62588,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Karrimeth_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -62453,7 +62666,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Karrobel_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -62529,7 +62744,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Karrolun_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -65997,7 +66214,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_VFEI2_BlackSwarmling_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -67811,7 +68030,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_ShockGoat_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -68144,7 +68365,9 @@
       "canon_missing_entry": true
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Tauntaun_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -71197,7 +71420,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_FE_Plant_EmberGrass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -71266,7 +71491,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_FE_Plant_Quickgrass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -71366,7 +71593,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_GR_Mecharat_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -71736,7 +71965,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_CoolantEelCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -74415,7 +74646,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Aerofleet_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -74501,7 +74734,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_ColossalAerofleet_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -74579,7 +74814,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_CrescendoAnole_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -74673,7 +74910,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Metallovore_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -74767,7 +75006,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_LavaSnail_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -75688,7 +75929,9 @@
       "canon_missing_entry": true
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Tibidee_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -75962,7 +76205,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_IronScruff_Bindweed_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -76056,7 +76301,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_IronScruff_PrimordialGrass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -76140,7 +76387,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_IronScruff_PrimordialTallGrass_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -76930,7 +77179,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_AngelMoth_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -77024,7 +77275,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_AnimaColossus_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -78874,7 +79127,9 @@
       "canon_missing_entry": true
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Snoruuk_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -84787,7 +85042,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Saal_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -86847,7 +87104,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RUT_Plant_Wick_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -86959,7 +87218,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Aerofleet_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -90299,7 +90560,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_Helixien_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -90385,7 +90648,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_AA_SpinedGow_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -91775,7 +92040,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_SW_Electricgryllotalpa_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -91869,7 +92136,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_SW_Electrictick_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -91963,7 +92232,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_SW_Juggernautbeetles_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -92064,7 +92335,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Glower_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -93478,7 +93751,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_TreePolux_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -94244,7 +94519,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_WastelandScorchedStars_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -94935,7 +95212,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_Plant_TookeTrap_Wild_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -96298,7 +96577,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_ColossusToad_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99400,7 +99681,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Duul_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99507,7 +99790,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_HulduCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99621,7 +99906,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Ikkal_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99728,7 +100015,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_IvvolCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99835,7 +100124,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_KarrekCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -99942,7 +100233,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_LoomuCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100134,7 +100427,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Ozhu_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100241,7 +100536,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_SkarrinCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100355,7 +100652,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Tarrik_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100469,7 +100768,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Ullo_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100576,7 +100877,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_VizhikCatch_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -100690,7 +100993,9 @@
        "in_this_biome": false
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "gapall_RM_Vobbal_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -101776,21 +102081,21 @@
  },
  "totals": {
   "twin_rows": 16,
-  "rows": 906,
-  "fauna": 534,
+  "rows": 902,
+  "fauna": 530,
   "flora": 308,
   "fish": 64,
-  "with_art": 906,
+  "with_art": 902,
   "no_art": 0,
-  "canon_entry": 161,
+  "canon_entry": 162,
   "canon_missing_entry": 12,
   "noncanon_twin": 4,
   "any_twin": 116,
   "prior_selection_rows": 119,
-  "distinct_species": 852
+  "distinct_species": 849
  },
  "unmapped_patch_targets": {
-  "RUT_Abyss": 26,
+  "RUT_Abyss": 22,
   "RUT_AridShrubland": 56,
   "RUT_BlueDesert": 9,
   "RUT_Cauldron": 28,

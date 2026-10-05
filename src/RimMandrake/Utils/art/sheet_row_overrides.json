@@ -1,0 +1,136 @@
+{
+ "RM_Abyss": {
+  "AA_Nightling": {
+   "new_label": "sesserith",
+   "new_defName": "RM_Sesserith",
+   "jobs": [
+    "abyss_grothik_v1",
+    "crags_vrakk"
+   ]
+  },
+  "AA_NightRam": {
+   "new_label": "olumetha",
+   "new_defName": "RM_Olumetha",
+   "jobs": [
+    "abyss_dugrath_v1",
+    "crags_dhukk"
+   ]
+  },
+  "AA_NightMule": {
+   "new_label": "aveluthia",
+   "new_defName": "RM_Aveluthia",
+   "jobs": [
+    "abyss_gaddrum_v1",
+    "crags_hulggarok"
+   ]
+  },
+  "AA_Murkling": {
+   "new_label": "lirrith",
+   "new_defName": "RM_Lirrith",
+   "jobs": [
+    "abyss_kittrik_v1",
+    "crags_kessik"
+   ]
+  },
+  "AA_CrepuscularBeetle": {
+   "new_label": "moravatha",
+   "new_defName": "RM_Moravatha",
+   "jobs": [
+    "abyss_tarrgun_v1",
+    "crags_brekkugar"
+   ]
+  },
+  "AA_ShadowCharger": {
+   "new_label": "sirathia",
+   "new_defName": "RM_Sirathia",
+   "jobs": [
+    "abyss_kraddun_v1"
+   ]
+  },
+  "AA_Thunderox": {
+   "new_label": "velessith",
+   "new_defName": "RM_Velessith",
+   "jobs": [
+    "abyss_bragmor_v1"
+   ]
+  },
+  "AA_DarkVandal": {
+   "new_label": "ossumatha",
+   "new_defName": "RM_Ossumatha",
+   "jobs": [
+    "abyss_gukkath_v1",
+    "crags_gruzz"
+   ]
+  },
+  "AA_DuskProwler": {
+   "new_label": "ysvaltha",
+   "new_defName": "RM_Ysvaltha",
+   "jobs": [
+    "abyss_rakketh_v1",
+    "crags_shekkur"
+   ]
+  },
+  "AA_Darkbeast": {
+   "new_label": "nevarithia",
+   "new_defName": "RM_Nevarithia",
+   "jobs": [
+    "abyss_ugrothar_v1",
+    "crags_ulkhorr"
+   ]
+  },
+  "AG_Gamma": {
+   "new_label": "glow globe",
+   "new_defName": "RM_GlowGlobe",
+   "jobs": [
+    "abyss_bulgra_v1"
+   ]
+  },
+  "AB_GiantGamma": {
+   "new_label": "giant glow globe",
+   "new_defName": "RM_GiantGlowGlobe",
+   "jobs": [
+    "abyss_greatbulgra_v1"
+   ]
+  },
+  "AB_ToxicGamma": {
+   "new_label": "sickly glow mushroom",
+   "new_defName": "RM_SicklyGlowMushroom",
+   "jobs": [
+    "abyss_blightbulgra_v1"
+   ]
+  },
+  "AG_Septimum": {
+   "new_label": "fibre stalk",
+   "new_defName": "RM_FibreStalk",
+   "jobs": [
+    "abyss_skeddra_v1"
+   ]
+  },
+  "AB_GiantSeptimum": {
+   "new_label": "giant fibre stalk",
+   "new_defName": "RM_GiantFibreStalk",
+   "jobs": [
+    "abyss_elderskeddra_v1"
+   ]
+  },
+  "AB_GiantStikehr": {
+   "new_label": "tree mushroom",
+   "new_defName": "RM_TreeMushroom",
+   "jobs": [
+    "abyss_morkhul_v1"
+   ]
+  },
+  "AB_WildRadagast": {
+   "new_label": "glowberry bush",
+   "new_defName": "RM_GlowberryBush",
+   "jobs": [
+    "abyss_vettrig_v1"
+   ]
+  },
+  "RM_Skarnix": {
+   "jobs": [
+    "abyss_gekkrith_v1"
+   ]
+  }
+ }
+}
