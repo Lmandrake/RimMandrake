@@ -214,7 +214,7 @@
            arrivals, not ambient biome fauna). -->
       <JOE_Landopus>0.5</JOE_Landopus>  <!-- thraia (was "landopus", renamed 2026-10-05) - small ambush predator, ruled, this mod's own def -->
       <RSW_Kreetle MayRequire="mandrake.rsw.swbestiary">1.3</RSW_Kreetle>  <!-- kreetle - ambush-small, keep; boosted from 0.8 for the ecosystem pyramid law -->
-      <RSW_Jellypot MayRequire="mandrake.rsw.swbestiary">0.7</RSW_Jellypot>  <!-- jellypot - ambush-small, keep -->
+      <RM_Dunejelly MayRequire="mandrake.rm.biomes">0.7</RM_Dunejelly>  <!-- dunejelly (was jellypot) - ambush-small, keep -->
       <RSW_Shyrack MayRequire="mandrake.rsw.swbestiary">0.6</RSW_Shyrack>  <!-- shyrack - ambush-flier, keep -->
       <RSW_Gorg MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gorg>  <!-- gorg - ambush-small, keep -->
       <RSW_Gutkurr MayRequire="mandrake.rsw.swbestiary">0.4</RSW_Gutkurr>  <!-- gutkurr - burst-predator, adjust-keep; interim stand-in, complemented (not replaced) by RSW_WraidAlpha, DESERT_BURST_PREDATOR_FLAGSHIP_1 -->
