@@ -190,7 +190,6 @@
       <RM_TruffleMole>0.5</RM_TruffleMole>
       <RM_GreatDevourer>0.5</RM_GreatDevourer>
       <RM_Groundrunner>0.5</RM_Groundrunner>
-      <RM_MatureFleshbeast>0.5</RM_MatureFleshbeast>
       <RM_Gloomcast>0.015</RM_Gloomcast>  <!-- the shade whale, RULED "gloomcast" (Q5) -->
       <!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 2: the four Q4-ruled fillers
            (sollak/gennok/tebbra/dakkra), RM_LongShade_Fillers.xml. Commonalities

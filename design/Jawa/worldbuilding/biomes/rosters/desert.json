@@ -721,6 +721,11 @@
       "def": "RSW_Kudda",
       "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
       "reason": "owner 2026-10-04 Long Shade sheet: \"Just cut this creature. It's dumb.\" RM_Kudda and RSW_Kudda defs deleted."
+    },
+    {
+      "def": "AA_MatureFleshbeast",
+      "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+      "reason": "owner 2026-10-04 Long Shade sheet: \"Remove this, no longer needed\" / \"No longer needed, remove.\" RM_MatureFleshbeast and RSW_MatureFleshbeast defs deleted."
     }
   ],
   "fauna": [
@@ -1041,12 +1046,6 @@
       "commonality": 0.5,
       "def": "AA_Groundrunner",
       "law": "owner review 2026-09 (round2 move mapping): desert"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "AA_MatureFleshbeast",
-      "law": "owner review 2026-09 (round2 move mapping): desert, immature sarlacc"
     },
     {
       "action": "import",
