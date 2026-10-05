@@ -93,7 +93,8 @@ BOOL_DEFAULTS = {
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True, swaleEnabled=True,
                trapTriggerEnabled=True, fallDamageEnabled=True,
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
-               canalFireEnabled=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 6    # rehoused from PitsSettings 2026-10-02
+               canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
+               pitDrowningEnabled=True, poisonFillEnabled=True),     # PIT_FILL_EFFECTS_1    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -103,7 +104,8 @@ FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPer
                   "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,
                   "pitSinkPerLevel": 0.3,
                   "canalBurnDaysPerLevel": 1.0, "sourceBurnDaysPerLevel": 5.0,     # Phase 6, ruling 7
-                  "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0}
+                  "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,
+                  "pitDrowningRateMultiplier": 1.0}
 # PIT_LEGACY_CODE_RETIRE_1: every def the building-pit model shipped (26). O1 asserts each is ABSENT.
 RETIRED_PIT_DEFS = (["RM_OpenPit_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]
                     + ["RM_PitDigSite_Shallow_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]

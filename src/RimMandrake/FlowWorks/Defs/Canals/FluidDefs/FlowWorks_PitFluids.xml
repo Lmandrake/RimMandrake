@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- PIT_FILL_EFFECTS_1 (owner ruling 7 of PIT_SUPERDEEP_COLLAPSE_1: "oil and poison ARE FluidDefs").
+       What a pit does to its occupant comes from the fluid, never from a pit def. Numbers PROVISIONAL.
+       Neither row is yet the canalFluid of a natural LiquidDef, so a pond cannot feed them: they reach a
+       cell by a driver/debug fill (RM_FluidIdentityProof.ProofFillWithFluid) or by flowing from such a cell. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Oil</defName>
+    <label>oil</label>
+    <!-- Ignitable: a creeping fuse like tar, a little quicker (thinner). PROVISIONAL 90 ticks/cell. -->
+    <fireKind>CreepingFuse</fireKind>
+    <fireFrontTicksPerCell>90</fireFrontTicksPerCell>
+    <floodTerrain>RM_Fill_Oil_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Oil_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Oil_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Oil_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>180</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Poison</defName>
+    <label>poison</label>
+    <!-- Toxin keyed to fill: 2.4 ToxicBuildup/day standing in a brimming cell (a pawn reaches
+         "extreme" in well under a day; PROVISIONAL). Does not burn. -->
+    <toxicPerDayAtBrim>2.4</toxicPerDayAtBrim>
+    <floodTerrain>RM_Fill_Poison_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Poison_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Poison_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Poison_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+</Defs>

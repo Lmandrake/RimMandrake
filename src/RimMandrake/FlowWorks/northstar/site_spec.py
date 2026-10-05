@@ -61,6 +61,7 @@ SETTINGS = {
         "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "canalFireEnabled": True, "canalBurnDaysPerLevel": 1.0, "sourceBurnDaysPerLevel": 5.0,   # Phase 6 (ruling 7)
         "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,                                  # Phase 6 (PROVISIONAL)
+        "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "poisonFillEnabled": True,   # PIT_FILL_EFFECTS_1
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,

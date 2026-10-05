@@ -57,6 +57,10 @@ namespace RimMandrake.FlowWorks
 		/// walking pawn (~13 ticks/cell) so a player can outrun it. PROVISIONAL per row.</summary>
 		public int fireFrontTicksPerCell = 120;
 
+		/// <summary>PIT_FILL_EFFECTS_1: a poison fluid. Vanilla ToxicBuildup severity per day for a pawn standing in
+		/// a brimming cell, scaled by fill and the pawn's toxic resistance. 0 = not poisonous.</summary>
+		public float toxicPerDayAtBrim;
+
 		/// <summary>Ticks the fluid stands on a cell after the whole release has
 		/// finished spreading, before the map's temp-terrain manager drains it
 		/// and hands the cell back. Default is the midpoint of vanilla

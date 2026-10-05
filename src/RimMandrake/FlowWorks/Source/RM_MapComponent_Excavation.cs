@@ -939,6 +939,10 @@ namespace RimMandrake.FlowWorks
 				RM_PitExposure.Tick(map, this);
 			}
 			liquidFire.Tick(map, this);
+			if (excavatedCells.Count > 0)
+			{
+				RM_PitFillEffects.Tick(map, this);
+			}
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{
 				return;

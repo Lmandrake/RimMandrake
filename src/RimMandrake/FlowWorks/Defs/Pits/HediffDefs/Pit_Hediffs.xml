@@ -33,11 +33,9 @@
     </stages>
   </HediffDef>
 
-  <!-- Drowning clock: "swimming things tread until exhausted; air-breathers
-       drown if left." REWIRE pending in PIT_FILL_EFFECTS_1: keyed to fill
-       (F > 0) at D=4 instead of the retired Water fitting; nothing writes it
-       until then. No vanilla drowning hediff exists to reuse. Severity IS the
-       damage/exhaustion signal. -->
+  <!-- Drowning clock (PIT_FILL_EFFECTS_1): RM_PitFillEffects raises it while a non-swimmer stands in any
+       fluid on a D=4 cell, keyed to fill (about one in-game hour at brim, PROVISIONAL). No vanilla drowning
+       hediff exists to reuse. The severityPerDay comp lets it ebb once the pawn is out (PROVISIONAL -4/day). -->
   <HediffDef>
     <defName>RM_PitDrowning</defName>
     <label>drowning</label>
@@ -45,6 +43,11 @@
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.3, 0.5, 0.9)</defaultLabelColor>
     <lethalSeverity>1.0</lethalSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-4</severityPerDay>
+      </li>
+    </comps>
     <stages>
       <li>
         <label>treading water</label>
