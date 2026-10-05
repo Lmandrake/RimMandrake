@@ -27,6 +27,8 @@
     <graphicData>
       <texPath>Things/Item/Resource/RM_DuneCrawler</texPath>
       <graphicClass>Graphic_Single</graphicClass>
+      <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Stillsand sheet: "Make this 1/3 size"): drawSize 1 (default) -> 0.33. -->
+      <drawSize>0.33</drawSize>
     </graphicData>
   </ThingDef>
 
