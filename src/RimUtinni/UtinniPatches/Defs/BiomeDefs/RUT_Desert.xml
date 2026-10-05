@@ -273,7 +273,7 @@
       <!-- DESERT_ROUND2_IMPORTS_UNLANDED_1 2026-09-20: round-2 import rows
            (rosters/desert.json "fauna", owner review 2026-09, commonality 0.5 each)
            wired for the first time. -->
-      <RSW_Bokka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Bokka>  <!-- bokka - anywhere on the dayside, import -->
+      <RM_Bokka MayRequire="mandrake.rm.biomes">0.5</RM_Bokka>  <!-- bokka - anywhere on the dayside, import -->
       <RSW_TruffleMole MayRequire="mandrake.rsw.swbestiary">0.5</RSW_TruffleMole>  <!-- truffle mole - sand burrower, desert & extreme desert, import -->
       <!-- AA_JOE_DESERT_PORT_BATCH_1 2026-09-20: the remaining round-2 import rows
            (design/Jawa/fauna/cast_assignment.csv, owner review 2026-09, commonality

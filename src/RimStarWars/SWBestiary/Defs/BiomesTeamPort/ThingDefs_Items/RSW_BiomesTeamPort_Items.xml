@@ -553,19 +553,6 @@ copied verbatim from the donor mods' own Textures trees.
     </filth>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggStonebackUnfertilized</defName>
-    <label>bokka egg (unfert.)</label>
-    <description>An unfertilized bokka egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(220,202,183)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggBovineBeetleUnfertilized</defName>
     <label>bovine beetle egg (unfert.)</label>
     <description>An unfertilized bovine beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
@@ -1792,25 +1779,6 @@ copied verbatim from the donor mods' own Textures trees.
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
         <hatcherPawn>RSW_Megapleura</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggStonebackFertilized</defName>
-    <label>bokka egg (fert.)</label>
-    <description>A fertilized bokka egg. If all goes well, it should hatch into a baby bokka. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/AnimalProductRaw/EggRound</texPath>
-      <color>(230,212,193)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>45</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>3.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Bokka</hatcherPawn>
       </li>
     </comps>
   </ThingDef>
