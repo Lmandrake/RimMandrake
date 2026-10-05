@@ -390,8 +390,8 @@ def _font(sz):
 def _art_quads(art, size, ppc):
     """[(img, x_cells, y_cells_top)] relative to the subject cell's bottom-left, y up in cells."""
     art = _tint(art, size.get("color"))
-    if size["kind"] == "plant":
-        q = size["quad"]
+    if size.get("kind") == "plant":
+        q = size.get("quad", size.get("cells", 1.0))
         mesh = size.get("mesh") or 1
         if mesh > 1:
             side = int(round(mesh ** 0.5)) or 1
@@ -409,7 +409,7 @@ def _art_quads(art, size, ppc):
         if cz - vis / 2 < 0:   # Plant.Print: `if (z - num2/2 < Position.z) z = Position.z + num2/2` —
             cz = vis / 2       # num2 is visualSize, NOT the quad, so a drawSize>1 plant still overhangs
         return [(spr, 0.5 - q / 2, cz + q / 2)]
-    dx, dy = size["drawSize"]
+    dx, dy = size.get("drawSize") or (size.get("cells", 1.0), size.get("cells", 1.0))
     w, h = max(1, round(dx * ppc)), max(1, round(dy * ppc))
     spr = _premul_resize(art, w, h)
     return [(spr, 0.5 - dx / 2, 0.5 + dy / 2)]
@@ -541,7 +541,11 @@ def render_panel(art_bytes: bytes, size: dict, out_png: Path, full_png: Path) ->
     from PIL import Image
     art = Image.open(BytesIO(art_bytes)).convert("RGBA")
     f = _font(11)
-    quad_x = size["drawSize"][0] if size["kind"] == "animal" else size["quad"]
+    # a FALLBACK size (def missing from the dump, e.g. renamed since the last dump) carries only "cells"
+    if size.get("kind") == "animal" and size.get("drawSize"):
+        quad_x = size["drawSize"][0]
+    else:
+        quad_x = size.get("quad", size.get("cells", 1.0))
     native = round(art.width / quad_x) if quad_x else None
     top, w = _cells(art, size, False)
     zfull, _ = zoom_ppc(native, top, w, 10 ** 6, 10 ** 6)

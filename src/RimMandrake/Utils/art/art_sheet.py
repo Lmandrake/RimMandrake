@@ -744,6 +744,8 @@ def _short(c: dict) -> str:
         return f"render {(c.get('date') or '')[:10]} · {lab.removeprefix('render ')}"
     if c.get("kind") == "git":
         return f"history {(c.get('date') or '')[:10]} · {lab.removeprefix('history ').rsplit(' ', 1)[0]}"
+    if c.get("kind") == "kept":
+        return "KEPT · your ruled pick, no longer found · " + lab
     if c.get("kind") == "donor":
         if c.get("winner"):
             return "IN GAME · " + lab.split("— ", 1)[-1]
@@ -796,11 +798,14 @@ def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
             for k, f in sorted(fams.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
 
 
-def _assign_letters(cols: list[dict], prev: dict) -> None:
-    """Reuse the previous snapshot's letter for a column whose pictures are unchanged; new columns take the
-    next unused letter. Stable letters keep a decisions file valid across a re-run that adds renders."""
-    back = {tuple(sorted(f.items())): l for l, f in (prev or {}).items()}
-    used = set(back.values())
+def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
+    """Reuse the remembered letter for a column whose pictures are unchanged; new columns take the next letter
+    never used on this row before (remembered or reserved). Letters are append-only: a set keeps its letter for
+    good and a vanished set's letter is never handed to another set."""
+    back = {}
+    for l, f in (prev or {}).items():
+        back.setdefault(tuple(sorted(f.items())), l)
+    used = set((prev or {}).keys()) | set(reserved or ())
     for c in cols:
         l = back.get(_fkey(c))
         if l and l not in {d.get("letter") for d in cols}:
@@ -809,6 +814,47 @@ def _assign_letters(cols: list[dict], prev: dict) -> None:
     for c in cols:
         if not c.get("letter"):
             c["letter"] = next(free)
+
+
+def _merge_memory(ruled_rows: dict, prev_rows: dict) -> dict:
+    """Letter memory per row: the ruled snapshot's letters win; a later snapshot adds only letters (and sets)
+    the ruled one did not have. Every letter either ever carried stays reserved."""
+    out = {}
+    for k in set(ruled_rows) | set(prev_rows):
+        r, p = ruled_rows.get(k) or {}, prev_rows.get(k) or {}
+        cols = dict(r.get("columns") or {})
+        labels, gof = dict(r.get("labels") or {}), dict(r.get("graphic_of") or {})
+        have = {tuple(sorted(f.items())) for f in cols.values()}
+        for l, f in (p.get("columns") or {}).items():
+            if l not in cols and tuple(sorted(f.items())) not in have:
+                cols[l] = f
+                have.add(tuple(sorted(f.items())))
+                if l in (p.get("labels") or {}):
+                    labels[l] = p["labels"][l]
+                if l in (p.get("graphic_of") or {}):
+                    gof[l] = p["graphic_of"][l]
+        reserved = set(r.get("reserved") or []) | set(p.get("reserved") or []) | set(r.get("columns") or {}) \
+            | set(p.get("columns") or {})
+        out[k] = {"columns": cols, "labels": labels, "graphic_of": gof, "reserved": sorted(reserved, key=LETTERS.index),
+                  "subject_key": r.get("subject_key") or p.get("subject_key"), "res": r.get("res") or p.get("res")}
+    return out
+
+
+def _kept_cols(cols: list[dict], mem: dict, used: set) -> list[dict]:
+    """A set the owner's decision names (decision / pick / variant letter) that this rebuild no longer finds
+    keeps its letter as a KEPT column with the very pictures he ruled on, so the letter still resolves."""
+    have = {c["letter"] for c in cols}
+    out = []
+    for l in sorted(used - have, key=LETTERS.index):
+        f = (mem.get("columns") or {}).get(l)
+        if not f:
+            continue
+        lab = (mem.get("labels") or {}).get(l) or f"set {l}"
+        out.append({"kind": "kept", "letter": l, "faces": dict(f), "label": lab, "date": "", "winner": False,
+                    "prompt": "", "bound": False,
+                    "detail": "no longer among this row's current pictures — kept because your decision names it "
+                              "(the exact pictures you ruled on)"})
+    return out
 
 
 def _graphic_prefill(g: dict, rulings: list[dict]):
@@ -1182,7 +1228,19 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         (old.get("reviewStatus") or {}).get("state") == "prefill"
     # letters are kept stable only once a human has written to the decisions file; until then every row
     # is lettered A, B, C … afresh, with no gaps left by columns that have since disappeared
-    letter_memory = prev_rows if (old is not None and not untouched) else {}
+    # Memory = the snapshot the owner RULED on (by the decisions file's snapshotId, from git history if a later
+    # rebuild overwrote it) first, then any letter a later rebuild added. Letters are append-only per row: a set
+    # keeps its letter for good, a vanished set's letter is never reused, and a vanished set a decision still
+    # names is carried forward as a "kept" column so the letter keeps resolving to the same pictures.
+    ruled = None
+    if old is not None and not untouched:
+        ruled = L.snapshot_by_id(snap_path, old.get("snapshotId")) or None
+        if ruled is None and old.get("snapshotId"):
+            print(f"WARNING {decisions_path.name}: its snapshot {old.get('snapshotId')} is not on disk or in git "
+                  f"history — letters kept from the latest snapshot only", file=sys.stderr)
+    letter_memory = _merge_memory((ruled or {}).get("rows") or {}, prev_rows) if (old is not None and not untouched) else {}
+    used_letters = {k: L.decision_letters(v) for k, v in ((old or {}).get("decisions") or {}).items()} \
+        if letter_memory else {}
     idx = L.Index()
     slots = L.scan_def_slots()
     order, fp = load_order()
@@ -1230,9 +1288,21 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             graphics.remove(prim)
             graphics.insert(0, prim)
         allcols = [c for g in graphics for c in g["cols"]]
-        _assign_letters(allcols, (letter_memory.get(r["key"]) or {}).get("columns"))
+        mem = letter_memory.get(r["key"]) or {}
+        _assign_letters(allcols, mem.get("columns"), mem.get("reserved"))
+        kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
+        for c in kept:
+            gk = (mem.get("graphic_of") or {}).get(c["letter"])
+            g = next((g for g in graphics if (g["res"] or "_byname") == gk), None)
+            if g is None:
+                g = graphics[0] if graphics else None
+            if g is None:
+                g = {"res": gk if gk and gk != "_byname" else None, "role": "body", "cols": [], "prior_raw": None}
+                graphics.append(g)
+            g["cols"].append(c)
+            allcols.append(c)
         for c in allcols:
-            c["purgeable"] = c["kind"] != "live" and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
+            c["purgeable"] = c["kind"] not in ("live", "kept") and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
         for g in graphics:
             letters = {id(c) for c in allcols}
             for c in g["cols"]:
@@ -1349,7 +1419,21 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         snap_rows[key] = {"subject_key": _stem(key).lower(), "res": (gitems[0]["res"] if gitems else None),
                           "columns": {c["letter"]: c["faces"] for g in gitems for c in g["cols"]},
                           "labels": {c["letter"]: c["label"] for g in gitems for c in g["cols"]},
-                          "graphic_of": {c["letter"]: g["key"] for g in gitems for c in g["cols"]}}
+                          "graphic_of": {c["letter"]: g["key"] for g in gitems for c in g["cols"]},
+                          "reserved": sorted(set((letter_memory.get(key) or {}).get("reserved") or [])
+                                             | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index)}
+
+    # a row the owner ruled on that has left this biome's census keeps its snapshot entry (not shown on the page),
+    # so his decision letters still resolve to the pictures he ruled on
+    touched_rows = {k for k, v in ((old or {}).get("decisions") or {}).items() if isinstance(v, dict) and v.get("at")}
+    for key, ls in used_letters.items():
+        mem = letter_memory.get(key)
+        if key in snap_rows or not mem or not ((ls & set(mem.get("columns") or {})) or key in touched_rows):
+            continue
+        snap_rows[key] = {"subject_key": mem.get("subject_key") or _stem(key).lower(), "res": mem.get("res"),
+                          "columns": mem["columns"], "labels": mem.get("labels") or {},
+                          "graphic_of": mem.get("graphic_of") or {}, "reserved": mem.get("reserved") or [],
+                          "rowGone": "not in this biome's census any more — kept so the owner's ruled letters resolve"}
 
     # order + groups: per kind, unlinked rows first, then each linked cluster as its own band
     kinds = ["fauna", "flora", "fish"]
@@ -1436,10 +1520,16 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         }, indent=1))
         wrote = True
     elif old.get("snapshotId") != snap["snapshotId"]:
-        print(f"WARNING {decisions_path.name}: the owner has touched it and this rebuild changed existing columns "
-              f"(snapshot {old.get('snapshotId')} -> {snap['snapshotId']}); ingest will refuse until reconciled", file=sys.stderr)
+        # letters are stable, so only a letter his decisions USE naming different pictures is a problem
+        base = ruled or prev
+        bad = L.letter_mismatches(old, base, snap) if base else [("?", "?")]
+        if bad:
+            print(f"WARNING {decisions_path.name}: the owner has touched it and these decision letters now name "
+                  f"different pictures than in snapshot {old.get('snapshotId')}: "
+                  + ", ".join(f"{r}:{l}" for r, l in bad[:20]) + " — ingest will refuse until reconciled", file=sys.stderr)
     return {"biome": biome, "html": _rel(out_html), "decisions": _rel(decisions_path), "wrote_decisions": wrote,
             "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"], "census_rows": len(rows), "rows": len(ordered),
+            "ruled_rows_gone_kept_in_snapshot": sorted(k for k, v in snap_rows.items() if v.get("rowGone")),
             "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
             "canon_rows_with_must_show": sum(1 for it in ordered if it["canon"] and it["canon"]["must"]),
             "linked_rows": n_link, "prefilled_sit1": n_sit1, "no_art": n_noart,

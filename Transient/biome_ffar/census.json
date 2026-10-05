@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-04T23:52:52-0700",
- "git_head": "2ba7e2593",
+ "generated": "2026-10-05T06:59:51-0700",
+ "git_head": "6772566b4",
  "inputs": {
-  "ledger_events": 44853,
-  "ledger_variants": 11135,
+  "ledger_events": 45395,
+  "ledger_variants": 11355,
   "load_order": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
-  "artpipe_state": "searched 17484 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 17903 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -18,7 +18,7 @@
   "stoneback": 1,
   "_canon_index_defnames": 254,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 11135
+  "_ledger_variants": 11355
  },
  "biome_order": [
   "RM_LongShade",
@@ -145,6 +145,26 @@
          },
          {
           "kind": "artpipe",
+          "label": "render ls_regen_JOE_Landopus_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_JOE_Landopus_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "941bc4f7025e66cc4b483d0155cc09e09eecc41d4c0d343a896d68bd938005b7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_landopus",
           "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-27",
@@ -230,7 +250,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 7,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -536,12 +556,32 @@
            "south": "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dakkra_down_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "20df6497bbad7e2af4dc48ad61871cfc9a49180f9904cefa630ca73f51ea14c8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dakkra_rest_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -592,7 +632,10 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "RM_Dunejelly_tint_v1",
+      "RM_Dunejelly_tint_v2"
+     ],
      "art": {
       "resources": [
        {
@@ -628,6 +671,42 @@
          },
          {
           "kind": "artpipe",
+          "label": "render RM_Dunejelly_tint_v1",
+          "detail": "2026-10-05T00:01:57-0700 \u00b7 collected to this texPath \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05T00:01:57-0700",
+          "faces": {
+           "east": "1d40c90e69e8bda87a93ec56f38e79f9dd6493a5fb2b16598edb169b26e9ae70",
+           "north": "ae26a108fb2870804b0275631d00fba4c6ce86f086a717c12ca9a69197bc5d4d",
+           "south": "808e80d3bdb999d5f8c1581aaddeb53c43ed5fe3e0b9dad99b062b24eb89cd6a"
+          },
+          "near_dup_of": "IN GAME \u2014 SWBestiary"
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Dunejelly_tint_v2",
+          "detail": "2026-10-05T00:01:57-0700 \u00b7 collected to this texPath \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05T00:01:57-0700",
+          "faces": {
+           "east": "1f38098e7ba9f62fc3c1dfe941638ea6c547d700b27ce655a512d08f9c5b63a1",
+           "north": "60c3ce8140ef913e763d5ed78d1293d669e5347d51294c14f5da9a4fcabf681c",
+           "south": "1e79c98bd4269061c241dca50c039d1ae61bd1e0ddb3bae18ef7bd8edaf463d5"
+          },
+          "near_dup_of": "IN GAME \u2014 SWBestiary"
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_jellypot_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "cbb0d215ec0e9eb798c8ab08aaf03c129d5081c241a6daa0ae851f0161f47ee5",
+           "north": "2b5c313670f2f9e4835a5b666c16db73246f5c5d80e514925f0d75932b6d7f22",
+           "south": "53a6d433a4ca6ec927df881c59fb4894c09b51b4bca51bf4ea644f4859c2020c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_jellypot",
           "detail": "2026-09-27 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-27",
@@ -655,7 +734,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -738,6 +817,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render ls_regen_RM_Gennok_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "f93e3535210b155743d1efac07a745e674520d171d5495de4c5058ba9d3cc3ce",
+           "north": "d349110ae418ab24c77866e0dccab92cd0cff3c109a0f00624d1e2dce69fda63",
+           "south": "93a961fd0ef1b65983cba59d4b63d89ef24335e422cfd6615355f4003d88e7d0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Gennok",
           "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_DESIGN_SITTING_1",
           "date": "2026-09-28",
@@ -752,7 +843,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -842,6 +933,17 @@
          },
          {
           "kind": "artpipe",
+          "label": "render ls_regen_RM_Gloomcast_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "760af72482f7515f8f622f893dc9762397f7f84447ccf1a4b5417c0bbf22d7ae",
+           "south": "37c4321e6fd55a4154b9a6b9372b21833fbd107997f0f78f9bc5e0a2ea1b17ee"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Gloomcast",
           "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
           "date": "2026-09-30",
@@ -868,7 +970,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -1413,6 +1515,18 @@
            "south": "da2f73171ae951ec24ab8bec5c42023c1268ce673e44adbde2e70527ac8ac1bf"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "965c48577d312e01ee2d2c81f0861bb4c5a0ae033ad67ae7182b0cf399b6304a",
+           "north": "7d58b3ef3acd3066eab5b5befc59b275b675211872f931b1cb27c968195b8f9f",
+           "south": "c4a028e806b23a82be31fb016f640614481c6f8bdf04c17661c81054363efeae"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -1447,12 +1561,24 @@
            "south": "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "965c48577d312e01ee2d2c81f0861bb4c5a0ae033ad67ae7182b0cf399b6304a",
+           "north": "7d58b3ef3acd3066eab5b5befc59b275b675211872f931b1cb27c968195b8f9f",
+           "south": "c4a028e806b23a82be31fb016f640614481c6f8bdf04c17661c81054363efeae"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -2283,10 +2409,12 @@
          {
           "kind": "artpipe",
           "label": "render longshade_rsw_bolotaur_v1",
-          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
-           "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b"
+           "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b",
+           "north": "a47592f78c40e079cce681b721a52b6ad81e9641127f5553eb248168db9becb3",
+           "south": "ad9c0c32664157500524be460e4bb074cf8753469f522888735423b3c1ef7ab2"
           },
           "near_dup_of": null
          },
@@ -3105,6 +3233,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_falumpaset_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "005cc2e9131f6f4c52cd030dee215172dcbcd58f0b0db86980b8ba6153fd8785"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_falumpaset",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -3132,7 +3270,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -3390,6 +3528,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
+           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a",
+           "south": "f93d64524269825aead0cb77f64c4220cc58dad997b1dcd828e17726a3e84913"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render longshade_rsw_frilledgorg_v3",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
@@ -3402,12 +3552,11 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v1",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
-          "date": "2026-10-04",
+          "label": "render longshade_rsw_frilledgorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
           "faces": {
-           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
-           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a"
+           "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec"
           },
           "near_dup_of": null
          },
@@ -3587,7 +3736,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 10,
+      "n_versions": 11,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -3731,7 +3880,40 @@
           "date": "2026-10-05",
           "faces": {
            "east": "0553a966f94e40888ea582c79175c8b7487ef4f3d28390a3eb997507677e2141",
-           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f"
+           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f",
+           "south": "a8a77ac6e04042083b6083651bdd5605847fda23a02c92ad9ceff893a13ed894"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "499434c89c03f58d1e505f6c0a874702c6a1a493b4539cd35ae4116981550e91",
+           "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470",
+           "north": "46816f531940eb563b42cfaaef050f29a4d46f507cf68e9bd37e1c0217edc843"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd"
           },
           "near_dup_of": null
          },
@@ -3754,17 +3936,6 @@
           "date": "2026-10-04",
           "faces": {
            "east": "e4bb1cc09df37068bd8d917806f806df22624d153f98e197e381d6d7d8ef775a"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v6",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
-          "date": "2026-10-04",
-          "faces": {
-           "east": "499434c89c03f58d1e505f6c0a874702c6a1a493b4539cd35ae4116981550e91",
-           "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470"
           },
           "near_dup_of": null
          },
@@ -3912,7 +4083,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 10,
+      "n_versions": 12,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -4457,11 +4628,12 @@
          {
           "kind": "artpipe",
           "label": "render longshade_rsw_hrumph_v1",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
-          "date": "2026-10-04",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
           "faces": {
            "east": "dad8444da393832763ccfeb7e4c96e89be64d4adbe60084a2b1427f61ec59be2",
-           "north": "d3556a341d5431d99274b08c30662afcdbdf50406109fbffe1e5ddad09b320f8"
+           "north": "d3556a341d5431d99274b08c30662afcdbdf50406109fbffe1e5ddad09b320f8",
+           "south": "0004338235546cab7aa4eecd8ae639092f7e961d5b0e49018b87afb6fb636979"
           },
           "near_dup_of": null
          },
@@ -4671,7 +4843,8 @@
           "date": "2026-10-05",
           "faces": {
            "east": "194f1deddfdebe55eee756e4ca6cb6cce6dcb255fe1384f42e29525cf584e4d4",
-           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f"
+           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
+           "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
           },
           "near_dup_of": null
          },
@@ -4898,10 +5071,12 @@
          {
           "kind": "artpipe",
           "label": "render longshade_rsw_iridonianreek_v1",
-          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
           "faces": {
-           "east": "904373759ba0a44d40737c0d604a1d827221324e58697e736dd1bc41523804f5"
+           "east": "904373759ba0a44d40737c0d604a1d827221324e58697e736dd1bc41523804f5",
+           "north": "e55cde7d1f14744a6cba6a5c23073ae22b4556519cb3fc90a9d88eec098641ae",
+           "south": "c9fa40cd6ffcaa7d444824792bc7943e421df93be0085b22215be6824ebb6126"
           },
           "near_dup_of": null
          },
@@ -5106,6 +5281,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_jakobeast_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "cdad847c4e0badffcde0d76d179ec52f696e23358c5d22ee7519bc5d9549c0ae"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_jakobeast",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5180,7 +5365,7 @@
         }
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -5298,6 +5483,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_jamel_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "1b17ef32a1c6d1aac8dd628554242baee904b77ac63c4853ab24e826b617ccdf",
+           "north": "08d586f5808ca080f76e9b46d5e14d750ce804e59111b65853a81a824e9d887a",
+           "south": "8a4f2642b6956d2c534d4a137d3beb82c2620fd9f887b61e13ebc5a502ca1807"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_jamel",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5337,7 +5534,7 @@
         }
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -5453,6 +5650,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_jimvu_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "fd1c70eb1ce37fb39e594738c20bfdadf95abeb8ae9d15f11a09f154c4d25e6e",
+           "north": "0c166a186bb9001025f6909b7df99450ab1bf13c20abe9dc9695639331de6721",
+           "south": "e0b5bd306b5c853b4281b6ba92cb7ceb185b693c112734e10d33df4f833081a8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_jimvu",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5480,7 +5689,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -5704,6 +5913,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_krykna_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "37952e2a5ba094400055f10f8f56a7f668717dc95e0a3eafefda91b894e3f5ce",
+           "north": "70cefc3a74378e4d258476c43f234f05f1770bc284e3365df5c823a310c9ef7f",
+           "south": "f37f0563e75c97676fbdc55ca77b22517ec1f248a9d720f4fde1c0ffac1600a8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_krykna",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -5731,7 +5952,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -5987,6 +6208,90 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "922744c0d5c845a460e2166509a34c6cbe7c33095249db2dd33cf14e69eb175a",
+           "north": "428edd9fe12cceb8c9a0eb3b8eb56eade0a6843d359e0b5e719e07078a5a54ac",
+           "south": "acae07b9b0ed328e5a7243b9a8ef67ea8c3da3de73811d1fec56ea8328751d43"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "c37397bd2d5c309f089bcf804ae601e1ebe928d4a81ac0f5d078d220530ea316",
+           "north": "b690aebb5166461428d3a7c55f9c4a9c7f6f94c5c38dc0831297ced1fee53293",
+           "south": "2cb6096cfef81812aa7e6577ef19d9a26ea9b1989d6d5691ce028335084d1a90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a689db478c1ba40f409cee7dcefc6628cab17e74d5c4e7ba21af51fadcf1d0e8",
+           "north": "3a6a1a8efc91cc92cd5d859ebd8964389dab865480892bd3eb69752dee3f1e54",
+           "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "94a7bc9b2e957f2908b8ec9fbd1fa96c31f611df5dfbf22b11d060a39515c8f8",
+           "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
+           "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "7d765b4e5cfaa4a9007b48837cdbb2e50a44c0eef0ee99b25030d60fe315f0d8",
+           "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
+           "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "beee62668832199955fa0076dcc80ea162634c9a3ccf474676d38120fcfc55bf",
+           "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262",
+           "south": "47e54403e4871a7028969fe2aadf3bb708f331fe08722c75319d66c15eea9ac9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "ab4d592ab2bbdbe695218e768d7248359f25dcbd655236862b6f35441c383f32",
+           "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
+           "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_longtailgorg",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -6129,7 +6434,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 12,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -6766,6 +7071,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_ronto_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_ronto",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -6817,7 +7132,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -6931,6 +7246,17 @@
            "east": "d10f3a9369e39ee6530addf47bb93be57fbaa2f26bfcb32785efa73bbc346f3a",
            "north": "8c76736041e5331f15cdbb97eb16740a14bc8d799a09bd4548d52e40eb198965",
            "south": "0db9f1e981eb6e09d4c8b4e55009e28e6bc11e4f3dafd334f9fb48e134e43820"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_runyip_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+           "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
           },
           "near_dup_of": null
          },
@@ -7078,7 +7404,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -7197,6 +7523,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_shaak_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a8118aa8b47ef30b2670839de87305696a21bd5d7861e70f1250df62648e5e20",
+           "north": "4f6b2c3de1ecece9299a320fee7790d432737b8be90bd82395902476c2bb5d5a",
+           "south": "a42478f4b9550014f019fc3d9baa8c3299eb3fe55201267bcc3c24521323668e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_shaak",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7224,7 +7562,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -7333,6 +7671,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_shyrack_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "04f3a27615b54e958b045977f62c2ca0eb7190d60e04ebba48e17f878e15b90a",
+           "north": "afd8f66c9e2f2b3994e95d7b639213454c76b0bbb3d3386001f315d582a8bc36",
+           "south": "d306c95701b9d7a5fc8fb641c537e149ae1bb49f55686a124346bf52aa8988f9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_shyrack",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7372,7 +7722,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -7489,6 +7839,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_skalder_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
+           "north": "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
+           "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_skalder",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7550,7 +7912,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -7660,6 +8022,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_sketto_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_sketto",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7699,7 +8071,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -7815,6 +8187,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_teemuss_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "6a35577644c24efbde61eb255afe01f4458996eb9a7f985e4dcf90641b3236a7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_teemuss",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7842,7 +8224,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -7953,6 +8335,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_uvak_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "937f534c2a6b3bfe37a931a649dc9ac0a2b109706b2a09bc402808164b1b16b4",
+           "north": "1a4dba32dce704d8430f8d680a3eb53730eefddaaa846ab8f54590dca7fe5ea0",
+           "south": "4774644e6d3586ea430ae5059a896f2ab2fc03b10d58468c9284c074588c3cee"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_uvak",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -7992,7 +8386,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -8286,6 +8680,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_voorpak_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "97ca276a1be374b3fddc10337ebc34b6846b448818eabc9b2c890b41bbc27002"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_voorpak",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -8313,7 +8717,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -8432,6 +8836,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_worrt_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "496a899613e108c6898e48ee59575d3a4d77c94462ca26c6fc29be21a98224b3",
+           "north": "55b8ff5fcf8421b1febf1a129323c2b5700b1ac2028824ce53ce0e39bb9e014e",
+           "south": "1e4fd8c4ff8ee59b53da989e19d0d0c4503849f85c05447aaeca499e2b042ac0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_worrt",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -8540,7 +8956,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 3,
@@ -8658,6 +9074,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_wraid_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "f4ce0b1989e319fb4f90231e0b654f2837d90da2b19bc637adcda6d62127a480",
+           "north": "154dfe1ebcb4e9e0277b660a36222bb50bcae8f26a23f4365fc04b68a226b9de",
+           "south": "b7648045712d84ec47428154d2aa1578fc4f3547456ef83fc0a76c248175956f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_wraid",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -8685,7 +9113,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -8795,6 +9223,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_wraid_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "f4ce0b1989e319fb4f90231e0b654f2837d90da2b19bc637adcda6d62127a480",
+           "north": "154dfe1ebcb4e9e0277b660a36222bb50bcae8f26a23f4365fc04b68a226b9de",
+           "south": "b7648045712d84ec47428154d2aa1578fc4f3547456ef83fc0a76c248175956f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_wraid",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -8822,7 +9262,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -8903,6 +9343,18 @@
            "east": "8415f059d25254f65f2515afbef69919f1a06f4f002a3d4e062ce031dc6a0946",
            "north": "b73924f2b863215f0be3a618afb6af224effbee097430ccffc6ef54cf257be8c",
            "south": "3fd011f6a52adb2b18d9a784dc61858603d8a03d4d6a61455179398e5558660f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_zeer_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+           "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
+           "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
           },
           "near_dup_of": null
          },
@@ -9005,7 +9457,7 @@
         }
        }
       ],
-      "n_versions": 8,
+      "n_versions": 9,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -9117,12 +9569,62 @@
            "single": "e9f874385871dca98a52fac379e4011e5bb314680bda0544215f4089e3836f0d"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dewfringe_b_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "54d7774752cc0321e8555803cda4acd0630f465bdae57e5b7e0d27ae2ef99e08"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dewfringe_c_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "d3ab614e79d2738c4949544923fc51faa64f3d38b814f5094fa25474490fbcf6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dewfringe_d_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "6f51ea578408f7a9605a2b8bef7f87a0c993766a123768925c0c27524afc0d1d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dewfringe_e_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "0ac523ee31dab834764ac2eac25994a7b00bcf6fcd12311d41e99b645198fab9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Dewfringe_f_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "e4d47303fad896b56a05ff6fa0692411fb928b0cbcc5b9addc7766156cae11eb"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9372,12 +9874,52 @@
            "single": "11160600cab5c7a52de83b90cdda8febaeef62f4b41b95ae03ae3b840087e62a"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Pavecrust_b_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "fcd600de69714b3d7cc312ba4cc5cdb837449b21f8dd6b8acedca1143be212ed"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Pavecrust_c_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "ab3cd773141ae47cc00b4c629104c8c69cf3635352f51b80726ae06ae412abb4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Pavecrust_d_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "4fcefc79d24bda615945d1d30bef787ebf1a95f769605fae97c742e388e04bec"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Pavecrust_f_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "a862a55da538d7527cd8df6e47be0695e3e001a595c9c054b1381b7232b5bd37"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9466,6 +10008,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render ls_regen_RM_Shadespire_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "73bbd1d27f6e469b7c4733377426464909ce6bc8d461ea9641af0a53b9397970"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Shadespire_b",
           "detail": "2026-10-02 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
           "date": "2026-10-02",
@@ -9488,7 +10040,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9572,12 +10124,22 @@
            "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Venomvine_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "02098c35dc6af7b904e77de15672a22ef8a7952ef1a82abe8604b811e3fc44e5"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9643,12 +10205,22 @@
            "single": "f37dd6f324c1c9f81656071cc25167b01c5f039b63d7726433ff7c32a4f5ea8c"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Vorrel_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "963c445feb66c236f21cf04581d9683f620152faef515636823aeab925137ea7"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9923,12 +10495,42 @@
            "single": "524f9734ea27fbd0d5b00aabcf9d7bcfc0f418c2b1b5c8b3cb1421508937a4fc"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_surragrass_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "5f16ba705adb9c5492f5fc081af02cb35842b9b57a0ae110d12afdb7abb399e8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_surragrass_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "69df8643405ce858889043b4b205cfe540a3133df28e44fcb77e65489b512f05"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_surragrass_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "4913c0925d8247232a1584af29191fb721159039b401b4e3681ad38277dec148"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -9997,6 +10599,26 @@
            "single": "a3069bf1c4bea67b2e15cde09e281d26f6cf0c6fdb80006b46a0a37cdd1022c4"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_vellarabloom_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "4cfe7733c49854b761b9fcd2503a31fe008d62786aca0c9274ec0a8c3b9f970c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_vellarabloom_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "91f981da6ebde0f1cd11952d245090f6d4703f3bc7c222ee5bd8a98c5950f37f"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": {
@@ -10013,7 +10635,7 @@
         }
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -10123,12 +10745,24 @@
            "south": "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Aurrok_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "8338e43008c3547baff4aeb1ec5dace671c5d0068aad11887a9ab6cfcfa579ea",
+           "north": "45ab167eb5ca151aeb203108bbfa488139927082549bca8a622337ef4d459d9e",
+           "south": "ed9b579d555577fb5c0e421888c20282e29ba7809f52d253ea242ee0c55ee26f"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -10206,6 +10840,18 @@
            "south": "8853b193d2c23fccfc2f0607e93b8cfe112b99b2a9557f886da2a336cdd96a45"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Drazzik_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "944b55f4b32ba088f6431a12ce7a9c0215b413c86284d8d30e4dfb45740ab1b2",
+           "north": "6f28694b3aa1fca32a20b4c6743c3dcda94fb2ac97f6ab732d5318db65305db3",
+           "south": "eef2368fa4991980c63ccfc65d195b874fbfe7fe7bbc80d75e3e1790c408601c"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -10219,11 +10865,24 @@
          "RM_Drazzik"
         ],
         "live": null,
-        "versions": [],
+        "versions": [
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Drazzik_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "944b55f4b32ba088f6431a12ce7a9c0215b413c86284d8d30e4dfb45740ab1b2",
+           "north": "6f28694b3aa1fca32a20b4c6743c3dcda94fb2ac97f6ab732d5318db65305db3",
+           "south": "eef2368fa4991980c63ccfc65d195b874fbfe7fe7bbc80d75e3e1790c408601c"
+          },
+          "near_dup_of": null
+         }
+        ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -10680,12 +11339,23 @@
            "south": "cf471436e28c9c31cafe7570f754229b7b467b4db571d9a15b9c98bc7f598331"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Oommok_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "north": "1a39d81a3a7f9bef164328563cbfd525499df28c029d0bc832c1c0d8084be1f8",
+           "south": "741d5bf04f41814fcc88bed4d179b6cad70ac59bbfabe0c5b0bf14b167c55b35"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -10764,6 +11434,18 @@
            "south": "da2f73171ae951ec24ab8bec5c42023c1268ce673e44adbde2e70527ac8ac1bf"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "965c48577d312e01ee2d2c81f0861bb4c5a0ae033ad67ae7182b0cf399b6304a",
+           "north": "7d58b3ef3acd3066eab5b5befc59b275b675211872f931b1cb27c968195b8f9f",
+           "south": "c4a028e806b23a82be31fb016f640614481c6f8bdf04c17661c81054363efeae"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
@@ -10798,12 +11480,24 @@
            "south": "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Qorrax_swimming_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "965c48577d312e01ee2d2c81f0861bb4c5a0ae033ad67ae7182b0cf399b6304a",
+           "north": "7d58b3ef3acd3066eab5b5befc59b275b675211872f931b1cb27c968195b8f9f",
+           "south": "c4a028e806b23a82be31fb016f640614481c6f8bdf04c17661c81054363efeae"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -11069,6 +11763,17 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Soorrak_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
+           "south": "fa087c1492f47c1a4bfd8f21fcbd0c59a72d759408c5f3699e5a8abc6c70de8d"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Soorrak",
           "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 STILLSAND_DESIGN_SITTING_1",
           "date": "2026-09-28",
@@ -11083,7 +11788,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -11173,6 +11878,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_ulgga_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Ulgga",
           "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
           "date": "2026-09-30",
@@ -11187,7 +11902,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -11403,7 +12118,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Vosska"
+      "RM_Vosska",
+      "stillsand_RM_Vosska_sandswim_v1"
      ],
      "art": {
       "resources": [
@@ -11440,6 +12156,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_RM_Vosska_sandswim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "74078e9d6dd26c74dcfd835d00d070167e6c44662411cb5811b734ce1b7cf136",
+           "north": "ff1c2fc7c7077f1a45c24bf3379f2917958b2cba516e3cd9da4078f7f7fc3181",
+           "south": "b92f64772e59e128889fb0fa54c9ceb964da5b836b34790696caa0f115d10da8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Vosska",
           "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
           "date": "2026-09-30",
@@ -11454,7 +12182,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -11778,6 +12506,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_GraniteSlug_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
+           "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+           "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_graniteslug",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -11792,7 +12532,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -11903,6 +12643,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_GreaterKraytDragon_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "c5ede570f7e950b87d962742260ee3d519beb7511db29608844795c1e60c4cb2",
+           "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
+           "south": "47ddd4cb149e691d9895589ac172f0d141ae55c0a27ddb21ee3d0344b129e816"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_greaterkraytdragon",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -11940,7 +12692,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -12046,6 +12798,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Ikee_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
+           "north": "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
+           "south": "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Ikee",
           "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 CONTAGION_BEDAZZLE_SITTING_1",
           "date": "2026-09-28",
@@ -12073,7 +12837,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -12361,6 +13125,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Kreetle_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "dc85f8e03d8cdc19debf206a703559c0bcf08badce9b0704ef696f39d3e41eb8",
+           "north": "062137f7c37a33b27a3214694fa8d888f3017edca050f582267fc11b7d4a6518",
+           "south": "1072144b2279549094eeddeca784fd0709294e2acedf75927de357be3275e9a6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_kreetle",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -12469,7 +13245,7 @@
         }
        }
       ],
-      "n_versions": 6,
+      "n_versions": 7,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -12757,6 +13533,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_WarWyrm_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "8cab92f7e37f047cef315f93133ff3acb6cd96c8dd70a2595468a859114557dc",
+           "north": "400bf1437ae63181c3affd80fedcb780062e62e845bb3e2dd8f0d7c4bee4365f",
+           "south": "3d53f451b1c0c3474ddf19622609b879303f460a00509a5347ae7ca541fe9677"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_warwyrm",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -12771,7 +13559,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -12963,12 +13751,62 @@
            "single": "b1730b227eeafc48cabba40e953958e99c36d442ca2085ce378fca0c58640775"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Glasscrust_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "e15b6cb46eeb8803b2d22abffd2881a847964a3fbc4ffd96f6627c2c42089da5"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Glasscrust_var2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "ce311ccb3b20622978b28192c927da45fac62338f88ff8e5546c239bbd746178"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Glasscrust_var3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "bbf9487479404e5d964aeea659738ddbf06ffe0985542fcbb032e77b0e102563"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Glasscrust_var4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "41615e7153d0bbadd167b4ba66a44c3261f780d2a39481e94500ef4f662735d8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_Glasscrust_var5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "23848771ed181e045232d64ac588203a44093a9fda3be3405bb217d430fdd914"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -13052,6 +13890,56 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RM_KneelOllim_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_KneelOllim_var2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "5c855498e32cba323c4efbeea6d46d042fcfda1c644b59f5b3bccf4be8063b09"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_KneelOllim_var3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "b9403600f0716e62745e0675366243fe3d04c82983f0435bdc14aa285cf50a37"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_KneelOllim_var4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "927f08c9e0b7d4802ca7bf077cc47d6a9876ba3bdaa5b918b90d0f1a4230da4b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_KneelOllim_var5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "8b8bf8d353731b01f93bfd6af5b57b77c939cb4b009ff0bf074ca29db8ea85bb"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_KneelOllim",
           "detail": "2026-09-28 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 STILLSAND_DESIGN_SITTING_1",
           "date": "2026-09-28",
@@ -13064,7 +13952,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 7,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -13139,12 +14027,22 @@
            "single": "9315eab290fb74cece8122fb8beda7277c25f2dd440a9f4b518a4ebff74b8302"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RM_LightPipeNub_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "2731d919555cf53555e8270132b24825579a5a7efd0b638d943070e974c14400"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -13279,12 +14177,22 @@
            "single": "aba3edd42fcd16360c25e0e4ec84e2d38b8a2ab11b18d4aa0dbc8670d5f28677"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_ultracactus_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "a49e8d6b6a520c0f40cd981a8afd9d2ebe344c3252439c86b9be3ff961c810a1"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -13361,6 +14269,46 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Plant_Bloddle_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "372060452ed2933976d5e9512ac43a897854b9868905d10320bfa52aa7afa83e"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Plant_Bloddle_var2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "62d66a32e1b4ebb8f9b3fc46f4884f75f64ccb87f05c9cf87cda73a9e0286b0c"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Plant_Bloddle_var3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "2e8dd050cb44bf46cb993249c130dc9acf79bd1a5ad83444b6d308914f98549f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Plant_Bloddle_var5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_plant_bloddle",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -13373,7 +14321,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -14013,7 +14961,8 @@
           "date": "2026-10-05",
           "faces": {
            "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
-           "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac"
+           "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
+           "south": "2809e5e7d8af4d9be9f4060b4f7151f4d2804c4dd25564357e66519681c76c60"
           },
           "near_dup_of": null
          }
@@ -14443,9 +15392,10 @@
           "date": "2026-10-04",
           "faces": {
            "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
-           "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
+           "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1",
+           "north": "44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256"
           },
-          "near_dup_of": "IN GAME \u2014 BlueDesert"
+          "near_dup_of": null
          },
          {
           "kind": "artpipe",
@@ -15082,12 +16032,22 @@
            "single": "a51fe94de705bdc2afe7644f8c5f29fb81314ab1d46da2223cc9d8a79048443a"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Lisqueth_var1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "4848ecabcbeee9b4ba97573e3279c742978959ffa8fa3d468bcbd63ff76b1fb8"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -17651,7 +18611,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Vosska"
+      "RM_Vosska",
+      "stillsand_RM_Vosska_sandswim_v1"
      ],
      "art": {
       "resources": [
@@ -17688,6 +18649,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_RM_Vosska_sandswim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "74078e9d6dd26c74dcfd835d00d070167e6c44662411cb5811b734ce1b7cf136",
+           "north": "ff1c2fc7c7077f1a45c24bf3379f2917958b2cba516e3cd9da4078f7f7fc3181",
+           "south": "b92f64772e59e128889fb0fa54c9ceb964da5b836b34790696caa0f115d10da8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Vosska",
           "detail": "2026-09-30 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 LONGSHADE_BEDAZZLE_CONTENT_1",
           "date": "2026-09-30",
@@ -17702,7 +18675,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -20591,6 +21564,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_GraniteSlug_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
+           "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+           "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_graniteslug",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -20605,7 +21590,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -21377,6 +22362,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_skalder_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
+           "north": "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
+           "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_skalder",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -21438,7 +22435,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -27948,6 +28945,90 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "922744c0d5c845a460e2166509a34c6cbe7c33095249db2dd33cf14e69eb175a",
+           "north": "428edd9fe12cceb8c9a0eb3b8eb56eade0a6843d359e0b5e719e07078a5a54ac",
+           "south": "acae07b9b0ed328e5a7243b9a8ef67ea8c3da3de73811d1fec56ea8328751d43"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "c37397bd2d5c309f089bcf804ae601e1ebe928d4a81ac0f5d078d220530ea316",
+           "north": "b690aebb5166461428d3a7c55f9c4a9c7f6f94c5c38dc0831297ced1fee53293",
+           "south": "2cb6096cfef81812aa7e6577ef19d9a26ea9b1989d6d5691ce028335084d1a90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a689db478c1ba40f409cee7dcefc6628cab17e74d5c4e7ba21af51fadcf1d0e8",
+           "north": "3a6a1a8efc91cc92cd5d859ebd8964389dab865480892bd3eb69752dee3f1e54",
+           "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "94a7bc9b2e957f2908b8ec9fbd1fa96c31f611df5dfbf22b11d060a39515c8f8",
+           "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
+           "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "7d765b4e5cfaa4a9007b48837cdbb2e50a44c0eef0ee99b25030d60fe315f0d8",
+           "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
+           "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "beee62668832199955fa0076dcc80ea162634c9a3ccf474676d38120fcfc55bf",
+           "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262",
+           "south": "47e54403e4871a7028969fe2aadf3bb708f331fe08722c75319d66c15eea9ac9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "ab4d592ab2bbdbe695218e768d7248359f25dcbd655236862b6f35441c383f32",
+           "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
+           "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_longtailgorg",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -28090,7 +29171,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 12,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -35960,6 +37041,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_falumpaset_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "005cc2e9131f6f4c52cd030dee215172dcbcd58f0b0db86980b8ba6153fd8785"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_falumpaset",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -35987,7 +37078,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -38758,6 +39849,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_worrt_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "496a899613e108c6898e48ee59575d3a4d77c94462ca26c6fc29be21a98224b3",
+           "north": "55b8ff5fcf8421b1febf1a129323c2b5700b1ac2028824ce53ce0e39bb9e014e",
+           "south": "1e4fd8c4ff8ee59b53da989e19d0d0c4503849f85c05447aaeca499e2b042ac0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_worrt",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -38866,7 +39969,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 3,
@@ -51897,6 +53000,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
+           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a",
+           "south": "f93d64524269825aead0cb77f64c4220cc58dad997b1dcd828e17726a3e84913"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render longshade_rsw_frilledgorg_v3",
           "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
           "date": "2026-10-05",
@@ -51909,12 +53024,11 @@
          },
          {
           "kind": "artpipe",
-          "label": "render longshade_rsw_frilledgorg_v1",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
-          "date": "2026-10-04",
+          "label": "render longshade_rsw_frilledgorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
           "faces": {
-           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
-           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a"
+           "east": "71552ef6c03bec3dfb61fb10bd2e9fe87ac74ef2c0f8d38b8a92d3f6cd3287ec"
           },
           "near_dup_of": null
          },
@@ -52094,7 +53208,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 10,
+      "n_versions": 11,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -52478,7 +53592,40 @@
           "date": "2026-10-05",
           "faces": {
            "east": "0553a966f94e40888ea582c79175c8b7487ef4f3d28390a3eb997507677e2141",
-           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f"
+           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f",
+           "south": "a8a77ac6e04042083b6083651bdd5605847fda23a02c92ad9ceff893a13ed894"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "499434c89c03f58d1e505f6c0a874702c6a1a493b4539cd35ae4116981550e91",
+           "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470",
+           "north": "46816f531940eb563b42cfaaef050f29a4d46f507cf68e9bd37e1c0217edc843"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "e71370e1d99a98a2f10882d99b8414f0cfd452925f5ee78c3a383370c481efa7"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "e1ec5d438f72bcfbb0876b2afa7aa693a278535fa5c31701a19ad3457b60dadd"
           },
           "near_dup_of": null
          },
@@ -52501,17 +53648,6 @@
           "date": "2026-10-04",
           "faces": {
            "east": "e4bb1cc09df37068bd8d917806f806df22624d153f98e197e381d6d7d8ef775a"
-          },
-          "near_dup_of": null
-         },
-         {
-          "kind": "artpipe",
-          "label": "render longshade_rsw_gorg_v6",
-          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
-          "date": "2026-10-04",
-          "faces": {
-           "east": "499434c89c03f58d1e505f6c0a874702c6a1a493b4539cd35ae4116981550e91",
-           "south": "e2e78cde43d2fa8046e3f03aa0649677560a35611e2af8f029c2d1b4dc8ad470"
           },
           "near_dup_of": null
          },
@@ -52659,7 +53795,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 10,
+      "n_versions": 12,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -53305,7 +54441,8 @@
           "date": "2026-10-05",
           "faces": {
            "east": "194f1deddfdebe55eee756e4ca6cb6cce6dcb255fe1384f42e29525cf584e4d4",
-           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f"
+           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
+           "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
           },
           "near_dup_of": null
          },
@@ -53679,6 +54816,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Kreetle_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "dc85f8e03d8cdc19debf206a703559c0bcf08badce9b0704ef696f39d3e41eb8",
+           "north": "062137f7c37a33b27a3214694fa8d888f3017edca050f582267fc11b7d4a6518",
+           "south": "1072144b2279549094eeddeca784fd0709294e2acedf75927de357be3275e9a6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_kreetle",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -53787,7 +54936,7 @@
         }
        }
       ],
-      "n_versions": 6,
+      "n_versions": 7,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -54080,6 +55229,90 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_swim_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "922744c0d5c845a460e2166509a34c6cbe7c33095249db2dd33cf14e69eb175a",
+           "north": "428edd9fe12cceb8c9a0eb3b8eb56eade0a6843d359e0b5e719e07078a5a54ac",
+           "south": "acae07b9b0ed328e5a7243b9a8ef67ea8c3da3de73811d1fec56ea8328751d43"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "c37397bd2d5c309f089bcf804ae601e1ebe928d4a81ac0f5d078d220530ea316",
+           "north": "b690aebb5166461428d3a7c55f9c4a9c7f6f94c5c38dc0831297ced1fee53293",
+           "south": "2cb6096cfef81812aa7e6577ef19d9a26ea9b1989d6d5691ce028335084d1a90"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a689db478c1ba40f409cee7dcefc6628cab17e74d5c4e7ba21af51fadcf1d0e8",
+           "north": "3a6a1a8efc91cc92cd5d859ebd8964389dab865480892bd3eb69752dee3f1e54",
+           "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "94a7bc9b2e957f2908b8ec9fbd1fa96c31f611df5dfbf22b11d060a39515c8f8",
+           "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
+           "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v4",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "7d765b4e5cfaa4a9007b48837cdbb2e50a44c0eef0ee99b25030d60fe315f0d8",
+           "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
+           "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v5",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "beee62668832199955fa0076dcc80ea162634c9a3ccf474676d38120fcfc55bf",
+           "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262",
+           "south": "47e54403e4871a7028969fe2aadf3bb708f331fe08722c75319d66c15eea9ac9"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_longtailgorg_v6",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "ab4d592ab2bbdbe695218e768d7248359f25dcbd655236862b6f35441c383f32",
+           "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
+           "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_longtailgorg",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -54222,7 +55455,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 12,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -56187,6 +57420,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_ronto_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_ronto",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -56238,7 +57481,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -56690,6 +57933,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_skalder_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
+           "north": "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
+           "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_skalder",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -56751,7 +58006,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2,
@@ -56861,6 +58116,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_sketto_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_sketto",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -56900,7 +58165,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -57534,6 +58799,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_voorpak_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "97ca276a1be374b3fddc10337ebc34b6846b448818eabc9b2c890b41bbc27002"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_voorpak",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -57561,7 +58836,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -58135,6 +59410,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_worrt_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "496a899613e108c6898e48ee59575d3a4d77c94462ca26c6fc29be21a98224b3",
+           "north": "55b8ff5fcf8421b1febf1a129323c2b5700b1ac2028824ce53ce0e39bb9e014e",
+           "south": "1e4fd8c4ff8ee59b53da989e19d0d0c4503849f85c05447aaeca499e2b042ac0"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_worrt",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -58243,7 +59530,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 3,
@@ -59461,12 +60748,22 @@
            "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render ls_regen_RM_Venomvine_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "single": "02098c35dc6af7b904e77de15672a22ef8a7952ef1a82abe8604b811e3fc44e5"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 0,
@@ -63546,6 +64843,17 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_runyip_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+           "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_runyip",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -63688,7 +64996,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 6,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4,
@@ -69002,7 +70310,8 @@
           "date": "2026-10-05",
           "faces": {
            "east": "194f1deddfdebe55eee756e4ca6cb6cce6dcb255fe1384f42e29525cf584e4d4",
-           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f"
+           "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
+           "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
           },
           "near_dup_of": null
          },
@@ -69696,6 +71005,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_zeer_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "93357dde17949bac2576c805c09c5990f7fb98a08434d9e14b8073565a3a0015",
+           "north": "cd220ccc8f4933bdab6cf78a6b642ed4c2cd10610fd34bc0bb3fa65827b34768",
+           "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_zeer",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -69793,7 +71114,7 @@
         }
        }
       ],
-      "n_versions": 8,
+      "n_versions": 9,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -70347,6 +71668,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Vozzik_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+           "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+           "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Vozzik",
           "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 STILLSAND_BEDAZZLE_CONTENT_1",
           "date": "2026-10-01",
@@ -70361,7 +71694,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -89740,12 +91073,24 @@
            "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Vozzik_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+           "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+           "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -90362,6 +91707,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render stillsand_regen_RSW_Vozzik_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+           "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+           "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Vozzik",
           "detail": "2026-10-01 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 STILLSAND_BEDAZZLE_CONTENT_1",
           "date": "2026-10-01",
@@ -90376,7 +91733,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,
@@ -97738,6 +99095,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_jamel_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "1b17ef32a1c6d1aac8dd628554242baee904b77ac63c4853ab24e826b617ccdf",
+           "north": "08d586f5808ca080f76e9b46d5e14d750ce804e59111b65853a81a824e9d887a",
+           "south": "8a4f2642b6956d2c534d4a137d3beb82c2620fd9f887b61e13ebc5a502ca1807"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desert_swaca_jamel",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -97777,7 +99146,7 @@
         }
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1,

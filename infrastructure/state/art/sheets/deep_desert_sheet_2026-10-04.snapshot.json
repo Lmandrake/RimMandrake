@@ -1,8 +1,8 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-04T21:34:50-0700",
+ "built": "2026-10-05T07:05:05-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "87e6995b6",
+ "census_git_head": "6772566b4",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Aurrok": {
@@ -11,15 +11,26 @@
      "east": "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
      "north": "5f1ddc63c80bac5004161539c45367600c6ebabd2d7cffbd9f59c84257bffaec",
      "south": "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
+    },
+    "B": {
+     "east": "8338e43008c3547baff4aeb1ec5dace671c5d0068aad11887a9ab6cfcfa579ea",
+     "north": "45ab167eb5ca151aeb203108bbfa488139927082549bca8a622337ef4d459d9e",
+     "south": "ed9b579d555577fb5c0e421888c20282e29ba7809f52d253ea242ee0c55ee26f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+    "B": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_regen_RM_Aurrok_v1"
    },
    "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "aurrok"
   },
   "RM_Drazzik": {
@@ -28,15 +39,26 @@
      "east": "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838",
      "north": "52504edc50913c2f61dd1e4768feefec1f0fbde25cd19e9951dec70cb22b29d9",
      "south": "8853b193d2c23fccfc2f0607e93b8cfe112b99b2a9557f886da2a336cdd96a45"
+    },
+    "B": {
+     "east": "944b55f4b32ba088f6431a12ce7a9c0215b413c86284d8d30e4dfb45740ab1b2",
+     "north": "6f28694b3aa1fca32a20b4c6743c3dcda94fb2ac97f6ab732d5318db65305db3",
+     "south": "eef2368fa4991980c63ccfc65d195b874fbfe7fe7bbc80d75e3e1790c408601c"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
+    "A": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+    "B": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_regen_RM_Drazzik_swimming_v1"
    },
    "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "drazzik"
   },
   "RM_DuneCrawler": {
@@ -57,6 +79,10 @@
     "B": "history Stillsand 2026-10-01"
    },
    "res": "Things/Item/Resource/RM_DuneCrawler",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "dunecrawler"
   },
   "RM_Duumma": {
@@ -74,6 +100,9 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "duumma"
   },
   "RM_Gaanok": {
@@ -98,21 +127,58 @@
     "B": "render RM_Gaanok"
    },
    "res": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "gaanok"
   },
   "RM_Glasscrust": {
    "columns": {
     "A": {
      "single": "b1730b227eeafc48cabba40e953958e99c36d442ca2085ce378fca0c58640775"
+    },
+    "B": {
+     "single": "e15b6cb46eeb8803b2d22abffd2881a847964a3fbc4ffd96f6627c2c42089da5"
+    },
+    "C": {
+     "single": "ce311ccb3b20622978b28192c927da45fac62338f88ff8e5546c239bbd746178"
+    },
+    "D": {
+     "single": "bbf9487479404e5d964aeea659738ddbf06ffe0985542fcbb032e77b0e102563"
+    },
+    "E": {
+     "single": "41615e7153d0bbadd167b4ba66a44c3261f780d2a39481e94500ef4f662735d8"
+    },
+    "F": {
+     "single": "23848771ed181e045232d64ac588203a44093a9fda3be3405bb217d430fdd914"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Glasscrust"
+    "A": "Things/Plant/RM_Glasscrust",
+    "B": "Things/Plant/RM_Glasscrust",
+    "C": "Things/Plant/RM_Glasscrust",
+    "D": "Things/Plant/RM_Glasscrust",
+    "E": "Things/Plant/RM_Glasscrust",
+    "F": "Things/Plant/RM_Glasscrust"
    },
    "labels": {
-    "A": "render RM_Glasscrust"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render stillsand_regen_RM_Glasscrust_var1",
+    "C": "render stillsand_regen_RM_Glasscrust_var2",
+    "D": "render stillsand_regen_RM_Glasscrust_var3",
+    "E": "render stillsand_regen_RM_Glasscrust_var4",
+    "F": "render stillsand_regen_RM_Glasscrust_var5"
    },
    "res": "Things/Plant/RM_Glasscrust",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "glasscrust"
   },
   "RM_Ikee": {
@@ -137,6 +203,11 @@
     "B": "render RM_Ikee"
    },
    "res": "Things/Pawn/Animal/RM_Ikee/RM_Ikee",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ikee"
   },
   "RM_KneelOllim": {
@@ -146,24 +217,75 @@
     },
     "B": {
      "single": "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531"
+    },
+    "C": {
+     "single": "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df"
+    },
+    "D": {
+     "single": "5c855498e32cba323c4efbeea6d46d042fcfda1c644b59f5b3bccf4be8063b09"
+    },
+    "E": {
+     "single": "b9403600f0716e62745e0675366243fe3d04c82983f0435bdc14aa285cf50a37"
+    },
+    "F": {
+     "single": "927f08c9e0b7d4802ca7bf077cc47d6a9876ba3bdaa5b918b90d0f1a4230da4b"
+    },
+    "G": {
+     "single": "8b8bf8d353731b01f93bfd6af5b57b77c939cb4b009ff0bf074ca29db8ea85bb"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_KneelOllim",
-    "B": "Things/Plant/RM_KneelOllim"
+    "B": "Things/Plant/RM_KneelOllim",
+    "C": "Things/Plant/RM_KneelOllim",
+    "D": "Things/Plant/RM_KneelOllim",
+    "E": "Things/Plant/RM_KneelOllim",
+    "F": "Things/Plant/RM_KneelOllim",
+    "G": "Things/Plant/RM_KneelOllim"
    },
    "labels": {
-    "A": "render RM_KneelOllim_b",
-    "B": "render RM_KneelOllim"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render RM_KneelOllim",
+    "C": "render stillsand_regen_RM_KneelOllim_var1",
+    "D": "render stillsand_regen_RM_KneelOllim_var2",
+    "E": "render stillsand_regen_RM_KneelOllim_var3",
+    "F": "render stillsand_regen_RM_KneelOllim_var4",
+    "G": "render stillsand_regen_RM_KneelOllim_var5"
    },
    "res": "Things/Plant/RM_KneelOllim",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
    "subject_key": "kneelollim"
   },
   "RM_LightPipeNub": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "res": null,
+   "columns": {
+    "A": {
+     "single": "9315eab290fb74cece8122fb8beda7277c25f2dd440a9f4b518a4ebff74b8302"
+    },
+    "B": {
+     "single": "2731d919555cf53555e8270132b24825579a5a7efd0b638d943070e974c14400"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_LightPipeNub",
+    "B": "Things/Plant/RM_LightPipeNub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render stillsand_regen_RM_LightPipeNub_v1"
+   },
+   "res": "Things/Plant/RM_LightPipeNub",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "lightpipenub"
   },
   "RM_Liikka": {
@@ -181,7 +303,31 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Liikka/RM_Liikka",
+   "reserved": [
+    "A"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "liikka"
+  },
+  "RM_LikkaLikka": {
+   "columns": {
+    "A": {
+     "east": "f66af873e918b7eb50fbe20cd85fa3f500cd66df809b93680972fddcba00c59b",
+     "north": "e2591b9152e8aedaa63a2143c4abc9aa188c5aaf23adb21c4d7e027fdefa552c",
+     "south": "f137ade40ba2bbe22ec8cb94896d0860cf25770776b9d8f24aa8da86be4d908e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Liikka/RM_Liikka"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Stillsand"
+   },
+   "res": "Things/Pawn/Animal/RM_Liikka/RM_Liikka",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "likkalikka"
   },
   "RM_Loomma": {
    "columns": {
@@ -205,13 +351,28 @@
     "B": "render RM_Loomma"
    },
    "res": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "loomma"
   },
   "RM_Ollim": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "res": null,
+   "columns": {
+    "A": {
+     "single": "33e4726e38410d45acfca459a1f6bcebaee1e1569204f3aa5d58e4073b092d8e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ollim"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "Things/Plant/RM_Ollim",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "ollim"
   },
   "RM_Oommok": {
@@ -220,15 +381,25 @@
      "east": "0de995dc3a96f4a2fc7b8d692012432e4b34a938b4cdf1515feaca76ebc16c04",
      "north": "33e801b13a9ad4c425a322c3ea26d2fd7c252fe94fee0cbc0de85d6fe5292120",
      "south": "cf471436e28c9c31cafe7570f754229b7b467b4db571d9a15b9c98bc7f598331"
+    },
+    "B": {
+     "north": "1a39d81a3a7f9bef164328563cbfd525499df28c029d0bc832c1c0d8084be1f8",
+     "south": "741d5bf04f41814fcc88bed4d179b6cad70ac59bbfabe0c5b0bf14b167c55b35"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+    "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+    "B": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render stillsand_regen_RM_Oommok_v2"
    },
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "oommok"
   },
   "RM_Qorrax": {
@@ -242,17 +413,29 @@
      "east": "125bc9e16093f82c33e2aa586d96388b8664504dbb7e90a16314e52f024aeb4a",
      "north": "207016afcc77718d263cae722a1562bf366f1d48069c452003f2da1647b6fbac",
      "south": "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25"
+    },
+    "C": {
+     "east": "965c48577d312e01ee2d2c81f0861bb4c5a0ae033ad67ae7182b0cf399b6304a",
+     "north": "7d58b3ef3acd3066eab5b5befc59b275b675211872f931b1cb27c968195b8f9f",
+     "south": "c4a028e806b23a82be31fb016f640614481c6f8bdf04c17661c81054363efeae"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
-    "B": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming"
+    "B": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming",
+    "C": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "IN GAME \u2014 Stillsand"
+    "B": "IN GAME \u2014 Stillsand",
+    "C": "render stillsand_regen_RM_Qorrax_swimming_v1"
    },
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "qorrax"
   },
   "RM_ShadeMite": {
@@ -261,15 +444,27 @@
      "east": "ae789ac5e4076c2e415db03ab7153c28a1ce7db6cffa066cb70f80488b9b139f",
      "north": "9078c35b257ac0b34a6137557ab7c3f0b305d00486631cf499ab436b9d5324d9",
      "south": "5ba66fa8e967f738aee8ce21e0e7821a940f4abdd99969e90a42132ea09d4cca"
+    },
+    "B": {
+     "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
+     "single": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+    "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "B": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "B": "render RM_ShadeMite_tint_v1"
    },
    "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+   "reserved": [
+    "A",
+    "B"
+   ],
    "subject_key": "shademite"
   },
   "RM_Siidda": {
@@ -287,6 +482,9 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "siidda"
   },
   "RM_Soorrak": {
@@ -300,18 +498,87 @@
      "east": "276a39da510922f19afe5fae1803679e62804cc4ca6d1ce953ea30696c29e905",
      "north": "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a",
      "south": "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c"
+    },
+    "C": {
+     "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
+     "south": "fa087c1492f47c1a4bfd8f21fcbd0c59a72d759408c5f3699e5a8abc6c70de8d"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
-    "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+    "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+    "C": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "render RM_Soorrak"
+    "B": "render RM_Soorrak",
+    "C": "render stillsand_regen_RM_Soorrak_v2"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "soorrak"
+  },
+  "RM_Ulgga": {
+   "columns": {
+    "A": {
+     "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+     "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+     "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+    },
+    "B": {
+     "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3"
+    },
+    "C": {
+     "east": "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+     "north": "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa",
+     "south": "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "B": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "C": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render longshade_rsw_ulgga_v1",
+    "C": "render RM_Ulgga"
+   },
+   "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "subject_key": "ulgga"
+  },
+  "RM_UltrissPad": {
+   "columns": {
+    "A": {
+     "single": "aba3edd42fcd16360c25e0e4ec84e2d38b8a2ab11b18d4aa0dbc8670d5f28677"
+    },
+    "B": {
+     "single": "a49e8d6b6a520c0f40cd981a8afd9d2ebe344c3252439c86b9be3ff961c810a1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Ultracactus",
+    "B": "Things/Plant/RM_Ultracactus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render longshade_rsw_ultracactus_v1"
+   },
+   "res": "Things/Plant/RM_Ultracactus",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "ultrisspad"
   },
   "RM_Veessa": {
    "columns": {
@@ -328,6 +595,9 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "veessa"
   },
   "RM_Vekka": {
@@ -345,7 +615,46 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
+   "reserved": [
+    "A"
+   ],
    "subject_key": "vekka"
+  },
+  "RM_Vosska": {
+   "columns": {
+    "A": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+    },
+    "B": {
+     "east": "74078e9d6dd26c74dcfd835d00d070167e6c44662411cb5811b734ce1b7cf136",
+     "north": "ff1c2fc7c7077f1a45c24bf3379f2917958b2cba516e3cd9da4078f7f7fc3181",
+     "south": "b92f64772e59e128889fb0fa54c9ceb964da5b836b34790696caa0f115d10da8"
+    },
+    "C": {
+     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
+     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
+     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "B": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "C": "Things/Pawn/Animal/RM_Vosska/RM_Vosska"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render stillsand_RM_Vosska_sandswim_v1",
+    "C": "render RM_Vosska"
+   },
+   "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "subject_key": "vosska"
   },
   "RM_Vozzik": {
    "columns": {
@@ -362,6 +671,10 @@
     "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
+   "reserved": [
+    "A"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "vozzik"
   },
   "RSW_Drazzik": {
@@ -379,6 +692,10 @@
     "A": "render RM_Drazzik"
    },
    "res": null,
+   "reserved": [
+    "A"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "drazzik"
   },
   "RSW_Gizka": {
@@ -442,9 +759,19 @@
     "E": "history GizkaArtOverride 2026-09-14",
     "F": "history GizkaArtOverride 2026-09-17",
     "G": "history GizkaArtOverride 2026-09-17",
-    "H": "donor original mlie.starwarsanimalcollection"
+    "H": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Gizka/Gizka",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
    "subject_key": "gizka"
   },
   "RSW_GraniteSlug": {
@@ -458,17 +785,29 @@
      "east": "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
      "north": "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3",
      "south": "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534"
+    },
+    "C": {
+     "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
+     "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+     "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
     }
    },
    "graphic_of": {
     "A": "swanimals/GraniteSlug/GraniteSlug",
-    "B": "swanimals/GraniteSlug/GraniteSlug"
+    "B": "swanimals/GraniteSlug/GraniteSlug",
+    "C": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_graniteslug"
+    "B": "render desertportb_graniteslug",
+    "C": "render stillsand_regen_RSW_GraniteSlug_v2"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "graniteslug"
   },
   "RSW_GreaterKraytDragon": {
@@ -491,21 +830,35 @@
      "east": "162477ddb4152e6fbd677c80ec69a60abdcd4134bba6280f1f406971aa14200c",
      "north": "ab0561c0c4f92b088271783daeb4e3a07f8a0ec75e80c05f79102e5d76ef164d",
      "south": "971257281ef89ad736ddfc885fe231a5efff3638c49da74d747dfa53a8be77a2"
+    },
+    "E": {
+     "east": "c5ede570f7e950b87d962742260ee3d519beb7511db29608844795c1e60c4cb2",
+     "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
+     "south": "47ddd4cb149e691d9895589ac172f0d141ae55c0a27ddb21ee3d0344b129e816"
     }
    },
    "graphic_of": {
     "A": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "B": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "C": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-    "D": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
+    "D": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
+    "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
     "A": "IN GAME \u2014 GreaterKraytDragonArtOverride",
     "B": "render desertportb_greaterkraytdragon",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
-    "D": "donor original mlie.starwarsanimalcollection"
+    "D": "donor original \u2014 mlie.starwarsanimalcollection",
+    "E": "render stillsand_regen_RSW_GreaterKraytDragon_v2"
    },
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "greaterkraytdragon"
   },
   "RSW_Ikee": {
@@ -519,17 +872,29 @@
      "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
      "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
      "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
+    },
+    "C": {
+     "east": "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
+     "north": "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
+     "south": "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
-    "B": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee"
+    "B": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+    "C": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render RM_Ikee"
+    "B": "render RM_Ikee",
+    "C": "render stillsand_regen_RSW_Ikee_v2"
    },
    "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "ikee"
   },
   "RSW_KraytDragon": {
@@ -553,21 +918,33 @@
      "east": "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
      "north": "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988",
      "south": "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4"
+    },
+    "E": {
+     "east": "f5575bcffa2686fd5fa0cf195778c107a6fb0e19147d48aadd5a617c9e4257a7"
     }
    },
    "graphic_of": {
     "A": "swanimals/KraytDragon/KraytDragon_f",
     "B": "swanimals/KraytDragon/KraytDragon_j",
     "C": "swanimals/KraytDragon/KraytDragon_m",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render desertportb_kraytdragon"
+    "D": "render desertportb_kraytdragon",
+    "E": "render stillsand_regen_RSW_KraytDragon_v2"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
    "subject_key": "kraytdragon"
   },
   "RSW_Kreetle": {
@@ -599,6 +976,11 @@
      "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
      "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
      "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
+    },
+    "G": {
+     "east": "dc85f8e03d8cdc19debf206a703559c0bcf08badce9b0704ef696f39d3e41eb8",
+     "north": "062137f7c37a33b27a3214694fa8d888f3017edca050f582267fc11b7d4a6518",
+     "south": "1072144b2279549094eeddeca784fd0709294e2acedf75927de357be3275e9a6"
     }
    },
    "graphic_of": {
@@ -607,17 +989,28 @@
     "C": "swanimals/Kreetle/Kreetle",
     "D": "swanimals/Kreetle/Kreetle",
     "E": "swanimals/Kreetle/Kreetle",
-    "F": "swanimals/Kreetle/Kreetle_j"
+    "F": "swanimals/Kreetle/Kreetle_j",
+    "G": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "A": "IN GAME \u2014 KreetleArtOverride",
     "B": "render desert_swaca_kreetle",
     "C": "render facingrepair_kreetle_v1",
     "D": "history KreetleArtOverride 2026-09-11",
-    "E": "donor original mlie.starwarsanimalcollection",
-    "F": "IN GAME \u2014 SWBestiary"
+    "E": "donor original \u2014 mlie.starwarsanimalcollection",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render stillsand_regen_RSW_Kreetle_v2"
    },
    "res": "swanimals/Kreetle/Kreetle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
    "subject_key": "kreetle"
   },
   "RSW_LightPipeNub": {
@@ -625,6 +1018,8 @@
    "graphic_of": {},
    "labels": {},
    "res": null,
+   "reserved": [],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "lightpipenub"
   },
   "RSW_Ollim": {
@@ -632,21 +1027,56 @@
    "graphic_of": {},
    "labels": {},
    "res": null,
+   "reserved": [],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ollim"
   },
   "RSW_Plant_Bloddle": {
    "columns": {
     "A": {
      "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+    },
+    "B": {
+     "single": "0f35431ae70ca1f3c22e67b7ae387f8b17f6aa514358bbde646b9b42e793e480"
+    },
+    "C": {
+     "single": "372060452ed2933976d5e9512ac43a897854b9868905d10320bfa52aa7afa83e"
+    },
+    "D": {
+     "single": "62d66a32e1b4ebb8f9b3fc46f4884f75f64ccb87f05c9cf87cda73a9e0286b0c"
+    },
+    "E": {
+     "single": "2e8dd050cb44bf46cb993249c130dc9acf79bd1a5ad83444b6d308914f98549f"
+    },
+    "F": {
+     "single": "82602ff97ace79d8e382c8284b22a3ad32ae611e72c9bc582b064789ab0bbb25"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RSW_Plant_Bloddle"
+    "A": "Things/Plant/RSW_Plant_Bloddle",
+    "B": "Things/Plant/RSW_Plant_Bloddle",
+    "C": "Things/Plant/RSW_Plant_Bloddle",
+    "D": "Things/Plant/RSW_Plant_Bloddle",
+    "E": "Things/Plant/RSW_Plant_Bloddle",
+    "F": "Things/Plant/RSW_Plant_Bloddle"
    },
    "labels": {
-    "A": "render desertportb_plant_bloddle"
+    "A": "render desertportb_plant_bloddle",
+    "B": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
+    "C": "render stillsand_regen_RSW_Plant_Bloddle_var1",
+    "D": "render stillsand_regen_RSW_Plant_Bloddle_var2",
+    "E": "render stillsand_regen_RSW_Plant_Bloddle_var3",
+    "F": "render stillsand_regen_RSW_Plant_Bloddle_var5"
    },
    "res": "Things/Plant/RSW_Plant_Bloddle",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
    "subject_key": "plant_bloddle"
   },
   "RSW_Scurrier": {
@@ -665,19 +1095,31 @@
      "east": "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
      "north": "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
      "south": "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6"
+    },
+    "D": {
+     "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
+     "south": "11f20107cbd58557d424e2238370e46ab0370879e13cbb58b61ac550758518ef"
     }
    },
    "graphic_of": {
     "A": "swanimals/Scurrier/Scurrier_f",
     "B": "swanimals/Scurrier/Scurrier_m",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "render desert_swaca_scurrier"
+    "C": "render desert_swaca_scurrier",
+    "D": "render stillsand_regen_RSW_Scurrier_v2"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
    "subject_key": "scurrier"
   },
   "RSW_Vozzik": {
@@ -702,6 +1144,11 @@
     "B": "render RM_Vozzik"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "vozzik"
   },
   "RSW_WarWyrm": {
@@ -715,20 +1162,32 @@
      "east": "edb081b14409007555df46d2da17e5fb4d07cdb9bd09efb378afc41e7d20a359",
      "north": "562ceee378083a7330bb872c479cb28b24c34b56edbc446c53664c886eb72523",
      "south": "5b95d1ceda5b9fce3f55e542f2d3e1409ca4ae85ffa48c0e43bf4c7639ae0f70"
+    },
+    "C": {
+     "east": "8cab92f7e37f047cef315f93133ff3acb6cd96c8dd70a2595468a859114557dc",
+     "north": "400bf1437ae63181c3affd80fedcb780062e62e845bb3e2dd8f0d7c4bee4365f",
+     "south": "3d53f451b1c0c3474ddf19622609b879303f460a00509a5347ae7ca541fe9677"
     }
    },
    "graphic_of": {
     "A": "swanimals/WarWyrm/WarWyrm",
-    "B": "swanimals/WarWyrm/WarWyrm"
+    "B": "swanimals/WarWyrm/WarWyrm",
+    "C": "swanimals/WarWyrm/WarWyrm"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_warwyrm"
+    "B": "render desertportb_warwyrm",
+    "C": "render stillsand_regen_RSW_WarWyrm_v2"
    },
    "res": "swanimals/WarWyrm/WarWyrm",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
    "subject_key": "warwyrm"
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "78a5fec1d0539d51"
+ "snapshotId": "6d6f9577f527be48"
 }
