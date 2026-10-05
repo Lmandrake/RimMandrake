@@ -356,6 +356,8 @@ LOG_NEEDLES = (
 def p_l2(s, P, sc):
     with open(P.player_log, "rb") as f:
         txt = f.read().decode("utf-8", "replace")
+    if not txt.strip():
+        return row("P-L2", UNMEASURED, "Player.log is empty: nothing was scanned (%s)" % P.player_log)
     hits = [l.strip() for l in txt.splitlines() if any(a.search(l) and b.search(l) for a, b in LOG_NEEDLES)]
     if hits:
         return row("P-L2", FAIL, "%d log line(s), first: %s" % (len(hits), hits[0][:160]))

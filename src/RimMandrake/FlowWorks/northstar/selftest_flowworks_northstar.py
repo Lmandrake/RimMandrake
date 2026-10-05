@@ -290,6 +290,11 @@ def test_preflight_dirt(P, g0):
     c, _ = live(P, FakeFlowWorksGame(saves_dir=P.saves, shots_dir=P.saves), seat="BENCH")
     check("bridge held by FOUNDRY refuses a BENCH run (P-B1)", c["P-B1"].status == FAIL)
     # log + list
+    real_log, empty_log = P.player_log, os.path.join(TMP, "empty_Player.log")
+    open(empty_log, "w").close()
+    P.player_log = empty_log
+    check("empty Player.log is UNMEASURED on P-L2, never PASS", PF.p_l2(None, P, None).status == UNMEASURED)
+    P.player_log = real_log
     with open(P.player_log, "a") as f:
         f.write("Exception in RimMandrake.FlowWorks.RM_MapComponent_Excavation.MapComponentTick\n")
     check("FlowWorks exception in Player.log refused by P-L2", PF.p_l2(None, P, None).status == FAIL)

@@ -63,8 +63,13 @@ def main():
             bars_seen.update(bars)
             out.append("| `%s` | %s | %s |" % (name, ("`%s`" % tg.group(1)) if tg else "-", ", ".join("`%s`" % b for b in bars) or "state only"))
         i += 1
+    if not n_comp or not bars_seen:     # a parse that matched nothing must not emit an empty-looking run sheet
+        sys.stderr.write("runsheet: parsed %d components / %d bars from %s -- validation.py layout changed?\n"
+                         % (n_comp, len(bars_seen), VAL))
+        return 1
     out += ["", "Totals: %d components, %d distinct bars claimed." % (n_comp, len(bars_seen))]
     print("\n".join(out))
+    return 0
 
 
 if __name__ == "__main__":

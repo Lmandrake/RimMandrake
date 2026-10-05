@@ -671,8 +671,8 @@ def o2_settings_defaults():
     dead = re.findall(r"public static \w+ (\w*(?:struggle|escape|Escape|Struggle|pitCellExposure)\w*)\s*=", allsrc)
     if dead:
         probs.append("retired settings still declared: %s" % dead)
-    return Check("O2", not probs, "; ".join(probs) or "31 toggles + %d floats match C#; 2 Mod screens; no "
-                 "struggle/escape/exposure setting" % len(FLOAT_DEFAULTS))
+    return Check("O2", not probs, "; ".join(probs) or "%d toggles + %d floats match C#; 2 Mod screens; no "
+                 "struggle/escape/exposure setting" % (seen, len(FLOAT_DEFAULTS)))
 
 
 # UNBUILT register (R9): bar -> (source fact that keeps it UNBUILT, predicate over sources).
@@ -1229,7 +1229,10 @@ class Live(object):
     def restore_settings(self):
         bad = []
         for typ, f in sorted(self.touched):
-            want = _SETTINGS[typ][f]
+            want = _SETTINGS.get(typ, {}).get(f)
+            if want is None:                        # site_spec failed to import: report, never KeyError the restore loop
+                bad.append("%s (no shipped default known)" % f)
+                continue
             try:
                 self.B.call("jawa/mod_settings_field", typeName=typ, action="set", field=f, value=str(want))
                 if not _settings_equal(self.sget(typ, f), want):

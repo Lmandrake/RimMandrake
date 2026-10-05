@@ -258,11 +258,13 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
     # listed), so a map that dropped one inside a plot cannot be cleaned: re-roll the quicktest map instead.
     mono = s.call("jawa/list_things", defName="VoidMonolith", limit=10)
     for t in (mono.get("things") or []) if isinstance(mono, dict) else []:
+        pos = t.get("position") or t        # live list_things nests x/z under "position" (preflight does the same)
+        tx, tz = pos.get("x", -1), pos.get("z", -1)
         for p in plots:
             bx, bz, bw, bh = S.clip(p["buffered"], size)
-            if bx <= t.get("x", -1) < bx + bw and bz <= t.get("z", -1) < bz + bh:
+            if bx <= tx < bx + bw and bz <= tz < bz + bh:
                 raise Refused("2", "indestructible VoidMonolith at %s,%s inside plot %s: re-roll the map (go_to_main_menu + start_debug_game_ready)"
-                              % (t.get("x"), t.get("z"), p["id"]))
+                              % (tx, tz, p["id"]))
     # 4. environment
     season = environment(s, log)
     # 3. plots
