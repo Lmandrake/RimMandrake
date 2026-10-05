@@ -634,6 +634,25 @@ def test_dry_run_never_touches_the_queue():
         ok("dry-run: no image ever written to _artsrc/", not any(q.artsrc.rglob("*.png")))
 
 
+def test_fill_queue_refuses_contradicted_facing_prompt_at_filing():
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        rows = [{"id": "badfacing", "rimflow_item_id": "SELFTEST_ARTPIPE",
+                 "prompt": "a creature shown in three facings", "facings": "south", "canvas_w": 64, "canvas_h": 64},
+                {"id": "cleanfacing", "rimflow_item_id": "SELFTEST_ARTPIPE",
+                 "prompt": "a creature, side view", "canvas_w": 64, "canvas_h": 64}]
+        art_list = q.root / "art_list.json"
+        art_list.write_text(json.dumps(rows))
+        r = subprocess.run([sys.executable, str(HERE / "fill_queue.py"), "--input", str(art_list),
+                            "--no-subject", "selftest fixture", "--pending-dir", str(q.pending),
+                            "--active-dir", str(q.active), "--done-dir", str(q.done),
+                            "--failed-dir", str(q.failed)], capture_output=True, text=True, timeout=30)
+        ok("fill_queue: 'three facings' prompt refused at filing, loudly",
+           "badfacing" in r.stderr and "refused at filing" in r.stderr and not (q.pending / "badfacing.json").exists(),
+           r.stdout + r.stderr)
+        ok("fill_queue: clean row still filed", (q.pending / "cleanfacing.json").exists(), r.stdout + r.stderr)
+
+
 def test_fill_queue_refuses_duplicate_id():
     with tempfile.TemporaryDirectory() as td:
         q = Queue(Path(td))
@@ -3705,6 +3724,7 @@ def main() -> int:
         test_two_concurrent_daemons_claim_atomically,
         test_dry_run_never_touches_the_queue,
         test_fill_queue_refuses_duplicate_id,
+        test_fill_queue_refuses_contradicted_facing_prompt_at_filing,
         test_load_job_validates_value_shapes_not_just_key_presence,
         test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp,
         test_building_facing_gets_the_top_down_building_clause,
