@@ -1,0 +1,754 @@
+[
+ {
+  "id": "gapfin_AB_GiantStikehr_v1",
+  "target_def": "AB_GiantStikehr",
+  "target_original": [
+   "AB_GiantStikehr"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the giant stikehr. A giant alien mushroom that glows in the strange darkening mist. Contrary to the smaller domesticated strands, the giant Stikehr can grow in light environments, as long as it is protected by the Forsaken mists. Its stalk is so hardened that it can be considered wood for all intents and purposes. \n\nPlant details: Giant Stikehr is a cultivated plant that also appears in the wild, and it needs minimum terrain fertility of 0.7. It needs no light, and produces 50% light on its own, not enough to grow other plants around it. Can be harvested for normal wood.\n\nBased on art by Tyson Roberts, https://www.artstation.com/tyson Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_TwistingThornwood_v1",
+  "target_def": "RM_TwistingThornwood",
+  "target_original": [
+   "RM_TwistingThornwood"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the twisting thornwood. A tree the Cauldron has wrung into a corkscrew, its trunk armoured in hard grey thorns and weeping the forest's metallic sweat from every split in the bark. The wood inside is dense and slow-grown, and cutting it is a long, ugly job: the thorns fight back, and the sweat dries into the grain like solder. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_TwistingThorngrass_v1",
+  "target_def": "RM_TwistingThorngrass",
+  "target_original": [
+   "RM_TwistingThorngrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the twisting thorngrass. Similar to grass yet covered in small thorn-like structures. It is related in part to the twisting thornwood and thornweed. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Brunnock_v1",
+  "target_def": "RM_Brunnock",
+  "target_original": [
+   "RM_Brunnock"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the brunnock. Visibly heavy: a trunk far too thick for its height under a tight low dome of black-green leathery leaves the size of a shield, overlapping like armour plate. Short internodes, tight grain, cracked near-black bark. The toughest, slowest-growing tree on the page \u2014 bulk greenwood at the highest hit points here, deliberately scarce. It is no longer the hardwood route; that job belongs to the greatbole alone. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Cundral_v1",
+  "target_def": "RM_Cundral",
+  "target_original": [
+   "RM_Cundral"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the cundral. A squat woody base almost buried under a skirt of tentacle-thick ground runners, with translucent pods hanging among them like fruit you must not pick \u2014 you can see the acid moving inside them. Left undisturbed it lets you dig its root, a real food staple; damaged, the pods go. Reward and hazard are the same object, most explicitly of anything in the biome. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Gorbeleth_v1",
+  "target_def": "RM_Gorbeleth",
+  "target_original": [
+   "RM_Gorbeleth"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the gorbeleth. A low mottled purple-brown barrel of a trunk with one upward-facing muscular throat at the top, ringed with tooth-like bracts. It twitches toward movement. Nothing else about it suggests a plant. Its toxin is worth extracting, which means going close. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Mirrelbole_v1",
+  "target_def": "RM_Mirrelbole",
+  "target_original": [
+   "RM_Mirrelbole"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the mirrelbole. Trunk visibly split down its own length by the speed it grew, the wounds glazed with amber resin that never sets in the humidity. Sheds bark plates; permanently wet-looking, the mud at its foot sticky. The sap tap of the fuel economy \u2014 and reward and hazard are the same object here: the tree you tap is the tree most likely to crack and come down on you. The highest crack-fall rate in the biome. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Mourvel_v1",
+  "target_def": "RM_Mourvel",
+  "target_original": [
+   "RM_Mourvel"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the mourvel. The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it \u2014 the Greentide's one true concealment tree. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Phorrik_v1",
+  "target_def": "RM_Phorrik",
+  "target_original": [
+   "RM_Phorrik"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the phorrik. A dense thicket of taut translucent bladders held at head height on springy stalks, each visibly over-full. You cannot see through the mass of them, and pushing through bursts them. Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air \u2014 go around, or pay for what you release. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Quathis_v1",
+  "target_def": "RM_Quathis",
+  "target_original": [
+   "RM_Quathis"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the quathis. One flat vertical fan of gigantic leaves, all in a single plane from a short thick base \u2014 a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. Its leaves are single-piece roofing and thatch panels, the biome's cheapest building material, and the colour relief in a dark understory. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Sarnstilt_v1",
+  "target_def": "RM_Sarnstilt",
+  "target_original": [
+   "RM_Sarnstilt"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the sarnstilt. Stands in the channel itself on a tripod of prop roots, trunk starting clear of the water, crown leaning hard out over the current and shedding huge single leaves onto it. Bark salt-crusted pale on the downstream side. River-margin only \u2014 this is the tree that makes crossing water frightening, and it falls across the channel it stands in. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Sarquin_v1",
+  "target_def": "RM_Sarquin",
+  "target_original": [
+   "RM_Sarquin"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the sarquin. A thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, each drip-point glazed and crusted. The curtain of strands is what blocks the view; the mud beneath is sugared and crawling. The sugar source \u2014 and the drip is why insects are drawn here, and the insects are why something bigger is. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Thalquith_v1",
+  "target_def": "RM_Thalquith",
+  "target_original": [
+   "RM_Thalquith"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the thalquith. Aquamarine \u2014 the only non-green thing growing here. Smooth trunk with no bark texture at all, branches meeting overhead in a flat interlocking lattice rather than a crown; saplings are literal inverted cones. The lattice hums in moving air, constantly \u2014 the hum stopping is the tell. Fragile, and hard to keep alive near work. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Tumbel_v1",
+  "target_def": "RM_Tumbel",
+  "target_original": [
+   "RM_Tumbel"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the tumbel. A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested \u2014 the roster's own waypoint marker, visible from further away than a flat plant would be. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Vurmeloth_v1",
+  "target_def": "RM_Vurmeloth",
+  "target_original": [
+   "RM_Vurmeloth"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the vurmeloth. Almost suspiciously tidy \u2014 a neat narrow crown of even mid-green leaves on a straight clean bole, the one plant here that looks cultivated. Unremarkable until cut, when the heartwood is arterial crimson. Grows only in small pure stands, never mixed in: not a bulk wood, a premium timber the caravans carry out at a markup. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Wollick_v1",
+  "target_def": "RM_Wollick",
+  "target_original": [
+   "RM_Wollick"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wollick. A rosette of huge leaves standing upright rather than lying flat, each a blade taller than a pawn, fanning out over a deep starchy tuber. From inside a patch you can see nothing but leaf. Bulk carbohydrate \u2014 digging it slumps the churnmud around it, a small honest cost rather than a hazard. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Zhorrel_v1",
+  "target_def": "RM_Zhorrel",
+  "target_original": [
+   "RM_Zhorrel"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the zhorrel. No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still \u2014 the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RG_Plant_AridGrass_v1",
+  "target_def": "RG_Plant_AridGrass",
+  "target_original": [
+   "RG_Plant_AridGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the grass. Wild grass. Grows in arid regions where there is little light and minimally fertile ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_CrownVenomvine_v1",
+  "target_def": "RM_CrownVenomvine",
+  "target_original": [
+   "RM_CrownVenomvine"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the crown venomvine. Rarest of all: a stand that crowns. It climbs past man-height-and-more into a single black column and flowers at the top - the only flower this plain owns - and when the wind drops, the dustflutters mob it in a grey cloud you can see from a day's walk. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Cruststar_v1",
+  "target_def": "RM_Cruststar",
+  "target_original": [
+   "RM_Cruststar"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the cruststar. A hand-span star of pale lichen flat against the root-bound crust, rimmed gold where it fruits. The crustweevils graze it like a herd on a pasture the size of a plate. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_DrippingVenomvine_v1",
+  "target_def": "RM_DrippingVenomvine",
+  "target_original": [
+   "RM_DrippingVenomvine"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the dripping venomvine. Some stands make more venom than their thorns can hold. A dripping stand hangs it in amber beads along every cane, and the harvest is real money for whoever works bare-headed under a plant that sweats poison. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Grellbush_v1",
+  "target_def": "RM_Grellbush",
+  "target_original": [
+   "RM_Grellbush"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the grellbush. A short, tough scrub shrub adapted to thin desert soil. Not much use for anything but it holds ground other plants can't. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Grellspine_v1",
+  "target_def": "RM_Grellspine",
+  "target_original": [
+   "RM_Grellspine"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the grellspine. A short toxin-adapted shrub, a dense tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_HollowVenomvine_v1",
+  "target_def": "RM_HollowVenomvine",
+  "target_original": [
+   "RM_HollowVenomvine"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the hollow venomvine. Old stands die from the inside and stand anyway: tubes of grey cane, galleries wide enough that the runway nations thread them like streets - and a person the Jawas' size can crawl where the streets go. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Pillowmoss_v1",
+  "target_def": "RM_Pillowmoss",
+  "target_original": [
+   "RM_Pillowmoss"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the pillowmoss. A fat, low cushion that drinks the wind - fog beads on it all day, and the ground under a pillowmoss is the only reliably wet ground on the plain. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Tanglefuzz_v1",
+  "target_def": "RM_Tanglefuzz",
+  "target_original": [
+   "RM_Tanglefuzz"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the tanglefuzz. Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_TwitcherVenomvine_v1",
+  "target_def": "RM_TwitcherVenomvine",
+  "target_original": [
+   "RM_TwitcherVenomvine"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the twitcher venomvine. A twitcher stand strikes once at whatever comes close - one whip-crack of a cane, fast as a snake - and then spends an hour drooping, visibly spent, earning the next one. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Whipfuzz_v1",
+  "target_def": "RM_Whipfuzz",
+  "target_original": [
+   "RM_Whipfuzz"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the whipfuzz. The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_WildHealroot_v1",
+  "target_def": "RM_WildHealroot",
+  "target_original": [
+   "RM_WildHealroot"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wild healroot. A slow-growing plant which yields herbal medicine when harvested.\n\nThis wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Brelloch_v1",
+  "target_def": "RM_Brelloch",
+  "target_original": [
+   "RM_Brelloch"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the brelloch. A low, heavy mangal that looks half-buried, its whole upper surface armoured in a crust of its own excreted salt an inch thick, grey-white and cracked like old glaze. Where the crust has flaked, the living bark beneath is a startling wet green. Leaves small, thick and rimed shut. Brelloch is the last living thing before the salt wins \u2014 a stand of it marks exactly where the fresh-to-brine gradient ends, and its crust is scraped for the cheapest salt in the biome. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Immarel_v1",
+  "target_def": "RM_Immarel",
+  "target_original": [
+   "RM_Immarel"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the immarel. Tight stands of hollow jointed reeds, all leaning downstream together, stems banded olive and rust with a greasy iridescent film where they leave the water. Tops bear a spent brown tassel. The mud in an immarel bed is black, fine and slick, and smells extraordinary \u2014 this is where the delta silt concentrates into a findable, workable bed, and the root of the luxury attar the whole biome is named for. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Ollamane_v1",
+  "target_def": "RM_Ollamane",
+  "target_original": [
+   "RM_Ollamane"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the ollamane. Three or four vast fan-leaves on separate stalks, rising far above everything around them \u2014 each fan a deep saturated purple shot through with darker veins and rimmed in a hard electric-blue line that reads almost like light. The stalks are so dark they are nearly black, and glossy. This is the Miasma's signature silhouette, the thing you see first standing in the delta; its fans are cut for roofing and for stilt-architecture. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Quennath_v1",
+  "target_def": "RM_Quennath",
+  "target_original": [
+   "RM_Quennath"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the quennath. Quennath has no trunk of its own. A knotted mass clamped into a thessamor's prop-root cage sends up a slender stem and a crown that is visibly more colourful and healthier than its host's \u2014 because it is drinking water another plant already strained. Its leaves are the deepest green in the canopy, veined violet. It never touches the brine at all; it just takes from something that did. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Thessamor_v1",
+  "target_def": "RM_Thessamor",
+  "target_original": [
+   "RM_Thessamor"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the thessamor. A mangal tree whose trunk never touches the water \u2014 it begins a full metre up, carried on a splayed cage of prop-roots you can see straight through. Below the tide-mark the bark is wet black and polished; above it, grey-green and furred with a white salt rime it has sweated out, which flakes when touched. The crown is broad, low and permanently dripping. This is the stilt-root maze itself: the biome's structural unit, its architecture, and the nursery cage of everything the Grey Sea still keeps. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_CinderCrust_v1",
+  "target_def": "RM_CinderCrust",
+  "target_original": [
+   "RM_CinderCrust"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the cinder crust. A tough, ash-grey crust-fungus that clings to cooling rock at the skirts of the massif, baked hard by radiant heat rather than any light it drinks. Nothing much eats it and nothing much kills it; it is the first thing to grow back after a boiling-rain burst scalds a slope bare. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_Plant_Fireweed_v1",
+  "target_def": "Plant_Fireweed",
+  "target_original": [
+   "Plant_Fireweed"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the fireweed. A low-lying plant that produces clusters of purple flowers. It is common in alpine environments. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_ScorchedStars_v1",
+  "target_def": "RM_ScorchedStars",
+  "target_original": [
+   "RM_ScorchedStars"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the scorched stars. Rounder cacti covered in sharp spines. They are often said to look like a burnt star. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Bladderquill_v1",
+  "target_def": "RM_Bladderquill",
+  "target_original": [
+   "RM_Bladderquill"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the bladderquill. A knee-high fan of stiff translucent quills, each fat at the base with stored water, standing in arcs along the green ring. Cut a quill and it sloshes. It bears the bladder-fruit -- food and drink in one object -- and is the visible promise of the green ring: where bladderquill stands, nobody dies thirsty. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Dewblade_v1",
+  "target_def": "RM_Dewblade",
+  "target_original": [
+   "RM_Dewblade"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the dewblade. Shin-high tufts of flat grey-green blades standing edge-on to the sun and face-on to the wind, each blade tipped with a drip-point that feeds its own root. Whole hillsides of them align like iron filings -- the wind made visible. The grass-analog and graze base of the biome, densest toward true water. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Dewgourd_v1",
+  "target_def": "RM_Dewgourd",
+  "target_original": [
+   "RM_Dewgourd"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the dewgourd. Owner's spec, verbatim: \"a large melon like gourd that takes a long time to grow but is then worth a lot of food and keeps for a long time.\" A single melon-sized gourd per plant, rind pale and waxy as the stone, swelling in the shade of its own little blade-comb, fed by drip. One slow gourd is a season's promise -- the reason a colony can farm here. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Dripfringe_v1",
+  "target_def": "RM_Dripfringe",
+  "target_original": [
+   "RM_Dripfringe"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the dripfringe. A curtain of dark fleshy fingers hanging from overhang lips and cistern mouths, each finger a drip-tip, forever ticking water into the catch-pool below. The comb inverted -- teeth down. A dripfringe curtain over a dark mouth means water below. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Rockfinger_v1",
+  "target_def": "RM_Rockfinger",
+  "target_original": [
+   "RM_Rockfinger"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the rockfinger. A gnarled, wind-stripped hardwood rooted in the rim cracks of the tall stone, branches clawing out over the drop, bark pale as the stone it grips. At this biome's low sun its shadow runs down the rock face and across the ground for many times its height -- you meet the shadow before the tree. Scarce, and hardy the way it has to be. Slow, scattered, precious timber in high stone country; a felled rockfinger is a caravan event. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Salvecomb_v1",
+  "target_def": "RM_Salvecomb",
+  "target_original": [
+   "RM_Salvecomb"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the salvecomb. One waist-high arched frond per plant, serrated along its windward edge like a comb's teeth, silver-downy where it combs the fog. Grows alone in shade lines. Its down mats wick clean condensate; field dressing is the fiction. Rare enough to be worth a walk under the overhangs. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Shadefern_v1",
+  "target_def": "RM_Shadefern",
+  "target_original": [
+   "RM_Shadefern"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the shadefern. A deep-green fern growing only on the shaded face of standing stone, every frond swept to the cold side as if combed, its pale rachis catching what light bounces in. Marks which side of a rock is the cold side at a glance -- the stone-shade fern niche, now donor-free under its own name. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Steamfrond_v1",
+  "target_def": "RM_Steamfrond",
+  "target_original": [
+   "RM_Steamfrond"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the steamfrond. A rosette of mineral-pale fronds spiralled around a breathing vent, rims crusted with white salt bloom. Grows only at the seep oases -- the green eye in open nothing is a steamfrond ring before it is anything else. Its harvest scrapes seep-salt, a preservative and spice with the underworld's taste, and the only source of it. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Verdimoss_v1",
+  "target_def": "RM_Verdimoss",
+  "target_original": [
+   "RM_Verdimoss"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the verdimoss. Cushions of blue-green moss growing in beaded lines along seep cracks -- and over the old machines, where it takes the colour of oxidised bronze. It marks the seep lines and ages the ruins: every relic in the biome is half-mossed, which is its own sacred ambiguity. Zero yield; pure register, cheap density. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapfin_RM_Weepmat_v1",
+  "target_def": "RM_Weepmat",
+  "target_original": [
+   "RM_Weepmat"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the weep-mat. A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. It grows exactly where the stone weeps, so a weep-mat is the wet black streak's green echo -- a face without one is a face that has gone dry. Graze for the sillik. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
