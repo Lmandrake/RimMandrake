@@ -88,6 +88,8 @@
          (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
+    <Compile Include="Superdeep\RM_PitDepthDraw.cs" />
+    <Compile Include="RM_PitDrawMath.cs" />
     <Compile Include="Superdeep\RM_FlowDoors.cs" />
     <Compile Include="RM_PitTrapMath.cs" />
     <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />

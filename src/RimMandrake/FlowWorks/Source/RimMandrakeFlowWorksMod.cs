@@ -145,6 +145,9 @@ namespace RimMandrake.FlowWorks
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
         public static bool spikesEnabled = true;
         public static float spikeDamageMultiplier = 1f;
+        // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
+        public static bool pitDepthDrawOffsetEnabled = true;
+        public static float pitSinkPerLevel = 0.3f;
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors that pass liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
         public static bool sluiceLetsBigThroughEnabled = true;
@@ -286,6 +289,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
+            Scribe_Values.Look(ref pitDepthDrawOffsetEnabled, "pitDepthDrawOffsetEnabled", true);
+            Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.3f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
             Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
@@ -537,6 +542,17 @@ namespace RimMandrake.FlowWorks
             {
                 list.Label("Spike damage multiplier: " + spikeDamageMultiplier.ToString("F2"));
                 spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
+            }
+
+            list.CheckboxLabeled("Pawns sink into dug channels and rise out of them", ref pitDepthDrawOffsetEnabled,
+                "A pawn standing in a dug cell is drawn lower the deeper the cell, and rises smoothly as it "
+              + "walks out, so every depth reads at a glance. Drawing only: it changes nothing about "
+              + "movement, sight or shooting. Off: pawns are drawn at ground level everywhere.");
+            if (pitDepthDrawOffsetEnabled)
+            {
+                list.Label("Sink per depth level (cells): " + pitSinkPerLevel.ToString("F2")
+                  + "  (superdeep: " + (pitSinkPerLevel * 4f).ToString("F2") + ")");
+                pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
             }
 
             list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,

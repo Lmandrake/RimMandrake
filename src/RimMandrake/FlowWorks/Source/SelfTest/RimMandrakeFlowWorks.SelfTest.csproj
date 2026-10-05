@@ -46,6 +46,7 @@
     <Compile Include="..\RM_StockMath.cs" />
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\RM_PitExposureMath.cs" />
+    <Compile Include="..\RM_PitDrawMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
