@@ -360,6 +360,33 @@ namespace RimMandrake.FlowWorks
 			return ReferenceEquals(recipientFluid, donorFluid);
 		}
 
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY ("Tar needs the viscosity most of all"):
+		/// water's <c>FluidDef.ticksPerTile</c>, the unit a fluid's slowness is measured against.</summary>
+		public const int WaterTicksPerTile = 60;
+
+		/// <summary>How many pulses one level of this fluid waits between moves: ticksPerTile / water's,
+		/// rounded, at least 1. Water 60 -> 1 (every pulse), oil 180 -> 3, tar 360 -> 6, slime 480 -> 8.
+		/// PROVISIONAL: the ratio is the defs' own (tar is "6x water"); no owner number yet.</summary>
+		public static int ViscosityStride(int ticksPerTile)
+		{
+			if (ticksPerTile <= WaterTicksPerTile)
+			{
+				return 1;
+			}
+			int stride = (ticksPerTile + WaterTicksPerTile / 2) / WaterTicksPerTile;
+			return stride < 1 ? 1 : stride;
+		}
+
+		/// <summary>Does a donor of this fluid give on pulse number <paramref name="pulse"/>? A viscous
+		/// fluid gives only every <see cref="ViscosityStride"/>-th pulse, so its fill front advances that
+		/// many times slower. Like the no-mix rule this only REMOVES donor candidates, so every move is
+		/// still -1/+1 and the conservation ledger cannot see it.</summary>
+		public static bool FluidMovesThisPulse(long pulse, int ticksPerTile)
+		{
+			int stride = ViscosityStride(ticksPerTile);
+			return stride <= 1 || pulse % stride == 0;
+		}
+
 		/// <summary>FLOWWORKS_SHARED_SOURCE_STALL_1. One pulse component: BFS from
 		/// <paramref name="seed"/> (an excavated cell) through excavated cells,
 		/// collecting adjacent source cells as donors that are never expanded

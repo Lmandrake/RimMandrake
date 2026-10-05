@@ -18,10 +18,9 @@ WIRED, NOT GREEN. Every must-show and cannot-show bar of the VALIDATED walk is c
 component via `shows=`, and every toggle in `suite.toggles` is covered (pitDepthDrawOffsetEnabled has no chain yet). Nothing here has run
 live: every predicate below is UNMEASURED until the baseline run
 (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1). Expected today (plan section 1): the state half of the
-canal/stock bars passes, about two thirds of the visual bars come back NO until art and the
-unbuilt mechanics (viscosity, per-body fluid, depth draw offset, superdeep cover, per-cell
-spikes, sluice doors) land -- a bar for an unbuilt feature fails until it is built, which is
-the bar doing its job.
+canal/stock bars passes; visual bars whose art is still borrowed may come back NO from the
+judge. The mechanics once listed here as unbuilt (viscosity, per-body fluid, depth draw offset,
+superdeep cover, per-cell spikes, sluice doors) are all built as of 2026-10-05.
 
 Site: the plan's trial map (golden save, 8-cell buffers, per-plot manifest) is built by the
 shared driver and preflight (plan sections 3, 6), which do not exist yet. Until then every
@@ -67,6 +66,7 @@ FW_TOGGLES = [
     "swaleEnabled", "pitExposureEnabled",
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
     "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
+    "viscosityEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -470,7 +470,7 @@ def _plot_C2_body(t, x0, z0):
     _limitless_source(t, "T")
     cells = _channel_from(x0 + 10, z0 + 6, 10)
     _dig_run(t, cells, 1)
-    with t.component("tar_front_lags_water", shows=["tar_fill_front_lags_water"]):
+    with t.component("tar_front_lags_water", toggle="viscosityEnabled", shows=["tar_fill_front_lags_water"]):
         _wait(t, PULSE)
         p1 = _frame(t, x0, z0 + 2, 22, 10, "T_pulse1")
         _wait(t, 2 * PULSE)

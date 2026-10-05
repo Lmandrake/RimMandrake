@@ -57,6 +57,12 @@ namespace RimMandrake.FlowWorks
 
 		private int nextPulseTick = -1;
 
+		/// <summary>VISCOSITY (FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7): pulses run on this map, scribed so a viscous
+		/// fluid's every-Nth-pulse cadence survives a save. <see cref="RM_StockMath.FluidMovesThisPulse"/>.</summary>
+		private long pulseCount;
+
+		public long PulseCount => pulseCount;
+
 		/// <summary>PHASE 4. The map's memory of what a cell was before FlowWorks
 		/// touched its base terrain — written the first time a cell is dug, and
 		/// the first time a natural liquid cell is dried by recession.
@@ -336,6 +342,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Collections.Look(ref fluidPalette, "RM_excavationFluidPalette", LookMode.Def);
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
+			Scribe_Values.Look(ref pulseCount, "RM_pulseCount", 0L);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
 			// PHASE 4. Everything persistent the stock model adds is scribed
 			// here: the original-terrain record, the bodies (their sticky
@@ -962,6 +969,7 @@ namespace RimMandrake.FlowWorks
 		/// "physics" — no pressure, no velocity, no simulation.</summary>
 		private void DoPulse()
 		{
+			pulseCount++;
 			// PHASE 4. Rain lands BEFORE the sort, so the water it adds is part
 			// of the "before" the conservation ledger measures and cannot read
 			// as a leak. It is genuine external input, like a limitless source.
@@ -1316,7 +1324,15 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				// LIQUID_BODY_FLUID_IDENTITY_1 step 2: fluids never mix (owner Q3).
-				if (!RM_StockMath.FluidsCompatible(fillGrid[map.cellIndices.CellToIndex(r)] > 0, FluidAt(r), DonorFluid(n, source)))
+				FluidDef donorFluid = DonorFluid(n, source);
+				if (!RM_StockMath.FluidsCompatible(fillGrid[map.cellIndices.CellToIndex(r)] > 0, FluidAt(r), donorFluid))
+				{
+					continue;
+				}
+				// VISCOSITY (Phase 3/7): a viscous donor gives only every Nth pulse (FluidDef.ticksPerTile /
+				// water's), so a tar front lags a water front. Removes candidates only: the ledger is untouched.
+				if (RimMandrakeFlowWorksSettings.viscosityEnabled
+					&& !RM_StockMath.FluidMovesThisPulse(pulseCount, (donorFluid ?? ActiveFluid)?.ticksPerTile ?? RM_StockMath.WaterTicksPerTile))
 				{
 					continue;
 				}
