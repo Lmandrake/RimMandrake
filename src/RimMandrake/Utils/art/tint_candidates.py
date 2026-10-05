@@ -19,6 +19,13 @@ JOBS = {  # id: (res, {facing|None: source sha}, target hue 0-1, min sat, hue-pu
     "RM_Qeshra": ("Things/Plant/RM_Qeshra/RM_Qeshra",
                   {None: "537d854c068db37f83ac4756a1abb71142460b322e8d4b6d5431b7a665bd0086"},
                   34 / 360, 0.0, 1.0),
+    # owner, Stillsand sheet 2026-10-04: "Tint it towards grey please" -> hue None = keep each pixel's hue, pull
+    # saturation toward grey (strength 0.6 = lose 60% of the saturation), luma preserved.
+    "RM_ShadeMite": ("Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+                     {"east": "ae789ac5e4076c2e415db03ab7153c28a1ce7db6cffa066cb70f80488b9b139f",
+                      "north": "9078c35b257ac0b34a6137557ab7c3f0b305d00486631cf499ab436b9d5324d9",
+                      "south": "5ba66fa8e967f738aee8ce21e0e7821a940f4abdd99969e90a42132ea09d4cca"},
+                     None, 0.0, 0.6),
 }
 
 def luma(r, g, b): return 0.299 * r + 0.587 * g + 0.114 * b
@@ -33,7 +40,10 @@ def tint(im, hue, min_sat, k):
             hh, s, v = colorsys.rgb_to_hsv(rf, gf, bf)
             if min_sat:  # grey source: lift saturation, less in the darkest keyline pixels
                 s = s + (max(s, min_sat * min(1, v * 1.6)) - s) * k
-            hh2 = hue
+            if hue is None:  # desaturate toward grey, keep the pixel's own hue
+                hh2 = hh; s = s * (1 - k)
+            else:
+                hh2 = hue
             nr, ng, nb = colorsys.hsv_to_rgb(hh2, s, v)
             y0, y1 = luma(rf, gf, bf), luma(nr, ng, nb)
             if y1 > 1e-4:
@@ -56,7 +66,7 @@ def main():
                   "kind": "artpipe", "loc": f"_artsrc/{d.name}/{job}.png", "date": L.now(), "job": job,
                   "res": res, "facing": fac or "single", "mask": False,
                   "item": "BIOME_FLORAFAUNA_ART_REVIEW_1", "parent_sha": sha,
-                  "prompt": f"deterministic tint to hue {round(hue*360)} deg, luma preserved (owner note, BlueDesert sheet 2026-10-04)"}
+                  "prompt": (f"deterministic tint to hue {round(hue*360)} deg, luma preserved (owner note, BlueDesert sheet 2026-10-04)" if hue is not None else f"deterministic desaturation toward grey ({k:.0%}), luma preserved (owner note 'Tint it towards grey', Stillsand sheet 2026-10-04)")}
             w.add(ev); out.append((job, nsha[:12]))
     w.flush(); print(out)
 
