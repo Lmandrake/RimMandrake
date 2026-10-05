@@ -13,6 +13,8 @@ namespace RimMandrake.MessyConduit.Hose
     public class Graphic_HoseReel : Graphic_Single
     {
         private Material deployed;
+        /// <summary>State read: the laid-art path this graphic found beside its stored texPath (null when missing).</summary>
+        public string DeployedPath;
 
         public override void Init(GraphicRequest req)
         {
@@ -20,6 +22,7 @@ namespace RimMandrake.MessyConduit.Hose
             int slash = req.path.LastIndexOf('/');
             string p = (slash >= 0 ? req.path.Substring(0, slash + 1) : "") + "Reel_Deployed";
             Texture2D t = ContentFinder<Texture2D>.Get(p, reportFailure: false);
+            if (t != null) DeployedPath = p;
             if (t != null)
                 deployed = MaterialPool.MatFrom(new MaterialRequest(t, req.shader, color) { colorTwo = colorTwo, renderQueue = req.renderQueue });
         }

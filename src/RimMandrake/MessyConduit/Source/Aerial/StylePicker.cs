@@ -33,7 +33,8 @@ namespace RimMandrake.MessyConduit.Aerial
 
         static StylePicker()
         {
-            foreach (string dn in AerialStyles.StyledDefs)
+            // stage 3: the hose reel registers beside the anchors (Hose/HoseStyles.cs)
+            foreach (string dn in System.Linq.Enumerable.Concat(AerialStyles.StyledDefs, Hose.HoseStyles.StyledDefs))
             {
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
                 if (d == null) { Missing.Add(dn); continue; }
