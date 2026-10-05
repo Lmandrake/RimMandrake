@@ -1,0 +1,106 @@
+{
+ "script": "validation_v2",
+ "mod": "FlowWorks",
+ "mod_hash": "5e61ce27d091d85ca363f5841ca0b3f107019542d090690a151ddb6256d3bac4",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.flowworks"
+  ],
+  "running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
+  "assembly_sha256": "9547149cb522e5186ea577e75c09d5ad3237c72fd254db8e6140aebcf28992e5",
+  "assembly_matches": 1
+ },
+ "mode": "live",
+ "faults": [],
+ "started": "2026-10-05T14:30:12",
+ "wall_s": 18.0,
+ "ticks_spent": 0,
+ "fresh_map": {
+  "menu": true,
+  "start": true,
+  "programState": "Playing",
+  "biomes": [
+   "TropicalRainforest"
+  ],
+  "wall_s": 14.4
+ },
+ "calls": 28,
+ "aborted": "settings get canalBurnDaysPerLevel failed: {'success': False, 'message': \"No public field 'canalBurnDaysPerLevel' (static or instance) on RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings.\", 'details': {'staticFields': ['bottleDirtyStageEnabled', 'bottleLoopEnabled', 'channelConfinementEnabled', 'depthEngineEnabled', 'digToDepthEnabled', 'drillUnitsPerCycle', 'drillYieldChanceMultiplier', 'edgeSinksEnabled', 'fallDamageEnabled', 'fallDamageMultiplier', 'fillInDisplacementEnabled', 'fillInEnabled', 'flowDoorsSealedFromPitEnabled', 'flowPerPulse', 'ladderPrisonDoorEnabled', 'ladderRequiredToExitEnabled', 'liquidCorrosionEnabled', 'liquidDrillingEnabled', 'liquidIgnitionEnabled', 'minLimitlessBodyCells', 'pitDepthDrawOffsetEnabled', 'pitExposureEnabled', 'pitResistanceLossMultiplier', 'pitSinkPerLevel', 'pitTemperatureCoupling', 'pitWidthBodySizeMultiplier', 'pulseIntervalTicks', 'rainFillPerPulse', 'rainFillsExcavationsEnabled', 'recessionEnabled', 'refillEnabled', 'refillRateMultiplier', 'sluiceLetsBigThroughEnabled', 'sourceBudgetEnabled', 'sourceBudgetMultiplier', 'spikeDamageMultiplier', 'spikesEnabled', 'stickyLimitlessEnabled', 'superdeepCaptureEnabled', 'superdeepCapturesOwnFaction', 'superdeepShootingRuleEnabled', 'swaleEnabled', 'swaleRateMultiplier', 'tankCapacityMultiplier', 'tankLoopEnabled', 'trapSensitivityMultiplier', 'trapTriggerEnabled', 'typedLiquidShoresEnabled'], 'instanceFields': []}, 'operation': {'OperationId': 'op_33800fa426d447029782519ada87c822', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-05T21:30:30.5662498+00:00', 'CompletedAtUtc': '2026-10-05T21:30:30.6159267+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+ "steps": [
+  {
+   "step": "L_preflight",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 1.96,
+   "calls": 14,
+   "error": "Abort: settings get canalBurnDaysPerLevel failed: {'success': False, 'message': \"No public field 'canalBurnDaysPerLevel' (static or instance) on RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings.\", 'details': {'staticFields': ['bottleDirtyStageEnabled', 'bottleLoopEnabled', 'channelConfinementEnabled', 'depthEngineEnabled', 'digToDepthEnabled', 'drillUnitsPerCycle', 'drillYieldChanceMultiplier', 'edgeSinksEnabled', 'fallDamageEnabled', 'fallDamageMultiplier', 'fillInDisplacementEnabled', 'fillInEnabled', 'flowDoorsSealedFromPitEnabled', 'flowPerPulse', 'ladderPrisonDoorEnabled', 'ladderRequiredToExitEnabled', 'liquidCorrosionEnabled', 'liquidDrillingEnabled', 'liquidIgnitionEnabled', 'minLimitlessBodyCells', 'pitDepthDrawOffsetEnabled', 'pitExposureEnabled', 'pitResistanceLossMultiplier', 'pitSinkPerLevel', 'pitTemperatureCoupling', 'pitWidthBodySizeMultiplier', 'pulseIntervalTicks', 'rainFillPerPulse', 'rainFillsExcavationsEnabled', 'recessionEnabled', 'refillEnabled', 'refillRateMultiplier', 'sluiceLetsBigThroughEnabled', 'sourceBudgetEnabled', 'sourceBudgetMultiplier', 'spikeDamageMultiplier', 'spikesEnabled', 'stickyLimitlessEnabled', 'superdeepCaptureEnabled', 'superdeepCapturesOwnFaction', 'superdeepShootingRuleEnabled', 'swaleEnabled', 'swaleRateMultiplier', 'tankCapacityMultiplier', 'tankLoopEnabled', 'trapSensitivityMultiplier', 'trapTriggerEnabled', 'typedLiquidShoresEnabled'], 'instanceFields': []}, 'operation': {'OperationId': 'op_33800fa426d447029782519ada87c822', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-05T21:30:30.5662498+00:00', 'CompletedAtUtc': '2026-10-05T21:30:30.6159267+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}"
+  }
+ ],
+ "rows": [
+  {
+   "id": "L0_loaded_paused",
+   "status": "PASS",
+   "cls": "",
+   "detail": "programState Playing, ticksGame 1 -> 1 over 1 s"
+  },
+  {
+   "id": "L0_map_250",
+   "status": "PASS",
+   "cls": "",
+   "detail": "map 250x250 biome TropicalRainforest"
+  },
+  {
+   "id": "L1_log_clean",
+   "status": "PASS",
+   "cls": "",
+   "detail": "no FlowWorks error in 19 warn+ entries (base seq 56)"
+  },
+  {
+   "id": "L2_assembly_identity",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "loaded C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll sha 9547149cb522 mvidMatchesFile True; repo sha 5ea39dc01231"
+  },
+  {
+   "id": "L3_defs_live",
+   "status": "PASS",
+   "cls": "",
+   "detail": "live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})"
+  },
+  {
+   "id": "ABORT",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "settings get canalBurnDaysPerLevel failed: {'success': False, 'message': \"No public field 'canalBurnDaysPerLevel' (static or instance) on RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings.\", 'details': {'staticFields': ['bottleDirtyStageEnabled', 'bottleLoopEnabled', 'channelConfinementEnabled', 'depthEngineEnabled', 'digToDepthEnabled', 'drillUnitsPerCycle', 'drillYieldChanceMultiplier', 'edgeSinksEnabled', 'fallDamageEnabled', 'fallDamageMultiplier', 'fillInDisplacementEnabled', 'fillInEnabled', 'flowDoorsSealedFromPitEnabled', 'flowPerPulse', 'ladderPrisonDoorEnabled', 'ladderRequiredToExitEnabled', 'liquidCorrosionEnabled', 'liquidDrillingEnabled', 'liquidIgnitionEnabled', 'minLimitlessBodyCells', 'pitDepthDrawOffsetEnabled', 'pitExposureEnabled', 'pitResistanceLossMultiplier', 'pitSinkPerLevel', 'pitTemperatureCoupling', 'pitWidthBodySizeMultiplier', 'pulseIntervalTicks', 'rainFillPerPulse', 'rainFillsExcavationsEnabled', 'recessionEnabled', 'refillEnabled', 'refillRateMultiplier', 'sluiceLetsBigThroughEnabled', 'sourceBudgetEnabled', 'sourceBudgetMultiplier', 'spikeDamageMultiplier', 'spikesEnabled', 'stickyLimitlessEnabled', 'superdeepCaptureEnabled', 'superdeepCapturesOwnF"
+  },
+  {
+   "id": "Z_settings_restored",
+   "status": "PASS",
+   "cls": "",
+   "detail": "0 touched settings back to shipped defaults"
+  }
+ ],
+ "plan_budget": {
+  "v2_target_ticks": "1,000-2,000 (plan section 10, with flowworks_pulse)",
+  "v2_without_pulse_tool": "3,000-7,300",
+  "old_suite": 112921
+ },
+ "summary": {
+  "PASS": 5,
+  "FAIL": 2,
+  "UNMEASURED": 0,
+  "UNCOVERED": 0,
+  "UNBUILT": 0,
+  "SKIP": 0
+ },
+ "green": false
+}
