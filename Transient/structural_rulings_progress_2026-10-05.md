@@ -43,3 +43,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - SIZE RSW_Zeer: DONE — +50% (bodySize 3->4.5; drawSizes x1.5)
 - SIZE RM_Oommok: DONE — x2 (bodySize 18->36; drawSizes 3/5/7.5 -> 6/10/15)
 - SIZE RSW_Ikee: DONE — x1/3 (bodySize 0.4->0.133; drawSizes 1/1.25/1.5 -> 0.333/0.417/0.5)
+- SIZE RSW_WarWyrm: DONE — +50% (bodySize 15->22.5; drawSizes x1.5)
