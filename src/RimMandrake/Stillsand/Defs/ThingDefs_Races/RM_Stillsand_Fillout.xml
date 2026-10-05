@@ -512,6 +512,8 @@
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <canArriveManhunter>false</canArriveManhunter>
+        <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "it likely needs a corpse-body when killed, just having a swimming form isn't enough."
+         Vanilla 1.6 corpseGraphicData (PawnRenderNode_AnimalPart: drawn when pawn.Dead): the dead duumma is the out-of-sand barrel body, the living one stays the half-buried dome. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -519,6 +521,10 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
         </bodyGraphicData>
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+          <drawSize>0.8</drawSize>
+        </corpseGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -526,6 +532,10 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
         </bodyGraphicData>
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+          <drawSize>1.4</drawSize>
+        </corpseGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -533,6 +543,10 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.9</drawSize>
         </bodyGraphicData>
+        <corpseGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+          <drawSize>1.9</drawSize>
+        </corpseGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>

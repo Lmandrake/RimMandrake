@@ -133,6 +133,10 @@
         <checkIntervalTicks>90</checkIntervalTicks>
       </li>
     </comps>
+    <modExtensions>
+      <!-- Half-buried waiting graphic on sand while still (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandBuriedGraphicExtension" />
+    </modExtensions>
     <race>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <herdAnimal>false</herdAnimal>
@@ -180,6 +184,9 @@
     <combatPower>340</combatPower>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <wildGroupSize>1~1</wildGroupSize>
+        <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "Needs a beneath-sand-waiting image (swimming)."
+         swimmingGraphicData is drawn on sand while still by RM_SandBuriedGraphicExtension (CreatureBehaviors, RM_SandBuriedGraphic.cs);
+         the player sees it because RM_DrumLureSubmersion is now visibleToPlayer (pawns still cannot see or target it). -->
     <lifeStages>
       <li>
         <label>drazzik cub</label>
@@ -187,6 +194,10 @@
           <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <drawSize>1.2</drawSize>
+        </swimmingGraphicData>
       </li>
       <li>
         <label>drazzik juvenile</label>
@@ -198,6 +209,10 @@
             <offset>(0,0,-0.3)</offset>
           </shadowData>
         </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <drawSize>1.85</drawSize>
+        </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -208,6 +223,10 @@
             <offset>(0,0,-0.1)</offset>
           </shadowData>
         </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <drawSize>2.5</drawSize>
+        </swimmingGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>
