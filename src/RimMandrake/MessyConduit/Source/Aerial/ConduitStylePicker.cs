@@ -24,6 +24,8 @@ namespace RimMandrake.MessyConduit.Aerial
     ///   * the build button's menu for conduit (4 looks, and for Modern: each colour, "one colour per run", "random mix")
     ///     and for the switch (4 looks); the designator style getter for these defs in every game mode;
     ///   * the switch drawn in its look, on and off (Building_PowerSwitch.Graphic postfix; legacy switches keep today's art);
+    ///   * the vanilla floor lamp (StandingLamp, art round 5): same menu/getter/copy/Frame guard, NOT a run member (a lamp
+    ///     ends a run); drawn by its ThingStyleDef's own graphic; unstyled (legacy) lamps keep vanilla art;
     ///   * the spawn hook that queues every new run member for the run rule (RM_MapComponent_ConduitRuns);
     ///   * the free "Restyle this run" gizmo on any member;
     ///   * the stage-1 copy-carries-style and Frame guard patches extended to these defs (StyleIndex flags).
@@ -61,6 +63,7 @@ namespace RimMandrake.MessyConduit.Aerial
             StylePicker.IsStyled(null);                              // stage 1's registry and StyleIndex first
             var defs = new List<string>(ConduitStyles.ConduitDefs);
             defs.AddRange(ConduitStyles.SwitchDefs);
+            defs.AddRange(ConduitStyles.LampDefs);
             foreach (string dn in defs)
             {
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
@@ -87,7 +90,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(dn);
                 if (d != null) members.Add(d);
             }
-            foreach (ThingDef d in byDef.Keys) members.Add(d);
+            foreach (ThingDef d in byDef.Keys) if (!ConduitStyles.IsLampDef(d.defName)) members.Add(d);   // a lamp ends a run
             memberList.AddRange(members);
         }
 

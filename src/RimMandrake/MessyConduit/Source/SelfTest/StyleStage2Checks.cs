@@ -29,9 +29,14 @@ namespace RimMandrake.MessyConduit.SelfTest
             var names = ConduitStyles.AllStyleDefNames().ToList();
             bool round = names.All(n => ConduitStyles.TryParseStyleDefName(n, out string d, out string l, out string c) &&
                                         ConduitStyles.StyleDefName(d, l, c) == n);
-            Check(names.Count == 24 && names.Distinct().Count() == 24 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
-                  ConduitStyles.KeysFor("PowerSwitch").Count == 4,
-                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 looks = {names.Count} distinct style defs, each parses back");
+            Check(names.Count == 28 && names.Distinct().Count() == 28 && round && ConduitStyles.KeysFor("PowerConduit").Count == 10 &&
+                  ConduitStyles.KeysFor("PowerSwitch").Count == 4 && ConduitStyles.KeysFor("StandingLamp").Count == 4 &&
+                  names.Contains("StandingLamp_Futuristic"),
+                  $"naming: 2 conduit defs x 10 keys (4 looks + 5 Modern colours + Mix) + switch x 4 + floor lamp x 4 looks = {names.Count} distinct style defs, each parses back");
+            Check(ConduitStyles.IsLampDef("StandingLamp") && !ConduitStyles.IsSwitchDef("StandingLamp") && !ConduitStyles.IsConduitDef("StandingLamp") &&
+                  !ConduitStyles.TryParseStyleDefName("StandingLamp_Modern_Orange", out _, out _, out _),
+                  "lamp (round 5): styled by look only (no Modern colour), and not a switch/conduit so it never joins a run");
+            TapClamp();
             bool rejects = !ConduitStyles.TryParseStyleDefName("PowerSwitch_Modern_Orange", out _, out _, out _) &&
                            !ConduitStyles.TryParseStyleDefName("PowerConduit_Modern_Purple", out _, out _, out _) &&
                            !ConduitStyles.TryParseStyleDefName("RM_AerialMast_Modern", out _, out _, out _) &&
@@ -39,6 +44,26 @@ namespace RimMandrake.MessyConduit.SelfTest
                            !ConduitStyles.TryParseStyleDefName(null, out _, out _, out _) &&
                            !ConduitStyles.TryParseKey("Modern_Multi", out _, out _);
             Check(rejects, "can fail: a switch with a colour, an unknown colour, a pole style, a non-look and the menu-only Multi never parse as stored styles");
+        }
+
+        private static void TapClamp()
+        {
+            const string dir = "RimMandrake/MessyConduit/Aerial/";
+            var paths = AerialStyles.Looks.Select(l => ConduitStyles.TapClampPath(dir, l)).ToList();
+            Check(paths.Distinct().Count() == 4 && paths[0] == dir + "TapClamp" && paths[2] == dir + "Styles/Modern/TapClamp" &&
+                  ConduitStyles.TapClampPath(dir, null) == dir + "TapClamp" && ConduitStyles.TapClampPath(dir, "Gold") == dir + "TapClamp",
+                  "tap clamp (round 5): 4 looks -> 4 distinct arts, Scrapper/none/unknown = the root clamp");
+            bool rule = true; int globalRight = 0, n = 0;
+            foreach (string victim in AerialStyles.Looks.Concat(new string[] { null }))
+                foreach (string def in AerialStyles.Looks)
+                {
+                    string want = victim ?? def;
+                    rule &= ConduitStyles.TapLook(victim, def) == want;
+                    if (def == want) globalRight++;            // a "clamp follows the global setting" rule
+                    n++;
+                }
+            Check(rule, "tap clamp: draws the bitten run's stored look; a legacy (unstyled) victim draws the default look");
+            Check(globalRight < n, $"can fail: drawing the clamp by the global default is right in only {globalRight}/{n} (victim, default) pairs");
         }
 
         // a row of cells: id = x, neighbours = x +- 1 (a straight conduit line)

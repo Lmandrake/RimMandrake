@@ -130,4 +130,59 @@
       <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
     </graphicData>
   </ThingStyleDef>
+
+  <!-- StandingLamp (vanilla floor lamp; art round 5): styled by the same picker, NOT a run member (a lamp ends a run).
+       An unstyled lamp (legacy save, or ideoligion-styled) keeps whatever vanilla draws: nothing reads a default for it. -->
+  <ThingStyleDef>
+    <defName>StandingLamp_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Scrapper/StandingLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+      <shadowData>
+        <volume>(0.3, 0.6, 0.3)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>StandingLamp_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Industrial/StandingLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+      <shadowData>
+        <volume>(0.3, 0.6, 0.3)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>StandingLamp_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Modern/StandingLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+      <shadowData>
+        <volume>(0.3, 0.6, 0.3)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>StandingLamp_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Futuristic/StandingLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+      <shadowData>
+        <volume>(0.3, 0.6, 0.3)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+  </ThingStyleDef>
 </Defs>

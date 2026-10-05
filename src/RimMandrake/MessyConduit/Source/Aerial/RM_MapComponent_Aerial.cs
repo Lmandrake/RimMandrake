@@ -100,8 +100,36 @@ namespace RimMandrake.MessyConduit.Aerial
         /// of the width from the centre) PROVISIONAL, measured from the 128 px art.</summary>
         public const float TapSize = 1.5f, TapBiteX = -0.40f;
         public int lastTapDraws, tapSparks;
-        private static Material tapMat;
-        private static bool tapMatTried;
+        /// <summary>Clamp material per look (art round 5: Aerial/Styles/&lt;Look&gt;/TapClamp, Scrapper = root), null = art missing.</summary>
+        private static readonly Dictionary<string, Material> tapMats = new Dictionary<string, Material>();
+        /// <summary>State read: the clamp art path each look resolved to (a look whose own art is missing falls back to root).</summary>
+        public static readonly Dictionary<string, string> TapPaths = new Dictionary<string, string>();
+
+        /// <summary>The look a clamp draws in: the look of the run member it bites (legacy / none = the default look).</summary>
+        public static string TapLookOf(CompPowerTap t)
+        {
+            t.VictimNet(out Thing v);
+            return ConduitStyles.TapLook(v == null ? null : ConduitStylePicker.RawLook(v), StylePicker.DefaultLook);
+        }
+
+        public static Material TapMat(string look)
+        {
+            if (look == null) look = "Scrapper";
+            if (tapMats.TryGetValue(look, out Material m)) return m;
+            string path = ConduitStyles.TapClampPath(AerialMaterials.AerialDir, look);
+            Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+            if (tex == null && look != "Scrapper")
+            {
+                Log.WarningOnce("[MessyConduit] tap clamp art missing for " + look + " (" + path + "): drawing the root clamp", path.GetHashCode());
+                path = ConduitStyles.TapClampPath(AerialMaterials.AerialDir, null);
+                tex = ContentFinder<Texture2D>.Get(path, false);
+            }
+            // above every cord material (strands 3000, plugs 3001, wall faces 3002): the clamp sits ON the meeting cables
+            m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = Mathf.Max(3004, CordMaterials.FaceQueue + 2) });
+            tapMats[look] = m;
+            TapPaths[look] = m == null ? null : path;
+            return m;
+        }
 
         public static bool TapBite(CompPowerTap t, out Vector3 bite, out Vector3 centre, out float angle)
         {
@@ -122,18 +150,12 @@ namespace RimMandrake.MessyConduit.Aerial
         private void DrawTaps(CellRect view)
         {
             lastTapDraws = 0;
-            if (!tapMatTried)
-            {
-                tapMatTried = true;
-                Texture2D tex = ContentFinder<Texture2D>.Get(AerialMaterials.AerialDir + "TapClamp", false);
-                // above every cord material (strands 3000, plugs 3001, wall faces 3002): the clamp sits ON the meeting cables
-                if (tex != null) tapMat = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = Mathf.Max(3004, CordMaterials.FaceQueue + 2) });
-            }
-            if (tapMat == null) return;
             float y = AltitudeLayer.BuildingOnTop.AltitudeFor();
             foreach (CompPowerTap t in Taps)
             {
                 if (!view.Contains(t.parent.Position)) continue;
+                Material tapMat = TapMat(TapLookOf(t));
+                if (tapMat == null) continue;
                 TapBite(t, out _, out Vector3 c, out float ang);
                 c.y = y;
                 Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(c, Quaternion.AngleAxis(ang, Vector3.up), new Vector3(TapSize, 1f, TapSize)), tapMat, 0);

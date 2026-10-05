@@ -25,6 +25,9 @@ namespace RimMandrake.MessyConduit.Aerial
         /// <summary>Conduit defs styled in stage 2 (WaterproofConduit inherits the comp from PowerConduit).</summary>
         public static readonly string[] ConduitDefs = { "PowerConduit", "WaterproofConduit" };
         public static readonly string[] SwitchDefs = { "PowerSwitch" };
+        /// <summary>Styled by the same picker (4 looks, build menu, copy, Frame guard) but NOT a run member: a lamp is a
+        /// machine, and machines end a run (design 2.1), so a lamp keeps its own picked look (art round 5, 2026-10-04).</summary>
+        public static readonly string[] LampDefs = { "StandingLamp" };
 
         /// <summary>Modern (extension cord) colours, in CordMaterials' strand order.</summary>
         public static readonly string[] Colours = { "Orange", "Green", "Brown", "Yellow", "Blue" };
@@ -40,6 +43,16 @@ namespace RimMandrake.MessyConduit.Aerial
 
         public static bool IsConduitDef(string d) => d != null && Array.IndexOf(ConduitDefs, d) >= 0;
         public static bool IsSwitchDef(string d) => d != null && Array.IndexOf(SwitchDefs, d) >= 0;
+        public static bool IsLampDef(string d) => d != null && Array.IndexOf(LampDefs, d) >= 0;
+
+        /// <summary>The power-tap clamp's art in a look (texture path under the mod): Scrapper, an unknown look or none =
+        /// the root Aerial/TapClamp; the others Aerial/Styles/&lt;Look&gt;/TapClamp.</summary>
+        public static string TapClampPath(string aerialDir, string look) =>
+            look == null || look == "Scrapper" || !AerialStyles.IsLook(look) ? aerialDir + "TapClamp" : aerialDir + "Styles/" + look + "/TapClamp";
+
+        /// <summary>The clamp's look = the look of the thing it bites (the tapped run's stored look); a tapped thing with no
+        /// stored look (legacy, hidden conduit, no victim) = the default look, the same legacy rule as every run member.</summary>
+        public static string TapLook(string victimRawLook, string defaultLook) => AerialStyles.IsLook(victimRawLook) ? victimRawLook : defaultLook;
         public static bool IsColour(string c) => c != null && Array.IndexOf(Colours, c) >= 0;
 
         // ------------------------------------------------------------------ naming
@@ -70,6 +83,7 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             foreach (string d in ConduitDefs) foreach (string k in KeysFor(d)) yield return d + "_" + k;
             foreach (string d in SwitchDefs) foreach (string k in KeysFor(d)) yield return d + "_" + k;
+            foreach (string d in LampDefs) foreach (string k in KeysFor(d)) yield return d + "_" + k;
         }
 
         /// <summary>Split a key into look and colour (colour null for a plain look). False for anything not a key.</summary>
@@ -93,6 +107,7 @@ namespace RimMandrake.MessyConduit.Aerial
             if (string.IsNullOrEmpty(name)) return false;
             foreach (string d in ConduitDefs) if (TryDef(name, d, ref def, ref look, ref colour)) return true;
             foreach (string d in SwitchDefs) if (TryDef(name, d, ref def, ref look, ref colour)) return true;
+            foreach (string d in LampDefs) if (TryDef(name, d, ref def, ref look, ref colour)) return true;
             return false;
         }
 

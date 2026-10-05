@@ -24,4 +24,15 @@
       </value>
     </nomatch>
   </Operation>
+  <!-- StandingLamp: vanilla already lists CompProperties_Styleable (Ideology lamp styles), so this normally adds nothing;
+       kept so a mod that stripped it does not leave the lamp's picked look unsaved. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="StandingLamp"]/comps/li[@Class="CompProperties_Styleable"]</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="StandingLamp"]/comps</xpath>
+      <value>
+        <li Class="CompProperties_Styleable" />
+      </value>
+    </nomatch>
+  </Operation>
 </Patch>
