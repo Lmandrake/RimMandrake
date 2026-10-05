@@ -953,6 +953,23 @@ def toggle_liquid_ignition(t):
             _wait(t, 5 * PULSE)
 
 
+@suite.chain("all_off_still_digs")
+def all_off_still_digs(t):
+    """FLOWWORKS_NORTHSTAR_SHIP_1 / MOD_OPTIONS ruling 2026-09-12: with EVERY FlowWorks toggle off the mod still
+    digs dry channels. A D=1 run dug beside a pond stays D=1 and dry across pulses (no flow, no rain, no fire)."""
+    import contextlib
+    x0, z0 = _prep_plot(t, "T")
+    px, pz = _limited_pond(t, "T")
+    cells = _channel_from(px + 5, pz + 2, 4)
+    with contextlib.ExitStack() as stack:
+        for f in FW_TOGGLES + PITS_TOGGLES:
+            stack.enter_context(_setting(t, f, False))
+        with t.component("all_off_digs_dry_channel"):
+            _dig_run(t, cells, 1)
+            _wait(t, 4 * PULSE)
+            _expect_state(t, cells, depth=1, fill=0, what="all-off dug")
+
+
 @suite.chain("toggle_canal_fire")
 def toggle_canal_fire(t):
     """Phase 6 toggle: OFF, a lit tar channel takes no flame; ON, the same light takes."""
