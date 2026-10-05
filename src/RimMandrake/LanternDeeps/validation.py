@@ -200,22 +200,34 @@ def defs_resolve_as_documented(t):
     with t.component("scatter_genstepdef_and_global_patch", beyond_toggle=True):
         _genstep_read(t, EMERGENCE_SCATTER, 320, "RM_LanternDeepEmergence_Scatter.xml", "GenStep_ScatterCavePortal")
         base = t.bridge_call("jawa/get_defs",
-                             defs="MapGeneratorDef/MapCommonBase",
+                             defs="MapGeneratorDef/Base_Player",  # MapCommonBase is Abstract (not a loaded def); its child inherits the patched genSteps
                              fields="genSteps", deep=True)
         if EMERGENCE_SCATTER not in str(base):
             raise ExpectationFailed(
-                "MapCommonBase.genSteps does not contain %s -- the global "
+                "Base_Player.genSteps (inherits MapCommonBase) does not contain %s -- the global "
                 "PatchOperationAdd may not have landed: %r"
                 % (EMERGENCE_SCATTER, base))
         if MINESHAFT_SCATTER not in str(base):
             raise ExpectationFailed(
-                "MapCommonBase.genSteps does not contain %s -- the mineshaft "
+                "Base_Player.genSteps (inherits MapCommonBase) does not contain %s -- the mineshaft "
                 "entrance's own global PatchOperationAdd may not have "
                 "landed: %r" % (MINESHAFT_SCATTER, base))
         t.screenshot()
 
     with t.component("mineshaft_genstepdef_fields", beyond_toggle=True):
         _genstep_read(t, MINESHAFT_SCATTER, 321, "RM_LanternDeepMineshaft_Scatter.xml", "GenStep_ScatterMineshaftPortal")
+
+_NEEDS_DEEP = ("only on a Deep", "no colony battery")
+
+
+def _deep_prereq_missing(t, res):
+    """The Proof* methods answer one of these strings when the CURRENT map is not a Lantern Deep (or has no colony
+    battery). No bridge tool generates a pocket map, so that is UNMEASURED with its reason, never a FAIL of the mod."""
+    if t._guard() and any(n in res for n in _NEEDS_DEEP):
+        t.upstream_reason = "UNMEASURED: the proof needs a Lantern Deep pocket map as the current map (no bridge tool opens one): %s" % res[:120]
+        t.upstream_failed = True
+        return True
+    return False
 
 
 @suite.chain("master_toggle_gates_before_per_mechanic")
@@ -510,11 +522,15 @@ def creep_cleavers(t):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("creep_stalks_and_engulfs", toggle="creepEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCreep", args="10") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"before=([\d.]+) after=([\d.]+) engulf=([\d.]+)", res)
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1)) or float(m.group(3)) <= 0):
             raise ExpectationFailed("the Creep did not close on and engulf the downed body: %r" % res)
     with t.component("cleaver_splits_when_struck", toggle="cleavingEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCleave", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"before=(\d+) after=(\d+)", res)
         if t._guard() and (not m or int(m.group(2)) <= int(m.group(1))):
             raise ExpectationFailed("no shard walked away: %r" % res)
@@ -528,11 +544,15 @@ def aurora_collapse(t):
     AP = "RimMandrake.LanternDeeps.RM_AuroraCollapseProof"
     with t.component("aurora_brightens_lanternstone", toggle="auroraEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofAurora", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"glow=([\d.]+)->([\d.]+)", res)
         if t._guard() and ("active=True" not in res or not m or float(m.group(2)) <= float(m.group(1))):
             raise ExpectationFailed("aurora did not start or did not brighten lanternstone: %r" % res)
     with t.component("roof_warns_before_it_falls", toggle="collapseWarningsEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofCollapse", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         if t._guard() and "heldForWarning=True" not in res:
             raise ExpectationFailed("the roof was not held for its warning: %r" % res)
 
@@ -552,15 +572,21 @@ def hydrocarbon_wave2(t):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("slick_lays_fuel", toggle="slickTrailEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSlick", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"moved=(\d+) fuelCells=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0 or int(m.group(2)) == 0):
             raise ExpectationFailed("no fuel trail: %r" % res)
     with t.component("blinker_flashes", toggle="blinkerFlashEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofBlinker", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         if t._guard() and "flare=True" not in res:
             raise ExpectationFailed("no flash: %r" % res)
     with t.component("knocker_hears_failing_roof", toggle="knockerAlarmEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofKnocker", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"heard=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0):
             raise ExpectationFailed("the knocker heard nothing: %r" % res)
@@ -582,19 +608,27 @@ def hydrocarbon_wave3(t):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("hush_hides_and_lunges", toggle="hushHidingEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofHush", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         if t._guard() and ("hidden=True" not in res or "second=lunge" not in res):
             raise ExpectationFailed("hush did not hide and lunge: %r" % res)
     with t.component("sippers_drink_light", toggle="sipperDrinkingEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSipper", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
             raise ExpectationFailed("the light did not shrink: %r" % res)
     with t.component("tapper_drains_battery", toggle="tapperEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofTapper", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
         if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
             raise ExpectationFailed("the battery did not drain: %r" % res)
     with t.component("pooler_smothers_fire", toggle="poolerSmotherEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofPooler", args="go") or {}).get("result", ""))
+        if _deep_prereq_missing(t, res):
+            return
         if t._guard() and ("fireLeft=False" not in res or "flameHurt=False" not in res):
             raise ExpectationFailed("pooler did not put the fire out unhurt: %r" % res)
