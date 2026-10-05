@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Jamel
@@ -12,11 +12,22 @@
 The jamels were a yellow-skinned, quadrupedal creature native to the planet Utapau. The creature had tall, spindly legs, a large hump on their backs, and a drawn-out face with a red snout. Jamels were used as beasts of burden by the Utapau Amani. During the Clone Wars, Jedi Master Obi-Wan Kenobi and Jedi Knight Anakin Skywalker found a jamel near an Amani village during their mission to Utapau and used it to pull a cart carrying a massive kyber crystal.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Three CANON images: a low-res Clone Wars in-production render (infobox) and two Pat Presley concept sheets, which are labelled "Jamul" (an alternate spelling of the same Utapau beast). The concept sheets are the best evidence; they include a trooper silhouette for scale.
+- **Silhouette**: a tall, long-legged, long-necked quadruped with a big hump or sail-like arch over the shoulders and back, a heavy tapering tail as long as the body held low and straight out behind (like a sauropod/hadrosaur rather than a camel), and a long forward-hung neck carrying a small head low. Dinosaur-like, a bit like a stooped oviraptor/therizinosaur.
+- **Colour/pattern**: golden-yellow to ochre hide; the back hump and flanks carry darker orange-brown vertical stripes/banding, with blue-grey-green mottling over the hump; pale cream belly and underside of the tail; reddish-brown, pale-edged feet.
+- **Head**: a drawn-out, narrow head with a pinkish-red snout/muzzle and red face cap, a pale blue-grey patch around a large round, pale pupilled eye, small ear nubs or horn buds on the brow, and neck flaps/frill behind the head (a note on the sheet says the flaps should move).
+- **Legs/feet**: tall, spindly pillar legs with visible knees, two-three splayed toed feet in dark red-brown with small claws or hooves; front legs a bit shorter than the hind legs, so the back rises toward the hump.
+- **Harness (concept sheet)**: a leather saddle-pad on the hump, a crossbar yoke/shaft rig to pull a cart; the rig is not part of the animal.
+- **Size**: in the concept sheet, the back rises about a head or so above a clone trooper's height.
+- **Disagreement with prose**: prose says "large hump on their backs"; sheets show a broad stripy ridge/hump rather than a camel-style fat lump, consistent enough. The "red snout" is confirmed.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Tall spindly legs with visible knees; hump/arched back; long drawn-out neck with a small head carried low
+- [ ] Golden-yellow ochre hide with darker orange-brown vertical stripes over the back, blue-grey mottling over the hump
+- [ ] Pinkish-red snout and head cap, pale blue-grey ring around a large round eye, small brow nubs, neck flaps
+- [ ] Long heavy tapering tail carried low behind, pale underside
+- [ ] Splayed dark reddish-brown clawed toed feet
+- [ ] Rises above a person's head height
 
 ## Engine limits
 not yet assessed

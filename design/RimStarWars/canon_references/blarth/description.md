@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Blarth
@@ -23,11 +23,23 @@ Pet blarths were notorious for leaving drool puddles wherever they roamed in Gun
 The female blarth gave birth to three to four pups once or twice a year. Mother blarths liked to lick her young to soothe them and initiate hormone production.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+All three images are LEGENDS continuity (Blarth/Legends page); no canon-page image exists. They agree closely.
+- **Body**: a stout, rotund, low-slung amphibian-like quadruped, roughly seal/hippo-pup in bulk, with a barrel torso and short stubby legs. Front legs short with small clawed/toed feet; hind end tapers into a long, thick tail.
+- **Colour**: pale powder blue-grey hide, lighter cream-white on belly and throat, soft warm peach-orange highlights; smooth, wrinkled, rubbery skin with no fur or scales.
+- **Markings**: scattered small circular whorl/spiral dimples (concentric ring pores) over the back and flanks.
+- **Head**: wide, flat, toad-like head with a very broad mouth, small pointed teeth, one or two curved tusk-like lower teeth, small half-closed eyes, ridged/brow-wrinkled skin above, short horn nubs near the eyes.
+- **Tongue/drool**: a huge flat pink-salmon tongue lolling out of the mouth, with drool strands dripping (the infobox piece, the pup piece, and the comic frame all show it).
+- **Tail**: very long (about body length or more), thin-ish, tapering, prehensile, ending in tiny finger-like nubs (clearly drawn in the infobox piece). Carried trailing or curled up.
+- **Size cue**: in the comic frame it is about knee-to-waist height of a humanoid child and sprawls over a body length; pups are small round blobs with the same pale blue colouring.
+- Captioned: infobox plate (side view), a Coruscant pet comic frame (lower-detail, whiter hide), and a mother with pups wearing a ribbed collar (pet context). Prose says amphibian that can stay underwater two hours; images show nothing aquatic but the build.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Rotund barrel body, short stubby legs, low to the ground
+- [ ] Smooth pale blue-grey hide with a lighter cream belly, no fur
+- [ ] Small circular whorl/spiral dimples scattered over back and flanks
+- [ ] Very wide toad-like mouth with a big flat pink tongue lolling out and drool
+- [ ] One or two curved lower tusks/teeth and small half-lidded eyes
+- [ ] Long tapering prehensile tail ending in tiny finger-like nubs
 
 ## Engine limits
 not yet assessed

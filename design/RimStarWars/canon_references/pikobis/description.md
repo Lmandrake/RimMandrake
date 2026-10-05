@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Pikobi
@@ -23,11 +23,20 @@ These creatures possessed large, webbed feet which they used to create shadowy a
 The Pikobi traveled in pairs or groups of five to six. The mother would lay its eggs in the sand and upon birth, the young could already walk and swim.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Three images: one CANON (a low-res Episode I film still), two LEGENDS (a CG infobox render and a painted plate of two pikobis fishing). They agree strongly.
+- **Silhouette**: a slim, long-legged, wading-bird-sized, reptilian biped (a small compsognathus/ornithomimid shape) with a horizontal body, a long thin neck, a very long, thin, whip-like tapering tail held out stiffly behind as a balance, a small head, and a forward-curved beak. It stands on two long legs; the forearms are short and thin with clawed fingers, held tucked against the chest.
+- **Beak/head**: a long, thin, slightly down-curved, pointed beak, like an ibis or curlew, tan-orange (the prose says lined with sharp teeth, none visible in the images); a small round head with a large pale grey-blue eye, a tiny back-swept crest or ear flap behind the eye.
+- **Colour/pattern**: olive-khaki to tan-brown, with finely striated pale-cream striping along the neck, shoulders and thighs; yellowish cream belly and underside of throat; in the plate, mottled brown and cream. The tail turns blue-grey toward the tip. In the film still, the chest and neck are lighter green-cream with a blue-green tail and blue eyes.
+- **Feet**: long toes, slender, with sharp curved claws, large webbed feet are drawn in the plate (the foot is long, spread and flattened like a wading foot) but not clearly in the CG render.
+- **Pose**: in the plate, one stands upright and the other bends deep with the beak down at the water surface and the arms flung out for balance, tail up.
+- **Size**: about 1 m long from beak to tail tip, small, shown at about waist height of a Gungan only in the film still (a large Gungan or beast looms beside it); no explicit scale elsewhere, so treat it as roughly heron-sized.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Slender two-legged, long-necked wader with horizontal body and a very long thin whip-like tail
+- [ ] Long thin down-curved pointed beak, small round head with a large pale eye
+- [ ] Olive-tan skin with fine cream striations on neck, shoulders and thighs, cream underside; tail blue-grey toward the tip
+- [ ] Short thin forelimbs with clawed fingers held to the chest
+- [ ] Long spindly legs, long-toed feet with sharp claws (wading feet in the plate)
 
 ## Engine limits
 not yet assessed

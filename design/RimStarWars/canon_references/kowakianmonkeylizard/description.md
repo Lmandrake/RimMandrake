@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Kowakian_monkey-lizard
@@ -23,11 +23,22 @@ Kowakian monkey-lizards were rarely found off their homeworld, although it was n
 Each monkey-lizard had tufts of thick hair growing around their neck, resembling a ruff, on the tops of their heads, and at corners of their jawbones. Some also had a tuft at the tip of the tai …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images: two CANON (a detailed CG infobox render, and a small game portrait of a red individual named Pilf Mukmuk) and two LEGENDS (an infobox plate and a Unknown Aliens-style painting, plus a concept painting). Canon and Legends agree on the body plan; the canon text adds feathers, which only the CG render and game portrait show.
+- **Silhouette**: a thin-limbed, pot-bellied biped about 70 cm tall (Legends text), stooped or perched, long stalk arms and legs, narrow shoulders, a round belly, a thin whip-like tail that curls up behind (prehensile in poses).
+- **Head**: small and triangular, dominated by a wide, hooked, glossy dark-brown or black parrot-like beak, no nose, a wide red-lipped mouth that opens to a toothless pink-red interior, small close-set yellow eyes, a pale white/grey striped or scaly face mask in the canon render.
+- **Ears**: two enormous, floppy, backward-sweeping ears, narrowing to thin curved points, often longer than the head (clearly larger than the face in every image), yellow on the inside with a blue-grey edge in the CG render, sometimes torn or pierced.
+- **Colour, canon CG**: blue-grey feathery/hairy ruff (a bib of fluffy blue plumage around the shoulders), a bright orange crest tuft on the top of the head, a bright yellow-gold belly and thighs, yellow-edged blue-grey forearms and a blue-grey tail; blue-grey toes with long dark red-brown claws. The canon text lists red, blue, yellow, brown, green, purple and orange individuals, so colour varies by individual.
+- **Colour, Legends**: warm tan-brown skin with a dark brown ruff of hair at the neck and jaw corners and a ratty tuft on the head (infobox, vine-swinging pose), or a pale green-tan body with a rusty hair ruff and long dark ear rims (concept). The game portrait is a rust-red individual with a green ruff and a green crest.
+- **Hands and feet**: long spindly fingers and long, three-toed (plus a hind toe) bird-like feet ending in sharp curved claws.
+- **Disagreement**: the Legends images show furry hair, not feathers; the canon render shows feathery blue plumage and a hair-like crest. The beak, ears, belly and spindly build are common to all.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Spindly stick limbs, pot belly, small stooped biped (about 70 cm), long thin curling tail
+- [ ] Small triangular head with a wide hooked dark parrot beak, red lips, close-set yellow eyes
+- [ ] Two huge floppy backward-sweeping ears, thin and pointed
+- [ ] A ruff of fluffy feathers/hair around the neck and shoulders and a tuft or crest on top of the head
+- [ ] Long clawed bird-like toes and spindly clawed fingers
+- [ ] Body colour as a distinct individual variant (canon CG: blue ruff, yellow belly and thighs, orange crest)
 
 ## Engine limits
 not yet assessed

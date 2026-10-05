@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Gutkurr
@@ -25,11 +25,21 @@ Always on the hunt for their next meal, they were surprisingly intelligent creat
 Young gutkurrs were referred as gutkurr chicks. They were small enougth that could wonder around Ryloth markets, though parents warned their children to not touch them.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+All four images are Clone Wars CGI (two on the CANON page, two on the Legends page; the Legends frames show the same design). They agree, and they disagree with the Legends prose in two places (see end).
+- **Silhouette**: a hunched, bipedal-leaning predator that also drops onto its forelimbs; a big domed, rounded shell on the back, a heavy low head slung forward beneath the shell front, long strong hind legs, short thin forearms ending in hooks. In the Legends frame it stands crouched over a prone trooper, shell above shoulder height and head near the ground.
+- **Carapace**: a smooth, scute-plated, tortoise-like or beetle-like dome over the back and shoulders, rust-orange to tan-brown with weathered pale patches/stains, edges flaring out like a skirt; rows of cream-coloured thorn spikes in lines down the back and the sides of the shell, with a spiny ridge toward the rear/neck.
+- **Underparts/limbs**: lighter yellow-orange belly and thighs; darker maroon-brown forearms and lower legs; legs jointed insect-like with segmented plated lower limbs ending in single large curved black-brown talon hooks. A segmented, ridged, tapering tail with a tip hook in the infobox render.
+- **Head**: a wide, flat armoured head with a blunt mask-plate brow, deep-set RED eyes, two long curved front fangs/mandible hooks flanking the nose, a wide jaw lined with rows of small pale teeth, a dark red mouth interior.
+- **Size**: clearly larger than a clone trooper in the frames; the prose gives about 2 m high.
+- **Disagreement**: the prose says arms are short and thin (images: yes, thin hooked forelimbs). The prose says "long hind legs, fast" (images: yes). Nothing contradicts. Young gutkurrs (chicks) are not shown anywhere; in frame 3 (small ones on prey) the small individuals in the background look like juveniles or smaller adults at a distance and cannot be confirmed.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Hunched posture, long strong hind legs, short thin forearms ending in large curved black talons
+- [ ] Domed rust-orange/tan carapace with weathered pale patches and rows of cream thorn spikes down the back
+- [ ] Lighter yellow-orange belly/thighs, darker maroon-brown limbs
+- [ ] Flat armoured head with red eyes, two long curved front fangs and a wide toothed jaw
+- [ ] Segmented, ridged, tapering tail
+- [ ] Larger than a human (about 2 m tall)
 
 ## Engine limits
 not yet assessed

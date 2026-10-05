@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Kwi
@@ -14,11 +14,20 @@ The Kwi were the degenerated descendants of the saurian Kwa&mdash;Dathomir's fir
 **Biology and appearance** The Kwi were large, bipedal lizards with powerful hind legs and tiny forelimbs. They had light blue flesh covered in cobalt-blue scales. The scales located at the top of their skulls had an iridescence that tended to be almost lavender in hue. The face of a Kwi featured two bloodred eyes, a mouth full of black teeth shaped like spades and a long, black tongue. Thanks to their conformation, they could race at incredible speed. To put themselves into a running position, the Kwi would lower their heads and lift their tails out straight behind them to act as a counterbalance. An average member of the Kwi species was three meters tall and four meters long.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Both images are CANON comic art (Star Wars Republic), rendered in bright flat blue; they agree with the prose.
+- **Silhouette**: a large theropod-style biped, a tyrannosaur-like shape: heavy deep body, powerful long hind legs, tiny forelimbs, a thick tail carried out straight and level behind as a counterbalance, and a thick neck with the head carried low and forward in the running pose.
+- **Colour/pattern**: saturated cobalt/cyan blue skin (the prose: light blue flesh, cobalt scales) with black tiger-like transverse stripes over the neck, back, flanks, tail and thighs. Frame 1 shows stripes banding the whole body, tail tip tapering to a point. The prose's lavender iridescence on the skull is NOT visible in the flat colouring.
+- **Head**: long, boxy crocodile-like snout with a heavy brow, a slit-pupil yellow-pale eye (prose says blood-red; the images show a pale yellow eye with a dark pupil, so the images and prose disagree), and rows of widely spaced pale spade-like teeth along the jaw line (prose: black teeth; the art shows pale grey-white teeth).
+- **Hands/feet**: forearms are short but not tiny, ending in three hooked pale-grey claws; hind feet have three forward toes with big pale curved claws.
+- **Size**: large; a big predator; no scale reference in the frames.
+- **Disagreement**: eye colour (red in text, yellow in art) and tooth colour (black in text, pale in art); trust the images.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Heavy theropod biped with long strong hind legs, small clawed forearms, thick straight tail as counterbalance
+- [ ] Bright cobalt/cyan-blue skin with dark black tiger-like stripes over the body, neck and tail
+- [ ] Long boxy crocodilian head with a heavy brow, a yellow-pale slit-pupil eye and a row of pale spade teeth
+- [ ] Hooked pale-grey claws on all limbs
+- [ ] Head carried low and forward in a running posture
 
 ## Engine limits
 not yet assessed

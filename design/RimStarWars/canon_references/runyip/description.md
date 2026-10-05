@@ -4,7 +4,7 @@
 
 > Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
 > and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
+> from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Runyip
@@ -23,11 +23,21 @@ Yavin 4 runyips were a different species. They had claws on their toes which the
 Natural predators of the Yavin 4 runyip include a number of species, including piranha beetles (in which its only escape is to dive underwater), as well as aquatic gundarks.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images: CANON (a Battlefront II concept/map illustration labelled RUNYIP, and a motion-blurred game still of one running through water), LEGENDS (a painted plate of the Yavin 4 runyip, and a black-and-white drawing of a DIFFERENT species, the Tran Mariel runyip). The Legends text itself says two unrelated species share the name; use the Yavin 4 (canon) animal.
+- **Silhouette**: a squat, heavy, rhino/tapir-like quadruped with a huge barrel body, a high rounded hump over the shoulders and a sagging belly, short thick legs with broad padded feet, and a hanging tail with a tuft at the end. The head is held low and nose-down while rooting, long, pig-like or tapir-like.
+- **Pattern/colour**: a whitish-cream coat with bold black-brown (dark brown in the plate) tiger- or zebra-like vertical stripes over the back, flanks and rear legs; the shoulder and neck are a solid darker patch; creamy belly and underside; legs below the knees are darkest. The motion-blur game still shows pale tan with dark banding at the rump and tail.
+- **Head**: a long, flexible, pig-like snout, a down-turned wrinkled snout with a thick lower lip and a pale muzzle; small eyes; two very long, tall, branching ANTLERS rise straight up from the back of the skull like a stag's, flat and palmate with a few short tines, as tall as the head and neck combined, pale brown in the plate (the text says shed annually).
+- **Feet**: broad feet with several toes, and a claw on the front toes (text); the plate shows pale claws on the foreleg.
+- **Tail**: a long tapering tail with a tuft of hair at the tip hanging to the ground.
+- **Disagreement**: the Tran Mariel runyip (Legends 2) has long ears, a long bifurcated trunk and no stripes, so do NOT use it; the Yavin 4 text 'brown and white fur' matches the striped images.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Squat barrel-bodied rhino-tapir shape, high shoulder, sagging belly, short thick legs, head held low
+- [ ] Whitish coat with bold dark brown/black vertical stripes over back, flanks and rump; dark solid shoulder
+- [ ] Long flexible down-turned snout with thick lip
+- [ ] Two tall branching antlers rising straight up from the back of the skull
+- [ ] Broad padded multi-toed feet with front claws
+- [ ] Long tail with a tuft at the tip
 
 ## Engine limits
 not yet assessed
