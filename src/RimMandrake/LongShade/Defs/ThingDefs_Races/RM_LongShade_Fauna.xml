@@ -517,6 +517,7 @@
 
 	<ThingDef ParentName="AnimalThingBase">
 		<!-- Alpha Animals AA_MammothWorm -> RM_Ulgga. Body AA_WormWithArmorAndTusks substituted with vanilla Snake (HeadAttackTool on SnakeHead, group tag 'Mouth' on SnakeMouth - confirmed by reading the BodyDef, not guessed). ToolCapacityDefs AA_SiegeBlunt->Blunt and AA_ExtraDamageMechanoidsTusk->Poke (donor's anti-mechanoid bonus-damage mechanic dropped with it); TuskAttackTool group remapped -> Mouth (the only group Snake actually carries besides HeadAttackTool). Dropped: AlphaBehavioursAndEvents.CompProperties_GraphicsRefresher. CompProperties_EggLayer (vanilla) kept, pointed at this batch's own ported eggs. -->
+		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04): moved to the Stillsand and made twice as big (baseBodySize and every lifestage drawSize x2); RSW_Ulgga retired onto this def. -->
 		<defName>RM_Ulgga</defName>
 		<label>ulgga</label>
 		<description>An extremely large, genetically engineered worm, armored and tusked but strangely peaceful for its size. Old records suggest it was once the worker caste of an artificial ecosystem, now running wild and self-sustaining out on the open sand.</description>
@@ -560,7 +561,7 @@
 			<body>Snake</body>
 			<herdAnimal>false</herdAnimal>
 			<predator>false</predator>
-			<baseBodySize>3.00</baseBodySize>
+			<baseBodySize>6</baseBodySize>
 			<baseHealthScale>3.0</baseHealthScale>
 			<baseHungerRate>0.535</baseHungerRate>
 			<leatherDef>RM_BlackChitin</leatherDef>
@@ -592,19 +593,19 @@
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
-					<drawSize>1.8</drawSize>
+					<drawSize>3.6</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
-					<drawSize>3.2</drawSize>
+					<drawSize>6.4</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ulgga/RM_Ulgga</texPath>
-					<drawSize>4.1</drawSize>
+					<drawSize>8.2</drawSize>
 				</bodyGraphicData>
 			</li>
 		</lifeStages>

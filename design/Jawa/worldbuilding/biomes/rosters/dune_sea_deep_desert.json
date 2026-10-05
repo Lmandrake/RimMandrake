@@ -757,6 +757,12 @@
       "commonality": 0,
       "def": "RM_Vaalok",
       "law": "Free-tier pack giant (Q11), allowedPackAnimals only, so the standalone mod generates traders. BUILT in STILLSAND_BEDAZZLE_CONTENT_1 (built 2026-10-01); art placeholder until the queued render lands."
+    },
+    {
+      "action": "add",
+      "commonality": 0.015,
+      "def": "RM_Ulgga",
+      "law": "LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 Long Shade sheet: \"Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.\" RSW_Ulgga retired onto RM_Ulgga."
     }
   ],
   "fish": {
