@@ -310,6 +310,10 @@ namespace RimMandrake.CreatureBehaviors
     //      already laid stay saved and reappear when it is turned back on).
     //      trackPoolCap — records kept per map (eviction: small animals first,
     //      then oldest; recent humanlike and large prints kept). trackPrintOpacity.
+    //  47. sandBuriedGraphicEnabled — RM_SandBuriedGraphic.cs
+    //      (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1). Off: a race carrying
+    //      RM_SandBuriedGraphicExtension draws its ordinary body on sand like any
+    //      vanilla animal; purely visual, no behaviour depends on it.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -409,6 +413,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool mirageEnabled = true;
         public static float mirageBreakChanceMultiplier = 1f;
         public static bool tracksEnabled = true;
+        public static bool sandBuriedGraphicEnabled = true;
         public static int trackPoolCap = RM_TrackPool.DefaultCapacity;
         public static float trackPrintOpacity = 0.7f;
 
@@ -511,6 +516,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref mirageEnabled, "mirageEnabled", true);
             Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
             Scribe_Values.Look(ref tracksEnabled, "tracksEnabled", true);
+            Scribe_Values.Look(ref sandBuriedGraphicEnabled, "sandBuriedGraphicEnabled", true);
             Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
             Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
         }
@@ -900,6 +906,11 @@ namespace RimMandrake.CreatureBehaviors
                 list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
                 sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
             }
+            list.GapLine();
+
+            list.CheckboxLabeled("Half-buried-in-sand graphics", ref sandBuriedGraphicEnabled,
+                "Sand burrowers (thraia, drazzik) draw their half-buried art while resting on loose sand. "
+              + "Off: they draw their ordinary body there. Purely visual.");
             list.GapLine();
 
             list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,

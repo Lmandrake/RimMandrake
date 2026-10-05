@@ -27,7 +27,7 @@
     <isBad>false</isBad>
     <comps>
       <li Class="HediffCompProperties_Invisibility">
-        <visibleToPlayer>false</visibleToPlayer>
+        <visibleToPlayer>true</visibleToPlayer> <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1: the PLAYER sees the half-buried drazzik (owner asked for a beneath-sand-waiting image; "no pawn vanishes without a readable sign"); pawns still cannot see or target it (IsPsychologicallyInvisible ignores this flag). -->
         <fadeDurationTicks>30</fadeDurationTicks> <!-- INVENTED, a snappy submerge/surface, matches RM_AquaticAmbushInvisibility -->
         <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks> <!-- INVENTED, ~5s forced-visible after taking damage -->
         <affectedByDisruptor>false</affectedByDisruptor>
