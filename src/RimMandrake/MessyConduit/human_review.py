@@ -64,7 +64,7 @@ ROWS = (("A", "Row A - floor cords", ""),
         ("D", "Row D - hose crossings and parallel runs",
          "Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece."),
         ("E", "Row E - power showpieces (north gallery)",
-         "Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, cords through a fogged mountain."),
+         "Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, a span over a hidden stone block."),
         ("F", "Row F - hose mazes (north gallery)",
          "Two routes out of a small maze, then the short one walled off after laying. validation_hose.py owns the pass/fail; this map shows it."),
         ("G", "Row G - challenge configurations (north gallery)",
@@ -135,9 +135,12 @@ def station_list():
        devs=[("Battery", (1, 3), 0, 1.0), ("PowerSwitch", (5, 3), None, None), ("WoodFiredGenerator", (7, 4), None, None),
              ("Heater", (11, 3), None, None), ("StandingLamp", (3, 6), None, None), ("StandingLamp", (10, 0), None, None)])
     st(6, "A", A_X[5], ROW_A, 14, 9, "WALL + ROCK ENTRIES", "a run passing under a steel wall and through a granite block; a branch ending inside the wall",
-       ["where the cord meets the wall it goes into a STUB (a hole/grommet), and comes out the other side",
-        "the rock tunnel has rock holes on both faces, drawn foreshortened (angled like the rock face), not straight down",
-        "the branch ending in the wall is a wall terminal"],
+       ["where the cord meets the wall it goes into a plate mounted ON the wall (round 4): a thin edge-on strip inside a west or "
+        "east face, the whole plate on a south face's lit band, a sliver on a hidden north face; nothing pokes out onto the floor",
+        "the cord meets the plate straight (no hooked curl of cord printed on the plate)",
+        "the rock tunnel has rock holes on both faces, inside the rock, the same way",
+        "the branch ending in the wall is a wall terminal: its loose wire leaves the socket straight out of the wall and lies on "
+        "the floor (on a south face it hangs straight down the face)"],
        ["deconstruct a wall cell: the cord re-plans across the gap", "mine the granite: the tunnel opens"],
        conduit=line(1, 11, 3) + [(2, 4), (2, 5), (3, 5), (4, 5)], walls=[(4, z) for z in range(0, 8)],
        rock=[(x, z) for x in range(7, 10) for z in range(1, 6)],
@@ -154,7 +157,9 @@ def station_list():
        devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (27, 6), None, None)],
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialMast", (14, 4)), ("RM_AerialMast", (26, 4))], links=[(0, 1), (1, 2)])
     st(8, "B", B_X[1], ROW_B, 30, 11, "LAMP MASTS", "a power mast feeding two scrap lamp masts over the air",
-       ["each lamp mast is a light AND an anchor: it lights the ground under it", "the wire runs mast to lamp mast to lamp mast"],
+       ["each lamp mast is a light AND an anchor: its head shows a lit bulb while powered and switched on (round 4; daylight "
+        "hides the glow itself at noon, as for any vanilla lamp), radius 12 like a standing lamp",
+        "the wire runs mast to lamp mast to lamp mast"],
        ["unlink the second span: that lamp mast goes dark", "build one more lamp mast within range"],
        devs=[("Battery", (1, 4), 0, 1.0)],
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialLampMast", (14, 4)), ("RM_AerialLampMast", (26, 4))], links=[(0, 1), (1, 2)])
@@ -244,7 +249,7 @@ def stations_round2(st, hose_i):
     hose hook run after the hoses are laid."""
     R2 = dict(region=2)
     # ---- row E: power showpieces
-    s19 = [("Battery", (16, 10), 0, 1.0), ("Battery", (17, 10), 0, 1.0),            # adjacent to the pole
+    s19 = [("Battery", (20, 11), 0, 1.0), ("Battery", (21, 11), 0, 1.0),            # TOUCHING the pole / its conduit (round 4: they stood 2 cells off)
            ("StandingLamp", (18, 15), None, None), ("Heater", (22, 15), None, None), ("SunLamp", (20, 10), None, None),
            ("Turret_MiniTurret", (23, 12), None, None),
            ("ElectricStove", (35, 13), None, None), ("HiTechResearchBench", (4, 16), None, None),   # at distance, by conduit
@@ -257,8 +262,8 @@ def stations_round2(st, hose_i):
         "see whether they share a terminal or pile onto one (owner question: which terminal does each go to?)",
         "big devices (5x2 bench, 3x1 stove, 2x1 TV): the cord should meet the building, not stop short of its edge or end in mid-air",
         "the in-wall cooler: the cord reaches it through the wall face, not across the room",
-        "wall lamps (one inside the freezer, one outside on its south wall): their cords run to the wall, never through the room's "
-        "middle", "the turret's cord does not cross the turret's own base art",
+        "wall lamps (one inside the freezer, one outside on its south wall): their cords run up to and beneath the WALL the lamp "
+        "hangs on, ending under it (round 4), never stopping short in the lamp's cell or crossing the room's middle", "the turret's cord does not cross the turret's own base art",
         "the lamp mast on the far NW gets its power through the air: one span, lit"],
        ["toggle each device off (select > flick): its cord stays, the device goes dark",
         "deconstruct the pole: every adjacent hookup falls; the conduit-fed devices keep their cords",
@@ -267,7 +272,7 @@ def stations_round2(st, hose_i):
        walls=perimeter(26, 18, 32, 24, gaps=[(26, 21)]), devs=s19,
        masts=[("RM_AerialMast", (20, 13)), ("RM_AerialLampMast", (6, 22))], links=[(0, 1)], **R2)
     room = perimeter(4, 2, 30, 18, gaps=[(17, 2), (30, 13)])
-    s20 = [("Battery", (1, 7), 0, 1.0), ("Battery", (6, 7), 0, 1.0), ("Battery", (27, 11), 0, 1.0),
+    s20 = [("Battery", (1, 8), 0, 1.0), ("Battery", (6, 8), 0, 1.0), ("Battery", (27, 11), 0, 1.0),    # round 4: each touches pole/conduit
            ("ElectricStove", (8, 15), None, None), ("ElectricStove", (12, 15), None, None),
            ("HiTechResearchBench", (24, 15), None, None), ("FlatscreenTelevision", (7, 5), 0, None),
            ("StandingLamp", (6, 12), None, None), ("StandingLamp", (27, 6), None, None), ("StandingLamp", (19, 4), None, None),
@@ -288,24 +293,23 @@ def stations_round2(st, hose_i):
        rect_cells(13, 7, 3, 3) + [(29, 11), (29, 12), (29, 13)],
        walls=room, devs=s20, masts=[("RM_AerialMast", (1, 10)), ("RM_AerialMast", (17, 10)), ("RM_AerialMast", (33, 10))],
        links=[(0, 1), (1, 2)], **R2)
-    tunnel = [(4, 5, 3, 1), (6, 5, 1, 16), (6, 20, 12, 1), (18, 14, 7, 8), (25, 16, 19, 1)]   # x, z, w, h (station-local)
-    open_ = set(c for r in tunnel for c in rect_cells(*r))
-    st(21, "E", 108, 144, 48, 32, "MOUNTAIN TUNNEL", "a cord run through a winding one-cell tunnel and a small cavern inside a big "
-       "block of granite under OVERHEAD MOUNTAIN, fog of war ON over the rock; a pole in the cavern tries to link to one outside",
-       ["the cords stay INSIDE the tunnel: their curls must not draw over the fogged rock or poke out of the fog",
-        "the cords are drawn under the mountain-roof shading like everything else (no bright cord in a dark tunnel)",
-        "where the tunnel turns, the cord turns with it (no shortcut through rock)",
-        "the cavern pole is under the mountain roof: its link to the pole outside is REFUSED (anchors need open sky), "
-        "so no wire runs through the rock", "the lamp in the cavern and the one past the east exit are lit"],
-       ["mine a cell of the tunnel wall: the fog lifts there; do the cords move?", "toggle the roof overlay (bottom-right)",
-        "select the cavern pole > Link wire to the outside pole: the refusal message should say 'roofed'"],
-       rock=[c for c in rect_cells(4, 0, 40, 26) if c not in open_],
-       conduit=line(2, 6, 5) + [(6, z) for z in range(6, 21)] + line(7, 21, 20) + [(21, z) for z in range(16, 20)] +
-       line(22, 44, 16),
-       devs=[("Battery", (1, 5), 0, 1.0), ("StandingLamp", (19, 15), None, None), ("Heater", (23, 19), None, None),
-             ("StandingLamp", (46, 16), None, None)],
-       masts=[("RM_AerialMast", (21, 29)), ("RM_AerialMast", (23, 17))], links=[(0, 1, "Roofed")],
-       roof=[("RoofRockThick", (4, 0, 40, 26))], fog=dict(refog=[(4, 0, 40, 26)], unfog=tunnel), **R2)
+    # round 4 (owner 2026-10-04, typed: "Station 21: I didn't mean this. I meant two power poles carrying power OVER a hidden
+    # stone block, not through a tunnel. Appearing to carry power 'off into the unknown' and then emerging from it on the
+    # other side."): two masts 19 cells apart (range 20) with a solid granite block between them under overhead mountain and
+    # fog of war; the span runs over it, vanishes into the fog (drawn above spans) and comes out the far side.
+    st(21, "E", 108, 144, 36, 22, "OVER THE UNKNOWN", "two power poles carrying power OVER a solid granite block that lies hidden "
+       "under fog of war and overhead mountain: the wire runs off into the unknown and emerges on the other side",
+       ["the span leaves the west pole, vanishes into the fog over the block and reappears to land on the east pole",
+        "nothing of the wire shows ON the fog (no bright line drawn over the unknown), and its ground shadow vanishes with it",
+        "both poles stand in open sky beside the block, so the link is allowed (a roof under a span is fine)",
+        "the lamp and the heater beside the east pole are lit: power crossed the block"],
+       ["mine into the block from the west (god mode): the fog lifts cell by cell and the wire is revealed overhead",
+        "toggle the roof overlay (bottom-right): the block is all mountain roof",
+        "select a pole > Unlink wire: the east lamp goes dark; Link it again"],
+       rock=rect_cells(10, 2, 16, 17),
+       devs=[("Battery", (7, 10), 0, 1.0), ("StandingLamp", (29, 8), None, None), ("Heater", (29, 12), None, None)],
+       masts=[("RM_AerialMast", (8, 10)), ("RM_AerialMast", (27, 10))], links=[(0, 1)],
+       roof=[("RoofRockThick", (10, 2, 16, 17))], fog=dict(refog=[(10, 2, 16, 17)], unfog=[]), **R2)
     # ---- row F: hose mazes (the paths are judged by validation_hose.py; this file only lays them out and calls the hooks)
     maze = perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + perimeter(4, 3, 8, 7, gaps=[(4, 5)]) + \
         line(9, 11, 5)
@@ -357,7 +361,10 @@ def stations_round2(st, hose_i):
         "remove the room's roof: link the inside pole from its gizmo"],
        walls=perimeter(9, 4, 19, 14), roof=[("RoofConstructed", (9, 4, 11, 11))],
        conduit=[(3, 10), (3, 11)] + line(4, 15, 11),
-       devs=[("Battery", (1, 9), 0, 1.0), ("StandingLamp", (15, 12), None, None), ("Heater", (12, 6), None, None),
+       # round 4 (owner 2026-10-04: "Station 26 screenshot shows battery having no connection to local power pole"): the battery
+       # stood at x 1 with a one-cell gap to the 1x1 mast at x 3; a battery is a TRANSMITTER and joins a net only by touching,
+       # so it was not on the net at all. It now touches the mast (and the conduit at 3,10). layout_check enforces it.
+       devs=[("Battery", (2, 9), 0, 1.0), ("StandingLamp", (15, 12), None, None), ("Heater", (12, 6), None, None),
              ("StandingLamp", (25, 9), None, None)],
        masts=[("RM_AerialMast", (3, 9)), ("RM_AerialMast", (22, 9)), ("RM_AerialMast", (14, 7))],
        links=[(0, 1), (0, 2, "Roofed")], **R2)
@@ -383,7 +390,7 @@ def stations_round2(st, hose_i):
         "with more wires than insulators, do two share a tip cleanly or overlap in a blob?",
         "the fifth (NE) pole stays unlinked, its lamp dark", "the hub's local hookups: which terminal does each lamp take?"],
        ["unlink one spoke, then link the NE pole: it takes the freed slot", "deconstruct the hub: four spans drop at once"],
-       devs=[("Battery", (13, 16), 0, 1.0), ("StandingLamp", (16, 19), None, None), ("StandingLamp", (19, 16), None, None),
+       devs=[("Battery", (15, 15), 0, 1.0), ("StandingLamp", (16, 19), None, None),     # round 4: touches the hub ("StandingLamp", (19, 16), None, None),
              ("StandingLamp", (16, 13), None, None), ("Heater", (19, 19), None, None),
              ("StandingLamp", (18, 30), None, None), ("StandingLamp", (30, 18), None, None), ("StandingLamp", (18, 2), None, None),
              ("StandingLamp", (2, 18), None, None), ("StandingLamp", (27, 29), None, None)],
@@ -427,6 +434,36 @@ def rect_of(st, pad=1):
     x, z = st["origin"]
     w, h = st["size"]
     return (x - pad, z - pad, w + 2 * pad, h + 2 * pad)
+
+
+def battery_footprint(cell, rot):
+    """Vanilla Battery is 1x2: rot 0/2 cells (x,z),(x,z+1); rot 1/3 (x,z),(x+1,z)."""
+    x, z = cell
+    return [(x, z), (x + 1, z)] if rot in (1, 3) else [(x, z), (x, z + 1)]
+
+
+def battery_touch(S):
+    """Round 4 (owner 2026-10-04, station 26): a Battery is a power TRANSMITTER (CompPowerBattery transmitsPower), and vanilla
+    joins transmitters only by touching (PowerNetMaker floods cardinal neighbours); the 6-cell reach of
+    PowerConnectionMaker.ConnectMaxDist is for CONSUMERS only. So every gallery battery must touch a conduit, a pole or
+    another battery that does, or it is a separate, unwired net."""
+    probs = []
+    for s in S:
+        trans = set(s["conduit"]) | set(s.get("wconduit", [])) | {m[1] for m in s["masts"]}
+        bats = [(d[1], d[2] if len(d) > 2 and d[2] is not None else 0) for d in s["devs"] if d[0] == "Battery"]
+        fps = [battery_footprint(c, r) for c, r in bats]
+        ok = [False] * len(fps)
+        for _ in range(len(fps) + 1):                     # a battery touching a joined battery is joined too
+            for i, fp in enumerate(fps):
+                if ok[i]:
+                    continue
+                near = {(x + dx, z + dz) for x, z in fp for dx, dz in ((1, 0), (-1, 0), (0, 1), (0, -1))} - set(fp)
+                if near & trans or any(ok[j] and near & set(fps[j]) for j in range(len(fps)) if j != i):
+                    ok[i] = True
+        for i, (c, r) in enumerate(bats):
+            if not ok[i]:
+                probs.append("station %d battery at %s touches no conduit, pole or joined battery (a battery joins only by touching)" % (s["n"], c))
+    return probs
 
 
 def layout_check(S):
@@ -478,6 +515,7 @@ def layout_check(S):
             (na, pa), (nb, pb) = masts[i], masts[j]
             if na != nb and max(na, nb) >= 19 and (pa[0] - pb[0]) ** 2 + (pa[1] - pb[1]) ** 2 <= SPAN_RANGE ** 2:
                 probs.append("masts of stations %d and %d within span range (%s, %s)" % (na, nb, pa, pb))
+    probs += battery_touch(S)
     for i in range(len(rects)):
         for j in range(i + 1, len(rects)):
             a, b = rects[i], rects[j]
@@ -507,7 +545,7 @@ SHORT = {1: "full battery, cord to heater + a plugged lamp", 2: "same build, bat
          14: "flow on, fully filled", 15: "26 cells, bends round a wall stub", 16: "two hoses crossing: one cleanly over",
          17: "two hoses side by side", 18: "four hoses crossing in a 2 x 2 grid",
          19: "one pole, many kinds of device, near and far", 20: "crowded electric room, a line overhead",
-         21: "cords through a fogged mountain tunnel", 22: "hose out of a maze: two routes",
+         21: "a span over a hidden, fogged stone block", 22: "hose out of a maze: two routes",
          23: "maze, short way walled after laying", 24: "poles and cords on the map's corner",
          25: "span over a river, cord fording it", 26: "span over a roof, pole under one",
          27: "longest span, too long, diagonals, tiny", 28: "four spans into one pole, a fifth refused",
