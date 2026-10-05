@@ -226,7 +226,23 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         if gs:
             first_git[sha] = gs[0]
     ranks = {m: order.get(package_id(m), -1) for m in live}
-    winner = max(ranks, key=ranks.get) if ranks and max(ranks.values()) >= 0 else None
+    # game copies of this texPath (donor / other mods, ingested by gametex.py bound by texPath): one per mod
+    dons, don_meta = defaultdict(dict), {}
+    for sha, vs in idx.variants.items():
+        for v in vs:
+            if v.get("kind") == "donor" and v.get("res") == res and not v.get("mask"):
+                pkg = (v.get("donor_pkg") or "?").lower()
+                dons[pkg].setdefault(v.get("facing"), sha)
+                m = don_meta.setdefault(pkg, {"mod": v.get("donor_mod") or pkg, "how": v.get("how"),
+                                              "random_of": v.get("random_of"), "bound_by": v.get("bound_by"),
+                                              "loc": v.get("loc", "")})
+                if v.get("donor_mod"):
+                    m["mod"] = v["donor_mod"]
+    dranks = {p: order.get(p, order.get(p + "_steam", -1)) for p in dons}
+    allr = list(ranks.values()) + list(dranks.values())
+    top = max(allr) if allr and max(allr) >= 0 else None
+    winner = next((m for m in ranks if top is not None and ranks[m] == top), None)
+    dwinner = next((p for p in dranks if top is not None and dranks[p] == top), None) if winner is None else None
     for mod in sorted(live, key=lambda m: -ranks[m]):
         f = live[mod]
         g = [first_git[s] for s in f.values() if s in first_git]
@@ -287,15 +303,22 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                          "label": f"history {mod.split('/')[-1]} {date}",
                          "detail": f"{commit} {date}: {subj}"})
 
-    # 4. donor original
-    dons = defaultdict(dict)
-    for sha, vs in idx.variants.items():
-        for v in vs:
-            if v.get("kind") == "donor" and v.get("res") == res and not v.get("mask"):
-                dons[v.get("donor_pkg", "?")].setdefault(v.get("facing"), sha)
-    for pkg, faces in dons.items():
-        cols.append({"kind": "donor", "faces": faces, "date": "", "label": f"donor original {pkg}",
-                     "detail": "the donor mod's own sprite (AssetBundle extract)"})
+    # 4. game copies from other mods: the one the game draws first (IN GAME), then donor originals
+    for pkg in sorted(dons, key=lambda p: -dranks[p]):
+        m = don_meta[pkg]
+        win = pkg == dwinner
+        how = "AssetBundle extract" if m["how"] == "assetbundle-extract" else "loose PNG in the game's mod folders"
+        col = {"kind": "donor", "faces": dons[pkg], "date": "", "winner": win,
+               "label": (f"IN GAME — {m['mod']}" if win else f"donor original — {m['mod']}"),
+               "detail": (f"load index {dranks[pkg]}" + (" (last loaded, wins)" if win else
+                          " (shadowed by a later mod)" if dranks[pkg] >= 0 else " (not in the measured load order)")
+                          + f" · {pkg} · {how}"
+                          + (f" · 1 of {m['random_of']} random variants" if m.get("random_of") else "")
+                          + (f" · bound: {m['bound_by']}" if m.get("bound_by") else ""))}
+        if win:
+            cols.insert(0, col)
+        else:
+            cols.append(col)
 
     # drop purged pictures; fold exact duplicates into the first column carrying them
     out, seen = [], {}
@@ -497,7 +520,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
     for row in rows:
         for i, c in enumerate(row["cols"]):
             c["letter"] = LETTERS[i]
-            c["purgeable"] = c["kind"] != "live"
+            c["purgeable"] = c["kind"] != "live" and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
         maxcols = max(maxcols, len(row["cols"]))
     for row in rows:
         word = row["word"]
@@ -653,7 +676,8 @@ ledger rulings, then you see an install plan.</p>"""
 # ─────────────────────────── per-biome sheet (BIOME_FLORAFAUNA_ART_REVIEW_1, owner rulings 2026-10-04) ──
 #
 #   python3 src/RimMandrake/Utils/art/art_sheet.py --refresh --biome first3
-#     --refresh = art.py backfill artpipe (~45 s, finished renders into the ledger) + biome_census.py; the sheets then
+#     --refresh = art.py backfill artpipe (~45 s, finished renders into the ledger) + gametex.py ingest (game copies of
+#     every row's texPath, ~10 s; ~65 s more when its /tmp/rm_gametex index must be rebuilt) + biome_census.py; the sheets then
 #     take ~4 min for the first three biomes (thumbnails are cached by sha, so a re-run only renders new pictures)
 #
 # One sheet per biome from Transient/biome_ffar/census.json (biome_census.py). One item per census row (flora AND
@@ -721,7 +745,9 @@ def _short(c: dict) -> str:
     if c.get("kind") == "git":
         return f"history {(c.get('date') or '')[:10]} · {lab.removeprefix('history ').rsplit(' ', 1)[0]}"
     if c.get("kind") == "donor":
-        return "donor original · " + lab.removeprefix("donor original ")
+        if c.get("winner"):
+            return "IN GAME · " + lab.split("— ", 1)[-1]
+        return "donor original · " + lab.split("— ", 1)[-1].removeprefix("donor original ")
     return lab
 
 
@@ -854,7 +880,7 @@ window.itemBody = it => {
   };
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
-  const noart = it.noArt ? `<div class="bs-noart" title="${esc(it.noArtWhy)}">NO ART YET — the art ledger holds no picture for this row</div>` : '';
+  const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
   const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
   const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
@@ -1206,7 +1232,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         allcols = [c for g in graphics for c in g["cols"]]
         _assign_letters(allcols, (letter_memory.get(r["key"]) or {}).get("columns"))
         for c in allcols:
-            c["purgeable"] = c["kind"] != "live"
+            c["purgeable"] = c["kind"] != "live" and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
         for g in graphics:
             letters = {id(c) for c in allcols}
             for c in g["cols"]:
@@ -1308,7 +1334,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
             "noArt": no_art,
-            "noArtWhy": ("searched by graphic and by name: " + ", ".join(sorted(w for w in {_stem(key)} | set(r.get("defNames") or []) if w))
+            "noArtWhy": ((r.get("art") or {}).get("searched") or "searched by graphic and by name: " + ", ".join(sorted(w for w in {_stem(key)} | set(r.get("defNames") or []) if w))
                          + ("; artpipe jobs on record: " + ", ".join(r.get("artpipe_state_jobs") or []) if r.get("artpipe_state_jobs") else "")),
             "rulings": [{"at": (x.get("at") or "")[:10], "verdict": x.get("raw_verdict") or x.get("verdict"),
                          "trust": x.get("trust"), "sheet": Path(x.get("source_file") or "").name.replace(".decisions.json", ""),
@@ -1444,6 +1470,8 @@ def main(argv=None):
             import subprocess
             here = Path(__file__).resolve().parent
             for cmd in ([sys.executable, str(here / "art.py"), "backfill", "artpipe"],
+                        # the game's own copies of every row's texPath (donor/vanilla art), bound by texPath
+                        [sys.executable, str(here / "gametex.py"), "ingest", "--census", str(a.census)],
                         [sys.executable, str(here / "biome_census.py"), "--out", str(Path(a.census).parent)]):
                 print("refresh:", " ".join(cmd[1:]), flush=True)
                 if subprocess.run(cmd, cwd=str(L.REPO_ROOT)).returncode:
