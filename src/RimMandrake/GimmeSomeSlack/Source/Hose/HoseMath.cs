@@ -939,18 +939,19 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public HoseReelRect(int x0, int z0, int w, int h) { X0 = x0; Z0 = z0; W = Math.Max(1, w); H = Math.Max(1, h); }
         public V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
 
-        /// <summary>Where the hose leaves the reel. Round 5 (owner, station 11: "the hoses should aim to the mid-point of the
-        /// reel wheel, so you can't see the end of the hose peeking through below the reel"): on the 2x2 reel the hose
-        /// ends at the DRUM's axis, read off all four looks' Reel_Deployed art at drawSize 2.8 (axle bolt v 124/256, drum
-        /// between the flanges u 118-245, centre u 180/256), so the hose disappears under the opaque drum; its end and
-        /// its reel-end fitting are never drawn (RM_MapComponent_Hoses.DrawEnds). Round 4 had it just above the drum's
-        /// underside (u 168, v 165), where its end showed through the gap above the base rail. A 1x1 reel keeps its centre.</summary>
+        /// <summary>Where the hose leaves the reel. Owner 2026-10-05 (reversing round 5's hide-under-the-drum): the 2x2 reel's hose
+        /// starts at its brass OUTLET, the nozzle on the left of the Reel_Deployed art (tip u 7-11/256, centre v 133-141/256 across the
+        /// four looks; drawSize 2.8), and a coupling sits on that nozzle. The routing start is the nozzle's height on the footprint's
+        /// west edge (inside the west cell, so a lay still starts in a reel cell); <see cref="NozzleTip"/> is where the coupling's face
+        /// meets the nozzle. A 1x1 reel keeps its centre.</summary>
         public V2 Mouth => W == 2 && H == 2 ? Centre + new V2(MouthDX, MouthDZ) : Centre;
-        public const double ReelDrawSize = 2.8, MouthDX = (180.0 / 256 - 0.5) * ReelDrawSize, MouthDZ = (0.5 - 124.0 / 256) * ReelDrawSize;
-        /// <summary>The drum's half-height below its axis (art: underside v 165/256), cells: the hose end must sit above it.</summary>
+        public const double ReelDrawSize = 2.8, MouthDX = -0.98, MouthDZ = (0.5 - 135.0 / 256) * ReelDrawSize;
+        /// <summary>The nozzle's tip, where the end coupling's face is drawn (2x2 reel only; the art's tip at u 9/256).</summary>
+        public V2 NozzleTip => Centre + new V2((9.0 / 256 - 0.5) * ReelDrawSize, MouthDZ);
+        /// <summary>The drum's half-height below its axis (art: underside v 165/256), cells.</summary>
         public const double DrumBelowAxis = (165.0 - 124.0) / 256 * ReelDrawSize;
-        /// <summary>True when the reel's own art hides the hose end (the 2x2 reel's drum): no reel-end fitting is drawn.</summary>
-        public bool HidesHoseEnd => W == 2 && H == 2;
+        /// <summary>True when the reel's art carries a brass outlet nozzle the hose couples to (the 2x2 reel).</summary>
+        public bool HasNozzle => W == 2 && H == 2;
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 

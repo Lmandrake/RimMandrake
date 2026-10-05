@@ -559,19 +559,19 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static void Round5()
         {
             string perf;
-            // station 11: the hose ends at the reel drum's axis, under the opaque drum, never below it
+            // owner 2026-10-05: the hose starts at the reel's brass outlet nozzle (west side), not under the drum
             var reel = new HoseReelRect(6 + SX, 5 + SZ, 2, 2);
-            V2 m = reel.Mouth, c = reel.Centre;
-            C(reel.Contains(m.Floor) && Math.Abs(m.Z - c.Z) < 0.1 && m.X - c.X > 0.45 && m.X - c.X < 0.7 && HoseReelRect.DrumBelowAxis > 0.4
-                && reel.HidesHoseEnd && !new HoseReelRect(4, 4, 1, 1).HidesHoseEnd,
-                "r5 st11: the hose aims at the drum's axis (" + (m.X - c.X).ToString("0.00") + ", " + (m.Z - c.Z).ToString("0.00") + " from the centre; drum reaches "
-                + HoseReelRect.DrumBelowAxis.ToString("0.00") + " below it) and no reel-end fitting is drawn on the 2x2 reel");
+            V2 m = reel.Mouth, c = reel.Centre, tip = reel.NozzleTip;
+            C(reel.Contains(m.Floor) && m.X - c.X < -0.9 && Math.Abs(m.Z - c.Z) < 0.15 && tip.X < reel.X0 - 0.2 && Math.Abs(tip.Z - m.Z) < 1e-9
+                && reel.HasNozzle && !new HoseReelRect(4, 4, 1, 1).HasNozzle,
+                "nozzle: the hose starts on the west edge at the outlet's height (" + (m.X - c.X).ToString("0.00") + ", " + (m.Z - c.Z).ToString("0.00") + " from the centre) and the coupling meets the nozzle tip "
+                + (tip.X - c.X).ToString("0.00") + " from the centre; a 1x1 reel has no nozzle");
             // a hose laid south from the reel: its first sample is the mouth, so its end sits at the axis, not below the drum
             CordWorld ow = Open(30, 30);
             var r2 = new HoseReelRect(10, 20, 2, 2);
             HoseLay ls = HoseMath.Lay(ow, r2.Mouth, new V2(11.5, 6.5), new HoseShapeParams { MaxLength = 30 }, 4);
-            C(ls.Ok && V2.Dist(ls.Flat[0], r2.Mouth) < 1e-6 && ls.Flat[0].Z > r2.Centre.Z - HoseReelRect.DrumBelowAxis + 0.3,
-                "r5 st11: a hose laid south starts at the axis (" + ls.Flat[0].Z.ToString("0.00") + "), " + HoseReelRect.DrumBelowAxis.ToString("0.00") + " above the drum's underside");
+            C(ls.Ok && V2.Dist(ls.Flat[0], r2.Mouth) < 1e-6 && Math.Abs(ls.Flat[0].Z - (r2.Centre.Z + HoseReelRect.MouthDZ)) < 1e-6,
+                "nozzle: a hose laid south still starts at the outlet (" + ls.Flat[0].Z.ToString("0.00") + ")");
 
             // station 34 (old 22) with the owner's walls, read cell for cell off 20261004210108_1.jpg: the north-east gap
             // shut by (12,8) and (11,9) (a pinched diagonal), the south way out of the west corridor by (3,2), the south-east
