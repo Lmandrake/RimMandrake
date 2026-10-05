@@ -16,7 +16,7 @@ namespace RimMandrake.MessyConduit.Aerial
     /// Per-build style (design messyconduit_style_per_build_design.md, stage 1): each anchor carries its own look in the
     /// engine's style field (StylePicker); its pole art is that style def's graphic, and its geometry, top overlay, lamp
     /// head and cable are looked up by ITS look here. A span draws in its poles' look (the older pole's when they differ,
-    /// AerialStyles.SpanLook); a span reads the look's own SpanWire (Aerial/Styles/&lt;Look&gt;/SpanWire) and falls back
+    /// ConduitStyles.SpanLook); a span reads the look's own SpanWire (Aerial/Styles/&lt;Look&gt;/SpanWire) and falls back
     /// to the cable named in <see cref="SpanFallback"/>. Fallen cords and the hanging drop of a cut wire use the
     /// anchor's span cable, never the floor cord (B11). The globals Look/Span/SpanWidth are the DEFAULT look's (the
     /// `style` Mod Setting): legacy unstyled anchors and the switch hookup cable. Rebuilt on a settings change.
@@ -138,9 +138,19 @@ namespace RimMandrake.MessyConduit.Aerial
         /// <summary>The look an anchor is drawn in (its own style; an unstyled legacy anchor draws the default look).</summary>
         public static string LookOf(CompAerialAnchor a) => a?.parent == null ? Look : StylePicker.LookOfThing(a.parent);
 
-        /// <summary>The look a span between two anchors draws in (AerialStyles.SpanLook: same look, or the older pole's).</summary>
-        public static string SpanLookOf(CompAerialAnchor a, CompAerialAnchor b) =>
-            AerialStyles.SpanLook(LookOf(a), a.thingIDNumber, LookOf(b), b.thingIDNumber, StylePicker.DefaultLook);
+        /// <summary>The look a span between two anchors draws in. The run rule keeps a run in one look, so both ends nearly
+        /// always agree; when they do not (the moment between a new link and its run check) the larger run wins, a tie goes
+        /// to the older (ConduitStyles.SpanLook, owner 2026-10-04). Each side is measured without this span.</summary>
+        public static string SpanLookOf(CompAerialAnchor a, CompAerialAnchor b)
+        {
+            string la = LookOf(a), lb = LookOf(b);
+            if (la == lb) return la;
+            RM_MapComponent_ConduitRuns runs = a.Map?.GetComponent<RM_MapComponent_ConduitRuns>();
+            if (runs == null) return ConduitStyles.SpanLook(la, 0, a.thingIDNumber, lb, 0, b.thingIDNumber, StylePicker.DefaultLook);
+            ConduitStyles.Run ra = RM_MapComponent_ConduitRuns.Info(runs.RunOf(a.parent, null, a.parent, b.parent));
+            ConduitStyles.Run rb = RM_MapComponent_ConduitRuns.Info(runs.RunOf(b.parent, null, a.parent, b.parent));
+            return ConduitStyles.SpanLook(la, ra.Area, ra.Oldest, lb, rb.Area, rb.Oldest, StylePicker.DefaultLook);
+        }
 
         public static LookMats SpanMats(CompAerialAnchor a, CompAerialAnchor b) => For(SpanLookOf(a, b));
 

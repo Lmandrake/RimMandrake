@@ -7,8 +7,8 @@ namespace RimMandrake.MessyConduit.Aerial
 {
     /// <summary>
     /// The four looks a pole can be built in, how their ThingStyleDefs are named, and the two rules stage 1 needs:
-    /// what style the build button hands the designator (<see cref="Resolve"/>), and which look a span between two poles
-    /// draws in (<see cref="SpanLook"/>). The look rides the engine's own per-building style field (CompStyleable).
+    /// what style the build button hands the designator (<see cref="Resolve"/>); which look a span between two poles draws in
+    /// is stage 2's run rule (ConduitStyles.SpanLook: the larger run wins, a tie goes to the older). The look rides the engine's own per-building style field (CompStyleable).
     /// </summary>
     public static class AerialStyles
     {
@@ -32,19 +32,6 @@ namespace RimMandrake.MessyConduit.Aerial
             string look = styleDefName.Substring(i + 1);
             string def = styleDefName.Substring(0, i);
             return IsLook(look) && Array.IndexOf(StyledDefs, def) >= 0 ? look : null;
-        }
-
-        /// <summary>
-        /// The look a span between two anchors draws in. Same look: that look. Two looks: the OLDER anchor's (the lower
-        /// thingIDNumber; a reinstall keeps its id) -- stage 1's stand-in until stage 2's run rule (largest run wins,
-        /// owner 2026-10-04) makes a mixed span impossible. A missing look (legacy, unstyled) is the default look.
-        /// Symmetric: the same answer whichever end asks.
-        /// </summary>
-        public static string SpanLook(string lookA, int idA, string lookB, int idB, string defaultLook)
-        {
-            string a = IsLook(lookA) ? lookA : defaultLook, b = IsLook(lookB) ? lookB : defaultLook;
-            if (a == b) return a;
-            return idA <= idB ? a : b;
         }
 
         /// <summary>

@@ -19,6 +19,8 @@ namespace RimMandrake.MessyConduit.Aerial
     /// | watchdog | poll | set:field=value | defaults           (ids are thingIDNumber)
     /// per-build style (stage 1, validation_style.py): styles | place:def:Look:x,z[:rot]:god|build | finishbuild
     /// | reinstall:id:x,z | copy:id:x,z | clearpicks
+    /// per-build style stage 2 (conduit runs, ConduitStyleProbe): cstyles[:x,z,w,h] | cplace:def:key:x,z:god|build
+    /// | cline:def:key:x0,z0:x1,z1:god|build | cfinishbuild | cprocess | cclearpicks | crestyle:x,z:key | cdeconstruct:x,z
     /// </summary>
     public static class AerialProbe
     {
@@ -49,6 +51,7 @@ namespace RimMandrake.MessyConduit.Aerial
         private static string Run(Map map, RM_MapComponent_Aerial comp, string cmd)
         {
             if (cmd == "census") return Census(map, comp);
+            if (cmd.StartsWith("c") && ConduitStyleProbe.Run(map, cmd) is string cres) return cres;   // stage 2: conduit runs
             if (cmd == "styles") return StyleProbeAerial.Styles(map, comp);
             if (cmd == "clearpicks") { StylePicker.ClearPicks(); return Ok(cmd, ""); }
             if (cmd == "finishbuild") return StyleProbeAerial.FinishBuild(map);

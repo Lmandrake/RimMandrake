@@ -228,7 +228,8 @@ namespace RimMandrake.MessyConduit
                 "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +
                 "Off: vanilla conduit art and hookup wires come back as soon as you close this window.");
             l.GapLine();
-            l.Label("Art style (changes take effect when this window closes, no restart)");
+            // per-build style (stage 2, design 2.4): the style is picked on each build button; this is only the default
+            l.Label("Default style. Style is chosen when you build (the build button's menu); this sets what new games start with and how unstyled conduit looks (changes take effect when this window closes)");
             foreach (CordStyle s in Enum.GetValues(typeof(CordStyle)))
             {
                 bool installed = CordMaterials.StyleInstalled(s);
@@ -250,9 +251,9 @@ namespace RimMandrake.MessyConduit
             }
             if (MessyConduitSettings.style == CordStyle.ExtensionCord)
             {
-                if (l.RadioButton("   Extension cords: a different colour per power net", MessyConduitSettings.extCordColorMode == ExtCordColorMode.Mixed))
+                if (l.RadioButton("   Default Modern colour: a different colour per run", MessyConduitSettings.extCordColorMode == ExtCordColorMode.Mixed))
                     MessyConduitSettings.extCordColorMode = ExtCordColorMode.Mixed;
-                if (l.RadioButton("   Extension cords: one colour everywhere (" + CordMaterials.ExtCordColors[Mathf.Clamp(MessyConduitSettings.extCordColor, 0, 4)] + ")",
+                if (l.RadioButton("   Default Modern colour: one colour (" + CordMaterials.ExtCordColors[Mathf.Clamp(MessyConduitSettings.extCordColor, 0, 4)] + ")",
                                   MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single))
                     MessyConduitSettings.extCordColorMode = ExtCordColorMode.Single;
                 if (MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single)

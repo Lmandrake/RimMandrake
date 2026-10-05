@@ -1,4 +1,4 @@
-"""validation_style.py -- Messy Conduit per-build style, STAGE 1 (poles alone): functional script beside validation_aerial.py.
+"""validation_style.py -- Messy Conduit per-build style, STAGES 1-2 (poles; conduit runs): functional script beside validation_aerial.py.
 
 Design: design/RimMandrake/messyconduit_style_per_build_design.md (architecture B, section 5 stage 1, owner decisions
 2026-10-04). The look is stored on each building in the engine's own style field (CompStyleable, ThingStyleDefs in
@@ -6,7 +6,21 @@ Defs/Aerial/RM_AerialStyles.xml); StylePicker.cs adds the build-button menu, the
 carry-over, the legacy read (unstyled -> default look, never written) and a Frame guard.
 
     python3 validation_style.py --offline                    # S0: style defs, art on disk, no ideo category lists them
-    python.exe validation_style.py --live [--save NAME]      # S1-S8: THE one behaviour check of stage 1 (needs colonists)
+    python.exe validation_style.py --live [--save NAME]      # S1-S8: THE one behaviour check of stage 1 (needs colonists),
+                                                             # then S9 + S10: stage 2's two behaviour checks (conduit runs)
+
+STAGE 2 (design 5 stage 2, owner decisions 2026-10-04; ConduitStyles.cs / ConduitStylePicker.cs / RM_MapComponent_ConduitRuns.cs).
+The probe verbs are on the AerialProbe channel (ConduitStyleProbe): cstyles / cplace / cline / cfinishbuild / crestyle /
+cdeconstruct / cprocess.
+  S9  two runs in two styles (Industrial 6 cells, Modern orange 3 cells + a Modern switch), a Futuristic cell bridging them
+      (the 6-cell run wins: all Industrial, the switch too, a message naming Modern and Industrial), a split by
+      deconstruction (both halves stay Industrial), a "Restyle this run" of one half to Modern random mix (the other half
+      untouched), a build-mode Futuristic line (blueprint -> frame -> building keeps the style); then every cell's stored
+      style and every cord piece's printed material are read (a piece prints its run's look; the section meshes hold it);
+      with --save, the same read after save/load must be identical.
+  S10 an unstyled (legacy) conduit line built outside the menu: nothing is stored, nothing is written when it is
+      processed, and every piece chooses the SAME Material objects the pre-stage-2 default-look set chose (an older
+      save looks unchanged -- the materials-identity proof standing in for a screenshot hash).
 
 The ONE live scene (design 5, stage 1): the four mast looks placed through the REAL Architect designator twice -- build
 mode (blueprint -> frame -> building, completed by the engine's own Blueprint.TryReplaceWithSolidThing and
@@ -94,6 +108,69 @@ def s0_offline(rows):
     if re.search(r"\bd\.graphicData\s*=|\bd\.graphic\s*=|ext\.attachZ\s*=", am):
         probs.append("AerialMaterials still edits a shared ThingDef / extension")
     V.row(rows, "S0_style_defs_offline", "FAIL" if probs else "PASS", "MOD", {"problems": probs, **info, "styleDefs": len(styles)})
+    s0b_offline(rows)
+
+
+COLOURS = ["Orange", "Green", "Brown", "Yellow", "Blue"]
+CONDUITS = ["PowerConduit", "WaterproofConduit"]
+
+
+def stage2_style_names():
+    names = []
+    for d in CONDUITS:
+        for l in LOOKS:
+            names.append("%s_%s" % (d, l))
+            if l == "Modern":
+                names += ["%s_Modern_%s" % (d, c) for c in COLOURS + ["Mix"]]
+    return names + ["PowerSwitch_%s" % l for l in LOOKS]
+
+
+def s0b_offline(rows):
+    """Stage 2 offline: the 24 style defs (conduit markers carry NO graphic; switch styles point at art on disk), the guarded
+    CompProperties_Styleable patch, and the per-look art the cord layer and the switch now pick."""
+    probs, info = [], {}
+    root = ET.parse(os.path.join(HERE, "Defs", "Aerial", "RM_ConduitStyles.xml")).getroot()
+    styles = {e.findtext("defName"): e for e in root.findall("ThingStyleDef")}
+    want = set(stage2_style_names())
+    if set(styles) != want:
+        probs.append("stage-2 style defs: missing %s extra %s" % (sorted(want - set(styles)), sorted(set(styles) - want)))
+    for n, e in styles.items():
+        has_g = e.find("graphicData") is not None
+        if n.startswith("PowerSwitch_"):
+            tp = e.findtext("graphicData/texPath") or ""
+            if not os.path.exists(os.path.join(TEX, tp + ".png")):
+                probs.append("%s: switch art missing %s" % (n, tp))
+        elif has_g:
+            probs.append("%s: a conduit style must be a marker (a graphic would make the conduit visible)" % n)
+    pt = os.path.join(HERE, "Patches", "RM_ConduitStyleable.xml")
+    patch = open(pt, encoding="utf-8").read() if os.path.exists(pt) else ""
+    for d in ("PowerConduit", "PowerSwitch"):
+        if 'defName="%s"]/comps/li[@Class="CompProperties_Styleable"]' % d not in patch or "PatchOperationConditional" not in patch:
+            probs.append("patch: %s lacks the guarded CompProperties_Styleable add" % d)
+    if 'defName="WaterproofConduit"' in patch:
+        probs.append("patch: WaterproofConduit inherits PowerConduit's comps; patching it too lists the comp twice")
+    # every look's switch on/off frames, live frayed ends, and Modern's dark strip (art stage 2026-10-04)
+    need = ["PowerSwitch.png", "PowerSwitch_Off.png"] + ["Styles/%s/PowerSwitch%s.png" % (l, s) for l in LOOKS[1:] for s in ("", "_Off")]
+    need += ["Styles/%s/EndFrayed_Live.png" % f for f in ("StarWars", "ExtCord", "Cybertek")] + ["Styles/ExtCord/PowerStrip_Off.png"]
+    need += ["Styles/ExtCord/Strand_%s.png" % c for c in COLOURS] + ["Styles/StarWars/Strand_%s.png" % k for k in ("BlackRubber", "CorrugatedSteel", "CoiledBlack")]
+    need += ["Styles/Cybertek/Strand.png", "Strand_Jawa.png"]
+    miss = [f for f in need if not os.path.exists(os.path.join(TEX, "RimMandrake", "MessyConduit", f))]
+    info["artChecked"] = len(need)
+    if miss:
+        probs.append("art missing: %s" % miss)
+    hits = 0
+    for dp, _, fs in os.walk(os.path.join(V.REPO, "src")):
+        for f in fs:
+            if f.endswith(".xml") and "Defs" in dp:
+                t = open(os.path.join(dp, f), encoding="utf-8", errors="replace").read()
+                if re.search(r"<StyleCategoryDef[\s>]", t) and re.search(r"(PowerConduit|WaterproofConduit|PowerSwitch)_(Scrapper|Industrial|Modern|Futuristic)", t):
+                    hits += 1
+    if hits:
+        probs.append("%d StyleCategoryDef files list stage-2 styles" % hits)
+    info["styleDefsSeen"] = len(styles)
+    if len(styles) < 20:
+        probs.append("sanity: parser saw only %d stage-2 style defs" % len(styles))
+    V.row(rows, "S0b_stage2_defs_offline", "FAIL" if probs else "PASS", "MOD", {"problems": probs, **info})
 
 
 # ============================================================================ live
@@ -217,17 +294,174 @@ def run_live(args):
             if s.get("spanTex") != ls.get("tex") or abs((s.get("width") or 0) - (ls.get("width") or 0)) > 1e-3:
                 bad.append(("tex/width", a["id"], s))
     spans = same + mixed
-    V.row(rows, "S6_spans_in_pole_look", "PASS" if spans >= 4 and same >= 1 and mixed >= 1 and not bad else "FAIL", "MOD",
+    # stage 2 (design 2.3): auto-link only links a pole to a run of the SAME look, so no mixed span forms here any more;
+    # a span's look is its run's (ConduitStyles.SpanLook: larger run wins, tie older) -- "expect" above is that tie case
+    V.row(rows, "S6_spans_in_pole_look", "PASS" if spans >= 1 and same >= 1 and mixed == 0 and not bad else "FAIL", "MOD",
           {"spans": spans, "sameLook": same, "mixedLook": mixed, "bad": bad[:8], "lookSpans": st.get("lookSpans"),
-           "meaning": "PASS = a same-look span draws that look's cable; a mixed span draws the OLDER pole's (stage 1 stand-in)"})
+           "meaning": "PASS = a same-look span draws that look's cable, and auto-link strung no span between two looks (stage 2)"})
     res["styles_before"] = st
 
-    # ---------------------------------------------------------------- S7: save / load
+    # ---------------------------------------------------------------- stage 2: S9 runs, S10 legacy
+    s9 = s9_runs(B, rows, res)
+    s10 = s10_legacy(B, rows, res)
+
+    # ---------------------------------------------------------------- S7: save / load (stage 1 masts, then S9's read)
     if args.save:
         res["save"] = _save_load(B, rows, args.save, st)
+        s9_after_load(B, rows, s9, s10)
     else:
         V.row(rows, "S7_save_load_styles", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
+        V.row(rows, "S9e_runs_save_load", "UNMEASURED", "HARNESS", "run with --save NAME to include save/load")
     return res
+
+
+# ============================================================================ stage 2 (conduit runs)
+SITE2 = (X0, Z0 + 26, 30, 12)                       # clear of stage 1's site (z up to Z0+21)
+ZR = Z0 + 29                                         # the two-runs row
+RUN_A = [(X0 + 2 + i, ZR) for i in range(6)]         # Industrial, 6 conduit cells
+BRIDGE = (X0 + 8, ZR)                                # the gap; a Futuristic cell placed here joins A and B
+RUN_B = [(X0 + 9 + i, ZR) for i in range(3)]         # Modern orange, 3 conduit cells
+SWITCH = (X0 + 12, ZR)                               # a Modern switch at the end of run B
+SPLIT = (X0 + 5, ZR)                                 # deconstructed: halves X0+2..4 and X0+6..12
+ZF = Z0 + 32
+LINE_F = [(X0 + 2 + i, ZF) for i in range(4)]        # a build-mode Futuristic line (blueprint -> frame -> building)
+ZL = Z0 + 35
+LEGACY = [(X0 + 2 + i, ZL) for i in range(8)]       # S10: unstyled, built outside the menu
+
+
+def _members(st):
+    return {(m["x"], m["z"]): m for m in st.get("members") or []}
+
+
+def _cst(B):
+    B.ap("cprocess")
+    B.ticks(2)
+    return B.ap("cstyles:%d,%d,%d,%d" % SITE2)
+
+
+def _piece_look_bad(st):
+    """Every cord piece owned on a styled cell must print its cell's run look; returns the offenders and the count checked."""
+    mem = _members(st)
+    bad, n = [], 0
+    for p in st.get("pieces") or []:
+        m = mem.get(tuple(p["owner"]))
+        if not m or not m.get("look") or not p.get("strands"):
+            continue
+        n += 1
+        if p.get("look") != m["look"] or p.get("legacy") or p.get("strandTex") not in ((st.get("lookStrands") or {}).get(m["look"]) or []):
+            bad.append((p["owner"], m["look"], p.get("look"), p.get("strandTex")))
+    return bad, n
+
+
+def s9_runs(B, rows, res):
+    B.ap("cclearpicks")
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE2, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % SITE2)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % SITE2)
+    B.call("rimworld/frame_cell_rect", x=SITE2[0], z=SITE2[1], width=SITE2[2], height=SITE2[3], paddingCells=1)
+    B.ticks(2)
+    out = {}
+    # ---- S9a: two runs in two styles
+    a = B.ap("cline:PowerConduit:Industrial:%d,%d:%d,%d:god" % (RUN_A[0] + RUN_A[-1]))
+    b = B.ap("cline:PowerConduit:Modern_Orange:%d,%d:%d,%d:god" % (RUN_B[0] + RUN_B[-1]))
+    sw = B.ap("cplace:PowerSwitch:Modern:%d,%d:god" % SWITCH)
+    st = _cst(B)
+    mem = _members(st)
+    ok_a = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Industrial" for c in RUN_A)
+    ok_b = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Modern_Orange" for c in RUN_B) and (mem.get(SWITCH) or {}).get("rawStyle") == "PowerSwitch_Modern"
+    runs = {(mem.get(c) or {}).get("run") for c in RUN_A} | {(mem.get(c) or {}).get("run") for c in RUN_B}
+    pb, pn = _piece_look_bad(st)
+    V.row(rows, "S9a_two_runs_two_styles", "PASS" if a.get("success") and b.get("success") and sw.get("success") and ok_a and ok_b and len(runs) == 2 and pn >= 2 and not pb else "FAIL", "MOD",
+          {"runs": len(runs), "piecesChecked": pn, "pieceBad": pb[:6], "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"),
+           "errors": [x.get("error") for x in (a, b, sw) if not x.get("success")],
+           "meaning": "PASS = each run stores its picked style on every cell (the switch adopts its Modern run) and its cords print that look"})
+    # ---- S9b: a Futuristic cell bridging them -> the 6-cell Industrial run wins, the 3-cell run + switch are repainted
+    br = B.ap("cplace:PowerConduit:Futuristic:%d,%d:god" % BRIDGE)
+    st = _cst(B)
+    mem = _members(st)
+    allc = RUN_A + [BRIDGE] + RUN_B
+    wrong = [(c, (mem.get(c) or {}).get("rawStyle")) for c in allc if (mem.get(c) or {}).get("rawStyle") != "PowerConduit_Industrial"]
+    swr = (mem.get(SWITCH) or {}).get("rawStyle")
+    msg = st.get("lastMessage") or ""
+    pb, pn = _piece_look_bad(st)
+    V.row(rows, "S9b_bridge_largest_wins", "PASS" if br.get("success") and not wrong and swr == "PowerSwitch_Industrial" and "Modern" in msg and "Industrial" in msg
+          and len({(mem.get(c) or {}).get("run") for c in allc}) == 1 and not pb else "FAIL", "MOD",
+          {"wrong": wrong, "switch": swr, "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"), "message": msg, "counters": st.get("counters"), "pieceBad": pb[:6],
+           "meaning": "PASS = bridging Industrial(6) and Modern(3) with a Futuristic cell: one run, all Industrial incl. the switch, a message naming both"})
+    # ---- S9c: split by deconstruction -> both halves keep Industrial
+    dc = B.ap("cdeconstruct:%d,%d" % SPLIT)
+    st = _cst(B)
+    mem = _members(st)
+    left = [c for c in allc if c[0] < SPLIT[0]]
+    right = [c for c in allc if c[0] > SPLIT[0]] + [SWITCH]
+    kept = all((mem.get(c) or {}).get("look") == "Industrial" for c in left + right) and SPLIT not in mem
+    two = len({(mem.get(c) or {}).get("run") for c in left}) == 1 and len({(mem.get(c) or {}).get("run") for c in right}) == 1 and \
+        (mem.get(left[0]) or {}).get("run") != (mem.get(right[0]) or {}).get("run")
+    V.row(rows, "S9c_split_keeps_styles", "PASS" if dc.get("success") and kept and two else "FAIL", "MOD",
+          {"deconstruct": dc, "left": [(mem.get(c) or {}).get("rawStyle") for c in left], "right": [(mem.get(c) or {}).get("rawStyle") for c in right],
+           "meaning": "PASS = deconstructing the middle leaves two runs, each still Industrial"})
+    # ---- S9d: restyle the right half to Modern random mix; the left half is untouched; a build-mode Futuristic line
+    rs = B.ap("crestyle:%d,%d:Modern_Mix" % right[1])
+    fl = B.ap("cline:PowerConduit:Futuristic:%d,%d:%d,%d:build" % (LINE_F[0] + LINE_F[-1]))
+    fb = B.ap("cfinishbuild")
+    B.ticks(3)
+    st = _cst(B)
+    mem = _members(st)
+    r_ok = all((mem.get(c) or {}).get("rawStyle") == ("PowerSwitch_Modern" if c == SWITCH else "PowerConduit_Modern_Mix") for c in right)
+    l_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Industrial" for c in left)
+    f_ok = all((mem.get(c) or {}).get("rawStyle") == "PowerConduit_Futuristic" for c in LINE_F)
+    pb, pn = _piece_look_bad(st)
+    right_tex = {p.get("strandTex") for p in st.get("pieces") or [] if tuple(p["owner"]) in set(right)}
+    printed = st.get("printedTex") or {}
+    unprinted = sorted({p.get("strandTex") for p in st.get("pieces") or [] if p.get("strands")} - set(printed))
+    V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 4 and not pb and not unprinted else "FAIL", "MOD",
+          {"restyle": rs, "build": {"line": fl.get("success"), "finish": fb}, "rightColours": sorted(x for x in right_tex if x), "pieceBad": pb[:6],
+           "unprintedStrands": unprinted, "printedTex": printed, "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"),
+           "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern), build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
+    out["st"] = st
+    res["stage2_before"] = st
+    return out
+
+
+def s10_legacy(B, rows, res):
+    before = _cst(B)
+    mat0 = (before.get("counters") or {}).get("materialised")
+    bb = B.call("jawa/build_batch", ops=";".join("PowerConduit:%d,%d" % c for c in LEGACY), faction="player", wipeExisting=False)
+    B.ticks(3)
+    st = _cst(B)
+    mem = _members(st)
+    raw = [(mem.get(c) or {}).get("rawStyle") for c in LEGACY]
+    leg = [p for p in st.get("pieces") or [] if p["owner"][1] == ZL]
+    same = [p for p in leg if p.get("legacy") and p.get("legacySameMaterials")]
+    dl = st.get("defaultLook")
+    in_default = all(p.get("strandTex") in ((st.get("lookStrands") or {}).get(dl) or []) for p in leg if p.get("strands"))
+    V.row(rows, "S10_legacy_default_materials", "PASS" if len(mem.keys() & set(LEGACY)) == len(LEGACY) and all(r is None for r in raw) and leg and len(same) == len(leg)
+          and in_default and (st.get("counters") or {}).get("materialised") == mat0 else "FAIL", "MOD",
+          {"build": bb.get("success"), "rawStyles": raw, "pieces": len(leg), "sameMaterials": len(same), "defaultLook": dl, "defaultKey": st.get("defaultKey"),
+           "materialisedBefore": mat0, "materialisedAfter": (st.get("counters") or {}).get("materialised"),
+           "meaning": "PASS = an unstyled line stores nothing, processing writes nothing, and every piece chooses the SAME Material objects as the pre-stage-2 default-look set (older saves look unchanged)"})
+    return {"st": st}
+
+
+def _s9_snap(st):
+    return (sorted((m["x"], m["z"], m["def"], m.get("rawStyle")) for m in st.get("members") or []),
+            sorted((tuple(p["owner"]), p.get("key"), p.get("g"), p.get("strandTex"), p.get("legacy")) for p in st.get("pieces") or []))
+
+
+def s9_after_load(B, rows, s9, s10):
+    before = s10.get("st") or s9.get("st") or {}
+    st = {}
+    t0 = time.time()
+    while time.time() - t0 < 12.0:
+        st = _cst(B)
+        if len(st.get("members") or []) >= len(before.get("members") or []):
+            break
+        B.ticks(10)
+        time.sleep(1.0)
+    a, b = _s9_snap(before), _s9_snap(st)
+    V.row(rows, "S9e_runs_save_load", "PASS" if a == b and a[0] else "FAIL", "MOD",
+          {"members": len(a[0]), "pieces": len(a[1]), "membersDiffer": [x for x in a[0] if x not in b[0]][:6], "piecesDiffer": [x for x in a[1] if x not in b[1]][:6],
+           "meaning": "PASS = after save/load every cell's stored style and every piece's material index and strand texture are identical (legacy cells still store nothing)"})
 
 
 def _snapshot(st):

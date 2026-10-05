@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Messy Conduit per-build styles, STAGE 2: conduit runs (design/RimMandrake/messyconduit_style_per_build_design.md section 2,
+     owner decisions 2026-10-04). Names: <Def>_<Look>, and for Modern conduit <Def>_Modern_<Colour> / <Def>_Modern_Mix
+     (ConduitStyles.StyleDefName). The conduit styles are MARKERS: no graphicData, so Thing.Graphic keeps the def's own
+     (invisible) graphic and the cord layer reads the style to pick its materials. <Def>_Modern alone means "Modern, colour
+     never stored" (drawn by the default colour setting, like an unstyled cell). The switch styles carry the look's switch art
+     for the blueprint and the menu icon; the built switch is drawn by ConduitStylePicker's Building_PowerSwitch.Graphic
+     postfix (on/off per look). The style field itself is added to PowerConduit (inherited by WaterproofConduit) and
+     PowerSwitch by Patches/RM_ConduitStyleable.xml, only where no other mod added it. No StyleCategoryDef lists these. -->
+<Defs>
+
+  <!-- PowerConduit -->
+  <ThingStyleDef>
+    <defName>PowerConduit_Scrapper</defName>
+    <label>scrapper</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Industrial</defName>
+    <label>industrial</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern</defName>
+    <label>modern</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Orange</defName>
+    <label>modern, orange</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Green</defName>
+    <label>modern, green</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Brown</defName>
+    <label>modern, brown</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Yellow</defName>
+    <label>modern, yellow</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Blue</defName>
+    <label>modern, blue</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Modern_Mix</defName>
+    <label>modern, mixed colours</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerConduit_Futuristic</defName>
+    <label>futuristic</label>
+  </ThingStyleDef>
+
+  <!-- WaterproofConduit -->
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Scrapper</defName>
+    <label>scrapper</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Industrial</defName>
+    <label>industrial</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern</defName>
+    <label>modern</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Orange</defName>
+    <label>modern, orange</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Green</defName>
+    <label>modern, green</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Brown</defName>
+    <label>modern, brown</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Yellow</defName>
+    <label>modern, yellow</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Blue</defName>
+    <label>modern, blue</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Modern_Mix</defName>
+    <label>modern, mixed colours</label>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>WaterproofConduit_Futuristic</defName>
+    <label>futuristic</label>
+  </ThingStyleDef>
+
+  <!-- PowerSwitch -->
+  <ThingStyleDef>
+    <defName>PowerSwitch_Scrapper</defName>
+    <label>scrapper</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/PowerSwitch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerSwitch_Industrial</defName>
+    <label>industrial</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Industrial/PowerSwitch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerSwitch_Modern</defName>
+    <label>modern</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Modern/PowerSwitch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+  <ThingStyleDef>
+    <defName>PowerSwitch_Futuristic</defName>
+    <label>futuristic</label>
+    <graphicData>
+      <texPath>RimMandrake/MessyConduit/Styles/Futuristic/PowerSwitch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
+    </graphicData>
+  </ThingStyleDef>
+</Defs>
