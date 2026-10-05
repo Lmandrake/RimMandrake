@@ -759,8 +759,8 @@ def run_carry(args):
     B.hp("devmode:%d,%d=%s" % (CREEL + ("on" if was else "off",)))
     lo = [str(x) for x in (off.get("labels") or [])]
     lon = [str(x) for x in (on.get("labels") or [])]
-    bad = [x for x in lo if "Lay hose" in x or "Reel in" in x]
-    control = [x for x in lon if "Lay hose" in x or "Reel in" in x]
+    bad = [x for x in lo if "lay hose" in x.lower() or "reel in" in x.lower()]
+    control = [x for x in lon if "lay hose" in x.lower() or "reel in" in x.lower()]
     V.row(rows, "CR7_no_instant_gizmos_without_devmode",
           "PASS" if off.get("success") and off.get("devMode") is False and lo and not bad and control else "FAIL", "MOD",
           {"devModeOff_labels": lo, "offending": bad, "devModeOn_labels": lon, "control_found_in_devmode": control,
