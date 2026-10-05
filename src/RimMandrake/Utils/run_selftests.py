@@ -59,6 +59,12 @@ def per_test_timeout(path: Path) -> int:
 # changing this string.
 UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
 SEQUENTIAL_ISOLATED = {"selftest_render.py"}
+# Tests that load the large def dump: each passes alone but several at once (plus the
+# 16-worker pool) get SIGKILLed by the OOM killer with no output (SELFTEST_RUNNER_SILENT_OOM_1).
+# Serializing them among themselves was measured NOT enough (the Utinni one still died at ~17 s beside the
+# 16-worker pool), so they run ISOLATED after the pool, one at a time, like selftest_render.py.
+MEMORY_HEAVY = {"selftest_starwarspatches_semantics.py", "selftest_utinnipatches_dump.py",
+                "selftest_mandrakepatches.py"}
 # Per-test wall times from the previous run (path -> seconds). Used ONLY to start the
 # slowest tests first (longest-processing-time scheduling), so the long pole overlaps
 # everything else instead of starting last. Never read for a verdict. Lives in /tmp:
@@ -169,6 +175,11 @@ def run_one(path: Path) -> tuple[Path, str, float, str]:
         if proc.returncode == 0:
             return path, "PASS", elapsed, ""
         out = proc.stdout + proc.stderr
+        rc = proc.returncode
+        if rc < 0 or rc in (137, 139):  # killed by a signal: say so, never a silent FAIL
+            sig = -rc if rc < 0 else rc - 128
+            out += (f"\nKILLED by signal {sig} (rc={rc}) - SIGKILL(9) is almost always the OOM "
+                    "killer; rerun this test alone before believing it is a real failure")
         tail = out.strip().splitlines()[-40:]
         # UNMEASURED is not FAILED. A child that could not run at all — no
         # Windows-side dotnet.exe here, no live game — says so with the phrase
@@ -212,8 +223,9 @@ def main() -> int:
               "otherwise silently drop or re-add a selftest: " + ", ".join(sorted(stale)))
         return 1
 
-    pooled = [t for t in tests if t.name not in SEQUENTIAL_ISOLATED]
-    isolated = [t for t in tests if t.name in SEQUENTIAL_ISOLATED]
+    ISOLATED = SEQUENTIAL_ISOLATED | MEMORY_HEAVY
+    pooled = [t for t in tests if t.name not in ISOLATED]
+    isolated = [t for t in tests if t.name in ISOLATED]
 
     # Slowest-first (from last run's timings); unknown tests go first too, so a new
     # slow test cannot become the tail.
@@ -247,7 +259,7 @@ def main() -> int:
 
     for path, status, elapsed, detail in results:
         rel = path.relative_to(REPO_ROOT)
-        note = "  (isolated)" if path.name in SEQUENTIAL_ISOLATED else ""
+        note = "  (isolated)" if path.name in SEQUENTIAL_ISOLATED | MEMORY_HEAVY else ""
         print(f"{status:8s} {elapsed:6.1f}s  {rel}{note}")
         if status != "PASS" and detail:
             for line in detail.splitlines():
