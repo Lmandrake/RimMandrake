@@ -1,0 +1,3115 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "script": "validation_style.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T17:24:41",
+ "rows": [
+  {
+   "id": "S1_pick_reaches_blueprint",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = each picked look is the designator's style (getter patch, any game mode) and is stored on the blueprint"
+   }
+  },
+  {
+   "id": "S2_blueprint_frame_building",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Abbey",
+     "workerHasIdeo": true,
+     "frames": 5,
+     "built": 5,
+     "errors": []
+    },
+    "frameStyleRestored": 0,
+    "meaning": "PASS = the engine carried each look blueprint -> frame -> building, and each mast DRAWS its look's art"
+   }
+  },
+  {
+   "id": "S3_god_mode",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = god mode writes the picked look straight onto the building"
+   }
+  },
+  {
+   "id": "S4_copy_carries_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "copy": {
+     "success": true,
+     "cmd": "copy:40316:80,128",
+     "godMode": false,
+     "designatorStyle": "RM_AerialMast_Industrial",
+     "made": {
+      "id": 40320,
+      "def": "Blueprint_RM_AerialMast",
+      "x": 80,
+      "z": 128,
+      "rot": 0,
+      "rawStyle": "RM_AerialMast_Industrial",
+      "style": "RM_AerialMast_Industrial",
+      "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+      "drawnTex": "AerialMast",
+      "kind": "blueprint"
+     }
+    },
+    "built": "RM_AerialMast_Industrial",
+    "lastPicked": {
+     "RM_AerialMast": "Modern",
+     "RM_AerialLampMast": null,
+     "RM_AerialWallBracket": null
+    },
+    "meaning": "PASS = copying an Industrial mast builds Industrial although the button's last pick is Futuristic"
+   }
+  },
+  {
+   "id": "S5_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:40314:80,120",
+     "styleBefore": "RM_AerialMast_Futuristic",
+     "minifiedStyle": "RM_AerialMast_Futuristic",
+     "installBlueprint": 40324,
+     "installStyle": "RM_AerialMast_Futuristic"
+    },
+    "after": {
+     "id": 40314,
+     "rawStyle": "RM_AerialMast_Futuristic",
+     "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast"
+    }
+   }
+  },
+  {
+   "id": "S8_legacy_unstyled_draws_default",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": "RM_AerialMast_Scrapper",
+     "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast"
+    },
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = an unstyled mast stores NO style (an older save is unchanged) yet draws the default look"
+   }
+  },
+  {
+   "id": "S6_spans_in_pole_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spans": 33,
+    "sameLook": 25,
+    "mixedLook": 8,
+    "bad": [],
+    "lookSpans": {
+     "Scrapper": {
+      "tex": "Strand_Jawa",
+      "path": "RimMandrake/MessyConduit/Strand_Jawa",
+      "width": 0.14
+     },
+     "Industrial": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.17
+     },
+     "Modern": {
+      "tex": "Strand_BlackRubber",
+      "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+      "width": 0.095
+     },
+     "Futuristic": {
+      "tex": "Strand",
+      "path": "RimMandrake/MessyConduit/Styles/Cybertek/Strand",
+      "width": 0.095
+     }
+    },
+    "meaning": "PASS = a same-look span draws that look's cable; a mixed span draws the OLDER pole's (stage 1 stand-in)"
+   }
+  },
+  {
+   "id": "S7_save_load_styles",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "anchors": 59,
+    "differs": [],
+    "loadSeconds": 2
+   }
+  }
+ ],
+ "styles_before": {
+  "success": true,
+  "cmd": "styles",
+  "lookSpans": {
+   "Scrapper": {
+    "tex": "Strand_Jawa",
+    "path": "RimMandrake/MessyConduit/Strand_Jawa",
+    "width": 0.14
+   },
+   "Industrial": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.17
+   },
+   "Modern": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.095
+   },
+   "Futuristic": {
+    "tex": "Strand",
+    "path": "RimMandrake/MessyConduit/Styles/Cybertek/Strand",
+    "width": 0.095
+   }
+  },
+  "defaultLook": "Scrapper",
+  "lastPicked": {
+   "RM_AerialMast": "Modern",
+   "RM_AerialLampMast": null,
+   "RM_AerialWallBracket": null
+  },
+  "picks": 9,
+  "missingStyleDefs": [],
+  "frameStyleRestored": 0,
+  "godMode": true,
+  "anchors": [
+   {
+    "id": 40096,
+    "def": "RM_AerialMast",
+    "x": 22,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     22.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40097,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40097,
+    "def": "RM_AerialMast",
+    "x": 34,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     34.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40098,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40098,
+    "def": "RM_AerialMast",
+    "x": 46,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     46.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40099,
+    "def": "RM_AerialMast",
+    "x": 62,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     62.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40135,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40100,
+    "def": "RM_AerialMast",
+    "x": 102,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     102.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40139,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40101,
+    "def": "RM_AerialMast",
+    "x": 142,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     142.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40102,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40102,
+    "def": "RM_AerialMast",
+    "x": 154,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     154.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40103,
+    "def": "RM_AerialMast",
+    "x": 166,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     166.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40104,
+    "def": "RM_AerialMast",
+    "x": 32,
+    "z": 157,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     32.5,
+     157.5
+    ],
+    "spans": [
+     {
+      "other": 40137,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40105,
+    "def": "RM_AerialMast",
+    "x": 63,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     63.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40106,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40106,
+    "def": "RM_AerialMast",
+    "x": 79,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     79.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40107,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40107,
+    "def": "RM_AerialMast",
+    "x": 95,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     95.5,
+     154.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40108,
+    "def": "RM_AerialMast",
+    "x": 116,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     116.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40109,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40109,
+    "def": "RM_AerialMast",
+    "x": 135,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     135.5,
+     154.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40110,
+    "def": "RM_AerialMast",
+    "x": 224,
+    "z": 238,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     224.5,
+     238.5
+    ],
+    "spans": [
+     {
+      "other": 40111,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40111,
+    "def": "RM_AerialMast",
+    "x": 236,
+    "z": 249,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     236.5,
+     249.5
+    ],
+    "spans": [
+     {
+      "other": 40112,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40112,
+    "def": "RM_AerialMast",
+    "x": 249,
+    "z": 249,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     249.5,
+     249.5
+    ],
+    "spans": [
+     {
+      "other": 40113,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40113,
+    "def": "RM_AerialMast",
+    "x": 249,
+    "z": 234,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     249.5,
+     234.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40114,
+    "def": "RM_AerialMast",
+    "x": 18,
+    "z": 204,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     18.5,
+     204.5
+    ],
+    "spans": [
+     {
+      "other": 40115,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40115,
+    "def": "RM_AerialMast",
+    "x": 35,
+    "z": 204,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     35.5,
+     204.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40116,
+    "def": "RM_AerialMast",
+    "x": 57,
+    "z": 201,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     57.5,
+     201.5
+    ],
+    "spans": [
+     {
+      "other": 40117,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40117,
+    "def": "RM_AerialMast",
+    "x": 76,
+    "z": 201,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     76.5,
+     201.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40118,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 199,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     199.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40119,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     194.5
+    ],
+    "spans": [
+     {
+      "other": 40120,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40120,
+    "def": "RM_AerialMast",
+    "x": 117,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     117.5,
+     194.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40121,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40122,
+    "def": "RM_AerialMast",
+    "x": 118,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     118.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40123,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 206,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     206.5
+    ],
+    "spans": [
+     {
+      "other": 40124,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40124,
+    "def": "RM_AerialMast",
+    "x": 110,
+    "z": 219,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     110.5,
+     219.5
+    ],
+    "spans": [
+     {
+      "other": 40125,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40125,
+    "def": "RM_AerialMast",
+    "x": 123,
+    "z": 206,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     123.5,
+     206.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40126,
+    "def": "RM_AerialMast",
+    "x": 127,
+    "z": 214,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     127.5,
+     214.5
+    ],
+    "spans": [
+     {
+      "other": 40127,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40127,
+    "def": "RM_AerialMast",
+    "x": 137,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     137.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40128,
+    "def": "RM_AerialMast",
+    "x": 129,
+    "z": 222,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     129.5,
+     222.5
+    ],
+    "spans": [
+     {
+      "other": 40138,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40129,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     208.5
+    ],
+    "spans": [
+     {
+      "other": 40130,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40131,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40132,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40133,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40130,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 222,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     222.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40131,
+    "def": "RM_AerialMast",
+    "x": 186,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     186.5,
+     208.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40132,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     194.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40133,
+    "def": "RM_AerialMast",
+    "x": 158,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     158.5,
+     208.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40134,
+    "def": "RM_AerialMast",
+    "x": 183,
+    "z": 219,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     183.5,
+     219.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40135,
+    "def": "RM_AerialLampMast",
+    "x": 74,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     74.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40136,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40136,
+    "def": "RM_AerialLampMast",
+    "x": 86,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     86.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40137,
+    "def": "RM_AerialLampMast",
+    "x": 18,
+    "z": 166,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     18.5,
+     166.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40138,
+    "def": "RM_AerialLampMast",
+    "x": 132,
+    "z": 223,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     132.5,
+     223.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40139,
+    "def": "RM_AerialWallBracket",
+    "x": 114,
+    "z": 64,
+    "rot": 2,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_south",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     114.5,
+     63.884
+    ],
+    "spans": []
+   },
+   {
+    "id": 40140,
+    "def": "RM_AerialWallBracket",
+    "x": 111,
+    "z": 61,
+    "rot": 1,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_east",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     111.698,
+     61.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40141,
+    "def": "RM_AerialWallBracket",
+    "x": 117,
+    "z": 61,
+    "rot": 3,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_east",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     117.302,
+     61.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40142,
+    "def": "RM_AerialWallBracket",
+    "x": 113,
+    "z": 59,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_north",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     113.5,
+     59.776
+    ],
+    "spans": []
+   },
+   {
+    "id": 40310,
+    "def": "RM_AerialMast",
+    "x": 216,
+    "z": 212,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     216.5,
+     212.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40311,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40312,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40312,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40313,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.17
+     }
+    ]
+   },
+   {
+    "id": 40313,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     120.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40314,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40322,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40315,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40316,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40316,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40317,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.17
+     }
+    ]
+   },
+   {
+    "id": 40317,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40318,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     },
+     {
+      "other": 40319,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40318,
+    "def": "RM_AerialMast",
+    "x": 72,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     72.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40322,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40319,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 131,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     131.5
+    ],
+    "spans": [
+     {
+      "other": 40325,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40322,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40325,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 134,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     134.5
+    ],
+    "spans": []
+   }
+  ],
+  "pending": []
+ },
+ "save": {
+  "success": true,
+  "cmd": "styles",
+  "lookSpans": {
+   "Scrapper": {
+    "tex": "Strand_Jawa",
+    "path": "RimMandrake/MessyConduit/Strand_Jawa",
+    "width": 0.14
+   },
+   "Industrial": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.17
+   },
+   "Modern": {
+    "tex": "Strand_BlackRubber",
+    "path": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+    "width": 0.095
+   },
+   "Futuristic": {
+    "tex": "Strand",
+    "path": "RimMandrake/MessyConduit/Styles/Cybertek/Strand",
+    "width": 0.095
+   }
+  },
+  "defaultLook": "Scrapper",
+  "lastPicked": {
+   "RM_AerialMast": "Modern",
+   "RM_AerialLampMast": null,
+   "RM_AerialWallBracket": null
+  },
+  "picks": 9,
+  "missingStyleDefs": [],
+  "frameStyleRestored": 0,
+  "godMode": true,
+  "anchors": [
+   {
+    "id": 40096,
+    "def": "RM_AerialMast",
+    "x": 22,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     22.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40097,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40097,
+    "def": "RM_AerialMast",
+    "x": 34,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     34.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40098,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40098,
+    "def": "RM_AerialMast",
+    "x": 46,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     46.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40099,
+    "def": "RM_AerialMast",
+    "x": 62,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     62.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40135,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40100,
+    "def": "RM_AerialMast",
+    "x": 102,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     102.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40139,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40101,
+    "def": "RM_AerialMast",
+    "x": 142,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     142.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40102,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40102,
+    "def": "RM_AerialMast",
+    "x": 154,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     154.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40103,
+    "def": "RM_AerialMast",
+    "x": 166,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     166.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40104,
+    "def": "RM_AerialMast",
+    "x": 32,
+    "z": 157,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     32.5,
+     157.5
+    ],
+    "spans": [
+     {
+      "other": 40137,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40105,
+    "def": "RM_AerialMast",
+    "x": 63,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     63.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40106,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40106,
+    "def": "RM_AerialMast",
+    "x": 79,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     79.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40107,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40107,
+    "def": "RM_AerialMast",
+    "x": 95,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     95.5,
+     154.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40108,
+    "def": "RM_AerialMast",
+    "x": 116,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     116.5,
+     154.5
+    ],
+    "spans": [
+     {
+      "other": 40109,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40109,
+    "def": "RM_AerialMast",
+    "x": 135,
+    "z": 154,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     135.5,
+     154.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40110,
+    "def": "RM_AerialMast",
+    "x": 224,
+    "z": 238,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     224.5,
+     238.5
+    ],
+    "spans": [
+     {
+      "other": 40111,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40111,
+    "def": "RM_AerialMast",
+    "x": 236,
+    "z": 249,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     236.5,
+     249.5
+    ],
+    "spans": [
+     {
+      "other": 40112,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40112,
+    "def": "RM_AerialMast",
+    "x": 249,
+    "z": 249,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     249.5,
+     249.5
+    ],
+    "spans": [
+     {
+      "other": 40113,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40113,
+    "def": "RM_AerialMast",
+    "x": 249,
+    "z": 234,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     249.5,
+     234.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40114,
+    "def": "RM_AerialMast",
+    "x": 18,
+    "z": 204,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     18.5,
+     204.5
+    ],
+    "spans": [
+     {
+      "other": 40115,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40115,
+    "def": "RM_AerialMast",
+    "x": 35,
+    "z": 204,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     35.5,
+     204.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40116,
+    "def": "RM_AerialMast",
+    "x": 57,
+    "z": 201,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     57.5,
+     201.5
+    ],
+    "spans": [
+     {
+      "other": 40117,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40117,
+    "def": "RM_AerialMast",
+    "x": 76,
+    "z": 201,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     76.5,
+     201.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40118,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 199,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     199.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40119,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     194.5
+    ],
+    "spans": [
+     {
+      "other": 40120,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40120,
+    "def": "RM_AerialMast",
+    "x": 117,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     117.5,
+     194.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40121,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40122,
+    "def": "RM_AerialMast",
+    "x": 118,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     118.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40123,
+    "def": "RM_AerialMast",
+    "x": 97,
+    "z": 206,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     97.5,
+     206.5
+    ],
+    "spans": [
+     {
+      "other": 40124,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40124,
+    "def": "RM_AerialMast",
+    "x": 110,
+    "z": 219,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     110.5,
+     219.5
+    ],
+    "spans": [
+     {
+      "other": 40125,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40125,
+    "def": "RM_AerialMast",
+    "x": 123,
+    "z": 206,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     123.5,
+     206.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40126,
+    "def": "RM_AerialMast",
+    "x": 127,
+    "z": 214,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     127.5,
+     214.5
+    ],
+    "spans": [
+     {
+      "other": 40127,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40127,
+    "def": "RM_AerialMast",
+    "x": 137,
+    "z": 200,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     137.5,
+     200.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40128,
+    "def": "RM_AerialMast",
+    "x": 129,
+    "z": 222,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     129.5,
+     222.5
+    ],
+    "spans": [
+     {
+      "other": 40138,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40129,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     208.5
+    ],
+    "spans": [
+     {
+      "other": 40130,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40131,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40132,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     },
+     {
+      "other": 40133,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40130,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 222,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     222.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40131,
+    "def": "RM_AerialMast",
+    "x": 186,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     186.5,
+     208.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40132,
+    "def": "RM_AerialMast",
+    "x": 172,
+    "z": 194,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     172.5,
+     194.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40133,
+    "def": "RM_AerialMast",
+    "x": 158,
+    "z": 208,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     158.5,
+     208.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40134,
+    "def": "RM_AerialMast",
+    "x": 183,
+    "z": 219,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     183.5,
+     219.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40135,
+    "def": "RM_AerialLampMast",
+    "x": 74,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     74.5,
+     64.5
+    ],
+    "spans": [
+     {
+      "other": 40136,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40136,
+    "def": "RM_AerialLampMast",
+    "x": 86,
+    "z": 64,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     86.5,
+     64.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40137,
+    "def": "RM_AerialLampMast",
+    "x": 18,
+    "z": 166,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     18.5,
+     166.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40138,
+    "def": "RM_AerialLampMast",
+    "x": 132,
+    "z": 223,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialLampMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMast",
+    "drawnTex": "AerialLampMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialLampMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     132.5,
+     223.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40139,
+    "def": "RM_AerialWallBracket",
+    "x": 114,
+    "z": 64,
+    "rot": 2,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_south",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     114.5,
+     63.884
+    ],
+    "spans": []
+   },
+   {
+    "id": 40140,
+    "def": "RM_AerialWallBracket",
+    "x": 111,
+    "z": 61,
+    "rot": 1,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_east",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     111.698,
+     61.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40141,
+    "def": "RM_AerialWallBracket",
+    "x": 117,
+    "z": 61,
+    "rot": 3,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_east",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     117.302,
+     61.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40142,
+    "def": "RM_AerialWallBracket",
+    "x": 113,
+    "z": 59,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialWallBracket_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/WallBracket",
+    "drawnTex": "WallBracket_north",
+    "look": "Scrapper",
+    "topTex": null,
+    "attachZ": 0.27,
+    "insulators": 1,
+    "basePoint": [
+     113.5,
+     59.776
+    ],
+    "spans": []
+   },
+   {
+    "id": 40310,
+    "def": "RM_AerialMast",
+    "x": 216,
+    "z": 212,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     216.5,
+     212.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40311,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40312,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40312,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40313,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.17
+     }
+    ]
+   },
+   {
+    "id": 40313,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     120.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40314,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 120,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     120.5
+    ],
+    "spans": [
+     {
+      "other": 40322,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40315,
+    "def": "RM_AerialMast",
+    "x": 60,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Scrapper",
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     60.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40316,
+      "look": "Scrapper",
+      "expectLook": "Scrapper",
+      "spanTex": "Strand_Jawa",
+      "width": 0.14
+     }
+    ]
+   },
+   {
+    "id": 40316,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40317,
+      "look": "Industrial",
+      "expectLook": "Industrial",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.17
+     }
+    ]
+   },
+   {
+    "id": 40317,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40318,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     },
+     {
+      "other": 40319,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40318,
+    "def": "RM_AerialMast",
+    "x": 72,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Futuristic",
+    "style": "RM_AerialMast_Futuristic",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Futuristic",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Futuristic/AerialMastTop",
+    "attachZ": 3.281,
+    "insulators": 3,
+    "basePoint": [
+     72.5,
+     128.5
+    ],
+    "spans": [
+     {
+      "other": 40322,
+      "look": "Futuristic",
+      "expectLook": "Futuristic",
+      "spanTex": "Strand",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40319,
+    "def": "RM_AerialMast",
+    "x": 68,
+    "z": 131,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Modern",
+    "style": "RM_AerialMast_Modern",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Modern",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Modern/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     68.5,
+     131.5
+    ],
+    "spans": [
+     {
+      "other": 40325,
+      "look": "Modern",
+      "expectLook": "Modern",
+      "spanTex": "Strand_BlackRubber",
+      "width": 0.095
+     }
+    ]
+   },
+   {
+    "id": 40322,
+    "def": "RM_AerialMast",
+    "x": 80,
+    "z": 128,
+    "rot": 0,
+    "rawStyle": "RM_AerialMast_Industrial",
+    "style": "RM_AerialMast_Industrial",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Industrial",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Industrial/AerialMastTop",
+    "attachZ": 3.242,
+    "insulators": 3,
+    "basePoint": [
+     80.5,
+     128.5
+    ],
+    "spans": []
+   },
+   {
+    "id": 40325,
+    "def": "RM_AerialMast",
+    "x": 64,
+    "z": 134,
+    "rot": 0,
+    "rawStyle": null,
+    "style": "RM_AerialMast_Scrapper",
+    "graphicPath": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMast",
+    "drawnTex": "AerialMast",
+    "look": "Scrapper",
+    "topTex": "RimMandrake/MessyConduit/Aerial/Styles/Scrapper/AerialMastTop",
+    "attachZ": 3.223,
+    "insulators": 3,
+    "basePoint": [
+     64.5,
+     134.5
+    ],
+    "spans": []
+   }
+  ],
+  "pending": []
+ }
+}
