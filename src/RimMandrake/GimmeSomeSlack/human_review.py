@@ -1377,6 +1377,17 @@ class Review(object):
             out[s["n"]] = r
         return out
 
+    def sweep_hostiles(self):
+        """Owner 2026-10-05 ("kill all hostiles on any review map, there were mechanoids running around"): every non-colonist
+        pawn is destroyed (jawa/destroy_bulk nonColonists is pawns only, never buildings), the incident queue emptied and the
+        storyteller held Peaceful. Run at the end of a build and on every --goto, because a raid can land after the setup."""
+        r = self.B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        self.B.call("jawa/incident_queue_clear")
+        n = r.get("matchedCount") if isinstance(r, dict) else None
+        if n:
+            self.notes.append("swept %s hostile/non-colonist pawn(s) off the review map" % n)
+        return r
+
     def labels(self, S, style):
         r = self.B.call("jawa/review_label", action="clear", tag=TAG)
         r = self.B.call("jawa/review_label", action="add", ops=label_ops(S, style), tag=TAG)
@@ -1385,6 +1396,7 @@ class Review(object):
         return r
 
     def goto(self, S, which, sub=None):
+        self.sweep_hostiles()
         if sub and which not in ("0", "all") and which.upper() not in ("F", "N0", "S0", "M"):
             s = next(s for s in S if str(s["n"]) == which)
             dx, dz, w, h = sub
@@ -1561,6 +1573,7 @@ def main(argv=None):
         R.say("region cleared")
         style = style or "StarWarsJawa"
         R.build(S, style)
+        R.sweep_hostiles()
         R.say("stations built; hose states %s" % R.hose_states)
         lab = R.labels(S, style)
         R.say("labels: added %s, refused %s" % (lab.get("added"), lab.get("refused")))
