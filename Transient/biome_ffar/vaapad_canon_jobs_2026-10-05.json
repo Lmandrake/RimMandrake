@@ -1,0 +1,27 @@
+[
+ {
+  "id": "vapaad_canon_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Vapaad",
+  "target_original": "Vaapad",
+  "prompt": "RimWorld creature sprite: the Vaapad (Legends canon, Wookieepedia Vaapad/Legends): a BROWN, BALL-SHAPED, squat invertebrate predator with TWO YELLOW EYES and a mass of many thin whip-like tentacles (at least seven, as many as twenty-three) radiating from the round body, as if ready to lash. The body is the creature: a round brown ball, low to the ground, no wings, no legs, no shell plates, no fins, no hydrocarbon or glass look. The attached canon image is a tiny Force Commander game sprite that shows a blue-grey squat ball-bodied many-limbed shape; follow its squat ball-with-limbs silhouette but use the written canon colour (brown) and eyes (yellow) from the Visual brief. Previous attempt (a glassy hydrocarbon tentacle creature) was rejected as not being a vaapad.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "blue desert, starlit cold light; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Creature carries its own canon colours (brown body, yellow eyes). Same individual in all three facings.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "vaapad",
+  "owner_note": "Option B is a FANTASTIC creature to move to the Propane Lakes biome, but it's simply not a vapaad (canon creature). Please look at the canon images and follow them carefully and regenerate, but keep Option B in the Propane Lakes.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/vaapad/wookieepedia_vaapad.jpg"
+  ]
+ }
+]
