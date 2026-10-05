@@ -50,3 +50,8 @@ Re-run `validation_hose_maze_20261004T235424.json`: 7 PASS + P1 RECORD.
 - No check changed. CR4b's check (Carrying or Dropped, trail kept, pending Deploy kept) already matched §11.
 
 ## Result
+`--carry` green at 3824a232d (9 PASS, CR5c SKIP = S4). Regression sweep clean after d8ab7ed3f (maze check fixes).
+Still owed — S4: live drawing during carry, `endKind` in the census (un-SKIPs CR5c), HoseEnds/HoseEvents, animated
+winder-less auto-retract. S5: HoseJobTuning onto the settings page, review stations 43-47, CR7 (gizmos without DevMode).
+Also open: maze P1 (reel couples to tank) is unmeasured on the messyconduit tier and needs a FlowWorks-loaded tier; the
+per-tick `World()` cache means a same-tick edit+lay sees the old world.
