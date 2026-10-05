@@ -16,6 +16,10 @@ namespace RimMandrake.MessyConduit.Hose
     ///
     /// census | lay:rx,rz,x,z | check:rx,rz,x,z | reelin:rx,rz | flow:rx,rz=on|off | end:rx,rz=nozzle|cap |
     /// set:field=value | defaults. (rx,rz) is the reel's cell. flow: drives the DEBUG provider (b).
+    /// Carry stage S2 (hose_carry_design_2026-10-04.md section 13): order:rx,rz=deploy:x,z|move:x,z|retract|cancel places
+    /// the PLAYER's order exactly as the gizmos do; settrail:rx,rz=laid|dropped;x,z;x,z;... stages a walked trail (review map
+    /// station 44); gizmos:rx,rz lists the reel's gizmo labels under the CURRENT dev-mode flag (CR7). lay/reelin stay the
+    /// instant staging verbs and work with dev mode off.
     /// </summary>
     public static class HoseProbe
     {
@@ -80,6 +84,42 @@ namespace RimMandrake.MessyConduit.Hose
                 case "end":
                     r.end = val == "cap" ? HoseEnd.EndCap : HoseEnd.Nozzle;
                     return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
+                case "order":
+                {
+                    string why;
+                    string o = val ?? "";
+                    if (o.StartsWith("deploy:")) { int[] t = Ints(o.Substring(7)); why = r.OrderDeploy(new IntVec3(t[0], 0, t[1])); }
+                    else if (o.StartsWith("move:")) { int[] t = Ints(o.Substring(5)); why = r.OrderMove(new IntVec3(t[0], 0, t[1])); }
+                    else if (o == "retract") why = r.OrderRetract();
+                    else if (o == "cancel") { r.CancelOrder(); why = null; }
+                    else return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"order must be deploy:x,z|move:x,z|retract|cancel\"}";
+                    return "{\"success\":" + B(why == null) + ",\"cmd\":" + S(cmd) + ",\"reason\":" + S(why) + ",\"pending\":" + S(r.pending.ToString()) +
+                           ",\"pendingAt\":" + Pos(r.pendingAt) + ",\"carry\":" + S(r.carry.ToString()) + "}";
+                }
+                case "settrail":
+                {
+                    // laid|dropped;x,z;x,z;... : the first cell should be a reel cell (where the hose leaves the drum)
+                    string[] parts = (val ?? "").Split(';');
+                    HoseCarryState st = parts[0] == "dropped" ? HoseCarryState.Dropped : HoseCarryState.Laid;
+                    var cells = parts.Skip(1).Where(x => x.Trim().Length > 0).Select(x => { int[] t = Ints(x); return new IntVec3(t[0], 0, t[1]); }).ToList();
+                    if (cells.Count == 0) return "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":\"no cells\"}";
+                    r.ReelIn();
+                    r.trail.AddRange(cells);
+                    r.far = cells[cells.Count - 1];
+                    r.carry = st;
+                    r.laid = true;
+                    r.layKey = null;
+                    r.lay = null;
+                    r.parent.DirtyMapMesh(map);
+                    comp.EnsureLay(r);
+                    return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"carry\":" + S(r.carry.ToString()) + ",\"trail\":" + r.trail.Count +
+                           ",\"trailLength\":" + D(r.TrailLength()) + ",\"layOk\":" + B(r.lay != null) + "}";
+                }
+                case "gizmos":
+                {
+                    var labels = r.CompGetGizmosExtra().OfType<Command>().Select(g => g.Label).ToList();
+                    return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"devMode\":" + B(Prefs.DevMode) + ",\"labels\":[" + string.Join(",", labels.Select(S)) + "]}";
+                }
                 case "clearhist":
                     r.history.Clear();
                     return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
@@ -121,6 +161,13 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"far\":[").Append(r.far.x).Append(',').Append(r.far.z).Append(']')
                   .Append(",\"laid\":").Append(B(r.laid))
                   .Append(",\"layOk\":").Append(B(lay != null))
+                  .Append(",\"carry\":").Append(S(r.carry.ToString()))
+                  .Append(",\"carrier\":").Append(r.carrier == null ? "null" : "{\"id\":" + r.carrier.thingIDNumber + ",\"name\":" + S(r.carrier.LabelShort) + ",\"pos\":" + Pos(r.carrier.Position) + "}")
+                  .Append(",\"trail\":{\"count\":").Append(r.trail.Count).Append(",\"pulled\":").Append(D(r.TrailLength()))
+                  .Append(",\"last\":").Append(r.trail.Count > 0 ? Pos(r.trail[r.trail.Count - 1]) : "null").Append(",\"planned\":").Append(B(r.trail.Count == 0)).Append('}')
+                  .Append(",\"pending\":").Append(S(r.pending.ToString()))
+                  .Append(",\"pendingAt\":").Append(Pos(r.pendingAt))
+                  .Append(",\"wound\":").Append(D(r.wound))
                   .Append(",\"end\":").Append(S(r.end.ToString()))
                   .Append(",\"state\":").Append(S(r.sm.State.ToString()))
                   .Append(",\"stateSince\":").Append(r.sm.Since)
@@ -184,6 +231,7 @@ namespace RimMandrake.MessyConduit.Hose
             return sb.ToString();
         }
 
+        private static string Pos(IntVec3 c) => c.IsValid ? "[" + c.x + "," + c.z + "]" : "null";
         private static string RelayPos(CompHoseReel r) => r == null ? "null" : "[" + r.parent.Position.x + "," + r.parent.Position.z + "]";
         private static string EndPos(RM_MapComponent_Hoses comp, CompHoseReel r)
         {

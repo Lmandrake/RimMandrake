@@ -50,6 +50,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             Row3Stretch();
             Row4Random();
             Row5Clip();
+            Row6Legacy();
         }
 
         private static void Row1Table()
@@ -213,6 +214,65 @@ namespace RimMandrake.MessyConduit.SelfTest
             t.ShortenBy(12, w);
             double after = t.PulledLength(w);
             Check(Math.Abs((before - after) - 12) <= 1.0, "row5 trail ShortenBy 12 shortens the pulled hose by 12 within one sample (" + (before - after).ToString("0.0") + ")");
+        }
+
+        private static ulong Hash(HoseLay lay)
+        {
+            ulong h = 1469598103934665603UL;
+            foreach (V2 p in lay.Flat.Concat(lay.Plump).Concat(lay.Centre))
+            {
+                h = (h ^ unchecked((ulong)(long)Math.Round(p.X * 1000))) * 1099511628211UL;
+                h = (h ^ unchecked((ulong)(long)Math.Round(p.Z * 1000))) * 1099511628211UL;
+            }
+            return h;
+        }
+
+        /// <summary>Row 6 (stage S2): a reel saved before the carry stage {laid=true, no rmHoseCarry key} reads as Laid with an
+        /// empty trail, and an empty trail lays the PLANNED route byte-identically to HoseMath.Lay (today's geometry). Plus
+        /// LayAlong's own point: a walked detour is laid along the walk, not re-planned.</summary>
+        private static void Row6Legacy()
+        {
+            Check(HoseCarryLoad.Resolve(true, S, 0) == L && HoseCarryLoad.IsLaid(L), "row6 legacy {laid, no carry key} reads as Laid (laid flag kept)");
+            Check(HoseCarryLoad.Resolve(false, S, 0) == S && !HoseCarryLoad.IsLaid(S), "row6 legacy {not laid} reads as Stored");
+            Check(HoseCarryLoad.Resolve(true, D, 5) == D && HoseCarryLoad.Resolve(false, C, 5) == C && HoseCarryLoad.IsLaid(D),
+                "row6 a carry-stage save keeps its own state (Dropped, Carrying)");
+            Check(HoseCarryLoad.Resolve(false, C, 0) == S && HoseCarryLoad.Resolve(true, R, 0) == L, "row6 a Carrying/Retracting save with no trail never comes back un-drawable");
+
+            // station-23-like fixture: a wall stub between the reel and the end
+            CordWorld w = Open(80, 40);
+            for (int z = 8; z <= 18; z++) w.SetBlocked(new Cell(25, z), BlockKind.Wall);
+            var rect = new HoseReelRect(10, 12, 2, 2);
+            V2 a = rect.Mouth, b = new Cell(36, 13).Centre;
+            var sp = new HoseShapeParams { MaxLength = 40 };
+            const ulong seed = 7919UL * 123 + 17;
+            HoseLay today = HoseMath.Lay(w, a, b, sp, seed);
+            HoseLay legacy = HoseMath.LayAlong(w, a, new List<Cell>(), b, sp, seed);
+            Check(today.Ok && legacy.Ok && Hash(today) == Hash(legacy) && today.Flat.Count == legacy.Flat.Count,
+                "row6 an empty trail lays the planned route byte-identically to HoseMath.Lay (" + Hash(today).ToString("x16") + " vs " + Hash(legacy).ToString("x16") + ")");
+            // relay-shaped end (endInward) too
+            HoseLay todayR = HoseMath.Lay(w, a, b, sp, seed, new V2(1, 0));
+            HoseLay legacyR = HoseMath.LayAlong(w, a, null, b, sp, seed, new V2(1, 0));
+            Check(todayR.Ok && Hash(todayR) == Hash(legacyR), "row6 ... and with a relay end (endInward)");
+
+            // a walked detour: north past the stub's top and far east before coming back down to the end
+            var walk = new List<Cell>();
+            Cell cur = new Cell(11, 13);
+            walk.Add(cur);
+            foreach (var (x, z) in new[] { (11, 22), (30, 22), (36, 13) })
+                while (cur.X != x || cur.Z != z)
+                {
+                    cur = new Cell(cur.X + Math.Sign(x - cur.X), cur.Z + Math.Sign(z - cur.Z));
+                    walk.Add(cur);
+                }
+            HoseLay walked = HoseMath.LayAlong(w, a, walk, b, sp, seed);
+            double maxZ = walked.Ok ? walked.Flat.Max(q => q.Z) : 0, plannedMaxZ = today.Flat.Max(q => q.Z);
+            Check(walked.Ok && HoseMath.Clear(w, walked.Flat) && Math.Abs(walked.Flat[walked.Flat.Count - 1].X - b.X) < 1e-6 && Math.Abs(walked.Flat[walked.Flat.Count - 1].Z - b.Z) < 1e-6,
+                "row6 LayAlong lays a walked trail clear of the wall and ends at the end cell (ok " + walked.Ok + ", reason " + walked.Reason + ")");
+            Check(maxZ > 21 && maxZ > plannedMaxZ + 2, "row6 the walked hose follows the walk north to z~22 (" + maxZ.ToString("0.0") + "), the planned one does not (" + plannedMaxZ.ToString("0.0") + ")");
+            // can-fail: laying the walk's END alone (what a re-plan would do) does not follow the walk, and a non-empty trail is
+            // not the planned geometry
+            Check(Hash(walked) != Hash(today), "row6 can-fail: a walked trail is not laid as the planned route");
+            Check(HoseCarryLoad.Resolve(false, S, 0) != L, "row6 can-fail: a reel that was not laid does not come back Laid");
         }
     }
 }

@@ -206,12 +206,35 @@ namespace RimMandrake.MessyConduit.Hose
         /// coupling sits on the receiving reel's inlet axis instead of the last bend's tangent.</param>
         public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null)
         {
-            var lay = new HoseLay();
             V2 bPlan = endInward.HasValue ? b - endInward.Value * HoseRelay.EndStraight : b;
             CordPlan plan = CordPlanner.Plan(w, a, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
-            if (!plan.Ok) { lay.Reason = "no route"; return lay; }
+            if (!plan.Ok) return new HoseLay { Reason = "no route" };
             if (endInward.HasValue) plan.Points.Add(b);
-            List<V2> C = CordPlanner.RoundCorners(plan.Points, Math.Max(0.45, p.MinBendRadius));
+            return LayOn(w, a, b, plan.Points, p, seed, endInward);
+        }
+
+        /// <summary>Colonist-carried hose (hose_carry_design_2026-10-04 section 6, stage S2): lay the hose along the cells
+        /// a colonist actually WALKED instead of a planned route. The walked cells are pulled taut from the reel's mouth
+        /// (HoseTrail.Pulled: any-angle, never through a wall or a pinched diagonal) and then run through exactly Lay's
+        /// round -> settle -> stiffen pipeline. An EMPTY route is the legacy / DEV "planned" hose: it is HoseMath.Lay
+        /// itself, so a save written before the carry stage lays byte-identically.</summary>
+        public static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null)
+        {
+            if (route == null || route.Count == 0) return Lay(w, a, b, p, seed, endInward);
+            var t = new HoseTrail(a, double.PositiveInfinity);
+            t.Cells.AddRange(route);
+            List<V2> pts = t.Pulled(w);
+            // the walked end is the end cell's centre; a relay end (or any end point off that centre) is reached from it
+            if (V2.Dist(pts[pts.Count - 1], b) > 1e-6) pts.Add(b);
+            if (pts.Count < 2) return new HoseLay { Reason = "no route" };
+            return LayOn(w, a, b, pts, p, seed, endInward);
+        }
+
+        /// <summary>Lay's shared tail: round the route's corners, settle the slack, stiffen, place the joiners.</summary>
+        private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward)
+        {
+            var lay = new HoseLay();
+            List<V2> C = CordPlanner.RoundCorners(planPoints, Math.Max(0.45, p.MinBendRadius));
             CordLayer.ProjectOut(w, C);
             C[0] = a;
             C[C.Count - 1] = b;
@@ -244,7 +267,7 @@ namespace RimMandrake.MessyConduit.Hose
                 // round 4: the rounded centreline itself can clip a stub corner in a one-cell zig-zag; the string-pulled
                 // plan (line of sight between its corners) is the last resort, and a hose that still crosses a wall is
                 // not laid at all (the reel retracts it with the reason) rather than drawn through the wall
-                if (!Clear(w, F)) F = Geo.Resample(plan.Points, Sample);
+                if (!Clear(w, F)) F = Geo.Resample(planPoints, Sample);
                 if (!Clear(w, F)) { lay.Reason = "no clear route (corners too tight for the hose)"; return lay; }
             }
             int n = Math.Max(8, F.Count);

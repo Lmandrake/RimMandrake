@@ -145,7 +145,8 @@ namespace RimMandrake.MessyConduit.Hose
         {
             relay = RelayOf(r);
             inward = null;
-            var far = new Cell(r.far.x, r.far.z);
+            IntVec3 ec = r.EndCell;   // S2: far while laid/dropped, the trail's last cell while carried or wound
+            var far = new Cell(ec.x, ec.z);
             if (relay == null) return far.Centre;
             V2 e = HoseRelay.DrawnEnd(relay.Rect, far, HoseMaterials.LookOf(relay), relay.laid, out V2 d);
             inward = d;
@@ -159,16 +160,17 @@ namespace RimMandrake.MessyConduit.Hose
 
         public HoseLay EnsureLay(CompHoseReel r)
         {
-            if (!r.laid || !r.far.IsValid) return null;
+            if (!r.HoseOut) return null;
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
-            // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key
-            string key = r.parent.Position + ">" + r.far + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + "|" + HoseSettings.ShapeFingerprint();
+            // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
+            // walked trail (empty = the planned route, the key as before)
+            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + HoseSettings.ShapeFingerprint();
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             HoseShapeParams sp = HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
-            HoseLay lay = HoseMath.Lay(w, Start(r), end, sp, r.Seed, inward);
+            HoseLay lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward);
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
@@ -213,6 +215,10 @@ namespace RimMandrake.MessyConduit.Hose
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
+                // S2, design section 5 b: a carried / wound hose's holder is re-checked every 30 ticks (the RopingTick
+                // pattern) so an end is never held by a pawn that stopped holding it
+                if ((r.carry == HoseCarryState.Carrying || r.carry == HoseCarryState.Retracting) && (now + r.parent.thingIDNumber) % 30 == 0)
+                    r.HolderCheck();
                 if (!r.laid) continue;
                 bool sig = HoseFlow.Signal(r, now, out r.lastProvider);
                 r.lastSignal = sig;
@@ -228,6 +234,14 @@ namespace RimMandrake.MessyConduit.Hose
                 // A failed lay is never left laid-but-invisible (no ghost hose).
                 if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash))
                 {
+                    // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the
+                    // planned route from the reel; the walked shape is lost, which is right: the obstacle moved it
+                    if (r.trail.Count > 0 && (r.lay == null || !r.TrailWalkable(World())))
+                    {
+                        r.trail.Clear();
+                        r.layKey = null;
+                        continue;
+                    }
                     string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
                     if (why != null) { r.Retract(why); Retracts++; continue; }
                     r.layKey = null;

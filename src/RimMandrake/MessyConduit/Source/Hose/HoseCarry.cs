@@ -252,4 +252,28 @@ namespace RimMandrake.MessyConduit.Hose
             return null;
         }
     }
+
+    /// <summary>Stage S2: the order a player placed on a reel (saved as rmHosePending, appended order only). Nothing in
+    /// S2 executes it; the S3 WorkGiver takes reels whose pending is not None.</summary>
+    public enum HosePendingOrder { None = 0, Deploy = 1, Move = 2, Retract = 3 }
+
+    /// <summary>Stage S2 (design section 11): how a reel's saved fields read back. Verse-free so the selftest (row 6)
+    /// exercises the same rule the reel's PostLoadInit runs.</summary>
+    public static class HoseCarryLoad
+    {
+        /// <summary>The reel's `laid` flag (still written, read by flow, relays, probe and alert) for a carry state.</summary>
+        public static bool IsLaid(HoseCarryState s) => s == HoseCarryState.Laid || s == HoseCarryState.Dropped;
+
+        /// <summary>The state a loaded reel is in. A save written before the carry stage has no rmHoseCarry key (reads as
+        /// Stored): laid == true there means Laid with an EMPTY trail, i.e. today's planned route. A Carrying or
+        /// Retracting reel with no trail (a damaged save) has nothing to draw and reads as Stored, or Laid when the old
+        /// laid flag says the hose was out.</summary>
+        public static HoseCarryState Resolve(bool laid, HoseCarryState saved, int trailCount)
+        {
+            if (saved == HoseCarryState.Stored) return laid ? HoseCarryState.Laid : HoseCarryState.Stored;
+            if ((saved == HoseCarryState.Carrying || saved == HoseCarryState.Retracting) && trailCount == 0)
+                return laid ? HoseCarryState.Laid : HoseCarryState.Stored;
+            return saved;
+        }
+    }
 }
