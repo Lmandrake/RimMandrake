@@ -26,3 +26,8 @@
 - Review tooling: `validation_style.py` S9d builds a 3-cell Modern-mix spur (MIX_SPUR) off the right half so the mix run has >= 3 node-to-node pieces, and requires each mix piece ONE colour (mixTex == [strandTex]), >= 2 colours across the pieces, every colour printed (and its LOD mesh when LOD is on). `human_review.py` station 5: height 19 -> 23, two 3-cell mix spurs up off the mix row (x 5 and 9, z 19-21), the check reads >= 3 mix pieces in >= 2 colours, each piece uniform; texts updated. `selftest_human_review.py` 24/24.
 - Unproven live: everything above (offline only; the review map needs a rebuild for station 5's new spurs).
 - Hose: `HoseMath.WireVisibleWidth` still says StrandWidth 0.11 (comment + 0.11 constant); Hose files were off limits this round.
+
+## Commit record
+- 466749d46 cords r5 source + selftests + S9d/station 5 + this report; 4554fb531 DLL+srchash from committed source.
+- The Industrial span width (AerialMaterials.WidthOf 0.17 -> 0.10) landed inside the lamp/hose agent's d7fb73e3a (its pathspec commit took the worktree file, which held this edit).
+- The first ./publish hit an autostash reset failure (shared clone, lock contention); the stale rebase state was cleared by the time it was checked, nothing was lost, and the commits were pushed by hand after the DLL rebuild.
