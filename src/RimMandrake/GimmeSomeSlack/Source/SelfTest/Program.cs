@@ -201,21 +201,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// (CordBuilder.IntoArt), so its END run lies inside the machine's own (unwalkable) footprint by design. The floor
         /// and attachment checks judge the strand with that end run trimmed off; a vertex inside a footprint anywhere else
         /// in the strand still fails them.</summary>
-        internal static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
-        {
-            // round 4: a cord into a wall/rock face runs on PastFaceDepth under the wall by design (CordBuilder.PastFace)
-            bool PastFace(V2 p)
-            {
-                if (w.IsWalkable(p.Floor)) return false;
-                double fx = p.X - Math.Floor(p.X), fz = p.Z - Math.Floor(p.Z);
-                return Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz)) <= CordBuilder.PastFaceDepth + 0.005;
-            }
-            bool In(V2 p) => PastFace(p) || w.Machines.Any(m => p.X >= m.X0 && p.X < m.X0 + m.W && p.Z >= m.Z0 && p.Z < m.Z0 + m.H);
-            int a = 0, b = pts.Count - 1;
-            while (a < b && In(pts[a])) a++;
-            while (b > a && In(pts[b])) b--;
-            return pts.GetRange(a, b - a + 1);
-        }
+        internal static List<V2> TrimUnderArt(CordWorld w, List<V2> pts) => CordAudit.TrimUnderArt(w, pts);   // one rule, shared with the live probe
 
         private static void GeometryChecks(string name, JsonElement sc)
         {

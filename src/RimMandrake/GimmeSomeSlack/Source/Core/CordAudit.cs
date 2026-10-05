@@ -22,6 +22,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
     public static class CordAudit
     {
+        /// <summary>The floor rule's view of a laid strand (walk M2b; shared by the offline SelfTest and the live probe so the
+        /// two instruments cannot drift apart again -- the probe counted the round-2/round-4 ends as faults until 2026-10-05).
+        /// By design a strand's END runs may lie inside unwalkable cells: (round 2) a cord into a machine runs on under its
+        /// art to the footprint centroid (CordBuilder.IntoArt); (round 4) a cord into a wall/rock face ends at its socket on
+        /// a plate mounted ON that face, and a loose wire leaves that socket (WallMount: within SouthBand / SideBevel /
+        /// NorthSliver of the face it is mounted on). Those end runs are trimmed off; any other vertex inside an unwalkable
+        /// cell, anywhere in the strand, still counts.</summary>
+        public static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
+        {
+            bool OnFace(V2 p)
+            {
+                Cell c = p.Floor;
+                if (!w.InBounds(c) || w.IsWalkable(c)) return false;
+                double fx = p.X - Math.Floor(p.X), fz = p.Z - Math.Floor(p.Z), tol = 0.005;
+                bool Open(int dx, int dz) { var n = new Cell(c.X + dx, c.Z + dz); return w.InBounds(n) && w.IsWalkable(n); }
+                return Open(0, -1) && fz <= WallMount.SouthBand + tol || Open(0, 1) && 1 - fz <= WallMount.NorthSliver + tol ||
+                       Open(-1, 0) && fx <= WallMount.SideBevel + tol || Open(1, 0) && 1 - fx <= WallMount.SideBevel + tol ||
+                       Math.Min(Math.Min(fx, 1 - fx), Math.Min(fz, 1 - fz)) <= CordBuilder.PastFaceDepth + tol;
+            }
+            bool In(V2 p) => OnFace(p) || w.Machines.Any(m => p.X >= m.X0 && p.X < m.X0 + m.W && p.Z >= m.Z0 && p.Z < m.Z0 + m.H);
+            int a = 0, b = pts.Count - 1;
+            while (a < b && In(pts[a])) a++;
+            while (b > a && In(pts[b])) b--;
+            return pts.GetRange(a, b - a + 1);
+        }
+
         
         // Art geometry measured from the shipped PNGs (Textures/RimMandrake/GimmeSomeSlack), in canvas units
         // (1 = the decal's full side), independent of the builder (CordBuilder keeps its own copies):

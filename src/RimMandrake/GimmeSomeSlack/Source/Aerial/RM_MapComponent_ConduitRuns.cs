@@ -363,4 +363,35 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
     }
+    /// <summary>Keeps RM_MapComponent_ConduitRuns out of the save, as the cord, aerial and hose components are kept out
+    /// (walk M4/E1: a save names no class of ours). Map.ExposeComponents writes EVERY MapComponent as
+    /// &lt;li Class="..."/&gt; whether or not it has ExposeData, so a mod-less load logs "Could not find class". Found
+    /// live 2026-10-05 by proof_all.py SL2 (the class was in the save); nothing here is saved state.</summary>
+    [HarmonyLib.HarmonyPatch(typeof(Map), "ExposeComponents")]
+    internal static class Patch_Map_ExposeComponents_SkipConduitRuns
+    {
+        internal sealed class Held { public int Index; public MapComponent Comp; }
+
+        private static void Prefix(Map __instance, out Held __state)
+        {
+            __state = null;
+            if (Scribe.mode != LoadSaveMode.Saving) return;
+            List<MapComponent> list = __instance.components;
+            int i = list.FindIndex(c => c is RM_MapComponent_ConduitRuns);
+            if (i < 0) return;
+            __state = new Held { Index = i, Comp = list[i] };
+            list.RemoveAt(i);
+        }
+
+        private static Exception Finalizer(Map __instance, Exception __exception, Held __state)
+        {
+            if (__state != null)
+            {
+                List<MapComponent> list = __instance.components;
+                list.RemoveAll(c => c is RM_MapComponent_ConduitRuns);
+                list.Insert(Math.Min(__state.Index, list.Count), __state.Comp);
+            }
+            return __exception;
+        }
+    }
 }
