@@ -662,8 +662,8 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 31:
-        probs.append("toggle census %d != 31" % seen)
+    if seen != 35:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill
+        probs.append("toggle census %d != 35" % seen)
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
@@ -2038,6 +2038,16 @@ def _order_row(o, pid):
 def phase_P(L, args):
     B = L.B
     with L.step("P_pits", None):
+        # FLOWWORKS_PIT_PAWN_ROWS_RED_1 (2026-10-05): P measures the trap and the ladder in DRY pits, with
+        # nothing hostile about. phase_rain leaves rain filling excavations, and since PIT_FILL_EFFECTS_1 a
+        # non-swimmer drowns at D=4 F>0 (as designed), so the P_walk colonist drowned before P4 could order it
+        # out. And Anomaly fleshbeasts from the storyteller killed the control colonist while it wandered,
+        # undrafted, through P3/P4's ~2,400 ticks. Both rows read FAIL on a working mod.
+        L.sset(S_FW, "rainFillsExcavationsEnabled", False)
+        L.o.rain_on = False
+        B.call("jawa/weather_set", weather="Clear")
+        B.call("jawa/incident_queue_clear")
+        B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         for k in sorted(k for k, sc in SCENES.items() if sc.get("phase") == "P"):
             L.dig_scene(k)
         ids = {}
@@ -2088,28 +2098,38 @@ def phase_P(L, args):
         # P3/P4: a colonist WALKS in (own-faction capture switched ON), takes the fall, stays spawned and
         # cannot walk out; a ladder in its cell frees it. P5n: the shipped carve-out (OFF) is the control.
         col = {}
-        for k, spot in sorted(PIT_SPOTS.items()):
+
+        def spawn_col(k):           # each colonist spawned just before its own row, so none idles undrafted
+            spot = PIT_SPOTS[k]
             r = B.call("jawa/spawn_pawn", kindDef="Colonist", faction="player", x=spot[0], z=spot[1], count=1)
             if not r.get("success"):
                 raise Abort("spawn colonist for %s: %r" % (k, r))
             col[k] = r["pawns"][0]["id"]
-        a, wc = col["P_walk"], SCENES["P_walk"]["cells"][0]
+            return col[k]
+
+        def alive(rep, pid):        # a dead or downed pawn is not evidence about the trap: say so in the row
+            pw = _pit_pawn(rep, pid)
+            return "pawn %s fill %s" % ("off-cell" if pw is None else "dead" if pw.get("dead") else
+                                        "downed" if pw.get("downed") else "ok", rep.get("fillRaw"))
+        a, wc = spawn_col("P_walk"), SCENES["P_walk"]["cells"][0]
         L.sset(S_FW, "superdeepCapturesOwnFaction", True)
         try:
             d0 = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1]).get("descentCount") or 0
             o_in = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
             r_in = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pw = _pit_pawn(r_in, a) or {}
+            # descentCount is map-wide: the start colonists, own-faction capture ON here, walk into the P1 pits
+            # after the held hares (live 2026-10-05: 0->3). Count THIS pawn's descents only.
             rec = [d for d in r_in.get("recentDescents") or [] if d.startswith(a + "@")]
             fall = float(rec[-1].split("fall=")[1]) if rec else 0.0
             o_out = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
             end = o_out.get("end") or {}
             L.row("P3_walk_in_held", o_in.get("arrived") is True and pw.get("held") is True and pw.get("spawned") is True
-                  and (r_in.get("descentCount") or 0) == d0 + 1 and fall > 0 and pw.get("lipReachable") == 0
+                  and len(rec) == 1 and (r_in.get("descentCount") or 0) >= d0 + 1 and fall > 0 and pw.get("lipReachable") == 0
                   and o_out.get("canReach") is False and (end.get("x"), end.get("z")) == wc, "MOD",
-                  "walked in %s; held %s spawned %s; descents %s->%s fall %.1f; lip %s/%s; ordered out: canReach %s, "
-                  "ended %s" % (o_in.get("arrived"), pw.get("held"), pw.get("spawned"), d0, r_in.get("descentCount"),
-                                fall, pw.get("lipReachable"), pw.get("lipCells"), o_out.get("canReach"),
+                  "walked in %s; held %s spawned %s; descents %s->%s (own %d) fall %.1f; lip %s/%s; ordered out: "
+                  "canReach %s, ended %s" % (o_in.get("arrived"), pw.get("held"), pw.get("spawned"), d0,
+                                             r_in.get("descentCount"), len(rec), fall, pw.get("lipReachable"), pw.get("lipCells"), o_out.get("canReach"),
                                 (end.get("x"), end.get("z"))))
             sb = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % wc)
             r_l = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
@@ -2117,22 +2137,23 @@ def phase_P(L, args):
             o_l = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
             L.row("P4_ladder_frees", r_l.get("hasLadder") is True and pl.get("held") is False
                   and (pl.get("lipReachable") or 0) > 0 and o_l.get("arrived") is True, "MOD",
-                  "ladder spawned %s hasLadder %s; held %s lip %s/%s; ordered out: arrived %s" % (
+                  "ladder spawned %s hasLadder %s; held %s lip %s/%s; ordered out: arrived %s; %s" % (
                       sb.get("success"), r_l.get("hasLadder"), pl.get("held"), pl.get("lipReachable"),
-                      pl.get("lipCells"), o_l.get("arrived")))
+                      pl.get("lipCells"), o_l.get("arrived"), alive(r_l, a)))
         finally:
             L.sset(S_FW, "superdeepCapturesOwnFaction", False)
-        b, cc = col["P_walk_ctrl"], SCENES["P_walk_ctrl"]["cells"][0]
+        b, cc = spawn_col("P_walk_ctrl"), SCENES["P_walk_ctrl"]["cells"][0]
         d1 = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1]).get("descentCount") or 0
         o_in = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1], waitTicks=PIT_WAIT_IN, draft=True), b)
         r_c = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1])
         pc = _pit_pawn(r_c, b) or {}
         o_out = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), b)
         L.row("P5n_own_faction_carveout", o_in.get("arrived") is True and pc.get("captured") is False
-              and pc.get("held") is False and (r_c.get("descentCount") or 0) == d1 and o_out.get("arrived") is True,
-              "MOD", "carve-out ON (shipped): colonist in %s captured %s held %s descents %s->%s; out %s" % (
+              and pc.get("held") is False and not [d for d in r_c.get("recentDescents") or [] if d.startswith(b + "@")]
+              and o_out.get("arrived") is True,
+              "MOD", "carve-out ON (shipped): colonist in %s captured %s held %s descents %s->%s; out %s; %s" % (
                   o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
-                  o_out.get("arrived")))
+                  o_out.get("arrived"), alive(r_c, b)))
         for pid in col.values():
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
