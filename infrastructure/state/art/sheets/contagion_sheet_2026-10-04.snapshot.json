@@ -1,8 +1,8 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-04T23:18:31-0700",
+ "built": "2026-10-04T23:54:09-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "a91be293e",
+ "census_git_head": "2ba7e2593",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Bleedleaf": {

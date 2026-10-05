@@ -1,0 +1,412 @@
+{
+ "biome": "RM_Wasteland",
+ "built": "2026-10-04T23:54:57-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "2ba7e2593",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "Plant_GrayGrass": {
+   "columns": {
+    "A": {
+     "single": "f1100d8f36f9c7bb9c4fbdeba42c9ff291d5932f7164065532561a810d2138f4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Graygrass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 ludeon.rimworld.biotech"
+   },
+   "res": "Things/Plant/Graygrass",
+   "subject_key": "plant_graygrass"
+  },
+  "Plant_Toxipotato": {
+   "columns": {
+    "A": {
+     "single": "7f908f2aeff1f4f5dd70916e139166f2fbc4718884f39b84a851784d91fc39a3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RG_Toxipotato"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 regrowth.botr.core"
+   },
+   "res": "Things/Plant/RG_Toxipotato",
+   "subject_key": "plant_toxipotato"
+  },
+  "Plant_TreePolux": {
+   "columns": {
+    "A": {
+     "single": "d9d4182f04ce7437a9f09bf32386040ca939222072d75c98e35591c674de7dd8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RG_PoluxTree"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 regrowth.botr.core"
+   },
+   "res": "Things/Plant/RG_PoluxTree",
+   "subject_key": "plant_treepolux"
+  },
+  "RM_Boilbulb": {
+   "columns": {
+    "A": {
+     "single": "36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Boilbulb"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_Boilbulb",
+   "subject_key": "boilbulb"
+  },
+  "RM_Cinderfelt": {
+   "columns": {
+    "A": {
+     "single": "523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Cinderfelt"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_Cinderfelt",
+   "subject_key": "cinderfelt"
+  },
+  "RM_DosimeterLawn": {
+   "columns": {
+    "A": {
+     "single": "65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/DosimeterLawn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/DosimeterLawn",
+   "subject_key": "dosimeterlawn"
+  },
+  "RM_Pusberry": {
+   "columns": {
+    "A": {
+     "single": "f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Pusberry"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_Pusberry",
+   "subject_key": "pusberry"
+  },
+  "RM_Scumgrass": {
+   "columns": {
+    "A": {
+     "single": "29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Scumgrass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_Scumgrass",
+   "subject_key": "scumgrass"
+  },
+  "RM_TallScumgrass": {
+   "columns": {
+    "A": {
+     "single": "79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_TallScumgrass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_TallScumgrass",
+   "subject_key": "tallscumgrass"
+  },
+  "RM_VaultRoot": {
+   "columns": {
+    "A": {
+     "single": "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/VaultRoot"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/VaultRoot",
+   "subject_key": "vaultroot"
+  },
+  "RM_Wartshrub": {
+   "columns": {
+    "A": {
+     "single": "b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Wartshrub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Wasteland"
+   },
+   "res": "Things/Plant/RM_Wartshrub",
+   "subject_key": "wartshrub"
+  },
+  "RM_WastelandScorchedStars": {
+   "columns": {
+    "A": {
+     "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/ScorchedStars"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "Things/Plant/ScorchedStars",
+   "subject_key": "wastelandscorchedstars"
+  },
+  "RSW_BloodletterPetrel": {
+   "columns": {
+    "A": {
+     "east": "c98b9cc79b22fc9811786f892a13dade5804f805581d53ffd2de4f013de599e1",
+     "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c",
+     "south": "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff"
+    },
+    "B": {
+     "east": "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043",
+     "north": "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932",
+     "south": "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11"
+   },
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+   "subject_key": "bloodletterpetrel"
+  },
+  "RSW_Borcatu": {
+   "columns": {
+    "A": {
+     "east": "fc74e123c6ce3d922aacd3094edb655f6cfee62dbff64851cef56360a2a01b90",
+     "north": "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620",
+     "south": "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868"
+    },
+    "B": {
+     "east": "cbce7196dc1359bf1905654a474076f29c10502c0cbbc69bd97fb0de2a7985c0",
+     "north": "ebe0d0b2a0045cefb4367c51f98387a2796e96c74bf4d956578a254356df5f38",
+     "south": "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Borcatu/Borcatu",
+    "B": "swanimals/Borcatu/Borcatu"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-12"
+   },
+   "res": "swanimals/Borcatu/Borcatu",
+   "subject_key": "borcatu"
+  },
+  "RSW_Excretor": {
+   "columns": {
+    "A": {
+     "east": "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb",
+     "north": "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629",
+     "south": "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880"
+    },
+    "B": {
+     "east": "2dae2ceca927e04a59cc0226ee6d424cb4bac28b22630fe135e67a4cc84f357e",
+     "north": "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9",
+     "south": "a94174bdc57b18382386baf919cd6baf2b2f53c2381166f766161d78466266e6"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/FeralNerf/FeralNerf",
+    "B": "swanimals/FeralNerf/FeralNerf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render desertportb_feralnerf"
+   },
+   "res": "swanimals/FeralNerf/FeralNerf",
+   "subject_key": "excretor"
+  },
+  "RSW_FleeceSpider": {
+   "columns": {
+    "A": {
+     "east": "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b",
+     "north": "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07",
+     "south": "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df"
+    },
+    "B": {
+     "east": "4829fb13730337b300f86d452cc6991ab6eeda3c52d27b1b0eefb7ccaafa8bb7",
+     "north": "fbb7f0ab1e343d2b3594cc52e556ee2fe7399a7d1eac4e5ce846df852d3d4176",
+     "south": "ecd0608f9463d5da066bf8e64c2bbcbab37d3e89d4bb2bb5703ea365603fca70"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11"
+   },
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
+   "subject_key": "fleecespider"
+  },
+  "RSW_Maligoat": {
+   "columns": {
+    "A": {
+     "east": "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+     "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092",
+     "south": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573"
+    },
+    "B": {
+     "east": "bec987be0727cd32568a92cc4c7141557fcff1d6beb6f75bda1a5bda511bfe30",
+     "north": "2fbe31dd9e27a9b1eb4c6af3ee32b7e8005dd903302d4b610f383a863aee351a",
+     "south": "a5a789a64e3fcb4ce6242e5060d2a6fe6c92cb3a1f287152030195005384cc43"
+    },
+    "C": {
+     "east": "1ecae74132eed9577805ee01e10d0a2ad7eed6c2cb339d8bfc84db0ef642952b",
+     "north": "7e948ac1c419651e4bb9b8dd749f8fa15a86def298b4c30812fcce0807f5db3e",
+     "south": "058011fd38ebd48c32545ed38328c6078493dbc3376b19aeb3fb73347198b285"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
+    "C": "history SWBestiary 2026-09-11"
+   },
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
+   "subject_key": "maligoat"
+  },
+  "RSW_Sacapillar": {
+   "columns": {
+    "A": {
+     "east": "02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4",
+     "north": "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3",
+     "south": "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+   "subject_key": "sacapillar"
+  },
+  "RSW_Screecher": {
+   "columns": {
+    "A": {
+     "east": "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
+     "north": "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
+     "south": "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1"
+    },
+    "B": {
+     "east": "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
+     "north": "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
+     "south": "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11"
+   },
+   "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+   "subject_key": "screecher"
+  },
+  "RUT_BrineBattery": {
+   "columns": {
+    "A": {
+     "east": "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+     "north": "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284",
+     "south": "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches"
+   },
+   "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
+   "subject_key": "brinebattery"
+  },
+  "VAEWaste_Megatardi": {
+   "columns": {
+    "A": {
+     "east": "69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3",
+     "north": "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7",
+     "south": "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee"
+    },
+    "B": {
+     "south": "a6852f208b6536f55d7e51f05a58513c4a3266e923d70da35614eaf15f1c2d63"
+    },
+    "C": {
+     "east": "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166",
+     "north": "9469a6d8a42985ecd9c5ebb9c51b55bff9a2efaef34c2f734fc1452333b7702c",
+     "south": "ac5cb0278c1d783c2274ffae91627a946c40ed3ac7c18e45d11f05ae53f9a8bd"
+    },
+    "D": {
+     "east": "6ef846a310960a6adae1d3256523218f792da74ec3d446824b66a7b78bc8ad5f",
+     "north": "b564e443de1d0c2216eb39b9daf384d62f453946b5c7e1db538c2f55824e918f",
+     "south": "04aed4596b4bc40af6e5ad8e6d20e651b58ce29808d4d53aa6b500f06b62614f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "B": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "C": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "D": "Things/Pawn/Animal/Megatardi/Megatardi"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render facingrepair_megatardi_v1",
+    "C": "history UtinniPatches 2026-09-11",
+    "D": "history UtinniPatches 2026-09-11"
+   },
+   "res": "Things/Pawn/Animal/Megatardi/Megatardi",
+   "subject_key": "vaewaste_megatardi"
+  }
+ },
+ "sheetId": "wasteland_sheet_2026-10-05",
+ "snapshotId": "adc5fe59cbff151d"
+}

@@ -2,7 +2,7 @@
  "sheetId": "leaningscrub_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/leaningscrub_sheet_2026-10-05.snapshot.json",
- "snapshotId": "80150fcdce94498e",
+ "snapshotId": "6504ff29f5f737d3",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_LeaningScrub",
  "reviewStatus": {
@@ -63,6 +63,11 @@
    "prefill": "A"
   },
   "RM_Tikkit": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_TruffleMole": {
    "decision": "A",
    "note": "",
    "prefill": "A"

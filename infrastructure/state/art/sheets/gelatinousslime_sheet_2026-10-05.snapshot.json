@@ -1,0 +1,227 @@
+{
+ "biome": "RM_GelatinousSlime",
+ "built": "2026-10-04T23:54:19-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "2ba7e2593",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "RM_Dwommo": {
+   "columns": {
+    "A": {
+     "east": "808e475864c6a33104e8065ff0eb1ca372d2f1d3749dc89fce809347b0e0beac",
+     "north": "dafcffd0808b032753874d46e68b760387548a971950a87759134d437d8ce108",
+     "south": "52ce95b020409ae041fe5c0d2c4523827449150a54fc10a4479868a2b82c5e1c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Dwommo/RM_Dwommo"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
+   "subject_key": "dwommo"
+  },
+  "RM_Fubbum": {
+   "columns": {
+    "A": {
+     "east": "b9a9818ef5aaaa94de7f408f20bd226d82f90d8e6d040e0e1499fa0d38a5399c",
+     "north": "6e97315c38e6df849d306ea50e00b60cfee0d1b80d3413b1ae5191b6b2bd03b1",
+     "south": "8b287325be5df7d22f1c4e24692bff1f05a79eef6128c9b2c690acb91d49953b"
+    },
+    "B": {
+     "south": "8b287325be5df7d22f1c4e24692bff1f05a79eef6128c9b2c690acb91d49953b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
+    "B": "Things/Pawn/Animal/Fubbum/RM_Fubbum"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "history GelatinousSlime 2026-10-03"
+   },
+   "res": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
+   "subject_key": "fubbum"
+  },
+  "RM_Gappo": {
+   "columns": {
+    "A": {
+     "east": "d8299031e1f6d0ec33ee7162b686c9ef5b3258d79a4f7dd0604262986bb46996",
+     "north": "d86b01b63d66ca8844f90968232f9804a229dc810bcf3429272b0918e4a955fe",
+     "south": "618c3f7aa0eb9fbb842a82ddabd9d969e08c0c12d5c374baa5bb4797abb50e83"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Gappo/RM_Gappo"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Gappo/RM_Gappo",
+   "subject_key": "gappo"
+  },
+  "RM_GappoGreater": {
+   "columns": {
+    "A": {
+     "east": "a719ea1be4f33bbb884bfab53e30409e3b2c987bb3f84137e8bd7205643f44f0",
+     "north": "c2e0cfad8a9085ea6b17925a37fc72fcddc7e2a30de1ba83c446907d581b33f2",
+     "south": "c061c490b7146415f038472e9b66ad369829e44fd3ed8c92c05eb47c9632752c"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Gappo/RM_GappoGreater"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
+   "subject_key": "gappogreater"
+  },
+  "RM_GappoLesser": {
+   "columns": {
+    "A": {
+     "east": "b5861746c5d077a712ec3acf4d1440c99b52d31cb86054ec59049f0aa1073163",
+     "north": "736bc145228864a9b92b0d6d85b7032e472e2d13ecdd9b6e54d64637445b1324",
+     "south": "158082ff7223975cd9520bb294ff00de11e8262ae5161ae295f514aae175a49a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Gappo/RM_GappoLesser"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
+   "subject_key": "gappolesser"
+  },
+  "RM_Gelatid": {
+   "columns": {
+    "A": {
+     "east": "844b48382f548c853f855908171d19d459f8b9020f44b29ad484cf17edbe3ead",
+     "north": "f44628e62a5127b6d68321c82f40944386bb7dead6cba5709c6fab77c668b519",
+     "south": "00416e13e69e992a162ff5f79da269a7f9401dc2ea797f917310dd0937847acd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid",
+   "subject_key": "gelatid"
+  },
+  "RM_Glurro": {
+   "columns": {
+    "A": {
+     "east": "62dbeaf9b59ead7750fa700dd5f510fef0fe299fd790aa9867357e427377618b",
+     "north": "9a70a98d3e3528bb207a5b5e0e7be11101be751e9e22710f6bf1287eb87e7cd3",
+     "south": "695c86b19bee528a7765144b6e61f5f635d37e12f72593680b14714de62b80f4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Glurro/RM_Glurro"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Glurro/RM_Glurro",
+   "subject_key": "glurro"
+  },
+  "RM_Plant_Bellows": {
+   "columns": {
+    "A": {
+     "single": "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Bush"
+   },
+   "labels": {
+    "A": "donor original \u2014 Vanilla Textures Expanded"
+   },
+   "res": "Things/Plant/Bush",
+   "subject_key": "plant_bellows"
+  },
+  "RM_Plant_Readerbloom": {
+   "columns": {
+    "A": {
+     "single": "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d"
+    },
+    "B": {
+     "single": "e0d843944abc6c00e62f9e247451efaeefb21007f8ac5d12e3087fa538f9fb40"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Dandelion",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "donor original \u2014 Vanilla Textures Expanded",
+    "B": "render RM_Readerbloom"
+   },
+   "res": "Things/Plant/Dandelion",
+   "subject_key": "plant_readerbloom"
+  },
+  "RM_Plant_SlimeGrass": {
+   "columns": {
+    "A": {
+     "single": "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f"
+    },
+    "B": {
+     "single": "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Grass",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
+    "B": "render RM_SlimeGrass"
+   },
+   "res": "Things/Plant/Grass",
+   "subject_key": "plant_slimegrass"
+  },
+  "RM_Plant_Thumbstalk": {
+   "columns": {
+    "A": {
+     "single": "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+    },
+    "B": {
+     "single": "b84959459d9c7b751194c408e0cf90db375b4a3ba4239cad646ec7c68778547e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Bush",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "donor original \u2014 Vanilla Textures Expanded",
+    "B": "render RM_Thumbstalk"
+   },
+   "res": "Things/Plant/Bush",
+   "subject_key": "plant_thumbstalk"
+  },
+  "RM_Titanoslime": {
+   "columns": {
+    "A": {
+     "east": "731aaeff0a4792d09326d3861fe1518bc806099d36fd3a573a408ffea16bcc2c",
+     "north": "848a265280215bb48affa387396e5ebc4ea1b12f3728cf8330c555bb56b567b1",
+     "south": "81396f1760f5310cff8ef3a06757bc2ecb020d325a1d643e369f242a8972f66f"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 GelatinousSlime"
+   },
+   "res": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime",
+   "subject_key": "titanoslime"
+  }
+ },
+ "sheetId": "gelatinousslime_sheet_2026-10-05",
+ "snapshotId": "0141a5075626ad24"
+}
