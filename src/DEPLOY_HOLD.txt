@@ -459,3 +459,6 @@ UtinniPatches/Patches/RUT_FoundryTowerHoistFrame.xml          # 2026-10-03 belt 
 
 # --- TheSump hold LIFTED 2026-10-03 (FOUNDRY belt): every TheSump art file now exists under TheSump/Textures/ (flora x8, Dredgel stand-in facings,
 # BeastBulge, MouseTrack, MoatFusePost); the 11 TheSump holds above were only "no art yet" and the biome hold was only "held with the flora/fauna".
+# --- GimmeSomeSlack review sheet: a human-review artifact, never part of the shipped mod (owner 2026-10-05) ---
+GimmeSomeSlack/review/*   # review sheet + key kept beside the mod for quick review; not game content
+GimmeSomeSlack/northstar/*   # proof/validation result JSONs: evidence, not game content
