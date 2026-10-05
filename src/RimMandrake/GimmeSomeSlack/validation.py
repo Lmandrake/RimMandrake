@@ -987,9 +987,11 @@ def lane_a_live(B, rows, log):
          "stubRings": [h1.get("highlightStubs"), h2.get("highlightStubs")], "deselected": h3.get("highlightCords")})
     # B8 LOD by zoom
     cam = B.call("rimworld/get_camera_state")
-    B.call("rimworld/set_camera_zoom", rootSize=58)
-    # HARNESS (proof_all run 1, 2026-10-05): the camera eases to a new root over several frames; 3 motion reads (~0.75 s)
-    # caught it at "Middle" (lodFarNow false). Read until the zoom has arrived (<= 5 s), then judge exactly as before.
+    # HARNESS (proof_all runs 1-2, 2026-10-05): root 58 is NOT the far zoom on every camera setup -- with the tier's camera
+    # mod the root range is 0.5..100 and 58 reads CurrentZoom "Middle" (measured: 58 and 60 Middle, 100 Furthest). FALSE
+    # THEORY first tried: the camera was still easing (polling 5 s at 58 stayed Middle). Zoom to the camera's own maximum.
+    far_root = max(58, int(((cam.get("sizeRange") or {}).get("max")) or 58))
+    B.call("rimworld/set_camera_zoom", rootSize=far_root)
     t_z = time.time()
     f1 = motion(B, 3)
     while f1.get("zoom") != "Furthest" and time.time() - t_z < 5.0:
@@ -1003,7 +1005,7 @@ def lane_a_live(B, rows, log):
         (not f2.get("lodFarNow")) and f2.get("lodEnabled") == 0 and f2.get("fullEnabled", 0) > 0
     row(rows, "B8_lod_far_zoom", "PASS" if lod_ok else "FAIL", "MOD",
         {"far": {k: f1.get(k) for k in ("zoom", "lodFarNow", "lodSubMeshes", "lodEnabled", "fullSubMeshes", "fullEnabled")},
-         "close": {k: f2.get(k) for k in ("zoom", "lodFarNow", "lodEnabled", "fullEnabled")}, "camera0": cam.get("rootSize"), "shot": bool(shot_far)})
+         "close": {k: f2.get(k) for k in ("zoom", "lodFarNow", "lodEnabled", "fullEnabled")}, "camera0": cam.get("rootSize"), "farRoot": far_root, "shot": bool(shot_far)})
     # B9 cutscene guard (state read; a gravship launch is not staged here)
     row(rows, "B9_cutscene_guard_idle", "PASS" if f2.get("cutsceneInProgress") is False and f2.get("cutsceneHides") is False else "FAIL",
         "MOD", {k: f2.get(k) for k in ("cutsceneInProgress", "cutsceneHides", "cutsceneSkips")})
