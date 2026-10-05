@@ -668,7 +668,7 @@ ledger rulings, then you see an install plan.</p>"""
 CENSUS = L.REPO_ROOT / "Transient" / "biome_ffar" / "census.json"
 BIOME_OUT = L.REPO_ROOT / "Transient" / "biome_ffar"
 BIOME_SLUG = {"RM_LongShade": "desert", "RM_Stillsand": "deep_desert", "RM_BlueDesert": "blue_desert",
-              "desert": "desert", "deep_desert": "deep_desert", "blue_desert": "blue_desert"}
+              "desert": "desert", "deep_desert": "deep_desert", "blue_desert": "blue_desert"}   # others: _stem(key).lower()
 TIER_RE = re.compile(r"^(RSW_|RM_|RUT_|rut_|AA_|AB_|BMT_|JOE_|A_|ZBiome_)")
 NOT_BODY_JOB = re.compile(r"dess?icc?at|corpse|_mote|halo|filth|skeleton|print|mask|_icon\b", re.I)
 PAIR_COLOURS = ["#e8b64c", "#5ac3c3", "#c38ae8", "#e07a5f", "#7fc35a", "#5a8ae8", "#e85aa8", "#c3b85a"]
@@ -1069,7 +1069,10 @@ prefill. Nothing installs from this sheet: your picks become ledger rulings, the
 # biome -> ground colour behind the panel (None = scale_panel's default Ash'karr tan). Measured as the mean opaque
 # RGB of the biome's own ground texture (vanilla Core bundle_textures): Sand.png (Stillsand terrainsByFertility
 # Sand), Ice.png (Blue Desert terrain Ice). The dump carries no terrain colour, so these are texture means.
-SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172)}
+SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172),
+                # Abyss: AB_ForsakenSands.png (near-black, 25,25,35); Cauldron: RM_CauldronSoil -> Soil.png (93,76,61);
+                # Contagion: GU_AlienSand/GU_AlienSandFine mean (fine sand dominates fertility < 0.2)
+                "RM_Abyss": (24, 24, 34), "RM_Cauldron": (93, 76, 61), "RM_Contagion": (145, 113, 115)}
 SCALE_FACE = ("east", "south", "single", "west", "north")
 SCALE_RENDER_VERSION = 6   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
 
