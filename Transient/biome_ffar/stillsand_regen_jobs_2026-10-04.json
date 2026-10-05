@@ -460,6 +460,23 @@
   "owner_note": "Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue."
  },
  {
+  "id": "stillsand_regen_RSW_Ollim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Ollim",
+  "prompt": "RimWorld plant sprite: the ollim, the tall form: a bone-white shield rising out of the sand on a flat-topped trunk, standing where the faintest hint of buried moisture fed it. It is photosynthetic in nothing and grows no leaf: a smooth chalky bone-white truncate trunk, flat-topped, carrying a broad rounded shield-shaped cap that exists to cast shade, fine growth rings and hairline cracks, pale ivory and bone tones, the base lightly dusted with sand and a few old bleached bone fragments at its foot. No leaves, no flowers, no green. Owner note on the row: it belongs at the RimMandrake level (art is the plain biome plant). Do not paint any ground shadow; the engine draws the shade.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "facings": [],
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "stillsand register: a vast dune sea of bone-white and pale-gold deep sand under a white, overhead, merciless sun; everything native is sun-bleached, matte, dust-glazed, silica-glass or mirror-ceramic; surfaces pale ivory, bone, dust-grey and ochre with hard clean light from above and no warm/cool tinting; no cast shadow baked in; realistic painted natural-history illustration, matte texture, alien but biologically plausible, never a nameable Earth animal;",
+  "target_texpath": "Things/Plant/RSW_Ollim",
+  "target_original": "RM_Ollim"
+ },
+ {
   "id": "stillsand_regen_RSW_GraniteSlug_v2",
   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
   "target_def": "RSW_GraniteSlug",
@@ -484,7 +501,7 @@
   "id": "stillsand_regen_RSW_KraytDragon_v2",
   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
   "target_def": "RSW_KraytDragon",
-  "prompt": "Owner's note, verbatim, overrides everything below: \"This is the four-legged subspecies, follow the canon image closely.\" RimWorld creature sprite: the FOUR-LEGGED krayt dragon subspecies (not the many-legged leviathan). Follow the canon library's four-legged images closely (legends_1 painting first, legends_2 model second; both attached as canon_reference): a heavy crocodile-meets-dragon reptile on exactly FOUR legs with five-toed pale-clawed feet, a thick folded neck, two upturned brow horns and a crest of smaller spiked frills behind the head, a row of pale spines down the back, a long curving thin-tipped tail, jaws able to open full of conical teeth. Colour follows the legends_1 painting (olive-green, pale spines and claws). Where the Must show list below says many limbs, no brow horns or tan, that describes the many-legged canon leviathan variant, not this subspecies; it is already resolved here by the owner's note and the four-legged images.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This is the four-legged subspecies, follow the canon image closely.\" RimWorld creature sprite: the FOUR-LEGGED krayt dragon subspecies (not the many-legged leviathan). Follow the canon library's four-legged images closely (legends_1 painting first, legends_2 model second; both attached as canon_reference): a heavy crocodile-meets-dragon reptile on exactly FOUR legs with five-toed pale-clawed feet, a thick folded neck, two upturned brow horns and a crest of smaller spiked frills behind the head, a row of pale spines down the back, a long curving thin-tipped tail, jaws able to open full of conical teeth. Colour follows the legends_1 painting (olive-green, pale spines and claws). OWNER OVERRIDE FOR GRADING: this is the four-legged subspecies, so the owner note wins over the canon Must show lines 2 (tan, not green or blue), 4 (hooked side barb, no brow horns) and 5 (many clustered limbs) of the krayt entry: grade those lines n/a, and judge instead that it has exactly four legs, two upturned brow horns and olive-green hide as in the legends_1 painting.",
   "canvas_w": 1024,
   "canvas_h": 1024,
   "drawsize": 8.3,
