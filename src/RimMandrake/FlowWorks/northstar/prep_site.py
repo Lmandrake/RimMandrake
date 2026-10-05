@@ -105,11 +105,17 @@ def build_plot(s, plot, size, authored):
     return n_halo
 
 
+def _wx(w):
+    """weather_get returns weather as {'current': 'Clear', ...} live (MEASURED 2026-10-05), a bare name in the fake."""
+    x = w.get("weather")
+    return x.get("current") if isinstance(x, dict) else x
+
+
 def environment(s, log):
     _ok(s.call("jawa/weather_set", weather="Clear", lockWeather=True), "4", "weather_set")
     w = _ok(s.call("jawa/weather_get"), "4", "weather_get")
     for c in w.get("conditions") or []:
-        if c.get("affectsThisMap"):
+        if c.get("affectsThisMap") and c.get("def") != "WeatherController":
             _ok(s.call("jawa/game_condition", action="end", condition=c.get("def")), "4", "game_condition end")
     q = _ok(s.call("jawa/incident_queue_clear"), "4", "incident_queue_clear")
     log("incident queue: cleared %s" % q.get("clearedCount"))
@@ -121,9 +127,13 @@ def environment(s, log):
         _ok(s.call("jawa/time_set_ticks", ticks=int(t) + QUADRUM_TICKS), "4", "time_set_ticks(forward)")
     else:
         raise Refused("4", "season never reached summer: %s" % mi.get("season"))
+    # the outdoor temperature cache only refreshes while ticks run (MEASURED 2026-10-05: seasonalTemp followed the
+    # clock at once, cell_temperature stayed at the old value): step a few ticks so step 7 reads the summer value
+    if "rimworld/step_game_ticks" in getattr(s, "tools", ()):
+        s.call("rimworld/step_game_ticks", ticks=60)
     s.call("jawa/research_bulk", mode="finish_all")
     w = _ok(s.call("jawa/weather_get"), "4", "weather_get")
-    if w.get("weather") != "Clear" or [c for c in w.get("conditions") or [] if c.get("affectsThisMap")]:
+    if _wx(w) != "Clear" or [c for c in w.get("conditions") or [] if c.get("affectsThisMap") and c.get("def") != "WeatherController"]:
         raise Refused("4", "environment did not settle: %s" % w)
     return mi.get("season")
 
@@ -224,8 +234,27 @@ def prep(s, saves_dir, seat, prefs=None, player_log=None, repo_copy_dir=S.REPO_S
     _ok(s.call("jawa/destroy_batch", rects="0,0,%d,%d" % size, categories="Pawn"), "2", "destroy_batch(Pawn)")
     left = _ok(s.call("jawa/list_pawns", limit=500), "2", "list_pawns").get("pawns") or []
     if left:
+        # MEASURED 2026-10-05: destroy_batch(Pawn) leaves every pawn alone ("N pawn(s) left alone").
+        # destroy_bulk(nonColonists) destroys animals/visitors; start colonists are first re-factioned
+        # to a live NPC faction so the same filter takes them.
+        for q in left:
+            for fac in ("OutlanderCivil", "TribeCivil", "Empire"):
+                if s.call("jawa/set_pawn_faction", pawn=q.get("id"), faction=fac).get("success"):
+                    break
+        _ok(s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False), "2", "destroy_bulk(nonColonists)")
+        left = _ok(s.call("jawa/list_pawns", limit=500), "2", "list_pawns").get("pawns") or []
+    if left:
         raise Refused("2", "pawns survived the despawn: %s" % [q.get("id") for q in left][:6])
     log("despawned %d pawn(s): %s" % (len(roster), roster[:8]))
+    # MEASURED 2026-10-05: Anomaly's VoidMonolith survives destroy_batch/clear_area ("Destroyed 1" and it is still
+    # listed), so a map that dropped one inside a plot cannot be cleaned: re-roll the quicktest map instead.
+    mono = s.call("jawa/list_things", defName="VoidMonolith", limit=10)
+    for t in (mono.get("things") or []) if isinstance(mono, dict) else []:
+        for p in plots:
+            bx, bz, bw, bh = S.clip(p["buffered"], size)
+            if bx <= t.get("x", -1) < bx + bw and bz <= t.get("z", -1) < bz + bh:
+                raise Refused("2", "indestructible VoidMonolith at %s,%s inside plot %s: re-roll the map (go_to_main_menu + start_debug_game_ready)"
+                              % (t.get("x"), t.get("z"), p["id"]))
     # 3. plots
     authored = {c for p in plots for b in p["bodies"] for c in S.cells(b["rect"])}
     halo = sum(build_plot(s, p, size, authored) for p in plots)

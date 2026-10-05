@@ -1,0 +1,8 @@
+despawned 53 pawn(s): ['Human702', 'Human705', 'Macaw3217', 'Human708', 'Squirrel36997', 'Boomrat36998', 'Rat36999', 'Muffalo37000']
+built 11 plots; painted 92 stray wet/rough halo cell(s) to Soil
+incident queue: cleared 0
+body D_pond: {'id': 1, 'limitless': False, 'cellCount': 25, 'capacity': 125.0, 'stock': 125.0, 'recededCount': 0}
+body K_pond: {'id': 2, 'limitless': False, 'cellCount': 4, 'capacity': 20.0, 'stock': 20.0, 'recededCount': 0}
+body C_sea: {'id': 3, 'limitless': True, 'cellCount': 96, 'capacity': 480.0, 'stock': 480.0, 'recededCount': 0}
+body S_pond: {'id': 4, 'limitless': False, 'cellCount': 16, 'capacity': 80.0, 'stock': 80.0, 'recededCount': 0}
+golden save C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\NS_FlowWorks_TrialSite_v1.rws (read-only), sidecar C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\NS_FlowWorks_TrialSite_v1.json

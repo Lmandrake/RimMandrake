@@ -403,8 +403,13 @@ def settings_snapshot(s):
     for t, fields in S.SETTINGS.items():
         snap[t] = {}
         for f, v in fields.items():
-            got = _ok(s.call("jawa/mod_settings_field", typeName=t, action="get", field=f),
-                      "mod_settings_field %s.%s" % (t, f)).get("value")
+            r = s.call("jawa/mod_settings_field", typeName=t, action="get", field=f)
+            if isinstance(r, dict) and not r.get("success") and "No public field" in str(r.get("message")):
+                # the spec is newer than the loaded DLL (a field landed in Source after the deploy):
+                # recorded as ABSENT so the golden save's contract names exactly what it was built without
+                snap[t][f] = "ABSENT"
+                continue
+            got = _ok(r, "mod_settings_field %s.%s" % (t, f)).get("value")
             snap[t][f] = got
             if not S.settings_equal(got, v):
                 bad["%s.%s" % (t.rsplit(".", 1)[1], f)] = got
@@ -432,7 +437,7 @@ def read_plot_state(s, plot, size):
     out = {}
     for c in lay["cells"]:
         k = (c["x"], c["z"])
-        out[k] = {"base": c.get("top"), "temp": c.get("temp") or "none", "roof": roofs.get(k) or "none",
+        out[k] = {"base": c.get("top"), "temp": c.get("temp") or "none", "roof": ("none" if str(roofs.get(k) or "none").lower() == "none" else roofs.get(k)),
                   "things": []}
     for t in th.get("things") or []:
         pos = t.get("position") or t
@@ -515,14 +520,19 @@ def p_s3(s, P, sc):
     return row("P-S3", FAIL if bad else PASS, "; ".join(bad) or "no excavation, no flow totals, no flood Thing")
 
 
+def _wx(w):
+    x = w.get("weather")
+    return x.get("current") if isinstance(x, dict) else x
+
+
 def p_e1(s, P, sc, fix=False):
     w = _ok(s.call("jawa/weather_get"), "weather_get")
     bad = []
     if w.get("readErrors"):
         return row("P-E1", UNMEASURED, "weather_get readErrors %s" % w["readErrors"])
-    if w.get("weather") != "Clear":
-        bad.append("weather %s (rain fills excavations)" % w.get("weather"))
-    conds = [c.get("def") for c in w.get("conditions") or [] if c.get("affectsThisMap")]
+    if _wx(w) != "Clear":
+        bad.append("weather %s (rain fills excavations)" % _wx(w))
+    conds = [c.get("def") for c in w.get("conditions") or [] if c.get("affectsThisMap") and c.get("def") != "WeatherController"]  # WeatherController = the prep's own Clear lock
     if conds:
         bad.append("GameCondition(s) on the map: %s" % conds)
     q = _ok(s.call("jawa/incident_queue_clear"), "incident_queue_clear")   # no read-only queue tool exists
