@@ -249,7 +249,6 @@
       <RSW_Shaak MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Shaak>  <!-- shaak - herd, import -->
       <RSW_TeeMuss MayRequire="mandrake.rsw.swbestiary">0.2</RSW_TeeMuss>  <!-- tee muss - herd, import -->
       <RSW_Worrt MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Worrt>  <!-- worrt - ambush-small, keep -->
-      <RSW_Kudda MayRequire="mandrake.rsw.swbestiary">0.2</RSW_Kudda>  <!-- needleroll - grain, keep -->
       <RSW_Bolotaur MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Bolotaur>  <!-- bolotaur - herd, import -->
       <RSW_Clodhopper MayRequire="mandrake.rsw.swbestiary">0.1</RSW_Clodhopper>  <!-- clodhopper - ambush-small, keep -->
       <RSW_FeralGrazer MayRequire="mandrake.rsw.swbestiary">0.1</RSW_FeralGrazer>  <!-- feral grazer - herd, import -->

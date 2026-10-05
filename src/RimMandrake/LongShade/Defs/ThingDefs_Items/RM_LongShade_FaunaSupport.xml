@@ -8,12 +8,6 @@
   see below): the bokka's and ossik's own eggs, the ulgga's own eggs, the
   great devourer's own eggs, and the ulgga's own black-chitin leather.
 
-  The kudda's leatherDef/specificMeatDef (RM_CactusHide/RM_CactusMeat) are
-  duplicated here rather than reusing the SW-tier RSW_CactusHide/RSW_CactusMeat
-  they were ported with — those two materials are ALSO used by RSW_Chikka and
-  RSW_Skorra, two SW-tier creatures that are not part of this ruling and stay
-  in the Utinni layer, so sharing them would give this free mod's kudda a
-  cross-mod material reference. Same stats/texPath as the SW-tier originals.
 -->
 <Defs>
 
@@ -161,51 +155,8 @@
 	</ThingDef>
 
 
-	<ThingDef ParentName="LeatherBase">
-		<defName>RM_CactusHide</defName>
-		<label>sentient plant skin</label>
-		<description>Part animal hide, part living plant tissue. Traps cold water inside, acting as a good thermal insulator in hot climates.</description>
-		<graphicData>
-			<color>(162,175,90)</color>
-		</graphicData>
-		<statBases>
-			<MarketValue>3.8</MarketValue>
-			<StuffPower_Armor_Sharp>1</StuffPower_Armor_Sharp>
-			<StuffPower_Insulation_Cold>0</StuffPower_Insulation_Cold>
-			<StuffPower_Insulation_Heat>45</StuffPower_Insulation_Heat>
-		</statBases>
-		<stuffProps>
-			<color>(162,175,90)</color>
-			<commonality>0.001</commonality>
-			<statFactors>
-				<MaxHitPoints>1.5</MaxHitPoints>
-				<Beauty>1.3</Beauty>
-			</statFactors>
-		</stuffProps>
-	</ThingDef>
 
 
-	<ThingDef ParentName="PlantFoodRawBase">
-		<defName>RM_CactusMeat</defName>
-		<label>plant meat</label>
-		<description>A strange meat, part vegetable, part animal, harvested from cactus-hybrid creatures.</description>
-		<!-- TEMP PLACEHOLDER: donor Alpha Animals texture -->
-		<graphicData>
-			<texPath>Things/Item/Resource/AA_Cactipine_Meat</texPath>
-		</graphicData>
-		<statBases>
-			<MarketValue>1.1</MarketValue>
-		</statBases>
-		<ingestible>
-			<foodType>VegetableOrFruit</foodType>
-		</ingestible>
-		<comps>
-			<li Class="CompProperties_Rottable">
-				<daysToRotStart>30</daysToRotStart>
-				<rotDestroys>true</rotDestroys>
-			</li>
-		</comps>
-	</ThingDef>
 
 
 	<ThingDef ParentName="LeatherBase">
