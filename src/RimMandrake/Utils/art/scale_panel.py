@@ -25,7 +25,7 @@ with enhanced-zoom mods, so vanilla's 96 px/cell ceiling does not hold (owner, 2
 down-resolve the imagery so badly"). Normal play (32 px/cell) is a small secondary; 18 lives only in the
 click-to-enlarge strip.
 
-The human is the vanilla colonist composed exactly as the engine does it: Naked_Male_south and
+The human is a vanilla colonist composed as the engine does it (body, T-shirt in Cloth, head, Mop hair): Naked_Male_south and
 Male_Average_Normal_south (both 128² on the 1.5-cell humanlike mesh), the head raised by BodyTypeDef
 Male headOffset.y = 0.34 (live dump). The vanilla control is Core's Rat (drawSize 1.25, 128²).
 
@@ -354,17 +354,28 @@ def _vanilla(name):
     return Image.open(VANILLA_TEX / f"{name}.png").convert("RGBA")
 
 
+CLOTH = (0.635294139, 0.6156863, 0.596078455)   # ThingDef Cloth stuffProps.color, live dump — the shirt's stuff
+HAIR_COLOR = (0.32, 0.22, 0.13)                 # an ordinary dark-brown hair colour
+HUMAN_LAYERS = "Naked_Male_south + ShirtBasic_Male_south (Cloth) + Male_Average_Normal_south + Mop_south"
+
+
 def human_sprite(ppc: int):
-    """Body + head on the 1.5-cell mesh, head raised by headOffset.y. Returns (img, mesh_px, head_px)
-    where the BODY mesh is the bottom mesh_px×mesh_px square of img."""
+    """A vanilla colonist as seen in play, south facing, in the engine's draw order: naked body, OnSkin
+    apparel (T-shirt, Apparel_BasicShirt in Cloth — vanilla pants have no worn graphic), head, hair. Body and
+    apparel on the 1.5-cell body mesh; head and hair on the 1.5-cell head mesh raised by headOffset.y.
+    Returns (img, mesh_px, head_px) where the BODY mesh is the bottom mesh_px×mesh_px square of img."""
     from PIL import Image
     m = round(HUMAN_MESH * ppc)
     hoff = round(HEAD_OFFSET_Y * ppc)
     body = _tint(_premul_resize(_vanilla("Naked_Male_south"), m, m), SKIN)
+    shirt = _tint(_premul_resize(_vanilla("ShirtBasic_Male_south"), m, m), CLOTH)
     head = _tint(_premul_resize(_vanilla("Male_Average_Normal_south"), m, m), SKIN)
+    hair = _tint(_premul_resize(_vanilla("Mop_south"), m, m), HAIR_COLOR)
     img = Image.new("RGBA", (m, m + hoff), (0, 0, 0, 0))
     img.alpha_composite(body, (0, hoff))
+    img.alpha_composite(shirt, (0, hoff))
     img.alpha_composite(head, (0, 0))
+    img.alpha_composite(hair, (0, 0))
     return img, m, hoff
 
 

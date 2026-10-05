@@ -1071,7 +1071,7 @@ prefill. Nothing installs from this sheet: your picks become ledger rulings, the
 # Sand), Ice.png (Blue Desert terrain Ice). The dump carries no terrain colour, so these are texture means.
 SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172)}
 SCALE_FACE = ("east", "south", "single", "west", "north")
-SCALE_RENDER_VERSION = 5   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
+SCALE_RENDER_VERSION = 6   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
 
 
 def _img_px(sha: str):
