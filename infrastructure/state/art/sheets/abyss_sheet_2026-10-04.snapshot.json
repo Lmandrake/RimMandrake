@@ -1,0 +1,403 @@
+{
+ "biome": "RM_Abyss",
+ "built": "2026-10-04T22:42:48-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "78fde209c",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "AA_CrepuscularBeetle": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "crepuscularbeetle"
+  },
+  "AA_DarkVandal": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "darkvandal"
+  },
+  "AA_Darkbeast": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "darkbeast"
+  },
+  "AA_DuskProwler": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "duskprowler"
+  },
+  "AA_DuskRat": {
+   "columns": {
+    "A": {
+     "east": "986daa6687694c60e7b595e3d191098afeaef2be34d7ffa69bfdcdfb9c502453",
+     "north": "4f5f459787645dc0edfb6669d930f908e5d76ccafa7b84b57ffcd64ff73fea3d",
+     "south": "8a0e46ac9f78a30ff09165656952aae2f4af1fe1440fcd834b79ac9f98b65611"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_DuskRat"
+   },
+   "res": null,
+   "subject_key": "duskrat"
+  },
+  "AA_Frostling": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "frostling"
+  },
+  "AA_Murkling": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "murkling"
+  },
+  "AA_NightAve": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "nightave"
+  },
+  "AA_NightMule": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "nightmule"
+  },
+  "AA_NightRam": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "nightram"
+  },
+  "AA_Nightling": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "nightling"
+  },
+  "AA_ShadowCharger": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "shadowcharger"
+  },
+  "AA_Thunderox": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "thunderox"
+  },
+  "AB_GiantGamma": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "giantgamma"
+  },
+  "AB_GiantSeptimum": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "giantseptimum"
+  },
+  "AB_GiantStikehr": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "giantstikehr"
+  },
+  "AB_GlowingGrass": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "glowinggrass"
+  },
+  "AB_ToxicGamma": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "toxicgamma"
+  },
+  "AB_WildRadagast": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "wildradagast"
+  },
+  "AG_Gamma": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "ag_gamma"
+  },
+  "AG_Septimum": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "ag_septimum"
+  },
+  "RM_Cindermare": {
+   "columns": {
+    "A": {
+     "single": "f18f1e42b57674ca155a37bede987207067aa9a023c8a09b7712e8d913acbf34"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare",
+   "subject_key": "cindermare"
+  },
+  "RM_Drokattak": {
+   "columns": {
+    "A": {
+     "east": "6449f17e40c8944f3fdf0538265de095c3f12b667eabc86704babf3627cb382b",
+     "north": "ceff22603c2afa5740d11af3ddce326f5d263b1e5d96e5fff7db3adafdd1ad68",
+     "south": "164caae6729eb68c94f7fad726f30d0017a8407e5802753d10dd590342ebc8eb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Drokattak/RM_Drokattak",
+   "subject_key": "drokattak"
+  },
+  "RM_Durrgak": {
+   "columns": {
+    "A": {
+     "east": "7545f2ff13316ff6cc4d416b4868561786189c2bf7c10b59f8f4d80b5378004d",
+     "north": "ee18dc965ea438a6682390fd7625477b020f26f7dd23454757f131685ddf5ac6",
+     "south": "01c24ff299b19e05ebf35fe8da6cf80146139923c38ab5e895a0685eea5e59ed"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak",
+   "subject_key": "durrgak"
+  },
+  "RM_Etchcap": {
+   "columns": {
+    "A": {
+     "single": "ef342d8975d29f07b2913883bea3962fbd65b191e65cbc047ea8f8befbc80a10"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/Etchcap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Plant/Etchcap",
+   "subject_key": "etchcap"
+  },
+  "RM_Gharrek": {
+   "columns": {
+    "A": {
+     "east": "335988bc6895590629b676c192b7dddeea75d53797c88c09c849fefb31716a44",
+     "north": "8cd874ecdd7bd6c4f234b24088854c6ca24b8998c46861b9ca8d1f16313f0260",
+     "south": "3e7833beacc33b95522ade7750dc89347455025993a8eb8ff0ba7eb47637ef49"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek",
+   "subject_key": "gharrek"
+  },
+  "RM_Krizzak": {
+   "columns": {
+    "A": {
+     "east": "c47c285a5187f9dc1f872c56a66a5064d34ea598ca2b81526d27ea3d30c4eab3",
+     "north": "102de660f8a4bb8a1a8bb77f2eabe22b6da937ce7e4ef46a63cc50ab48ce9b90",
+     "south": "3cfe6ebe94042fa7f1ad97a6f58a4a1949dadb7ee0b6c1840304d46918148a7a"
+    },
+    "B": {
+     "east": "7a3f6baca8c358fca6b0c7db6d76bdf937ca852f70147dfc19307a8c66141345",
+     "north": "3d8a4b2da1d78b048d020a60980a722846c4a36e18bf1b24d91a9be93d9d9b6a",
+     "south": "dc6cfbd21bf92576cc37e4a60a3e3383e5dde7e9c05642dec2b10a85b66b6c7e"
+    },
+    "C": {
+     "east": "30329c8b75d25d12e6ffec668a68a61f6853befbb9ddb2b64b28786050633fc1",
+     "north": "276c913485f82d24f1b6bc9bec0f43512099ac69ba581ab90bfe4d96ab464743",
+     "south": "7d2f2094d485829c127e6ffbc9e002672bbc0799b67f571fc2f8b47410d68b30"
+    },
+    "D": {
+     "east": "bf786344d718338fd832f2ab403267e7862c27eed3b1994692da5378589f1b9f",
+     "north": "aa9ad30dfef4006f2e8313e0d879425074227f7f28b0a916ba522be478fb07b4",
+     "south": "864fabeb4c735f0dde3d1eca93de855910fe77c204519cc6d129f61b292c2188"
+    },
+    "E": {
+     "east": "56dce893da34b6ae453ac8e983f996b44ad24612acebff1db1f0a16d37c0761c",
+     "north": "5d86f3468e5be47ecf3d2094c480c20d69094da275bd6e32413eafec2db62e7a",
+     "south": "0544a44c8454c9a7c48c5311e4b72ace7319de894c2922187f14b32333b81e6d"
+    },
+    "F": {
+     "east": "8015a012571e4aadaf185c2dfae2ebe685e24c91f599500319b464029b8e1ee3",
+     "north": "265debbe7a7ee6186324765b5ceb52a2740d58b2524e4f7a07dbf6a7f72cff98",
+     "south": "2945156e32b1124d0c137e0ef04008ed82b6c2269a364e16c367f087bbf34ca0"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+    "C": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+    "D": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+    "E": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+    "F": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render RM_Krizzak_Flying_1",
+    "C": "render RM_Krizzak_Flying_2",
+    "D": "render RM_Krizzak_Flying_3",
+    "E": "render RM_Krizzak_Flying_4",
+    "F": "render RM_Krizzak_Flying_5"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+   "subject_key": "krizzak"
+  },
+  "RM_Skarnix": {
+   "columns": {
+    "A": {
+     "single": "df1fd5ceaa9a4fc6492a22bda5bad01978e1d478b599e2c627cfb1ffdf4e424d"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix",
+   "subject_key": "skarnix"
+  },
+  "RM_Summ": {
+   "columns": {
+    "A": {
+     "east": "ca7ec6af9bea6662c13672b5b3861d77dcdb9ac36f05172d39434850df03704a",
+     "north": "058d0ad960125179a2a807aee802278fe1851ecb86597caa815a9e62af9a6131",
+     "south": "28c188dd04beeafe6b3fbed1639d4a58c7c43c2e3124dcfee321a707c09763b0"
+    },
+    "B": {
+     "east": "7a2409fdbf02f6c48445668ff048d665a4c2afc7e2bce4cb3a8368cbe7197346",
+     "north": "2aa5553dbc53729d14abfbc80e2e916b08f52663eda3658abc84255a822050eb",
+     "south": "41e5e580aee41661a08c72bb15b8581691e7bef7456414f8c12d72f62387bddc"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ",
+   "subject_key": "summ"
+  },
+  "RM_Vosska": {
+   "columns": {
+    "A": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+    },
+    "B": {
+     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
+     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
+     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+    "B": "Things/Pawn/Animal/RM_Vosska/RM_Vosska"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 LongShade",
+    "B": "render RM_Vosska"
+   },
+   "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
+   "subject_key": "vosska"
+  },
+  "RM_Wickwood": {
+   "columns": {
+    "A": {
+     "single": "79956fefc23ea22ea42d39f840fb7a2554df287cbaa5f43fbf2a131a338981f1"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_Wickwood"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_Wickwood",
+   "subject_key": "wickwood"
+  },
+  "RSW_Vosska": {
+   "columns": {
+    "A": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+    },
+    "B": {
+     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
+     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
+     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+    "B": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render RM_Vosska"
+   },
+   "res": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+   "subject_key": "vosska"
+  }
+ },
+ "sheetId": "abyss_sheet_2026-10-04",
+ "snapshotId": "5e588a103d3bc93f"
+}
