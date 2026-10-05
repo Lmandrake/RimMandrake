@@ -731,6 +731,11 @@
       "def": "AA_DesertAve",
       "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
       "reason": "owner 2026-10-04 Long Shade sheet: \"no longer needed\". RM_Ossik and RSW_Ossik (+ their eggs) deleted."
+    },
+    {
+      "def": "AA_Gigantelope",
+      "disposition": "cut:LONGSHADE_SHEET_STRUCTURAL_RULINGS_1",
+      "reason": "owner 2026-10-04 Long Shade sheet: \"no longer needed\". RM_Thurra and RSW_Thurra defs deleted."
     }
   ],
   "fauna": [
@@ -904,13 +909,6 @@
       "commonality": 0.035,
       "def": "AA_Terramorph",
       "law": "flat oriented terrain-mimic — \"anything hiding becomes flat and oriented\" (§4); spd 1.8 (MEASURED)"
-    },
-    {
-      "action": "keep",
-      "band": "herd",
-      "commonality": 0.05,
-      "def": "AA_Gigantelope",
-      "law": "herd herbivore, spd 4.5 non-predator (ban 3 bans predators only)"
     },
     {
       "action": "keep",
