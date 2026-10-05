@@ -1,14 +1,23 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-04T17:04:10-0700",
+ "built": "2026-10-04T22:51:40-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "87e6995b6",
+ "census_git_head": "335bdd0eb",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
+     "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render bluedesert_Thunderbeast_v2"
+   },
    "res": null,
    "subject_key": "thunderbeast"
   },
@@ -55,13 +64,20 @@
      "east": "5afdcdfafbba574d4d2ae90438b2adf380f09854c16a3151ecd43efb095c4ad3",
      "north": "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849",
      "south": "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe"
+    },
+    "B": {
+     "east": "55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f",
+     "north": "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0",
+     "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
+    "A": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
+    "B": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render bluedesert_Dovvik_v2"
    },
    "res": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
    "subject_key": "dovvik"
@@ -145,19 +161,20 @@
      "north": "06fbf592fefbf142f7361a7c4bd1a3e149e5ebbecde300923bad030047fa946d",
      "south": "159fe4a3402609050dbd5d37c14beb7fb9a94a0199ef1ad1da346cb6a45ab8cb"
     },
-    "B": {
+    "C": {
      "east": "f8259d80408212687f29ded3cafd267fe12063f11fc0a5b7d78ff6cbdf5b2111",
      "north": "6ba660244ece66a1e0321a02b1da77abd3da4b23b078b291f930c0a82243ae6c",
+     "single": "6ba660244ece66a1e0321a02b1da77abd3da4b23b078b291f930c0a82243ae6c",
      "south": "b6032685b59877add8d0992ad7bb0bbe572c0204115c1c83250e2e718b5a2747"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Murrek/RM_Murrek",
-    "B": "Things/Pawn/Animal/RM_Murrek/RM_Murrek"
+    "C": "Things/Pawn/Animal/RM_Murrek/RM_Murrek"
    },
    "labels": {
     "A": "IN GAME \u2014 BlueDesert",
-    "B": "render RM_Murrek_tint_v1"
+    "C": "render RM_Murrek_tint_v1"
    },
    "res": "Things/Pawn/Animal/RM_Murrek/RM_Murrek",
    "subject_key": "murrek"
@@ -230,13 +247,20 @@
      "east": "086e060adc0fb404fd9b5be01ac9ed63177020c3f2c5337dce8a50fc68f495a0",
      "north": "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae",
      "south": "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6"
+    },
+    "B": {
+     "east": "e4f4570b4a51414d43a8acc2ee44de01e6281097c1db70414f2f38e91851ad8f",
+     "north": "0e1a90004719690365e475afc579bd444c13562074643519cb14d24d1fa4c9d7",
+     "south": "5333d045c2d9c1a5c42b9c4b32598de374f6659cbc1ffb0154b982720094a7c2"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Utikka/RM_Utikka"
+    "A": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
+    "B": "Things/Pawn/Animal/RM_Utikka/RM_Utikka"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render bluedesert_Utikka_v2"
    },
    "res": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
    "subject_key": "utikka"
@@ -287,17 +311,22 @@
      "east": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
      "north": "98eb9382c55693cdbab802d055ec5a232e24032f304bb437fd54af972c060d9e",
      "south": "9ee9f4991ad004935efbdaf947bc563b579b578dbd5456a6def7d9f39e849ff9"
+    },
+    "D": {
+     "east": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk",
     "B": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk",
-    "C": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk"
+    "C": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk",
+    "D": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk"
    },
    "labels": {
     "A": "IN GAME \u2014 BlueDesert",
     "B": "render RM_Vhaulk_v2",
-    "C": "render RM_Vhaulk"
+    "C": "render RM_Vhaulk",
+    "D": "render RM_Vhaulk_v3"
    },
    "res": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk",
    "subject_key": "vhaulk"
@@ -323,13 +352,19 @@
      "east": "6e9f6f848afe411e6e922f9c8423618d2a378f92f29f532b22a6cc3cc3e81c5a",
      "north": "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c",
      "south": "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5"
+    },
+    "B": {
+     "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
+     "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk"
+    "A": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
+    "B": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert",
+    "B": "render bluedesert_Vrisk_v2"
    },
    "res": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
    "subject_key": "vrisk"
@@ -357,18 +392,25 @@
      "east": "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
      "north": "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
      "south": "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803"
+    },
+    "B": {
+     "east": "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
+     "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
+     "south": "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802"
     }
    },
    "graphic_of": {
-    "A": "_byname"
+    "A": "_byname",
+    "B": "_byname"
    },
    "labels": {
-    "A": "render bluedesert_Vapaad_v1"
+    "A": "render bluedesert_Vapaad_v1",
+    "B": "render bluedesert_Vapaad_v2"
    },
    "res": null,
    "subject_key": "vapaad"
   }
  },
  "sheetId": "blue_desert_sheet_2026-10-04",
- "snapshotId": "4a3c4f2fb0916499"
+ "snapshotId": "0a169dd06c1c1b1c"
 }

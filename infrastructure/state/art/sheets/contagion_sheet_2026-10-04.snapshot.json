@@ -1,0 +1,596 @@
+{
+ "biome": "RM_Contagion",
+ "built": "2026-10-04T22:47:08-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "f35a5ed89",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "RM_Bleedleaf": {
+   "columns": {
+    "A": {
+     "single": "d3061e1c738b40d711e8deeeb003c20197510259abd478ea2290aedee404d3ef"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
+   "subject_key": "bleedleaf"
+  },
+  "RM_Blisterfloat": {
+   "columns": {
+    "A": {
+     "east": "93e691f9d78c0621f8d640161942e17b422dc0626708b05eeb025ea080d5cdb3",
+     "north": "6ab7560e591729faae22fe4f55bed3bd6ea13e59d15b1819a369f6063f09e3ba",
+     "south": "19d4f21e8ba7c0f96b2797a21467e5b023b4c744313777b69f58d13c325b69f1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat",
+   "subject_key": "blisterfloat"
+  },
+  "RM_Bloodlurk": {
+   "columns": {
+    "A": {
+     "east": "fb1a38ff15bda5fc7fa78dc2b2ab3b05163b86b52eb95c436422a24330d6fee5",
+     "north": "a114f9b1b26fcd682f2c18367abc9628e30c0b80c16916f7e0777f8d3b623775",
+     "south": "d0e68df4947a50d356a151604032e4636e1909ead17fc791b41ffdfa47ad8a51"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
+   "subject_key": "bloodlurk"
+  },
+  "RM_BloodyFist": {
+   "columns": {
+    "A": {
+     "single": "5e708945e2eb80111076c8cb51eedde1fd91ecf12e840bea2059f3b4fb2352f7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_BloodyFist/RM_BloodyFist"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
+   "subject_key": "bloodyfist"
+  },
+  "RM_BloodyMess": {
+   "columns": {
+    "A": {
+     "east": "0d84f5d7210f26867ad7a688107efc6c3a0d671af5a7d4ded77dd9128900f91f",
+     "north": "cdd3752f3f9e0c36cd4e432e9105b92a067d849b0dde066cb52b82c7e9688dd2",
+     "south": "bbc70a31fbe937705f1e84b9c1f17f0fac9d6b831d7a6db98073f54cad863c39"
+    },
+    "B": {
+     "east": "a566f3bd25d3a9446e9c946b057cb48314262b64fd7d661a4d493dba0d2801db",
+     "north": "85ba049a987e3de73556e69eb3a6177c2942d3b7c423de63d35e1e3af2552200",
+     "south": "30f3b7e11cc1cf3fa0c7293e4f117e4fcd09f8f017293466ae84733089bebea7"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess",
+    "B": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_BloodyMess"
+   },
+   "res": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess",
+   "subject_key": "bloodymess"
+  },
+  "RM_ContagionIkee": {
+   "columns": {
+    "A": {
+     "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+     "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+     "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
+   "subject_key": "contagionikee"
+  },
+  "RM_Crispling": {
+   "columns": {
+    "A": {
+     "east": "413b1f33c4856d4ce02315b68cecfa0c08e7361d6f540af8fdd098b4360b7e94",
+     "north": "f17a04f318cd2f8b2a05259f2833e7b4b76722c5457b2b68b01dd8f9cf192218",
+     "south": "191b5af36dab89184a694d0fa3887c7ee5c8cba7c7a3db52dc19f16efa1acc23"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Crispling/RM_Crispling"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Crispling/RM_Crispling",
+   "subject_key": "crispling"
+  },
+  "RM_Danglemaw": {
+   "columns": {
+    "A": {
+     "east": "78acbbaceeb0bb464ca8b67953580f2209216ddb710987169eb88465f41d6762",
+     "north": "0712b5ffecfd746d9aece691c14f200ddf2f2b8d28d68462444d09906fb9d71d",
+     "south": "fb5e8b4c2368d5479fe910f635604b31997d6c09cb9dd65a617218106ce78523"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw",
+   "subject_key": "danglemaw"
+  },
+  "RM_Doublemaw": {
+   "columns": {
+    "A": {
+     "east": "cad1a884c027eb99175b0e3caede6531bfb9026b7cd5e202a11d5822bf468e1f",
+     "north": "65d3280a17147e761b48d8efcf4e686df14cfa472885691a75de4caaa4314893",
+     "south": "8cda2812e2c6d8bc20e639e11a50ae529d18ffe8a663d05b9c3571cc9c077117"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw",
+   "subject_key": "doublemaw"
+  },
+  "RM_Eyebark": {
+   "columns": {
+    "A": {
+     "single": "c8896a1c28f41b7604d60a0acf78360f236607ef861fff183afff433420d4c4c"
+    },
+    "B": {
+     "single": "f243da8bacaf203b515ae6315534d1b38350af6363bc4db5f0d1bd2901abcaeb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Eyebark/RM_Eyebark",
+    "B": "Things/Plant/RM_Eyebark/RM_Eyebark"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_Eyebark"
+   },
+   "res": "Things/Plant/RM_Eyebark/RM_Eyebark",
+   "subject_key": "eyebark"
+  },
+  "RM_Eyestinger": {
+   "columns": {
+    "A": {
+     "east": "8e7a8518cc61511a0a7f5aea5693c81fc8a8f915cc59670f18c71afb496de331",
+     "north": "8c4cf067e1227c635eec3a1f885df8ddd7525520746a42f6a1c404e18848fd53",
+     "south": "a326d8f1e83ce8027719d42806bd9e102765f030a931aac1d7c70dab554b0f5b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger",
+   "subject_key": "eyestinger"
+  },
+  "RM_Fleshsop": {
+   "columns": {
+    "A": {
+     "east": "854cf9e717567ddba2094e6acc22bcf164e99c15974c6ea5e168c823145ce40e",
+     "north": "e811433e27f0f33781ccf6d35e3b4d81ea61a4ed5eea1098ca7af5cb9a9fc902",
+     "south": "c2e784c442c5b090b3269604291530056fd42952d3d1365be39773d817f2b6e5"
+    },
+    "B": {
+     "east": "b7de49a65193201380aefcad3f4ddb3a3a6a3ba4c5985ccadc2898e927ee862e",
+     "north": "2b462d6401cffb6dc102ee9b4a80ce5b3d5e486c5fc191cdd8d1c2b7e170387e",
+     "south": "7e03bae1276fb73b215aff8e29109eb0142b96bf7378a3a2295bde3c54dbe778"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
+    "B": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render RM_Fleshsop"
+   },
+   "res": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
+   "subject_key": "fleshsop"
+  },
+  "RM_Gawpsack": {
+   "columns": {
+    "A": {
+     "east": "55a5f4c93fa78328cf7c6d0a33229e4f7a65aefaa91be613e6c6e3a52f5742ce",
+     "north": "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408",
+     "south": "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+   "subject_key": "gawpsack"
+  },
+  "RM_Gnashling": {
+   "columns": {
+    "A": {
+     "east": "6f7f10e3b8809180952d7f722b043be298dee7ad26e0395151cbd6d411828d83",
+     "north": "f5c312be74a4a7d9d972b47b731049ad50c0fc0bb0374cbfe2d74d928a268bdb",
+     "south": "0f30ad3d3003331de909b0341db1139f20ee58cd5bee3e3de22b0ccccba1f671"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling",
+   "subject_key": "gnashling"
+  },
+  "RM_Gorekite": {
+   "columns": {
+    "A": {
+     "east": "2b24e6bd3055738f7c0516f99c5f67ca858764591b4042ae87fb819e5f233ed5",
+     "north": "a86f1717b2be4e22c725d8f6f1597cc01a3c3ef00b9d8c533b003fc791728d52",
+     "south": "b03f8db9a7b41d154b0490bea7dee273fb7d116e9550ca8b93695d0e1f872757"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
+   "subject_key": "gorekite"
+  },
+  "RM_Gorestalk": {
+   "columns": {
+    "A": {
+     "single": "523207eca1fecbb0d7f59686ba687ada463df01add21d4a757207c147070bcf5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Gorestalk/RM_Gorestalk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+   "subject_key": "gorestalk"
+  },
+  "RM_HalfmadeTree": {
+   "columns": {
+    "A": {
+     "single": "06662f225e067db5c6780f8c3dac2f96dc0e28f309cbdc9c2b5d6bd249787573"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
+   "subject_key": "halfmadetree"
+  },
+  "RM_HalfmadeTreeBlighted": {
+   "columns": {
+    "A": {
+     "single": "8d6b8df7dfe8a2658cde1acc03040cf10066ac53314d0bf9c50131beb9dd4a0b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
+   "subject_key": "halfmadetreeblighted"
+  },
+  "RM_Lashgrass": {
+   "columns": {
+    "A": {
+     "single": "ff50c7035183d622416b7acc23d935dfd24defe8a9b85773b1a72ffe5f58059b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Lashgrass/RM_Lashgrass"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
+   "subject_key": "lashgrass"
+  },
+  "RM_Meatvine": {
+   "columns": {
+    "A": {
+     "single": "b0dda9e113d0566f9581c403e3519e9ca1ccd7b9f2dd761886ae3a0a15ba19e6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Meatvine/RM_Meatvine"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Meatvine/RM_Meatvine",
+   "subject_key": "meatvine"
+  },
+  "RM_Meltgut": {
+   "columns": {
+    "A": {
+     "east": "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
+     "north": "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9",
+     "south": "22832bea0e572c9b779d8c5f0a8e086c5491acf1493714660f442f13c84b4cff"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
+   "subject_key": "meltgut"
+  },
+  "RM_Ogleknot": {
+   "columns": {
+    "A": {
+     "east": "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+     "north": "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+     "south": "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot",
+   "subject_key": "ogleknot"
+  },
+  "RM_Peeper": {
+   "columns": {
+    "A": {
+     "east": "c188e79cae223511600cbeef6e53248fabe1d92e3c43308c86ff8333f7a99148",
+     "north": "bb976333012fd3fb90afc779b773d95c1548843cd257e8e8350ddf9ef625a7ff",
+     "south": "8b975ef975dc114d237367e58788e8d9379724b0c48926c54788159004b65541"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Peeper/RM_Peeper"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
+   "subject_key": "peeper"
+  },
+  "RM_Rattlegrope": {
+   "columns": {
+    "A": {
+     "single": "9c7913080f7037acbbcccb8c54f765fb4a9df3b7a6bd4ec9a019b152a141edf3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
+   "subject_key": "rattlegrope"
+  },
+  "RM_RustPuff": {
+   "columns": {},
+   "graphic_of": {},
+   "labels": {},
+   "res": null,
+   "subject_key": "rustpuff"
+  },
+  "RM_Sapblister": {
+   "columns": {
+    "A": {
+     "single": "dd92c1c7fdb72a324094d83c64f60094a3fbe6586ee9854c4961f3550ee63416"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Sapblister/RM_Sapblister"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Sapblister/RM_Sapblister",
+   "subject_key": "sapblister"
+  },
+  "RM_Scaldhide": {
+   "columns": {
+    "A": {
+     "east": "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+     "north": "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631",
+     "south": "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
+   "subject_key": "scaldhide"
+  },
+  "RM_Scorchpod": {
+   "columns": {
+    "A": {
+     "east": "ce52cd467f26e62b511a528fdb0bbe0befcd88b2186843a08b4fae14aea1b3bc",
+     "north": "ed67a7bc6f03ee5b790dcbf8fad1aec0c0db03e64acc2ce516f74d57db7fb5df",
+     "south": "e5f138fc1c01e6e0c7ad932d19f74ece5e5b2175d67e3cd528b23a42a103dcdc"
+    },
+    "B": {
+     "single": "dad5d1128c2228a61f4a9b20b92e33716a8bff421bd79f17fab150621dff544e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod",
+    "B": "Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render pyre_scorchpod_v1"
+   },
+   "res": "Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod",
+   "subject_key": "scorchpod"
+  },
+  "RM_Shambles": {
+   "columns": {
+    "A": {
+     "east": "5b88ed6046bf16b892979f96bf28f30e962f5a81b5eefa0deacc88a5ebb55695",
+     "north": "9766cbacb85d1b6cc82812fdb8716a77578e138af7cb9bd7746c31eb85607835",
+     "south": "213c6d2777ae9a9826dacfacaddd896cf14ab115ec8ee5bb71485df280761a35"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
+   "subject_key": "shambles"
+  },
+  "RM_Skinflap": {
+   "columns": {
+    "A": {
+     "east": "79778a06a0ca1ebc56e2b33c3794d869289b2efc882c5544a6510ae90b3890ab",
+     "north": "fa9e4f80155a9b0bf8821205593ed5326a0ed5a7678102471158b973d4837679",
+     "south": "4c93210ca24edc2a96a44e521132dd54c4982310fd2b2b7a081833409299f034"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap",
+   "subject_key": "skinflap"
+  },
+  "RM_Sloshbelly": {
+   "columns": {
+    "A": {
+     "east": "15f7abd43878551b7e0fb738c6d059a8980f6c7e008e5cb1e395b70c58e6e77c",
+     "north": "f785d0007e44aca36154e3c13adc31cc310442f066099f6781fd381c0d8ee71f",
+     "south": "71b204e544d03c7bcb68e756aa90c6a45d1137827f37b7415d048051243e1075"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly",
+   "subject_key": "sloshbelly"
+  },
+  "RM_Sparkleech": {
+   "columns": {
+    "A": {
+     "east": "0d40769ce16804fa0c6c77029bc43dfc33c5900411cffbe698d8726db6d32087",
+     "north": "0f89474654a08680bee6f8250365720777603cbcf3e261ceee42bd38797d8d18",
+     "south": "70a83735015b59f8f209bddb0b786169a25a6d6c81a0f1ddfbb0e500409251ef"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+   "subject_key": "sparkleech"
+  },
+  "RM_SparkleechGrub": {
+   "columns": {
+    "A": {
+     "east": "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
+     "north": "d09f63f36c4c346a687429a723400a01c434026691cf50cd7eb4d40e7c44f6e3",
+     "south": "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
+   "subject_key": "sparkleechgrub"
+  },
+  "RM_Toothmoss": {
+   "columns": {
+    "A": {
+     "single": "1776e4b50139d2e1b6e23080214bbb87f620ba500fb0ad009697ee8cc7c021aa"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Toothmoss/RM_Toothmoss"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
+   "subject_key": "toothmoss"
+  },
+  "RM_Wombpod": {
+   "columns": {
+    "A": {
+     "single": "33c57fb8cd84f56f90bd4ee9510ed0114b47caacba8a0209335a63ccd323ac17"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Wombpod/RM_Wombpod"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Contagion"
+   },
+   "res": "Things/Plant/RM_Wombpod/RM_Wombpod",
+   "subject_key": "wombpod"
+  }
+ },
+ "sheetId": "contagion_sheet_2026-10-04",
+ "snapshotId": "a264d24f368495d6"
+}
