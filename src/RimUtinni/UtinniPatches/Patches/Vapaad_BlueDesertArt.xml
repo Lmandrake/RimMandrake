@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    Vapaad, the Blue Desert's canon row (WildAnimals_BlueDesert.xml), drawn as Blue Desert
+    hydrocarbon life: owner's pick B (render bluedesert_Vapaad_v2) on the Blue Desert art
+    sheet 2026-10-04 — "This needs to be made into hydrocarbon-based resolution please."
+    Our sprites live at Things/Pawn/Animal/RUT_Vapaad/ (a path the donor does not use).
+    Body graphic only; desiccated stays on donor art. Guarded with PatchOperationFindMod —
+    MayRequire on an <Operation> is ignored by 1.6.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Vapaad"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Vapaad"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Vapaad"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
