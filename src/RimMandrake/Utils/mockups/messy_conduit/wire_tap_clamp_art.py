@@ -22,7 +22,7 @@ import artledger  # noqa: E402  the only sanctioned writer into Textures
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-DEST = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Aerial", "TapClamp.png")
+DEST = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial", "TapClamp.png")
 SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc/RM_MessyConduit_Jawa_TapClamp/RM_MessyConduit_Jawa_TapClamp.png"
 PIPE_X = 15          # 64 px render: the pipe spans x 2..14; the jaws' hinge starts right of it
 GREY_SAT = 0.28      # saturation below this is pipe steel; the copper jaws are well above it

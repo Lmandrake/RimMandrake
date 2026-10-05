@@ -22,7 +22,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-OUT = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Aerial")
+OUT = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack", "Aerial")
 SS = 4
 SIZES = {"AerialMast.png": (128, 256), "AerialMastTop.png": (128, 128), "AerialLampMast.png": (128, 256),
          "WallBracket.png": (128, 128), "TapClamp.png": (64, 64)}

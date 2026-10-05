@@ -33,7 +33,7 @@ import artledger  # noqa: E402  the only sanctioned writer into Textures
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
-TEX = os.path.join(REPO, "src", "RimMandrake", "MessyConduit", "Textures", "RimMandrake", "MessyConduit")
+TEX = os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Textures", "RimMandrake", "GimmeSomeSlack")
 CONF = "/mnt/d/Luke/dev/_rmscratch/mc_style_art/conformed"
 REASON = "script:src/RimMandrake/Utils/mockups/messy_conduit/wire_style_pieces_art.py"
 LOOKS = ("Industrial", "Modern", "Futuristic")
