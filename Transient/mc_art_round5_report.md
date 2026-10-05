@@ -1,6 +1,6 @@
 # Messy Conduit — art round 5 (owner review of per-style map)
 
-Status: IN PROGRESS (skeleton written first; filled section by section)
+Status: DONE 2026-10-04 (art installed through the art ledger; nothing deployed or seen in game)
 
 ## 1. Owner's words (verbatim)
 "Station 3: Power switch in modern style should look like something in the real world: a throw-switch to connect-disconnect power. Junction boxes should look like little square connector bricks you plug into (three prong). Power strips should be plugged into the top with three-prong plugs, like real life. Station 4 T and + power junctions look very poor quality: need to make the wires thinner, and ensure the junction box connectors are thicker to cover them. Make + and T connectors be relatively the same central size/center. Station 6: Make the lamps on the lamp masts like ordinary lights, not frozen bright sparkles. Make them the same as the wall lights normally used. Make the cybertek light look very futuristic, the modern lamp look like a streetlight, the industrial star wars one look angular and industrial, and the junker one look like a bare lightbulb in a crude reflector dish. Make the industrial black cables for the poles narrower: they are extremely thick right now. Station 11: The hose reel for modern should not itself be neon, but rather fire-hydrant-red painted metal and bare steel wheel. Make the power switches look appropriate for each of the chosen styles as well. Also redo the bare lamp on the floor the same way (art). station 23: clamp is too low res, looks bad and has strange metallic conduit sticking out its back. Fix."
@@ -40,14 +40,34 @@ clamps x4, Modern stored reel); wave 2 = switch Off x4 (edit of each new On: lev
 T junctions are NOT rendered: each T is its look's + image shifted 19 px and cut above the brick, so T and + share one
 brick size and centre exactly.
 
-Progress: first 5 renders back clean with real alpha at 1254 px. Scrapper switch first render came back as a 128 px
-non-render (rejected, `sw_Scrapper_rejected128.png`), re-queued.
-Conformed so far and looked at: all four + / T junction pairs (ExtCord recoloured to Green/Brown/Yellow/Blue with
-recolor_extcord_pieces.recolor: the plug heads take the net's cord colour, the white brick stays), Modern switch (grey
-disconnect box, red throw handle), Modern mast head (cobra-head streetlight).
+Installed (all through artledger.install_image, reason script:round5_art_install.py; validator PASS on every slot against
+its shipped reference, the only finding the usual faint-alpha WARN 0.2-3%):
+- switches x8: Scrapper copper knife switch on scrap plate; Industrial gunmetal disconnect box with angular throw lever and
+  green lamp; Modern grey steel safety-disconnect box with a red throw handle (On = handle up, Off = handle down);
+  Futuristic alloy breaker with a glowing slide lever. Off = an edit of the same On render with the lever thrown open.
+- junctions x16: + and T per family + ExtCord Green/Brown/Yellow/Blue recolours (`Junction_Tin`/`Junction_Tape` for Scrapper).
+- power strip: `PowerStrip.png` (white strip, black 3-prong plugs pushed in from the top, orange LED) + derived
+  `Styles\ExtCord\PowerStrip_Off.png`. **Validator REJECT, shipped anyway, said here:** height 16 px vs the old 18 and
+  aspect 3.69 vs 3.28 - the redesign (plugs on top, cord tails) is wider than the old bare strip at the same box; it is
+  not squashed. Same 64x32 canvas, same draw (0.8 x 0.4 cell).
+- lamp mast heads x4 (+ tops): Scrapper bare bulb in a dented reflector dish; Industrial angular gunmetal floodlight (retry:
+  the first edit barely changed the old caged lantern); Modern cobra-head streetlight; Futuristic alloy blade with a cyan-white
+  light strip (retry, same reason). Pole/crossarm/insulators byte-identical outside the head box.
+- Modern reel stored + laid: fire-hydrant red painted housing, bare steel hand-wheel, green hose kept.
+- tap clamps x4 at 256 (was a 64 render upscaled to 128): no cable stub behind the handles. Validated against the old clamp
+  upscaled x2 with its stub columns cut (vs the raw old one it REJECTs on -18% width: that width IS the removed stub).
+- floor lamps x4 at `Styles\<Look>\StandingLamp.png` (new paths, 128): Scrapper bulb in scrap dish on pipe stand;
+  Industrial caged lantern on hazard-striped stand; Modern drum shade on black pole; Futuristic alloy column with a ring light.
+  NOT DRAWN IN GAME until the code change in sec. 6 item 3.
 
-## 5. Contact sheets
-(to fill)
+## 5. Contact sheets (before = git HEAD at sheet time, after = installed candidate)
+
+- `D:\Luke\dev\RimMandrake\Transient\mc_style_art\round5_switches.png`
+- `D:\Luke\dev\RimMandrake\Transient\mc_style_art\round5_junctions.png`
+- `D:\Luke\dev\RimMandrake\Transient\mc_style_art\round5_lamps.png` (mast heads + floor lamps)
+- `D:\Luke\dev\RimMandrake\Transient\mc_style_art\round5_strip_reel_clamp.png`
+(Rebuilt with `round5_art_install.py sheets`; in the lamps sheet Scrapper/Modern masts show identical before/after because
+they were committed before the last rebuild.)
 
 ## 6. Code changes owed by other agents (no C#/Defs edited here)
 
@@ -66,4 +86,11 @@ disconnect box, red throw handle), Modern mast head (cobra-head streetlight).
 
 
 ## 7. Owed / not done
-(to fill)
+
+- Floor lamp and per-look clamp art are NOT drawn until the code changes in sec. 6 (items 2, 3). The root `Aerial\TapClamp.png`
+  (Scrapper) IS what the code draws today, so station 23's clamp changes on the next deploy.
+- Overhead Industrial cable width is code (sec. 6 item 1).
+- ExtCord colour recolours: `recolor_extcord_pieces.py --check` reports 0 stale of 24 against the new orange sources.
+- Junction T has no separate render: derived from the + (sec. 4). Old root `Aerial\AerialLampMast.png` (unstyled legacy
+  def texture, 3 green dots) untouched: every look draws `Aerial\Styles\<Look>\` art.
+- Nothing deployed; no live check (offline only, as briefed).

@@ -156,10 +156,11 @@ def plan():
         off, n = w.strip_off(S)
         out.append(("Styles/ExtCord/PowerStrip_Off.png", off, "derived LED-off %d px" % n))
     for L in LOOKS:
-        if not have("mast_" + L):
+        src = "mast2_" + L if have("mast2_" + L) else "mast_" + L    # mast2_ = the stronger retry (Industrial, Futuristic)
+        if not have(src):
             continue
         old_p = os.path.join(IN, "mast_" + L + ".png")
-        new = conform(old_p, os.path.join(RAW, "mast_" + L + ".png"), os.path.join(CONF, "mast_%s_reg.png" % L))
+        new = conform(old_p, os.path.join(RAW, src + ".png"), os.path.join(CONF, "mast_%s_reg.png" % L))
         old = rgba(old_p)
         x0, y0, x1, y1 = HEAD_BOX[L]
         m = old.copy()
