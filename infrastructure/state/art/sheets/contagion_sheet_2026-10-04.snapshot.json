@@ -1,8 +1,8 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-04T22:47:08-0700",
+ "built": "2026-10-04T23:18:31-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "f35a5ed89",
+ "census_git_head": "a91be293e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Bleedleaf": {
@@ -415,10 +415,18 @@
    "subject_key": "rattlegrope"
   },
   "RM_RustPuff": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
-   "res": null,
+   "columns": {
+    "A": {
+     "single": "f96230d2d72b629dd52d7e0da3985b8a17d7a403342bb7d5ab29692327d7435e"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/RustPuff"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/RustPuff",
    "subject_key": "rustpuff"
   },
   "RM_Sapblister": {

@@ -168,9 +168,9 @@
    "prefill": "A"
   },
   "RM_RustPuff": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Sapblister": {
    "decision": "A",
