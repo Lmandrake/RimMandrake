@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SARLACC_SEEKER_ROOTING_1: the sarlacc seeker (RSW_GreatDevourer, Stage I) quests for rich food, then water, then roots.
+     PROVISIONAL numbers. It roots ONLY at a deep-desert seep (rootWhenReserveRunsOut=false), so no pit ever appears
+     on ordinary desert: the seep marker is the biome gate (owner yes owed for any other placement). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_GreatDevourer"]/comps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_GreatDevourer"]/comps</xpath>
+      <value>
+            <li Class="RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccSwimmer">
+              <startingReserveRange>300~900</startingReserveRange>
+              <reserveDrainPerDay>1</reserveDrainPerDay>
+              <reserveGainOnKill>0</reserveGainOnKill>
+              <reserveGainPerKilledBodySize>120</reserveGainPerKilledBodySize>
+              <seepRootMinReserveFraction>0.6</seepRootMinReserveFraction>
+              <seepSeekRadius>60</seepSeekRadius>
+              <rootWhenReserveRunsOut>false</rootWhenReserveRunsOut>
+              <seepDetectRadius>4</seepDetectRadius>
+              <seepDetectChancePerCheck>0.15</seepDetectChancePerCheck>
+              <anchoredDef>RSW_SarlaccAnchored</anchoredDef>
+              <seepMarkerDef>RSW_DeepDesertSeep</seepMarkerDef>
+            </li>
+          </value>
+    </match>
+  </Operation>
+</Patch>

@@ -28,6 +28,21 @@ namespace RimMandrake.StarWars.Sarlacc
         /// <summary>The marker def a "finds a seep" check scans for.</summary>
         public ThingDef seepMarkerDef;
 
+        // SARLACC_SEEKER_ROOTING_1 (the sarlacc seeker, Stage I that quests for rich food then water, then roots).
+        // All default to the old swimmer behaviour, so RSW_SarlaccSwimmer is unchanged.
+
+        /// <summary>Kill top-up for a swimmer with no CompDevourer: this x victim body size, added to the reserve. 0 = off.</summary>
+        public float reserveGainPerKilledBodySize = 0f;
+
+        /// <summary>Seep rooting needs the reserve at this fraction of the starting band's top ("rich food first"). 0 = any reserve.</summary>
+        public float seepRootMinReserveFraction = 0f;
+
+        /// <summary>Once above the threshold, walk toward a known seep this far away (cells). 0 = never seek.</summary>
+        public float seepSeekRadius = 0f;
+
+        /// <summary>False: running dry does NOT root it where it stands; only a seep roots it. Seekers set false, so pits appear only at seeps, never on ordinary desert.</summary>
+        public bool rootWhenReserveRunsOut = true;
+
         public CompProperties_SarlaccSwimmer()
         {
             compClass = typeof(CompSarlaccSwimmer);
@@ -132,11 +147,18 @@ namespace RimMandrake.StarWars.Sarlacc
             }
             nextRareCheckTick = Find.TickManager.TicksGame + 2500;
 
-            if (reserve <= 0f)
+            if (reserve <= 0f && Props.rootWhenReserveRunsOut)
             {
                 RootHere(foundSeep: false);
                 return;
             }
+
+            if (!SeepRootingAllowed())
+            {
+                return;
+            }
+
+            SeekSeep();
 
             if (Props.seepMarkerDef != null && Rand.Chance(Props.seepDetectChancePerCheck))
             {
@@ -152,6 +174,39 @@ namespace RimMandrake.StarWars.Sarlacc
                     RootHere(foundSeep: true);
                 }
             }
+        }
+
+        /// <summary>SARLACC_SEEKER_ROOTING_1: rich food first. True when the reserve is high enough to root at a seep.</summary>
+        public bool SeepRootingAllowed()
+        {
+            return Props.seepRootMinReserveFraction <= 0f || ReserveFraction >= Props.seepRootMinReserveFraction;
+        }
+
+        /// <summary>SARLACC_SEEKER_ROOTING_1: reserve gained for killing a victim, by body size. 0 when the prop is off.</summary>
+        public float KillGain(float victimBodySize)
+        {
+            return Props.reserveGainPerKilledBodySize * victimBodySize;
+        }
+
+        public override void Notify_KilledPawn(Pawn pawn)
+        {
+            base.Notify_KilledPawn(pawn);
+            if (Props.reserveGainPerKilledBodySize > 0f && pawn != null && pawn.RaceProps != null)
+            {
+                reserve += KillGain(pawn.BodySize);
+            }
+        }
+
+        // Fed: walk to the nearest known seep. Water is the second half of "rich food AND water".
+        private void SeekSeep()
+        {
+            if (Props.seepSeekRadius <= 0f || Props.seepMarkerDef == null || Pawn.pather == null || Pawn.Downed) return;
+            Thing seep = GenClosest.ClosestThingReachable(parent.Position, parent.Map, ThingRequest.ForDef(Props.seepMarkerDef),
+                PathEndMode.Touch, TraverseParms.For(Pawn), Props.seepSeekRadius);
+            if (seep == null || parent.Position.DistanceTo(seep.Position) <= Props.seepDetectRadius) return;
+            Job go = JobMaker.MakeJob(JobDefOf.Goto, seep);
+            go.expiryInterval = 2600;
+            Pawn.jobs.StartJob(go, JobCondition.InterruptForced);
         }
 
         // LONGSHADE_BEDAZZLE_MECHANICS_1 part 3 (tranche 1) — the owner's condition on
