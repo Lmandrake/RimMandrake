@@ -24,7 +24,7 @@ RUT_Antiquities ships its own tab separately, untouched here. Labels ruled by
 the owner 2026-09-04: "Jawa Scavenging"/"The Utinni" rename Scavenger/THE
 SHIP; The Waking Mind ships unfolded, not merged into The Unbolting.
 
-RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets; re-derived 2026-10-04 from the load-14 capture over all 406 targets of the three patch files: 15 more owners added, 63 total; plus petetimessix.researchreinvented.steppingstones, which owns none of the targets but PATCHES 13 VFE Tribals ones via its LoadFolders compat folder, VFET_RETAG_ROWS_NOT_HELD_1) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.
+RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets; re-derived 2026-10-04 from the load-14 capture over all 406 targets of the three patch files: 15 more owners added, 63 total; mlie.nwnrealfogofwar (CameraSecurity, CameraSecurityAdvanced, WatchTelescope) added from the 2026-10-05T22-44-27Z capture, 64; plus petetimessix.researchreinvented.steppingstones, which owns none of the targets but PATCHES 13 VFE Tribals ones via its LoadFolders compat folder, VFET_RETAG_ROWS_NOT_HELD_1) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.
 
 RESEARCH_TRIO_RETIRE_1 (owner card 2026-09-18): this mod now OWNS 18 native
 ResearchProjectDefs (Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml) that
@@ -70,6 +70,7 @@ dropped.</description>
     <li>mlie.miningcoalertspeaker</li>
     <li>mlie.miningcodrillturret</li>
     <li>mlie.miningcomms</li>
+    <li>mlie.nwnrealfogofwar</li>
     <li>mlie.spaceworms</li>
     <li>nephlite.orbitaltradecolumn</li>
     <li>neronix17.asimov</li>
