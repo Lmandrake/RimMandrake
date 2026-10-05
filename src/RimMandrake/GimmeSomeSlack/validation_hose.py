@@ -29,8 +29,8 @@ The reel is 2x2 (round 3): Position = its south-west cell, footprint x..x+1 / z.
 reel below is placed so that footprint holds no wall, pipe, tank, other reel or free end.
 
 The flow signal here is the DEBUG provider (HoseProbe "flow:"): FlowWorks has no pump yet, so its adapter
-(FlowWorksPumpFlow, design 3.3 fields lastMovedUnits/lastMovedTick read by reflection) answers null and H5 asserts
-the provider that decided was "debug" -- the day a pump exists beside a reel, that row says so.
+(FlowWorksPumpFlow, design 3.3 fields lastMovedUnits/lastMovedTick read by reflection) answers null and the census's
+`provider` reads "debug" (H5 used to assert it; H5 was cut 2026-10-05 as implied by the matrix's MX_H Flat scenes).
 
 LEARNED (seed; each line is a check below):
   * A hose wrapped round an obstacle corner bends at about its clearance from the corner (SelfTest measured 1.03
@@ -134,7 +134,7 @@ def run_live(args):
         V.row(rows, "H0_probe_channel", "FAIL", "HARNESS", d)
         res["aborted"] = "hose probe dead"
         return res
-    V.row(rows, "H0_probe_channel", "PASS", "HARNESS", "defaults applied")
+    V.hrow(rows, "H0_probe_channel", "PASS", "HARNESS", "defaults applied")
 
     # ---------------------------------------------------------------- scene
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
@@ -147,7 +147,7 @@ def run_live(args):
     B.ticks(2)
     h1, c = B.hose(R1)
     h2, _ = B.hose(R2)
-    V.row(rows, "H1_reels_built", "PASS" if h1 and h2 else "FAIL", "MOD" if br.get("success") else "SITE",
+    V.hrow(rows, "H1_reels_built", "PASS" if h1 and h2 else "FAIL", "MOD" if br.get("success") else "SITE",
           {"reels": len(c.get("hoses") or []), "build": br.get("success"), "walls": bw.get("success"), "textures": c.get("texturesInstalled")})
     if not (h1 and h2):
         res["aborted"] = "reels missing"
@@ -172,18 +172,15 @@ def run_live(args):
           dict(_pick(h1, "kind", "layOk", "pathLen", "flatLen", "plumpLen", "straight", "points", "couplings", "fellBack",
                      "unwalkablePoints", "selfIntersects", "geometryHash"), lay1=l1.get("reason"), lay2=l2.get("reason"),
                lastLayMs=c.get("lastLayMs")))
-    V.row(rows, "H3_width_ge_4x_wire", "PASS" if (h1.get("widthOverWire") or 0) >= WIRE_RATIO_MIN else "FAIL", "MOD",
-          _pick(h1, "visibleWidth", "widthOverWire", "meshWidthFlat", "meshWidthPlump") | {"wireVisibleWidth": c.get("wireVisibleWidth")})
-    mb = c.get("minBendSetting") or 1.2
-    ok4 = (h1.get("minBendFlat") or 0) >= 0.95 * mb and (h1.get("minBendPlump") or 0) >= 0.95 * mb and (h2.get("minBendFlat") or 0) >= 0.95 * mb
-    V.row(rows, "H4_bend_radius_ge_hose_min", "PASS" if ok4 else "FAIL", "MOD",
-          {"setting": mb, "hose1": _pick(h1, "minBendFlat", "minBendPlump"), "hose2": _pick(h2, "minBendFlat", "minBendPlump"), "wallInPath": True})
+    # H3 (width >= 4x wire) and H4 (bend radius >= 0.95 x setting) are CUT (consolidation doc section 2 "Matrix hose 9"):
+    # every MX_H00-H08 scene asserts the same predicates (run_live.hose_compare width_over_wire_ge / min_bend_radius_ge) on
+    # a superset of shapes (straight / corner round a wall / water, 6/14/24 cells, flat / plump / filling).
 
     # ---------------------------------------------------------------- flat while nothing flows
+    # H5 (flat while nothing flows) is CUT: MX_H Flat scenes assert state Flat + blend 0 on three shapes (doc section 2).
+    # The 300 settle ticks stay: H6 reads "plump is wider and shorter than flat" against this flat pose.
     B.ticks(300)
     h1, _ = B.hose(R1)
-    ok5 = h1.get("state") == "Flat" and h1.get("transitions") == 0 and h1.get("blend") == 0 and h1.get("provider") == "debug"
-    V.row(rows, "H5_flat_when_not_flowing", "PASS" if ok5 else "FAIL", "MOD", _pick(h1, "state", "blend", "transitions", "provider", "signal"))
     res["screenshots"].append(B.shot("hose_01_flat"))
     flat_ratio = h1.get("widthOverWire")
     flat_len = h1.get("poseLen")
@@ -243,8 +240,9 @@ def run_live(args):
     # the scene clear's own destroy_batch over a map geyser logs "Tried to destroy non-destroyable thing": harness, not the mod
     site = [e for e in errs_all if "non-destroyable" in str(e.get("Message", ""))]
     errs = [e for e in errs_all if e not in site]
-    V.row(rows, "HZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
-          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrors": len(site)})
+    if not V.SHARED:                 # SHARED: proof_all's one run-end Z (doc section 2 "Log budget")
+        V.row(rows, "HZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
+              {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrors": len(site)})
     # leave hose 1 plump for the save-load mode (state must survive)
     B.hp("flow:%d,%d=on" % R1)
     B.ticks(tt + 5)
@@ -513,7 +511,7 @@ def run_relay(args):
     a, c = B.hose(RA)
     b, _ = B.hose(RB)
     cc, _ = B.hose(RC)
-    V.row(rows, "RL1_reels_built", "PASS" if a and b and cc else "FAIL", "SITE", {"build": br.get("success"), "maxLength": a.get("maxLength")})
+    V.hrow(rows, "RL1_reels_built", "PASS" if a and b and cc else "FAIL", "SITE", {"build": br.get("success"), "maxLength": a.get("maxLength")})
     if not (a and b and cc):
         res["aborted"] = "reels missing"
         return res
@@ -671,7 +669,7 @@ def run_carry(args):
     if pawns[0].get("drafted"):
         B.hp("pawn:%d=undraft" % pid)
     tp = B.hp("pawn:%d=tp:%d,%d" % ((pid,) + CSTAND))
-    V.row(rows, "CR0_scene", "PASS" if tp.get("success") else "FAIL", "HARNESS", {"pawn": tp.get("pawn"), "reel": CREEL})
+    V.hrow(rows, "CR0_scene", "PASS" if tp.get("success") else "FAIL", "HARNESS", {"pawn": tp.get("pawn"), "reel": CREEL})
 
     # ---------------------------------------------------------------- CR1: order Deploy -> a real colonist carries it
     o = B.hp("order:%d,%d=deploy:%d,%d" % (CREEL + CTARGET))
@@ -700,15 +698,18 @@ def run_carry(args):
           {"draft": (dr.get("pawn") or {}).get("drafted"), "pawn": me, "hose": _carry_view(c)})
 
     # ---------------------------------------------------------------- CR4a: save/load while Dropped
-    keys = ("carry", "far", "trailCount", "trailLast", "pending", "pendingAt")
-    va = {k: _carry_view(c)[k] for k in keys}
-    ok, det = _save_reload(B, "RM_hosecarry_%s_dropped" % stamp)
-    c2, _ = B.hose(CREEL) if ok else ({}, None)
-    vb = {k: _carry_view(c2)[k] for k in keys} if ok else None
-    V.row(rows, "CR4a_save_load_dropped", "PASS" if ok and va == vb else "FAIL", "MOD", {"io": det, "before": va, "after": vb})
-    if not ok:
-        res["aborted"] = "save/load failed"
-        return res
+    # SHARED (proof_all): CR4a/CR4b are the session's ONE save (SL4, consolidation doc section 2 "Save/load"), staged by
+    # proof_all.stage_carry_for_save: a Dropped reel and a Carrying reel in the same save, the carrying one resumed after load.
+    if not V.SHARED:
+        keys = ("carry", "far", "trailCount", "trailLast", "pending", "pendingAt")
+        va = {k: _carry_view(c)[k] for k in keys}
+        ok, det = _save_reload(B, "RM_hosecarry_%s_dropped" % stamp)
+        c2, _ = B.hose(CREEL) if ok else ({}, None)
+        vb = {k: _carry_view(c2)[k] for k in keys} if ok else None
+        V.row(rows, "CR4a_save_load_dropped", "PASS" if ok and va == vb else "FAIL", "MOD", {"io": det, "before": va, "after": vb})
+        if not ok:
+            res["aborted"] = "save/load failed"
+            return res
 
     # ---------------------------------------------------------------- CR5: undraft -> the WorkGiver path resumes, Laid at the target
     B.hp("pawn:%d=undraft" % pid)
@@ -719,15 +720,16 @@ def run_carry(args):
         how = {"work": sj, "forced": sj2}
     h, waited, seen = _poll(B, lambda x: x.get("carry") == "Carrying", 600)
     resumed = h.get("carry") == "Carrying"
-    # CR4b: save/load while Carrying (taken here, mid-resume)
-    vc = _carry_view(h)
-    ok, det = _save_reload(B, "RM_hosecarry_%s_carrying" % stamp)
-    hl, _ = B.hose(CREEL) if ok else ({}, None)
-    vl = _carry_view(hl)
-    good = ok and resumed and vl["carry"] in ("Carrying", "Dropped") and (vl["trailCount"] or 0) > 0 and vl["pending"] == "Deploy"
-    V.row(rows, "CR4b_save_load_carrying", "PASS" if good else "FAIL", "MOD", {"io": det, "before": vc, "after": vl})
-    if ok and hl.get("carry") == "Dropped":
-        B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
+    # CR4b: save/load while Carrying (taken here, mid-resume) -- SHARED: SL4 (see CR4a)
+    if not V.SHARED:
+        vc = _carry_view(h)
+        ok, det = _save_reload(B, "RM_hosecarry_%s_carrying" % stamp)
+        hl, _ = B.hose(CREEL) if ok else ({}, None)
+        vl = _carry_view(hl)
+        good = ok and resumed and vl["carry"] in ("Carrying", "Dropped") and (vl["trailCount"] or 0) > 0 and vl["pending"] == "Deploy"
+        V.row(rows, "CR4b_save_load_carrying", "PASS" if good else "FAIL", "MOD", {"io": det, "before": vc, "after": vl})
+        if ok and hl.get("carry") == "Dropped":
+            B.hp("startjob:%d,%d=work;%d" % (CREEL + (pid,)))
     h, waited2, seen2 = _poll(B, lambda x: x.get("carry") == "Laid", 1200)
     V.row(rows, "CR5_resume_laid_at_target", "PASS" if resumed and h.get("carry") == "Laid" and tuple(h.get("far") or ()) == CTARGET
           and h.get("pending") == "None" and h.get("layOk") else "FAIL", "MOD",
@@ -765,7 +767,8 @@ def run_carry(args):
           "PASS" if off.get("success") and off.get("devMode") is False and lo and not bad and control else "FAIL", "MOD",
           {"devModeOff_labels": lo, "offending": bad, "devModeOn_labels": lon, "control_found_in_devmode": control,
            "devModeBefore": was})
-    res["saves"] = ["RM_hosecarry_%s_dropped.rws" % stamp, "RM_hosecarry_%s_carrying.rws" % stamp]
+    res["saves"] = [] if V.SHARED else ["RM_hosecarry_%s_dropped.rws" % stamp, "RM_hosecarry_%s_carrying.rws" % stamp]
+    res["pawn"] = pid
     return res
 
 

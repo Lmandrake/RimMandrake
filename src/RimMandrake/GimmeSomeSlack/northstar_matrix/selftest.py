@@ -246,6 +246,26 @@ def main(argv=None):
     check("DS1 design formulas: floor/aerial/hose pairwise-complete, 109 scenes",
           not any(gaps.values()) and len(spec["scenes"]) == 109 and spec["counts"]["floor"] == 64,
           {"counts": spec["counts"], "missing": gaps})
+    # ---------------------------------------------------------------- 8b. the REDUCED live matrix (owner densification 2026-10-05)
+    import reduced as RD
+    import collections as _co
+    red = RD.reduce_spec(spec)
+    rf = [x for x in red["scenes"] if x["group"] == "floor"]
+    ra = [x for x in red["scenes"] if x["group"] == "aerial"]
+    cnt = lambda xs, k: _co.Counter(str(x["factors"][k]) for x in xs)  # noqa: E731
+    check("RD1 reduced matrix: 39 scenes (floor 16, density 4, aerial 9, hose 9, controls 1)",
+          len(red["scenes"]) == 39 and len(rf) == 16 and len(ra) == 9 and
+          sum(1 for x in red["scenes"] if x["group"] == "density") == 4 and
+          [x["id"] for x in red["scenes"] if x["group"] == "controls"] == ["C00_empty"], len(red["scenes"]))
+    check("RD2 reduced floor: every T once, every S and F on exactly 4 scenes, P/V/Z all levels, ring (T3) kept",
+          sorted(cnt(rf, "T").values()) == [1] * 16 and sorted(cnt(rf, "S").values()) == [4] * 4 and
+          sorted(cnt(rf, "F").values()) == [4] * 4 and len(cnt(rf, "P")) == 2 and len(cnt(rf, "V")) == 3 and
+          len(cnt(rf, "Z")) == 2 and cnt(rf, "T").get("ring") == 1, {k: dict(cnt(rf, k)) for k in ("S", "F", "P", "V", "Z")})
+    check("RD3 reduced aerial: every N x R once, dead AND live poles, all six P x St pairs",
+          len({(x["factors"]["N"], x["factors"]["R"]) for x in ra}) == 9 and
+          len({(x["factors"]["P"], x["factors"]["St"]) for x in ra}) == 6, [x["id"] for x in ra])
+    rd = {x["factors"]["n"]: x["factors"]["S"] for x in red["scenes"] if x["group"] == "density"}
+    check("RD4 reduced density: one per n, S rotated", sorted(rd) == [1, 10, 100, 1000] and len(set(rd.values())) == 4, rd)
     # ---------------------------------------------------------------- 9. hose scenes: placed + checked (no UNBUILT)
     import run_live as RL
     hs = [x for x in spec["scenes"] if x["group"] == "hose"]

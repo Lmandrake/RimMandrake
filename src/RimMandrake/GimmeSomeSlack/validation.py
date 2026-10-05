@@ -119,15 +119,26 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
-# Bars this phase does not build or this short tier does not reach. Honest, named, never PASS.
-UNBUILT = [
-    ("U_motion_look", "UNCOVERED", "whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above"),
-    ("U_style_missing_art", "UNBUILT", "per-family EndFrayed_Live / PowerStrip / StrandShadow art does not exist; those slots "
-                                       "fall back to the Jawa pieces (ST1 asserts the fallback list is exactly that)"),
-    ("M4_save_load_hash", "UNCOVERED", "walk M4: same polylines after save/load -- its own mode, --save-load NAME"),
-    ("M9_remove_mod_clean", "UNCOVERED", "walk M9: a save made with the mod loads clean without it -- its own mode, "
-                                         "--removal-check NAME on a tier without the mod"),
-]
+# The UNBUILT/UNCOVERED placeholder rows (U_motion_look, U_style_missing_art, M4_save_load_hash, M9_remove_mod_clean) are
+# GONE (owner 2026-10-05 densification, design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md
+# section 2 "Core" + section 7 items 3-4): the two U looks are taste and live on the human review sheet as notes
+# (human_review.py), M4 is proof_all.py's SL3 (one save/load), M9 is the walk's extended E1 (paused by the owner).
+
+# SHARED (set by proof_all.py): one session, one map. The per-script harness/site rows collapse into proof_all's
+# P1-P3 (doc section 2 "Harness/site rows"): a harness row is then written only when it is NOT PASS (a fault still
+# surfaces under its own id; a green one becomes a site note), and per-script log budgets / determinism / save rows
+# are proof_all's session rows (Z, D1/D2, SL1-SL4).
+SHARED = False
+SITE_NOTES = []
+
+
+def hrow(rows, rid, status, cls, detail):
+    """A harness/site row: a row of its own standalone; in SHARED mode only when it is not PASS."""
+    if SHARED and status == "PASS":
+        SITE_NOTES.append({"id": rid, "detail": detail})
+        return
+    row(rows, rid, status, cls, detail)
+
 
 SAVES = os.path.join(os.environ.get("USERPROFILE", ""), "AppData", "LocalLow", "Ludeon Studios",
                      "RimWorld by Ludeon Studios", "Saves")
@@ -237,7 +248,9 @@ def _canvas_for(rel):
         return (64, 64)
     if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
         return (128, 32)
-    if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow", "TapClamp"):
+    if n == "TapClamp" or rel == "Hose/Reel_PumpHookup":
+        return (256, 256)          # art r5 (9245c831b): "256 px tap clamps"; the 2x2 reel's drum art is 256 too
+    if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow"):
         return (64, 64)
     if n == "PowerStrip":
         return (64, 32)
@@ -322,7 +335,7 @@ def _band_px(path, xs=(10, 20)):
     return max(sum(1 for y in range(a.size[1]) if a.getpixel((x, y)) > 128) for x in xs)
 
 
-OWNER_WORDS = ("fire hoses they use",)
+OWNER_WORDS = ("fire hoses they use", "firehose is shown as going OVER")   # the owner's words, quoted verbatim
 
 
 def visible_fire_hose(paths):
@@ -392,9 +405,11 @@ def o6_review_round1(rows):
     if "PlaceWorker_AerialWallBracket" in open(os.path.join(HERE, "Source", "Aerial", "PlaceWorkers_Aerial.cs"), encoding="utf-8").read():
         probs.append("B7: the old in-front-of-the-wall placeworker is still in the source")
     # B8: every hose fitting's hose band matches the band constant the code sizes it by (within 2 px of 128)
-    hs = open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
+    # HARNESS 2026-10-05: the constant moved to HoseMath.cs (RM_MapComponent_Hoses aliases it as (float)HoseMath.PieceBand),
+    # and the old regex crashed the whole offline tier; read the numeric definition wherever it lives
     import re
-    pb = float(re.search(r"PieceBand = ([0-9.]+)f", hs).group(1))
+    hs = "".join(open(os.path.join(HERE, "Source", "Hose", f), encoding="utf-8").read() for f in ("HoseMath.cs", "RM_MapComponent_Hoses.cs"))
+    pb = float(re.search(r"PieceBand = ([0-9.]+)f?[,;]", hs).group(1))
     for n, b in (("Coupling_Brass", pb), ("EndCap", pb)):
         px = _band_px(os.path.join(tex, "Hose", n + ".png"))
         info.append("%s band %d px (code %.0f)" % (n, px, b * 128))
@@ -411,8 +426,9 @@ def o6_review_round1(rows):
     ba = bim.getchannel("A")
     bind_px = max(sum(1 for y in range(bim.size[1]) if ba.getpixel((x, y)) > 128) for x in range(bim.size[0]))
     bind_frac = bind_px / float(bim.size[1])
-    maxes = dict(zip(("Coupling_Brass", "Nozzle", "EndCap"), [float(x) for x in re.search(
-        r"CouplingMax = ([0-9.]+)f, NozzleMax = ([0-9.]+)f, EndCapMax = ([0-9.]+)f", hs).groups()]))
+    # each constant read by name wherever it is DEFINED with a number (CouplingMax moved to HoseMath.cs; HARNESS 2026-10-05)
+    maxes = {n: float(re.search(r"\b%s = ([0-9.]+)f?[,;]" % c, hs).group(1))
+             for n, c in (("Coupling_Brass", "CouplingMax"), ("Nozzle", "NozzleMax"), ("EndCap", "EndCapMax"))}
     worst = []
     for vis in (fv, fv + pe):
         wrap_drawn = wk * vis / bind_code * bind_frac
@@ -428,7 +444,8 @@ def o6_review_round1(rows):
             worst.append(fit_w / wrap_drawn)
             if fit_w > wrap_drawn + 1e-6:
                 probs.append("B22 %s on hose %.2f: fitting %.3f wider than wrap %.3f" % (n, vis, fit_w, wrap_drawn))
-    if os.path.exists(os.path.join(tex, "Hose", "OpenEnd.png")) or "HoseMaterials.Mouth" not in hs or "Wrap(" not in hs:
+    # HARNESS 2026-10-05: per-look hose materials (style stage 3) draw the open end's mouth as hm.Mouth (the look's set)
+    if os.path.exists(os.path.join(tex, "Hose", "OpenEnd.png")) or not ("HoseMaterials.Mouth" in hs or "PieceXZ(hm.Mouth" in hs) or "Wrap(" not in hs:
         probs.append("B22: open end still the OpenEnd stub, or no wrap drawn")
     info.append("B22 wrap band %d/%d px, wrap %.2f x hose, fitting/wrap max %.2f" % (bind_px, bim.size[1], wk * bind_frac / bind_code, max(worst)))
     if "public HoseEnd end = HoseEnd.Open;" not in open(os.path.join(HERE, "Source", "Hose", "CompHoseReel.cs"), encoding="utf-8").read():
@@ -458,8 +475,11 @@ def o6_review_round1(rows):
         if d > 15:
             probs.append("B14 %s: cord pixels hue %.0f vs cord %.0f" % (c, mh, th))
     cm = open(os.path.join(HERE, "Source", "CordMaterials.cs"), encoding="utf-8").read()
-    if "public static Material Decal(DecalKind k, int variant)" not in cm or \
-            "CordMaterials.Decal(d.Kind, variant)" not in open(os.path.join(HERE, "Source", "SectionLayer_RM_MessyCords.cs"), encoding="utf-8").read():
+    # HARNESS 2026-10-05: style stage 2 draws each piece with its GLOBAL material index (look x variant), DecalG(kind, g),
+    # which falls back to Decal(kind); the per-variant table itself is still Decal(kind, variant)
+    sl = open(os.path.join(HERE, "Source", "SectionLayer_RM_MessyCords.cs"), encoding="utf-8").read()
+    if "public static Material Decal(DecalKind k, int variant)" not in cm or not (
+            "CordMaterials.Decal(d.Kind, variant)" in sl or ("CordMaterials.DecalG(d.Kind, g)" in sl and "public static Material DecalG(" in cm)):
         probs.append("B14: the section layer does not draw pieces per cord variant")
     # B6/B16/B19: the per-look pole geometry table matches the wired art
     rp = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_pole_art.py"), "--check"],
@@ -647,7 +667,7 @@ def live_battery(B, fresh_map=False, rows=None):
             if st == "Playing" and B.call("jawa/map_info").get("success"):
                 break
             time.sleep(2)
-        row(rows, "L0_fresh_map", "PASS" if st == "Playing" else "FAIL", "SITE", {"start": r.get("success"), "programState": st})
+        hrow(rows, "L0_fresh_map", "PASS" if st == "Playing" else "FAIL", "SITE", {"start": r.get("success"), "programState": st})
         if st != "Playing":
             res["aborted"] = "no fresh map"
             return res
@@ -668,7 +688,7 @@ def live_battery(B, fresh_map=False, rows=None):
     except Exception as ex:  # noqa: BLE001
         res["mod_hash"] = None
         log.append("mod_hash unavailable: %s" % ex)
-    row(rows, "L1_tier_running", "PASS" if PKG in env.get("running", []) else "FAIL", "SITE",
+    hrow(rows, "L1_tier_running", "PASS" if PKG in env.get("running", []) else "FAIL", "SITE",
         "%d mods running, gimmesomeslack %s" % (len(env.get("running", [])), PKG in env.get("running", [])))
     lg0 = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     logs0 = lg0.get("logs") or []
@@ -676,7 +696,7 @@ def live_battery(B, fresh_map=False, rows=None):
     bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs0)
     pre = [x.get("Message", "")[:200] for x in logs0 if "GimmeSomeSlack" in (x.get("Message", "") + x.get("StackTrace", ""))
            and (x.get("Level") or "").lower() in ("error", "exception")]
-    row(rows, "L2_startup_log_clean", ("PASS" if not pre else "FAIL") if bridge_line else "UNMEASURED", "MOD",
+    hrow(rows, "L2_startup_log_clean", ("PASS" if not pre else "FAIL") if bridge_line else "UNMEASURED", "MOD",
         pre or "no GimmeSomeSlack error in %d warn+ startup entries (sanity: [RimBridge] line seen=%s)" % (len(logs0), bridge_line))
     pd = B.probe("defaults")
     if not pd.get("success"):
@@ -717,7 +737,7 @@ def live_battery(B, fresh_map=False, rows=None):
     B.ticks(2)
     time.sleep(1.0)
     ok_scene = b4.get("survived") == len(cond) and bs.get("storedEnergyAfter", 0) > 0
-    row(rows, "S0_scene_built", "PASS" if ok_scene else "FAIL", "SITE", dict(built, battery=bat_id, stored=bs.get("storedEnergyAfter")))
+    hrow(rows, "S0_scene_built", "PASS" if ok_scene else "FAIL", "SITE", dict(built, battery=bat_id, stored=bs.get("storedEnergyAfter")))
     c0 = B.probe("census")
     log.append({"census0": c0})
 
@@ -741,9 +761,7 @@ def live_battery(B, fresh_map=False, rows=None):
         (dc.get("JunctionTape", 0) + dc.get("JunctionTin", 0)) > 0 and (dc.get("FrayDead", 0) + dc.get("FrayLive", 0)) > 0 else "FAIL",
         "MOD", {"decals": dc})
     # ---------------------------------------------------------------- M2: connected only, floor rule
-    m2 = c0.get("cordsAcrossNets") == 0 and c0.get("cordEndsWithoutNet") == 0
-    row(rows, "M2_cords_only_within_net", "PASS" if m2 else "FAIL", "MOD",
-        {k: c0.get(k) for k in ("cordsAcrossNets", "cordsAcrossNetsList", "cordEndsWithoutNet")})
+    # M2 is written after the break (M8) so it is evaluated on the post-break census too -- see there.
     row(rows, "M2b_no_vertex_unwalkable", "PASS" if c0.get("verticesInUnwalkable") == 0 and c0.get("interiorVertices", 0) > 0 else "FAIL",
         "MOD", {k: c0.get(k) for k in ("verticesInUnwalkable", "interiorVertices", "fellBack", "unroutable")})
     # ---------------------------------------------------------------- M6: hookup wire hidden, overlay intact
@@ -751,9 +769,12 @@ def live_battery(B, fresh_map=False, rows=None):
     row(rows, "M6_overlay_lines_intact", "PASS" if m6 else "FAIL", "MOD",
         {k: c0.get(k) for k in ("hookupWiresSuppressed", "overlayWiresPrinted", "overlayConnectorVerts")})
     # ---------------------------------------------------------------- determinism (fresh builder, same map)
-    fr = B.probe("fresh")
-    row(rows, "D1_determinism_fresh_build", "PASS" if fr.get("edges", 0) > 0 and fr.get("different") == 0 and fr.get("missing") == 0 else "FAIL",
-        "MOD", fr)
+    # D1 (fresh builder reproduces every edge) is the same predicate as the matrix's D2 on a superset of boards; in a
+    # SHARED (proof_all) session D2 carries it (consolidation doc section 2 "Determinism"); standalone it stays here.
+    if not SHARED:
+        fr = B.probe("fresh")
+        row(rows, "D1_determinism_fresh_build", "PASS" if fr.get("edges", 0) > 0 and fr.get("different") == 0 and fr.get("missing") == 0 else "FAIL",
+            "MOD", fr)
     # ---------------------------------------------------------------- M5: local invalidation
     hashes0 = c0.get("edgeHashes") or {}
     B.call("jawa/build_batch", ops=ops("PowerConduit", [(FAR[-1][0] + 1, FAR[-1][1])]), faction="player", wipeExisting=False)
@@ -778,8 +799,13 @@ def live_battery(B, fresh_map=False, rows=None):
               ew.get("netLive") is True and ee.get("netLive") is False)
     row(rows, "M8_break_two_ends_live_dead", "PASS" if m8 else "FAIL", "MOD",
         {"west(battery side)": ew, "east": ee, "cordsAcrossNets": c2.get("cordsAcrossNets")})
-    row(rows, "M8b_no_cord_across_gap", "PASS" if c2.get("cordsAcrossNets") == 0 else "FAIL", "MOD",
-        {"cordsAcrossNets": c2.get("cordsAcrossNets"), "list": c2.get("cordsAcrossNetsList")})
+    # M2 on BOTH the built scene (c0) and the post-break census (c2). The one-cell gap splits the PowerNet, so a cord
+    # across it IS a cross-net edge: M8b ("no cord across the gap") is this predicate on c2 and is cut as a row
+    # (consolidation doc section 2 "Core": "cut M8b after that one-line harness change").
+    m2 = all(c.get("cordsAcrossNets") == 0 and c.get("cordEndsWithoutNet") == 0 for c in (c0, c2))
+    row(rows, "M2_cords_only_within_net", "PASS" if m2 else "FAIL", "MOD",
+        {"built": {k: c0.get(k) for k in ("cordsAcrossNets", "cordsAcrossNetsList", "cordEndsWithoutNet")},
+         "afterBreak": {k: c2.get(k) for k in ("cordsAcrossNets", "cordsAcrossNetsList", "cordEndsWithoutNet")}})
     try:
         lane_a_live(B, rows, log)
     except Exception as ex:  # noqa: BLE001
@@ -822,12 +848,11 @@ def live_battery(B, fresh_map=False, rows=None):
     # SteamGeyser..."): the harness, not the mod -- counted, never charged to the mod (run_live.py does the same)
     site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
     errs = [e for e in errs if e not in site]
-    row(rows, "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
-        {"errors": [str(e.get("Message", ""))[:200] for e in errs[:6]], "newWarnings": len(new), "siteClearErrors": len(site)})
+    if not SHARED:                   # SHARED: one run-end log budget over the whole session (proof_all Z)
+        row(rows, "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
+            {"errors": [str(e.get("Message", ""))[:200] for e in errs[:6]], "newWarnings": len(new), "siteClearErrors": len(site)})
     t_end = B.probe("census").get("ticksGame")
     res["ticks"] = (t_end - t_start) if isinstance(t_end, int) and isinstance(t_start, int) else None
-    for rid, st, why in UNBUILT:
-        row(rows, rid, st, "SCOPE", why)
     res["log"] = log
     return res
 
@@ -887,7 +912,7 @@ def lane_a_live(B, rows, log):
     m0 = motion(B)
     log.append({"lane_a_m0": m0, "plot": {"walls": b1.get("survived"), "battery": bat2, "conduit": b3.get("survived"),
                                           "stored": bs.get("storedEnergyAfter")}})
-    row(rows, "P1B_plot_built", "PASS" if b3.get("survived") == len(FIELD + RUN2) and bs.get("storedEnergyAfter", 0) > 0 else "FAIL",
+    hrow(rows, "P1B_plot_built", "PASS" if b3.get("survived") == len(FIELD + RUN2) and bs.get("storedEnergyAfter", 0) > 0 else "FAIL",
         "SITE", {"conduit": b3.get("survived"), "battery2": bat2, "stored": bs.get("storedEnergyAfter")})
     # owner review 2026-10-04 B1: power strips are the Modern (ExtensionCord) look only; the default Scrapper look's
     # pile is junction boxes. So the strip rows (B6, B6b) read the field in the Modern look; settle is look-agnostic.
@@ -1071,7 +1096,7 @@ def style_live(B, rows, log, shots_prefix=None):
     """ST rows: every style loads every texture it needs (no null / bad / missing material, fallbacks only to
     the Jawa slots no family has art for), switching re-prints the section meshes with that style's strand,
     the extension-cord colour modes, the settings file round trip, and a clean return to the default."""
-    per = {}
+    per, st1 = {}, {}
     for st in STYLES:
         B.probe("set:style=%s" % st)
         B.ticks(1)
@@ -1084,11 +1109,14 @@ def style_live(B, rows, log, shots_prefix=None):
         allowed = set() if st == "StarWarsJawa" else ALLOWED_FALLBACKS
         ok = (sp.get("success") and not sp.get("nulls") and not sp.get("bad") and not sp.get("missing") and fb <= allowed and
               sp.get("builtKey") == sp.get("currentKey") and (sp.get("installed") or {}).get(st) and (c.get("layerVerts") or 0) > 0)
-        row(rows, "ST1_%s_textures_load" % st, "PASS" if ok else "FAIL", "MOD",
-            {"strandTex": sp.get("strandTex"), "fallbacks": sorted(fb), "nulls": sp.get("nulls"), "bad": sp.get("bad"),
-             "missing": sp.get("missing"), "layerVerts": c.get("layerVerts")})
+        st1[st] = {"ok": bool(ok), "strandTex": sp.get("strandTex"), "fallbacks": sorted(fb), "nulls": sp.get("nulls"),
+                   "bad": sp.get("bad"), "missing": sp.get("missing"), "layerVerts": c.get("layerVerts")}
         if shots_prefix:
             shots_prefix(st)
+    # ST1 x4 -> ONE row (consolidation doc section 2 "Core": "ST1 x4 (each look's textures load) -> 1 consolidated
+    # row"); the detail names every look and the failing one(s), so no detection is lost.
+    row(rows, "ST1_styles_textures_load", "PASS" if all(v["ok"] for v in st1.values()) else "FAIL", "MOD",
+        {"failing": [k for k, v in st1.items() if not v["ok"]], "perStyle": st1})
     strand_sets = {st: tuple(per[st].get("strandTex") or []) for st in STYLES}
     distinct = len(set(strand_sets.values())) == len(STYLES)
     printed_ok = {st: any(t in (per[st].get("printedTex") or {}) for t in strand_sets[st]) and
@@ -1307,7 +1335,7 @@ suite.toggles = list(SHIPPED)          # every Mod Settings field; floor.uncover
 ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "enabled",
                "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "B7b_sway_shader_path": "swayMode", "B7c_floor_ripple": "floorRipple", "M10_tangle_threshold_setting": "tangleMin",
                "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
-ROW_TOGGLES.update({"ST1_%s_textures_load" % s: "style" for s in ["StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek"]})
+ROW_TOGGLES["ST1_styles_textures_load"] = "style"
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
 MIRROR_POSIX = "/mnt/d/Luke/dev/RimMandrake"       # read-only origin/main mirror: the offline tier writes exports
 
@@ -1389,7 +1417,7 @@ def offline_O1_O5(t):
 @suite.chain("live_battery")
 def live_battery_chain(t):
     """validation.py --live on the runner's map: scene built around the anchor, M1-M3, M5-M8, D1, phase-1b lane A
-    (B1-B9, M10), lane C styles (ST1-ST5), log budget, and the UNBUILT/UNCOVERED scope rows (UNMEASURED)."""
+    (B1-B9, M10), lane C styles (ST1-ST5), log budget."""
     rows = []
     built = False
     try:

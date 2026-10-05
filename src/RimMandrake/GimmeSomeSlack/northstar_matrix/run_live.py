@@ -1207,6 +1207,9 @@ def install_profiler(B):
 
 def run(args, B, mock=False):
     spec = load_catalog(args.catalog)
+    if getattr(args, "scenes", "full") == "reduced":
+        import reduced as RD                       # numpy-free: owner 2026-10-05 densification, 109 -> 39 scenes
+        spec = RD.reduce_spec(spec)
     scenes = spec["scenes"]
     if args.only:
         scenes = [s for s in scenes if any(s["id"].startswith(o) for o in args.only)]
@@ -1522,6 +1525,9 @@ def main(argv=None):
     ap.add_argument("--fresh-map", action="store_true")
     ap.add_argument("--catalog", default="design", help="design | matrix | <scenes.json written by design_spec.py --out>")
     ap.add_argument("--only", nargs="*", help="scene id prefixes")
+    ap.add_argument("--scenes", choices=("reduced", "full"), default="reduced",
+                    help="reduced (default, 39 scenes: northstar_matrix/reduced.py, owner densification 2026-10-05) or full "
+                         "(the phase-2 design's T16 x S4 catalog, 109 scenes, for a design review)")
     ap.add_argument("--max-boards", type=int, default=0)
     ap.add_argument("--out", default=None)
     ap.add_argument("--progress", default=None)
