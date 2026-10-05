@@ -12,11 +12,11 @@
   measured fact in modextension-missing-type-discards-def: a modExtensions
   <li Class="..."> whose type cannot be found in ANY loaded assembly does not
   degrade — it discards the WHOLE target def. Since this patch file ships
-  INSIDE mandrake.rm.liquidtypes itself, our own assembly is guaranteed
+  INSIDE mandrake.rm.flowworks itself, our own assembly is guaranteed
   present whenever this patch runs at all, so that failure mode cannot occur
   here. It becomes live risk only if this compat block is ever copied into a
   DIFFERENT mod's patch folder (e.g. the RUT layer, §7) without a
-  FindMod("mandrake.rm.liquidtypes") guard around it — flagged for whoever
+  FindMod("mandrake.rm.flowworks") guard around it — flagged for whoever
   builds §7, not fixed here.
 
   Includes: acid (Spike A's proof, onto Odyssey ToxicWater*), a normal-water

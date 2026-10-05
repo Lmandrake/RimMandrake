@@ -31,7 +31,7 @@ Rows deliberately NOT generated here, per §6 and the item's own scoping:
     terrain, not a shallow/deep pair, so it does not fit this generator's
     per-row shape and isn't worth bending it for one def.
 
-RM_LiquidProperties (Source/RM_LiquidProperties.cs) ships exactly SEVEN
+RM_LiquidProperties (Source/LiquidTypes/RM_LiquidProperties.cs) ships exactly SEVEN
 fields: viscosityClass, pH, damageOnContact, damageOnImmersion,
 corrodesApparel, flammable, igniteTemp. §3's fuller field list (opacity,
 surfaceFilm, freezesTo/boilsAwayTo) is DESIGN-ONLY — Spike B "trimmed to what
@@ -245,14 +245,10 @@ LIQUID_ROWS = {
     # "no spontaneous vanilla spread" baseline RUT_ScaldWater/RM_AcidWater
     # already rely on) so LiquidIgnitionMapComponent's trigger-gated ignition
     # is the ONLY ignition route, never vanilla's own TrySpread.
-    # 🔴 CHILL_FLORA_BUILD_1, 2026-09-28: the GENERATED RM_Propane.xml carries
-    # a MANUAL post-generation patch (RM_TheChillBed on Deep's <tags>,
-    # RM_TheChillShelf on Shallow's) that this table does NOT reproduce — no
-    # per-row extra-tags field exists yet (generate()'s extra_tags=["Water"]
-    # is hardcoded uniform across every LIQUID_ROWS entry). Regenerating this
-    # row from a re-frozen dump DROPS those two tags silently and the whole
-    # Chill flora roster (RM_TheChillFlora.xml) stops spawning — carry them
-    # forward by hand, or add the per-row field properly, before regenerating.
+    # CHILL_FLORA_BUILD_1: RM_TheChillShelf (Shallow) and RM_TheChillBed (Deep)
+    # are the wildTerrainTags RM_TheChillFlora.xml's plants match; without
+    # them the Chill's whole flora roster never spawns. Carried by the per-row
+    # extra_tags_shallow/extra_tags_deep fields so a regeneration keeps them.
     "propane": {
         "defnamePrefix": "RM_Propane",
         "file_name": "RM_Propane.xml",
@@ -265,6 +261,8 @@ LIQUID_ROWS = {
         "native_overrides": {"waterBodyType": "Saltwater", "canFreeze": False, "extinguishesFire": False},  # Saltwater, not None: owner card 2026-09-24 (SEA_FLOOR_AND_CATCH_PASS_1) - the Chill shore is FISHED, and the fishing designator and WaterBodyTracker both refuse None; Saltwater keeps it non-potable
         "native_overrides_shallow": {"pathCost": 20},  # [INVENTED] thin viscosity, flows easier than water
         "extension": {"viscosityClass": "thin", "pH": 7, "flammable": True, "igniteTemp": 40},  # [INVENTED igniteTemp]
+        "extra_tags_shallow": ["RM_TheChillShelf"],
+        "extra_tags_deep": ["RM_TheChillBed"],
         "compat_targets": [],
     },
 
@@ -530,9 +528,7 @@ LIQUID_ROWS = {
             "pH": 6,  # [INVENTED] mildly acidic, mucus-typical, well inside the neutral 4..10 band
             # No damageOnContact/damageOnImmersion, no corrodesApparel, no
             # flammable: snot is unpleasant, not a hazard. RM_LiquidProperties.
-            # ConfigErrors flags this combination as a naming/authoring note
-            # only ("does nothing beyond documenting viscosity"), never a
-            # hard error — that note is expected and correct for this row.
+            # ConfigErrors reports nothing for an inert extension.
         },
         "compat_targets": [],
     },
@@ -657,12 +653,12 @@ def generate(liquid_key, defs_by_name, out_dir: Path):
     shallow_xml = build_terrain_xml(
         f"{prefix}Shallow", row["label_shallow"], row["description"],
         shallow_leaf, shallow_overrides, row["extension"],
-        RENDER_PRECEDENCE_SHALLOW, extra_tags=["Water"],
+        RENDER_PRECEDENCE_SHALLOW, extra_tags=["Water"] + row.get("extra_tags_shallow", []),
     )
     deep_xml = build_terrain_xml(
         f"{prefix}Deep", row["label_deep"], row["description"],
         deep_leaf, deep_overrides, row["extension"],
-        RENDER_PRECEDENCE_DEEP, extra_tags=["Water"],
+        RENDER_PRECEDENCE_DEEP, extra_tags=["Water"] + row.get("extra_tags_deep", []),
     )
 
     header = f"""<?xml version="1.0" encoding="utf-8"?>
@@ -756,11 +752,11 @@ def build_compat_patch(out_dir: Path):
   measured fact in modextension-missing-type-discards-def: a modExtensions
   <li Class="..."> whose type cannot be found in ANY loaded assembly does not
   degrade — it discards the WHOLE target def. Since this patch file ships
-  INSIDE mandrake.rm.liquidtypes itself, our own assembly is guaranteed
+  INSIDE mandrake.rm.flowworks itself, our own assembly is guaranteed
   present whenever this patch runs at all, so that failure mode cannot occur
   here. It becomes live risk only if this compat block is ever copied into a
   DIFFERENT mod's patch folder (e.g. the RUT layer, §7) without a
-  FindMod("mandrake.rm.liquidtypes") guard around it — flagged for whoever
+  FindMod("mandrake.rm.flowworks") guard around it — flagged for whoever
   builds §7, not fixed here.
 
   Includes: acid (Spike A's proof, onto Odyssey ToxicWater*), a normal-water
@@ -1185,7 +1181,8 @@ def build_liquiddef_registry(out_dir: Path):
   water, tar, brine, propane, chemfuel — every one resolving only against
   vanilla Core defs and FlowWorks' own already-shipped terrain/FluidDefs,
   so it loads clean under a minimal mod list with no third-party
-  dependency. Plus four more from SLIME_STREAM_ROWS_1: red/green/white/
+  dependency. Plus reaction liquor (WARSCAR_RAINBOW_POOLS_1, adopting the
+  RM_ReactionLiquor terrain suite), and four more from SLIME_STREAM_ROWS_1: red/green/white/
   yellow slime, each owning its own new always-loaded terrain suite and
   canal FluidDef (no MayRequire gate — see the table's own module comment
   above the slime_* rows for how the previous blocker was solved). Blood
