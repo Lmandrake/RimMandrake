@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Colonist-carried hose, stage S3 (design/RimMandrake/hose_carry_design_2026-10-04.md section 4).
+     The player's order sits on the reel (CompHoseReel.pending); any free colonist takes it as Hauling work, or a
+     selected pawn (drafted too) is ordered directly from the right-click menu. -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_CarryHoseEnd</defName>
+    <driverClass>RimMandrake.MessyConduit.Hose.Jobs.JobDriver_CarryHoseEnd</driverClass>
+    <reportString>carrying a hose.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_RetractHose</defName>
+    <driverClass>RimMandrake.MessyConduit.Hose.Jobs.JobDriver_RetractHose</driverClass>
+    <reportString>winding in a hose.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_HoseOrders</defName>
+    <label>carry and wind in hoses</label>
+    <giverClass>RimMandrake.MessyConduit.Hose.Jobs.WorkGiver_HoseOrders</giverClass>
+    <workType>Hauling</workType>
+    <verb>deploy hose</verb>
+    <gerund>deploying hose</gerund>
+    <priorityInType>145</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>
