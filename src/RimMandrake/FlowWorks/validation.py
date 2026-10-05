@@ -1253,15 +1253,16 @@ def toggle_superdeep_shooting(t):
 @suite.chain("toggle_pit_exposure")
 def toggle_pit_exposure(t):
     # PIT_TEMPERATURE_SOFTENING_1: a pawn left on an unroofed uncovered D=4 cell gains the RM_PitExposure
-    # hediff every 250 ticks; the toggle off must stop it. The hediff is read through jawa/pawn_health
-    # (payload substring, since the row shape is not pinned); UNMEASURED-tolerant via t._guard().
+    # hediff every 250 ticks; the toggle off must stop it. The hediff is read through jawa/pawn_get
+    # (jawa/pawn_get hediffs[].def); UNMEASURED-tolerant via t._guard().
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
 
     def _has_exposure(pid):
-        r = t.bridge_call("jawa/pawn_health", pawn=pid)
-        return "RM_PitExposure" in json.dumps(r or {})
+        r = t.bridge_call("jawa/pawn_get", pawn=pid)     # MEASURED 2026-10-05: pawn_health ADDS a hediff ("Give a HediffDef"); pawn_get lists them
+        pw = ((r or {}).get("pawns") or [{}])[0]
+        return any(h.get("def") == "RM_PitExposure" for h in pw.get("hediffs") or [])
 
     with t.component("pit_exposure_on", toggle="pitExposureEnabled"):
         pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
@@ -1318,8 +1319,9 @@ def pit_fill_effects(t):
         rc = _fx_row(_fill_fx(t), pc)
         if t._guard():
             _expect(rc.get("burning") == "True", "lit oil pit not burning: %r" % rc)
-            r = t.bridge_call("jawa/pawn_health", pawn=pc)
-            _expect("Burn" in json.dumps(r or {}), "occupant of a burning oil pit has no burn")
+            r = t.bridge_call("jawa/pawn_get", pawn=pc)      # jawa/pawn_health ADDS a hediff; pawn_get lists them
+            hs = [h.get("def") for h in (((r or {}).get("pawns") or [{}])[0].get("hediffs") or [])]
+            _expect(any("Burn" in str(h) for h in hs), "occupant of a burning oil pit has no burn: hediffs %s" % hs)
 
 
 @suite.chain("toggle_pit_fill_effects")
