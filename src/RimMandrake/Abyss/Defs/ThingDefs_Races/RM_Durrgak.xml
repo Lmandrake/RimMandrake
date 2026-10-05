@@ -12,8 +12,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Durrgak</defName>
-    <label>durrgak</label>
-    <description>A slow, stoop-backed digger the colour of dusty umber, with very long, pale, many-jointed fingers that it never seems to stop using. It works the black glass of the crags with a patient, shy care, turning over shards and stones and setting them down again somewhere else. Wherever one has been, things are a little too neat.</description>
+    <label>sorter</label>
+    <description>A slow, stoop-backed digger the colour of dusty umber, with very long, pale, many-jointed fingers that it never seems to stop using. It works the black glass of the crags with a patient, shy care, turning over shards and stones and setting them down again somewhere else. Wherever one has been, things are a little too neat.\n\nColonists call it the sorter. It can be tamed and trained, and a tame sorter cannot leave a mess alone: it hauls, and it picks the filth off a floor and eats it.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>140</MarketValue>
@@ -75,6 +75,18 @@
         <maxCairnsOnMap>10</maxCairnsOnMap>
       </li>
     </comps>
+    <modExtensions>
+      <!-- owner, Abyss sheet 2026-10-05: "Rename to a Sorter. Trainable. Tamable. Cleans."
+           Cleaning rides the existing CreatureBehaviors engine (composed into mandrake.rm.biomes);
+           same extension the warscar scavenger and cathedral roach use. Filth only, no item targets. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">
+        <eatsFilth>true</eatsFilth>
+        <searchRadius>20</searchRadius>
+        <nutritionPerMeal>0.05</nutritionPerMeal>
+        <eatDurationTicks>600</eatDurationTicks>
+        <seekChance>0.05</seekChance>
+      </li>
+    </modExtensions>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
@@ -82,7 +94,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Durrgak</defName>
-    <label>durrgak</label>
+    <label>sorter</label>
     <race>RM_Durrgak</race>
     <combatPower>60</combatPower>
     <wildGroupSize>1</wildGroupSize>

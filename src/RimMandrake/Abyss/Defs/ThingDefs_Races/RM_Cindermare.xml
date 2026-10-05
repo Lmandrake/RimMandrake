@@ -9,7 +9,7 @@
   <ThingDef ParentName="ThingBaseWolf">
     <defName>RM_Cindermare</defName>
     <label>cindermare</label>
-    <description>A mouthless nightside predator, seven asymmetric eyes clustered above a damp black hide. It has no bite - it kills by grip, draining the warmth from whatever it holds until the cold itself is the wound. Solitary and untameable; its mane and hide are only ever taken from a kill, never sheared.</description>
+    <description>A mouthless nightside predator, fourteen eyes, seven to a side, clustered above a damp black hide. It has no bite - it kills by grip, draining the warmth from whatever it holds until the cold itself is the wound. Solitary and untameable; its mane and hide are only ever taken from a kill, never sheared.</description>
     <race>
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
