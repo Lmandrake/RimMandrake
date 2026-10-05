@@ -1,0 +1,54 @@
+[canon_check] 39 job(s), model gpt-6.1-sol effort high, -j 3
+[canon_check] graded 30, PASS 20, FAIL 10, other 9
+RM_Vhaulk_v3_east: FAIL 2/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The domed plated shell and squat projecting legs strongly resemble terrestrial tortoise anatomy despite the absent head.
+    ✗ Quality target: the owner's praised exemplars RM_Kethevar and RM_Lisqueth ('finally a real — Fine frost texture and a readable silhouette are present, but the armor looks opaque and stony, lacks fractal or pleated structure, and the 
+bluedesert_Dovvik_v2_east: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The stout legs, broad feet and long trunk create recognizable elephant-like Earth-animal anatomy despite the alien surface structure.
+bluedesert_Dovvik_v2_north: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The overlapping armored back and splayed, footed limbs read as recognizable terrestrial armored-quadruped anatomy.
+bluedesert_Dovvik_v2_south: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The broad torso, paired arm-like side limbs and two separated footed legs create a recognizable humanoid body plan.
+bluedesert_Thunderbeast_v2_east: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The barrel torso, four articulated legs, broad feet and projecting head form a recognizable armored terrestrial quadruped silhouette.
+bluedesert_Thunderbeast_v2_south: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — Broad shoulder-like masses and long paired limbs with splayed, finger-like ends create a recognizable gorilla-like silhouette.
+bluedesert_Utikka_v2_east: PASS 4/4 (owner)
+bluedesert_Utikka_v2_north: PASS 4/4 (owner)
+bluedesert_Utikka_v2_south: PASS 4/4 (owner)
+bluedesert_Vapaad_v1_east: SKIP no canon/owner note
+bluedesert_Vapaad_v1_north: SKIP no canon/owner note
+bluedesert_Vapaad_v1_south: SKIP no canon/owner note
+bluedesert_Vapaad_v2_east: PASS 4/4 (owner)
+bluedesert_Vapaad_v2_north: PASS 4/4 (owner)
+bluedesert_Vapaad_v2_south: PASS 4/4 (owner)
+bluedesert_Vrisk_v2_east: FAIL 3/4 (owner)
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The large veined upper wing and smaller lower wing form a recognisable insect-like wing arrangement despite the eyeless, tapered prow.
+bluedesert_Vrisk_v2_north: FAIL 2/4 (owner)
+    ✗ Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showin — The tissue is translucent pale blue-white, but veins and joints lack clearly visible pale-yellow blood accents.
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The paired large upper wings and smaller lower wings form a recognisable terrestrial butterfly silhouette, despite the eyeless prow.
+bluedesert_Vrisk_v2_south: FAIL 2/4 (owner)
+    ✗ Pale white-and-blue, slightly translucent body with pale yellow (hydrocarbon) blood showin — The body and membranes are translucent white-blue, but discernible pale yellow blood accents are missing.
+    ✗ It must look like nothing terrestrial: no recognisable Earth-animal anatomy, no mammal, re — The paired upper and lower wings around a narrow central body form recognisable butterfly-like anatomy, despite the absence of eyes or a dis
+desert_gap_DUM_v1_east: PASS 6/6 (canon: droid_dum_pit)
+desert_gap_DUM_v1_north: PASS 5/5 (canon: droid_dum_pit)
+desert_gap_Destroyer_v1_east: PASS 3/3 (canon: droid_droideka)
+desert_gap_Destroyer_v1_south: FAIL 4/5 (canon: droid_droideka)
+    ✗ Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizon — Rounded shell, three small eyes, paired side cannons, and bronze plating contradict the specified Sharpshooter shield, two-eye bar, sniper b
+desert_gap_FX7_v1_east: PASS 5/5 (canon: droid_fx7)
+desert_gap_FX7_v1_north: PASS 5/5 (canon: droid_fx7)
+desert_gap_FX7_v1_south: PASS 5/5 (canon: droid_fx7)
+desert_gap_GNK_v1_east: PASS 5/5 (canon: droid_gnk)
+desert_gap_GNK_v1_north: PASS 4/4 (canon: droid_gnk)
+desert_gap_GNK_v1_south: PASS 5/5 (canon: droid_gnk)
+desert_gap_MSE_v1_east: PASS 6/6 (canon: droid_mse)
+desert_gap_MSE_v1_north: PASS 5/5 (canon: droid_mse)
+desert_gap_MSE_v1_south: PASS 5/5 (canon: droid_mse)
+desert_gap_Muckraker_v1_east: SKIP no canon/owner note
+desert_gap_Muckraker_v1_south: SKIP no canon/owner note
+longshade_rsw_bantha_v1_east: PASS 7/7 (canon: bantha)
+longshade_rsw_bantha_v2_east: PASS 6/6 (canon: bantha)
+messyconduit_bracket_modern_v2_east: SKIP no canon/owner note
+messyconduit_bracket_modern_v2_north: SKIP no canon/owner note
+messyconduit_bracket_modern_v2_south: SKIP no canon/owner note
+messyconduit_hose_binding_v1: SKIP no canon/owner note
