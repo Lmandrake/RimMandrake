@@ -33,3 +33,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - SELFTESTS (milestone 1, after cuts/tier/moves): 177/179. FAIL selftest_utinnipatches_dump.py — JOE_Landopus label 'thraia' in XML vs 'landopus' in the recorded load-14 def dump: a TRUE finding (the rename has not been through a game load yet), clears on the next load + dump refresh; not edited past. FAIL bridgetools/selftest_tool_metadata.py — DLL tool surface vs source, untouched by this item (not mine).
 - Dewfringe tier move: NO-OP — only RM_Dewfringe exists (no RSW_ twin anywhere); "add a bunch of variants" is art.
 - RENAME RM_Skarrok -> Ski'ra'lim: DONE — defName RM_Skiralim, label ski'ra'lim; texPath kept (owner: accept art). CALL: defNames of RM-only defs renamed (none is cast on a biome the saved planet carries); every renamed def keeps its texPath.
+- RENAME RM_Sollak -> Chorn: DONE — defName RM_Chorn, label/description chorn; texPath kept (owner: keep art).
