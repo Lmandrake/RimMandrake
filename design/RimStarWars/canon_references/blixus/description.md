@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Blixus` — in-repo label "blixus"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Blixus
@@ -19,11 +16,19 @@ Blixus were large non-sentient carnivorous cephalopods from an unknown planet of
 **Biology and appearance** A horrific monstrosity coated with a half-shelled, articulated carapace, with hard chitin covering its six pick-like legs. Its well-muscled underbelly concealed a ghastly gash of a mouth filled with sharp teeth, and a pair of pincer-tipped graspers. Its most terrifying feature, though, were the five sinewy tentacles that terminated in sucker-lined grasping pads.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Two images, and they disagree sharply on colour and body plan, so read both before drawing.
+- **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers.
+- **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes.
+- Text agrees with both on the count: five tentacles, six legs, half-shell.
+- Size: the tentacles dwarf the body; no scale reference in the images (comic shows it filling a corridor beside droid-suited figures, indicating human-plus size).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it
+- [ ] Exactly six stiff, blade/pick-like chitin legs, angled down and forward
+- [ ] Exactly five very long, ringed, flesh-pink tentacles, each longer than the body
+- [ ] Tentacles grey and thorn-spiked toward the tips, ending in a flat pink sucker-pad
+- [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it
+- [ ] Two small amber eyes tucked under the carapace brim
 
 ## Engine limits
 not yet assessed

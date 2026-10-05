@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Kybuck` — in-repo label "kybuck"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Kybuck
@@ -35,11 +32,18 @@ By 19 BBY, however, Yoda had a new kybuck, received as a gift as a token of grat
 A colony of kybucks was established on Felucia during the battle there by Confederate mercenaries, including Vazus Mandrake, who tended to the creatures after the war's end.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images; the canon one (CGI render, file `Kybucks-LaD.png`) differs a lot from the three Legends ones.
+- **`canon_1` (canon, CGI, Shili):** two kybucks standing upright in tall grass on **two hind legs** (matches the text "stood on two hoofed feet"), forelimbs small and tucked. Light **golden-tan/caramel short coat**, slim torso, **long thin neck**, small head with a pointed muzzle and a **narrow beard/tuft hanging from the chin** (the Shili form), big leaf-shaped upright ears, and **a pair of dark red-brown, ridged, backward-curving horns** (curve downward at the tips, ibex/goat-like). Dark nose, large amber eye. Slender, antelope/gazelle build. The pale chest tuft and the neck ruff are visible on the left animal.
+- **Legends (`legends_1`, `legends_2`, `legends_3`):** a **four-legged, horse-sized riding animal** (Yoda's mount): chestnut red-brown or dark brown coat, long bushy tail, sturdy hoofed legs, a thick mane of fur at the neck, short upswept horns or a horned/ridged head-guard worn like a helmet, saddle and harness. `legends_1` (Clone Wars 2D cartoon) is red-brown with ringed striped horns; `legends_2` (concept/painted) is dark brown with short upswept horns; `legends_3` (toy packaging art) is a shaggy brown beast with big ridged curled horns and a mane. Looks like a horse/yak hybrid.
+- **The images disagree** on stance (biped in canon, quadruped in Legends), size and build (slim gazelle vs horse). Trust the canon image for the canon animal. The text also says canon Kashyyyk kybucks have dark-brown fur and upward-curving horns with no chin tufts; Shili ones (shown) have light-brown fur, downward-curving horns and chin tufts. Pick one population and keep it consistent.
+- **Size:** canon plate shows them roughly head-high above the grass, deer-sized; Legends mounts are horse-sized.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Two hoofed legs as the standing/walking posture in canon art (small forelimbs held up), not a horse stance
+- [ ] Pair of dark, ridged horns curving back (down-curving for the Shili form shown, up-curving for Kashyyyk)
+- [ ] Slender, long-necked antelope/goat build with a golden-tan short coat (Shili) or dark brown (Kashyyyk)
+- [ ] Small pointed muzzle with large upright leaf-shaped ears
+- [ ] Narrow beard/tuft hanging from the chin on the Shili form; none on the Kashyyyk form
 
 ## Engine limits
 not yet assessed

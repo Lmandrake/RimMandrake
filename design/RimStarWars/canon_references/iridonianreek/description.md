@@ -2,9 +2,6 @@
 
 **defName**: `RSW_IridonianReek` — in-repo label "iridonian reek" (canon name: reek); no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Reek
@@ -29,11 +26,22 @@ Reeks were usually found in herds and resided in the mossy grasslands and were v
 While reeks were not terribly fast, they were intelligent. If given patient, gentle training, they could make excellent pack animals.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Entry covers the reek (the slug names the Iridonian subspecies, but no image is Iridonia-specific; Legends says the subspecies is identified only by skin mottling). Four images: one canon render, three Legends.
+- **Silhouette (all four agree):** a massive, low-slung, rhino/triceratops-like quadruped. Sprawling, wide-set, splayed stance with thick, columnar front legs and a hunched, domed back; head carried low and forward. Short, thick neck. Big three-toed feet with heavy blunt claws/hooves.
+- **Horns (the defining feature):** one tall single central horn rising from the nose/brow (curved slightly back, long as the head or longer), plus **two big cheek horns that curve out and forward from the sides of the lower face/jaw like tusks**. Horns are pale cream/bone with a darker base; in the SWTOR-style render (`legends_3`) the nose horn is black.
+- **Colour:** disagreement between sources, which matches the text (skin colour depends on diet and subspecies). `canon_1` and `legends_2` show the **meat-fed red form**: a bright blood-red knobbly head and neck/shoulders against a dark olive-brown body and legs. `legends_1` is an all-brown/rust-red form with pale legs. `legends_3` is a grey-lilac hide with black wart-studs and green glowing patches (Rakghoul-plague-infected, per its caption: do not use as a base colour). Base form per text and Legends: brown. Sprites need a brown base and a red aggressive variant.
+- **Skin:** thick, leathery and knobbly: rows of small raised nodules or bumps across the back and shoulders (olive-yellow bumps in `canon_1`, rusty armour-like scales in `legends_1`), wrinkled folds on the legs.
+- **Face:** deep-set small eyes under a heavy brow, wrinkled snout, wide mouth with a hanging lower lip and blunt teeth; in `canon_1` there is a metal nose ring (Petranaki Arena-bred; not a base trait).
+- **Size:** `legends_2` shows a Lannik rider on its back (shoulder reaches well above a human); herd animals appear behind. Big as a rhino or bigger.
+- No tail is visible in any image.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Massive low, hunched quadruped with a sprawling wide-set stance and thick columnar legs
+- [ ] One tall central nose/brow horn plus two thick cheek horns curving out and forward from the lower face
+- [ ] Thick knobbly, leathery hide with rows of raised bumps over the back and shoulders
+- [ ] Brown base colour, with a red-headed meat-fed variant (red knobbly head, neck and shoulders, dark body)
+- [ ] Heavy brow with small deep-set eyes, wrinkled snout and a hanging lower lip
+- [ ] Big three-toed feet with blunt claws
 
 ## Engine limits
 not yet assessed

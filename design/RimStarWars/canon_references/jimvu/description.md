@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Jimvu` — in-repo label "jimvu"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Jimvu
@@ -12,11 +9,19 @@
 The jimvu was a large, agile, six-legged reptilian creature native to the planet Naboo. A capable runner due to their six legs, they were considered defenseless from predators if not for their speed and their beak nose. The neck of a jimvu was covered in a row of short knobs. Their predators were the veermok and narglatch, both of which could be found in the Gungan swamps of Naboo.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+One image (canon page, file `Jimvu-woswfg.jpg`, pencil and watercolour plate). It shows two jimvu in flight from a large dark furred predator (left, probably the veermok) that grabs one by the leg; judge the jimvu only, the dark animal is a different creature.
+- **Skin:** pale blue-teal to lilac-blue, covered in irregular **purple-violet blotches**; belly and underside cream/olive-tan. Smooth, thin skin, no scales or fur.
+- **Head:** small and bird-like, long pointed **beak-like snout** (cream-yellow, hooked at the tip), pale yellow-green eye, **a comb of short blunt purple spikes/knobs along the back of the head and down the neck** (this is the "row of short knobs" in the text).
+- **Body and limbs:** slender, lean, deer- or ostrich-proportioned torso with a long curving neck and a long thin tail that curls up behind. Legs are long, thin and sinewy with big three-toed clawed feet. **The prose says six legs; the plate does not make a clean count readable** (the overlapping pair in the foreground shows what looks like a long front limb, a mid limb and a trailing hind limb on the nearer animal). Follow the text for six legs but keep them thin and lizard-like.
+- **Posture:** running or leaping, body angled forward and head up and back, a fleeing-prey stance. There are no horns, wings or armour.
+- **Size:** the text says "large"; the plate gives no size cue. The predator dwarfs them in the image.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Slender, lean runner's body with a long curved neck and a long thin tail
+- [ ] Small bird-like head with a long pointed, hooked beak-like snout
+- [ ] Row of short blunt purple knobs/spikes along the back of the head and down the neck
+- [ ] Pale blue-teal to lilac skin with irregular purple-violet blotches and a cream-tan belly
+- [ ] Six thin sinewy legs ending in clawed three-toed feet (leg count from text; the plate does not resolve it)
 
 ## Engine limits
 not yet assessed
