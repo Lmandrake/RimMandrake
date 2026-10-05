@@ -580,6 +580,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             }, caster: (Pawn)null);
         }
 
+        /// <summary>Owner 2026-10-05 ("reels don't have a choose style option"): restyle this reel in place. The hose draws in the
+        /// reel's look every frame (HoseStyles.HoseLook), so only the reel's own graphic needs refreshing.</summary>
+        public void SetLook(string look)
+        {
+            ThingStyleDef sd = Aerial.StylePicker.StyleFor(parent.def, look);
+            if (sd == null) return;
+            parent.SetStyleDef(sd);
+            parent.Notify_ColorChanged();
+        }
+
         /// <summary>Owner ruling 2026-10-04: the player path is a colonist doing it (orders here, jobs in S3); the instant
         /// lay / reel-in are DEBUG actions under Prefs.DevMode only, with no setting that restores them.</summary>
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -614,6 +624,26 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                     action = () => OrderRetract()
                 };
             }
+            if (Aerial.StylePicker.IsStyled(parent.def))
+                yield return new Command_Action
+                {
+                    defaultLabel = "Choose style",
+                    defaultDesc = "Change how this reel and its hose look (scrapper, industrial, modern, futuristic). Free and instant; it changes art only, never cost or function.",
+                    icon = parent.StyleDef?.UIIcon ?? IconLay,
+                    action = () =>
+                    {
+                        string cur = Aerial.StylePicker.LookOfThing(parent);
+                        var opts = new List<FloatMenuOption>();
+                        foreach (string look in Aerial.AerialStyles.Looks)
+                        {
+                            ThingStyleDef sd = Aerial.StylePicker.StyleFor(parent.def, look);
+                            if (sd == null) continue;
+                            string l = look;
+                            opts.Add(new FloatMenuOption(look + (look == cur ? " (current)" : ""), () => SetLook(l), sd.UIIcon ?? IconLay, Color.white));
+                        }
+                        Find.WindowStack.Add(new FloatMenu(opts));
+                    }
+                };
             if (pending != HosePendingOrder.None || carry == HoseCarryState.Carrying || (carry == HoseCarryState.Retracting && carrier != null))
                 yield return new Command_Action
                 {
