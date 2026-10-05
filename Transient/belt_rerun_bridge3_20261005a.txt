@@ -1,0 +1,21 @@
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 561
+  ok   bland world established (tile 2215, map 4)
+  -- RaidRedesigner
+     !! RaidRedesigner: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 10, 'UNMEASURED': 6} surprises=0 serious=[]
+  -- RustChrome
+     !! RustChrome: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 6} surprises=0 serious=[]
+  -- SeaShores
+     !! SeaShores: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 5, 'UNMEASURED': 4} surprises=0 serious=[]
+  -- LanternDeeps
+     !! LanternDeeps: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 31, 'FAIL': 5, 'UNMEASURED': 4} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl
