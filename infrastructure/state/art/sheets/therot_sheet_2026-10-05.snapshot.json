@@ -1,0 +1,1073 @@
+{
+ "biome": "RM_TheRot",
+ "built": "2026-10-04T23:54:48-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "2ba7e2593",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "AA_Agaripawn": {
+   "columns": {
+    "A": {
+     "east": "fc250aed26c6dc69029190e5a8a2830c3d34635065983dd499d63e97d7b73aff",
+     "north": "d0685f7758527e5dc293083a813c9e87f2f6b183cd6f98c9a415d851ca1f15b6",
+     "south": "8c127dc52dfe1793fedd7464ff03172d871cf27d779b6aac742a573dd7460d46"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Agaripawn/Agaripawn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RotSpecies/Agaripawn/Agaripawn",
+   "subject_key": "agaripawn"
+  },
+  "AA_Agaripod": {
+   "columns": {
+    "A": {
+     "east": "5878b091696ef1c9d1f72dda572b840a7a2360a76e7e75e3bbe8c8c3a0c26122",
+     "north": "63588c10b9779d47a3cea4cc16d6b6df8bc6ec650a5e97b0336173743c73e5b4",
+     "south": "8fde5ed91c715dba7e71f434751531089a316797df1f216a277c361ff18d9479"
+    },
+    "B": {
+     "east": "6bb23fdaa633e3018a6acf8c24feb78712584cf0753ab2c345bb579527bee5e0",
+     "north": "8f7163b46de1b7e205964bd11fd4ce796bb1f62420f4f92da51cb867644b5630",
+     "south": "7b42f67d859d1ad86a9cf9feaa3cbe28f2df526a0743a49f1fb2af590568e505"
+    },
+    "C": {
+     "east": "f176c520718ee2dd421a8f50758826eb8ae4709b7959722a96e3d1af6789f1e7",
+     "north": "944bb3ecc045bba8fd140c44272567c7629d4112a83b4d4855b4bf018d598cef",
+     "south": "f3332328c9a16f7a73620527867c3d31bd07d63d09263d74088d596e27e2e622"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+    "B": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+    "C": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 AgaripodArtOverride",
+    "B": "history AgaripodArtOverride 2026-09-13",
+    "C": "donor original \u2014 Alpha Animals"
+   },
+   "res": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
+   "subject_key": "agaripod"
+  },
+  "AA_AngelMoth": {
+   "columns": {
+    "A": {
+     "east": "cadebc6675363a5e31f772b0553744008e87af0ba9fffce880acc2ec1841b919",
+     "north": "e14810d6b74b3ccd2980facce0b49d2226497d0b19954f3e51b862b50ac9d0cd",
+     "south": "c531ad6e109b7e285c9a3c0a9dda70ae142b24ba0132f1c024765e773fa8dca9"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Alpha Animals"
+   },
+   "res": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+   "subject_key": "angelmoth"
+  },
+  "AA_AnimaColossus": {
+   "columns": {
+    "A": {
+     "east": "3998e435539b0778a82b03f3ea40168beee6778fa2c100058f0d3d68c4ea85eb",
+     "north": "60bf836a9ae058e16c1122d3fe42613e58b711a14daf2633b74bcac8bdf1d7d9",
+     "south": "2d27955a87e58ef3ec971f675939f0920e08d44995b7d41e2784bec9a91f7659"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Alpha Animals"
+   },
+   "res": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
+   "subject_key": "animacolossus"
+  },
+  "AA_MycoidColossus": {
+   "columns": {
+    "A": {
+     "east": "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
+     "north": "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40",
+     "south": "fa17e986b743fc7336232a3d7f8e46d05a882e21e7b8a8e22b6f7f26246ee67b"
+    },
+    "B": {
+     "north": "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40"
+    },
+    "C": {
+     "east": "0663191015852bf12257ed76ef4b273844981b3ff6f31ac05265cc774e06d6e4"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/MycoidColossus/MycoidColossus",
+    "B": "RotSpecies/MycoidColossus/MycoidColossus",
+    "C": "RotSpecies/MycoidColossus/MycoidColossus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_mycoidcolossus_v3",
+    "C": "render rut_mycoidcolossus_v1"
+   },
+   "res": "RotSpecies/MycoidColossus/MycoidColossus",
+   "subject_key": "mycoidcolossus"
+  },
+  "AA_Swarmling": {
+   "columns": {
+    "A": {
+     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+     "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
+     "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Swarmling/Swarmling"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RotSpecies/Swarmling/Swarmling",
+   "subject_key": "swarmling"
+  },
+  "AB_AgaricusDomeCap": {
+   "columns": {
+    "A": {
+     "single": "07d0af160b434d89bcbfc04218c5b409ca9e8b8593a1ade53087b6ee6dbd498f"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/AgaricusDomeCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RotSpecies/AgaricusDomeCap",
+   "subject_key": "agaricusdomecap"
+  },
+  "AB_Agarilux": {
+   "columns": {
+    "A": {
+     "single": "a3dff28387f7c532ce16f5c599e00674d6aaa4e1ecf8e822fe275da55ee7aa24"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Agarilux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/Agarilux",
+   "subject_key": "agarilux"
+  },
+  "AB_AgariluxPrime": {
+   "columns": {
+    "A": {
+     "single": "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/AgariluxPrime"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RotSpecies/AgariluxPrime",
+   "subject_key": "agariluxprime"
+  },
+  "AB_ArbuscularMycorrhiza": {
+   "columns": {
+    "A": {
+     "single": "dcd2dcbfce7e121a4e685d2ff294a8f5d27d3a5cdfc0ea3b7795fea885b44ac7"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/ArbuscularMycorrhiza"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/ArbuscularMycorrhiza",
+   "subject_key": "arbuscularmycorrhiza"
+  },
+  "AB_Bryolux": {
+   "columns": {
+    "A": {
+     "single": "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Bryolux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/Bryolux",
+   "subject_key": "bryolux"
+  },
+  "AB_DribblingCap": {
+   "columns": {
+    "A": {
+     "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/DribblingCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/DribblingCap",
+   "subject_key": "dribblingcap"
+  },
+  "AB_GiantAgarilux": {
+   "columns": {
+    "A": {
+     "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/GiantAgarilux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/GiantAgarilux",
+   "subject_key": "giantagarilux"
+  },
+  "AB_GlowingAgarilux": {
+   "columns": {
+    "A": {
+     "single": "6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/GlowingAgarilux"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/GlowingAgarilux",
+   "subject_key": "glowingagarilux"
+  },
+  "AB_Glowstool": {
+   "columns": {
+    "A": {
+     "single": "11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/Glowstool"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/Glowstool",
+   "subject_key": "glowstool"
+  },
+  "AB_LilacBeacon": {
+   "columns": {
+    "A": {
+     "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/LilacBeacon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/LilacBeacon",
+   "subject_key": "lilacbeacon"
+  },
+  "AB_RecurvedStropharia": {
+   "columns": {
+    "A": {
+     "single": "e56158571747f7f85a6eec6e1931621dec1152cd8751157f5540164e71b2fcfd"
+    },
+    "B": {
+     "single": "6173714afac0369b808de7c2bc36f8913aafff95b351b8bfceaec8bc3b6fafcf"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/RecurvedStropharia",
+    "B": "RotSpecies/RecurvedStropharia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_recurvedstropharia_v2"
+   },
+   "res": "RotSpecies/RecurvedStropharia",
+   "subject_key": "recurvedstropharia"
+  },
+  "AB_SlimyPholiota": {
+   "columns": {
+    "A": {
+     "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/SlimyPholiota"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSpecies/SlimyPholiota",
+   "subject_key": "slimypholiota"
+  },
+  "AB_WitchesOyster": {
+   "columns": {
+    "A": {
+     "single": "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSpecies/WitchesOyster"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RotSpecies/WitchesOyster",
+   "subject_key": "witchesoyster"
+  },
+  "RM_AgelessCap": {
+   "columns": {
+    "A": {
+     "single": "f7fa31b5554e081b371746401c6525d5b7cdb9cd8af339c97d37fe5dcee41722"
+    },
+    "B": {
+     "single": "6800368c9e2ee35421e18770a28012d90fbdddfa8bc52b98861199bc090aa294"
+    },
+    "C": {
+     "single": "925feb103df63816f8e76cc8af317a643f537a2d1293ca1ffd5aa0d7f104a095"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/AgelessCap",
+    "B": "RotSporeKit/Things/Plant/AgelessCap",
+    "C": "RotSporeKit/Things/Plant/AgelessCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render rut_agelesscap_v2",
+    "C": "render rut_liveingredient_agelesscap_v1"
+   },
+   "res": "RotSporeKit/Things/Plant/AgelessCap",
+   "subject_key": "agelesscap"
+  },
+  "RM_Arpeau": {
+   "columns": {
+    "A": {
+     "single": "9115df0f8b6b673edef479f9ab88e122b4024d830286f5c2188af359203213e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Arpeau"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Arpeau",
+   "subject_key": "arpeau"
+  },
+  "RM_BlastpodShroom": {
+   "columns": {
+    "A": {
+     "single": "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+   "subject_key": "blastpodshroom"
+  },
+  "RM_BleedingTooth": {
+   "columns": {
+    "A": {
+     "single": "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/BleedingTooth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/BleedingTooth",
+   "subject_key": "bleedingtooth"
+  },
+  "RM_Brightbell": {
+   "columns": {
+    "A": {
+     "single": "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Brightbell"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Brightbell",
+   "subject_key": "brightbell"
+  },
+  "RM_Brogg": {
+   "columns": {
+    "A": {
+     "east": "bcbb8a4a68fbc9d462fc7dffbfa81cb10dc9bde86665df30c1a8e9dba88b85a0",
+     "north": "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245",
+     "south": "9aa35cd9e2b7d4888b1d419ddaf116c8d4d696b5a4889fc63c7f3a57f0fa6b09"
+    },
+    "B": {
+     "east": "8790466bcc0ccfd0bae6bd5b004f6c3eae0d0e7e4802cc6ccdba19a47447fa95",
+     "north": "82bc8e90c6bfd75b3adeb4c05c4da744fa9f48b0a1e15fd500aa983179e9f1bb",
+     "south": "9bd30a8ac36e1dbeefe838d28004ac4d03b236878d6edac10060c1ffd1a5119e"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
+    "B": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_brogg"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
+   "subject_key": "brogg"
+  },
+  "RM_Brullith": {
+   "columns": {
+    "A": {
+     "east": "f3879ffb08a64fc534d213308ac731a399a0cb2ea08695abb69b718ac424cf94",
+     "north": "a9745b1fb70317271f024207ac448bb8fde47e20b7911fb9a9a80752bcedc320",
+     "south": "3f0d353930bedea257ba1a7db2bffc6cea5f0a8fbf1fedb5e043344a048dc743"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Brullith/Brullith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Brullith/Brullith",
+   "subject_key": "brullith"
+  },
+  "RM_CrimsonCap": {
+   "columns": {
+    "A": {
+     "single": "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/CrimsonCap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/CrimsonCap",
+   "subject_key": "crimsoncap"
+  },
+  "RM_Dewshrooms": {
+   "columns": {
+    "A": {
+     "single": "1fa62377db397ce41e67996bbc7d1c38916bf44b21e1f7cab5c70c74ad76ac73"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Seadew"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Seadew",
+   "subject_key": "dewshrooms"
+  },
+  "RM_EuphoricCrown": {
+   "columns": {
+    "A": {
+     "single": "ce3215f8ebf69895be401b60a720a85393ec9c6e489d7637f822e1155c4eb3bf"
+    },
+    "B": {
+     "single": "d336df74f4d99946cf244fb5408e288862ecefeb3d24f8337a6fde01ae4bce2f"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/EuphoricCrown",
+    "B": "RotSporeKit/Things/Plant/EuphoricCrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render rut_liveingredient_euphoriccrown_v1"
+   },
+   "res": "RotSporeKit/Things/Plant/EuphoricCrown",
+   "subject_key": "euphoriccrown"
+  },
+  "RM_FalseFruit": {
+   "columns": {
+    "A": {
+     "single": "e55f14a8fadcca02d83197930a98e23a8b8715c3fc289d50ef85959ce73170c5"
+    },
+    "B": {
+     "single": "0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FalseFruit",
+    "B": "RotSporeKit/Things/Plant/FalseFruit"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render rut_falsefruit_v1"
+   },
+   "res": "RotSporeKit/Things/Plant/FalseFruit",
+   "subject_key": "falsefruit"
+  },
+  "RM_FlakespireFungus": {
+   "columns": {
+    "A": {
+     "single": "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FlakespireFungus"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/FlakespireFungus",
+   "subject_key": "flakespirefungus"
+  },
+  "RM_FruitingBodies": {
+   "columns": {
+    "A": {
+     "single": "753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/FruitingBodies"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/FruitingBodies",
+   "subject_key": "fruitingbodies"
+  },
+  "RM_Grellik": {
+   "columns": {
+    "A": {
+     "east": "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0",
+     "north": "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+     "south": "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
+   "subject_key": "grellik"
+  },
+  "RM_GreyLady": {
+   "columns": {
+    "A": {
+     "single": "58480c528d3498ec0070fa1d7caa11823b681c79f994a7806ab8354e657c095e"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+   "subject_key": "greylady"
+  },
+  "RM_Hwelgrue": {
+   "columns": {
+    "A": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    },
+    "B": {
+     "north": "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+    },
+    "C": {
+     "east": "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+     "north": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b",
+     "south": "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "B": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+    "C": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "history TheRot 2026-10-03",
+    "C": "history TheRot 2026-10-03"
+   },
+   "res": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
+   "subject_key": "hwelgrue"
+  },
+  "RM_Illoth": {
+   "columns": {
+    "A": {
+     "east": "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
+     "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff",
+     "south": "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
+    },
+    "B": {
+     "east": "49488b471b241356de5de5fa143dec93fb803b59d0ca2667db56c7ac7bbc004f",
+     "north": "1cef08e262658cc4d6758120b7ae5cf8de735329ec8a242e85094f6ff5ef6560",
+     "south": "8a3287d9253bf143c76687e344656dc5e282fcfa3405fa53b3791cd93625df52"
+    },
+    "C": {
+     "east": "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
+     "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+    "B": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+    "C": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_illoth",
+    "C": "history TheRot 2026-10-03"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+   "subject_key": "illoth"
+  },
+  "RM_MortalMorelPlant": {
+   "columns": {
+    "A": {
+     "single": "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/MortalMorel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/MortalMorel",
+   "subject_key": "mortalmorelplant"
+  },
+  "RM_Nuitae": {
+   "columns": {
+    "A": {
+     "single": "ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Nuitae"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Nuitae",
+   "subject_key": "nuitae"
+  },
+  "RM_PaleTree": {
+   "columns": {
+    "A": {
+     "single": "21f4283ee40c328728c7b833e88b81700aef4b4cf5f71887753101cee8168294"
+    },
+    "B": {
+     "single": "7e02de00583902fc0872bd4c5c6c57ef8f23de70099afad603e3a96197dc2190"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/PaleTree",
+    "B": "RotSporeKit/Things/Plant/PaleTree"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render rut_paletree_v1"
+   },
+   "res": "RotSporeKit/Things/Plant/PaleTree",
+   "subject_key": "paletree"
+  },
+  "RM_Pusmelon": {
+   "columns": {
+    "A": {
+     "single": "72d3ad9a630f2ad58ba9a56edcf67cf62a8f80e45598400024623acafd7c2006"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Pusmelon"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Pusmelon",
+   "subject_key": "pusmelon"
+  },
+  "RM_RegenerantVeil": {
+   "columns": {
+    "A": {
+     "single": "cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e"
+    },
+    "B": {
+     "single": "4459145f8a4cbabea89690312cad07f543d0a3e63e329402bfdf1a365f0bbb93"
+    },
+    "C": {
+     "single": "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "B": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "C": "RotSporeKit/Things/Plant/RegenerantVeil"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render rut_liveingredient_regenerantveil_v1",
+    "C": "render rut_regenerantveil_v1"
+   },
+   "res": "RotSporeKit/Things/Plant/RegenerantVeil",
+   "subject_key": "regenerantveil"
+  },
+  "RM_Sagecrust": {
+   "columns": {
+    "A": {
+     "single": "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Sagecrust"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Sagecrust",
+   "subject_key": "sagecrust"
+  },
+  "RM_Shinecap": {
+   "columns": {
+    "A": {
+     "single": "19dd20f4f2d1f596273dd54e3b556e247f84d7e94ab23d752ca946439b44e2c3"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+   "subject_key": "shinecap"
+  },
+  "RM_Skerrith": {
+   "columns": {
+    "A": {
+     "east": "fb43237ea89d4c20c957d4f9e75d4285e5c22581a301a1cb723438cb5b96911d",
+     "north": "e713aad586bcc162a1060e3b245c9d605385fa26883d5619325fb60b7493b639",
+     "south": "0bdfaf0fd45e71181dd341de9f4aed815c99ec42a902c8a164180b3dde8c6bb6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith",
+   "subject_key": "skerrith"
+  },
+  "RM_Skulltop": {
+   "columns": {
+    "A": {
+     "single": "d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
+   "subject_key": "skulltop"
+  },
+  "RM_Thozzik": {
+   "columns": {
+    "A": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+    },
+    "B": {
+     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
+    },
+    "C": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_thozzik",
+    "C": "history TheRot 2026-10-03"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "subject_key": "thozzik"
+  },
+  "RM_ThozzikColony": {
+   "columns": {
+    "A": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+    },
+    "B": {
+     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
+    },
+    "C": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_thozzik",
+    "C": "history TheRot 2026-10-03"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "subject_key": "thozzikcolony"
+  },
+  "RM_ThozzikColonyQueen": {
+   "columns": {
+    "A": {
+     "east": "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+     "north": "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3",
+     "south": "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "subject_key": "thozzikcolonyqueen"
+  },
+  "RM_ThozzikQueen": {
+   "columns": {
+    "A": {
+     "east": "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+     "north": "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3",
+     "south": "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "subject_key": "thozzikqueen"
+  },
+  "RM_ThozzikSpawned": {
+   "columns": {
+    "A": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+     "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
+    },
+    "B": {
+     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
+    },
+    "C": {
+     "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+     "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+    "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rot_thozzik",
+    "C": "history TheRot 2026-10-03"
+   },
+   "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "subject_key": "thozzikspawned"
+  },
+  "RM_VioletWimple": {
+   "columns": {
+    "A": {
+     "single": "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/VioletWimple"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/VioletWimple",
+   "subject_key": "violetwimple"
+  },
+  "RM_Wrinklecap": {
+   "columns": {
+    "A": {
+     "single": "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e"
+    }
+   },
+   "graphic_of": {
+    "A": "RotSporeKit/Things/Plant/Wrinklecap"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+   },
+   "res": "RotSporeKit/Things/Plant/Wrinklecap",
+   "subject_key": "wrinklecap"
+  },
+  "RSW_Durrok": {
+   "columns": {
+    "A": {
+     "east": "baf60eb96ddbb26ce8ecf541ee10ffe3fcfe14ea3f276c24bd2102024cc48ce1",
+     "north": "5e5cc21329aaf8f4e7eec9a37c828b3c4aa7bffbc86f133f4c69acc92e2e5a1b",
+     "south": "9331c2e8e592ee8141d2d78b35d94ff9a90f1516ae388f98f972e7cb98d6d496"
+    },
+    "B": {
+     "south": "9331c2e8e592ee8141d2d78b35d94ff9a90f1516ae388f98f972e7cb98d6d496"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
+    "B": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "donor original \u2014 1541721856"
+   },
+   "res": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
+   "subject_key": "durrok"
+  },
+  "RSW_Mullgoth": {
+   "columns": {
+    "A": {
+     "east": "810032c86cf70324085ff51cc2a40d3b7577ad27dde681d1842f74406f056d49",
+     "north": "f38d8ae5dc9995e0f6a6c8bf49131b60372288fa9bd57e1c54d721365d49df8f",
+     "south": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8"
+    },
+    "B": {
+     "east": "77efac86d35edcbf90eb71f4eb929b426367b7e98e6b912f0a0a89268d6ddbb4",
+     "north": "0a9255469f40284fdee664b64d3bca3d9e38e10f24b0c7ea2961c1800fd627ad",
+     "south": "858e5aefcd48e559a80bccb155a53fe1be03c7d8f86b4fbc44340254f358dd9c"
+    },
+    "C": {
+     "east": "745882d99a2216e009a242cbc387523a70e11dabdb488d10b2115b8f6199f6c7",
+     "north": "62e56dd1b876af8723a076f264c902318359c6577c908918b0345a711d66302c",
+     "south": "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534"
+    },
+    "D": {
+     "south": "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+    "B": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+    "C": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+    "D": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 WildpodArtOverride",
+    "B": "history WildpodArtOverride 2026-09-13",
+    "C": "donor original \u2014 Alpha Animals",
+    "D": "donor original \u2014 1541721856"
+   },
+   "res": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+   "subject_key": "mullgoth"
+  },
+  "RSW_ShiroTrap": {
+   "columns": {
+    "A": {
+     "east": "c15f31c73a543fea740004f8aa1b6e951d0f228f8054eec7c9729e16e6e3d764",
+     "north": "9ded9c265c32e51f4a62ac31b595c6e16abbcd58bf63e96fdf2553c0043e1791",
+     "south": "71bc818df17f50639a95e89317210a981d3a40cbb588d2951e5c51486a8ff622"
+    },
+    "B": {
+     "east": "1638eb06ac8ad05585fa0418a58f4f0a8fb1ced49edf1d10f8abefeea288a53d",
+     "north": "64e8a7b01468a6be75d7ff64e1939aef15980e72d7861e769244e1fe8d1c3fb5",
+     "south": "ab0eba0b16a0d64921d64ea8dd3917bf79b20bb6737fc686ab0d292035d9228f"
+    },
+    "C": {
+     "east": "0fb340316f7c162bdf1c1bfaf3bc507f4a025e3f199e6ea44e7afcb19e5ee8b1",
+     "north": "081005155dc2c73537267237f86b2e83c1ed423cbc4bb53d4d5a0d06b4be521a",
+     "south": "ce84c80fc922ee5bb95898af8236e06f95b7292641bc99013f471888302e3ceb"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/ShiroTrap/ShiroTrap",
+    "B": "swanimals/ShiroTrap/ShiroTrap_i",
+    "C": "swanimals/ShiroTrap/ShiroTrap_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "swanimals/ShiroTrap/ShiroTrap",
+   "subject_key": "shirotrap"
+  },
+  "Snoruuk": {
+   "columns": {
+    "A": {
+     "east": "a9c96b522a49f28939983909b39e040c62053b19ff1c8be614463fcdd372c48e",
+     "north": "dc8164ce7f2a65138878ffeb48bb98482d385afc2bf5d68c1abc6e3484f3ef49",
+     "south": "84b5aed6c720ce44907c2bf4ca7505fafe26191f222ec7982396057411308791"
+    },
+    "B": {
+     "east": "a4c6a36277e72f754db3e208f1bdca0309973219ab05c048d80aa43208642a6d",
+     "north": "e1c8c25f1b10ea4d4116fcba2276664be2f4e7fd25b2c5d6518b9a355e796c53",
+     "south": "a8e85102baba028883b2ac9e634b854e9cb05be8adb57269c9e3a07d2321a25b"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Snoruuk/Snoruuk",
+    "B": "swanimals/Snoruuk/Snoruuk_j"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "B": "IN GAME \u2014 mlie.starwarsanimalcollection"
+   },
+   "res": "swanimals/Snoruuk/Snoruuk",
+   "subject_key": "snoruuk"
+  }
+ },
+ "sheetId": "therot_sheet_2026-10-05",
+ "snapshotId": "9bfb0b0c0412a83d"
+}

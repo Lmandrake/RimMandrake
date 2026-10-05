@@ -54,6 +54,11 @@
    "note": "",
    "prefill": "A"
   },
+  "RM_Vozzik": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_CrystalFairyMole": {
    "decision": "A",
    "note": "",
@@ -75,6 +80,11 @@
    "prefill": "A"
   },
   "RSW_Mynock": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Vozzik": {
    "decision": "A",
    "note": "",
    "prefill": "A"

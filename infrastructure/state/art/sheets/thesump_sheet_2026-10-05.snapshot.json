@@ -1,0 +1,388 @@
+{
+ "biome": "RM_TheSump",
+ "built": "2026-10-04T23:54:52-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "2ba7e2593",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "RM_Brindeth": {
+   "columns": {
+    "A": {
+     "single": "b8b30e331c24e7a90e230ee0e5eaf8a2cce8099cdfddaea037a709221f39d6dd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Brindeth/RM_Brindeth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+   "subject_key": "brindeth"
+  },
+  "RM_Brommet": {
+   "columns": {
+    "A": {
+     "east": "f5707c5dc0c2440569405252aa29128ac42f3d5f4a731dd62264564702a61bb7",
+     "north": "a5f17b5da872d818bb016da6e9753dbdb2386b6df9189741f2fba06a3dce0716",
+     "south": "fbaade5cbb85a04ce61ac4e29a1e9b3cd4ef49c0b98eec386cbd17313798789d"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Brommet/RM_Brommet"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_Brommet/RM_Brommet",
+   "subject_key": "brommet"
+  },
+  "RM_Dorvel": {
+   "columns": {
+    "A": {
+     "single": "8a3a5377f0e6bf7823a5d137c2cb3c47b9134644c24e15bacb2f92f52ebfa4c2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Dorvel/RM_Dorvel_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+   "subject_key": "dorvel"
+  },
+  "RM_Dredgel": {
+   "columns": {
+    "A": {
+     "east": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+     "north": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+     "south": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    },
+    "B": {
+     "east": "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac",
+     "north": "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76",
+     "south": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+    "B": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RM_Dredgel"
+   },
+   "res": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+   "subject_key": "dredgel"
+  },
+  "RM_Gulveth": {
+   "columns": {
+    "A": {
+     "east": "003618df6de8bb6ddc6dba758cf7f13125bdc8fe56b9a89fcaa0e0745e49990d",
+     "north": "966965fb45e0d02312ef20fe7b90a9f13427aeda32be5129a26c459b0ff5989f",
+     "south": "8008fe4c474c8f60e72ac332853042871c576bfee5476553b329011d98b86692"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
+   "subject_key": "gulveth"
+  },
+  "RM_Kethrel": {
+   "columns": {
+    "A": {
+     "east": "9f8035a19940b41349fa92495adfdb0df155d8bc3202227764fb5cca03cb255a",
+     "north": "6eb4ad8af7cf32faffcb724ed3f3c0c9a428b2b7d77579ba4879648854d520fe",
+     "south": "5d2d5061583dfc1f3a0b1083f48bbd5537a205fd3299e3a6045c60301be5a711"
+    },
+    "B": {
+     "east": "7b042f027c335ca41a880aec4232dd9d7d22f45eb6d59f7bf166e7adbd6383f9",
+     "north": "8e1bcec0f3b5074ed68d1053045dd396ad1542ca396f8ac5d3facb68367122e5",
+     "south": "63950fd2a3cb4547267b472de664fc1130c52efcc176a8becfbf35dacd57f0fb"
+    },
+    "C": {
+     "east": "e9b256816445d466957ffca219021139813f4397ff17857adaeb3af97280870f",
+     "north": "1d3db3290e3e9882a886cc3a7c00f0cffbc445a9e5990f3cdb4b7d0593295026",
+     "south": "753d4a00777eaa44ecda0416fcd1c8d3c9a1f1c8fd0b987d00aa8ec93afa9200"
+    },
+    "D": {
+     "east": "8a7083e15098ae5c7e95bf8c3f1db09db878584d0c6e836c4846191447fbcb46",
+     "north": "8abb0c7e6bbfab66c5dc1b043a6681a3ae3eb49c67127e7c958cfdd76f0f4e98",
+     "south": "4e054cd866c28b737a014e7315e8eac79d0965d986a6adfd174dbf7cd4162eb4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render RM_Kethrel_Stage1",
+    "C": "render RM_Kethrel_Stage2",
+    "D": "render RM_Kethrel_Stage3"
+   },
+   "res": "Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0",
+   "subject_key": "kethrel"
+  },
+  "RM_Korveth": {
+   "columns": {
+    "A": {
+     "single": "96fc2b8881c42a2253a58243e3202d58235a88472f4a888d43f3e479f0cf4567"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Korveth/RM_Korveth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
+   "subject_key": "korveth"
+  },
+  "RM_Mirrelin": {
+   "columns": {
+    "A": {
+     "single": "cf7f863be32a238c5d7c623bfd068b7c012276c954025bcc17c4f5ecf3b1af01"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+   "subject_key": "mirrelin"
+  },
+  "RM_Pallick": {
+   "columns": {
+    "A": {
+     "single": "74e65868b227230e88ee1f63a5975afe5a8d9305eaa80e0f92ed704218f7e52a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Pallick/RM_Pallick_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Pallick/RM_Pallick_a",
+   "subject_key": "pallick"
+  },
+  "RM_Skarrid": {
+   "columns": {
+    "A": {
+     "east": "c9fbcb96dbf3aa938e2abd7c9cd616bec24cb3985d832de74ee9e79feed5964a",
+     "north": "a361baa2e721e2dca7c84166bb9b2ad879b3d41d9533d32f5aa712e118651f7a",
+     "south": "c7c6444f44c85673966b66ade33a40fb7feab858035fc604e274b3e63cd8a395"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
+   "subject_key": "skarrid"
+  },
+  "RM_Skellarn": {
+   "columns": {
+    "A": {
+     "east": "33e73e6038c4b3645ee8fbde1437f86ea9e186080dd522aa463c9084a8f47e73",
+     "north": "1742866dcaeb12585bf8282dcfe0ff5354f4d8bd987f6048f0f1e40539e9531e",
+     "south": "f7084298e38ff2d35af264d3264501edd817d5c1833d6103c8fd702881238be5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
+   "subject_key": "skellarn"
+  },
+  "RM_Skelver": {
+   "columns": {
+    "A": {
+     "single": "a45a5c53047768a6eabb657fbd92e43349e67c35ad2d8f092a8bdf72c1f4cb55"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Skelver/RM_Skelver_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Skelver/RM_Skelver_a",
+   "subject_key": "skelver"
+  },
+  "RM_Soffeth": {
+   "columns": {
+    "A": {
+     "single": "1a4dd401609435b2d741c4eec5a1fe8f36c67da6934b7b44f00fbc10b3424d09"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Soffeth/RM_Soffeth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+   "subject_key": "soffeth"
+  },
+  "RM_SumpMouse": {
+   "columns": {
+    "A": {
+     "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
+     "north": "632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0",
+     "south": "9d407c7364f96a9b05eb514dee8159ab49d7ee9feb59511b30e64c028f5cd700"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+   "subject_key": "sumpmouse"
+  },
+  "RM_Thrummel": {
+   "columns": {
+    "A": {
+     "east": "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670",
+     "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
+     "south": "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+   "subject_key": "thrummel"
+  },
+  "RM_ThrummelBroodmother": {
+   "columns": {
+    "A": {
+     "east": "bf90aaa2f4f309f6d90d0174538718211fa84d59dc3de630b893086d04462400",
+     "north": "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
+     "south": "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+   "subject_key": "thrummelbroodmother"
+  },
+  "RM_ThrummelWarden": {
+   "columns": {
+    "A": {
+     "east": "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697",
+     "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
+     "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+   "subject_key": "thrummelwarden"
+  },
+  "RM_Tolleth": {
+   "columns": {
+    "A": {
+     "single": "774ce307491f08cbf4cadf2a33bd28bf002a89ad28e237dd20745f57eb40d8a3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Tolleth/RM_Tolleth_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+   "subject_key": "tolleth"
+  },
+  "RM_Velloch": {
+   "columns": {
+    "A": {
+     "single": "fa96726ed239fa9ca9f9ab671aef6596173e6ea878ab74c960fef86f992b30cb"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Velloch/RM_Velloch_a"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheSump"
+   },
+   "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
+   "subject_key": "velloch"
+  },
+  "RSW_Hssiss": {
+   "columns": {
+    "A": {
+     "east": "980e61dbe6a026a073199851f16c33d6c2df9e841aceceed630788bf546be47e",
+     "north": "f5cc3c557c56ce2d1f5d969b7ec702320b9553701ed678f5071fdc63eca06724",
+     "south": "e84e3fba38c7a0e5cfd71104587134708b800a650f55d9481696ef3fab0e15be"
+    },
+    "B": {
+     "east": "24ac8ee79856c3a4cb779aaabf512f35ef97d0688e08774205078176161c9c68",
+     "north": "e0f18f3f10577e1c13a6f3c25cc0c8eba1508e4ff4934a642d94279986f53ebe",
+     "south": "e242bfec7b768df5f97d0bcca3dd116631106ac12812cc56771aaac4c7876faa"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/Hssiss/Hssiss",
+    "B": "swanimals/Hssiss/Hssiss_Swimming"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "swanimals/Hssiss/Hssiss",
+   "subject_key": "hssiss"
+  },
+  "RUT_Plant_Wick": {
+   "columns": {
+    "A": {
+     "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
+    },
+    "B": {
+     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/Ambrosia",
+    "B": "Things/Plant/Ambrosia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "B": "donor original \u2014 Vanilla Textures Expanded"
+   },
+   "res": "Things/Plant/Ambrosia",
+   "subject_key": "plant_wick"
+  }
+ },
+ "sheetId": "thesump_sheet_2026-10-05",
+ "snapshotId": "b7749c4a1b2da636"
+}

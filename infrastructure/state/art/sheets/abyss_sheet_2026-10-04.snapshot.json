@@ -1,8 +1,8 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-04T23:17:54-0700",
+ "built": "2026-10-04T23:53:23-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "a91be293e",
+ "census_git_head": "2ba7e2593",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_CrepuscularBeetle": {
@@ -662,32 +662,8 @@
    },
    "res": "RM_Abyss/Things/Plant/RM_Wickwood",
    "subject_key": "wickwood"
-  },
-  "RSW_Vosska": {
-   "columns": {
-    "A": {
-     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
-     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
-     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
-    },
-    "B": {
-     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
-     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
-     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
-    "B": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render RM_Vosska"
-   },
-   "res": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
-   "subject_key": "vosska"
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "972285c71ff7a180"
+ "snapshotId": "54bf020bff3792a8"
 }

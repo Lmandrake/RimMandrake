@@ -2,7 +2,7 @@
  "sheetId": "abyss_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/abyss_sheet_2026-10-04.snapshot.json",
- "snapshotId": "972285c71ff7a180",
+ "snapshotId": "54bf020bff3792a8",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Abyss",
  "reviewStatus": {
@@ -131,11 +131,6 @@
    }
   },
   "RM_Vosska": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RSW_Vosska": {
    "decision": "A",
    "note": "",
    "prefill": "A"

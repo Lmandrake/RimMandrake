@@ -1,0 +1,108 @@
+{
+ "biome": "RM_RustCathedral",
+ "built": "2026-10-04T23:54:41-0700",
+ "census": "Transient/biome_ffar/census.json",
+ "census_git_head": "2ba7e2593",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "rows": {
+  "GR_Mecharat": {
+   "columns": {
+    "A": {
+     "east": "2d1a9740ae520f8b2bc034acb96d33b09d685d6d85f80c9b4547cc9fbe0e0869",
+     "north": "cb49bfa37b578144511b6ee55ef71fc1968416683c0983a9ad1160e4d0b2543c",
+     "south": "6632172e7079874a79b12ed39a4ed60b4367b9651ead833761069574ed382c90"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Vanilla Genetics Expanded"
+   },
+   "res": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat",
+   "subject_key": "gr_mecharat"
+  },
+  "RM_CathedralRoach": {
+   "columns": {
+    "A": {
+     "east": "afb2f61d35ba1ad6c3d367477aad0d34cc32574f49d1e47faefc104e451e1f0c",
+     "north": "6aef557545c11404640a5fe247a6665f1aa6f5d1079c62f57e013822cd6e7762",
+     "south": "436cc5fc81c52a8fccf1fd27569f64947b1b18a3c0ec0b3ecf890411487f7735"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral"
+   },
+   "res": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
+   "subject_key": "cathedralroach"
+  },
+  "RM_CoolantEelCatch": {
+   "columns": {
+    "A": {
+     "single": "74b6b33887d032ca8b0fe92280bb5a396eb72adf057f413b2021272db0b10034"
+    },
+    "B": {
+     "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
+     "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
+     "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Item/Fish/Dogfish",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "B": "render RM_CoolantEel"
+   },
+   "res": "Things/Item/Fish/Dogfish",
+   "subject_key": "coolanteelcatch"
+  },
+  "RM_LivingBolt": {
+   "columns": {
+    "A": {
+     "east": "47e7de96f33036d17ca3f2608c7eb8189f2cb50559a0d4d10f6843ea517a07f2",
+     "north": "507f524f19789f4dc28e4ffcc83f6d33748c39c71847bda8d28afd60ed4bf38a",
+     "south": "342dc505109ba3a2e9983239a3a1541cb3c843820c44ab005e830e9cbfeee810"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 RustCathedral"
+   },
+   "res": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+   "subject_key": "livingbolt"
+  },
+  "RSW_Vozzik": {
+   "columns": {
+    "A": {
+     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
+    },
+    "B": {
+     "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+     "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+    "B": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render RM_Vozzik"
+   },
+   "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+   "subject_key": "vozzik"
+  }
+ },
+ "sheetId": "rustcathedral_sheet_2026-10-05",
+ "snapshotId": "ba0c5b22225c5a95"
+}
