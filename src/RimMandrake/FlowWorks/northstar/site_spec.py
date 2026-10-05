@@ -59,6 +59,8 @@ SETTINGS = {
         "pitExposureEnabled": True, "pitTemperatureCoupling": 3.0, "pitResistanceLossMultiplier": 1.0,   # PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL)
         "pitDepthDrawOffsetEnabled": True, "pitSinkPerLevel": 0.3,   # PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL)
         "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
+        "canalFireEnabled": True, "canalBurnDaysPerLevel": 1.0, "sourceBurnDaysPerLevel": 5.0,   # Phase 6 (ruling 7)
+        "fireFrontSpeedMultiplier": 1.0, "sourceFireReach": 3.0,                                  # Phase 6 (PROVISIONAL)
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,

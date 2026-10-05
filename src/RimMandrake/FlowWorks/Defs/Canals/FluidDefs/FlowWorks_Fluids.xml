@@ -51,6 +51,10 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Tar</defName>
     <label>tar</label>
+    <!-- Phase 6: tar is a creeping fuse (his ruling: tar and propane creep, chemfuel/astrofuel detonate).
+         PROVISIONAL 120 ticks/cell — about two seconds a cell, well under a walking pawn, so it can be outrun. -->
+    <fireKind>CreepingFuse</fireKind>
+    <fireFrontTicksPerCell>120</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_Tar_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_Tar_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Tar_Brim</fillTerrainBrim>

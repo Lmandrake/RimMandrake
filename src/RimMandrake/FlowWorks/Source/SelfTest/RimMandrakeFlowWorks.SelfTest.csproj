@@ -47,6 +47,7 @@
     <Compile Include="..\RM_PitTrapMath.cs" />
     <Compile Include="..\RM_PitExposureMath.cs" />
     <Compile Include="..\RM_PitDrawMath.cs" />
+    <Compile Include="..\RM_FireMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -854,6 +854,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
             });
 
+            // ── FLOWWORKS_BUILD_PROGRAM_1 Phase 6: ruling 7's burn rates and the travelling front ──
+            Case("Fire_burn_is_a_rate_on_the_ladder_one_level_a_day_source_one_per_five", () =>
+            {
+                int canal = RM_FireMath.TicksPerCanalLevel(1f);
+                int source = RM_FireMath.TicksPerSourceLevel(5f);
+                Assert(canal == 60000, "one canal level per day");
+                Assert(source == 5 * canal, "source level takes five canal days (5:1)");
+                int acc = 0, levels = 0;
+                for (int p = 0; p < 240; p++) levels += RM_FireMath.LevelsDue(ref acc, 250, canal);
+                Assert(levels == 1 && acc == 0, "240 pulses of 250 ticks burn exactly one level");
+                acc = 0; levels = 0;
+                for (int p = 0; p < 720; p++) levels += RM_FireMath.LevelsDue(ref acc, 250, canal);
+                Assert(levels == 3, "a brimming 3-level cell burns about three days");
+                acc = 0;
+                Assert(RM_FireMath.LevelsDue(ref acc, 0, canal) == 0 && acc == 0, "no time, no burn");
+            });
+            Case("Fire_front_fuse_is_outrunnable_detonation_is_fast_and_source_reach_bounded", () =>
+            {
+                Assert(RM_FireMath.FrontDue(100, 120, 1f) == 220, "fuse steps by ticksPerCell");
+                Assert(RM_FireMath.FrontDue(100, 120, 2f) == 160, "speed multiplier halves the step");
+                Assert(RM_FireMath.FrontDue(100, 0, 1f) == 101, "never zero: the front always moves forward in time");
+                Assert(RM_FireMath.SourceHopsFor(false, 0, true) == 1, "entering a pond is hop 1");
+                Assert(RM_FireMath.SourceHopsFor(true, 2, true) == 3, "walking a pond counts hops");
+                Assert(RM_FireMath.SourceHopsFor(true, 5, false) == 0, "back into a channel resets");
+                Assert(RM_FireMath.SourceHopAllowed(3, 3) && !RM_FireMath.SourceHopAllowed(4, 3), "reach bounds the pond walk");
+                Assert(!RM_FireMath.SourceHopAllowed(1, 0), "reach 0: a source never lights");
+                AssertClose(RM_FireMath.AttachChance(true), 1f, "ruling 22: a pit occupant always catches");
+                Assert(RM_FireMath.AttachChance(false) < 1f, "a free pawn may step out unburned");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

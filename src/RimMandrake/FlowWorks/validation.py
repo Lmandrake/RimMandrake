@@ -64,6 +64,7 @@ FW_TOGGLES = [
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
     "swaleEnabled",
+    "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -321,11 +322,32 @@ def _limitless_source(t, key, w=10, h=6):
     return x0, z0
 
 
-def _limited_pond(t, key, size=5):
+def _limited_pond(t, key, size=5, terrain="WaterShallow"):
     x0, z0 = _plot(t, key)
     px, pz = x0 + 3, z0 + 4
-    t.bridge_call("jawa/set_terrain_batch", ops="WaterShallow:%s" % _rect(px, pz, size, size))
+    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(px, pz, size, size)))
     return px, pz
+
+
+def _fill_fluid(t, x, z, f, fluid):
+    """Fill an excavated cell with a NAMED fluid (LIQUID_BODY_FLUID_IDENTITY_1 step 3); refuses another fluid's cell."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FluidIdentityProof",
+                      method="ProofFillWithFluid", args="%d,%d,%d,%s" % (x, z, f, fluid))
+    res = str((r or {}).get("result", ""))
+    if t._guard() and not res.startswith("FILLED"):
+        raise ExpectationFailed("fill %s (%d,%d,F=%d) failed: %s" % (fluid, x, z, f, res or r))
+    return res
+
+
+def _light(t, x, z):
+    """Phase 6: light a liquid cell through RM_LiquidFire directly (a vanilla Fire next to it does the same
+    via the Fire.SpawnSetup hook; _ignite exercises that route)."""
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_LiquidFireProof",
+                      method="ProofIgnite", args="%d,%d" % (x, z))
+    return str((r or {}).get("result", ""))
+
+
+FLAME = "RM_LiquidFlame"   # Phase 6: the burning-liquid flame; vanilla "Fire" dies on liquid terrain (no fuel)
 
 
 def _channel_from(x0, z, n):
@@ -508,37 +530,40 @@ def plot_D_limited_pond(t):
 
 @suite.chain("plot_E_fire")
 def plot_E_fire(t):
-    """Plot E (tar, ignition ON): 1x8 D=1 channel from a limited tar pond, ignite the mouth.
-    Which cells can hold Fire is read from LiquidIgnition.cs before the baseline run, not assumed.
+    """Plot E (tar, Phase 6 fire ON): 1x8 D=1 tar channel from a limited RM_TarShallow pond, ignite the far end.
+    Engine: RM_LiquidFire (FLOWWORKS_BUILD_PROGRAM_1 Phase 6) — one RM_LiquidFlame per burning cell, the front
+    creeps 120 ticks/cell (tar, PROVISIONAL) back to the pond, burn = 1 level/day (ruling 7).
+    RULED OUT (kept): counting vanilla "Fire" — it self-destroys on liquid terrain (Fire.DoComplexCalcs:
+    flammabilityMax < 0.01), so the old LiquidIgnition spike could never have shown a lasting burn.
     Fire-safety: the 8-cell buffer is bare Soil (no plants); `_prep_plot` clears all things."""
     x0, z0 = _prep_plot(t, "E")
-    px, pz = _limited_pond(t, "E")
+    px, pz = _limited_pond(t, "E", terrain="RM_TarShallow")
     cells = _channel_from(px + 5, pz + 2, 8)
     shot = (px - 1, pz - 1, 16, 8)
     _dig_run(t, cells, 1)
-    with _setting(t, "liquidIgnitionEnabled", True):
+    with _setting(t, "canalFireEnabled", True):
         for x, z in cells:
-            _fill(t, x, z, 1)
-        _ignite(t, *cells[0])
-        with t.component("fire_burning_look", toggle="liquidIgnitionEnabled",
+            _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
+        _ignite(t, *cells[-1])
+        with t.component("fire_burning_look", toggle="canalFireEnabled",
                          shows=["canal_burning_reads_as_burning_liquid"]):
             _wait(t, 5 * PULSE)
             if t._guard():
-                fires = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(px, pz, 14, 8), limit=200)
+                fires = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200)
                 n = len((fires or {}).get("things") or [])
-                _expect(n >= 3, "fewer than 3 Fire things in the channel after ignition: %d" % n)
+                _expect(n >= 3, "fewer than 3 burning-liquid flames in the channel after ignition: %d" % n)
             _frame(t, *shot)
         with t.component("fire_reaches_reservoir", shows=["canal_fire_reaches_reservoir"]):
             _wait(t, 24 * PULSE)
             if t._guard():
-                fires = t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(px, pz, 5, 5), limit=200)
-                _expect(len((fires or {}).get("things") or []) >= 1, "no Fire at the pond cells within budget")
+                fires = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 5, 5), limit=200)
+                _expect(len((fires or {}).get("things") or []) >= 1, "no flame at the pond cells within budget")
             _frame(t, *shot)
         with t.component("fire_persists_look", shows=["canal_fire_persists"]):
-            f1 = len(((t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(px, pz, 14, 8), limit=200) or {})
+            f1 = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200) or {})
                       .get("things")) or [])
             _wait(t, 4 * PULSE)
-            f2 = len(((t.bridge_call("jawa/list_things", defName="Fire", rect=_rect(px, pz, 14, 8), limit=200) or {})
+            f2 = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200) or {})
                       .get("things")) or [])
             _expect(f2 > 0 if t._guard() else None, "fire died within 4 pulses (was %s, now %s)" % (f1, f2))
             _frame(t, *shot)
@@ -925,6 +950,25 @@ def toggle_liquid_ignition(t):
         with _setting(t, "liquidIgnitionEnabled", True):
             _ignite(t, *cells[0])
             _wait(t, 5 * PULSE)
+
+
+@suite.chain("toggle_canal_fire")
+def toggle_canal_fire(t):
+    """Phase 6 toggle: OFF, a lit tar channel takes no flame; ON, the same light takes."""
+    x0, z0 = _prep_plot(t, "E")
+    cells = _line(x0 + 4, z0 + 6, 4)
+    _dig_run(t, cells, 1)
+    for c in cells:
+        _fill_fluid(t, c[0], c[1], 1, "RM_Fluid_Tar")
+    with t.component("canal_fire_off_is_inert", toggle="canalFireEnabled"):
+        with _setting(t, "canalFireEnabled", False):
+            r = _light(t, *cells[0])
+            _wait(t, 2 * PULSE)
+            n = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(x0 + 3, z0 + 5, 6, 3), limit=50)
+                      or {}).get("things")) or [])
+            _expect(n == 0 if t._guard() else None, "flame with canalFireEnabled OFF: %d (%s)" % (n, r))
+        r = _light(t, *cells[0])
+        _expect(r.startswith("LIT") if t._guard() else None, "ON: light refused: %s" % r)
 
 
 @suite.chain("toggle_liquid_corrosion")

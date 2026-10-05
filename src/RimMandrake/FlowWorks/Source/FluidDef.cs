@@ -49,6 +49,14 @@ namespace RimMandrake.FlowWorks
 		/// real map; a viscous fluid (tar, ooze) sets this far higher.</summary>
 		public int ticksPerTile = 60;
 
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: how this liquid burns. None never lights; CreepingFuse and
+		/// Detonation share one travelling front and differ only in speed (Detonation also blasts as it goes).</summary>
+		public RM_FluidFireKind fireKind = RM_FluidFireKind.None;
+
+		/// <summary>Phase 6: ticks for the fire front to cross one cell of this liquid. A fuse must be slower than a
+		/// walking pawn (~13 ticks/cell) so a player can outrun it. PROVISIONAL per row.</summary>
+		public int fireFrontTicksPerCell = 120;
+
 		/// <summary>Ticks the fluid stands on a cell after the whole release has
 		/// finished spreading, before the map's temp-terrain manager drains it
 		/// and hands the cell back. Default is the midpoint of vanilla
@@ -196,5 +204,14 @@ namespace RimMandrake.FlowWorks
 					+ "layer recedes, and the glass front would never actually be seen.";
 			}
 		}
+	}
+
+	/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: a creeping fuse (tar, oil, propane) or a detonation
+	/// (chemfuel, astrofuel) — one front, speed the only difference.</summary>
+	public enum RM_FluidFireKind
+	{
+		None,
+		CreepingFuse,
+		Detonation
 	}
 }

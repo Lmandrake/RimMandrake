@@ -198,6 +198,20 @@ illegal shot, or raiders will try and fail and it will read as broken pathing.
 
 ## Phase 6 — Fire
 
+**✅ BUILT OFFLINE (FOUNDRY flowworksA, 2026-10-05) — no live proof yet.** `Source/RM_LiquidFire.cs` +
+`RM_FireMath.cs` (Verse-free, 2 selftest cases): per-cell burn state on the excavation component, one
+travelling front (`FluidDef.fireKind` CreepingFuse/Detonation, `fireFrontTicksPerCell`; tar = fuse,
+120 ticks/cell PROVISIONAL), back into the source body up to `sourceFireReach` cells (3, PROVISIONAL); burn
+is ruling 7's rate (1 canal level/day, 1 source level/5 days — limitless burns forever); burned liquid is a
+disclosed exit (`BurnedLevelsTotal`), taken before the pulse ledger. Trigger: a Harmony postfix on
+`Fire.SpawnSetup` lights burnable liquid on/around any new vanilla Fire. Look: one non-ticking
+`RM_LiquidFlame` per burning cell (vanilla fire graphic); burned-dry canal cells get ash. Harm: pawns in the
+cell catch fire (0.35/check PROVISIONAL; a D=4 occupant always — ruling 22). Settings: "Burning liquid"
+section, `canalFireEnabled` default ON. Bridge: static_call `RM_LiquidFireProof.ProofIgnite("x,z")` /
+`ProofReport`. Owed: explosion-only ignition, extinguishing, bespoke burning/scorched art, the live run of
+validation.py `plot_E_fire` (rewired to this engine) and `toggle_canal_fire`. The old
+`LiquidIgnitionMapComponent` spike stays OFF and is superseded for excavated/source cells.
+
 Per-liquid ignition behaviour from the registry row: a **creeping fuse** (tar, propane) or a
 **detonation** (astrofuel, chemfuel) — one travelling front, speed the only difference, so a player can
 just outrun it. Burn is a rate on the tier ladder: **one canal tier per day, one source level per five

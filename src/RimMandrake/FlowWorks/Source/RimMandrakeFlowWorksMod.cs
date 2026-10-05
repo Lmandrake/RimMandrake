@@ -63,6 +63,14 @@ namespace RimMandrake.FlowWorks
         //  10. liquidIgnitionEnabled   — LiquidIgnitionMapComponent
         public static bool liquidCorrosionEnabled = false;
         public static bool liquidIgnitionEnabled = false;
+        // FLOWWORKS_BUILD_PROGRAM_1 Phase 6 — fire on the depth/fill engine (RM_LiquidFire). Ruling 7's numbers are
+        // the owner's (1 canal level/day, 1 source level/5 days); front speed and source reach are PROVISIONAL.
+        public static bool canalFireEnabled = true;
+        public static float canalBurnDaysPerLevel = 1f;
+        public static float sourceBurnDaysPerLevel = 5f;
+        public static float fireFrontSpeedMultiplier = 1f;
+        public static float sourceFireReach = 3f;
+        public static int SourceFireReach => Mathf.Clamp(Mathf.RoundToInt(sourceFireReach), 0, 30);
 
         // ══════════════════════════════════════════════════════════════════
         // PHASE 4 — STOCK, DISPLACEMENT, RECESSION, REFILL, SINKS.
@@ -260,6 +268,11 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
+            Scribe_Values.Look(ref canalFireEnabled, "canalFireEnabled", true);
+            Scribe_Values.Look(ref canalBurnDaysPerLevel, "canalBurnDaysPerLevel", 1f);
+            Scribe_Values.Look(ref sourceBurnDaysPerLevel, "sourceBurnDaysPerLevel", 5f);
+            Scribe_Values.Look(ref fireFrontSpeedMultiplier, "fireFrontSpeedMultiplier", 1f);
+            Scribe_Values.Look(ref sourceFireReach, "sourceFireReach", 3f);
             // ── Phase 4 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref fillInEnabled, "fillInEnabled", true);
             Scribe_Values.Look(ref fillInDisplacementEnabled, "fillInDisplacementEnabled", true);
@@ -473,6 +486,31 @@ namespace RimMandrake.FlowWorks
               + "leaves the map. It is not destroyed — it goes where an edge-touching lake's "
               + "water comes from. This also lets you dig in that strip at all, which the game "
               + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
+
+            // ── PHASE 6: fire ───────────────────────────────────────────────
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Burning liquid");
+            Text.Font = GameFont.Small;
+            list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
+                "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
+              + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
+              + "fire; anyone trapped in a superdeep pit always does. Off: liquid never burns.");
+            if (canalFireEnabled)
+            {
+                list.Label("Channel burn: one fill level every " + canalBurnDaysPerLevel.ToString("F1") + " day(s)");
+                canalBurnDaysPerLevel = list.Slider(canalBurnDaysPerLevel, 0.1f, 5f);
+                list.Label("Source burn: one level every " + sourceBurnDaysPerLevel.ToString("F1") + " day(s)");
+                sourceBurnDaysPerLevel = list.Slider(sourceBurnDaysPerLevel, 0.5f, 25f);
+                list.Label("A channel three levels full burns about three times the first number. These are rates "
+                  + "on the fill ladder, so changing how many levels a channel holds changes how long it burns. "
+                  + "A small moat fed from a bigger unburning source can burn indefinitely; a limitless source "
+                  + "burns forever.");
+                list.Label("Fire front speed: x" + fireFrontSpeedMultiplier.ToString("F2"));
+                fireFrontSpeedMultiplier = list.Slider(fireFrontSpeedMultiplier, 0.25f, 4f);
+                list.Label("How far fire walks into a pond from where it enters: " + SourceFireReach + " cell(s)");
+                sourceFireReach = list.Slider(sourceFireReach, 0f, 30f);
+            }
 
             // ══════════════════════════════════════════════════════════════
             // PHASE 5 SECTION — kept whole and kept last, see the field block.

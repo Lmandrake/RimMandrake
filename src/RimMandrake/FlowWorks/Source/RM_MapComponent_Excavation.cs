@@ -347,11 +347,16 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref rainAccumulator, "RM_rainAccumulator", 0f);
 			Scribe_Values.Look(ref sinkTransferredTotal, "RM_sinkTransferredTotal", 0f);
 			Scribe_Deep.Look(ref superdeepTrap, "RM_superdeepTrap");
+			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
 				{
 					superdeepTrap = new RM_SuperdeepTrapState();
+				}
+				if (liquidFire == null)
+				{
+					liquidFire = new RM_LiquidFire();
 				}
 				EnsureGrids();
 				if (originalTerrain == null)
@@ -894,6 +899,37 @@ namespace RimMandrake.FlowWorks
 
 		internal RM_SuperdeepTrapState SuperdeepTrap => superdeepTrap;
 
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: fire on the liquid (RM_LiquidFire).</summary>
+		private RM_LiquidFire liquidFire = new RM_LiquidFire();
+
+		public RM_LiquidFire LiquidFire => liquidFire;
+
+		/// <summary>Phase 6, ruling 7: burning takes one fill level off an excavated cell. Burned liquid leaves the
+		/// world (the fire's disclosed exit, counted by RM_LiquidFire). Runs outside ResolveComponent's ledger.</summary>
+		internal bool BurnOffLevel(IntVec3 c)
+		{
+			if (!IsExcavated(c))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			if (fillGrid[i] == 0)
+			{
+				return false;
+			}
+			FluidDef fluid = FluidAt(c) ?? ActiveFluid;
+			fillGrid[i] -= 1;
+			if (fluid != null)
+			{
+				ApplyFillTerrain(c, fluid);
+			}
+			if (fillGrid[i] == 0)
+			{
+				fluidGrid[i] = 0;
+			}
+			return true;
+		}
+
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
@@ -902,6 +938,7 @@ namespace RimMandrake.FlowWorks
 				superdeepTrap.Tick(map, this);
 				RM_PitExposure.Tick(map, this);
 			}
+			liquidFire.Tick(map, this);
 			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
 			{
 				return;
@@ -925,6 +962,9 @@ namespace RimMandrake.FlowWorks
 			// of the "before" the conservation ledger measures and cannot read
 			// as a leak. It is genuine external input, like a limitless source.
 			ApplyRain();
+			// PHASE 6, ruling 7: the burn takes its levels before the components measure "before", so burned
+			// liquid is never mistaken for a leak.
+			liquidFire.BurnPulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
 			// PHASE 4. Stock first too: recession and refill decide which source
 			// cells are still wet, and the flow below reads that.
 			if (stock != null)
