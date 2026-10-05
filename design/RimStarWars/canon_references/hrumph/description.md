@@ -2,9 +2,6 @@
 
 **defName**: `RSW_Hrumph` — in-repo label "hrumph"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Hrumph
@@ -23,11 +20,22 @@ The hrumphs were powerful, thick-necked herbivores native to the Gungan Swamps o
 Hrumphs were quite nearsighted and, with an irritable temperament, they never hesitated to charge. They were also good leapers, despite their bulk. Female hrumphs gave birth to one calf at a time. Herds defended young from predators like veermoks by encircling them and facing outward like a shield.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four watercolour/pencil illustrations (canon Bestiary pair, Legends pair), all consistent with each other.
+- **Colour disagreement:** the canon prose says "lightly tanned" skin. Every image shows a cool **grey-lavender / blue-grey hide** (warmer tan-brown shading only in the Legends side view), with **purple-blue spots** scattered over the flanks and thickening toward the spine. Trust the images: cool lavender-grey, not tan.
+- **Silhouette:** a heavy, broad-backed quadruped with a humped, arched back sloping up from a low head, thick neck and sturdy limbs; short-legged and bulky like a rhino/ankylosaur rather than a deer. Underside and lower belly pale/white.
+- **Back spines:** a row of short, dark purple-indigo cartilaginous spikes/studs along the spine and shoulders, clustered over the shoulder hump (canon_1, legends_1).
+- **Head:** a black-to-dark-purple hooked beak (parrot- or turtle-like) beneath a magenta/purple crest or facial patch; small, round, dark-ringed blue eyes set high and forward; **four long, straight horns sweeping up and back** from the brow: pale cream-white with blue-green streaking and black tips (two upper, two lower, slightly splayed). Horns are as long as the head or longer. Large soft ears are tucked in among them.
+- **Feet:** big paws/hooves with **white shaggy fur on the feet** and black claws or toes (canon_1); a thin, long **white tail** with a purple streak, drooping to the ground (canon_1).
+- **Behaviour in art (legends_2):** a herd stands in a ring facing outward with calves in the centre; adults are much bigger than the calves. Calves are plain grey with small horns.
+- Size: 3 to 4 m tall at the shoulder per prose; no scale object appears in the images.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Cool grey-lavender / blue-grey hide (not tan) with purple-blue spots, denser toward the spine, pale belly
+- [ ] Row of short dark indigo cartilaginous spikes along the spine and shoulders
+- [ ] Four long, straight horns sweeping up and back from the brow: pale with blue streaks and black tips
+- [ ] Hooked black-purple beak under a magenta/purple crest, small round blue eyes high on the face
+- [ ] Heavy, broad, humped-back quadruped build with a low head and thick neck
+- [ ] White shaggy-furred feet with dark claws, and a long white tail with a purple streak
 
 ## Engine limits
 not yet assessed

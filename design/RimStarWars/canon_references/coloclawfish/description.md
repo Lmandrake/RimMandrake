@@ -2,9 +2,6 @@
 
 **defName**: `RSW_ColoClawFish` — in-repo label "colo claw fish"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Colo_claw_fish
@@ -27,11 +24,23 @@ It was the second-largest predator on Naboo, larger than the opee sea killer, be
 Their stomachs could expand to accommodate larger prey, resulting in some colos looking bloated.
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images; the two canon-page pieces and the two Legends pieces differ in rendering but agree on the body plan.
+- **Overall silhouette:** a very long, flat, eel/serpent body — a thick crocodilian head and neck at one end, tapering back into a long ribbon tail. In the 3D render (`legends_1`, Legends) the body is a rippling band whose back is brown-olive and whose belly is darker grey, with a fin-like flat paddle at the tail end. In the canon illustration (`canon_1`) the body is coiled in a U: olive-green back, paler blue-grey underside.
+- **Head:** a crocodile/alligator head with a long snout, a row of large fangs at the front (white/cream, curved), a red-pink open mouth and tongue, and a yellow eye with a black slit pupil set high on a bony brow. The Legends render adds a toothy lower jaw with mandible-like pincers hanging off it.
+- **Claws:** a pair of jointed, clawed arm-like appendages immediately behind the head, ending in curved talons (large in `legends_1`, small and tucked in `canon_1`). The text says these shove food into the mouth.
+- **Bioluminescence:** a glowing cyan/teal fringe runs along the edge between back and belly, plus a row of glowing teal nodules/studs down the spine and flanks (`canon_1`, `legends_1`).
+- **Skin:** olive to khaki-brown, finely textured, with scattered dark blue-black spots along the flank (`legends_1`, `canon_2`) — canon_1 is plain olive with no spots.
+- **Infant (`canon_2`, canon, a baby):** a smooth tan-olive torpedo with a pale belly, blue flank spots, small yellow eye and a short croc snout; claws only just visible. Not a different species, just a juvenile: no glow fringe.
+- **Painted watercolour (`legends_2`, Legends):** shows opee sea killers escaping from the stomach; the colo is grey-brown with a blue-striped glow band down the body, spines along the back, toothy head with small claws. Useful only to confirm the glow band and the spiny back.
+- **Disagreement:** the prose says "flat eel-like" and "serpentine and spine-studded"; images agree, but the spine studs are small glowing nodules, not big spikes. Size is not shown directly (text: second-largest predator in Naboo's seas, bigger than an opee sea killer).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Very long, flat, eel-like body tapering to a thin or paddle-shaped tail, not a stout fish
+- [ ] Crocodile-like head with a long snout, large curved front fangs and a yellow slit-pupil eye
+- [ ] A pair of clawed arm-like appendages directly behind the head
+- [ ] Glowing cyan/teal fringe along the flank edge and a row of glowing nodules down the spine
+- [ ] Olive to khaki-brown back with dark blue-black flank spots, paler grey-blue belly
+- [ ] Mandible-like jaw appendages (Legends render) kept subtle, not required in canon art
 
 ## Engine limits
 not yet assessed

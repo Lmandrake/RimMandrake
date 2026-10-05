@@ -2,9 +2,6 @@
 
 **defName**: `RSW_KraytDragon` — in-repo label "krayt dragon"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Krayt_dragon
@@ -31,11 +28,22 @@ The krayt dragon had a set of sharp teeth used for capturing prey, but relied on
 Krayt dragons were heavily attracted to areas that were strong in the Force, especially the dark side.  …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images (two canon, two Legends) that show three clearly different looks, so the entry must pick one. The text calls "krayt dragon" an umbrella term for several species (canyon krayt, greater krayt, the sixteen-limbed leviathan variant).
+- **`canon_1` (The Mandalorian CGI render; the canon infobox):** a sand-coloured tan-brown, long, **serpentine/lizard** body. The head is a big wedge with a wide mouth packed with rows of white conical teeth, a long tongue, and a **small hooked beak-like horn/barb on the side of the head**. Very long muscular neck, thick body, and a **long tail that curls up** and carries a ridge of spikes. Pale cream-grey underside. Short dorsal bone-spikes along the neck and back. **Many short, thick limbs, arranged in banks along the body (the leviathan variant: sixteen legs; visible here as clustered stubby legs at the front and middle of the body)**, each with 4 to 5 curved dark claws. Skin is dry, rough, wrinkled, desert-camouflage coloured, no bright colours. Rock-and-sand texture on the back.
+- **`canon_2` (screen frame, The Mandalorian season 2):** the leviathan's head from the front mid-attack: huge gaping jaws, upper and lower rows of conical white teeth, grey tongue, sand blasting off it, and a spray of yellowish-green venom being spat from the mouth (the caption: acidic poison). Head is broad and smooth-domed, not horned.
+- **`legends_1` (colour painting, Legends):** a **green-olive** four-legged reptile, crocodile-meets-dragon: **two upturned horns on the brow and a crest of smaller spiked frills behind the head**, a row of pale spines along the back, long curving thin-tipped tail, five-toed pale-clawed feet, jaws open and drooling, thick folded neck. Four legs only.
+- **`legends_2` (3D model, Legends):** a blue-grey, scaly four-legged reptile with **two long upswept horns**, a yellow-brown head and back spikes, long snout, a pale belly, and a rat-like thin tail. Four legs.
+- **The images disagree:** canon art (`canon_1`, `canon_2`) = tan sand-coloured, hornless apart from the side barb, many legs, huge toothy maw. Legends art = green or blue-grey, four legs, with long brow horns. Trust the canon pair for the shipping design; keep Legends horns and green colour out unless the owner rules otherwise.
+- **Size:** none shown directly (Legends text: about 45 m long; no scale object in any image).
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Long serpentine lizard body with a very long muscular neck and a long tail that curls up with a spiked ridge (canon render)
+- [ ] Sand-tan / desert-brown rough wrinkled hide with a paler cream underside, not green or blue
+- [ ] Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue
+- [ ] Small hooked horn or barb on the side of the head; no big brow horns (those are Legends only)
+- [ ] Many short, thick clawed limbs in clustered banks along the body (leviathan variant: sixteen limbs; four-legged only for the Legends type)
+- [ ] Short bony dorsal spikes down the neck and back
+- [ ] Able to show a yellow-green acid spray from the mouth when attacking
 
 ## Engine limits
 not yet assessed
