@@ -282,10 +282,16 @@ class Proof(object):
         rx, rz, rw, rh = RL.REGION
         inside = lambda p: p and rx - 2 <= p[0] < rx + rw + 2 and rz - 2 <= p[1] < rz + rh + 2  # noqa: E731
         moved = []
-        for i, p in enumerate((B.hp("colonists").get("pawns") or [])):
+        # HARNESS (run 3, 2026-10-05): a fixed park cell can be unstandable on a random map ("cell not standable"); try
+        # cells along a short row near PARK until the teleport is accepted
+        cand = [(PARK[0] + dx, PARK[1] + dz) for dz in (0, 2, 4, -2) for dx in range(0, 24, 2)]
+        for p in (B.hp("colonists").get("pawns") or []):
             if inside(p.get("pos")):
-                to = (PARK[0] + 2 * i, PARK[1])
-                moved.append((p["id"], p.get("pos"), to, B.hp("pawn:%d=tp:%d,%d" % ((p["id"],) + to)).get("success")))
+                ok, to = False, None
+                while cand and not ok:
+                    to = cand.pop(0)
+                    ok = bool(B.hp("pawn:%d=tp:%d,%d" % ((p["id"],) + to)).get("success"))
+                moved.append((p["id"], p.get("pos"), to, ok))
         rr = "%d,%d,%d,%d" % (rx - 2, rz - 2, rw + 4, rh + 4)
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
         left = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
