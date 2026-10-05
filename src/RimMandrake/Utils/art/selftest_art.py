@@ -207,6 +207,40 @@ def main():
         (tmp / "sheet" / "test_sheet.decisions.json").write_text(json.dumps(bdec))
         check(not art_sheet.generate_biome("RM_Test", cen, bout, "T")["wrote_decisions"],
               "biome rebuild never overwrites a decisions file the sidecar wrote")
+        # ART_SHEET_DONOR_JOIN_GAPS_1: a donor-prefixed texPath (RG_Brambles) must still join its finished render
+        # `brambles_v1`, and a render that failed the canon gate shows as a candidate badged as such
+        import backfill as _bf
+        yellow = png((255, 255, 0, 255))
+        syellow = L.sha256_bytes(yellow)
+        L.store_put_bytes(yellow)
+        wr = L.Writer()
+        _bf._variant(wr, sha=sgreen, b=green, kind="donor", loc="donor:brambles", rel="Things/Plant/RG_Brambles_south.png",
+                     extra={"donor_pkg": "rg.mod", "donor_mod": "RG Mod", "how": "loose"})
+        _bf._variant(wr, sha=sblue, b=blue, kind="artpipe", loc="_artsrc/brambles_v1/x.png",
+                     extra={"job": "brambles_v1", "facing": "south", "date": "2026-10-05"})
+        _bf._variant(wr, sha=syellow, b=yellow, kind="artpipe", loc="_artsrc/foxwing_v1/x.png",
+                     extra={"job": "foxwing_v1", "facing": "south", "date": "2026-10-05"})
+        wr.flush()
+        (tmp / "artpipe" / "failed").mkdir(parents=True)
+        (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon"}))
+        os.environ["ARTPIPE_STATE_DIR"] = str(tmp / "artpipe")
+        row_c = {"key": "RG_Plant_Brambles", "kind": "flora", "label": "thorny bush", "defNames": ["RG_Plant_Brambles"],
+                 "placements": [], "canon": {"entry": None}, "twins": [], "artpipe_state_jobs": [],
+                 "art": {"resources": [{"res": "Things/Plant/RG_Brambles", "role": "body"}]}}
+        row_d = {"key": "RM_Foxwing", "kind": "fauna", "label": "foxwing", "defNames": ["RM_Foxwing"], "placements": [],
+                 "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
+        cen2 = tmp / "census2.json"
+        cen2.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
+                                    "biomes": {"RM_Test": {"label": "Test", "rows": [row_c, row_d]}}}))
+        bout2 = tmp / "sheet" / "test2_sheet.html"
+        art_sheet.generate_biome("RM_Test", cen2, bout2, "T")
+        items2 = {i["id"]: i for i in json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>',
+                                                          bout2.read_text(), re.S).group(1))}
+        cols_c = [c for g in items2["RG_Plant_Brambles"]["graphics"] for c in g["cols"]]
+        check(any(sblue in c["faces"].values() for c in cols_c), "donor-prefixed row RG_Plant_Brambles shows the render brambles_v1")
+        cols_d = [c for g in items2["RM_Foxwing"]["graphics"] for c in g["cols"]]
+        check(any(syellow in c["faces"].values() and "failed canon check" in c["label"] for c in cols_d),
+              "a failed_canon render is a candidate badged 'failed canon check'")
     else:
         print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
 
