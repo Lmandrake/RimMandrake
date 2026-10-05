@@ -421,11 +421,18 @@ def s9_runs(B, rows, res):
     mix_flag = all(p.get("mix") for p in right_pieces if (mem.get(tuple(p["owner"])) or {}).get("def") != "PowerSwitch")
     printed = st.get("printedTex") or {}
     unprinted = sorted({p.get("strandTex") for p in st.get("pieces") or [] if p.get("strands")} - set(printed))
+    # LEARNED live 2026-10-04: a straight run is ONE cord piece, so this scene has 3 strand pieces (left Industrial half, right
+    # mix half, the Futuristic line); the first version demanded >= 4 and failed on a correct scene
     mixed_ok = len([t for t in right_tex if t and t.startswith("Strand_")]) >= 2 and mix_flag and all(t in printed for t in right_tex if t)
-    V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 4 and not pb and not unprinted and mixed_ok else "FAIL", "MOD",
+    # far zoom: every mix colour also has its LOD mesh (live 2026-10-04: only the owner colour had one)
+    lod_on = any(k.endswith("(lod)") for k in printed)
+    lod_missing = sorted(t for t in right_tex if t and (t + "(lod)") not in printed) if lod_on else []
+    mixed_ok = mixed_ok and not lod_missing
+    V.row(rows, "S9d_restyle_and_materials", "PASS" if rs.get("success") and r_ok and l_ok and f_ok and pn >= 3 and not pb and not unprinted and mixed_ok else "FAIL", "MOD",
           {"restyle": rs, "build": {"line": fl.get("success"), "finish": fb}, "rightColours": sorted(x for x in right_tex if x), "pieceBad": pb[:6],
            "unprintedStrands": unprinted, "printedTex": printed, "switchDrawn": (mem.get(SWITCH) or {}).get("drawnTex"),
            "mixSegmentsPrinted": st.get("mixSegmentsPrinted"),
+           "conds": {"restyle": bool(rs.get("success")), "right": r_ok, "left": l_ok, "futuristic": f_ok, "piecesChecked": pn, "mixed": mixed_ok, "lodMissing": lod_missing},
            "meaning": "PASS = Restyle repaints only its own run (Mix; switch Modern) and the mixed run prints >= 2 Modern colours along its cords, build mode keeps Futuristic, every piece prints its run's look and the section meshes hold every piece's strand"})
     out["st"] = st
     res["stage2_before"] = st

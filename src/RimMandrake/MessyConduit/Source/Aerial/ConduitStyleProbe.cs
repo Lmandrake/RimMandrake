@@ -202,7 +202,7 @@ namespace RimMandrake.MessyConduit.Aerial
             // ---- every look's strand textures (what a run of that look may print)
             var lookStrands = AerialStyles.Looks.Select(look =>
                 S(look) + ":[" + string.Join(",", Enumerable.Range(0, ConduitStyles.VariantsOf(look)).Select(v => S(TexName(CordMaterials.StrandG(ConduitStyles.Global(look, v)))))) + "]");
-            return AerialProbe.Ok(cmd, "\"mixSegmentsPrinted\":" + SectionLayer_RM_MessyCords.MixSegmentsPrinted + ",\"defaultLook\":" + S(StylePicker.DefaultLook) + ",\"defaultKey\":" + S(ConduitStylePicker.DefaultKey(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit"))) +
+            return AerialProbe.Ok(cmd, "\"mixSegmentsPrinted\":" + SectionLayer_RM_MessyCords.MixSegmentsPrinted + ",\"mixLodSegmentsPrinted\":" + SectionLayer_RM_MessyCords.MixLodSegmentsPrinted + ",\"defaultLook\":" + S(StylePicker.DefaultLook) + ",\"defaultKey\":" + S(ConduitStylePicker.DefaultKey(DefDatabase<ThingDef>.GetNamedSilentFail("PowerConduit"))) +
                 ",\"missingStyleDefs\":[" + string.Join(",", ConduitStylePicker.Missing.Select(S)) + "],\"notStylable\":[" + string.Join(",", ConduitStylePicker.NotStylable.Select(S)) + "]" +
                 ",\"globalMissing\":[" + string.Join(",", CordMaterials.GlobalMissing.Select(S)) + "],\"lookStrands\":{" + string.Join(",", lookStrands) + "}" +
                 ",\"counters\":{\"processed\":" + runs.processed + ",\"adopted\":" + runs.adopted + ",\"bridges\":" + runs.bridges + ",\"linkBridges\":" + runs.linkBridges +

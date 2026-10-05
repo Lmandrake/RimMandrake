@@ -49,3 +49,8 @@ Status: BUILT offline, committed and pushed (7c0c8b87a source, df9836b50 DLL+.sr
 - Placement cursor hint: "joins <Look> run" / "bridges A + B runs: X wins (most conduit)" (Designator_Build.DrawMouseAttachments postfix, recomputed per mouse cell).
 - Selftests 558/558 (new: neighbouring mix blocks differ, worst straight 4-cell run >= 2 colours, a 7-cell cord prints contiguous segments in >= 2 colours, NeedsWrite keep/write cases with can-fail). run_selftests 174/177 (MandrakePatches, northstar_matrix C2, UtinniPatches dump: the failures stage 1 already listed).
 - Unproven live: all of the above. The motion layer (whip/sway/ripple) still draws a mix piece in its owner cell's single colour.
+
+## 9. Second live run (validation_style_live_20261004T180716.json: 13 PASS, 1 FAIL = S9d)
+- The clause that tripped was `pn >= 4` (pieces checked). Each straight run is ONE cord piece, so the scene has exactly 3 strand pieces (left Industrial half, right mix half, Futuristic line). That was a check bug; it is now `pn >= 3`, and the row reports every sub-condition under `conds`.
+- A real far-zoom bug was behind the coordinator's LOD reading: the LOD mesh of a mix cord was one strand in the piece's owner colour (only Strand_Green(lod) was printed). LOD mix cords are now printed in colour segments too (`MixRibbons(..., lod: true)`, probe `mixLodSegmentsPrinted`). When LOD meshes are on, S9d now requires a `(lod)` mesh for every mix colour.
+- Review map station 5 ("random mix shows 1 strand colour"): the station read each piece's `strandTex`, which is one representative colour. It now reads `mixTex`, the colours printed along the cord. The mod was right; the station was wrong.
