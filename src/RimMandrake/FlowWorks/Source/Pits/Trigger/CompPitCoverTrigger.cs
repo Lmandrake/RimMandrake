@@ -68,9 +68,12 @@ namespace RimMandrake.FlowWorks.Pits
             List<IntVec3> cells = new List<IntVec3>();
             if (self != null)
             {
-                if (!self.IsDeckLead) return;
-                foreach (Building_PitCover c in RM_PitCoverUtility.Deck(self))
+                // One flood-fill per scan: the lead test and the cell list come from the same deck
+                // (IsDeckLead would walk it a second time, on every cover, every scan).
+                List<Building_PitCover> deck = RM_PitCoverUtility.Deck(self);
+                foreach (Building_PitCover c in deck)
                 {
+                    if (c.thingIDNumber < self.thingIDNumber) return;
                     cells.Add(c.Position);
                 }
             }
