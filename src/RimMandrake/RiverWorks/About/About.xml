@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.riverworks</packageId>
+  <name>RimMandrake: River Works</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+  <description>Rivers that move. Moving river water shoves pawns, corpses and loose items downstream: chest-deep water is a fast lane nobody wades out of, shallow water an edge lane you can still cross. Bigger rivers shove harder, and a spring or torrential-rain flood makes every river fiercer. Get swept to the edge of the map and you are washed away - your people walk home a few days later, and a letter tells you so. Lay ford stones across shallow water to cross safely; colonists route to fords and bridges on their own.
+
+Coming next: the weir, stake-line levee and silt-trap, weirs that catch fish from the river's own stock, and the rope ferry.
+
+Every piece has a toggle in Mod Settings.</description>
+</ModMetaData>

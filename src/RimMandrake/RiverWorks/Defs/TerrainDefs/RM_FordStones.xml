@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- SURFACE_RIVER_WEIRS_1 design §3.7: ford stones, laid in SHALLOW moving water only (the
+       RM_Fordable affordance is patched onto WaterMovingShallow alone, Patches/RM_Fordable_Water.xml).
+       Nothing is carried on or beside a ford (RM_MapComponent_RiverCurrent.NearFord); the sea's
+       channel current already exempts the same defName. Layered over the water like a bridge so
+       removing it restores the river. Texture is a vanilla PLACEHOLDER (flagstone); art owed. -->
+  <TerrainAffordanceDef>
+    <defName>RM_Fordable</defName>
+    <label>fordable</label>
+    <order>2100</order>
+  </TerrainAffordanceDef>
+
+  <TerrainDef>
+    <defName>RM_FordStones</defName>
+    <label>ford stones</label>
+    <description>Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.</description>
+    <layerable>true</layerable>
+    <texturePath>Terrain/Surfaces/Flagstone</texturePath>
+    <color>(128,124,112)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>390</renderPrecedence>
+    <designationCategory>Structure</designationCategory>
+    <terrainAffordanceNeeded>RM_Fordable</terrainAffordanceNeeded>
+    <pathCost>10</pathCost>
+    <fertility>0</fertility>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <constructEffect>ConstructDirt</constructEffect>
+    <statBases>
+      <WorkToBuild>900</WorkToBuild>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <BlocksGranite>8</BlocksGranite>
+    </costList>
+    <tags>
+      <li>Floor</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

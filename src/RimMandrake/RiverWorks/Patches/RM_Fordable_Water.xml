@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- SURFACE_RIVER_WEIRS_1 §3.7: ford stones go in shallow MOVING water only. WaterMovingShallow
+       inherits its affordances list from WaterShallowBase, so it may carry no node of its own:
+       add the node when absent (a child list merges with the inherited one). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TerrainDef[defName="WaterMovingShallow"]/affordances</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TerrainDef[defName="WaterMovingShallow"]/affordances</xpath>
+      <value>
+        <li>RM_Fordable</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/TerrainDef[defName="WaterMovingShallow"]</xpath>
+      <value>
+        <affordances>
+          <li>RM_Fordable</li>
+        </affordances>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
