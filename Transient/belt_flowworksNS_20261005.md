@@ -15,3 +15,4 @@
 - [live] 14:3x redeployed builder phase6 DLL, rebuilt golden (twin roof RoofRockThick: RoofConstructed collapses; afternoon clock 35000)
 - [live] FOUND: jawa/flowworks_excavation_drive reflection call TrySetDriverFill(c,fill) broke when builder added optional 3rd param FluidDef (S2_fill_clamp F=None, A0 instrument blind). Fixed in JawaBenchFlowWorksTools.cs (pass null). Needs companion rebuild (game down).
 - [live] twin roof collapses always (even w/ wall) -> golden has no roofed twin; plants regrow after ticks, so preflight is one-shot per fresh copy; late pawn sweep (mechs arrive after clock jump). golden rebuilt vs deployed DLL
+- [live] 14:57 v2 live (functional, fresh map) 61 PASS / 2 FAIL (P4_ladder_frees, P5n_own_faction_carveout: pit pawn rows, passed 2026-10-02; likely PIT_FILL_EFFECTS/DEPTH_OFFSET era) / 10 UNBUILT. also fixed validation.py: jawa/pawn_health ADDS a hediff -> use pawn_get hediffs (2 chains)

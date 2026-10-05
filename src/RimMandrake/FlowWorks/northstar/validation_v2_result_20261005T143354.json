@@ -1,0 +1,280 @@
+{
+ "script": "validation_v2",
+ "mod": "FlowWorks",
+ "mod_hash": "662ecd3f69376edeece9f177079999224637a33f9b8237faebd442ebadc8e97e",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.flowworks"
+  ],
+  "running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
+  "assembly_sha256": "5ea39dc01231835e94b1bf9e9fc4478f116c16a4be2fdb095c0eff32b6db8abc",
+  "assembly_matches": 1
+ },
+ "mode": "live",
+ "faults": [],
+ "started": "2026-10-05T14:33:29",
+ "wall_s": 24.4,
+ "ticks_spent": 0,
+ "fresh_map": {
+  "menu": true,
+  "start": true,
+  "programState": "Playing",
+  "biomes": [
+   "AridShrubland"
+  ],
+  "wall_s": 6.8
+ },
+ "calls": 300,
+ "aborted": "instrument blind",
+ "steps": [
+  {
+   "step": "L_preflight",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 4.69,
+   "calls": 69,
+   "error": null
+  },
+  {
+   "step": "SITE_paint",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 4.75,
+   "calls": 95,
+   "error": null
+  },
+  {
+   "step": "S_state",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 2.53,
+   "calls": 39,
+   "error": null
+  },
+  {
+   "step": "A_flow_defaults",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 4.15,
+   "calls": 83,
+   "error": "Abort: instrument blind"
+  }
+ ],
+ "rows": [
+  {
+   "id": "L0_loaded_paused",
+   "status": "PASS",
+   "cls": "",
+   "detail": "programState Playing, ticksGame 1 -> 1 over 1 s"
+  },
+  {
+   "id": "L0_map_250",
+   "status": "PASS",
+   "cls": "",
+   "detail": "map 250x250 biome AridShrubland"
+  },
+  {
+   "id": "L1_log_clean",
+   "status": "PASS",
+   "cls": "",
+   "detail": "no FlowWorks error in 15 warn+ entries (base seq 28)"
+  },
+  {
+   "id": "L2_assembly_identity",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "loaded C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll sha 5ea39dc01231 mvidMatchesFile True; repo sha d205f122817a"
+  },
+  {
+   "id": "L3_defs_live",
+   "status": "PASS",
+   "cls": "",
+   "detail": "live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})"
+  },
+  {
+   "id": "L4_settings_default",
+   "status": "PASS",
+   "cls": "",
+   "detail": "58 settings read, all shipped defaults"
+  },
+  {
+   "id": "L5_site_pristine",
+   "status": "PASS",
+   "cls": "",
+   "detail": "excavated 0 bodies 0 superdeep 0 activeFluidRaw RM_Fluid_Water"
+  },
+  {
+   "id": "E1a_cadence_shipped",
+   "status": "PASS",
+   "cls": "",
+   "detail": "pulseIntervalTicks 250, nextPulseTick 251 at tick 1"
+  },
+  {
+   "id": "L5_dry_weather",
+   "status": "PASS",
+   "cls": "",
+   "detail": "weather Clear rainRate 0.0"
+  },
+  {
+   "id": "SITE0_no_pawn_in_plots",
+   "status": "PASS",
+   "cls": "",
+   "detail": "3 pawns, none in 46 plot rects"
+  },
+  {
+   "id": "SITE1_painted_readback",
+   "status": "PASS",
+   "cls": "",
+   "detail": "46 rects cleared+Soil, 9 bodies painted, every scene cell fresh Soil, every body exactly its sources"
+  },
+  {
+   "id": "S1_dig_ladder",
+   "status": "PASS",
+   "cls": "",
+   "detail": "D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1"
+  },
+  {
+   "id": "S1n_superdeep_is_max",
+   "status": "PASS",
+   "cls": "",
+   "detail": "deepen D=4 once more -> 4"
+  },
+  {
+   "id": "S1p_pit_is_grid_only",
+   "status": "PASS",
+   "cls": "",
+   "detail": "D4 cell: isSuperdeep True width 1 holders []; D3 cell: isSuperdeep False width 0 holders []"
+  },
+  {
+   "id": "S2_fill_clamp",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": "setFill 9 on D=2 -> F=None; setFill 1 on undug -> fillSet=None F=None"
+  },
+  {
+   "id": "S3_classification",
+   "status": "PASS",
+   "cls": "",
+   "detail": "W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
+  },
+  {
+   "id": "S4_sink_band",
+   "status": "PASS",
+   "cls": "",
+   "detail": "isSink at edge distance 9: True; at 11: False"
+  },
+  {
+   "id": "S5_sticky_limitless",
+   "status": "PASS",
+   "cls": "",
+   "detail": "W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True"
+  },
+  {
+   "id": "S6_digToDepth_gate",
+   "status": "PASS",
+   "cls": "",
+   "detail": "Designator_DigCanal: D1 ON True; D4 False (Already SUPERDEEP \u2014 this is as far down ); D1 OFF False (Deepening is switched off in this mod's settings.); undug soil OFF True"
+  },
+  {
+   "id": "U_fill_fluid_distinct",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: one activeFluid field per map component"
+  },
+  {
+   "id": "U_ladder_state_legible",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: RM_Ladder has no raised/lowered state (thingClass Building)"
+  },
+  {
+   "id": "U_pawn_height_ladder_legible",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: no pawn draw offset by depth"
+  },
+  {
+   "id": "U_pawn_lowers_on_deeper_cell",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: same"
+  },
+  {
+   "id": "U_pawn_rises_on_shallower_cell",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: same"
+  },
+  {
+   "id": "U_pit_covered_invisible",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: no superdeep cover (only legacy Building_TerrainMimicCover)"
+  },
+  {
+   "id": "U_pit_covered_seam_at_max_zoom",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: same as pit_covered_invisible"
+  },
+  {
+   "id": "U_pit_trapped_reads_as_trapped",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: same (walls above head need the offset)"
+  },
+  {
+   "id": "U_slime_occupant_below_surface",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: same"
+  },
+  {
+   "id": "U_tar_fill_front_lags_water",
+   "status": "UNBUILT",
+   "cls": "",
+   "detail": "UNBUILT: FlowPerPulse is global; viscosity not read by the engine"
+  },
+  {
+   "id": "A0_sanity_probe",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "rect read of the prefilled E5_sink run: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] (must see a known F=1)"
+  },
+  {
+   "id": "ABORT",
+   "status": "FAIL",
+   "cls": "HARNESS",
+   "detail": "instrument blind"
+  },
+  {
+   "id": "Z_settings_restored",
+   "status": "PASS",
+   "cls": "",
+   "detail": "2 touched settings back to shipped defaults"
+  }
+ ],
+ "plan_budget": {
+  "v2_target_ticks": "1,000-2,000 (plan section 10, with flowworks_pulse)",
+  "v2_without_pulse_tool": "3,000-7,300",
+  "old_suite": 112921
+ },
+ "summary": {
+  "PASS": 18,
+  "FAIL": 4,
+  "UNMEASURED": 0,
+  "UNCOVERED": 0,
+  "UNBUILT": 10,
+  "SKIP": 0
+ },
+ "green": false
+}
