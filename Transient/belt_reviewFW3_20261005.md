@@ -1,0 +1,17 @@
+# FlowWorks non-northstar review notes 2026-10-05
+- patches: validate_patch OK (3 files, MapGen warn is Core target, benign)
+- About.xml: fixed stale 'ten liquid types' (15) and 'burning liquids not built' (built offline)
+- Fluids.xml: stale 'one fluid v1 slice' header + wrong patch path/tier fixed. PitFluids/PitFluidTerrain read: ok
+- Pit_Hediffs: header falsely said nothing writes RM_PitExposure (RM_PitExposure.cs does) - fixed. Doors, LiquidFlame, Pit_Thoughts read: ok
+- RM_PitCovers: classes/tiers/masses verified ok
+- ThingDefs.xml ok (note Transient path cited in ladder comment)
+- Drill/Tank ok; ThingDefs: removed Transient path cite
+- LiquidBodyRegistry ok (biomes exist)
+- TarGlass: stale UtinniPatches refs -> TheSump. LiquidDefRegistry ok
+- DeepSand: removed ref to nonexistent SandFishing_CrackedLands.xml; About: dropped 'No DLC required'. Propane/WaterBoiling read ok
+- DeepSand: removed ref to nonexistent SandFishing_CrackedLands.xml; About: dropped 'No DLC required'. Propane/WaterBoiling read ok
+- SlimeTerrain/Terrain: structural diff of all 8 fill ladders vs tar ok; all FluidDef terrain refs resolve
+- csproj x2: all .cs listed, comment path fixed; swale selftest PASS
+- validation.py: pitExposureEnabled missing from suite.toggles (KeyError in _setting) added; stale 'per-body fluid unbuilt' BLOCKED component now stages tar+water; docstring counts fixed. pitDepthDrawOffsetEnabled has no chain (reported)
+- validation.py: pit_not_vanilla_trap predicate naive text-grep (hit RM_Ladder placeholder + comments) -> parsed texPath, ladder exempt. Read to line ~860 ok
+- validation.py fully read; 2 more stale docstrings fixed

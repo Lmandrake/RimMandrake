@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- The one fluid this v1 slice ships, chosen to prove genericity. Tar and
-       the rest of the owner's named roster (ooze, slime, oil, propane) are
-       deliberately NOT authored here; they are Utinni-tier content and belong
-       in their own client mod once this engine is live-proven, per this
-       item's own scope note.
+  <!-- Canal fluids: water first (it proved the engine is generic), then tar,
+       the four slime colours below, and oil and poison in FlowWorks_PitFluids.xml.
+       Further liquids exist as LiquidDefs (Defs/LiquidTypes) without a canal form.
 
        Every tier terrain MUST be temporary=true (see FluidDef.ConfigErrors),
        and every one of them is OURS: the base game's only temporary water
@@ -78,9 +76,9 @@
     <recededTerrain>Mud</recededTerrain>
     <!-- SUMP_TAR_HYDROLOGY_1 ruling 3, "flood fronts cool to glass". Our own
          def (Defs/LiquidTypes/TerrainDefs/RM_TarGlass.xml), tier-neutral so
-         glass cooling works standalone; Patches/RM_Tar_GlasswalkCooling.xml
+         glass cooling works standalone; TheSump/Patches/RM_Tar_GlasswalkCooling.xml
          repoints this at the campaign's own bespoke RM_Glasswalk when
-         UtinniPatches is active. -->
+         TheSump is active. -->
     <coolsToGlassEdge>RM_TarGlass</coolsToGlassEdge>
   </RimMandrake.FlowWorks.FluidDef>
 

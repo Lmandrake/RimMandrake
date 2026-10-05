@@ -16,13 +16,13 @@
   ships this as its OWN generic def, tier-neutral and donor-free, so glass-
   front cooling works the same for a standalone install as for the campaign
   (biome_mod_architecture.md §7 Q11a's "the free mod looks the same" law,
-  generalised from naming to mechanism here). The Utinni layer already ships
+  generalised from naming to mechanism here). TheSump already ships
   a hand-built, lore-flavoured twin for the player-BUILT case —
-  src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RM_SumpWalkways.xml's own
+  src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml's own
   RM_Glasswalk, whose header explicitly deferred "crossing the liquid tar
   itself" to this item — and
-  Patches/RM_Tar_GlasswalkCooling.xml (this same pass) repoints
-  coolsToGlassEdge at that terrain instead when UtinniPatches is active, so
+  TheSump/Patches/RM_Tar_GlasswalkCooling.xml repoints
+  coolsToGlassEdge at that terrain instead when TheSump is active, so
   the campaign gets the bespoke art/slip mechanic and everyone else still
   gets a real, working glass front.
 

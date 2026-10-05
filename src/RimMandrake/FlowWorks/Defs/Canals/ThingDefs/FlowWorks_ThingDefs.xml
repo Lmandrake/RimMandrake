@@ -27,11 +27,9 @@
 
        PLACEHOLDER ART, and flagged as such: texPath borrows the vanilla
        spike-trap sheet the pit family already ships against, so the mod
-       loads with no missing-texture error. Candidate art EXISTS but is
-       NOT wired and NOT ruled on by the owner —
-       Transient/flowworks_art_2026-09-16/buildings/RUT_Ladder_A.png and
-       RUT_Ladder_B.png. Do not copy either into Textures/ before he picks
-       one; note also that the candidates carry the RUT_ tier prefix while
+       loads with no missing-texture error. Candidate ladder art exists but is
+       NOT wired and NOT ruled on by the owner: do not copy any into Textures/
+       before he picks one. The candidates carry the RUT_ tier prefix while
        this def is RM_ tier, which is itself a question for him.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">

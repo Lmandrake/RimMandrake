@@ -20,7 +20,7 @@
       python3 src/RimMandrake/Utils/selftest_flowworks_stock.py
 
     Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\FlowWorks\Source\SelfTest\RimMandrakeFlowWorks.SelfTest.csproj -c Release
       (that flag is two hyphens then "project" - written apart here only because
       an XML comment cannot contain two adjacent hyphens)
   -->

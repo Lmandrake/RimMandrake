@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- Exposure in an open pit. KEPT by ruling [H] of the unified pit model
-       (design/RimMandrake/flowworks_pits_unified_model_2026-10-02.md 3.7):
-       REWIRE pending in PIT_TEMPERATURE_SOFTENING_1 - its writer becomes the
-       temperature accumulator, its effect lowered resistance. Nothing writes
-       it since the pit cell building retired (PIT_LEGACY_CODE_RETIRE_1).
-       Placeholder rate/stages. -->
+  <!-- Exposure in an open pit (PIT_TEMPERATURE_SOFTENING_1). Written by RM_PitExposure.Tick (Source/RM_PitExposure.cs):
+       severity rises while a pawn stands on an unroofed, uncovered D=4 cell and ebbs once it is out. Placeholder
+       rate/stages. -->
   <HediffDef>
     <defName>RM_PitExposure</defName>
     <label>pit exposure</label>

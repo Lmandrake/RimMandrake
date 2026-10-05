@@ -90,8 +90,7 @@
   `RM_LongShade.xml`/`RM_Stillsand_Biome.xml`'s own `terrainPatchMakers`
   (DEEP_SAND_WALKABLE_TERRAIN_1), not by a fixed pool siting list. The original
   Cracked-Lands-only fish-family siting note this header used to carry is UNCHANGED
-  and untouched by this pass — see Patches/SandFishing_CrackedLands.xml's own header
-  for that history; it targets a different biome than the two this ruling touches.
+  and untouched by this pass; it targets a different biome than the two this ruling touches.
 
   ART — PLACEHOLDER. texturePath below points at the vanilla `Terrain/Surfaces/SoftSand`
   texture as a deliberate stand-in so this never renders magenta; a real "sunken,
