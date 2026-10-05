@@ -64,6 +64,8 @@
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="FluidDef.cs" />
+    <Compile Include="RM_PitExposureMath.cs" />
+    <Compile Include="RM_PitExposure.cs" />
     <Compile Include="Swale\RM_Swale.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />

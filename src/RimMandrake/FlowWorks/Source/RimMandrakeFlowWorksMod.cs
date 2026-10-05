@@ -138,6 +138,10 @@ namespace RimMandrake.FlowWorks
         public static float trapSensitivityMultiplier = 1f;
         public static bool fallDamageEnabled = true;
         public static float fallDamageMultiplier = 1f;
+        // PIT_TEMPERATURE_SOFTENING_1 (PROVISIONAL numbers): exposure on/off, temperature coupling, resistance loss rate.
+        public static bool pitExposureEnabled = true;
+        public static float pitTemperatureCoupling = 3f;
+        public static float pitResistanceLossMultiplier = 1f;
         // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
         public static bool spikesEnabled = true;
         public static float spikeDamageMultiplier = 1f;
@@ -277,6 +281,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
             Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
+            Scribe_Values.Look(ref pitExposureEnabled, "pitExposureEnabled", true);
+            Scribe_Values.Look(ref pitTemperatureCoupling, "pitTemperatureCoupling", 3f);
+            Scribe_Values.Look(ref pitResistanceLossMultiplier, "pitResistanceLossMultiplier", 1f);
             Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
@@ -501,6 +508,17 @@ namespace RimMandrake.FlowWorks
               + "anything under body size 2.25 (a human), a 2x2 pit anything under 6.25, a 3x3 pit "
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
+
+            list.CheckboxLabeled("An open pit wears down whoever is left in it", ref pitExposureEnabled,
+                "An unroofed pit room tracks outdoor temperature faster, and a prisoner left in it gains pit "
+              + "exposure and loses recruitment resistance. Off: a pit room behaves like any room.");
+            if (pitExposureEnabled)
+            {
+                list.Label("Pit temperature coupling: x" + pitTemperatureCoupling.ToString("F1"));
+                pitTemperatureCoupling = list.Slider(pitTemperatureCoupling, 1f, 6f);
+                list.Label("Resistance loss rate: x" + pitResistanceLossMultiplier.ToString("F2"));
+                pitResistanceLossMultiplier = list.Slider(pitResistanceLossMultiplier, 0f, 4f);
+            }
 
             list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
                 "Anyone who walks, is pushed or jumps into a superdeep cell takes blunt damage scaled "
