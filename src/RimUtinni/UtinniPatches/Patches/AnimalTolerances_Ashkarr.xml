@@ -17,215 +17,430 @@
        ANIMAL_TOLERANCES_JOIN_BROKEN_1 for what the cast assignment does and does
        not guarantee today. -->
 
-  <!-- mubbaro (AA_DecayDrake) - 189 tiles, home demands -13.4 … 73.1 °C  -22.6..63.8 -> -22.6..74.1 -->
+  <!-- bokka (RM_Bokka) - 2390 tiles, home demands -5.5 … 50.1 °C  0..60 -> -6.5..60 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Bokka"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-22.6</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-6.5</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-22.6</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-6.5</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>74.1</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
-            <value><ComfyTemperatureMax>74.1</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Bokka"]/statBases</xpath>
+            <value><ComfyTemperatureMax>60</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Bokka"]</xpath>
       <value>
         <statBases>
-          <ComfyTemperatureMin>-22.6</ComfyTemperatureMin>
-          <ComfyTemperatureMax>74.1</ComfyTemperatureMax>
+          <ComfyTemperatureMin>-6.5</ComfyTemperatureMin>
+          <ComfyTemperatureMax>60</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
     </match>
   </Operation>
 
-  <!-- vulloth (AA_Helixien) - 458 tiles, home demands -5.8 … 76.8 °C  -21.1..75 -> -21.1..77.8 -->
+  <!-- jellypot (RM_Dunejelly) - 2390 tiles, home demands -5.5 … 50.1 °C  -25..40 -> -25..51.1 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
-            <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]/statBases</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Dunejelly"]</xpath>
       <value>
         <statBases>
-          <ComfyTemperatureMin>-21.1</ComfyTemperatureMin>
-          <ComfyTemperatureMax>77.8</ComfyTemperatureMax>
+          <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+          <ComfyTemperatureMax>51.1</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
     </match>
   </Operation>
 
-  <!-- blistered bulloo (AA_InfectedAerofleet) - 179 tiles, home demands 9.9 … 66.5 °C  -63.2..58 -> -63.2..67.5 -->
+  <!-- khorrak (RM_Khorrak) - 2390 tiles, home demands -5.5 … 50.1 °C  -40..40 -> -40..51.1 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Khorrak"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-40</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-40</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
-            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Khorrak"]/statBases</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Khorrak"]</xpath>
       <value>
         <statBases>
-          <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
-          <ComfyTemperatureMax>67.5</ComfyTemperatureMax>
+          <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+          <ComfyTemperatureMax>51.1</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
     </match>
   </Operation>
 
-  <!-- kessik (AA_Murkling) - 970 tiles, home demands -8.6 … 70.1 °C  -35..57.5 -> -35..71.1 -->
+  <!-- groundrunner (RM_Oreclaw) - 2390 tiles, home demands -5.5 … 50.1 °C  -10..40 -> -10..51.1 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>71.1</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
-            <value><ComfyTemperatureMax>71.1</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]/statBases</xpath>
+            <value><ComfyTemperatureMax>51.1</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Oreclaw"]</xpath>
       <value>
         <statBases>
-          <ComfyTemperatureMin>-35</ComfyTemperatureMin>
-          <ComfyTemperatureMax>71.1</ComfyTemperatureMax>
+          <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+          <ComfyTemperatureMax>51.1</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
     </match>
   </Operation>
 
-  <!-- zhool (AA_OcularJelly) - 179 tiles, home demands 9.9 … 66.5 °C  -35..58 -> -35..67.5 -->
+  <!-- truffle mole (RM_TruffleMole) - 628 tiles, home demands -22.4 … 61.8 °C  -25..45 -> -25..62.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]</xpath>
     <match Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMin</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
-            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+            <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-25</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMax</xpath>
-            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>62.8</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
-            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+            <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]/statBases</xpath>
+            <value><ComfyTemperatureMax>62.8</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_TruffleMole"]</xpath>
       <value>
         <statBases>
-          <ComfyTemperatureMin>-35</ComfyTemperatureMin>
-          <ComfyTemperatureMax>67.5</ComfyTemperatureMax>
+          <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+          <ComfyTemperatureMax>62.8</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- ulgga (RM_Ulgga) - 3969 tiles, home demands 16.9 … 76.6 °C  -30..40 -> -30..77.6 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ulgga"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-30</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-30</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Ulgga"]/statBases</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_Ulgga"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+          <ComfyTemperatureMax>77.6</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- vosska (RM_Vosska) - 3969 tiles, home demands 16.9 … 76.6 °C  0..70 -> 0..77.6 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Vosska"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>0</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases</xpath>
+            <value><ComfyTemperatureMin>0</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Vosska"]/statBases</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_Vosska"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>0</ComfyTemperatureMin>
+          <ComfyTemperatureMax>77.6</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- vozzik (RM_Vozzik) - 90 tiles, home demands 43.1 … 80.9 °C  -10..40 -> -10..81.9 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Vozzik"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>81.9</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RM_Vozzik"]/statBases</xpath>
+            <value><ComfyTemperatureMax>81.9</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_Vozzik"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+          <ComfyTemperatureMax>81.9</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- ikee (RSW_Ikee) - 3969 tiles, home demands 16.9 … 76.6 °C  0..60 -> 0..77.6 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Ikee"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>0</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases</xpath>
+            <value><ComfyTemperatureMin>0</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Ikee"]/statBases</xpath>
+            <value><ComfyTemperatureMax>77.6</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Ikee"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>0</ComfyTemperatureMin>
+          <ComfyTemperatureMax>77.6</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- vozzik (RSW_Vozzik) - 236 tiles, home demands 43.7 … 80.2 °C  -10..40 -> -10..81.2 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-10</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>81.2</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]/statBases</xpath>
+            <value><ComfyTemperatureMax>81.2</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_Vozzik"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+          <ComfyTemperatureMax>81.2</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>
@@ -1608,6 +1823,49 @@
     </match>
   </Operation>
 
+  <!-- mubbaro (AA_DecayDrake) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -22.6..74.1 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-22.6</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-22.6</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>74.1</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/statBases</xpath>
+            <value><ComfyTemperatureMax>74.1</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-22.6</ComfyTemperatureMin>
+          <ComfyTemperatureMax>74.1</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
   <!-- desert ave (AA_DesertAve) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -6.5..79.7 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_DesertAve"]</xpath>
@@ -2511,6 +2769,92 @@
     </match>
   </Operation>
 
+  <!-- vulloth (AA_Helixien) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -21.1..77.8 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_Helixien"]/statBases</xpath>
+            <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-21.1</ComfyTemperatureMin>
+          <ComfyTemperatureMax>77.8</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- blistered bulloo (AA_InfectedAerofleet) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -63.2..67.5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-63.2</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/statBases</xpath>
+            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-63.2</ComfyTemperatureMin>
+          <ComfyTemperatureMax>67.5</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
   <!-- junglelisk (AA_Junglelisk) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -12..79.7 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_Junglelisk"]</xpath>
@@ -2855,6 +3199,49 @@
     </match>
   </Operation>
 
+  <!-- kessik (AA_Murkling) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -35..71.1 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>71.1</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_Murkling"]/statBases</xpath>
+            <value><ComfyTemperatureMax>71.1</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+          <ComfyTemperatureMax>71.1</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
   <!-- vorrugath (AA_MycoidColossus) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -54.1..40 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_MycoidColossus"]</xpath>
@@ -3064,6 +3451,49 @@
         <statBases>
           <ComfyTemperatureMin>-55</ComfyTemperatureMin>
           <ComfyTemperatureMax>62.3</ComfyTemperatureMax>
+        </statBases>
+      </value>
+    </nomatch>
+    </match>
+  </Operation>
+
+  <!-- zhool (AA_OcularJelly) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -35..67.5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]</xpath>
+    <match Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMin</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMin</xpath>
+            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
+            <value><ComfyTemperatureMin>-35</ComfyTemperatureMin></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMax</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases/ComfyTemperatureMax</xpath>
+            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]/statBases</xpath>
+            <value><ComfyTemperatureMax>67.5</ComfyTemperatureMax></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="AA_OcularJelly"]</xpath>
+      <value>
+        <statBases>
+          <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+          <ComfyTemperatureMax>67.5</ComfyTemperatureMax>
         </statBases>
       </value>
     </nomatch>

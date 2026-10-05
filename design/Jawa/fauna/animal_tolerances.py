@@ -89,8 +89,26 @@ EPSILON = 1.0                         # the gate is a STRICT inequality
 from biome_name_migration import OLD_TO_NEW_BIOME as _OLD_TO_NEW_BIOME  # noqa: E402
 
 
+# defs renamed in the repo AFTER the newest def dump was captured: new defName -> the name the
+# dump still carries. Only the defName/label moved, so the dump's comfy stats are still the
+# def's. Without this a renamed cast animal is SKIPPED as "not an animal in the dump" and keeps
+# a band that may miss its home. Entries are dead weight once a dump post-dates the rename.
+RENAMED_SINCE_DUMP = {
+    'RM_Dunejelly': 'RM_Jellypot',      # LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, 2026-10-05
+    'RM_Oreclaw': 'RM_Groundrunner',    # LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, 2026-10-05
+}
+
+
 def animals():
     """defName -> its declared comfy stats, for every animal in the def dump."""
+    out = _animals_in_dump()
+    for new, old in RENAMED_SINCE_DUMP.items():
+        if new not in out and old in out:
+            out[new] = out[old]
+    return out
+
+
+def _animals_in_dump():
     con = sqlite3.connect(f'file:{bf.DB}?mode=ro', uri=True)
     out = {}
     for (j,) in con.execute("SELECT json FROM defs WHERE def_type='ThingDef'"):
