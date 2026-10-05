@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -19,12 +20,14 @@ namespace RimMandrake.MessyConduit.Hose.Jobs
     /// hose settings page; the defaults are the shipped behaviour.</summary>
     public static class HoseJobTuning
     {
-        public static int grabTicks = 45;
-        public static int setDownTicks = 30;
-        public static int coupleTicks = 90;
-        public static float windCellsPerSecond = 3f;
+        /// <summary>Design section 12: ONE handling-time setting scales grab / set-down / couple together.</summary>
+        static int Scaled(int baseTicks) => Mathf.Max(1, Mathf.RoundToInt(baseTicks * Mathf.Clamp(HoseSettings.handlingTime, 0.25f, 3f)));
+        public static int grabTicks => Scaled(45);
+        public static int setDownTicks => Scaled(30);
+        public static int coupleTicks => Scaled(90);
+        public static float windCellsPerSecond => Mathf.Clamp(HoseSettings.windCellsPerSecond, 0.5f, 10f);
         /// <summary>Design section 2: an interrupted order (end dropped, order kept) is picked up again by an idle colonist.</summary>
-        public static bool autoResumeDroppedHose = true;
+        public static bool autoResumeDroppedHose => HoseSettings.autoResumeDroppedHose;
     }
 
     /// <summary>Job construction and the holder test the reel's 30-tick check uses (design section 5 b).</summary>

@@ -30,6 +30,12 @@ namespace RimMandrake.MessyConduit.Hose
         /// "maxLength" key as ever; HoseMath.MigrateMaxLength lifts an untouched old default to the new one.</summary>
         public static int maxLengthDefaults = HoseMath.MaxLengthDefaultsVersion;
         public static int couplingSpacing = 8;
+        /// <summary>Carry (design 12): one slider scaling the grab (45), set-down (30) and couple (90) ticks together, 0.25-3x.</summary>
+        public static float handlingTime = 1f;
+        /// <summary>Carry: winding speed when a colonist reels a hose in, cells per second (scaled by his Manipulation).</summary>
+        public static float windCellsPerSecond = 3f;
+        /// <summary>Carry: an interrupted hose (end dropped, order kept) is picked up again by an idle colonist.</summary>
+        public static bool autoResumeDroppedHose = true;
         /// <summary>Scales the S-curve slack.</summary>
         public static float slack = 1f;
         /// <summary>Wet darkening of a charged hose tinted by what it carries.</summary>
@@ -57,6 +63,9 @@ namespace RimMandrake.MessyConduit.Hose
                 maxLengthDefaults = HoseMath.MaxLengthDefaultsVersion;
             }
             Scribe_Values.Look(ref couplingSpacing, "couplingSpacing", 8);
+            Scribe_Values.Look(ref handlingTime, "handlingTime", 1f);
+            Scribe_Values.Look(ref windCellsPerSecond, "windCellsPerSecond", 3f);
+            Scribe_Values.Look(ref autoResumeDroppedHose, "autoResumeDroppedHose", true);
             Scribe_Values.Look(ref slack, "slack", 1f);
             Scribe_Values.Look(ref tintByContents, "tintByContents", true);
             Scribe_Values.Look(ref fillWobble, "fillWobble", true);
@@ -74,6 +83,9 @@ namespace RimMandrake.MessyConduit.Hose
             minPlumpDwell = 600;
             maxLength = (float)HoseMath.DefaultMaxLength;
             couplingSpacing = 8;
+            handlingTime = 1f;
+            windCellsPerSecond = 3f;
+            autoResumeDroppedHose = true;
             slack = 1f;
             tintByContents = true;
             fillWobble = true;
@@ -133,6 +145,19 @@ namespace RimMandrake.MessyConduit.Hose
             HoseSettings.couplingSpacing = Mathf.RoundToInt(l.Slider(HoseSettings.couplingSpacing, 4f, 16f));
             l.Label("Hose slack: " + HoseSettings.slack.ToString("0.0") + "x");
             HoseSettings.slack = Mathf.Round(l.Slider(HoseSettings.slack, 0f, 2f) * 10f) / 10f;
+            l.GapLine();
+            l.Label("Colonists carrying hoses", -1f, (TipSignal?)("Hoses are laid by a colonist who carries the end out and winds it back in. " +
+                "The instant Lay / Reel in buttons exist only in dev mode and have no setting."));
+            l.Label("Handling time (grab, set down, couple): " + HoseSettings.handlingTime.ToString("0.00") + "x", -1f,
+                (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
+            HoseSettings.handlingTime = Mathf.Round(l.Slider(HoseSettings.handlingTime, 0.25f, 3f) * 20f) / 20f;
+            l.Label("Winding speed: " + HoseSettings.windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
+                (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
+            HoseSettings.windCellsPerSecond = Mathf.Round(l.Slider(HoseSettings.windCellsPerSecond, 1f, 8f) * 2f) / 2f;
+            l.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref HoseSettings.autoResumeDroppedHose,
+                "When a colonist is drafted, downed or distracted mid-carry the hose end lies where he left it and the order stays. " +
+                "On: an idle colonist takes it up again. Off: the end waits until you order it.");
+            l.GapLine();
             l.CheckboxLabeled("Charged hoses darken with what they carry", ref HoseSettings.tintByContents);
             l.CheckboxLabeled("Brief wobble when a hose fills or drains", ref HoseSettings.fillWobble);
             l.CheckboxLabeled("Read FlowWorks pumps beside a reel (when FlowWorks has them)", ref HoseSettings.useFlowWorksPumps);

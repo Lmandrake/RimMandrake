@@ -62,7 +62,7 @@ STYLES = ("StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek")
 # the Mod Settings names (owner review 2026-10-04 B19: labels only, the enum names / saved keys are unchanged)
 LOOK = {"StarWarsJawa": "Scrapper", "StarWars": "Industrial", "ExtensionCord": "Modern", "Cybertek": "Futuristic"}
 REGION = (8, 6, 228, 106)              # x, z, w, h: everything the review owns (quicktest colonists stand near 125,125)
-REGION2 = (8, 140, 242, 110)           # round 2 stations 19+: north of the colonists, out to the map's NE corner (250x250)
+REGION2 = (8, 118, 242, 132)           # round 2 stations 19+: north of the colonists (carry stations 43-47 take the strip z 118-139), out to the map NE corner (250x250)
 REGIONS = {1: REGION, 2: REGION2}
 MAP_SIZE = 250
 SPAN_RANGE = 20                        # AerialSettings.maxSpan default
@@ -445,6 +445,7 @@ def station_list():
                        dict(reel=(6, 0), far=(6, 21), state="Plump"), dict(reel=(15, 0), far=(15, 21), state="Plump")])
     stations_round2(st, hose_i)
     stations_round6(mk, hose_i)
+    stations_round7(mk)
     for d in S:
         if d["hose"] and not d["hoses"]:
             d["hoses"] = [d["hose"]]
@@ -475,6 +476,38 @@ def stations_round6(mk, hose_i):
                  "build a fourth reel 30 cells further east and lay the third reel onto it: the chain goes on"],
        hoses=[dict(reel=(0, 2), far=(31, 2), state="Plump"), dict(reel=(32, 2), far=(63, 2), state="Relay")],
        devs=[("RM_HoseReel", (64, 2), None, None)], region=2)
+
+
+def stations_round7(mk):
+    """Carry stage S5 (design/RimMandrake/hose_carry_design_2026-10-04.md section 14): the colonist-carried hose, stations
+    43-47 after 42. Staged through the hose probe (order:/settrail:/lay:, which work with dev mode off: they are staging
+    tools, not player actions); the hooks below place the one free colonist the carrying stations need."""
+    carry_i = ["select the reel: the gizmos are the player orders (Lay hose / Move hose end / Retract hose); the instant "
+               "'DEV:' ones appear only with dev mode on"]
+    mk(43, "G", 12, 120, 30, 12, "DEPLOY BY HAND", "a hose reel with a Deploy order 24 cells out and one idle colonist beside it "
+       "(UNPAUSE: nothing else is ordered)",
+       ["the colonist walks to the reel, picks up the hose end and walks it out: the hose unrolls behind him along his walk",
+        "he sets the end down at the order's cell and the hose lies there, coupled",
+        "the hose is never longer than his walk: it does not jump out to the target"],
+       carry_i + ["draft him mid-walk: the end drops where he stands (see station 44)"],
+       devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_by_hand_hook", region=2)
+    mk(44, "G", 56, 120, 22, 12, "DROPPED HALFWAY", "a reel whose hose end was dropped 14 cells out (an interrupted carry)",
+       ["the open end lies on the ground at the end of the hose; the hose is drawn only as far as it was walked",
+        "select the reel: 'Move hose end' and 'Retract hose' are offered; no colonist is carrying anything"],
+       carry_i + ["Move hose end to a cell beside it, then unpause: an idle colonist picks the end up and walks it there"],
+       devs=[("RM_HoseReel", (2, 4), None, None)], hook="hose_dropped_hook", region=2)
+    mk(45, "G", 96, 120, 30, 12, "INTO THE POND", "a reel 10 cells from a pond, its hose laid into the water",
+       ["the hose end lies in the water, not on the bank", "select the reel: inspect reads 'intake in ...' (it is drawing from the pond)"],
+       carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Plump")],
+       terrain=[("WaterShallow", (12, 0, 14, 12))], region=2)
+    mk(46, "G", 140, 120, 26, 12, "ON THEIR TANK", "a hose coupled to another faction's liquid tank",
+       ["a brass coupling sits on THEIR tank where the hose ends", "select the reel or the tank: inspect names their faction"],
+       carry_i, hoses=[dict(reel=(2, 4), far=(15, 5), state="Flat")], hostile=[("RM_LiquidTank", (16, 4), None, None)], region=2)
+    mk(47, "G", 180, 120, 34, 12, "WIND IT IN", "a laid 30-cell hose and one idle colonist beside the reel",
+       ["press Retract on the reel (UNPAUSE first): the colonist winds the hose back along its route to the reel",
+        "the free end runs back along the hose's route; the hose gets shorter, it does not vanish at once",
+        "it ends Stored: no hose on the ground, the reel's drum full"],
+       carry_i, hoses=[dict(reel=(2, 4), far=(31, 5), state="Flat")], hook="hose_by_hand_hook", region=2)
 
 
 def stations_round2(st, hose_i):
@@ -966,7 +999,39 @@ def hose_block_wall_hook(R, s):
     R.hook_results[s["n"]] = {"before": before, "after_wall": _hose_census(R, s), "judged": "TODO validation_hose.review_block_wall"}
 
 
-HOOKS = {"hose_maze_hook": hose_maze_hook, "hose_block_wall_hook": hose_block_wall_hook}
+def _free_colonist(R, s, near):
+    """The carry stations need an idle colonist: stand the (n - 43)th free one beside the reel; draft off, no job given."""
+    col = R.B.hp("colonists")
+    pawns = [p for p in col.get("pawns") or [] if not p.get("downed")]
+    if not pawns:
+        R.notes.append("station %d: no free colonist to stand beside the reel" % s["n"])
+        return None
+    p = pawns[(s["n"] - 43) % len(pawns)]
+    if p.get("drafted"):
+        R.B.hp("pawn:%d=undraft" % p["id"])
+    x, z = g(s, near)
+    return R.B.hp("pawn:%d=tp:%d,%d" % (p["id"], x, z))
+
+
+def hose_by_hand_hook(R, s):
+    """Stations 43 (a pending Deploy order 24 cells out) and 47 (colonist only; the hose is already laid)."""
+    out = {"colonist": _free_colonist(R, s, (4, 8))}
+    if s["n"] == 43:
+        x, z = g(s, (2, 4))
+        tx, tz = g(s, (26, 5))
+        out["order"] = R.B.hp("order:%d,%d=deploy:%d,%d" % (x, z, tx, tz))
+    R.hook_results[s["n"]] = out
+
+
+def hose_dropped_hook(R, s):
+    """Station 44: the end dropped 14 cells out (probe settrail; works with dev mode off)."""
+    x, z = g(s, (2, 4))
+    cells = ";".join("%d,%d" % g(s, (cx, 4)) for cx in range(2, 17))
+    R.hook_results[s["n"]] = {"settrail": R.B.hp("settrail:%d,%d=dropped;%s" % (x, z, cells))}
+
+
+HOOKS = {"hose_maze_hook": hose_maze_hook, "hose_block_wall_hook": hose_block_wall_hook,
+         "hose_by_hand_hook": hose_by_hand_hook, "hose_dropped_hook": hose_dropped_hook}
 
 
 # ------------------------------------------------------------------------------------------------ live build

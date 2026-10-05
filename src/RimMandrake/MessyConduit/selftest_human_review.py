@@ -158,5 +158,22 @@ pr = HR.layout_check([s1 if s["n"] == 1 else s for s in S])
 check(any("sits on a device" in p for p in pr), "can fail: a styled cell on station 1's battery is reported")
 N_CHECKS += 2
 
+# ---------------------------------------------------------------------------------------------- carry stations 43-47 (S5)
+by = {s["n"]: s for s in S}
+carry = [by.get(n) for n in range(43, 48)]
+check(all(carry) and [s["title"] for s in carry] == ["DEPLOY BY HAND", "DROPPED HALFWAY", "INTO THE POND", "ON THEIR TANK", "WIND IT IN"]
+      and all(s["row"] == "G" and s.get("region") == 2 for s in carry) and max(by) == 47,
+      "carry stations 43-47 follow 42 in row G, region 2, in the design's order")
+check(all(by[n].get("hook") for n in (43, 47)) and by[44].get("hook") == "hose_dropped_hook"
+      and all(by[n].get("hook") in HR.HOOKS for n in (43, 44, 47)),
+      "stations 43/47 stand a colonist beside the reel and 44 stages the dropped end: every hook name resolves")
+check(by[45]["terrain"] and by[45]["hoses"][0]["far"][0] >= by[45]["terrain"][0][1][0]
+      and any(h[0] == "RM_LiquidTank" for h in by[46]["hostile"]) and by[47]["hoses"][0]["far"][0] - by[47]["hoses"][0]["reel"][0] >= 28,
+      "45 lays into water, 46 ends at a hostile-faction tank, 47 lays a ~30-cell hose")
+bad = dict(by[45], hoses=[dict(by[45]["hoses"][0], far=(0, 0))], terrain=by[45]["terrain"])
+check(not (bad["hoses"][0]["far"][0] >= bad["terrain"][0][1][0]),
+      "can fail: station 45 with its hose end back on the bank is not 'in the water'")
+N_CHECKS += 4
+
 print("%d/%d checks passed" % (N_CHECKS - len(fails), N_CHECKS))
 sys.exit(1 if fails else 0)

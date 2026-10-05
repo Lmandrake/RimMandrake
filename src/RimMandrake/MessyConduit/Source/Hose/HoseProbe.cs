@@ -124,6 +124,12 @@ namespace RimMandrake.MessyConduit.Hose
                     var labels = r.CompGetGizmosExtra().OfType<Command>().Select(g => g.Label).ToList();
                     return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"devMode\":" + B(Prefs.DevMode) + ",\"labels\":[" + string.Join(",", labels.Select(S)) + "]}";
                 }
+                case "devmode":
+                {
+                    // CR7 staging: devmode:rx,rz=on|off sets the dev-mode flag so the gizmos verb can be read both ways.
+                    if (val == "on") Prefs.DevMode = true; else if (val == "off") Prefs.DevMode = false;
+                    return "{\"success\":true,\"cmd\":" + S(cmd) + ",\"devMode\":" + B(Prefs.DevMode) + "}";
+                }
                 case "clearhist":
                     r.history.Clear();
                     return "{\"success\":true,\"cmd\":" + S(cmd) + "}";
@@ -167,6 +173,10 @@ namespace RimMandrake.MessyConduit.Hose
               .Append(",\"queues\":{\"hose\":").Append(HoseMaterials.Queue).Append(",\"overhead\":").Append(Aerial.AerialMaterials.OverheadQueue)
               .Append(",\"spanMat\":").Append(Aerial.AerialMaterials.Span != null ? Aerial.AerialMaterials.Span.renderQueue : -1).Append('}').Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)
               .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
+              .Append(",\"live\":{\"carryDraws\":").Append(comp.lastCarryDraws).Append(",\"clipDraws\":").Append(comp.lastClipDraws)
+              .Append(",\"ghostDraws\":").Append(comp.lastGhostDraws).Append(",\"ghosts\":").Append(comp.GhostCount)
+              .Append(",\"portCouplings\":").Append(comp.lastPortCouplings).Append(",\"prefixBuilds\":").Append(comp.carryPrefixBuilds)
+              .Append(",\"far\":").Append(B(comp.lastFar)).Append(",\"placed\":").Append(HoseEvents.Placed).Append(",\"lifted\":").Append(HoseEvents.Lifted).Append('}')
               .Append(",\"hoses\":[");
             bool first = true;
             foreach (CompHoseReel r in comp.Reels)
@@ -175,6 +185,7 @@ namespace RimMandrake.MessyConduit.Hose
                 first = false;
                 HoseLay lay = comp.EnsureLay(r);
                 RM_MapComponent_Hoses.PoseInfo pi = RM_MapComponent_Hoses.Info(r);
+                HoseFreeEnd fe = HoseEnds.Read(r);
                 sb.Append("{\"id\":").Append(r.parent.thingIDNumber)
                   .Append(",\"kind\":\"Hose\"")
                   .Append(",\"reel\":[").Append(r.parent.Position.x).Append(',').Append(r.parent.Position.z).Append(']')
@@ -188,6 +199,14 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"pending\":").Append(S(r.pending.ToString()))
                   .Append(",\"pendingAt\":").Append(Pos(r.pendingAt))
                   .Append(",\"wound\":").Append(D(r.wound))
+                  .Append(",\"endKind\":").Append(S(fe.Kind.ToString()))
+                  .Append(",\"freeEnd\":{\"cell\":").Append(fe.Cell.IsValid ? Pos(fe.Cell) : "null").Append(",\"terrain\":").Append(S(fe.Terrain?.defName ?? ""))
+                  .Append(",\"water\":").Append(S(fe.Water?.defName ?? "")).Append(",\"port\":").Append(S(fe.Port?.def.defName ?? ""))
+                  .Append(",\"portFaction\":").Append(S(fe.Port?.Faction?.Name ?? "")).Append(",\"describe\":").Append(S(fe.Describe())).Append('}')
+                  .Append(",\"draw\":{\"mode\":").Append(S(comp.lastDraw.TryGetValue(r, out string dm) ? dm : "none"))
+                  .Append(",\"len\":").Append(D(comp.lastDrawnLen.TryGetValue(r, out double dl) ? dl : 0))
+                  .Append(",\"hand\":").Append(comp.lastHand.TryGetValue(r, out Core.V2 hv) ? "[" + D(hv.X) + "," + D(hv.Z) + "]" : "null")
+                  .Append(",\"reelArt\":").Append(S(RM_MapComponent_Hoses.ReelGraphic(r))).Append('}')
                   .Append(",\"end\":").Append(S(r.end.ToString()))
                   .Append(",\"state\":").Append(S(r.sm.State.ToString()))
                   .Append(",\"stateSince\":").Append(r.sm.Since)
