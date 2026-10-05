@@ -126,7 +126,7 @@ namespace RimMandrake.MessyConduit.Aerial
         public SpanLink LinkTo(CompAerialAnchor b) => links.FirstOrDefault(l => l.other == b);
 
         /// <summary>The insulator point the wire hangs from (ground-plane coordinates; z is the fake height).</summary>
-        public Vector3 AttachPoint => AerialMaterials.BracketInsulator(this) is Vector2 bi ? BasePoint + new Vector3(bi.x, 0f, bi.y) : BasePoint + new Vector3(0f, 0f, Ext.attachZ);
+        public Vector3 AttachPoint => AerialMaterials.BracketInsulator(this) is Vector2 bi ? BasePoint + new Vector3(bi.x, 0f, bi.y) : BasePoint + new Vector3(0f, 0f, AerialMaterials.AttachZ(this));
 
         /// <summary>The insulator tips the span wires end on (B23), in ground-plane coordinates (z fakes height).</summary>
         public List<P2> InsulatorTips()
@@ -144,9 +144,11 @@ namespace RimMandrake.MessyConduit.Aerial
             get
             {
                 var b = new Vector3(Position.x + 0.5f, 0f, Position.z + 0.5f);
-                if (parent.def.building != null && parent.def.building.isAttachment && parent.def.graphicData != null)
+                // the offset of the graphic actually drawn: the anchor's STYLE (per-look plate-on-the-wall offsets)
+                GraphicData gd = parent.def.building != null && parent.def.building.isAttachment ? StylePicker.GraphicDataOf(parent) : null;
+                if (gd != null)
                 {
-                    Vector3 o = parent.def.graphicData.DrawOffsetForRot(parent.Rotation);
+                    Vector3 o = gd.DrawOffsetForRot(parent.Rotation);
                     b.x += o.x; b.z += o.z;
                 }
                 return b;

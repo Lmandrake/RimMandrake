@@ -333,10 +333,10 @@ namespace RimMandrake.MessyConduit.Aerial
             float spanY = SpanAltitude;
             foreach (CompAerialAnchor a in Anchors)
             {
-                Material top = AerialMaterials.Top(AerialMaterials.TopPathFor(a.def) ?? a.Ext.topTexPath);
+                Material top = AerialMaterials.Top(AerialMaterials.TopPathFor(a));
                 if (top != null && view.Contains(a.Position))
                 {
-                    var pos = new Vector3(a.Position.x + 0.5f, TopAltitude, a.Position.z + 0.5f + a.Ext.topOffsetZ);
+                    var pos = new Vector3(a.Position.x + 0.5f, TopAltitude, a.Position.z + 0.5f + AerialMaterials.TopOffsetZ(a));
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(top.mainTexture != null ? top.mainTexture.width / 128f : 1f, 1f, 1f)), top, 0);
                     lastTopDraws++;
                 }
@@ -348,17 +348,18 @@ namespace RimMandrake.MessyConduit.Aerial
                     if (m == null || !m.rect.Overlaps(view)) continue;
                     if (sway) { m.Sway(time, wind, 0.12f * AerialSettings.swayStrength); lastSwayDraws++; }
                     else m.Rest();
-                    Graphics.DrawMesh(m.mesh, Matrix4x4.identity, AerialMaterials.Span, 0);
+                    Graphics.DrawMesh(m.mesh, Matrix4x4.identity, m.mat, 0);
                     lastSpanDraws++;
                 }
                 // B11/B21: a cut / orphaned wire is ONE cable from the insulator down to the break on the ground, in the
                 // span's own material and width (the ground layer prints only the frayed end at its tip)
-                if (a.fallen.Count > 0 && AerialMaterials.Span != null)
+                Material own = a.fallen.Count > 0 ? AerialMaterials.For(AerialMaterials.LookOf(a)).Span : null;
+                if (own != null)
                     foreach (FallenCord f in a.fallen)
                     {
                         Mesh dm = WireMesh(a, f, spanY);
                         if (dm == null || !dm.bounds.Intersects(new Bounds(view.CenterVector3, new Vector3(view.Width, 100f, view.Height)))) continue;
-                        Graphics.DrawMesh(dm, Matrix4x4.identity, AerialMaterials.Span, 0);
+                        Graphics.DrawMesh(dm, Matrix4x4.identity, own, 0);
                         lastDropDraws++;
                     }
             }
@@ -417,6 +418,8 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (devs.Count == 0) { lastTerminals.Remove(a.thingIDNumber); continue; }
                 List<P2> tips = a.InsulatorTips();
                 if (tips.Count == 0) continue;
+                AerialMaterials.LookMats lm = AerialMaterials.For(AerialMaterials.LookOf(a));
+                if (lm.Span == null) continue;
                 Vector3 bp = a.BasePoint;
                 Dictionary<int, int> term = AerialMath.AssignTerminals(devs.Select(d => (d.thingIDNumber, (double)(d.TrueCenter().x - bp.x))).ToList(), tips.Count);
                 lastTerminals[a.thingIDNumber] = term;
@@ -427,15 +430,15 @@ namespace RimMandrake.MessyConduit.Aerial
                     dropUsed.Add(key);
                     Vector3 c = DeviceHome(d);
                     int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
-                                                 Gen.HashCombineInt(Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f), d.Rotation.AsInt));
+                                                 Gen.HashCombineInt(Mathf.RoundToInt(lm.Width * 1000f), d.Rotation.AsInt));
                     if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
                     {
                         if (kv.Value != null) foreach (Mesh old in kv.Value) if (old != null) UnityEngine.Object.Destroy(old);
-                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, new P2(c.x, c.z), tip, under, over));
+                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, new P2(c.x, c.z), tip, under, over, lm.Width));
                         dropMeshes[key] = kv;
                     }
                     foreach (Mesh m in kv.Value)
-                        if (m != null) Graphics.DrawMesh(m, Matrix4x4.identity, AerialMaterials.Span, 0);
+                        if (m != null) Graphics.DrawMesh(m, Matrix4x4.identity, lm.Span, 0);
                     lastLocalDrops++;
                 }
             }
@@ -478,21 +481,21 @@ namespace RimMandrake.MessyConduit.Aerial
             return Math.Abs(p.X - g.x) <= sz.x / 2f && Math.Abs(p.Z - g.z) <= sz.y / 2f;
         }
 
-        private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over)
+        private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over, float width)
         {
             List<P2> pts = AerialMath.SpanCurve(from, tip, 0.04, 0.2);
             int split = 0;
             while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;
             var lo = pts.GetRange(0, Math.Min(pts.Count, split + 1));
             var hi = pts.GetRange(split, pts.Count - split);
-            return new[] { Ribbon(lo, under, "RM_AerialDropUnder"), Ribbon(hi, over, "RM_AerialDrop") };
+            return new[] { Ribbon(lo, under, "RM_AerialDropUnder", width), Ribbon(hi, over, "RM_AerialDrop", width) };
         }
 
-        private static Mesh Ribbon(List<P2> pts, float y, string name)
+        private static Mesh Ribbon(List<P2> pts, float y, string name, float width)
         {
             if (pts.Count < 2) return null;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
-            float w = AerialMaterials.SpanWidth * 0.85f;
+            float w = width * 0.85f;
             double u = 0;
             for (int i = 0; i < pts.Count; i++)
             {
@@ -525,7 +528,7 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             CompGlower g = a.parent.TryGetComp<CompGlower>();
             if (g == null || !g.Glows) return;
-            if (!AerialMaterials.LampHead.TryGetValue(AerialMaterials.Look, out Vector2 h)) h = AerialMaterials.LampHead["Scrapper"];
+            Vector2 h = AerialMaterials.LampHeadFor(a);
             Color c = g.GlowColor.ToColor;
             float mx = Mathf.Max(c.r, Mathf.Max(c.g, c.b), 0.01f);
             c = new Color(c.r / mx, c.g / mx, c.b / mx, 1f);
@@ -566,11 +569,11 @@ namespace RimMandrake.MessyConduit.Aerial
         /// when the anchor moves or the look's width changes).</summary>
         public Mesh WireMesh(CompAerialAnchor a, FallenCord f, float y)
         {
-            int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f));
-            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(a.Ext.attachZ * 1000f));
+            float w = AerialMaterials.For(AerialMaterials.LookOf(a)).Width;
+            int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(w * 1000f));
+            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.AttachZ(a) * 1000f));
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
-            float w = AerialMaterials.SpanWidth;
             foreach (FallenLay lay in Lays(a, f))
             {
             List<P2> pts = lay.Pts;
@@ -601,16 +604,21 @@ namespace RimMandrake.MessyConduit.Aerial
             return m;
         }
 
+        /// <summary>State read (AerialProbe "styles"): the span mesh as drawn now, built if missing.</summary>
+        public SpanMesh SpanMeshFor(CompAerialAnchor a, CompAerialAnchor b) => MeshFor(a, b, SpanAltitude);
+
         private SpanMesh MeshFor(CompAerialAnchor a, CompAerialAnchor b, float y)
         {
             long key = ((long)a.thingIDNumber << 32) ^ (uint)b.thingIDNumber;
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), b.Position.GetHashCode());
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialSettings.sag * 1000f) * 7 + AerialSettings.maxStrands);
-            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f));
-            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt((a.Ext.attachZ + 7f * b.Ext.attachZ) * 1000f));
-            sig = Gen.HashCombineInt(sig, AerialMaterials.Look.GetHashCode());
+            // per-build style: the span's look (AerialStyles.SpanLook) and BOTH poles' looks (their insulator rows)
+            AerialMaterials.LookMats lm = AerialMaterials.SpanMats(a, b);
+            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(lm.Width * 1000f));
+            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt((AerialMaterials.AttachZ(a) + 7f * AerialMaterials.AttachZ(b)) * 1000f));
+            sig = Gen.HashCombineInt(sig, Gen.HashCombineInt(lm.Look.GetHashCode(), (AerialMaterials.LookOf(a) + "|" + AerialMaterials.LookOf(b)).GetHashCode()));
             if (meshes.TryGetValue(key, out SpanMesh m) && m.sig == sig) return m;
-            m = SpanMesh.Build(a, b, y, sig);
+            m = SpanMesh.Build(a, b, y, sig, lm);
             meshes[key] = m;
             return m;
         }
@@ -624,6 +632,9 @@ namespace RimMandrake.MessyConduit.Aerial
     public class SpanMesh
     {
         public Mesh mesh;
+        /// <summary>The span's cable (its look's, AerialStyles.SpanLook) and the look it was built in (state read).</summary>
+        public Material mat;
+        public string look;
         public int sig, seed;
         public CellRect rect;
         private readonly List<List<P2>> strands = new List<List<P2>>();
@@ -634,13 +645,13 @@ namespace RimMandrake.MessyConduit.Aerial
         private P2 dir;
         private float y;
         private bool atRest = true;
-        /// <summary>The look's cable width (AerialMaterials.SpanWidth: thick black Star Wars cable, thin modern/Cybertek lines).</summary>
-        public static float Width => AerialMaterials.SpanWidth;
+        /// <summary>The span look's cable width (thick black Industrial cable, thin Modern/Futuristic lines).</summary>
+        public float Width = 0.17f;
         public int Verts => verts?.Length ?? 0;
 
-        public static SpanMesh Build(CompAerialAnchor a, CompAerialAnchor b, float y, int sig)
+        public static SpanMesh Build(CompAerialAnchor a, CompAerialAnchor b, float y, int sig, AerialMaterials.LookMats lm)
         {
-            var m = new SpanMesh { sig = sig, y = y, seed = RM_MapComponent_Aerial.SpanSeed(a, b) };
+            var m = new SpanMesh { sig = sig, y = y, seed = RM_MapComponent_Aerial.SpanSeed(a, b), mat = lm.Span, look = lm.Look, Width = lm.Width };
             Vector3 ba = a.BasePoint, bb = b.BasePoint;
             double len = Math.Max(0.01, Vector3.Distance(ba, bb));
             m.dir = new P2((bb.x - ba.x) / len, (bb.z - ba.z) / len);
@@ -659,7 +670,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 double u = 0;
                 for (int i = 0; i < s.Count; i++)
                 {
-                    if (i > 0) u += P2.Dist(s[i - 1], s[i]) / (Width * 4);
+                    if (i > 0) u += P2.Dist(s[i - 1], s[i]) / (m.Width * 4);
                     uvs[v] = new Vector2((float)u, 1f);
                     uvs[v + 1] = new Vector2((float)u, 0f);
                     if (i > 0)

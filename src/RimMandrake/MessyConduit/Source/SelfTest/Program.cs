@@ -68,6 +68,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             ReviewRound1Checks.Run();      // owner human review round 1 (2026-10-04): ReviewRound1Checks.cs
             ReviewRound3Checks.Run();      // owner human review round 3 (2026-10-04): ReviewRound3Checks.cs
             ReviewRound4Checks.Run();      // owner human review round 4 (2026-10-04): ReviewRound4Checks.cs
+            StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;

@@ -17,6 +17,8 @@ namespace RimMandrake.MessyConduit.Aerial
     ///
     /// census | net:x,z | skipreseed:true|false | reseed:id | link:a,b | unlink:a,b | cut:a,b | restring:a,b | kill:id | dismantle:id | explode:x,z,r,dmg
     /// | watchdog | poll | set:field=value | defaults           (ids are thingIDNumber)
+    /// per-build style (stage 1, validation_style.py): styles | place:def:Look:x,z[:rot]:god|build | finishbuild
+    /// | reinstall:id:x,z | copy:id:x,z | clearpicks
     /// </summary>
     public static class AerialProbe
     {
@@ -47,6 +49,12 @@ namespace RimMandrake.MessyConduit.Aerial
         private static string Run(Map map, RM_MapComponent_Aerial comp, string cmd)
         {
             if (cmd == "census") return Census(map, comp);
+            if (cmd == "styles") return StyleProbeAerial.Styles(map, comp);
+            if (cmd == "clearpicks") { StylePicker.ClearPicks(); return Ok(cmd, ""); }
+            if (cmd == "finishbuild") return StyleProbeAerial.FinishBuild(map);
+            if (cmd.StartsWith("place:")) return StyleProbeAerial.Place(map, cmd.Substring(6));
+            if (cmd.StartsWith("reinstall:")) return StyleProbeAerial.Reinstall(map, cmd.Substring(10));
+            if (cmd.StartsWith("copy:")) return StyleProbeAerial.Copy(map, cmd.Substring(5));
             if (cmd == "watchdog") return Ok(cmd, "\"repairs\":" + comp.Watchdog() + ",\"netRepairs\":" + comp.netRepairs);
             if (cmd == "poll") return Ok(cmd, "\"flips\":" + comp.PollFallen());
             if (cmd == "defaults") { AerialSettings.ResetToDefaults(); AerialSettings.Apply(); return Ok(cmd, ""); }
@@ -202,12 +210,12 @@ namespace RimMandrake.MessyConduit.Aerial
             return sb.ToString();
         }
 
-        private static string Ok(string cmd, string body) => "{\"success\":true,\"cmd\":" + S(cmd) + (body.Length > 0 ? "," + body : "") + "}";
-        private static string Fail(string cmd, string why) => "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":" + S(why) + "}";
-        private static string B(bool b) => b ? "true" : "false";
-        private static string F(float f) => float.IsNaN(f) || float.IsInfinity(f) ? "null" : f.ToString("0.####", CultureInfo.InvariantCulture);
+        internal static string Ok(string cmd, string body) => "{\"success\":true,\"cmd\":" + S(cmd) + (body.Length > 0 ? "," + body : "") + "}";
+        internal static string Fail(string cmd, string why) => "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":" + S(why) + "}";
+        internal static string B(bool b) => b ? "true" : "false";
+        internal static string F(float f) => float.IsNaN(f) || float.IsInfinity(f) ? "null" : f.ToString("0.####", CultureInfo.InvariantCulture);
 
-        private static string S(string s)
+        internal static string S(string s)
         {
             if (s == null) return "null";
             var sb = new StringBuilder("\"");

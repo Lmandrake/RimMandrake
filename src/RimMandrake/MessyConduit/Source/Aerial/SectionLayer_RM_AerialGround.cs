@@ -50,7 +50,7 @@ namespace RimMandrake.MessyConduit.Aerial
                             if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                             Vector3 pa = a.BasePoint, pb = l.other.BasePoint;
                             // B24: a soft cast shadow that follows the sag, never a straight wire-like line on the ground
-                            List<P2> sh = AerialMath.SpanShadow(new P2(pa.x, pa.z), new P2(pb.x, pb.z), a.Ext.attachZ, l.other.Ext.attachZ, AerialSettings.sag);
+                            List<P2> sh = AerialMath.SpanShadow(new P2(pa.x, pa.z), new P2(pb.x, pb.z), AerialMaterials.AttachZ(a), AerialMaterials.AttachZ(l.other), AerialSettings.sag);
                             verts += Ribbon(AerialMaterials.Shadow, sh, ShadowWidth, shadowY);
                             shadowN++;
                         }
