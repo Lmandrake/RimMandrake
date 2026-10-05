@@ -28,7 +28,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="Vapaad"]/description</xpath>
-          <value><description>A squat, brown, ball-bodied predator from the energy-world Sarapin and its moons, with two yellow eyes and a mass of whip-like tentacles, seven at the least and as many as twenty-three in the largest specimen on record. It kills by lashing its prey so fast that the tentacles are only a blur to the naked eye, and no one can say how many it carries until it is dead.</description></value>
+          <value><description>A squat, dark blue-grey predator from the energy-world Sarapin and its moons: a hunched tripod arch around a glowing blue orb of a body, a crown of small red eyes on top, and a fringe of whip-like tentacles, seven at the least and as many as twenty-three in the largest specimen on record. It kills by lashing its prey so fast that the tentacles are only a blur to the naked eye, and no one can say how many it carries until it is dead.</description></value>
         </li>
       </operations>
     </match>

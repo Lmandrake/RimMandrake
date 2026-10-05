@@ -17,42 +17,38 @@ Mace Windu's lightsaber style Form VII (Juyo / Vaapad) was named after it; that 
 only other thing the article says. First appearance: Star Wars: Force Commander.
 
 ## Visual brief
-The only image on the page is `File:VaapadCreature.jpg`, a 350x250 sprite sheet of six
-poses from the game Force Commander. **The image and the prose disagree, and the prose is
-the more specific source:**
-- The sprite shows a blue-grey, thick-limbed, hunched body with a translucent BLUE orb
-  slung beneath it and a reddish-purple crown or eye-cluster on top, on three or four heavy
-  arm-like limbs. It is NOT brown, and no yellow eyes or fine tentacles are readable at
-  this resolution.
-- It is a tiny low-resolution isometric game sprite; treat it as weak evidence for
-  colour and detail, decent evidence for a squat, ball-bodied, many-limbed silhouette.
-- Where they conflict: take body plan (ball body, many limbs) from both, and take
-  colour (brown) and eyes (two yellow) and tentacle count (7 or more, thin and whip-like)
-  from the prose, since the sprite is a game-engine palette render. Flag for the owner if
-  he prefers the blue sprite.
-- The owner's sheet ruling 2026-10-04 on the previous render: "it's simply not a vapaad
-  (canon creature). Please look at the canon images and follow them carefully." That
-  render (`bluedesert_Vapaad_v2`) is a hydrocarbon tentacle creature kept for the Propane
-  Lake under its own new name, not this entry's art.
+Two images, and they agree: `wookieepedia_vaapad.jpg` (Force Commander sprite sheet, 350x250,
+six poses) and `donor_current_sprite.png` (the MLIE / Star Wars Animal Collection Vapaad,
+128x128, copied from `design/Jawa/fauna/sprites/Vapaad.png`). Both show:
+- A **dark blue-grey, thick, arch-shaped body on three heavy limbs** (a tripod: two
+  forward-reaching arms and a rear leg), hunched low, wider than tall.
+- A **translucent glowing BLUE ORB** slung in the middle beneath the arch: the "ball".
+- A **dark crown on top** holding a **cluster of small red/pink eye-spots**.
+- Pale shoulder/foot highlights where limbs meet the ground.
+The prose says brown ball, two yellow eyes, 7 to 23 tentacles; the owner ruled (see
+ruling) to follow the sprites and extrapolate. Extension to a full creature: keep the
+blue-grey tripod arch and blue orb; add a fringe of thin whip-like tentacles hanging from
+the orb and arch (many, visibly more than seven), keep the crown eye cluster. Brown and
+yellow eyes from the prose are NOT required. Tentacle blur is animation, not drawable.
 
 ## Must show
-- [ ] Ball-shaped body, the body is the creature, not a head on a long torso
-- [ ] Brown colouring (prose, infobox)
-- [ ] Two yellow eyes
-- [ ] Many tentacles, at least seven, whip-like, springing from the body
-- [ ] Squat, low silhouette on the ground, no wings, no legs, no shell plates
+- [ ] Dark blue-grey arched body on three heavy limbs (tripod), hunched and low
+- [ ] Translucent blue orb slung beneath the arch as the central "ball"
+- [ ] Dark crown on top carrying a cluster of small red/pink eyes
+- [ ] Many thin whip-like tentacles (at least seven) hanging from orb and body
+- [ ] No wings, no shell plates, no fur, no glassy hydrocarbon look
 
 ## Engine limits
-none known. (Tentacle blur on attack is an animation property and cannot be drawn in a
-still sprite; do not ask the art for it.)
+none known. (Attack blur is animation and cannot be drawn in a still sprite.)
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Vaapad/Legends (text via `api.php?action=parse&page=Vaapad/Legends&prop=wikitext`)
 - https://static.wikia.nocookie.net/starwars/images/8/8d/VaapadCreature.jpg (saved as `wookieepedia_vaapad.jpg`)
 
 ## Candidate images
-- `wookieepedia_vaapad.jpg` : Force Commander 6-pose sprite sheet, 350x250; blue-grey
-  squat body with blue orb and dark crown. Weak evidence, see Visual brief.
+- `wookieepedia_vaapad.jpg` : Force Commander 6-pose sprite sheet, 350x250. Agrees with the donor.
+- `donor_current_sprite.png` : MLIE donor Vapaad, 128x128, same shape and palette.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+Owner, 2026-10-05, verbatim: "Try to follow art inspired by the small sprite as well as the MLIE donor art. You can see they seem to agree. Extrapolate from that."
+Effect: the two sprites outrank the prose on colour (blue-grey, not brown) and eyes (red/pink cluster, not two yellow). Tentacle count, strike speed and Sarapin origin from the prose stand.
