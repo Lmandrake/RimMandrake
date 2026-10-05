@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-04 15:47
+# Biome flora/fauna art census — 2026-10-04 22:50
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -12,13 +12,7 @@ defs: `RM_LongShade` (75)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 75 | 62 | 13 | 0 | 71 | 38 | 0 | 0 | 14 | 4 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `RM_Leachmoss` (leachmoss) — texPath `Things/Plant/RM_Leachmoss` not in the art ledger (vanilla/donor texture)
-- `RM_Ultracactus` (ultracactus) — texPath `Things/Plant/RM_Ultracactus` not in the art ledger (vanilla/donor texture)
-- `RM_Venomvine` (venomvine) — texPath `Things/Plant/RM_Venomvine` not in the art ledger (vanilla/donor texture)
-- `RM_Vorrel` (vorrel) — texPath `Things/Plant/RM_Vorrel` not in the art ledger (vanilla/donor texture)
+| 75 | 62 | 13 | 0 | 75 | 38 | 0 | 0 | 14 | 0 |
 
 ## 2. the Stillsand (`RM_Stillsand`)
 
@@ -28,11 +22,7 @@ defs: `RM_Stillsand` (28)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 28 | 22 | 5 | 1 | 26 | 8 | 0 | 0 | 5 | 2 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `RM_LightPipeNub` (light-pipe nub) — texPath `Things/Plant/RM_LightPipeNub` not in the art ledger (vanilla/donor texture)
-- `RM_Ollim` (ollim) — texPath `Things/Plant/RM_Ollim` not in the art ledger (vanilla/donor texture)
+| 28 | 22 | 5 | 1 | 28 | 8 | 0 | 0 | 5 | 0 |
 
 ## 3. the Blue Desert (`RM_BlueDesert`)
 
@@ -524,11 +514,11 @@ defs: `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 911 | 538 | 309 | 64 | 803 | 160 | 12 | 2 | 138 | 108 |
+| 911 | 538 | 309 | 64 | 809 | 160 | 12 | 2 | 138 | 102 |
 
 Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 873.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 10574
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 10753
 
 
 **UNMEASURED:**

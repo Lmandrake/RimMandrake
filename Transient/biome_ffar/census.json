@@ -1,12 +1,12 @@
 {
  "schema": "biome_ffar.census/1",
- "generated": "2026-10-04T15:47:54-0700",
- "git_head": "87e6995b6",
+ "generated": "2026-10-04T22:51:14-0700",
+ "git_head": "335bdd0eb",
  "inputs": {
-  "ledger_events": 43412,
-  "ledger_variants": 10574,
+  "ledger_events": 43708,
+  "ledger_variants": 10753,
   "load_order": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
-  "artpipe_state": "searched 17121 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
+  "artpipe_state": "searched 17407 entries under /mnt/d/Luke/dev/_artpipe + legacy /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe",
   "wookieepedia": true,
   "prior_selection_sheet": "Transient/desert_sitting1_2026-10-04.decisions.json"
  },
@@ -18,7 +18,7 @@
   "stoneback": 2,
   "_canon_index_defnames": 255,
   "_artpipe_jobs_anooba": 8,
-  "_ledger_variants": 10574
+  "_ledger_variants": 10753
  },
  "biome_order": [
   "RM_LongShade",
@@ -106,7 +106,9 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_landopus"
+      "desertportb_landopus",
+      "ls_regen_JOE_Landopus_swim_v1",
+      "ls_regen_JOE_Landopus_v1"
      ],
      "art": {
       "resources": [
@@ -412,7 +414,9 @@
      "twins": [],
      "artpipe_state_jobs": [
       "LEGACY /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_withdrawn/RM_Dakkra",
-      "RM_Dakkra"
+      "RM_Dakkra",
+      "ls_regen_RM_Dakkra_down_v1",
+      "ls_regen_RM_Dakkra_rest_v1"
      ],
      "art": {
       "resources": [
@@ -504,7 +508,8 @@
      "artpipe_state_jobs": [
       "LEGACY /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_withdrawn/RM_Gennok",
       "RM_Gennok",
-      "RM_Gennok_b"
+      "RM_Gennok_b",
+      "ls_regen_RM_Gennok_v1"
      ],
      "art": {
       "resources": [
@@ -606,7 +611,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Gloomcast"
+      "RM_Gloomcast",
+      "ls_regen_RM_Gloomcast_v1"
      ],
      "art": {
       "resources": [
@@ -706,7 +712,7 @@
       "images": [
        "design/RimStarWars/canon_references/greatdevourer/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -914,7 +920,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "desertportb_jellypot"
+      "desertportb_jellypot",
+      "longshade_rsw_jellypot_v1"
      ],
      "art": {
       "resources": [
@@ -1721,7 +1728,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "LEGACY /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_withdrawn/RM_Qorrax",
-      "RM_Qorrax"
+      "RM_Qorrax",
+      "stillsand_regen_RM_Qorrax_swimming_v1"
      ],
      "art": {
       "resources": [
@@ -2598,7 +2606,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ulgga"
+      "RM_Ulgga",
+      "longshade_rsw_ulgga_v1"
      ],
      "art": {
       "resources": [
@@ -2791,7 +2800,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Vrekka"
+      "RM_Vrekka",
+      "ls_regen_RM_Vrekka_v1"
      ],
      "art": {
       "resources": [
@@ -2895,7 +2905,11 @@
      "artpipe_state_jobs": [
       "desert_swaca_bantha",
       "doubles_redo_bantha_w_v1",
-      "doubles_redo_bantha_wj_v1"
+      "doubles_redo_bantha_wj_v1",
+      "longshade_rsw_bantha_v1",
+      "longshade_rsw_bantha_v2",
+      "longshade_rsw_bantha_v3",
+      "longshade_rsw_bantha_v4"
      ],
      "art": {
       "resources": [
@@ -3220,6 +3234,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desertportb_bolotaur",
+      "longshade_rsw_bolotaur_v1",
       "offbiome_bolotaur_v2",
       "offbiome_bolotaur_v3"
      ],
@@ -3253,6 +3268,16 @@
            "east": "fe5517163b73268a51be966a0513001b2bbdfa5c46a0dd1862fbc4eac3ec24f7",
            "north": "04ea14b85af18c7ba4eb233a87ac31a6a763778c0d9c9f5becadf40a7247ef6d",
            "south": "1ab443280378eda4725c5922b2d2c20454e65a8b88ddb7c52c575e0fa595c371"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_bolotaur_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "3fb22c349166006b920777141d952410b0a896f3bceca109cf3996d3fb24664b"
           },
           "near_dup_of": null
          },
@@ -3308,7 +3333,7 @@
         }
        }
       ],
-      "n_versions": 4,
+      "n_versions": 5,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -3385,7 +3410,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_clodhopper"
+      "desertportb_clodhopper",
+      "longshade_rsw_clodhopper_v1"
      ],
      "art": {
       "resources": [
@@ -3422,6 +3448,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_clodhopper_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "00a75f52067020c99e5965fcfa31eec1b015289b6eacad9b4736f2d6fbd1f8ec",
+           "north": "075e3871f098ec5f2592a0163484bd58bbf398c3cd61d38e7f6a91b3b132a7f2",
+           "south": "d0f077c2adf3d430a678b78bb841db73d17d3a9718108214b2c354474c309b32"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_clodhopper",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -3449,7 +3487,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -3532,7 +3570,8 @@
       "dewback_toyfig_a",
       "dewback_toyfig_b",
       "dewback_v1",
-      "facingrepair_dewback_v1"
+      "facingrepair_dewback_v1",
+      "longshade_rsw_dewback_v1"
      ],
      "art": {
       "resources": [
@@ -3564,6 +3603,16 @@
            "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
            "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
            "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_dewback_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
           },
           "near_dup_of": null
          },
@@ -3637,7 +3686,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 7,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -3727,7 +3776,8 @@
       "canon_eopie_v1",
       "desert_swaca_eopie",
       "doubles_redo_eopie_j_v1",
-      "doubles_redo_eopie_v1"
+      "doubles_redo_eopie_v1",
+      "longshade_rsw_eopie_v1"
      ],
      "art": {
       "resources": [
@@ -3795,6 +3845,18 @@
            "east": "7e13d71016d0628bf81529f2f74723e93f3248dbd23549be7c37a69e3af3d181",
            "north": "e92587194d7df7e897ab5d81dd063e1ddea115d5fb5bc1180bd1b92ab25500f8",
            "south": "94905a98a66416e6d3f21124f3a29ec548f2819c2c7961c941d758e23f5011f6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_eopie_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
+           "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
+           "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
           },
           "near_dup_of": null
          },
@@ -3898,7 +3960,7 @@
         }
        }
       ],
-      "n_versions": 8,
+      "n_versions": 9,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2
@@ -3985,14 +4047,15 @@
        "design/RimStarWars/canon_references/falumpaset/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/falumpaset/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_falumpaset"
+      "desertportb_falumpaset",
+      "longshade_rsw_falumpaset_v1"
      ],
      "art": {
       "resources": [
@@ -4133,7 +4196,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_feralgrazer"
+      "desertportb_feralgrazer",
+      "longshade_rsw_feralgrazer_v1"
      ],
      "art": {
       "resources": [
@@ -4170,6 +4234,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_feralgrazer_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "47255a27f4f7882b6dd72f7a0fce3cb6b5067099bc80d7fbdc21a231971f69e2",
+           "north": "3bbec49d91ac52a7ff81a137f2e12b8da3de5f4f0d7978a9d9429fbfd8f48d9d",
+           "south": "49d6f2f00455bdf46fdec940a2e4c6e5a5a221de5ca4555cc23928daa4799cc4"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_feralgrazer",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -4197,7 +4273,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -4256,7 +4332,13 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_frilledgorg"
+      "desert_swaca_frilledgorg",
+      "longshade_rsw_frilledgorg_v1",
+      "longshade_rsw_frilledgorg_v2",
+      "longshade_rsw_frilledgorg_v3",
+      "longshade_rsw_frilledgorg_v4",
+      "longshade_rsw_frilledgorg_v5",
+      "longshade_rsw_frilledgorg_v6"
      ],
      "art": {
       "resources": [
@@ -4288,6 +4370,61 @@
            "east": "db294f48374b4d02704fdc4ca4178d699dc307d37004048af0d34a50e377fba3",
            "north": "c83dd075243daaa6e40de427a3d0d90ebf837abc3bd088809a04ce233b23210c",
            "south": "977cb82046d21f347904907cf85114f833406dc355a10f78106fd8d6f8c4eb41"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "02243eb8e1dfaafb706fe72eda0971ca07786946697803f5ce63e269fc7ca435",
+           "north": "520b9529573a86fae16ae22e880bea0aee3423be3aa45d1ad1d3257478ed7b4e",
+           "south": "c56f2a1c9ccce5cda1acb87efd772cf424696da40a1e565bbacb3ce01a23c67a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
+           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v2",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v4",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "b538f7d50010a7a90b5c6681c134b023c5fecb1e4b380420df11125038e8f990",
+           "north": "54fece3dc9a8d919ea56be4b7f1f78717f0f68c2aced3992a71961dc12f9deb9",
+           "south": "90c40f0be650f52940e3b7431f4ef60ddffc3afc5982682437763d77a7e1e69f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v5",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "55679c277b67fb6c05138c045871ab36ae4fb38c84b1777fad80871bdf5eac93"
           },
           "near_dup_of": null
          },
@@ -4435,7 +4572,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 10,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4
@@ -4503,6 +4640,7 @@
       "entry": "design/RimStarWars/canon_references/gorg",
       "match": "index_defname",
       "images": [
+       "design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_legends_2.webp",
@@ -4516,7 +4654,15 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_gorg"
+      "desert_swaca_gorg",
+      "longshade_rsw_gorg_swim_v1",
+      "longshade_rsw_gorg_v1",
+      "longshade_rsw_gorg_v2",
+      "longshade_rsw_gorg_v3",
+      "longshade_rsw_gorg_v4",
+      "longshade_rsw_gorg_v4_north.worker_last_message",
+      "longshade_rsw_gorg_v5",
+      "longshade_rsw_gorg_v6"
      ],
      "art": {
       "resources": [
@@ -4548,6 +4694,40 @@
            "east": "e09e6079ada034af58ceb9a96a300a6a548b6acfb3e9b1c59605ae58ca1582a7",
            "north": "4bead2784236c91637798a55773fddd3b36ddc707fedf4c20e62f828f56a8ea8",
            "south": "605c4213aeeb0c0f179348b45d16213064a57ef60df7117c5bd1d001552e9153"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "605c646af4eca95704a2b8fc96cb819daeb1da12c9fe1449302a26a81d55a013",
+           "north": "79ddc4f35cb994497d79f992a9eab5bd8d0251dc38fe82ff5e6011bc8419ca9c",
+           "south": "d1bf025d6d272ce1f63e550812856a8c182a291549a46165b1220df8a200ecb8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "0553a966f94e40888ea582c79175c8b7487ef4f3d28390a3eb997507677e2141",
+           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v4",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "db6ad9689f8e4f5f2ad6774b31e17f20935c42e9ec25237b85d052f186fa472c",
+           "north": "cfd0064b8d598a8fd496b73215276f118777ba690466da8e598ccca18db07510"
           },
           "near_dup_of": null
          },
@@ -4695,7 +4875,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4
@@ -4764,7 +4944,7 @@
       "images": [
        "design/RimStarWars/canon_references/greatdevourer/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -4938,14 +5118,15 @@
        "design/RimStarWars/canon_references/gutkurr/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gutkurr/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_gutkurr"
+      "desert_swaca_gutkurr",
+      "longshade_rsw_gutkurr_v1"
      ],
      "art": {
       "resources": [
@@ -5081,7 +5262,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desertportb_horax",
-      "horax_v1"
+      "horax_v1",
+      "longshade_rsw_horax_v1"
      ],
      "art": {
       "resources": [
@@ -5235,14 +5417,15 @@
        "design/RimStarWars/canon_references/hrumph/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/hrumph/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_hrumph"
+      "desert_swaca_hrumph",
+      "longshade_rsw_hrumph_v1"
      ],
      "art": {
       "resources": [
@@ -5425,6 +5608,7 @@
      "artpipe_state_jobs": [
       "desert_swaca_iriaz",
       "doubles_redo_iriaz_edit_v1",
+      "longshade_rsw_iriaz_v1",
       "pyrelands_iriaz_v1",
       "pyrelands_iriaz_v2",
       "pyrelands_iriaz_v3"
@@ -5650,14 +5834,15 @@
        "design/RimStarWars/canon_references/iridonianreek/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/iridonianreek/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_iridonianreek"
+      "desert_swaca_iridonianreek",
+      "longshade_rsw_iridonianreek_v1"
      ],
      "art": {
       "resources": [
@@ -5847,14 +6032,15 @@
        "design/RimStarWars/canon_references/jakobeast/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/jakobeast/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_jakobeast"
+      "desertportb_jakobeast",
+      "longshade_rsw_jakobeast_v1"
      ],
      "art": {
       "resources": [
@@ -6037,14 +6223,15 @@
        "design/RimStarWars/canon_references/jamel/wookieepedia_canon_2.webp",
        "design/RimStarWars/canon_references/jamel/wookieepedia_canon_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_jamel"
+      "desert_swaca_jamel",
+      "longshade_rsw_jamel_v1"
      ],
      "art": {
       "resources": [
@@ -6199,7 +6386,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "desertportb_jellypot"
+      "desertportb_jellypot",
+      "longshade_rsw_jellypot_v1"
      ],
      "art": {
       "resources": [
@@ -6318,14 +6506,15 @@
       "images": [
        "design/RimStarWars/canon_references/jimvu/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_jimvu"
+      "desert_swaca_jimvu",
+      "longshade_rsw_jimvu_v1"
      ],
      "art": {
       "resources": [
@@ -6566,14 +6755,15 @@
        "design/RimStarWars/canon_references/krykna/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/krykna/wookieepedia_canon_4.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_krykna"
+      "desertportb_krykna",
+      "longshade_rsw_krykna_v1"
      ],
      "art": {
       "resources": [
@@ -6799,14 +6989,15 @@
        "design/RimStarWars/canon_references/kwi/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/kwi/wookieepedia_canon_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_kwi"
+      "desert_swaca_kwi",
+      "longshade_rsw_kwi_v1"
      ],
      "art": {
       "resources": [
@@ -6937,7 +7128,14 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_longtailgorg"
+      "desert_swaca_longtailgorg",
+      "longshade_rsw_longtailgorg_swim_v1",
+      "longshade_rsw_longtailgorg_v1",
+      "longshade_rsw_longtailgorg_v2",
+      "longshade_rsw_longtailgorg_v3",
+      "longshade_rsw_longtailgorg_v4",
+      "longshade_rsw_longtailgorg_v5",
+      "longshade_rsw_longtailgorg_v6"
      ],
      "art": {
       "resources": [
@@ -7276,14 +7474,15 @@
        "design/RimStarWars/canon_references/nerf/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/nerf/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_nerf"
+      "desertportb_nerf",
+      "longshade_rsw_nerf_v1"
      ],
      "art": {
       "resources": [
@@ -7985,6 +8184,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desert_swaca_ronto",
+      "longshade_rsw_ronto_v1",
       "ronto_v1"
      ],
      "art": {
@@ -8146,14 +8346,15 @@
        "design/RimStarWars/canon_references/runyip/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/runyip/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_runyip"
+      "desertportb_runyip",
+      "longshade_rsw_runyip_v1"
      ],
      "art": {
       "resources": [
@@ -8405,14 +8606,15 @@
        "design/RimStarWars/canon_references/shaaks/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/shaaks/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_shaak"
+      "desertportb_shaak",
+      "longshade_rsw_shaak_v1"
      ],
      "art": {
       "resources": [
@@ -8539,14 +8741,15 @@
        "design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/shyrack/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_shyrack"
+      "desert_swaca_shyrack",
+      "longshade_rsw_shyrack_v1"
      ],
      "art": {
       "resources": [
@@ -8693,14 +8896,15 @@
        "design/RimStarWars/canon_references/skalders/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/skalders/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_skalder"
+      "desert_swaca_skalder",
+      "longshade_rsw_skalder_v1"
      ],
      "art": {
       "resources": [
@@ -8862,14 +9066,15 @@
        "design/RimStarWars/canon_references/sketto/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/sketto/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_sketto"
+      "desert_swaca_sketto",
+      "longshade_rsw_sketto_v1"
      ],
      "art": {
       "resources": [
@@ -9015,14 +9220,15 @@
       "images": [
        "design/RimStarWars/canon_references/teemuss/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_teemuss"
+      "desertportb_teemuss",
+      "longshade_rsw_teemuss_v1"
      ],
      "art": {
       "resources": [
@@ -9364,7 +9570,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ulgga"
+      "RM_Ulgga",
+      "longshade_rsw_ulgga_v1"
      ],
      "art": {
       "resources": [
@@ -9468,14 +9675,15 @@
        "design/RimStarWars/canon_references/uvak/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/uvak/wookieepedia_canon_4.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_uvak"
+      "desertportb_uvak",
+      "longshade_rsw_uvak_v1"
      ],
      "art": {
       "resources": [
@@ -9624,14 +9832,17 @@
        "design/RimStarWars/canon_references/varactyl/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/varactyl/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_varactyl"
+      "desertportb_varactyl",
+      "longshade_rsw_varactyl_v1",
+      "longshade_rsw_varactyl_v2",
+      "longshade_rsw_varactyl_v3"
      ],
      "art": {
       "resources": [
@@ -9795,14 +10006,15 @@
        "design/RimStarWars/canon_references/voorpak/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/voorpak/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_voorpak"
+      "desertportb_voorpak",
+      "longshade_rsw_voorpak_v1"
      ],
      "art": {
       "resources": [
@@ -10043,14 +10255,15 @@
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_worrt"
+      "desert_swaca_worrt",
+      "longshade_rsw_worrt_v1"
      ],
      "art": {
       "resources": [
@@ -10266,14 +10479,15 @@
        "design/RimStarWars/canon_references/wraid/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/wraid/wookieepedia_canon_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_wraid"
+      "desert_swaca_wraid",
+      "longshade_rsw_wraid_v1"
      ],
      "art": {
       "resources": [
@@ -10401,14 +10615,16 @@
        "design/RimStarWars/canon_references/wraid/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/wraid/wookieepedia_canon_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false,
       "base": "wraid"
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "longshade_rsw_wraidalpha_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -10518,6 +10734,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desertportb_zeer",
+      "longshade_rsw_zeer_v1",
       "pyrelands_zeer_v1",
       "pyrelands_zeer_v2"
      ],
@@ -10736,7 +10953,12 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Dewfringe"
+      "RM_Dewfringe",
+      "ls_regen_RM_Dewfringe_b_v1",
+      "ls_regen_RM_Dewfringe_c_v1",
+      "ls_regen_RM_Dewfringe_d_v1",
+      "ls_regen_RM_Dewfringe_e_v1",
+      "ls_regen_RM_Dewfringe_f_v1"
      ],
      "art": {
       "resources": [
@@ -10814,7 +11036,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "ls_regen_RM_Leachmoss_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -10831,8 +11055,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -10970,7 +11194,12 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Pavecrust"
+      "RM_Pavecrust",
+      "ls_regen_RM_Pavecrust_b_v1",
+      "ls_regen_RM_Pavecrust_c_v1",
+      "ls_regen_RM_Pavecrust_d_v1",
+      "ls_regen_RM_Pavecrust_e_v1",
+      "ls_regen_RM_Pavecrust_f_v1"
      ],
      "art": {
       "resources": [
@@ -11059,7 +11288,8 @@
      "artpipe_state_jobs": [
       "RM_Shadespire",
       "RM_Shadespire_b",
-      "RM_Shadespire_c"
+      "RM_Shadespire_c",
+      "ls_regen_RM_Shadespire_v1"
      ],
      "art": {
       "resources": [
@@ -11172,7 +11402,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "longshade_rsw_ultracactus_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -11189,8 +11421,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -11229,7 +11461,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "ls_regen_RM_Venomvine_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -11247,8 +11481,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -11287,7 +11521,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "ls_regen_RM_Vorrel_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -11304,8 +11540,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -11599,6 +11835,9 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "longshade_rsw_surragrass_v1",
+      "longshade_rsw_surragrass_v2",
+      "longshade_rsw_surragrass_v3",
       "rsw_surragrass_v1"
      ],
      "art": {
@@ -11666,7 +11905,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "longshade_rsw_ultracactus_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -11683,8 +11924,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -11724,7 +11965,10 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RSW_VellaraBloom"
+      "RSW_VellaraBloom",
+      "longshade_rsw_vellarabloom_v1",
+      "longshade_rsw_vellarabloom_v2",
+      "longshade_rsw_vellarabloom_v3"
      ],
      "art": {
       "resources": [
@@ -11778,8 +12022,8 @@
     "fauna": 62,
     "flora": 13,
     "fish": 0,
-    "with_art": 71,
-    "no_art": 4,
+    "with_art": 75,
+    "no_art": 0,
     "canon_entry": 38,
     "canon_missing_entry": 0,
     "noncanon_twin": 0,
@@ -11836,7 +12080,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Aurrok"
+      "RM_Aurrok",
+      "stillsand_regen_RM_Aurrok_v1"
      ],
      "art": {
       "resources": [
@@ -11925,7 +12170,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Drazzik"
+      "RM_Drazzik",
+      "stillsand_regen_RM_Drazzik_swimming_v1"
      ],
      "art": {
       "resources": [
@@ -12006,7 +12252,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Duumma"
+      "RM_Duumma",
+      "stillsand_regen_RM_Duumma_corpse_v1"
      ],
      "art": {
       "resources": [
@@ -12206,7 +12453,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ikee"
+      "RM_Ikee",
+      "stillsand_regen_RSW_Ikee_v2"
      ],
      "art": {
       "resources": [
@@ -12500,7 +12748,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "stillsand_regen_RM_Oommok_v2"
+     ],
      "art": {
       "resources": [
        {
@@ -12581,7 +12831,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "LEGACY /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_withdrawn/RM_Qorrax",
-      "RM_Qorrax"
+      "RM_Qorrax",
+      "stillsand_regen_RM_Qorrax_swimming_v1"
      ],
      "art": {
       "resources": [
@@ -12704,7 +12955,9 @@
       "canon_missing_entry": false
      },
      "twins": [],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "RM_ShadeMite_tint_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -12737,12 +12990,25 @@
            "south": "5ba66fa8e967f738aee8ce21e0e7821a940f4abdd99969e90a42132ea09d4cca"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_ShadeMite_tint_v1",
+          "detail": "2026-10-04T22:40:15-0700 \u00b7 collected to this texPath \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-04T22:40:15-0700",
+          "faces": {
+           "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+           "single": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+           "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
+           "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -12864,7 +13130,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "RM_Soorrak",
-      "RM_Soorrak_b"
+      "RM_Soorrak_b",
+      "stillsand_regen_RM_Soorrak_v2"
      ],
      "art": {
       "resources": [
@@ -13144,7 +13411,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Vozzik"
+      "RM_Vozzik",
+      "stillsand_regen_RSW_Vozzik_v2"
      ],
      "art": {
       "resources": [
@@ -13223,7 +13491,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Drazzik"
+      "RM_Drazzik",
+      "stillsand_regen_RM_Drazzik_swimming_v1"
      ],
      "art": {
       "resources": [
@@ -13518,14 +13787,15 @@
        "design/RimStarWars/canon_references/graniteslug/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/graniteslug/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_graniteslug"
+      "desertportb_graniteslug",
+      "stillsand_regen_RSW_GraniteSlug_v2"
      ],
      "art": {
       "resources": [
@@ -13648,7 +13918,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desertportb_greaterkraytdragon",
-      "greaterkraytdragon_v1"
+      "greaterkraytdragon_v1",
+      "stillsand_regen_RSW_GreaterKraytDragon_v2"
      ],
      "art": {
       "resources": [
@@ -13787,7 +14058,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ikee"
+      "RM_Ikee",
+      "stillsand_regen_RSW_Ikee_v2"
      ],
      "art": {
       "resources": [
@@ -13900,14 +14172,15 @@
        "design/RimStarWars/canon_references/kraytdragon/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/kraytdragon/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_kraytdragon"
+      "desertportb_kraytdragon",
+      "stillsand_regen_RSW_KraytDragon_v2"
      ],
      "art": {
       "resources": [
@@ -14098,7 +14371,8 @@
       "canon_kreetle_v1",
       "desert_swaca_kreetle",
       "facingrepair_kreetle_v1",
-      "kreetle_v1"
+      "kreetle_v1",
+      "stillsand_regen_RSW_Kreetle_v2"
      ],
      "art": {
       "resources": [
@@ -14332,14 +14606,15 @@
        "design/RimStarWars/canon_references/scurrier/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/scurrier/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_scurrier"
+      "desert_swaca_scurrier",
+      "stillsand_regen_RSW_Scurrier_v2"
      ],
      "art": {
       "resources": [
@@ -14485,7 +14760,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Vozzik"
+      "RM_Vozzik",
+      "stillsand_regen_RSW_Vozzik_v2"
      ],
      "art": {
       "resources": [
@@ -14581,7 +14857,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_warwyrm"
+      "desertportb_warwyrm",
+      "stillsand_regen_RSW_WarWyrm_v2"
      ],
      "art": {
       "resources": [
@@ -14794,7 +15071,12 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Glasscrust"
+      "RM_Glasscrust",
+      "stillsand_regen_RM_Glasscrust_var1",
+      "stillsand_regen_RM_Glasscrust_var2",
+      "stillsand_regen_RM_Glasscrust_var3",
+      "stillsand_regen_RM_Glasscrust_var4",
+      "stillsand_regen_RM_Glasscrust_var5"
      ],
      "art": {
       "resources": [
@@ -14874,7 +15156,12 @@
      "twins": [],
      "artpipe_state_jobs": [
       "RM_KneelOllim",
-      "RM_KneelOllim_b"
+      "RM_KneelOllim_b",
+      "stillsand_regen_RM_KneelOllim_var1",
+      "stillsand_regen_RM_KneelOllim_var2",
+      "stillsand_regen_RM_KneelOllim_var3",
+      "stillsand_regen_RM_KneelOllim_var4",
+      "stillsand_regen_RM_KneelOllim_var5"
      ],
      "art": {
       "resources": [
@@ -14969,7 +15256,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "stillsand_regen_RM_LightPipeNub_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -14986,8 +15275,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -15033,7 +15322,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "stillsand_regen_RSW_Ollim_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -15050,8 +15341,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -15088,7 +15379,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "stillsand_regen_RM_LightPipeNub_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -15105,8 +15398,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -15143,7 +15436,9 @@
        "in_this_biome": true
       }
      ],
-     "artpipe_state_jobs": [],
+     "artpipe_state_jobs": [
+      "stillsand_regen_RSW_Ollim_v1"
+     ],
      "art": {
       "resources": [
        {
@@ -15160,8 +15455,8 @@
        }
       ],
       "n_versions": 0,
-      "has_art": false,
-      "basis": "none",
+      "has_art": true,
+      "basis": "name-matched",
       "live_res": 0
      },
      "ledger_rulings": [],
@@ -15204,7 +15499,12 @@
      "twins": [],
      "artpipe_state_jobs": [
       "bloddle_v1",
-      "desertportb_plant_bloddle"
+      "desertportb_plant_bloddle",
+      "stillsand_regen_RSW_Plant_Bloddle_var1",
+      "stillsand_regen_RSW_Plant_Bloddle_var2",
+      "stillsand_regen_RSW_Plant_Bloddle_var3",
+      "stillsand_regen_RSW_Plant_Bloddle_var4",
+      "stillsand_regen_RSW_Plant_Bloddle_var5"
      ],
      "art": {
       "resources": [
@@ -15256,8 +15556,8 @@
     "fauna": 22,
     "flora": 5,
     "fish": 1,
-    "with_art": 26,
-    "no_art": 2,
+    "with_art": 28,
+    "no_art": 0,
     "canon_entry": 8,
     "canon_missing_entry": 0,
     "noncanon_twin": 0,
@@ -15314,7 +15614,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "bluedesert_AA_Thunderbeast_v1"
+      "bluedesert_AA_Thunderbeast_v1",
+      "bluedesert_Thunderbeast_v2"
      ],
      "art": {
       "resources": [],
@@ -15447,6 +15748,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "bluedesert_Dovvik_v2",
       "bluedesert_dovvik"
      ],
      "art": {
@@ -15481,12 +15783,24 @@
            "south": "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render bluedesert_Dovvik_v2",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f",
+           "north": "fb814f932cccf41c9a0f51991a1be25422848e89cd600e40af769632914793e0",
+           "south": "b5fc1315b61a54962343b8651a1bf78394271a353b01dfc0247bd0939af53dee"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -15592,7 +15906,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Murrek"
+      "RM_Murrek",
+      "RM_Murrek_tint_v1"
      ],
      "art": {
       "resources": [
@@ -15626,12 +15941,25 @@
            "south": "159fe4a3402609050dbd5d37c14beb7fb9a94a0199ef1ad1da346cb6a45ab8cb"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Murrek_tint_v1",
+          "detail": "2026-10-04T16:47:19-0700 \u00b7 collected to this texPath \u00b7 derive_from no \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-04T16:47:19-0700",
+          "faces": {
+           "east": "f8259d80408212687f29ded3cafd267fe12063f11fc0a5b7d78ff6cbdf5b2111",
+           "north": "6ba660244ece66a1e0321a02b1da77abd3da4b23b078b291f930c0a82243ae6c",
+           "single": "6ba660244ece66a1e0321a02b1da77abd3da4b23b078b291f930c0a82243ae6c",
+           "south": "b6032685b59877add8d0992ad7bb0bbe572c0204115c1c83250e2e718b5a2747"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -15682,7 +16010,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Ossivel"
+      "RM_Ossivel",
+      "bluedesert_Ossivel_v2"
      ],
      "art": {
       "resources": [
@@ -15772,6 +16101,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "bluedesert_Utikka_v2",
       "bluedesert_utikka"
      ],
      "art": {
@@ -15806,12 +16136,24 @@
            "south": "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render bluedesert_Utikka_v2",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "e4f4570b4a51414d43a8acc2ee44de01e6281097c1db70414f2f38e91851ad8f",
+           "north": "0e1a90004719690365e475afc579bd444c13562074643519cb14d24d1fa4c9d7",
+           "south": "5333d045c2d9c1a5c42b9c4b32598de374f6659cbc1ffb0154b982720094a7c2"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -15915,7 +16257,8 @@
      "twins": [],
      "artpipe_state_jobs": [
       "RM_Vhaulk",
-      "RM_Vhaulk_v2"
+      "RM_Vhaulk_v2",
+      "RM_Vhaulk_v3"
      ],
      "art": {
       "resources": [
@@ -15952,6 +16295,16 @@
          },
          {
           "kind": "artpipe",
+          "label": "render RM_Vhaulk_v3",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "07fbf467c0b343208be29534093a52f890445c4eedf0c2183b29af32eb0b750f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render RM_Vhaulk_v2",
           "detail": "2026-09-29 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 BLUEDESERT_BEDAZZLE_SITTING_1",
           "date": "2026-09-29",
@@ -15976,7 +16329,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 3,
+      "n_versions": 4,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -16027,6 +16380,7 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
+      "bluedesert_Vrisk_v2",
       "bluedesert_vrisk"
      ],
      "art": {
@@ -16061,12 +16415,23 @@
            "south": "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render bluedesert_Vrisk_v2",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "9708ec22481c0625529c5a44bb1c984bf786c3c60dbd810905a0871571b8841f",
+           "south": "a36a8d24fe0783742c03b46a7e86384611a0e3ff446c4e61fd93dd4771e191b1"
+          },
+          "near_dup_of": null
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -16189,7 +16554,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "bluedesert_Vapaad_v1"
+      "bluedesert_Vapaad_v1",
+      "bluedesert_Vapaad_v2"
      ],
      "art": {
       "resources": [],
@@ -16663,7 +17029,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "RM_Qeshra"
+      "RM_Qeshra",
+      "RM_Qeshra_tint_v1"
      ],
      "art": {
       "resources": [
@@ -16693,12 +17060,22 @@
            "single": "537d854c068db37f83ac4756a1abb71142460b322e8d4b6d5431b7a665bd0086"
           },
           "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render RM_Qeshra_tint_v1",
+          "detail": "2026-10-04 \u00b7 collected to this texPath \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "single": "560f3b5d3a99bf15d914f9cff016ad935e7d6fe71c5743c98253e7f51e666e3d"
+          },
+          "near_dup_of": "IN GAME \u2014 BlueDesert"
          }
         ],
         "prior_selection": null
        }
       ],
-      "n_versions": 1,
+      "n_versions": 2,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -20732,14 +21109,15 @@
        "design/RimStarWars/canon_references/graniteslug/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/graniteslug/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_graniteslug"
+      "desertportb_graniteslug",
+      "stillsand_regen_RSW_GraniteSlug_v2"
      ],
      "art": {
       "resources": [
@@ -20855,7 +21233,7 @@
        "design/RimStarWars/canon_references/lylek/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/lylek/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -21109,7 +21487,7 @@
        "design/RimStarWars/canon_references/mynock/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/mynock/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -21255,7 +21633,7 @@
        "design/RimStarWars/canon_references/neebray/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/neebray/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -21499,14 +21877,15 @@
        "design/RimStarWars/canon_references/skalders/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/skalders/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_skalder"
+      "desert_swaca_skalder",
+      "longshade_rsw_skalder_v1"
      ],
      "art": {
       "resources": [
@@ -27746,7 +28125,7 @@
        "design/RimStarWars/canon_references/gelagrub/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gelagrub/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -27853,7 +28232,14 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_longtailgorg"
+      "desert_swaca_longtailgorg",
+      "longshade_rsw_longtailgorg_swim_v1",
+      "longshade_rsw_longtailgorg_v1",
+      "longshade_rsw_longtailgorg_v2",
+      "longshade_rsw_longtailgorg_v3",
+      "longshade_rsw_longtailgorg_v4",
+      "longshade_rsw_longtailgorg_v5",
+      "longshade_rsw_longtailgorg_v6"
      ],
      "art": {
       "resources": [
@@ -28393,7 +28779,7 @@
        "design/RimStarWars/canon_references/urusai/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/urusai/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -31471,7 +31857,7 @@
        "design/RimStarWars/canon_references/gornt/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gornt/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -31959,7 +32345,7 @@
        "design/RimStarWars/canon_references/woolamander/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/woolamander/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -34757,7 +35143,8 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_clodhopper"
+      "desertportb_clodhopper",
+      "longshade_rsw_clodhopper_v1"
      ],
      "art": {
       "resources": [
@@ -34794,6 +35181,18 @@
          },
          {
           "kind": "artpipe",
+          "label": "render longshade_rsw_clodhopper_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "00a75f52067020c99e5965fcfa31eec1b015289b6eacad9b4736f2d6fbd1f8ec",
+           "north": "075e3871f098ec5f2592a0163484bd58bbf398c3cd61d38e7f6a91b3b132a7f2",
+           "south": "d0f077c2adf3d430a678b78bb841db73d17d3a9718108214b2c354474c309b32"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
           "label": "render desertportb_clodhopper",
           "detail": "2026-09-20 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 DESERT_FAMILY_PORT_EXECUTION_1",
           "date": "2026-09-20",
@@ -34821,7 +35220,7 @@
         }
        }
       ],
-      "n_versions": 2,
+      "n_versions": 3,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -35577,14 +35976,15 @@
        "design/RimStarWars/canon_references/falumpaset/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/falumpaset/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_falumpaset"
+      "desertportb_falumpaset",
+      "longshade_rsw_falumpaset_v1"
      ],
      "art": {
       "resources": [
@@ -35949,7 +36349,7 @@
        "design/RimStarWars/canon_references/gelagrub/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gelagrub/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -36507,7 +36907,7 @@
        "design/RimStarWars/canon_references/hssiss/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/hssiss/wookieepedia_canon_4.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -36788,7 +37188,7 @@
        "design/RimStarWars/canon_references/klorslug/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/klorslug/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -36931,7 +37331,7 @@
        "design/RimStarWars/canon_references/lylek/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/lylek/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -37032,7 +37432,7 @@
        "design/RimStarWars/canon_references/mott/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/mott/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -37869,7 +38269,7 @@
        "design/RimStarWars/canon_references/shirotrap/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/shirotrap/wookieepedia_canon_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -38346,14 +38746,15 @@
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_worrt"
+      "desert_swaca_worrt",
+      "longshade_rsw_worrt_v1"
      ],
      "art": {
       "resources": [
@@ -49504,7 +49905,11 @@
      "artpipe_state_jobs": [
       "desert_swaca_bantha",
       "doubles_redo_bantha_w_v1",
-      "doubles_redo_bantha_wj_v1"
+      "doubles_redo_bantha_wj_v1",
+      "longshade_rsw_bantha_v1",
+      "longshade_rsw_bantha_v2",
+      "longshade_rsw_bantha_v3",
+      "longshade_rsw_bantha_v4"
      ],
      "art": {
       "resources": [
@@ -50462,7 +50867,8 @@
       "canon_eopie_v1",
       "desert_swaca_eopie",
       "doubles_redo_eopie_j_v1",
-      "doubles_redo_eopie_v1"
+      "doubles_redo_eopie_v1",
+      "longshade_rsw_eopie_v1"
      ],
      "art": {
       "resources": [
@@ -50530,6 +50936,18 @@
            "east": "7e13d71016d0628bf81529f2f74723e93f3248dbd23549be7c37a69e3af3d181",
            "north": "e92587194d7df7e897ab5d81dd063e1ddea115d5fb5bc1180bd1b92ab25500f8",
            "south": "94905a98a66416e6d3f21124f3a29ec548f2819c2c7961c941d758e23f5011f6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_eopie_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
+           "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
+           "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
           },
           "near_dup_of": null
          },
@@ -50633,7 +51051,7 @@
         }
        }
       ],
-      "n_versions": 8,
+      "n_versions": 9,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2
@@ -50722,7 +51140,7 @@
        "design/RimStarWars/canon_references/nerf/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/nerf/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false,
@@ -50862,7 +51280,13 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_frilledgorg"
+      "desert_swaca_frilledgorg",
+      "longshade_rsw_frilledgorg_v1",
+      "longshade_rsw_frilledgorg_v2",
+      "longshade_rsw_frilledgorg_v3",
+      "longshade_rsw_frilledgorg_v4",
+      "longshade_rsw_frilledgorg_v5",
+      "longshade_rsw_frilledgorg_v6"
      ],
      "art": {
       "resources": [
@@ -50894,6 +51318,61 @@
            "east": "db294f48374b4d02704fdc4ca4178d699dc307d37004048af0d34a50e377fba3",
            "north": "c83dd075243daaa6e40de427a3d0d90ebf837abc3bd088809a04ce233b23210c",
            "south": "977cb82046d21f347904907cf85114f833406dc355a10f78106fd8d6f8c4eb41"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "02243eb8e1dfaafb706fe72eda0971ca07786946697803f5ce63e269fc7ca435",
+           "north": "520b9529573a86fae16ae22e880bea0aee3423be3aa45d1ad1d3257478ed7b4e",
+           "south": "c56f2a1c9ccce5cda1acb87efd772cf424696da40a1e565bbacb3ce01a23c67a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "08607b63099995a761d8d3b6f38993edcdb92c95d24fc36fb8254bf36113c0a2",
+           "north": "e153d651011cc812c590291e5da22bec75369a73fe8a67a55635e324dd59d86a"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v2",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v4",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "b538f7d50010a7a90b5c6681c134b023c5fecb1e4b380420df11125038e8f990",
+           "north": "54fece3dc9a8d919ea56be4b7f1f78717f0f68c2aced3992a71961dc12f9deb9",
+           "south": "90c40f0be650f52940e3b7431f4ef60ddffc3afc5982682437763d77a7e1e69f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_frilledgorg_v5",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "55679c277b67fb6c05138c045871ab36ae4fb38c84b1777fad80871bdf5eac93"
           },
           "near_dup_of": null
          },
@@ -51041,7 +51520,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 10,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4
@@ -51348,6 +51827,7 @@
       "entry": "design/RimStarWars/canon_references/gorg",
       "match": "index_defname",
       "images": [
+       "design/RimStarWars/canon_references/gorg/owner_canon_gorgs_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/gorg/wookieepedia_legends_2.webp",
@@ -51361,7 +51841,15 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_gorg"
+      "desert_swaca_gorg",
+      "longshade_rsw_gorg_swim_v1",
+      "longshade_rsw_gorg_v1",
+      "longshade_rsw_gorg_v2",
+      "longshade_rsw_gorg_v3",
+      "longshade_rsw_gorg_v4",
+      "longshade_rsw_gorg_v4_north.worker_last_message",
+      "longshade_rsw_gorg_v5",
+      "longshade_rsw_gorg_v6"
      ],
      "art": {
       "resources": [
@@ -51393,6 +51881,40 @@
            "east": "e09e6079ada034af58ceb9a96a300a6a548b6acfb3e9b1c59605ae58ca1582a7",
            "north": "4bead2784236c91637798a55773fddd3b36ddc707fedf4c20e62f828f56a8ea8",
            "south": "605c4213aeeb0c0f179348b45d16213064a57ef60df7117c5bd1d001552e9153"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v1",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "605c646af4eca95704a2b8fc96cb819daeb1da12c9fe1449302a26a81d55a013",
+           "north": "79ddc4f35cb994497d79f992a9eab5bd8d0251dc38fe82ff5e6011bc8419ca9c",
+           "south": "d1bf025d6d272ce1f63e550812856a8c182a291549a46165b1220df8a200ecb8"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v3",
+          "detail": "2026-10-05 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from yes \u00b7 BIOME_FLORAFAUNA_ART_REVIEW_1",
+          "date": "2026-10-05",
+          "faces": {
+           "east": "0553a966f94e40888ea582c79175c8b7487ef4f3d28390a3eb997507677e2141",
+           "north": "ff6bfde3ce59ed30e408f8aa46e9de6a3c4776196cfd06d2c3f41c296d023d7f"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_gorg_v4",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "db6ad9689f8e4f5f2ad6774b31e17f20935c42e9ec25237b85d052f186fa472c",
+           "north": "cfd0064b8d598a8fd496b73215276f118777ba690466da8e598ccca18db07510"
           },
           "near_dup_of": null
          },
@@ -51540,7 +52062,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 5,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 4
@@ -51778,7 +52300,7 @@
       "images": [
        "design/RimStarWars/canon_references/igitz/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -52125,6 +52647,7 @@
      "artpipe_state_jobs": [
       "desert_swaca_iriaz",
       "doubles_redo_iriaz_edit_v1",
+      "longshade_rsw_iriaz_v1",
       "pyrelands_iriaz_v1",
       "pyrelands_iriaz_v2",
       "pyrelands_iriaz_v3"
@@ -52350,7 +52873,7 @@
        "design/RimStarWars/canon_references/kowakianmonkeylizard/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/kowakianmonkeylizard/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -52504,7 +53027,8 @@
       "canon_kreetle_v1",
       "desert_swaca_kreetle",
       "facingrepair_kreetle_v1",
-      "kreetle_v1"
+      "kreetle_v1",
+      "stillsand_regen_RSW_Kreetle_v2"
      ],
      "art": {
       "resources": [
@@ -52738,7 +53262,7 @@
        "design/RimStarWars/canon_references/kybuck/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/kybuck/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -52896,7 +53420,14 @@
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_longtailgorg"
+      "desert_swaca_longtailgorg",
+      "longshade_rsw_longtailgorg_swim_v1",
+      "longshade_rsw_longtailgorg_v1",
+      "longshade_rsw_longtailgorg_v2",
+      "longshade_rsw_longtailgorg_v3",
+      "longshade_rsw_longtailgorg_v4",
+      "longshade_rsw_longtailgorg_v5",
+      "longshade_rsw_longtailgorg_v6"
      ],
      "art": {
       "resources": [
@@ -53156,7 +53687,7 @@
        "design/RimStarWars/canon_references/lothcat/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/lothcat/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -53343,7 +53874,7 @@
        "design/RimStarWars/canon_references/massiff/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/massiff/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -54248,7 +54779,7 @@
        "design/RimStarWars/canon_references/pikobis/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/pikobis/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -54694,7 +55225,7 @@
        "design/RimStarWars/canon_references/pufferpig/wookieepedia_canon_2.webp",
        "design/RimStarWars/canon_references/pufferpig/wookieepedia_canon_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -54835,7 +55366,7 @@
       "images": [
        "design/RimStarWars/canon_references/qormot/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -54979,6 +55510,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desert_swaca_ronto",
+      "longshade_rsw_ronto_v1",
       "ronto_v1"
      ],
      "art": {
@@ -55234,14 +55766,15 @@
        "design/RimStarWars/canon_references/scurrier/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/scurrier/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_scurrier"
+      "desert_swaca_scurrier",
+      "stillsand_regen_RSW_Scurrier_v2"
      ],
      "art": {
       "resources": [
@@ -55466,14 +55999,15 @@
        "design/RimStarWars/canon_references/skalders/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/skalders/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_skalder"
+      "desert_swaca_skalder",
+      "longshade_rsw_skalder_v1"
      ],
      "art": {
       "resources": [
@@ -55635,14 +56169,15 @@
        "design/RimStarWars/canon_references/sketto/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/sketto/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_sketto"
+      "desert_swaca_sketto",
+      "longshade_rsw_sketto_v1"
      ],
      "art": {
       "resources": [
@@ -55897,7 +56432,7 @@
        "design/RimStarWars/canon_references/strill/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/strill/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -56134,7 +56669,7 @@
        "design/RimStarWars/canon_references/urusai/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/urusai/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -56290,14 +56825,15 @@
        "design/RimStarWars/canon_references/voorpak/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/voorpak/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_voorpak"
+      "desertportb_voorpak",
+      "longshade_rsw_voorpak_v1"
      ],
      "art": {
       "resources": [
@@ -56873,14 +57409,15 @@
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/worrt/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_worrt"
+      "desert_swaca_worrt",
+      "longshade_rsw_worrt_v1"
      ],
      "art": {
       "resources": [
@@ -60477,7 +61014,7 @@
        "design/RimStarWars/canon_references/blarth/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/blarth/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -60610,7 +61147,7 @@
        "design/RimStarWars/canon_references/blixus/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/blixus/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -60736,7 +61273,7 @@
        "design/RimStarWars/canon_references/bogwing/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/bogwing/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -60948,7 +61485,7 @@
        "design/RimStarWars/canon_references/faascalefish/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/faascalefish/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -61194,7 +61731,7 @@
        "design/RimStarWars/canon_references/laascalefish/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/laascalefish/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -61278,7 +61815,7 @@
       "images": [
        "design/RimStarWars/canon_references/marshhaunt/wookieepedia_canon_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -61413,7 +61950,7 @@
        "design/RimStarWars/canon_references/meescalefish/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/meescalefish/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -61500,7 +62037,7 @@
        "design/RimStarWars/canon_references/opeeseakiller/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/opeeseakiller/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -61683,14 +62220,15 @@
        "design/RimStarWars/canon_references/runyip/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/runyip/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desertportb_runyip"
+      "desertportb_runyip",
+      "longshade_rsw_runyip_v1"
      ],
      "art": {
       "resources": [
@@ -62620,7 +63158,7 @@
        "design/RimStarWars/canon_references/paleyobshrimp/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/paleyobshrimp/wookieepedia_legends_1.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -66924,6 +67462,7 @@
      "artpipe_state_jobs": [
       "desert_swaca_iriaz",
       "doubles_redo_iriaz_edit_v1",
+      "longshade_rsw_iriaz_v1",
       "pyrelands_iriaz_v1",
       "pyrelands_iriaz_v2",
       "pyrelands_iriaz_v3"
@@ -67621,6 +68160,7 @@
      "twins": [],
      "artpipe_state_jobs": [
       "desertportb_zeer",
+      "longshade_rsw_zeer_v1",
       "pyrelands_zeer_v1",
       "pyrelands_zeer_v2"
      ],
@@ -71745,7 +72285,7 @@
        "design/RimStarWars/canon_references/lavaflea/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/lavaflea/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -74623,7 +75163,7 @@
        "design/RimStarWars/canon_references/shirotrap/wookieepedia_canon_1.webp",
        "design/RimStarWars/canon_references/shirotrap/wookieepedia_canon_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -79790,7 +80330,7 @@
        "design/RimStarWars/canon_references/sandoaquamonster/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/sandoaquamonster/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -81635,7 +82175,7 @@
        "design/RimStarWars/canon_references/hssiss/wookieepedia_canon_3.webp",
        "design/RimStarWars/canon_references/hssiss/wookieepedia_canon_4.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -84337,7 +84877,7 @@
        "design/RimStarWars/canon_references/faascalefish/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/faascalefish/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -84522,7 +85062,7 @@
        "design/RimStarWars/canon_references/meescalefish/wookieepedia_legends_2.webp",
        "design/RimStarWars/canon_references/meescalefish/wookieepedia_legends_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -86820,7 +87360,7 @@
        "design/RimStarWars/canon_references/mynock/wookieepedia_legends_1.webp",
        "design/RimStarWars/canon_references/mynock/wookieepedia_legends_2.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
@@ -91533,7 +92073,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ikee"
+      "RM_Ikee",
+      "stillsand_regen_RSW_Ikee_v2"
      ],
      "art": {
       "resources": [
@@ -92521,7 +93062,11 @@
      "artpipe_state_jobs": [
       "desert_swaca_bantha",
       "doubles_redo_bantha_w_v1",
-      "doubles_redo_bantha_wj_v1"
+      "doubles_redo_bantha_wj_v1",
+      "longshade_rsw_bantha_v1",
+      "longshade_rsw_bantha_v2",
+      "longshade_rsw_bantha_v3",
+      "longshade_rsw_bantha_v4"
      ],
      "art": {
       "resources": [
@@ -93082,7 +93627,8 @@
       "dewback_toyfig_a",
       "dewback_toyfig_b",
       "dewback_v1",
-      "facingrepair_dewback_v1"
+      "facingrepair_dewback_v1",
+      "longshade_rsw_dewback_v1"
      ],
      "art": {
       "resources": [
@@ -93114,6 +93660,16 @@
            "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
            "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
            "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_dewback_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
           },
           "near_dup_of": null
          },
@@ -93187,7 +93743,7 @@
         "prior_selection": null
        }
       ],
-      "n_versions": 7,
+      "n_versions": 8,
       "has_art": true,
       "basis": "ledger",
       "live_res": 1
@@ -93277,7 +93833,8 @@
       "canon_eopie_v1",
       "desert_swaca_eopie",
       "doubles_redo_eopie_j_v1",
-      "doubles_redo_eopie_v1"
+      "doubles_redo_eopie_v1",
+      "longshade_rsw_eopie_v1"
      ],
      "art": {
       "resources": [
@@ -93345,6 +93902,18 @@
            "east": "7e13d71016d0628bf81529f2f74723e93f3248dbd23549be7c37a69e3af3d181",
            "north": "e92587194d7df7e897ab5d81dd063e1ddea115d5fb5bc1180bd1b92ab25500f8",
            "south": "94905a98a66416e6d3f21124f3a29ec548f2819c2c7961c941d758e23f5011f6"
+          },
+          "near_dup_of": null
+         },
+         {
+          "kind": "artpipe",
+          "label": "render longshade_rsw_eopie_v1",
+          "detail": "2026-10-04 \u00b7 joined by creature name only (not bound to this graphic) \u00b7 derive_from no \u00b7 ",
+          "date": "2026-10-04",
+          "faces": {
+           "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
+           "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
+           "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
           },
           "near_dup_of": null
          },
@@ -93448,7 +94017,7 @@
         }
        }
       ],
-      "n_versions": 8,
+      "n_versions": 9,
       "has_art": true,
       "basis": "ledger",
       "live_res": 2
@@ -93719,7 +94288,8 @@
       }
      ],
      "artpipe_state_jobs": [
-      "RM_Ikee"
+      "RM_Ikee",
+      "stillsand_regen_RSW_Ikee_v2"
      ],
      "art": {
       "resources": [
@@ -93831,14 +94401,15 @@
        "design/RimStarWars/canon_references/jamel/wookieepedia_canon_2.webp",
        "design/RimStarWars/canon_references/jamel/wookieepedia_canon_3.webp"
       ],
-      "has_must_show": false,
+      "has_must_show": true,
       "ruled": false,
       "wookieepedia": null,
       "canon_missing_entry": false
      },
      "twins": [],
      "artpipe_state_jobs": [
-      "desert_swaca_jamel"
+      "desert_swaca_jamel",
+      "longshade_rsw_jamel_v1"
      ],
      "art": {
       "resources": [
@@ -96228,8 +96799,8 @@
   "fauna": 538,
   "flora": 309,
   "fish": 64,
-  "with_art": 803,
-  "no_art": 108,
+  "with_art": 809,
+  "no_art": 102,
   "canon_entry": 160,
   "canon_missing_entry": 12,
   "noncanon_twin": 2,
