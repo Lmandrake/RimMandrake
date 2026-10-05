@@ -8,3 +8,9 @@ jimvu done
 kraytdragon done
 kybuck done
 lothcat done
+massiff done
+mynock done
+opeeseakiller done
+pufferpig done
+sandoaquamonster done
+shirotrap done

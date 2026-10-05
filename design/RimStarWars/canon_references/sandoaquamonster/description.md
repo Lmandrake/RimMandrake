@@ -2,9 +2,6 @@
 
 **defName**: `RSW_SandoAquaMonster` — in-repo label "sando aqua monster"; no variants
 
-> Skeleton entry written by `canon_gapfill.py` on 2026-10-04: sourced text is the page lead
-> and appearance sections, mechanically stripped of markup. Images are downloaded and captioned
-> from the pages, but **no agent has viewed them yet** — the visual brief is owed.
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Sando_aqua_monster
@@ -27,11 +24,20 @@ Their limbs were part flippers, part claws; scientists theorized that they had o
 When it spots its prey (such as opee sea killers and colo claw fish), the sando gets close to it quickly, then opens its large mouth, letting out a roar before biting down. If the prey is small, the sando will swallow it whole. If the prey is large, the sando would either bite it in half or physically tear it in half to stop it from escaping. To most natives of Naboo, sando aqua monsters were more of a myth than a …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-OWED — images pulled 2026-10-04, not yet viewed. On appearance, trust the images over the prose;
-images from the Legends page are Legends continuity and say so in their caption below.
+Four images (canon render and film frame, two Legends sketches). The three that show the whole animal agree on the body plan.
+- **Silhouette:** a vast, heavy-muscled, **half-reptile, half-whale** body: a **bulky torso with big shoulders and a long thick neck, a long, tapering, muscular tail ending in a broad horizontal fluke** (flattened tail fin, fine ribbed rays; clear in `canon_1`, `legends_1` and `legends_2`). In the film frame (`canon_2`) it sits upright on its haunches on a rock like a bear or a theropod and holds prey in its hand.
+- **Head:** broad and flat, wide as the neck, with a **very wide grinning mouth** (the corners sweep back and up like a lipped smile), tiny eyes, small nostrils, and spiky fin-like **frills/ruffs at the cheeks** and short horn-like spikes on the brow and chin (`canon_1`). The film frame shows a dark, smooth reptile-seal head with a small eye.
+- **Limbs:** **powerful arms and legs, each ending in a broad webbed hand or foot with large dark claws**. The forelimbs are grasping hands with long fingers and curved talons (`canon_1`, `canon_2`, `legends_1`); the hind feet are fan-shaped paddles with four to five claws. The arms are heavily muscled and shoulder-heavy (feline or ape-like).
+- **Colour and skin:** `canon_1` is a mottled **brown-grey to beige hide with darker blotches and some lichen-like pale spots**; the film frame is **dark blue-grey, smooth and almost black in the water**; the Legends sketches are **pale grey-cream, finely lined with long ridges along the back and tail**. Bellies are lighter. No scales visible, a smooth, leathery to rubbery skin.
+- **Legends detail:** `legends_1` shows a male and female entwined (the female has a row of round pores/nipple-like marks on the belly), `legends_2` a sleeping animal draped over a rock outcrop. Not extra features for a sprite.
+- **Size:** 160 to 200 m long per the text. The film frame shows it holding opee sea killers (themselves 20 m) in one hand as if they were crayfish.
 
 ## Must show
-(owed — distil from the visual brief once it is written; add no claim the brief does not make)
+- [ ] Massive, heavy-shouldered body with a long thick neck and a long muscular tapering tail ending in a broad horizontal fluke
+- [ ] Broad flat head with a very wide grinning mouth, tiny eyes and cheek frills or short spikes
+- [ ] Four powerful limbs ending in broad webbed hands and feet with large dark claws; forelimbs able to grasp
+- [ ] Smooth leathery skin, mottled grey-brown to dark blue-grey with a paler belly, with no scales or fur
+- [ ] Reads as a half-whale, half-reptile with feline muscular build, not a fish and not a plain whale
 
 ## Engine limits
 not yet assessed
