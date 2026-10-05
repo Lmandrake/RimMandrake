@@ -36,3 +36,5 @@ No significant findings except RM_StockMath.CollectComponent: when a component h
 - Group A follow-up: BaseTerrainAt in the dig designator would have let a floored cell be dug; switched to FoundationAt ?? TopTerrainAt (TerrainAt minus temp layer).
 - Not changed: SuperdeepTrapState.Tick walks spawned pawns every tick while superdeep cells exist (descent detector by design, no alloc). PitDepthDraw DrawPos also feeds projectile origin (minor).
 Build 0 err after all fixes.
+
+## Marked clean (pass 1, at c984c264f): 26 files with zero significant findings (all except the 10 fixed). Fixed 10 get a fresh full re-read before marking.
