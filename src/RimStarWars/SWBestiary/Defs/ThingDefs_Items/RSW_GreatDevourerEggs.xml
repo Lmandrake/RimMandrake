@@ -17,8 +17,8 @@
 
 	<ThingDef ParentName="EggUnfertBase">
 		<defName>RSW_GreatDevourerEggUnfertilized</defName>
-		<label>great devourer egg (unfert.)</label>
-		<description>Unfertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way...</description>
+		<label>sarlacc seeker egg (unfert.)</label>
+		<description>An unfertilized sarlacc seeker egg: a leathery canteen of a shell. It can be eaten raw, but it is better cooked, and disgusting either way.</description>
 		<graphicData>
 			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
 			<color>(163,81,36)</color>
@@ -31,8 +31,8 @@
 
 	<ThingDef ParentName="EggFertBase">
 		<defName>RSW_GreatDevourerEggFertilized</defName>
-		<label>great devourer egg (fert.)</label>
-		<description>Fertilized great devourer egg. It can be eaten raw, but it's much, much better cooked. Actually, it's a worm egg, it is disgusting either way... If all goes well, it should hatch into a great devourer.</description>
+		<label>sarlacc seeker egg (fert.)</label>
+		<description>A fertilized sarlacc seeker egg: a leathery canteen of a shell. If all goes well it hatches into a seeker, the questing stage of a sarlacc.</description>
 		<tradeability>None</tradeability>
 		<statBases>
 			<MarketValue>9.0</MarketValue>

@@ -35,12 +35,21 @@
   Odyssey's Races_Animal.xml - not donor-only), tools, stats, sounds and
   tradeTags verbatim.
 -->
+<!--
+  LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04 (desert sheet): "This is NOT Canon. Star Wars DOES have
+  something called the Great Devourer that is unrelated. ... It is now a life stage of the Sarlacc ... that quests until
+  it finds rich food and a water source to claim. ... Lives at the RSW level." Relabelled "sarlacc seeker": Stage I of
+  design/Jawa/worldbuilding/sarlacc_native_habitat_draft.md §2 (the swimmer), using that doc's tribal word for the stage
+  ("the Seeker", Fork 9) because "sarlacc swimmer" is already RSW_SarlaccSwimmer's label. defName kept for save safety.
+  Canon entry removed (canon_references/NO_SOURCE.json not_canon_linked). The rooting behaviour is
+  SARLACC_SEEKER_ROOTING_1.
+-->
 <Defs>
 
 	<ThingDef ParentName="AnimalThingBase">
 		<defName>RSW_GreatDevourer</defName>
-		<label>great devourer</label>
-		<description>Great Devourers are armoured worms known for their unquenchable appetite. Once a Great Devourer arrives, it will proceed to gorge itself on small prey, and total ecosystem collapse is almost a certainty.\n\nLuckily, they won't attack large creatures, including humans, unless provoked. Their whole name is in fact a pun, since they are not very resilient and are easily dispatched. They have however slow regenerative capabilities.</description>
+		<label>sarlacc seeker</label>
+		<description>A young sarlacc in its questing stage: an armoured worm, a mouth with a body behind it, that swims the sand on the water it was born with. It gorges on small prey to top that reserve up, and where one hunts the small life of a region can collapse. It wanders until it finds rich food and a water source worth claiming, then sinks, roots, and becomes the pit that every desert traveller learns to fear. Desert tribes call it the seeker.\n\nIt will not attack large creatures, humans included, unless provoked. Its armour is thinner than it looks, and it heals slowly.</description>
 		<statBases>
 			<MoveSpeed>2.8</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -129,7 +138,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RSW_GreatDevourer</defName>
-		<label>great devourer</label>
+		<label>sarlacc seeker</label>
 		<race>RSW_GreatDevourer</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
