@@ -1,0 +1,208 @@
+[
+ {
+  "id": "gapbs_Plant_Brambles_v1",
+  "target_def": "Plant_Brambles",
+  "target_original": [
+   "Plant_Brambles"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the brambles. Tangled, thorny, woody shoots covered with leaves. Brambles grow in clusters, and slow down anyone moving over them. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_RG_Plant_CreepStern_v1",
+  "target_def": "RG_Plant_CreepStern",
+  "target_original": [
+   "RG_Plant_CreepStern"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the creep stern. Wild Ivy with star shaped leaves that grows in patches in cold and wet biomes. Takes a long time to grow, but is very frost-resistant. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_RG_Plant_CrimsonCushion_v1",
+  "target_def": "RG_Plant_CrimsonCushion",
+  "target_original": [
+   "RG_Plant_CrimsonCushion"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the crimson cushion. Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_RG_Plant_Dervish_v1",
+  "target_def": "RG_Plant_Dervish",
+  "target_original": [
+   "RG_Plant_Dervish"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the dervish. A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_AB_FirevineTree_v1",
+  "target_def": "AB_FirevineTree",
+  "target_original": [
+   "AB_FirevineTree"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the firevine tree. Firevine trees are pyrophitic plants that are able to survive wildfires due to a clever layer of thermal insulation provided by their fire retardant bark. They can be directly burned without sustaining damage to their vital tissues. In fact, their seeds require fire to sprout, so they are only found in fire-prone areas, such as active volcanic zones. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_Plant_MagmaCactus_v1",
+  "target_def": "Plant_MagmaCactus",
+  "target_original": [
+   "Plant_MagmaCactus"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the magma cactus. A resilient species of cactus notable for its ability to survive extreme heat. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_AB_TinkleGrass_v1",
+  "target_def": "AB_TinkleGrass",
+  "target_original": [
+   "AB_TinkleGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the tinkle grass. Wild grass. Grows anywhere there is a little light and minimally fertile ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_Plant_GrayGrass_v1",
+  "target_def": "Plant_GrayGrass",
+  "target_original": [
+   "Plant_GrayGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the gray grass. Gray grass refers to a variety of species of wild toxin-adapted grass. It grows anywhere there is minimally-fertile polluted ground and the climate isn't overwhelming hostile. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_Plant_Toxipotato_v1",
+  "target_def": "Plant_Toxipotato",
+  "target_original": [
+   "Plant_Toxipotato"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the toxipotato. A genetically-engineered variant of potato adapted for growing in polluted areas. Compared to regular potatoes, toxipotatoes take less time to grow but yield a meager harvest of food. When eaten raw, they have a high chance of causing food poisoning. In spite of this, they have saved many settlers from starvation after toxic events. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_Plant_Reeds_v1",
+  "target_def": "Plant_Reeds",
+  "target_original": [
+   "Plant_Reeds"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the reeds. A tall slender plant that grows in water. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_RSW_Hawkbat_juv_v1",
+  "target_def": "RSW_Hawkbat",
+  "target_original": [
+   "Hawkbat"
+  ],
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j",
+  "canon": "hawkbat",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the juvenile hawk-bat, a young reptavian in its hatchling stage, scaly green skin before its first molt, curved beak, leathery wings folded close, small body. Precocial and ready to hunt on the day of hatching. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "gapbs_RSW_PekoPeko_male_v1",
+  "target_def": "RSW_PekoPeko",
+  "target_original": [
+   "PekoPeko"
+  ],
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m",
+  "canon": "pekopeko",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the male peko-peko, a large colourful reptavian with a long S-curved neck, hooked beak, and showy plumage with long trailing tail feathers. Native to the Gungan swamps; its skin carries a mild toxin. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings.",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
