@@ -94,6 +94,21 @@ def jobs(wave):
                   "small orange power LED at the right end) seen from directly above, with a black THREE-PRONG PLUG pushed into "
                   "EACH outlet from the top (you see the backs of the plug heads), each plug's short black cord curling off the "
                   "strip. Very wide and low: the strip fills the width of the image. " + BASE))
+    elif wave == "retry":
+        # first mast edits for Industrial/Futuristic barely changed the head: ask for a clearly different, larger head
+        RETRY = {
+            "Industrial": "a LARGE ANGULAR INDUSTRIAL FLOODLIGHT: a wide flat rectangular chamfered gunmetal housing tilted down, "
+                          "heavy bolted yoke bracket, a broad flat glass lens softly lit warm white, small hazard stripe on the "
+                          "housing. Clearly different from the old small caged lantern",
+            "Futuristic": "a STRIKING FUTURISTIC LAMP HEAD: a long curved silver-white alloy blade/visor cantilevered off the pole "
+                          "with a continuous glowing cyan-white light strip along its whole underside and a small floating ring "
+                          "accent. Clearly different from the old plain flat lamp",
+        }
+        for L, s in RETRY.items():
+            J.append(("mast2_" + L, "edit", [R + "/in/mast_" + L + ".png"],
+                      "Edit this power pole sprite: REMOVE the existing lamp and its arm on the right side and draw in its place "
+                      + s + ", on a short sturdy arm from the pole at the same height. Keep the pole, the crossarm, the insulators, "
+                      "the framing and the canvas exactly identical. " + LOOK[L] + " Keep the transparent background."))
     else:
         for L, s in SW.items():
             J.append(("swoff_" + L, "edit", [R + "/raw/sw_" + L + ".png"],
