@@ -30,4 +30,4 @@ Diffed against the committed decisions (8792def2b). Changed rows (Vapaad exclude
 - RM_Kethevar / RM_Lisqueth graphicClass -> Graphic_Random (step 2). No other mechanical def edit in his new notes (Thunderbeast size/description was sitting 1).
 - OWED when the variant renders land and he picks them: RM_Vashpuk / RM_Virr -> Graphic_Random + install. Recorded as a note on BIOME_FLORAFAUNA_ART_REVIEW_1; no new item.
 - Deploy still HELD (same reasons as sitting 1).
-## 5 commits — pending
+## 5 commits — 3de4163ab (raw decisions), 1c7c2df86 (stamp+ingest+install+defs), 45df3c182 (jobs+note)
