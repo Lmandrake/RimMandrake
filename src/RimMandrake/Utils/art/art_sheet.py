@@ -33,6 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import artledger as L  # noqa: E402
+import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -211,7 +212,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
     # *_plant_* render to every plant row (49 foreign renders on RM_Shadespire, 2026-10-04).
     word = parts[-2] if len(parts) > 1 and parts[-2].lower() not in GENERIC_DIRS else parts[-1]
     # render alias: the FILE STEM minus tier prefix, never the folder (art_resolution_rootcause §5.4 / B0)
-    wl = TIER_RE.sub("", parts[-1]).lower()
+    wl = S.stem(parts[-1]).lower()   # subject.stem: donor tiers (RG_, AB_ ...) and Plant_ too
     cols = []          # {kind, label, detail, faces:{facing: sha}, date, live, winner}
 
     # 1. every mod shipping it today
@@ -258,13 +259,14 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
     # 2. artpipe render families: bound by collected.jsonl dest, or alias by creature word
     fams = defaultdict(dict)
     fam_meta = {}
+    _fc = failed_canon_jobs()
     for sha, vs in idx.variants.items():
         for v in vs:
             if v.get("kind") != "artpipe":
                 continue
             job = v.get("job", "")
             bound = v.get("res") == res
-            alias = len(wl) >= 4 and re.search(rf"(^|_){re.escape(wl)}(_|$)", job.lower()) is not None
+            alias = len(S.norm(wl)) >= 4 and S.token_match(job, S.norm(wl))
             if not (bound or alias):
                 continue
             fam = FAM_RE.sub("", job)
@@ -279,7 +281,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         if not fam_meta[fam]["bound"] and NOT_BODY_JOB.search(fam):
             continue
         m = fam_meta[fam]
-        cols.append({"kind": "artpipe", "faces": faces, "date": m["date"], "label": f"render {fam}",
+        cols.append({"kind": "artpipe", "faces": faces, "date": m["date"],
+                     "label": f"render {fam}" + (FAILED_CANON_BADGE if _is_failed_canon(fam, _fc) else ""),
                      "detail": (f"{m['date']} · {'collected to this texPath' if m['bound'] else 'joined by creature name only (not bound to this graphic)'}"
                                 f" · derive_from {'yes' if m['derive'] else 'no'} · {m['item'] or ''}"),
                      "prompt": m["prompt"][:240], "bound": m["bound"]})
@@ -309,7 +312,9 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         win = pkg == dwinner
         how = "AssetBundle extract" if m["how"] == "assetbundle-extract" else "loose PNG in the game's mod folders"
         col = {"kind": "donor", "faces": dons[pkg], "date": "", "winner": win,
-               "label": (f"IN GAME — {m['mod']}" if win else f"donor original — {m['mod']}"),
+               "ours": pkg.startswith("mandrake."),   # our own deployed copy is not a donor original
+               "label": (f"IN GAME — {m['mod']}" if win else
+                         f"our deployed art — {m['mod']}" if pkg.startswith("mandrake.") else f"donor original — {m['mod']}"),
                "detail": (f"load index {dranks[pkg]}" + (" (last loaded, wins)" if win else
                           " (shadowed by a later mod)" if dranks[pkg] >= 0 else " (not in the measured load order)")
                           + f" · {pkg} · {how}"
@@ -693,7 +698,7 @@ CENSUS = L.REPO_ROOT / "Transient" / "biome_ffar" / "census.json"
 BIOME_OUT = L.REPO_ROOT / "Transient" / "biome_ffar"
 BIOME_SLUG = {"RM_LongShade": "desert", "RM_Stillsand": "deep_desert", "RM_BlueDesert": "blue_desert",
               "desert": "desert", "deep_desert": "deep_desert", "blue_desert": "blue_desert"}   # others: _stem(key).lower()
-TIER_RE = re.compile(r"^(RSW_|RM_|RUT_|rut_|AA_|AB_|BMT_|JOE_|A_|ZBiome_)")
+TIER_RE = S.TIER_RE
 NOT_BODY_JOB = re.compile(r"dess?icc?at|corpse|_mote|halo|filth|skeleton|print|mask|_icon\b", re.I)
 PAIR_COLOURS = ["#e8b64c", "#5ac3c3", "#c38ae8", "#e07a5f", "#7fc35a", "#5a8ae8", "#e85aa8", "#c3b85a"]
 ROLE_TEXT = {"body": "body", "swimming": "swimming graphic", "flying": "flying graphic",
@@ -702,7 +707,7 @@ SIT1 = "desert sitting 1"
 
 
 def _stem(n: str) -> str:
-    return TIER_RE.sub("", n or "")
+    return S.stem(n)
 
 
 def _human(row: dict) -> str:
@@ -772,10 +777,38 @@ def _fkey(c: dict) -> tuple:
 OVERRIDES = Path(__file__).resolve().parent / "sheet_row_overrides.json"
 
 
+FAILED_CANON_BADGE = " — failed canon check"
+
+
+_FC_CACHE: dict = {}
+
+
+def failed_canon_jobs() -> set:
+    """Job ids the artpipe canon gate filed as failed_canon (failed/<job>.manifest.json). The render still exists in
+    _artsrc and is a CANDIDATE: the gate has false-failed before (owner accepted such a render). Read at build time."""
+    import os
+    root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "failed"
+    if root in _FC_CACHE:
+        return _FC_CACHE[root]
+    out = _FC_CACHE[root] = set()
+    if root.is_dir():
+        for m in root.glob("*.manifest.json"):
+            try:
+                if json.loads(m.read_text()).get("worker_status") == "failed_canon":
+                    out.add(m.name[:-len(".manifest.json")])
+            except (OSError, ValueError):
+                pass
+    return out
+
+
+def _is_failed_canon(fam: str, fc: set) -> bool:
+    return any(j == fam or FAM_RE.sub("", j) == fam for j in fc)
+
+
 def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
     """Artpipe render families whose job name carries one of WORDS (word-bounded, >= 4 chars) or is one of
     EXACT (artpipe_state_jobs). Corpse/mote/mask/filth jobs are not body art and never join."""
-    pats = [re.compile(rf"(^|_){re.escape(w.lower())}(_|$)") for w in words if w and len(w) >= 4]
+    keys = [S.norm(w) for w in words if w and len(S.norm(w)) >= 4]
     exact = {e.lower() for e in exact}
     fams, meta = defaultdict(dict), {}
     for sha, vs in idx.variants.items():
@@ -787,7 +820,7 @@ def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
             job = v.get("job", "")
             fam = FAM_RE.sub("", job)
             fl = fam.lower()
-            if NOT_BODY_JOB.search(fl) or not (fl in exact or any(p.search(fl) for p in pats)):
+            if NOT_BODY_JOB.search(fl) or not (fl in exact or any(S.token_match(fl, k) for k in keys)):
                 continue
             fac = v.get("facing")
             if fac not in FACINGS:
@@ -795,7 +828,9 @@ def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
                 fac = fm.group(1) if fm else "single"
             fams[fam].setdefault(fac, sha)
             meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item")}
-    return [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "label": f"render {k}",
+    fc = failed_canon_jobs()
+    return [{"kind": "artpipe", "faces": f, "date": meta[k]["date"],
+             "label": f"render {k}" + (FAILED_CANON_BADGE if _is_failed_canon(k, fc) else ""),
              "detail": f"{meta[k]['date']} · found by NAME — not wired to any graphic of ours yet · {meta[k]['item'] or ''}",
              "prompt": (meta[k]["prompt"] or "")[:240], "bound": False}
             for k, f in sorted(fams.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
