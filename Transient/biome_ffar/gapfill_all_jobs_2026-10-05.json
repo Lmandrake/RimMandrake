@@ -1,0 +1,1651 @@
+[
+ {
+  "id": "gapall_AA_BedBug_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_BedBug",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_BedBug"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the bedbug. These oversized insects are considered a pest and a nuisance in every world they manage to infest. While not particularly dangerous or powerful on their own, their bite carries a powerful toxin that paralyzes its prey, so one small bite is enough to down prey much larger than themselves. Thankfully, humans are way too large for them, unless they are somehow maddened beyond all reason... Hunters should be wary not to tackle a bedbug on their own! Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_CrystalMit_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_CrystalMit",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_CrystalMit"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the crystalmit. A Crystalmit is a Pebblemit that has been genetically modified to feed on minerals. Crystalmits have a partly silicon-based biology, so they can derive substenance from eating scattered rocks. Crystalmits were created as a quick way of removing rock rubble from mining operations, but wild ones may prove to be a nuisance for colonies who'd rather use rocks for something useful. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_DecayDrake_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_DecayDrake",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_DecayDrake"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the mubbaro. A winged, flightless lizard that breathes out a slow ferment over any greenery nearby and then eats the result \u2014 getting thoroughly, contentedly drunk on it, which its four livers were apparently built to handle. Hard to tame, but a mubbaro that accepts you, especially with a drink in hand, makes a fine hunting companion. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_GiantCrownedSilkie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_GiantCrownedSilkie",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_GiantCrownedSilkie"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the giant crowned silkie. A large flightless bird, genetically modified to produce both edible eggs and a valuable silk-like textile. The giant crowned silkie was designed from the ground up as a versatile farm animal, perfectly domesticated and -contrary to other ratites- showing very little aggression. It is not uncommon to see flocks of silkies grazing in pastures all along the Rim. They are however not usually found in the wild, and when they are there is often a tale of violence behind their roaming around unprotected. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Helixien_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Helixien",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Helixien"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the vulloth. A vast, slow slug that breathes out a foul, corrosive gas wherever it goes \u2014 mostly harmless to the living, but murder on the dead: anything it passes near rots in minutes into a black, reeking fluid, which the vulloth then happily drinks. Watching one clear a field of corpses is not a sight anyone forgets. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_InfectedAerofleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_InfectedAerofleet",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_InfectedAerofleet"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the blistered bulloo. A bulloo whose hide has blistered from too long in the valley's haze, its hydrogen float now carrying a payload of spore rather than the clean gas its kin drift on. It rides the updraft same as any bulloo, bouncing off whatever gets in its way \u2014 until the sun catches it, and it pops. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_LuciferBug_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_LuciferBug",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_LuciferBug"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the luciferbug. A small insectoid, genetically modified to produce small batches of Luciferium extract every few days. Even though they are useful as a source of the dangerous drug, the fact that Luciferium is a mechanite-based drug makes luciferbugs extremely unstable, and prone to violent detonation if damaged. This detonation releases all the Luciferium accumulating on their abdomens, subjecting any nearby creatures to a dangerous drug overdose. For this reason, luciferbugs should always be kept VERY FAR AWAY from any valuable Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_OcularJelly_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_OcularJelly",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_OcularJelly"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the zhool. A drifting, gas-filled shape that hangs at canopy height, watching the cloud below. It breathes out a faint reddish haze that turns whatever plant it touches into something that shares its own strange flesh. When a zhool sinks low and settles, the valley's old hands know a Burn is coming. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Plasmorph_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Plasmorph",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Plasmorph"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the bezzul. A strange snail shelled in iron sulphide, carrying organs that build a weak electric spark down its length. The bezzul uses that spark to light its own flammable spit before lobbing a burning gobbet at whatever is threatening it. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Radyak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Radyak",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Radyak"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the radyak. The radyak is a peaceful herbivore bred to thrive in high radiation environments. Its ruminant digestive tract is composed of six bionic stomachs, reinforced with a lead-lined biolattice designed to extract residual radioactive material from grass cells. This radioactive material is then deposited in crystal-like formations that pierce the hard skin of the creature. This crystals can be harvested periodically, and refined into uranium in a standard chemfuel refinery. The technology behind creating such carefully Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_RipperHound_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_RipperHound",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_RipperHound"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the ripper hound. Ripper Hounds were created as a purely biological defense against Insectoids, a genetically engineered species bred for hunting and defeating them. These hulking canines sport two viciously sharp claws specially designed to attach to chitinous plates and rip them apart. Despite their fearsome appearance, Ripper Hounds can be extremely affectionate and loyal, and they love to be pet by those they trust. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AM_Dryad_Corruptor_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AM_Dryad_Corruptor",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AM_Dryad_Corruptor"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the corruptor dryad. A dryad caste with the unique ability to produce corrupted Gauranlen pods and reproduce the Gauranlen tree along with its symbiote, the dryad queen. To do this, three corruptor dryads must slowly merge. In general, dryads are mammal-like creatures that have a symbiotic relationship with the Gauranlen tree. They reproduce together with their tree, which contains a hidden dryad queen. Dryads can morph into various specialized castes. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AM_Dryad_Ocular_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AM_Dryad_Ocular",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AM_Dryad_Ocular"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the ocular dryad. A corrupted dryad afflicted by a bizarre extradimensional disease that causes gaping wounds to appear all over its body, from which ocular orbs slowly emerge. Ocular dryads can be further mutated into grotesque beasts by an Ocular Priest. In general, dryads are mammal-like creatures that have a symbiotic relationship with the Gauranlen tree. They reproduce together with their tree, which contains a hidden dryad queen. Dryads can morph into various specialized castes. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AM_Dryad_Tumorous_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AM_Dryad_Tumorous",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AM_Dryad_Tumorous"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the tumorous dryad. A corrupted dryad covered in tumorous growths that constantly appear over its whole body. These growths are edible, and can be used as a meat substitute of... questionable origins to say the least. In general, dryads are mammal-like creatures that have a symbiotic relationship with the Gauranlen tree. They reproduce together with their tree, which contains a hidden dryad queen. Dryads can morph into various specialized castes. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_GR_Beetlefleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "GR_Beetlefleet",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "GR_Beetlefleet"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the beetlefleet. A chitinous, floating, hydrogen-filled monstruosity. The beetlefleet wanders the land bouncing off objects in its path, seeking prey to consume. Useful abilities: Beetlefleet produce insect jelly, explode on death violently, and reproduce asexually. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Silooth_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Silooth",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Silooth"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the silooth. The silooth were a large 'Sithspawn' acid spitting beetle bred by the Sith Empire for use as a warbeast. Silooth were ferocious creatures using their powerful mandibles to crush their prey or tear down trees and buildings. They were spread to numerous worlds either intentionally or accidentally by the Sith. These descendents whilst not as large and ferocious (another process of feral regression in the absence of their 'Sith masters') are still formidable. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Visceral_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Visceral",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Visceral"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the visceral. An alien (or at least unknown) creature of rigor and veracity. About the size of a human and much more dangerous. Armed with rending raptorial legs and a maw capable of tearing into even the toughest hide. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_TreeMartyr_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_TreeMartyr",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the martyr tree. A large yucca-related plant adapted to poisoned soils. It yields a small amount of fibrous material that can be used like wood. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_VFEI2_Megathrips_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Megathrips",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "VFEI2_Megathrips"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the megathrips. A large, genetically-engineered thrips. A worker caste of an artificial ecosystem of insectoids designed to fight against humans in large scale wars, it now often makes up for the majority of the kemian geneline hives. Megathrisp uses sharp mandibles to rip the armor into shreds, while overcharged acid glands coat the exposed flesh in corrosive substance, causing severe burns. A eusocial creature, it cannot reproduce individually. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Plant_HydenockTree_Wild_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_HydenockTree_Wild",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_HydenockTree_Wild"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wild hydenock tree. The hydenock was a species of reddish, curving trees native to planet Alderaan, whose bark produced a dye which could be harvested in large amounts. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_Plant_JoganTree_Wild_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_JoganTree_Wild",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_JoganTree_Wild"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wild jogan tree. Jogan trees were the source of the popular jogan fruit. There were jogan tree orchards on the planet Lothal but the popularity of the fruit resulted in the trees being spread across the galaxy. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_AA_Murkling_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Murkling",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Murkling"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the kessik. A small, quick-witted scavenger that runs in packs, humming to its kin through organs on its snout that no other ear can follow. Sly enough to outwit prey twice its size, the kessik has a reputation across the crags as the thief of the night \u2014 and a bite that leaves more than a scar behind. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_CrackedThornwood_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_CrackedThornwood",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the twisting thornwood. A large species of tree found in polluted arid environments. It is one of three closely related species of plant, alongside the thornweed and thorngrass. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Plant_Bellows_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Plant_Bellows",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the bellows. A knee-high sac of the body, rounded and taut and slowly breathing. It is not a plant and has no roots; it is a pocket the flow has pushed up and forgotten to reabsorb. Cut one and it empties itself of clean, heavy slime without complaint. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RSW_Skorra_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Skorra",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "RSW_Skorra",
+   "AA_Needlepost"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the skorra. A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first skorras was overrun soon after. Skorras can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Plant_Grass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Grass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_Grass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the grass. Wild grass. Grows anywhere there is a little light and minimally fertile ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_Plant_TallGrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TallGrass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_TallGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the tall grass. Wild tall grass. Slows down anyone moving over it. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_YearningFruit_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_YearningFruit",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the yearning fruit. A heavy-fruiting bush, absurdly generous with itself \u2014 huge, glossy, sickly-sweet fruit hangs everywhere on it, all season. The sweetness is real, but so is the trick: every fruit is loaded with digestive accelerants, so whatever eats it digests fast, is hungry again within hours, and leaves the seed behind in a fresh patch of its own fertilizer a short walk from where it ate. The ground under a healthy stand is carpeted in filth and new sprouts in equal measure, which is not neglect. It is the plan working. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_BrellikBulb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_BrellikBulb",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the brellik bulb. With brightly glowing amber tips, brellik draws animals to eat it and unwittingly carry its durable spores through the dark. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_DeepMycelium_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_DeepMycelium",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the mycelium. Extremely wide-spread mycelium of many different species, carpeting the floors of the Deeps. Herbivores eat it where it grows. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_KuvraSpout_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_KuvraSpout",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the kuvra spout. An aquatic fungus that grows as an upside-down cone and glows in the dark. Kuvra cones, dried, hold liquid. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_NurrikGill_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_NurrikGill",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the nurrik gill. Its cap is almost black; its gills glow brightly beneath. Nurrik grows in water, or in ground wet enough to pass for it. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_OsskBramble_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_OsskBramble",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the ossk bramble. Tangled, thorny shoots tipped with crystal. Ossk grows in clusters and slows anyone moving over it; grazers strip it anyway. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_PrennaLace_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_PrennaLace",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the prenna lace. A grey fungus that grows cloth-like lace from under its cap. Prenna is the Deeps' one source of fabric. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_QuorrFern_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_QuorrFern",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the quorr fern. A symbiosis between two species of mushroom and a fern, unique to the crystal voids. Quorr is what the Deeps have instead of undergrowth. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_ThrakkCap_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_ThrakkCap",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the thrakk cap. A strong crystal-capped mushroom tree. Slow-growing, but thrakk wood is very tough and very handsome, and it does not much care what it grows in. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_VellokReed_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_VellokReed",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the vellok reed. An aquatic fungus tall enough to be logged, lit from inside. Vellok grows fast in the shallows, but it does not yield much usable material. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_ZivvitTaper_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_ZivvitTaper",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the zivvit taper. A mushroom with a long narrow cap that glows at the tip. Cave dwellers use zivvit the way other people use flowers, or candles. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RSW_Chikka_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Chikka",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "RSW_Chikka",
+   "AA_Cactipine"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the chikka. A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RSW_Skorra_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Skorra",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "RSW_Skorra",
+   "AA_Needlepost"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the skorra. A mobile cactus given crude sentience and toxic barbs. Early trials aimed for a stationary deterrent; giving it a body and a mind of its own proved a mistake, and the facility that made the first skorras was overrun soon after. Skorras can draw a little nutrition from rotting vegetation, but they live and die by direct sunlight - a long eclipse is usually fatal. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RSW_Vurra_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Vurra",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "RSW_Vurra",
+   "Terrorworm"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the vurra. An alien worm of uncertain origin, large enough to threaten a lone traveler but neither fast nor especially ferocious. Vurras are usually found trailing larger, stranger things, as if playing a supporting role in something else's hunt. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Fuzz_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Fuzz",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the the fuzz. A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Its growth crown sits below the soil line, so grazing and cutting alike only ever take the expendable leaves above - the fuzz and the giants that mow it are one equilibrium, and it is back within days. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_AA_DecayDrake_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_DecayDrake",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_DecayDrake"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the mubbaro. A winged, flightless lizard that breathes out a slow ferment over any greenery nearby and then eats the result \u2014 getting thoroughly, contentedly drunk on it, which its four livers were apparently built to handle. Hard to tame, but a mubbaro that accepts you, especially with a drink in hand, makes a fine hunting companion. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Helixien_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Helixien",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Helixien"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the vulloth. A vast, slow slug that breathes out a foul, corrosive gas wherever it goes \u2014 mostly harmless to the living, but murder on the dead: anything it passes near rots in minutes into a black, reeking fluid, which the vulloth then happily drinks. Watching one clear a field of corpses is not a sight anyone forgets. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Slurrypede_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Slurrypede",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Slurrypede"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the slurrypede. Although rare, mechanoids have been known to capture prisoners, and the Slurrypede is their solution to feed them in the most efficient way possible. The Slurrypede is a modified bio-mechanoid capable of devouring almost anything and processing it into a homogeneous organic slurry. This slurry is edible for carnivore and omnivore animals, but barely, and completely indigestible for herbivores. Slurrypedes are docile, almost never hostile, and in case a mechanoid base is destroyed and one of them manages to Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_FeverSwarm_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FeverSwarm",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 30,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite, painterly: the fever swarm. Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone \u2014 only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Karravel_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Karravel",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 30,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite, painterly: the karravel. A coin-flat armoured disc the size of a palm, dull olive with a fine salt bloom, its legs never showing beneath the shell. Alone it is nothing. In numbers \u2014 and karravel are never anything but numerous \u2014 they cover the mud film so completely the ground itself appears to be sliding. The Miasma's cheapest protein, and the bulk of everything that eats here. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Karrimeth_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Karrimeth",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 30,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite, painterly: the karrimeth. Individually unremarkable \u2014 a thumb-sized humped shell, pale grey, salt-frosted. Karrimeth are never seen individually for long: they occur as a moving carpet thousands strong, flowing around obstacles as a single audibly clicking body. A lone karrimeth is a straggler, and stragglers do not last. A mass crossing a colony strips forage and fills traps rather than threatening anyone directly \u2014 the aftermath of a surge, made visible. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Karrobel_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Karrobel",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 30,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite, painterly: the karrobel. A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole \u2014 mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Karrolun_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Karrolun",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 30,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld creature sprite, painterly: the karrolun. A slow, long-legged scuttler the size of a spread hand \u2014 visibly the biggest of its kin, its shell a deep iridescent blue-green that fades to chalk when it dies. Faintly comic in its deliberateness, and the only one of the floor's four worth picking up by hand: the Miasma's ordinary meat, and the one thing that gives the arthropod harvest a real target instead of a chore spread across three other species. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_VFEI2_BlackSwarmling_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_BlackSwarmling",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "VFEI2_BlackSwarmling"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the black swarmlings. The juvenile form of Black Hive insectoids, black swarmlings are more or less harmless, slow and easy to kill. After some time has passed, they undergo a metamorphosis, forming a cocoon from which an adult Black Hive insectoid will emerge. There is no way to tell what kind of insect will crawl out of its cocoon. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_ShockGoat_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_ShockGoat",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_ShockGoat"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the zhissa. A pale-eyed grazer of the ice sheets, its body running with static it can discharge in a crackling pale-blue burst when threatened. Six eyes see nothing on the nightside \u2014 the zhissa reads the world entirely by heat instead. Farmed where it can be kept, for the milk it still gives. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Tauntaun_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Tauntaun",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Tauntaun"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the tauntaun. Tauntauns are a species of omnivorous reptomammals who are indigenous to the icy planet of Hoth. Tauntauns were commonly used as pack animals during the Rebel Alliance's stay at Hoth. Tauntauns were also used as patrol mounts when it was learned that the Rebel Alliance's own vehicles could not cope with the very cold weather. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_FE_Plant_EmberGrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FE_Plant_EmberGrass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the ember grass. A coarse, fast bunchgrass that carpets burned ground within days of the fire going out. It puts everything into height and nothing into water, so it is dry and brittle almost as soon as it is up \u2014 standing tinder, growing faster than anything can graze it down. The stems dry to a dull orange, which is where the name comes from, though it is a fair description of what happens next as well. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_FE_Plant_Quickgrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FE_Plant_Quickgrass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the quickgrass. A low, dense forage grass that comes back onto burned ground while the ash is still warm, green against the black inside a day or two. Its roots run absurdly deep for its size \u2014 down to the water table, in defiance of everything the surface suggests \u2014 and its blades carry more food than any wild grass has a right to. It was engineered that way, twenty-five millennia ago, by gardeners who wanted this ground to feed things. The gardeners are gone. The lawn is still working. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_GR_Mecharat_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "GR_Mecharat",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "GR_Mecharat"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the mecha-rat. This tiny cybernetic organism can be mass-produced as a kind of \"suicide weapon\". It is very fast, and armed with a short ranged stun gun, so hordes of mecha-rats can be sent to the front lines to keep enemies stunned and in check. <color=#E5E54C>Gameplay effect:</color>Mechanoid hybrids are always created with a controller booster, allowing the colonists to send the mecha-rat to the front lines to quickly stun enemies. Mechanoid hybrids need very little food or rest, don't have psychic or toxic sensitivity, and Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_CoolantEelCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_CoolantEelCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught coolant eel, as a fresh catch lying as a single inventory item. A pale, eyeless eel as long as a forearm, cold to the touch long after it leaves the water. Its skin is smooth and faintly metallic, and it goes on twitching for a while after it stops living. Buyers off-plateau pay well for one. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_AA_Aerofleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Aerofleet",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Aerofleet"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the bulloo. A small, floating, gas-filled creature that drifts on the hydrogen it draws from water and plant matter, bouncing gently off whatever stands in its way. Harmless, and slowly weeping a thick gel that can be refined into fuel. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_ColossalAerofleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_ColossalAerofleet",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_ColossalAerofleet"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the greater bulloo. A bulloo grown to enormous size, trailing a little escort of smaller ones that seem to follow it everywhere it drifts. It sheds the same thick gel as its kin, just far more of it. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_CrescendoAnole_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_CrescendoAnole",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_CrescendoAnole"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the crescendo anole. Most of the time, the Crescendo Anole is a harmless iguanian lizard that feeds on vegetation and small arthropods. They are unusually intelligent, and can be kept as pets. However, when the anole becomes aggressive in any way, usually in self defense, an unstable cocktail of growth hormones and biomechanical mechanites causes a runaway growth of the creature's cells, turning it into a hulking crocodilian nightmare. This effect is temporary, lasting a few hours, and afterwards the anole must recover its strength to Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Metallovore_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Metallovore",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Metallovore"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the metallovore. Metallovores are repulsive creatures genetically modified to fill a very specific niche: eating metals. The writhing tentacles in the animal's mouth secrete an organic substance that is capable of quickly rusting and dissolving most common metals, turning them into small flakes that serve as sustenance for the metallovore. They prefer small chunks of metal, since they can be more easily digested, but they will resort to digging into rocks in search of new metal if they can find none available. Presumably, they Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_LavaSnail_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "LavaSnail",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "LavaSnail"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the lava snail. A large slow-moving mollusk. Originating from the volcanic planet Nuchadus, lava snails were bred as farm animals. Their skin secretes a thick slime that protects them from extreme temperatures. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Tibidee_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Tibidee",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Tibidee"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the tibidee. Tibidees were giant silicon-based creature native to Stygeon Prime, though they could also be found on other mountainous Outer Rim planets (such as Oosalon). Though normally gentle, tibidees would attack anything they felt was threatening. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_IronScruff_Bindweed_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "IronScruff_Bindweed",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "IronScruff_Bindweed"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the bindweed. A ground cover flower that grows in large clusters. Quite pretty. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_IronScruff_PrimordialGrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "IronScruff_PrimordialGrass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "IronScruff_PrimordialGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the primordial grass. Wild, yellow tinged grass. Grows anywhere there is a little light and minimally fertile ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_IronScruff_PrimordialTallGrass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "IronScruff_PrimordialTallGrass",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "IronScruff_PrimordialTallGrass"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the primordial tall grass. Wild, tall, yellow tinged grass. Slows down anyone moving over it. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_AA_AngelMoth_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_AngelMoth",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_AngelMoth"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the angel moth. Angel moths are beautiful lepidopterans that undergo metamorphosis, similar to other more mundane moths. Angel moths are yet another example of a genetically engineered project of waste disposal being abandoned, and its subjects being released into the wild. The larvae are quite timid and harmless, and they are content with munching on sparse vegetation. The adult form of the moth, however, is voracious, and it will mainly consume its favourite food: clothing \u2013in particular wool clothes, but many other natural Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_AnimaColossus_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_AnimaColossus",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_AnimaColossus"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the anima colossus. The Anima Colossus is a variant of the Overgrown colossus native to the legendary anima forests. It seems to be reptilian in nature, with cold blood, a slow metabolism, and a very weird body plan: it has six legs, two intertwined spines and six eyes. It has a symbiotic relationship with anima vegetation, with several Anima Trees and Mystic Cap mushrooms growing on its back. These plants seem to provide sustenance in a symbiotic relationship with the colossus. When tamed, the Anima Colossus can be periodically Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_Snoruuk_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Snoruuk",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Snoruuk"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the snoruuk. Snoruuks were mobile mushrooms found on the planet Gamorr. They could be herded and were the favourite livestock of the Gamorreans, which resulted in their transplantation to other worlds. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Saal_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Saal",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught saal, as a fresh catch lying as a single inventory item. The bubble-sailor, netted: a bell no bigger than a fist with a single stiff sail-vane that it sets into the trailing lines of boiling bubbles and rides \u2014 up the vent columns, drifting down, riding again. The Scald's kindest resident and its signature silhouette; pilgrims read their traffic the way sailors read gulls. Nobody fishes for them on purpose. One in a margin-net is let go more often than not, and the margin-net that keeps one is not spoken of. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RUT_Plant_Wick_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RUT_Plant_Wick",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "RUT_Plant_Wick"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wick-plant. A low, waxy stand of stems that feeds directly on the tar's own chemistry rather than the sun \u2014 it needs no daylight at all, only whatever faint light is already there. Junker stations cultivate it in wick-gardens at the tar's edge; harvested and dried, its stems are the only living light the Sump ever gives back. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_AA_Aerofleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Aerofleet",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Aerofleet"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the bulloo. A small, floating, gas-filled creature that drifts on the hydrogen it draws from water and plant matter, bouncing gently off whatever stands in its way. Harmless, and slowly weeping a thick gel that can be refined into fuel. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_Helixien_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Helixien",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_Helixien"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the vulloth. A vast, slow slug that breathes out a foul, corrosive gas wherever it goes \u2014 mostly harmless to the living, but murder on the dead: anything it passes near rots in minutes into a black, reeking fluid, which the vulloth then happily drinks. Watching one clear a field of corpses is not a sight anyone forgets. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_AA_SpinedGow_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_SpinedGow",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "AA_SpinedGow"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the spined gow. Spined Gows are farm animals with cow and goat characteristics, bred to survive in extreme environments. Spined Gows are herbivorous, happy to graze in any grassy meadow. However, their neural spine sails provide a different and additional type of sustenance: when the creature is near a geologically active terrain, such as liquid lava, the sail absorbs part of the intense radiating heat and converts it into chemical energy. Sp\u00ecned Gows provide a very nutritious milk. <color=#E5E54C>Gameplay effect:</color> The Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_SW_Electricgryllotalpa_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "SW_Electricgryllotalpa",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "SW_Electricgryllotalpa"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the Electricgryllotalpa. A large bioengineered insectoid. Designed to destroy the mechanoid. The discharge organs are highly developed and capable of releasing focused arcs to attack distant enemies.Focused arcs can cause double damage to the mechanoid. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_SW_Electrictick_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "SW_Electrictick",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "SW_Electrictick"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the Electrictick. A medium bioengineered insectoid. Designed to destroy the mechanoid. The growth rate is extremely rapid, but as a result, the lifespan is very short. The discharge organ occupies more than half of the body tissue and releases a strong electric current upon death. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_SW_Juggernautbeetles_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "SW_Juggernautbeetles",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "SW_Juggernautbeetles"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the Juggernautbeetles. A giant bioengineered insectoid. Designed to destroy the mechanoid. The thick shell covering its entire body enables it to charge against the fierce firepower of the mechanoid's artillery and tear apart any mechanoid's armor with its strong front paws equipped with discharge organs. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Glower_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Glower",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the the Glowers. A glassy black varnish of moss and lichen, spread thick over crater bowls and hotspots wherever the ground still runs hot -- it eats the radiation itself, the same trick some radiotrophic molds are said to know. It thickens for centuries undisturbed. Scraped up, it burns crude and hot, and its ash makes a pigment nothing else on the planet can match. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_Plant_TreePolux_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TreePolux",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_TreePolux"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the polux tree. After generations of exposure, these trees have evolved to metabolize pollutants. By drawing pollutants from the ground through wide root networks, they slowly clean polluted terrain in their vicinity. However, they cannot do this if buildings are constructed over their roots. Unlike most methods of cleaning polluted terrain, polux trees do not create toxic wastepacks. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_WastelandScorchedStars_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_WastelandScorchedStars",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld plant sprite, painterly: the scorched stars. Rounder cacti covered in sharp spines. They are often said to look like a burnt star. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_Plant_TookeTrap_Wild_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TookeTrap_Wild",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "Plant_TookeTrap_Wild"
+  ],
+  "prompt": "RimWorld plant sprite, painterly: the wild tooke-trap plant. Tooke-trap plants were a species of carnivorous plant that were native to the swamps of Naboo. This strain was selected for it's beauty but there were rumours of larger more aggressive variants that could eat small animals like the Tooke (for which the plant got it's name). Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_ColossusToad_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "ColossusToad",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "target_original": [
+   "ColossusToad"
+  ],
+  "prompt": "RimWorld creature sprite, painterly: the colossus toad. A massive frog bioengineered for industrial farms. While safe to eat, its thick skin secretes an unpleasant slime. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings."
+ },
+ {
+  "id": "gapall_RM_Duul_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Duul",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught duul, as a fresh catch lying as a single inventory item. A slow grey sock of a thing that lies on the pool floor and eats what settles -- silt, dung, dead dew-smoke, the ash blown in from the desert. A pool with duul in it stays clear; a pool without them clouds in a season. Every oasis keeper knows the count. It is edible in the sense that most things are. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_HulduCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_HulduCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught huldu, as a fresh catch lying as a single inventory item. Picked up. It holds on. The easiest catch on the farm, and the one that leaves the handler uneasy. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Ikkal_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ikkal",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught ikkal, as a fresh catch lying as a single inventory item. A palm-wide bladder that hangs at the surface with a comb of fringe trailing below it, sieving the dew-smoke out of the water as it falls. At dusk the whole pool is dimpled with them, tilted to the same side like cups set out. It has no fight in it; a child can lift one out. Thin eating, and nobody minds -- pilgrims cook them for the broth, which tastes faintly of the stones. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_IvvolCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_IvvolCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught ivvol, as a fresh catch lying as a single inventory item. Lifted from the floor at night, when the eye-ridge closes. By day it sees the net coming, every time. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_KarrekCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_KarrekCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught karrek, as a fresh catch lying as a single inventory item. A basket-trapped handful of finger-length armored fish, chitin combs still snapping. Never a line, never bare hands. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_LoomuCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_LoomuCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught loomu, as a fresh catch lying as a single inventory item. It came to the feed whistle. That IS the catch method, and everyone hates it. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Ozhu_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ozhu",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught ozhu, as a fresh catch lying as a single inventory item. A blind, comb-gilled eel that lives in the warm throat of the seep itself, down where the spring comes up through the stones. It surfaces at dusk to feed on the fallen dew-smoke and goes back down. Warm to the touch when landed, and it stays warm for a while, which unsettles people. The oldest pools have the longest ozhu; oasis-keepers claim they can taste which spring one came from. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_SkarrinCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_SkarrinCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught skarrin, as a fresh catch lying as a single inventory item. A silver arc netted mid-air when the pool is fed \u2014 the one catch you make above the water. A missed net is a bite. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Tarrik_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tarrik",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught tarrik, as a fresh catch lying as a single inventory item. A thumb-length shrimp-thing with antennae grown into two fine combs that it holds up into the current and licks clean. Kin to the mirrik above the water, and it shows: the same chitin, the same fringed silhouette, the same habit of mist-dancing at dusk, only underwater. It breeds in the shallows during the truce, in the open, in crowds -- which is why nobody who has sat at a pool at dusk can eat one without a small pang. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Ullo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ullo",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught ullo, as a fresh catch lying as a single inventory item. A soft bell the size of two cupped hands, near-invisible by day, that lights a slow blue pulse from dusk. Ullo rise together and drift as a lit crowd while the fan-dancers display on the bank; the pools are places of romance and the ullo have never been told otherwise. Netted, it is a sting and a disappointment -- mostly water, a little meat, and the light goes out in your hands. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_VizhikCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_VizhikCatch",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught vizhik, as a fresh catch lying as a single inventory item. Picked off wet stone after an escape, gloved \u2014 not caught in the pool, caught traveling. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ },
+ {
+  "id": "gapall_RM_Vobbal_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vobbal",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "prompt": "RimWorld item sprite, painterly: the caught vobbal, as a fresh catch lying as a single inventory item. Eight soft arms and a bulb of a body, living in the hollows where the seep water enters the pool. It takes things. Pebbles, offerings, a dropped tool, a ring -- and it stacks them, carefully, in towers in the shallows, and knocks them down, and stacks them again. Some oases forbid catching them; most simply don't. The ones who do eat them say it is very good, in a voice that suggests they would rather not have. Our own original design; do not copy any existing mod's art.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props."
+ }
+]
