@@ -36,3 +36,4 @@ Sources: Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json (Long Shade
 - RENAME RM_Sollak -> Chorn: DONE — defName RM_Chorn, label/description chorn; texPath kept (owner: keep art).
 - RENAME RM_Liikka -> Likka Likka: DONE — defName RM_LikkaLikka, label/plural/description 'likka likka'; texPath kept; roster row renamed.
 - SIZE RM_Gennok: DONE — +50% (bodySize 2.4->3.6; drawSize 1.4/2.0/2.6 -> 2.1/3/3.9)
+- SIZE RM_Gloomcast: DONE — +50% (bodySize 16->24; drawSizes 2.2/6.4/8.8 -> 3.3/9.6/13.2)
