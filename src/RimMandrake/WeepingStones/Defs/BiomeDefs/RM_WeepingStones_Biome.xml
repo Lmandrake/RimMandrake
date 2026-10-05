@@ -145,7 +145,6 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal -->
-      <RM_Ikee MayRequire="mandrake.rm.biomes">0.1</RM_Ikee>  <!-- ikee - omen, import; non-Star-Wars donor, stays RM tier per Q9 -->
       <!-- STOCKED_POOL_BUILD_1 wave 2 — the stocked-pool bestiary's floor/pen
            half (two-def law). RM_Vhorrin deliberately excluded, see the
            header comment above. -->
