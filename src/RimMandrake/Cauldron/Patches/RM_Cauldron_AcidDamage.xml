@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_CLOSED_LOOP_BUILD_1: mark the damage types that count as ACID, so vexxith (and anything
+  else carrying RM_AcidImmuneExtension) ignores them. Data, not a hard-coded list: another mod's
+  acid joins with one more operation here.
+    * AcidBurn — vanilla (Core); FlowWorks' acid liquids and red slime also deal it.
+    * RM_BloomAcid — Warscar's reaction-pool bloom phase (source folder src/RimMandrake/Scarlands,
+      composed into mandrake.rm.biomes beside this biome). Guarded by a Conditional on the def
+      existing (a top-level MayRequire is inert in 1.6), so a standalone Cauldron load is clean.
+-->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/DamageDef[defName="AcidBurn"]</xpath>
+    <value>
+      <li Class="RimMandrake.Cauldron.RM_AcidDamageExtension" />
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/DamageDef[defName="RM_BloomAcid"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/DamageDef[defName="RM_BloomAcid"]</xpath>
+      <value>
+        <li Class="RimMandrake.Cauldron.RM_AcidDamageExtension" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

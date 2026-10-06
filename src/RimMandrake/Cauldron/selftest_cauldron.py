@@ -414,7 +414,35 @@ class Fake(object):
             p["hediffs"] = [h for h in p["hediffs"] if h["def"] != hediff]
         return {"success": True}
 
-    def t_damage(self, damageDef=None, amount=0, thingId=None, **k):
+    def t_build_batch(self, ops="", stuff=None, **k):
+        placed = 0
+        back = []
+        for op in ops.split(";"):
+            d, nums = op.split(":")
+            n = [int(v) for v in nums.split(",")]
+            self.new(d, n[0], n[1], stuff=stuff, hp=300)
+            placed += 1
+            back.append({"def": d, "stuff": stuff, "x": n[0], "z": n[1], "hitPoints": 300})
+        return {"success": True, "placed": placed, "survived": placed, "things": back}
+
+    def _acid_proof(self, t):
+        if self.settings.get("vexxithAcidImmunityEnabled") != "True" and "acid_ignores_toggle" not in self.broken:
+            return False
+        if "acid_burns_vexxith" in self.broken:
+            return False
+        return t.get("stuff") == V.VEXXITH or t["def"] == V.VDOOR
+
+    def t_damage(self, damageDef=None, amount=0, thingId=None, x=-1, z=-1, **k):
+        if thingId is None and x >= 0:
+            rows = []
+            for t in self.things.values():
+                if t["x"] == x and t["z"] == z and "hp" in t:
+                    before = t["hp"]
+                    if not (damageDef == V.ACID and self._acid_proof(t)):
+                        t["hp"] = max(0, before - int(amount))
+                    rows.append({"id": t["id"], "def": t["def"], "hitPointsBefore": before,
+                                 "hitPointsAfter": t["hp"]})
+            return {"success": bool(rows), "results": rows, "resultCount": len(rows)}
         p = self.pawns.get(thingId)
         if p and p["kind"] == V.SUUSH:
             hit = damageDef in ("Bullet", "Bomb") and "no_detonate" not in self.broken
@@ -561,6 +589,9 @@ def run(broken=()):
     if "fexxil_no_venom" in broken:
         V._OVERRIDE["ThingDefs_Plants/RM_CauldronFloraExpansion.xml"] = V._def_text(
             "ThingDefs_Plants/RM_CauldronFloraExpansion.xml").replace("CompProperties_ContactVenom", "CompProperties_Gone")
+    if "acid_ext_missing" in broken:
+        V._OVERRIDE["ThingDefs_Items/RM_CauldronItems.xml"] = V._def_text(
+            "ThingDefs_Items/RM_CauldronItems.xml").replace("RM_AcidImmuneExtension", "RM_AcidGoneExtension")
     real_err = sys.stderr
     sys.stderr = open(os.devnull, "w")             # the suite's per-component progress lines
     try:
@@ -632,6 +663,9 @@ BREAKS = {
     "log_error": "log.log_clean",
     "flora_row_missing": "load.flora_expansion_shape",
     "fexxil_no_venom": "load.fexxil_venom_shape",
+    "acid_ext_missing": "load.acid_wiring_shape",
+    "acid_burns_vexxith": "acid.vexxith_acid_proof",
+    "acid_ignores_toggle": "acid.vexxith_acid_toggle_off",
 }
 
 # A few breaks cascade by design: the component named is the FIRST red, later ones are UNMEASURED
@@ -651,14 +685,14 @@ def source_checks():
         short = typ.rsplit(".", 1)[1]
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
-    if len(V.DEFAULTS) != 20 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 16:
-        bad.append("parsed %d defaults / %d bools, expected 20 / 16" %
+    if len(V.DEFAULTS) != 22 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 18:
+        bad.append("parsed %d defaults / %d bools, expected 22 / 18" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
-    if len(V.SHIPPED) != 42 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 42 / 17 / 4); update "
+    if len(V.SHIPPED) != 43 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 43 / 17 / 4); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

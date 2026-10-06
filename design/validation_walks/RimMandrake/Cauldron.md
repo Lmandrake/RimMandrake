@@ -66,6 +66,13 @@ The suush, zisska, eskith
 - A real butchering of a zisska pays that steel. → UNCOVERED: needs a built butcher table + bill (no cheap fixture yet)
 - The eskith hushes before a vent bloom. → UNCOVERED: not built (the item `CAULDRON_MECHANICS_BUILD_1` owes the falter tell)
 
+Vexxith ignores acid (VEXXITH_CLOSED_LOOP_BUILD_1)
+- `RM_Vexxith` carries `RM_AcidImmuneExtension` and is both Metallic and `RM_VexxithPlate`; `RM_VexxithDoor` accepts `RM_VexxithPlate` and nothing else; the mod's patch marks vanilla `AcidBurn` as acid. → load.acid_wiring_shape
+- A vexxith wall and a vexxith door hit by AcidBurn keep every hit point while a steel wall beside them loses some (the control). → acid.vexxith_acid_proof
+- With `vexxithAcidImmunityEnabled` off a vexxith wall loses hit points to the same AcidBurn. → acid.vexxith_acid_toggle_off
+- Warscar's `RM_BloomAcid` (source folder Scarlands, composed beside this biome) is marked acid too, by a patch guarded on the def existing. → load.acid_wiring_shape
+- `vexxithDoorEnabled` exists, defaults on and is writable (it hides the door from the architect menu at the next launch). → settings.vexxithDoorEnabled_roundtrip
+
 Nettles on toxic shores
 - Raven nettles colonise land beside toxic water: some at map creation, more over the following weeks. → UNCOVERED: the live pass samples 40 random cells per 2500 ticks over the whole map and only runs where the map biome's roster names the nettle, so it needs days of ticks and a Cauldron-biome map; only the wiring is read (load.nettle_habitat_wired). Proposed tool: CAULDRON_CONDENSATE_SWEEP_HOOK_1
 - `condensateGardensEnabled` exists, defaults on and is writable. → settings.condensateGardensEnabled_roundtrip

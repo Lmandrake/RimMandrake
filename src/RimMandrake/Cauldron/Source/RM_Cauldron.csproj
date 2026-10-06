@@ -5,10 +5,10 @@
     src/RimMandrake/Abyss/Source/RM_Abyss.csproj — copy
     that header if this one goes stale.
 
-    NO HARMONY REFERENCE, DELIBERATELY. The only hook this mod uses is a
-    vanilla extension point (BiomeWorker, ModSettings). Nothing here patches
-    an engine method, so nothing here breaks on a game update that renames
-    one. About.xml carries no brrainz.harmony dependency either.
+    HARMONY: one prefix, Thing.TakeDamage (VEXXITH_CLOSED_LOOP_BUILD_1, owner
+    ruling 2026-10-03: the acid-immunity patch goes into this mod, which drops
+    its no-patch purity for it). 0Harmony is referenced, never copied: it comes
+    from brrainz.harmony at runtime, which About.xml now depends on.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Cauldron\Source\RM_Cauldron.csproj -c Release
@@ -39,6 +39,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_CauldronMod.cs" />
     <Compile Include="RM_CauldronBiome.cs" />
@@ -48,6 +52,7 @@
     <Compile Include="RM_CondensateGardens.cs" />
     <Compile Include="RM_CauldronVents.cs" />
     <Compile Include="RM_CauldronFloraExpansion.cs" />
+    <Compile Include="RM_VexxithAcidImmunity.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,6 +60,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>

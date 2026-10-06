@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_CLOSED_LOOP_BUILD_1: the acid-proof vexxith door (owner ruling 2026-10-03).
+
+  Plate-only: stuffCategories is RM_VexxithPlate alone, so it can only be built from vexxith.
+  Acid-proof by being made of vexxith (RM_AcidImmuneExtension on the stuff, the Harmony prefix in
+  RM_VexxithAcidImmunity.cs); fireproof because vexxith's Flammability factor is 0. A vexxith-stuffed
+  vanilla Door gets the same immunity; this def exists because the owner asked for a distinct one.
+  Mod Settings: vexxithDoorEnabled hides it from the architect menu (restart to apply).
+
+  PROVISIONAL numbers (invented, owed to DESIGN_MATERIALS_REVIEW_1): costStuffCount 25 (vanilla
+  Door's), WorkToBuild 1200, MaxHitPoints 200.
+  Placeholder art: vanilla simple-door textures tinted by the stuff colour. Own art is owed.
+-->
+<Defs>
+  <ThingDef ParentName="DoorBase">
+    <defName>RM_VexxithDoor</defName>
+    <label>acid-proof door</label>
+    <description>A door hung from sheared vexxith plates, every seam lapped so nothing can wick through. Acid beads and runs off it; fire cannot catch it. Slow to make, because the plates do not care to be shaped.</description>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <stuffCategories Inherit="False">
+      <li>RM_VexxithPlate</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <uiOrder>2015</uiOrder>
+    <building>
+      <isStuffableAirtight>true</isStuffableAirtight>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+    </modExtensions>
+  </ThingDef>
+</Defs>

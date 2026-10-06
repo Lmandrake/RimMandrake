@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_CLOSED_LOOP_BUILD_1: a stuff category only vexxith carries, so a def can be made
+  "plate-only" (accepts vexxith and nothing else) while vexxith itself also stays Metallic and
+  works anywhere steel does (owner ruling 2026-10-03: vexxith stays a strong general material).
+  Fields copied from vanilla Metallic.
+-->
+<Defs>
+  <StuffCategoryDef>
+    <defName>RM_VexxithPlate</defName>
+    <label>vexxith plate</label>
+    <noun>vexxith</noun>
+    <destroySoundSmall>BuildingDestroyed_Metal_Small</destroySoundSmall>
+    <destroySoundMedium>BuildingDestroyed_Metal_Medium</destroySoundMedium>
+    <destroySoundLarge>BuildingDestroyed_Metal_Big</destroySoundLarge>
+  </StuffCategoryDef>
+</Defs>
