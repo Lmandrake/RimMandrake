@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The sickly glow mushroom: owned port of Alpha Biomes' toxic gamma (sarg.alphabiomes
+  AB_ToxicGamma, 1.6/Mods/Biotech/Defs/ThingDefs_Plants/Plants_Crags_Polluted.xml); plain name and description are
+  the owner's (sheet 2026-10-05). Every plant/stat/comp field is the donor's own EXCEPT:
+    - placeWorker AlphaBiomes.PlaceWorker_ShowGammaRadius (donor C#) dropped.
+  ⚠️ Faithful to the donor, its parent is Biotech's PollutionTreeBase (pollution PollutedOnly), so it grows WILD ONLY
+  ON POLLUTED GROUND, exactly as the donor row did. Whether the Abyss wants it on clean ground is an open question
+  for the owner, not decided here.
+  ART (owner's "wire as picked"): abyss_blightbulgra_v1, finished in the artpipe, awaiting install as
+  RM_Abyss/Things/Plant/RM_SicklyGlowMushroom.png.
+-->
+<Defs>
+  <ThingDef ParentName="PollutionTreeBase">
+    <defName>RM_SicklyGlowMushroom</defName>
+    <label>sickly glow mushroom</label>
+    <description>A sickly kin of the glow globe that grows not one clean globe but a swollen, mushrooming mass of them, glowing a dim bilious green. It lights the ground beneath it with a sour darklight and fouls the air with spores.</description>
+    <pathCost>10</pathCost>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_SicklyGlowMushroom</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.55, 0.17, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <visualSizeRange>2~2.8</visualSizeRange>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <blockAdjacentSow>true</blockAdjacentSow>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <overlightRadius>7</overlightRadius>
+        <glowRadius>10</glowRadius>
+        <glowColor>(78, 226, 229, 0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

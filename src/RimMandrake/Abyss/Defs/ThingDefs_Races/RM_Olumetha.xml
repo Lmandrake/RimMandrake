@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The olumetha: one of the Abyss's black, many-eyed kin, a plated-brow grazer. Owned
+  port of the Alpha Animals nightram (sarg.alphaanimals AA_NightRam, 1.6/Defs/ThingDefs_Races/Races_Nightram.xml);
+  name and description are the owner's sheet ruling 2026-10-05. Free RM_ tier, ONE HOME: the Abyss. Stats, tools,
+  race fields and pawnkind numbers are the donor's own, EXCEPT these donor-only references:
+    - body AA_NightRamBody -> vanilla QuadrupedAnimalWithHoovesAndHorn (same tool groups: horn, legs, teeth, head)
+    - leatherDef Leather_Night -> Leather_Plain (PROVISIONAL substitute)
+    - useMeatFrom AA_NightMule -> RM_Aveluthia (that donor's own port, this pass)
+    - the VEF stat extension dropped; the horn tool is relabelled "plated brow" to match the description.
+  ART: abyss_olumetha_v3 east+south finished in the artpipe; NORTH FAILED and is owed a requeue. Awaiting install
+  at the texPath below (the owner's pick dugrath, recoloured).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Olumetha</defName>
+    <label>olumetha</label>
+    <description>A broad, low grazer, inky black, with a heavy wedge of fused plates for a brow and four glowing yellow eyes beneath it. It crops glow-grass by night with its head down, and if cornered it does not turn: it drives the plated wedge forward and keeps driving. Herders say its line was bred long ago to serve masters who prized obedience above everything.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <MarketValue>550</MarketValue>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>plated brow</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>2</milkIntervalDays>
+        <milkAmount>12</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHungerRate>0.225</baseHungerRate>
+      <baseHealthScale>2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <useMeatFrom>RM_Aveluthia</useMeatFrom>
+      <trainability>None</trainability>
+      <gestationPeriodDays>6.66</gestationPeriodDays>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+          <soundWounded>Pawn_Deer_Wounded</soundWounded>
+          <soundDeath>Pawn_Deer_Death</soundDeath>
+          <soundCall>Pawn_Deer_Call</soundCall>
+          <soundAngry>Pawn_Deer_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Olumetha</defName>
+    <label>olumetha</label>
+    <race>RM_Olumetha</race>
+    <combatPower>125</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>9</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>olumetha calf</label>
+        <labelPlural>olumetha calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

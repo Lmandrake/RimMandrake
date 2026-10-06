@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The glow globe: owned port of Alpha Genes' gamma (sarg.alphagenes AG_Gamma,
+  1.6/Defs/ThingDefs_Plants/ThingDef_Plants.xml); plain name and description are the owner's (sheet 2026-10-05,
+  name by question card). Every plant/stat/comp field is the donor's own EXCEPT:
+    - SIZE x2 (owner, verbatim: "great idea. Make twice as big."): visualSizeRange 0.3~1.50 -> 0.6~3.0
+    - Graphic_Single -> Graphic_Random over the owner's three picks.
+  The donor carries no poison mechanic; "deeply poisonous" is description only (as on the donor).
+  ART (owner's "wire as picked"): abyss_bulgra_v1 (_a), abyss_glowglobe_b_v2 (_b), abyss_glowglobe_c_v2 (_c),
+  all finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_{a,b,c}.png.
+-->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_GlowGlobe</defName>
+    <label>glow globe</label>
+    <description>A low plant that grows a single round glowing globe the size of a melon on a short curved stem, soft-lit from within like a paper lantern. Colonists set them out as lamps. Nobody eats one twice: the flesh of the globe is deeply poisonous.</description>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_GlowGlobe</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Beauty>10</Beauty>
+      <Nutrition>0.1</Nutrition>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <blockWind>true</blockWind>
+    <ingestible/>
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <sowWork>1200</sowWork>
+      <sowTags>
+        <li>Ground</li>
+        <li>Decorative</li>
+      </sowTags>
+      <growMinGlow>0.3</growMinGlow>
+      <topWindExposure>0.2</topWindExposure>
+      <growDays>5</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <visualSizeRange>0.6~3.0</visualSizeRange>
+      <purpose>Beauty</purpose>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6</glowRadius>
+        <glowColor>(242,221,37,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

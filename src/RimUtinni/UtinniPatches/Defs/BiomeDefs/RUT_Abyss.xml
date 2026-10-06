@@ -114,25 +114,25 @@
            so the fix raises the grain already here, same shape as the Gizka fix in
            Pyrelands (ECOSYSTEM_PYRAMID_LAW_1's first application): the two existing
            small residents become more common, no megafauna cut. -->
-      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>
+      <RM_Lirrith MayRequire="mandrake.rm.biomes">1.0</RM_Lirrith>
       <RM_Cindermare MayRequire="mandrake.rm.biomes">0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: free-tier predators, same rows as RM_Abyss -->
       <RM_Skarnix MayRequire="mandrake.rm.biomes">0.09</RM_Skarnix>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <RM_Drokattak MayRequire="mandrake.rm.biomes">0.12</RM_Drokattak>  <!-- ABYSS_DONOR_BEASTS_FREED_1: same rows as RM_Abyss -->
       <RM_Summ MayRequire="mandrake.rm.biomes">0.01</RM_Summ>
-      <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
-      <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
-      <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
-      <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
-      <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
-      <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
-      <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
+      <RM_Aveluthia MayRequire="mandrake.rm.biomes">0.5</RM_Aveluthia>  <!-- nightmule - large, keep -->
+      <RM_Moravatha MayRequire="mandrake.rm.biomes">0.35</RM_Moravatha>  <!-- Crepuscular Beetle - large, keep -->
+      <RM_Ysvaltha MayRequire="mandrake.rm.biomes">0.2</RM_Ysvaltha>  <!-- dusk prowler - medium-pred, keep -->
+      <RM_Sesserith MayRequire="mandrake.rm.biomes">0.2</RM_Sesserith>  <!-- nightling - medium-apex, keep -->
+      <RM_Ossumatha MayRequire="mandrake.rm.biomes">0.15</RM_Ossumatha>  <!-- dark vandal - medium, keep -->
+      <RM_Olumetha MayRequire="mandrake.rm.biomes">0.09</RM_Olumetha>  <!-- nightram - large, keep -->
+      <RM_Nevarithia MayRequire="mandrake.rm.biomes">0.005</RM_Nevarithia>  <!-- darkbeast - medium, keep -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <AB_GlowingGrass>1.0</AB_GlowingGrass>  <!-- grass -->
-      <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
-      <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
-      <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
+      <RM_SicklyGlowMushroom MayRequire="mandrake.rm.biomes">0.6</RM_SicklyGlowMushroom>  <!-- toxic gamma - tree -->
+      <RM_GiantGlowGlobe MayRequire="mandrake.rm.biomes">0.5</RM_GiantGlowGlobe>  <!-- giant gamma -->
+      <RM_GlowberryBush MayRequire="mandrake.rm.biomes">0.5</RM_GlowberryBush>  <!-- wild ragadast -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11 ("to crags" / "elsewhere,
            not heat resistant"): AG_Gamma and AG_Septimum moved here from the_forge, whose
            42-56 C floor is above their optimal band (opt max 42 C, MEASURED plant_pool.csv)
@@ -140,10 +140,10 @@
            in rosters/abyss.json and reached the game only through
            BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1 so this def carries it itself. -->
-      <AG_Gamma MayRequire="sarg.alphagenes">0.5</AG_Gamma>  <!-- gamma -->
-      <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
-      <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
-      <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+      <RM_GlowGlobe MayRequire="mandrake.rm.biomes">0.5</RM_GlowGlobe>  <!-- gamma -->
+      <RM_TreeMushroom MayRequire="mandrake.rm.biomes">0.3</RM_TreeMushroom>  <!-- giant stikehr -->
+      <RM_PaddleVine MayRequire="mandrake.rm.biomes">0.25</RM_PaddleVine>  <!-- septimum -->
+      <RM_GiantFibreStalk MayRequire="mandrake.rm.biomes">0.2</RM_GiantFibreStalk>  <!-- giant septimum - tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>

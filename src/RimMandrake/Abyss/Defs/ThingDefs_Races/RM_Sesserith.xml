@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The sesserith: one of the Abyss's black, many-eyed kin. Owned port of the Alpha Animals
+  nightling (sarg.alphaanimals AA_Nightling, 1.6/Defs/ThingDefs_Races/Races_Nightling.xml); name and description
+  are the owner's sheet ruling 2026-10-05. Free RM_ tier, ONE HOME: the Abyss. Every stat, tool, race field and
+  pawnkind number below is the donor's own, EXCEPT these donor-only references, which this tier may not name:
+    - bite capacity AA_ToxicBite -> vanilla ToxicBite (PROVISIONAL substitute)
+    - leatherDef Leather_Night -> Leather_Wolf (PROVISIONAL; the Abyss siblings' leather)
+    - CompProperties_EggLayer (donor egg items) dropped: it bears live young on the donor's own
+      gestationPeriodDays/litterSizeCurve
+    - VEF CompProperties_InitialAbility AA_Quill (the quill throw) and the VEF stat extension dropped. The
+      thrown-spine lunge in the description is OWED as our own mechanic (not built here).
+    - wildBiomes dropped (one home: cast only in RM_Abyss).
+  ART: abyss_sesserith_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  The owner's pup pick was the donor's own AA_NightlingPuppy art, so every life stage uses the adult set
+  until owned pup art exists.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sesserith</defName>
+    <label>sesserith</label>
+    <description>A lean, long-skulled night hunter on six spindly legs, its hide pitch black, with a row of small eyes glowing yellow down each side of its narrow head. A ridge of long, bone-white barbed spines runs from its neck to the tip of its tail; it shakes them off in a rattling spray as it lunges, and whatever they stick in, it follows down. Like all the black, many-eyed things of the Abyss, it seems less evolved than made, as if some old and patient cruelty once had the shaping of it.</description>
+    <statBases>
+      <MoveSpeed>5.00</MoveSpeed>
+      <ComfyTemperatureMin>-35</ComfyTemperatureMin>
+      <MarketValue>750</MarketValue>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <petness>0.5</petness>
+      <baseBodySize>1.0</baseBodySize>
+      <baseHungerRate>0.25</baseHungerRate>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <baseHealthScale>1.15</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <maxPreyBodySize>2</maxPreyBodySize>
+      <trainability>Advanced</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <nameOnTameChance>1</nameOnTameChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+      <nuzzleMtbHours>30</nuzzleMtbHours>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Warg_Wounded</soundWounded>
+          <soundDeath>Pawn_Warg_Death</soundDeath>
+          <soundCall>Pawn_Warg_Call</soundCall>
+          <soundAngry>Pawn_Warg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sesserith</defName>
+    <label>sesserith</label>
+    <race>RM_Sesserith</race>
+    <combatPower>125</combatPower>
+    <ecoSystemWeight>0.9</ecoSystemWeight>
+    <wildGroupSize>
+      <min>2</min>
+      <max>5</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.05</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.05</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

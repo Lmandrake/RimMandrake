@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The ysvaltha: one of the Abyss's black, many-eyed kin, a made killer. Owned port of the
+  Alpha Animals dusk prowler (sarg.alphaanimals AA_DuskProwler, 1.6/Defs/ThingDefs_Races/Races_DuskProwler.xml);
+  name and description are the owner's sheet ruling 2026-10-05. Free RM_ tier, ONE HOME: the Abyss. Stats, tools,
+  race fields and pawnkind numbers are the donor's own, EXCEPT these donor-only references:
+    - body AA_FourEyedQuadruped -> vanilla QuadrupedAnimalWithPawsAndTail
+    - the donor's "ninetails" flurry (Stab 3 / cooldown 0.2 on the donor-only AA_Tail part group) is DROPPED:
+      no vanilla body carries a tail attack group. Its barbed-tail / shoulder-blade attack is OWED (needs our own
+      BodyDef or part group; not built here), so for now it fights with claws, bite and head only.
+    - leatherDef Leather_Night -> Leather_Wolf (PROVISIONAL substitute)
+    - the VEF stat extension dropped.
+  ART: abyss_ysvaltha_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ysvaltha</defName>
+    <label>ysvaltha</label>
+    <description>Something bred for killing rather than born to it: a long, low, sinuous body in near-black hide, a whip of a tail fringed with crimson barbs, and a narrow, needle-pointed head set with four glowing yellow eyes. Along its shoulders it carries curved, crimson-edged blades folded back like swept wings; they fling it forward faster than the eye can follow and open as it strikes. The dark masters who made it are long gone; their hounds were hunted almost to nothing, and few who see one see it twice.</description>
+    <statBases>
+      <MoveSpeed>6.00</MoveSpeed>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <MarketValue>750</MarketValue>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.25</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.25</chanceFactor>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>3.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>15</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>3.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>2</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <maxPreyBodySize>3</maxPreyBodySize>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <nameOnTameChance>1</nameOnTameChance>
+      <useMeatFrom>Panther</useMeatFrom>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <nuzzleMtbHours>45</nuzzleMtbHours>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.7)</li>
+          <li>(3, 0.7)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.9</minAge>
+          <soundWounded>Pawn_Warg_Wounded</soundWounded>
+          <soundDeath>Pawn_Warg_Death</soundDeath>
+          <soundCall>Pawn_Warg_Call</soundCall>
+          <soundAngry>Pawn_Warg_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ysvaltha</defName>
+    <label>ysvaltha</label>
+    <race>RM_Ysvaltha</race>
+    <combatPower>125</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>ysvaltha whelp</label>
+        <labelPlural>ysvaltha whelps</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
