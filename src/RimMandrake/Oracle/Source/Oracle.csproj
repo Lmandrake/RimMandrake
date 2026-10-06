@@ -10,7 +10,7 @@
     two debug actions and a GameComponent queue.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Oracle\Source\Oracle.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Oracle\Source\Oracle.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

@@ -13,7 +13,7 @@
     mod folder). Renamed from RimMandrake.Utinni.* to RimMandrake.RustCathedral.* by RUSTCATHEDRAL_FREE_NAMES_TIDY_1.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.RustCathedral.Hum.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.RustCathedral.Hum.csproj -c Release
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
   -->

@@ -5,7 +5,7 @@
     src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      /mnt/c/Users/Mandrake/.dotnet/dotnet.exe build D:\Luke\dev\Rimworld\src\RimMandrake\AcousticScanner\Source\RM_AcousticScanner.csproj -c Release
+      /mnt/c/Users/Mandrake/.dotnet/dotnet.exe build D:\Luke\dev\RimMandrake\src\RimMandrake\AcousticScanner\Source\RM_AcousticScanner.csproj -c Release
 
     Output lands in ../Assemblies/. No Harmony: the sounder is a Building
     subclass wired by thingClass, the overlay a MapComponent (auto-instantiated

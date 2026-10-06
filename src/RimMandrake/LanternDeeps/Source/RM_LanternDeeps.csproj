@@ -14,7 +14,7 @@
     flora with no valid parent tile.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\LanternDeeps\Source\RM_LanternDeeps.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\LanternDeeps\Source\RM_LanternDeeps.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

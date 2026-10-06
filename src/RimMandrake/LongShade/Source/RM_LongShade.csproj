@@ -6,7 +6,7 @@
     if this one goes stale.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\LongShade\Source\RM_LongShade.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\LongShade\Source\RM_LongShade.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
@@ -53,7 +53,7 @@
          has no XML hook, same reason RM_Patch_LeachmossWildSpawnGate needs
          it) and RimMandrake.CreatureBehaviors (RM_MapComponent_ShadeGrid).
          Build CreatureBehaviors FIRST:
-           "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release -->
+           "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release -->
     <Compile Include="RM_Patch_DewfringeWildSpawnGate.cs" />
     <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the Crawler Road and the Long Carry
          GenSteps (shade-patch graph, RimMandrake.CreatureBehaviors). -->

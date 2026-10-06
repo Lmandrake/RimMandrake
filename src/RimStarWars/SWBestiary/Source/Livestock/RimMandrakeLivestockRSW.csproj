@@ -6,7 +6,7 @@
     src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.csproj.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Source\Livestock\RimMandrakeLivestockRSW.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\SWBestiary\Source\Livestock\RimMandrakeLivestockRSW.csproj -c Release
 
     Output lands in ../../Assemblies/ (this project sits at
     SWBestiary/Source/Livestock/, two levels below the mod root's own

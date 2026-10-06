@@ -11,7 +11,7 @@
     <Compile Include> line below or it compiles into nothing, with no error.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\SeaShores\Source\RM_SeaShores.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\SeaShores\Source\RM_SeaShores.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

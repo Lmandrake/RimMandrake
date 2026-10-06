@@ -5,7 +5,7 @@
     src/RimUtinni/ShipShields/Source/RimMandrake.Utinni.ShipShields.csproj.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\GravshipLanding\Source\RM_GravshipLanding.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\GravshipLanding\Source\RM_GravshipLanding.csproj -c Release
   -->
 
   <PropertyGroup>

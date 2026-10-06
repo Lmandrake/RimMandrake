@@ -10,7 +10,7 @@
     (Source/HarmonyPatches.cs); nothing else here patches an engine method.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\LuminousPigment\Source\RM_LuminousPigment.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\LuminousPigment\Source\RM_LuminousPigment.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

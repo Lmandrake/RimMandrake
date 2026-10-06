@@ -10,7 +10,7 @@
     method, so nothing here breaks on a game update that renames one.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\.claude\worktrees\agent-afc100cb85cd7f019\src\RimMandrake\WreckedMachines\Source\RM_WreckedMachines.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\.claude\worktrees\agent-afc100cb85cd7f019\src\RimMandrake\WreckedMachines\Source\RM_WreckedMachines.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

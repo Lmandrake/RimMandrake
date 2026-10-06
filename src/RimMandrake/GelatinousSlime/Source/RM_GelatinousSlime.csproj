@@ -12,7 +12,7 @@
     brrainz.harmony dependency. Adding one is a decision, not a convenience.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\GelatinousSlime\Source\RM_GelatinousSlime.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\GelatinousSlime\Source\RM_GelatinousSlime.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
