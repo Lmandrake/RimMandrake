@@ -23,8 +23,15 @@ namespace RimMandrake.FlowWorks.Rivers
 		public static bool FindWeirSite(Map map, out IntVec3 loc, out Rot4 rot)
 		{
 			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
+			// Away from the map edge: the first site in AllCells order sat on row 0, where the river ENTERS the map, so it
+			// had no upstream to pool (MEASURED 2026-10-06, Desert river tile 162: "POOL cells=0 ... at=(79, 0, 0)").
+			int margin = RM_RiversSettings.weirPoolLength + 4;
 			foreach (IntVec3 c in map.AllCells)
 			{
+				if (c.x < margin || c.z < margin || c.x >= map.Size.x - margin || c.z >= map.Size.z - margin)
+				{
+					continue;
+				}
 				for (int r = 0; r < 4; r++)
 				{
 					Rot4 tr = new Rot4(r);

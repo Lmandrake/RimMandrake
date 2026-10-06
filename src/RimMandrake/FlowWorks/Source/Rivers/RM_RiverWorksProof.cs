@@ -53,7 +53,8 @@ namespace RimMandrake.FlowWorks.Rivers
 			{
 				return "UNMEASURED no river current on the current map";
 			}
-			string[] parts = (arg ?? "fast").Split('|');
+			// ';' (jawa/static_call splits its args on '|' into PARAMETERS, so "fast|3" arrived as two and was refused)
+			string[] parts = (arg ?? "fast").Split(';', '|');
 			string mode = parts[0].Trim().ToLowerInvariant();
 			int steps = parts.Length > 1 && int.TryParse(parts[1], out int s) ? s : 3;
 			int wantLane = mode == "edge" ? RM_RiverMath.LaneMargin : (mode == "ford" ? RM_RiverMath.LaneMargin : RM_RiverMath.LaneCentre);
