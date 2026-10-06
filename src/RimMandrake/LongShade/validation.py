@@ -291,6 +291,32 @@ def dewfringe_problems():
     return bad
 
 
+# Defs LongShade still ships but whose roster row moved to another biome at the 2026-10-04 sheet
+# (commits dfc35ba68 Ommok, 0e98ccfdf Vosska, d2a4879b5 Ulgga, b5df5f05d TruffleMole, 1b0aba6b1 UltrissPad).
+# Each must be in that biome's roster instead: (def, biome mod folder, biome file, roster element).
+MOVED_ROWS = (
+    ("RM_Ommok", "Miasma", "RM_Miasma.xml", "wildAnimals"),
+    ("RM_Vosska", "Stillsand", "RM_Stillsand_Biome.xml", "wildAnimals"),
+    ("RM_Ulgga", "Stillsand", "RM_Stillsand_Biome.xml", "wildAnimals"),
+    ("RM_TruffleMole", "LeaningScrub", "RM_LeaningScrub_Biome.xml", "wildAnimals"),
+    ("RM_UltrissPad", "Stillsand", "RM_Stillsand_Biome.xml", "wildPlants"),
+)
+
+
+def _moved_row_home(name):
+    for nm, mod, fn, elem in MOVED_ROWS:
+        if nm != name:
+            continue
+        path = os.path.join(HERE, "..", mod, "Defs", "BiomeDefs", fn)
+        if not os.path.isfile(path):
+            return False
+        for el in ET.parse(path).getroot().iter(elem):
+            if any(e.tag == nm for e in el):
+                return True
+        return False
+    return None
+
+
 def roster_problems():
     """Every shipped creature race and plant is named in the biome's roster (a def nobody can spawn is dead content)."""
     biome = _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME)
@@ -304,7 +330,10 @@ def roster_problems():
                 nm = el.findtext("defName") if isinstance(el.tag, str) else None
                 if el.tag == "ThingDef" and el.find(tag) is not None and nm and el.get("Abstract", "").lower() != "true":
                     found += 1
-                    if nm not in have:
+                    home = _moved_row_home(nm) if nm not in have else True
+                    if home is False:
+                        bad.append("%s %s moved to another biome but is not in that roster" % (key, nm))
+                    elif nm not in have and home is None:
                         bad.append("%s %s is not in the biome roster" % (key, nm))
         if found < 4:
             bad.append("only %d %ss parsed (sanity probe failed)" % (found, key))
