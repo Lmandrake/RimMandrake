@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><meta name="scaled-review-gate" content="v1 sha256:3dd271cb0806b7cbd8dd6f8464c6bddb00c7cdc184976b1a0dc2ddbdd57b0441">
+<head><meta name="scaled-review-gate" content="v1 sha256:2eca3a447419429b2f9455b37805758593b942bfb4410f687ccb21acba7db3c9">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>the Stillsand — flora & fauna art</title>
@@ -386,7 +386,7 @@ body.grid .row.sel-tint{border-color:currentColor}
    thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
    the right show only this row's letters. */
 const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
-window.itemBody = it => {
+const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
@@ -408,7 +408,7 @@ window.itemBody = it => {
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
       <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
-      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
+      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
@@ -451,8 +451,8 @@ const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
   const s = it.scale; if (!s) return '';
   const size = s.kind === 'plant'
-    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt(s.drawSize[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
-    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt(s.drawSize[0])}×${fmt(s.drawSize[1])}</span> · bodySize ${fmt(s.bodySize)}`;
+    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt((s.drawSize||[])[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
+    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])}</span> · bodySize ${fmt(s.bodySize)}`;
   const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
   const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
   const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
@@ -500,6 +500,21 @@ document.addEventListener('click', e => {
     else alert('That row is hidden by the current filter.');
   }
 }, true);
+/* rebuilt-sheet notice: poll the served page every ~60 s; when its build stamp (the gate stamp, else a hash of the HTML) differs
+   from what this tab loaded, show a banner. NEVER auto-reloads: an unsaved note would be lost. */
+(() => {
+  const fp = t => { const m = t.match(/<meta name="scaled-review-gate" content="([^"]*)">/); if (m) return m[1];
+    let h = 2166136261; for (let i = 0; i < t.length; i += 7) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return 'h' + (h >>> 0) + ':' + t.length; };
+  const get = () => fetch(location.href, { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => t && fp(t)).catch(() => null);
+  let base = null, shown = false;
+  const banner = () => { if (shown) return; shown = true; const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#b8860b;color:#000;padding:10px 14px;font:600 15px sans-serif;display:flex;gap:14px;align-items:center;box-shadow:0 2px 8px #000';
+    d.innerHTML = '<span>This sheet was rebuilt with new content — reload (your picks are saved)</span><button style="font:600 14px sans-serif;padding:4px 12px;cursor:pointer">Reload now</button><button style="font:14px sans-serif;padding:4px 10px;cursor:pointer">dismiss</button>';
+    d.children[1].onclick = () => location.reload(); d.children[2].onclick = () => d.remove(); document.body.appendChild(d); };
+  get().then(f => { base = f; });
+  setInterval(() => get().then(f => { if (f && base && f !== base) banner(); }), 60000);
+})();
+window.itemBody = it => { try { return _itemBody(it); } catch (e) { return `<div class="bs-noart">row render error (this row only; the sheet is intact): ${esc(String(e && e.message || e))}</div>`; } };
 
 window.artRepaint = id => {
   const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);

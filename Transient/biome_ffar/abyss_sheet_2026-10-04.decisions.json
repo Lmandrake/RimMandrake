@@ -379,10 +379,10 @@
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "at": "2026-10-05T07:26:00-0700",
+    "at": "2026-10-05T20:11:52-0700",
     "by": "owner (Lukas)",
-    "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 96, savedAt 2026-10-05T07:26:00-0700; 30 of 31 rows carry an owner 'at' stamp; BENCH relayed that the owner finished ruling the Abyss sheet",
-    "state": "ruled"
+    "state": "ruled",
+    "evidence": "second sitting: sidecar savedBy review-sheet-sidecar, writeCount 204, savedAt 2026-10-05T20:11:52-0700; 24 rows carry an owner 'at' stamp 20:00-20:11; owner typed \"The Abyss sheet done\" (BENCH relay)"
   },
   "savedAt": "2026-10-05T20:11:52-0700",
   "savedBy": "review-sheet-sidecar",

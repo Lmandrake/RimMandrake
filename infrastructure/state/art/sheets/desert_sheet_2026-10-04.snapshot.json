@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-05T18:43:53-0700",
+ "built": "2026-10-05T20:13:55-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -1175,6 +1175,11 @@
      "east": "eb68da09a6e6e4408e9d44f1b6354527f7ac015a4f052e475da83c17238465da",
      "north": "2b86e472d073a580434e2976cc6448faa0657604ade31116d9d843fda75bed1f",
      "south": "9701636912ce4d4a3cd449a7ca29e4c35567a0d3ad1f0e0ea844b111eedc59b1"
+    },
+    "J": {
+     "east": "339cc926addefa9d90c93ed3a2ab0dee3d6265f8515bdb0b7d2bd56607ff8228",
+     "north": "d8f9263efc046a9ba7c23662fd84b7e9a0b064f8407acabda8a93cccb4f5899f",
+     "south": "e3c454fd58dfc6ece273ec2e43009f4ed8fb33cf24f8fd847d128809e8047280"
     }
    },
    "graphic_of": {
@@ -1184,7 +1189,8 @@
     "F": "_byname",
     "G": "_byname",
     "H": "_byname",
-    "I": "_byname"
+    "I": "_byname",
+    "J": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1193,7 +1199,8 @@
     "F": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
     "G": "render longshade_rsw_bantha_v2",
     "H": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
-    "I": "render longshade_rsw_bantha_v4 \u2014 failed canon check"
+    "I": "render longshade_rsw_bantha_v4 \u2014 failed canon check",
+    "J": "render leaningscrub_bantha_v1"
    },
    "res": "swanimals/Bantha/BanthaW",
    "reserved": [
@@ -1205,7 +1212,8 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J"
    ],
    "subject_key": "bantha"
   },

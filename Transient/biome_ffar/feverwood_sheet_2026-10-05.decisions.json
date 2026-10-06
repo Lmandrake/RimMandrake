@@ -2,7 +2,7 @@
  "sheetId": "feverwood_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/feverwood_sheet_2026-10-05.snapshot.json",
- "snapshotId": "a3440d92179f12c5",
+ "snapshotId": "14bcab9f834b8313",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_FeverWood",
  "reviewStatus": {
