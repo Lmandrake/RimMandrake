@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-05T20:04:11-0700",
+ "built": "2026-10-06T05:43:33-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -425,7 +425,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render miasma_brelloch) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Brelloch_v1"
    },
    "res": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
@@ -512,7 +512,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render miasma_immarel) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Immarel_v1"
    },
    "res": "Things/Plant/RM_Immarel/RM_Immarel_a",
@@ -664,7 +664,7 @@
     "A": "RotSporeKit/Things/Plant/Nogtyl"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_nogtyl_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Nogtyl",
    "reserved": [
@@ -704,7 +704,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render miasma_ollamane) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Ollamane_v1"
    },
    "res": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
@@ -792,7 +792,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render miasma_quennath) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Quennath_v1"
    },
    "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
@@ -918,7 +918,7 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render miasma_thessamor) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Thessamor_v1"
    },
    "res": "Things/Plant/RM_Thessamor/RM_Thessamor_a",
@@ -1181,17 +1181,34 @@
      "east": "e9f308c20adb4187239ce8600fcd8c95f9f6c994be0847aaef25c67d9f2b3af1",
      "north": "9efcbbef67aa1d5649902d853237515eadd51cf31b76877acdc8e03cc0611611",
      "south": "ce3a2a9d93be49f5d7fdc6e668792146d8ea7bc30fe54d6a9ed5d21bed2e0ef8"
+    },
+    "B": {
+     "1_east": "1c7d71e7634424b82145b38032a508cc51b982df2d6ba01a6372e00d3313c264",
+     "1_north": "0c56858ce24445a0dd1e0d8de1845368092d60f1ff7bff46f1a3e6512b3199a0",
+     "1_south": "ff76ed6cdb8873799d48f16820968f0d0f94c839c3f05f046864b06dec7ad131",
+     "2_east": "2331dee1e399cf0e2dba2ade02e4416a0111af6878ca16db2d2af8bc81e1cfc9",
+     "2_north": "3e07dcd0b02f4c5d248ea70ca1131803cfd6831e0cf17820a68a5c77f1be9b68",
+     "2_south": "e67de3567bda6341497b9b63c8e52226e54522936baad65dbc6d1fd0d518692e",
+     "3_east": "65f99bebbfb00f5552ac947c29d889c68c9e519205649dd0af9ef7ff40b9c5a7",
+     "3_north": "109774f85e5cc00900c2bc9a7d2f9cc985748e448915f29bb13d2c9cabfe78f0",
+     "3_south": "f9a36d0cbf69262964101e73057d2c632a0577bcd6f9f17080eb75462a8506ab",
+     "4_east": "1c7d71e7634424b82145b38032a508cc51b982df2d6ba01a6372e00d3313c264",
+     "4_north": "0c56858ce24445a0dd1e0d8de1845368092d60f1ff7bff46f1a3e6512b3199a0",
+     "4_south": "ff76ed6cdb8873799d48f16820968f0d0f94c839c3f05f046864b06dec7ad131"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Bogwing/Bogwing"
+    "A": "swanimals/Bogwing/Bogwing",
+    "B": "_flip:swanimals/Bogwing/Bogwing_Flying_"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 Bogwing_Flying_"
    },
    "res": "swanimals/Bogwing/Bogwing",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "bogwing"
   },
@@ -1252,11 +1269,14 @@
      "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
     },
     "B": {
+     "east": "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15"
+    },
+    "C": {
      "east": "ec070a853856f42fa1ff148f8394725f7f60e48026c9e8cae8ce189a5086f361",
      "north": "1fd297392af1c6fbeb93c6bbb041eb7e108235812401da4182472a3cb1fb80c9",
      "south": "bb77d0791588fc20692bd0a1d837b350d09baa3a077f9d61b2a2f8d4d3daf031"
     },
-    "C": {
+    "D": {
      "east": "84a80542cf841ba2c810f6d148b6d1c1a223f5b0ccd318daaf41d348dbcc91c5",
      "north": "b9893b6e5e9892faf34e2ac8e2798acf8989385d4027a02b4fd0bae25c7cc829",
      "south": "4b980aefdd9305d6beaeb32d7e1df2ced461ac1b528b390a0ae2ed1e0e227ccc"
@@ -1265,18 +1285,21 @@
    "graphic_of": {
     "A": "swanimals/Grank/Grank",
     "B": "swanimals/Grank/Grank",
-    "C": "swanimals/Grank/Grank"
+    "C": "swanimals/Grank/Grank",
+    "D": "swanimals/Grank/Grank"
    },
    "labels": {
     "A": "IN GAME \u2014 GrankArtOverride",
-    "B": "history GrankArtOverride 2026-09-13",
-    "C": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render leaningscrub_grank_v1 \u2014 failed canon check",
+    "C": "history GrankArtOverride 2026-09-13",
+    "D": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Grank/Grank",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "grank"
   },
@@ -1404,21 +1427,16 @@
      "south": "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4"
     },
     "C": {
-     "east": "b7183440ee99134015bf3dc0ad0067b70d9d0e5a0ef34e0dce0c58e5b345a05d",
-     "north": "09f42584602e2be5452f174e29a71891d1a1917541992cb33a01c0b1ec12cb39",
-     "south": "25888e5bc73588461568f1da194cc423be4b24d0db98d6b7ad3ada935197dc1b"
-    },
-    "D": {
      "east": "8eaac9428a94122709810b08e6c65f74e7ac737706789439d94559292fef1fef",
      "north": "e5448b9390471027a1d4e08a37b09d2c2d6285113c74a7292319a1b380a8c1c8",
      "south": "97a71f8b6c44c031f13c6ac3eafc58a1a22363ab6db1036d358a03366b9cce84"
     },
-    "E": {
+    "D": {
      "east": "24606d6427b8f159e82df20745b4e7b1a37ca469a923244dd32170b221463e26",
      "north": "ff64a17ff834b22e45898b520dc7dc687ea693cd6873f04e61489399b5e442fe",
      "south": "1f93381d0af41b63853f1a4ed4df317410ac0df191e07aa5e0637649c5e55c54"
     },
-    "F": {
+    "E": {
      "east": "805acd616fb4c08567a0e1aa9b2d3b2f7700318b1998d251de1293313f39a20b",
      "north": "ee52b1e929af84d5fb9e7ee2b77d63e1b2126ca3dd7894def8e7079ab190c6cd",
      "south": "05cb88ad0aa971941ca6b2faa9799e490822caa10ef6dcbc1ecb1c08743cacc0"
@@ -1427,18 +1445,16 @@
    "graphic_of": {
     "A": "swanimals/Runyip/Runyip",
     "B": "swanimals/Runyip/Runyip",
-    "C": "swanimals/Runyip/Runyip",
-    "D": "swanimals/Runyip/Runyip_Swimming",
-    "E": "swanimals/Runyip/Runyip_j",
-    "F": "swanimals/Runyip/Runyip_j_Swimming"
+    "C": "swanimals/Runyip/Runyip_Swimming",
+    "D": "swanimals/Runyip/Runyip_j",
+    "E": "swanimals/Runyip/Runyip_j_Swimming"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render longshade_rsw_runyip_v1",
-    "C": "render desertportb_runyip",
+    "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
-    "E": "IN GAME \u2014 SWBestiary",
-    "F": "IN GAME \u2014 SWBestiary"
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Runyip/Runyip",
    "reserved": [
@@ -1446,8 +1462,7 @@
     "B",
     "C",
     "D",
-    "E",
-    "F"
+    "E"
    ],
    "subject_key": "runyip"
   },
@@ -1589,31 +1604,54 @@
      "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
     },
     "B": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235"
+    },
+    "C": {
      "east": "f685c0e91711ac58f7efb0f2adb58d32789b86725dc62b7e31b33ff3af9c557a",
      "north": "c959b7fc4dbfed12b16ef579104cfe5631f11ee44bac8aa98affb7edf6bff4b3",
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
     },
-    "C": {
+    "D": {
      "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
      "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
      "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
+    },
+    "E": {
+     "1_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
+     "1_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
+     "1_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9",
+     "2_east": "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
+     "2_north": "1796d7c62eb7d37203fc8ea78fd86baeb127f6ff41e2947b466ccd0f432cb4e4",
+     "2_south": "f1bf361b8df0285d41ac0779c64b3c5a3df92ca39da0f9b0ac76d1cd5f725318",
+     "3_east": "044567f5e87ed5eae89163b656580f64e1bcebb991303fa70bab4d35412334f6",
+     "3_north": "8e713f0b0fb3768ac78f04e7f76ff6f4ff8e513e482def4d67abe12929005278",
+     "3_south": "0fbfc37be3e254b11bdc97953506eb97a14a7636fcf201415c72df609853da3d",
+     "4_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
+     "4_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
+     "4_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9"
     }
    },
    "graphic_of": {
     "A": "swanimals/Whisperbird/Whisperbird",
     "B": "swanimals/Whisperbird/Whisperbird",
-    "C": "swanimals/Whisperbird/Whisperbird"
+    "C": "swanimals/Whisperbird/Whisperbird",
+    "D": "swanimals/Whisperbird/Whisperbird",
+    "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 WhisperbirdArtOverride",
-    "B": "render canon_whisperbird_v1",
-    "C": "history WhisperbirdArtOverride 2026-09-13"
+    "B": "render leaningscrub_whisperbird_v1 \u2014 failed canon check",
+    "C": "render canon_whisperbird_v1",
+    "D": "history WhisperbirdArtOverride 2026-09-13",
+    "E": "IN GAME \u2014 Whisperbird_Flying_"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "whisperbird"
   },
@@ -1740,5 +1778,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "a971ffb66143cb7f"
+ "snapshotId": "851a1e7c69c9a22c"
 }

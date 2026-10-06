@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-06T01:09:04-0700",
+ "built": "2026-10-06T05:57:15-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "RM_Brindeth": {
    "columns": {
@@ -70,21 +70,28 @@
     },
     "C": {
      "south": "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    },
+    "D": {
+     "north": "f2a5b3f5ea110a81b54d22be44c3e634ed7571fa23c1a7c97bb0056393a8fde5",
+     "south": "39e45d48506d58e91b161f6687ebae9023d4a517ae8146ef4108862dda534b4e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
-    "C": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
+    "C": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
+    "D": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "C": "render RM_Dredgel"
+    "C": "render RM_Dredgel",
+    "D": "render thesump_Dredgel_v2"
    },
    "res": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "dredgel"
   },
@@ -268,17 +275,23 @@
    "columns": {
     "A": {
      "single": "1a4dd401609435b2d741c4eec5a1fe8f36c67da6934b7b44f00fbc10b3424d09"
+    },
+    "B": {
+     "single": "bc920d365c33b57705b18a066c84603a3da3000c9b0aea1a50621c197e51cb23"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Soffeth/RM_Soffeth_a"
+    "A": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Soffeth_v2"
    },
    "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "soffeth"
   },
@@ -288,17 +301,25 @@
      "east": "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563",
      "north": "632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0",
      "south": "9d407c7364f96a9b05eb514dee8159ab49d7ee9feb59511b30e64c028f5cd700"
+    },
+    "B": {
+     "east": "174afd5fe477e83e0126fd89fdd9d508029ef5f2c7279be6ab69cb828f0256c3",
+     "north": "6f1db31be29e0ea7bdfb7c81b410038d4c6064ef2028add471a4e31445cf733d",
+     "south": "614fe2f71728659469fb7c329630313a7880f1b8786ef4fc614a0fb3e0fba7d0"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
+    "A": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
+    "B": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_SumpMouse_v2"
    },
    "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sumpmouse"
   },
@@ -308,17 +329,23 @@
      "east": "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670",
      "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
      "south": "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e"
+    },
+    "B": {
+     "east": "688001e68c3ac6f6795eea5c7628e2c6e82f36c82a74535435b1c3c9293452c9"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+    "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
+    "B": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Thrummel_v2"
    },
    "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "thrummel"
   },
@@ -328,17 +355,23 @@
      "east": "bf90aaa2f4f309f6d90d0174538718211fa84d59dc3de630b893086d04462400",
      "north": "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
      "south": "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562"
+    },
+    "B": {
+     "east": "b0902c3ccff93e8b3e9b45b3bffc5de70d2e2425194f5518db094a6511ac1295"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+    "A": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
+    "B": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_ThrummelBroodmother_v2"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "thrummelbroodmother"
   },
@@ -348,17 +381,23 @@
      "east": "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697",
      "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
      "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
+    },
+    "B": {
+     "east": "173f909396efd7df29ea87c49b3cd5d7edb071c60af50ba771f3e202b5e69030"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+    "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
+    "B": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_ThrummelWarden_v2"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "thrummelwarden"
   },
@@ -409,20 +448,28 @@
      "east": "24ac8ee79856c3a4cb779aaabf512f35ef97d0688e08774205078176161c9c68",
      "north": "e0f18f3f10577e1c13a6f3c25cc0c8eba1508e4ff4934a642d94279986f53ebe",
      "south": "e242bfec7b768df5f97d0bcca3dd116631106ac12812cc56771aaac4c7876faa"
+    },
+    "C": {
+     "east": "0d30a373b760c4e69bf470d0c2a520f00159d1b73ab46c6108865581cc4c7746",
+     "north": "b3177bac6db8e882be247e63d84b960d0c31e771bf12904b7976455216a02ee1",
+     "south": "350f2b9759d65713b642acc5959dd597266007db703f51c1e9ee907daed74f3b"
     }
    },
    "graphic_of": {
     "A": "swanimals/Hssiss/Hssiss",
-    "B": "swanimals/Hssiss/Hssiss_Swimming"
+    "B": "swanimals/Hssiss/Hssiss_Swimming",
+    "C": "swanimals/Hssiss/Hssiss"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render thesump_Hssiss_v2"
    },
    "res": "swanimals/Hssiss/Hssiss",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "hssiss"
   },

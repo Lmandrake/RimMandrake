@@ -1,9 +1,9 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-06T01:19:13-0700",
+ "built": "2026-10-06T05:29:54-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_TookeTrap_Wild": {
    "columns": {
@@ -255,17 +255,25 @@
      "east": "bd9731c301928ef132cd7b55b0edcba4b4cb77a099332c68a867dad84fdae704",
      "north": "a5dbb13bd0c89eb97d4fe2f1a1de5960727d0186c87ebdaa86809f4daafaa6dc",
      "south": "1882a438503a851c42b57b9d3ef675d8f362ea25e58c15cddd69bc0decd30f8b"
+    },
+    "B": {
+     "east": "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11",
+     "north": "5cdb320de39113b75466b6ba97c21974e0b40e01af1f0c1e8aadb06964278543",
+     "south": "f073a9fd6fdea3b3ceff659fc81b5ed9b3e0583a287fbd67a2022e83a178e0d9"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
+    "A": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
+    "B": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix"
    },
    "labels": {
-    "A": "IN GAME \u2014 Webwork"
+    "A": "IN GAME \u2014 Webwork",
+    "B": "render phreg_RM_Ollathrix_v1"
    },
    "res": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ollathrix"
   },

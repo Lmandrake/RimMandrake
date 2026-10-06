@@ -1,9 +1,9 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-06T00:56:01-0700",
+ "built": "2026-10-06T05:44:05-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
@@ -16,20 +16,29 @@
      "east": "e0b5ce5699b15ead5420377f45d493d9b3453b9d396bf30c890c769f827a87e0",
      "north": "dbdf4abf638e547780df0da7225486568e75a991f6b0e85f39447e964c695ce5",
      "south": "6a11a568eae6fabdb835565debf26d108beb84faccf95cca4cc336056b21eac7"
+    },
+    "D": {
+     "east": "4e65bde48307524837aa46cba364c9a1baea28a86c16c3cc5914636bec3eb31e",
+     "north": "68d32ba5492ccc74b5db92fa055cec13ad2f376b33933f9b898f61607f8dc43a",
+     "south": "e9212327ae7c7643948a9d238cc97656bcd5e4773a3aeb1d7047a69e669d55f1"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
-    "B": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat"
+    "B": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
+    "D": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_ShockGoat_v1"
+    "B": "render gapall_AA_ShockGoat_v1",
+    "D": "render nightsideice_shockgoat_v1"
    },
    "res": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "shockgoat"
   },
@@ -39,18 +48,26 @@
      "east": "22e9996b2a717b3e5eab916f893b770ec541a2605dec1b1d5a79dde316a7f86b",
      "north": "8e3d67c15d10edcd1cd1e041e98391c72a4088233d72a1dbf35e246dd8253126",
      "south": "ca95c92e524c096bbfad950d22fa8cb85864f93dfe5ea6419c9ac60b8b6c8012"
+    },
+    "C": {
+     "east": "1d9d2c449af5e83b6d614cc70780baa8ce0dbcb5c513933653b9653c6a58a955",
+     "north": "3f6e1e8cb8f8aaf1da96c1078ac06b8a13a729ccc9c5f4656656debb38c71963",
+     "south": "fda357d0e43770aef98d636f6dbe9dabb0ada2d64ed88415aea6e4c5487e305e"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "C": "render nightsideice_cavelemming_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "cavelemming"
   },
@@ -106,27 +123,35 @@
      "east": "dd44f62b3b53bb50cdba2ca90021db2d919e92d678930420aeafa2c5161d830e",
      "north": "7c6c193a9b5f8e1923dcd54d22bcdadd814469aca2b5ecf9118bd7d1fb70ac5d",
      "south": "f600c0a4770bba2397e303d9c166dfe60b7f594b3bf5ff921b0644e3e3aa676c"
+    },
+    "D": {
+     "east": "27e976bc5fea092659db109edbe221d33ee507b3c72f6408e663e0eb6bd806f4",
+     "north": "d5141e04d0f4ac9a382dd7eb66690e8e4193c7cf5c24e3ef908f307766166c5b",
+     "south": "54256ce93ad9bb12ed2c9cdb4ba295404b8dc93b2875ff201e469b837cd5d4ec"
     }
    },
    "graphic_of": {
     "A": "swanimals/Tauntaun/Tauntaun",
     "B": "swanimals/Tauntaun/Tauntaun",
-    "C": "swanimals/Tauntaun/Tauntaun_j"
+    "C": "swanimals/Tauntaun/Tauntaun_j",
+    "D": "swanimals/Tauntaun/Tauntaun"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Tauntaun_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "D": "render nightsideice_tauntaun_v1"
    },
    "res": "swanimals/Tauntaun/Tauntaun",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "tauntaun"
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "98bd1609fa1e8de3"
+ "snapshotId": "0314f878a681ce45"
 }

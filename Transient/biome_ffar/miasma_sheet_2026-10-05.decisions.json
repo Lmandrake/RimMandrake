@@ -2,7 +2,7 @@
  "sheetId": "miasma_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/miasma_sheet_2026-10-05.snapshot.json",
- "snapshotId": "a971ffb66143cb7f",
+ "snapshotId": "851a1e7c69c9a22c",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Miasma",
  "reviewStatus": {
@@ -18,9 +18,9 @@
    "prefill": "A"
   },
   "AA_Helixien": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "AA_Lockjaw": {
    "decision": "A",
@@ -144,7 +144,10 @@
   "RSW_Bogwing": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/Bogwing/Bogwing_Flying_": "B"
+   }
   },
   "RSW_CrestedDragon": {
    "decision": "A",
@@ -194,9 +197,9 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Runyip/Runyip_Swimming": "D",
-    "swanimals/Runyip/Runyip_j": "E",
-    "swanimals/Runyip/Runyip_j_Swimming": "F"
+    "swanimals/Runyip/Runyip_Swimming": "C",
+    "swanimals/Runyip/Runyip_j": "D",
+    "swanimals/Runyip/Runyip_j_Swimming": "E"
    }
   },
   "RSW_RustNipperJuv": {
@@ -222,7 +225,10 @@
   "RSW_Whisperbird": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "E"
+   }
   },
   "RSW_YobshrimpJuv": {
    "decision": "A",

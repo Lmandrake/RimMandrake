@@ -1,9 +1,9 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-06T00:58:19-0700",
+ "built": "2026-10-06T05:45:26-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "GR_Mecharat": {
    "columns": {
@@ -91,17 +91,25 @@
      "east": "47e7de96f33036d17ca3f2608c7eb8189f2cb50559a0d4d10f6843ea517a07f2",
      "north": "507f524f19789f4dc28e4ffcc83f6d33748c39c71847bda8d28afd60ed4bf38a",
      "south": "342dc505109ba3a2e9983239a3a1541cb3c843820c44ab005e830e9cbfeee810"
+    },
+    "B": {
+     "east": "cfce652fa171dc4c11f82aa921c11812c7784c505b601c3bc0f6b43b506554b9",
+     "north": "3be9863ccdcea84d0187a058f16c31f0676147f06515e4e5fc5b3c5ea566c355",
+     "south": "11f0f3ddc4fde9f18abb84d223fbb908997f7f0322770db5a97e82089737e071"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
+    "A": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
+    "B": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt"
    },
    "labels": {
-    "A": "IN GAME \u2014 RustCathedral"
+    "A": "IN GAME \u2014 RustCathedral",
+    "B": "render rustcathedral_livingbolt_v1"
    },
    "res": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "livingbolt"
   },

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-06T01:10:04-0700",
+ "built": "2026-10-06T05:58:26-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "AA_Helixien": {
    "columns": {
@@ -149,7 +149,7 @@
     "B": "Things/Plant/RM_Glower"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rutglower_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapall_RM_Glower_v1"
    },
    "res": "Things/Plant/RM_Glower",
@@ -339,17 +339,23 @@
      "east": "9024a09c35caa054e010e2da5fdab186c5ad9d6b80ab7fe292166445ef62f9f5",
      "north": "9bb9f217fa56a34c54b2c46ddf3e9855957446b0ffa06b912dbac452e981c557",
      "south": "0930aca68fbb08b5a8f5b6f958f602936cc232ff3122a01d0008754bd3cb1537"
+    },
+    "B": {
+     "east": "cfe016ec17edbe1ecb346a080ab330588b622343637a269044feedd7fb77fda4"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva"
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render warscar_MegaphoridLarva_v2"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "megaphoridlarva"
   },
@@ -357,18 +363,24 @@
    "columns": {
     "A": {
      "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
+    },
+    "C": {
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5"
     }
    },
    "graphic_of": {
-    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+    "A": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+    "C": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "C": "render warscar_Mynock_v2"
    },
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "mynock"
   },
