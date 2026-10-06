@@ -163,6 +163,21 @@ with tempfile.TemporaryDirectory() as d:
     check("file path: appended taint removes the proof", rep[0]["head"]["proven"] == 0)
     out = R.render(rep, runs, None)
     check("render leads with the proven headline", out.startswith("REQUIRED CHECKS PROVEN"), out[:60])
+    # a manifest mod with no live_queue record is NAMED, with its own checkout results, never silently dropped
+    mdir = os.path.join(d, "src", "N")
+    os.makedirs(os.path.join(mdir, "northstar"))
+    json.dump({"rows": [{"id": "x"}, {"id": "y"}]}, open(os.path.join(mdir, "northstar", "proof_all_1.json"), "w"))
+    old_root, R.ROOT = R.ROOT, d
+    try:
+        rep, runs = R.build_report({"mods": {"M": man("c/a"), "N": dict(man("n/a", "n/b"), script="src/N/validation.py")}}, d, ap)
+        out = R.render(rep, runs, None)
+    finally:
+        R.ROOT = old_root
+    un = [e for e in rep if e.get("unread")]
+    check("unrecorded manifest mod is listed, outside the total", len(un) == 1 and un[0]["required"] == 2
+          and "NOT IN THE TOTAL: 1 mods (2 required checks)" in out and "of 1 required" in out, out[-400:])
+    check("its checkout result file is named with its row count",
+          "src/N/northstar/proof_all_1.json" in out and "2 rows" in out, out[-300:])
 
 # 12. sanity probe on the committed manifest
 try:
