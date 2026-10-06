@@ -221,6 +221,14 @@ def main():
                      extra={"job": "brambles_v1", "facing": "south", "date": "2026-10-05"})
         _bf._variant(wr, sha=syellow, b=yellow, kind="artpipe", loc="_artsrc/foxwing_v1/x.png",
                      extra={"job": "foxwing_v1", "facing": "south", "date": "2026-10-05"})
+        frames = {}
+        for n in (1, 2, 3):
+            for fac in ("east", "south"):
+                b_ = png((10 * n, 40 if fac == "east" else 90, 200, 255))
+                frames[(n, fac)] = L.sha256_bytes(b_)
+                L.store_put_bytes(b_)
+                _bf._variant(wr, sha=frames[(n, fac)], b=b_, kind="artpipe", loc=f"_artsrc/x/{n}{fac}.png",
+                             extra={"job": f"pyre_foxwing_flight8_{n}_{fac}", "facing": fac, "date": "2026-10-06"})
         wr.flush()
         (tmp / "artpipe" / "failed").mkdir(parents=True)
         (tmp / "artpipe" / "failed" / "foxwing_v1.manifest.json").write_text(json.dumps({"id": "foxwing_v1", "worker_status": "failed_canon"}))
@@ -242,6 +250,13 @@ def main():
         cols_d = [c for g in items2["RM_Foxwing"]["graphics"] for c in g["cols"]]
         check(any(syellow in c["faces"].values() and "failed canon check" in c["label"] for c in cols_d),
               "a failed_canon render is a candidate badged 'failed canon check'")
+        fg = [g for g in items2["RM_Foxwing"]["graphics"] if g.get("flip")]
+        check(len(fg) == 1 and len(fg[0]["cols"]) == 1 and len(fg[0]["cols"][0]["faces"]) == 6
+              and fg[0]["nframes"] == 3 and fg[0]["flipFacings"] == ["east", "south"]
+              and fg[0]["facings"][:3] == ["1_east", "2_east", "3_east"],
+              "flight frames join into ONE flip-book set, a frames x facings grid")
+        check(not any(set(frames.values()) & set(c["faces"].values()) for g in items2["RM_Foxwing"]["graphics"]
+                      if not g.get("flip") for c in g["cols"]), "flight frames never also show as one-frame name sets")
     else:
         print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
 
