@@ -7,6 +7,3 @@ review_map.py
 review_map_visuals.py
 review_map_stations_visuals.json
 selftest_*
-# held scaffold, not built, not deployed (src/DEPLOY_HOLD.txt)
-Defs/Machinery/Kits
-Source/Machinery/Kits

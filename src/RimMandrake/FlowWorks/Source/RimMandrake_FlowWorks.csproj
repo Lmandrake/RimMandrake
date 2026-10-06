@@ -208,6 +208,16 @@
     <Compile Include="Rivers\RM_RiverWorksProofWorks.cs" />
   </ItemGroup>
 
+  <!-- Liquid kits: Machinery\Kits\ (namespace RimMandrake.FlowWorks.Machinery.Kits). Kits-only files go in this group. -->
+  <ItemGroup>
+    <Compile Include="Machinery\Kits\RM_KitMath.cs" />
+    <Compile Include="Machinery\Kits\RM_KitSettings.cs" />
+    <Compile Include="Machinery\Kits\RM_FluidResidue.cs" />
+    <Compile Include="Machinery\Kits\RM_HotLiquid.cs" />
+    <Compile Include="Machinery\Kits\RM_LiquidBath.cs" />
+    <Compile Include="Machinery\Kits\RM_LiquidReaction.cs" />
+  </ItemGroup>
+
   <!-- Tanker raid loop: Machinery\Logistics\ (namespace RimMandrake.FlowWorks.Machinery.Logistics). Tanker-only files go in this group.
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>

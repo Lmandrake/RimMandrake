@@ -466,5 +466,3 @@ GimmeSomeSlack/northstar/*   # proof/validation result JSONs: evidence, not game
 FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside the mod; not game content
 # --- FlowWorks review MAP data: read by review_map.py on the Windows side, never game content (2026-10-05) ---
 FlowWorks/review_map_stations_visuals.json   # visuals station data for the review map builder; not game content
-# --- FlowWorks liquid kits: Defs name CompProperties_LiquidReactor, but Source/Machinery/Kits is uncommitted and not in the csproj, so the class is not in the DLL; deploying the XML makes the launch gate refuse every map (2026-10-06) ---
-FlowWorks/Defs/Machinery/Kits/*   # unbuilt kits scaffold; lift when the kits source is built and committed
