@@ -15,11 +15,13 @@ namespace RimMandrake.EnvironmentalHazards
     // ForcedWeather() override point: GameCondition.ForcedWeather()
     // (Source/RimWorld/GameCondition.cs:345, verified this spec) is
     // vanilla's own per-tick hook for exactly this — the weather system
-    // calls it every weather-decision tick and takes whatever WeatherDef it
-    // returns, so switching what this method returns IS switching the
-    // map's live weather; no re-set loop needed, same reasoning
-    // GameCondition_EnvironmentalWeather's own header already gives for
-    // that override.
+    // calls it every weather-decision tick, but WeatherDecider.WeatherDeciderTick
+    // only moves to a newly forced weather once the current one is older
+    // than 4000 ticks (or the forced def's Anomaly transitionTicksOverride),
+    // which is longer than a whole 20-40 minute burst. So every change of
+    // what this method returns is followed by SnapForcedWeather(), which runs
+    // vanilla's own StartNextWeather at once (LIVE 2026-10-04: TheForge's
+    // cycle_walk read 'Clear' 130 ticks into a forced Rain burst).
     //
     // 1 in-game hour = 2500 ticks (60000 ticks/day / 24), the same
     // conversion RM_CompScriptedDieOff already uses.
@@ -54,6 +56,29 @@ namespace RimMandrake.EnvironmentalHazards
         protected virtual WeatherDef NonBurstWeatherOverride()
         {
             return null;
+        }
+
+        /// <summary>Move each affected map to its forced weather now, through
+        /// vanilla's own StartNextWeather (which picks ForcedWeather and sets a
+        /// fresh duration), instead of waiting out WeatherDeciderTick's
+        /// 4000-tick age gate. No-op when nothing is forced or it already
+        /// shows.</summary>
+        protected void SnapForcedWeather()
+        {
+            List<Map> maps = AffectedMaps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                Map m = maps[i];
+                if (m == null || m.weatherDecider == null || m.weatherManager == null)
+                {
+                    continue;
+                }
+                WeatherDef want = m.weatherDecider.ForcedWeather;
+                if (want != null && m.weatherManager.curWeather != want)
+                {
+                    m.weatherDecider.StartNextWeather();
+                }
+            }
         }
 
         /// <summary>Start (or restart) a burst of an exact length instead
@@ -154,6 +179,8 @@ namespace RimMandrake.EnvironmentalHazards
             burstWeatherEndTick = nowTick + burstTicks;
             ticksUntilScaldDamage = ext.scaldDamageIntervalTicks;
 
+            SnapForcedWeather();
+
             int flashWindowTicks = Mathf.Max(1, Mathf.RoundToInt(ext.flashWindowHoursAfterBurstStart * TicksPerHour));
             List<Map> maps = AffectedMaps;
             for (int i = 0; i < maps.Count; i++)
@@ -170,6 +197,7 @@ namespace RimMandrake.EnvironmentalHazards
         {
             inBurst = false;
             burstWeatherEndTick = 0;
+            SnapForcedWeather();
             // The flash window deliberately keeps running past burst end
             // (it was set to burst-start + flashWindowHoursAfterBurstStart,
             // not to the burst weather's own, shorter end) —

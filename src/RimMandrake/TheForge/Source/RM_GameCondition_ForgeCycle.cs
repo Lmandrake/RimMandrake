@@ -494,6 +494,11 @@ namespace RimMandrake.TheForge
                     }
                     break;
             }
+
+            // The freeze forces its own steam (NonBurstWeatherOverride) and every
+            // other phase hands back the pulse's base weather; show it now rather
+            // than after vanilla's 4000-tick age gate.
+            SnapForcedWeather();
         }
 
         private static FloatRange HoursFor(RM_ForgeCycleExtension ext, ForgeCyclePhase p)
