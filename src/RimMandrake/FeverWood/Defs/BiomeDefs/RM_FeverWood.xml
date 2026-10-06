@@ -234,6 +234,9 @@
       <RM_Lommerel>0.4</RM_Lommerel>  <!-- lommerel - the crown's grazer, slung under the boughs -->
       <RM_Nemmel>0.4</RM_Nemmel>  <!-- nemmel - the floor's one honest meal -->
       <RM_Grolth>0.05</RM_Grolth>  <!-- grolth - carrion-dissolver, waits, never chases -->
+      <RM_Gorrameth>0.02</RM_Gorrameth>  <!-- gorrameth - the terribly lost, drinks at the mirrors -->
+      <RM_Brathek>0.5</RM_Brathek>  <!-- brathek - the wood-borer that keeps digging -->
+      <RM_Silloch>0.3</RM_Silloch>  <!-- silloch - the crown's wait-ambusher, reads as bark -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- FEVERWOOD_FLORA_ROSTER_1: the 3 AB_* donor placeholder rows

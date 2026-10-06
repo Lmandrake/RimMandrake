@@ -84,6 +84,8 @@
     <Compile Include="RM_KurrethTheft.cs" />
     <Compile Include="RM_KurrethColumn.cs" />
     <Compile Include="RM_OilBoil.cs" />
+    <Compile Include="RM_CompSillochAmbush.cs" />
+    <Compile Include="RM_BrathekBoring.cs" />
   </ItemGroup>
 
   <ItemGroup>
