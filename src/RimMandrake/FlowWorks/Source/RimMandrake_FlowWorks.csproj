@@ -104,6 +104,7 @@
     <Compile Include="Superdeep\RM_FlowDoors.cs" />
     <Compile Include="RM_PitTrapMath.cs" />
     <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />
+    <Compile Include="Superdeep\RM_PitPathing.cs" />
     <Compile Include="RM_Patch_SuperdeepShooting.cs" />
   </ItemGroup>
 

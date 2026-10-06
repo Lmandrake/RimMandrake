@@ -195,7 +195,7 @@ namespace RimMandrake.FlowWorks.Pits
                 }
                 if (state != null)
                 {
-                    RM_SuperdeepTrap.OnDescent(p, p.Position, state);
+                    RM_SuperdeepTrap.OnForcedDescent(p, p.Position, state);
                 }
                 first = first ?? p;
             }

@@ -210,13 +210,13 @@ A pit only holds a creature that fits: anything wider walks out, and narrowing a
 
 ### 19. Falling in hurts - works in game
 
-Falling in hurts, and your own colonists are not trapped unless you choose that in settings
+Falling in hurts, and only being forced, blown or jumping in does it: colonists never walk into an open pit
 
 **Look at:** a pit and one of your colonists beside it
 
 **Try:**
 
-- order him into the pit: he is hurt by the fall, and (shipped default) climbs back out
+- order him into the pit: he will not walk in (colonists never path into an open pit); 'Jump into pit', or a blast or skip that puts him in, hurts him and holds him until a lowered ladder lets him climb out
 
 ### 20. Shots only from the pit's edge - built, not yet seen
 

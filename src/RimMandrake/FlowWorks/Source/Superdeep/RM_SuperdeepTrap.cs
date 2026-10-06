@@ -220,6 +220,24 @@ namespace RimMandrake.FlowWorks
 			PitDescent?.Invoke(p, cell);
 		}
 
+		/// <summary>FLOWWORKS_PIT_FALL_ONLY_FORCED_1: a forced arrival (skip, flyer landing, a cover
+		/// giving way, a mod's push). Everyone falls; one of your own who was forced in is then held
+		/// like a jumper ("If you're in a superdeep pit, you can't climb out. Period.") — a lowered
+		/// ladder is their way out.</summary>
+		internal static void OnForcedDescent(Pawn p, IntVec3 cell, RM_SuperdeepTrapState state)
+		{
+			if (p == null || state == null)
+			{
+				return;
+			}
+			if (p.Faction == Faction.OfPlayer)
+			{
+				state.AddJumper(p);
+			}
+			state.NoteHandledArrival(p, cell);
+			OnDescent(p, cell, state);
+		}
+
 		// ── "Jump into pit" ───────────────────────────────────────────────
 		/// <summary>Voluntary descent: the pawn steps into the D = 4 cell, takes the fall, and
 		/// is stranded like anyone else (it counts as captured until it is off D = 4).</summary>
@@ -272,7 +290,11 @@ namespace RimMandrake.FlowWorks
 		private HashSet<Pawn> jumpers = new HashSet<Pawn>();
 		private Dictionary<Pawn, IntVec3> lastCell = new Dictionary<Pawn, IntVec3>();
 		private Dictionary<Pawn, IntVec3> nextCell = new Dictionary<Pawn, IntVec3>();
+		/// <summary>Superdeep cells a pawn's own path follower stepped it into since the last
+		/// detector pass (RM_Patch_PathFollower_WalkedStep). Absent = the arrival was forced.</summary>
+		private readonly Dictionary<Pawn, IntVec3> walkedInto = new Dictionary<Pawn, IntVec3>();
 		private readonly List<Pawn> descents = new List<Pawn>();
+		private readonly HashSet<Pawn> forced = new HashSet<Pawn>();
 
 		/// <summary>Read by the bridge (jawa/flowworks_pit_report): newest last, max 32.</summary>
 		public readonly List<string> RecentDescents = new List<string>();
@@ -295,12 +317,32 @@ namespace RimMandrake.FlowWorks
 		{
 			lastCell.Clear();
 			nextCell.Clear();
+			walkedInto.Clear();
+		}
+
+		public void NoteWalkedStep(Pawn p, IntVec3 cell)
+		{
+			if (p != null)
+			{
+				walkedInto[p] = cell;
+			}
+		}
+
+		/// <summary>An arrival already handled as a fall elsewhere: the detector must not count it
+		/// again (it compares against lastCell on its next pass).</summary>
+		public void NoteHandledArrival(Pawn p, IntVec3 cell)
+		{
+			if (p != null)
+			{
+				lastCell[p] = cell;
+			}
 		}
 
 		public void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
 			nextCell.Clear();
 			descents.Clear();
+			forced.Clear();
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
@@ -310,12 +352,23 @@ namespace RimMandrake.FlowWorks
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
 					&& RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos))
 					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
-					&& !p.Flying && RM_SuperdeepTrap.Captures(p))
+					&& !p.Flying)
 				{
-					descents.Add(p);
+					// FLOWWORKS_PIT_FALL_ONLY_FORCED_1: who falls is decided by HOW the pawn arrived.
+					bool walked = walkedInto.TryGetValue(p, out IntVec3 w) && w == pos;
+					if (RM_PitTrapMath.DescentFalls(walked, RM_LadderRules.LadderLetsOut(map, pos, p),
+						p.Faction == Faction.OfPlayer, RM_SuperdeepTrap.Captures(p)))
+					{
+						descents.Add(p);
+						if (!walked)
+						{
+							forced.Add(p);
+						}
+					}
 				}
 				nextCell[p] = pos;
 			}
+			walkedInto.Clear();
 			Dictionary<Pawn, IntVec3> swap = lastCell;
 			lastCell = nextCell;
 			nextCell = swap;
@@ -324,7 +377,14 @@ namespace RimMandrake.FlowWorks
 				Pawn p = descents[i];
 				if (p.Spawned)
 				{
-					RM_SuperdeepTrap.OnDescent(p, p.Position, this);
+					if (forced.Contains(p))
+					{
+						RM_SuperdeepTrap.OnForcedDescent(p, p.Position, this);
+					}
+					else
+					{
+						RM_SuperdeepTrap.OnDescent(p, p.Position, this);
+					}
 				}
 			}
 			if (jumpers.Count > 0)
@@ -370,6 +430,9 @@ namespace RimMandrake.FlowWorks
 	[HarmonyPatch(typeof(Pawn_PathFollower), "TryEnterNextPathCell")]
 	public static class RM_Patch_PathFollower_SuperdeepFloor
 	{
+		private const int RerouteCooldown = 60;
+		private static readonly Dictionary<int, int> lastReroute = new Dictionary<int, int>();
+
 		[HarmonyPrefix]
 		public static bool Prefix(Pawn_PathFollower __instance, Pawn ___pawn)
 		{
@@ -387,6 +450,23 @@ namespace RimMandrake.FlowWorks
 			if (!RM_PitTrapMath.StepBlocked(RM_SuperdeepTrap.IsHeld(pawn), toD))
 			{
 				return true;
+			}
+			// A path planned before the pawn was held (or a stale one) tries to leave over the lip.
+			// If this pit has a way out for it, re-plan (RM_PitPathing routes it to the ladder) rather
+			// than fail the job — failing is what left the pit_escape friendly on Wait forever. At
+			// most once per RerouteCooldown ticks, so a route that still cannot work fails as before.
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (!RM_SuperdeepTrap.TryGetTrapRegion(pawn, out _)
+				&& (!lastReroute.TryGetValue(pawn.thingIDNumber, out int last) || now - last >= RerouteCooldown))
+			{
+				lastReroute[pawn.thingIDNumber] = now;
+				if (lastReroute.Count > 256)
+				{
+					lastReroute.Clear();
+					lastReroute[pawn.thingIDNumber] = now;
+				}
+				__instance.ResetToCurrentPosition();
+				return false;
 			}
 			// Vanilla's own PatherFailed shape (Pawn_PathFollower.cs l.573).
 			__instance.StopDead();
