@@ -710,8 +710,8 @@ if Suite is not None:
         "(worldgen-affecting), so a held bland map cannot show it", "scaldS4VentFieldsEnabled")
     _um("scald_sail_walker", "walker_surfaces_and_sails_scatter", "RUT_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident",
         "scaldS5SailWalkerEnabled")
-    _um("scald_wreck_salvage", "wrecks_scatter_and_yield_salvage", "RUT_ScaldWreckScatter runs at map generation on the Scald biome; needs a fresh Scald map",
-        "scaldS6WreckSalvageEnabled")
+    # S6 wreck salvage moved to Wreckage (RM_WreckField_Scald, field key "Scald"): its chain is Wreckage's
+    # mapgen.scald_field_on_shallows_only, toggled by that mod's wreckFields/disabledFields.
     _um("scald_steam_exposure", "steam_carrier_inflicts_scald_exposure", "RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need a Scald map under "
         "steam and an unprotected pawn; no way to start the condition on a bland map", "scaldS7SteamExposureEnabled")
     _um("twilight_suulk", "suulk_arrival_and_vaulisk_lure", "RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the "

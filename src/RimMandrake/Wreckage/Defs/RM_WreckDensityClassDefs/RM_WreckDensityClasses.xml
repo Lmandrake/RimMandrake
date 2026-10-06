@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3d-i: the placement law's density classes. Density
+  follows ONE axis, how long a wreck survives in a place (how hard it is to reach, and whether
+  the place eats metal), never how many ships fell. A biome's RM_GenStep_WreckField names its
+  class; re-tuning a row re-tunes every field of that class. Mod Settings' wreck density
+  multiplies every count.
+
+  Not rows here, by design: Cleaned (travelled or inhabited land) scatters nothing, so a Cleaned
+  biome simply has no field; Fresh (the Fall Line) is delivered by the wreck-fall incident (§3e).
+  The law's "loot +1 tier" for Riddled/High is NOT a class field: a tier is per-def and set at
+  resolve time, so it rides the weathering row those biomes use (RM_WreckWeathering_Frozen etc.).
+  The "repairable few" weight (§3d-i) is not built yet.
+
+  ALL NUMBERS PROVISIONAL. Counts are the design table's INVENTED ranges, to be tuned live;
+  Moderate's 0.2 cluster chance and every clusterSizeRange are invented here.
+-->
+<Defs>
+
+  <RimMandrake.Wreckage.RM_WreckDensityClassDef>
+    <defName>RM_WreckDensity_Riddled</defName>
+    <label>riddled</label>
+    <description>Deep nightside: nobody goes, and the cold stops corrosion. The densest wreck fields on the planet.</description>
+    <countPer10kCellsRange>6~10</countPer10kCellsRange>
+    <clusterChance>0.5</clusterChance>
+    <clusterSizeRange>2~4</clusterSizeRange>
+  </RimMandrake.Wreckage.RM_WreckDensityClassDef>
+
+  <RimMandrake.Wreckage.RM_WreckDensityClassDef>
+    <defName>RM_WreckDensity_High</defName>
+    <label>high</label>
+    <description>Sea floors: only a gravship gets down, so almost no one can or would bother to go there.</description>
+    <countPer10kCellsRange>4~6</countPer10kCellsRange>
+    <clusterChance>0.3</clusterChance>
+    <clusterSizeRange>2~4</clusterSizeRange>
+  </RimMandrake.Wreckage.RM_WreckDensityClassDef>
+
+  <RimMandrake.Wreckage.RM_WreckDensityClassDef>
+    <defName>RM_WreckDensity_Moderate</defName>
+    <label>moderate</label>
+    <description>Hostile land: lethal terrain, heat, radiation or rot, and few visitors.</description>
+    <countPer10kCellsRange>1.5~3</countPer10kCellsRange>
+    <clusterChance>0.2</clusterChance>
+    <clusterSizeRange>2~3</clusterSizeRange>
+  </RimMandrake.Wreckage.RM_WreckDensityClassDef>
+
+  <RimMandrake.Wreckage.RM_WreckDensityClassDef>
+    <defName>RM_WreckDensity_Low</defName>
+    <label>low</label>
+    <description>Hostile but crossed, or land that buries and reveals.</description>
+    <countPer10kCellsRange>0.3~0.8</countPer10kCellsRange>
+    <clusterChance>0</clusterChance>
+  </RimMandrake.Wreckage.RM_WreckDensityClassDef>
+
+  <RimMandrake.Wreckage.RM_WreckDensityClassDef>
+    <defName>RM_WreckDensity_Eroded</defName>
+    <label>eroded</label>
+    <description>Wrecks are present, but the biome eats them and little remains: fragments only.</description>
+    <countPer10kCellsRange>1~2</countPer10kCellsRange>
+    <clusterChance>0</clusterChance>
+  </RimMandrake.Wreckage.RM_WreckDensityClassDef>
+
+</Defs>

@@ -2,8 +2,10 @@
 mandrake.rm.biomes as an engine entry.
 
 SALVAGE_WRECKAGE_EVERYWHERE_1, slice 1: the loot half of design step 1;
-slice 2: the family parents and the weathering row, the Scald reparented as the template
-(design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md §3c, §6). Walk:
+slice 2: the family parents and the weathering row, the Scald reparented as the template;
+slice 3: the weighted wreck-field GenStep + density classes, the Scald's three steps merged into one
+(S6 folded into the field key "Scald", alias Scald.S6), and the Riddled/High weathering rows
+(design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md §3c, §3d, §6). Walk:
 design/validation_walks/RimMandrake/Wreckage.md. Run:
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run Wreckage
@@ -21,7 +23,7 @@ from modcheck import Suite, ExpectationFailed
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCALD = os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Buildings", "RUT_ScaldWrecks.xml")
 suite = Suite("Wreckage")
-suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare"]
+suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields"]
 
 TIERS = ("Scrap", "Hull", "Tank", "Carapace", "Sealed")
 RARE_TIERS = ("Hull", "Tank", "Carapace", "Sealed")
@@ -39,8 +41,30 @@ SCALD_SHIPPED = {
     "RUT_ScaldWreckTank": ({"Steel": 20, "GravlitePanel": 5}, 0.75),
     "RUT_ScaldWreckFrame": ({"Steel": 15}, 0.75),
 }
+DENSITY_XML = os.path.join(HERE, "Defs", "RM_WreckDensityClassDefs", "RM_WreckDensityClasses.xml")
+DCLASS_TAG = "RimMandrake.Wreckage.RM_WreckDensityClassDef"
+FIELD_CLASS = "RimMandrake.Wreckage.RM_GenStep_WreckField"
+FIELD_CS = os.path.join(HERE, "Source", "RM_GenStep_WreckField.cs")
+TB = os.path.join(HERE, "..", "TerminalBiomes")
+SCALD_FIELD_XML = os.path.join(TB, "Defs", "MapGeneration", "RUT_ScaldWreckScatter.xml")
+SCALD_REGISTER_XML = os.path.join(TB, "Patches", "RUT_ScaldWreckScatter_Register.xml")
+SCALD_TERRAIN_XML = os.path.join(TB, "Defs", "TerrainDefs", "RUT_ScaldWater.xml")
+TB_MOD_CS = os.path.join(TB, "Source", "RM_TerminalBiomesMod.cs")
+OLD_SCALD_STEPS = ["RUT_Jawa_ScatterScaldWreck%s" % k for k in ("Hull", "Tank", "Frame")]
+# Expected per the placement law (design §3d-i): ordered by persistence, Riddled densest.
+DENSITY_ORDER = ["RM_WreckDensity_Riddled", "RM_WreckDensity_High", "RM_WreckDensity_Moderate", "RM_WreckDensity_Low"]
+# Design §4 numbers for the rows this script pins (yieldFactor, lootTierShift).
+WEATHER_PINNED = {"RM_WreckWeathering_Cooked": (0.75, 0), "RM_WreckWeathering_Frozen": (1.0, 1),
+                  "RM_WreckWeathering_Picked": (0.2, -2), "RM_WreckWeathering_CrystalJacketed": (1.0, 1)}
+# Public fields of the base class GenStep_Scatterer (RimSage Verse/GenStep_Scatterer.cs), so an XML field
+# that is neither ours nor the base's is a typo the loader would only warn about at load.
+SCATTERER_FIELDS = {"count", "countPer10kCellsRange", "nearPlayerStart", "nearMapCenter", "minSpacing",
+                    "spotMustBeStandable", "minDistToPlayerStart", "minDistToPlayerStartPct", "minEdgeDist",
+                    "minEdgeDistPct", "extraNoBuildEdgeDist", "validators", "fallbackValidators", "allowInWaterBiome",
+                    "allowFoggedPositions", "allowRoofed", "onlyOnStartingMap", "minPollution",
+                    "allowMechanoidDatacoreReadOrLost", "isJunk", "warnOnFail"}
 NEEDLES = ("mandrake.rm.wreckage", "RimMandrake.Wreckage", "RM_SalvageLoot", "RM_CompSalvageLoot",
-           "RM_WreckFamily", "RM_WreckWeathering")
+           "RM_WreckFamily", "RM_WreckWeathering", "RM_WreckField", "RM_WreckDensity", "[Wreckage]")
 
 
 @suite.chain("load")
@@ -73,6 +97,25 @@ def defs(t):
         if t._guard():
             # A ThingDef whose comp Class cannot resolve is discarded whole, so presence is the check.
             _get_defs(t, ["ThingDef/%s" % d for d in SCALD_WRECKS])
+    with t.component("scald_field_resolves", beyond_toggle=True):
+        if t._guard():
+            # One step now; a GenStepDef whose genStep Class cannot resolve is an error at load.
+            _get_defs(t, ["GenStepDef/RM_WreckField_Scald"])
+
+
+@suite.chain("mapgen")
+def mapgen(t):
+    for comp, tog, why in (
+            ("scald_field_on_shallows_only", None,
+             "needs a FRESH Scald map; list_things RUT_ScaldWreck* then every occupied cell's terrain must carry "
+             "RUT_ScaldShallow"),
+            ("wreck_fields_off_new_map_empty", "wreckFields",
+             "needs a fresh Scald map generated with wreckFields false (and one with disabledFields \"Scald\")"),
+            ("density_scales_count", "wreckDensity",
+             "needs two fresh Scald maps at density 0 and 2; zero at 0, more at 2 (ratio, not exact)")):
+        with t.component(comp, toggle=tog, beyond_toggle=tog is None):
+            if t._guard():
+                raise ExpectationFailed("UNMEASURED: " + why)
 
 
 def _shift(tier, shift):
@@ -139,6 +182,121 @@ def _weatherings(bad):
     return out
 
 
+def _density_classes(bad):
+    """{defName: (min, max, clusterChance)}"""
+    out = {}
+    for e in ET.parse(DENSITY_XML).getroot():
+        if e.tag != DCLASS_TAG:
+            bad.append("density file holds a <%s>" % e.tag)
+            continue
+        dn = e.findtext("defName")
+        try:
+            lo, hi = [float(x) for x in (e.findtext("countPer10kCellsRange") or "").split("~")]
+        except ValueError:
+            bad.append("%s countPer10kCellsRange unparseable" % dn)
+            continue
+        cc = float(e.findtext("clusterChance") or "0")
+        if lo < 0 or hi < lo or not 0 <= cc <= 1:
+            bad.append("%s out of range (%s~%s, cluster %s)" % (dn, lo, hi, cc))
+        cs = e.findtext("clusterSizeRange")
+        if cs and int(cs.split("~")[0]) < 2:
+            bad.append("%s clusterSizeRange below 2" % dn)
+        out[dn] = (lo, hi, cc)
+    missing = [d for d in DENSITY_ORDER + ["RM_WreckDensity_Eroded"] if d not in out]
+    if missing:
+        bad.append("density classes missing: %s" % missing)
+        return out
+    mids = [sum(out[d][:2]) / 2 for d in DENSITY_ORDER]
+    if mids != sorted(mids, reverse=True):
+        bad.append("density classes break the persistence law (Riddled > High > Moderate > Low): mids %s" % mids)
+    return out
+
+
+def _cs_fields(path):
+    src = open(path, encoding="utf-8").read().split("class RM_GenStep_WreckField")[1].split("RM_WreckFieldStartup")[0]
+    return set(re.findall(r"^\s*public (?!override|static)[\w<>.,\s]+? (\w+)\s*(?:=[^;]*)?;", src, flags=re.M))
+
+
+def _field_checks(bad, weathers):
+    """The wreck-field GenStep(s): shape, refs, the Scald merge and the S6 fold."""
+    for dn, want in WEATHER_PINNED.items():
+        if weathers.get(dn) != want:
+            bad.append("weathering %s is %s, design §4 pins %s" % (dn, weathers.get(dn), want))
+    classes = _density_classes(bad)
+    ours = _cs_fields(FIELD_CS) | SCATTERER_FIELDS
+    wreck_defs = {e.findtext("defName") for e in ET.parse(SCALD).getroot() if e.findtext("defName")}
+    tags = set(li.text for li in ET.parse(SCALD_TERRAIN_XML).getroot().iter("li") if li.text)
+    fields = {}
+    for e in ET.parse(SCALD_FIELD_XML).getroot():
+        gs = e.find("genStep")
+        if e.tag != "GenStepDef" or gs is None:
+            continue
+        dn = e.findtext("defName")
+        if gs.get("Class") != FIELD_CLASS:
+            bad.append("%s is %s, not the wreck field" % (dn, gs.get("Class")))
+            continue
+        fields[dn] = gs
+        for child in gs:
+            if child.tag not in ours:
+                bad.append("%s sets <%s>, which is no field of RM_GenStep_WreckField or GenStep_Scatterer" % (dn, child.tag))
+        if not gs.findtext("settingsKey"):
+            bad.append("%s has no settingsKey (no checkbox, no gate)" % dn)
+        dc = gs.findtext("densityClass")
+        if dc not in classes:
+            bad.append("%s names density class %s, not defined" % (dn, dc))
+        w = gs.find("wrecks")
+        rows = list(w) if w is not None else []
+        if not rows or any(r.tag == "li" for r in rows):
+            bad.append("%s wrecks list empty or in <li> form (the custom loader reads element names)" % dn)
+        for r in rows:
+            if r.tag not in wreck_defs:
+                bad.append("%s lists %s, which no Scald wreck def defines" % (dn, r.tag))
+            try:
+                if float(r.text) <= 0:
+                    bad.append("%s gives %s weight %s" % (dn, r.tag, r.text))
+            except (TypeError, ValueError):
+                bad.append("%s gives %s a non-number weight %r" % (dn, r.tag, r.text))
+        for li in gs.findall("terrainValidationAllowed/li"):
+            if li.text not in tags:
+                bad.append("%s validates on tag %s, which no Scald terrain carries" % (dn, li.text))
+        if float(gs.findtext("terrainValidationRadius") or "0") <= 0 and gs.find("terrainValidationAllowed") is not None:
+            bad.append("%s has allowed tags but radius 0: the tags are never read" % dn)
+    if sorted(fields) != ["RM_WreckField_Scald"]:
+        bad.append("Scald wreck fields: %s, want exactly RM_WreckField_Scald (three steps merged into one)" % sorted(fields))
+        return
+    gs = fields["RM_WreckField_Scald"]
+    if sorted(r.tag for r in gs.find("wrecks")) != sorted(SCALD_WRECKS):
+        bad.append("RM_WreckField_Scald does not list all three Scald wrecks")
+    if gs.findtext("settingsKey") != "Scald" or [li.text for li in gs.findall("gateAliases/li")] != ["Scald.S6"]:
+        bad.append("RM_WreckField_Scald must key on Scald with the Scald.S6 alias (design §6)")
+    if gs.findtext("countPer10kCellsRange") != "1.2~1.8" or gs.findtext("allowInWaterBiome") != "true":
+        bad.append("RM_WreckField_Scald changed the shipped ceiling (3 x 0.4~0.6) or dropped allowInWaterBiome")
+    reg = ET.parse(SCALD_REGISTER_XML).getroot()
+    for biome in ("RM_TheScald", "RUT_TheScald"):
+        ops = [op for op in reg if biome in (op.findtext("xpath") or "")]
+        got = [li.text for op in ops for li in op.iter("li")]
+        if got.count("RM_WreckField_Scald") != 2:  # the match and the nomatch arms
+            bad.append("register patch does not add RM_WreckField_Scald to %s on both arms" % biome)
+    stale = []
+    root = os.path.normpath(os.path.join(HERE, ".."))
+    for dp, dns, fns in os.walk(os.path.normpath(os.path.join(HERE, "..", ".."))):
+        dns[:] = [d for d in dns if d not in (".git", "obj", "bin", "__pycache__")]
+        for fn in fns:
+            if fn.endswith((".xml", ".cs")):
+                txt = open(os.path.join(dp, fn), encoding="utf-8", errors="replace").read()
+                if any(o in txt for o in OLD_SCALD_STEPS) and fn != "RUT_ScaldWreckScatter.xml":
+                    stale.append(os.path.relpath(os.path.join(dp, fn), root))
+                if "scaldS6WreckSalvage" in txt or "ScaldS6WreckSalvage" in txt or "RM_GenStep_ScaldWreckScatter" in txt:
+                    stale.append(os.path.relpath(os.path.join(dp, fn), root) + " (S6 bool/class)")
+    if stale:
+        bad.append("old three-step Scald scatter or S6 bool still referenced: %s" % sorted(set(stale)))
+    tb = open(TB_MOD_CS, encoding="utf-8").read()
+    if re.search(r'Register\("Scald\.S6"', tb):
+        bad.append("TerminalBiomes still registers Scald.S6 (the alias is Wreckage's now)")
+    if not re.search(r'Register\("Scald", \(\) => RM_TerminalBiomesSettings\.ScaldActive\)', tb):
+        bad.append("TerminalBiomes does not register the bare Scald gate: the field would ignore the biome switch")
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -199,6 +357,7 @@ def static_checks():
                            % (dn, cost, eff, SCALD_SHIPPED[dn][0], SCALD_SHIPPED[dn][1]))
         if set(seen) != set(SCALD_WRECKS):
             bad.append("Scald wrecks wired: %s, want %s" % (sorted(seen), sorted(SCALD_WRECKS)))
+    _field_checks(bad, weathers)
     src_dir = os.path.join(HERE, "Source")
     proj = open(os.path.join(src_dir, "RM_Wreckage.csproj"), encoding="utf-8").read()
     for f in os.listdir(src_dir):

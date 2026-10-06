@@ -6,6 +6,11 @@
   <RM_Wreckage_Setting_Generosity>Loot generosity: {0}</RM_Wreckage_Setting_Generosity>
   <RM_Wreckage_Setting_SkillScales>Skill improves rare finds</RM_Wreckage_Setting_SkillScales>
   <RM_Wreckage_Setting_SkillScales_Tip>A skilled salvager is far more likely to recover a rare part intact (Construction skill for now). Off: every salvager has the same chance.</RM_Wreckage_Setting_SkillScales_Tip>
+  <RM_Wreckage_Setting_WreckFields>Wreck fields</RM_Wreckage_Setting_WreckFields>
+  <RM_Wreckage_Setting_WreckFields_Tip>Scatter salvageable wrecks on new maps of the biomes that have a wreck field. Affects new maps only: wrecks already on a map stay. Off: no biome scatters wrecks.</RM_Wreckage_Setting_WreckFields_Tip>
+  <RM_Wreckage_Setting_Density>Wreck density (new maps only): {0}</RM_Wreckage_Setting_Density>
+  <RM_Wreckage_Setting_Field>Wreck field: {0}</RM_Wreckage_Setting_Field>
+  <RM_Wreckage_Setting_Field_Tip>Scatter wrecks on new {0} maps. Affects new maps only.</RM_Wreckage_Setting_Field_Tip>
   <RM_Wreckage_InspectLootTier>Salvage: {0}</RM_Wreckage_InspectLootTier>
   <RM_Wreckage_Tier_Scrap>scrap</RM_Wreckage_Tier_Scrap>
   <RM_Wreckage_Tier_Hull>hull parts</RM_Wreckage_Tier_Hull>
