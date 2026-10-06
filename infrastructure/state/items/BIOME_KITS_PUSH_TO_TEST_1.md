@@ -122,3 +122,22 @@ here.
   order-dependent `PatchOperationAdd`s missing `<match>` branches, and a
   Scarlands `wildAnimalScariaChance` that would've left its own arm-gate
   with nothing to ever trigger.
+
+- 2026-10-06 (FOUNDRY helper, owner AFK, offline only — game up on the flowworks
+  tier, bridge not used). Census of the eight kit mods plus the two shared
+  engines: every kit has About.xml, a Mod Settings class, a `validation.py`,
+  explicit-compile csproj with every `.cs` listed, every DLL `.srchash` MATCH,
+  and `validate_patch.py` over all kit `Patches/` against
+  `ModsConfig.FULL.LATEST.xml` = 27 files, 0 errors. Last live reruns
+  (2026-10-03/04) classified: one MOD defect, fixed — `86c0e1d06`
+  (`RM_GameCondition_WeatherPulse` relied on `ForcedWeather()` alone, but
+  vanilla waits 4000 ticks before switching to a forced weather, longer than a
+  20-40 min burst; now `SnapForcedWeather()` on burst start/end and Forge phase
+  entry). TheSump's two notFound defs were deploy drift, not a defect. Script
+  work: walks for Miasma + Scarlands (`eb4b3e41f`), Miasma round-trips all 18
+  settings, CreatureBehaviors all 96 (`4b6127995`), TheForge surprise/site
+  fixes (`37c96a7dd`, `6f08b61ae`), Greentide seeded mire escalation +
+  `RM_Mired` ambient (`f983aca2b`). Still owed live: deploy the rebuilt
+  EnvironmentalHazards/TheForge DLLs into `RimMandrake.Biomes`, then rerun the
+  kit suites; the Kurreth-hive site contamination (FeverWood ant-hive on the
+  shared test map) is a SITE defect for the bridge holder.
