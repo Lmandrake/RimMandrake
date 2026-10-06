@@ -85,6 +85,10 @@ def sweep_pawns(B, keep_rects=()):
             continue
         x, z = pawn_xz(p)
         (kept if x is not None and _inside(x, z, keep_rects) else out).append(p)
+    if out and not kept:            # nothing held on purpose: the clean route (no corpse, no boomalope blast)
+        r = B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        B.call("jawa/incident_queue_clear")
+        return dict(matched=len(out), removed=r.get("matchedCount"), kept=0)
     removed = 0
     # destroy_bulk has no exclusion list, so with keep rects the outsiders are killed per id (a corpse is left
     # outside the stations; builders sweep with NO keep rects before they spawn their held creatures, so this

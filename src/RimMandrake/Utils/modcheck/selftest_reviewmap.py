@@ -70,6 +70,11 @@ killed = [kw["pawn"] for t, kw in B.calls if t == "jawa/pawn_force_incapacitate"
 check(killed == ["2"] and r["kept"] == 2, "keep-rect sweep: killed %s, %s" % (killed, r))
 check(not any(t == "jawa/destroy_bulk" for t, _ in B.calls), "keep-rect sweep must not destroy_bulk (no exclusion list)")
 
+B = FakeB(pawns=[pawns[0], pawns[1]])
+r = RM.sweep_pawns(B, keep_rects=[(48, 48, 10, 10)])
+check(any(t == "jawa/destroy_bulk" for t, _ in B.calls) and not any(t == "jawa/pawn_force_incapacitate" for t, _ in B.calls),
+      "nothing held -> the clean destroy_bulk route: %s" % B.calls)
+
 # pawn_xz reads every row shape seen
 check(RM.pawn_xz({"x": 1, "z": 2}) == (1, 2), "pawn_xz x/z")
 check(RM.pawn_xz({"position": {"x": 3, "z": 4}}) == (3, 4), "pawn_xz dict")

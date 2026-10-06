@@ -85,6 +85,14 @@ def derive(m=None, rows=None):
     return m, st, capd
 
 
+def sentence(title, say):
+    """The feature's designer sentence plus its plain line, as two sentences."""
+    t = title.strip()
+    if say:
+        t = (t if t.endswith((".", "!", "?")) else t + ".") + " " + say.strip()
+    return t
+
+
 def missing_parts(m, f, capd):
     return [m.PLAIN.get(c, capd[c]["label"]) for c in f["caps"] + f.get("minor", [])
             if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL")]
@@ -187,7 +195,7 @@ SETUPS = {
                      dig=[_pit(6, 5)], pawns=[("Colonist", 4, 6, "player", "drafted")],
                      try_=["order him into the pit: he is hurt by the fall, and (shipped default) climbs back out"]),
     "pit_shooting": dict(short="Shots only from the pit's edge", notice="a boar in a pit; your colonist stands 6 cells off",
-                         dig=[_pit(9, 5)], pawns=[("Boar", 10, 6, "none", None), ("Colonist", 3, 6, "player", "drafted")],
+                         dig=[_pit(9, 5)], pawns=[("WildBoar", 10, 6, "none", None), ("Colonist", 3, 6, "player", "drafted")],
                          keep=True, try_=["order an attack on the boar: he walks to the lip before he can shoot"]),
     "pit_ways_in": dict(short="Jump in on purpose", notice="a pit and a colonist beside it",
                         dig=[_pit(6, 5)], pawns=[("Colonist", 4, 6, "player", "drafted")],
@@ -209,7 +217,7 @@ SETUPS = {
                        try_=["walking up to the spikes is harmless; only a fall in triggers them"]),
     "pit_flood": dict(short="Flood an occupied pit", notice="a boar in a pit, a water canal behind a shut sluice",
                       terrain=[("WaterDeep", 0, 5, 3, 3)], dig=[(3, 6, 5, 1, 2), (8, 6, 1, 1, 2), _pit(9, 5)],
-                      spawn=[("RM_Sluice", 8, 6, "WoodLog")], pawns=[("Boar", 10, 6, "none", None)], keep=True,
+                      spawn=[("RM_Sluice", 8, 6, "WoodLog")], pawns=[("WildBoar", 10, 6, "none", None)], keep=True,
                       try_=["open the sluice (select it): water pours into the pit"]),
     # ---- 5 holding
     "hold_ladder": dict(short="A ladder in and out", notice="a pit with a ladder on its west wall and a colonist in it",
@@ -302,7 +310,7 @@ SETUPS = {
 RIVER = [("WaterMovingShallow", 0, 3, 16, 2), ("WaterMovingChestDeep", 0, 5, 16, 4), ("WaterMovingShallow", 0, 9, 16, 2)]
 RIVERS = [
     dict(id="river_ford", caps=["L09"], short="Ford stones", notice="a shallow river with a line of ford stones across",
-         terrain=[("WaterMovingShallow", 0, 3, 16, 8)], build=[("RM_FordStones", 7, z, None, None) for z in range(3, 11)],
+         terrain=[("WaterMovingShallow", 0, 3, 16, 8), ("RM_FordStones", 7, 3, 1, 8)],
          try_=["on a real river the current carries people; on ford stones it does not"]),
     dict(id="river_weir", caps=["L10"], short="A weir", notice="a weir on the bank edge, its slack pool upstream",
          terrain=RIVER, build=[("RM_BankWeir", 7, 11, None, None)], try_=["select the weir: its pool and catch"]),
@@ -478,6 +486,17 @@ def layout_check(S, doc=None):
 
 
 # ------------------------------------------------------------------------------------------------ labels
+def wrap(text, width):
+    out, cur = [], ""
+    for w in text.split():
+        if cur and len(cur) + 1 + len(w) > width:
+            out.append(cur)
+            cur = w
+        else:
+            cur = (cur + " " + w).strip()
+    return out + ([cur] if cur else [])
+
+
 def label_ops(S, st, doc, m=None):
     L = []
 
@@ -506,10 +525,13 @@ def label_ops(S, st, doc, m=None):
             "stations %d-%d" % (min(nums), max(nums)), TEAL, "small")
     for s in S:
         x, z = s["origin"]
-        sub = STATUS_WORD[s["status"]] + ("  -  " + s["notice"] if s["notice"] else "")
-        if s["placeholder"]:
-            sub = "NOT BUILT yet  -  " + (s["say"] or s["title"])
-        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), sub[:170], col[s["status"]], "small")
+        # title + status above the station; the what-to-notice line below it (tiny): one line each never runs into the
+        # neighbouring station's label (live look 2026-10-05: a 170-char sub line overran three stations)
+        add(x + SW // 2, z + SH + 1, "%d  %s" % (s["n"], s["short"]), STATUS_WORD[s["status"]], col[s["status"]], "small")
+        low = ("NOT BUILT yet: " + (s["say"] or s["title"])) if s["placeholder"] else s["notice"]
+        if low:
+            for k, part in enumerate(wrap(low, 46)[:3]):
+                add(x + SW // 2, z - 1 - k, part, "", CREAM, "tiny")
         for dx, dz, text in s["setup"].get("marks", []):
             add(x + dx, z + dz, text, "", RUST, "tiny")
     fx, fz, fw, fh = FREE["rect"]
@@ -837,8 +859,7 @@ def keysheet(S, st, doc, m, live=None, save=None):
     for name in secs:
         md += ["## " + name, ""]
         for s in [s for s in S if s["section_name"] == name]:
-            md += ["### %d. %s - %s" % (s["n"], s["short"], STATUS_WORD[s["status"]].lower()), "", s["title"] +
-                   (" " + s["say"] if s["say"] else ""), ""]
+            md += ["### %d. %s - %s" % (s["n"], s["short"], STATUS_WORD[s["status"]].lower()), "", sentence(s["title"], s["say"]), ""]
             if s["placeholder"]:
                 md += ["Not built yet: the station is an empty concrete pad with its label.", ""]
                 continue
@@ -863,7 +884,7 @@ def keysheet(S, st, doc, m, live=None, save=None):
     for name in secs:
         cs = []
         for s in [s for s in S if s["section_name"] == name]:
-            body = "<p class='what'>%s</p>" % E(s["title"] + (" " + s["say"] if s["say"] else ""))
+            body = "<p class='what'>%s</p>" % E(sentence(s["title"], s["say"]))
             if s["placeholder"]:
                 body += "<p>Not built yet: an empty concrete pad with its label.</p>"
             else:
@@ -889,7 +910,7 @@ def keysheet(S, st, doc, m, live=None, save=None):
 :root{--bg:#2a1d14;--panel:#3a291c;--ink:#f2e6cf;--muted:#c9b79a;--gold:#ffd27f;--teal:#8fd3c7;--rust:#ff9a6b;--line:#5a4230}
 body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 Georgia,serif;padding:20px 16px;overflow-x:hidden}
 h1{color:var(--gold);margin:0 0 6px;font-size:28px}h2{color:var(--teal);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:30px}
-.sub{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.sub{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%%),1fr));gap:12px}
 .st{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;gap:12px}
 .num{font-size:30px;color:var(--gold);min-width:42px;text-align:center;font-weight:bold}
 h3{margin:0 0 4px;color:var(--gold);font-size:20px}.what{color:var(--muted);margin:6px 0}.miss{color:var(--rust)}
@@ -964,6 +985,7 @@ def main(argv=None):
         vis_ok = R.verify_visuals(doc) if a.only in (None, "visuals") and doc else None
         gal_ok = R.verify_gallery(S) if a.only in (None, "gallery") else None
         R.labels(S, st, doc)
+        R.B.call("jawa/clear_ui", all=True)          # the debug log auto-opens on a fresh map
         R.goto(S, "V")
         live = dict(visuals_ok=vis_ok, gallery_ok=gal_ok, verify=R.verify, notes=R.notes, wall_s=round(time.time() - t0, 1))
         with open(os.path.join(REPO, "Transient", "fw_review_map_verify.json"), "w", encoding="utf-8") as f:
@@ -975,6 +997,7 @@ def main(argv=None):
     if a.save:
         R.sweep(R.keep_rects(S))
         R.call("rimworld/pause_game", pause=True)
+        R.B.call("jawa/clear_ui", all=True)
         name = RM.free_save_name(a.name, RM.saves_stat())
         r = RM.save_keeper(R.B, name)
         print("save %s: ok=%s new=%s changed=%s gone=%s" % (name, r["ok"], r["new"], r["changed"], r["gone"]))
