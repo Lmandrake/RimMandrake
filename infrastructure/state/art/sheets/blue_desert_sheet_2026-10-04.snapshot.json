@@ -1,9 +1,9 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T20:39:04-0700",
+ "built": "2026-10-05T21:18:39-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
@@ -323,20 +323,38 @@
     },
     "B": {
      "single": "560f3b5d3a99bf15d914f9cff016ad935e7d6fe71c5743c98253e7f51e666e3d"
+    },
+    "C": {
+     "single": "82edb15567e0b008a6a173d8a43dd40e0fd6b6192949e1cc9afd5501a6098252"
+    },
+    "D": {
+     "single": "78f9bf27ee504f09407f61959d7f5bcb0d22db7fc7256d1131787b582d3ee85b"
+    },
+    "E": {
+     "single": "2d107e9f60723f0bd99cf5ef5c6356481b2287676b635a1fc32ab36f4ecb9405"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Qeshra/RM_Qeshra",
-    "B": "Things/Plant/RM_Qeshra/RM_Qeshra"
+    "B": "Things/Plant/RM_Qeshra/RM_Qeshra",
+    "C": "Things/Plant/RM_Qeshra/RM_Qeshra",
+    "D": "Things/Plant/RM_Qeshra/RM_Qeshra",
+    "E": "Things/Plant/RM_Qeshra/RM_Qeshra"
    },
    "labels": {
     "A": "IN GAME \u2014 BlueDesert",
-    "B": "render RM_Qeshra_tint_v1"
+    "B": "render RM_Qeshra_tint_v1",
+    "C": "render RM_Qeshra_var1",
+    "D": "render RM_Qeshra_var2",
+    "E": "render RM_Qeshra_var3"
    },
    "res": "Things/Plant/RM_Qeshra/RM_Qeshra",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "qeshra"
   },

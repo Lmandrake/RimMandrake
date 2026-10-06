@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-05T20:44:29-0700",
+ "built": "2026-10-05T21:24:13-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -57,7 +57,7 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "history LanternDeeps 2026-10-03"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
    "reserved": [
@@ -69,18 +69,13 @@
    "columns": {
     "A": {
      "single": "ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335"
-    },
-    "B": {
-     "single": "8929ed215e73bfd524c4508d339747a392075d66f5b7608b257a1aaad927026c"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb",
-    "B": "RM_LanternDeeps/Things/Plant/BrellikBulb"
+    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_BrellikBulb_v1"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
    "reserved": [
@@ -157,12 +152,6 @@
     "B": {
      "single": "8f73f198c94d170903c91ef3881653523b98beec42d73afedd07de8d137a344b"
     },
-    "C": {
-     "single": "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd"
-    },
-    "D": {
-     "single": "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51"
-    },
     "E": {
      "single": "e47f72c83faa47ecd5aa5fea88331a7465870e7804dc2ddd72cd9a9b413d99f2"
     }
@@ -170,15 +159,11 @@
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/Mycelium",
     "B": "RM_LanternDeeps/Things/Plant/Mycelium",
-    "C": "RM_LanternDeeps/Things/Plant/Mycelium",
-    "D": "RM_LanternDeeps/Things/Plant/Mycelium",
     "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render mycelium_a_v1",
-    "C": "render mycelium_b_v1",
-    "D": "render mycelium_c_v1",
     "E": "render gapall_RM_DeepMycelium_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
@@ -263,7 +248,7 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "history LanternDeeps 2026-10-03"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
    "reserved": [
@@ -457,18 +442,13 @@
    "columns": {
     "A": {
      "single": "8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d"
-    },
-    "B": {
-     "single": "8fa4fe85a54fcfb04378ca925ec1284b3766cf261bd5604861153dfec5e773fe"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
-    "B": "_byname"
+    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_PrennaLace_v1"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
    "reserved": [
@@ -481,18 +461,13 @@
    "columns": {
     "A": {
      "single": "f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730"
-    },
-    "B": {
-     "single": "95f377bf312efb42ffaa888a44f3e6341628f0e4591f67408e2e95caa4e4e73f"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/QuorrFern",
-    "B": "RM_LanternDeeps/Things/Plant/QuorrFern"
+    "A": "RM_LanternDeeps/Things/Plant/QuorrFern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_QuorrFern_v1"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
    "reserved": [
@@ -513,7 +488,7 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "render deeps_shatterjaw_v2"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
    "reserved": [
@@ -633,9 +608,6 @@
     "B": {
      "single": "074246c6fca0c0a026bb9747a26bcbe36474230ad67a47b6025a632996dba59d"
     },
-    "C": {
-     "single": "ebab863d05bdab245bb5a5b45b2437f2503b56cf004c71b3f0abea1826478459"
-    },
     "D": {
      "single": "bcb7fb1afc1b6564de7e93543de10f661091adaecfc3166cb646dd5a67c7d447"
     },
@@ -649,7 +621,6 @@
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
     "B": "_byname",
-    "C": "_byname",
     "D": "_byname",
     "E": "_byname",
     "F": "_byname"
@@ -657,7 +628,6 @@
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render twitchingpuffer_grown_v1",
-    "C": "render twitchingpuffer_harvested_v1",
     "D": "render twitchingpuffer_harvested_v2",
     "E": "render twitchingpuffer_immature_v1",
     "F": "render twitchingpuffer_tendrils_v1"
@@ -677,18 +647,13 @@
    "columns": {
     "A": {
      "single": "3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578"
-    },
-    "B": {
-     "single": "ba87b34f7a9436d65feefa5c33109cb5c626dffd1895c961ef48c99e0307d5ba"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/VellokReed",
-    "B": "RM_LanternDeeps/Things/Plant/VellokReed"
+    "A": "RM_LanternDeeps/Things/Plant/VellokReed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_VellokReed_v1"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
    "reserved": [
@@ -701,18 +666,13 @@
    "columns": {
     "A": {
      "single": "573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd"
-    },
-    "B": {
-     "single": "259c71777f6263a9158e731add420ce12bd91a51fde29943102488c41dab1b7e"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
-    "B": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_ZivvitTaper_v1"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
    "reserved": [
@@ -727,20 +687,13 @@
      "east": "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
      "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
      "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
-    },
-    "B": {
-     "east": "1d04505102b068678c0e43031756cb07911b7d42d81fdc34db5bf8472c088959",
-     "north": "09392e00a033bba7d40b2ca39ac8a8fabe8f091e82b1369cb577fa9caa9d0e22",
-     "south": "11e8e0974cb408eaf5296ef59fa5e341dd59763f639f37c65185bcad51814464"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
    "reserved": [
@@ -755,27 +708,13 @@
      "east": "16593bb512cea7429af4ef20ed13c2ac728a0fe7a365b7727fd48188c6a1d6ec",
      "north": "9bb9643e71a9e40081224338d603b892829ad2e684ebf643daa241199e6ae15b",
      "south": "b7bea51a71c5ad57ac96324dcfa28234a004bd7999216b77d090032b0865feb2"
-    },
-    "B": {
-     "east": "fbe676e6024b6833149193bd125b5d7897eac6d3416d631466125f3076c105d3",
-     "north": "b77e6174df38cddd52dde5aca011cd133d7cdced0b5aec81feab3c968daa6911",
-     "south": "23788644daa70c792c26a727c771ed21e9b9f89b8620912a4b1c9e152e0fe95d"
-    },
-    "C": {
-     "east": "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
-     "north": "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
-     "south": "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
-    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11",
-    "C": "history SWBestiary 2026-09-18"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
    "reserved": [
@@ -791,20 +730,13 @@
      "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
-    },
-    "B": {
-     "east": "bb8842a43d16e4002dc07dacdb21ed2bf618ab80407508e9725b7fb89cc65c97",
-     "north": "ced346acae7b745698ca8c2b8618a8484121437082c4090be3124f25c00c6ce4",
-     "south": "807e4d0ff73b821060cd14b0248f4928f1d842526b81df8052323fa1d700c525"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
@@ -903,20 +835,13 @@
      "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
      "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
      "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
-    },
-    "B": {
-     "east": "cd18739cd2687d42acdda7805116f05e71b2bddfa8acd4130b812d2022c8e7d4",
-     "north": "33d160e8b74c4470e1b6cda1d63f519c5b06bb0ac0b3b714e856a2bc69273642",
-     "south": "41796dfb29783bf4b7feb8b5fdaac9f4658e0a721b5236f6dc3f1055458d0548"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
    "reserved": [
@@ -955,5 +880,5 @@
   }
  },
  "sheetId": "lanterndeeps_sheet_2026-10-05",
- "snapshotId": "9314c44a9f6fb7c7"
+ "snapshotId": "73a33e03b3c29cfe"
 }

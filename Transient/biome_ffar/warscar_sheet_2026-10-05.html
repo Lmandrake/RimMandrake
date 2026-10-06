@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
-<head><meta name="scaled-review-gate" content="v1 sha256:80eb5b15229e8473b559cabea6524f464bac89c98fb1eedf31f2621c881ed508"><meta charset="utf-8">
+<head><meta name="scaled-review-gate" content="v1 sha256:1bb31a560d81c437513c833005eb815e22c26783f4df194bdd2cfc34c48a7f17">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Warscar — flora & fauna art</title>
 
@@ -365,7 +366,7 @@ const _itemBody = it => {
     const vr = variants.has(c.letter);
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
-      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
@@ -595,7 +596,7 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
 .bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
-.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
+.bs-ph{background:#b3261e;color:#fff;font-style:normal;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;font-size:.8em}.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
 .mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
 .bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
