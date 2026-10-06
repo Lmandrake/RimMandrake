@@ -3112,3 +3112,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"MESSYCONDUIT_STYLED_POLES_1","ts":"2026-10-06T18:30:35Z","tsn":1791311435896493957}
 {"seat":"FOUNDRY","event":"start","id":"MESSYCONDUIT_STYLED_POLES_1","ts":"2026-10-06T18:33:08Z","tsn":1791311588214606223}
 {"seat":"FOUNDRY","event":"close","id":"MESSYCONDUIT_STYLED_POLES_1","sha":"7edf12aa8","ts":"2026-10-06T18:33:08Z","tsn":1791311588814670632}
+{"seat":"FOUNDRY","event":"claim","id":"SALVAGE_WRECKAGE_EVERYWHERE_1","ts":"2026-10-06T18:33:37Z","tsn":1791311617053074612}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_RM_CAST_COMPLETION_1","ts":"2026-10-06T18:41:55Z","tsn":1791312115182210944}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_SHEET_DONOR_PORT_1","ts":"2026-10-06T18:42:12Z","tsn":1791312132474350246}
+{"seat":"FOUNDRY","event":"note","id":"GREENTIDE_STELLOCK_LACE_BUILD_1","text":"598dec613: offline build published; live criteria + art install owed","ts":"2026-10-06T18:49:09Z","tsn":1791312549054344087}
+{"seat":"FOUNDRY","event":"note","id":"GREENTIDE_THURROCK_HERD_BUILD_1","text":"598dec613: offline build published; art install, rut note, live criteria owed","ts":"2026-10-06T18:49:09Z","tsn":1791312549675103077}
+{"seat":"FOUNDRY","event":"note","id":"WEBWORK_TRACTION_LANCE_BUILD_1","text":"598dec613: offline build published; live proof calls RM_TractionLanceProof.ProofPull/ProofStuffTable owed; lance base art not generated","ts":"2026-10-06T18:49:10Z","tsn":1791312550318070526}
+{"seat":"FOUNDRY","event":"note","id":"WEBWORK_DEAD_GIANT_BUILD_1","text":"598dec613: offline build published; art install, live check, validation.py chain owed","ts":"2026-10-06T18:49:10Z","tsn":1791312550941072953}
+{"seat":"FOUNDRY","event":"note","id":"RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1","text":"db013a05e: offline build published; art swaps, WornDrillHead, live criteria owed","ts":"2026-10-06T18:49:11Z","tsn":1791312551567624636}
