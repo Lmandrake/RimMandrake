@@ -67,8 +67,12 @@ namespace RimMandrake.Webwork
 
 		public void DoWindowContents(Rect inRect)
 		{
-			Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-			list.Begin(inRect);
+			// Scrolls: ~25 rows against a ~570px settings window clipped the lower
+			// sections. View height = last measured content height.
+			Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastContentHeight, inRect.height));
+			Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+			Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+			list.Begin(viewRect);
 
 			list.Label("World generation");
 			list.CheckboxLabeled("Let the Webwork generate on new worlds", ref generateOnWorldgen,
@@ -137,8 +141,13 @@ namespace RimMandrake.Webwork
 				urravethCollapseDamageMultiplier = list.Slider(urravethCollapseDamageMultiplier, 0f, 3f);
 			}
 
+			lastContentHeight = list.CurHeight + 12f;
 			list.End();
+			Widgets.EndScrollView();
 		}
+
+		private Vector2 scrollPosition;
+		private float lastContentHeight;
 	}
 
 	public class RM_WebworkMod : Mod
