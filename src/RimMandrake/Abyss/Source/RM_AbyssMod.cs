@@ -104,7 +104,7 @@ namespace RimMandrake.Abyss
             // the screen outgrew one page: scroll it (view height measured from the last draw)
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, lastHeight));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());

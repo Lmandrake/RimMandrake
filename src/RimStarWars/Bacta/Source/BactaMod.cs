@@ -79,12 +79,14 @@ namespace RimMandrake.StarWars.Bacta
             Scribe_Values.Look(ref fieldItemPotency, "fieldItemPotency", BactaTuning.FieldItemPotency);
         }
 
+        private static float settingsViewHeight = 1060f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 1060f);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(settingsViewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.Label("The fluid's work");
@@ -185,6 +187,7 @@ namespace RimMandrake.StarWars.Bacta
                 fieldItemPotency = list.Slider(fieldItemPotency, 0.25f, 3f);
             }
 
+            settingsViewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }

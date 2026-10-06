@@ -221,9 +221,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void DrawCables(Rect inRect)
         {
-            var view = new Rect(0f, 0f, inRect.width - 20f, viewHeight);
+            var view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            var l = new Listing_Standard();
+            var l = new Listing_Standard { maxOneColumn = true };
             l.Begin(view);
             l.CheckboxLabeled("Messy cords (master switch)", ref GimmeSomeSlackSettings.enabled,
                 "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +

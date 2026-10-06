@@ -18,18 +18,18 @@ Heuristic estimate (rows x ~30px, GapLine 12, long labels +22/55 chars; largest 
 | src/RimMandrake/Wasteland/Source/RM_WastelandMod.cs | 53 | 2634 | viewHeight | UNK | 2074 | FIXED |
 | src/RimMandrake/TheForge/Source/RM_TheForgeMod.cs | 45 | 2474 | viewHeight | UNK | 1914 | FIXED |
 | src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs | 42 | 2442 | - | NO-SCROLL | 1882 | FIXED |
-| src/RimStarWars/Droidworks/Source/Droidworks/RSW_DroidworksSettings.cs | 58 | 2368 | lastContentHeight | UNK | 1808 | not fixed (beyond top 12) |
-| src/RimMandrake/Abyss/Source/RM_AbyssMod.cs | 31 | 1986 | Mathf.Max(inRect.height, lastH | UNK | 1426 | not fixed (beyond top 12) |
-| src/RimMandrake/Miasma/Source/RM_MiasmaMod.cs | 37 | 1920 | viewHeight | UNK | 1360 | not fixed (beyond top 12) |
-| src/RimMandrake/RimProperty/Source/PropertySettings.cs | 44 | 1880 | - | NO-SCROLL | 1320 | not fixed (beyond top 12) |
-| src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs | 34 | 1846 | Mathf.Max(inRect.height, lastL | UNK | 1286 | not fixed (beyond top 12) |
-| src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs | 36 | 1650 | - | NO-SCROLL | 1090 | not fixed (beyond top 12) |
-| src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs | 27 | 1516 | - | NO-SCROLL | 956 | not fixed (beyond top 12) |
-| src/RimMandrake/KeelHoist/Source/KeelHoistMod.cs | 31 | 1426 | - | NO-SCROLL | 866 | not fixed (beyond top 12) |
-| src/RimUtinni/UnfinishedLine/Source/UnfinishedLineMod.cs | 37 | 1332 | Mathf.Max(inRect.height, viewH | UNK | 772 | not fixed (beyond top 12) |
-| src/RimStarWars/Armoury/Source/RSW_ArmourySettings.cs | 58 | 2268 | 1500f | RISK | 768 | not fixed (beyond top 12) |
-| src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs | 34 | 1256 | viewHeight | UNK | 696 | not fixed (beyond top 12) |
-| src/RimStarWars/Bacta/Source/BactaMod.cs | 39 | 1748 | 1060f | RISK | 688 | not fixed (beyond top 12) |
+| src/RimStarWars/Droidworks/Source/Droidworks/RSW_DroidworksSettings.cs | 58 | 2368 | lastContentHeight | UNK | 1808 | FIXED (wave 2) |
+| src/RimMandrake/Abyss/Source/RM_AbyssMod.cs | 31 | 1986 | Mathf.Max(inRect.height, lastH | UNK | 1426 | FIXED (wave 2) |
+| src/RimMandrake/Miasma/Source/RM_MiasmaMod.cs | 37 | 1920 | viewHeight | UNK | 1360 | FIXED (wave 2) |
+| src/RimMandrake/RimProperty/Source/PropertySettings.cs | 44 | 1880 | - | NO-SCROLL | 1320 | FIXED (wave 2) |
+| src/RimMandrake/BlueDesert/Source/RM_BlueDesertMod.cs | 34 | 1846 | Mathf.Max(inRect.height, lastL | UNK | 1286 | FIXED (wave 2) |
+| src/RimMandrake/TheSump/Source/RM_TheSumpMod.cs | 36 | 1650 | - | NO-SCROLL | 1090 | FIXED (wave 2) |
+| src/RimStarWars/Sarlacc/Source/RSW_SarlaccSettings.cs | 27 | 1516 | - | NO-SCROLL | 956 | FIXED (wave 2) |
+| src/RimMandrake/KeelHoist/Source/KeelHoistMod.cs | 31 | 1426 | - | NO-SCROLL | 866 | FIXED (wave 2) |
+| src/RimUtinni/UnfinishedLine/Source/UnfinishedLineMod.cs | 37 | 1332 | Mathf.Max(inRect.height, viewH | UNK | 772 | FIXED (wave 2) |
+| src/RimStarWars/Armoury/Source/RSW_ArmourySettings.cs | 58 | 2268 | 1500f | RISK | 768 | FIXED (wave 2) |
+| src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs | 34 | 1256 | viewHeight | UNK | 696 | FIXED (wave 2) |
+| src/RimStarWars/Bacta/Source/BactaMod.cs | 39 | 1748 | 1060f | RISK | 688 | FIXED (wave 2) |
 | src/RimMandrake/LongShade/Source/RM_LongShadeMod.cs | 17 | 1230 | - | NO-SCROLL | 670 | not fixed (beyond top 12) |
 | src/RimMandrake/Contagion/Source/RM_ContagionMod.cs | 20 | 1188 | Mathf.Max(viewHeight, inRect.h | UNK | 628 | not fixed (beyond top 12) |
 | src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs | 27 | 1168 | - | NO-SCROLL | 608 | not fixed (beyond top 12) |
@@ -103,3 +103,8 @@ Heuristic estimate (rows x ~30px, GapLine 12, long labels +22/55 chars; largest 
 | src/RimUtinni/EmpirePursuit/Source/Settings.cs | 1 | 30 | - | OK | -530 |  |
 | src/RimMandrake/SeaShores/Source/RM_SeaShoresMod.cs | 0 | 0 | - | OK | -560 |  |
 | src/RimUtinni/PropaneLakeMechanics/Source/PropaneLakeMechanicsMod.cs | 0 | 0 | - | OK | -560 |  |
+
+
+## Wave 2 (2026-10-06)
+
+Fixed 12 (same pattern: maxOneColumn, view height Mathf.Max(measured, inRect.height), BeginScrollView added where absent; Armoury/Bacta fixed constant heights replaced by measured): Droidworks, Abyss, Miasma, RimProperty, BlueDesert, TheSump, Sarlacc, KeelHoist, UnfinishedLine, Armoury, GimmeSomeSlack (cables tab), Bacta. All rebuilt. Skipped by instruction: FlowWorks, CreatureBehaviors (modified). Remaining "not fixed" rows: LongShade, Contagion, Stillsand (GlassChain), NightsideIce, Hose, UtinniPatches, ShipShields, JawaIonWeapons, ExplosiveGrowth, FallLineArrivals, GizkaStowaway, WeepingStones, Warcasket, TitanicCreatures, JawaRules, PlantGrowth, Atlas, PyrelandsMechanics, OasisMaker, Aerial, ScavengerEvents, RustCathedral, MovingDunes, Skeleton, WreckedMachines (all lower over-estimates).
