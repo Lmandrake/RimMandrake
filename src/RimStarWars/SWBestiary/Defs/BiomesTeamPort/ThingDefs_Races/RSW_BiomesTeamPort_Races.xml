@@ -8741,7 +8741,7 @@ copied verbatim from the donor mods' own Textures trees.
   <ThingDef ParentName="BaseHare">
     <defName>RSW_CaveLemming</defName>
     <label>mahllik</label>
-    <description>A big, solitary grazer of the ice sheet, a soft lump at rest that becomes a sudden, springing leap the instant danger closes.</description>
+    <description>A small, silkily furred, solitary grazer of the ice sheet, trailing long tassels of silky fur, a soft lump at rest that becomes a sudden, springing leap the instant danger closes.</description>
     <uiIconScale>1.1</uiIconScale>
     <race>
       <baseBodySize>1.0</baseBodySize>
