@@ -16,8 +16,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_ScaldWalker</defName>
-    <label>bottom-walker</label>
-    <description>A domed, heat-glossed giant that walks the Scald's floor on a hundred short thick legs, head low, scraping the rainbow mats off the bottom in slow broad swathes. It is the muddal's far larger kin and unmistakably the same make. It barely notices anything the size of a person; it is simply very large and has somewhere to be. Where it grazes, the mats' pigment-rich underside is left briefly bare.</description>
+    <label>iridesce</label>
+    <description>A domed, heat-glossed giant that walks the Scald's floor on a hundred short thick legs, head low, scraping the rainbow mats off the bottom in slow broad swathes. It is the iridai's far larger kin and unmistakably the same make. It barely notices anything the size of a person; it is simply very large and has somewhere to be. Where it grazes, the mats' pigment-rich underside is left briefly bare.</description>
     <statBases>
       <MoveSpeed>1.1</MoveSpeed>
       <MarketValue>400</MarketValue>
@@ -79,7 +79,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_ScaldWalker</defName>
-    <label>bottom-walker</label>
+    <label>iridesce</label>
     <race>RM_ScaldWalker</race>
     <combatPower>180</combatPower>
     <wildGroupSize>3~6</wildGroupSize>

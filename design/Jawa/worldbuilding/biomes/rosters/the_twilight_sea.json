@@ -126,6 +126,18 @@
       "commonality": 0.5,
       "def": "StoneCrab",
       "law": "owner review 2026-09 (round2 move mapping): 0.3 squares, Twilight Sea"
+    },
+    {
+      "action": "cast",
+      "commonality": 0.005,
+      "def": "RM_GrippingTerror",
+      "law": "owner, Scald sheet 2026-10-05 (moved from the Scald; was RSW_ElderSando/RM_ElderSando), RM tier inline in RM_TwilightSea"
+    },
+    {
+      "action": "import",
+      "commonality": 0.03,
+      "def": "RSW_SandoAquaMonster",
+      "law": "owner, Scald sheet 2026-10-05 (moved from the Scald); canon, Utinni layer WildAnimals_TwilightSea.xml"
     }
   ],
   "fish": {

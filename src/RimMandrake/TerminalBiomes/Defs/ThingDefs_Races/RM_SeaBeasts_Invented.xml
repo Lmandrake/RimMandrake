@@ -632,12 +632,17 @@
     </lifeStages>
   </PawnKindDef>
 
-  <!-- ===================== leviathans — the sando family's originals ===================== -->
+  <!-- ===================== leviathans ===================== -->
+  <!-- RM_GrippingTerror: was RM_ElderSando (an invented elder of the sando line). Owner, Scald sheet
+       2026-10-05, verbatim: "Rename this to the Gripping Terror and move it to the Twilight Sea. It does
+       not belong in the Scald. RimMandrake tier." Franchise-free name and defName (Q11a); cast in
+       RM_TwilightSea; draws its own copy of the elder-sando picture he kept. RSW_ElderSando in
+       SWBestiary is the canon-layer original and is not cast in any RM_ biome. -->
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_ElderSando</defName>
-    <label>elder sando</label>
-    <description>A scarred bull sando, barnacle-crusted, carrying old harpoon wounds it has outlived by a century. One per sea, if that. Named by every crew that has seen it and survived, which is how it came to have so many names.</description>
+    <defName>RM_GrippingTerror</defName>
+    <label>gripping terror</label>
+    <description>A scarred old bull of the Twilight Sea's deep water, barnacle-crusted, carrying harpoon wounds it has outlived by a century. Its long arms end in broad webbed hands with dark hooked claws, and what those hands close on they do not let go of: a hull, a mooring, a diver. Every crew that has seen one and come home calls it the gripping terror, whatever else they call it. One per sea, if that.</description>
     <statBases>
       <MoveSpeed>3.8</MoveSpeed>
       <MarketValue>9000</MarketValue>
@@ -724,9 +729,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_ElderSando</defName>
-    <label>elder sando</label>
-    <race>RM_ElderSando</race>
+    <defName>RM_GrippingTerror</defName>
+    <label>gripping terror</label>
+    <race>RM_GrippingTerror</race>
     <combatPower>1200</combatPower>
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>3.0</ecoSystemWeight>
@@ -740,36 +745,36 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>4.68</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>4.68</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>6.80</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>6.80</drawSize>
         </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>8.50</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/SeaBeasts/ElderSando/ElderSando</texPath>
+          <texPath>Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>8.50</drawSize>
         </swimmingGraphicData>

@@ -1,0 +1,202 @@
+[
+ {
+  "id": "scald3_shimmereel",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Thuum",
+  "target_original": [
+   "thuum"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.\" Edit the attached accepted render of this eel of the Scald floor (our own invention, now named the shimmer eel). Keep the same individual: the long flat ribbon body, its proportions, and the DULL, muted rainbow bands that run along its whole body length, in the same painted style. Change only the head: make it armored, with overlapping hard plates over the skull and snout like a blunt helmet, the plates a darker dull tone that still carries a faint muted rainbow sheen; it must still read as an eel. Drop any dark outline.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.75,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "scaldfloor_thuum_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Living counterpart of RM_ThuumCatch; keep the catch art's dull rainbow read.",
+  "owner_note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_shimmereel",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Thuum",
+  "target_original": [
+   "thuum"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.\" Derive from the attached accepted master render of the shimmer eel: the same individual, the same dull muted rainbow bands along its whole body length, the same armored plated head, the same proportions, colours and painted style, so every view reads as one creature.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.75,
+  "facings": [
+   "north",
+   "south"
+  ],
+  "derive_from": "scald3_shimmereel_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_doss",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Doss",
+  "target_original": [
+   "doss"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Too cartoonish, try again\" The doss, a finger-length hunch-backed shrimp of the Scald floor (our own invention): a high arched, segmented carapace, many short jointed legs tucked beneath, a short pair of feelers, a blunt tail fan. Boiled pink to coral all over, as though already cooked, with a natural semi-translucent shell, wet sheen and fine surface texture. Naturalistic and anatomically believable, like a real deep-water shrimp studied from life: small dark eyes, realistic proportions, no cartoon features, no big eyes, no smile, no outline.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.4,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Living counterpart of RM_DossCatch (its kept catch art a/b/c): match that pink-coral colour.",
+  "owner_note": "Too cartoonish, try again",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_crowncarpet_a",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Crowncarpet",
+  "target_original": [
+   "welcome blanket"
+  ],
+  "target_texpath": "Things/Plant/RM_Crowncarpet",
+  "install_to": "src/RimMandrake/LuminousPigment/Textures/Things/Plant/RM_Crowncarpet/RM_Crowncarpet_a.png",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.\" The crowncarpet: a low, flat living mat of thermophile bacteria lying on hot wet rock at the edge of a boiling sea. Oily, glossy, wet-shiny biofilm surface, slightly lumpy and wrinkled, with random irregular patches, swirls and streaks of colour inside it: rust orange, ochre, olive green, murky teal, dull red and brown, blending organically into one another. Organic and natural, like a real microbial mat; not neon, not glowing, no concentric rings, no flowers, leaves or stems. Shape: broad irregular spread with one thicker lumpy centre.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.85,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Ground-cover plant, Graphic_Random variant a; the three variants are the same organism.",
+  "owner_note": "Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_crowncarpet_b",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Crowncarpet",
+  "target_original": [
+   "welcome blanket"
+  ],
+  "target_texpath": "Things/Plant/RM_Crowncarpet",
+  "install_to": "src/RimMandrake/LuminousPigment/Textures/Things/Plant/RM_Crowncarpet/RM_Crowncarpet_b.png",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.\" The crowncarpet: a low, flat living mat of thermophile bacteria lying on hot wet rock at the edge of a boiling sea. Oily, glossy, wet-shiny biofilm surface, slightly lumpy and wrinkled, with random irregular patches, swirls and streaks of colour inside it: rust orange, ochre, olive green, murky teal, dull red and brown, blending organically into one another. Organic and natural, like a real microbial mat; not neon, not glowing, no concentric rings, no flowers, leaves or stems. Shape: a long uneven sheet, wrinkled along one edge.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.85,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Ground-cover plant, Graphic_Random variant b; the three variants are the same organism.",
+  "owner_note": "Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_crowncarpet_c",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Crowncarpet",
+  "target_original": [
+   "welcome blanket"
+  ],
+  "target_texpath": "Things/Plant/RM_Crowncarpet",
+  "install_to": "src/RimMandrake/LuminousPigment/Textures/Things/Plant/RM_Crowncarpet/RM_Crowncarpet_c.png",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.\" The crowncarpet: a low, flat living mat of thermophile bacteria lying on hot wet rock at the edge of a boiling sea. Oily, glossy, wet-shiny biofilm surface, slightly lumpy and wrinkled, with random irregular patches, swirls and streaks of colour inside it: rust orange, ochre, olive green, murky teal, dull red and brown, blending organically into one another. Organic and natural, like a real microbial mat; not neon, not glowing, no concentric rings, no flowers, leaves or stems. Shape: a patchy, broken mat with small gaps of wet rock showing through.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.85,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Ground-cover plant, Graphic_Random variant c; the three variants are the same organism.",
+  "owner_note": "Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald3_iridesce",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_ScaldWalker",
+  "target_original": [
+   "bottom-walker"
+  ],
+  "prompt": "Edit the attached accepted render of the iridai, a small armored grazer of the Scald floor (our own invention). Keep its make exactly: the glossy heat-sheened segmented plates, the rainbow bands across the plates from red through orange and green to teal, the dark rims and the painted style. Redraw it as the iridesce, its giant herd-animal kin: a much higher, domed, heavier shell, many short thick legs visible beneath the plate rims, a low broad blunt head with heavy scraping mouthparts held close to the ground, no long feelers; older, scarred and massive. No outline.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 4.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "scaldfloor_muddal_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. RM_ScaldWalker, label iridesce (owner, Scald sheet 2026-10-05: \"Rename to Iridesce\"); he kept the iridai picture on this row, so the look is the iridai's at herd-giant scale.",
+  "owner_note": "Rename to Iridesce"
+ },
+ {
+  "id": "scald3_iridesce",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_ScaldWalker",
+  "target_original": [
+   "bottom-walker"
+  ],
+  "prompt": "Derive from the attached accepted master render of the iridesce: the same individual, the same domed rainbow-banded glossy plates, legs, blunt grazing head, proportions, colours and painted style.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 4.2,
+  "facings": [
+   "north",
+   "south"
+  ],
+  "derive_from": "scald3_iridesce_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Rename to Iridesce"
+ },
+ {
+  "id": "scald3_sandoaquamonster",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RSW_SandoAquaMonster",
+  "canon": "sandoaquamonster",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Move this to the Twilight Sea, it does not belong in the Scald. look carefully at the canon art. It is NOT a giant feline thing.\" The sando aqua monster of Naboo's deep water, drawn from the attached canon art: a vast half-whale, half-reptile leviathan. Heavy shoulders and a long thick neck; a broad flat head as wide as the neck with a very wide grinning mouth whose corners sweep back and up, tiny eyes, small nostrils, short spiky fin-frills at the cheeks and short horn-like spikes on brow and chin; four powerful limbs ending in broad webbed hands and paddle-like feet with large dark curved claws; a long muscular tapering tail ending in a broad flat horizontal fluke. Smooth leathery hide, mottled grey-brown to dark blue-grey with a paler belly, no scales, no fur. It is NOT a cat or a lion: no feline face, no muzzle, no mane, no whiskers, no pointed ears.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 7.1,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "twilight sea register: a deep hypersaline sea lidded by living stained glass, dim blue-green light filtered through waveglass from above; cool teal and violet with glints of coloured glass; reads against dark blue-green silt",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Move this to the Twilight Sea, it does not belong in the Scald. look carefully at the canon art. It is NOT a giant feline thing."
+ }
+]

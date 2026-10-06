@@ -9,7 +9,7 @@
        products once a walker pawnkind ships — this def does not block that. -->
   <ThingDef ParentName="ResourceBase">
     <defName>RM_ScaldWalkerChitin</defName>
-    <label>walker chitin</label>
+    <label>iridesce chitin</label>
     <description>A curved plate torn from something that lives at the bottom of the Scald, where the boil gentles to mere heat. Cooled, it is nearly stone; warmed again, it still smells faintly of the mats it grazed. Traders pay for the novelty as much as the material.</description>
     <thingCategories>
       <li>ResourcesRaw</li>

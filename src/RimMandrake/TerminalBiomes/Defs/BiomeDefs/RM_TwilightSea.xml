@@ -51,6 +51,8 @@
     <wildAnimals>
       <AA_Aerofleet MayRequire="sarg.alphaanimals">0.05</AA_Aerofleet>
       <RM_Lanternwhale>0.005</RM_Lanternwhale>
+      <!-- Gripping terror: moved here from the Scald (owner, Scald sheet 2026-10-05). -->
+      <RM_GrippingTerror>0.005</RM_GrippingTerror>
       <RM_Noolim>0.8</RM_Noolim>
       <RM_Loohn>0.01</RM_Loohn>
       <RM_Weloon>0.4</RM_Weloon>

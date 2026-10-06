@@ -71,7 +71,6 @@
           <li>RM_Karrash</li>
           <li>RM_Ekkel</li>
           <li>RM_Bladderboil</li>
-          <li>RM_ElderSando</li>
         </immuneThingDefs>
 
         <!-- All other fields left at RM_WanderingVortexExtension's own INVENTED defaults; see that class. -->
