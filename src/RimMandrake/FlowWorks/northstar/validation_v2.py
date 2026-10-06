@@ -1539,6 +1539,8 @@ def phase_L(L, args):
             set_part = ("settings_default", not drift and n_set >= 31, "HARNESS",
                         drift[:6] or "%d settings read, all shipped defaults" % n_set)
         _fold(L, "L2_tier_live", [log_part, asm_part, set_part])
+        if asm_part[1] is False:
+            raise Abort("stale DLL: the running assembly is not the repo's -- redeploy and relaunch before any run")
         if drift and not args.reset_settings:
             raise Abort("settings drift")
         gd = B.call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty;TerrainDef/RM_Channel_Mid;"
