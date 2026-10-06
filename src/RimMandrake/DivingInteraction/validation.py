@@ -7,7 +7,7 @@ biome (Patches/RM_SeabedFloorBiomeWiring.xml). Pure def-state check; no live run
 # DIVINGINTERACTION_COVERAGE_GAPS_1: the `toggle_gates` chain below asserts that each of the eleven
 # Mod Settings toggles gates its behaviour in source and flips live. UNCOVERED on purpose:
 # RM_SeaDiveHatch enter/descent (retired, SEA_DIVE_HATCH_RETIRE_1). UNMEASURED: live floor content and
-# floor animal count (needs a ship landed on a seabed layer; no tool lands one).
+# floor animal count off the Grey: chain grey_floor_is_a_place generates a floor map directly (layer=, 2026-10-06).
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("DivingInteraction")
@@ -391,3 +391,99 @@ def toggle_gates(t):
 # sea-floor layer, biomes, map generators). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402
 shipped_defs.add_chain(suite, __file__, sanity=('RM_SeaFloorTerrain', 'RM_ProbeGalleryOutlet'), min_count=50)
+
+
+# GREYSEA_FLOOR_PASS_1 / SEABED_PER_SEA_FLOORS_1: the Grey Sea floor is a PLACE. A floor map is generated straight
+# on the RM_SeabedLayer (jawa/world_tile_map_generate layer=, 2026-10-06), its tile set to the Grey floor biome
+# so an unpainted planet still checks out (planet painting is last, CLAUDE.md), and the map is censused for the
+# sea's signature: salt pillars + domes + crystals from its scatter GenSteps, its ruled flora, its cast.
+GREY_SCATTER = ("RM_SaltPillar", "RM_SaltDome", "RM_SaltChimney", "RM_GreatSaltCrystal_White",
+                "RM_GreatSaltCrystal_Pink", "RM_GreatSaltCrystal_Amber", "RM_GreatSaltCrystal_Violet")
+
+
+class _ToolTooOld(Exception):
+    """The deployed companion DLL predates the layer= parameter: an environment fact, so UNMEASURED."""
+    is_surprise_abort = True
+    kind = "tool-too-old"
+
+    def summary(self):
+        return {"evidence": []}
+
+
+def _roster(kind):
+    import os, re
+    here = os.path.dirname(os.path.abspath(__file__))
+    b = open(os.path.join(here, "..", "TerminalBiomes", "Defs", "BiomeDefs", "RM_GreySea.xml"), encoding="utf-8").read()
+    m = re.search(r"<%s>(.*?)</%s>" % (kind, kind), b, re.S)
+    return re.findall(r"<(\w+)[^>]*>[\d.]+</\1>", m.group(1)) if m else []
+
+
+@suite.chain("grey_floor_is_a_place")
+def grey_floor_is_a_place(t):
+    """A map made on the Grey Sea's floor tile runs the Grey generator and shows pillars, flora and cast."""
+    plants, cast = _roster("wildPlants"), _roster("wildAnimals")
+    with t.component("grey_roster_read_offline", beyond_toggle=True):
+        # sanity probe: the instrument sees the ruled roster (16 plants, 17 animals on 2026-10-06)
+        if len(plants) < 10 or len(cast) < 10 or "RM_Fessk" not in cast:
+            raise ExpectationFailed("RM_GreySea roster misread: %d plants, %d animals" % (len(plants), len(cast)))
+    state = {}
+    with t.component("grey_floor_map_generates", beyond_toggle=True):
+        if _live(t):
+            g = None
+            for tile in range(1000, 1400, 37):      # first tile on the layer with no map yet
+                d = t.bridge_call("jawa/world_tile_map_generate", tile=tile, layer="RM_SeabedLayer",
+                                  biome="RM_SeabedFloor_GreySea", sizeX=120, sizeZ=120, dryRun=True) or {}
+                if "layer" not in d:
+                    raise _ToolTooOld("world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)")
+                if d.get("success") and not d.get("wasAlreadyGenerated"):
+                    g = t.bridge_call("jawa/world_tile_map_generate", tile=tile, layer="RM_SeabedLayer",
+                                      biome="RM_SeabedFloor_GreySea", sizeX=120, sizeZ=120) or {}
+                    break
+            if not g or g.get("success") is not True:
+                raise ExpectationFailed("no Grey floor map generated: %r" % (g or "no free tile in 1000..1400"))
+            if (g.get("biome"), g.get("mapGenerator")) != ("RM_SeabedFloor_GreySea", "RM_SeabedGenerator_GreySea"):
+                raise ExpectationFailed("floor map is %s / %s, not the Grey floor" % (g.get("biome"), g.get("mapGenerator")))
+            if (g.get("mapFinalize") or {}).get("failedSteps"):
+                raise ExpectationFailed("map finalize failed: %r" % g["mapFinalize"]["failedSteps"])
+            sc = t.bridge_call("jawa/set_current_map", mapId=g["mapIndex"]) or {}
+            if sc.get("success") is not True:
+                raise ExpectationFailed("set_current_map refused: %r" % sc)
+            state["map"] = g["mapIndex"]
+        t.screenshot()
+
+    def census(defs, pawns=False):
+        r = t.bridge_call("jawa/list_things", defName=",".join(defs), includePawns=pawns, limit=2000) or {}
+        if r.get("success") is False or not r.get("scanned"):
+            raise ExpectationFailed("census could not ask (scanned=%r): %r" % (r.get("scanned"), r.get("message")))
+        got = {}
+        for th in r.get("things") or []:
+            got[th.get("def")] = got.get(th.get("def"), 0) + 1
+        return got, r
+    with t.component("grey_floor_has_pillars_and_crystals", beyond_toggle=True):
+        if _live(t) and "map" in state:
+            got, r = census(GREY_SCATTER)
+            if not got.get("RM_SaltPillar"):
+                raise ExpectationFailed("no salt pillars on the Grey floor (the navigation system): %r" % got)
+            crystals = [d for d in GREY_SCATTER if "Crystal" in d and got.get(d)]
+            if len(crystals) < 2:
+                raise ExpectationFailed("fewer than two crystal colours on the floor: %r" % got)
+    with t.component("grey_floor_grows_its_flora", beyond_toggle=True):
+        if _live(t) and "map" in state:
+            got, _ = census(plants)
+            if len(got) < 3:
+                raise ExpectationFailed("only %d of %d ruled Grey plants on the floor: %r" % (len(got), len(plants), got))
+    with t.component("grey_floor_carries_its_cast", beyond_toggle=True):
+        if _live(t) and "map" in state:
+            got, _ = census(cast, pawns=True)
+            if not got:
+                raise ExpectationFailed("none of the %d Grey cast spawned on the floor map" % len(cast))
+            strays = t.bridge_call("jawa/list_pawns", limit=2000) or {}
+            alien = sorted({p.get("def") for p in strays.get("pawns") or []
+                            if not p.get("hasGenes") and p.get("def") not in cast})
+            if alien:
+                raise ExpectationFailed("animals from outside the Grey cast on its floor: %s" % alien[:8])
+    with t.component("grey_floor_returns_home", beyond_toggle=True):
+        if _live(t) and "map" in state:      # Find.Maps[0] is the home map on every test world
+            r = t.bridge_call("jawa/set_current_map", mapId=0) or {}
+            if r.get("success") is not True:
+                raise ExpectationFailed("could not return to map 0: %r" % r)
