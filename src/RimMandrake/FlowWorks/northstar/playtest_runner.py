@@ -249,6 +249,17 @@ def main(argv=None):
             except (ValueError, KeyError, IndexError, TypeError):
                 pass
         print("load_game_ready: success=%s  %.1f s  %s" % (lr.get("success"), time.time() - t, lr.get("message") or ""))
+        # load_game_ready answers before the map exists (live 2026-10-06: mapCount 0 for ~3 s), so
+        # playtest_start would refuse "No current map". Wait for the map, bounded.
+        while lr.get("success") and time.time() - t < 180:
+            gi = _call(s, calls, "rimworld/get_game_info")
+            # the OLD game still answers for a moment (live: mapCount 2 at the pre-load tick), so the
+            # map counts only once the clock is back at the save's tick
+            tk = gi.get("ticksGame")
+            if (gi.get("mapCount") or 0) >= 1 and isinstance(tk, int) and 0 < tk <= (ev.get("ticksAtSave") or 0) + 5:
+                print("map ready after %.1f s at tick %s" % (time.time() - t, gi.get("ticksGame")))
+                break
+            time.sleep(1.0)
         second = None
         if lr.get("success"):
             second, _, _, _ = run_once(s, calls, a, ev.get("resumeRecipe"), pend.get("runId"))
