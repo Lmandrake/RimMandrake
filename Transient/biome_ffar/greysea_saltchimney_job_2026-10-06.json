@@ -1,0 +1,19 @@
+[
+ {
+  "rimflow_item_id": "GREYSEA_FLOOR_PASS_1",
+  "target_def": "RM_SaltChimney",
+  "priority": 5,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "grey sea floor register: hypersaline grey-green murk, a few metres of dim diffuse light, salt pillars, white brine haze, crusted mineral surfaces; muted grey, bone and verdigris with one accent colour; must read against pale grey sediment through value and rim",
+  "owner_note": "Also note the screenshot... the salt chimney looks like crude blocks stacked",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines; one centred subject on a transparent background, no ground plane, no props, no baked shadow.",
+  "id": "greysea_saltchimney_v1",
+  "prompt": "RimWorld natural-structure sprite seen from the standard three-quarter top-down view, painterly: a single crooked salt chimney rising from the floor of a hypersaline sea, about four cells tall. A crooked tower of cubic salt blocks built by its own exhalation, venting a slow plume of super-brine so dense it hangs in the water as a white smoke before it sinks. The brine it breathes is the same the pools at the bottom are made of, and it carries the sea's dissolved chemistry up off the rock below. Warm to the touch, which nothing else down here is. Grown, not built: crystalline cubic salt fused into an irregular leaning tower with rime crusts, layered growth bands, cracks and translucent edges where dim light catches; a slow white plume of dense brine curling from the top and sinking. Organic mineral form, never neat stacked blocks or toy bricks. Our own original design. One structure, centred.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 4,
+  "facings": [],
+  "biome": "RM_GreySea"
+ }
+]
