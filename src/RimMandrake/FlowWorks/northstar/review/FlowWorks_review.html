@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FlowWorks capability review</title>
+<title>FlowWorks feature review</title>
 
 <!--
   sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
@@ -191,47 +191,148 @@ body.grid .row.sel-tint{border-color:currentColor}
 .banner button{margin-left:8px}
 .hide{display:none !important}
 </style>
+<style id="FWSTYLE">
+/* FlowWorks designer sheet: the owner's warm dark-brown palette, text >= 16px, one column on a phone. */
+:root{--bg:#171310;--panel:#211b16;--panel2:#1c1713;--line:#3a2f24;--ink:#efe7d9;--dim:#b3a892;--accent:#e0803a;
+  --link:#f0c08a;--ok:#6fae5a;--warn:#c9a44a;--bad:#c96634;--info:#5390c4}
+html,body{font:17px/1.5 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;margin:0}
+.hrow h1{font-size:21px}.sub{font-size:16px;color:var(--dim)}
+.panel{font-size:16px;background:var(--panel2)}.panel h3{font-size:16px}
+#posturePanel{display:none}
+.crit{font-size:16px;color:var(--dim)}
+.btn{font-size:16px;padding:6px 12px;background:#2a221b;border-color:var(--line)}
+.btn:hover{background:#352a20}.btn.pri,.btn.on{background:#3a2a1c;border-color:#6b4a2a;color:var(--link)}
+.bar{background:#1c1713;border-top-color:var(--line)}
+.bar input[type=search],.bar select{font-size:16px;background:#120f0c;border-color:var(--line);min-width:0}
+.bar input[type=search]{flex:1 1 220px}
+#fmark,#btnGrid,#cell{display:none !important}
+kbd{font-size:14px}
+.panel h3,.pathbar b{font-size:16px}
+.pill{font-size:16px;background:#120f0c;border-color:var(--line)}
+.pathbar{font-size:16px;background:var(--panel2)}
+.gh{font-size:19px;background:#2a2119;color:var(--accent);padding:10px 18px;border-color:var(--line)}
+.gh .ghcount{display:none}.gh .ghbulk button{font-size:16px;padding:4px 10px}
+.row{flex-wrap:wrap;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.row:hover{background:#1f1914}.row.focus{background:#2a2119;box-shadow:inset 4px 0 0 var(--accent)}
+.row[style*="color"]{box-shadow:inset 6px 0 0 currentColor}
+.label{font-size:19px;color:var(--ink);font-weight:650;line-height:1.35}.label .id{display:none}
+.effect{font-size:16px;color:#d9cfbf;margin-top:6px}
+.main{flex:1 1 380px}
+.ctrl{width:270px;flex:0 0 270px}
+.opts button{font-size:16px;padding:9px 6px;background:#241d17;border-color:var(--line);color:var(--ink)}
+.opts button.sel{color:#171310}
+.note{font-size:16px;background:#120f0c;border-color:#4a3c2c;color:var(--ink);min-height:40px}
+.note::placeholder{color:#8a7d68}
+.mark{font-size:16px}
+.badge{display:inline-block;font-size:16px;font-weight:700;color:#171310;border-radius:999px;padding:3px 12px;
+  margin:0 0 6px;letter-spacing:.2px}
+.seen{font-size:16px;color:var(--dim);margin-left:8px}
+.pics{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.pic{margin:0;width:230px;max-width:100%;cursor:zoom-in}
+.pic img{width:100%;height:150px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block;background:#120f0c}
+.pic.art img{object-fit:contain;background:#3a3a3a}
+.pic figcaption{font-size:16px;color:var(--dim);margin-top:4px;line-height:1.35}
+.nopic{font-size:16px;color:#8a7d68;margin-top:8px;font-style:italic}
+.missing{font-size:16px;color:#e8c9a0;margin-top:8px}
+details.tech{margin-top:10px;font-size:16px;color:var(--dim)}
+details.tech summary{cursor:pointer;font-size:16px;color:#8a7d68;width:max-content}
+details.tech table{border-collapse:collapse;margin-top:6px;width:100%}
+details.tech td{border-top:1px solid var(--line);padding:4px 6px;vertical-align:top;word-break:break-word}
+details.tech code{font-size:15px;color:#cdbb9c}
+.secfoot{padding:10px 18px 18px;font-size:16px;color:var(--dim);border-bottom:2px solid var(--line);background:#1a1511}
+.secfoot b{font-weight:700}
+#zoom img{image-rendering:auto;max-width:92vw;max-height:80vh}
+#zoom .cap{font-size:16px}
+/* the at-a-glance panel: outside the sticky header, so it scrolls away like the top of a document */
+#glance{padding:18px;max-width:1200px}
+#glance h2{font-size:24px;margin:0 0 6px}
+#glance h3{font-size:18px;margin:18px 0 8px;color:var(--accent)}
+#glance h4{font-size:16px;margin:12px 0 4px;color:var(--ink)}
+#glance p,#glance li{font-size:16px}
+#glance a{color:var(--link)}
+.gtot{font-size:18px;margin:6px 0 12px}
+.legend{font-size:16px;color:var(--dim);margin:6px 0 10px}.legend div{margin:2px 0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mrow{display:grid;grid-template-columns:minmax(150px,260px) 1fr;gap:10px;align-items:center;margin:5px 0;
+  color:inherit;text-decoration:none}
+.mrow:hover .mname{text-decoration:underline}
+.mname{font-size:16px}
+.mbar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:#120f0c;border:1px solid var(--line)}
+.mbar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:16px;font-weight:700;
+  color:#171310;min-width:22px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.cols ol,.cols ul{padding-left:22px;margin:4px 0}
+.cols li{margin:4px 0}
+.waitt{font-size:16px;color:var(--dim)}
+@media (max-width:760px){
+  .row{flex-direction:column}.ctrl{width:100%;flex:1 1 auto}.main{flex:1 1 auto}
+  .pic{width:100%}.pic img{height:190px}
+  .mrow{grid-template-columns:1fr}
+  #glance{padding:14px 16px}
+  .hrow,.bar,.gh,.row,.secfoot{padding-left:16px;padding-right:16px}
+  header{position:static}.gh{top:0 !important}   /* a sticky header would cover a phone screen */
+  .bar select,.bar .btn{flex:1 1 auto}
+}
+</style>
 </head>
 <body>
 
 <!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
 <script id="CONFIG" type="application/json">
 {
- "sheetId": "flowworks_capability_review",
- "title": "FlowWorks \u2014 what exists, what works, what remains",
- "subtitle": "139 capabilities \u00b7 40 PROVEN-LIVE \u00b7 63 BUILT-UNPROVEN \u00b7 13 PARTIAL \u00b7 23 NOT BUILT",
- "briefHtml": "<p><b>139 intended capabilities<\/b> of FlowWorks, built or not. <span style=\"color:#5ac37f\"><b>40<\/b> PROVEN-LIVE<\/span> \u00b7 <span style=\"color:#6aa6e8\"><b>63<\/b> BUILT-UNPROVEN<\/span> \u00b7 <span style=\"color:#e8b64c\"><b>13<\/b> PARTIAL<\/span> \u00b7 <span style=\"color:#e06c6c\"><b>23<\/b> NOT BUILT<\/span> \u00b7<\/p><p><b>Status is derived, never typed:<\/b> PROVEN-LIVE = a mapped mechanism row PASSed in <code>validation_v2_result_20261005T162414.json<\/code>; BUILT-UNPROVEN = every declared probe (class / def / setting / texture) exists on disk; PARTIAL = some do; NOT BUILT = none. Each row lists its probes (\u2713/\u2717), its live rows, its north-star bars (\u2605) and the owning item with its ledger state. North-star walk state: <b>DRAFT<\/b>; 43 of 43 bars carried by a row.<\/p><p><b>Your controls:<\/b> <i>Looks right<\/i> / <i>Wrong<\/i> (say why in the note) / <i>Wanted<\/i> (not built, and you still want it). Rows the ledger says are open and unbuilt start on <i>Wanted<\/i> because their item is open; nothing else is pre-filled. Thumbnails: the 2026-10-05 live run (load <code>NS_FlowWorks_Review_20261005<\/code> to walk it) and the Quarry reference (ruling 33). Canon: no canon entry for any FlowWorks subject (checked 214 entries).<\/p><h3 style='margin:8px 0 2px'>What remains to build (open items, from the ledger)<\/h3><ul style='margin:0;padding-left:18px'><li><b>CRACKEDLANDS_MECHANICS_BUILD_1<\/b> <i>(doing)<\/i> Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discov: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1<\/b> <i>(proposed)<\/i> Utinni lock for RM_Swale: locked in the campaign until discovered in the Cracked Lands (fi: L06 Swale locked in the campaign until discovered [NOT BUILT]<\/li><li><b>EXCAVATION_WALL_ART_1<\/b> <i>(proposed)<\/i> Wall-face art for all four depths, spikes and ladder (Quarry perspective): H12 No pit def borrows vanilla&#x27;s spike-trap art [NOT BUILT], J05 Occupant reads as down in the hole; occupied vs empty at a glance [PARTIAL], J06 Wall-face art for all four depths (Quarry perspective) [NOT BUILT], J07 Spike art: some spike visibly projects [PARTIAL], J08 Ladder art: raised vs lowered drawn on the wall [PARTIAL], J09 A dug channel looks dug (recessed bed, earthen walls), not gravel [NOT BUILT], J10 A superdeep cell reads as a big dark hole at play zoom [PARTIAL], J11 A multi-cell pit reads as one place, not a tile grid [NOT BUILT], J12 The bare excavation never reads as a building [PARTIAL], J13 Depth and fill legible together in one view [PARTIAL], J14 Dry and filled channels read as obstacles without a tooltip [PARTIAL]<\/li><li><b>FLOWWORKS_BUILD_PROGRAM_1<\/b> <i>(doing)<\/i> FlowWorks - the phased build program for one liquid mod built on excavation depth as the p: C09 Pumping into tanks draws a source down [NOT BUILT], D08 Slime reads thick and opaque, not recoloured water [PARTIAL], D09 Slime is nearly impossible to cross, slow to escape [NOT BUILT], E05 Burning liquid reads as the surface alight [PARTIAL], E06 A burned-out channel reads scorched and empty [PARTIAL], E08 Explosions ignite liquid [NOT BUILT], E09 Burning liquid can be put out [NOT BUILT], K08 Pumps [NOT BUILT], K10 Per-net adapters [NOT BUILT], L08 Irrigation: plants beside a filled canal act watered [NOT BUILT] \u00b7 <i>15 built, unproven<\/i><\/li><li><b>FLOWWORKS_NORTHSTAR_SHIP_1<\/b> <i>(proposed)<\/i> FlowWorks SHIPPED: settings superb, art complete, code review CLEAN, deployed: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><li><b>FLOWWORKS_QUARRY_DIGGING_1<\/b> <i>(proposed)<\/i> Design pass: extend FlowWorks with the quarry concept - digging a canal can uncover local : M01 Digging a canal turns up local materials (a lump on the bank) [NOT BUILT], M02 A letter on the first find of each material per map [NOT BUILT], M03 Deep cuts reach deep-drill minerals; mineral-less biomes give rock chunks [NOT BUILT], M04 Reads the mineral abundance registry [NOT BUILT], M05 Sluice box: a stream slowly yields ore [NOT BUILT], M06 Panning for gold in a river [NOT BUILT]<\/li><li><b>LIQUID_BODY_FLUID_IDENTITY_1<\/b> <i>(proposed)<\/i> Fluid identity per liquid body (retire per-map ActiveFluid); the merge rule: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><li><b>LIQUID_BOTTLE_LOOP_1<\/b> <i>(doing)<\/i> Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), rever: nothing unbuilt \u00b7 <i>5 built, unproven<\/i><\/li><li><b>LIQUID_INDUSTRY_SETPIECES_1<\/b> <i>(doing)<\/i> Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumpin: K11 Found liquid industry: desal, detox, tar refinery, pumping station [NOT BUILT]<\/li><li><b>LIQUID_THIRST_CHAIN_1<\/b> <i>(doing)<\/i> Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>MOD_OPTIONS_RETROFIT_1<\/b> <i>(doing)<\/i> Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStar: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>PIT_FILL_EFFECTS_1<\/b> <i>(proposed)<\/i> What a fluid does to a pit occupant: drowning at D=4, poison keyed to fill, burning oil wi: H11 Flood an occupied pit by opening a sluice [NOT BUILT] \u00b7 <i>3 built, unproven<\/i><\/li><li><b>PIT_SUPERDEEP_COLLAPSE_1<\/b> <i>(proposed)<\/i> Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room : F10 Blast / blowback can knock a pawn into a pit [NOT BUILT] \u00b7 <i>1 built, unproven<\/i><\/li><li><b>PIT_TEMPERATURE_SOFTENING_1<\/b> <i>(proposed)<\/i> Pit temperature couples hard to ambient and wears down resistance; Exposed Prisoner though: G08 &#x27;Exposed Prisoner&#x27; thought: cruel, and reads as cruel [PARTIAL] \u00b7 <i>2 built, unproven<\/i><\/li><li><b>RIVER_STEAM_ANIMATION_1<\/b> <i>(doing)<\/i> Animated steam rising from the rivers (Pyrelands weather visual): nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>SUPERDEEP_PRISON_ROOM_1<\/b> <i>(proposed)<\/i> An enclosed superdeep area is a room; a prisoner bed makes it a prison; capture down / con: G04 Convert down (recruit from the lip) [NOT BUILT] \u00b7 <i>4 built, unproven<\/i><\/li><li><b>SURFACE_RIVER_WEIRS_1<\/b> <i>(proposed)<\/i> Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 20: L11 Silt-trap, stake-line and hopper bank-works [PARTIAL] \u00b7 <i>4 built, unproven<\/i><\/li><li><b>SWALE_CANAL_ART_REFERENCE_1<\/b> <i>(doing)<\/i> Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec t: L07 Swale art from a real canal [NOT BUILT]<\/li><li><b>WORLDMAP_LIQUID_TAGS_1<\/b> <i>(doing)<\/i> worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenSte: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><\/ul>",
- "criterion": "Rows follow the build program's subsystems; status comes from probes + the newest live result, which proves a mechanism exists, never that it looks right.",
+ "sheetId": "flowworks_feature_review",
+ "title": "FlowWorks: what exists, what works, what remains",
+ "subtitle": "45 features \u00b7 13 works in game \u00b7 21 built, not yet seen \u00b7 9 partly built \u00b7 2 not built",
+ "briefHtml": "<p><b>What this is:<\/b> every FlowWorks feature, built or not, in plain words, so you can see what exists, what works, what doesn't and what remains. Each feature carries <b>one<\/b> status, worked out from the code on disk and the newest live test; nobody typed it. The small <i>details<\/i> toggle on a feature holds the technical evidence.<\/p><p><b>Your buttons:<\/b> <b>OK<\/b> \u00b7 <b>Not right<\/b> (say why in the note) \u00b7 <b>Don't want<\/b> (drop it from the plan). Keys: <kbd>j<\/kbd>/<kbd>k<\/kbd> move, <kbd>1<\/kbd> <kbd>2<\/kbd> <kbd>3<\/kbd> mark, <kbd>n<\/kbd> note, <kbd>?<\/kbd> all keys. Each section has an <b>all ok<\/b> button. The only rows I pre-marked are unbuilt features still on the work list (OK = still wanted; each says so). Nothing is removed by this sheet.<\/p>",
+ "criterion": "part of the mod, nothing else. A status says whether a thing exists and passed a live test, never whether it looks right.",
  "invented": [],
  "posture": {
-  "mode": "whitelist",
-  "explain": "Looks right and Wanted keep a capability in scope; Wrong reopens it. Undecided = not yet looked at."
+  "mode": "blacklist",
+  "explain": "Nothing is removed by this sheet; Don't want marks a feature to drop from the plan."
  },
  "options": [
   {
-   "key": "right",
-   "label": "Looks right",
+   "key": "ok",
+   "label": "OK",
    "hotkey": "1",
-   "color": "#5ac37f",
+   "color": "#6fae5a",
    "counts": "in"
   },
   {
    "key": "wrong",
-   "label": "Wrong",
+   "label": "Not right",
    "hotkey": "2",
-   "color": "#e06c6c",
-   "counts": "out"
+   "color": "#c96634",
+   "counts": "out",
+   "bulk": false
   },
   {
-   "key": "wanted",
-   "label": "Wanted",
+   "key": "unwanted",
+   "label": "Don't want",
    "hotkey": "3",
-   "color": "#e8b64c",
-   "counts": "in"
+   "color": "#7d7565",
+   "counts": "out",
+   "bulk": false
+  },
+  {
+   "key": "pickA",
+   "label": "Pick A",
+   "hotkey": "4",
+   "color": "#5390c4",
+   "counts": "in",
+   "bulk": false
+  },
+  {
+   "key": "pickB",
+   "label": "Pick B",
+   "hotkey": "5",
+   "color": "#5390c4",
+   "counts": "in",
+   "bulk": false
   }
  ],
- "groupLabel": "subsystem",
- "media": true,
+ "groupLabel": "section",
+ "media": false,
  "decisionsFile": "FlowWorks_review.decisions.json",
  "decisionsPath": "",
  "sheetPath": ""
@@ -242,4018 +343,1780 @@ body.grid .row.sel-tint{border-color:currentColor}
 <script id="ITEMS" type="application/json">
 [
 {
-"id": "A01",
-"label": "[PROVEN-LIVE] Dig-canal order: a colonist carves a channel",
-"group": "A \u00b7 Digging & depth",
-"effect": "Designate soil; a colonist digs it to D=1 (RM_Channel_Empty). Refuses edifices, water, existing channel.",
-"prefill": null,
+"id": "ask_ladder",
+"label": "Pick the ladder drawing: A or B",
+"group": "0 \u00b7 What I need from you",
+"effect": "Two ladder drawings were made on 16 Sept and never picked; until you pick, the ladder borrows the vanilla spike-trap picture. Both were drawn before your Quarry-perspective ruling, so 'Not right' means: redraw it in perspective.",
+"say": "Two ladder drawings were made on 16 Sept and never picked; until you pick, the ladder borrows the vanilla spike-trap picture. Both were drawn before your Quarry-perspective ruling, so 'Not right' means: redraw it in perspective.",
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program Ph2",
-"bars": [],
-"probes": [
+"pics": [
 [
-"cs:class Designator_DigCanal",
+"shots/ART_ladder_A.png",
+"Ladder drawing A (16 Sept): scrap-metal rails, lashed rungs",
 true
 ],
 [
-"cs:class WorkGiver_DigCanal",
-true
-],
-[
-"cs:class JobDriver_DigCanal",
+"shots/ART_ladder_B.png",
+"Ladder drawing B (16 Sept): pegged desert timber with a stone counterweight",
 true
 ]
 ],
-"live": [
-[
-"E8_player_dig",
-"PASS",
-"designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 720 ticks (cap 2178, MiningSpeed 2.15)"
-],
-[
-"J_workgiver_selection",
-"PASS",
-"E8_dig:dig/RM_DigCanalJob skip=False cell=True has=True prio=3; E7a_fillin:fillin/RM_FillInCanalJob skip=False cell=True has=True prio=3; E7b_overflow:fillin/RM_FillInCanalJob skip=False cell=True has"
-],
-[
-"J_orders_accepted",
-"PASS",
-"[('E8_dig', True, None), ('E7a_fillin', True, None), ('E7b_overflow', True, None)]"
-]
-]
-},
-"thumb": "shots/J_jobs.jpg"
-},
-{
-"id": "A02",
-"label": "[PROVEN-LIVE] Four dug depths D1..D4 (shallow/mid/deep/SUPERDEEP)",
-"group": "A \u00b7 Digging & depth",
-"effect": "Every excavated cell carries depth D 0-4; each level is its own terrain (Empty/Mid/Deep/Superdeep).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 19",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_Channel_Empty<",
-true
-],
-[
-"xml:defName>RM_Channel_Mid<",
-true
-],
-[
-"xml:defName>RM_Channel_Deep<",
-true
-],
-[
-"xml:defName>RM_Channel_Superdeep<",
-true
-]
-],
-"live": [
-[
-"S1_dig_ladder",
-"PASS",
-"D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1"
-]
-]
-},
-"thumb": "shots/S_ladder.jpg"
-},
-{
-"id": "A03",
-"label": "[PROVEN-LIVE] Deepen an existing channel (dig to depth)",
-"group": "A \u00b7 Digging & depth",
-"effect": "Re-designating a dug cell deepens it one level; refused at SUPERDEEP (as far down as it goes).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program Ph2",
-"bars": [],
-"probes": [
-[
-"set:digToDepthEnabled",
-true
-]
-],
-"live": [
-[
-"S6_digToDepth_gate",
-"PASS",
-"Designator_DigCanal: D1 ON True; D4 False (Already SUPERDEEP \u2014 this is as far down ); D1 OFF False (Deepening is switched off in this mod's settings.); undug soil OFF True"
-],
-[
-"S1n_superdeep_is_max",
-"PASS",
-"deepen D=4 once more -> 4"
-]
+"opts": [
+"pickA",
+"pickB",
+"wrong"
 ]
 }
 },
 {
-"id": "A04",
-"label": "[PROVEN-LIVE] Depth + fill grid saved with the map",
-"group": "A \u00b7 Digging & depth",
-"effect": "Per-map D and F grids live on one MapComponent and survive save/load; F is clamped 0 <= F <= D.",
-"prefill": null,
+"id": "ask_numbers",
+"label": "Sanity-check the first-guess numbers",
+"group": "0 \u00b7 What I need from you",
+"effect": "You ruled these ship as first guesses and get tuned in live play. Say if any sounds wrong: people sink 0.3 of a tile per depth level (so pit walls stand 1.2x a person's height); spikes deal three stabs totalling about 40 for a person, 96 for a muffalo, 160 for a thrumbo; an enclosed pond feeds 5 canal tiles per tile of water; canal digging can turn up at most 5% of the ore in a map's rock; about 1 in 70 dug tiles turns something up.",
+"say": "You ruled these ship as first guesses and get tuned in live play. Say if any sounds wrong: people sink 0.3 of a tile per depth level (so pit walls stand 1.2x a person's height); spikes deal three stabs totalling about 40 for a person, 96 for a muffalo, 160 for a thrumbo; an enclosed pond feeds 5 canal tiles per tile of water; canal digging can turn up at most 5% of the ore in a map's rock; about 1 in 70 dug tiles turns something up.",
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program Ph2",
-"bars": [],
-"probes": [
-[
-"cs:class RM_MapComponent_Excavation",
-true
-],
-[
-"cs:Scribe",
-true
-]
-],
-"live": [
-[
-"S2_fill_clamp",
-"PASS",
-"setFill 9 on D=2 -> F=2; setFill 1 on undug -> fillSet=False F=0"
-]
+"pics": [],
+"opts": [
+"ok",
+"wrong"
 ]
 }
 },
 {
-"id": "A05",
-"label": "[PROVEN-LIVE] Fill-in order: lower a channel back toward ground",
-"group": "A \u00b7 Digging & depth",
-"effect": "A fill-in designation lowers D; liquid in the cell is pushed back into the network (see B12).",
+"id": "dig_canal",
+"label": "You mark ground and a colonist digs a canal there; dig again to go one level deeper",
+"group": "1 \u00b7 Digging canals and pits",
+"effect": "You mark ground and a colonist digs a canal there; dig again to go one level deeper There are four depths. The fourth is a pit: nothing more than the deepest dug ground.",
+"say": "There are four depths. The fourth is a pit: nothing more than the deepest dug ground.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "CANAL_FILL_IN_DISPLACEMENT_1",
-"itemState": "done",
-"src": "Build program Ph2",
-"bars": [],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class Designator_FillInCanal",
-true
+"ordering a canal dug and a colonist digging it",
+"A01 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E8_player_dig: PASS \u00b7 live test J_workgiver_selection: PASS \u00b7 live test J_orders_accepted: PASS \u00b7 \u2713 cs:class Designator_DigCanal \u00b7 \u2713 cs:class WorkGiver_DigCanal \u00b7 \u2713 cs:class JobDriver_DigCanal"
 ],
 [
-"cs:class WorkGiver_FillInCanal",
-true
+"four dug depths, the deepest being a pit",
+"A02 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S1_dig_ladder: PASS \u00b7 \u2713 xml:defName>RM_Channel_Empty< \u00b7 \u2713 xml:defName>RM_Channel_Mid< \u00b7 \u2713 xml:defName>RM_Channel_Deep< \u00b7 \u2713 xml:defName>RM_Channel_Superdeep<"
 ],
 [
-"cs:class JobDriver_FillInCanal",
-true
-]
-],
-"live": [
-[
-"E7a_fillin_displaces",
-"PASS",
-"sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]"
-]
-]
-},
-"thumb": "shots/J_jobs.jpg"
-},
-{
-"id": "A06",
-"label": "[PROVEN-LIVE] Dry depth slows movement (30/45/80, superdeep impassable)",
-"group": "A \u00b7 Digging & depth",
-"effect": "Dry path cost climbs with depth so an unfilled trench is a real barrier (ruling 17).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 17 / Ph5",
-"bars": [
-"canal_dry_reads_as_obstacle"
-],
-"probes": [
-[
-"xml:<pathCost>30<\/pathCost>",
-true
-],
-[
-"xml:<pathCost>45<\/pathCost>",
-true
-],
-[
-"xml:<pathCost>80<\/pathCost>",
-true
-]
-],
-"live": [
-[
-"L3_defs_live",
-"PASS",
-"live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel"
-]
-]
-}
-},
-{
-"id": "A07",
-"label": "[BUILT-UNPROVEN] Flooded is always slower than dry (depth x fill cost matrix)",
-"group": "A \u00b7 Digging & depth",
-"effect": "Each fluid has a cost per depth x fill tier, strictly worse flooded than the same depth dry.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "DEPTH_FILL_COST_MATRIX_1",
-"itemState": "done",
-"src": "Collapse [E]",
-"bars": [
-"filled_excavation_reads_as_obstacle"
-],
-"probes": [
-[
-"xml:defName>RM_Fill_Water_Half",
-true
-],
-[
-"cs:pathCost|PathCost",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "A08",
-"label": "[PROVEN-LIVE] A pit is only a D=4 cell (no holder Thing, no old pit building)",
-"group": "A \u00b7 Digging & depth",
-"effect": "Trapping is a grid rule on a spawned pawn; the old Building_OpenPit / RM_SuperdeepPit model is gone.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "SUPERDEEP_HOLDER_RETIRE_1",
-"itemState": "done",
-"src": "Collapse ruling",
-"bars": [],
-"probes": [
-[
-"cs:class RM_SuperdeepTrap",
-true
-],
-[
-"!cs:class Building_OpenPit",
-true
-]
-],
-"live": [
-[
-"S1p_pit_is_grid_only",
-"PASS",
-"D4 cell: isSuperdeep True width 1 holders []; D3 cell: isSuperdeep False width 0 holders []"
-]
-]
-}
-},
-{
-"id": "B01",
-"label": "[PROVEN-LIVE] Flow runs on a pulse, never per tick",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Liquid moves only at pulse boundaries (default every 250 ticks); the cadence is a setting.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Framework pillar 2",
-"bars": [],
-"probes": [
-[
-"set:pulseIntervalTicks",
-true
-]
-],
-"live": [
-[
-"E1a_cadence_shipped",
-"PASS",
-"pulseIntervalTicks 250, nextPulseTick 251 at tick 1"
-],
-[
-"E1c_cadence_real_scheduler",
-"PASS",
-"12 chunks of 60 ticks: nextPulseTick advances [60], lead [1]"
-],
-[
-"A_pulse_contract",
-"PASS",
-"8 pulses, 0 ticks, scheduler untouched, paused"
-]
-]
-}
-},
-{
-"id": "B02",
-"label": "[PROVEN-LIVE] Pulse interval cannot be set below 60 ticks",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "A too-fast pulse setting is clamped to 60 so the engine cannot become a per-tick sim.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program Ph3",
-"bars": [],
-"probes": [
-[
-"set:pulseIntervalTicks",
-true
-]
-],
-"live": [
-[
-"E1b_pulse_clamp",
-"PASS",
-"pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)"
-]
-]
-}
-},
-{
-"id": "B03",
-"label": "[PROVEN-LIVE] Sort + overflow: a canal fills from its source in every direction",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Deepest-first pour to F=D, full cells overflow into neighbours; E/N/S/W channels all fill, bottom-up.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_CHANNEL_OSCILLATION_1",
-"itemState": "done",
-"src": "Build program Ph3",
-"bars": [
-"canal_fill_spreads_along_itself",
-"canal_fill_front_watchable"
-],
-"probes": [
-[
-"cs:PickDonor",
-true
-]
-],
-"live": [
-[
-"E2_east_A",
-"PASS",
-"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"E2_north",
-"PASS",
-"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"E2_south",
-"PASS",
-"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"E2_west",
-"PASS",
-"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"E2_channels_fill_every_direction",
-"PASS",
-"first-full pulse by direction {'E2_east_A': 4, 'E2_north': 4, 'E2_south': 4, 'E2_west': 4} (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)"
-],
-[
-"A_global_vs_oracle",
-"PASS",
-"every excavated cell == oracle at every pulse"
-],
-[
-"G_every_cell_vs_oracle",
-"absent",
-""
-]
-]
-},
-"thumb": "shots/E2_flow.jpg"
-},
-{
-"id": "B04",
-"label": "[PROVEN-LIVE] Two channels off one source both fill",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "A source cell shared by several channels feeds all of them (the old shared-visited stall is fixed).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_SHARED_SOURCE_STALL_1",
-"itemState": "done",
-"src": "Bug item",
-"bars": [],
-"probes": [
-[
-"cs:PickDonor",
-true
-]
-],
-"live": [
-[
-"E2s_shared_source_oracle",
-"PASS",
-"both pairs == oracle (every channel gets the shared source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}"
-],
-[
-"E2s_shared_source_both_fill",
-"PASS",
-"all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}"
-],
-[
-"G_every_cell_vs_oracle",
-"absent",
-""
-]
-]
-}
-},
-{
-"id": "B05",
-"label": "[PROVEN-LIVE] Flow is deterministic (twins and re-runs identical)",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Identical channels and a re-run produce the same pulse-by-pulse fill vectors.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program verify",
-"bars": [],
-"probes": [
-[
-"cs:class RM_StockMath",
-true
-]
-],
-"live": [
-[
-"E2_twins_identical",
-"PASS",
-"A [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] / B [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"E2_rerun_determinism",
-"PASS",
-"E2_east_A (phase A) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] vs E2_rerun (dug later, other body) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
-],
-[
-"R_global_vs_oracle",
-"PASS",
-"all cells == oracle"
-],
-[
-"G_every_cell_vs_oracle",
-"absent",
-""
-]
-]
-}
-},
-{
-"id": "B06",
-"label": "[PROVEN-LIVE] Liquid stays in the dug channel",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Fill never spreads onto undug ground beside a channel; confinement is a setting (default ON).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"canal_holds_only_the_channel",
-"never_liquid_on_open_ground"
-],
-"probes": [
-[
-"set:channelConfinementEnabled",
-true
-],
-[
-"cs:CanLiquidEnter",
-true
-]
-],
-"live": [
-[
-"E2_dry_ring",
-"PASS",
-"every non-channel, non-body ring cell undug, F=0, Soil"
-]
-]
-},
-"thumb": "shots/E2_flow.jpg"
-},
-{
-"id": "B07",
-"label": "[PROVEN-LIVE] Master switch: depth engine off freezes all flow",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "With the engine off no cell moves past its due pulse; turning it back on resumes on schedule.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Settings rule 2026-09-12",
-"bars": [],
-"probes": [
-[
-"set:depthEngineEnabled",
-true
-]
-],
-"live": [
-[
-"E4_engine_off",
-"PASS",
-"OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []"
-],
-[
-"E4_engine_on_scheduled",
-"PASS",
-"after 12 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]"
-]
-]
-},
-"thumb": "shots/E3_E4.jpg"
-},
-{
-"id": "B08",
-"label": "[BUILT-UNPROVEN] Partial fill tiers: trace / half / brim / superdeep per fluid",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "A part-filled canal draws a lighter tier than a full one; four fill terrains per fluid (ruling 5).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 5",
-"bars": [
-"canal_partial_fill_distinct",
-"fill_tier_legible"
-],
-"probes": [
-[
-"xml:defName>RM_Fill_Water_Trace",
-true
-],
-[
-"xml:defName>RM_Fill_Water_Half",
-true
-],
-[
-"xml:defName>RM_Fill_Water_Brim",
-true
-]
-],
-"live": []
-},
-"thumb": "shots/S_ladder.jpg"
-},
-{
-"id": "B09",
-"label": "[PROVEN-LIVE] Canal reads as the same liquid as its reservoir",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "A filled canal draws the fill ladder of the fluid it came from (water from water, tar from tar).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"canal_reads_as_same_liquid_as_reservoir"
-],
-"probes": [
-[
-"xml:defName>RM_Fill_Tar_Brim",
-true
-],
-[
-"cs:fillTerrain|FillTerrain",
-true
-]
-],
-"live": [
-[
-"X6_two_fluids_distinct",
-"PASS",
-"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "B10",
-"label": "[PROVEN-LIVE] Fill-in pushes liquid back (conserved)",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Filling a wet cell credits its liquid to connected channel/source cells with room; nothing vanishes.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "CANAL_FILL_IN_DISPLACEMENT_1",
-"itemState": "done",
-"src": "Ph4",
-"bars": [],
-"probes": [
-[
-"set:fillInDisplacementEnabled",
-true
-]
-],
-"live": [
-[
-"E7a_fillin_displaces",
-"PASS",
-"sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]"
-]
-]
-},
-"thumb": "shots/J_jobs.jpg"
-},
-{
-"id": "B11",
-"label": "[PROVEN-LIVE] Disclosed overflow: only liquid with nowhere to go is destroyed",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "The single conservation exception, counted and disclosed (overflowDestroyedTotal), never silent.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "CANAL_FILL_IN_DISPLACEMENT_1",
-"itemState": "done",
-"src": "Ph4",
-"bars": [],
-"probes": [
-[
-"cs:overflowDestroyed|OverflowDestroyed",
-true
-]
-],
-"live": [
-[
-"E7b_overflow_sanctioned",
-"PASS",
-"no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)"
-]
-]
-}
-},
-{
-"id": "B12",
-"label": "[PROVEN-LIVE] Every pulse balances against an oracle (no leaks)",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "Whole-map fill matches an independent oracle every pulse across the scripted phases.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Build program verify",
-"bars": [],
-"probes": [
-[
-"cs:class RM_StockMath",
-true
-]
-],
-"live": [
-[
-"B_global_vs_oracle",
-"PASS",
-"all cells == oracle"
-],
-[
-"C_global_vs_oracle",
-"PASS",
-"all cells == oracle"
-],
-[
-"G_every_cell_vs_oracle",
-"absent",
-""
-]
-]
-}
-},
-{
-"id": "B13",
-"label": "[BUILT-UNPROVEN] Canyon floods drive FlowWorks instead of erasing canals",
-"group": "B \u00b7 Fill & flow engine",
-"effect": "FloodedCanyon is a flood-driver client; its floods use FlowWorks' recoverable temp-terrain release.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "CANYON_FLOOD_ERASES_CANALS_1",
-"itemState": "done",
-"src": "Ruling 8",
-"bars": [],
-"probes": [
-[
-"cs:class Flood_FlowWorks",
-true
-],
-[
-"cs:SetTempTerrain",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "C01",
-"label": "[PROVEN-LIVE] A source is just deep liquid terrain (no reservoir building)",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "Ruling 24/34: placed deep liquid tiles ARE the reservoir; the old CompFluidReservoir is deleted.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Rulings 24/34",
-"bars": [],
-"probes": [
-[
-"cs:class RM_LiquidBody",
-true
-],
-[
-"!cs:class CompFluidReservoir",
-true
-]
-],
-"live": [
-[
-"S3_classification",
-"PASS",
-"W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
-]
-]
-}
-},
-{
-"id": "C02",
-"label": "[PROVEN-LIVE] Limited vs limitless: touching the map edge (and big enough)",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "A body touching the edge with >= min cells is limitless; an enclosed body is limited stock.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [],
-"probes": [
-[
-"set:minLimitlessBodyCells",
-true
-],
-[
-"cs:touchesEdge",
-true
-]
-],
-"live": [
-[
-"S3_classification",
-"PASS",
-"W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
-]
-]
-}
-},
-{
-"id": "C03",
-"label": "[PROVEN-LIVE] Limitless is sticky (classified once, never flickers)",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "Once limitless, a body stays limitless even as it recedes; a setting can turn stickiness off.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph4",
-"bars": [],
-"probes": [
-[
-"set:stickyLimitlessEnabled",
-true
-]
-],
-"live": [
-[
-"S5_sticky_limitless",
-"PASS",
-"W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True"
-]
-]
-}
-},
-{
-"id": "C04",
-"label": "[PROVEN-LIVE] 5:1 budget: each source cell feeds five canal cells, then stops",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "An enclosed pond supplies exactly its budget, then the wet front stops; budget OFF = old behaviour.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"empty_reservoir_stops_flow",
-"never_full_reservoir_after_heavy_draw"
-],
-"probes": [
-[
-"set:sourceBudgetEnabled",
-true
-],
-[
-"set:sourceBudgetMultiplier",
-true
-]
-],
-"live": [
-[
-"E3_budget_exhaustion",
-"PASS",
-"cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.004062602"
-],
-[
-"E3n_budget_off_supplies",
-"PASS",
-"budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])"
-]
-]
-},
-"thumb": "shots/E3_E4.jpg"
-},
-{
-"id": "C05",
-"label": "[PROVEN-LIVE] The source visibly recedes as it pays out",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "Supplying a canal shrinks an enclosed body cell by cell from the outside in, restoring the old ground.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"reservoir_fill_visibly_drops",
-"reservoir_shoreline_recedes"
-],
-"probes": [
-[
-"set:recessionEnabled",
-true
-],
-[
-"cs:recededCount|Recede",
-true
-]
-],
-"live": [
-[
-"E3b_recession_shipped",
-"PASS",
-"final [0, 0, 0, 1], W2R {'stock': 4.00473976, 'recededCount': 1, 'activeCellCount': 0}"
-]
-]
-},
-"thumb": "shots/E3_E4.jpg"
-},
-{
-"id": "C06",
-"label": "[BUILT-UNPROVEN] Slow refill from rain, season and seepage",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "A drawn-down body slowly regains level; a very small body refills slowest.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner scarcity ruling",
-"bars": [
-"reservoir_recharge_progress_visible"
+"digging an existing canal one level deeper",
+"A03 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S6_digToDepth_gate: PASS \u00b7 live test S1n_superdeep_is_max: PASS \u00b7 \u2713 set:digToDepthEnabled"
 ],
-"probes": [
 [
-"set:refillEnabled",
-true
+"a pit being just the deepest dug ground, not a building",
+"A08 \u00b7 PROVEN-LIVE",
+"SUPERDEEP_HOLDER_RETIRE_1 (done) \u00b7 live test S1p_pit_is_grid_only: PASS \u00b7 \u2713 cs:class RM_SuperdeepTrap \u00b7 \u2713 !cs:class Building_OpenPit"
 ],
 [
-"set:refillRateMultiplier",
-true
-],
-[
-"cs:void Refill",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "C07",
-"label": "[PROVEN-LIVE] Rain fills unroofed excavations only",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "Rain adds fill to open dug cells; a roofed twin stays dry; the toggle stops it.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 25",
-"bars": [],
-"probes": [
-[
-"set:rainFillsExcavationsEnabled",
-true
-],
-[
-"set:rainFillPerPulse",
-true
-]
-],
-"live": [
-[
-"E6_rain_fills_unroofed",
-"PASS",
-"rate 0.258 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle"
-],
-[
-"E6_roof_readback",
-"PASS",
-"roofed excavated cells [(182, 60)]"
-],
-[
-"E6n_rain_toggle_off",
-"PASS",
-"rain fell (rate now 0.258) with rainFillsExcavations OFF over 12 pulses: no cell gained"
+"depth and fill saved with the map",
+"A04 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S2_fill_clamp: PASS \u00b7 \u2713 cs:class RM_MapComponent_Excavation \u00b7 \u2713 cs:Scribe"
 ]
-]
-},
-"thumb": "shots/J_jobs.jpg"
-},
-{
-"id": "C08",
-"label": "[PROVEN-LIVE] Map-edge sinks drain a canal off-map",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "A channel reaching the edge band transfers liquid off-map (counted), an interior twin holds.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "LIQUID_SINK_DRAINAGE_1",
-"itemState": "done",
-"src": "Ph4",
-"bars": [],
-"probes": [
-[
-"set:edgeSinksEnabled",
-true
-]
-],
-"live": [
-[
-"S4_sink_band",
-"PASS",
-"isSink at edge distance 9: True; at 11: False"
-],
-[
-"E5_sink_drains",
-"PASS",
-"band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
 ],
-[
-"E5_inner_holds",
-"PASS",
-"interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
-],
-[
-"E5n_sinks_off",
-"PASS",
-"sinks OFF: run [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], total 10.0->10.0, isSink any=False"
-],
-[
-"E5_sinks_back_on",
-"PASS",
-"sinks ON again: [1, 1, 0, 0, 0, 1, 0, 0, 0, 0], total +7.0 (oracle +7)"
-]
-]
-},
-"thumb": "shots/E5_sinks.jpg"
-},
-{
-"id": "C09",
-"label": "[NOT BUILT] Pumping into tanks draws a source down",
-"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
-"effect": "A pump moves liquid from a source or canal into a tank; one full tank = 5 canal cells of stock.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience; Ph8",
-"bars": [],
-"probes": [
+"pics": [
 [
-"cs:class \\w*Pump",
+"shots/S_ladder.jpg",
+"Live test, 5 Oct: a dug trench and a pit side by side (the test site's depth ladder)",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "D01",
-"label": "[PROVEN-LIVE] Viscosity: tar flows slower than water",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Each fluid moves on its own stride; from equal starts tar trails water. Toggle restores equal speed.",
+"id": "dig_fill_in",
+"label": "You can fill a canal back in, and the liquid in it is pushed along, not deleted",
+"group": "1 \u00b7 Digging canals and pits",
+"effect": "You can fill a canal back in, and the liquid in it is pushed along, not deleted Only liquid with nowhere at all to go is lost, and the game counts it.",
+"say": "Only liquid with nowhere at all to go is lost, and the game counts it.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner: tar needs viscosity most",
-"bars": [
-"tar_fill_front_lags_water"
-],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"set:viscosityEnabled",
-true
-],
-[
-"cs:ViscosityStride",
-true
-]
-],
-"live": [
-[
-"X7_tar_front_lags_water",
-"PASS",
-"gravity staircase D1..D4, one level each: after 3 pulses water at step 3, tar at 0; after 12 water 3, tar 2 (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels 1/1; pulse 200 viscosity True"
+"filling a canal back in",
+"A05 \u00b7 PROVEN-LIVE",
+"CANAL_FILL_IN_DISPLACEMENT_1 (done) \u00b7 live test E7a_fillin_displaces: PASS \u00b7 \u2713 cs:class Designator_FillInCanal \u00b7 \u2713 cs:class WorkGiver_FillInCanal \u00b7 \u2713 cs:class JobDriver_FillInCanal"
 ],
 [
-"X7n_viscosity_off",
-"PASS",
-"viscosityEnabled OFF: a tar staircase moved like water, step 3 after 3 pulses (levels 1, ['RM_Fluid_Tar'])"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "D02",
-"label": "[PROVEN-LIVE] Fluid identity per cell / body",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Each wet cell and body records its own fluid, so oil in one pit and water in the next can coexist.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "LIQUID_BODY_FLUID_IDENTITY_1",
-"itemState": "proposed",
-"src": "Collapse [F]",
-"bars": [],
-"probes": [
-[
-"cs:fluidGrid",
-true
+"liquid being pushed along when a canal is filled in",
+"B10 \u00b7 PROVEN-LIVE",
+"CANAL_FILL_IN_DISPLACEMENT_1 (done) \u00b7 live test E7a_fillin_displaces: PASS \u00b7 \u2713 set:fillInDisplacementEnabled"
 ],
 [
-"cs:FluidAt",
-true
+"only liquid with nowhere at all to go being lost, and counted",
+"B11 \u00b7 PROVEN-LIVE",
+"CANAL_FILL_IN_DISPLACEMENT_1 (done) \u00b7 live test E7b_overflow_sanctioned: PASS \u00b7 \u2713 cs:overflowDestroyed|OverflowDestroyed"
 ]
 ],
-"live": [
+"pics": [
 [
-"X6_two_fluids_distinct",
-"PASS",
-"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
-]
-]
-}
-},
-{
-"id": "D03",
-"label": "[BUILT-UNPROVEN] Fluids never mix: fronts meet and stop",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "A dry cell is claimed by the first fluid to reach it; the other front stops; drain one side and the other advances.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BODY_FLUID_IDENTITY_1",
-"itemState": "proposed",
-"src": "Owner Q3 2026-10-02",
-"bars": [],
-"probes": [
-[
-"cs:FluidsCompatible",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D04",
-"label": "[BUILT-UNPROVEN] Old saves migrate; lost fluids are warned, not converted",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "A save with only the per-map fluid stamps it onto every wet cell; a removed FluidDef warns once.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BODY_FLUID_IDENTITY_1",
-"itemState": "proposed",
-"src": "Identity step 4",
-"bars": [],
-"probes": [
-[
-"cs:ReportLostPaletteFluids",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D05",
-"label": "[PROVEN-LIVE] Map fluid cannot be switched after filling",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Changing the map's active fluid after classification is refused (no silent conversion).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "LIQUID_BODY_FLUID_IDENTITY_1",
-"itemState": "proposed",
-"src": "Identity",
-"bars": [],
-"probes": [
-[
-"cs:ActiveFluid",
-true
-]
-],
-"live": [
-[
-"T0n_fluid_switch_refused",
-"PASS",
-"set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water"
-]
-]
-}
-},
-{
-"id": "D06",
-"label": "[PROVEN-LIVE] Different fluids look different in a canal",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "A tar row and a water row draw different fill terrains; bespoke per-fluid art is still placeholder.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "LIQUID_BODY_FLUID_IDENTITY_1",
-"itemState": "proposed",
-"src": "Bar ruling 2026-09-17",
-"bars": [
-"fill_fluid_distinct"
-],
-"probes": [
-[
-"xml:defName>RM_Fill_Tar_Brim",
-true
-],
-[
-"xml:defName>RM_Fill_Water_Brim",
-true
-]
-],
-"live": [
-[
-"X6_two_fluids_distinct",
-"PASS",
-"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "D07",
-"label": "[BUILT-UNPROVEN] Tar has a viscous surface, not tinted water",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Tar adopts Alpha Biomes' tar surfaces when present (MayRequire), else a tinted fallback.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "TAR_VISCOUS_SURFACE_ART_1",
-"itemState": "done",
-"src": "Ph7",
-"bars": [],
-"probes": [
-[
-"xml:AB_Tar",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D08",
-"label": "[PARTIAL] Slime reads thick and opaque, not recoloured water",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Slime canals draw a thick opaque surface. Today slime fill is a tint on the water ramp.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"slime_reads_as_viscous_not_water"
-],
-"probes": [
-[
-"xml:defName>RM_Fluid_SlimeGreen",
-true
-],
-[
-"tex:(?i)slime",
+"shots/J_jobs.jpg",
+"Live test, 5 Oct: open vs roofed trenches in rain, a filled-in canal, and a dig order",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "D09",
-"label": "[NOT BUILT] Slime is nearly impossible to cross, slow to escape",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Owner: slime is so slippery it is nearly uncrossable and escape takes a long time.",
-"prefill": "wanted",
+"id": "dig_slows",
+"label": "Trenches slow people down: deeper is slower, flooded is slower still, and a pit can't be crossed",
+"group": "1 \u00b7 Digging canals and pits",
+"effect": "Trenches slow people down: deeper is slower, flooded is slower still, and a pit can't be crossed A dug line is a real barrier you can build defences with.",
+"say": "A dug line is a real barrier you can build defences with.",
+"prefill": null,
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": true,
+"missing": [],
+"tech": [
 [
-"cs:(?i)slime\\w*(slip|escape)",
+"dry trenches slowing people down, deeper slower",
+"A06 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test L3_defs_live: PASS \u00b7 \u2713 xml:<pathCost>30<\/pathCost> \u00b7 \u2713 xml:<pathCost>45<\/pathCost> \u00b7 \u2713 xml:<pathCost>80<\/pathCost>"
+],
+[
+"a flooded trench being slower to cross than a dry one",
+"A07 \u00b7 BUILT-UNPROVEN",
+"DEPTH_FILL_COST_MATRIX_1 (done) \u00b7 \u2713 xml:defName>RM_Fill_Water_Half \u00b7 \u2713 cs:pathCost|PathCost"
+]
+],
+"pics": [],
+"pre": ""
+}
+},
+{
+"id": "dig_finds",
+"label": "Digging a canal sometimes turns up local minerals, with a letter the first time each one appears",
+"group": "1 \u00b7 Digging canals and pits",
+"effect": "Digging a canal sometimes turns up local minerals, with a letter the first time each one appears Deep cuts can reach the minerals deep drills find; where there are none, you get chunks of local rock.",
+"say": "Deep cuts can reach the minerals deep drills find; where there are none, you get chunks of local rock.",
+"prefill": "ok",
+"fw": {
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"finds following the shared list of which minerals belong where"
+],
+"tech": [
+[
+"digging turning up local minerals",
+"M01 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2713 cs:class RM_DigDiscovery\\b \u00b7 \u2713 set:digFindsEnabled"
+],
+[
+"a letter the first time each mineral turns up",
+"M02 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2713 set:digFindLetterEnabled"
+],
+[
+"deep cuts reaching deep minerals; rock chunks where there are none",
+"M03 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2713 cs:ReachesDeep \u00b7 \u2713 cs:LocalRockChunk"
+],
+[
+"finds following the shared list of which minerals belong where",
+"M04 \u00b7 NOT BUILT",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2717 cs:MineralRegistry\\.\\w+\\("
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "flow_spreads",
+"label": "Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the engine off in settings freezes every canal where it is.",
+"say": "It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the engine off in settings freezes every canal where it is.",
+"prefill": null,
+"fw": {
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
+[
+"a canal filling from its source in every direction",
+"B03 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_CHANNEL_OSCILLATION_1 (done) \u00b7 live test E2_east_A: PASS \u00b7 live test E2_north: PASS \u00b7 live test E2_south: PASS \u00b7 live test E2_west: PASS \u00b7 live test E2_channels_fill_every_direction: PASS \u00b7 live test A_global_vs_oracle: PASS \u00b7 live test G_every_cell_vs_oracle: absent \u00b7 \u2713 cs:PickDonor"
+],
+[
+"two canals off one source both filling",
+"B04 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_SHARED_SOURCE_STALL_1 (done) \u00b7 live test E2s_shared_source_oracle: PASS \u00b7 live test E2s_shared_source_both_fill: PASS \u00b7 live test G_every_cell_vs_oracle: absent \u00b7 \u2713 cs:PickDonor"
+],
+[
+"liquid staying inside the dug channel",
+"B06 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E2_dry_ring: PASS \u00b7 \u2713 set:channelConfinementEnabled \u00b7 \u2713 cs:CanLiquidEnter"
+],
+[
+"flow moving in steady pulses",
+"B01 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E1a_cadence_shipped: PASS \u00b7 live test E1c_cadence_real_scheduler: PASS \u00b7 live test A_pulse_contract: PASS \u00b7 \u2713 set:pulseIntervalTicks"
+],
+[
+"flow behaving the same way every time",
+"B05 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E2_twins_identical: PASS \u00b7 live test E2_rerun_determinism: PASS \u00b7 live test R_global_vs_oracle: PASS \u00b7 live test G_every_cell_vs_oracle: absent \u00b7 \u2713 cs:class RM_StockMath"
+],
+[
+"no liquid leaking or appearing from nowhere",
+"B12 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test B_global_vs_oracle: PASS \u00b7 live test C_global_vs_oracle: PASS \u00b7 live test G_every_cell_vs_oracle: absent \u00b7 \u2713 cs:class RM_StockMath"
+],
+[
+"a settings switch that freezes all flow",
+"B07 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E4_engine_off: PASS \u00b7 live test E4_engine_on_scheduled: PASS \u00b7 \u2713 set:depthEngineEnabled"
+],
+[
+"a floor on how fast the pulse can be set",
+"B02 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E1b_pulse_clamp: PASS \u00b7 \u2713 set:pulseIntervalTicks"
+]
+],
+"pics": [
+[
+"shots/E2_flow.jpg",
+"Live test, 5 Oct: water spreading down a canal from its pond",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "D10",
-"label": "[PROVEN-LIVE] A pawn in slime is drawn sunk into it",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "An occupant of a slime-filled D=4 cell is drawn down in the slime, not on its surface.",
+"id": "flow_identity",
+"label": "Each liquid keeps its own nature: tar crawls while water runs, and a canal shows the liquid it came from",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Each liquid keeps its own nature: tar crawls while water runs, and a canal shows the liquid it came from Water fed from water looks like water; tar fed from tar looks like tar.",
+"say": "Water fed from water looks like water; tar fed from tar looks like tar.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_DEPTH_DRAW_OFFSET_1",
-"itemState": "proposed",
-"src": "Bar",
-"bars": [
-"slime_occupant_below_surface"
-],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_PitDepthDraw",
-true
+"tar flowing slower than water",
+"D01 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test X7_tar_front_lags_water: PASS \u00b7 live test X7n_viscosity_off: PASS \u00b7 \u2713 set:viscosityEnabled \u00b7 \u2713 cs:ViscosityStride"
+],
+[
+"every wet tile remembering which liquid it holds",
+"D02 \u00b7 PROVEN-LIVE",
+"LIQUID_BODY_FLUID_IDENTITY_1 (done) \u00b7 live test X6_two_fluids_distinct: PASS \u00b7 \u2713 cs:fluidGrid \u00b7 \u2713 cs:FluidAt"
+],
+[
+"a map's liquid not silently switching after it fills",
+"D05 \u00b7 PROVEN-LIVE",
+"LIQUID_BODY_FLUID_IDENTITY_1 (done) \u00b7 live test T0n_fluid_switch_refused: PASS \u00b7 \u2713 cs:ActiveFluid"
+],
+[
+"different liquids looking different in a canal",
+"D06 \u00b7 PROVEN-LIVE",
+"LIQUID_BODY_FLUID_IDENTITY_1 (done) \u00b7 live test X6_two_fluids_distinct: PASS \u00b7 \u2713 xml:defName>RM_Fill_Tar_Brim \u00b7 \u2713 xml:defName>RM_Fill_Water_Brim"
+],
+[
+"a canal showing the same liquid as its pond",
+"B09 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test X6_two_fluids_distinct: PASS \u00b7 \u2713 xml:defName>RM_Fill_Tar_Brim \u00b7 \u2713 cs:fillTerrain|FillTerrain"
 ]
 ],
-"live": [
+"pics": [
 [
-"X5_slime_occupant_below_surface",
-"PASS",
-"D=4 cell holding RM_Fluid_SlimeGreen F=2: occupant drawn 1.2 down (dry D=4: 1.20), drawDz -1.2"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "D11",
-"label": "[BUILT-UNPROVEN] Liquid registry: one row per liquid",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "LiquidDef rows carry properties + form slots (terrain, bottle, trade) for every liquid.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_REGISTRY_CORE_1",
-"itemState": "done",
-"src": "Registry",
-"bars": [],
-"probes": [
-[
-"cs:class LiquidDef",
-true
-],
-[
-"xml:defName>RM_Liquid_Tar<",
-true
-],
-[
-"xml:defName>RM_Liquid_FreshWater<",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D12",
-"label": "[BUILT-UNPROVEN] Canal fluids: water, tar, oil, poison, four slimes",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "FluidDefs that a canal can hold; oil and poison are contents, not pit fittings (collapse Q7).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Collapse Q7",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_Fluid_Water<",
-true
-],
-[
-"xml:defName>RM_Fluid_Tar<",
-true
-],
-[
-"xml:defName>RM_Fluid_Oil<",
-true
-],
-[
-"xml:defName>RM_Fluid_Poison<",
-true
-],
-[
-"xml:defName>RM_Fluid_SlimeRed<",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D13",
-"label": "[BUILT-UNPROVEN] Many Waters liquid terrains (brine, boiling, propane, acid...)",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Shallow/deep terrain pairs for the whole roster, plus coloured waters with bottles.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_TYPES_MOD_1",
-"itemState": "done",
-"src": "Roster",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_WaterBrineDeep<",
-true
-],
-[
-"xml:defName>RM_PropaneDeep<",
-true
-],
-[
-"xml:defName>RM_Water_Amber<",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "D14",
-"label": "[BUILT-UNPROVEN] Each liquid has its faces: flood, rain, river, lake, ocean",
-"group": "D \u00b7 Fluids: viscosity, identity, roster",
-"effect": "Every registry liquid declares how it appears as a flood, rain, river, lake and ocean.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_LIQUID_FACES_1",
-"itemState": "done",
-"src": "Faces item",
-"bars": [],
-"probes": [
-[
-"cs:class LiquidTerrainSuite",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "E01",
-"label": "[BUILT-UNPROVEN] Burnable liquid catches from any fire",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "A vanilla fire on or beside tar/oil/propane lights the liquid (Harmony on Fire.SpawnSetup).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_FireLightsLiquid",
-true
-],
-[
-"set:canalFireEnabled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "E02",
-"label": "[BUILT-UNPROVEN] One travelling front: creeping fuse or detonation",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Per fluid: tar/propane creep, astrofuel/chemfuel detonate; one front a player can outrun.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6",
-"bars": [],
-"probes": [
-[
-"cs:RM_FluidFireKind",
-true
-],
-[
-"set:fireFrontSpeedMultiplier",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "E03",
-"label": "[BUILT-UNPROVEN] Burns for a long time: 1 canal level/day, 1 source level/5 days",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Burn is a rate on the depth ladder; a limitless source burns effectively forever.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 7",
-"bars": [
-"canal_fire_persists"
-],
-"probes": [
-[
-"set:canalBurnDaysPerLevel",
-true
-],
-[
-"set:sourceBurnDaysPerLevel",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "E04",
-"label": "[BUILT-UNPROVEN] Fire travels back into the source",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "A lit canal lights its connected reservoir (up to sourceFireReach cells in).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [
-"canal_fire_reaches_reservoir"
-],
-"probes": [
-[
-"set:sourceFireReach",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "E05",
-"label": "[PARTIAL] Burning liquid reads as the surface alight",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "A flame per burning cell (vanilla fire graphic today); bespoke burning-liquid art is owed.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6 owed art",
-"bars": [
-"canal_burning_reads_as_burning_liquid"
-],
-"probes": [
-[
-"xml:defName>RM_LiquidFlame<",
-true
-],
-[
-"tex:(?i)(burning|liquidflame)",
+"shots/X_promoted.jpg",
+"Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "E06",
-"label": "[PARTIAL] A burned-out channel reads scorched and empty",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Burned-dry canal cells get ash today; bespoke scorched art is owed.",
-"prefill": "wanted",
+"id": "flow_no_mix",
+"label": "Two different liquids never mix: where their fronts meet, both stop",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Two different liquids never mix: where their fronts meet, both stop Drain one side and the other moves in. Old saves keep their liquids.",
+"say": "Drain one side and the other moves in. Old saves keep their liquids.",
+"prefill": null,
 "fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6 owed art",
-"bars": [
-"canal_spent_after_burn"
-],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:Ash",
-true
+"two liquids meeting and stopping instead of mixing",
+"D03 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BODY_FLUID_IDENTITY_1 (done) \u00b7 \u2713 cs:FluidsCompatible"
 ],
 [
-"tex:(?i)scorch",
+"old saves keeping their liquids",
+"D04 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BODY_FLUID_IDENTITY_1 (done) \u00b7 \u2713 cs:ReportLostPaletteFluids"
+]
+],
+"pics": [],
+"pre": ""
+}
+},
+{
+"id": "flow_ponds",
+"label": "Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.",
+"say": "An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.",
+"prefill": null,
+"fw": {
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
+[
+"any pond or lake acting as a source",
+"C01 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S3_classification: PASS \u00b7 \u2713 cs:class RM_LiquidBody \u00b7 \u2713 !cs:class CompFluidReservoir"
+],
+[
+"lakes touching the map edge never running dry",
+"C02 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S3_classification: PASS \u00b7 \u2713 set:minLimitlessBodyCells \u00b7 \u2713 cs:touchesEdge"
+],
+[
+"a never-dry lake staying never-dry as it shrinks",
+"C03 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test S5_sticky_limitless: PASS \u00b7 \u2713 set:stickyLimitlessEnabled"
+],
+[
+"an enclosed pond feeding about five canal tiles per tile, then stopping",
+"C04 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E3_budget_exhaustion: PASS \u00b7 live test E3n_budget_off_supplies: PASS \u00b7 \u2713 set:sourceBudgetEnabled \u00b7 \u2713 set:sourceBudgetMultiplier"
+]
+],
+"pics": [
+[
+"shots/E3_E4.jpg",
+"Live test, 5 Oct: a pond feeding canals in four directions",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "E07",
-"label": "[BUILT-UNPROVEN] Pawns in a burning cell catch fire (D=4 occupant always)",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Fire harms whoever stands in the burning liquid; a trapped occupant always catches (ruling 22).",
+"id": "flow_shrinks",
+"label": "A pond visibly shrinks as it pays out, and slowly refills from rain, season and seepage",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "A pond visibly shrinks as it pays out, and slowly refills from rain, season and seepage You can see a source being drawn down.",
+"say": "You can see a source being drawn down.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 22",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": true,
+"missing": [],
+"tech": [
 [
-"cs:class RM_LiquidFire",
-true
+"the pond visibly shrinking as it pays out",
+"C05 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E3b_recession_shipped: PASS \u00b7 \u2713 set:recessionEnabled \u00b7 \u2713 cs:recededCount|Recede"
+],
+[
+"a drawn-down pond slowly refilling",
+"C06 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 set:refillEnabled \u00b7 \u2713 set:refillRateMultiplier \u00b7 \u2713 cs:void Refill"
 ]
 ],
-"live": []
-}
-},
-{
-"id": "E08",
-"label": "[NOT BUILT] Explosions ignite liquid",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "An explosion (not only a fire) over burnable liquid lights it. Owed per Ph6.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6 owed",
-"bars": [],
-"probes": [
+"pics": [
 [
-"cs:class RM_Patch_\\w*Explosion",
+"shots/E3_E4.jpg",
+"Live test, 5 Oct: a pond feeding canals in four directions",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "E09",
-"label": "[NOT BUILT] Burning liquid can be put out",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Firefighting / rain can extinguish burning liquid. Owed per Ph6 (only burn-out exists).",
-"prefill": "wanted",
+"id": "flow_rain",
+"label": "Rain fills open trenches; roofed ones stay dry",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Rain fills open trenches; roofed ones stay dry",
+"say": "",
+"prefill": null,
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph6 owed",
-"bars": [],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_\\w*Extinguish",
+"rain filling open trenches but not roofed ones",
+"C07 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test E6_rain_fills_unroofed: PASS \u00b7 live test E6_roof_readback: PASS \u00b7 live test E6n_rain_toggle_off: PASS \u00b7 \u2713 set:rainFillsExcavationsEnabled \u00b7 \u2713 set:rainFillPerPulse"
+]
+],
+"pics": [
+[
+"shots/J_jobs.jpg",
+"Live test, 5 Oct: open vs roofed trenches in rain, a filled-in canal, and a dig order",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "E10",
-"label": "[BUILT-UNPROVEN] Liquid corrosion spike (ships OFF)",
-"group": "E \u00b7 Fire, ignition, corrosion",
-"effect": "Corrosive liquids damage what stands in them; an older spike, default off.",
+"id": "flow_drains",
+"label": "A canal that runs off the edge of the map drains away",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "A canal that runs off the edge of the map drains away A canal ending inside the map holds its water.",
+"say": "A canal ending inside the map holds its water.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph1 escalation",
-"bars": [],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class LiquidCorrosionMapComponent",
-true
-],
-[
-"set:liquidCorrosionEnabled",
-true
+"canals draining away off the map edge",
+"C08 \u00b7 PROVEN-LIVE",
+"LIQUID_SINK_DRAINAGE_1 (done) \u00b7 live test S4_sink_band: PASS \u00b7 live test E5_sink_drains: PASS \u00b7 live test E5_inner_holds: PASS \u00b7 live test E5n_sinks_off: PASS \u00b7 live test E5_sinks_back_on: PASS \u00b7 \u2713 set:edgeSinksEnabled"
 ]
 ],
-"live": []
-}
-},
-{
-"id": "F01",
-"label": "[PROVEN-LIVE] SUPERDEEP traps absolutely: no climbing out",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "A pawn that walks or falls into D=4 stays spawned and cannot path out; no lip cell is reachable.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "SUPERDEEP_HOLDER_RETIRE_1",
-"itemState": "done",
-"src": "Collapse ruling",
-"bars": [
-"never_snared_standing"
-],
-"probes": [
+"pics": [
 [
-"set:superdeepCaptureEnabled",
-true
-],
-[
-"cs:class RM_Patch_Reachability_SuperdeepVeto",
-true
-]
-],
-"live": [
-[
-"P3_walk_in_held",
-"PASS",
-"walked in True; held True spawned True; descents 0->2 (own 1) fall 3.9; lip 0/8; ordered out: canReach False, ended (166, 100)"
-],
-[
-"P1_width_matrix",
-"PASS",
-"held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); "
-]
-]
-},
-"thumb": "shots/P_pits.jpg"
-},
-{
-"id": "F02",
-"label": "[PROVEN-LIVE] Pit must be as wide as the creature to hold it",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Owner Q4: a creature too large for the pit's width walks out; fill-in that narrows a pit frees it.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "SUPERDEEP_HOLDER_RETIRE_1",
-"itemState": "done",
-"src": "Owner Q4 2026-10-02",
-"bars": [],
-"probes": [
-[
-"set:pitWidthBodySizeMultiplier",
-true
-]
-],
-"live": [
-[
-"P1_width_matrix",
-"PASS",
-"held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); "
-],
-[
-"P2_fillin_releases_large",
-"PASS",
-"fill-in (161,101) -> D 3; large at (160,100): width 1 held False lip 12/12"
-]
-]
-},
-"thumb": "shots/P_pits.jpg"
-},
-{
-"id": "F03",
-"label": "[PROVEN-LIVE] Own colonists are not captured (shipped carve-out)",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "By default a colonist entering D=4 is not trapped; a setting makes the pit catch your own too.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_PIT_PAWN_ROWS_RED_1",
-"itemState": "done",
-"src": "Settings",
-"bars": [],
-"probes": [
-[
-"set:superdeepCapturesOwnFaction",
-true
-]
-],
-"live": [
-[
-"P5n_own_faction_carveout",
-"PASS",
-"carve-out ON (shipped): colonist in True captured False held False descents 6->6; out True; pawn ok fill 0"
-]
-]
-},
-"thumb": "shots/P_pits.jpg"
-},
-{
-"id": "F04",
-"label": "[PROVEN-LIVE] Falling in hurts",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "A descent into a deep cell deals fall damage (setting + multiplier).",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Pit model",
-"bars": [],
-"probes": [
-[
-"set:fallDamageEnabled",
-true
-],
-[
-"set:fallDamageMultiplier",
-true
-]
-],
-"live": [
-[
-"P3_walk_in_held",
-"PASS",
-"walked in True; held True spawned True; descents 0->2 (own 1) fall 3.9; lip 0/8; ordered out: canReach False, ended (166, 100)"
-]
-]
-}
-},
-{
-"id": "F05",
-"label": "[BUILT-UNPROVEN] 'Jump into pit' button strands the jumper",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "A gizmo lets a pawn jump into a superdeep cell (warns and confirms); they are stuck there too.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_SUPERDEEP_COLLAPSE_1",
-"itemState": "proposed",
-"src": "Collapse ruling",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_Pawn_JumpIntoPitGizmo",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "F06",
-"label": "[BUILT-UNPROVEN] Superdeep occupant fires only at its 8 neighbours",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Ruling 23, the one sight exception: a D=4 pawn trades fire only with pawns at its own lip.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ruling 23",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_Verb_CanHitTargetFrom",
-true
-],
-[
-"set:superdeepShootingRuleEnabled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "F07",
-"label": "[BUILT-UNPROVEN] AI does not pick a pit occupant as a ranged target",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Raiders skip SUPERDEEP occupants in target selection instead of failing shots.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph5",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_AttackTargetFinder_BestAttackTarget",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "F08",
-"label": "[BUILT-UNPROVEN] A trapped pawn is not counted as able to reach the map edge",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Flee/exit logic treats a trapped pawn as stuck rather than walking it off-map.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Pit model",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_Reachability_SuperdeepMapEdge",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "F09",
-"label": "[BUILT-UNPROVEN] Inspect line names the pit state",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Selecting a pit occupant says it is trapped (and why).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Pit model",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_Pawn_PitInspectLine",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "F10",
-"label": "[NOT BUILT] Blast / blowback can knock a pawn into a pit",
-"group": "F \u00b7 Pits: superdeep capture & escape",
-"effect": "Involuntary entry by anything that moves a pawn against its will (weapon blowback, explosions).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "PIT_SUPERDEEP_COLLAPSE_1",
-"itemState": "proposed",
-"src": "Collapse ruling 6",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_\\w*(Knockback|Blowback|Stagger)",
+"shots/E5_sinks.jpg",
+"Live test, 5 Oct: a canal running to the map edge, where it drains away",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "G01",
-"label": "[BUILT-UNPROVEN] An enclosed superdeep area is a ROOM",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "LAW 2 exception [D]: depth bounds a room, so a dug pit area is one room (holds trapped enemies).",
+"id": "flow_canyon",
+"label": "Canyon floods run through your canals instead of wiping them out",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Canyon floods run through your canals instead of wiping them out",
+"say": "",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SUPERDEEP_PRISON_ROOM_1",
-"itemState": "proposed",
-"src": "Collapse [D]",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_\\w*(Region|District|RoomFromDepth)",
-true
+"canyon floods running through the canals instead of erasing them",
+"B13 \u00b7 BUILT-UNPROVEN",
+"CANYON_FLOOD_ERASES_CANALS_1 (done) \u00b7 \u2713 cs:class Flood_FlowWorks \u00b7 \u2713 cs:SetTempTerrain"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "G02",
-"label": "[BUILT-UNPROVEN] A prisoner bed makes the pit a prison; fed and tended from the lip",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "With a vanilla prisoner bed the room is a prison on vanilla's terms; wardens never enter.",
+"id": "flow_slime",
+"label": "Slime is nearly impossible to cross and slow to climb out of",
+"group": "2 \u00b7 Liquid in canals and ponds",
+"effect": "Slime is nearly impossible to cross and slow to climb out of Your words: so slippery it is nearly uncrossable.",
+"say": "Your words: so slippery it is nearly uncrossable.",
+"prefill": "ok",
+"fw": {
+"status": "not",
+"label": "Not built",
+"color": "#c96634",
+"means": "nothing of it is built yet.",
+"seen": false,
+"missing": [
+"slime being nearly impossible to cross and slow to escape"
+],
+"tech": [
+[
+"slime being nearly impossible to cross and slow to escape",
+"D09 \u00b7 NOT BUILT",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2717 cs:(?i)slime\\w*(slip|escape)"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "fire_lights",
+"label": "Fire or an explosion lights tar, oil or propane, and the flame travels along the canal",
+"group": "3 \u00b7 Fire and corrosion",
+"effect": "Fire or an explosion lights tar, oil or propane, and the flame travels along the canal Tar and propane creep like a fuse you can outrun; fuels go up fast.",
+"say": "Tar and propane creep like a fuse you can outrun; fuels go up fast.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SUPERDEEP_PRISON_ROOM_1",
-"itemState": "proposed",
-"src": "Collapse Q1",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:(?i)(WardenFromLip|FeedFromLip|PitPrison)",
-true
+"any fire lighting burnable liquid",
+"E01 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_FireLightsLiquid \u00b7 \u2713 set:canalFireEnabled"
+],
+[
+"flame travelling along a canal as a slow fuse or a fast blast",
+"E02 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:RM_FluidFireKind \u00b7 \u2713 set:fireFrontSpeedMultiplier"
+],
+[
+"an explosion lighting liquid",
+"E08 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_ExplosionLightsLiquid \u00b7 \u2713 set:explosionIgnitesLiquidEnabled"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "G03",
-"label": "[BUILT-UNPROVEN] Capture down (from the lip)",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "A warden ADJACENT to the lip captures a trapped/downed pawn without entering the pit.",
+"id": "fire_lasts",
+"label": "A burning canal burns for days, spreads back into its pond, and sets anyone standing in it alight",
+"group": "3 \u00b7 Fire and corrosion",
+"effect": "A burning canal burns for days, spreads back into its pond, and sets anyone standing in it alight About one canal level a day; a pond burns far longer. Corrosive liquids also eat whatever stands in them (that one is switched off by default).",
+"say": "About one canal level a day; a pond burns far longer. Corrosive liquids also eat whatever stands in them (that one is switched off by default).",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SUPERDEEP_PRISON_ROOM_1",
-"itemState": "proposed",
-"src": "Collapse Q1 / [B-item]",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:(?i)capturedown|capture_down",
-true
+"a burning canal burning for days",
+"E03 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 set:canalBurnDaysPerLevel \u00b7 \u2713 set:sourceBurnDaysPerLevel"
+],
+[
+"fire travelling back into the pond",
+"E04 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 set:sourceFireReach"
+],
+[
+"anyone in burning liquid catching fire",
+"E07 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_LiquidFire"
+],
+[
+"corrosive liquids damaging what stands in them",
+"E10 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class LiquidCorrosionMapComponent \u00b7 \u2713 set:liquidCorrosionEnabled"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "G04",
-"label": "[NOT BUILT] Convert down (recruit from the lip)",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "Recruitment/conversion interaction works from the lip; nobody climbs down.",
-"prefill": "wanted",
+"id": "fire_out",
+"label": "Foam or rain puts burning liquid out",
+"group": "3 \u00b7 Fire and corrosion",
+"effect": "Foam or rain puts burning liquid out Foam keeps it out while the foam lies there; rain has a chance on open ground.",
+"say": "Foam keeps it out while the foam lies there; rain has a chance on open ground.",
+"prefill": null,
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "SUPERDEEP_PRISON_ROOM_1",
-"itemState": "proposed",
-"src": "Collapse Q1",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:(?i)convertdown|convert_down",
+"putting burning liquid out with foam or rain",
+"E09 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:IsSmothered \u00b7 \u2713 set:foamSmothersLiquidFireEnabled \u00b7 \u2713 set:rainDousesLiquidFireEnabled"
+]
+],
+"pics": [],
+"pre": ""
+}
+},
+{
+"id": "pit_holds",
+"label": "Anything that falls into a pit cannot climb out",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Anything that falls into a pit cannot climb out It stays where it is; its info line says it is trapped.",
+"say": "It stays where it is; its info line says it is trapped.",
+"prefill": null,
+"fw": {
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
+[
+"nobody climbing out of a pit",
+"F01 \u00b7 PROVEN-LIVE",
+"SUPERDEEP_HOLDER_RETIRE_1 (done) \u00b7 live test P3_walk_in_held: PASS \u00b7 live test P1_width_matrix: PASS \u00b7 \u2713 set:superdeepCaptureEnabled \u00b7 \u2713 cs:class RM_Patch_Reachability_SuperdeepVeto"
+],
+[
+"a trapped creature not trying to flee off the map",
+"F08 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_Reachability_SuperdeepMapEdge"
+],
+[
+"the info line saying someone is trapped",
+"F09 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_Pawn_PitInspectLine"
+]
+],
+"pics": [
+[
+"shots/P_pits.jpg",
+"Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "G05",
-"label": "[BUILT-UNPROVEN] Too-wide creature is not offered capture down",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "A pawn the pit cannot hold (width rule) is not 'trapped' and gets no capture-down option.",
+"id": "pit_width",
+"label": "A pit only holds a creature that fits: anything wider walks out, and narrowing a pit frees it",
+"group": "4 \u00b7 Pits: catching",
+"effect": "A pit only holds a creature that fits: anything wider walks out, and narrowing a pit frees it Your rule: the pit must be as wide as the creature.",
+"say": "Your rule: the pit must be as wide as the creature.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SUPERDEEP_PRISON_ROOM_1",
-"itemState": "proposed",
-"src": "Owner Q4",
-"bars": [],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:(?i)capturedown|capture_down",
-true
-],
-[
-"set:pitWidthBodySizeMultiplier",
-true
+"a pit only holding creatures that fit its width",
+"F02 \u00b7 PROVEN-LIVE",
+"SUPERDEEP_HOLDER_RETIRE_1 (done) \u00b7 live test P1_width_matrix: PASS \u00b7 live test P2_fillin_releases_large: PASS \u00b7 \u2713 set:pitWidthBodySizeMultiplier"
 ]
 ],
-"live": []
-}
-},
-{
-"id": "G06",
-"label": "[BUILT-UNPROVEN] Open pit heats fast in sun, chills fast at night",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "An unroofed superdeep room tracks ambient faster than a roofed room (coupling multiplier).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_TEMPERATURE_SOFTENING_1",
-"itemState": "proposed",
-"src": "Collapse Q5",
-"bars": [],
-"probes": [
+"pics": [
 [
-"cs:class RM_Patch_PitRoomCoupling",
-true
-],
-[
-"set:pitTemperatureCoupling",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "G07",
-"label": "[BUILT-UNPROVEN] Exposure wears down resistance",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "RM_PitExposure accumulates on an exposed occupant and lowers recruitment resistance; vanilla heat/cold does the harm.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_TEMPERATURE_SOFTENING_1",
-"itemState": "proposed",
-"src": "Collapse [H]",
-"bars": [],
-"probes": [
-[
-"cs:class RM_PitExposure",
-true
-],
-[
-"xml:defName>RM_PitExposure<",
-true
-],
-[
-"set:pitExposureEnabled",
-true
-],
-[
-"set:pitResistanceLossMultiplier",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "G08",
-"label": "[PARTIAL] 'Exposed Prisoner' thought: cruel, and reads as cruel",
-"group": "G \u00b7 Pits: prison room, capture down, temperature",
-"effect": "Compassionate colonists feel it; psychopaths (built) and hard-morality cultures (NOT yet) do not.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "PIT_TEMPERATURE_SOFTENING_1",
-"itemState": "proposed",
-"src": "Collapse [A-item]",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_ExposedPrisoner<",
-true
-],
-[
-"rx:src/RimMandrake/FlowWorks/Defs:(?i)precept.*ExposedPrisoner|ExposedPrisoner.*precept",
+"shots/P_pits.jpg",
+"Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "H01",
-"label": "[PROVEN-LIVE] Ladder: lowered lets people out, raised strands them",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "A ladder in the D=4 cell works like a prison door: lowered = held False, raised = nobody climbs out.",
+"id": "pit_fall",
+"label": "Falling in hurts, and your own colonists are not trapped unless you choose that in settings",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Falling in hurts, and your own colonists are not trapped unless you choose that in settings",
+"say": "",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "LADDER_PRISON_DOOR_1",
-"itemState": "done",
-"src": "Collapse ruling 4",
-"bars": [
-"ladder_state_legible"
-],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_CompLadder",
-true
-],
-[
-"xml:defName>RM_Ladder<",
-true
+"your own colonists not being trapped",
+"F03 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_PIT_PAWN_ROWS_RED_1 (done) \u00b7 live test P5n_own_faction_carveout: PASS \u00b7 \u2713 set:superdeepCapturesOwnFaction"
 ],
 [
-"set:ladderPrisonDoorEnabled",
-true
-],
-[
-"set:ladderRequiredToExitEnabled",
-true
+"falling into a pit hurting",
+"F04 \u00b7 PROVEN-LIVE",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 live test P3_walk_in_held: PASS \u00b7 \u2713 set:fallDamageEnabled \u00b7 \u2713 set:fallDamageMultiplier"
 ]
 ],
-"live": [
+"pics": [
 [
-"P4_ladder_frees",
-"PASS",
-"ladder spawned True hasLadder True; held False lip 8/8; ordered out: arrived True; pawn ok fill 0"
-],
-[
-"P4b_ladder_raised_strands",
-"PASS",
-"raised True (Ladder_raised:_nobody_can_climb_out.): held True lip 0/8, ordered out canReach False | lowered False (Ladder_lowered:_your_people_climb;_prisoners_only_in_a_prison_break.): held False lip"
-]
-]
-},
-"thumb": "shots/P_pits.jpg"
-},
-{
-"id": "H02",
-"label": "[BUILT-UNPROVEN] Ladders only on an excavation",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Placement refuses a ladder anywhere but a dug cell.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LADDER_PRISON_DOOR_1",
-"itemState": "done",
-"src": "Ladder item",
-"bars": [],
-"probes": [
-[
-"cs:class PlaceWorker_LadderOnExcavation",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H03",
-"label": "[BUILT-UNPROVEN] Spikes: per-cell, D=4 only, hurt only on a fall in",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Spikes in one superdeep cell; walking up to them is harmless; any descent into that cell triggers them.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "CANAL_BOTTOM_SPIKES_1",
-"itemState": "done",
-"src": "Collapse Q6 / [G]",
-"bars": [],
-"probes": [
-[
-"cs:class RM_SpikeUtility",
-true
-],
-[
-"xml:defName>RM_Spikes<",
-true
-],
-[
-"cs:class PlaceWorker_SpikesOnSuperdeep",
-true
-],
-[
-"set:spikesEnabled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H04",
-"label": "[BUILT-UNPROVEN] Spike damage: massive Sharp, scaled by body size, survivable",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Regular Stab damage (3 hits ~40 x BodySize PROPOSED), never instant death; armour applies.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SPIKE_DAMAGE_NUMBERS_RULING_1",
-"itemState": "done",
-"src": "Collapse [G]",
-"bars": [],
-"probes": [
-[
-"set:spikeDamageMultiplier",
-true
-],
-[
-"cs:BodySize",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H05",
-"label": "[PROVEN-LIVE] Pit cover hides the hole (looks like the ground)",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "A multi-cell terrain-mimic deck over D=4 prints the surrounding surface; slight seam at max zoom.",
-"prefill": null,
-"fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_COVER_FALL_REWIRE_1",
-"itemState": "done",
-"src": "Collapse ruling 6",
-"bars": [
-"pit_covered_invisible",
-"pit_covered_seam_at_max_zoom"
-],
-"probes": [
-[
-"cs:class TerrainMimicPrinter",
-true
-],
-[
-"cs:class Building_PitCover",
-true
-]
-],
-"live": [
-[
-"X8_cover_hides_pit",
-"PASS",
-"4 deck cells over D=4 (RM_Channel_Superdeep) print Soil, the surrounding surface; gives way: Gives_way_under_40_kg_on_the_whole_cover."
-],
-[
-"X9_cover_deck_uniform",
-"PASS",
-"deck prints ['Soil']; ring terrain ['Soil'] (one surface: no seam between deck cells or at the lip; the frame is still the judge's)"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "H06",
-"label": "[BUILT-UNPROVEN] Covered pit drops whoever steps on it",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Weight on a cover makes it give way and the pawn falls into the superdeep cell below.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_COVER_FALL_REWIRE_1",
-"itemState": "done",
-"src": "Collapse ruling 6",
-"bars": [],
-"probes": [
-[
-"cs:class CompPitCoverTrigger",
-true
-],
-[
-"set:trapTriggerEnabled",
-true
-],
-[
-"set:trapSensitivityMultiplier",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H07",
-"label": "[BUILT-UNPROVEN] Three cover builds (plank lattice, woven scrap, reinforced frame)",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Cover tiers differ in what weight they bear; placed only over superdeep cells.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_COVER_FALL_REWIRE_1",
-"itemState": "done",
-"src": "Cover item",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_PitCover_PlankLattice<",
-true
-],
-[
-"xml:defName>RM_PitCover_WovenScrap<",
-true
-],
-[
-"xml:defName>RM_PitCover_ReinforcedFrame<",
-true
-],
-[
-"cs:class PlaceWorker_PitCoverOnSuperdeep",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H08",
-"label": "[BUILT-UNPROVEN] Drowning: liquid in an occupied D=4 cell drowns non-swimmers",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "F>0 at D=4 builds RM_PitDrowning on non-swimmers (swimmers and fliers spared).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_FILL_EFFECTS_1",
-"itemState": "proposed",
-"src": "Collapse Q3",
-"bars": [],
-"probes": [
-[
-"cs:class RM_PitFillEffects",
-true
-],
-[
-"xml:defName>RM_PitDrowning<",
-true
-],
-[
-"set:pitDrowningEnabled",
-true
-],
-[
-"set:pitDrowningRateMultiplier",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H09",
-"label": "[BUILT-UNPROVEN] Poison fill: toxin keyed to fill level",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "A poison-filled cell applies toxic buildup scaled by F/D and toxic resistance, any depth.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_FILL_EFFECTS_1",
-"itemState": "proposed",
-"src": "Collapse Q7",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_Fluid_Poison<",
-true
-],
-[
-"cs:toxicPerDayAtBrim",
-true
-],
-[
-"set:poisonFillEnabled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H10",
-"label": "[BUILT-UNPROVEN] Oil fill: ignitable, burns the occupant",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Oil is a creeping-fuse FluidDef; lit oil in an occupied pit burns the occupant (ruling 22).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "PIT_FILL_EFFECTS_1",
-"itemState": "proposed",
-"src": "Collapse Q7",
-"bars": [],
-"probes": [
-[
-"xml:defName>RM_Fluid_Oil<",
-true
-],
-[
-"cs:CreepingFuse",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "H11",
-"label": "[NOT BUILT] Flood an occupied pit by opening a sluice",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Opening a sluice onto an occupied pit lets liquid in (the scripted route is not written yet).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "PIT_FILL_EFFECTS_1",
-"itemState": "proposed",
-"src": "Fill-effects verify",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/FlowWorks:(?i)sluice.{0,40}drown|drown.{0,40}sluice",
+"shots/P_pits.jpg",
+"Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "H12",
-"label": "[NOT BUILT] No pit def borrows vanilla's spike-trap art",
-"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
-"effect": "Nothing ships Things/Building/Security/TrapSpikeArmed (today the ladder still does).",
-"prefill": "wanted",
+"id": "pit_shooting",
+"label": "Someone in a pit can only shoot, and be shot at, from the pit's edge",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Someone in a pit can only shoot, and be shot at, from the pit's edge Raiders don't waste shots on them from further away.",
+"say": "Raiders don't waste shots on them from further away.",
+"prefill": null,
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Collapse verify",
-"bars": [
-"pit_not_vanilla_trap"
-],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"!xml:TrapSpikeArmed",
+"someone in a pit only trading shots with the edge",
+"F06 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_Verb_CanHitTargetFrom \u00b7 \u2713 set:superdeepShootingRuleEnabled"
+],
+[
+"raiders not wasting shots on someone in a pit",
+"F07 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_AttackTargetFinder_BestAttackTarget"
+]
+],
+"pics": [],
+"pre": ""
+}
+},
+{
+"id": "pit_ways_in",
+"label": "A 'jump in' button drops a colonist in on purpose; explosions and knockback can throw people in",
+"group": "4 \u00b7 Pits: catching",
+"effect": "A 'jump in' button drops a colonist in on purpose; explosions and knockback can throw people in Whoever jumps in is stuck there too.",
+"say": "Whoever jumps in is stuck there too.",
+"prefill": "ok",
+"fw": {
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"an explosion or knockback throwing someone into a pit"
+],
+"tech": [
+[
+"a 'jump in' button",
+"F05 \u00b7 BUILT-UNPROVEN",
+"PIT_SUPERDEEP_COLLAPSE_1 (proposed) \u00b7 \u2713 cs:class RM_Patch_Pawn_JumpIntoPitGizmo"
+],
+[
+"an explosion or knockback throwing someone into a pit",
+"F10 \u00b7 NOT BUILT",
+"PIT_SUPERDEEP_COLLAPSE_1 (proposed) \u00b7 \u2717 cs:class RM_Patch_\\w*(Knockback|Blowback|Stagger)"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "pit_cover",
+"label": "A pit cover hides the hole and looks like the ground around it",
+"group": "4 \u00b7 Pits: catching",
+"effect": "A pit cover hides the hole and looks like the ground around it A faint seam shows only at the closest zoom.",
+"say": "A faint seam shows only at the closest zoom.",
+"prefill": null,
+"fw": {
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
+[
+"a pit cover that looks like the ground",
+"H05 \u00b7 PROVEN-LIVE",
+"PIT_COVER_FALL_REWIRE_1 (done) \u00b7 live test X8_cover_hides_pit: PASS \u00b7 live test X9_cover_deck_uniform: PASS \u00b7 \u2713 cs:class TerrainMimicPrinter \u00b7 \u2713 cs:class Building_PitCover"
+]
+],
+"pics": [
+[
+"shots/X_promoted.jpg",
+"Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "I01",
-"label": "[BUILT-UNPROVEN] Sluice: cheap stuffable door that passes liquid, holds small creatures",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "Two defs, both stuffable; stuff decides armour and fire survival ('learn what happens if made of wood').",
+"id": "pit_cover_drop",
+"label": "Step on a cover and you fall through; three cover builds bear different weights",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Step on a cover and you fall through; three cover builds bear different weights Plank lattice, woven scrap, reinforced frame.",
+"say": "Plank lattice, woven scrap, reinforced frame.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Door commission",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"xml:defName>RM_Sluice<",
-true
+"falling through a cover when stepping on it",
+"H06 \u00b7 BUILT-UNPROVEN",
+"PIT_COVER_FALL_REWIRE_1 (done) \u00b7 \u2713 cs:class CompPitCoverTrigger \u00b7 \u2713 set:trapTriggerEnabled \u00b7 \u2713 set:trapSensitivityMultiplier"
 ],
 [
-"cs:class Building_RM_FlowDoor",
-true
+"three cover builds bearing different weights",
+"H07 \u00b7 BUILT-UNPROVEN",
+"PIT_COVER_FALL_REWIRE_1 (done) \u00b7 \u2713 xml:defName>RM_PitCover_PlankLattice< \u00b7 \u2713 xml:defName>RM_PitCover_WovenScrap< \u00b7 \u2713 xml:defName>RM_PitCover_ReinforcedFrame< \u00b7 \u2713 cs:class PlaceWorker_PitCoverOnSuperdeep"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "I02",
-"label": "[BUILT-UNPROVEN] Security grate door: passes liquid AND holds a real prisoner",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "The prisoner door at a canal's end: fluid enters without opening it.",
+"id": "pit_spikes",
+"label": "Spikes at the bottom stab whoever falls in: badly, scaled to their size, never instantly fatal",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Spikes at the bottom stab whoever falls in: badly, scaled to their size, never instantly fatal Walking up to the spikes is harmless; only a fall triggers them.",
+"say": "Walking up to the spikes is harmless; only a fall triggers them.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Door commission",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"xml:defName>RM_SecurityGrateDoor<",
-true
+"spikes at the bottom of a pit",
+"H03 \u00b7 BUILT-UNPROVEN",
+"CANAL_BOTTOM_SPIKES_1 (done) \u00b7 \u2713 cs:class RM_SpikeUtility \u00b7 \u2713 xml:defName>RM_Spikes< \u00b7 \u2713 cs:class PlaceWorker_SpikesOnSuperdeep \u00b7 \u2713 set:spikesEnabled"
 ],
 [
-"cs:class RM_FlowDoorRules",
-true
+"spike damage: heavy, scaled to size, never instantly fatal",
+"H04 \u00b7 BUILT-UNPROVEN",
+"SPIKE_DAMAGE_NUMBERS_RULING_1 (done) \u00b7 \u2713 set:spikeDamageMultiplier \u00b7 \u2713 cs:BodySize"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "I03",
-"label": "[BUILT-UNPROVEN] Doors cannot be opened from inside the pit",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "A sluice/grate on a superdeep cell opens from outside or above only.",
+"id": "pit_flood",
+"label": "Flood an occupied pit to drown, poison or burn whoever is in it",
+"group": "4 \u00b7 Pits: catching",
+"effect": "Flood an occupied pit to drown, poison or burn whoever is in it Water drowns non-swimmers, poison builds up, oil can be lit; open a gate to let the liquid in.",
+"say": "Water drowns non-swimmers, poison builds up, oil can be lit; open a gate to let the liquid in.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Collapse ruling 7",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"set:flowDoorsSealedFromPitEnabled",
-true
+"liquid in an occupied pit drowning non-swimmers",
+"H08 \u00b7 BUILT-UNPROVEN",
+"PIT_FILL_EFFECTS_1 (done) \u00b7 \u2713 cs:class RM_PitFillEffects \u00b7 \u2713 xml:defName>RM_PitDrowning< \u00b7 \u2713 set:pitDrowningEnabled \u00b7 \u2713 set:pitDrowningRateMultiplier"
+],
+[
+"poison in a pit poisoning whoever is in it",
+"H09 \u00b7 BUILT-UNPROVEN",
+"PIT_FILL_EFFECTS_1 (done) \u00b7 \u2713 xml:defName>RM_Fluid_Poison< \u00b7 \u2713 cs:toxicPerDayAtBrim \u00b7 \u2713 set:poisonFillEnabled"
+],
+[
+"oil in a pit that can be lit",
+"H10 \u00b7 BUILT-UNPROVEN",
+"PIT_FILL_EFFECTS_1 (done) \u00b7 \u2713 xml:defName>RM_Fluid_Oil< \u00b7 \u2713 cs:CreepingFuse"
+],
+[
+"flooding an occupied pit by opening a gate",
+"H11 \u00b7 BUILT-UNPROVEN",
+"PIT_FILL_EFFECTS_1 (done) \u00b7 \u2713 cs:IsFlowDoor\\(edifice\\) \u00b7 \u2713 cs:class RM_PitFillEffects"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "I04",
-"label": "[BUILT-UNPROVEN] Release a held mech/creature through a sluice",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "Opening a sluice lets a big trapped creature walk out: the pit is a holding pen.",
+"id": "hold_ladder",
+"label": "A ladder: lowered, people climb out; raised, they're stranded",
+"group": "5 \u00b7 Pits: holding prisoners",
+"effect": "A ladder: lowered, people climb out; raised, they're stranded It works like a prison door. Ladders only go on dug ground.",
+"say": "It works like a prison door. Ladders only go on dug ground.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Collapse [C]",
-"bars": [],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"set:sluiceLetsBigThroughEnabled",
-true
+"a ladder that lets people out when lowered and strands them when raised",
+"H01 \u00b7 PROVEN-LIVE",
+"LADDER_PRISON_DOOR_1 (done) \u00b7 live test P4_ladder_frees: PASS \u00b7 live test P4b_ladder_raised_strands: PASS \u00b7 \u2713 cs:class RM_CompLadder \u00b7 \u2713 xml:defName>RM_Ladder< \u00b7 \u2713 set:ladderPrisonDoorEnabled \u00b7 \u2713 set:ladderRequiredToExitEnabled"
+],
+[
+"ladders only going on dug ground",
+"H02 \u00b7 BUILT-UNPROVEN",
+"LADDER_PRISON_DOOR_1 (done) \u00b7 \u2713 cs:class PlaceWorker_LadderOnExcavation"
 ]
 ],
-"live": []
-}
-},
-{
-"id": "I05",
-"label": "[BUILT-UNPROVEN] Liquid flows through an open sluice / any grate",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "The flow engine treats an open sluice and a grate as passable for liquid.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Door commission",
-"bars": [],
-"probes": [
+"pics": [
 [
-"cs:IsFlowDoor\\(edifice\\)",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "I06",
-"label": "[PARTIAL] Sluice open vs shut is visible without selecting it",
-"group": "I \u00b7 Doors: sluice & security grate",
-"effect": "Own art for both doors; today they borrow vanilla DoorSimple_Mover.",
-"prefill": null,
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "FLOWWORKS_DOOR_FAMILY_1",
-"itemState": "done",
-"src": "Bar",
-"bars": [
-"sluice_gate_state_legible"
-],
-"probes": [
-[
-"xml:defName>RM_Sluice<",
-true
-],
-[
-"tex:(?i)(sluice|grate)",
+"shots/P_pits.jpg",
+"Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right",
 false
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "J01",
-"label": "[PROVEN-LIVE] Pawns sit lower at every deeper step",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Draw offset per depth (0.3 cell/level PROVISIONAL): D0..D4 strictly lower.",
+"id": "hold_prison",
+"label": "A walled-in pit is a room; add a prisoner bed and it's a prison you run from the edge",
+"group": "5 \u00b7 Pits: holding prisoners",
+"effect": "A walled-in pit is a room; add a prisoner bed and it's a prison you run from the edge Wardens feed, tend, capture, recruit and convert from the lip without climbing down; nothing too wide is offered.",
+"say": "Wardens feed, tend, capture, recruit and convert from the lip without climbing down; nothing too wide is offered.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_DEPTH_DRAW_OFFSET_1",
-"itemState": "proposed",
-"src": "Depth ruling",
-"bars": [
-"pawn_height_ladder_legible"
-],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_PitDepthDraw",
-true
-],
-[
-"set:pitDepthDrawOffsetEnabled",
-true
+"a walled-in pit area counting as a room",
+"G01 \u00b7 BUILT-UNPROVEN",
+"SUPERDEEP_PRISON_ROOM_1 (done) \u00b7 \u2713 cs:class RM_PitRooms \u00b7 \u2713 set:superdeepRoomsEnabled"
 ],
 [
-"set:pitSinkPerLevel",
-true
+"a prisoner bed turning a pit into a prison, tended from the edge",
+"G02 \u00b7 BUILT-UNPROVEN",
+"SUPERDEEP_PRISON_ROOM_1 (done) \u00b7 \u2713 cs:class RM_Patch_PathFollower_LipService \u00b7 \u2713 set:wardenFromLipEnabled"
+],
+[
+"capturing someone in a pit from the edge",
+"G03 \u00b7 BUILT-UNPROVEN",
+"SUPERDEEP_PRISON_ROOM_1 (done) \u00b7 \u2713 set:captureDownEnabled"
+],
+[
+"recruiting or converting a prisoner from the edge",
+"G04 \u00b7 BUILT-UNPROVEN",
+"SUPERDEEP_PRISON_ROOM_1 (done) \u00b7 \u2713 cs:PrisonerConvert \u00b7 \u2713 set:wardenFromLipEnabled"
+],
+[
+"no capture offered for a creature the pit can't hold",
+"G05 \u00b7 BUILT-UNPROVEN",
+"SUPERDEEP_PRISON_ROOM_1 (done) \u00b7 \u2713 set:captureDownEnabled \u00b7 \u2713 set:pitWidthBodySizeMultiplier"
 ]
 ],
-"live": [
-[
-"X1_pawn_height_ladder",
-"PASS",
-"sink/drawDz by depth (0.3/level PROVISIONAL, strictly deeper each step): D0 0/0; D1 0.3/-0.3; D2 0.6/-0.6; D3 0.9/-0.9; D4 1.2/-1.2"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
+"pics": [],
+"pre": ""
+}
 },
 {
-"id": "J02",
-"label": "[PROVEN-LIVE] A pawn walking into a deeper cell visibly lowers",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "The offset is lerped along the step, so descending reads as movement down.",
+"id": "hold_exposure",
+"label": "An open pit bakes by day and freezes by night, wearing down a prisoner's resistance",
+"group": "5 \u00b7 Pits: holding prisoners",
+"effect": "An open pit bakes by day and freezes by night, wearing down a prisoner's resistance Colonists whose beliefs mind cruelty are upset by it; psychopaths are not.",
+"say": "Colonists whose beliefs mind cruelty are upset by it; psychopaths are not.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_DEPTH_DRAW_OFFSET_1",
-"itemState": "proposed",
-"src": "Depth ruling",
-"bars": [
-"pawn_lowers_on_deeper_cell"
-],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_PitDepthDraw",
-true
+"an open pit getting hot by day and cold by night",
+"G06 \u00b7 BUILT-UNPROVEN",
+"PIT_TEMPERATURE_SOFTENING_1 (proposed) \u00b7 \u2713 cs:class RM_Patch_PitRoomCoupling \u00b7 \u2713 set:pitTemperatureCoupling"
+],
+[
+"exposure wearing down a prisoner's resistance",
+"G07 \u00b7 BUILT-UNPROVEN",
+"PIT_TEMPERATURE_SOFTENING_1 (proposed) \u00b7 \u2713 cs:class RM_PitExposure \u00b7 \u2713 xml:defName>RM_PitExposure< \u00b7 \u2713 set:pitExposureEnabled \u00b7 \u2713 set:pitResistanceLossMultiplier"
+],
+[
+"colonists with a conscience minding exposed prisoners",
+"G08 \u00b7 BUILT-UNPROVEN",
+"PIT_TEMPERATURE_SOFTENING_1 (proposed) \u00b7 \u2713 xml:defName>RM_ExposedPrisoner< \u00b7 \u2713 cs:FeelsForExposedPrisoners"
 ]
 ],
-"live": [
-[
-"X2_pawn_lowers_walking_in",
-"PASS",
-"walked D0->D4 arrived True: sink 0 -> 1.2 (drawDz -1.2) "
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
+"pics": [],
+"pre": ""
+}
 },
 {
-"id": "J03",
-"label": "[PROVEN-LIVE] A pawn walking out visibly rises",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Climbing out (by ladder) lifts the pawn back to ground level along the step.",
+"id": "hold_gates",
+"label": "Sluice gates and grate doors let liquid through but hold creatures and prisoners",
+"group": "5 \u00b7 Pits: holding prisoners",
+"effect": "Sluice gates and grate doors let liquid through but hold creatures and prisoners They can't be opened from inside the pit; open one to let a held creature walk out.",
+"say": "They can't be opened from inside the pit; open one to let a held creature walk out.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_DEPTH_DRAW_OFFSET_1",
-"itemState": "proposed",
-"src": "Depth ruling",
-"bars": [
-"pawn_rises_on_shallower_cell"
-],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_Patch_PitDepthDraw",
-true
+"a cheap sluice gate in any material",
+"I01 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 xml:defName>RM_Sluice< \u00b7 \u2713 cs:class Building_RM_FlowDoor"
+],
+[
+"a grate door that holds a real prisoner",
+"I02 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 xml:defName>RM_SecurityGrateDoor< \u00b7 \u2713 cs:class RM_FlowDoorRules"
+],
+[
+"gates that can't be opened from inside the pit",
+"I03 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 set:flowDoorsSealedFromPitEnabled"
+],
+[
+"letting a held creature out through a gate",
+"I04 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 set:sluiceLetsBigThroughEnabled"
+],
+[
+"liquid flowing through an open gate or any grate",
+"I05 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 cs:IsFlowDoor\\(edifice\\)"
 ]
 ],
-"live": [
-[
-"X3_pawn_rises_walking_out",
-"PASS",
-"walked D4->D0 arrived True: sink 1.2 -> 0 (drawDz 0) "
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
+"pics": [],
+"pre": ""
+}
 },
 {
-"id": "J04",
-"label": "[PROVEN-LIVE] At D=4 the walls stand 20% above the occupant's head",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Owner's only number: wall top >= 1.2 x head height, so climbing out is visibly impossible.",
+"id": "look_sink",
+"label": "People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head",
+"group": "6 \u00b7 How it looks",
+"effect": "People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head Someone in slime is drawn sunk into it, not standing on top.",
+"say": "Someone in slime is drawn sunk into it, not standing on top.",
 "prefill": null,
 "fw": {
-"status": "PROVEN-LIVE",
-"color": "#5ac37f",
-"item": "PIT_DEPTH_DRAW_OFFSET_1",
-"itemState": "proposed",
-"src": "Depth ruling",
-"bars": [
-"pit_trapped_reads_as_trapped"
-],
-"probes": [
+"status": "works",
+"label": "Works in game",
+"color": "#6fae5a",
+"means": "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class RM_PitDrawMath",
-true
+"people sitting lower at every deeper step",
+"J01 \u00b7 PROVEN-LIVE",
+"PIT_DEPTH_DRAW_OFFSET_1 (done) \u00b7 live test X1_pawn_height_ladder: PASS \u00b7 \u2713 cs:class RM_Patch_PitDepthDraw \u00b7 \u2713 set:pitDepthDrawOffsetEnabled \u00b7 \u2713 set:pitSinkPerLevel"
+],
+[
+"people visibly lowering as they walk in",
+"J02 \u00b7 PROVEN-LIVE",
+"PIT_DEPTH_DRAW_OFFSET_1 (done) \u00b7 live test X2_pawn_lowers_walking_in: PASS \u00b7 \u2713 cs:class RM_Patch_PitDepthDraw"
+],
+[
+"people visibly rising as they climb out",
+"J03 \u00b7 PROVEN-LIVE",
+"PIT_DEPTH_DRAW_OFFSET_1 (done) \u00b7 live test X3_pawn_rises_walking_out: PASS \u00b7 \u2713 cs:class RM_Patch_PitDepthDraw"
+],
+[
+"pit walls standing above the occupant's head",
+"J04 \u00b7 PROVEN-LIVE",
+"PIT_DEPTH_DRAW_OFFSET_1 (done) \u00b7 live test X4_pit_wall_over_head: PASS \u00b7 \u2713 cs:class RM_PitDrawMath"
+],
+[
+"someone in slime being drawn sunk into it",
+"D10 \u00b7 PROVEN-LIVE",
+"PIT_DEPTH_DRAW_OFFSET_1 (done) \u00b7 live test X5_slime_occupant_below_surface: PASS \u00b7 \u2713 cs:class RM_Patch_PitDepthDraw"
 ]
 ],
-"live": [
+"pics": [
 [
-"X4_pit_wall_over_head",
-"PASS",
-"colonist on D=4 drawn 1.2 cells down; wall over crown 1.2 x a person's height (owner: walls 20% above the head, >= 1.2)"
-]
-]
-},
-"thumb": "shots/X_promoted.jpg"
-},
-{
-"id": "J05",
-"label": "[PARTIAL] Occupant reads as down in the hole; occupied vs empty at a glance",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Draw offset (built) + wall faces rising around the pawn (art owed).",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Rulings 33 + depth",
-"bars": [
-"pit_occupant_below_floor",
-"pit_occupied_distinguishable"
-],
-"probes": [
-[
-"cs:class RM_Patch_PitDepthDraw",
-true
-],
-[
-"tex:(?i)(excavation|pitwall|wallface|channel)",
+"shots/X_promoted.jpg",
+"Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover",
 false
 ]
 ],
-"live": []
-},
-"thumb": "shots/REF_quarry.jpg"
+"pre": ""
+}
 },
 {
-"id": "J06",
-"label": "[NOT BUILT] Wall-face art for all four depths (Quarry perspective)",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Shared rim + per-depth wall gradient; every depth legible and different from the others.",
-"prefill": "wanted",
+"id": "look_canal",
+"label": "A canal looks dug, not like a gravel path, and shows how full it is",
+"group": "6 \u00b7 How it looks",
+"effect": "A canal looks dug, not like a gravel path, and shows how full it is Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.",
+"say": "Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.",
+"prefill": "ok",
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Ruling 33 / depth ruling",
-"bars": [
-"pit_depth_ladder_legible",
-"pit_walls_have_visible_depth"
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"a dug canal looking dug, not like a gravel path",
+"trenches looking like obstacles without a tooltip"
 ],
-"probes": [
+"tech": [
 [
-"tex:(?i)(excavation|pitwall|wallface|rim)",
+"a part-filled canal looking different from a full one",
+"B08 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 xml:defName>RM_Fill_Water_Trace \u00b7 \u2713 xml:defName>RM_Fill_Water_Half \u00b7 \u2713 xml:defName>RM_Fill_Water_Brim"
+],
+[
+"a dug canal looking dug, not like a gravel path",
+"J09 \u00b7 NOT BUILT",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2717 tex:(?i)(channel|excavation)"
+],
+[
+"trenches looking like obstacles without a tooltip",
+"J14 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:<pathCost>30<\/pathCost> \u00b7 \u2717 tex:(?i)(channel|excavation)"
+]
+],
+"pics": [
+[
+"shots/S_ladder.jpg",
+"Live test, 5 Oct: a dug trench and a pit side by side (the test site's depth ladder)",
 false
 ]
 ],
-"live": []
-},
-"thumb": "shots/REF_quarry.jpg"
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
 },
 {
-"id": "J07",
-"label": "[PARTIAL] Spike art: some spike visibly projects",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Camera angle must let some spike show; today spikes borrow Skullspike.",
-"prefill": "wanted",
+"id": "look_pit",
+"label": "Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole",
+"group": "6 \u00b7 How it looks",
+"effect": "Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole Every depth looks different; an occupied pit reads differently from an empty one; never like a building.",
+"say": "Every depth looks different; an occupied pit reads differently from an empty one; never like a building.",
+"prefill": "ok",
 "fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Spike/camera ruling",
-"bars": [
-"spikes_read_distinct"
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"an occupied pit reading differently from an empty one",
+"painted pit-wall art for all four depths",
+"a pit reading as a big dark hole",
+"a large pit reading as one place, not a grid of tiles",
+"a bare pit never looking like a building",
+"depth and fill both readable at once"
 ],
-"probes": [
+"tech": [
 [
-"xml:defName>RM_Spikes<",
-true
+"an occupied pit reading differently from an empty one",
+"J05 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 cs:class RM_Patch_PitDepthDraw \u00b7 \u2713 cs:class SectionLayer_RMExcavationWalls \u00b7 \u2717 tex:(?i)(excavation|pitwall|wallface|channel)"
 ],
 [
-"tex:(?i)spike",
+"painted pit-wall art for all four depths",
+"J06 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 cs:class SectionLayer_RMExcavationWalls \u00b7 \u2717 tex:(?i)(excavation|pitwall|wallface|rim)"
+],
+[
+"a pit reading as a big dark hole",
+"J10 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:defName>RM_Channel_Superdeep< \u00b7 \u2717 tex:(?i)(superdeep|pit)"
+],
+[
+"a large pit reading as one place, not a grid of tiles",
+"J11 \u00b7 NOT BUILT",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2717 tex:(?i)(superdeep|pit|excavation)"
+],
+[
+"a bare pit never looking like a building",
+"J12 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:defName>RM_Channel_Superdeep< \u00b7 \u2713 !cs:class Building_OpenPit \u00b7 \u2717 tex:(?i)(superdeep|excavation)"
+],
+[
+"depth and fill both readable at once",
+"J13 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:defName>RM_Fill_Water_Half \u00b7 \u2717 tex:(?i)(excavation|wallface|rim)"
+]
+],
+"pics": [
+[
+"shots/REF_quarry.jpg",
+"Your reference (16 Sept): the Quarry mod's pit walls, the look the pit art is aiming for",
 false
 ]
 ],
-"live": []
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
 }
 },
 {
-"id": "J08",
-"label": "[PARTIAL] Ladder art: raised vs lowered drawn on the wall",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Ladders drawn in perspective, raised beside the rim vs lowered into the hole.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Ruling 33",
-"bars": [
-"ladder_state_legible"
-],
-"probes": [
-[
-"xml:defName>RM_Ladder<",
-true
-],
-[
-"tex:(?i)ladder",
-false
-]
-],
-"live": []
-},
-"thumb": "shots/REF_quarry.jpg"
-},
-{
-"id": "J09",
-"label": "[NOT BUILT] A dug channel looks dug (recessed bed, earthen walls), not gravel",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Today the channel borrows Terrain/Surfaces/Gravel.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Bar",
-"bars": [
-"canal_reads_as_dug_channel",
-"never_gravel_path"
-],
-"probes": [
-[
-"tex:(?i)(channel|excavation)",
-false
-]
-],
-"live": []
-},
-"thumb": "shots/S_ladder.jpg"
-},
-{
-"id": "J10",
-"label": "[PARTIAL] A superdeep cell reads as a big dark hole at play zoom",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Owner: 'we need a big dark pit', not a trap graphic.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Owner 2026-09-13",
-"bars": [
-"pit_reads_as_hole"
-],
-"probes": [
-[
-"xml:defName>RM_Channel_Superdeep<",
-true
-],
-[
-"tex:(?i)(superdeep|pit)",
-false
-]
-],
-"live": []
-},
-"thumb": "shots/REF_quarry.jpg"
-},
-{
-"id": "J11",
-"label": "[NOT BUILT] A multi-cell pit reads as one place, not a tile grid",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Irregular organic edges, Quarry-style, so an area reads as one excavation (and as a room).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Ruling 33",
-"bars": [
-"pit_reads_at_size"
-],
-"probes": [
-[
-"tex:(?i)(superdeep|pit|excavation)",
-false
-]
-],
-"live": []
-},
-"thumb": "shots/REF_quarry.jpg"
-},
-{
-"id": "J12",
-"label": "[PARTIAL] The bare excavation never reads as a building",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "The pit is terrain (built); its art must not look like a placed object on the floor (owed).",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Bar",
-"bars": [
-"never_reads_as_building"
-],
-"probes": [
-[
-"xml:defName>RM_Channel_Superdeep<",
-true
-],
-[
-"!cs:class Building_OpenPit",
-true
-],
-[
-"tex:(?i)(superdeep|excavation)",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "J13",
-"label": "[PARTIAL] Depth and fill legible together in one view",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Same fill/different depth and same depth/different fill all distinguishable.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Bar",
-"bars": [
-"depth_and_fill_jointly_legible"
-],
-"probes": [
-[
-"xml:defName>RM_Fill_Water_Half",
-true
-],
-[
-"tex:(?i)(excavation|wallface|rim)",
-false
-]
-],
-"live": []
-},
-"thumb": "shots/S_ladder.jpg"
-},
-{
-"id": "J14",
-"label": "[PARTIAL] Dry and filled channels read as obstacles without a tooltip",
-"group": "J \u00b7 Pawn height draw & excavation art",
-"effect": "Path cost exists (A06/A07); the look of impeding is the art's job.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "EXCAVATION_WALL_ART_1",
-"itemState": "proposed",
-"src": "Bar",
-"bars": [
-"canal_dry_reads_as_obstacle",
-"filled_excavation_reads_as_obstacle"
-],
-"probes": [
-[
-"xml:<pathCost>30<\/pathCost>",
-true
-],
-[
-"tex:(?i)(channel|excavation)",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "K01",
-"label": "[BUILT-UNPROVEN] Bottles: fill at a shore or tank, drink/use",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Empty bottle -> fill job -> per-liquid bottle -> use.",
+"id": "look_parts",
+"label": "Spikes, ladders and gates have their own drawings, not borrowed vanilla ones",
+"group": "6 \u00b7 How it looks",
+"effect": "Spikes, ladders and gates have their own drawings, not borrowed vanilla ones Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.",
+"say": "Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BOTTLE_LOOP_1",
-"itemState": "doing",
-"src": "Liquids framework \u00a74",
-"bars": [],
-"probes": [
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"spike art where some spike shows",
+"ladder art, raised and lowered",
+"a gate looking open or shut at a glance (its own art)",
+"no pit part borrowing the vanilla spike-trap drawing"
+],
+"tech": [
 [
-"cs:class JobDriver_FillBottle",
+"spike art where some spike shows",
+"J07 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:defName>RM_Spikes< \u00b7 \u2717 tex:(?i)spike"
+],
+[
+"ladder art, raised and lowered",
+"J08 \u00b7 PARTIAL",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2713 xml:defName>RM_Ladder< \u00b7 \u2717 tex:(?i)ladder"
+],
+[
+"a gate looking open or shut at a glance (its own art)",
+"I06 \u00b7 PARTIAL",
+"FLOWWORKS_DOOR_FAMILY_1 (done) \u00b7 \u2713 xml:defName>RM_Sluice< \u00b7 \u2717 tex:(?i)(sluice|grate)"
+],
+[
+"no pit part borrowing the vanilla spike-trap drawing",
+"H12 \u00b7 NOT BUILT",
+"EXCAVATION_WALL_ART_1 (proposed) \u00b7 \u2717 !xml:TrapSpikeArmed"
+]
+],
+"pics": [
+[
+"shots/ART_ladder_A.png",
+"Ladder drawing A (16 Sept): scrap-metal rails, lashed rungs",
 true
 ],
 [
-"cs:class JobDriver_FillBottleFromTank",
-true
-],
-[
-"xml:defName>RM_Bottle_FreshWater<",
-true
-],
-[
-"set:bottleLoopEnabled",
+"shots/ART_ladder_B.png",
+"Ladder drawing B (16 Sept): pegged desert timber with a stone counterweight",
 true
 ]
 ],
-"live": []
+"pre": ""
 }
 },
 {
-"id": "K02",
-"label": "[BUILT-UNPROVEN] Dirty bottles and washing (toggle, default ON)",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Use leaves a dirty bottle; washing consumes water and returns an empty one.",
+"id": "look_liquids",
+"label": "Tar looks thick and sticky; slime looks thick and opaque, not tinted water",
+"group": "6 \u00b7 How it looks",
+"effect": "Tar looks thick and sticky; slime looks thick and opaque, not tinted water",
+"say": "",
+"prefill": "ok",
+"fw": {
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"slime looking thick and opaque, not tinted water"
+],
+"tech": [
+[
+"tar having a thick tar surface",
+"D07 \u00b7 BUILT-UNPROVEN",
+"TAR_VISCOUS_SURFACE_ART_1 (done) \u00b7 \u2713 xml:AB_Tar"
+],
+[
+"slime looking thick and opaque, not tinted water",
+"D08 \u00b7 PARTIAL",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 xml:defName>RM_Fluid_SlimeGreen \u00b7 \u2717 tex:(?i)slime"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "look_fire",
+"label": "Burning liquid looks alight, and a burnt-out canal looks scorched",
+"group": "6 \u00b7 How it looks",
+"effect": "Burning liquid looks alight, and a burnt-out canal looks scorched Today it uses the vanilla fire and ash.",
+"say": "Today it uses the vanilla fire and ash.",
+"prefill": "ok",
+"fw": {
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"burning liquid looking alight (its own art)",
+"a burnt-out canal looking scorched (its own art)"
+],
+"tech": [
+[
+"burning liquid looking alight (its own art)",
+"E05 \u00b7 PARTIAL",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 xml:defName>RM_LiquidFlame< \u00b7 \u2717 tex:(?i)(burning|liquidflame)"
+],
+[
+"a burnt-out canal looking scorched (its own art)",
+"E06 \u00b7 PARTIAL",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:Ash \u00b7 \u2717 tex:(?i)scorch"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "carry_bottles",
+"label": "Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse",
+"group": "7 \u00b7 Bottles, tanks and pumps",
+"effect": "Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.",
+"say": "Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BOTTLE_LOOP_1",
-"itemState": "doing",
-"src": "Bottle item",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class JobDriver_WashBottle",
-true
+"bottles you fill at a shore or tank and use",
+"K01 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BOTTLE_LOOP_1 (doing) \u00b7 \u2713 cs:class JobDriver_FillBottle \u00b7 \u2713 cs:class JobDriver_FillBottleFromTank \u00b7 \u2713 xml:defName>RM_Bottle_FreshWater< \u00b7 \u2713 set:bottleLoopEnabled"
 ],
 [
-"xml:defName>RM_BottleDirty<",
-true
+"dirty bottles and washing them",
+"K02 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BOTTLE_LOOP_1 (doing) \u00b7 \u2713 cs:class JobDriver_WashBottle \u00b7 \u2713 xml:defName>RM_BottleDirty< \u00b7 \u2713 set:bottleDirtyStageEnabled"
 ],
 [
-"set:bottleDirtyStageEnabled",
-true
+"buckets and barrels",
+"K03 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BOTTLE_LOOP_1 (doing) \u00b7 \u2713 xml:defName>RM_BucketEmpty< \u00b7 \u2713 xml:defName>RM_BarrelEmpty< \u00b7 \u2713 tex:RM_Barrel"
+],
+[
+"boiling water cooling and blood spoiling in a bottle",
+"K04 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BOTTLE_LOOP_1 (doing) \u00b7 \u2713 cs:(?i)revert \u00b7 \u2713 xml:(?i)hemopack"
+],
+[
+"bottles tagged for future cooking",
+"K05 \u00b7 BUILT-UNPROVEN",
+"LIQUID_BOTTLE_LOOP_1 (doing) \u00b7 \u2713 xml:(?i)cuisine"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K03",
-"label": "[BUILT-UNPROVEN] Buckets and barrels: bigger bottles, same chain",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Buckets and ~25-unit barrels; barrels are the vanilla-native bulk trade route.",
+"id": "carry_tanks",
+"label": "Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all",
+"group": "7 \u00b7 Bottles, tanks and pumps",
+"effect": "Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all One full tank holds about five canal tiles of liquid.",
+"say": "One full tank holds about five canal tiles of liquid.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BOTTLE_LOOP_1",
-"itemState": "doing",
-"src": "Owner 2026-09-13",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"xml:defName>RM_BucketEmpty<",
-true
+"a liquid tank",
+"K06 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class Building_LiquidTank \u00b7 \u2713 xml:defName>RM_LiquidTank< \u00b7 \u2713 cs:class JobDriver_EmptyBottleIntoTank \u00b7 \u2713 set:tankLoopEnabled"
 ],
 [
-"xml:defName>RM_BarrelEmpty<",
-true
+"pumps",
+"K08 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 xml:defName>RM_\\w*Pump\\w*<"
 ],
 [
-"tex:RM_Barrel",
-true
+"pumping a pond down into tanks",
+"C09 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class \\w*Pump"
+],
+[
+"hoses",
+"K09 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_HOSE_DEPLOY_DRAG_1 (done) \u00b7 \u2713 file:src/RimMandrake/GimmeSomeSlack/Source/Hose/CompHoseReel.cs"
+],
+[
+"adapters joining pipe and hose networks",
+"K10 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class \\w*Adapter"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K04",
-"label": "[BUILT-UNPROVEN] Special bottle behaviours: boiling reverts, blood rots",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Row data, no per-liquid C#: a revert timer (boiling/icy -> fresh) and rot (blood -> hemopack race).",
+"id": "carry_drills",
+"label": "Drills and taps bring underground liquids up, and cleaned water feeds thirst",
+"group": "7 \u00b7 Bottles, tanks and pumps",
+"effect": "Drills and taps bring underground liquids up, and cleaned water feeds thirst",
+"say": "",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BOTTLE_LOOP_1",
-"itemState": "doing",
-"src": "Bottle item",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:(?i)revert",
-true
+"drills and taps bringing up underground liquid",
+"K07 \u00b7 BUILT-UNPROVEN",
+"MANY_WATERS_DRILL_BUILDINGS_1 (done) \u00b7 \u2713 cs:class Building_LiquidDrill \u00b7 \u2713 xml:defName>RM_LiquidDrill< \u00b7 \u2713 xml:defName>RM_LiquidTap< \u00b7 \u2713 cs:class PlaceWorker_DrillNeedsExcavatedOutlet \u00b7 \u2713 set:liquidDrillingEnabled"
 ],
 [
-"xml:(?i)hemopack",
-true
+"water cleaning feeding into thirst",
+"K12 \u00b7 BUILT-UNPROVEN",
+"LIQUID_THIRST_CHAIN_1 (doing) \u00b7 \u2713 cs:LiquidThirstQuality \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Defs:(?i)DBHThirst"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K05",
-"label": "[BUILT-UNPROVEN] Bottles carry cuisine tags",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "ThingCategories so a future cuisine mod cooks against tags, never defNames.",
+"id": "carry_industry",
+"label": "Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired",
+"group": "7 \u00b7 Bottles, tanks and pumps",
+"effect": "Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired Never built from the menu in the campaign.",
+"say": "Never built from the menu in the campaign.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_BOTTLE_LOOP_1",
-"itemState": "doing",
-"src": "Bottle item",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"xml:(?i)cuisine",
-true
+"ruined industrial liquid plants you find and repair",
+"K11 \u00b7 BUILT-UNPROVEN",
+"LIQUID_INDUSTRY_SETPIECES_1 (doing) \u00b7 \u2713 rx:src/RimMandrake:(?i)defName>\\w*(Desal|TarRefiner|PumpingStation)"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K06",
-"label": "[BUILT-UNPROVEN] Liquid tank: fill from and empty into bottles",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "A universal container building; bottles empty into it and fill from it.",
+"id": "land_liquids",
+"label": "Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea Nobody goes swimming in sand for fun.",
+"say": "Nobody goes swimming in sand for fun.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph8",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class Building_LiquidTank",
-true
+"one list of every liquid and its forms",
+"D11 \u00b7 BUILT-UNPROVEN",
+"LIQUID_REGISTRY_CORE_1 (done) \u00b7 \u2713 cs:class LiquidDef \u00b7 \u2713 xml:defName>RM_Liquid_Tar< \u00b7 \u2713 xml:defName>RM_Liquid_FreshWater<"
 ],
 [
-"xml:defName>RM_LiquidTank<",
-true
+"canal liquids: water, tar, oil, poison and four slimes",
+"D12 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 xml:defName>RM_Fluid_Water< \u00b7 \u2713 xml:defName>RM_Fluid_Tar< \u00b7 \u2713 xml:defName>RM_Fluid_Oil< \u00b7 \u2713 xml:defName>RM_Fluid_Poison< \u00b7 \u2713 xml:defName>RM_Fluid_SlimeRed<"
 ],
 [
-"cs:class JobDriver_EmptyBottleIntoTank",
-true
+"the wider set of liquids as ground (brine, boiling water, propane, acid)",
+"D13 \u00b7 BUILT-UNPROVEN",
+"LIQUID_TYPES_MOD_1 (done) \u00b7 \u2713 xml:defName>RM_WaterBrineDeep< \u00b7 \u2713 xml:defName>RM_PropaneDeep< \u00b7 \u2713 xml:defName>RM_Water_Amber<"
 ],
 [
-"set:tankLoopEnabled",
-true
+"each liquid's look as a flood, rain, river, lake and sea",
+"D14 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_LIQUID_FACES_1 (done) \u00b7 \u2713 cs:class LiquidTerrainSuite"
+],
+[
+"nobody swimming in sand for fun",
+"L04 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2713 cs:class RM_Patch_JoyGiver_GoSwimming_NoSandSwim"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K07",
-"label": "[BUILT-UNPROVEN] Liquid drill and tap raise subsurface liquid",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "On maps whose biome yields it, a drill/tap brings liquid up into an excavated outlet.",
+"id": "land_shores",
+"label": "New maps get shores of the local liquid, and hot rivers steam in colour",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "New maps get shores of the local liquid, and hot rivers steam in colour The shores change only newly generated maps.",
+"say": "The shores change only newly generated maps.",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "MANY_WATERS_DRILL_BUILDINGS_1",
-"itemState": "done",
-"src": "Drill item",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"cs:class Building_LiquidDrill",
-true
+"new maps getting shores of the local liquid",
+"L01 \u00b7 BUILT-UNPROVEN",
+"WORLDMAP_LIQUID_TAGS_1 (doing) \u00b7 \u2713 cs:class RM_GenStep_LiquidShores \u00b7 \u2713 set:typedLiquidShoresEnabled"
 ],
 [
-"xml:defName>RM_LiquidDrill<",
-true
+"the world map knowing which liquid each region has",
+"L02 \u00b7 BUILT-UNPROVEN",
+"WORLDMAP_LIQUID_TAGS_1 (doing) \u00b7 \u2713 cs:class RM_WorldComponent_LiquidTags"
 ],
 [
-"xml:defName>RM_LiquidTap<",
-true
-],
-[
-"cs:class PlaceWorker_DrillNeedsExcavatedOutlet",
-true
-],
-[
-"set:liquidDrillingEnabled",
-true
+"coloured steam rising from hot rivers",
+"L03 \u00b7 BUILT-UNPROVEN",
+"RIVER_STEAM_ANIMATION_1 (doing) \u00b7 \u2713 cs:class MapComponent_RiverSteam \u00b7 \u2713 xml:defName>RM_Fleck_Steam_Amber<"
 ]
 ],
-"live": []
+"pics": [],
+"pre": ""
 }
 },
 {
-"id": "K08",
-"label": "[NOT BUILT] Pumps",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Universal pump moving liquid between sources, canals and tanks.",
-"prefill": "wanted",
+"id": "land_swale",
+"label": "A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered In the campaign the swale stays locked until found; its art comes from a real canal.",
+"say": "In the campaign the swale stays locked until found; its art comes from a real canal.",
+"prefill": "ok",
 "fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph8",
-"bars": [],
-"probes": [
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"the swale being locked in the campaign until found",
+"swale art drawn from a real canal",
+"crops beside a filled canal counting as watered"
+],
+"tech": [
 [
-"xml:defName>RM_\\w*Pump\\w*<",
-false
+"a swale slowly turning sand into soil",
+"L05 \u00b7 BUILT-UNPROVEN",
+"CRACKEDLANDS_MECHANICS_BUILD_1 (doing) \u00b7 \u2713 cs:class RM_CompSwale \u00b7 \u2713 xml:defName>RM_Swale< \u00b7 \u2713 set:swaleEnabled \u00b7 \u2713 set:swaleRateMultiplier"
+],
+[
+"the swale being locked in the campaign until found",
+"L06 \u00b7 NOT BUILT",
+"CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1 (proposed) \u00b7 \u2717 rx:src/RimMandrake:(?i)swale\\w*(unlock|discover)"
+],
+[
+"swale art drawn from a real canal",
+"L07 \u00b7 NOT BUILT",
+"SWALE_CANAL_ART_REFERENCE_1 (doing) \u00b7 \u2717 tex:(?i)swale"
+],
+[
+"crops beside a filled canal counting as watered",
+"L08 \u00b7 NOT BUILT",
+"FLOWWORKS_BUILD_PROGRAM_1 (doing) \u00b7 \u2717 cs:class \\w*Irrigat"
 ]
 ],
-"live": []
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
 }
 },
 {
-"id": "K09",
-"label": "[BUILT-UNPROVEN] Flexible hoses (built in Gimme Some Slack)",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Hose reels a colonist drags out; lives in GimmeSomeSlack, carries no real liquid yet.",
+"id": "land_rivers",
+"label": "Rivers get current, ford stones, weirs, bank works, breaches in floods, fish catches and ferries",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "Rivers get current, ford stones, weirs, bank works, breaches in floods, fish catches and ferries",
+"say": "",
+"prefill": "ok",
+"fw": {
+"status": "partly",
+"label": "Partly built",
+"color": "#c9a44a",
+"means": "some parts are built and some are not.",
+"seen": false,
+"missing": [
+"silt traps, stake lines and hoppers on river banks"
+],
+"tech": [
+[
+"river current and ford stones",
+"L09 \u00b7 BUILT-UNPROVEN",
+"SURFACE_RIVER_WEIRS_1 (proposed) \u00b7 \u2713 file:src/RimMandrake/FlowWorks/Source/Rivers/RM_MapComponent_RiverCurrent.cs \u00b7 \u2713 file:src/RimMandrake/FlowWorks/Defs/Rivers/RM_FordStones.xml"
+],
+[
+"weirs on ordinary rivers",
+"L10 \u00b7 BUILT-UNPROVEN",
+"SURFACE_RIVER_WEIRS_1 (proposed) \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)weir"
+],
+[
+"silt traps, stake lines and hoppers on river banks",
+"L11 \u00b7 PARTIAL",
+"SURFACE_RIVER_WEIRS_1 (proposed) \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)silt \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)stake \u00b7 \u2717 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)hopper"
+],
+[
+"an untended weir breaching in a flood",
+"L12 \u00b7 BUILT-UNPROVEN",
+"SURFACE_RIVER_WEIRS_1 (proposed) \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)breach"
+],
+[
+"fish catches, drift and ferries",
+"L13 \u00b7 BUILT-UNPROVEN",
+"SURFACE_RIVER_WEIRS_1 (proposed) \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)ferry \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)drift \u00b7 \u2713 rx:src/RimMandrake/FlowWorks/Source/Rivers:(?i)fish"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "land_panning",
+"label": "Pan a river for gold, or set a sluice box to sift ore from a stream",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "Pan a river for gold, or set a sluice box to sift ore from a stream",
+"say": "",
+"prefill": "ok",
+"fw": {
+"status": "not",
+"label": "Not built",
+"color": "#c96634",
+"means": "nothing of it is built yet.",
+"seen": false,
+"missing": [
+"a sluice box slowly sifting ore from a stream",
+"panning a river for gold"
+],
+"tech": [
+[
+"a sluice box slowly sifting ore from a stream",
+"M05 \u00b7 NOT BUILT",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2717 rx:src/RimMandrake:(?i)defName>\\w*SluiceBox"
+],
+[
+"panning a river for gold",
+"M06 \u00b7 NOT BUILT",
+"FLOWWORKS_QUARRY_DIGGING_1 (proposed) \u00b7 \u2717 rx:src/RimMandrake:(?i)defName>\\w*(GoldPan|Panning)\\w*<"
+]
+],
+"pics": [],
+"pre": "Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. Mark Don't want if you don't."
+}
+},
+{
+"id": "land_settings",
+"label": "Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals",
+"group": "8 \u00b7 Rivers, shores and the land",
+"effect": "Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals",
+"say": "",
 "prefill": null,
 "fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_HOSE_DEPLOY_DRAG_1",
-"itemState": "done",
-"src": "Ph8 / hose item",
-"bars": [],
-"probes": [
+"status": "built",
+"label": "Built, not yet seen",
+"color": "#5390c4",
+"means": "everything is built, but it has not yet been seen working in a running game.",
+"seen": false,
+"missing": [],
+"tech": [
 [
-"file:src/RimMandrake/GimmeSomeSlack/Source/Hose/CompHoseReel.cs",
-true
+"a settings switch for every mechanic",
+"N01 \u00b7 BUILT-UNPROVEN",
+"MOD_OPTIONS_RETROFIT_1 (doing) \u00b7 \u2713 cs:class RimMandrakeFlowWorksSettings \u00b7 \u2713 cs:CheckboxLabeled"
+],
+[
+"the mod still digging dry canals with everything switched off",
+"N02 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_NORTHSTAR_SHIP_1 (proposed) \u00b7 \u2713 rx:src/RimMandrake/FlowWorks:all_off_still_digs"
+],
+[
+"settings that change new maps saying so",
+"N03 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_NORTHSTAR_SHIP_1 (proposed) \u00b7 \u2713 cs:affects newly generated maps"
+],
+[
+"the hooks automated tests read the game through",
+"N04 \u00b7 BUILT-UNPROVEN",
+"FLOWWORKS_NORTHSTAR_WIRE_1 (done) \u00b7 \u2713 cs:class RM_PromotionProofs \u00b7 \u2713 cs:class RM_LiquidFireProof \u00b7 \u2713 cs:class FlowWorksDebugActions"
 ]
 ],
-"live": []
-}
-},
-{
-"id": "K10",
-"label": "[NOT BUILT] Per-net adapters",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Adapters joining pipe/hose nets (the Ph8 internal interface boundary).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Ph8",
-"bars": [],
-"probes": [
-[
-"cs:class \\w*Adapter",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "K11",
-"label": "[NOT BUILT] Found liquid industry: desal, detox, tar refinery, pumping station",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Industrial scale is FOUND (wrecked -> repaired), never built from the menu in the campaign.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "LIQUID_INDUSTRY_SETPIECES_1",
-"itemState": "doing",
-"src": "Liquids framework \u00a74",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake:(?i)defName>\\w*(Desal|TarRefiner|PumpingStation)",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "K12",
-"label": "[BUILT-UNPROVEN] Water cleaning chain wired to thirst",
-"group": "K \u00b7 Bottles, tanks, drilling, industry",
-"effect": "Crude/household/industrial cleaning tiers feed Dubs Bad Hygiene thirst.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "LIQUID_THIRST_CHAIN_1",
-"itemState": "doing",
-"src": "Thirst item",
-"bars": [],
-"probes": [
-[
-"cs:LiquidThirstQuality",
-true
-],
-[
-"rx:src/RimMandrake/FlowWorks/Defs:(?i)DBHThirst",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L01",
-"label": "[BUILT-UNPROVEN] Typed liquid shores on new maps",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "A landing GenStep repaints shores to the tile's liquid (affects newly generated maps).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "WORLDMAP_LIQUID_TAGS_1",
-"itemState": "doing",
-"src": "Liquid tags item",
-"bars": [],
-"probes": [
-[
-"cs:class RM_GenStep_LiquidShores",
-true
-],
-[
-"set:typedLiquidShoresEnabled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L02",
-"label": "[BUILT-UNPROVEN] World liquid tags on the frozen map",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "worldTags mark which tiles carry which liquid, read by shores and set-piece siting.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "WORLDMAP_LIQUID_TAGS_1",
-"itemState": "doing",
-"src": "Liquid tags item",
-"bars": [],
-"probes": [
-[
-"cs:class RM_WorldComponent_LiquidTags",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L03",
-"label": "[BUILT-UNPROVEN] Coloured steam rising from rivers",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Animated steam flecks over hot rivers, coloured per river.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "RIVER_STEAM_ANIMATION_1",
-"itemState": "doing",
-"src": "Steam item",
-"bars": [],
-"probes": [
-[
-"cs:class MapComponent_RiverSteam",
-true
-],
-[
-"xml:defName>RM_Fleck_Steam_Amber<",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L04",
-"label": "[BUILT-UNPROVEN] Nobody goes recreational swimming in sand",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Swim joy is refused on sand-like liquid terrains.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Many Waters",
-"bars": [],
-"probes": [
-[
-"cs:class RM_Patch_JoyGiver_GoSwimming_NoSandSwim",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L05",
-"label": "[BUILT-UNPROVEN] Swale: a fed canal slowly improves the soil beside it",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "While carrying water, adjacent cells climb sand -> soil -> rich soil, capped, slow.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "CRACKEDLANDS_MECHANICS_BUILD_1",
-"itemState": "doing",
-"src": "Cracked Lands ruling",
-"bars": [],
-"probes": [
-[
-"cs:class RM_CompSwale",
-true
-],
-[
-"xml:defName>RM_Swale<",
-true
-],
-[
-"set:swaleEnabled",
-true
-],
-[
-"set:swaleRateMultiplier",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L06",
-"label": "[NOT BUILT] Swale locked in the campaign until discovered",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "World-level unlock earned in the Cracked Lands; free tier stays a normal buildable.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1",
-"itemState": "proposed",
-"src": "Cracked Lands ruling",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake:(?i)swale\\w*(unlock|discover)",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "L07",
-"label": "[NOT BUILT] Swale art from a real canal",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Today the swale borrows GraveEmpty; its art waits on screenshots of a real canal.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "SWALE_CANAL_ART_REFERENCE_1",
-"itemState": "doing",
-"src": "Owner art sheet",
-"bars": [],
-"probes": [
-[
-"tex:(?i)swale",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "L08",
-"label": "[NOT BUILT] Irrigation: plants beside a filled canal act watered",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Owner experience: 'natural irrigation of crops'. Solved in FloodedCanyon, not wired here.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_BUILD_PROGRAM_1",
-"itemState": "doing",
-"src": "Owner experience",
-"bars": [],
-"probes": [
-[
-"cs:class \\w*Irrigat",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "L09",
-"label": "[BUILT-UNPROVEN] River Works slice 1: river current + ford stones",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Surface current on vanilla rivers, fordable stones, swept-away pawns (new mod RiverWorks).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SURFACE_RIVER_WEIRS_1",
-"itemState": "proposed",
-"src": "River works design",
-"bars": [],
-"probes": [
-[
-"file:src/RimMandrake/RiverWorks/Source/RM_MapComponent_RiverCurrent.cs",
-true
-],
-[
-"file:src/RimMandrake/RiverWorks/Defs/TerrainDefs/RM_FordStones.xml",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L10",
-"label": "[BUILT-UNPROVEN] Weirs on ordinary rivers",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "Build a weir across a surface river to hold and raise water.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SURFACE_RIVER_WEIRS_1",
-"itemState": "proposed",
-"src": "Owner-typed 2026-09-26",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/RiverWorks:(?i)weir",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L11",
-"label": "[PARTIAL] Silt-trap, stake-line and hopper bank-works",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "The bank-works family from the weir system, on surface rivers.",
-"prefill": "wanted",
-"fw": {
-"status": "PARTIAL",
-"color": "#e8b64c",
-"item": "SURFACE_RIVER_WEIRS_1",
-"itemState": "proposed",
-"src": "Owner-typed 2026-09-26",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/RiverWorks:(?i)silt",
-true
-],
-[
-"rx:src/RimMandrake/RiverWorks:(?i)stake",
-true
-],
-[
-"rx:src/RimMandrake/RiverWorks:(?i)hopper",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "L12",
-"label": "[BUILT-UNPROVEN] Untended weir + flood = breach cascade",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "A weir left untended when a flood comes breaches and cascades downstream.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SURFACE_RIVER_WEIRS_1",
-"itemState": "proposed",
-"src": "Owner-typed 2026-09-26",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/RiverWorks:(?i)breach",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "L13",
-"label": "[BUILT-UNPROVEN] River Works slice 2: fish catch, drift, ferry",
-"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
-"effect": "The rest of the surface-river works beyond weirs and bank-works.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "SURFACE_RIVER_WEIRS_1",
-"itemState": "proposed",
-"src": "Remaining inventory #12",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/RiverWorks:(?i)ferry",
-true
-],
-[
-"rx:src/RimMandrake/RiverWorks:(?i)drift",
-true
-],
-[
-"rx:src/RimMandrake/RiverWorks:(?i)fish",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "M01",
-"label": "[NOT BUILT] Digging a canal turns up local materials (a lump on the bank)",
-"group": "M \u00b7 Quarry digging",
-"effect": "Excavation can yield biome-local materials dropped on the bank (availability by biome, configurable).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Quarry item / remaining inventory #6",
-"bars": [],
-"probes": [
-[
-"cs:(?i)quarry|canaldigfind|digfind",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "M02",
-"label": "[NOT BUILT] A letter on the first find of each material per map",
-"group": "M \u00b7 Quarry digging",
-"effect": "The first time a material turns up on a map, a letter says what and where.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Remaining inventory #6",
-"bars": [],
-"probes": [
-[
-"cs:(?i)(firstfind|first_find)",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "M03",
-"label": "[NOT BUILT] Deep cuts reach deep-drill minerals; mineral-less biomes give rock chunks",
-"group": "M \u00b7 Quarry digging",
-"effect": "Depth decides what can turn up; a biome with no minerals yields local rock chunks instead.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Remaining inventory #6",
-"bars": [],
-"probes": [
-[
-"cs:(?i)quarry\\w*(deep|depth)|deepdrillmineral",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "M04",
-"label": "[NOT BUILT] Reads the mineral abundance registry",
-"group": "M \u00b7 Quarry digging",
-"effect": "What can turn up comes from the shared mineral abundance registry, not a FlowWorks list.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Quarry item",
-"bars": [],
-"probes": [
-[
-"cs:(?i)mineralabundance|MineralRegistry",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "M05",
-"label": "[NOT BUILT] Sluice box: a stream slowly yields ore",
-"group": "M \u00b7 Quarry digging",
-"effect": "River Works half; waits on the rivers-carry column of MINERALS_WHERE_THEY_BELONG_1.",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Quarry item",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake:(?i)defName>\\w*SluiceBox",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "M06",
-"label": "[NOT BUILT] Panning for gold in a river",
-"group": "M \u00b7 Quarry digging",
-"effect": "A colonist pans a river cell for a slow trickle of gold (River Works half).",
-"prefill": "wanted",
-"fw": {
-"status": "NOT BUILT",
-"color": "#e06c6c",
-"item": "FLOWWORKS_QUARRY_DIGGING_1",
-"itemState": "proposed",
-"src": "Quarry item",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake:(?i)defName>\\w*(GoldPan|Panning)\\w*<",
-false
-]
-],
-"live": []
-}
-},
-{
-"id": "N01",
-"label": "[BUILT-UNPROVEN] Every mechanic has a Mod Settings toggle, grouped by section",
-"group": "N \u00b7 Settings, proofs, shipping",
-"effect": "Defaults = shipped behaviour; the settings screen is grouped (excavation, stock, fire, pits, containers...).",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "MOD_OPTIONS_RETROFIT_1",
-"itemState": "doing",
-"src": "Standing rule 2026-09-12",
-"bars": [],
-"probes": [
-[
-"cs:class RimMandrakeFlowWorksSettings",
-true
-],
-[
-"cs:CheckboxLabeled",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "N02",
-"label": "[BUILT-UNPROVEN] All mechanics off still digs dry channels",
-"group": "N \u00b7 Settings, proofs, shipping",
-"effect": "An all-off component proves the mod degrades to a channel digger.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_NORTHSTAR_SHIP_1",
-"itemState": "proposed",
-"src": "Ship item",
-"bars": [],
-"probes": [
-[
-"rx:src/RimMandrake/FlowWorks:all_off_still_digs",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "N03",
-"label": "[BUILT-UNPROVEN] Worldgen-affecting toggle labelled as such",
-"group": "N \u00b7 Settings, proofs, shipping",
-"effect": "The shores toggle says it affects newly generated maps.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_NORTHSTAR_SHIP_1",
-"itemState": "proposed",
-"src": "Settings rule",
-"bars": [],
-"probes": [
-[
-"cs:affects newly generated maps",
-true
-]
-],
-"live": []
-}
-},
-{
-"id": "N04",
-"label": "[BUILT-UNPROVEN] Bridge proof surface (static calls) for every promoted row",
-"group": "N \u00b7 Settings, proofs, shipping",
-"effect": "Proof*/Report static calls the north-star driver reads state through.",
-"prefill": null,
-"fw": {
-"status": "BUILT-UNPROVEN",
-"color": "#6aa6e8",
-"item": "FLOWWORKS_NORTHSTAR_WIRE_1",
-"itemState": "done",
-"src": "North star",
-"bars": [],
-"probes": [
-[
-"cs:class RM_PromotionProofs",
-true
-],
-[
-"cs:class RM_LiquidFireProof",
-true
-],
-[
-"cs:class FlowWorksDebugActions",
-true
-]
-],
-"live": []
+"pics": [],
+"pre": ""
 }
 }
 ]
@@ -4316,6 +2179,7 @@ true
   <div class="banner bad hide" id="err"></div>
 </header>
 
+<section id="glance"><h2>FlowWorks at a glance</h2><p class="gtot">45 features: <b style="color:#6fae5a">13</b> works in game · <b style="color:#5390c4">21</b> built, not yet seen · <b style="color:#c9a44a">9</b> partly built · <b style="color:#c96634">2</b> not built</p><div><a class="mrow" href="#" data-goto="dig_canal"><span class="mname">Digging canals and pits</span><span class="mbar"><i style="flex:2;background:#6fae5a" title="2 works in game">2</i><i style="flex:1;background:#5390c4" title="1 built, not yet seen">1</i><i style="flex:1;background:#c9a44a" title="1 partly built">1</i></span></a><a class="mrow" href="#" data-goto="flow_spreads"><span class="mname">Liquid in canals and ponds</span><span class="mbar"><i style="flex:5;background:#6fae5a" title="5 works in game">5</i><i style="flex:3;background:#5390c4" title="3 built, not yet seen">3</i><i style="flex:1;background:#c96634" title="1 not built">1</i></span></a><a class="mrow" href="#" data-goto="fire_lights"><span class="mname">Fire and corrosion</span><span class="mbar"><i style="flex:3;background:#5390c4" title="3 built, not yet seen">3</i></span></a><a class="mrow" href="#" data-goto="pit_holds"><span class="mname">Pits: catching</span><span class="mbar"><i style="flex:4;background:#6fae5a" title="4 works in game">4</i><i style="flex:4;background:#5390c4" title="4 built, not yet seen">4</i><i style="flex:1;background:#c9a44a" title="1 partly built">1</i></span></a><a class="mrow" href="#" data-goto="hold_ladder"><span class="mname">Pits: holding prisoners</span><span class="mbar"><i style="flex:1;background:#6fae5a" title="1 works in game">1</i><i style="flex:3;background:#5390c4" title="3 built, not yet seen">3</i></span></a><a class="mrow" href="#" data-goto="look_sink"><span class="mname">How it looks</span><span class="mbar"><i style="flex:1;background:#6fae5a" title="1 works in game">1</i><i style="flex:5;background:#c9a44a" title="5 partly built">5</i></span></a><a class="mrow" href="#" data-goto="carry_bottles"><span class="mname">Bottles, tanks and pumps</span><span class="mbar"><i style="flex:4;background:#5390c4" title="4 built, not yet seen">4</i></span></a><a class="mrow" href="#" data-goto="land_liquids"><span class="mname">Rivers, shores and the land</span><span class="mbar"><i style="flex:3;background:#5390c4" title="3 built, not yet seen">3</i><i style="flex:2;background:#c9a44a" title="2 partly built">2</i><i style="flex:1;background:#c96634" title="1 not built">1</i></span></a></div><div class="legend"><div><i class="dot" style="background:#6fae5a"></i><b>Works in game</b>: a test in the running game passed for every part of it. Whether it LOOKS right is your call.</div><div><i class="dot" style="background:#5390c4"></i><b>Built, not yet seen</b>: everything is built, but it has not yet been seen working in a running game.</div><div><i class="dot" style="background:#c9a44a"></i><b>Partly built</b>: some parts are built and some are not.</div><div><i class="dot" style="background:#c96634"></i><b>Not built</b>: nothing of it is built yet.</div></div><p><a href="FlowWorks_status_board.html" target="_blank" rel="noopener">Read it as a plain status board, top to bottom (printable)</a> &nbsp;·&nbsp; <span id="gprog"></span></p><div class="cols"><div><h3>What I need from you</h3><ol><li><a href="#" data-goto="ask_ladder"><b>Pick the ladder drawing: A or B</b></a><br><span class="waitt">Two drawings from 16 Sept, never picked; the ladder borrows the vanilla spike trap until you do.</span></li><li><a href="#" data-goto="ask_numbers"><b>Sanity-check the first-guess numbers</b></a><br><span class="waitt">How far people sink, spike damage, how far a pond reaches, how much digging turns up.</span></li><li><a href="#" data-goto="dig_canal"><b>Look at the 13 features that work in game, and say if they look right</b></a><br><span class="waitt">A test in the running game proved each one works; only your eyes can say it looks and feels right. The pictures on each one are from that test.</span></li><li><a href="#" data-goto="look_parts"><b>One unbuilt part has no open work item: do you still want it?</b></a><br><span class="waitt">Mark the feature Don&#x27;t want if not; otherwise it gets filed.</span></li></ol><p class="waitt">Everything below is yours to mark too: <b>OK</b>, <b>Not right</b> (say why in the note) or <b>Don't want</b>. Only unbuilt features still on the work list start pre-marked OK.</p></div><div><h3>What remains to build</h3><h4>Waiting on you</h4><ul><li>Swale art drawn from a real canal. <a href="#" data-goto="land_swale" class="waitt">(Rivers, shores and the land)</a></li></ul><h4>Nothing in the way: ready to build</h4><ul><li>Finds following the shared list of which minerals belong where. <a href="#" data-goto="dig_finds" class="waitt">(Digging canals and pits)</a></li><li>Slime being nearly impossible to cross and slow to escape. <a href="#" data-goto="flow_slime" class="waitt">(Liquid in canals and ponds)</a></li><li>An explosion or knockback throwing someone into a pit. <a href="#" data-goto="pit_ways_in" class="waitt">(Pits: catching)</a></li><li>A dug canal looking dug, not like a gravel path; trenches looking like obstacles without a tooltip. <a href="#" data-goto="look_canal" class="waitt">(How it looks)</a></li><li>An occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a pit reading as a big dark hole; a large pit reading as one place, not a grid of tiles; a bare pit never looking like a building; depth and fill both readable at once. <a href="#" data-goto="look_pit" class="waitt">(How it looks)</a></li><li>Spike art where some spike shows; ladder art, raised and lowered; no pit part borrowing the vanilla spike-trap drawing. <a href="#" data-goto="look_parts" class="waitt">(How it looks)</a></li><li>Slime looking thick and opaque, not tinted water. <a href="#" data-goto="look_liquids" class="waitt">(How it looks)</a></li><li>Burning liquid looking alight (its own art); a burnt-out canal looking scorched (its own art). <a href="#" data-goto="look_fire" class="waitt">(How it looks)</a></li><li>The swale being locked in the campaign until found; crops beside a filled canal counting as watered. <a href="#" data-goto="land_swale" class="waitt">(Rivers, shores and the land)</a></li><li>Silt traps, stake lines and hoppers on river banks. <a href="#" data-goto="land_rivers" class="waitt">(Rivers, shores and the land)</a></li><li>A sluice box slowly sifting ore from a stream; panning a river for gold. <a href="#" data-goto="land_panning" class="waitt">(Rivers, shores and the land)</a></li></ul><h4>Not built, and no open work item for it</h4><ul><li>A gate looking open or shut at a glance (its own art). <a href="#" data-goto="look_parts" class="waitt">(How it looks)</a></li></ul></div></div></section>
 <div id="list"></div>
 
 <div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
@@ -4336,12 +2200,20 @@ true
 <script id="RENDER">
 window.itemBody = it => {
   const e = window.esc, s = it.fw || {};
-  const pr = (s.probes || []).map(p => `<span class="mark ${p[1] ? '' : 'inferred'}" style="${p[1] ? 'color:#8fd3a8;border-color:#2b5a3b' : ''}" title="declared probe">${p[1] ? '✓' : '✗'} ${e(p[0])}</span>`).join('');
-  const lv = (s.live || []).map(r => `<span class="mark" style="${r[1] === 'PASS' ? 'color:#5ac37f;border-color:#2b5a3b' : 'color:#e06c6c;border-color:#5a2b2b'}" title="${e(r[2] || '')}">${e(r[0])} ${e(r[1])}</span>`).join('');
-  const bars = (s.bars || []).map(b => `<span class="mark absent" title="north-star bar">★ ${e(b)}</span>`).join('');
-  return `<div class="effect"><b style="color:${e(s.color)}">${e(s.status)}</b> · ${e(it.effect)}</div>
-    <div class="marks"><span class="mark absent">${e(s.item)} <b>${e(s.itemState)}</b></span><span class="mark absent">intent: ${e(s.src)}</span>${bars}</div>
-    <div class="marks">${lv}${pr}</div>`;
+  const pics = (s.pics || []).map(p => `<figure class="pic${p[2] ? ' art' : ''}" data-zoom="${e(p[0])}" data-cap="${e(p[1])}">`
+    + `<img src="${e(p[0])}" loading="lazy" decoding="async" alt="${e(p[1])}"><figcaption>${e(p[1])}</figcaption></figure>`).join('');
+  const badge = s.status ? `<span class="badge" style="background:${e(s.color)}" title="${e(s.means)}">${e(s.label)}</span>`
+    + (s.seen ? '<span class="seen">part of it was seen working in the game</span>' : '') : '';
+  const pre = s.pre ? `<div class="waitt" style="margin-top:6px">${e(s.pre)}</div>` : '';
+  const missing = (s.missing || []).length ? `<div class="missing">Still to build: ${e(s.missing.join('; '))}.</div>` : '';
+  const tech = (s.tech || []).map(r => `<tr><td>${e(r[0])}</td><td>${e(r[1])}</td><td><code>${e(r[2])}</code></td></tr>`).join('');
+  return `${badge}<div class="effect">${e(it.say || '')}</div>${missing}${pre}`
+    + (pics ? `<div class="pics">${pics}</div>` : (s.status ? '<div class="nopic">no picture yet</div>' : ''))
+    + (tech ? `<details class="tech"><summary>details</summary><table>${tech}</table></details>` : '');
+};
+window.itemOptions = it => {
+  const want = (it.fw || {}).opts || ['ok', 'wrong', 'unwanted'];
+  return want.map(k => OPTS.find(o => o.key === k)).filter(Boolean);
 };
 </script>
 
@@ -5199,5 +3071,67 @@ async function boot() {
 }
 boot();
 </script>
+<script id="FWDATA" type="application/json">{"labels": {"works": "Works in game", "built": "Built, not yet seen", "partly": "Partly built", "not": "Not built"}, "colors": {"works": "#6fae5a", "built": "#5390c4", "partly": "#c9a44a", "not": "#c96634"}, "order": ["works", "built", "partly", "not"], "askGroup": "0 \u00b7 What I need from you"}</script>
+<script id="FWAFTER">
+"use strict";
+/* Plain-language chrome on top of the template, run after every paintCounts (which render() also calls): section
+   summary lines at the END of each section, a plain progress counter, no bulk buttons on the asks group, and the
+   glance panel's jump links. Hotkeys a row does not offer are swallowed rather than recorded. */
+(function () {
+  const FW = JSON.parse(document.getElementById('FWDATA').textContent);
+  const LBL = FW.labels, COL = FW.colors, ORD = FW.order;
+  const mine = it => { const d = decOf(it.id);
+    return !!(d && d.decision && (d.decidedAt || isOverride(it.id) || prefillOf(it) == null)); };
+  function sectionLine(group) {
+    const rows = ITEMS.filter(it => it.group === group && it.fw && it.fw.status);
+    if (!rows.length) return '';
+    const n = {}; for (const it of rows) n[it.fw.status] = (n[it.fw.status] || 0) + 1;
+    const marked = rows.filter(mine).length;
+    return ORD.filter(k => n[k]).map(k => `<b style="color:${COL[k]}">${n[k]}</b> ${LBL[k].toLowerCase()}`).join(' · ')
+      + ` &nbsp;—&nbsp; you have marked ${marked} of ${rows.length}`;
+  }
+  function fwAfter() {
+    const list = document.getElementById('list');
+    for (const f of list.querySelectorAll('.secfoot')) f.remove();
+    const heads = [...list.querySelectorAll('.gh')];
+    heads.forEach((gh, i) => {
+      const name = gh.firstChild ? gh.firstChild.textContent : '';
+      if (name === FW.askGroup) for (const b of gh.querySelectorAll('[data-bulk]')) b.remove();
+      const line = sectionLine(name);
+      if (!line) return;
+      let last = gh, n = gh.nextElementSibling;
+      while (n && !n.classList.contains('gh')) { last = n; n = n.nextElementSibling; }
+      last.insertAdjacentHTML('afterend', `<div class="secfoot">${line}</div>`);
+    });
+    const total = ITEMS.length, done = ITEMS.filter(mine).length;
+    const pre = ITEMS.filter(it => decisionOf(it.id) && !mine(it)).length;
+    const notes = ITEMS.filter(it => String((decOf(it.id) || {}).note || '').trim()).length;
+    const p = document.getElementById('progress');
+    if (p) p.innerHTML = `<b>${done}</b> of ${total} marked by you` + (pre ? ` · ${pre} pre-marked by me` : '')
+      + (notes ? ` · ${notes} with a note` : '');
+    const g = document.getElementById('gprog');
+    if (g) g.textContent = `${done} of ${total} marked by you so far`;
+  }
+  const orig = window.paintCounts;
+  window.paintCounts = function () { orig.apply(this, arguments); try { fwAfter(); } catch (e) { console.error(e); } };
+  if (document.querySelector('#list .row')) fwAfter();
+  addEventListener('keydown', e => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || e.metaKey || e.ctrlKey || e.altKey) return;
+    const op = OPTS.find(o => o.hotkey === e.key); if (!op) return;
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    if (!window.itemOptions(it).some(o => o.key === op.key)) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-goto]'); if (!a) return;
+    e.preventDefault();
+    for (const id of ['q', 'fstate', 'fgroup']) { const x = document.getElementById(id); if (x && x.value) { x.value = ''; render(); } }
+    const row = document.querySelector(`.row[data-id="${a.dataset.goto}"]`); if (!row) return;
+    const hh = document.querySelector('header').offsetHeight + 50;
+    scrollTo({ top: row.getBoundingClientRect().top + scrollY - hh, behavior: 'smooth' });
+    focusIdx = shown.findIndex(x => x.id === a.dataset.goto); paintFocus(false);
+  });
+})();
+</script>
+
 </body>
 </html>

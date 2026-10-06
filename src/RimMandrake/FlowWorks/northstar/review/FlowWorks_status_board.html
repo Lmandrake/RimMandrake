@@ -1,0 +1,154 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FlowWorks status board</title><style>
+/* FlowWorks designer sheet: the owner's warm dark-brown palette, text >= 16px, one column on a phone. */
+:root{--bg:#171310;--panel:#211b16;--panel2:#1c1713;--line:#3a2f24;--ink:#efe7d9;--dim:#b3a892;--accent:#e0803a;
+  --link:#f0c08a;--ok:#6fae5a;--warn:#c9a44a;--bad:#c96634;--info:#5390c4}
+html,body{font:17px/1.5 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;margin:0}
+.hrow h1{font-size:21px}.sub{font-size:16px;color:var(--dim)}
+.panel{font-size:16px;background:var(--panel2)}.panel h3{font-size:16px}
+#posturePanel{display:none}
+.crit{font-size:16px;color:var(--dim)}
+.btn{font-size:16px;padding:6px 12px;background:#2a221b;border-color:var(--line)}
+.btn:hover{background:#352a20}.btn.pri,.btn.on{background:#3a2a1c;border-color:#6b4a2a;color:var(--link)}
+.bar{background:#1c1713;border-top-color:var(--line)}
+.bar input[type=search],.bar select{font-size:16px;background:#120f0c;border-color:var(--line);min-width:0}
+.bar input[type=search]{flex:1 1 220px}
+#fmark,#btnGrid,#cell{display:none !important}
+kbd{font-size:14px}
+.panel h3,.pathbar b{font-size:16px}
+.pill{font-size:16px;background:#120f0c;border-color:var(--line)}
+.pathbar{font-size:16px;background:var(--panel2)}
+.gh{font-size:19px;background:#2a2119;color:var(--accent);padding:10px 18px;border-color:var(--line)}
+.gh .ghcount{display:none}.gh .ghbulk button{font-size:16px;padding:4px 10px}
+.row{flex-wrap:wrap;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.row:hover{background:#1f1914}.row.focus{background:#2a2119;box-shadow:inset 4px 0 0 var(--accent)}
+.row[style*="color"]{box-shadow:inset 6px 0 0 currentColor}
+.label{font-size:19px;color:var(--ink);font-weight:650;line-height:1.35}.label .id{display:none}
+.effect{font-size:16px;color:#d9cfbf;margin-top:6px}
+.main{flex:1 1 380px}
+.ctrl{width:270px;flex:0 0 270px}
+.opts button{font-size:16px;padding:9px 6px;background:#241d17;border-color:var(--line);color:var(--ink)}
+.opts button.sel{color:#171310}
+.note{font-size:16px;background:#120f0c;border-color:#4a3c2c;color:var(--ink);min-height:40px}
+.note::placeholder{color:#8a7d68}
+.mark{font-size:16px}
+.badge{display:inline-block;font-size:16px;font-weight:700;color:#171310;border-radius:999px;padding:3px 12px;
+  margin:0 0 6px;letter-spacing:.2px}
+.seen{font-size:16px;color:var(--dim);margin-left:8px}
+.pics{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.pic{margin:0;width:230px;max-width:100%;cursor:zoom-in}
+.pic img{width:100%;height:150px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block;background:#120f0c}
+.pic.art img{object-fit:contain;background:#3a3a3a}
+.pic figcaption{font-size:16px;color:var(--dim);margin-top:4px;line-height:1.35}
+.nopic{font-size:16px;color:#8a7d68;margin-top:8px;font-style:italic}
+.missing{font-size:16px;color:#e8c9a0;margin-top:8px}
+details.tech{margin-top:10px;font-size:16px;color:var(--dim)}
+details.tech summary{cursor:pointer;font-size:16px;color:#8a7d68;width:max-content}
+details.tech table{border-collapse:collapse;margin-top:6px;width:100%}
+details.tech td{border-top:1px solid var(--line);padding:4px 6px;vertical-align:top;word-break:break-word}
+details.tech code{font-size:15px;color:#cdbb9c}
+.secfoot{padding:10px 18px 18px;font-size:16px;color:var(--dim);border-bottom:2px solid var(--line);background:#1a1511}
+.secfoot b{font-weight:700}
+#zoom img{image-rendering:auto;max-width:92vw;max-height:80vh}
+#zoom .cap{font-size:16px}
+/* the at-a-glance panel: outside the sticky header, so it scrolls away like the top of a document */
+#glance{padding:18px;max-width:1200px}
+#glance h2{font-size:24px;margin:0 0 6px}
+#glance h3{font-size:18px;margin:18px 0 8px;color:var(--accent)}
+#glance h4{font-size:16px;margin:12px 0 4px;color:var(--ink)}
+#glance p,#glance li{font-size:16px}
+#glance a{color:var(--link)}
+.gtot{font-size:18px;margin:6px 0 12px}
+.legend{font-size:16px;color:var(--dim);margin:6px 0 10px}.legend div{margin:2px 0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mrow{display:grid;grid-template-columns:minmax(150px,260px) 1fr;gap:10px;align-items:center;margin:5px 0;
+  color:inherit;text-decoration:none}
+.mrow:hover .mname{text-decoration:underline}
+.mname{font-size:16px}
+.mbar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:#120f0c;border:1px solid var(--line)}
+.mbar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:16px;font-weight:700;
+  color:#171310;min-width:22px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.cols ol,.cols ul{padding-left:22px;margin:4px 0}
+.cols li{margin:4px 0}
+.waitt{font-size:16px;color:var(--dim)}
+@media (max-width:760px){
+  .row{flex-direction:column}.ctrl{width:100%;flex:1 1 auto}.main{flex:1 1 auto}
+  .pic{width:100%}.pic img{height:190px}
+  .mrow{grid-template-columns:1fr}
+  #glance{padding:14px 16px}
+  .hrow,.bar,.gh,.row,.secfoot{padding-left:16px;padding-right:16px}
+  header{position:static}.gh{top:0 !important}   /* a sticky header would cover a phone screen */
+  .bar select,.bar .btn{flex:1 1 auto}
+}
+
+
+body{max-width:980px;margin:0 auto;padding:20px 18px}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:22px;margin:28px 0 4px;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:4px}
+.f{margin:14px 0;padding-left:12px;border-left:4px solid var(--line)}
+.f .t{font-size:18px;font-weight:650}
+.sum{color:var(--dim);font-size:16px;margin:2px 0 8px}
+.pics .pic{width:200px}.pics .pic img{height:120px}
+@media print{html,body{background:#fff;color:#000}.effect,.sum,.pic figcaption{color:#333}.missing{color:#7a4a10}
+  .f{break-inside:avoid}.pic img{border-color:#999}}
+</style></head><body>
+<h1>FlowWorks status board</h1><p class='sum'>Generated 2026-10-05 19:08 from the code on disk, the newest live test result and the work list. The review sheet is where you mark things; this page is for reading.</p>
+<p class='gtot'>45 features: <b style="color:#6fae5a">13</b> works in game · <b style="color:#5390c4">21</b> built, not yet seen · <b style="color:#c9a44a">9</b> partly built · <b style="color:#c96634">2</b> not built</p>
+<h2>What I need from you</h2><ol><li><b>Pick the ladder drawing: A or B</b>: Two ladder drawings were made on 16 Sept and never picked; until you pick, the ladder borrows the vanilla spike-trap picture. Both were drawn before your Quarry-perspective ruling, so &#x27;Not right&#x27; means: redraw it in perspective.</li><li><b>Sanity-check the first-guess numbers</b>: You ruled these ship as first guesses and get tuned in live play. Say if any sounds wrong: people sink 0.3 of a tile per depth level (so pit walls stand 1.2x a person&#x27;s height); spikes deal three stabs totalling about 40 for a person, 96 for a muffalo, 160 for a thrumbo; an enclosed pond feeds 5 canal tiles per tile of water; canal digging can turn up at most 5% of the ore in a map&#x27;s rock; about 1 in 70 dug tiles turns something up.</li><li><b>Look at the 13 features that work in game, and say if they look right</b>: A test in the running game proved each one works; only your eyes can say it looks and feels right. The pictures on each one are from that test.</li><li><b>One unbuilt part has no open work item: do you still want it?</b>: Mark the feature Don&#x27;t want if not; otherwise it gets filed.</li></ol>
+<h2>Digging canals and pits</h2><p class='sum'><b style="color:#6fae5a">2</b> works in game · <b style="color:#5390c4">1</b> built, not yet seen · <b style="color:#c9a44a">1</b> partly built</p>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">You mark ground and a colonist digs a canal there; dig again to go one level deeper</div><div class="effect">There are four depths. The fourth is a pit: nothing more than the deepest dug ground.</div><div class="pics"><figure class="pic"><img src="shots/S_ladder.jpg" alt=""><figcaption>Live test, 5 Oct: a dug trench and a pit side by side (the test site&#x27;s depth ladder)</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">You can fill a canal back in, and the liquid in it is pushed along, not deleted</div><div class="effect">Only liquid with nowhere at all to go is lost, and the game counts it.</div><div class="pics"><figure class="pic"><img src="shots/J_jobs.jpg" alt=""><figcaption>Live test, 5 Oct: open vs roofed trenches in rain, a filled-in canal, and a dig order</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><span class="seen">part of it was seen working in the game</span><div class="t">Trenches slow people down: deeper is slower, flooded is slower still, and a pit can&#x27;t be crossed</div><div class="effect">A dug line is a real barrier you can build defences with.</div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Digging a canal sometimes turns up local minerals, with a letter the first time each one appears</div><div class="effect">Deep cuts can reach the minerals deep drills find; where there are none, you get chunks of local rock.</div><div class="missing">Still to build: finds following the shared list of which minerals belong where.</div></div>
+<h2>Liquid in canals and ponds</h2><p class='sum'><b style="color:#6fae5a">5</b> works in game · <b style="color:#5390c4">3</b> built, not yet seen · <b style="color:#c96634">1</b> not built</p>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel</div><div class="effect">It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the engine off in settings freezes every canal where it is.</div><div class="pics"><figure class="pic"><img src="shots/E2_flow.jpg" alt=""><figcaption>Live test, 5 Oct: water spreading down a canal from its pond</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Each liquid keeps its own nature: tar crawls while water runs, and a canal shows the liquid it came from</div><div class="effect">Water fed from water looks like water; tar fed from tar looks like tar.</div><div class="pics"><figure class="pic"><img src="shots/X_promoted.jpg" alt=""><figcaption>Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Two different liquids never mix: where their fronts meet, both stop</div><div class="effect">Drain one side and the other moves in. Old saves keep their liquids.</div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out</div><div class="effect">An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.</div><div class="pics"><figure class="pic"><img src="shots/E3_E4.jpg" alt=""><figcaption>Live test, 5 Oct: a pond feeding canals in four directions</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><span class="seen">part of it was seen working in the game</span><div class="t">A pond visibly shrinks as it pays out, and slowly refills from rain, season and seepage</div><div class="effect">You can see a source being drawn down.</div><div class="pics"><figure class="pic"><img src="shots/E3_E4.jpg" alt=""><figcaption>Live test, 5 Oct: a pond feeding canals in four directions</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Rain fills open trenches; roofed ones stay dry</div><div class="effect"></div><div class="pics"><figure class="pic"><img src="shots/J_jobs.jpg" alt=""><figcaption>Live test, 5 Oct: open vs roofed trenches in rain, a filled-in canal, and a dig order</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">A canal that runs off the edge of the map drains away</div><div class="effect">A canal ending inside the map holds its water.</div><div class="pics"><figure class="pic"><img src="shots/E5_sinks.jpg" alt=""><figcaption>Live test, 5 Oct: a canal running to the map edge, where it drains away</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Canyon floods run through your canals instead of wiping them out</div><div class="effect"></div></div>
+<div class="f"><span class="badge" style="background:#c96634">Not built</span><div class="t">Slime is nearly impossible to cross and slow to climb out of</div><div class="effect">Your words: so slippery it is nearly uncrossable.</div><div class="missing">Still to build: slime being nearly impossible to cross and slow to escape.</div></div>
+<h2>Fire and corrosion</h2><p class='sum'><b style="color:#5390c4">3</b> built, not yet seen</p>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Fire or an explosion lights tar, oil or propane, and the flame travels along the canal</div><div class="effect">Tar and propane creep like a fuse you can outrun; fuels go up fast.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">A burning canal burns for days, spreads back into its pond, and sets anyone standing in it alight</div><div class="effect">About one canal level a day; a pond burns far longer. Corrosive liquids also eat whatever stands in them (that one is switched off by default).</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Foam or rain puts burning liquid out</div><div class="effect">Foam keeps it out while the foam lies there; rain has a chance on open ground.</div></div>
+<h2>Pits: catching</h2><p class='sum'><b style="color:#6fae5a">4</b> works in game · <b style="color:#5390c4">4</b> built, not yet seen · <b style="color:#c9a44a">1</b> partly built</p>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Anything that falls into a pit cannot climb out</div><div class="effect">It stays where it is; its info line says it is trapped.</div><div class="pics"><figure class="pic"><img src="shots/P_pits.jpg" alt=""><figcaption>Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">A pit only holds a creature that fits: anything wider walks out, and narrowing a pit frees it</div><div class="effect">Your rule: the pit must be as wide as the creature.</div><div class="pics"><figure class="pic"><img src="shots/P_pits.jpg" alt=""><figcaption>Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">Falling in hurts, and your own colonists are not trapped unless you choose that in settings</div><div class="effect"></div><div class="pics"><figure class="pic"><img src="shots/P_pits.jpg" alt=""><figcaption>Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Someone in a pit can only shoot, and be shot at, from the pit&#x27;s edge</div><div class="effect">Raiders don&#x27;t waste shots on them from further away.</div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">A &#x27;jump in&#x27; button drops a colonist in on purpose; explosions and knockback can throw people in</div><div class="effect">Whoever jumps in is stuck there too.</div><div class="missing">Still to build: an explosion or knockback throwing someone into a pit.</div></div>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">A pit cover hides the hole and looks like the ground around it</div><div class="effect">A faint seam shows only at the closest zoom.</div><div class="pics"><figure class="pic"><img src="shots/X_promoted.jpg" alt=""><figcaption>Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Step on a cover and you fall through; three cover builds bear different weights</div><div class="effect">Plank lattice, woven scrap, reinforced frame.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Spikes at the bottom stab whoever falls in: badly, scaled to their size, never instantly fatal</div><div class="effect">Walking up to the spikes is harmless; only a fall triggers them.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Flood an occupied pit to drown, poison or burn whoever is in it</div><div class="effect">Water drowns non-swimmers, poison builds up, oil can be lit; open a gate to let the liquid in.</div></div>
+<h2>Pits: holding prisoners</h2><p class='sum'><b style="color:#6fae5a">1</b> works in game · <b style="color:#5390c4">3</b> built, not yet seen</p>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">A ladder: lowered, people climb out; raised, they&#x27;re stranded</div><div class="effect">It works like a prison door. Ladders only go on dug ground.</div><div class="pics"><figure class="pic"><img src="shots/P_pits.jpg" alt=""><figcaption>Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">A walled-in pit is a room; add a prisoner bed and it&#x27;s a prison you run from the edge</div><div class="effect">Wardens feed, tend, capture, recruit and convert from the lip without climbing down; nothing too wide is offered.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">An open pit bakes by day and freezes by night, wearing down a prisoner&#x27;s resistance</div><div class="effect">Colonists whose beliefs mind cruelty are upset by it; psychopaths are not.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Sluice gates and grate doors let liquid through but hold creatures and prisoners</div><div class="effect">They can&#x27;t be opened from inside the pit; open one to let a held creature walk out.</div></div>
+<h2>How it looks</h2><p class='sum'><b style="color:#6fae5a">1</b> works in game · <b style="color:#c9a44a">5</b> partly built</p>
+<div class="f"><span class="badge" style="background:#6fae5a">Works in game</span><div class="t">People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head</div><div class="effect">Someone in slime is drawn sunk into it, not standing on top.</div><div class="pics"><figure class="pic"><img src="shots/X_promoted.jpg" alt=""><figcaption>Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">A canal looks dug, not like a gravel path, and shows how full it is</div><div class="effect">Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.</div><div class="missing">Still to build: a dug canal looking dug, not like a gravel path; trenches looking like obstacles without a tooltip.</div><div class="pics"><figure class="pic"><img src="shots/S_ladder.jpg" alt=""><figcaption>Live test, 5 Oct: a dug trench and a pit side by side (the test site&#x27;s depth ladder)</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole</div><div class="effect">Every depth looks different; an occupied pit reads differently from an empty one; never like a building.</div><div class="missing">Still to build: an occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a pit reading as a big dark hole; a large pit reading as one place, not a grid of tiles; a bare pit never looking like a building; depth and fill both readable at once.</div><div class="pics"><figure class="pic"><img src="shots/REF_quarry.jpg" alt=""><figcaption>Your reference (16 Sept): the Quarry mod&#x27;s pit walls, the look the pit art is aiming for</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Spikes, ladders and gates have their own drawings, not borrowed vanilla ones</div><div class="effect">Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.</div><div class="missing">Still to build: spike art where some spike shows; ladder art, raised and lowered; a gate looking open or shut at a glance (its own art); no pit part borrowing the vanilla spike-trap drawing.</div><div class="pics"><figure class="pic art"><img src="shots/ART_ladder_A.png" alt=""><figcaption>Ladder drawing A (16 Sept): scrap-metal rails, lashed rungs</figcaption></figure><figure class="pic art"><img src="shots/ART_ladder_B.png" alt=""><figcaption>Ladder drawing B (16 Sept): pegged desert timber with a stone counterweight</figcaption></figure></div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Tar looks thick and sticky; slime looks thick and opaque, not tinted water</div><div class="effect"></div><div class="missing">Still to build: slime looking thick and opaque, not tinted water.</div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Burning liquid looks alight, and a burnt-out canal looks scorched</div><div class="effect">Today it uses the vanilla fire and ash.</div><div class="missing">Still to build: burning liquid looking alight (its own art); a burnt-out canal looking scorched (its own art).</div></div>
+<h2>Bottles, tanks and pumps</h2><p class='sum'><b style="color:#5390c4">4</b> built, not yet seen</p>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse</div><div class="effect">Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all</div><div class="effect">One full tank holds about five canal tiles of liquid.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Drills and taps bring underground liquids up, and cleaned water feeds thirst</div><div class="effect"></div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired</div><div class="effect">Never built from the menu in the campaign.</div></div>
+<h2>Rivers, shores and the land</h2><p class='sum'><b style="color:#5390c4">3</b> built, not yet seen · <b style="color:#c9a44a">2</b> partly built · <b style="color:#c96634">1</b> not built</p>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea</div><div class="effect">Nobody goes swimming in sand for fun.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">New maps get shores of the local liquid, and hot rivers steam in colour</div><div class="effect">The shores change only newly generated maps.</div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered</div><div class="effect">In the campaign the swale stays locked until found; its art comes from a real canal.</div><div class="missing">Still to build: the swale being locked in the campaign until found; swale art drawn from a real canal; crops beside a filled canal counting as watered.</div></div>
+<div class="f"><span class="badge" style="background:#c9a44a">Partly built</span><div class="t">Rivers get current, ford stones, weirs, bank works, breaches in floods, fish catches and ferries</div><div class="effect"></div><div class="missing">Still to build: silt traps, stake lines and hoppers on river banks.</div></div>
+<div class="f"><span class="badge" style="background:#c96634">Not built</span><div class="t">Pan a river for gold, or set a sluice box to sift ore from a stream</div><div class="effect"></div><div class="missing">Still to build: a sluice box slowly sifting ore from a stream; panning a river for gold.</div></div>
+<div class="f"><span class="badge" style="background:#5390c4">Built, not yet seen</span><div class="t">Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals</div><div class="effect"></div></div>
+<h2>What remains to build</h2>
+<h3>Waiting on you</h3><ul><li>Swale art drawn from a real canal. (A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered)</li></ul>
+<h3>Nothing in the way: ready to build</h3><ul><li>Finds following the shared list of which minerals belong where. (Digging a canal sometimes turns up local minerals, with a letter the first time each one appears)</li><li>Slime being nearly impossible to cross and slow to escape. (Slime is nearly impossible to cross and slow to climb out of)</li><li>An explosion or knockback throwing someone into a pit. (A &#x27;jump in&#x27; button drops a colonist in on purpose; explosions and knockback can throw people in)</li><li>A dug canal looking dug, not like a gravel path; trenches looking like obstacles without a tooltip. (A canal looks dug, not like a gravel path, and shows how full it is)</li><li>An occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a pit reading as a big dark hole; a large pit reading as one place, not a grid of tiles; a bare pit never looking like a building; depth and fill both readable at once. (Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole)</li><li>Spike art where some spike shows; ladder art, raised and lowered; no pit part borrowing the vanilla spike-trap drawing. (Spikes, ladders and gates have their own drawings, not borrowed vanilla ones)</li><li>Slime looking thick and opaque, not tinted water. (Tar looks thick and sticky; slime looks thick and opaque, not tinted water)</li><li>Burning liquid looking alight (its own art); a burnt-out canal looking scorched (its own art). (Burning liquid looks alight, and a burnt-out canal looks scorched)</li><li>The swale being locked in the campaign until found; crops beside a filled canal counting as watered. (A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered)</li><li>Silt traps, stake lines and hoppers on river banks. (Rivers get current, ford stones, weirs, bank works, breaches in floods, fish catches and ferries)</li><li>A sluice box slowly sifting ore from a stream; panning a river for gold. (Pan a river for gold, or set a sluice box to sift ore from a stream)</li></ul>
+<h3>Not built, and no open work item for it</h3><ul><li>A gate looking open or shut at a glance (its own art). (Spikes, ladders and gates have their own drawings, not borrowed vanilla ones)</li></ul>
+</body></html>

@@ -1,5 +1,5 @@
 {
- "posture": "whitelist",
+ "posture": "blacklist",
  "decisions": {},
  "reviewStatus": {
   "state": "prefill",

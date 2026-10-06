@@ -49,3 +49,27 @@ d08c8223d (review sheet + key in the mod's `review/`). Result: 15 live invocatio
   HOSE STATES station); cut stations another station already shows (47 -> 33). Keep the before/after pairs.
 - The sheet and its key live in the mod's own `review/` folder (held from deploy), not in Transient.
 - It records no verdict of ours; the owner's decisions are data, never pre-filled.
+
+## Review sheet presentation rules (owner, 2026-10-05: *"You proposed a review sheet that was not human readable. Bad medium for review."*)
+The FlowWorks capability sheet showed 139 rows of internal evidence (status twice per row, ticket ids, test-row
+names, `cs:`/`xml:` chips, "intent: Ruling 17 / Ph5"). Same data, redesigned (`src/RimMandrake/FlowWorks/human_review.py`):
+1. **The owner reads designer sentences, the agent reads evidence.** Every main-view string is something a game
+   designer would say ("Pawns sink visibly as the cut deepens"). defNames, classes, ticket ids, test rows, file
+   paths and code chips live behind a closed `details` toggle. A selftest regex guards it (with a sanity probe).
+2. **Collapse to features.** ~140 capabilities -> ~45 features in ~8 sections; the capability table stays as the
+   evidence layer and each feature's status is DERIVED from it in one function, never typed.
+3. **One status, shown once,** as a coloured badge with a 3-word label (Works in game / Built, not yet seen /
+   Partly built / Not built), plus a one-line traffic-light summary at the end of each section.
+4. **At-a-glance first:** a sections x status bar matrix, "What I need from you" (max 5, each dropping off when
+   answered/built) and "What remains to build", grouped by what it waits on — read from the ledger (`needs=owner`
+   -> you, `blocked_on` -> other work, closed/unfiled -> no work item), never hand-written.
+5. **Pictures inline** with plain captions, click to enlarge; "no picture yet" when there is none. Art the owner
+   must pick is shown side by side on its own ask row.
+6. **Readable everywhere:** >= 16px text, the owner's brown palette, one column at phone width, no sticky header on
+   a phone, no horizontal scroll. Plus a no-controls status board page that reads like a document and prints.
+7. **Render it and LOOK before handing it over.** Headless Edge over CDP from `python.exe` (Chrome MCP was down;
+   WSL Chromium lacks libasound): screenshot at 1400 and 390 wide, report console errors, overflow, clipped boxes and
+   fonts under 16px, and click one control of each kind on a COPY served on another port (never the owner's file).
+   Remove the template's `body.perf` before a full-page capture or off-screen rows render blank.
+8. A walkable-save key sheet (GimmeSomeSlack) had the same disease in a smaller dose: a 47-row renumbering table and
+   CLI flags ahead of the stations, 12-13px text. Bookkeeping goes in a closed "for the agent" section at the end.
