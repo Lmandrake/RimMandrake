@@ -27,6 +27,19 @@
   <RMFlow_DigFindLetterText>{1} turned up {0} while cutting a canal. The land here holds it — dig deeper, or mine the rock it came from.</RMFlow_DigFindLetterText>
   <RMFlow_DigFindMessage>{0} dug up {1} {2} while cutting the canal.</RMFlow_DigFindMessage>
 
+  <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the pump. -->
+  <RMFlow_PumpModeDraw>Drawing into the tank</RMFlow_PumpModeDraw>
+  <RMFlow_PumpModePour>Pouring into the channel</RMFlow_PumpModePour>
+  <RMFlow_PumpModeDesc>Switch between lifting liquid from the water beside the pump into the tank beside it, and running the tank's liquid into a dug channel beside it.</RMFlow_PumpModeDesc>
+  <RMFlow_PumpNoTank>no liquid tank beside it</RMFlow_PumpNoTank>
+  <RMFlow_PumpNothingToDraw>nothing beside it the tank can take</RMFlow_PumpNothingToDraw>
+  <RMFlow_PumpDrew>drew {0}</RMFlow_PumpDrew>
+  <RMFlow_PumpTankEmpty>the tank beside it is empty</RMFlow_PumpTankEmpty>
+  <RMFlow_PumpNoChannelForm>{0} has no channel form</RMFlow_PumpNoChannelForm>
+  <RMFlow_PumpNoRoom>no dug channel beside it has room</RMFlow_PumpNoRoom>
+  <RMFlow_PumpForeign>the channel holds a different liquid</RMFlow_PumpForeign>
+  <RMFlow_PumpPoured>poured {0}</RMFlow_PumpPoured>
+
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->
   <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
   <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>

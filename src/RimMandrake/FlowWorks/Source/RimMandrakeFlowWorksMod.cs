@@ -214,6 +214,8 @@ namespace RimMandrake.FlowWorks
         //      "tuning where a number is the experience" dial for it.
         public static bool tankLoopEnabled = true;
         public static float tankCapacityMultiplier = 1f;
+        // FLOWWORKS_BUILD_PROGRAM_1 Phase 8: the universal pump (first slice, no hoses).
+        public static bool liquidPumpEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // MANY_WATERS_DRILL_BUILDINGS_1 — THE DRILL/TAP FAMILY.
@@ -346,6 +348,7 @@ namespace RimMandrake.FlowWorks
             // ── LIQUID_BOTTLE_LOOP_1 tank (see the block above; contiguous) ─
             Scribe_Values.Look(ref tankLoopEnabled, "tankLoopEnabled", true);
             Scribe_Values.Look(ref tankCapacityMultiplier, "tankCapacityMultiplier", 1f);
+            Scribe_Values.Look(ref liquidPumpEnabled, "liquidPumpEnabled", true);
             // ── MANY_WATERS_DRILL_BUILDINGS_1 (see the block above; contiguous) ─
             Scribe_Values.Look(ref liquidDrillingEnabled, "liquidDrillingEnabled", true);
             Scribe_Values.Look(ref drillYieldChanceMultiplier, "drillYieldChanceMultiplier", 1f);
@@ -757,6 +760,12 @@ namespace RimMandrake.FlowWorks
             list.Label("Every RM_LiquidTank ships holding this many units at 1x. Raise it for a "
                      + "colony that wants to stockpile; lower it to keep a tank a modest buffer "
                      + "rather than a warehouse.");
+
+            list.CheckboxLabeled("Liquid pumps run", ref liquidPumpEnabled,
+                "A powered pump set beside a liquid tank either draws liquid from the pond, lake or dug channel beside "
+              + "it into the tank, or pours the tank into a dug channel beside it — one channel level (five tank "
+              + "units) every few seconds. A pond it draws from runs down like any other use. Off: pumps sit idle "
+              + "and draw no power.");
 
             // ══════════════════════════════════════════════════════════════
             // MANY_WATERS_DRILL_BUILDINGS_1 SECTION — kept whole and kept last.

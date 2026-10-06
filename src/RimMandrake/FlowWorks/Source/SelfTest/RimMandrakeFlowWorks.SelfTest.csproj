@@ -51,6 +51,7 @@
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />
+    <Compile Include="..\RM_PumpMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
