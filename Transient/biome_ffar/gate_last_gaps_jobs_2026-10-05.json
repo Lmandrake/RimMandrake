@@ -1,0 +1,54 @@
+[
+ {
+  "id": "gate_gap_HaarnCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_HaarnCatch",
+  "target_original": [],
+  "target_texpath": "Things/Plant/Echeveria/EcheveriaA",
+  "prompt": "RimWorld item sprite, painterly: a single freshly caught haarn laid out as a harvested catch, whole body, the same creature as the floor animal RM_Haarn. A jacket of pillar-mineral the size of a helmet, closed all round, with a scrape-line of silt; a soft eyeless hooked thing inside. Our own original design; not a plant, not generic meat. One item, centred.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "priority": 8,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Biome register: grey sea floor register: hypersaline grey-green murk, a few metres of dim diffuse light, salt pillars, white brine haze, crusted mineral surfaces; muted grey, bone and verdigris with one accent colour. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "owner_note": "any remaining MLIE, donor, alpha animals, alpha biomes, etc. art MUST be regenerated at least once for me tonight and wired into the sheets, ok?"
+ },
+ {
+  "id": "gate_gap_HessalCatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_HessalCatch",
+  "target_original": [],
+  "target_texpath": "Things/Plant/PincushionPlant/PincushionPlantA",
+  "prompt": "RimWorld item sprite, painterly: a single freshly caught hessal laid out as a harvested catch, whole body, the same creature as the floor animal RM_Hessal. Two shells grown from the sea's own crystal, frost-like, sealed, a knot of grey meat inside. Our own original design; not a plant, not generic meat. One item, centred.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "priority": 8,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Biome register: grey sea floor register: hypersaline grey-green murk, a few metres of dim diffuse light, salt pillars, white brine haze, crusted mineral surfaces; muted grey, bone and verdigris with one accent colour. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "owner_note": "any remaining MLIE, donor, alpha animals, alpha biomes, etc. art MUST be regenerated at least once for me tonight and wired into the sheets, ok?"
+ },
+ {
+  "id": "gate_gap_chakroot_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "target_original": "Chak-root",
+  "prompt": "Canon chak-root: a red tuberous root forked into three or four thick stubby tapering legs, green-tipped, with a tall tuft of finely cut dark-green carrot-like leaves from the crown. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 8,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "Fever Wood marsh; the subject keeps its own canon colours, no biome grade",
+  "style_notes": "Painted RimWorld plant sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow.",
+  "canon": "chak_root",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/chak_root/wookieepedia_legends_1.webp"
+  ],
+  "owner_note": "any remaining MLIE, donor, alpha animals, alpha biomes, etc. art MUST be regenerated at least once for me tonight and wired into the sheets, ok?"
+ }
+]
