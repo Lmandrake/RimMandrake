@@ -124,6 +124,7 @@ loads under the same name; only its location moved.
 | `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
 | `rimworld-world-editing` | Author RimWorld's PLANET from the bridge - tiles, biomes, elevation, rivers, roads, mutators, landmarks, named regions and… |
 | `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face |
+| `scaled-game-image-review` | Build a review sheet for art that will be SEEN IN THE GAME — every picture also shown at true in-game size beside a vanilla human… |
 | `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 | `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->
