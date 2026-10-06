@@ -79,6 +79,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             }
         }
 
+        private static void FuzzCase(string name, Func<List<string>> run)
+        {
+            long c0 = SequenceFuzz.Cases, s0 = SequenceFuzz.Steps;
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            Case(name, () =>
+            {
+                List<string> fails = run();
+                if (fails.Count > 0) throw new Exception(fails.Count + " failing seed(s), shrunk:\n        " + string.Join("\n        ", fails));
+            });
+            Console.WriteLine($"      {SequenceFuzz.Cases - c0} cases, {SequenceFuzz.Steps - s0} steps, {clock.Elapsed.TotalSeconds:F2} s");
+        }
+
         private static void Assert(bool cond, string msg)
         {
             if (!cond) throw new Exception(msg);
@@ -1102,6 +1114,15 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.ScorchDarken(1f) < RM_WallFaceMath.ScorchDarken(0.25f), "fuller scorch is darker");
                 AssertClose(RM_WallFaceMath.ScorchDarken(0f), 1f, "no scorch, no darkening");
             });
+
+            // ═══════════ Approach B: generated action sequences (design/RimMandrake/flowworks_offline_kernel_B.md) ══
+            // Timing is a first-class output: each family prints its case count, step count and seconds.
+            var fuzzClock = System.Diagnostics.Stopwatch.StartNew();
+            FuzzCase("Fuzz_cell_body_tank_sequences", () => SequenceFuzz.Sequences(20000, 1));
+            FuzzCase("Fuzz_flow_and_recession_orders_are_strict", () => SequenceFuzz.Orders(200000, 7));
+            FuzzCase("Fuzz_converter_never_overspends", () => SequenceFuzz.Conversion(5000, 11));
+            FuzzCase("Fuzz_pit_width_monotone", () => SequenceFuzz.PitWidth(20000, 13));
+            Console.WriteLine($"fuzz total: {SequenceFuzz.Cases} cases, {SequenceFuzz.Steps} steps, {fuzzClock.Elapsed.TotalSeconds:F2} s");
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
