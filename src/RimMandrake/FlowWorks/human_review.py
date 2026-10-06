@@ -7,13 +7,23 @@ Owner, 2026-10-05 (typed): *"make a dense, comprehensive, efficient human review
 functionality in flow works even if it's not built yet so we can see what's there, what's working or not, and what
 remains to be built easily."*
 
-One row per INTENDED capability (the CAPS table below, data). Nothing on a row is a hand-typed verdict:
+Owner, same day, on the first version (139 rows, one per capability, ticket ids and code chips in the main view):
+*"You proposed a review sheet that was not human readable. Bad medium for review."* So the page he READS shows ~45
+FEATURES in plain designer sentences (the FEATURES table), 8 sections, ONE status badge each, an at-a-glance panel
+(sections x status, what I need from you, what remains to build -- derived from the ledger), pictures inline, and the
+technical evidence behind a closed "details" toggle; plus FlowWorks_status_board.html, the same content as a plain
+document. The rules for any sheet like this: design/RimMandrake/northstar_densification_lessons.md, "Review sheet
+presentation rules".
+
+Underneath, one EVIDENCE row per intended capability (the CAPS table, data). Nothing is a hand-typed verdict:
   * BUILT is DERIVED from declared probes (a class / def / setting / texture / file that must exist on disk);
   * PROVEN-LIVE is DERIVED from a PASS row in the newest northstar/validation_v2_result_*.json (+ any proof_*.json),
     mapped to MECHANISM rows only (never the harness rows L1/L2/L4, SITE*, A0, E9, Z; L3_defs_live is a MOD row);
   * the owning item's state is read from the rimflow ledger at generation time, and the "what remains to build"
     list is derived from it (open items only).
 Status: PROVEN-LIVE (a mapped row PASSed) > BUILT-UNPROVEN (every probe present) > PARTIAL (some) > NOT BUILT (none).
+A feature's status (Works in game / Built, not yet seen / Partly built / Not built) is derived from its capabilities in
+feature_status() and nowhere else.
 
 Why this file name and folder: modcheck's mod_hash skips `human_review.py` and `northstar/`, so neither this script
 nor its sheet (northstar/review/) moves FlowWorks' recorded GREEN hash. DEPLOY_HOLD keeps northstar/review/ out of
@@ -266,10 +276,10 @@ CAPS = [
          probes=["cs:class RM_LiquidFire"], src="Ruling 22"),
     dict(id="E08", g="E", label="Explosions ignite liquid", item=BP,
          effect="An explosion (not only a fire) over burnable liquid lights it. Owed per Ph6.",
-         probes=["cs:class RM_Patch_\\w*Explosion"], src="Ph6 owed"),
+         probes=["cs:class RM_Patch_ExplosionLightsLiquid", "set:explosionIgnitesLiquidEnabled"], src="Ph6"),
     dict(id="E09", g="E", label="Burning liquid can be put out", item=BP,
          effect="Firefighting / rain can extinguish burning liquid. Owed per Ph6 (only burn-out exists).",
-         probes=["cs:class RM_Patch_\\w*Extinguish"], src="Ph6 owed"),
+         probes=["cs:IsSmothered", "set:foamSmothersLiquidFireEnabled", "set:rainDousesLiquidFireEnabled"], src="Ph6"),
     dict(id="E10", g="E", label="Liquid corrosion spike (ships OFF)", item=BP,
          effect="Corrosive liquids damage what stands in them; an older spike, default off.",
          probes=["cs:class LiquidCorrosionMapComponent", "set:liquidCorrosionEnabled"], src="Ph1 escalation"),
@@ -309,19 +319,19 @@ CAPS = [
     # ---- G prison / temperature
     dict(id="G01", g="G", label="An enclosed superdeep area is a ROOM", item="SUPERDEEP_PRISON_ROOM_1",
          effect="LAW 2 exception [D]: depth bounds a room, so a dug pit area is one room (holds trapped enemies).",
-         probes=["cs:class RM_Patch_\\w*(Region|District|RoomFromDepth)"], src="Collapse [D]"),
+         probes=["cs:class RM_PitRooms", "set:superdeepRoomsEnabled"], src="Collapse [D]"),
     dict(id="G02", g="G", label="A prisoner bed makes the pit a prison; fed and tended from the lip", item="SUPERDEEP_PRISON_ROOM_1",
          effect="With a vanilla prisoner bed the room is a prison on vanilla's terms; wardens never enter.",
-         probes=["cs:(?i)(WardenFromLip|FeedFromLip|PitPrison)"], src="Collapse Q1"),
+         probes=["cs:class RM_Patch_PathFollower_LipService", "set:wardenFromLipEnabled"], src="Collapse Q1"),
     dict(id="G03", g="G", label="Capture down (from the lip)", item="SUPERDEEP_PRISON_ROOM_1",
          effect="A warden ADJACENT to the lip captures a trapped/downed pawn without entering the pit.",
-         probes=["cs:(?i)capturedown|capture_down"], src="Collapse Q1 / [B-item]"),
+         probes=["set:captureDownEnabled"], src="Collapse Q1 / [B-item]"),
     dict(id="G04", g="G", label="Convert down (recruit from the lip)", item="SUPERDEEP_PRISON_ROOM_1",
          effect="Recruitment/conversion interaction works from the lip; nobody climbs down.",
-         probes=["cs:(?i)convertdown|convert_down"], src="Collapse Q1"),
+         probes=["cs:PrisonerConvert", "set:wardenFromLipEnabled"], src="Collapse Q1"),
     dict(id="G05", g="G", label="Too-wide creature is not offered capture down", item="SUPERDEEP_PRISON_ROOM_1",
          effect="A pawn the pit cannot hold (width rule) is not 'trapped' and gets no capture-down option.",
-         probes=["cs:(?i)capturedown|capture_down", "set:pitWidthBodySizeMultiplier"], src="Owner Q4"),
+         probes=["set:captureDownEnabled", "set:pitWidthBodySizeMultiplier"], src="Owner Q4"),
     dict(id="G06", g="G", label="Open pit heats fast in sun, chills fast at night", item="PIT_TEMPERATURE_SOFTENING_1",
          effect="An unroofed superdeep room tracks ambient faster than a roofed room (coupling multiplier).",
          probes=["cs:class RM_Patch_PitRoomCoupling", "set:pitTemperatureCoupling"], src="Collapse Q5"),
@@ -331,7 +341,7 @@ CAPS = [
                  "set:pitResistanceLossMultiplier"], src="Collapse [H]"),
     dict(id="G08", g="G", label="'Exposed Prisoner' thought: cruel, and reads as cruel", item="PIT_TEMPERATURE_SOFTENING_1",
          effect="Compassionate colonists feel it; psychopaths (built) and hard-morality cultures (NOT yet) do not.",
-         probes=["xml:defName>RM_ExposedPrisoner<", "rx:src/RimMandrake/FlowWorks/Defs:(?i)precept.*ExposedPrisoner|ExposedPrisoner.*precept"],
+         probes=["xml:defName>RM_ExposedPrisoner<", "cs:FeelsForExposedPrisoners"],
          src="Collapse [A-item]"),
     # ---- H pit hardware
     dict(id="H01", g="H", label="Ladder: lowered lets people out, raised strands them", item="LADDER_PRISON_DOOR_1",
@@ -372,7 +382,7 @@ CAPS = [
          probes=["xml:defName>RM_Fluid_Oil<", "cs:CreepingFuse"], src="Collapse Q7"),
     dict(id="H11", g="H", label="Flood an occupied pit by opening a sluice", item="PIT_FILL_EFFECTS_1",
          effect="Opening a sluice onto an occupied pit lets liquid in (the scripted route is not written yet).",
-         probes=["rx:src/RimMandrake/FlowWorks:(?i)sluice.{0,40}drown|drown.{0,40}sluice"], src="Fill-effects verify"),
+         probes=["cs:IsFlowDoor\\(edifice\\)", "cs:class RM_PitFillEffects"], src="Fill-effects verify"),
     dict(id="H12", g="H", label="No pit def borrows vanilla's spike-trap art", item="EXCAVATION_WALL_ART_1",
          effect="Nothing ships Things/Building/Security/TrapSpikeArmed (today the ladder still does).",
          probes=["!xml:TrapSpikeArmed"], bars=["pit_not_vanilla_trap"], src="Collapse verify"),
@@ -415,11 +425,11 @@ CAPS = [
          shots=["X_promoted"], src="Depth ruling"),
     dict(id="J05", g="J", label="Occupant reads as down in the hole; occupied vs empty at a glance", item="EXCAVATION_WALL_ART_1",
          effect="Draw offset (built) + wall faces rising around the pawn (art owed).",
-         probes=["cs:class RM_Patch_PitDepthDraw", "tex:(?i)(excavation|pitwall|wallface|channel)"],
+         probes=["cs:class RM_Patch_PitDepthDraw", "cs:class SectionLayer_RMExcavationWalls", "tex:(?i)(excavation|pitwall|wallface|channel)"],
          bars=["pit_occupant_below_floor", "pit_occupied_distinguishable"], shots=["REF_quarry"], src="Rulings 33 + depth"),
     dict(id="J06", g="J", label="Wall-face art for all four depths (Quarry perspective)", item="EXCAVATION_WALL_ART_1",
          effect="Shared rim + per-depth wall gradient; every depth legible and different from the others.",
-         probes=["tex:(?i)(excavation|pitwall|wallface|rim)"], bars=["pit_depth_ladder_legible", "pit_walls_have_visible_depth"],
+         probes=["cs:class SectionLayer_RMExcavationWalls", "tex:(?i)(excavation|pitwall|wallface|rim)"], bars=["pit_depth_ladder_legible", "pit_walls_have_visible_depth"],
          shots=["REF_quarry"], src="Ruling 33 / depth ruling"),
     dict(id="J07", g="J", label="Spike art: some spike visibly projects", item="EXCAVATION_WALL_ART_1",
          effect="Camera angle must let some spike show; today spikes borrow Skullspike.",
@@ -537,16 +547,16 @@ CAPS = [
     # ---- M quarry
     dict(id="M01", g="M", label="Digging a canal turns up local materials (a lump on the bank)", item="FLOWWORKS_QUARRY_DIGGING_1",
          effect="Excavation can yield biome-local materials dropped on the bank (availability by biome, configurable).",
-         probes=["cs:(?i)quarry|canaldigfind|digfind"], src="Quarry item / remaining inventory #6"),
+         probes=["cs:class RM_DigDiscovery\\b", "set:digFindsEnabled"], src="Quarry item / remaining inventory #6"),
     dict(id="M02", g="M", label="A letter on the first find of each material per map", item="FLOWWORKS_QUARRY_DIGGING_1",
          effect="The first time a material turns up on a map, a letter says what and where.",
-         probes=["cs:(?i)(firstfind|first_find)"], src="Remaining inventory #6"),
+         probes=["set:digFindLetterEnabled"], src="Remaining inventory #6"),
     dict(id="M03", g="M", label="Deep cuts reach deep-drill minerals; mineral-less biomes give rock chunks", item="FLOWWORKS_QUARRY_DIGGING_1",
          effect="Depth decides what can turn up; a biome with no minerals yields local rock chunks instead.",
-         probes=["cs:(?i)quarry\\w*(deep|depth)|deepdrillmineral"], src="Remaining inventory #6"),
+         probes=["cs:ReachesDeep", "cs:LocalRockChunk"], src="Remaining inventory #6"),
     dict(id="M04", g="M", label="Reads the mineral abundance registry", item="FLOWWORKS_QUARRY_DIGGING_1",
          effect="What can turn up comes from the shared mineral abundance registry, not a FlowWorks list.",
-         probes=["cs:(?i)mineralabundance|MineralRegistry"], src="Quarry item"),
+         probes=["cs:MineralRegistry\\.\\w+\\("], src="Quarry item"),
     dict(id="M05", g="M", label="Sluice box: a stream slowly yields ore", item="FLOWWORKS_QUARRY_DIGGING_1",
          effect="Rivers half; waits on the rivers-carry column of MINERALS_WHERE_THEY_BELONG_1.",
          probes=["rx:src/RimMandrake:(?i)defName>\\w*SluiceBox"], src="Quarry item"),
@@ -568,6 +578,339 @@ CAPS = [
          probes=["cs:class RM_PromotionProofs", "cs:class RM_LiquidFireProof", "cs:class FlowWorksDebugActions"], src="North star"),
 ]
 
+# ------------------------------------------------------------------------------------------------ THE DESIGNER VIEW
+# Owner, 2026-10-05, on the 139-row capability sheet: *"You proposed a review sheet that was not human readable. Bad
+# medium for review."* So the sheet the owner READS is built from the table below, not from CAPS: ~45 FEATURES, each
+# a sentence a designer would say, grouped into SECTIONS. CAPS stays the evidence layer — a feature's status is
+# DERIVED from its capabilities (never typed here), and the technical detail lives behind a closed "details" toggle.
+#
+# PLAIN: one designer-language phrase per capability. Used wherever a single capability surfaces in the main view
+# (the "what remains to build" list). Rule for every string here: no defName, class, setting, ticket, test or row id.
+PLAIN = {
+    "A01": "ordering a canal dug and a colonist digging it",
+    "A02": "four dug depths, the deepest being a pit",
+    "A03": "digging an existing canal one level deeper",
+    "A04": "depth and fill saved with the map",
+    "A05": "filling a canal back in",
+    "A06": "dry trenches slowing people down, deeper slower",
+    "A07": "a flooded trench being slower to cross than a dry one",
+    "A08": "a pit being just the deepest dug ground, not a building",
+    "B01": "flow moving in steady pulses",
+    "B02": "a floor on how fast the pulse can be set",
+    "B03": "a canal filling from its source in every direction",
+    "B04": "two canals off one source both filling",
+    "B05": "flow behaving the same way every time",
+    "B06": "liquid staying inside the dug channel",
+    "B07": "a settings switch that freezes all flow",
+    "B08": "a part-filled canal looking different from a full one",
+    "B09": "a canal showing the same liquid as its pond",
+    "B10": "liquid being pushed along when a canal is filled in",
+    "B11": "only liquid with nowhere at all to go being lost, and counted",
+    "B12": "no liquid leaking or appearing from nowhere",
+    "B13": "canyon floods running through the canals instead of erasing them",
+    "C01": "any pond or lake acting as a source",
+    "C02": "lakes touching the map edge never running dry",
+    "C03": "a never-dry lake staying never-dry as it shrinks",
+    "C04": "an enclosed pond feeding about five canal tiles per tile, then stopping",
+    "C05": "the pond visibly shrinking as it pays out",
+    "C06": "a drawn-down pond slowly refilling",
+    "C07": "rain filling open trenches but not roofed ones",
+    "C08": "canals draining away off the map edge",
+    "C09": "pumping a pond down into tanks",
+    "D01": "tar flowing slower than water",
+    "D02": "every wet tile remembering which liquid it holds",
+    "D03": "two liquids meeting and stopping instead of mixing",
+    "D04": "old saves keeping their liquids",
+    "D05": "a map's liquid not silently switching after it fills",
+    "D06": "different liquids looking different in a canal",
+    "D07": "tar having a thick tar surface",
+    "D08": "slime looking thick and opaque, not tinted water",
+    "D09": "slime being nearly impossible to cross and slow to escape",
+    "D10": "someone in slime being drawn sunk into it",
+    "D11": "one list of every liquid and its forms",
+    "D12": "canal liquids: water, tar, oil, poison and four slimes",
+    "D13": "the wider set of liquids as ground (brine, boiling water, propane, acid)",
+    "D14": "each liquid's look as a flood, rain, river, lake and sea",
+    "E01": "any fire lighting burnable liquid",
+    "E02": "flame travelling along a canal as a slow fuse or a fast blast",
+    "E03": "a burning canal burning for days",
+    "E04": "fire travelling back into the pond",
+    "E05": "burning liquid looking alight (its own art)",
+    "E06": "a burnt-out canal looking scorched (its own art)",
+    "E07": "anyone in burning liquid catching fire",
+    "E08": "an explosion lighting liquid",
+    "E09": "putting burning liquid out with foam or rain",
+    "E10": "corrosive liquids damaging what stands in them",
+    "F01": "nobody climbing out of a pit",
+    "F02": "a pit only holding creatures that fit its width",
+    "F03": "your own colonists not being trapped",
+    "F04": "falling into a pit hurting",
+    "F05": "a 'jump in' button",
+    "F06": "someone in a pit only trading shots with the edge",
+    "F07": "raiders not wasting shots on someone in a pit",
+    "F08": "a trapped creature not trying to flee off the map",
+    "F09": "the info line saying someone is trapped",
+    "F10": "an explosion or knockback throwing someone into a pit",
+    "G01": "a walled-in pit area counting as a room",
+    "G02": "a prisoner bed turning a pit into a prison, tended from the edge",
+    "G03": "capturing someone in a pit from the edge",
+    "G04": "recruiting or converting a prisoner from the edge",
+    "G05": "no capture offered for a creature the pit can't hold",
+    "G06": "an open pit getting hot by day and cold by night",
+    "G07": "exposure wearing down a prisoner's resistance",
+    "G08": "colonists with a conscience minding exposed prisoners",
+    "H01": "a ladder that lets people out when lowered and strands them when raised",
+    "H02": "ladders only going on dug ground",
+    "H03": "spikes at the bottom of a pit",
+    "H04": "spike damage: heavy, scaled to size, never instantly fatal",
+    "H05": "a pit cover that looks like the ground",
+    "H06": "falling through a cover when stepping on it",
+    "H07": "three cover builds bearing different weights",
+    "H08": "liquid in an occupied pit drowning non-swimmers",
+    "H09": "poison in a pit poisoning whoever is in it",
+    "H10": "oil in a pit that can be lit",
+    "H11": "flooding an occupied pit by opening a gate",
+    "H12": "no pit part borrowing the vanilla spike-trap drawing",
+    "I01": "a cheap sluice gate in any material",
+    "I02": "a grate door that holds a real prisoner",
+    "I03": "gates that can't be opened from inside the pit",
+    "I04": "letting a held creature out through a gate",
+    "I05": "liquid flowing through an open gate or any grate",
+    "I06": "a gate looking open or shut at a glance (its own art)",
+    "J01": "people sitting lower at every deeper step",
+    "J02": "people visibly lowering as they walk in",
+    "J03": "people visibly rising as they climb out",
+    "J04": "pit walls standing above the occupant's head",
+    "J05": "an occupied pit reading differently from an empty one",
+    "J06": "painted pit-wall art for all four depths",
+    "J07": "spike art where some spike shows",
+    "J08": "ladder art, raised and lowered",
+    "J09": "a dug canal looking dug, not like a gravel path",
+    "J10": "a pit reading as a big dark hole",
+    "J11": "a large pit reading as one place, not a grid of tiles",
+    "J12": "a bare pit never looking like a building",
+    "J13": "depth and fill both readable at once",
+    "J14": "trenches looking like obstacles without a tooltip",
+    "K01": "bottles you fill at a shore or tank and use",
+    "K02": "dirty bottles and washing them",
+    "K03": "buckets and barrels",
+    "K04": "boiling water cooling and blood spoiling in a bottle",
+    "K05": "bottles tagged for future cooking",
+    "K06": "a liquid tank",
+    "K07": "drills and taps bringing up underground liquid",
+    "K08": "pumps",
+    "K09": "hoses",
+    "K10": "adapters joining pipe and hose networks",
+    "K11": "ruined industrial liquid plants you find and repair",
+    "K12": "water cleaning feeding into thirst",
+    "L01": "new maps getting shores of the local liquid",
+    "L02": "the world map knowing which liquid each region has",
+    "L03": "coloured steam rising from hot rivers",
+    "L04": "nobody swimming in sand for fun",
+    "L05": "a swale slowly turning sand into soil",
+    "L06": "the swale being locked in the campaign until found",
+    "L07": "swale art drawn from a real canal",
+    "L08": "crops beside a filled canal counting as watered",
+    "L09": "river current and ford stones",
+    "L10": "weirs on ordinary rivers",
+    "L11": "silt traps, stake lines and hoppers on river banks",
+    "L12": "an untended weir breaching in a flood",
+    "L13": "fish catches, drift and ferries",
+    "M01": "digging turning up local minerals",
+    "M02": "a letter the first time each mineral turns up",
+    "M03": "deep cuts reaching deep minerals; rock chunks where there are none",
+    "M04": "finds following the shared list of which minerals belong where",
+    "M05": "a sluice box slowly sifting ore from a stream",
+    "M06": "panning a river for gold",
+    "N01": "a settings switch for every mechanic",
+    "N02": "the mod still digging dry canals with everything switched off",
+    "N03": "settings that change new maps saying so",
+    "N04": "the hooks automated tests read the game through",
+}
+
+# Plain captions for the pictures (the scene-group shots of the 2026-10-05 live test, the Quarry reference, and the
+# 2026-09-16 art candidates). A caption says what you are looking at, never which test row produced it.
+SHOT_CAPTIONS = {
+    "S_ladder": "Live test, 5 Oct: a dug trench and a pit side by side (the test site's depth ladder)",
+    "E2_flow": "Live test, 5 Oct: water spreading down a canal from its pond",
+    "E3_E4": "Live test, 5 Oct: a pond feeding canals in four directions",
+    "E5_sinks": "Live test, 5 Oct: a canal running to the map edge, where it drains away",
+    "J_jobs": "Live test, 5 Oct: open vs roofed trenches in rain, a filled-in canal, and a dig order",
+    "P_pits": "Live test, 5 Oct: pits of different widths with creatures in them; colonists at the ladder on the right",
+    "X_promoted": "Live test, 5 Oct: people standing at each depth, a water and a tar canal, a slime pit, and a pit cover",
+    "REF_quarry": "Your reference (16 Sept): the Quarry mod's pit walls, the look the pit art is aiming for",
+    "ART_ladder_A": "Ladder drawing A (16 Sept): scrap-metal rails, lashed rungs",
+    "ART_ladder_B": "Ladder drawing B (16 Sept): pegged desert timber with a stone counterweight",
+}
+ART = {   # art candidates the owner is asked to pick between (committed sources, copied into review/shots/)
+    "ART_ladder_A": "src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A.png",
+    "ART_ladder_B": "src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_B.png",
+}
+
+SECTIONS = [
+    ("dig", "1 · Digging canals and pits"),
+    ("flow", "2 · Liquid in canals and ponds"),
+    ("fire", "3 · Fire and corrosion"),
+    ("catch", "4 · Pits: catching"),
+    ("hold", "5 · Pits: holding prisoners"),
+    ("look", "6 · How it looks"),
+    ("carry", "7 · Bottles, tanks and pumps"),
+    ("land", "8 · Rivers, shores and the land"),
+]
+
+# id, section, the designer's sentence, one plain line of what the player experiences, caps (decide the status),
+# minor (count toward built / not built, never toward "works in game"), shots.
+FEATURES = [
+    # ---- 1 digging
+    dict(id="dig_canal", s="dig", title="You mark ground and a colonist digs a canal there; dig again to go one level deeper",
+         say="There are four depths. The fourth is a pit: nothing more than the deepest dug ground.",
+         caps=["A01", "A02", "A03", "A08"], minor=["A04"], shots=["S_ladder"]),
+    dict(id="dig_fill_in", s="dig", title="You can fill a canal back in, and the liquid in it is pushed along, not deleted",
+         say="Only liquid with nowhere at all to go is lost, and the game counts it.",
+         caps=["A05", "B10", "B11"], shots=["J_jobs"]),
+    dict(id="dig_slows", s="dig", title="Trenches slow people down: deeper is slower, flooded is slower still, and a pit can't be crossed",
+         say="A dug line is a real barrier you can build defences with.",
+         caps=["A06", "A07"]),
+    dict(id="dig_finds", s="dig", title="Digging a canal sometimes turns up local minerals, with a letter the first time each one appears",
+         say="Deep cuts can reach the minerals deep drills find; where there are none, you get chunks of local rock.",
+         caps=["M01", "M02", "M03", "M04"]),
+    # ---- 2 flow
+    dict(id="flow_spreads", s="flow", title="Liquid spreads along a canal from its pond, in every direction, and stays inside the dug channel",
+         say="It moves in steady pulses, the same way every time; two canals off one pond both fill. Switching the "
+             "engine off in settings freezes every canal where it is.",
+         caps=["B03", "B04", "B06", "B01", "B05", "B12", "B07"], minor=["B02"], shots=["E2_flow"]),
+    dict(id="flow_identity", s="flow", title="Each liquid keeps its own nature: tar crawls while water runs, and a canal shows the liquid it came from",
+         say="Water fed from water looks like water; tar fed from tar looks like tar.",
+         caps=["D01", "D02", "D05", "D06", "B09"], shots=["X_promoted"]),
+    dict(id="flow_no_mix", s="flow", title="Two different liquids never mix: where their fronts meet, both stop",
+         say="Drain one side and the other moves in. Old saves keep their liquids.", caps=["D03", "D04"]),
+    dict(id="flow_ponds", s="flow", title="Any pond is a source: a lake touching the map edge never runs dry; an enclosed pond runs out",
+         say="An enclosed pond feeds about five canal tiles for each tile of water, then the flow stops.",
+         caps=["C01", "C02", "C03", "C04"], shots=["E3_E4"]),
+    dict(id="flow_shrinks", s="flow", title="A pond visibly shrinks as it pays out, and slowly refills from rain, season and seepage",
+         say="You can see a source being drawn down.", caps=["C05", "C06"], shots=["E3_E4"]),
+    dict(id="flow_rain", s="flow", title="Rain fills open trenches; roofed ones stay dry",
+         say="", caps=["C07"], shots=["J_jobs"]),
+    dict(id="flow_drains", s="flow", title="A canal that runs off the edge of the map drains away",
+         say="A canal ending inside the map holds its water.", caps=["C08"], shots=["E5_sinks"]),
+    dict(id="flow_canyon", s="flow", title="Canyon floods run through your canals instead of wiping them out",
+         say="", caps=["B13"]),
+    dict(id="flow_slime", s="flow", title="Slime is nearly impossible to cross and slow to climb out of",
+         say="Your words: so slippery it is nearly uncrossable.", caps=["D09"]),
+    # ---- 3 fire
+    dict(id="fire_lights", s="fire", title="Fire or an explosion lights tar, oil or propane, and the flame travels along the canal",
+         say="Tar and propane creep like a fuse you can outrun; fuels go up fast.",
+         caps=["E01", "E02", "E08"]),
+    dict(id="fire_lasts", s="fire", title="A burning canal burns for days, spreads back into its pond, and sets anyone standing in it alight",
+         say="About one canal level a day; a pond burns far longer. Corrosive liquids also eat whatever stands in "
+             "them (that one is switched off by default).", caps=["E03", "E04", "E07", "E10"]),
+    dict(id="fire_out", s="fire", title="Foam or rain puts burning liquid out",
+         say="Foam keeps it out while the foam lies there; rain has a chance on open ground.", caps=["E09"]),
+    # ---- 4 catching
+    dict(id="pit_holds", s="catch", title="Anything that falls into a pit cannot climb out",
+         say="It stays where it is; its info line says it is trapped.", caps=["F01"], minor=["F08", "F09"], shots=["P_pits"]),
+    dict(id="pit_width", s="catch", title="A pit only holds a creature that fits: anything wider walks out, and narrowing a pit frees it",
+         say="Your rule: the pit must be as wide as the creature.", caps=["F02"], shots=["P_pits"]),
+    dict(id="pit_fall", s="catch", title="Falling in hurts, and your own colonists are not trapped unless you choose that in settings",
+         say="", caps=["F03", "F04"], shots=["P_pits"]),
+    dict(id="pit_shooting", s="catch", title="Someone in a pit can only shoot, and be shot at, from the pit's edge",
+         say="Raiders don't waste shots on them from further away.", caps=["F06", "F07"]),
+    dict(id="pit_ways_in", s="catch", title="A 'jump in' button drops a colonist in on purpose; explosions and knockback can throw people in",
+         say="Whoever jumps in is stuck there too.", caps=["F05", "F10"]),
+    dict(id="pit_cover", s="catch", title="A pit cover hides the hole and looks like the ground around it",
+         say="A faint seam shows only at the closest zoom.", caps=["H05"], shots=["X_promoted"]),
+    dict(id="pit_cover_drop", s="catch", title="Step on a cover and you fall through; three cover builds bear different weights",
+         say="Plank lattice, woven scrap, reinforced frame.", caps=["H06", "H07"]),
+    dict(id="pit_spikes", s="catch", title="Spikes at the bottom stab whoever falls in: badly, scaled to their size, never instantly fatal",
+         say="Walking up to the spikes is harmless; only a fall triggers them.", caps=["H03", "H04"]),
+    dict(id="pit_flood", s="catch", title="Flood an occupied pit to drown, poison or burn whoever is in it",
+         say="Water drowns non-swimmers, poison builds up, oil can be lit; open a gate to let the liquid in.",
+         caps=["H08", "H09", "H10", "H11"]),
+    # ---- 5 holding
+    dict(id="hold_ladder", s="hold", title="A ladder: lowered, people climb out; raised, they're stranded",
+         say="It works like a prison door. Ladders only go on dug ground.", caps=["H01"], minor=["H02"], shots=["P_pits"]),
+    dict(id="hold_prison", s="hold", title="A walled-in pit is a room; add a prisoner bed and it's a prison you run from the edge",
+         say="Wardens feed, tend, capture, recruit and convert from the lip without climbing down; nothing too wide is offered.",
+         caps=["G01", "G02", "G03", "G04", "G05"]),
+    dict(id="hold_exposure", s="hold", title="An open pit bakes by day and freezes by night, wearing down a prisoner's resistance",
+         say="Colonists whose beliefs mind cruelty are upset by it; psychopaths are not.", caps=["G06", "G07", "G08"]),
+    dict(id="hold_gates", s="hold", title="Sluice gates and grate doors let liquid through but hold creatures and prisoners",
+         say="They can't be opened from inside the pit; open one to let a held creature walk out.",
+         caps=["I01", "I02", "I03", "I04", "I05"]),
+    # ---- 6 look
+    dict(id="look_sink", s="look", title="People sink as the ground deepens and rise as they climb out; in a pit the walls stand over their head",
+         say="Someone in slime is drawn sunk into it, not standing on top.", caps=["J01", "J02", "J03", "J04", "D10"],
+         shots=["X_promoted"]),
+    dict(id="look_canal", s="look", title="A canal looks dug, not like a gravel path, and shows how full it is",
+         say="Trace, half and brimming fills look different; trenches read as obstacles without a tooltip.",
+         caps=["B08", "J09", "J14"], shots=["S_ladder"]),
+    dict(id="look_pit", s="look", title="Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hole",
+         say="Every depth looks different; an occupied pit reads differently from an empty one; never like a building.",
+         caps=["J05", "J06", "J10", "J11", "J12", "J13"], shots=["REF_quarry"]),
+    dict(id="look_parts", s="look", title="Spikes, ladders and gates have their own drawings, not borrowed vanilla ones",
+         say="Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.",
+         caps=["J07", "J08", "I06", "H12"], shots=["ART_ladder_A", "ART_ladder_B"]),
+    dict(id="look_liquids", s="look", title="Tar looks thick and sticky; slime looks thick and opaque, not tinted water",
+         say="", caps=["D07", "D08"]),
+    dict(id="look_fire", s="look", title="Burning liquid looks alight, and a burnt-out canal looks scorched",
+         say="Today it uses the vanilla fire and ash.", caps=["E05", "E06"]),
+    # ---- 7 carry
+    dict(id="carry_bottles", s="carry", title="Bottles, buckets and barrels: fill at a shore or tank, use, wash and reuse",
+         say="Boiling water cools and blood spoils in a bottle; bottles are tagged for a future cooking mod.",
+         caps=["K01", "K02", "K03", "K04", "K05"]),
+    dict(id="carry_tanks", s="carry", title="Tanks store liquid; pumps move it from ponds and canals; hoses and adapters connect it all",
+         say="One full tank holds about five canal tiles of liquid.", caps=["K06", "K08", "C09", "K09", "K10"]),
+    dict(id="carry_drills", s="carry", title="Drills and taps bring underground liquids up, and cleaned water feeds thirst",
+         say="", caps=["K07", "K12"]),
+    dict(id="carry_industry", s="carry", title="Ruined industrial liquid plants (desalination, tar refinery, pumping station) are found and repaired",
+         say="Never built from the menu in the campaign.", caps=["K11"]),
+    # ---- 8 land
+    dict(id="land_liquids", s="land", title="Many liquids exist as ground: brine, boiling water, propane, acid and more, each with its own flood, rain, river, lake and sea",
+         say="Nobody goes swimming in sand for fun.", caps=["D11", "D12", "D13", "D14"], minor=["L04"]),
+    dict(id="land_shores", s="land", title="New maps get shores of the local liquid, and hot rivers steam in colour",
+         say="The shores change only newly generated maps.", caps=["L01", "L02", "L03"]),
+    dict(id="land_swale", s="land", title="A water-fed canal improves the land: a swale turns sand into soil, and crops beside it count as watered",
+         say="In the campaign the swale stays locked until found; its art comes from a real canal.",
+         caps=["L05", "L06", "L07", "L08"]),
+    dict(id="land_rivers", s="land", title="Rivers get current, ford stones, weirs, bank works, breaches in floods, fish catches and ferries",
+         say="", caps=["L09", "L10", "L11", "L12", "L13"]),
+    dict(id="land_panning", s="land", title="Pan a river for gold, or set a sluice box to sift ore from a stream",
+         say="", caps=["M05", "M06"]),
+    dict(id="land_settings", s="land", title="Every mechanic can be switched off in Mod Settings, and with everything off the mod still digs dry canals",
+         say="", caps=["N01", "N02", "N03"], minor=["N04"]),
+]
+
+# Plain status vocabulary: ONE badge per feature, shown once.
+F_WORKS, F_BUILT, F_PARTLY, F_NOT = "works", "built", "partly", "not"
+F_LABEL = {F_WORKS: "Works in game", F_BUILT: "Built, not yet seen", F_PARTLY: "Partly built", F_NOT: "Not built"}
+F_COLOR = {F_WORKS: "#6fae5a", F_BUILT: "#5390c4", F_PARTLY: "#c9a44a", F_NOT: "#c96634"}
+F_ORDER = (F_WORKS, F_BUILT, F_PARTLY, F_NOT)
+F_MEANS = {
+    F_WORKS: "a test in the running game passed for every part of it. Whether it LOOKS right is your call.",
+    F_BUILT: "everything is built, but it has not yet been seen working in a running game.",
+    F_PARTLY: "some parts are built and some are not.",
+    F_NOT: "nothing of it is built yet.",
+}
+
+# What I need from you: at most five, each shown only while it is still open (`open_if` reads derived state).
+ASKS = [
+    dict(id="ask_ladder", title="Pick the ladder drawing: A or B",
+         say="Two ladder drawings were made on 16 Sept and never picked; until you pick, the ladder borrows the vanilla "
+             "spike-trap picture. Both were drawn before your Quarry-perspective ruling, so 'Not right' means: redraw "
+             "it in perspective.",
+         short="Two drawings from 16 Sept, never picked; the ladder borrows the vanilla spike trap until you do.",
+         shots=["ART_ladder_A", "ART_ladder_B"], kind="pick", open_if=("cap_missing", "J08")),
+    dict(id="ask_numbers", title="Sanity-check the first-guess numbers",
+         say="You ruled these ship as first guesses and get tuned in live play. Say if any sounds wrong: "
+             "people sink 0.3 of a tile per depth level (so pit walls stand 1.2x a person's height); spikes deal three "
+             "stabs totalling about 40 for a person, 96 for a muffalo, 160 for a thrumbo; an enclosed pond feeds 5 "
+             "canal tiles per tile of water; canal digging can turn up at most 5% of the ore in a map's rock; "
+             "about 1 in 70 dug tiles turns something up.",
+         short="How far people sink, spike damage, how far a pond reaches, how much digging turns up.",
+         kind="numbers", open_if=None),
+]
+
+
 # ------------------------------------------------------------------------------------------------ probes
 _cache = {}
 
@@ -585,7 +928,11 @@ def _texts(kind):
             for f in fn:
                 if f.endswith(ext):
                     try:
-                        out.append(open(os.path.join(dp, f), encoding="utf-8", errors="replace").read())
+                        t = open(os.path.join(dp, f), encoding="utf-8", errors="replace").read()
+                        if kind == "cs":   # a probe must find CODE: a comment naming a class is not the class
+                            t = re.sub(r"/\*.*?\*/", " ", t, flags=re.S)
+                            t = re.sub(r"(?m)^\s*//.*$|(?<=[;{}),])\s*//.*$", " ", t)
+                        out.append(t)
                     except OSError:
                         pass
     _cache[kind] = out
@@ -758,115 +1105,515 @@ def ensure_shots(out_dir):
     return got
 
 
+# ------------------------------------------------------------------------------------------------ designer derivation
+def ledger_needs(ids):
+    """-> {item: (needs, blocked_on)} from the rimflow ledger; {} when it cannot be read (waits then read 'unknown')."""
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
+    try:
+        from rimflow import cli
+        _, w = cli.load()
+    except (Exception, SystemExit):
+        return {}
+    out = {}
+    for i in ids:
+        it = w.items.get(i)
+        if it:
+            out[i] = (getattr(it, "needs", "") or "", getattr(it, "blocked_on", None) or "")
+    return out
+
+
+def feature_status(f, capd):
+    """-> (status key, part_seen). The ONLY place a feature's status is decided; it reads its capabilities' derived
+    statuses and nothing typed. core caps decide 'works in game'; minor caps can only hold a feature back from built."""
+    core = [capd[c]["d"]["status"] for c in f["caps"]]
+    allst = core + [capd[c]["d"]["status"] for c in f.get("minor", [])]
+    built = ("PROVEN-LIVE", "BUILT-UNPROVEN")
+    if all(s == "NOT BUILT" for s in allst):
+        return F_NOT, False
+    if not all(s in built for s in allst):
+        return F_PARTLY, any(s == "PROVEN-LIVE" for s in core)
+    if all(s == "PROVEN-LIVE" for s in core):
+        return F_WORKS, True
+    return F_BUILT, any(s == "PROVEN-LIVE" for s in core)
+
+
+WAITS = ("you", "other", "nothing", "unfiled", "unknown")
+WAITS_HEAD = {"you": "Waiting on you", "other": "Waiting on other work first",
+              "nothing": "Nothing in the way: ready to build", "unfiled": "Not built, and no open work item for it",
+              "unknown": "Could not read the work list (unknown)"}
+
+
+def waits_on(item, states, needs):
+    st = states.get(item, ("?", ""))[0]
+    if st == "UNMEASURED":
+        return "unknown"
+    if st not in OPEN_STATES:
+        return "unfiled"
+    nd, blocked = needs.get(item, ("", ""))
+    if nd == "owner":
+        return "you"
+    if blocked:
+        return "other"
+    return "nothing"
+
+
+def remains_plain(feats, capd, states, needs):
+    """-> {waits: [(feature, [phrases])]}: every feature with an unbuilt part, its missing parts in plain words, grouped
+    by what it waits on (read from the ledger: needs=owner -> you; blocked_on -> other work; closed/unfiled -> no item)."""
+    out = {w: [] for w in WAITS}
+    for f in feats:
+        by = {}
+        for c in f["caps"] + f.get("minor", []):
+            if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL"):
+                w = waits_on(capd[c]["item"], states, needs)
+                by.setdefault(w, []).append(PLAIN.get(c, capd[c]["label"]))
+        for w, ph in by.items():
+            out[w].append((f, ph))
+    return {w: v for w, v in out.items() if v}
+
+
+def asks_open(capd, feats_d):
+    out = []
+    for a in ASKS:
+        cond = a.get("open_if")
+        if cond and cond[0] == "cap_missing" and capd[cond[1]]["d"]["status"] in ("PROVEN-LIVE", "BUILT-UNPROVEN"):
+            continue
+        out.append(a)
+    return out[:5]
+
+
 # ------------------------------------------------------------------------------------------------ the sheet
+CSS = r"""<style id="FWSTYLE">
+/* FlowWorks designer sheet: the owner's warm dark-brown palette, text >= 16px, one column on a phone. */
+:root{--bg:#171310;--panel:#211b16;--panel2:#1c1713;--line:#3a2f24;--ink:#efe7d9;--dim:#b3a892;--accent:#e0803a;
+  --link:#f0c08a;--ok:#6fae5a;--warn:#c9a44a;--bad:#c96634;--info:#5390c4}
+html,body{font:17px/1.5 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;margin:0}
+.hrow h1{font-size:21px}.sub{font-size:16px;color:var(--dim)}
+.panel{font-size:16px;background:var(--panel2)}.panel h3{font-size:16px}
+#posturePanel{display:none}
+.crit{font-size:16px;color:var(--dim)}
+.btn{font-size:16px;padding:6px 12px;background:#2a221b;border-color:var(--line)}
+.btn:hover{background:#352a20}.btn.pri,.btn.on{background:#3a2a1c;border-color:#6b4a2a;color:var(--link)}
+.bar{background:#1c1713;border-top-color:var(--line)}
+.bar input[type=search],.bar select{font-size:16px;background:#120f0c;border-color:var(--line);min-width:0}
+.bar input[type=search]{flex:1 1 220px}
+#fmark,#btnGrid,#cell{display:none !important}
+kbd{font-size:14px}
+.panel h3,.pathbar b{font-size:16px}
+.pill{font-size:16px;background:#120f0c;border-color:var(--line)}
+.pathbar{font-size:16px;background:var(--panel2)}
+.gh{font-size:19px;background:#2a2119;color:var(--accent);padding:10px 18px;border-color:var(--line)}
+.gh .ghcount{display:none}.gh .ghbulk button{font-size:16px;padding:4px 10px}
+.row{flex-wrap:wrap;gap:14px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.row:hover{background:#1f1914}.row.focus{background:#2a2119;box-shadow:inset 4px 0 0 var(--accent)}
+.row[style*="color"]{box-shadow:inset 6px 0 0 currentColor}
+.label{font-size:19px;color:var(--ink);font-weight:650;line-height:1.35}.label .id{display:none}
+.effect{font-size:16px;color:#d9cfbf;margin-top:6px}
+.main{flex:1 1 380px}
+.ctrl{width:270px;flex:0 0 270px}
+.opts button{font-size:16px;padding:9px 6px;background:#241d17;border-color:var(--line);color:var(--ink)}
+.opts button.sel{color:#171310}
+.note{font-size:16px;background:#120f0c;border-color:#4a3c2c;color:var(--ink);min-height:40px}
+.note::placeholder{color:#8a7d68}
+.mark{font-size:16px}
+.badge{display:inline-block;font-size:16px;font-weight:700;color:#171310;border-radius:999px;padding:3px 12px;
+  margin:0 0 6px;letter-spacing:.2px}
+.seen{font-size:16px;color:var(--dim);margin-left:8px}
+.pics{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.pic{margin:0;width:230px;max-width:100%;cursor:zoom-in}
+.pic img{width:100%;height:150px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block;background:#120f0c}
+.pic.art img{object-fit:contain;background:#3a3a3a}
+.pic figcaption{font-size:16px;color:var(--dim);margin-top:4px;line-height:1.35}
+.nopic{font-size:16px;color:#8a7d68;margin-top:8px;font-style:italic}
+.missing{font-size:16px;color:#e8c9a0;margin-top:8px}
+details.tech{margin-top:10px;font-size:16px;color:var(--dim)}
+details.tech summary{cursor:pointer;font-size:16px;color:#8a7d68;width:max-content}
+details.tech table{border-collapse:collapse;margin-top:6px;width:100%}
+details.tech td{border-top:1px solid var(--line);padding:4px 6px;vertical-align:top;word-break:break-word}
+details.tech code{font-size:15px;color:#cdbb9c}
+.secfoot{padding:10px 18px 18px;font-size:16px;color:var(--dim);border-bottom:2px solid var(--line);background:#1a1511}
+.secfoot b{font-weight:700}
+#zoom img{image-rendering:auto;max-width:92vw;max-height:80vh}
+#zoom .cap{font-size:16px}
+/* the at-a-glance panel: outside the sticky header, so it scrolls away like the top of a document */
+#glance{padding:18px;max-width:1200px}
+#glance h2{font-size:24px;margin:0 0 6px}
+#glance h3{font-size:18px;margin:18px 0 8px;color:var(--accent)}
+#glance h4{font-size:16px;margin:12px 0 4px;color:var(--ink)}
+#glance p,#glance li{font-size:16px}
+#glance a{color:var(--link)}
+.gtot{font-size:18px;margin:6px 0 12px}
+.legend{font-size:16px;color:var(--dim);margin:6px 0 10px}.legend div{margin:2px 0}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mrow{display:grid;grid-template-columns:minmax(150px,260px) 1fr;gap:10px;align-items:center;margin:5px 0;
+  color:inherit;text-decoration:none}
+.mrow:hover .mname{text-decoration:underline}
+.mname{font-size:16px}
+.mbar{display:flex;height:26px;border-radius:5px;overflow:hidden;background:#120f0c;border:1px solid var(--line)}
+.mbar i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:16px;font-weight:700;
+  color:#171310;min-width:22px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.cols ol,.cols ul{padding-left:22px;margin:4px 0}
+.cols li{margin:4px 0}
+.waitt{font-size:16px;color:var(--dim)}
+@media (max-width:760px){
+  .row{flex-direction:column}.ctrl{width:100%;flex:1 1 auto}.main{flex:1 1 auto}
+  .pic{width:100%}.pic img{height:190px}
+  .mrow{grid-template-columns:1fr}
+  #glance{padding:14px 16px}
+  .hrow,.bar,.gh,.row,.secfoot{padding-left:16px;padding-right:16px}
+  header{position:static}.gh{top:0 !important}   /* a sticky header would cover a phone screen */
+  .bar select,.bar .btn{flex:1 1 auto}
+}
+</style>
+"""
+
 RENDER_JS = r"""<script id="RENDER">
 window.itemBody = it => {
   const e = window.esc, s = it.fw || {};
-  const pr = (s.probes || []).map(p => `<span class="mark ${p[1] ? '' : 'inferred'}" style="${p[1] ? 'color:#8fd3a8;border-color:#2b5a3b' : ''}" title="declared probe">${p[1] ? '✓' : '✗'} ${e(p[0])}</span>`).join('');
-  const lv = (s.live || []).map(r => `<span class="mark" style="${r[1] === 'PASS' ? 'color:#5ac37f;border-color:#2b5a3b' : 'color:#e06c6c;border-color:#5a2b2b'}" title="${e(r[2] || '')}">${e(r[0])} ${e(r[1])}</span>`).join('');
-  const bars = (s.bars || []).map(b => `<span class="mark absent" title="north-star bar">★ ${e(b)}</span>`).join('');
-  return `<div class="effect"><b style="color:${e(s.color)}">${e(s.status)}</b> · ${e(it.effect)}</div>
-    <div class="marks"><span class="mark absent">${e(s.item)} <b>${e(s.itemState)}</b></span><span class="mark absent">intent: ${e(s.src)}</span>${bars}</div>
-    <div class="marks">${lv}${pr}</div>`;
+  const pics = (s.pics || []).map(p => `<figure class="pic${p[2] ? ' art' : ''}" data-zoom="${e(p[0])}" data-cap="${e(p[1])}">`
+    + `<img src="${e(p[0])}" loading="lazy" decoding="async" alt="${e(p[1])}"><figcaption>${e(p[1])}</figcaption></figure>`).join('');
+  const badge = s.status ? `<span class="badge" style="background:${e(s.color)}" title="${e(s.means)}">${e(s.label)}</span>`
+    + (s.seen ? '<span class="seen">part of it was seen working in the game</span>' : '') : '';
+  const pre = s.pre ? `<div class="waitt" style="margin-top:6px">${e(s.pre)}</div>` : '';
+  const missing = (s.missing || []).length ? `<div class="missing">Still to build: ${e(s.missing.join('; '))}.</div>` : '';
+  const tech = (s.tech || []).map(r => `<tr><td>${e(r[0])}</td><td>${e(r[1])}</td><td><code>${e(r[2])}</code></td></tr>`).join('');
+  return `${badge}<div class="effect">${e(it.say || '')}</div>${missing}${pre}`
+    + (pics ? `<div class="pics">${pics}</div>` : (s.status ? '<div class="nopic">no picture yet</div>' : ''))
+    + (tech ? `<details class="tech"><summary>details</summary><table>${tech}</table></details>` : '');
+};
+window.itemOptions = it => {
+  const want = (it.fw || {}).opts || ['ok', 'wrong', 'unwanted'];
+  return want.map(k => OPTS.find(o => o.key === k)).filter(Boolean);
 };
 </script>
 """
 
+AFTER_JS = r"""<script id="FWAFTER">
+"use strict";
+/* Plain-language chrome on top of the template, run after every paintCounts (which render() also calls): section
+   summary lines at the END of each section, a plain progress counter, no bulk buttons on the asks group, and the
+   glance panel's jump links. Hotkeys a row does not offer are swallowed rather than recorded. */
+(function () {
+  const FW = JSON.parse(document.getElementById('FWDATA').textContent);
+  const LBL = FW.labels, COL = FW.colors, ORD = FW.order;
+  const mine = it => { const d = decOf(it.id);
+    return !!(d && d.decision && (d.decidedAt || isOverride(it.id) || prefillOf(it) == null)); };
+  function sectionLine(group) {
+    const rows = ITEMS.filter(it => it.group === group && it.fw && it.fw.status);
+    if (!rows.length) return '';
+    const n = {}; for (const it of rows) n[it.fw.status] = (n[it.fw.status] || 0) + 1;
+    const marked = rows.filter(mine).length;
+    return ORD.filter(k => n[k]).map(k => `<b style="color:${COL[k]}">${n[k]}</b> ${LBL[k].toLowerCase()}`).join(' · ')
+      + ` &nbsp;—&nbsp; you have marked ${marked} of ${rows.length}`;
+  }
+  function fwAfter() {
+    const list = document.getElementById('list');
+    for (const f of list.querySelectorAll('.secfoot')) f.remove();
+    const heads = [...list.querySelectorAll('.gh')];
+    heads.forEach((gh, i) => {
+      const name = gh.firstChild ? gh.firstChild.textContent : '';
+      if (name === FW.askGroup) for (const b of gh.querySelectorAll('[data-bulk]')) b.remove();
+      const line = sectionLine(name);
+      if (!line) return;
+      let last = gh, n = gh.nextElementSibling;
+      while (n && !n.classList.contains('gh')) { last = n; n = n.nextElementSibling; }
+      last.insertAdjacentHTML('afterend', `<div class="secfoot">${line}</div>`);
+    });
+    const total = ITEMS.length, done = ITEMS.filter(mine).length;
+    const pre = ITEMS.filter(it => decisionOf(it.id) && !mine(it)).length;
+    const notes = ITEMS.filter(it => String((decOf(it.id) || {}).note || '').trim()).length;
+    const p = document.getElementById('progress');
+    if (p) p.innerHTML = `<b>${done}</b> of ${total} marked by you` + (pre ? ` · ${pre} pre-marked by me` : '')
+      + (notes ? ` · ${notes} with a note` : '');
+    const g = document.getElementById('gprog');
+    if (g) g.textContent = `${done} of ${total} marked by you so far`;
+  }
+  const orig = window.paintCounts;
+  window.paintCounts = function () { orig.apply(this, arguments); try { fwAfter(); } catch (e) { console.error(e); } };
+  if (document.querySelector('#list .row')) fwAfter();
+  addEventListener('keydown', e => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || e.metaKey || e.ctrlKey || e.altKey) return;
+    const op = OPTS.find(o => o.hotkey === e.key); if (!op) return;
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    if (!window.itemOptions(it).some(o => o.key === op.key)) { e.stopImmediatePropagation(); e.preventDefault(); }
+  }, true);
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-goto]'); if (!a) return;
+    e.preventDefault();
+    for (const id of ['q', 'fstate', 'fgroup']) { const x = document.getElementById(id); if (x && x.value) { x.value = ''; render(); } }
+    const row = document.querySelector(`.row[data-id="${a.dataset.goto}"]`); if (!row) return;
+    const hh = document.querySelector('header').offsetHeight + 50;
+    scrollTo({ top: row.getBoundingClientRect().top + scrollY - hh, behavior: 'smooth' });
+    focusIdx = shown.findIndex(x => x.id === a.dataset.goto); paintFocus(false);
+  });
+})();
+</script>
+"""
 
-def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, write_decisions=True):
+
+def _esc(x):
+    return html.escape(str(x))
+
+
+def _cap1(s):
+    return s[:1].upper() + s[1:] if s else s
+
+
+def ensure_art(out_dir):
+    """Copy the art candidates the owner is asked to pick between into <out_dir>/shots/ (PNG, alpha kept)."""
+    got = {}
+    for name, src in ART.items():
+        rel = "shots/%s.png" % name
+        target = os.path.join(out_dir, rel)
+        committed = os.path.join(REVIEW, rel)
+        for s in (target, committed, os.path.join(REPO, src)):
+            if os.path.exists(s):
+                if s != target:
+                    os.makedirs(os.path.dirname(target), exist_ok=True)
+                    with open(s, "rb") as a, open(target, "wb") as b:
+                        b.write(a.read())
+                got[name] = rel
+                break
+    return got
+
+
+def glance_html(sec_counts, totals, nfeat, asks, rem, board_rel):
+    seg = []
+    for key, name in SECTIONS:
+        n = sec_counts.get(key, {})
+        tot = sum(n.values())
+        if not tot:
+            continue
+        bars = "".join('<i style="flex:%d;background:%s" title="%d %s">%d</i>' % (n[k], F_COLOR[k], n[k], F_LABEL[k].lower(), n[k])
+                       for k in F_ORDER if n.get(k))
+        first = next(f["id"] for f in FEATURES if f["s"] == key)
+        seg.append('<a class="mrow" href="#" data-goto="%s"><span class="mname">%s</span><span class="mbar">%s</span></a>'
+                   % (_esc(first), _esc(name.split(" · ", 1)[-1]), bars))
+    legend = "".join('<div><i class="dot" style="background:%s"></i><b>%s</b>: %s</div>' % (F_COLOR[k], F_LABEL[k], _esc(F_MEANS[k]))
+                     for k in F_ORDER)
+    tot_line = " · ".join('<b style="color:%s">%d</b> %s' % (F_COLOR[k], totals.get(k, 0), F_LABEL[k].lower()) for k in F_ORDER)
+    ask_li = "".join('<li><a href="#" data-goto="%s"><b>%s</b></a><br><span class="waitt">%s</span></li>'
+                     % (_esc(a["id"]), _esc(a["title"]), _esc(a.get("short") or a["say"])) for a in asks)
+    rem_html = ""
+    for w in WAITS:
+        if w not in rem:
+            continue
+        rem_html += "<h4>%s</h4><ul>" % _esc(WAITS_HEAD[w])
+        for f, ph in rem[w]:
+            rem_html += '<li>%s <a href="#" data-goto="%s" class="waitt">(%s)</a></li>' % (
+                _esc(_cap1("; ".join(ph))) + ".", _esc(f["id"]), _esc(dict(SECTIONS)[f["s"]].split(" · ", 1)[-1]))
+        rem_html += "</ul>"
+    return (
+        '<section id="glance">'
+        '<h2>FlowWorks at a glance</h2>'
+        '<p class="gtot">%d features: %s</p>'
+        '<div>%s</div>'
+        '<div class="legend">%s</div>'
+        '<p><a href="%s" target="_blank" rel="noopener">Read it as a plain status board, top to bottom (printable)</a>'
+        ' &nbsp;·&nbsp; <span id="gprog"></span></p>'
+        '<div class="cols"><div><h3>What I need from you</h3><ol>%s</ol>'
+        '<p class="waitt">Everything below is yours to mark too: <b>OK</b>, <b>Not right</b> (say why in the note) or '
+        "<b>Don't want</b>. Only unbuilt features still on the work list start pre-marked OK.</p></div>"
+        '<div><h3>What remains to build</h3>%s</div></div>'
+        '</section>'
+    ) % (nfeat, tot_line, "".join(seg), legend, _esc(board_rel), ask_li, rem_html or "<p>Nothing: every part is built.</p>")
+
+
+def board_html(feats_d, sec_counts, totals, asks, rem, stamp):
+    """A plain status board that reads top to bottom like a document: no controls, printable."""
+    css = CSS.replace('<style id="FWSTYLE">', "").replace("</style>", "") + r"""
+body{max-width:980px;margin:0 auto;padding:20px 18px}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:22px;margin:28px 0 4px;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:4px}
+.f{margin:14px 0;padding-left:12px;border-left:4px solid var(--line)}
+.f .t{font-size:18px;font-weight:650}
+.sum{color:var(--dim);font-size:16px;margin:2px 0 8px}
+.pics .pic{width:200px}.pics .pic img{height:120px}
+@media print{html,body{background:#fff;color:#000}.effect,.sum,.pic figcaption{color:#333}.missing{color:#7a4a10}
+  .f{break-inside:avoid}.pic img{border-color:#999}}
+"""
+    out = ['<!doctype html><html lang="en"><head><meta charset="utf-8">'
+           '<meta name="viewport" content="width=device-width,initial-scale=1"><title>FlowWorks status board</title>'
+           '<style>%s</style></head><body>' % css]
+    out.append("<h1>FlowWorks status board</h1><p class='sum'>Generated %s from the code on disk, the newest live test "
+               "result and the work list. The review sheet is where you mark things; this page is for reading.</p>" % _esc(stamp))
+    out.append("<p class='gtot'>%d features: %s</p>" % (len(feats_d), " · ".join(
+        '<b style="color:%s">%d</b> %s' % (F_COLOR[k], totals.get(k, 0), F_LABEL[k].lower()) for k in F_ORDER)))
+    if asks:
+        out.append("<h2>What I need from you</h2><ol>%s</ol>" % "".join(
+            "<li><b>%s</b>: %s</li>" % (_esc(a["title"]), _esc(a["say"])) for a in asks))
+    for key, name in SECTIONS:
+        fs = [f for f in feats_d if f["s"] == key]
+        if not fs:
+            continue
+        n = sec_counts.get(key, {})
+        out.append("<h2>%s</h2><p class='sum'>%s</p>" % (_esc(name.split(" · ", 1)[-1]), " · ".join(
+            '<b style="color:%s">%d</b> %s' % (F_COLOR[k], n[k], F_LABEL[k].lower()) for k in F_ORDER if n.get(k))))
+        for f in fs:
+            pics = "".join('<figure class="pic%s"><img src="%s" alt=""><figcaption>%s</figcaption></figure>'
+                           % (" art" if p[2] else "", _esc(p[0]), _esc(p[1])) for p in f["pics"][:2])
+            out.append('<div class="f"><span class="badge" style="background:%s">%s</span>%s<div class="t">%s</div>'
+                       '<div class="effect">%s</div>%s%s</div>' % (
+                           F_COLOR[f["status"]], F_LABEL[f["status"]],
+                           '<span class="seen">part of it was seen working in the game</span>' if f["seen"] else "",
+                           _esc(f["title"]), _esc(f["say"]),
+                           ('<div class="missing">Still to build: %s.</div>' % _esc("; ".join(f["missing"]))) if f["missing"] else "",
+                           ('<div class="pics">%s</div>' % pics) if pics else ""))
+    out.append("<h2>What remains to build</h2>")
+    for w in WAITS:
+        if w in rem:
+            out.append("<h3>%s</h3><ul>%s</ul>" % (_esc(WAITS_HEAD[w]), "".join(
+                "<li>%s (%s)</li>" % (_esc(_cap1("; ".join(ph))) + ".", _esc(f["title"])) for f, ph in rem[w])))
+    out.append("</body></html>")
+    return "\n".join(out)
+
+
+BOARD_NAME = "FlowWorks_status_board.html"
+PRE_NOTE = ("Pre-marked OK by me: the missing part is on the work list, so I assumed you still want it. "
+            "Mark Don't want if you don't.")
+
+
+def build(out=DEFAULT_OUT, result=None, states=None, probe_fn=probe, caps=None, write_decisions=True, needs=None,
+          feats=None):
     caps = caps if caps is not None else CAPS
+    feats = feats if feats is not None else FEATURES
     out = os.path.abspath(out)
     out_dir = os.path.dirname(out)
     os.makedirs(out_dir, exist_ok=True)
     rlabel, rows = latest_result(result)
-    states = states if states is not None else ledger_states(sorted({c["item"] for c in caps}))
+    item_ids = sorted({c["item"] for c in caps})
+    if states is None:
+        states = ledger_states(item_ids)
+        needs = ledger_needs(item_ids) if needs is None else needs
+    needs = needs or {}
     shots = ensure_shots(out_dir)
+    shots.update(ensure_art(out_dir))
     must, cannot, walk_state = walk_bars()
-    caps_d = []
-    for c in caps:
-        d = derive_status(c, rows, probe_fn)
-        caps_d.append(dict(c, d=d))
+    caps_d = [dict(c, d=derive_status(c, rows, probe_fn)) for c in caps]
+    capd = {c["id"]: c for c in caps_d}
     counts = {s: sum(1 for c in caps_d if c["d"]["status"] == s) for s in STATUSES}
-    rem = remains(caps_d, states)
+    rem_items = remains(caps_d, states)
     covered = {b for c in caps for b in c.get("bars", [])}
     uncovered = [b for b in must + cannot if b not in covered]
 
-    items = []
-    for c in caps_d:
-        d = c["d"]
-        st_item = states.get(c["item"], ("?", ""))[0]
-        thumb = next((shots[s] for s in c.get("shots", []) if s in shots), None)
-        wanted = d["status"] in ("NOT BUILT", "PARTIAL") and st_item in OPEN_STATES
-        it = dict(id=c["id"], label="[%s] %s" % (d["status"], c["label"]), group=GROUPS[c["g"]], effect=c["effect"],
-                  prefill="wanted" if wanted else None,
-                  fw=dict(status=d["status"], color=COLOR[d["status"]], item=c["item"], itemState=st_item, src=c.get("src", ""),
-                          bars=c.get("bars", []), probes=d["probes"],
-                          live=[(r, s, rows.get(r, ("", ""))[1][:200]) for r, s in d["live"]]))
-        if thumb:
-            it["thumb"] = thumb
-        items.append(it)
+    def pics_of(names):
+        return [(shots[n], SHOT_CAPTIONS.get(n, n), n.startswith("ART_")) for n in names if n in shots]
 
-    def esc(x):
-        return html.escape(str(x))
-    pills = " ".join('<span style="color:%s"><b>%d</b> %s</span> ·' % (COLOR[s], counts[s], s) for s in STATUSES)
-    rem_html = "".join(
-        "<li><b>%s</b> <i>(%s)</i> %s: %s%s</li>" % (
-            esc(k), esc(v["state"]), esc(v["title"][:90]),
-            ", ".join("%s %s [%s]" % (esc(c["id"]), esc(c["label"]), esc(c["d"]["status"])) for c in v["todo"]) or "nothing unbuilt",
-            (" · <i>%d built, unproven</i>" % v["unproven"]) if v["unproven"] else "")
-        for k, v in sorted(rem.items()))
+    feats_d = []
+    for f in feats:
+        st, seen = feature_status(f, capd)
+        missing = [PLAIN.get(c, capd[c]["label"]) for c in f["caps"] + f.get("minor", [])
+                   if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL")]
+        tech = []
+        for c in f["caps"] + f.get("minor", []):
+            d = capd[c]["d"]
+            ev = ["%s (%s)" % (capd[c]["item"], states.get(capd[c]["item"], ("?", ""))[0])]
+            ev += ["live test %s: %s" % (r, s) for r, s in d["live"]]
+            ev += ["%s %s" % ("✓" if ok else "✗", p) for p, ok in d["probes"]]
+            tech.append((PLAIN.get(c, c), "%s · %s" % (c, d["status"]), " · ".join(ev)))
+        feats_d.append(dict(f, status=st, seen=seen and st != F_WORKS, missing=missing, tech=tech,
+                            pics=pics_of(f.get("shots", []))))
+    totals = {k: sum(1 for f in feats_d if f["status"] == k) for k in F_ORDER}
+    sec_counts = {}
+    for f in feats_d:
+        sec_counts.setdefault(f["s"], {}).setdefault(f["status"], 0)
+        sec_counts[f["s"]][f["status"]] += 1
+    rem = remains_plain(feats, capd, states, needs)
+    asks = asks_open(capd, feats_d)
+    n_works = totals.get(F_WORKS, 0)
+    if n_works and len(asks) < 5:
+        asks.append(dict(id=next(f["id"] for f in feats_d if f["status"] == F_WORKS),
+                         title="Look at the %d features that work in game, and say if they look right" % n_works,
+                         say="A test in the running game proved each one works; only your eyes can say it looks and "
+                             "feels right. The pictures on each one are from that test.", kind="pointer"))
+    if "unfiled" in rem and len(asks) < 5:
+        asks.append(dict(id=rem["unfiled"][0][0]["id"],
+                         title=("%d unbuilt parts have no open work item: do you still want them?" % len(rem["unfiled"])
+                                if len(rem["unfiled"]) > 1 else "One unbuilt part has no open work item: do you still want it?"),
+                         say="Mark the feature Don't want if not; otherwise it gets filed.", kind="pointer"))
+
+    ask_group = "0 · What I need from you"
+    items = []
+    for a in asks:
+        if a.get("kind") == "pointer":
+            continue
+        items.append(dict(id=a["id"], label=a["title"], group=ask_group, effect=a["say"], say=a["say"],
+                          fw=dict(pics=pics_of(a.get("shots", [])),
+                                  opts=["pickA", "pickB", "wrong"] if a["kind"] == "pick" else ["ok", "wrong"])))
+    sec_name = dict(SECTIONS)
+    for f in feats_d:
+        waits = {waits_on(capd[c]["item"], states, needs) for c in f["caps"] + f.get("minor", [])
+                 if capd[c]["d"]["status"] in ("NOT BUILT", "PARTIAL")}
+        planned = bool(waits) and waits <= {"you", "other", "nothing"}
+        items.append(dict(id=f["id"], label=f["title"], group=sec_name[f["s"]], effect=(f["title"] + " " + f["say"]).strip(),
+                          say=f["say"], prefill="ok" if planned else None,
+                          fw=dict(status=f["status"], label=F_LABEL[f["status"]], color=F_COLOR[f["status"]],
+                                  means=F_MEANS[f["status"]], seen=f["seen"], missing=f["missing"], tech=f["tech"],
+                                  pics=f["pics"], pre=PRE_NOTE if planned else "")))
+
     brief = (
-        "<p><b>%d intended capabilities</b> of FlowWorks, built or not. %s</p>"
-        "<p><b>Status is derived, never typed:</b> PROVEN-LIVE = a mapped mechanism row PASSed in <code>%s</code>; "
-        "BUILT-UNPROVEN = every declared probe (class / def / setting / texture) exists on disk; PARTIAL = some do; "
-        "NOT BUILT = none. Each row lists its probes (✓/✗), its live rows, its north-star bars (★) and the owning item with "
-        "its ledger state. North-star walk state: <b>%s</b>; %d of %d bars carried by a row%s.</p>"
-        "<p><b>Your controls:</b> <i>Looks right</i> / <i>Wrong</i> (say why in the note) / <i>Wanted</i> (not built, and you "
-        "still want it). Rows the ledger says are open and unbuilt start on <i>Wanted</i> because their item is open; "
-        "nothing else is pre-filled. Thumbnails: the 2026-10-05 live run (load <code>NS_FlowWorks_Review_20261005</code> to walk it) "
-        "and the Quarry reference (ruling 33). Canon: %s.</p>"
-        "<h3 style='margin:8px 0 2px'>What remains to build (open items, from the ledger)</h3><ul style='margin:0;padding-left:18px'>%s</ul>"
-    ) % (len(caps), pills, esc(rlabel), esc(walk_state), len(must + cannot) - len(uncovered), len(must + cannot),
-         (" (uncovered: %s)" % esc(", ".join(uncovered))) if uncovered else "", esc(canon_note()), rem_html)
+        "<p><b>What this is:</b> every FlowWorks feature, built or not, in plain words, so you can see what exists, what "
+        "works, what doesn't and what remains. Each feature carries <b>one</b> status, worked out from the code on disk and "
+        "the newest live test; nobody typed it. The small <i>details</i> toggle on a feature holds the technical evidence.</p>"
+        "<p><b>Your buttons:</b> <b>OK</b> · <b>Not right</b> (say why in the note) · <b>Don't want</b> (drop it from the "
+        "plan). Keys: <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> mark, <kbd>n</kbd> note, "
+        "<kbd>?</kbd> all keys. Each section has an <b>all ok</b> button. The only rows I pre-marked are unbuilt "
+        "features still on the work list (OK = still wanted; each says so). Nothing is removed by this sheet.</p>")
     config = {
-        "sheetId": "flowworks_capability_review",
-        "title": "FlowWorks — what exists, what works, what remains",
-        "subtitle": "%d capabilities · %s" % (len(caps), " · ".join("%d %s" % (counts[s], s) for s in STATUSES)),
+        "sheetId": "flowworks_feature_review",
+        "title": "FlowWorks: what exists, what works, what remains",
+        "subtitle": "%d features · %s" % (len(feats_d), " · ".join("%d %s" % (totals.get(k, 0), F_LABEL[k].lower()) for k in F_ORDER)),
         "briefHtml": brief,
-        "criterion": "Rows follow the build program's subsystems; status comes from probes + the newest live result, "
-                     "which proves a mechanism exists, never that it looks right.",
+        "criterion": "part of the mod, nothing else. A status says whether a thing exists and passed a live test, never whether it looks right.",
         "invented": [],
-        "posture": {"mode": "whitelist",
-                    "explain": "Looks right and Wanted keep a capability in scope; Wrong reopens it. Undecided = not yet looked at."},
+        "posture": {"mode": "blacklist",
+                    "explain": "Nothing is removed by this sheet; Don't want marks a feature to drop from the plan."},
         "options": [
-            {"key": "right", "label": "Looks right", "hotkey": "1", "color": "#5ac37f", "counts": "in"},
-            {"key": "wrong", "label": "Wrong", "hotkey": "2", "color": "#e06c6c", "counts": "out"},
-            {"key": "wanted", "label": "Wanted", "hotkey": "3", "color": "#e8b64c", "counts": "in"},
+            {"key": "ok", "label": "OK", "hotkey": "1", "color": F_COLOR[F_WORKS], "counts": "in"},
+            {"key": "wrong", "label": "Not right", "hotkey": "2", "color": F_COLOR[F_NOT], "counts": "out", "bulk": False},
+            {"key": "unwanted", "label": "Don't want", "hotkey": "3", "color": "#7d7565", "counts": "out", "bulk": False},
+            {"key": "pickA", "label": "Pick A", "hotkey": "4", "color": F_COLOR[F_BUILT], "counts": "in", "bulk": False},
+            {"key": "pickB", "label": "Pick B", "hotkey": "5", "color": F_COLOR[F_BUILT], "counts": "in", "bulk": False},
         ],
-        "groupLabel": "subsystem",
-        "media": True,
+        "groupLabel": "section",
+        "media": False,
         "decisionsFile": DEC_NAME,
         "decisionsPath": "", "sheetPath": "",
     }
+    fwdata = {"labels": F_LABEL, "colors": F_COLOR, "order": list(F_ORDER), "askGroup": ask_group}
     tpl = open(TEMPLATE, encoding="utf-8").read()
     tpl = re.sub(r'(<script id="CONFIG" type="application/json">)(.*?)(</script>)',
                  lambda m: m.group(1) + "\n" + json.dumps(config, indent=1).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
     tpl = re.sub(r'(<script id="ITEMS" type="application/json">)(.*?)(</script>)',
                  lambda m: m.group(1) + "\n" + json.dumps(items, indent=0).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
-    tpl = tpl.replace("<title>Review sheet</title>", "<title>FlowWorks capability review</title>", 1)
+    tpl = tpl.replace("<title>Review sheet</title>", "<title>FlowWorks feature review</title>", 1)
+    assert tpl.count("</style>\n</head>") == 1, "template changed: cannot place the FlowWorks style"
+    tpl = tpl.replace("</style>\n</head>", "</style>\n" + CSS + "</head>", 1)
+    assert tpl.count('<div id="list"></div>') == 1, "template changed: cannot place the glance panel"
+    tpl = tpl.replace('<div id="list"></div>', glance_html(sec_counts, totals, len(feats_d), asks, rem, BOARD_NAME)
+                      + '\n<div id="list"></div>', 1)
     # the RENDER hook goes in LIVE, after the template's commented example (SKILL.md: a hook inside the comment is inert)
     marker = "-->\n\n<script>\n\"use strict\";"
     assert marker in tpl, "template changed: cannot place the RENDER hook"
     tpl = tpl.replace(marker, "-->\n" + RENDER_JS + "\n<script>\n\"use strict\";", 1)
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(tpl)
+    tail = "boot();\n</script>"
+    assert tpl.count(tail) == 1, "template changed: cannot place the after-hook"
+    tpl = tpl.replace(tail, tail + '\n<script id="FWDATA" type="application/json">%s</script>\n%s'
+                      % (json.dumps(fwdata).replace("</", "<\\/"), AFTER_JS), 1)
+    with open(out, "w", encoding="utf-8") as fh:
+        fh.write(tpl)
+    import datetime
+    stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    with open(os.path.join(out_dir, BOARD_NAME), "w", encoding="utf-8") as fh:
+        fh.write(board_html(feats_d, sec_counts, totals, asks, rem, stamp))
     dec = os.path.join(out_dir, DEC_NAME)
     if write_decisions and not os.path.exists(dec):      # never overwrite: once it exists it is the owner's
-        with open(dec, "w", encoding="utf-8") as f:
-            json.dump({"posture": "whitelist", "decisions": {},
+        with open(dec, "w", encoding="utf-8") as fh:
+            json.dump({"posture": "blacklist", "decisions": {},
                        "reviewStatus": {"state": "prefill", "by": None, "at": None,
-                                        "evidence": "generated by FlowWorks/human_review.py; nobody has ruled"}}, f, indent=1)
-    return dict(out=out, items=items, counts=counts, remains=rem, uncovered=uncovered, result=rlabel, caps=caps_d)
+                                        "evidence": "generated by FlowWorks/human_review.py; nobody has ruled"}}, fh, indent=1)
+    return dict(out=out, items=items, counts=counts, remains=rem_items, uncovered=uncovered, result=rlabel, caps=caps_d,
+                features=feats_d, totals=totals, remains_plain=rem, asks=asks, board=os.path.join(out_dir, BOARD_NAME))
 
 
 def main():
@@ -875,14 +1622,13 @@ def main():
     ap.add_argument("--result", help="a specific validation_v2 result json (default: the newest)")
     a = ap.parse_args()
     r = build(a.out, a.result)
-    print("%d rows -> %s" % (len(r["items"]), r["out"]))
-    print("  " + " · ".join("%d %s" % (r["counts"][s], s) for s in STATUSES))
+    print("%d features (%d capabilities underneath) -> %s" % (len(r["features"]), len(r["caps"]), r["out"]))
+    print("  " + " · ".join("%d %s" % (r["totals"].get(k, 0), F_LABEL[k]) for k in F_ORDER))
     print("  result: %s" % r["result"])
-    for k, v in sorted(r["remains"].items()):
-        print("  remains %s (%s): %s%s" % (k, v["state"], ", ".join(c["id"] for c in v["todo"]) or "-",
-                                          " +%d unproven" % v["unproven"] if v["unproven"] else ""))
+    for w, v in r["remains_plain"].items():
+        print("  %s: %d" % (WAITS_HEAD[w], len(v)))
     if r["uncovered"]:
-        print("  bars with no row: %s" % ", ".join(r["uncovered"]))
+        print("  bars with no capability: %s" % ", ".join(r["uncovered"]))
 
 
 if __name__ == "__main__":
