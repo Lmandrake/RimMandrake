@@ -1107,6 +1107,52 @@ LIQUID_DEF_ROWS = {
 }
 
 
+# FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 3 and 4, 2026-10-05): how each liquid's
+# surface MOVES and catches light, emitted as LiquidDef.surfaceLook and drawn by
+# Source/RM_LiquidSurface.cs over the (unchanged) vanilla water terrain. All values
+# [INVENTED, PROVISIONAL] and judged by looking -- review sheet
+# art_source/visual_principles_2026-10-05/. Fields: highlight (r,g,b 0..1), strength
+# (0..1), scale (cells per ripple repeat), speed (cells/s), sharpness (high = thin
+# glints, low = broad gloss), stretch (>1 = east-west slicks), sheen (rainbow film),
+# wake (V-wake strength). A row absent here gets no animated surface. RM_LiquidSurface
+# never applies a look to a base-game terrain (vanilla water already animates), so the
+# freshwater/saltwater rows reach only FlowWorks' own canal fills.
+_WATER = {"highlight": "(0.84,0.91,0.96)", "strength": 0.35, "scale": 2.0, "speed": 0.45,
+          "sharpness": 4.0, "stretch": 1.0, "wake": 1.0}
+_SLIME = {"strength": 0.35, "scale": 1.6, "speed": 0.06, "sharpness": 3.0, "stretch": 1.0, "wake": 0.3}
+SURFACE_LOOKS = {
+    "freshwater":     dict(_WATER),
+    "saltwater":      dict(_WATER, highlight="(0.80,0.92,0.92)"),
+    "boiling":        dict(_WATER, speed=0.9, strength=0.45, sharpness=3.0, wake=0.8),
+    "icy":            dict(_WATER, speed=0.2, strength=0.30, highlight="(0.88,0.95,1.0)"),
+    "toxic":          dict(_WATER, highlight="(0.75,0.95,0.55)", strength=0.30, speed=0.35),
+    "acid":           dict(_WATER, highlight="(0.85,1.0,0.60)", strength=0.35, speed=0.40),
+    "reactionliquor": dict(_WATER, sheen=0.6),
+    # tar: black LIQUID, not a burn scar -- slow, broad, glossy slicks; barely wakes (viscosity)
+    "tar":            {"highlight": "(0.80,0.76,0.69)", "strength": 0.45, "scale": 2.2, "speed": 0.05,
+                       "sharpness": 3.0, "stretch": 2.5, "wake": 0.15},
+    "brine":          dict(_WATER, speed=0.30, strength=0.30),
+    "propane":        dict(_WATER, speed=0.60, strength=0.30, sharpness=5.0),
+    "chemfuel":       dict(_WATER, speed=0.20, sheen=0.5, strength=0.35),
+    "slime_red":      dict(_SLIME, highlight="(1.0,0.70,0.66)"),
+    "slime_green":    dict(_SLIME, highlight="(0.82,0.96,0.62)"),
+    "slime_white":    dict(_SLIME, highlight="(1.0,0.98,0.92)"),
+    "slime_yellow":   dict(_SLIME, highlight="(1.0,0.95,0.62)"),
+}
+
+
+def _surface_xml(key):
+    look = SURFACE_LOOKS.get(key)
+    if not look:
+        return []
+    out = ["    <surfaceLook>"]
+    for f in ("highlight", "strength", "scale", "speed", "sharpness", "stretch", "sheen", "wake"):
+        if f in look:
+            out.append(f"      <{f}>{look[f]}</{f}>")
+    out.append("    </surfaceLook>")
+    return out
+
+
 def _xv(v):
     if v is True:
         return "true"
@@ -1211,6 +1257,8 @@ def build_liquiddef_xml(row):
 
     if row.get("thirstQuality"):
         lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
+
+    lines += _surface_xml(row.get("_key"))
 
     lines += _conversions_xml(row.get("_key"))
 

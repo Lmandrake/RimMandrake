@@ -1,0 +1,1174 @@
+{
+ "set": "flowworks_visuals",
+ "owner_principles": "2026-10-05, five rules: deep cuts look like walls; walls are dirt or stone; water moves; tar is a black liquid; a burned pit looks burned",
+ "mockups": "src/RimMandrake/FlowWorks/art_source/visual_principles_2026-10-05/",
+ "builder": "src/RimMandrake/FlowWorks/review_map_visuals.py (station_ops)",
+ "plot": {
+  "w": 6,
+  "h": 5,
+  "gap": 2
+ },
+ "notes": [
+  "Kill hostiles on the map; keep the plots unroofed and in daylight.",
+  "Water/tar/oil/slime: give the pawn a slow walk across the pit so the wake shows.",
+  "Fluids flow: fill after every station's dig, and leave a dug-free gap between plots so they never join."
+ ],
+ "stations": [
+  {
+   "id": "vis_dry_dirt_D1",
+   "title": "A depth-1 pit cut in soil, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 0,
+    "row": 0
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_dirt_D2",
+   "title": "A depth-2 pit cut in soil, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 1,
+    "row": 0
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_dirt_D3",
+   "title": "A depth-3 pit cut in soil, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 2,
+    "row": 0
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_dirt_D4",
+   "title": "A depth-4 pit cut in soil, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 3,
+    "row": 0
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_stone_D1",
+   "title": "A depth-1 pit cut in granite, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 0,
+    "row": 1
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_stone_D2",
+   "title": "A depth-2 pit cut in granite, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 1,
+    "row": 1
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_stone_D3",
+   "title": "A depth-3 pit cut in granite, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 2,
+    "row": 1
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_dry_stone_D4",
+   "title": "A depth-4 pit cut in granite, dug and empty.",
+   "what_to_notice": "The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.",
+   "grid": {
+    "col": 3,
+    "row": 1
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_dirt_D1",
+   "title": "A depth-1 pit cut in soil, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 0,
+    "row": 2
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_dirt_D2",
+   "title": "A depth-2 pit cut in soil, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 1,
+    "row": 2
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 2,
+    "row": 2
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_dirt_D4",
+   "title": "A depth-4 pit cut in soil, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 3,
+    "row": 2
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 3,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_stone_D1",
+   "title": "A depth-1 pit cut in granite, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 0,
+    "row": 3
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_stone_D2",
+   "title": "A depth-2 pit cut in granite, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 1,
+    "row": 3
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_stone_D3",
+   "title": "A depth-3 pit cut in granite, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 2,
+    "row": 3
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_water_stone_D4",
+   "title": "A depth-4 pit cut in granite, with water standing in it.",
+   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "grid": {
+    "col": 3,
+    "row": 3
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": "RM_Fluid_Water",
+    "fill_level": 3,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_dirt_D1",
+   "title": "A depth-1 pit cut in soil, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 0,
+    "row": 4
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_dirt_D2",
+   "title": "A depth-2 pit cut in soil, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 1,
+    "row": 4
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 2,
+    "row": 4
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_dirt_D4",
+   "title": "A depth-4 pit cut in soil, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 3,
+    "row": 4
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 3,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_stone_D1",
+   "title": "A depth-1 pit cut in granite, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 0,
+    "row": 5
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_stone_D2",
+   "title": "A depth-2 pit cut in granite, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 1,
+    "row": 5
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 1,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_stone_D3",
+   "title": "A depth-3 pit cut in granite, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 2,
+    "row": 5
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_tar_stone_D4",
+   "title": "A depth-4 pit cut in granite, with tar standing in it.",
+   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "grid": {
+    "col": 3,
+    "row": 5
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": "RM_Fluid_Tar",
+    "fill_level": 3,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_dirt_D1",
+   "title": "A depth-1 pit cut in soil, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 0,
+    "row": 6
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_dirt_D2",
+   "title": "A depth-2 pit cut in soil, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 1,
+    "row": 6
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_dirt_D3",
+   "title": "A depth-3 pit cut in soil, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 2,
+    "row": 6
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_dirt_D4",
+   "title": "A depth-4 pit cut in soil, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 3,
+    "row": 6
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_stone_D1",
+   "title": "A depth-1 pit cut in granite, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 0,
+    "row": 7
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 1
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_stone_D2",
+   "title": "A depth-2 pit cut in granite, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 1,
+    "row": 7
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 2
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_stone_D3",
+   "title": "A depth-3 pit cut in granite, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 2,
+    "row": 7
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_scorched_stone_D4",
+   "title": "A depth-4 pit cut in granite, after a fire burned it dry.",
+   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "grid": {
+    "col": 3,
+    "row": 7
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Granite_Rough",
+    "ground_kind": "stone",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 4
+    },
+    "fluid": null,
+    "fill_level": 0,
+    "scorched": true,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_oil_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with oil standing in it.",
+   "what_to_notice": "Oil: slow dark gloss with a faint rainbow film.",
+   "grid": {
+    "col": 0,
+    "row": 8
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Oil",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_slime_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with green slime standing in it.",
+   "what_to_notice": "Slime: thick, soft bright blobs that barely move.",
+   "grid": {
+    "col": 1,
+    "row": 8
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_SlimeGreen",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  }
+ ]
+}

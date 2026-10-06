@@ -1026,6 +1026,46 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.NorthFaceHeight(9) <= RM_WallFaceMath.NorthMax, "never taller than a cell");
             });
 
+            // ── FLOWWORKS_VISUAL_PRINCIPLES_1 principle 1: a person-deep cut shows a wall-height face, deeper taller ──
+            Case("WallFaces_D3_is_a_wall_D4_taller", () =>
+            {
+                // vanilla wall south face MEASURED ~0.25 cell (Wall_Atlas_Smooth / Rock_Atlas, 2026-10-05)
+                float d3 = RM_WallFaceMath.NorthFaceHeight(3);
+                Assert(d3 >= 0.25f && d3 <= 0.40f, "D3 face is about a vanilla wall's face: " + d3);
+                Assert(RM_WallFaceMath.NorthFaceHeight(4) >= d3 * 1.4f, "D4 is visibly more extended than D3");
+                float lastSide = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float s = RM_WallFaceMath.SideFaceWidth(d);
+                    Assert(s > lastSide, "side face grows with depth at D=" + d);
+                    lastSide = s;
+                }
+                Assert(RM_WallFaceMath.FaceFootLight(4) < RM_WallFaceMath.FaceFootLight(1), "deeper foot is dimmer");
+                Assert(RM_WallFaceMath.FaceFootLight(1) < RM_WallFaceMath.FaceTopLight, "the top of a face is its lit edge");
+            });
+
+            Case("LipOcclusion_band", () =>
+            {
+                // pawn centre 1.2 below its cell centre (D4 sink): sprite 10.05..11.55, lip at z=11 -> band 10.05..11
+                Assert(RM_WallFaceMath.OccludedBand(11f, 10.05f, 11.55f, out float a, out float b), "D4 pawn hangs below the lip");
+                AssertClose(a, 10.05f, "band starts at the sprite's bottom");
+                AssertClose(b, 11f, "band stops at the lip");
+                Assert(!RM_WallFaceMath.OccludedBand(11f, 11.2f, 12.4f, out _, out _), "a pawn wholly above the lip is not covered");
+                Assert(RM_WallFaceMath.OccludedBand(11f, 10.2f, 10.9f, out _, out float b2) && b2 < 11f, "a pawn wholly below is covered to its top");
+            });
+
+            // ── principle 5: the scorch persists, fades in quarters, never fades at 0 days ──
+            Case("Scorch_fade_rule", () =>
+            {
+                AssertClose(RM_WallFaceMath.ScorchStrength(0, 20f), 1f, "fresh scorch is full");
+                AssertClose(RM_WallFaceMath.ScorchStrength(10L * 60000, 0f), 1f, "0 days = never fades");
+                AssertClose(RM_WallFaceMath.ScorchStrength(20L * 60000, 20f), 0f, "gone at the fade time");
+                float mid = RM_WallFaceMath.ScorchStrength(9L * 60000, 20f);
+                Assert(mid > 0f && mid < 1f && Math.Abs(mid * 4f - Math.Round(mid * 4f)) < 1e-4, "quantised to quarters: " + mid);
+                Assert(RM_WallFaceMath.ScorchDarken(1f) < RM_WallFaceMath.ScorchDarken(0.25f), "fuller scorch is darker");
+                AssertClose(RM_WallFaceMath.ScorchDarken(0f), 1f, "no scorch, no darkening");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

@@ -44,6 +44,15 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Potable</thirstQuality>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.35</strength>
+      <scale>2.0</scale>
+      <speed>0.45</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -66,6 +75,15 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
+    <surfaceLook>
+      <highlight>(0.80,0.92,0.92)</highlight>
+      <strength>0.35</strength>
+      <scale>2.0</scale>
+      <speed>0.45</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Crude</tier>
@@ -106,6 +124,15 @@
       <revertTicks>2500</revertTicks>
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.45</strength>
+      <scale>2.0</scale>
+      <speed>0.9</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>0.8</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Crude</tier>
@@ -147,6 +174,15 @@
       <revertsTo>RM_Liquid_FreshWater</revertsTo>
       <revertTicks>5000</revertTicks>
     </bottled>
+    <surfaceLook>
+      <highlight>(0.88,0.95,1.0)</highlight>
+      <strength>0.3</strength>
+      <scale>2.0</scale>
+      <speed>0.2</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Crude</tier>
@@ -178,6 +214,15 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Toxic</thirstQuality>
+    <surfaceLook>
+      <highlight>(0.75,0.95,0.55)</highlight>
+      <strength>0.3</strength>
+      <scale>2.0</scale>
+      <speed>0.35</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Crude</tier>
@@ -223,6 +268,15 @@
       <barrel>RM_Barrel_AcidWater</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
+    <surfaceLook>
+      <highlight>(0.85,1.0,0.60)</highlight>
+      <strength>0.35</strength>
+      <scale>2.0</scale>
+      <speed>0.4</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Industrial</tier>
@@ -253,6 +307,16 @@
       <shallow>RM_ReactionLiquorShallow</shallow>
       <deep>RM_ReactionLiquorDeep</deep>
     </terrainSuite>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.35</strength>
+      <scale>2.0</scale>
+      <speed>0.45</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <sheen>0.6</sheen>
+      <wake>1.0</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -274,6 +338,15 @@
       <barrel>RM_Barrel_Tar</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
+    <surfaceLook>
+      <highlight>(0.80,0.76,0.69)</highlight>
+      <strength>0.45</strength>
+      <scale>2.2</scale>
+      <speed>0.05</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>2.5</stretch>
+      <wake>0.15</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Industrial</tier>
@@ -308,6 +381,15 @@
     </bottled>
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.3</strength>
+      <scale>2.0</scale>
+      <speed>0.3</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
     <conversions>
       <li>
         <tier>Household</tier>
@@ -347,6 +429,15 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.3</strength>
+      <scale>2.0</scale>
+      <speed>0.6</speed>
+      <sharpness>5.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>1.0</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -360,6 +451,16 @@
       <bottle>Chemfuel</bottle>
       <unitsPerBottle>1</unitsPerBottle>
     </bottled>
+    <surfaceLook>
+      <highlight>(0.84,0.91,0.96)</highlight>
+      <strength>0.35</strength>
+      <scale>2.0</scale>
+      <speed>0.2</speed>
+      <sharpness>4.0</sharpness>
+      <stretch>1.0</stretch>
+      <sheen>0.5</sheen>
+      <wake>1.0</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -382,6 +483,15 @@
       <deep>RM_SlimeRedDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeRed</canalFluid>
+    <surfaceLook>
+      <highlight>(1.0,0.70,0.66)</highlight>
+      <strength>0.35</strength>
+      <scale>1.6</scale>
+      <speed>0.06</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>0.3</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -400,6 +510,15 @@
       <deep>RM_SlimeGreenDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeGreen</canalFluid>
+    <surfaceLook>
+      <highlight>(0.82,0.96,0.62)</highlight>
+      <strength>0.35</strength>
+      <scale>1.6</scale>
+      <speed>0.06</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>0.3</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -415,6 +534,15 @@
       <deep>RM_SlimeWhiteDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeWhite</canalFluid>
+    <surfaceLook>
+      <highlight>(1.0,0.98,0.92)</highlight>
+      <strength>0.35</strength>
+      <scale>1.6</scale>
+      <speed>0.06</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>0.3</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -428,6 +556,15 @@
       <deep>RM_SlimeYellowDeep</deep>
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeYellow</canalFluid>
+    <surfaceLook>
+      <highlight>(1.0,0.95,0.62)</highlight>
+      <strength>0.35</strength>
+      <scale>1.6</scale>
+      <speed>0.06</speed>
+      <sharpness>3.0</sharpness>
+      <stretch>1.0</stretch>
+      <wake>0.3</wake>
+    </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
 </Defs>

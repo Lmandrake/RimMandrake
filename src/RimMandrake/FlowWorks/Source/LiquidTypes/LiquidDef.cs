@@ -52,6 +52,11 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// <summary>Tint for generated art, flecks and bottle fill.</summary>
         public Color color = Color.white;
 
+        /// <summary>FLOWWORKS_VISUAL_PRINCIPLES_1 (principles 3/4): how this liquid's surface moves and catches
+        /// light — ripple speed, gloss, sheen, wake. Emitted by Tools/generate_liquid_suite.py from the row's
+        /// "surface" entry; null = no animated surface (vanilla terrain only).</summary>
+        public RM_LiquidSurfaceLook surfaceLook;
+
         // ── Form slots ─────────────────────────────────────────────────
 
         /// <summary>Shallow/deep/chest-deep TerrainDef refs; may ADOPT
