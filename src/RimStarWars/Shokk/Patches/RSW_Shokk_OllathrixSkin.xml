@@ -24,8 +24,8 @@
   no-op instead of a red error on every launch.
 
   Reuses the Wyyyschokk's already-shipped art path (swanimals/Wyyyschokk/
-  Wyyyschokk{,_east,_north}) rather than commissioning new art — the same
-  texPath RSW_Wyyyschokk's own PawnKindDef already uses, shipped by the
+  Wyyyschokk{,_east,_north}) rather than commissioning new art — the donor's
+  own texPath, shipped by the
   donor mod `mlie.starwarsanimalcollection` (already a modDependency of
   this mod) and/or `mandrake.rsw.wyyyschokkartoverride`.
 
@@ -37,22 +37,8 @@
   is now the WHOLE of this mod's mechanical content besides
   RSW_Shokk_FeraliskBrood.xml (a different item's content, untouched).
 
-  🔴 STILL OPEN, not resolved by this move: MLIE_FAUNA_ABSORPTION_1
-  (2026-09-18) separately ported the donor's Wyyyschokk in full as its own
-  def, `RSW_Wyyyschokk` (src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
-  RSW_Wyyyschokk.xml — its own BodyDef, egg-laying, shearable wool,
-  TrophyCraft fang-drop recipe, tameable, combatPower 600, wildBiomes
-  weighted to TropicalRainforest/TropicalSwamp). That port is mechanically
-  unrelated to RM_Ollathrix (untameable, ambush-hunting, combatPower 160,
-  bespoke body) and is not wired into any biome's wildAnimals — it is a
-  SEPARATE, independent def this patch does not touch, reference or retire.
-  A full campaign install therefore carries two things labelled
-  "wyyyschokk": RSW_Wyyyschokk (homeless) and RM_Ollathrix wearing this
-  patch's skin. Not a defName collision (both load fine) but a genuine
-  identity/label collision — SHOKK_SKIN_SHRINK_1's scope was the mechanism
-  move only; this needs an owner decision (retire/rename/re-wire
-  RSW_Wyyyschokk, or accept two "wyyyschokk"s existing side by side) and is
-  not adjudicated here.
+  RM_Ollathrix is THE wyyyschokk (owner ruling 2026-10-03,
+  WYYYSCHOKK_IDENTITY_COLLISION_1); no second wyyyschokk def exists.
 -->
 <Patch>
 

@@ -2363,28 +2363,6 @@
       </statFactors>
     </stuffProps>
   </ThingDef>
-<ThingDef ParentName="WoolBase">
-    <defName>RSW_WoolWyyyschokk</defName>
-    <label>wyyyschokk silk</label>
-    <description>Sticky insectoid silk-wool squeezed from a wyyyschokk labial glands, it offers reasonable insulation and is resilient.</description>
-    <statBases>
-      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Heat>2.0</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>35</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>25</StuffPower_Insulation_Heat>
-    </statBases>
-    <graphicData>
-      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
-      <color>(200,255,255)</color>
-    </graphicData>
-    <stuffProps>
-      <color>(200,255,255)</color>
-      <commonality>0.025</commonality>
-      <statFactors>
-        <Beauty>2.0</Beauty>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
 <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggUrusaiFertilized</defName>
     <label>urusai egg (fert.)</label>
@@ -2595,43 +2573,6 @@
     </graphicData>
     <statBases>
       <MarketValue>80.0</MarketValue>
-    </statBases>
-  </ThingDef>
-<ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggWyyyschokkFertilized</defName>
-    <label>wyyyschokk egg (fert.)</label>
-    <description>A fertilized wyyyschokk egg. If all goes well, it should hatch into a baby wyyyschokk. It can be eaten raw, but it's much better cooked.</description>
-    <possessionCount>1</possessionCount>
-    <graphicData>
-      <texPath>swresource/EggSilk</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(255,255,200)</color>
-      <drawSize>0.75</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>0.5</Nutrition>
-      <MarketValue>70.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Wyyyschokk</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-<ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggWyyyschokkUnFertilized</defName>
-    <label>wyyyschokk egg (unfert.)</label>
-    <description>An unfertilized wyyyschokk egg. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swresource/EggSilk</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(255,255,200)</color>
-      <drawSize>0.75</drawSize>
-    </graphicData>
-    <statBases>
-      <Nutrition>0.5</Nutrition>
-      <MarketValue>70.0</MarketValue>
     </statBases>
   </ThingDef>
 <!-- Yobshrimp's own tasteThought (AteCrustapodRoe) stays a bare donor reference,

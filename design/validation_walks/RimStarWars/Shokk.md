@@ -17,7 +17,6 @@ Agent-owned, not hashed. Chains and components are in `src/RimStarWars/Shokk/val
 - The feralisk brood is a hidden, permanent-enemy, animal-tech, non-humanlike faction in the Fever Wood's two-front category, fielding the Wyyyschokk in its Combat group. [`RSW_Shokk_FeraliskBrood.xml`; FEVERWOOD_TWO_FRONT_LURE_1] → feralisk_brood.faction_is_hidden_permanent_enemy_animal, feralisk_brood.combat_group_fields_the_wyyyschokk (reports UNMEASURED while `get_defs` returns `pawnGroupMakers` as bare type names)
 - The Fever Wood raid's second front fires this faction. [`RM_MapComponent_TwoFrontLure`] → two_front_lure.fever_wood_second_front_fires_this_faction (reports UNMEASURED: needs a generated Fever Wood map and a raid; the mechanism belongs to `mandrake.rm.feverwood`)
 - The mod ships no Mod Settings screen, and that is by design: it has no mechanics to toggle. [About.xml; folder has no Source/] → settings.no_settings_class_by_design
-- Two things labelled "wyyyschokk" exist in a full campaign install (`RSW_Wyyyschokk` and `RM_Ollathrix` wearing the skin). → UNCOVERED: an open owner decision recorded in About.xml (not a defect to assert on); no check reads it
 
 ## the walk
 1. [D] defs_resolve: one batched `get_defs` of the shipped faction, a donor-kind and race presence read, a control name
