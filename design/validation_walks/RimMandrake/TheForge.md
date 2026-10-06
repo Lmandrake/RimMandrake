@@ -71,6 +71,7 @@ Run the script, not the prose: `python.exe src/RimMandrake/Utils/northstar_drive
 - RULED OUT: "the dormancy inspect string shows the seal with the toggle off" — `RM_CompForgeCycleDormancy.CompInspectStringExtra` returns null when `cycleDormancyEnabled` is off, so the line proves the toggle is read, not that a pawn woke.
 - RULED OUT: "the gas wash lights the pad" — the wave centre is a random unroofed flammable-plant cell anywhere on the map (`CellFinderLoose.RandomCellWith`, 400 tries), so the check reads the `gasIgnitions` counter and the pad's grass only guarantees a candidate exists.
 - RULED OUT: "RUT_Scald is missing on the RM tier" — it is defined in `TerminalBiomes/Defs/DamageDefs/RUT_Scald.xml`, composed into `mandrake.rm.biomes`; `scald_damage_def_resolves` pins it.
+- RULED OUT: "returning a WeatherDef from `ForcedWeather()` switches the live weather" — vanilla `WeatherDecider.WeatherDeciderTick` only starts a forced weather once the current one is older than 4000 ticks (Anomaly `transitionTicksOverride` aside), longer than a whole 20-40 min rolled burst. LIVE 2026-10-04 `rain_forces_boiling_weather_and_floods` read `Clear` 130 ticks into a forced Rain burst (red for exactly this). Fixed by `SnapForcedWeather()` on burst start/end and on every cycle phase entry; the same component is the guard.
 
 ## north star
 state: DRAFT
