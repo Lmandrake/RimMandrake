@@ -1632,6 +1632,9 @@ def lure_raid(t):
 
         with _comp(t, "a_staked_lure_draws_the_swarm", independent=True, toggle="twoFrontLureEnabled"):
             with _settings(t, twoFrontLureEnabled=True, twoFrontLureRaidMtbHours=1, twoFrontLureSecondWaveChance=0):
+                # LIVE 2026-10-06: the swarm this component waits for read as hostile_pawns SURPRISE on arrival and
+                # ended the component UNMEASURED. Its arrival is the subject, so it is declared.
+                t.expect("hostile", lambda p: p.get("faction") == swarm)
                 arm(t)
                 _wait_until(t, lambda: bool(swarm_pawns(t)), window, chunk=1000)
                 if _live(t):
