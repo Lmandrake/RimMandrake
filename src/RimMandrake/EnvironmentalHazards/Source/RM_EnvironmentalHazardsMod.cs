@@ -551,9 +551,9 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
             // Bumped 4990->5050 for setting #57 (hazardApparelAIAwarenessEnabled).
             // Bumped 5050->5170 for setting #58 (sumpLivingMapEnabled + pace slider).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5170f);
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(5170f, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("This is a toolkit other content uses to build hazards — turning a "

@@ -210,7 +210,7 @@ namespace RimMandrake.Greentide
             // Scrolls: the screen outgrew one window height when the vurrak joined.
             Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(lastContentHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.Label("Churnmud / mire hazard");

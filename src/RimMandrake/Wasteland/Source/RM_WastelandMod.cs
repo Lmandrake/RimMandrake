@@ -115,9 +115,9 @@ namespace RimMandrake.Wasteland
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, viewHeight);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.CheckboxLabeled("Wasteland enabled", ref wastelandEnabled,

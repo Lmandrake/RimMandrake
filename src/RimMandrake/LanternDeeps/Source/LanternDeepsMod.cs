@@ -239,7 +239,7 @@ namespace RimMandrake.LanternDeeps
             // the screen outgrew one page: the whole of it scrolls, the biome checklist keeps its own box
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, outerHeight));
             Widgets.BeginScrollView(inRect, ref outerScroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.CheckboxLabeled("Lantern Deeps enabled", ref lanternDeepsEnabled,

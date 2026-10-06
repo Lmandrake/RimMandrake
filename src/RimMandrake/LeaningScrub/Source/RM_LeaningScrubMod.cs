@@ -146,9 +146,9 @@ namespace RimMandrake.LeaningScrub
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.CheckboxLabeled("Mod enabled", ref modEnabled,

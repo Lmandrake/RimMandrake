@@ -205,6 +205,9 @@ namespace RimMandrake.Pyrelands
             return result;
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
             if (biomeListBuffer == null)
@@ -212,8 +215,11 @@ namespace RimMandrake.Pyrelands
                 biomeListBuffer = crossBiomeBiomeList;
             }
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Mod enabled", ref pyrelandsEnabled,
                 "Off: RM_Pyrelands still loads and can still be assigned to a tile, but every "
@@ -390,7 +396,9 @@ namespace RimMandrake.Pyrelands
                 crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
