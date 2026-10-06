@@ -52,6 +52,25 @@ def check_redo_jobs(doc: dict, jobs: list) -> list[str]:
     return problems
 
 
+def rejected_events(ruling: dict, srow: dict) -> list[dict]:
+    """A redo/reject on a row sends back the picture that was IN GAME when he looked: record those exact
+    bytes, so no later install can quietly put them back or copy them onto another creature
+    (ART_RULING_RENAME_CARRY_1). Columns he picked or kept as variants carry keeps, which win."""
+    labels = srow.get("labels") or {}
+    cols = srow.get("columns") or {}
+    out = []
+    for letter, lab in sorted(labels.items()):
+        if not str(lab).startswith("IN GAME"):
+            continue
+        for sha in sorted({s for s in (cols.get(letter) or {}).values() if s}):
+            out.append({"type": "rejected", "id": L.det_id("rejected", ruling["id"], sha), "sha": sha,
+                        "ruling_id": ruling["id"], "verdict": ruling["verdict"], "by": "owner",
+                        "said": ruling.get("said"), "via": ruling.get("via"), "at": ruling.get("at"),
+                        "row": (ruling.get("target") or {}).get("row"), "column": letter,
+                        "subject_key": ruling.get("subject_key", "")})
+    return out
+
+
 def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None = None,
            defer_redo_jobs: bool = False) -> dict:
     doc = json.loads(Path(decisions_path).read_text())
@@ -127,6 +146,10 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                       "subject_key": srow.get("subject_key", ""), "source_file": via}
             if not dry_run and w.add(ev):
                 out["rulings"] += 1
+            if ev["verdict"] in ("redo", "reject"):
+                for rev in rejected_events(ev, srow):
+                    if not dry_run and w.add(rev):
+                        out["rejected"] = out.get("rejected", 0) + 1
             # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
             for g, pl in sorted((v.get("picks") or {}).items()):
                 if pl in cols and pl != dec:
@@ -164,4 +187,49 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 out.setdefault("refusals", []).append(f"{sha[:12]}: {e}")
             w = L.Writer()
     w.flush()
+    return out
+
+
+def backfill_rejections(dry_run: bool = False) -> dict:
+    """Derive `rejected` events for owner redo/reject rulings ingested before they were recorded: each
+    ruling's decisions file names its snapshot, whose IN GAME columns are the pictures he sent back."""
+    idx = L.Index()
+    w = L.Writer({e["id"] for e in idx.events})
+    out = {"rulings": 0, "rejected": 0, "no_snapshot": [], "no_row": 0}
+    snaps: dict = {}
+    for r in idx.rulings:
+        if r.get("by") != "owner" or r.get("trust") != "ruled" or r.get("verdict") not in ("redo", "reject"):
+            continue
+        row, via = (r.get("target") or {}).get("row"), r.get("via") or r.get("source_file")
+        if not row or not via:
+            continue
+        out["rulings"] += 1
+        if via not in snaps:
+            snaps[via] = None
+            try:
+                vp = next((c for c in (L.REPO_ROOT / via, Path(__file__).resolve().parent / via) if c.is_file()),
+                          L.REPO_ROOT / via)
+                doc = json.loads(vp.read_text())
+                sp = Path(doc.get("snapshot") or "")
+                sp = sp if sp.is_absolute() else L.REPO_ROOT / sp
+                snaps[via] = L.snapshot_by_id(sp, doc.get("snapshotId")) or (
+                    json.loads(sp.read_text()) if sp.is_file() and not doc.get("snapshotId") else None)
+            except (OSError, ValueError):
+                pass
+        snap = snaps[via]
+        if snap is None:
+            if via not in out["no_snapshot"]:
+                out["no_snapshot"].append(via)
+            continue
+        srow = (snap.get("rows") or {}).get(row)
+        if not srow:
+            out["no_row"] += 1
+            continue
+        for rev in rejected_events(r, srow):
+            if not dry_run and w.add(rev):
+                out["rejected"] += 1
+            elif dry_run:
+                out["rejected"] += 1
+    if not dry_run:
+        w.flush()
     return out

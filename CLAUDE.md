@@ -373,9 +373,9 @@ MEASURED about the live world — the live system is the only instrument for "ri
   (`DesiredAnimalDensity` multiplies `map.TileInfo.AnimalDensity`, so 0 makes
   `DesiredTotalAnimalWeight` 0 and `AnimalEcosystemFull` instantly true) and, for ongoing
   spawns only, a walkable cell that `CanReachMapEdge`.
-  🔴 **So `RM_PropaneLake` and `RUT_PropaneLake` leave `animalDensity` UNSET — it defaults to
-  `0f` and their 6-animal roster is dead content that can never spawn.** Item:
-  `PROPANELAKE_ANIMALDENSITY_ZERO_1`.
+  ⇒ **Every BiomeDef with a roster must set `animalDensity`** (unset defaults to `0f`). The Propane
+  Lake (now `RM_TheChill`, 0.08) was fixed at `3fa505fbb`. The `RM_SeabedFloor_*` biomes' 0 is by design:
+  `RM_SeabedFloorLife` copies each sea's cast onto its floor at startup.
 - 🔑 **A review sheet's `cut` is scoped to THAT SHEET'S BIOME, never the planet** — owner
   ruling 2026-09-21. The Lantern Deeps sheet cut `RSW_AaroxisDendoria`, `RSW_PodWorm` and
   `RSW_MossBeetle`; all three legitimately remain admitted elsewhere (the first two in the

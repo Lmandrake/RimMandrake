@@ -65,6 +65,8 @@ def _authorized(ev: dict, idx: L.Index) -> str | None:
         return None
     if reason in BOOKKEEPING:
         return None
+    if ev.get("sha") is None and ev.get("said"):
+        return None                         # a retire on the owner's typed words (artledger.retire)
     if L.is_mechanical_reason(reason):
         if ev.get("prev") and idx.protected(ev["prev"]):
             return f"mechanical install ({reason}) displaced owner-kept {ev['prev'][:12]}"

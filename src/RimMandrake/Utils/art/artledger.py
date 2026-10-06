@@ -330,6 +330,7 @@ class Index:
         self.rulings_by_sha = defaultdict(list)
         self.live = {}                         # (mod, rel) -> live event (latest by causal prev)
         self.purged = {}                       # sha -> purge event
+        self.rejected = defaultdict(list)      # sha -> [rejected events: bytes an owner redo/reject named]
         self.snapshots = []
         for ev in self.events:
             self._take(ev)
@@ -354,6 +355,8 @@ class Index:
             self._fold_live(ev)
         elif t == "purge":
             self.purged[ev["sha"]] = ev
+        elif t == "rejected":
+            self.rejected[ev["sha"]].append(ev)
         elif t == "snapshot":
             self.snapshots.append(ev)
 
@@ -378,8 +381,18 @@ class Index:
         return sha in self.purged
 
     def subject_rulings(self, keys: set[str]) -> list[dict]:
-        keys = {k.lower() for k in keys}
-        return [r for r in self.rulings if (r.get("subject_key") or "").lower() in keys]
+        """Rulings on these subjects, following renames: an alias and its canonical key share history."""
+        keys = {canonical_subject(k) for k in keys}
+        return [r for r in self.rulings if canonical_subject(r.get("subject_key") or "") in keys]
+
+    def rejection(self, sha: str) -> list[dict]:
+        """The owner redo/reject verdicts that named these very bytes, unless he has since kept them."""
+        if self.protected(sha):
+            return []
+        return self.rejected.get(sha, [])
+
+    def live_anywhere(self, sha: str) -> list[str]:
+        return [f"{m}/Textures/{r}" for (m, r), ev in self.live.items() if ev.get("sha") == sha]
 
 
 _IDX: dict = {"sig": None, "idx": None}
@@ -416,6 +429,60 @@ def subject_key(raw: str) -> str:
     k = re.sub(r"^(A_|RSW_|RM_|RUT_|BMT_|AA_|ZB_)", "", k, flags=re.I)
     k = re.sub(r"(_[fm]|_v\d+|#.*)$", "", k, flags=re.I)
     return k.lower()
+
+
+# A def rename or a new def for the same creature gets a new subject key ('ikee' -> 'contagionikee'). The
+# alias file maps the new key to the creature's canonical one, so its rulings and rejections follow it.
+ALIASES_FILE = "subject_aliases.json"
+_ALIASES: dict = {"sig": None, "map": {}}
+
+
+def subject_aliases() -> dict:
+    p = ledger_dir() / ALIASES_FILE
+    try:
+        sig = (str(p), p.stat().st_mtime_ns)
+    except OSError:
+        return {}
+    if _ALIASES["sig"] != sig:
+        raw = json.loads(p.read_text()).get("aliases", {})
+        _ALIASES.update(sig=sig, map={k.lower(): v.lower() for k, v in raw.items()})
+    return _ALIASES["map"]
+
+
+def canonical_subject(key: str) -> str:
+    k, seen, al = (key or "").lower(), set(), subject_aliases()
+    while k in al and k not in seen:
+        seen.add(k)
+        k = al[k]
+    return k
+
+
+def subject_of_rel(rel: str) -> str:
+    """The creature a Textures path belongs to, by its folder: '.../RM_Ikee/RM_Ikee_east.png' -> 'ikee'."""
+    parent = Path(rel).parent.name or Path(rel).stem
+    return canonical_subject(subject_key(parent))
+
+
+def rejection_refusal(idx: "Index", rel: str, sha: str) -> str | None:
+    """Why a MECHANICAL install of `sha` at `rel` would bring back a picture he rejected, else None.
+    reject: never, anywhere. redo: only as the same creature's current picture being moved — a redo'd
+    picture that is live nowhere is being resurrected, and one copied to another creature is spreading."""
+    rej = idx.rejection(sha)
+    if not rej:
+        return None
+    r = rej[-1]
+    said = f" (he said: {r.get('said')!r})" if r.get("said") else ""
+    if any(normalise_verdict(x.get("verdict")) == "reject" for x in rej):
+        return f"{sha[:12]} was REJECTED by the owner on {Path(r.get('via') or '').name}{said}"
+    subjects = {canonical_subject(x.get("subject_key") or "") for x in rej}
+    if not idx.live_anywhere(sha):
+        return (f"{sha[:12]} is a picture the owner sent back for redo on {Path(r.get('via') or '').name}{said}, "
+                f"and it is live nowhere — installing it resurrects it")
+    tgt = subject_of_rel(rel)
+    if tgt not in subjects:
+        return (f"{sha[:12]} was sent back for redo as {'/'.join(sorted(subjects))}{said}; copying it onto "
+                f"{tgt} spreads a rejected picture (if {tgt} is a rename, add it to {ALIASES_FILE})")
+    return None
 
 
 # ─────────────────────────────────────────────────────────── installing ──
@@ -477,6 +544,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         if not is_mechanical_reason(reason):
             raise Refused(f"reason {reason!r} is not a mechanical tag (allowed: "
                           f"{', '.join(MECHANICAL_REASONS)}<name>)")
+        why = rejection_refusal(idx, rel, sha)
+        if why:
+            raise Refused(why + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
     else:
         raise Refused("install needs an owner keep ruling id, the owner's typed words, "
                       "or a mechanical reason (artpipe-collect | script:<path>)")
@@ -612,7 +682,10 @@ def purge(sha: str, *, owner_said: str, via: str = "art purge", release_keep: bo
     if live_paths is None:
         live_paths = [f"{m}/Textures/{r}" for (m, r), ev in idx.live.items() if ev.get("sha") == sha]
     if live_paths:
-        raise Refused(f"{sha[:12]} is live at {live_paths[0]} — install a replacement first")
+        kept = [k for k in idx.protected(sha) if k.get("subject_key")]
+        under = f"; he KEPT these bytes as {kept[0]['subject_key']} ({Path(kept[0].get('via') or '').name})" if kept else ""
+        raise Refused(f"{sha[:12]} is live at {len(live_paths)} slot(s): {', '.join(live_paths[:4])}"
+                      f"{' …' if len(live_paths) > 4 else ''}{under} — install a replacement first")
     prot = idx.protected(sha)
     w = Writer({e["id"] for e in idx.events})
     if prot and not release_keep:

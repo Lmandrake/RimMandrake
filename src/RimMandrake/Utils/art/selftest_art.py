@@ -245,6 +245,48 @@ def main():
     else:
         print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
 
+    # ART_RULING_RENAME_CARRY_1: a redo'd picture can't be resurrected or spread to another creature
+    purple, white = png((128, 0, 128, 255)), png((255, 255, 255, 255))
+    spurple, swhite = L.sha256_bytes(purple), L.sha256_bytes(white)
+    ik = "Things/Pawn/Animal/RM_Ikee/RM_Ikee_south.png"
+    L.store_put_bytes(purple), L.store_put_bytes(white)
+    L.install(mod, ik, spurple, reason="script:selftest")
+    snap2 = {"sheetId": "c", "rows": {"RM_Ikee": {"subject_key": "ikee", "columns": {"A": {"south": spurple}},
+                                                  "labels": {"A": "IN GAME — FixtureMod"}}}}
+    sp2, dec2 = tmp / "c.snapshot.json", tmp / "c.decisions.json"
+    sp2.write_text(json.dumps(snap2))
+    dec2.write_text(json.dumps({"snapshot": str(sp2), "savedBy": "serve_sheet.py", "writeCount": 1,
+                                "decisions": {"RM_Ikee": {"decision": "redo", "note": "This thing is hideous",
+                                                          "at": "2026-10-05T00:00:00Z"}}}))
+    r = ingest.ingest(dec2, defer_redo_jobs=True)
+    check(r["ok"] and r.get("rejected") == 1 and L.Index().rejection(spurple), f"a redo records the IN GAME bytes as rejected ({r})")
+
+    def refused(rel_, sha_, **kw):
+        try:
+            L.install(mod, rel_, sha_, **kw)
+            return None
+        except L.Refused as e:
+            return str(e)
+    check(refused("Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot_south.png", spurple, reason="script:selftest"),
+          "a redo'd picture cannot be copied onto another creature")
+    check(refused("Things/Pawn/Animal/RUT_Ikee/RUT_Ikee_south.png", spurple, reason="script:selftest") is None,
+          "the same creature's current picture may still be moved (RUT_ twin)")
+    cik = "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee_south.png"
+    check(refused(cik, spurple, reason="script:selftest"), "a renamed def without an alias is another creature")
+    (L.ledger_dir() / L.ALIASES_FILE).write_text(json.dumps({"aliases": {"ContagionIkee": "ikee"}}))
+    check(refused(cik, spurple, reason="script:selftest") is None and L.canonical_subject("contagionikee") == "ikee",
+          "an aliased rename is the same creature")
+    check(any(x.get("subject_key") == "ikee" for x in L.Index().subject_rulings({"contagionikee"})),
+          "rulings follow a creature through its alias")
+    for rel_ in (ik, cik, "Things/Pawn/Animal/RUT_Ikee/RUT_Ikee_south.png"):
+        L.install(mod, rel_, swhite, reason="script:selftest")
+    msg = refused("Things/Pawn/Animal/RM_Ikee/RM_Ikee_east.png", spurple, reason="script:selftest")
+    check(bool(msg) and "resurrects" in msg and "hideous" in msg, "a redo'd picture live nowhere cannot be resurrected, and says why")
+    check(refused(ik, spurple, owner_said="actually I like the purple one") is None, "his words still bring it back")
+    import art_guard
+    check(art_guard._authorized({"type": "live", "sha": None, "prev": spurple, "reason": "retire", "said": "remove it"},
+                                L.Index()) is None, "the guard accepts a retire on the owner's words")
+
     # selftest the CLI entry point end to end (subprocess, not import)
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "status", "Things/Beast/Beast"],
                          capture_output=True, text=True, env=os.environ)
