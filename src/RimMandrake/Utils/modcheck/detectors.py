@@ -75,6 +75,8 @@ WEAPON_CAUSES = ("weapon",)
 # MCR_MoodChainWatcher is the donor mod "Mood Chain Reaction"'s passive marker, added to every colonist on spawn (13:23 2026-10-03).
 AMBIENT_WEATHER_HEDIFFS = frozenset(("RM_SheenCoating", "RM_HazeFilm", "RM_GaleDeafened", "MCR_MoodChainWatcher", "RM_VentMetalLoad",
                                       "PregnantHuman",    # random pregnancy from the donor romance mods: not an injury
+                                      "RM_Mired",         # Greentide churnmud: any colonist crossing the mire sinks, by design;
+                                                          # a bystander colonist's RM_Mired aborted Greentide's swallow chain 2026-10-04
                                       "RM_PitExposure"))  # FlowWorks: open-sky exposure of anyone standing in a D=4 pit, by design
                                                           # (PIT_TEMPERATURE_SOFTENING_1); flow_doors' pit colonist read as injured 2026-10-06
 HOSTILE_NEAR_CELLS = 30
