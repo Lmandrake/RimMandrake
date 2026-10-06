@@ -124,9 +124,9 @@ namespace RimMandrake.TheForge
         {
             // Scrolls: the grand-cycle rows made the list taller than the
             // default settings window.
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.CheckboxLabeled("The Forge enabled", ref modEnabled,

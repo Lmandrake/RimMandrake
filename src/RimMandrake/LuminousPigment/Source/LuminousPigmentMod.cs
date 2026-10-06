@@ -215,10 +215,16 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref goodwillPerImpressedVisit, "goodwillPerImpressedVisit", DeepfireStatusDefaults.GoodwillPerImpressedVisit);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.Label("THE CHAIN");
             list.CheckboxLabeled("Wild crowncarpet on ocean shores", ref shoreMatsEnabled,
@@ -412,7 +418,9 @@ namespace RimMandrake.LuminousPigment
             list.Label("Goodwill per impressed visitor: " + goodwillPerImpressedVisit.ToString());
             goodwillPerImpressedVisit = Mathf.RoundToInt(list.Slider(goodwillPerImpressedVisit, 0f, 10f));
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

@@ -279,9 +279,9 @@ namespace RimMandrake.FeverWood
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("Fever Wood");

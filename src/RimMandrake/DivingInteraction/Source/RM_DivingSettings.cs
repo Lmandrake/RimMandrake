@@ -236,10 +236,16 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Sea diving enabled", ref masterEnabled,
                 "Master switch. Off: no RM_SeaDiveHatch anywhere can be entered — the mod is "
@@ -435,7 +441,9 @@ namespace RimMandrake.DivingInteraction
               + "This drops those stale entries before each listen. Off: Real Fog of War's own "
               + "behaviour, errors included. Takes effect immediately.");
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

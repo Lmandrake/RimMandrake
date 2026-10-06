@@ -173,9 +173,9 @@ namespace RimMandrake.TheRot
                 biomeListBuffer = crossBiomeBiomeList;
             }
 
-            Rect view = new Rect(0f, 0f, inRect.width - 16f, scrollHeight);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(scrollHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPos, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.CheckboxLabeled("The Rot enabled", ref theRotEnabled,
