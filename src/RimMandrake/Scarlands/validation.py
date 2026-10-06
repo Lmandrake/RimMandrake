@@ -752,6 +752,8 @@ def _build_suite():
     def _panel_proof(t, sev):
         r = t.bridge_call("jawa/static_call", type=NS + "RM_LoosenedPanelProof", method="ProofWork",
                           args="current|%s" % sev)
+        if t.session is not None and (not isinstance(r, dict) or r.get("success") is False):
+            raise ExpectationFailed("static_call ProofWork did not run: %r" % ((r or {}).get("message") if isinstance(r, dict) else r,))
         return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
 
     @suite.chain("loosened_panel")
