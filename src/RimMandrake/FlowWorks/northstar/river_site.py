@@ -2,6 +2,7 @@
 """Make the CURRENT map a river site for the FlowWorks rivers extension chains (extensions_rivers.py).
 
     python.exe src/RimMandrake/FlowWorks/northstar/river_site.py            # bridge held, a Playing game
+    python.exe src/RimMandrake/FlowWorks/northstar/river_site.py --dry      # the same, on a tile with NO river
 
 The rivers chains read "UNMEASURED: the site map has no river current" on a quicktest map without a river. This founds a
 colony on a flat MILD (18-26 C mean, |lat| <= 15 so nights and winter stay mild: map 5 at 12-24/25 hit frostbite) tile that HAS a river (largest river first), generates its map, makes it current, removes every
@@ -33,11 +34,16 @@ def river_candidates(rows):
             if (r.get("hilliness") in ("Flat", "SmallHills") and float(r.get("swampiness") or 0) < 0.3
                     and 0 <= float(r.get("elevation") or -1) < 600 and 18 <= float(r.get("temperature") or -99) <= 26
                     and abs(float(r.get("lat") or 90)) <= 15
-                    and r.get("biome") not in ("Ocean", "Lake", "SeaIce", "IceSheet")):
+                    and r.get("biome") not in ("Ocean", "Lake", "SeaIce", "IceSheet", "Desert", "ExtremeDesert", "AridShrubland")):
                 out.append(int(r.get("tile") if r.get("tile") is not None else r.get("index")))
         except (TypeError, ValueError):
             continue
     return out
+
+
+DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle chains. Their 40x30 Soil repaints cut a
+# river and a river cut their plots (MEASURED 2026-10-06: confinement read river cells (122,87..89) as D=4 F=4 "liquid on
+# un-dug ground"; the weir pooled over painted Soil). Rivers chains run on a river site, the rest on a dry one.
 
 
 def main():
@@ -56,14 +62,14 @@ def main():
         for i in range(0, len(cands), 100):           # world_tile_get caps a read at 100 rows
             got = s.call("jawa/world_tile_get", tiles=",".join(str(t) for t in cands[i:i + 100])).get("tiles") or []
             # no mutator/road filter: on 1.6 a river tile commonly carries a river mutator (0 of 7901 passed with it)
-            river += [g for g in got if int(g.get("riverCount") or 0) > 0]
+            river += [g for g in got if (int(g.get("riverCount") or 0) > 0) != DRY]
         print("river tiles among them", len(river))
         g, tries = None, 0
         for row in river:
             if tries >= 10:
                 break
             t = int(row["tile"])
-            cf = s.call("jawa/colony_found", tile=t, faction="Player", name="NorthstarRiver")
+            cf = s.call("jawa/colony_found", tile=t, faction="Player", name=("NorthstarDry" if DRY else "NorthstarRiver"))
             if not cf.get("success"):
                 continue
             tries += 1
@@ -81,7 +87,7 @@ def main():
             kv = dict(p.split("=", 1) for p in grid.split() if "=" in p)
             print("tile", t, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
             # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
-            if int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0:
+            if DRY or (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
                 tile, info = t, row
                 break
         if tile is None:
