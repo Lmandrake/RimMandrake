@@ -13,3 +13,17 @@ feature's closed "details" toggle. `FlowWorks_status_board.html` is the same con
 - `shots/` = downscaled 2026-10-05 live-run screenshots, the Quarry reference (ruling 33) and the two unpicked ladder drawings.
 - Lives under `northstar/` so it does not move modcheck's mod hash; held from deploy in `src/DEPLOY_HOLD.txt`.
 - Presentation rules: `design/RimMandrake/northstar_densification_lessons.md`, "Review sheet presentation rules".
+
+## Returning to the review map (keeper save)
+
+Keeper: `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\RM_fw_review_20261006.rws`
+(built 2026-10-06 from the GREEN run; 34 visuals + 51 gallery stations; older keepers `RM_fw_review_20261005*.rws` stay).
+It only loads cleanly on the **flowworks tier**, so the mod list comes first:
+
+1. `python3 src/RimMandrake/Utils/modset_builder.py --tier flowworks --apply`, then launch RimWorld through Steam.
+2. In the main menu use Load game and pick `RM_fw_review_20261006` (or bridge `rimworld/load_game_ready`).
+3. Labels are process memory and are gone after a load: `python.exe src/RimMandrake/FlowWorks/review_map.py --labels`.
+4. Walk it: `review_map.py --goto S0|V|M|F|<station>`. Key: `map/KEYSHEET.md`.
+5. Finished: `python3 src/RimMandrake/Utils/modset_builder.py --restore` with the game closed.
+
+A save carries the map as it was built; if FlowWorks code or defs changed since, rebuild with `review_map.py --build --fresh-map` and `--save` a new keeper rather than trusting the old one.
