@@ -347,10 +347,42 @@ if Suite is not None:
 
     @suite.chain("mire_escalation")
     def mire_escalation(t):
-        with _comp(t, "stuck_threshold_and_free_mired_job", beyond_toggle=True):
-            _unmeasured(t, "the stuck threshold is ~0.85 severity at 0.008 per 60 ticks with a 15%% struggle roll (a ~6000+ tick "
-                           "random climb) and RM_FreeMired needs a second pawn's job; a seeded hediff plus an ordered job is "
-                           "owed to a live round")
+        """Seeded past the stuck threshold (jawa/pawn_health add RM_Mired 0.95) instead of the ~6000-tick random
+        climb: a stuck pawn stays stuck alone, and RM_FreeMired by a second colonist removes the hediff
+        (RM_JobDriver_FreeMired: Touch, 240-tick wait, RemoveHediff)."""
+        P = {}
+        with _comp(t, "site_ready_escalation", beyond_toggle=True):
+            if _live(t):
+                x, z = _site(t)
+                P["stuck"] = _spawn(t, x - 6, z + 3)
+                P["helper"] = _spawn(t, x + 3, z + 3, draft=False)
+                r = t.bridge_call("jawa/pawn_health", pawn=P["stuck"], action="add", hediff="RM_Mired", severity=0.95)
+                if not (r or {}).get("success"):
+                    _unmeasured(t, "pawn_health add RM_Mired failed: %s" % str(r)[:160])
+                if _hed(t, P["stuck"]).get("RM_Mired", 0) < 0.85:
+                    _unmeasured(t, "seeded RM_Mired did not land at or above the 0.85 stuck threshold: %s" % _hed(t, P["stuck"]))
+        with _comp(t, "stuck_pawn_stays_stuck_alone", toggle="mireEnabled"):
+            if _live(t):
+                t.wait_ticks(240)       # four mire checks: a stuck pawn drops only on a 1.5%% roll, else sinks
+                sev = _hed(t, P["stuck"]).get("RM_Mired", 0)
+                if sev < 0.85:
+                    _fail("a pawn seeded at 0.95 on %s fell to %.3f in 240 ticks with nobody helping: the stuck "
+                          "branch of RM_MapComponent_TerrainMire is not holding it" % (MUD, sev))
+        with _comp(t, "free_mired_job_pulls_the_pawn_out", beyond_toggle=True):
+            if _live(t):
+                r = t.bridge_call("jawa/ordered_job", pawnId=P["helper"], jobDef="RM_FreeMired", targetAId=P["stuck"],
+                                  waitTicks=0, timeoutSeconds=30)
+                if not (r or {}).get("accepted"):
+                    _unmeasured(t, "ordered_job RM_FreeMired not accepted: %s" % str(r)[:160])
+                freed = False
+                for _ in range(6):
+                    t.wait_ticks(250)
+                    if "RM_Mired" not in _hed(t, P["stuck"]):
+                        freed = True
+                        break
+                if not freed:
+                    _fail("RM_FreeMired was accepted but the stuck pawn still carries RM_Mired after 1500 ticks "
+                          "(240-tick job plus a walk of ~9 cells): read the helper's job before blaming the driver")
 
     # ----------------------------------------------------------------------- 4. the swallow
 

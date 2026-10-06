@@ -12,7 +12,7 @@ Sources: `About/About.xml`, `Source/RM_GreentideMod.cs` (16 settings), `RM_MapCo
 - A run leaves every setting at its shipped default. → settings_restored.all_settings_at_shipped_defaults
 - Churnmud is a mire: a pawn standing on `RM_GreentideChurnmud` gains `RM_Mired`; one on Concrete or on `RM_ChurnmudSealed` does not (carrying no mire extension IS the sealant's safety). → mire.mire_applies_on_churnmud, mire.mire_skips_concrete_and_sealed_floor
 - The master switch `mireEnabled` off stops the mire. → mire.mire_master_switch_off
-- Past the stuck threshold only another pawn can pull a mired pawn out (`RM_FreeMired`). → UNCOVERED: a ~6000-tick random climb plus a second pawn's job; needs a seeded severity and a job order (named item to file: GREENTIDE_MIRE_SEED_1); chain mire_escalation records UNMEASURED
+- Past the stuck threshold a mired pawn stays stuck alone, and another colonist's `RM_FreeMired` pulls it out (severity seeded at 0.95 with `jawa/pawn_health`, 2026-10-06). → mire_escalation.stuck_pawn_stays_stuck_alone, mire_escalation.free_mired_job_pulls_the_pawn_out
 - A loose item left on churnmud for its dwell time is swallowed, even in a stockpile; items on safe or sealed ground stay. → swallow.swallow_buries_on_churnmud_only
 - `buriedCacheEnabled` off swallows nothing. → swallow.buried_cache_switch_off_keeps_items
 - The dig-out job restores a buried item and nothing is ever destroyed. → swallow.dig_out_job_restores_the_buried_item (UNMEASURED when the order shape is unproven)
