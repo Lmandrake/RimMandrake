@@ -192,8 +192,9 @@ def random_events_off(session, tx):
     return HelperResult("random_events_off", acted=2, verified=True)
 
 
-def _kill_ids(session, ids, name, pick, passes=2):
-    """Kill exact ids with pawn_force_incapacitate; re-read; retry once; leftovers are residue."""
+def _kill_ids(session, ids, name, pick, passes=2, action="kill"):
+    """Kill exact ids with pawn_force_incapacitate; re-read; retry once; leftovers are residue.
+    action="vanish" removes them with no death at all (see kill_hostiles)."""
     acted = 0
     done = set()
     for _ in range(passes):
@@ -201,7 +202,7 @@ def _kill_ids(session, ids, name, pick, passes=2):
         if not rows:
             break
         for r in rows:
-            session.call("jawa/pawn_force_incapacitate", pawn=r["id"], action="kill")
+            session.call("jawa/pawn_force_incapacitate", pawn=r["id"], action=action)
             acted += 1
             done.add(r["id"])
     left = [r["id"] for r in read_pawns(session, health=False) if r["id"] in ids and pick(r)]
@@ -210,9 +211,13 @@ def _kill_ids(session, ids, name, pick, passes=2):
 
 
 def kill_hostiles(session, expected_ids=()):
+    """Remove hostiles WITHOUT a death. MEASURED 2026-10-05 (FlowWorks extensions, 4 chains UNMEASURED on
+    "hostile_pawns: Fingerspike x3"): killing an Anomaly Toughspike/Trispike runs DeathActionWorker_Divide,
+    which launches smaller fleshbeasts as flyers that LAND after the bland check, inside the next chain --
+    the harness bred the surprise it then reported. Same family as the boomalope (kill_wildlife)."""
     exp = set(expected_ids)
     ids = set(r["id"] for r in read_pawns(session, health=False) if is_hostile(r) and r["id"] not in exp)
-    return _kill_ids(session, ids, "kill_hostiles", is_hostile)
+    return _kill_ids(session, ids, "kill_hostiles", is_hostile, action="vanish")
 
 
 def kill_wildlife(session, expected_ids=()):
