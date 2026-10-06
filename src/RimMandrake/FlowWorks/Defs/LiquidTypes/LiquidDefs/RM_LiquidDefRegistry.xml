@@ -320,7 +320,8 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <depthDarken>0.1</depthDarken>
+      <tint>(0.58,0.56,0.60)</tint>
+      <depthDarken>0.09</depthDarken>
       <rippleDensity>0.5</rippleDensity>
       <rippleIntensity>1.4</rippleIntensity>
       <overlay>false</overlay>

@@ -3068,3 +3068,9 @@
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-06T15:05:15Z","tsn":1791299115632308512}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T15:05:39Z","tsn":1791299139444953517}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T15:11:36Z","tsn":1791299496883925842}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY tar lightness live tune","ts":"2026-10-06T15:19:20Z","tsn":1791299960890328467}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T15:19:27Z","tsn":1791299967424538300}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-06T15:21:16Z","tsn":1791300076247425116}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T15:21:40Z","tsn":1791300100443976673}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY verify tar persisted look","ts":"2026-10-06T15:21:44Z","tsn":1791300104810582616}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T15:21:51Z","tsn":1791300111524452318}
