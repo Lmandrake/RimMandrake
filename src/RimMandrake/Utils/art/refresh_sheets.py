@@ -14,7 +14,12 @@ What it does, in order:
     A sheet whose fingerprint equals the one recorded at its last build is left alone.
  3. A changed sheet is rebuilt with art_sheet.generate_biome. Decisions are never overwritten: generate_biome
     refuses a file the sidecar wrote, and a sheet with any saved decisions is rebuilt HTML-only (sheet_only).
-    check_sheet.py must exit 0, else the sheet is reported FAILED.
+    THE SCALED-REVIEW GATE is hard: generate_biome builds to a temp file, runs scaled_review_gate, and only a pass
+    replaces the sheet. A failing rebuild is reported "GATE FAILED (previous sheet kept)" and the last good sheet
+    keeps being served untouched; its fingerprint is NOT recorded, so it is retried every cycle. A sheet left alone is
+    still re-verified, and one that no longer passes (e.g. a subject since ruled elsewhere) or was built before the
+    gate (no stamp) is rebuilt through the same gate. The exit code is nonzero when any sheet fails the gate; the
+    systemd loop ignores it, and no sheet is ever taken down.
  4. URLs stay STABLE: the running serve_sheet.py re-reads the sheet and decisions on every request, so rebuilt
     files are live on the same port and token. Only a sheet whose server no longer answers is restarted, and then
     TONIGHT and SHEETS_INDEX are rewritten with the new URL.
@@ -38,10 +43,11 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import artledger as L  # noqa: E402
 import subject as S  # noqa: E402
+import scaled_review_gate as SG  # noqa: E402
 
 OUT = L.REPO_ROOT / "Transient" / "biome_ffar"
 STATE = "sheets_state.json"
-SERVE = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "serve_sheet.py"
+SERVE = HERE / "serve_gated.py"      # the only server launcher: refuses an HTML without a passing gate stamp
 CHECK = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "check_sheet.py"
 SHEET_RE = re.compile(r"^([a-z_]+_sheet_(\d{4}-\d{2}-\d{2}))\.html$")
 URL_RE = re.compile(r"http://localhost:\d+/\?t=[A-Za-z0-9_-]+")
@@ -178,29 +184,54 @@ def main(argv=None) -> int:
     failed = art_sheet.failed_canon_jobs()
     sp = OUT / STATE
     state = json.loads(sp.read_text()) if sp.is_file() else {}
-    urls, donors, report = {}, {}, []
+    urls, donors, report, gate_reports = {}, {}, [], []
     for base, date, biome in sheets():
         rows = (census["biomes"].get(biome) or {}).get("rows") or []
         keys = [[S.norm(S.stem(x)) for x in [r["key"], r.get("port"), r.get("label")] + list(r.get("defNames") or [])
                  + list(r.get("donors") or []) if x] for r in rows]
         res = [[x["res"] for x in (r.get("art") or {}).get("resources") or []] for r in rows]
         fp = fingerprint(keys, res, idx, failed)
-        changed = a.force or state.get(base, {}).get("fp") != fp
+        stale, prev_blank = "", False
+        try:                      # re-verify the sheet on disk (stamp + every requirement, incl. rendering in a real browser)
+            st_ok, st_msg = SG.verify_stamp((OUT / f"{base}.html").read_text())
+            bad = [c for c in SG.run_gate(dict(SG.load_ctx(OUT / f"{base}.html"), skip_browser=True)) if not c.ok]
+        except Exception as e:  # noqa: BLE001
+            st_ok, st_msg, bad = False, f"{type(e).__name__}: {e}", []
+        if not a.force and state.get(base, {}).get("fp") == fp:
+            stale = ("" if st_ok else st_msg + "; ") + ("failing req " + ",".join(c.req for c in bad) if bad else "")
+        changed = a.force or state.get(base, {}).get("fp") != fp or bool(stale)
         status = "unchanged"
         if changed and not a.dry_run and biome:
-            r = art_sheet.generate_biome(biome, census_path, None, date, sheet_only=touched(base))
-            ok = subprocess.run([sys.executable, str(CHECK), str(OUT / f"{base}.html"), "--decisions",
-                                 str(OUT / f"{base}.decisions.json")], capture_output=True).returncode == 0
-            status = "rebuilt" if ok else "FAILED check_sheet"
-            if ok:
-                state[base] = {"fp": fp, "built": time.strftime("%Y-%m-%dT%H:%M:%S")}
+            try:
+                art_sheet.generate_biome(biome, census_path, None, date, sheet_only=touched(base))
+            except SG.GateFailed as e:
+                status = "GATE FAILED (previous sheet kept): req " + ",".join(c.req for c in e.checks if not c.ok)
+                gate_reports.append(SG.report(e.sheet, e.checks))
+                if not SG.check_browser(SG.load_ctx(OUT / f"{base}.html"), SG._items(SG.load_ctx(OUT / f"{base}.html")) or []).ok:
+                    prev_blank = True
+                if prev_blank:    # the served sheet is itself blank: a rendering sheet that fails other reqs beats it
+                    try:
+                        art_sheet.generate_biome(biome, census_path, None, date, sheet_only=touched(base),
+                                                 allow_failing="the previous sheet rendered blank (req 13)")
+                        status = "OVERRIDE: previous sheet was blank; rebuilt unstamped+bannered, still failing req " + ",".join(
+                            c.req for c in e.checks if not c.ok)
+                    except Exception as e2:  # noqa: BLE001
+                        status += f" (override failed: {type(e2).__name__})"
+            except Exception as e:  # noqa: BLE001  a crashing build must never take the served sheet down
+                status = f"BUILD ERROR (previous sheet kept): {type(e).__name__}: {str(e)[:120]}"
+            else:
+                ok = subprocess.run([sys.executable, str(CHECK), str(OUT / f"{base}.html"), "--decisions",
+                                     str(OUT / f"{base}.decisions.json")], capture_output=True).returncode == 0
+                status = "rebuilt" if ok else "FAILED check_sheet"
+                if ok:
+                    state[base] = {"fp": fp, "built": time.strftime("%Y-%m-%dT%H:%M:%S"), "gate": SG.GATE_VERSION}
         elif changed:
-            status = "would rebuild"
+            status = "would rebuild" + (f" ({stale})" if stale else "")
         u = served_url(base)
         if not alive(u) and not a.dry_run:
             u = restart(base)
             urls[base] = u
-            status += " (server restarted: NEW URL)"
+            status += " (server restarted: NEW URL)" if u else " (SERVER DOWN and not restarted: no passing gate stamp)"
         donors[base] = donor_only_count((OUT / f"{base}.html").read_text())
         report.append((base, status, donors[base]))
     if not a.dry_run:
@@ -213,7 +244,9 @@ def main(argv=None) -> int:
         print(f"{b:45} {s:28} donor-only {d}")
     print(f"total donor-only {sum(d for _, _, d in report)}; sheets rebuilt "
           f"{sum(s.startswith('rebuilt') for _, s, _ in report)}/{len(report)}")
-    return 1 if any("FAILED" in s for _, s, _ in report) else 0
+    for g in gate_reports:
+        print(g)
+    return 1 if any(x in s for _, s, _ in report for x in ("FAILED", "SERVER DOWN", "ERROR")) else 0
 
 
 def selftest() -> int:

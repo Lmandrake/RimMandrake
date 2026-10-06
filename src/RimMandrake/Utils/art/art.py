@@ -190,7 +190,8 @@ def cmd_purge(a):
 
 def cmd_ingest(a):
     import ingest
-    r = ingest.ingest(Path(a.decisions), dry_run=a.dry_run)
+    r = ingest.ingest(Path(a.decisions), dry_run=a.dry_run, redo_jobs=Path(a.redo_jobs) if a.redo_jobs else None,
+                      defer_redo_jobs=a.defer_redo_jobs)
     print(json.dumps(r, indent=1))
     return 0 if r.get("ok") else 2
 
@@ -225,6 +226,8 @@ def main(argv=None):
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
     p.add_argument("--release-keep", action="store_true")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
+    p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")
     sp.add_parser("index")
     if argv is None:
         argv = sys.argv[1:]

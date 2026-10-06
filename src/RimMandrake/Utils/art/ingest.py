@@ -11,6 +11,10 @@ Rules (design §3, owner rulings 2026-10-04):
   * Each row may carry `purge: [sha...]` — the owner's reject+purge. A purge of a live
     picture is refused (counted, reported); everything else is deleted from the store.
   * Nothing is installed. Installing is `art.py install`, a separate step.
+  * REGEN JOBS CARRY HIS NOTE VERBATIM (scaled-game-image-review req 9). `--redo-jobs <jobs.json>` checks every job
+    queued for the sheet: `target_def` must be a decided row, and when that row has a note the job's `owner_note`
+    must contain it character for character; a `redo` row with no job is refused too. A sheet with `redo` decisions
+    and no `--redo-jobs` is REFUSED (nothing ingested) unless `--defer-redo-jobs` says the jobs come later.
 """
 from __future__ import annotations
 
@@ -20,8 +24,53 @@ from pathlib import Path
 import artledger as L
 
 
-def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
+def _note_text(on) -> str:
+    return "\n".join(on) if isinstance(on, list) else (on if isinstance(on, str) else "")
+
+
+def check_redo_jobs(doc: dict, jobs: list) -> list[str]:
+    """Problems (empty = fine) with the regen jobs queued for a decisions file: each carries the row's note verbatim."""
+    rows = doc.get("decisions") or {}
+    problems, covered = [], set()
+    for j in jobs:
+        if not isinstance(j, dict):
+            problems.append(f"UNMEASURED: a job entry is not an object ({type(j).__name__})")
+            continue
+        jid = j.get("id", "?")
+        row = j.get("target_def") or j.get("row")
+        v = rows.get(row)
+        if not isinstance(v, dict):
+            problems.append(f"UNMEASURED: job {jid} targets {row!r}, which is not a row of this decisions file")
+            continue
+        covered.add(row)
+        note = (v.get("note") or "").strip()
+        if note and note not in _note_text(j.get("owner_note")):
+            problems.append(f"job {jid} (row {row}): owner_note does not carry his note verbatim: {note[:60]!r}")
+    for row, v in rows.items():
+        if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo" and row not in covered:
+            problems.append(f"row {row} is a redo with no regen job in the jobs file")
+    return problems
+
+
+def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None = None,
+           defer_redo_jobs: bool = False) -> dict:
     doc = json.loads(Path(decisions_path).read_text())
+    redo_rows = [r for r, v in (doc.get("decisions") or {}).items()
+                 if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo"]
+    if redo_jobs is not None:
+        try:
+            jobs = json.loads(Path(redo_jobs).read_text())
+        except (OSError, ValueError) as e:
+            return {"ok": False, "error": f"REFUSED (req 9): UNMEASURED — jobs file {redo_jobs} unreadable ({e})"}
+        jobs = jobs.get("jobs", jobs) if isinstance(jobs, dict) else jobs
+        bad = check_redo_jobs(doc, jobs)
+        if bad:
+            return {"ok": False, "error": "REFUSED (req 9): every regen job must carry the decision's note verbatim as "
+                                          "owner_note — " + " | ".join(bad[:12]) + (f" … +{len(bad) - 12} more" if len(bad) > 12 else "")}
+    elif redo_rows and not defer_redo_jobs:
+        return {"ok": False, "error": f"REFUSED (req 9): {len(redo_rows)} redo decision(s) and no --redo-jobs file to check "
+                                      f"their owner_note against (rows: {', '.join(redo_rows[:6])}). Pass --redo-jobs <jobs.json>, "
+                                      f"or --defer-redo-jobs if the jobs are queued later."}
     rs = doc.get("reviewStatus") if isinstance(doc.get("reviewStatus"), dict) else {}
     plumbed = bool(doc.get("savedBy")) and int(doc.get("writeCount") or 0) > 0
     if not plumbed and rs.get("state") != "ruled":
