@@ -151,7 +151,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var full = new StringBuilder(ekey).Append('#');
                 foreach (VId v in e.Chain()) full.Append(v.ToString()).Append(';');
                 foreach (VId v in new[] { e.A, e.B })
-                    full.Append(g.Nodes[v].Type).Append(',');
+                {
+                    // everything LayEdge/EndDecor read off the node beyond its type: whether a buried run ends inside the wall (a
+                    // wall terminal), the open side of a dead end, the stub's direction and face. Without these a conduit removed
+                    // behind a stub left its cached piece standing in the old look (gss fuzz seed 81: incremental != fresh).
+                    CordNode nn = g.Nodes[v];
+                    full.Append(nn.Type).Append(nn.WallTerminal ? "W" : "").Append(nn.Gap ? "G" : "")
+                        .Append(nn.Cls).Append(nn.Out.X).Append('/').Append(nn.Out.Z)
+                        .Append(nn.Into.X.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('/').Append(nn.Into.Z.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture))
+                        .Append(nn.Face.X.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append('/').Append(nn.Face.Z.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)).Append(',');
+                }
                 foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
                 foreach (VId v in new[] { e.A, e.B })

@@ -36,6 +36,9 @@ def main(argv):
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
     args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else [])
+    for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
+        if a.startswith("--fuzz") and i + 1 < len(argv):
+            args += [a, argv[i + 1]]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
     return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode
