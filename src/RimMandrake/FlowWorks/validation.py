@@ -54,7 +54,7 @@ CORE_LIVE_IDS = [
     "P5n_own_faction_carveout",
     "X1_pawn_height_ladder", "X2_pawn_lowers_walking_in", "X3_pawn_rises_walking_out", "X4_pit_wall_over_head",
     "X5_slime_occupant_below_surface", "X7_tar_front_lags_water", "X6_two_fluids_distinct", "X7n_viscosity_off",
-    "X8_cover_hides_pit", "X9_cover_deck_uniform", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
+    "X8_cover_hides_pit", "X9_cover_deck_uniform", "X10_canal_fire", "T0n_fluid_switch_refused", "E9_log_budget", "Z_settings_restored",
 ]
 
 # core row -> the north-star bars (design/validation_walks/RimMandrake/FlowWorks.md `## north star`) whose
@@ -86,10 +86,10 @@ ROW_SHOWS = {
     "X9_cover_deck_uniform": ["pit_covered_seam_at_max_zoom"],
     "P4_ladder_frees": ["ladder_state_legible"],
     "P4b_ladder_raised_strands": ["ladder_state_legible"],
+    "X10_canal_fire": ["canal_burning_reads_as_burning_liquid", "canal_fire_persists", "canal_spent_after_burn"],
 }
 # bars only an extension chain claims (selftest_extensions asserts this list is exactly the difference)
-EXTENSION_ONLY_BARS = ["canal_burning_reads_as_burning_liquid", "canal_fire_persists", "canal_fire_reaches_reservoir",
-                       "canal_spent_after_burn", "reservoir_recharge_progress_visible", "sluice_gate_state_legible",
+EXTENSION_ONLY_BARS = ["canal_fire_reaches_reservoir", "reservoir_recharge_progress_visible", "sluice_gate_state_legible",
                        "spikes_read_distinct"]
 
 # core row -> the Mod Settings toggle it flips (both sides proven in the same row or its pair)

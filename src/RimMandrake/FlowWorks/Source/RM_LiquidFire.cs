@@ -258,7 +258,10 @@ namespace RimMandrake.FlowWorks
 				int i = scratch[k];
 				IntVec3 c = map.cellIndices.IndexToCell(i);
 				FluidDef fluid = BurnableFluidAt(map, ex, c);
-				if (fluid == null)
+				// Foam lying on a burning cell puts it out (and TryQueue keeps it out while the foam lies); rain on an
+				// open cell has its chance once per effects check (60 ticks). Both were written and never called
+				// until 2026-10-05: foam only stopped a NEW light, and RainDouses had no caller at all.
+				if (fluid == null || IsSmothered(map, c) || (effects && RainDouses(map, c)))
 				{
 					Extinguish(map, c, i, false);
 					continue;

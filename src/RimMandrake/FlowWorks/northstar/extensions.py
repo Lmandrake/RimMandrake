@@ -61,9 +61,16 @@ FW_TOGGLES = [
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
     "swaleEnabled", "pitExposureEnabled",
+    "pitDepthDrawOffsetEnabled",  # PIT_DEPTH_DRAW_OFFSET_1: toggle_pit_depth_draw existed, the name was missing here
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
     "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
     "viscosityEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)
+    # 2026-10-05 build pass (belt_fwbuild): chains fire_put_out, pit_prison_room, liquid_pump, bottle_revert,
+    # wall_faces, dig_finds
+    "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
+    "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled",
+    "liquidPumpEnabled", "bottleRevertEnabled", "excavationWallFacesEnabled",
+    "digFindsEnabled", "digFindsLocalOnly", "digFindLetterEnabled",
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -550,31 +557,14 @@ def plot_E_fire(t):
         for x, z in cells:
             _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
         _ignite(t, *cells[-1])
-        with t.component("fire_burning_look", toggle="canalFireEnabled",
-                         shows=["canal_burning_reads_as_burning_liquid"]):
-            _wait(t, 5 * PULSE)
-            if t._guard():
-                fires = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200)
-                n = len((fires or {}).get("things") or [])
-                _expect(n >= 3, "fewer than 3 burning-liquid flames in the channel after ignition: %d" % n)
-            _frame(t, *shot)
+        _wait(t, 5 * PULSE)
+        # fire_burning_look / fire_persists_look / burned_channel_spent were CUT 2026-10-05: core row X10_canal_fire
+        # fails whenever they would (flames on the run, still alight, spent F=0 + ash) at 1/20th the ticks.
         with t.component("fire_reaches_reservoir", shows=["canal_fire_reaches_reservoir"]):
             _wait(t, 24 * PULSE)
             if t._guard():
                 fires = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 5, 5), limit=200)
                 _expect(len((fires or {}).get("things") or []) >= 1, "no flame at the pond cells within budget")
-            _frame(t, *shot)
-        with t.component("fire_persists_look", shows=["canal_fire_persists"]):
-            f1 = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200) or {})
-                      .get("things")) or [])
-            _wait(t, 4 * PULSE)
-            f2 = len(((t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(px, pz, 14, 8), limit=200) or {})
-                      .get("things")) or [])
-            _expect(f2 > 0 if t._guard() else None, "fire died within 4 pulses (was %s, now %s)" % (f1, f2))
-            _frame(t, *shot)
-        with t.component("burned_channel_spent", shows=["canal_spent_after_burn"]):
-            _wait(t, 240 * PULSE)     # ~60,000 ticks: "one canal tier per day"
-            _expect_state(t, cells, fill=0, what="burned cell")
             _frame(t, *shot)
 
 
@@ -1201,7 +1191,9 @@ def toggle_pit_depth_draw(t):
 
 def _fill_fx(t):
     """PIT_FILL_EFFECTS_1 census: every pawn standing in liquid, with cell fluid, swimmer flag, drown/tox severity."""
-    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitFillEffects", method="ProofReport", args="")
+    # args=" " (not ""): static_call reads "" as ZERO arguments and ProofReport takes one -- with "" this census
+    # was "No public static ProofReport with 0 params" on every call (harness bug, fixed 2026-10-05)
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitFillEffects", method="ProofReport", args=" ")
     return str((r or {}).get("result", ""))
 
 
@@ -1425,3 +1417,359 @@ def swale_enrichment(t):
             txt = _swale_proof(t, x, z)
             if t._guard():
                 _expect(txt == "OFF", "swaleEnabled OFF but the swale still answered: %s" % txt)
+
+
+# =============================================================== 2026-10-05 BUILD PASS
+# Rows owed by Transient/belt_fwbuild_20261005.md "NEW ROWS NEEDED", written dense: one chain per mechanism, each
+# toggle's two sides in adjacent components, every read through the shipping code's own predicates
+# (RM_NorthstarProofs / RM_LiquidFireProof / RM_DigDiscoveryProof via jawa/static_call). NOT wired, and why:
+#   * Exposed Prisoner gated on a Charity precept (PIT_TEMPERATURE_SOFTENING_1 leftover): needs two ideoligions
+#     authored live; its toggle (pitExposureEnabled) is already proven by toggle_pit_exposure. Live walk owed.
+#   * DBH thirst patch (LIQUID_THIRST_CHAIN_1): DBH is not on any test list; the patch is inert without it.
+#   * Bottle fill-job fix (cf1e75d26): toggle_bottle_loop is the route; no new row.
+#   * Too-wide pawn not offered capture-down: RM_PitRoomMath.CaptureDown is proven offline by the C# selftest.
+
+NS_PROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"
+FIRE_PROOF = "RimMandrake.FlowWorks.RM_LiquidFireProof"
+DIG_PROOF = "RimMandrake.FlowWorks.RM_DigDiscoveryProof"
+
+
+def _sc(t, typ, method, arg):
+    """One static_call, text result. arg "" would be read as ZERO arguments: every method here takes one string,
+    so an empty argument is sent as " "."""
+    r = t.bridge_call("jawa/static_call", type=typ, method=method, args=arg if arg else " ")
+    return str((r or {}).get("result") or (r or {}).get("message") or (r or {}).get("error") or "")
+
+
+def _kv(txt):
+    return dict(p.split("=", 1) for p in txt.split() if "=" in p)
+
+
+def _fire_count(t):
+    """FIRE burning N, or None when the report is unreadable."""
+    txt = _sc(t, FIRE_PROOF, "ProofReport", " ")
+    try:
+        return int(txt.split("burning", 1)[1].split("|", 1)[0])
+    except (IndexError, ValueError):
+        return None
+
+
+def _flames(t, cells):
+    """The subset of `cells` holding an RM_LiquidFlame."""
+    out = set()
+    for x, z in cells:
+        r = t.bridge_call("jawa/list_things", defName=FLAME, rect=_rect(x, z, 1, 1), limit=5)
+        if ((r or {}).get("things") or []):
+            out.add((x, z))
+    return out
+
+
+def _tar_cells(t, cells):
+    for x, z in cells:
+        _dig(t, x, z, 1)
+        _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
+
+
+@suite.chain("fire_put_out")
+def fire_put_out(t):
+    """Phase 6 owed (330a510d8 + the 2026-10-05 fix that gave foam and rain their first caller). Every burnable cell
+    is an ISOLATED 1x1 tar cut (3 apart), so no neighbour can relight a cell and each read is one cell's own fate.
+    explosion: a Bomb lights tar with no Fire anywhere, an EMP does not, and with the setting off a Bomb does not.
+    foam: firefoam on two burning cells puts them out within one 60-tick check, the two without foam burn on; with the
+    setting off foam is inert. rain: steady rain (filling off) douses open cells over 50 checks (0.03/check: P(an
+    open cell survives) ~0.22) while a roofed twin row stays alight; with the setting off the open row stays lit."""
+    x0, z0 = _prep_plot(t, "E")
+    bomb_off, emp_on, bomb_on = (x0 + 2, z0 + 1), (x0 + 9, z0 + 1), (x0 + 16, z0 + 1)
+    foam = [(x0 + 2 + 3 * i, z0 + 4) for i in range(4)]
+    open_row = [(x0 + 2 + 3 * i, z0 + 8) for i in range(6)]
+    roof_row = [(x0 + 2 + 3 * i, z0 + 11) for i in range(6)]
+    _tar_cells(t, [bomb_off, emp_on, bomb_on] + foam + open_row + roof_row)
+    t.bridge_call("jawa/set_roof_batch", ops=";".join("RoofConstructed:%d,%d,1,1" % c for c in roof_row))
+
+    def boom(c, dam):
+        t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType=dam, radius=0.9, screenShake=0)
+
+    with _setting(t, "canalFireEnabled", True):
+        with t.component("explosion_off_does_not_light", toggle="explosionIgnitesLiquidEnabled"):
+            with _setting(t, "explosionIgnitesLiquidEnabled", False):
+                boom(bomb_off, "Bomb")
+                _wait(t, PULSE)
+                _expect(not _flames(t, [bomb_off]) if t._guard() else None, "Bomb lit tar with the setting OFF")
+        with t.component("explosion_lights_liquid", toggle="explosionIgnitesLiquidEnabled"):
+            boom(emp_on, "EMP")
+            boom(bomb_on, "Bomb")
+            _wait(t, PULSE)
+            if t._guard():
+                _expect(not _flames(t, [emp_on]), "an EMP blast lit tar")
+                _expect(_flames(t, [bomb_on]) == {bomb_on}, "a Bomb blast did not light tar (no Fire involved)")
+        for c in foam:
+            _light(t, *c)
+        with t.component("foam_smothers_burning_liquid", toggle="foamSmothersLiquidFireEnabled"):
+            lit0 = _flames(t, foam)
+            t.bridge_call("jawa/spawn_batch", ops=";".join("Filth_FireFoam:%d,%d" % c for c in foam[:2]))
+            t.wait_ticks(90)
+            lit1 = _flames(t, foam)
+            if t._guard():
+                _expect(lit0 == set(foam), "not every foam-test cell lit: %s" % sorted(lit0))
+                _expect(not (lit1 & set(foam[:2])), "foamed cells still burning: %s" % sorted(lit1 & set(foam[:2])))
+                _expect(lit1 >= set(foam[2:]), "unfoamed cells went out too: %s" % sorted(lit1))
+        with t.component("foam_off_is_inert", toggle="foamSmothersLiquidFireEnabled"):
+            with _setting(t, "foamSmothersLiquidFireEnabled", False):
+                t.bridge_call("jawa/spawn_batch", ops="Filth_FireFoam:%d,%d" % foam[2])
+                t.wait_ticks(90)
+                _expect(foam[2] in _flames(t, [foam[2]]) if t._guard() else None,
+                        "foam put a cell out with foamSmothersLiquidFireEnabled OFF")
+        with _setting(t, "rainFillsExcavationsEnabled", False):
+            t.bridge_call("jawa/weather_set", weather="Rain", lockWeather=True)
+            try:
+                with t.component("rain_douses_open_fire", toggle="rainDousesLiquidFireEnabled"):
+                    for c in open_row + roof_row:
+                        _light(t, *c)
+                    t.wait_ticks(3000)
+                    lo, lr = _flames(t, open_row), _flames(t, roof_row)
+                    if t._guard():
+                        _expect(lr == set(roof_row), "a ROOFED cell went out in the rain: %d/6 lit" % len(lr))
+                        _expect(len(lo) < 6, "no open cell doused after 3000 ticks of rain: %d/6 lit" % len(lo))
+                with t.component("rain_off_leaves_fire", toggle="rainDousesLiquidFireEnabled"):
+                    with _setting(t, "rainDousesLiquidFireEnabled", False):
+                        for c in open_row:
+                            _light(t, *c)
+                        t.wait_ticks(1500)
+                        lo = _flames(t, open_row)
+                        _expect(len(lo) == 6 if t._guard() else None,
+                                "open cells went out in rain with the setting OFF: %d/6 lit" % len(lo))
+            finally:
+                t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+
+
+@suite.chain("pit_prison_room")
+def pit_prison_room(t):
+    """SUPERDEEP_PRISON_ROOM_1 (73408b80e). A 3x3 D=4 pit ringed by open ground is its OWN room (split from the lip),
+    a prisoner bed in it makes it a prison cell, a held hostile there can be captured DOWN by a colonist who never
+    stands in the pit, and a warden job on a pit cell is served from a lip cell (the PathFollower patch's own gate).
+    Each setting's OFF side is read through the same predicate. Not proven here: a full recruit/convert session
+    from the lip, food dropped down (live walk owed), the width rule (C# selftest)."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    centre, west_edge, east_edge = pit[4], pit[1], pit[7]
+    lip = (west_edge[0] - 1, west_edge[1])            # open ground touching the west edge cell
+    far = (x0 + 1, centre[1])
+
+    def room():
+        return _kv(_sc(t, NS_PROOF, "ProofRoom", "%d,%d|%d,%d" % (centre + far)))
+
+    with t.component("pit_is_its_own_room", toggle="superdeepRoomsEnabled"):
+        k = room()
+        if t._guard():
+            _expect(k.get("split") == "True" and k.get("pitRoom") == "True" and k.get("edge") == "False",
+                    "the pit is not its own enclosed room: %s" % k)
+    with t.component("rooms_off_pit_joins_lip", toggle="superdeepRoomsEnabled"):
+        with _setting(t, "superdeepRoomsEnabled", False):
+            t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitRooms", method="RebuildAllMaps", args="")
+            k = room()
+            _expect(k.get("split") == "False" if t._guard() else None, "rooms OFF but the pit is still split: %s" % k)
+        t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitRooms", method="RebuildAllMaps", args="")
+    with t.component("prisoner_bed_makes_prison_cell"):
+        t.bridge_call("jawa/build_batch", ops="Bed:%d,%d,0" % pit[3], stuff="WoodLog", faction="player")
+        beds = (t.bridge_call("jawa/list_things", defName="Bed", rect=_rect(pit[0][0], pit[0][1], 3, 3), limit=5) or {})
+        bid = ((beds.get("things") or [{}])[0]).get("id")
+        t.bridge_call("jawa/set_bed_owner_type", thing=bid, ownerType="Prisoner")
+        k = room()
+        if t._guard():
+            _expect(bid is not None and k.get("prison") == "True", "pit with a prisoner bed is not a prison cell: %s" % k)
+    hid = _spawn_pawn_at(t, "Pirate", west_edge[0], west_edge[1], faction="hostile")
+    t.bridge_call("jawa/pawn_gear", pawn=hid, action="clear")       # unarmed: nothing shoots the warden
+    col = _spawn_pawn_at(t, "Colonist", far[0], far[1])
+    with t.component("capture_down_from_the_lip", toggle="captureDownEnabled"):
+        t.wait_ticks(60)
+        v0 = _sc(t, NS_PROOF, "ProofCaptureDown", str(hid))
+        t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid,
+                      targetBX=lip[0], targetBZ=lip[1])
+        t.wait_ticks(900)
+        v1 = _kv(_sc(t, NS_PROOF, "ProofCaptureDown", str(hid)))
+        wx, wz = _pawn_xz(t, col)
+        if t._guard():
+            _expect(v0.startswith("VERDICT Allowed"), "capture-down not allowed on a held hostile in a prison pit: %s" % v0)
+            _expect(v1.get("prisoner") == "True", "hostile not a prisoner after the capture-down job: %s" % v1)
+            _expect((wx, wz) not in set(pit), "the warden ended IN the pit at %s" % ((wx, wz),))
+    with t.component("capture_down_off", toggle="captureDownEnabled"):
+        h2 = _spawn_pawn_at(t, "Pirate", east_edge[0], east_edge[1], faction="hostile")
+        t.bridge_call("jawa/pawn_gear", pawn=h2, action="clear")
+        t.wait_ticks(60)
+        with _setting(t, "captureDownEnabled", False):
+            v = _sc(t, NS_PROOF, "ProofCaptureDown", str(h2))
+            _expect(v.startswith("VERDICT SettingOff") if t._guard() else None, "capture-down offered with the setting OFF: %s" % v)
+    with t.component("warden_served_from_lip", toggle="wardenFromLipEnabled"):
+        k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s|%d,%d|PrisonerConvert" % ((col,) + centre)))
+        if t._guard():
+            _expect(k.get("serve") == "True" and k.get("kind") == "Interact" and k.get("lipSuperdeep") == "False"
+                    and float(k.get("dist", 99)) <= 6.0, "convert on a pit prisoner not served from a lip cell: %s" % k)
+    with t.component("warden_lip_off", toggle="wardenFromLipEnabled"):
+        with _setting(t, "wardenFromLipEnabled", False):
+            k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s|%d,%d|PrisonerConvert" % ((col,) + centre)))
+            _expect(k.get("serve") == "False" if t._guard() else None, "lip service with the setting OFF: %s" % k)
+
+
+@suite.chain("liquid_pump")
+def liquid_pump(t):
+    """FLOWWORKS_BUILD_PROGRAM_1 Phase 8 slice 1 (f3ab74a1b): a powered pump between a 3-cell D=2 water channel
+    (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 5 units, and in pour mode returns
+    them. Unpowered it does nothing; with liquidPumpEnabled off it does nothing even powered."""
+    x0, z0 = _prep_plot(t, "T")
+    ch = _line(x0 + 4, z0 + 6, 3)
+    pump, tank, batt = (x0 + 5, z0 + 7), (x0 + 5, z0 + 8), (x0 + 9, z0 + 8)
+    _dig_run(t, ch, 2)
+    for x, z in ch:
+        _fill(t, x, z, 2)
+    t.bridge_call("jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
+
+    def rd(mode=""):
+        return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d%s" % (pump + (("|" + mode) if mode else ""),)))
+
+    def level():
+        return sum((f or 0) for _, f in _state(t, ch))
+
+    with t.component("pump_unpowered_idle"):
+        t.wait_ticks(600)
+        k = rd()
+        if t._guard():
+            _expect(k.get("running") == "False" and k.get("moved") == "0" and level() == 6,
+                    "an unpowered pump moved liquid: %s level %s" % (k, level()))
+    t.bridge_call("jawa/build_batch", ops="Battery:%d,%d" % batt, faction="player")
+    bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
+           .get("things") or [{}])[0].get("id")
+    t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
+    with t.component("pump_draws_into_tank", toggle="liquidPumpEnabled"):
+        t.wait_ticks(800)
+        k, lv = rd(), level()
+        if t._guard():
+            moved = int(k.get("moved", 0))
+            tk = k.get("tank", "none")
+            _expect(k.get("running") == "True" and moved >= 2, "powered pump not drawing: %s" % k)
+            _expect(lv == 6 - moved, "channel levels %s, expected 6 - moved %d" % (lv, moved))
+            _expect(":" in tk and not tk.startswith("empty") and int(tk.split(":")[1]) == 5 * moved,
+                    "tank %s after %d draws (5 units/level)" % (tk, moved))
+    with t.component("pump_off_idles", toggle="liquidPumpEnabled"):
+        with _setting(t, "liquidPumpEnabled", False):
+            m0 = rd().get("moved")
+            t.wait_ticks(600)
+            k = rd()
+            _expect(k.get("moved") == m0 and k.get("running") == "False" if t._guard() else None,
+                    "pump moved liquid with liquidPumpEnabled OFF: %s -> %s" % (m0, k))
+    with t.component("pump_pours_back"):
+        lv0 = level()
+        rd("pour")
+        t.wait_ticks(600)
+        lv1 = level()
+        _expect(lv1 > lv0 if t._guard() else None, "pour mode did not raise the channel: %s -> %s" % (lv0, lv1))
+
+
+@suite.chain("bottle_revert")
+def bottle_revert(t):
+    """LIQUID_BOTTLE_LOOP_1 revert timer (73408b80e): three bottles of boiling water left for revertTicks (2500,
+    PROVISIONAL) become fresh water; with bottleRevertEnabled off the clock does not run at all."""
+    x0, z0 = _prep_plot(t, "F")
+    cells = [(x0 + 4 + 2 * i, z0 + 6) for i in range(3)]
+    area = _rect(x0 + 3, z0 + 5, 8, 3)
+    t.bridge_call("jawa/spawn_batch", ops=";".join("RM_Bottle_BoilingWater:%d,%d" % c for c in cells))
+
+    def count(d):
+        return len(((t.bridge_call("jawa/list_things", defName=d, rect=area, limit=20) or {}).get("things")) or [])
+
+    with t.component("revert_off_holds", toggle="bottleRevertEnabled"):
+        with _setting(t, "bottleRevertEnabled", False):
+            t.wait_ticks(2750)
+            if t._guard():
+                _expect(count("RM_Bottle_BoilingWater") == 3, "boiling bottles changed with the revert OFF")
+    with t.component("boiling_bottle_reverts_to_fresh", toggle="bottleRevertEnabled"):
+        t.wait_ticks(2750)
+        if t._guard():
+            b, f = count("RM_Bottle_BoilingWater"), count("RM_Bottle_FreshWater")
+            _expect(b == 0 and f == 3, "after 2750 ticks: %d boiling, %d fresh (want 0 / 3)" % (b, f))
+
+
+@suite.chain("wall_faces")
+def wall_faces(t):
+    """EXCAVATION_WALL_ART_1 carrier (a26e3d875): cutting D1..D4 cells adds wall-face geometry to their map section,
+    and excavationWallFacesEnabled off hides the layer. The LOOK (four distinct bands) is the human sheet's."""
+    x0, z0 = _prep_plot(t, "H")
+    cells = [(x0 + 4 + 2 * i, z0 + 6) for i in range(4)]
+    v0 = _kv(_sc(t, NS_PROOF, "ProofWallFaces", "%d,%d" % cells[0]))
+    for i, (x, z) in enumerate(cells):
+        _dig(t, x, z, i + 1)
+    with t.component("cuts_draw_wall_faces", toggle="excavationWallFacesEnabled"):
+        v1 = _kv(_sc(t, NS_PROOF, "ProofWallFaces", "%d,%d" % cells[0]))
+        if t._guard():
+            _expect(v1.get("visible") == "True" and int(v1.get("verts", 0)) > int(v0.get("verts", 0)),
+                    "no wall-face geometry added by four cuts: before %s after %s" % (v0, v1))
+    with t.component("wall_faces_off_hidden", toggle="excavationWallFacesEnabled"):
+        with _setting(t, "excavationWallFacesEnabled", False):
+            v2 = _kv(_sc(t, NS_PROOF, "ProofWallFaces", "%d,%d" % cells[0]))
+            _expect(v2.get("visible") == "False" if t._guard() else None, "wall faces still visible OFF: %s" % v2)
+
+
+def _dig_by_hand(t, pid, c):
+    """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut)."""
+    t.bridge_call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
+    t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1])
+    for _ in range(12):
+        t.wait_ticks(500)
+        q = t.bridge_call("jawa/designate_batch", action="query", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
+        if not (q or {}).get("totalNow"):
+            return True
+    return False
+
+
+def _finds(t):
+    k = _kv(_sc(t, DIG_PROOF, "ProofReport", " ").replace(" | ", " ").replace("finds ", "finds=").replace("last ", "last="))
+    return k
+
+
+@suite.chain("dig_finds")
+def dig_finds(t):
+    """FLOWWORKS_QUARRY_DIGGING_1, FlowWorks half (c858125a8). One cell cut four times by a colonist, each cut armed
+    with ProofReport("force") so the roll is certain: OFF finds nothing; ON a find lands that is never a made thing
+    (components/plasteel); the letter follows digFindLetterEnabled. digFindsLocalOnly: ON side only (the find is a
+    local mineable or a chunk); OFF draws from every ore, which no single draw can tell apart."""
+    x0, z0 = _prep_plot(t, "A")
+    c = (x0 + 10, z0 + 7)
+    pid = _spawn_pawn_at(t, "Colonist", c[0] - 2, c[1])
+
+    def letters():
+        return int((t.bridge_call("jawa/letter_list") or {}).get("count") or 0)
+
+    with t.component("finds_off_none", toggle="digFindsEnabled"):
+        with _setting(t, "digFindsEnabled", False):
+            n0 = _finds(t).get("finds")
+            _sc(t, DIG_PROOF, "ProofReport", "force")
+            done = _dig_by_hand(t, pid, c)
+            n1 = _finds(t).get("finds")
+            if t._guard():
+                _expect(done, "the dig job never finished")
+                _expect(n0 == n1, "a find with digFindsEnabled OFF: %s -> %s" % (n0, n1))
+    with t.component("cut_turns_up_local_find", toggle="digFindsLocalOnly"):
+        with _setting(t, "digFindLetterEnabled", False):
+            l0, n0 = letters(), _finds(t).get("finds")
+            _sc(t, DIG_PROOF, "ProofReport", "force")
+            done = _dig_by_hand(t, pid, c)
+            rep = _sc(t, DIG_PROOF, "ProofReport", " ")
+            n1, l1 = _finds(t).get("finds"), letters()
+            if t._guard():
+                _expect(done and n1 is not None and n0 is not None and int(n1) == int(n0) + 1,
+                        "a forced cut made no find: %s -> %s (%s)" % (n0, n1, rep))
+                _expect(not any(m in rep for m in ("ComponentIndustrial", "ComponentSpacer", "Plasteel")),
+                        "a made thing came out of the ground: %s" % rep)
+                _expect(l1 == l0, "a letter with digFindLetterEnabled OFF (%d -> %d)" % (l0, l1))
+    with t.component("first_find_sends_letter", toggle="digFindLetterEnabled"):
+        l0 = letters()
+        _sc(t, DIG_PROOF, "ProofReport", "force")
+        done = _dig_by_hand(t, pid, c)
+        rep = _sc(t, DIG_PROOF, "ProofReport", " ")
+        l1 = letters()
+        if t._guard():
+            if "Chunk" in rep.split("last", 1)[-1]:
+                t.upstream_reason = "UNMEASURED: the find was a rock chunk (no letter by design): %s" % rep
+                t.upstream_failed = True
+                return
+            _expect(done and l1 == l0 + 1, "no letter for the first find of a material (%d -> %d): %s" % (l0, l1, rep))

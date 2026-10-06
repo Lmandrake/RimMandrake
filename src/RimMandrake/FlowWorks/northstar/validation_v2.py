@@ -557,6 +557,7 @@ SCENES = {
     "X_race_water": dict(cells=_run(131, 82, 4, 1, 0), D=1, phase="X"),
     "X_race_off": dict(cells=_run(131, 85, 4, 1, 0), D=1, phase="X"),
     "X_cover": dict(cells=[(140, 70), (141, 70), (140, 71), (141, 71)], D=4, phase="X"),
+    "X_fire": dict(cells=_run(131, 88, 6, 1, 0), D=1, phase="X"),                 # X10: tar run, lit at (136,88)
 }
 X_WALK = (130, 70)                 # the strip's D=0 end: colonist spawn, hare 0
 X_JUNCTION = (134, 75)             # X_two: one dry D=2 cell between the tar row (z74) and the water row (z76)
@@ -769,6 +770,9 @@ PROMOTED = {
     "pit_covered_invisible": "X8_cover_hides_pit",            # PIT_COVER_FALL_REWIRE_1
     "pit_covered_seam_at_max_zoom": "X9_cover_deck_uniform",
     "ladder_state_legible": "P4b_ladder_raised_strands",      # LADDER_PRISON_DOOR_1
+    "canal_burning_reads_as_burning_liquid": "X10_canal_fire",  # Phase 6 fire, promoted from extensions 2026-10-05
+    "canal_fire_persists": "X10_canal_fire",
+    "canal_spent_after_burn": "X10_canal_fire",
 }
 
 
@@ -2491,6 +2495,65 @@ def phase_X(L, args):
               "deck prints %s; ring terrain %s (one surface: no seam between deck cells or at the lip; the frame is "
               "still the judge's)" % (sorted(printed), sorted(around)))
         B.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
+        _x10_canal_fire(L)
+
+
+FIRE_TYPE = "RimMandrake.FlowWorks.RM_LiquidFireProof"
+FLAME, ASH = "RM_LiquidFlame", "Filth_Ash"
+FIRE_FAST_BURN_DAYS = 0.02         # canalBurnDaysPerLevel for X10 only: 1,200 ticks per level instead of a day
+
+
+def _things_at(B, def_name, cells):
+    xs, zs = [c[0] for c in cells], [c[1] for c in cells]
+    r = B.call("jawa/list_things", defName=def_name, rect="%d,%d,%d,%d" % (min(xs) - 1, min(zs) - 1, max(xs) - min(xs) + 3,
+                                                                          max(zs) - min(zs) + 3), limit=200)
+    pos = [t.get("position") or t for t in (r.get("things") or [])]    # live nests x/z under "position"
+    return {(p.get("x"), p.get("z")) for p in pos} if r.get("success") else None
+
+
+def _x10_canal_fire(L):
+    """X10 (promoted 2026-10-05 from the extension plot_E_fire): a 1x6 D=1 tar run lit at its far end by
+    RM_LiquidFireProof.ProofIgnite (the engine's IgniteNow, same queue a vanilla Fire or a bomb feeds).
+    canal_burning: the creeping front (tar 120 ticks/cell) puts a flame on >= 3 run cells and on NO cell off the run;
+    canal_fire_persists: still alight 250 ticks later; canal_spent: with canalBurnDaysPerLevel cut to 0.02 for this
+    row only (a rate knob, restored in finally) every cell burns to F=0 and is left ashed, nothing alight.
+    canal_fire_reaches_reservoir stays in the extension (it needs a tar BODY; the core map's bodies are water)."""
+    B = L.B
+    run = SCENES["X_fire"]["cells"]
+    fills = [_fill_fluid(L, c, 1, TAR) for c in run]
+    if not all(f[0] for f in fills):
+        L.row("X10_canal_fire", False, "HARNESS", "ProofFillWithFluid: %s" % [f[1] for f in fills if not f[0]][:2],
+              status="UNMEASURED")
+        return
+    L.sset(S_FW, "canalBurnDaysPerLevel", FIRE_FAST_BURN_DAYS)
+    try:
+        ok, _, lit = _proof(B, "ProofIgnite", "%d,%d" % run[-1], typ=FIRE_TYPE)
+        if not (ok and lit.startswith("LIT")):
+            L.row("X10_canal_fire", False, "MOD", "a lit tar cell refused the light: %s" % lit[:200])
+            return
+        B.call("rimworld/step_game_ticks", ticks=750)
+        burn1 = _things_at(B, FLAME, run)
+        B.call("rimworld/step_game_ticks", ticks=250)
+        burn2 = _things_at(B, FLAME, run)
+        B.call("rimworld/step_game_ticks", ticks=3000)
+        burn3 = _things_at(B, FLAME, run)
+        ash = _things_at(B, ASH, run)
+        _, rows, _ = _fluid_row(L, run)
+        _, _, rep = _proof(B, "ProofReport", " ", typ=FIRE_TYPE)    # " ": static_call reads "" as ZERO args
+    finally:
+        L.sset(S_FW, "canalBurnDaysPerLevel", 1.0)
+    if burn1 is None or ash is None:
+        L.row("X10_canal_fire", False, "HARNESS", "list_things unreadable", status="UNMEASURED")
+        return
+    off_run = sorted((burn1 | burn2) - set(run))
+    left = [c for c in run if rows.get(c, {}).get("f", 1) != 0]
+    parts = [("burning >=3 run cells", len(burn1 & set(run)) >= 3), ("no flame off the run", not off_run),
+             ("persists 250 ticks", len(burn2 & set(run)) >= 1), ("spent: all F=0", not left),
+             ("spent: ashed", len(ash & set(run)) >= 3), ("spent: none alight", not burn3)]
+    L.row("X10_canal_fire", all(p[1] for p in parts), "MOD",
+          "%s | flames %d -> %d -> %d, off-run %s, ash %d, F>0 left %s | %s" % (
+              ", ".join("%s %s" % (n, "ok" if v else "FAIL") for n, v in parts), len(burn1), len(burn2), len(burn3),
+              off_run[:3], len(ash & set(run)), left[:3], rep[:120]))
 
 
 def phase_tail(L, args):
@@ -2563,6 +2626,9 @@ class MockBridge(object):
         "viscosity_toggle_ignored": ["X7n_viscosity_off"],             # OFF still slows tar
         "fluids_look_same": ["X6_two_fluids_distinct"],                # one fill terrain for every fluid
         "cover_shows_hole": ["X8_cover_hides_pit", "X9_cover_deck_uniform"],   # cover prints the pit
+        "fire_never_spreads": ["X10_canal_fire"],                     # the front never leaves the lit cell
+        "fire_never_burns": ["X10_canal_fire"],                       # a burning cell never spends its liquid
+        "fire_no_ash": ["X10_canal_fire"],                            # a spent cell is not left scorched
     }
 
     def __init__(self, faults=()):
@@ -2593,6 +2659,7 @@ class MockBridge(object):
         self.raised = set()       # ladders whose RM_CompLadder.raised is set (ProofLadder)
         self.covers = set()       # cells holding a pit cover (spawn_batch RM_PitCover_*)
         self.descents = []
+        self.fire, self.fire_pend, self.ash = {}, {}, set()   # X10 fire model: cell -> burn acc / due tick; ashed cells
 
     # ---- pit model (SUPERDEEP_HOLDER_RETIRE_1): the grid trap rule over the oracle's D map
     PIT_BS = {"Hare": 0.2, "Muffalo": 2.4, "Colonist": 1.0}
@@ -3009,10 +3076,60 @@ class MockBridge(object):
                         self.o.dig(c, 1)
                     else:
                         self.fill_in(c)
+            if self.tick % 30 == 0:
+                self.fire_tick()
             if (self.S("depthEngineEnabled") or "engine_toggle_ignored" in self.faults) and self.tick >= self.next_pulse:
                 self.next_pulse = self.tick + self.interval()
+                self.fire_burn(self.interval())
                 self.do_pulse()
         return dict(success=True)
+
+    # ---- X10 fire model (RM_LiquidFire, CreepingFuse tar 120 ticks/cell; burn = canalBurnDaysPerLevel per level)
+    BURNABLE = ("RM_Fluid_Tar", "RM_Fluid_Oil")
+
+    def burnable(self, c):
+        return self.o.exc(c) and self.o.F.get(c, 0) > 0 and self.o.fluid.get(c) in self.BURNABLE
+
+    def fire_tick(self):
+        if not self.S("canalFireEnabled"):
+            self.fire.clear(), self.fire_pend.clear()
+            return
+        for c, due in sorted(self.fire_pend.items()):
+            if due <= self.tick:
+                del self.fire_pend[c]
+                if self.burnable(c) and c not in self.fire:
+                    self.fire[c] = 0
+        for c in list(self.fire):
+            if not self.burnable(c):
+                del self.fire[c]
+                continue
+            if "fire_never_spreads" in self.faults:
+                continue
+            for d in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                n = (c[0] + d[0], c[1] + d[1])
+                if self.burnable(n) and n not in self.fire and n not in self.fire_pend:
+                    self.fire_pend[n] = self.tick + 120
+
+    def fire_burn(self, pulse_ticks):
+        if "fire_never_burns" in self.faults:
+            return
+        per = max(1, int(round(60000 * max(0.01, float(self.S("canalBurnDaysPerLevel"))))))
+        for c in list(self.fire):
+            self.fire[c] += pulse_ticks
+            while self.fire.get(c, 0) >= per:
+                self.fire[c] -= per
+                self.o.F[c] = max(0, self.o.F.get(c, 0) - 1)
+                if self.o.F[c] == 0:
+                    del self.fire[c]
+                    if "fire_no_ash" not in self.faults:
+                        self.ash.add(c)
+
+    def t_jawa_list_things(self, defName=None, rect=None, limit=200, **kw):
+        x, z, w, h = map(int, rect.split(","))
+        src = {"RM_LiquidFlame": set(self.fire), "Filth_Ash": self.ash}.get(defName, set())
+        hit = sorted(c for c in src if x <= c[0] < x + w and z <= c[1] < z + h)
+        return dict(success=True, countMatched=len(hit), things=[dict(id="T%d_%d" % c, position=dict(x=c[0], z=c[1]))
+                                                                 for c in hit[:limit]])
 
     # ---- phase X: jawa/static_call over RM_PromotionProofs / RM_FluidIdentityProof (2026-10-05)
     def _fill_terrain(self, c):
@@ -3069,6 +3186,18 @@ class MockBridge(object):
             printed = self.terrain_of(c) if "cover_shows_hole" in self.faults else around
             res = "COVER cell=%d,%d present=%s covered=%s sprung=False depth=%d cellTerrain=%s printed=%s matOk=True around=%s inspect=Gives_way_under_40_kg" % (
                 x, z, c in self.covers, c in self.covers, o.D.get(c, 0), self.terrain_of(c), printed, around)
+        elif method == "ProofIgnite":
+            x, z = map(int, args.split(","))
+            c = (x, z)
+            if not self.S("canalFireEnabled") or not self.burnable(c):
+                res = "REFUSED: fire off or nothing burnable at %s" % (c,)
+            else:
+                self.fire_pend[c] = self.tick
+                self.fire_tick()
+                res = "LIT (%d, 0, %d) | FIRE burning %d | front pending %d | burned levels 0" % (
+                    x, z, len(self.fire), len(self.fire_pend))
+        elif method == "ProofReport" and type.endswith("RM_LiquidFireProof"):
+            res = "FIRE burning %d | front pending %d | burned levels %d" % (len(self.fire), len(self.fire_pend), len(self.ash))
         elif method == "ProofFluidRow":
             x, z, w, h = map(int, args.split(","))
             toks = []
