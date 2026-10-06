@@ -33,7 +33,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
             "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
             "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
-            "enableWreckLichenSeeder": True, "enableInterimDonors": True,
+            "enableWreckLichenSeeder": True, "enableRimclaw": True, "enableBileworm": True, "enableElectricTick": True,
+            "enableElectricGryllotalpa": True, "enableJuggernautBeetle": True,
             "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True,
             "settlingEnabled": True, "settlingCalmThreshold": 0.35, "settlingCalmHours": 4.0, "settlingEndWind": 0.8,
             "settlingEndHours": 1.0, "settlingToxicStrength": 1.0, "liftFrontEnabled": True, "warDustEnabled": True,
@@ -297,6 +298,27 @@ def static_checks():
     for r in ("RM_Chatrak", "RM_Tetchik", "RM_Pallbearer", "RM_ScarRoach"):
         if "<%s>" % r not in biome_txt:
             bad.append("wildAnimals lacks %s" % r)
+    # WARSCAR_SHEET_DONOR_PORT_1: owned ports replace the donor rows, at the donor rows' commonalities.
+    PORTS = {"RM_Rimclaw": ("RG_Rimclaw", 0.1), "RM_Bileworm": ("AA_Helixien", 0.08),
+             "RM_ElectricTick": ("SW_Electrictick", 0.3), "RM_ElectricGryllotalpa": ("SW_Electricgryllotalpa", 0.15),
+             "RM_JuggernautBeetle": ("SW_Juggernautbeetles", 0.05)}
+    wa = ET.parse(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).getroot().find("BiomeDef/wildAnimals")
+    rows = {e.tag: float(e.text) for e in wa}
+    for port, (donor, w) in PORTS.items():
+        if rows.get(port) != w:
+            bad.append("wildAnimals row %s is %r, want %s" % (port, rows.get(port), w))
+        if donor in rows:
+            bad.append("donor row %s still in wildAnimals" % donor)
+        pf = os.path.join(D, "ThingDefs_Races", port + ".xml")
+        if not os.path.exists(pf):
+            bad.append("port def file %s missing" % port)
+            continue
+        kinds = {(e.tag, e.findtext("defName")) for e in ET.parse(pf).getroot()}
+        if ("ThingDef", port) not in kinds or ("PawnKindDef", port) not in kinds:
+            bad.append("%s lacks its ThingDef or PawnKindDef" % port)
+        for f in ("south", "east", "north"):
+            if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", port, "%s_%s.png" % (port, f))):
+                bad.append("%s texture %s missing" % (port, f))
     if "<RM_Totchak>" in biome_txt:
         bad.append("totchak must stay genstep-only (not a wildAnimals row)")
     fa = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_WarscarFauna.xml")).getroot()

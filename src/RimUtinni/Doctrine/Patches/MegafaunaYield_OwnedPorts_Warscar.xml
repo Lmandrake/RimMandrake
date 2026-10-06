@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MegafaunaYield_OwnedPorts_Warscar.xml - hand-written companion to the GENERATED MegafaunaYield.xml
+     (gen_megafauna_yield.py; do not hand-edit that one). WARSCAR_SHEET_DONOR_PORT_1, 2026-10-06; same shape as
+     MegafaunaYield_OwnedPorts.xml (the Abyss pass).
+
+     The Warscar's donor creatures were ported to owned RM_ defs, so the generated ops that tune the donors no
+     longer reach the animals the Warscar casts. These ops carry the SAME values onto the ports, numbers copied
+     from the generated file's donor ops. PROVISIONAL until the generator is re-run on a def dump that holds the
+     ports; once it emits ops for them, delete this file. BoneAmount assumes the bones stat mod the generated file
+     already assumes. RM_Rimclaw / RM_ElectricTick: their donors carry no op there. -->
+<Patch>
+
+  <!-- RM_Bileworm (port of AA_Helixien), bodySize 4.0 -->
+  <!-- RM_Bileworm MeatAmount 560 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>560</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+        <value><MeatAmount>560</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_ElectricGryllotalpa (port of SW_Electricgryllotalpa), bodySize 1.5 -->
+  <!-- RM_ElectricGryllotalpa MeatAmount 210 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>210</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+        <value><MeatAmount>210</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_ElectricGryllotalpa BoneAmount 75 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>75</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+        <value><BoneAmount>75</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_JuggernautBeetle (port of SW_Juggernautbeetles), bodySize 3.0 -->
+  <!-- RM_JuggernautBeetle MeatAmount 420 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>420</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+        <value><MeatAmount>420</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_JuggernautBeetle BoneAmount 150 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>150</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_JuggernautBeetle"]/statBases</xpath>
+        <value><BoneAmount>150</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+</Patch>

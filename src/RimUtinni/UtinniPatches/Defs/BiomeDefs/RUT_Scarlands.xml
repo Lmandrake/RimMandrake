@@ -71,7 +71,7 @@
     (RUT_ScarlandsFlora.xml) wired into wildPlants — also corrected the
     ban-3 paragraph above, which still said the Glower PlantDef was not yet
     authored. RUT_MortuaryCrawler (since replaced by RM_Pallbearer) wired into
-    wildAnimals alongside (not replacing) the AA_Helixien interim — same
+    wildAnimals alongside (not replacing) the AA_Helixien interim (now RM_Bileworm, WARSCAR_SHEET_DONOR_PORT_1) — same
     "wired alongside" precedent RSW_ShadeWhale/RSW_WraidAlpha used.
 
     SCARLANDS_MECHANICS_2 build pass continuation (2026-09-26):
@@ -195,13 +195,13 @@
     <wildAnimals>
       <Mynock MayRequire="mlie.starwarsanimalcollection">0.5</Mynock>  <!-- mynock - wiring-eater, import -->
       <RSW_MegaphoridLarva MayRequire="mandrake.rsw.swbestiary">0.5</RSW_MegaphoridLarva>  <!-- megaphorid larva (bodySize 0.32) - placed by the round2 move mapping ("scarlands"), never wired until 2026-09-23. Same reasoning as the fairy mole above: small, so 0.5 helps the pyramid rather than hurting it. -->
-      <SW_Electrictick MayRequire="who.vfee.isopodageneline">0.3</SW_Electrictick>  <!-- Electrictick - weapon-descendant, keep -->
+      <RM_ElectricTick MayRequire="mandrake.rm.biomes">0.3</RM_ElectricTick>  <!-- Electrictick - weapon-descendant, keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of SW_Electrictick, same row as RM_Warscar) -->
       <RSW_FoundryBeetle MayRequire="mandrake.rsw.swbestiary">0.18</RSW_FoundryBeetle>  <!-- foundry beetle - plated-grazer, keep -->
       <RSW_Korrum MayRequire="mandrake.rsw.swbestiary">0.05</RSW_Korrum>  <!-- korrum - boulder-shelled giant crab (bodySize 4.00), import; owner 2026-09-22 on the identity sheet: "This is good for Scarlands". ⚠️ Wired at 0.05, NOT the roster's 0.5: this roster is the thinnest we have (8 species, total commonality 1.51) and the weakest pyramid (53.0% small, ECOSYSTEM_PYRAMID_LAW_1), so 0.5 would make a mountain-sized crab a quarter of all sightings and drop the biome to ~40% small. 0.05 leaves the ratio where it was. The roster's 0.5 was a round2-mapping placeholder, not an ecology call. -->
-      <SW_Electricgryllotalpa MayRequire="who.vfee.isopodageneline">0.15</SW_Electricgryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep -->
-      <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep (interim; RM_Pallbearer below is the dedicated body) -->
-      <SW_Juggernautbeetles MayRequire="who.vfee.isopodageneline">0.05</SW_Juggernautbeetles>  <!-- Juggernautbeetles - weapon-descendant, keep -->
+      <RM_ElectricGryllotalpa MayRequire="mandrake.rm.biomes">0.15</RM_ElectricGryllotalpa>  <!-- Electricgryllotalpa - weapon-descendant, keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of SW_Electricgryllotalpa) -->
+      <RM_Rimclaw MayRequire="mandrake.rm.biomes">0.1</RM_Rimclaw>  <!-- rimclaw - weapon-descendant, keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of RG_Rimclaw) -->
+      <RM_Bileworm MayRequire="mandrake.rm.biomes">0.08</RM_Bileworm>  <!-- bileworm (was helixien) - mortuary-guild, adjust-keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of AA_Helixien; RM_Pallbearer below is the dedicated body) -->
+      <RM_JuggernautBeetle MayRequire="mandrake.rm.biomes">0.05</RM_JuggernautBeetle>  <!-- Juggernautbeetles - weapon-descendant, keep (WARSCAR_SHEET_DONOR_PORT_1: owned port of SW_Juggernautbeetles) -->
       <RM_Pallbearer MayRequire="mandrake.rm.biomes">0.06</RM_Pallbearer>  <!-- pallbearer: RUT_MortuaryCrawler retired, WARSCAR_FREE_TIER_BODY_1 (moved to RM tier) -->
     </wildAnimals>
     <coastalWildAnimals />

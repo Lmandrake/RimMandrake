@@ -33,15 +33,15 @@
       six extraGenSteps (AncientRuins_Scarlands, the three Craters sizes, the
       two ScarlandsJunk gensteps) are Odyssey's own first-party donor
       gensteps, not campaign content, and carry over unchanged.
-    - wildAnimals: the two non-Star-Wars, non-RimUtinni donor rows
-      (RG_Rimclaw, AA_Helixien) carry over inline, each keeping
-      its own MayRequire. The other seven rows of the frozen twin's live roster
-      (Mynock, RSW_MegaphoridLarva, SW_Electrictick,
-      RSW_FoundryBeetle, RSW_Korrum, SW_Electricgryllotalpa,
-      SW_Juggernautbeetles) are wired via
-      mandrake.rut.patches' own WildAnimals_Warscar.xml PatchOperationAdd —
-      an RM-tier def may not name RimStarWars- or RimUtinni-tier content
-      directly (Q11a). See that patch file for the full row-by-row reasoning.
+    - wildAnimals: no donor row is left. WARSCAR_SHEET_DONOR_PORT_1 replaced the
+      five donor rows (RG_Rimclaw, AA_Helixien, SW_Electrictick,
+      SW_Electricgryllotalpa, SW_Juggernautbeetles) with owned RM_ ports at the
+      same commonalities (RM_Rimclaw, RM_Bileworm, RM_ElectricTick,
+      RM_ElectricGryllotalpa, RM_JuggernautBeetle; Defs/ThingDefs_Races/). The
+      four Star Wars-tier rows (RSW_Mynock, RSW_MegaphoridLarva,
+      RSW_FoundryBeetle, RSW_Korrum) are wired via mandrake.rut.patches' own
+      WildAnimals_Warscar.xml PatchOperationAdd — an RM-tier def may not name
+      RimStarWars- or RimUtinni-tier content directly (Q11a).
     - wildPlants: RM_Glower/RM_ScorchedStars are OWN DUPLICATES (own defNames,
       Defs/ThingDefs_Plants/RM_WarscarFlora.xml) of the frozen twin's own
       RUT_Glower and RUT_ScorchedStars — duplicated rather than moved because
@@ -153,8 +153,13 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>
-      <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>
+      <!-- WARSCAR_SHEET_DONOR_PORT_1 (owner's Warscar sheet 2026-10-05): the five donor rows below are owned ports at the
+           donor rows' own commonalities; this biome only. The three insects used to arrive through WildAnimals_Warscar.xml. -->
+      <RM_ElectricTick>0.3</RM_ElectricTick>  <!-- port of SW_Electrictick -->
+      <RM_ElectricGryllotalpa>0.15</RM_ElectricGryllotalpa>  <!-- port of SW_Electricgryllotalpa -->
+      <RM_Rimclaw>0.1</RM_Rimclaw>  <!-- port of RG_Rimclaw -->
+      <RM_Bileworm>0.08</RM_Bileworm>  <!-- port of AA_Helixien -->
+      <RM_JuggernautBeetle>0.05</RM_JuggernautBeetle>  <!-- port of SW_Juggernautbeetles -->
       <!-- RM_Totchak is deliberately NOT a roster row: it exists only through the RM_TotchakInWall genstep (WARSCAR_TOTCHAK_WAKES_1). -->
       <RM_Chatrak>0.25</RM_Chatrak>
       <RM_Tetchik>0.5</RM_Tetchik>

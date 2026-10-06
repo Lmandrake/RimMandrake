@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_SHEET_DONOR_PORT_1. The electric gryllotalpa: a large war-insect that throws focused arcs. Owned port of
+  the Insectoids 2 Isopoda geneline electricgryllotalpa (Who.VFEE.IsopodaGeneline SW_Electricgryllotalpa,
+  1.6/Defs/ThingDefs_Races/Electricgryllotalpa.xml; its parent VFEI2_BaseInsect from VFE Insectoids 2 is inlined).
+  Name and description kept (owner's Warscar sheet 2026-10-05 ruled art only; "Electricgryllotalpa" is written as
+  "electric gryllotalpa", the description verbatim but for a missing space). Free RM_ tier, ONE HOME: the Warscar.
+  Stats, tools, verb, race fields and pawnkind numbers are the donor's own, EXCEPT these donor-only references
+  (all PROVISIONAL):
+    - tool capacity SW_FlameCut (a cut dealt by DamageWorker_Flame) -> vanilla Cut; the burn-on-hit is dropped.
+      The vanilla EMP extra damage (20, always) is kept.
+    - projectile Prj_SW_Electricgryllotalpa -> our RM_ElectricGryllotalpa_Arc below: same speed, damage, radius and
+      penetration, but damageDef SW_FalmeWithEMP (Isopoda_Geneline.DamageWoker_FalmeWithEMP, burn + EMP) -> vanilla
+      EMP, so the arc stuns machines and no longer burns flesh. Donor projectile texture -> vanilla
+      Things/Projectile/LauncherShot (the EMP launcher shell) in the donor's arc colour.
+    - verb soundCast Isopoda_LightningAttackSmall -> vanilla Shot_ChargeBlaster
+    - leatherDef VFEI2_Chitin dropped: no leather (LeatherAmount 0), as vanilla's own insectoids
+    - renderTree VFEI2_Unarmored dropped; uiIconPath, dessicated graphic, colour tint and CutoutComplex dropped
+      (the ruled render carries its own colour).
+  ART: gapall_SW_Electricgryllotalpa_v1 (east/south/north, the owner's B pick), installed 2026-10-06 via the art
+  ledger (ruling 111be9e4455e8fa91079) at the texPath below.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ElectricGryllotalpa</defName>
+    <label>electric gryllotalpa</label>
+    <description>A large bioengineered insectoid. Designed to destroy the mechanoid. The discharge organs are highly developed and capable of releasing focused arcs to attack distant enemies. Focused arcs can cause double damage to the mechanoid.</description>
+    <statBases>
+      <MoveSpeed>3.75</MoveSpeed>
+      <Flammability>0</Flammability>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>160</ComfyTemperatureMax>
+      <MarketValue>500</MarketValue>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Heat>2</ArmorRating_Heat>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.4</Wildness>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <armorPenetration>0.80</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>EMP</def>
+            <amount>20</amount>
+            <chance>1</chance>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.5</cooldownTime>
+        <armorPenetration>0.80</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>EMP</def>
+            <amount>20</amount>
+            <chance>1</chance>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseBodySize>1.50</baseBodySize>
+      <baseHealthScale>2.5</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>6</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.015</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <verbs>
+      <li>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <range>20</range>
+        <warmupTime>3</warmupTime>
+        <soundCast>Shot_ChargeBlaster</soundCast>
+        <forcedMissRadius>1</forcedMissRadius>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <defaultProjectile>RM_ElectricGryllotalpa_Arc</defaultProjectile>
+        <rangedFireRulepack>Combat_RangedFire_Thrown</rangedFireRulepack>
+      </li>
+    </verbs>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_ElectricGryllotalpa_Arc</defName>
+    <label>focused arc</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <category>Projectile</category>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Projectile</altitudeLayer>
+    <useHitPoints>False</useHitPoints>
+    <neverMultiSelect>True</neverMultiSelect>
+    <graphicData>
+      <texPath>Things/Projectile/LauncherShot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(147, 193, 232)</color>
+    </graphicData>
+    <projectile>
+      <damageDef>EMP</damageDef>
+      <screenShakeFactor>0</screenShakeFactor>
+      <damageAmountBase>7.5</damageAmountBase>
+      <armorPenetrationBase>1</armorPenetrationBase>
+      <explosionRadius>1.9</explosionRadius>
+      <speed>60</speed>
+    </projectile>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ElectricGryllotalpa</defName>
+    <label>electric gryllotalpa</label>
+    <race>RM_ElectricGryllotalpa</race>
+    <combatPower>150</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <defaultFactionType>Insect</defaultFactionType>
+    <aiAvoidCover>false</aiAvoidCover>
+    <defendPointRadius>0</defendPointRadius>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.75</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

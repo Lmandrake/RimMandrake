@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AnimalTolerances_OwnedPorts_Warscar.xml - hand-written companion to the GENERATED
+     AnimalTolerances_Ashkarr.xml (design/Jawa/fauna/animal_tolerances.py; do not hand-edit that one).
+     WARSCAR_SHEET_DONOR_PORT_1, 2026-10-06; same shape as AnimalTolerances_OwnedPorts.xml (the Abyss pass).
+
+     The generated file pins the donors' comfy bands (temperature is a HARD SPAWN GATE). The Warscar now casts
+     owned ports, which carry the donor's RAW band, so these ops give each port the band its donor ran at in the
+     campaign (the generated file's pinned live values). PROVISIONAL: delete once the generator fits the ports
+     from the cast itself. RM_JuggernautBeetle: its donor carries no op there (raw -40..160 stands). -->
+<Patch>
+
+  <!-- RM_Bileworm (port of AA_Helixien): -21.1..77.8 -->
+  <!-- RM_Bileworm ComfyTemperatureMin -21.1 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-21.1</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Bileworm ComfyTemperatureMax 77.8 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Bileworm"]/statBases</xpath>
+        <value><ComfyTemperatureMax>77.8</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Rimclaw (port of RG_Rimclaw): -8..81.2 -->
+  <!-- RM_Rimclaw ComfyTemperatureMin -8 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-8</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-8</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Rimclaw ComfyTemperatureMax 81.2 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>81.2</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Rimclaw"]/statBases</xpath>
+        <value><ComfyTemperatureMax>81.2</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_ElectricGryllotalpa (port of SW_Electricgryllotalpa): -58..160 -->
+  <!-- RM_ElectricGryllotalpa ComfyTemperatureMin -58 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-58</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-58</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_ElectricGryllotalpa ComfyTemperatureMax 160 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>160</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricGryllotalpa"]/statBases</xpath>
+        <value><ComfyTemperatureMax>160</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_ElectricTick (port of SW_Electrictick): -50.1..120 -->
+  <!-- RM_ElectricTick ComfyTemperatureMin -50.1 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-50.1</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-50.1</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_ElectricTick ComfyTemperatureMax 120 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>120</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_ElectricTick"]/statBases</xpath>
+        <value><ComfyTemperatureMax>120</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+</Patch>
