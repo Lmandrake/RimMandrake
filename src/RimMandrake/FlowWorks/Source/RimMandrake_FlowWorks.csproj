@@ -207,6 +207,30 @@
     <Compile Include="Rivers\RM_RiverWorksProofWorks.cs" />
   </ItemGroup>
 
+  <!-- Tanker raid loop: Machinery\Logistics\ (namespace RimMandrake.FlowWorks.Machinery.Logistics). Tanker-only files go in this group.
+       One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
+  <ItemGroup>
+    <Compile Include="Machinery\Logistics\RM_TankerSettings.cs" />
+  </ItemGroup>
+
+  <!-- Sluice gates: Machinery\Logistics\. Sluice-gate-only files go in this group.
+       One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
+  <ItemGroup>
+    <Compile Include="Machinery\Logistics\RM_SluiceGateSettings.cs" />
+  </ItemGroup>
+
+  <!-- Bottled blood: Machinery\Logistics\. Blood-draw-only files go in this group.
+       One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
+  <ItemGroup>
+    <Compile Include="Machinery\Logistics\RM_BloodDrawSettings.cs" />
+  </ItemGroup>
+
+  <!-- Quarry: sluice box, panning, rivers-carry registry (namespace RimMandrake.FlowWorks.Quarry). Quarry-only files go in this group.
+       One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
+  <ItemGroup>
+    <Compile Include="Quarry\RM_QuarrySettings.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
