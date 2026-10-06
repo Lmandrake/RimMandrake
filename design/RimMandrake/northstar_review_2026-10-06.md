@@ -47,9 +47,11 @@ next gains come from making every run's result durable, attributable and counted
 6. **`proof_all.py` can lose or overstate evidence. CONFIRMED by reading it:** the result JSON is written only
    after `P.run()` returns, so an exception mid-run loses every row (`main`, l. 701–711); `w.get("success") is
    not False` treats a missing field as success (l. 299); `--only` drops the preflight block unless named.
-7. **"Basic checkout" can quietly shrink.** HYPOTHESIS: FlowWorks puts ordinary features (doors, pumps, prison
-   rooms) behind the on-request extension proof. Its walk has must-be-true lines without the `→ chain` coverage
-   arrow that §2.3 requires.
+7. **"Basic checkout" can quietly shrink. CONFIRMED by reading the walk.** FlowWorks' step 4 puts doors, spikes,
+   the prison room, capture down, the pump, bottle revert, dig finds and fire extinguishing in the on-request extension
+   proof, while §6b reserves "extended" for compatibility and removal. Its five must-be-true lines carry no `→`
+   arrow (§2.3). Its core proof ran live 59/59 PASS at 23:22 on 2026-10-05, which the scoreboard (finding 1)
+   cannot see. Owed: `FLOWWORKS_CHECKOUT_SCOPE_1`.
 8. **The docs contradict each other, and there is no single northstar skill.** The guidance is split across five
    documents (~150 KB). Examples: §2 mandates a modcheck `Suite` while both real checkouts are custom
    orchestrators; the review-sheet location is `Transient/` in one doc and the mod's `review/` in another; the
