@@ -36,7 +36,7 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
 | 12 | Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
 | 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | DEP | — | Rivers-carry column of MINERALS_WHERE_THEY_BELONG_1 not built |
-| 14 | Water cleaning chain wired to DBH thirst | LIQUID_THIRST_CHAIN_1 | DEP | — | Blocked on LIQUID_BOTTLE_LOOP_1 live fill |
+| 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst | LIQUID_THIRST_CHAIN_1 | BUILT (FlowWorks part) / OUT (stills = technology) | — | DBH is not in the live mod list, so the patch is inert today |
 | 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | DEP/OUT | — | Wreck-tier set pieces: art + Phase 8 hardware; transformation machines are technology |
 | 16 | worldTag authoring + shore repaint on the frozen map | WORLDMAP_LIQUID_TAGS_1 | DEP | — | Code built and loads; authoring waits on the one-time world paint (CLAUDE.md: paint once at the end) |
 | 17 | Distillation module | WRECKED_DISTILLATION_MODULE_1 | OUT | — | WreckedMachines; boundary rule |

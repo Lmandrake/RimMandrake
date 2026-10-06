@@ -46,3 +46,7 @@
 ### LIQUID_BOTTLE_LOOP_1 fill-job failure: root cause found in source + fixed
 - cause: all four container JobDrivers had FailOnDespawnedNullOrForbidden(A); StartCarryThing despawns a 1-stack container on pickup, so the job failed the tick after pickup and the pawn dropped it (exactly the 2026-09-25 live symptom). Now FailOnDestroyedNullOrForbidden(A).
   assert live: one RM_BottleEmpty near WaterShallow, prioritized fill -> an RM_Bottle_FreshWater appears; then drink/dirty/wash/tank pour+draw loop. settings: bottleLoopEnabled, bottleDirtyStageEnabled, tankLoopEnabled
+### LIQUID_THIRST_CHAIN_1 FlowWorks part (built; DBH inactive in the live list)
+- feature: Patches/LiquidTypes/RM_DBH_FreshWaterDrinkables.xml - FindMod "Dubs Bad Hygiene Lite" adds DubsBadHygiene.WaterExt to RM_Bottle_FreshWater (water 1) / RM_Bucket_FreshWater (5)
+  assert live (only on a list with DBH Lite+Thirst): thirsty pawn seeks a fresh-water bottle; fouled/toxic bottles never sought. No setting (patch is inert without DBH).
+- conversion stills (crude/household) are liquid-TRANSFORMING machines = technology outside FlowWorks (mod definition boundary) - not built here.

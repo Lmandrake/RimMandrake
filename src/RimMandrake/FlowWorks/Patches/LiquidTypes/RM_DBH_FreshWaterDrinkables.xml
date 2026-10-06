@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_THIRST_CHAIN_1 - register FlowWorks' potable containers as Dubs Bad Hygiene drinkables.
+  Shape copied from DBH Lite's own example (Items_Resource_Stuff.xml, DBH_WaterBottle): a
+  DubsBadHygiene.WaterExt modExtension "makes anything ingestible work as a drink". Only the row whose
+  registry thirstQuality is Potable (fresh water) is registered: fouled/toxic water must never be what a
+  thirsty pawn seeks. Bucket water = 5 bottles (the container ladder). Guarded by PatchOperationFindMod on
+  DBH Lite's mod NAME (FindMod matches names, not packageIds); with DBH absent this does nothing and the
+  bottles stay plain fluid ingestibles (graceful degrade, as the item asks).
+  PROVISIONAL: water amounts.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Dubs Bad Hygiene Lite</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/ThingDef[defName="RM_Bottle_FreshWater"]</xpath>
+          <value>
+            <li Class="DubsBadHygiene.WaterExt">
+              <water>1</water>
+              <UseForWashing>true</UseForWashing>
+              <SeekForThirst>true</SeekForThirst>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/ThingDef[defName="RM_Bucket_FreshWater"]</xpath>
+          <value>
+            <li Class="DubsBadHygiene.WaterExt">
+              <water>5</water>
+              <UseForWashing>true</UseForWashing>
+              <SeekForThirst>true</SeekForThirst>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
