@@ -13,6 +13,9 @@ Inputs, all READ-ONLY:
   Transient/modcheck/live_queue/*/<Mod>_summary.json    latest suite record per mod
   Transient/modcheck/live_queue_results.jsonl          job rows (run identity + window)
   Transient/modcheck/obs_amendments.jsonl              recorded taints / attestations
+  <checkout>_*.json beside the checkout script or in its northstar/ (walk header `checkout:`;
+      GimmeSomeSlack proof_all_*.json, FlowWorks validation_v2_result_*.json): the newest LIVE result
+      per mod, bound to the current mod hash and the repo DLL's .srchash (stale -> never proven)
 
     python3 required_checks_report.py [--since 2026-10-03] [--mod X] [--detail] [--json]
 """
@@ -31,13 +34,15 @@ RECORDS = os.path.join(ROOT, "Transient", "modcheck")
 AMEND = os.path.join(RECORDS, "obs_amendments.jsonl")
 
 TAINTS = ("modal-open", "stale-deploy", "log-blind", "focus-lost", "upstream-failure",
-          "precondition", "unverified-calls", "other")
+          "precondition", "unverified-calls", "stale-result", "other")
 # unknown-reasons: evidence MIGHT hold, but nothing recorded proves it does.
 DEPLOY_UNRECORDED = "deploy-fresh-unrecorded"
 DEPLOY_UNPROVEN = "deploy-fingerprint-unproven"   # a fingerprint exists but cannot prove freshness (not drift)
 MODAL_UNCHECKED = "modal-check-failed"
 RUN_UNKNOWN = "run-identity-unknown"
 DETECTORS_UNRECORDED = "detector-coverage-unrecorded"
+DLL_UNRECORDED = "dll-identity-unrecorded"       # the result names no running assembly hash
+SRCHASH_MISMATCH = "srchash-mismatch"            # the repo DLL is not the one its .srchash stamp names
 
 
 def _t(s):
@@ -217,10 +222,12 @@ def _finish(ran, result, cause, no, unknown):
             "pending_deploy": holds == "unknown" and set(unknown) == {DEPLOY_UNRECORDED}}
 
 
-def judge_mod(mod, mrow, summary, run, amendments, when):
+def judge_mod(mod, mrow, summary, run, amendments, when, checkout=None):
     """Per required check of `mod`: the ran/result/evidence-holds triple. Returns
     (rows, extras) -- extras = components observed in the record but absent from the
-    manifest (script changed since the run, or declared only on a live branch)."""
+    manifest (script changed since the run, or declared only on a live branch).
+    `checkout` ({row id: judgement} from judge_checkout) judges every check the manifest marks
+    `checkout_row`; a declared row missing from the result is not reached."""
     run_no, run_unknown = set(), set()
     if run is None:
         run_unknown.add(RUN_UNKNOWN)
@@ -264,6 +271,12 @@ def judge_mod(mod, mrow, summary, run, amendments, when):
             if counts[cid] > 1:
                 cid = "%s#%d" % (cid, counts[cid])
             seen[cid] = judge_component(comp, cno, cunk, run_no, run_unknown)
+    if checkout is not None:
+        for chk in mrow["checks"]:
+            rid = chk.get("checkout_row")
+            if rid:
+                seen[chk["id"]] = checkout.get(rid) or _finish("not_reached", "NONE", "not in checkout result",
+                                                               set(), set())
     visual = {}
     for v in (summary or {}).get("visual", []) or []:
         if v.get("polarity", "must") == "must":
@@ -275,7 +288,7 @@ def judge_mod(mod, mrow, summary, run, amendments, when):
             continue
         manifest_ids.add(chk["id"])
         base = {"id": chk["id"], "source": chk["source"], "owner": chk["owner"]}
-        if chk["source"] == "script_check":
+        if chk["source"] in ("script_check", "checkout_row"):
             j = seen.get(chk["id"])
             if j is None:
                 j = _finish("not_reached", "NONE", "not in record", set(), set())
@@ -304,6 +317,9 @@ def judge_mod(mod, mrow, summary, run, amendments, when):
         rows.append(dict(base, **_finish("completed", result,
                                          None if result != "UNMEASURED" else "unjudgeable", no, unk)))
     extras = sorted(set(seen) - manifest_ids)
+    if checkout is not None:
+        fed = {c.get("checkout_row") for c in mrow["checks"] if c.get("checkout_row")}
+        extras += sorted("checkout/" + r for r in set(checkout) - fed)
     return rows, extras
 
 
@@ -340,10 +356,9 @@ def _fmt_counts(d):
     return ", ".join("%s %d" % (k, n) for k, n in sorted(d.items(), key=lambda kv: -kv[1])) or "-"
 
 
-# A mod's own checkout (GimmeSomeSlack proof_all.py, FlowWorks northstar/validation_v2.py) writes its result JSON
-# beside the mod, in a shape this report does not join yet. It is NAMED, never counted: the report must say a
-# manifest mod has evidence it cannot read, rather than leave it out of the table and the denominator silently
-# (2026-10-06: the two finished checkouts were absent from "proven 0 of 1543"). Join: NORTHSTAR_RESULTS_JOIN_1.
+# Result files beside a mod whose walk names NO `checkout:` script: the report cannot join their rows to the
+# manifest, so it NAMES them, never counts them -- a manifest mod with evidence it cannot read is listed, not left
+# out of the table and the denominator silently. A mod with a `checkout:` header is read by checkout_results().
 RESULT_GLOBS = ("northstar/*.json", "*_result_*.json", "proof_all_*.json")
 RESULT_WORDS = re.compile(r"result|proof|matrix|validation", re.I)
 
@@ -371,29 +386,202 @@ def results_elsewhere(mrow):
     return out
 
 
-def build_report(manifest, records_dir, amend_path, since=None, only=None):
+# ------------------------------------------------------------------ checkout results (NORTHSTAR_RESULTS_JOIN_1)
+# A checkout (walk header `checkout:`, manifest row "checkout") writes ONE result JSON per run:
+#   {mod, mode, started, mod_hash, env{assembly_sha256, ...}, rows[{id, status, block?, class|cls, detail}], aborted}
+# The same section 2.4 rules apply, with the result itself as the run identity:
+#   - only mode "live" counts (a partial/mock run is never a checkout record);
+#   - mod_hash != the mod's CURRENT hash -> taint stale-result: the code tested is not the code in the repo;
+#   - running DLL (env.assembly_sha256) != the repo DLL / its .srchash stamp -> taint stale-deploy (compared only
+#     when mod_hash is current: mod_hash covers Assemblies/, so then the repo DLL is the one of the run);
+#     no running hash recorded -> unknown; a repo DLL that disagrees with its own .srchash -> unknown;
+#   - deploy freshness: a recorded fingerprint (result `run_identity`, the suite shape) or an attestation
+#     amendment covering the run window, else unknown (deploy-fresh-unrecorded) -- the DLL match alone does
+#     not prove the deployed Defs/Textures;
+#   - detector coverage: a result `situational` record (the chain shape), else unknown;
+#   - a preflight row not PASS (block "preflight", or a folded L<n>_ row) -> taint precondition on every row.
+
+def _mod_dir(mrow):
+    s = (mrow or {}).get("script")
+    return os.path.dirname(os.path.join(ROOT, s)) if s else None
+
+
+def checkout_results(mod, mrow):
+    """[(path, result dict)] newest first (by `started`, then mtime): result JSONs of the mod's checkout."""
+    co = (mrow or {}).get("checkout") or {}
+    script = co.get("script")
+    if not script:
+        return []
+    d = os.path.dirname(os.path.join(ROOT, script))
+    stem = os.path.splitext(os.path.basename(script))[0]
+    out = []
+    for f in set(glob.glob(os.path.join(d, stem + "_*.json")) + glob.glob(os.path.join(d, "northstar", stem + "_*.json"))):
+        try:
+            r = json.load(open(f, encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(r, dict) and r.get("mod") == mod and isinstance(r.get("rows"), list):
+            out.append((f, r))
+    out.sort(key=lambda fr: (fr[1].get("started") or "", os.path.getmtime(fr[0])), reverse=True)
+    return out
+
+
+def _sha256(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        h.update(f.read())
+    return h.hexdigest()
+
+
+def repo_dll_identity(mod_dir):
+    """[(dll basename, sha256 of the repo DLL or None, the .srchash `# dll:` stamp or None)] for Assemblies/."""
+    out = []
+    for sh in sorted(glob.glob(os.path.join(mod_dir or "", "Assemblies", "*.dll.srchash"))):
+        dll = sh[:-len(".srchash")]
+        stamp = None
+        for line in open(sh, encoding="utf-8"):
+            if line.startswith("# dll:"):
+                stamp = line.split(":", 1)[1].strip()
+                break
+        out.append((os.path.basename(dll), _sha256(dll) if os.path.isfile(dll) else None, stamp))
+    return out
+
+
+def current_mod_hash(mod_dir):
+    import status as _st
+    return _st.mod_hash(mod_dir) if mod_dir and os.path.isdir(mod_dir) else None
+
+
+def judge_checkout(mod, res, amendments, mod_dir, cur_hash=None, dlls=None):
+    """({row id: judgement}, identity) for one checkout result. `cur_hash`/`dlls` default to the repo's."""
+    no, unknown, ident = set(), set(), {}
+    cur = cur_hash if cur_hash is not None else current_mod_hash(mod_dir)
+    dlls = dlls if dlls is not None else repo_dll_identity(mod_dir)
+    t0 = _t(res.get("started")) if res.get("started") else None
+    t1 = t0 + _dt.timedelta(seconds=float(res.get("wall_s") or 0)) if t0 else None
+    ident.update(started=t0, mod_hash=res.get("mod_hash"), current_hash=cur, mode=res.get("mode"),
+                 aborted=res.get("aborted"))
+    if t0 is None or not res.get("mod_hash"):
+        unknown.add(RUN_UNKNOWN)
+        ident["state"] = "unidentified"
+    elif not cur:
+        unknown.add(RUN_UNKNOWN)
+        ident["state"] = "current mod hash unreadable"
+    elif res["mod_hash"] != cur:
+        no.add("stale-result")
+        ident["state"] = "STALE"
+    else:
+        ident["state"] = "current"
+    running = (res.get("env") or {}).get("assembly_sha256")
+    ident["dll"] = "unrecorded"
+    if ident["state"] == "STALE":
+        # mod_hash covers Assemblies/, so the repo DLL may have moved since the run: comparing the running DLL with
+        # TODAY's repo DLL would call a then-fresh deploy stale. The result is already untrusted (stale-result).
+        ident["dll"] = "not compared (result is stale)"
+    elif not running:
+        unknown.add(DLL_UNRECORDED)
+    elif not any(running == repo for _n, repo, _s in dlls):
+        no.add("stale-deploy")
+        ident["dll"] = "running DLL is not the repo's"
+    else:
+        ident["dll"] = "running == repo DLL"
+        if not any(running == repo == stamp for _n, repo, stamp in dlls):
+            unknown.add(SRCHASH_MISMATCH)
+            ident["dll"] += ", but its .srchash names another"
+    attested = False
+    ri = res.get("run_identity")
+    if isinstance(ri, dict) and ri.get("deploy_start") is not None:
+        ok, why, hard = fingerprint_verdict(mod, ri)
+        if ok:
+            attested = True
+        elif hard:
+            no.add("stale-deploy")
+        else:
+            unknown.add(DEPLOY_UNPROVEN)
+    if t0 is not None:
+        for a in amendments:
+            if not _applies(a, mod, t0, t1):
+                continue
+            if a.get("kind") == "taint":
+                no.add(a.get("reason") if a.get("reason") in TAINTS else "other")
+            elif a.get("kind") == "attest" and a.get("what") == "deploy-fresh":
+                attested = True
+    if not attested and DEPLOY_UNPROVEN not in unknown and "stale-deploy" not in no:
+        unknown.add(DEPLOY_UNRECORDED)
+    cno, cunk = chain_taints({"situational": res.get("situational"), "components": []}, None)
+    no |= cno
+    unknown |= cunk
+    for r in res["rows"]:
+        pre = r.get("block") == "preflight" or ("block" not in r and re.match(r"L\d+_", r.get("id") or ""))
+        if pre and r.get("status") != "PASS":
+            no.add("precondition")
+    out = {}
+    for r in res["rows"]:
+        rid, st = r.get("id"), str(r.get("status") or "")
+        rno = set(no)
+        if st.startswith("PASS"):
+            ran, result, cause = "completed", "PASS", None
+            if "UNVERIFIED" in st:
+                rno.add("unverified-calls")
+        elif st == "FAIL":
+            ran, result, cause = "completed", "FAIL", None
+        else:
+            harness = (r.get("class") or r.get("cls")) == "HARNESS"
+            ran, result = ("aborted" if harness else "completed"), "UNMEASURED"
+            cause = "harness" if harness else ("precondition" if st == "UNMEASURED" else st.lower() or "?")
+        if rid not in out:
+            out[rid] = _finish(ran, result, cause, rno, unknown)
+    ident["no"], ident["unknown"] = sorted(no), sorted(unknown)
+    return out, ident
+
+
+def build_report(manifest, records_dir, amend_path, since=None, only=None, checkout_ident=None):
+    """`checkout_ident(mod, mrow) -> (cur_hash, dlls)` overrides the repo reads (selftests)."""
     runs = load_runs(os.path.join(records_dir, "live_queue_results.jsonl"))
     amendments = load_amendments(amend_path)
     out = []
     summaries = latest_summaries(records_dir, since)
     for mod, mrow in sorted((manifest.get("mods") or {}).items()):
-        if mod in summaries or (only and mod != only):
-            continue
-        req = sum(1 for c in mrow.get("checks") or [] if c.get("required", True))
-        out.append({"mod": mod, "unread": True, "required": req, "elsewhere": results_elsewhere(mrow)})
-    for mod, (path, mt) in sorted(summaries.items()):
         if only and mod != only:
             continue
-        mrow = manifest["mods"].get(mod)
-        summary = json.load(open(path, encoding="utf-8"))
-        run = match_run(mod, mt, runs)
-        if mrow is None:
-            out.append({"mod": mod, "when": mt, "run": run, "missing_manifest": True,
-                        "summary": summary})
+        co = None
+        if mrow.get("checkout"):
+            cands = checkout_results(mod, mrow)
+            live = [(f, r) for f, r in cands if r.get("mode") == "live" and
+                    not (since and r.get("started") and _t(r["started"]) < since)]
+            co = {"script": mrow["checkout"].get("script"), "error": mrow["checkout"].get("error"),
+                  "files": len(cands), "skipped_not_live": sum(1 for _f, r in cands if r.get("mode") != "live"),
+                  "path": None}
+            if live:
+                f, r = live[0]
+                cur, dlls = checkout_ident(mod, mrow) if checkout_ident else (None, None)
+                judged, ident = judge_checkout(mod, r, amendments, _mod_dir(mrow), cur, dlls)
+                co.update(path=os.path.relpath(f, ROOT), judged=judged, ident=ident)
+        if mod not in summaries and not (co and co.get("path")):
+            req = sum(1 for c in mrow.get("checks") or [] if c.get("required", True))
+            out.append({"mod": mod, "unread": True, "required": req, "checkout": co,
+                        "elsewhere": [] if co else results_elsewhere(mrow)})
             continue
-        rows, extras = judge_mod(mod, mrow, summary, run, amendments, mt)
-        out.append({"mod": mod, "when": mt, "run": run, "rows": rows, "extras": extras,
-                    "head": headline(rows), "summary": summary, "path": path})
+        summary, run, path, mt = None, None, None, None
+        if mod in summaries:
+            path, mt = summaries[mod]
+            summary = json.load(open(path, encoding="utf-8"))
+            run = match_run(mod, mt, runs)
+        judged = None
+        if co and co.get("path"):
+            ct = co["ident"]["started"]
+            if mt is None or ct >= mt:          # the newer record judges the checks the checkout feeds
+                judged = co["judged"]
+        when = mt if judged is None else co["ident"]["started"]
+        rows, extras = judge_mod(mod, mrow, summary, run, amendments, when, judged)
+        out.append({"mod": mod, "when": when, "run": run, "rows": rows, "extras": extras,
+                    "head": headline(rows), "summary": summary or {}, "path": path, "checkout": co})
+    for mod, (path, mt) in sorted(summaries.items()):
+        if (only and mod != only) or mod in (manifest.get("mods") or {}):
+            continue
+        out.append({"mod": mod, "when": mt, "run": match_run(mod, mt, runs), "missing_manifest": True,
+                    "summary": json.load(open(path, encoding="utf-8"))})
     return out, runs
 
 
@@ -455,6 +643,13 @@ def render(report, runs, since, detail=False):
             "%d/%d" % (h["owner_bars_proven"], h["owner_bars"]) if h["owner_bars"] else "-",
             "pend %d" % h["pending_deploy"] if h["pending_deploy"] else "-",
             "; ".join(why)))
+        co = e.get("checkout")
+        if co and co.get("path"):
+            i = co["ident"]
+            lines.append("    checkout %s  %s  mod_hash %s%s; DLL %s%s" % (
+                co["path"], i["state"], (i["mod_hash"] or "-")[:12],
+                "" if i["state"] == "current" else " (current %s)" % (i["current_hash"] or "?")[:12], i["dll"],
+                "; ABORTED: %s" % i["aborted"] if i.get("aborted") else ""))
         if detail:
             for r in e["rows"]:
                 lines.append("    %-60s %-12s %-10s holds=%-7s %s" % (
@@ -464,10 +659,27 @@ def render(report, runs, since, detail=False):
                  "run's deploy were recorded fresh" % (tot["proven"], tot["required"],
                                                        tot["owner_bars_proven"], tot["owner_bars"],
                                                        tot["pending_deploy"]))
+    stale = [e for e in report if (e.get("checkout") or {}).get("path") and e["checkout"]["ident"]["state"] != "current"]
+    if stale:
+        lines.append("STALE / UNIDENTIFIED checkout results (read, listed above, NOT proven -- the code they tested is not "
+                     "the code in the repo, or cannot be shown to be):")
+        for e in stale:
+            i = e["checkout"]["ident"]
+            lines.append("  %-22s %s  %s  result mod_hash %s, current %s" % (
+                e["mod"][:22], e["checkout"]["path"], i["state"], (i["mod_hash"] or "-")[:12],
+                (i["current_hash"] or "?")[:12]))
     if unread:
+        nores = [e for e in unread if e.get("checkout")]
+        if nores:
+            lines.append("CHECKOUT DECLARED, NO LIVE RESULT READ: %d mods" % len(nores))
+            for e in nores:
+                c = e["checkout"]
+                lines.append("  %-22s req %4d  checkout %s: %d result file(s), %d not live%s" % (
+                    e["mod"][:22], e["required"], c["script"], c["files"], c["skipped_not_live"],
+                    "; manifest enumeration failed: %s" % c["error"] if c.get("error") else ""))
         seen = [e for e in unread if e["elsewhere"]]
         lines.append("NOT IN THE TOTAL: %d mods (%d required checks) have a manifest row and no record this report "
-                     "reads; %d of them hold checkout results it cannot join (NORTHSTAR_RESULTS_JOIN_1):"
+                     "reads; %d of them hold result files but no walk `checkout:` header names their script:"
                      % (len(unread), sum(e["required"] for e in unread), len(seen)))
         for e in seen:
             f, mt, n = e["elsewhere"][0]
@@ -496,6 +708,9 @@ def main(argv=None):
         print(json.dumps([{"mod": e["mod"], "when": e["when"].isoformat() if e.get("when") else None,
                            "head": e.get("head"), "extras": e.get("extras"), "unread": bool(e.get("unread")),
                            "required": e.get("required"),
+                           "checkout": {k: (v if k != "ident" else dict(v, started=v["started"].isoformat()
+                                                                         if v.get("started") else None))
+                                        for k, v in (e.get("checkout") or {}).items() if k != "judged"} or None,
                            "elsewhere": [(f, mt.isoformat(), n) for f, mt, n in e.get("elsewhere") or []]}
                           for e in report], indent=1))
     else:

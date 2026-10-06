@@ -2,6 +2,7 @@
 subject: src/RimMandrake/GimmeSomeSlack  (packageId mandrake.rm.gimmesomeslack)
 deps: brrainz.harmony (hard modDependency)
 list: gimmesomeslack (modset_builder tier: bridge + this mod + all five DLCs)
+checkout: src/RimMandrake/GimmeSomeSlack/proof_all.py  (the ONE live proof; its declared_rows() is the manifest's row list, its northstar/proof_all_*.json the result the report reads)
 status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_conduit_design_2026-10-02.md (+ messy_conduit_phase2_design_2026-10-02.md, messyconduit_style_per_build_design.md) — conduit made invisible (runtime texPath swap, restorable), machine hookup wires hidden for our conduit only, and a cosmetic SectionLayer that draws loose too-long cords between the nodes of the conduit graph (reduction + A* + canned slack, Verse-free core in Source/Core), with a break readout (live ends spark, dead ends lie limp). Functional script: src/RimMandrake/GimmeSomeSlack/validation.py; the ONE live proof is proof_all.py (owner densification 2026-10-05, design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md).
 
 ## must be true

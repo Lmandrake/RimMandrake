@@ -10,6 +10,9 @@ checks a run is EXPECTED to produce, with their source:
   must_show_line   a must-show line of a DRAFT section -- agent-seeded (owner=False)
   script_check     a `with t.component(...)` block in validation.py, enumerated
                    offline by the same no-op probe `floor`/`runner` use (owner=False)
+  checkout_row     a row the mod's CHECKOUT emits (walk header `checkout: <script>`; the
+                   script's declared_rows()) that no script_check already mirrors; a
+                   mirroring script_check carries `checkout_row` instead (owner=False)
 
 `cannot_show` lines are listed with required=False: no component is obliged to claim
 them (`northstar.text_for`), so they never enter the denominator.
@@ -74,6 +77,45 @@ def script_checks(mod_dir):
     return out
 
 
+def walk_checkout(walk_path):
+    """The `checkout:` header of a walk (repo-relative script path), or None. Read from the header lines above
+    the first `## ` heading only -- never from inside a section (the north star is hash-bound)."""
+    with open(walk_path, encoding="utf-8") as f:
+        for line in f:
+            if line.startswith("## "):
+                return None
+            if line.lower().startswith("checkout:"):
+                v = line.split(":", 1)[1].split()
+                return v[0] if v else None
+    return None
+
+
+_ENUM = ("import importlib.util, json, os, sys\n"
+         "p = sys.argv[1]; sys.path.insert(0, os.path.dirname(p))\n"
+         "s = importlib.util.spec_from_file_location('_checkout_' + os.path.basename(p)[:-3], p)\n"
+         "m = importlib.util.module_from_spec(s); s.loader.exec_module(m)\n"
+         "f = getattr(m, 'declared_rows', None)\n"
+         "print('ROWS_JSON ' + json.dumps(f() if f else None))\n")
+
+
+def checkout_rows(script_rel):
+    """The row ids the checkout script declares it emits (its `declared_rows()`), enumerated in a SUBPROCESS so
+    the checkout's own module names (`validation`, ...) never collide with the suites loaded here. Raises."""
+    import subprocess
+    p = os.path.join(ROOT, script_rel)
+    if not os.path.isfile(p):
+        raise FileNotFoundError("checkout script %s does not exist" % script_rel)
+    r = subprocess.run([sys.executable, "-c", _ENUM, p], capture_output=True, text=True, timeout=300, cwd=ROOT)
+    for ln in reversed(r.stdout.splitlines()):
+        if ln.startswith("ROWS_JSON "):
+            rows = json.loads(ln[len("ROWS_JSON "):])
+            if rows is None:
+                raise ValueError("%s has no declared_rows()" % script_rel)
+            return rows
+    raise RuntimeError("enumerating %s printed no ROWS_JSON (exit %s): %s"
+                       % (script_rel, r.returncode, (r.stdout + r.stderr).strip()[-300:]))
+
+
 def _mod_dirs():
     out = {}
     for tier in TIERS:
@@ -84,6 +126,35 @@ def _mod_dirs():
             if os.path.isfile(os.path.join(base, name, "validation.py")):
                 out.setdefault(name, []).append(os.path.join(base, name))
     return out
+
+
+def _add_checkout(row, script_rel):
+    """Join the checkout's row ids onto the manifest row. A script_check whose component name IS a checkout row id
+    (validation.py's mirror chains: FlowWorks core_live_rows, GSS live_battery / proof_all_only_rows) is marked
+    `checkout_row` -- the same check, never counted twice. Every other declared row becomes its own required
+    check `checkout/<row id>` (source checkout_row). A failed enumeration is recorded, never hidden."""
+    row["checkout"] = {"script": script_rel, "rows": None, "error": None}
+    try:
+        rids = checkout_rows(script_rel)
+    except Exception as e:  # noqa: BLE001 - recorded, never hidden
+        row["checkout"]["error"] = "%s: %s" % (type(e).__name__, str(e)[:200])
+        return
+    row["checkout"]["rows"] = len(rids)
+    want = set(rids)
+    mirrored = set()
+    for c in row["checks"]:
+        if c["source"] == "script_check":
+            comp = c["id"].split("/", 1)[-1]
+            if "#" not in comp and comp in want:
+                c["checkout_row"] = comp
+                mirrored.add(comp)
+    seen = set()
+    for rid in rids:
+        if rid in mirrored or rid in seen:
+            continue
+        seen.add(rid)
+        row["checks"].append({"id": "checkout/" + rid, "source": "checkout_row", "owner": False,
+                              "required": True, "checkout_row": rid})
 
 
 def build():
@@ -131,6 +202,9 @@ def build():
                         "id": "ns:" + i, "source": src, "owner": owner,
                         "required": pol == "must", "polarity": pol,
                         "claimed_by": claimed.get(i, [])})
+            co = walk_checkout(walks[mod])
+            if co:
+                _add_checkout(row, co)
         mods[mod] = row
     body = json.dumps(mods, sort_keys=True)
     return {"version": 1,
@@ -149,11 +223,11 @@ def summary_line(man):
     mods = man["mods"]
     n = lambda src: sum(1 for m in mods.values() for c in m["checks"] if c["source"] == src)
     return ("%d mods (%d scripts, %d walks, %d load errors); required: %d north_star_bar + "
-            "%d must_show_line + %d script_check" % (
+            "%d must_show_line + %d script_check + %d checkout_row" % (
                 len(mods), sum(1 for m in mods.values() if m["script"]),
                 sum(1 for m in mods.values() if m["walk"]),
                 sum(1 for m in mods.values() if m["load_error"]),
-                n("north_star_bar"), n("must_show_line"), n("script_check")))
+                n("north_star_bar"), n("must_show_line"), n("script_check"), n("checkout_row")))
 
 
 def _write(man):

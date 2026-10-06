@@ -61,6 +61,64 @@ SPEC_NAME = "scenes_design.json"
 BLOCKS = ["matrix", "core", "aerial", "hose", "maze", "relay", "carry", "style", "style_hose", "save_load"]
 PARK = (125, 165)                     # colonists moved here, out of the matrix REGION and every site
 
+# The row ids a full live run emits, per block, for the required-check manifest (the walk's `checkout:` header names
+# this file; modcheck/required_checks.py calls declared_rows(); NORTHSTAR_RESULTS_JOIN_1). Seeded from the live runs
+# of 2026-10-05 08:24-08:52 (144 rows each). The matrix block is NOT listed: its ids are the reduced spec's scenes,
+# computed below. A row the run emits that is not declared shows in the report as "observed, not in manifest"; a
+# declared row the run no longer emits shows as not reached -- so this list can drift visibly, never silently.
+DECLARED_ROWS = {
+    "preflight": ["P1_fresh_map", "P2_tier_running_startup_log_clean", "P3_probes_site_pinned_region_empty"],
+    "core": ["M1_conduit_transparent", "M1_cords_exist", "M1_node_census", "M1c_end_pieces", "M2b_no_vertex_unwalkable",
+             "M6_overlay_lines_intact", "M5_local_invalidation", "M8_break_two_ends_live_dead", "M2_cords_only_within_net",
+             "B1_rope_settle", "B6_tangle_lit_strips", "B3_whip_live_ends", "B4_downed_wire_bursts",
+             "B4b_sparks_thrown_ticking", "B7_sway_cpu_two_frame", "B7b_sway_shader_path", "B7c_floor_ripple",
+             "B5_selection_highlight", "B8_lod_far_zoom", "B9_cutscene_guard_idle", "B6b_strips_dark_when_dead",
+             "M10_tangle_threshold_setting", "P1B_perf_rebuild", "ST1_styles_textures_load", "ST2_switch_changes_textures",
+             "ST3_extcord_colour_modes", "ST4_settings_roundtrip", "ST5_restore_default_and_master",
+             "M8c_source_off_reads_dead_250", "M7_off_restores_vanilla", "M7b_on_again_invisible"],
+    "aerial": ["M13a_linked_one_net_across_gap", "M13b_far_consumer_powered", "M13c_unlink_two_nets_relink_one",
+               "M13d_refusals", "M13e_hostile_mast_not_autolinked", "R1_span_altitude_above_pawns_below_blueprints",
+               "R2_spans_and_heads_drawn", "M14_gap_control_without_fix", "M14a_remove_middle_both_ends_resolve",
+               "M14b_dead_pole_drops_live_and_dead_cords", "M14c_live_tip_glows", "M15_explosion_cuts_span",
+               "M15b_restring_rejoins", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control"],
+    "hose": ["H1b_install_validity", "H2_hose_laid_as_hose_cord", "H6_plump_within_transition",
+             "H7_no_flicker_fast_toggle", "H8_collapse_after_release", "H9_stiffness_setting"],
+    "maze": ["M1_open_maze_short_route", "M2_gap_walled_reroutes", "M3_length_cap_install",
+             "M3b_laid_hose_over_cap_retracts", "M4_unreachable_retracts", "M5_walls_removed_recovers",
+             "P1_reel_couples_to_tank", "P2_lone_reel_not_coupled"],
+    "relay": ["RL2_one_hose_cannot_reach", "RL3_hose_onto_relay_B", "RL4_relay_B_onward_to_C", "RL5_ring_refused",
+              "RL6_flow_passes_through", "RL7_no_latch", "RL8_chain_beyond_one_hose", "RL9_overhead_drawn_over_hose"],
+    "carry": ["CR1_deploy_carrying", "CR2_trail_follows_walk", "CR3_draft_drops_end", "CR5_resume_laid_at_target",
+              "CR5b_laid_hose_plumps", "CR5c_end_kind", "CR6_retract_stored", "CR7_no_instant_gizmos_without_devmode"],
+    "style": ["S1_pick_reaches_blueprint", "S2_blueprint_frame_building", "S3_god_mode", "S4_copy_carries_look",
+              "S5_reinstall_keeps_look", "S8_legacy_unstyled_draws_default", "S6_spans_in_pole_look",
+              "S9a_two_runs_two_styles", "S9b_bridge_largest_wins", "S9c_split_keeps_styles",
+              "S9d_restyle_and_materials", "S10_legacy_default_materials"],
+    "style_hose": ["R1_pick_reaches_reel", "R2_built_reels_stored_art", "R3_laid_out_per_look", "R5_reeled_in_per_look",
+                   "R6_reinstall_keeps_look", "R7_legacy_reel_default_look"],
+    "session": ["D1_zero_tick_rereads_same", "D2_fresh_builder_same", "Z_log_budget"],
+    "save_load": ["SL1_save_landed_new_file_only", "SL2_save_names_no_class_of_ours", "SL3_after_load_census_equal",
+                  "SL4_carry_states_survive"],
+}
+
+
+def declared_rows():
+    """Every row id a full `--live` run emits (offline, no bridge): DECLARED_ROWS plus "MX_<scene>" for each scene of
+    the reduced design matrix, exactly the ids run_live.py writes."""
+    import run_live as RL
+    import reduced as RD
+    with open(os.devnull, "w") as dn:
+        so, sys.stdout = sys.stdout, dn
+        try:
+            spec = RD.reduce_spec(RL.load_catalog("design"))
+        finally:
+            sys.stdout = so
+    out = list(DECLARED_ROWS["preflight"]) + ["MX_" + s["id"] for s in spec["scenes"]]
+    for b, ids in DECLARED_ROWS.items():
+        if b != "preflight":
+            out += ids
+    return out
+
 
 # ============================================================================ 0. offline gate (WSL python3)
 def _run(cmd, timeout=1800):

@@ -3,6 +3,7 @@ subject: src/RimMandrake/FlowWorks  (packageId `mandrake.rm.flowworks`)
 feature: canal-flood-engine
 deps: Ludeon.RimWorld.Odyssey (Flood is Odyssey-gated in the base game); none third-party
 list: minimal+Odyssey     # official DLC, not a workshop mod; check it is in the active list
+checkout: src/RimMandrake/FlowWorks/northstar/validation_v2.py  (the core live proof; its declared_rows() is the manifest's row list, its validation_v2_result_*.json the result the report reads)
 status-hint: dig a canal cell, let a fluid reservoir prime and then drip + re-flood adjacent terrain on two cadences — species/biome-agnostic engine, water is the one shipped fluid
 
 The reservoir era (`CompFluidReservoir`, `RM_FluidSpring_Test`, `Flood_FluidCanal`) ended with ruling 24
