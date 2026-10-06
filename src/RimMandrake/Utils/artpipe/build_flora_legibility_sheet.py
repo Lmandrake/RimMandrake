@@ -83,13 +83,16 @@ def resolve_stem(job_id: str) -> str:
 
 
 def job_art_info(job_id: str, job: dict, backfill_stems: dict):
-    if job.get("art_class") or job.get("drawsize"):
-        return (job.get("art_class") or "creature", float(job.get("drawsize") or 1.0), "job-field")
+    # Class and drawsize resolve independently (job field, else backfill):
+    # fill_queue always writes drawsize, so it must never decide the class.
     info = backfill_stems.get(resolve_stem(job_id))
-    if isinstance(info, dict):
-        return (info.get("class") or "creature", float(info.get("drawsize") or 1.0),
-                info.get("ds_source") or "?")
-    return ("creature", 1.0, "unresolved")
+    info = info if isinstance(info, dict) else {}
+    art_class = job.get("art_class") or info.get("class") or "creature"
+    if job.get("drawsize"):
+        return (art_class, float(job["drawsize"]), "job-field")
+    if info:
+        return (art_class, float(info.get("drawsize") or 1.0), info.get("ds_source") or "?")
+    return (art_class, 1.0, "unresolved")
 
 
 def find_flora_jobs(backfill_stems: dict) -> list[dict]:

@@ -32,23 +32,35 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     S = Path(require())
     failed, pending, active, done, parked = (S / d for d in ("failed", "pending", "active", "done", "_requeued_manifests"))
+    missing = [d.name for d in (failed, pending) if not d.is_dir()]
+    if missing:  # require() checks done/ only; a missing pending/ would fail mid-pass at the rename
+        raise SystemExit(f"artpipe state dir {S} has no {'/, '.join(missing)}/ — refusing to requeue.")
     cutoff = time.time() - a.since_hours * 3600
     alive = lambda jid: any((d / f"{jid}.json").exists() for d in (pending, active, done))
     moved = {"worker_error": 0, "master_failed": 0}
-    skipped = {"cap": 0, "master_still_failed": 0}
+    skipped = {"cap": 0, "master_still_failed": 0, "unreadable": 0}
+    unreadable = []
     for man in sorted(failed.glob("*.manifest.json")):
         jid = man.name[: -len(".manifest.json")]
         job = failed / f"{jid}.json"
         if not job.exists() or man.stat().st_mtime < cutoff:
             continue
-        ws = json.loads(man.read_text()).get("worker_status")
+        try:
+            ws = json.loads(man.read_text()).get("worker_status")
+        except (OSError, ValueError, AttributeError) as e:
+            skipped["unreadable"] += 1; unreadable.append(f"{man.name}: {e}")
+            continue
         if ws not in moved:
             continue
         if len(list(parked.glob(f"{jid}.manifest*.json"))) >= a.max:
             skipped["cap"] += 1
             continue
         if ws == "master_failed":
-            master = json.loads(job.read_text()).get("derive_from")
+            try:
+                master = json.loads(job.read_text()).get("derive_from")
+            except (OSError, ValueError, AttributeError) as e:
+                skipped["unreadable"] += 1; unreadable.append(f"{job.name}: {e}")
+                continue
             if master and not alive(master):
                 skipped["master_still_failed"] += 1
                 continue
@@ -58,6 +70,8 @@ def main(argv=None) -> int:
             man.rename(parked / f"{jid}.manifest.{int(time.time())}.json")
             job.rename(pending / job.name)
     print(f"requeue_flakes{' (dry run)' if a.dry_run else ''}: requeued {moved}, skipped {skipped}")
+    for u in unreadable:
+        print(f"  unreadable, left in failed/: {u}")
     return 0
 
 

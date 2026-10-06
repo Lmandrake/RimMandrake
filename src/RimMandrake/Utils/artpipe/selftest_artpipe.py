@@ -3490,6 +3490,95 @@ def test_flora_never_gated_or_stroked_by_creature_model():
             os.environ["ARTPIPE_LEGIBILITY_MODEL"] = saved_model
 
 
+def test_job_art_info_unset_art_class_does_not_fall_through_to_drawsize():
+    """Wave-14 finding: fill_queue ALWAYS writes `drawsize`, so `art_class or
+    drawsize` made every fill_queue job without an explicit art_class read as
+    'creature' and never reach the flora exemption. Class and drawsize resolve
+    independently: job field first, then the backfill by stem. Both the
+    daemon and the flora sheet builder must agree."""
+    import build_flora_legibility_sheet as bfls
+    stems = {"glowcap": {"class": "flora", "drawsize": 2.0, "ds_source": "sizeBin"}}
+    saved = dict(artpiped._backfill_cache)
+    try:
+        artpiped._backfill_cache.clear()
+        artpiped._backfill_cache.update(stems)
+        cls, ds = artpiped._job_art_info("glowcap_v1_east", {"drawsize": 1.5})
+        ok("art-info (daemon): drawsize-only job takes its class from the backfill",
+           cls == "flora", cls)
+        ok("art-info (daemon): the job's own drawsize still wins", ds == 1.5, str(ds))
+        cls, ds = artpiped._job_art_info("glowcap_v1", {"art_class": "creature"})
+        ok("art-info (daemon): explicit art_class wins; drawsize from backfill",
+           (cls, ds) == ("creature", 2.0), str((cls, ds)))
+        cls, ds = artpiped._job_art_info("unknownthing", {"drawsize": 3.0})
+        ok("art-info (daemon): unresolved class defaults to creature",
+           (cls, ds) == ("creature", 3.0), str((cls, ds)))
+    finally:
+        artpiped._backfill_cache.clear()
+        artpiped._backfill_cache.update(saved)
+    cls, ds, src = bfls.job_art_info("glowcap_v1_east", {"drawsize": 1.5}, stems)
+    ok("art-info (sheet): drawsize-only job takes its class from the backfill",
+       (cls, ds, src) == ("flora", 1.5, "job-field"), str((cls, ds, src)))
+    cls, ds, src = bfls.job_art_info("glowcap_v1", {"art_class": "creature"}, stems)
+    ok("art-info (sheet): explicit art_class wins; drawsize+source from backfill",
+       (cls, ds, src) == ("creature", 2.0, "sizeBin"), str((cls, ds, src)))
+
+
+def _requeue_fixture(root: Path, with_pending: bool = True):
+    for d in ("failed", "active", "done") + (("pending",) if with_pending else ()):
+        (root / d).mkdir(parents=True, exist_ok=True)
+    for jid, man in (("aa_bad", "{not json"), ("bb_good", json.dumps({"worker_status": "worker_error"}))):
+        (root / "failed" / f"{jid}.json").write_text(json.dumps({"id": jid}))
+        (root / "failed" / f"{jid}.manifest.json").write_text(man)
+
+
+def _run_requeue(root: Path, argv):
+    import io, contextlib
+    import requeue_flakes
+    import state_dir
+    saved = state_dir.STATE_ROOT
+    state_dir.STATE_ROOT = root
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            try:
+                rc = requeue_flakes.main(argv)
+            except SystemExit as e:
+                rc = ("exit", str(e))
+    finally:
+        state_dir.STATE_ROOT = saved
+    return rc, buf.getvalue()
+
+
+def test_requeue_flakes_skips_and_reports_a_bad_manifest():
+    """Wave-14 finding: one unparseable manifest aborted the whole pass. It
+    is skipped, counted and named; the good job beside it is still requeued."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        _requeue_fixture(root)
+        rc, out = _run_requeue(root, [])
+        ok("requeue: a bad manifest does not abort the pass", rc == 0, f"{rc} {out}")
+        ok("requeue: the good job beside it is requeued",
+           (root / "pending" / "bb_good.json").is_file(), out)
+        ok("requeue: the bad job is left in failed/",
+           (root / "failed" / "aa_bad.json").is_file() and (root / "failed" / "aa_bad.manifest.json").is_file())
+        ok("requeue: the bad manifest is reported by name", "aa_bad" in out, out)
+
+
+def test_requeue_flakes_refuses_without_pending_dir():
+    """Wave-14 finding: require() checked done/ only, so a state dir missing
+    pending/ failed at the rename mid-pass. Refuse up front, move nothing."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        _requeue_fixture(root, with_pending=False)
+        (root / "failed" / "aa_bad.manifest.json").unlink()
+        rc, out = _run_requeue(root, [])
+        ok("requeue: missing pending/ is refused up front (SystemExit)",
+           isinstance(rc, tuple) and "pending" in rc[1], f"{rc} {out}")
+        ok("requeue: nothing was moved",
+           (root / "failed" / "bb_good.manifest.json").is_file()
+           and not (root / "_requeued_manifests").exists())
+
+
 def test_detector_selects_meter_by_declared_window_not_position():
     """ARTPIPE_METER_WINDOW_REMAP_1: the account's rate-limit report changed
     shape on 2026-09-26 — the weekly figure moved from the `secondary_*`
@@ -3814,6 +3903,9 @@ def main() -> int:
         test_process_gemini_job_marks_quota_error_worker_status_end_to_end,
         test_gemini_budget_backs_off_after_quota_error_and_recovers,
         test_gemini_quota_error_backs_off_and_blocks_next_gemini_job_end_to_end,
+        test_job_art_info_unset_art_class_does_not_fall_through_to_drawsize,
+        test_requeue_flakes_skips_and_reports_a_bad_manifest,
+        test_requeue_flakes_refuses_without_pending_dir,
         test_detector_selects_meter_by_declared_window_not_position,
         test_read_auth_freshness_decodes_last_refresh_and_jwt_claims,
         test_resync_stale_worker_homes_updates_only_the_stale_ones,

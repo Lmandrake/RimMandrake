@@ -248,9 +248,11 @@ _backfill_cache = {}
 
 
 def _job_art_info(job_id: str, job: dict):
-    """(art_class, drawsize) for a job: job fields first, backfill by stem."""
-    if job.get("art_class") or job.get("drawsize"):
-        return (job.get("art_class") or "creature", float(job.get("drawsize") or 1.0))
+    """(art_class, drawsize) for a job: each field from the job first, else
+    the backfill by stem. Resolved independently — fill_queue always writes
+    drawsize, so a drawsize on the job must never decide the class."""
+    if job.get("art_class") and job.get("drawsize"):
+        return (job["art_class"], float(job["drawsize"]))
     if not _backfill_cache and LEGIBILITY_BACKFILL.is_file():
         try:
             _backfill_cache.update(json.loads(LEGIBILITY_BACKFILL.read_text()).get("stems", {}))
@@ -262,9 +264,9 @@ def _job_art_info(job_id: str, job: dict):
         s2 = re.sub(r"(_east|_north|_south|_west|_r\d+|_improve(_[a-z])?|_v\d+)$", "", stem)
         changed = (s2 != stem); stem = s2
     info = _backfill_cache.get(stem)
-    if isinstance(info, dict):
-        return (info.get("class") or "creature", float(info.get("drawsize") or 1.0))
-    return ("creature", 1.0)
+    info = info if isinstance(info, dict) else {}
+    return (job.get("art_class") or info.get("class") or "creature",
+            float(job.get("drawsize") or info.get("drawsize") or 1.0))
 
 # Cheap startup maintenance: _artsrc/<id>/ scratch dirs for terminally-
 # decided jobs are pruned once they're this old (the repo's own Transient/
