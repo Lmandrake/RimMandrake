@@ -155,7 +155,9 @@ namespace RimMandrake.CreatureBehaviors
 
         private void ResetPower()
         {
-            if (Power != null && Power.PowerOn)
+            // Unconditional: a brownout mid-reel would otherwise leave the boosted draw on the trader, which
+            // PowerNet then demands before restarting it (PowerNet.cs: !PowerOn && ... EnergyOutputPerTick).
+            if (Power != null)
             {
                 Power.PowerOutput = -Power.Props.PowerConsumption;
             }

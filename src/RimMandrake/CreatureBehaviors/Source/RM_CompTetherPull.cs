@@ -191,7 +191,7 @@ namespace RimMandrake.CreatureBehaviors
                     continue;
                 }
                 bool hostile = p.HostileTo(Faction.OfPlayer) && !p.Downed && parent.Faction == Faction.OfPlayer;
-                bool rescue = tune.friendlyPull && p.Downed && p.Faction == parent.Faction && p.RaceProps.Humanlike;
+                bool rescue = tune.friendlyPull && p.Downed && p.Faction == parent.Faction && p.RaceProps.Humanlike && !p.InBed();
                 if ((hostile || rescue) && d < bestDist)
                 {
                     best = p;
