@@ -24,9 +24,19 @@ DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTame
             "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0,
             "rottingBedCorpsesEnabled": True, "rottingBedRotDays": 3.0,
             "mothersPriceEnabled": True, "youngPriceOffset": 1500.0}
-NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
-       "ambushFrogHunts", "attarEnabled", "youngCallEnabled", "decayCellsEnabled", "decayCellPowerMultiplier",
-       "rottingBedCorpsesEnabled", "rottingBedRotDays", "mothersPriceEnabled", "youngPriceOffset"]
+# Every declared field round-trips (the first five were left out until 2026-10-06; the walk named the gap).
+NEW = list(DEFAULTS)
+
+
+def _same(got, want):
+    """A bridge value string against a Python default: bools by name, numbers numerically ("1" == 1.0)."""
+    g = str(got).strip().lower()
+    if isinstance(want, bool):
+        return g == str(want).lower()
+    try:
+        return abs(float(g) - float(want)) < 1e-6
+    except ValueError:
+        return False
 
 
 def static_checks():
@@ -282,14 +292,13 @@ def _build_suite():
                 if t.session is None:
                     continue
                 got = _call(t, "get", field)
-                if str((got or {}).get("value")).lower() != str(DEFAULTS[field]).lower().rstrip("0").rstrip(".") and \
-                        str((got or {}).get("value")).lower() not in (str(DEFAULTS[field]).lower(), "0.25"):
+                if not _same((got or {}).get("value"), DEFAULTS[field]):
                     raise ExpectationFailed("%s default is not the shipped value: %r" % (field, got))
                 flip = (not DEFAULTS[field]) if isinstance(DEFAULTS[field], bool) else 0.5
                 try:
                     _call(t, "set", field, flip)
                     back = _call(t, "get", field)
-                    if str((back or {}).get("value")).lower() != str(flip).lower():
+                    if not _same((back or {}).get("value"), flip):
                         raise ExpectationFailed("%s did not take: %r" % (field, back))
                 finally:
                     _call(t, "set", field, DEFAULTS[field])
