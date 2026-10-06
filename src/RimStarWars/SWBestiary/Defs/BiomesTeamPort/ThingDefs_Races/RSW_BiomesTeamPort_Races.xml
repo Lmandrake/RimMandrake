@@ -3214,7 +3214,6 @@ copied verbatim from the donor mods' own Textures trees.
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BeetlePupae/BloodDropMothPupa</texPath>
           <drawSize>1</drawSize>
-          <color>(137,162,166)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BeetlePupae/Dessicated_BloodDropMothPupa</texPath>
@@ -6317,7 +6316,6 @@ copied verbatim from the donor mods' own Textures trees.
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>1</drawSize>
-          <color>(192,193,192)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/Dessicated_SandLeaper</texPath>
@@ -6329,7 +6327,6 @@ copied verbatim from the donor mods' own Textures trees.
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>1.25</drawSize>
-          <color>(192,193,192)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/Dessicated_SandLeaper</texPath>
@@ -6341,7 +6338,6 @@ copied verbatim from the donor mods' own Textures trees.
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>1.5</drawSize>
-          <color>(192,193,192)</color>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
             <offset>(0,0,0)</offset>
@@ -8751,7 +8747,6 @@ copied verbatim from the donor mods' own Textures trees.
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale</texPath>
           <drawSize>1.5</drawSize>
-          <color>(126,104,94)</color>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -8761,7 +8756,6 @@ copied verbatim from the donor mods' own Textures trees.
         <femaleGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabFemale</texPath>
           <drawSize>1.5</drawSize>
-          <color>(126,104,94)</color>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -8781,7 +8775,6 @@ copied verbatim from the donor mods' own Textures trees.
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale</texPath>
           <drawSize>2.25</drawSize>
-          <color>(126,104,94)</color>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -8791,7 +8784,6 @@ copied verbatim from the donor mods' own Textures trees.
         <femaleGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabFemale</texPath>
           <drawSize>2.25</drawSize>
-          <color>(126,104,94)</color>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -8811,7 +8803,6 @@ copied verbatim from the donor mods' own Textures trees.
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrystalCrab/CrystalCrabMale</texPath>
           <drawSize>3.3</drawSize>
-          <color>(126,104,94)</color>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

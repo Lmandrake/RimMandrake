@@ -61,7 +61,6 @@
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(238,238,232)</color>
       <colorTwo>(40,48,44)</colorTwo>
       <drawSize>(1.4,1.4)</drawSize>
     </graphicData>

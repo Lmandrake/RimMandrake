@@ -140,7 +140,6 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vurrak/RM_Vurrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <color>(120,110,170)</color>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
       </li>
@@ -148,7 +147,6 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vurrak/RM_Vurrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <color>(120,110,170)</color>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
       </li>
@@ -156,7 +154,6 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vurrak/RM_Vurrak</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <color>(120,110,170)</color>
           <drawSize>1.8</drawSize>
         </bodyGraphicData>
       </li>

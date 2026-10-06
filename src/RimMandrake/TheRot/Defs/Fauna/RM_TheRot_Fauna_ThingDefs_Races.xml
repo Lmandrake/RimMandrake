@@ -135,7 +135,6 @@
           <texPath>RM_TheRot/Fauna/Redrawn/Brogg/Brogg</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>1.5</drawSize>
-          <color>(49, 38, 32)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Alpaca/Dessicated_Alpaca</texPath>
@@ -147,7 +146,6 @@
           <texPath>RM_TheRot/Fauna/Redrawn/Brogg/Brogg</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>2.25</drawSize>
-          <color>(49, 38, 32)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Alpaca/Dessicated_Alpaca</texPath>
@@ -159,7 +157,6 @@
           <texPath>RM_TheRot/Fauna/Redrawn/Brogg/Brogg</texPath>
           <shaderType>CutoutComplex</shaderType>
           <drawSize>3</drawSize>
-          <color>(49, 38, 32)</color>
           <shadowData>
             <volume>(0.25, 0.3, 0.25)</volume>
             <offset>(0,0,0)</offset>

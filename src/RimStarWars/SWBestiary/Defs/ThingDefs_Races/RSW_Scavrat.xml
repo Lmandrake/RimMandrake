@@ -191,7 +191,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Scavrat/Scavrat</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(200,175,100)</color>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -203,7 +202,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Scavrat/Scavrat</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(200,175,100)</color>
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -215,7 +213,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Scavrat/Scavrat</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(200,175,100)</color>
           <drawSize>1.25</drawSize>
           <shadowData>
             <volume>(0.35, 0.4, 0.3)</volume>

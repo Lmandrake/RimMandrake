@@ -32,7 +32,6 @@
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(220,190,110)</color>
       <colorTwo>(180,150,80)</colorTwo>
       <drawSize>(1.2,1.2)</drawSize>
     </graphicData>
@@ -63,7 +62,6 @@
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(170,225,180)</color>
       <colorTwo>(120,190,150)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>
     </graphicData>

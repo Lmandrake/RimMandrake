@@ -177,7 +177,6 @@
     <graphicData>
       <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(214,186,228)</color>
     </graphicData>
     <plant>
       <growDays>22</growDays>
@@ -212,7 +211,6 @@
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(236,232,220)</color>
     </graphicData>
     <plant>
       <growDays>16</growDays>
@@ -271,7 +269,6 @@
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(226,236,234)</color>
       <drawSize>(1.6,1.6)</drawSize>
     </graphicData>
     <plant>
@@ -328,7 +325,6 @@
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(212,196,206)</color>
     </graphicData>
     <plant>
       <growDays>20</growDays>
@@ -383,7 +379,6 @@
     <graphicData>
       <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(232,196,152)</color>
       <drawSize>(1.3,1.3)</drawSize>
     </graphicData>
     <plant>
@@ -432,7 +427,6 @@
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(240,238,230)</color>
     </graphicData>
     <plant>
       <growDays>18</growDays>
@@ -483,7 +477,6 @@
     <graphicData>
       <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(228,206,222)</color>
     </graphicData>
     <plant>
       <growDays>28</growDays>

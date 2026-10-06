@@ -47,7 +47,6 @@
            (RM_Leachmoss precedent) — the render landed inside one. -->
       <texPath>Things/Plant/RM_Dewfringe</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(196,201,184)</color>
       <!-- pale silvery-sage, never green in quantity — Q10's ceiling, the same
            bound the ultracactus's pale green already respects one shade darker -->
     </graphicData>

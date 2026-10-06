@@ -20,7 +20,6 @@
     <graphicData>
       <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(214,236,238)</color>
       <colorTwo>(240,150,70)</colorTwo>
     </graphicData>
     <plant>
@@ -46,7 +45,6 @@
     <graphicData>
       <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(172,196,164)</color>
     </graphicData>
     <plant>
       <growDays>6</growDays>

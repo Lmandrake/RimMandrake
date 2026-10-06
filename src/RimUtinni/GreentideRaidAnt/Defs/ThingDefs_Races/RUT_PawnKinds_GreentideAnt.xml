@@ -17,7 +17,6 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt</texPath>
           <drawSize>2.0</drawSize>
-          <color>(120, 110, 100)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/RUT_GreentideAnt/dessicated_RUT_GreentideAnt</texPath>
@@ -39,7 +38,6 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RUT_GreentideAnt/RUT_GreentideAnt</texPath>
           <drawSize>2.5</drawSize>
-          <color>(80,80,80)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
