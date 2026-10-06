@@ -1212,10 +1212,11 @@ def _fx_row(report, pid):
 def pit_fill_effects(t):
     """PIT_FILL_EFFECTS_1 first script (owner Q3): two occupied D=4 cells side by side, water and poison, each
     applies only its own fluid's effect, read per cell by fluid id; a third (oil) is lit and burns its occupant."""
+    # three ISOLATED 1x1 pits, 4 apart: in one 3x3 pit the held occupants wander onto its dry cells and drop out of
+    # the per-fluid census (live 19:58: the poison pirate stood on a dry pit cell -> "got {}")
     x0, z0 = _prep_plot(t, "G")
-    pit = _pit_cells(x0, z0)
-    _dig_run(t, pit, 4)
-    a, b, c = pit[2], pit[4], pit[6]
+    a, b, c = (x0 + 4, z0 + 6), (x0 + 8, z0 + 6), (x0 + 12, z0 + 6)
+    _dig_run(t, [a, b, c], 4)
     _fill_fluid(t, a[0], a[1], 4, "RM_Fluid_Water")
     _fill_fluid(t, b[0], b[1], 4, "RM_Fluid_Poison")
     _fill_fluid(t, c[0], c[1], 4, "RM_Fluid_Oil")
@@ -1250,19 +1251,19 @@ def pit_fill_effects(t):
 def toggle_pit_fill_effects(t):
     """OFF: water at D=4 drowns no one and poison poisons no one."""
     x0, z0 = _prep_plot(t, "G")
-    pit = _pit_cells(x0, z0)
-    _dig_run(t, pit, 4)
+    pit = {3: (x0 + 4, z0 + 6), 5: (x0 + 8, z0 + 6)}      # isolated 1x1 pits (see pit_fill_effects)
+    _dig_run(t, list(pit.values()), 4)
     _fill_fluid(t, pit[3][0], pit[3][1], 4, "RM_Fluid_Water")
     _fill_fluid(t, pit[5][0], pit[5][1], 4, "RM_Fluid_Poison")
     with t.component("pit_drowning_off", toggle="pitDrowningEnabled"):
         with _setting(t, "pitDrowningEnabled", False):
-            pid = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
+            pid = _spawn_pawn_at(t, "Pirate", pit[3][0], pit[3][1], faction="hostile")
             _wait(t, 4 * 250)
             _expect(float(_fx_row(_fill_fx(t), pid).get("drown", 0)) == 0 if t._guard() else None,
                     "drowning with pitDrowningEnabled OFF")
     with t.component("poison_fill_off", toggle="poisonFillEnabled"):
         with _setting(t, "poisonFillEnabled", False):
-            pid = _spawn_pawn_at(t, "Colonist", pit[5][0], pit[5][1])
+            pid = _spawn_pawn_at(t, "Pirate", pit[5][0], pit[5][1], faction="hostile")
             _wait(t, 4 * 250)
             _expect(float(_fx_row(_fill_fx(t), pid).get("tox", 0)) == 0 if t._guard() else None,
                     "toxin with poisonFillEnabled OFF")
@@ -1621,6 +1622,8 @@ def pit_prison_room(t):
     with t.component("capture_down_from_the_lip", toggle="captureDownEnabled"):
         t.wait_ticks(60)
         v0 = _sc(t, NS_PROOF, "ProofCaptureDown", str(hid))
+        # drafted: undrafted, the colonist fled the (unarmed) hostile and dropped the job (live 19:58: FleeAndCower)
+        t.bridge_call("jawa/set_draft", pawnId=col, drafted=True)
         t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="RM_CaptureDown", targetAId=hid,
                       targetBX=lip[0], targetBZ=lip[1])
         t.wait_ticks(900)
@@ -1714,6 +1717,12 @@ def bottle_revert(t):
     def count(d):
         return len(((t.bridge_call("jawa/list_things", defName=d, rect=area, limit=20) or {}).get("things")) or [])
 
+    # every colonist drafted for the waits: undrafted, one hauled a bottle out of the area (live 19:58: 2 of 3)
+    cols = [p.get("id") for p in ((t.bridge_call("jawa/list_pawns", limit=200) or {}).get("pawns") or [])
+            if p.get("isPlayer") and p.get("kindDef") == "Colonist"]
+    for pid in cols:
+        t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)
+
     with t.component("revert_off_holds", toggle="bottleRevertEnabled"):
         with _setting(t, "bottleRevertEnabled", False):
             t.wait_ticks(2750)
@@ -1724,6 +1733,8 @@ def bottle_revert(t):
         if t._guard():
             b, f = count("RM_Bottle_BoilingWater"), count("RM_Bottle_FreshWater")
             _expect(b == 0 and f == 3, "after 2750 ticks: %d boiling, %d fresh (want 0 / 3)" % (b, f))
+    for pid in cols:
+        t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
     # a fresh bottle left lying is emptied into the nearest tank by a colonist (1 unit): it once read as a hose leak
     t.bridge_call("jawa/destroy_batch", rects=_rect(x0 + 3, z0 + 5, 8, 3), categories="All")
 

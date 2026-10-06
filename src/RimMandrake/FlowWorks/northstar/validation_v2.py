@@ -2543,7 +2543,9 @@ def _x10_canal_fire(L):
         burn1 = _things_at(B, FLAME, run)
         B.call("rimworld/step_game_ticks", ticks=250)
         burn2 = _things_at(B, FLAME, run)
-        B.call("rimworld/step_game_ticks", ticks=3000)
+        # 6000, not 3000: a burned-out cell takes a level back from its neighbour by flow (tar, stride 6), which
+        # relights it and stretches the burn (live 19:53: 5 of 6 spent at 4,000 ticks, the last still alight)
+        B.call("rimworld/step_game_ticks", ticks=6000)
         burn3 = _things_at(B, FLAME, run)
         ash = _things_at(B, ASH, run)
         _, rows, _ = _fluid_row(L, run)
