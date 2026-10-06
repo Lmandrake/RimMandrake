@@ -504,7 +504,13 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
-  </ThingDef>
+      <modExtensions>
+      <!-- Owner, Stillsand sheet 2026-10-05: "I think it likely needs a corpse-body when killed, just having a swimming form isn't enough. What does it look like when it's attacked for example?"
+           The half-buried dome is the SWIMMING slot, drawn on sand by RM_SandBuriedGraphicExtension (CreatureBehaviors, RM_SandBuriedGraphic.cs);
+           the BODY slot is the surfaced, out-of-sand barrel body, which is also what the corpse draws. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandBuriedGraphicExtension" />
+    </modExtensions>
+</ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Duumma</defName>
@@ -513,8 +519,9 @@
     <combatPower>40</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <canArriveManhunter>false</canArriveManhunter>
-        <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "it likely needs a corpse-body when killed, just having a swimming form isn't enough."
-         Vanilla 1.6 corpseGraphicData (PawnRenderNode_AnimalPart: drawn when pawn.Dead): the dead duumma is the out-of-sand barrel body, the living one stays the half-buried dome. -->
+    <!-- Body = the surfaced barrel body (also the corpse). Swimming = the half-buried dome shown on sand.
+         Both point at the dome art until the surfaced-body render (job stillsand_s2_RM_Duumma_surfaced) is installed;
+         then bodyGraphicData's texPath becomes Things/Pawn/Animal/RM_Duumma/RM_Duumma_Surfaced (STILLSAND_SAND_SWIM_REMAINDER_1 note). -->
     <lifeStages>
       <li>
         <bodyGraphicData>
@@ -522,10 +529,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
         </bodyGraphicData>
-        <corpseGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
-        </corpseGraphicData>
+        </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -533,10 +541,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
         </bodyGraphicData>
-        <corpseGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
-        </corpseGraphicData>
+        </swimmingGraphicData>
       </li>
       <li>
         <bodyGraphicData>
@@ -544,10 +553,11 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.9</drawSize>
         </bodyGraphicData>
-        <corpseGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma_Corpse</texPath>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.9</drawSize>
-        </corpseGraphicData>
+        </swimmingGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>

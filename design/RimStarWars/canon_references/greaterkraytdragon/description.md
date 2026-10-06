@@ -1,6 +1,6 @@
 # Greater Krayt Dragon
 
-**defName**: `GreaterKraytDragon` (bare — third-party, from `mlie.starwarsanimalcollection`, NOT currently vendored/installed in this repo)
+**defName**: `RSW_GreaterKraytDragon` (SWBestiary port of the donor `GreaterKraytDragon` from `mlie.starwarsanimalcollection`; live art in `src/RimStarWars/GreaterKraytDragonArtOverride`)
 
 ## Sourced text (Wookieepedia)
 The greater krayt dragon is a large species of krayt dragon, a giant carnivorous
@@ -131,4 +131,6 @@ none known
 - `donor_workshop_screenshot.jpg` — **Workshop preview substitute, not a local donor sprite** (the mod `mlie.starwarsanimalcollection` is not installed/vendored in this repo). This is the Steam Workshop page's main preview graphic for "Star Wars Animal Collection (Continued)," showing a flat cartoon icon montage of the mod's included animals; the krayt dragon is the large horned, spike-ridged olive/khaki creature at the left of the animal cluster, identifiable by its size and dorsal spikes relative to the other creatures (rancor, acklay, bantha, etc. also shown).
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-10-05, Stillsand sheet sitting 2, row `RSW_GreaterKraytDragon`, pick E = render `stillsand_regen_RSW_GreaterKraytDragon_v2`), verbatim:
+"Follow the canon imagery closely. Enormously long next and distant head, then a large number of legs far below (7-8 pair). Broad head with a shelf-like ramming bone top. "
+Read as: a very long neck carrying the head far from the body, 7–8 pairs of legs under a long body, and a broad head topped by a shelf-like ramming bone. Where this differs from the images above, the ruling wins.

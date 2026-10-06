@@ -31,4 +31,6 @@ Colossal size cannot be shown at the 1-tile creature scale; treat as a large-bod
 - `wookieepedia_legends_2.webp` — LEGENDS; `Sith_Wyrm_JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8b/Sith_Wyrm_JATM.jpg/revision/latest?cb=20090531191918
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED** (owner, 2026-10-05, Stillsand sheet sitting 2, row `RSW_WarWyrm`, pick C = render `stillsand_regen_RSW_WarWyrm_v2`), verbatim:
+"Note the four eyes and extremely serpentine body and unique coloration. Follow the canon art closely. 50% bigger. "
+Read as: four eyes, an extremely serpentine body and the canon images' own colouring are must-shows; the def's drawSize and bodySize went up by 1.5x for this same note at `a89376420` (sitting 1).
