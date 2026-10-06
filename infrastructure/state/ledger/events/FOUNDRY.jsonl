@@ -3098,3 +3098,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_SINKING_RITE_BUILD_1","ts":"2026-10-06T18:18:58Z","tsn":1791310738858289493}
 {"seat":"FOUNDRY","event":"block","id":"SEA_DIVE_HATCH_REMOVE_1","reason":"precondition unmet: SEABED_DESCENT_ASCENT_1 (ship descent, needs bridge) not landed; hatch is the only route to the floors. Progress: Transient/sea_dive_hatch_remove_20261006.md","ts":"2026-10-06T18:19:29Z","tsn":1791310769770418874}
 {"seat":"FOUNDRY","event":"claim","id":"WEBWORK_TRACTION_LANCE_BUILD_1","ts":"2026-10-06T18:19:30Z","tsn":1791310770366530323}
+{"seat":"FOUNDRY","event":"block","id":"CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1","reason":"needs a ruling on lock mechanism (hidden research vs WorldComponent) and the survey item CRACKEDLANDS_MECHANICS_BUILD_1 s2 to fire the unlock; a lock with no unlock bricks the Swale. Notes: Transient/swale_lock_20261006.md","ts":"2026-10-06T18:20:01Z","tsn":1791310801613471716}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_STELLOCK_LACE_BUILD_1","ts":"2026-10-06T18:20:02Z","tsn":1791310802255288453}
