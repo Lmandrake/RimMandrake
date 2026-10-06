@@ -1488,9 +1488,9 @@ def keysheet(S, style, live=None):
         was = ' <span class="was">was %d</span>' % pv if pv and pv != s["n"] else ' <span class="new">new</span>' if not pv else ""
         note = "<h4>Note</h4><ul>%s</ul>" % "".join("<li>%s</li>" % E(x) for x in s["notes"]) if s.get("notes") else ""
         cards.append('<section class="st row%s"><div class="num">%d</div><div><h3>%s%s</h3><p class="what">%s</p>'
-                     '<h4>Notice</h4><ul>%s</ul><h4>Try</h4><ul>%s</ul>%s<p class="go">--goto %d</p></div></section>' % (
+                     '<h4>Notice</h4><ul>%s</ul><h4>Try</h4><ul>%s</ul>%s</div></section>' % (
                          s["row"], s["n"], E(s["title"]), was, E(s["what"]), "".join("<li>%s</li>" % E(x) for x in s["notice"]),
-                         "".join("<li>%s</li>" % E(x) for x in s["interact"]), note, s["n"]))
+                         "".join("<li>%s</li>" % E(x) for x in s["interact"]), note))
     maptab = "".join("<tr><td>%s</td><td><b>%s</b></td><td>%s</td></tr>" % (o if o else "new", n if n else "-", E(t))
                      for o, n, t in renumber_table(S))
     boardnote = "".join("<li>%s</li>" % E(x) for x in BOARD_NOTES)
@@ -1499,32 +1499,36 @@ def keysheet(S, style, live=None):
     page = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Gimme Some Slack Review</title><style>
 :root{--bg:#2a1d14;--panel:#3a291c;--ink:#f2e6cf;--muted:#c9b79a;--gold:#ffd27f;--teal:#8fd3c7;--rust:#ff9a6b;--line:#5a4230}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Georgia,serif;padding:20px 16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 Georgia,serif;padding:20px 16px;overflow-x:hidden}
 h1{color:var(--gold);margin:0 0 4px;font-size:26px}h2{color:var(--teal);border-bottom:1px solid var(--line);padding-bottom:4px;margin-top:28px}
 .sub{color:var(--muted);margin:0 0 14px}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .st{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;gap:12px}
 .num{font-size:30px;color:var(--gold);min-width:40px;text-align:center;font-weight:bold}
-h3{margin:0;color:var(--gold);font-size:16px}h4{margin:8px 0 2px;color:var(--teal);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
-ul{margin:0;padding-left:18px}.what{margin:4px 0;color:var(--muted)}.go{margin:8px 0 0;font-family:monospace;color:var(--rust);font-size:12px}
+h3{margin:0;color:var(--gold);font-size:19px}h4{margin:8px 0 2px;color:var(--teal);font-size:16px;text-transform:uppercase;letter-spacing:.05em}
+ul{margin:0;padding-left:18px}.what{margin:4px 0;color:var(--muted)}.go{font-family:monospace;color:var(--rust);font-size:16px}
+details.agent{margin-top:28px;color:var(--muted)}details.agent summary{cursor:pointer;color:var(--muted)}
 code{color:var(--rust)}.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
-.was{font-size:12px;color:var(--muted);font-weight:normal}.new{font-size:12px;color:var(--rust);font-weight:normal}
-.tw{overflow-x:auto}table{border-collapse:collapse;font-size:13px}td,th{border:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}
+.was{font-size:16px;color:var(--muted);font-weight:normal}.new{font-size:16px;color:var(--rust);font-weight:normal}
+.tw{overflow-x:auto}table{border-collapse:collapse;font-size:16px}td,th{border:1px solid var(--line);padding:3px 8px;text-align:left;vertical-align:top}
 th{color:var(--teal)}td.fb{color:var(--rust)}td.own{color:var(--muted)}
 </style></head><body>
 <h1>Gimme Some Slack &mdash; human review</h1>
-<p class="sub">Reviewing the <b>per-build style</b> design: the look is picked on the build button and stored on each piece. Stations 1&ndash;11 stand side by side in four looks. Default look (station 12 and the stations 13&ndash;33, which store no look): <b>%s</b> &mdash; set it with Mod Settings &rsaquo; Default style or <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>. Game paused, god mode on, clear weather, noon, Peaceful. Jump: <code>human_review.py --goto N</code> (S0 = style gallery, 0 = south region, N0 = north gallery 18&ndash;33, M = art board, F = free area).</p>
-<h2>Old station &rarr; new station (densified 2026-10-05)</h2><p class="sub">Owner 2026-10-05: <i>"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."</i> 47 stations &rarr; %d (plan: design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4). Every old number is listed; a removed one names the station that still shows it.</p>
-<div class="tw"><table><tr><th>old (47-station map)</th><th>new</th><th>station</th></tr>%s<tr><td>F</td><td><b>F</b></td><td>free build area (unchanged)</td></tr><tr><td>M</td><td><b>M</b></td><td>art-slot board (unchanged; now carries a note)</td></tr></table></div>
+<p class="sub">Reviewing the <b>per-build style</b> design: the look is picked on the build button and stored on each piece. Stations 1&ndash;11 stand side by side in four looks. Default look (station 12 and the stations 13&ndash;33, which store no look): <b>%s</b>; change it in Mod Settings &rsaquo; Default style. The game is paused, god mode on, clear weather, noon, Peaceful.</p>
 <div class="box" style="margin-top:14px"><b>Everywhere:</b> each build button opens a four-look menu (conduit adds the Modern colours: random mix, one colour per run, orange, green, brown, yellow, blue) and remembers your pick. 'Restyle this run' sits on any selected conduit, switch or pole. Joining two looks: the run with more conduit cells wins, a tie goes to the older run. Master switch OFF = vanilla conduit art. Unpause for motion.</div>
 %s
-<h2>M &mdash; art-slot board</h2><p class="sub">Which per-look pieces still fall back, from the files on disk at the paths the code reads. <span class="go">--goto M</span></p>
+<h2>M &mdash; art-slot board</h2><p class="sub">Which per-look pieces still borrow other art, read from the files on disk.</p>
 <div class="box"><b>Note</b><ul>%s</ul></div>
 <div class="tw"><table><tr><th>piece</th>%s</tr>%s</table></div>
-<h2>F &mdash; free build area</h2><div class="box">North band, west end. Charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>; steel, plasteel, components, wood. Try the build menus here: pick a look, build, extend, join two looks, restyle. God mode builds instantly; turn it off to watch colonists carry the look from blueprint to building. No gallery mast is within 20 cells. <span class="go">--goto F</span></div>
-</body></html>""" % (E(look), len(S), maptab, "\n".join(
+<h2>F &mdash; free build area</h2><div class="box">North band, west end. Charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>; steel, plasteel, components, wood. Try the build menus here: pick a look, build, extend, join two looks, restyle. God mode builds instantly; turn it off to watch colonists carry the look from blueprint to building. No gallery mast is within 20 cells.</div>
+<details class="agent"><summary>For whoever drives the camera, and the old station numbers</summary>
+<p>Jump the camera: <code>human_review.py --goto N</code> (N = station number; S0 = style gallery, 0 = south region, N0 = north gallery 18&ndash;33, M = art board, F = free area). Default look: <code>--style StarWarsJawa | StarWars | ExtensionCord | Cybertek</code>.</p>
+<p>Old station &rarr; new station (densified 2026-10-05, owner: <i>"reduce the number of north Star verifications and verification stations for the human review sheet as well. If so, remove them."</i>): 47 stations &rarr; %d (plan: design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md section 4). A removed one names the station that still shows it.</p>
+<div class="tw"><table><tr><th>old (47-station map)</th><th>new</th><th>station</th></tr>%s<tr><td>F</td><td><b>F</b></td><td>free build area (unchanged)</td></tr><tr><td>M</td><td><b>M</b></td><td>art-slot board (unchanged; now carries a note)</td></tr></table></div>
+</details>
+</body></html>""" % (E(look), "\n".join(
         '<h2>%s</h2>%s<div class="grid">%s</div>' % (E(name.replace(" - ", " — ", 1)), '<p class="sub">%s</p>' % E(blurb) if blurb else "",
                                                      "".join(c for c, s in zip(cards, S) if s["row"] == row))
-        for row, name, blurb in ROWS), boardnote, "".join("<th>%s</th>" % lk for lk in LOOKS), arttab)
+        for row, name, blurb in ROWS), boardnote, "".join("<th>%s</th>" % lk for lk in LOOKS), arttab, len(S), maptab)
     with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)
 
