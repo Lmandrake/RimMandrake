@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FLOWWORKS_BUILD_PROGRAM_1 Phase 8, slice 2 (owner 2026-10-05: "Build all flowworks components").
+  * RM_LiquidHose — flexible tubing (design §4 RM_HoseSpool: fast-build, cheap, fragile; NOT terrain,
+    NOT a VE pipe). Conducts cardinally like a conduit; joins every tank touching the run into one liquid
+    net with any pump, still, works or adapter touching it (RM_LiquidNet). Setting: liquidHosesEnabled.
+  * RM_UniversalCargoTank — the ONE new storage building (design §4 "Universal tank interop"):
+    minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
+    tanker pillar's carrying half. Holds one liquid at a time, any liquid.
+  PROVISIONAL: every cost, work, hit-point and capacity number below.
+  ART OWED: hose atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank borrows the
+  scavenger tank's UniversalCargoTank render (art_source/UniversalCargoTank) — the two need distinct looks.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LiquidHose</defName>
+    <label>liquid hose</label>
+    <description>A run of patched rubber hose on scrap clamps. Hoses join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Cheap, quick to lay, and easy to cut. Machines and tanks can stand over it.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
+      <graphicClass>Graphic_Linked</graphicClass>
+      <color>(90,140,190)</color>
+      <linkFlags>
+        <li>Custom3</li>
+      </linkFlags>
+      <damageData>
+        <rect>(0,0.35,1,0.3)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath>
+    <uiIconColor>(90,140,190)</uiIconColor>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <drawerType>MapMeshOnly</drawerType>
+    <linkFlags>
+      <li>Custom3</li>
+    </linkFlags>
+    <useHitPoints>true</useHitPoints>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
+    <placingDraggableDimensions>1</placingDraggableDimensions>
+    <clearBuildingArea>false</clearBuildingArea>
+    <designationCategory>Production</designationCategory>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <WorkToBuild>30</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>1</Steel>
+    </costList>
+    <building>
+      <isEdifice>false</isEdifice>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_LiquidHoseExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_UniversalCargoTank</defName>
+    <label>universal cargo tank</label>
+    <description>A sealed cargo tank on skids, made to be lifted, carried and set down again with its liquid still inside. Holds a large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/RM_LiquidTank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(205,215,225)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <pathCost>50</pathCost>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>5200</WorkToBuild>
+      <MaxHitPoints>320</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Beauty>-6</Beauty>
+      <Mass>90</Mass>
+    </statBases>
+    <costList>
+      <Steel>220</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidTankExtension">
+        <baseCapacityUnits>600</baseCapacityUnits>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

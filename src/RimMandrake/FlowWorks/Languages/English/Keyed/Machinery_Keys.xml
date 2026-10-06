@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RMFlow_MachineOffInSettings>Switched off in Mod Settings</RMFlow_MachineOffInSettings>
+  <RMFlow_MachineSwitchedOff>Switched off</RMFlow_MachineSwitchedOff>
+  <RMFlow_MachineNoPower>No power</RMFlow_MachineNoPower>
+  <RMFlow_MachineNoFuel>Out of fuel</RMFlow_MachineNoFuel>
+  <RMFlow_MachineNoSun>Needs open sky in daylight</RMFlow_MachineNoSun>
+
+  <RMFlow_ConverterIdle>Idle</RMFlow_ConverterIdle>
+  <RMFlow_ConverterWorking>Turning {0} into {1}</RMFlow_ConverterWorking>
+  <RMFlow_ConverterNoOutput>No tank on its line can take the {0}</RMFlow_ConverterNoOutput>
+  <RMFlow_ConverterRefuses>Cannot process {0}</RMFlow_ConverterRefuses>
+  <RMFlow_ConverterRefusesMessage>{0} cannot process {1}.</RMFlow_ConverterRefusesMessage>
+  <RMFlow_ConverterNoTank>No liquid tank touching it or on a hose run to it</RMFlow_ConverterNoTank>
+  <RMFlow_ConverterNothingToDo>Nothing it can process in its tanks</RMFlow_ConverterNothingToDo>
+  <RMFlow_ConverterTotals>Processed {0} units in, {1} out</RMFlow_ConverterTotals>
+
+  <RMFlow_MustRestoreOverRuin>Must be raised over a {0}: industrial works are found, not built.</RMFlow_MustRestoreOverRuin>
+
+  <RMFlow_AdapterBroken>Pipe net not found</RMFlow_AdapterBroken>
+  <RMFlow_AdapterFeeding>Feeding {0} from the tanks into the pipe net</RMFlow_AdapterFeeding>
+  <RMFlow_AdapterDrawing>Drawing {0} from the pipe net into the tanks</RMFlow_AdapterDrawing>
+  <RMFlow_AdapterModeFeed>Mode: feed pipe net</RMFlow_AdapterModeFeed>
+  <RMFlow_AdapterModeDraw>Mode: draw from pipe net</RMFlow_AdapterModeDraw>
+  <RMFlow_AdapterModeDesc>Feed: move liquid from the tanks on this adapter's line into the pipe net. Draw: move it from the pipe net into the tanks.</RMFlow_AdapterModeDesc>
+  <RMFlow_AdapterMoved>Moved {0} units</RMFlow_AdapterMoved>
+
+</LanguageData>

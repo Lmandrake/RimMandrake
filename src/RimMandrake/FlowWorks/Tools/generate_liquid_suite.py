@@ -809,7 +809,9 @@ def build_compat_patch(out_dir: Path):
 #     not a hard bottled.bottle reference -- VGE is absent from the minimal
 #     list and a hard reference to VGE_Astrofuel* would fail the def-load
 #     verify outright.
-#   - trade/cuisineTags/conversions slots: left null across every row here.
+#   - conversions: see LIQUID_CONVERSIONS below (owner 2026-10-05: the
+#     stills and found works are FlowWorks' own machinery).
+#   - trade/cuisineTags slots: left null across every row here.
 #     No economy numbers or cuisine-tag vocabulary were asked for by this
 #     item's own verify (row resolution), and inventing marketValue/cuisine
 #     tags now risks being wrong ahead of the Bazaar (§9) and RSW cuisine
@@ -822,6 +824,59 @@ def build_compat_patch(out_dir: Path):
 # three of the frozen world's four authored bodies this pass gives a full
 # row to (boiling ocean, two brine seas, propane lake -- design §3's "every
 # authored body gets at least a minimal row, or ruling 5 cannot hold").
+# Conversion chain (LIQUID_THIRST_CHAIN_1, LIQUID_INDUSTRY_SETPIECES_1,
+# WRECKED_DISTILLATION_MODULE_1). Keyed by the INPUT row's LIQUID_DEF_ROWS key;
+# each step is emitted into that row's <conversions>. A machine
+# (CompLiquidConverter) runs a step when the step's process is in its process
+# list and the step's tier is at or below the machine's tier. Every ratio is
+# PROVISIONAL (agent guess, 2026-10-05) pending the owner's numbers.
+#   crude      solar still (distill/cool), drip filter (filter) - free, slow
+#   household  fueled still (distill/cool/filter) - research
+#   industrial found works: desal plant (desalinate/distill), detox works
+#              (detox/filter), tar refinery (refine)
+LIQUID_CONVERSIONS = {
+    "saltwater": [
+        {"tier": "Crude", "process": "distill", "product": "RM_Liquid_FreshWater", "inputUnits": 2, "outputUnits": 1},
+        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 2},
+    ],
+    "brine": [
+        {"tier": "Household", "process": "distill", "product": "RM_Liquid_FreshWater", "inputUnits": 4, "outputUnits": 1},
+        {"tier": "Industrial", "process": "desalinate", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
+    ],
+    "boiling": [
+        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputUnits": 1, "outputUnits": 1},
+    ],
+    "icy": [
+        {"tier": "Crude", "process": "cool", "product": "RM_Liquid_FreshWater", "inputUnits": 1, "outputUnits": 1},
+    ],
+    "toxic": [
+        {"tier": "Crude", "process": "filter", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
+        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputUnits": 2, "outputUnits": 1},
+    ],
+    "acid": [
+        {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputUnits": 3, "outputUnits": 1},
+    ],
+    "tar": [
+        {"tier": "Industrial", "process": "refine", "product": "RM_Liquid_Chemfuel", "inputUnits": 4, "outputUnits": 1, "productThing": "Chemfuel"},
+    ],
+}
+
+
+def _conversions_xml(key):
+    steps = LIQUID_CONVERSIONS.get(key)
+    if not steps:
+        return []
+    out = ["    <conversions>"]
+    for st in steps:
+        out.append("      <li>")
+        for f in ("tier", "process", "product", "inputUnits", "outputUnits", "productThing"):
+            if f in st:
+                out.append(f"        <{f}>{st[f]}</{f}>")
+        out.append("      </li>")
+    out.append("    </conversions>")
+    return out
+
+
 LIQUID_DEF_ROWS = {
     "freshwater": {
         "defName": "RM_Liquid_FreshWater",
@@ -1157,6 +1212,8 @@ def build_liquiddef_xml(row):
     if row.get("thirstQuality"):
         lines.append(f"    <thirstQuality>{row['thirstQuality']}</thirstQuality>")
 
+    lines += _conversions_xml(row.get("_key"))
+
     lines.append("  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>")
     return "\n".join(lines)
 
@@ -1165,7 +1222,9 @@ def build_liquiddef_registry(out_dir: Path):
     """Emits the v1 LiquidDef registry rows (LIQUID_REGISTRY_CORE_1, design
     §3) into one file. See LIQUID_DEF_ROWS' own module comment for exactly
     which rows this pass covers and why the rest are deferred."""
-    blocks = [build_liquiddef_xml(row) for row in LIQUID_DEF_ROWS.values()]
+    for unknown in set(LIQUID_CONVERSIONS) - set(LIQUID_DEF_ROWS):
+        raise SystemExit(f"LIQUID_CONVERSIONS names unknown row {unknown!r}")
+    blocks = [build_liquiddef_xml(dict(row, _key=key)) for key, row in LIQUID_DEF_ROWS.items()]
     xml = f"""<?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================

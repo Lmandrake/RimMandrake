@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WRECKED_DISTILLATION_MODULE_1 — the crashed ship's Distillation system (owner intent, 2026-09-13: the ship's
+  Wrecked Machines "should now include a Distillation system that produces clean water out of the appropriate
+  sources (e.g. not oil)"). Same tier grammar as the smelter: Wrecked -> Kludged -> Repaired via shared
+  replaceTags, each tier built over the one before.
+  The machine itself is FlowWorks' reusable converter kit (CompLiquidConverter, owner 2026-10-05: liquid
+  machinery is FlowWorks): distillsAny takes ANY registry row flagged <distillable> (salt, brine, boiling,
+  icy, toxic, acid water) and makes fresh water; tar, propane, chemfuel and slime carry no flag, so the module
+  refuses them with a message and makes nothing. Input from a FlowWorks tank on its line, output to another.
+  Whole-def patch gated on FlowWorks (PatchOperationFindMod — MayRequire on an <Operation> is inert in 1.6),
+  so WreckedMachines still loads clean without FlowWorks.
+  PROVISIONAL: rates (kludged 60/day at 0.5x, repaired 240/day — 2:1 input:output), power, costs.
+  ART OWED: all three tiers (placeholders: vanilla AncientGenerator / ChemfuelPoweredGenerator, tinted).
+  Placement on the ship is the ship-dressing pass's job (Utils/ship_dress.py galley), not this file's.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+
+        <ThingDef ParentName="BuildingBase">
+          <defName>RM_WM_Distillation_Wrecked</defName>
+          <label>wrecked distillation module</label>
+          <description>The ship's water distillation module, torn off its mounts in the crash. The boiler is cracked and the condenser coil crushed flat. For now it is rubble: clear it, or build a kludged module over it.</description>
+          <thingClass>Building</thingClass>
+          <graphicData>
+            <texPath>Things/Building/Ruins/AncientGenerator</texPath>
+            <graphicClass>Graphic_Random</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <color>(110,95,85)</color>
+          </graphicData>
+          <size>(2,2)</size>
+          <rotatable>false</rotatable>
+          <altitudeLayer>Building</altitudeLayer>
+          <passability>Impassable</passability>
+          <fillPercent>0.75</fillPercent>
+          <statBases>
+            <MaxHitPoints>200</MaxHitPoints>
+            <Flammability>0</Flammability>
+            <Beauty>-10</Beauty>
+            <WorkToBuild>1200</WorkToBuild>
+          </statBases>
+          <costList>
+            <Steel>40</Steel>
+          </costList>
+          <replaceTags>
+            <li>RM_WM_Distillation</li>
+          </replaceTags>
+        </ThingDef>
+
+        <ThingDef ParentName="BuildingBase">
+          <defName>RM_WM_Distillation_Kludged</defName>
+          <label>kludged distillation module</label>
+          <description>The ship's distillation module, patched back together with a scavenged coil and a boiler wrapped in wire. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another, slowly. It will not touch tar, oil, fuel or slime.</description>
+          <thingClass>Building</thingClass>
+          <tickerType>Rare</tickerType>
+          <graphicData>
+            <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <color>(170,150,130)</color>
+          </graphicData>
+          <size>(2,2)</size>
+          <rotatable>false</rotatable>
+          <altitudeLayer>Building</altitudeLayer>
+          <passability>Impassable</passability>
+          <fillPercent>0.75</fillPercent>
+          <designationCategory>Production</designationCategory>
+          <statBases>
+            <MaxHitPoints>220</MaxHitPoints>
+            <Flammability>0.3</Flammability>
+            <Beauty>-6</Beauty>
+            <WorkToBuild>2500</WorkToBuild>
+          </statBases>
+          <costList>
+            <Steel>60</Steel>
+            <ComponentIndustrial>2</ComponentIndustrial>
+          </costList>
+          <replaceTags>
+            <li>RM_WM_Distillation</li>
+          </replaceTags>
+          <comps>
+            <li Class="CompProperties_Power">
+              <compClass>CompPowerTrader</compClass>
+              <basePowerConsumption>250</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable" />
+            <li Class="CompProperties_Breakdownable" />
+            <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+              <tier>Household</tier>
+              <distillsAny>true</distillsAny>
+              <distillProduct>RM_Liquid_FreshWater</distillProduct>
+              <distillInputUnits>2</distillInputUnits>
+              <distillOutputUnits>1</distillOutputUnits>
+              <inputUnitsPerDay>120</inputUnitsPerDay>
+              <tierRate>0.5</tierRate>
+            </li>
+          </comps>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+              <key>RM_WM_Distillation</key>
+              <label>Ship distillation module (Wrecked Machines)</label>
+            </li>
+          </modExtensions>
+        </ThingDef>
+
+        <ThingDef ParentName="BuildingBase">
+          <defName>RM_WM_Distillation_Repaired</defName>
+          <label>repaired distillation module</label>
+          <description>The ship's distillation module, restored. It takes salt water, brine, boiling, icy, poisoned or acid water from a tank on its line and puts clean water into another at its full rate. It will not touch tar, oil, fuel or slime.</description>
+          <thingClass>Building</thingClass>
+          <tickerType>Rare</tickerType>
+          <graphicData>
+            <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+            <color>(175,200,215)</color>
+          </graphicData>
+          <size>(2,2)</size>
+          <rotatable>false</rotatable>
+          <altitudeLayer>Building</altitudeLayer>
+          <passability>Impassable</passability>
+          <fillPercent>0.75</fillPercent>
+          <designationCategory>Production</designationCategory>
+          <statBases>
+            <MaxHitPoints>300</MaxHitPoints>
+            <Flammability>0.2</Flammability>
+            <Beauty>-4</Beauty>
+            <WorkToBuild>5000</WorkToBuild>
+          </statBases>
+          <costList>
+            <Steel>120</Steel>
+            <ComponentIndustrial>5</ComponentIndustrial>
+          </costList>
+          <replaceTags>
+            <li>RM_WM_Distillation</li>
+          </replaceTags>
+          <comps>
+            <li Class="CompProperties_Power">
+              <compClass>CompPowerTrader</compClass>
+              <basePowerConsumption>350</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable" />
+            <li Class="CompProperties_Breakdownable" />
+            <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+              <tier>Industrial</tier>
+              <distillsAny>true</distillsAny>
+              <distillProduct>RM_Liquid_FreshWater</distillProduct>
+              <distillInputUnits>2</distillInputUnits>
+              <distillOutputUnits>1</distillOutputUnits>
+              <inputUnitsPerDay>240</inputUnitsPerDay>
+              <tierRate>1</tierRate>
+            </li>
+          </comps>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+              <key>RM_WM_Distillation</key>
+              <label>Ship distillation module (Wrecked Machines)</label>
+            </li>
+          </modExtensions>
+        </ThingDef>
+
+      </value>
+    </match>
+  </Operation>
+</Patch>

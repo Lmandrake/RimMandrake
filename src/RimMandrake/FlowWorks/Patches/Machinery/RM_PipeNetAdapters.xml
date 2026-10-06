@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FLOWWORKS_BUILD_PROGRAM_1 Phase 8 — per-net adapters (design §4 "Universal tank interop": the ecosystem's
+  pipe networks are ADOPTED, never duplicated). One adapter per supported VE PipeSystem net whose liquid has a
+  registry row: chemfuel (Vanilla Chemfuel Expanded, VCHE_ChemfuelNet -> RM_Liquid_Chemfuel) and propane
+  (Alpha Biomes, AB_PropaneNet -> RM_Liquid_Propane). Each adapter carries the pipe mod's OWN storage comp
+  (PipeSystem.CompProperties_ResourceStorage, so it joins that net like one of its tanks) and FlowWorks'
+  CompLiquidPipeAdapter, which moves units between it and the FlowWorks tanks on the adapter's hose line.
+  Whole-def patches: PatchOperationFindMod per pipe mod (MayRequire on an <Operation> is inert in 1.6).
+  PROVISIONAL: 10 units per rare tick, 1 resource per unit, 100-unit buffer, costs.
+  ART OWED: adapter (placeholder: vanilla AncientFuelNode, tinted per net).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Chemfuel Expanded</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+        <ThingDef ParentName="BuildingBase">
+          <defName>RM_PipeAdapter_Chemfuel</defName>
+          <label>chemfuel pipe adapter</label>
+          <description>A coupling that joins a chemfuel pipe network to the liquid tanks on its hose line. Feeding, it moves chemfuel from the tanks into the pipe network; drawing, it moves it from the network into the tanks.</description>
+          <thingClass>Building</thingClass>
+          <tickerType>Rare</tickerType>
+          <graphicData>
+            <texPath>Things/Building/Ruins/AncientFuelNode</texPath>
+            <graphicClass>Graphic_Random</graphicClass>
+            <drawSize>(1,1)</drawSize>
+            <color>(200,140,90)</color>
+          </graphicData>
+          <size>(1,1)</size>
+          <rotatable>false</rotatable>
+          <altitudeLayer>Building</altitudeLayer>
+          <passability>PassThroughOnly</passability>
+          <fillPercent>0.4</fillPercent>
+          <pathCost>42</pathCost>
+          <designationCategory>Production</designationCategory>
+          <statBases>
+            <WorkToBuild>900</WorkToBuild>
+            <MaxHitPoints>100</MaxHitPoints>
+            <Flammability>0.5</Flammability>
+            <Mass>15</Mass>
+          </statBases>
+          <costList>
+            <Steel>40</Steel>
+            <ComponentIndustrial>1</ComponentIndustrial>
+          </costList>
+          <comps>
+            <li Class="PipeSystem.CompProperties_ResourceStorage">
+              <pipeNet>VCHE_ChemfuelNet</pipeNet>
+              <storageCapacity>100</storageCapacity>
+              <drawStorageBar>false</drawStorageBar>
+            </li>
+            <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidPipeAdapter">
+              <liquid>RM_Liquid_Chemfuel</liquid>
+              <unitsPerRareTick>10</unitsPerRareTick>
+              <resourcePerUnit>1</resourcePerUnit>
+            </li>
+          </comps>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+              <label>Chemfuel pipe adapter</label>
+            </li>
+          </modExtensions>
+        </ThingDef>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Biomes</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+        <ThingDef ParentName="BuildingBase">
+          <defName>RM_PipeAdapter_Propane</defName>
+          <label>propane pipe adapter</label>
+          <description>A coupling that joins a propane pipe network to the liquid tanks on its hose line. Feeding, it moves propane from the tanks into the pipe network; drawing, it moves it from the network into the tanks.</description>
+          <thingClass>Building</thingClass>
+          <tickerType>Rare</tickerType>
+          <graphicData>
+            <texPath>Things/Building/Ruins/AncientFuelNode</texPath>
+            <graphicClass>Graphic_Random</graphicClass>
+            <drawSize>(1,1)</drawSize>
+            <color>(150,190,220)</color>
+          </graphicData>
+          <size>(1,1)</size>
+          <rotatable>false</rotatable>
+          <altitudeLayer>Building</altitudeLayer>
+          <passability>PassThroughOnly</passability>
+          <fillPercent>0.4</fillPercent>
+          <pathCost>42</pathCost>
+          <designationCategory>Production</designationCategory>
+          <statBases>
+            <WorkToBuild>900</WorkToBuild>
+            <MaxHitPoints>100</MaxHitPoints>
+            <Flammability>0.5</Flammability>
+            <Mass>15</Mass>
+          </statBases>
+          <costList>
+            <Steel>40</Steel>
+            <ComponentIndustrial>1</ComponentIndustrial>
+          </costList>
+          <comps>
+            <li Class="PipeSystem.CompProperties_ResourceStorage">
+              <pipeNet>AB_PropaneNet</pipeNet>
+              <storageCapacity>100</storageCapacity>
+              <drawStorageBar>false</drawStorageBar>
+            </li>
+            <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidPipeAdapter">
+              <liquid>RM_Liquid_Propane</liquid>
+              <unitsPerRareTick>10</unitsPerRareTick>
+              <resourcePerUnit>1</resourcePerUnit>
+            </li>
+          </comps>
+          <modExtensions>
+            <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+              <label>Propane pipe adapter</label>
+            </li>
+          </modExtensions>
+        </ThingDef>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_INDUSTRY_SETPIECES_1 — scatter the wrecked liquid works at map generation through the SHARED
+  set-piece scatterer, RM_GenStep_PlacedSetPieces + RM_SetPieceElement_SpawnMarker (Environmental Hazards
+  kit, RM_GENSTEP_PLACED_SETPIECES_1). MayRequire on each GenStepDef: without that kit nothing is scattered
+  and nothing errors. Registered onto Base_Player by Patches/Machinery/RM_LiquidWorksScatter_Register.xml.
+  Self-gating: RM_ScattererValidator_NearLiquid only accepts a dry, unroofed, buildable 3x2 (+1 margin)
+  footprint with the works' liquid within 10 cells — so a desal plant never spawns beside a tar lake, and a
+  map with none of the liquid gets none. Mod Setting liquidWorksRuinsEnabled off: no site is ever valid.
+  count 1 per works per map, minSpacing 40 (PROVISIONAL).
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_DesalPlant_RuinScatter</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minSpacing>40</minSpacing>
+      <minEdgeDistPct>0.05</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.FlowWorks.Machinery.RM_ScattererValidator_NearLiquid">
+          <liquids>
+            <li>RM_Liquid_SaltWater</li>
+            <li>RM_Liquid_Brine</li>
+          </liquids>
+          <radius>10</radius>
+          <size>(3,2)</size>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RM_DesalPlant_Wrecked</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_DetoxWorks_RuinScatter</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minSpacing>40</minSpacing>
+      <minEdgeDistPct>0.05</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.FlowWorks.Machinery.RM_ScattererValidator_NearLiquid">
+          <liquids>
+            <li>RM_Liquid_ToxicWater</li>
+            <li>RM_Liquid_AcidWater</li>
+          </liquids>
+          <radius>10</radius>
+          <size>(3,2)</size>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RM_DetoxWorks_Wrecked</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_TarRefinery_RuinScatter</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minSpacing>40</minSpacing>
+      <minEdgeDistPct>0.05</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.FlowWorks.Machinery.RM_ScattererValidator_NearLiquid">
+          <liquids>
+            <li>RM_Liquid_Tar</li>
+          </liquids>
+          <radius>10</radius>
+          <size>(3,2)</size>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RM_TarRefinery_Wrecked</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+    <defName>RM_PumpingStation_RuinScatter</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
+      <count>1</count>
+      <minSpacing>40</minSpacing>
+      <minEdgeDistPct>0.05</minEdgeDistPct>
+      <warnOnFail>false</warnOnFail>
+      <validators>
+        <li Class="RimMandrake.FlowWorks.Machinery.RM_ScattererValidator_NearLiquid">
+          <anyLiquid>true</anyLiquid>
+          <radius>10</radius>
+          <size>(3,2)</size>
+        </li>
+      </validators>
+      <elements>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_SpawnMarker">
+          <markerDef>RM_PumpingStation_Wrecked</markerDef>
+        </li>
+      </elements>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

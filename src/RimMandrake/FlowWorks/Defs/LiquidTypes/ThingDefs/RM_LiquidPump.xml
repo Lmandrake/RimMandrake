@@ -3,6 +3,8 @@
   FLOWWORKS_BUILD_PROGRAM_1 Phase 8 - the universal pump, first slice (no hoses yet: it works on what
   touches it). Draws one level per 250 ticks from an adjacent wet cell into an adjacent liquid tank, or
   pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
+  Minifiable (Phase 8 slice 2): the tanker pillar's portable pump — uninstall it, carry it to a far liquid
+  body with a cargo tank and a hose, pump, and fly home; a ruined works' damaged pump can be stolen the same way.
   PROVISIONAL: power 150 W, cost, work. Art: PLACEHOLDER (vanilla moisture pump) until its own render.
 -->
 <Defs>
@@ -24,6 +26,10 @@
     <fillPercent>0.4</fillPercent>
     <pathCost>42</pathCost>
     <tickerType>Normal</tickerType>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
     <designationCategory>Production</designationCategory>
     <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
     <statBases>

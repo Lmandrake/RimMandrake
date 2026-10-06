@@ -66,6 +66,22 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
+    <conversions>
+      <li>
+        <tier>Crude</tier>
+        <process>distill</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>2</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+      <li>
+        <tier>Industrial</tier>
+        <process>desalinate</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>3</inputUnits>
+        <outputUnits>2</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -90,6 +106,15 @@
       <revertTicks>2500</revertTicks>
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
+    <conversions>
+      <li>
+        <tier>Crude</tier>
+        <process>cool</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>1</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -122,6 +147,15 @@
       <revertsTo>RM_Liquid_FreshWater</revertsTo>
       <revertTicks>5000</revertTicks>
     </bottled>
+    <conversions>
+      <li>
+        <tier>Crude</tier>
+        <process>cool</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>1</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -144,6 +178,22 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <thirstQuality>Toxic</thirstQuality>
+    <conversions>
+      <li>
+        <tier>Crude</tier>
+        <process>filter</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>3</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+      <li>
+        <tier>Industrial</tier>
+        <process>detox</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>2</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -173,6 +223,15 @@
       <barrel>RM_Barrel_AcidWater</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
+    <conversions>
+      <li>
+        <tier>Industrial</tier>
+        <process>detox</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>3</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -215,6 +274,16 @@
       <barrel>RM_Barrel_Tar</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
+    <conversions>
+      <li>
+        <tier>Industrial</tier>
+        <process>refine</process>
+        <product>RM_Liquid_Chemfuel</product>
+        <inputUnits>4</inputUnits>
+        <outputUnits>1</outputUnits>
+        <productThing>Chemfuel</productThing>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -239,6 +308,22 @@
     </bottled>
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
+    <conversions>
+      <li>
+        <tier>Household</tier>
+        <process>distill</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>4</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+      <li>
+        <tier>Industrial</tier>
+        <process>desalinate</process>
+        <product>RM_Liquid_FreshWater</product>
+        <inputUnits>3</inputUnits>
+        <outputUnits>1</outputUnits>
+      </li>
+    </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
