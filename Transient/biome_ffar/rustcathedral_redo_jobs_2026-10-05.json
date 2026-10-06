@@ -1,0 +1,21 @@
+[
+ {
+  "id": "rustcathedral_livingbolt_v1",
+  "rimflow_item_id": "RUSTCATHEDRAL_SHEET_ART_REDO_1",
+  "target_def": "RM_LivingBolt",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nope. They should look like a large chrome nut with a bolthead above that. It should be oddly shiny and bear a very advanced-seeming geometry for such a nut and bolt configuration. Very small 0.1 cells, more like a little button that flits around on walls and other surfaces.\" RimWorld creature sprite, painterly: the living bolt, a small salvage-mech component creature of a rusted cathedral hull. A large chrome nut with a bolthead above it, oddly shiny, with unexpectedly advanced, precise geometry for a nut and bolt. Tiny, button-like, a small thing that flits across surfaces. Seen at very small scale, it must read clearly as a chrome nut and bolt.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte except the chrome, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Nope. They should look like a large chrome nut with a bolthead above that. It should be oddly shiny and bear a very advanced-seeming geometry for such a nut and bolt configuration. Very small 0.1 cells, more like a little button that flits around on walls and other surfaces.",
+  "biome_register": "rusted derelict cathedral hull interior, dim warm orange light; the subject stays bright chrome"
+ }
+]

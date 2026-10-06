@@ -19,8 +19,6 @@ CASES = {
     "nodef:ThingDef/RM_RawSlime": ["all_defs_resolve"],
     "notag": ["terrain_tagged"],
     "noflight": ["dwommo_flight_def"],
-    "nosalve": ["glurro_salve_slows_growth"],
-    "nodef:ThingDef/RM_GlurroSalve": ["glurro_salve_defs"],
     "nodef:RecipeDef/RM_Render_TwistedMeat": ["pit_solvent_defs"],
     "nodef:ThingDef/RM_TitanoslimeChunk": ["seal_breach_defs"],
     "nodef:ThingDef/RM_Proj_TitanoslimeChunk": ["chunk_bomb_defs"],

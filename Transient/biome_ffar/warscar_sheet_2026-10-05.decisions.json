@@ -55,9 +55,9 @@
    "prefill": "A"
   },
   "RM_Vozzik": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "RSW_CrystalFairyMole": {
    "decision": "A",
@@ -85,9 +85,9 @@
    "prefill": "A"
   },
   "RSW_Vozzik": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "SW_Electricgryllotalpa": {
    "decision": "A",

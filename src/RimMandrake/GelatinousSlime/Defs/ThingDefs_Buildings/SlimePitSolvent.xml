@@ -3,7 +3,7 @@
 
   <!--
     GELATINOUSSLIME_PIT_SOLVENT_1 (free tier). The slime pit as a solvent: it renders down food that
-    would otherwise poison, and the glurro carcass into its concentrate. Toggle SlimeSettings.pitSolvent
+    would otherwise poison. Toggle SlimeSettings.pitSolvent
     (PitSolvent.cs) adds/removes these recipes from RM_SlimePit. All yields and work amounts // INVENTED.
     Inputs are real vanilla defs (read from the installed Data, never guessed):
       RawToxipotato (Biotech, FoodPoisonChanceFixedHuman 0.04), Meat_Twisted (Anomaly, 0.02).
@@ -76,41 +76,6 @@
     </fixedIngredientFilter>
     <products>
       <MealSimple>1</MealSimple>
-    </products>
-  </RecipeDef>
-
-  <!-- The "rendered down" half of the glurro (GELATINOUSSLIME_GLURRO_SALVE_1): the carcass is no
-       longer a butcher product, it is rendered here. -->
-  <RecipeDef>
-    <defName>RM_Render_GlurroConcentrate</defName>
-    <label>render a glurro into salve concentrate</label>
-    <description>Boil a whole glurro carcass down in the slime pit to a pot of dark salve concentrate.</description>
-    <jobString>Rendering a glurro.</jobString>
-    <workAmount>900</workAmount>
-    <workSpeedStat>CookSpeed</workSpeedStat>
-    <workSkill>Cooking</workSkill>
-    <effectWorking>Cook</effectWorking>
-    <soundWorking>Recipe_CookMeal</soundWorking>
-    <recipeUsers>
-      <li>RM_SlimePit</li>
-    </recipeUsers>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Corpse_RM_Glurro</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>Corpse_RM_Glurro</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <RM_GlurroSalveConcentrate>1</RM_GlurroSalveConcentrate>
     </products>
   </RecipeDef>
 

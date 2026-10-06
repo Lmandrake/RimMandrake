@@ -28,9 +28,8 @@
       <Nutrition>0.4</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Grass</texPath>
+      <texPath>Things/Plant/RM_SlimeGrass/RM_SlimeGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(104, 168, 82)</color>
     </graphicData>
     <ingestible />
     <plant>
@@ -109,9 +108,8 @@
       <Nutrition>0.3</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Bush</texPath>
+      <texPath>Things/Plant/RM_Thumbstalk/RM_Thumbstalk</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(126, 160, 96)</color>
       <drawSize>1.4</drawSize>
     </graphicData>
     <ingestible />

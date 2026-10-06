@@ -192,8 +192,6 @@
       <RM_Fubbum>0.15</RM_Fubbum>
       <!-- GELATINOUSSLIME_DWOMMO_FLIER_1, // INVENTED: the flying aristocracy, low commonality -->
       <RM_Dwommo>0.2</RM_Dwommo>
-      <!-- GELATINOUSSLIME_GLURRO_SALVE_1, // INVENTED: iron-crusted grazer, milked for the slime-resistance salve -->
-      <RM_Glurro>0.3</RM_Glurro>
       <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
            ecoSystemWeight of 6 means one titanoslime costs the map's animal
            budget what six gelatids would, so the spawner stops adding animals

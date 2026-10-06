@@ -37,8 +37,7 @@
       Defs/ThingDefs_Races/RM_CathedralRoach.xml's own header for why this
       is a DUPLICATE, not a rename: the frozen twin's line 103 still needs
       the RUT_ original to keep working until Phase B); GR_Mecharat
-      unchanged (donor, stays per §3b: only Star Wars fauna route through a
-      Utinni patch, and this is not Star Wars); RM_LivingBolt/RM_LivingBolt
+      CUT (owner, Rust Cathedral sheet 2026-10-05: "cut no longer need"); RM_LivingBolt/RM_LivingBolt
       ADDED so §3 of the absorbed kit (the living bolts) can spawn at all —
       the frozen twin's own copy never wired one (item §5: "wired to
       NOTHING").
@@ -118,7 +117,6 @@
     </forceRockTypes>
     <wildAnimals>
       <RM_CathedralRoach>0.12</RM_CathedralRoach>
-      <GR_Mecharat MayRequire="vanillaexpanded.vgeneticse">0.5</GR_Mecharat>
       <RM_LivingBolt>0.06</RM_LivingBolt>
     </wildAnimals>
     <coastalWildAnimals />

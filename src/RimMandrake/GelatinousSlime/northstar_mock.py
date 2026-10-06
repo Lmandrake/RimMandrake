@@ -7,7 +7,7 @@ The sim mirrors the shipped C# rules; defs/stages/patch values are read from thi
 the XML breaks the mock the same way it would break the game.
 
 Faults: nodef:<Type/name> notag nodry nolaw2 nostage nodissolve nosmear nosmearsetting noexpose growfast
-        nosalve antidote_noop antidote_nocost eat_nocure eat_nofee nomarkedcost noshed noclamp noalert noweather
+        antidote_noop antidote_nocost eat_nocure eat_nofee nomarkedcost noshed noclamp noalert noweather
         noseeker defaultswrong noload noswap slowclock noreek nocharm offignored
 """
 import os
@@ -21,7 +21,7 @@ DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
             "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
-            "fieldConversionRate": "1", "farmRuinsEnabled": "True", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "glurroSalve": "True", "pitSolvent": "True", "sealBreach": "True", "chunkBomb": "True", "chunkShelfDays": "1.5", "archiveResurrection": "True"}
+            "fieldConversionRate": "1", "farmRuinsEnabled": "True", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "pitSolvent": "True", "sealBreach": "True", "chunkBomb": "True", "chunkShelfDays": "1.5", "archiveResurrection": "True"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 
@@ -345,9 +345,6 @@ class SlimeSim(object):
                 r = -abs(d)
             elif self.on_slime(pw):
                 r = 1.0 / 7 * (3 if "growfast" in self.f else 1)
-                gs = pw["hed"].get("RM_GlurroSalved")
-                if gs is not None and "nosalve" not in self.f and self.settings.get("glurroSalve") == "True":
-                    r *= 1.0 - min(gs, 0.8)
             else:
                 r = -0.5 if sev < 0.2 else 0.0
             sev = min(1.0, sev + r * 200.0 / 60000.0)

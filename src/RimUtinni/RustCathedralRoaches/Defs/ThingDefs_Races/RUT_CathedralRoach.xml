@@ -244,7 +244,7 @@
     </tools>
     <race>
       <body>RUT_RoachHex</body>
-      <baseBodySize>0.22</baseBodySize>
+      <baseBodySize>0.15</baseBodySize>
       <baseHealthScale>1.6</baseHealthScale>
       <!-- CATHEDRAL_ROACH_THINKTREE_GAP_1: BaseMechanoidWalker's inherited
            "Mechanoid" tree has no insertTag, so the Animal_PreMain hook
@@ -291,13 +291,13 @@
           <texPath>Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoach</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.4</drawSize>
         </bodyGraphicData>
         <corpseGraphicData>
           <texPath>Things/Pawn/Animal/RUT_CathedralRoach/RUT_CathedralRoachCorpse</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.4</drawSize>
         </corpseGraphicData>
       </li>
     </lifeStages>

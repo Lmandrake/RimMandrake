@@ -208,7 +208,7 @@
     </tools>
     <race>
       <body>RM_RoachHex</body>
-      <baseBodySize>0.22</baseBodySize>
+      <baseBodySize>0.15</baseBodySize>
       <baseHealthScale>1.6</baseHealthScale>
       <thinkTreeMain>RM_ThinkTree_CathedralRoach</thinkTreeMain>
       <lifeStageAges Inherit="False">
@@ -252,13 +252,13 @@
           <texPath>Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.4</drawSize>
         </bodyGraphicData>
         <corpseGraphicData>
           <texPath>Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoachCorpse</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
+          <drawSize>0.4</drawSize>
         </corpseGraphicData>
       </li>
     </lifeStages>
