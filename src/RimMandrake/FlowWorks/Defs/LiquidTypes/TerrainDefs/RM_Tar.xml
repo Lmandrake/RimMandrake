@@ -27,7 +27,7 @@
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <color>(86,82,88)</color>
     <pathCost>300</pathCost>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
@@ -56,7 +56,7 @@
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
+    <color>(86,82,88)</color>
     <affordances>
       <li MayRequire="biomesteam.biomescore">BMT_DeepWaterBridgeable</li>
     </affordances>

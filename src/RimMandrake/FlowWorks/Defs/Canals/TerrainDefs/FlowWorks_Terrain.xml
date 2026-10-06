@@ -306,8 +306,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
-    <color>(28,24,20)</color>
+    <color>(86,82,88)</color>
     <pathCost>100</pathCost>
     <renderPrecedence>394</renderPrecedence>
     <tags>
@@ -331,8 +330,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
-    <color>(28,24,20)</color>
+    <color>(86,82,88)</color>
     <pathCost>200</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
@@ -358,8 +356,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
-    <color>(28,24,20)</color>
+    <color>(86,82,88)</color>
     <pathCost>300</pathCost>
     <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
@@ -390,8 +387,7 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <takeSplashes>false</takeSplashes>
-    <color>(28,24,20)</color>
+    <color>(86,82,88)</color>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>
