@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Thurrock.xml                                GREENTIDE_THURROCK_HERD_BUILD_1
+
+  The thurrock: a giant tree-felling browser that moves in herds. The item is the authority
+  (infrastructure/state/items/GREENTIDE_THURROCK_HERD_BUILD_1.md). Everything here reuses built work:
+
+  - The felling is the built Shatterer aura, HediffComp_PeriodicAreaAttack with
+    fellsTreesBelowHealthFraction (mandrake.rm.environmentalhazards). A tree beaten low enough falls
+    through RM_TreeFallUtility.FellTree (FallCause.Shattered) and drops its wood, the same path the
+    crack fall uses. This is the aura's first creature carrier.
+  - "Always has the hediff from spawn" was ALREADY BUILT, despite the item saying no such wiring exists:
+    RM_CompGrantHediff / CompProperties_GrantHediff (mandrake.rm.creaturebehaviors,
+    ROT_WOUND_SHARING_WIRING_1). It adds the hediff in PostSpawnSetup only if missing, so a save/load
+    round trip leaves exactly one. No new innate-hediff comp was written.
+  - Provoked wall damage (§6): the one new piece is RM_HediffComp_AggroSeverity (creaturebehaviors),
+    which holds severity 0.5 at rest and 1.0 while Pawn.InAggroMentalState. A second aura comp with
+    minSeverity 0.9 hits buildings only (natural rock spared), so a calm thurrock never damages a building.
+  - Rut brawls (§5): DROPPED. RimSage (decompiled 1.6, 2026-10-06) has no rut field or rut-fight
+    behaviour on RaceProperties or anywhere in the source; per the item, no new AI is written for it.
+  - No moult, no shed: nothing of the kind exists on these defs (the moult is not built).
+  - No RM_SilenceAuraExtension (§7): it is not a hunter.
+  - Mod Settings (§9): Greentide settings -> RM_ThurrockAuraApplier writes them onto these comps' live props.
+
+  Every number below marked PROVISIONAL is an invented first value, not a measurement.
+  Aura tuning target (§4): a herd of 3-6 fells "a handful of trees per in-game hour". At 25 Blunt every
+  250 ticks (10 bursts/hour) a 300 HP Greentide tree drops below 40% after ~8 bursts, so a thurrock
+  lingering by a tree fells it in under an hour. PROVISIONAL; the felling-pace slider scales the interval.
+
+  Art: generated, not yet installed. artpipe_state.py find thurrock (2026-10-06) -> done/RM_Thurrock_{south,
+  east,north} and _artsrc/RM_Thurrock_{south,east,north}/ (art list
+  infrastructure/artpipe/art_lists/greentide_turn1_2026-10-02.csv, drawSize 4.5). The texPath below is
+  where the art ledger's install must land it.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_ThurrockShatter</defName>
+    <label>canopy-breaker</label>
+    <description>The thurrock's way of life. It leans its whole weight into the trees around it as it browses, and anything green within a few strides takes the blows; a tree beaten low enough comes down across the jungle floor. When it is provoked it shoulders walls and doors the same way. Natural rock it leaves alone.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <label>browsing</label>
+      </li>
+      <li>
+        <minSeverity>0.9</minSeverity>
+        <label>provoked</label>
+      </li>
+    </stages>
+    <comps>
+      <!-- Severity 0.5 at rest, 1.0 while in an aggro mental state (manhunter). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_AggroSeverity">
+        <restSeverity>0.5</restSeverity>
+        <aggroSeverity>1</aggroSeverity>
+      </li>
+      <!-- At rest: trees and plants only. PROVISIONAL numbers (header). -->
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttack">
+        <radius>2.9</radius>
+        <tickIntervalTicks>250</tickIntervalTicks>
+        <damageDef>Blunt</damageDef>
+        <damageAmount>25</damageAmount>
+        <pawnMultiplier>0</pawnMultiplier>
+        <buildingMultiplier>0</buildingMultiplier>
+        <plantMultiplier>1</plantMultiplier>
+        <itemMultiplier>0</itemMultiplier>
+        <sparedNaturalRock>true</sparedNaturalRock>
+        <sparesCarrier>true</sparesCarrier>
+        <requiresAwake>true</requiresAwake>
+        <fellsTreesBelowHealthFraction>0.4</fellsTreesBelowHealthFraction>
+      </li>
+      <!-- Provoked only (minSeverity 0.9): buildings only, natural rock spared. PROVISIONAL numbers. -->
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttack">
+        <radius>1.9</radius>
+        <tickIntervalTicks>60</tickIntervalTicks>
+        <damageDef>Blunt</damageDef>
+        <damageAmount>30</damageAmount>
+        <minSeverity>0.9</minSeverity>
+        <pawnMultiplier>0</pawnMultiplier>
+        <buildingMultiplier>1</buildingMultiplier>
+        <plantMultiplier>0</plantMultiplier>
+        <itemMultiplier>0</itemMultiplier>
+        <sparedNaturalRock>true</sparedNaturalRock>
+        <sparesCarrier>true</sparesCarrier>
+        <requiresAwake>true</requiresAwake>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Thurrock</defName>
+    <label>thurrock</label>
+    <description>A towering, slab-shouldered browser that stands higher than the lower canopy, hide a wet copper-teal sheened with pale mineral bloom, legs caked to the knee in churnmud. A short, muscular lip strips the crowns of the trees it leans over, and it leans with its whole weight: where a herd has passed, trunks lie across the causeways and the sun comes down through new holes in the canopy. You hear them long before you see them, crash after crash along a treeline, and when the crashing stops the herd has stopped too. They cannot be tamed and they do not carry anything for anyone. Provoked, a thurrock shoulders a wall the way it shoulders a tree.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed><!-- PROVISIONAL -->
+      <MarketValue>900</MarketValue><!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin><!-- PROVISIONAL -->
+      <ComfyTemperatureMax>55</ComfyTemperatureMax><!-- PROVISIONAL -->
+      <FilthRate>30</FilthRate><!-- PROVISIONAL -->
+      <Wildness>1</Wildness><!-- item §1 first value -->
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power><!-- PROVISIONAL -->
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power><!-- PROVISIONAL -->
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>22</power><!-- PROVISIONAL -->
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <!-- Always holds RM_ThurrockShatter from spawn (built comp, see header). -->
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+        <hediff>RM_ThurrockShatter</hediff>
+        <inspectLine>Fells trees as it browses.</inspectLine>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <!-- Vanilla hooved body with a hump (no new rig); the hump is the slab shoulder. -->
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <baseBodySize>8</baseBodySize><!-- item §1 -->
+      <baseHealthScale>6</baseHealthScale><!-- PROVISIONAL -->
+      <baseHungerRate>2.6</baseHungerRate><!-- PROVISIONAL -->
+      <!-- Item §1: browses tree crowns (Tree) as well as plants. -->
+      <foodType>VegetarianRoughAnimal, Tree</foodType>
+      <leatherDef>Leather_Elephant</leatherDef>
+      <trainability>None</trainability><!-- item §1 first value -->
+      <predator>false</predator>
+      <lifeExpectancy>60</lifeExpectancy><!-- PROVISIONAL -->
+      <gestationPeriodDays>20</gestationPeriodDays><!-- PROVISIONAL -->
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance><!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.9</minAge>
+          <soundWounded>Pawn_Elephant_Injured</soundWounded>
+          <soundDeath>Pawn_Elephant_Dead</soundDeath>
+          <soundCall>Pawn_Elephant_Call</soundCall>
+          <soundAngry>Pawn_Elephant_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thurrock</defName>
+    <label>thurrock</label>
+    <race>RM_Thurrock</race>
+    <combatPower>400</combatPower><!-- PROVISIONAL -->
+    <ecoSystemWeight>2</ecoSystemWeight><!-- PROVISIONAL -->
+    <wildGroupSize>3~6</wildGroupSize><!-- item §1 -->
+    <!-- Drawn huge on an ordinary footprint: drawSize carries the scale (art list: 4.5 adult). -->
+    <lifeStages>
+      <li>
+        <label>thurrock calf</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thurrock/RM_Thurrock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.4</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.35, 0.35)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thurrock/RM_Thurrock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.4</drawSize>
+          <shadowData>
+            <volume>(0.75, 0.55, 0.55)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thurrock/RM_Thurrock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.5</drawSize>
+          <shadowData>
+            <volume>(1.0, 0.75, 0.75)</volume>
+            <offset>(0,0,-0.35)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

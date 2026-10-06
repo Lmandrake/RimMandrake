@@ -106,8 +106,24 @@ namespace RimMandrake.EnvironmentalHazards
             // Distant-crash ambience is free from this alone, per the spec —
             // a plain map-volume PlayOneShot needs no separate sustainer or
             // falloff work.
-            tree.Destroy(DestroyMode.Vanish);
+            // FellingNow lets a ThingComp on the tree tell this Vanish (a real
+            // fall) apart from any other Vanish destroy in its PostDestroy
+            // (GREENTIDE_STELLOCK_LACE_BUILD_1: the stellock branch drops on a
+            // fall, never on a despawn).
+            FellingNow = tree;
+            try
+            {
+                tree.Destroy(DestroyMode.Vanish);
+            }
+            finally
+            {
+                FellingNow = null;
+            }
         }
+
+        /// <summary>The tree FellTree is destroying right now, else null. Read it from a
+        /// comp's PostDestroy to know the Vanish was a fall.</summary>
+        public static Plant FellingNow { get; private set; }
 
         private static void DamageCell(IntVec3 cell, Map map, Plant tree, RM_FellableTreeExtension ext)
         {

@@ -39,6 +39,11 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
+      <!-- WEBWORK_TRACTION_LANCE_BUILD_1: the shared pull (mandrake.rm.creaturebehaviors). The live numbers come
+           from RM_TheSumpSettings through RM_CapstanTurret (IRM_TetherPullHost); only the message text is set here. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_TetherPull">
+        <snapMessage>The capstan's line snapped: {0}.</snapMessage>
+      </li>
     </comps>
     <designationCategory>Security</designationCategory>
     <researchPrerequisites>

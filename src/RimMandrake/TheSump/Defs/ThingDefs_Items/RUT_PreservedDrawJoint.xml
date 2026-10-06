@@ -4,8 +4,10 @@
 
   A preserved draw-joint from an old tar-pit capstan, found in the dig strata (RUT_DigStratumTable, strata 2-3).
   Studying TWO of them (analysisRequiredRange 2~2, each consumed) unlocks the RM_CapstanTurret research row,
-  which carries <requiredAnalyzed>RUT_PreservedDrawJoint</requiredAnalyzed>. Vanilla mechanism, no C#: the
-  Biotech signal-chip shape (CompProperties_CompAnalyzableUnlockResearch + ResearchProjectDef.requiredAnalyzed).
+  which carries <requiredAnalyzed>RUT_PreservedDrawJoint</requiredAnalyzed>: the Biotech signal-chip shape
+  (ResearchProjectDef.requiredAnalyzed). The comp is RM_CompProperties_AnalyzableGrantResearch (creaturebehaviors), the
+  vanilla CompProperties_CompAnalyzableUnlockResearch plus a grant: completing the study also finishes
+  RM_Research_TractionLance (WEBWORK_TRACTION_LANCE_BUILD_1).
   After that the turret is researchable and buildable anywhere.
 
   analysisID is an arbitrary unique int (vanilla uses 8-digit ids). Texture is a procedural PLACEHOLDER; art job
@@ -36,7 +38,7 @@
       <li>Manufactured</li>
     </thingCategories>
     <comps>
-      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AnalyzableGrantResearch">
         <analysisID>61904417</analysisID>
         <analysisRequiredRange>2~2</analysisRequiredRange>
         <destroyedOnAnalyzed>true</destroyedOnAnalyzed>
@@ -50,6 +52,14 @@
         <completedLetterLabel>Draw-joints studied: {RESEARCH} unlocked</completedLetterLabel>
         <completedLetter>By taking apart two preserved draw-joints, {PAWN_labelShort} has worked out how the tar-pit capstans were built.\n\nYour researchers can now research {RESEARCH} at a research bench.</completedLetter>
         <completedLetterDef>PositiveEvent</completedLetterDef>
+        <!-- WEBWORK_TRACTION_LANCE_BUILD_1 step 4: the Sump's door to the traction lance. Finishing the study also
+             finishes RM_Research_TractionLance (Webwork) when that mod is loaded; looked up by defName, so this is a
+             silent no-op without it. -->
+        <grantsResearch>
+          <li>RM_Research_TractionLance</li>
+        </grantsResearch>
+        <grantLetterLabel>The same pull, on a tether: {RESEARCH} learned</grantLetterLabel>
+        <grantLetter>Taking the draw-joints apart, {PAWN_labelShort} saw that the capstan's ratchet does not care what it is mounted on. Rigged to a crewed lance and a fabric tether, the same pull can be thrown and reeled by hand.\n\n{RESEARCH} is now known: the traction lance can be built.</grantLetter>
         <activateTexPath>UI/Icons/Study</activateTexPath>
         <activateLabelString>Study...</activateLabelString>
         <activateDescString>Take the draw-joint apart to learn how it works.</activateDescString>

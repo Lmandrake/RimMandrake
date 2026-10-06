@@ -8,6 +8,10 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+    <li>
       <packageId>sarg.alphabiomes</packageId>
       <displayName>Alpha Biomes</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2777849228</steamWorkshopUrl>
@@ -21,6 +25,7 @@
     <li>sarg.alphaanimals</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
   <description>THESUMP_RM_MOD_BUILD_1 (Phase A row 23 of
 design/RimMandrake/biome_mod_architecture.md; parent BIOME_MOD_SPLIT_EXECUTION_1).

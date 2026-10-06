@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_STELLOCK_LACE_BUILD_1.
+
+  1. Every Greentide roster tree (Defs/ThingDefs_Plants/RM_Greentide_TreeRoster.xml) and the
+     greatbole (RM_Greatbole.xml) carries RM_CompStellockBranchDrop, which may drop one
+     RM_StellockBranch at the stump when the tree is felled on a Greentide map. Only
+     RM_Mirrelbole already has a <comps> list; the first operation gives the others one.
+     Raw-XML patches run before def inheritance, so a child <comps> list here is merged with
+     anything TreeBase supplies, never replacing it.
+  2. The doctor's bill: same targets and shape as Core's AdministerMechSerumHealer and
+     RimStarWars/Bacta/Patches/RSW_Bacta_RecipeWiring.xml (the animal abstract is addressed by
+     @Name="AnimalThingBase"; it has no defName).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[(defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Thalquith" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole") and not(comps)]</xpath>
+    <value>
+      <comps />
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="RM_Veluthar" or defName="RM_Mourvel" or defName="RM_Kaddrath" or defName="RM_Sarnstilt" or defName="RM_Brunnock" or defName="RM_Ghemmel" or defName="RM_Nemmer" or defName="RM_Vurmeloth" or defName="RM_Mirrelbole" or defName="RM_Zhorrel" or defName="RM_Quathis" or defName="RM_Thalquith" or defName="RM_Cundral" or defName="RM_Gorbeleth" or defName="RM_Greatbole"]/comps</xpath>
+    <value>
+      <li Class="RimMandrake.Greentide.CompProperties_StellockBranchDrop">
+        <branchDef>RM_StellockBranch</branchDef>
+      </li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[defName="Human"]/recipes</xpath>
+    <value>
+      <li>RM_AdministerStellockLace</li>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/ThingDef[@Name="AnimalThingBase"]/recipes</xpath>
+    <value>
+      <li>RM_AdministerStellockLace</li>
+    </value>
+  </Operation>
+
+</Patch>

@@ -298,4 +298,31 @@
     </stages>
   </HediffDef>
 
+  <!-- GREENTIDE_STELLOCK_LACE_BUILD_1. Added by using RM_StellockLace. totalBleedFactor 0
+       zeroes the pawn's whole bleed rate (RimSage 1.6: HediffSet.CalculateBleedRate multiplies
+       every CurStage.totalBleedFactor into the total), stumps included. Tends nothing.
+       Duration comes from Mod Settings (RM_HediffComp_StellockDuration overrides the
+       disappearsAfterTicks below, which is only the shipped default: 12 h = 30000 ticks). -->
+  <HediffDef>
+    <defName>RM_StellockLaced</defName>
+    <label>stellock-laced</label>
+    <description>A stellock film lies over this person's wounds and stumps, holding every vessel shut. Nothing bleeds while it holds. It tends nothing: the wounds are still untended, can still fester, and will bleed again when the lace lets go.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.7, 0.35)</defaultLabelColor>
+    <isBad>false</isBad>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <totalBleedFactor>0</totalBleedFactor>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <compClass>RimMandrake.Greentide.RM_HediffComp_StellockDuration</compClass>
+        <disappearsAfterTicks>30000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
 </Defs>

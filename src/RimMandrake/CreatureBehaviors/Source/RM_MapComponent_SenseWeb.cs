@@ -146,14 +146,39 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     continue;
                 }
-                if (pawn.health.hediffSet.HasHediff(feltMarkDef))
-                {
-                    continue;
-                }
+                MarkPawn(pawn, feltMarkDef, thrum);
+            }
+        }
 
-                pawn.health.AddHediff(feltMarkDef);
+        // WEBWORK_TRACTION_LANCE_BUILD_1 step 4: cutting a gutter junction out "registers the cut like a touch",
+        // so the owners come. Same mark the scan gives a pawn standing in the web. Returns true when a mark was
+        // newly given (proof read), false when switched off, not loaded, or already marked.
+        public bool RegisterTouch(Pawn pawn)
+        {
+            if (!RM_CreatureBehaviorsSettings.senseWebEnabled || pawn == null || pawn.Dead || pawn.health?.hediffSet == null)
+            {
+                return false;
+            }
+            HediffDef feltMarkDef = DefDatabase<HediffDef>.GetNamedSilentFail("RUT_Webwork_FeltMark");
+            if (feltMarkDef == null)
+            {
+                return false;
+            }
+            return MarkPawn(pawn, feltMarkDef, DefDatabase<SoundDef>.GetNamedSilentFail("RM_Webwork_Thrum"));
+        }
+
+        private bool MarkPawn(Pawn pawn, HediffDef feltMarkDef, SoundDef thrum)
+        {
+            if (pawn.health.hediffSet.HasHediff(feltMarkDef))
+            {
+                return false;
+            }
+            pawn.health.AddHediff(feltMarkDef);
+            if (pawn.Spawned)
+            {
                 thrum?.PlayOneShot(SoundInfo.InMap(new TargetInfo(pawn.Position, map)));
             }
+            return true;
         }
     }
 }

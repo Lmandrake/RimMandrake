@@ -178,7 +178,7 @@ def static_checks():
         if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "CapstanTurret", "RM_CapstanTurret_%s.png" % part)):
             bad.append("capstan %s art missing" % part)
     ccs = open(os.path.join(HERE, "Source", "RM_CapstanTurret.cs"), encoding="utf-8").read()
-    for need in ("class RM_CapstanTurret", "class RM_CapstanTurretProof", "Notify_Teleported", "capstanMaxMass"):
+    for need in ("class RM_CapstanTurret", "class RM_CapstanTurretProof", "RM_CompTetherPull", "IRM_TetherPullHost", "capstanMaxMass"):
         if need not in ccs:
             bad.append("RM_CapstanTurret.cs lacks %s" % need)
     if "HarmonyLib" in ccs:
@@ -196,7 +196,10 @@ def static_checks():
     if "<li>RUT_PreservedDrawJoint</li>" not in rp.split("<requiredAnalyzed>")[-1].split("</requiredAnalyzed>")[0]:
         bad.append("RM_CapstanTurret research does not require studying RUT_PreservedDrawJoint")
     dj = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "RUT_PreservedDrawJoint.xml")).getroot()
-    ana = dj.find(".//li[@Class='CompProperties_CompAnalyzableUnlockResearch']")
+    # WEBWORK_TRACTION_LANCE_BUILD_1: the comp is now the vanilla analyzable's grant-research subclass.
+    ana = dj.find(".//li[@Class='RimMandrake.CreatureBehaviors.RM_CompProperties_AnalyzableGrantResearch']")
+    if ana is not None and "RM_Research_TractionLance" not in [x.text for x in ana.iter("li")]:
+        bad.append("RUT_PreservedDrawJoint no longer grants RM_Research_TractionLance (the Sump door to the lance)")
     if ana is None or ana.findtext("analysisRequiredRange") != "2~2" or ana.findtext("destroyedOnAnalyzed") != "true":
         bad.append("RUT_PreservedDrawJoint must be analyzable twice and consumed (spec: two preserved draw-joints)")
     lot = ET.parse(os.path.join(HERE, "Defs", "LotteryTableDefs", "RUT_DigStratumTable.xml")).getroot()

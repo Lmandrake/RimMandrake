@@ -57,6 +57,8 @@
     <Compile Include="RM_HediffComp_MarksFeverSurvivor.cs" />
     <Compile Include="RM_Proj_GrenadeStenchSmoke.cs" />
     <Compile Include="RM_CompBankAmbusher.cs" />
+    <Compile Include="RM_StellockLace.cs" />
+    <Compile Include="RM_ThurrockAuraApplier.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +80,10 @@
     </Reference>
     <Reference Include="RimMandrake.CreatureBehaviors">
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
