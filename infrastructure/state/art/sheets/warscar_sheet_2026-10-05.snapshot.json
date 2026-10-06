@@ -1,6 +1,6 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-05T19:19:52-0700",
+ "built": "2026-10-05T20:53:27-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -410,19 +410,19 @@
   "RSW_Vozzik": {
    "columns": {
     "A": {
-     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
-     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
-     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
-    },
-    "B": {
      "east": "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
      "north": "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
      "south": "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492"
     },
-    "C": {
+    "B": {
      "east": "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
      "north": "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
      "south": "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e"
+    },
+    "C": {
+     "east": "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+     "north": "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+     "south": "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b"
     }
    },
    "graphic_of": {
@@ -432,8 +432,8 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render stillsand_regen_RSW_Vozzik_v2",
-    "C": "render RM_Vozzik"
+    "B": "render RM_Vozzik",
+    "C": "history SWBestiary 2026-10-03"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
    "reserved": [
@@ -529,5 +529,5 @@
   }
  },
  "sheetId": "warscar_sheet_2026-10-05",
- "snapshotId": "3c284ce91426eaea"
+ "snapshotId": "96f7fbde17b09a22"
 }

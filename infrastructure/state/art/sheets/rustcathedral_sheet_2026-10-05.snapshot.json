@@ -1,6 +1,6 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-05T19:17:01-0700",
+ "built": "2026-10-05T20:49:42-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -129,8 +129,8 @@
     "C": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render stillsand_regen_RSW_Vozzik_v2",
+    "A": "history SWBestiary 2026-10-03",
+    "B": "IN GAME \u2014 SWBestiary",
     "C": "render RM_Vozzik"
    },
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",

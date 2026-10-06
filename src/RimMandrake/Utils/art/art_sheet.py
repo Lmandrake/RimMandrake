@@ -965,6 +965,7 @@ const _itemBody = it => {
   };
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
+  const purgedNote = it.purgedHidden ? `<div class="sub" title="pictures you rejected with the purge mark; they no longer appear on any sheet">${it.purgedHidden} purged picture${it.purgedHidden === 1 ? '' : 's'} hidden</div>` : '';
   const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
   const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
@@ -980,7 +981,7 @@ const _itemBody = it => {
   const inner = `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${links}${elsewhere}${rul}${noart}</div>
+    ${desc}${links}${elsewhere}${rul}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
   return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
@@ -1470,7 +1471,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
 
     census_canon = {cr["key"]: (cr.get("canon") or {}).get("entry") for bb in census["biomes"].values()
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
-    built = []
+    built, purged_hidden, hidden_kept = [], {}, {}
     for r in rows:
         graphics, seen = [], set()
         for res in (r.get("art") or {}).get("resources") or []:
@@ -1487,6 +1488,18 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                  if _fkey(c) not in seen and not (set(c["faces"].values()) & have)]
         if named:
             graphics.append({"res": None, "role": ROLE_TEXT[None], "cols": named, "prior_raw": None})
+        # req 14: a picture the ledger has PURGED (his reject+purge, on any sheet) is never shown as a column
+        n_hidden = 0
+        for g in graphics:
+            kept_cols = []
+            for c in g["cols"]:
+                live = {f: sh for f, sh in c["faces"].items() if not idx.is_purged(sh)}
+                n_hidden += len(c["faces"]) - len(live)
+                if live:
+                    c["faces"] = live
+                    kept_cols.append(c)
+            g["cols"] = kept_cols
+        purged_hidden[r["key"]] = n_hidden
         graphics = [g for g in graphics if g["cols"]] or graphics[:0]
         # primary = first body graphic with pictures, else first graphic; name renders are offered to it too
         prim = next((g for g in graphics if g["res"] and g["role"] == "body"), graphics[0] if graphics else None)
@@ -1497,6 +1510,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         mem = letter_memory.get(r["key"]) or {}
         _assign_letters(allcols, mem.get("columns"), mem.get("reserved"))
         kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
+        _k = [c for c in kept if not any(idx.is_purged(sh) for sh in c["faces"].values())]
+        for c in kept:      # a set he picked that has since been purged is hidden from the page but its letter stays in the snapshot
+            if c not in _k:
+                hidden_kept.setdefault(r["key"], []).append((c, (mem.get("graphic_of") or {}).get(c["letter"])))
+        purged_hidden[r["key"]] += len(kept) - len(_k)
+        kept = _k
         for c in kept:
             gk = (mem.get("graphic_of") or {}).get(c["letter"])
             g = next((g for g in graphics if (g["res"] or "_byname") == gk), None)
@@ -1609,7 +1628,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"]],
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
-            "noArt": no_art,
+            "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0),
             "noArtWhy": ((r.get("art") or {}).get("searched") or "searched by graphic and by name: " + ", ".join(sorted(w for w in {_stem(key)} | set(r.get("defNames") or []) if w))
                          + ("; artpipe jobs on record: " + ", ".join(r.get("artpipe_state_jobs") or []) if r.get("artpipe_state_jobs") else "")),
             "rulings": [{"at": (x.get("at") or "")[:10], "verdict": x.get("raw_verdict") or x.get("verdict"),
@@ -1638,6 +1657,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                           "reserved": sorted(set((letter_memory.get(key) or {}).get("reserved") or [])
                                              | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index)}
 
+    for key, cs in hidden_kept.items():
+        sr = snap_rows.get(key)
+        if sr is None:
+            continue
+        for c, gk in cs:
+            sr["columns"].setdefault(c["letter"], c["faces"])
+            sr["labels"].setdefault(c["letter"], c.get("label", ""))
+            sr["graphic_of"].setdefault(c["letter"], gk or "_byname")
+            sr["reserved"] = sorted(set(sr["reserved"]) | {c["letter"]}, key=LETTERS.index)
     # a row the owner ruled on that has left this biome's census keeps its snapshot entry (not shown on the page),
     # so his decision letters still resolve to the pictures he ruled on
     touched_rows = {k for k, v in ((old or {}).get("decisions") or {}).items() if isinstance(v, dict) and v.get("at")}

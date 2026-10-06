@@ -85,7 +85,7 @@ def fixture(td: Path):
     ctx = {"html": html_of(items, sid), "sheet_id": sid, "sheet_dir": sd, "html_path": sd / f"{sid}.html", "snap": snap,
            "snap_path": snap_path, "decisions": dec, "decisions_path": sd / f"{sid}.decisions.json", "biome": "RM_Fix",
            "census_rows": census_rows, "ground": {"rgb": [120, 100, 80], "source": "Sand -> Terrain/Sand (mean of 900 px)"},
-           "check_sheet_fn": lambda p, d: (0, "ok"), "browser_fn": lambda p: (40, [], ""), "problems": []}
+           "check_sheet_fn": lambda p, d: (0, "ok"), "browser_fn": lambda p: (40, [], ""), "is_purged": lambda sh: False, "problems": []}
     return ctx, items
 
 
@@ -179,6 +179,11 @@ def main():
         # check_sheet
         f = failing(dict(ctx, check_sheet_fn=lambda p, d: (1, "FAIL  filter bar inside the brief")), "9/chk")
         check(f and "check_sheet exit 1" in f[0].problems[0], "check_sheet nonzero FAILS the gate")
+        # req 14
+        f = failing(dict(ctx, is_purged=lambda sh: sh.startswith("a")), "14")
+        check(f and "purged" in f[0].problems[0], "req 14 FAILS: a ledger-purged picture shown as a column")
+        f = failing(dict(ctx, is_purged=lambda sh: sh == "a" * 64), "14")
+        check(f and "RM_Alpha" in f[0].problems[0], "req 14 names the row and set")
         # req 13
         f = failing(dict(ctx, browser_fn=lambda p: (0, [], "")), "13")
         check(f and "renders blank" in f[0].problems[0], "req 13 FAILS: a sheet that renders far fewer images than its rows")

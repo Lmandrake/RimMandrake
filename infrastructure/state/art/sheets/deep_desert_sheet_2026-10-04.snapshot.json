@@ -1,6 +1,6 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T20:24:51-0700",
+ "built": "2026-10-05T20:40:49-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -111,20 +111,13 @@
      "east": "6a2c73a6ab3adc5fcf30314b2c01b8c7cdf34969c4472bfc11880f26fb4c28e4",
      "north": "641305e1b37353c979d41306285f1bd1897152c8a357a920b09830448ddaedb4",
      "south": "d23778afab12cc16f66d460bddadabf03915a7e17385cae40bbf16ac2edbb5b8"
-    },
-    "B": {
-     "east": "69f9d4e4593eab31cc968fd7f4482c3b259021fabd5b2aacf60fb5a35eff86b7",
-     "north": "051ecf84cc3aae9444f51cb9b2b4a5dc49200235ec72843438189cf1dddf883b",
-     "south": "7d8a03db1fbf0a5b7f5e9c744c5657be30a2f5f9e01e09c9d6d06b519099dc40"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
-    "B": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
+    "A": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "B": "render RM_Gaanok"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
    "reserved": [
@@ -215,9 +208,6 @@
     "A": {
      "single": "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
     },
-    "B": {
-     "single": "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531"
-    },
     "C": {
      "single": "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df"
     },
@@ -236,7 +226,6 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_KneelOllim",
-    "B": "Things/Plant/RM_KneelOllim",
     "C": "Things/Plant/RM_KneelOllim",
     "D": "Things/Plant/RM_KneelOllim",
     "E": "Things/Plant/RM_KneelOllim",
@@ -245,7 +234,6 @@
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render RM_KneelOllim",
     "C": "render stillsand_regen_RM_KneelOllim_var1",
     "D": "render stillsand_regen_RM_KneelOllim_var2",
     "E": "render stillsand_regen_RM_KneelOllim_var3",
@@ -335,20 +323,13 @@
      "east": "f2147abf95da83445e586b40a2f99389778bfaba40120a1d7686a50f91391ace",
      "north": "009059673d5d4f09126961d6215e639ad19c14125b001fe6722e072ed025ea6c",
      "south": "f1f1e0743a50aa7acc3956b40cc20f6abe1a69cbbadaea596fcc7bae01a068f4"
-    },
-    "B": {
-     "east": "6d19c8e43905d8be9b163b3fedd858d1786c372d8eefe1dc4d7e86ab51beb65a",
-     "north": "33ac2bfe8bbcebac05950d0d8ef53cbc6867eafce8f17fb31919f80bd6bf58e2",
-     "south": "5afa241a3cd4f9e69471b9efecbcd499b3519df03bc01deaecaa4de352101f61"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
-    "B": "Things/Pawn/Animal/RM_Loomma/RM_Loomma"
+    "A": "Things/Pawn/Animal/RM_Loomma/RM_Loomma"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "B": "render RM_Loomma"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
    "reserved": [
@@ -502,11 +483,6 @@
      "north": "21c9191a00e167f61b89bffbd026f9d2a9034e05fef6efeaea6e94ecc11a2f9e",
      "south": "a5de1dd5dbeb01398353ce9644f6a3bb308948c92673976e97d7414e3b5a83f3"
     },
-    "B": {
-     "east": "276a39da510922f19afe5fae1803679e62804cc4ca6d1ce953ea30696c29e905",
-     "north": "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a",
-     "south": "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c"
-    },
     "D": {
      "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
      "north": "e07f6bf1812fb724a93ca7d832c63a62d35a4a76084dfdf0a66d31385eefc6c4",
@@ -515,12 +491,10 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
-    "B": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
     "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "render RM_Soorrak",
     "D": "render stillsand_regen_RM_Soorrak_v2"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
@@ -539,11 +513,6 @@
      "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
      "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
     },
-    "C": {
-     "east": "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
-     "north": "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa",
-     "south": "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a"
-    },
     "D": {
      "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3",
      "north": "479f5b09e93f7f08c953e4bcd78c419860808cff5ecded5070911bb31ee205ce",
@@ -552,12 +521,10 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
-    "C": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
     "D": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
-    "C": "render RM_Ulgga",
     "D": "render longshade_rsw_ulgga_v1"
    },
    "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
@@ -758,11 +725,6 @@
      "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
      "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
     },
-    "B": {
-     "east": "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
-     "north": "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3",
-     "south": "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534"
-    },
     "C": {
      "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
      "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
@@ -771,12 +733,10 @@
    },
    "graphic_of": {
     "A": "swanimals/GraniteSlug/GraniteSlug",
-    "B": "swanimals/GraniteSlug/GraniteSlug",
     "C": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_graniteslug",
     "C": "render stillsand_regen_RSW_GraniteSlug_v2"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
@@ -793,10 +753,6 @@
      "east": "ba5e06d13eb4fc5638a3a58d55b78f9958fec06ee6cb8e8cb1f371bc2e9c7117",
      "north": "c2c7b257f29b46b905d12af5d5e37af52677f687ce7d0cad2c3f39a3fb3ce42e",
      "south": "c96fa5d97a4522d44da460f3537de64ef40e928cd37d56c13b1733559cf8eb90"
-    },
-    "B": {
-     "east": "5f8a4e6ab0e79fd363e28609f2937796c22938711566b0deb24c59e87da8c6b3",
-     "north": "5f22eea3820b94b92908481ddc82e220f9b9635e7e73f7156b81247c5128c8d3"
     },
     "C": {
      "east": "4857e0383aa7071290170baace7c12e8d7d615d60c42c0ec1b735dc27bbe1b25",
@@ -816,14 +772,12 @@
    },
    "graphic_of": {
     "A": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-    "B": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "C": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "D": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
     "A": "IN GAME \u2014 GreaterKraytDragonArtOverride",
-    "B": "render desertportb_greaterkraytdragon",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
     "D": "donor original \u2014 mlie.starwarsanimalcollection",
     "E": "render stillsand_regen_RSW_GreaterKraytDragon_v2"
@@ -891,11 +845,6 @@
      "north": "dc9f06ae65c91341a93aa25942dc084a168baafca2585c5e701e0c569aa88975",
      "south": "8050c37ed2005a4f4c2d80cf0294ad871c1becde3bac38b9e7ee70b4d16bd34d"
     },
-    "D": {
-     "east": "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
-     "north": "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988",
-     "south": "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4"
-    },
     "E": {
      "east": "f5575bcffa2686fd5fa0cf195778c107a6fb0e19147d48aadd5a617c9e4257a7"
     }
@@ -904,14 +853,12 @@
     "A": "swanimals/KraytDragon/KraytDragon_f",
     "B": "swanimals/KraytDragon/KraytDragon_j",
     "C": "swanimals/KraytDragon/KraytDragon_m",
-    "D": "_byname",
     "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render desertportb_kraytdragon",
     "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
@@ -940,17 +887,22 @@
      "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
      "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
      "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
+    },
+    "I": {
+     "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kreetle/Kreetle",
     "D": "swanimals/Kreetle/Kreetle",
-    "F": "swanimals/Kreetle/Kreetle_j"
+    "F": "swanimals/Kreetle/Kreetle_j",
+    "I": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "A": "IN GAME \u2014 KreetleArtOverride",
     "D": "history KreetleArtOverride 2026-09-11",
-    "F": "IN GAME \u2014 SWBestiary"
+    "F": "IN GAME \u2014 SWBestiary",
+    "I": "render leaningscrub_kreetle_v1"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -961,7 +913,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "subject_key": "kreetle"
   },
@@ -1111,11 +1064,6 @@
      "north": "b1321e00704a3f10ba14f338544ca16eb86ea7994c46f061dbc683bdbc8f9cde",
      "south": "72a3eac00775c60b388c250caa8b1d82c754a617b3d739bd13aa714f9e192f1e"
     },
-    "B": {
-     "east": "edb081b14409007555df46d2da17e5fb4d07cdb9bd09efb378afc41e7d20a359",
-     "north": "562ceee378083a7330bb872c479cb28b24c34b56edbc446c53664c886eb72523",
-     "south": "5b95d1ceda5b9fce3f55e542f2d3e1409ca4ae85ffa48c0e43bf4c7639ae0f70"
-    },
     "C": {
      "east": "8cab92f7e37f047cef315f93133ff3acb6cd96c8dd70a2595468a859114557dc",
      "north": "400bf1437ae63181c3affd80fedcb780062e62e845bb3e2dd8f0d7c4bee4365f",
@@ -1124,12 +1072,10 @@
    },
    "graphic_of": {
     "A": "swanimals/WarWyrm/WarWyrm",
-    "B": "swanimals/WarWyrm/WarWyrm",
     "C": "swanimals/WarWyrm/WarWyrm"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_warwyrm",
     "C": "render stillsand_regen_RSW_WarWyrm_v2"
    },
    "res": "swanimals/WarWyrm/WarWyrm",
@@ -1142,5 +1088,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "54d3779c77a39b75"
+ "snapshotId": "25d0a9b299acdda1"
 }

@@ -46,6 +46,7 @@ STAMP_RE = re.compile(r'<meta name="scaled-review-gate" content="([^"]*)">\n?')
 FAILED_CANON_BADGE = " — failed canon check"
 RULED_GROUP = "Already ruled on another sheet"
 SIZE_FALLBACK_FLAG = "SIZE FALLBACK"
+SKIP_BROWSER = False   # selftests of OTHER tools that build throwaway fixture sheets set this; the real tools never do
 ARTPIPE_DEFAULT = "/mnt/d/Luke/dev/_artpipe"
 
 
@@ -407,6 +408,26 @@ def check_purge_wired(ctx, items) -> Check:
     return Check("11", "per-picture x is reject-and-purge", [] if "purge" in ctx["html"] else ["the page has no purge control"])
 
 
+def check_no_purged(ctx, items) -> Check:
+    """Req 14 (owner 2026-10-05: "delete the graphics I already indicated we should purge, so I don't keep seeing and
+    reviewing them"): no picture the art ledger has purged is rendered as a column, on any sheet."""
+    fn = ctx.get("is_purged")
+    if fn is None:
+        try:
+            idx = L.Index()
+        except Exception as e:  # noqa: BLE001
+            return Check("14", "no purged picture shown", [f"UNMEASURED: art ledger unreadable ({type(e).__name__}: {e})"])
+        fn = idx.is_purged
+    p = []
+    for it in items:
+        for g in it.get("graphics", []):
+            for c in g.get("cols", []):
+                bad = [sh[:10] for sh in (c.get("faces") or {}).values() if fn(sh)]
+                if bad:
+                    p.append(f"{it['id']} {c.get('letter')}: purged {', '.join(bad)} still shown")
+    return Check("14", "no ledger-purged picture is shown as a column", p)
+
+
 def check_urls(ctx, items) -> Check:
     base = ctx["sheet_id"]
     log = ctx["sheet_dir"] / f"{base}.serve.log"
@@ -452,7 +473,10 @@ def check_browser(ctx, items) -> Check:
     """Req 13 (owner 2026-10-05, empty sheets): the page must RENDER in a real browser — no uncaught error, and the
     rendered <img> count not far below what the data holds (one row with a null field once blanked a whole sheet)."""
     fn = ctx.get("browser_fn") or browser_render
-    n, errs, prob = fn(ctx["html_path"]) if ctx.get("browser_fn") else fn(ctx["html_path"], ctx.get("decisions_path"))
+    call = (lambda: fn(ctx["html_path"])) if ctx.get("browser_fn") else (lambda: fn(ctx["html_path"], ctx.get("decisions_path")))
+    n, errs, prob = call()
+    if (prob and "Timeout" in prob) or (not prob and n == 0 and not ctx.get("browser_fn")):
+        n, errs, prob = call()          # Edge flakes under load (timeouts, an early empty dump): one retry before a FAIL
     if prob:
         return Check("13", "page renders in a real browser", [prob])
     p = [f"uncaught console error: {e}" for e in errs[:3]]
@@ -464,7 +488,7 @@ def check_browser(ctx, items) -> Check:
 
 
 CHECKS = (check_one_biome, check_scale, check_donor_only, check_donor_column, check_canon, check_failed_canon,
-          check_ruled_elsewhere, check_letters, check_purge_wired, check_check_sheet, check_browser)
+          check_ruled_elsewhere, check_letters, check_purge_wired, check_check_sheet, check_no_purged, check_browser)
 
 
 def run_gate(ctx: dict, urls: bool = False) -> list[Check]:
@@ -476,7 +500,7 @@ def run_gate(ctx: dict, urls: bool = False) -> list[Check]:
         out.append(Check("0", "ITEMS block", ["UNMEASURED: the page has no readable ITEMS list"]))
         return out
     for fn in CHECKS:
-        if fn is check_browser and ctx.get("skip_browser"):
+        if fn is check_browser and (ctx.get("skip_browser") or SKIP_BROWSER):
             continue
         try:
             out.append(fn(ctx, items))

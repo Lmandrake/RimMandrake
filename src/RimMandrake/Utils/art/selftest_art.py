@@ -142,6 +142,7 @@ def main():
 
     # the compare-sheet generator on a doubled texPath
     import art_sheet
+    art_sheet.SG.SKIP_BROWSER = True
     if (art_sheet.SKILL / "sheet_template.html").exists():
         mod2 = tmp / "src" / "FixtureOverride" / "Textures" / "Things" / "Beast"
         mod2.mkdir(parents=True)
@@ -182,7 +183,7 @@ def main():
         cen.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
                                    "biomes": {"RM_Test": {"label": "Test", "rows": [row_a, row_b]}}}))
         bout = tmp / "sheet" / "test_sheet.html"
-        rb = art_sheet.generate_biome("RM_Test", cen, bout, "T")
+        rb = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
         bh = bout.read_text()
         bitems = json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', bh, re.S).group(1))
         byid = {i["id"]: i for i in bitems}
@@ -201,11 +202,11 @@ def main():
         chk = subprocess.run([sys.executable, str(art_sheet.SKILL / "check_sheet.py"), str(bout), "--decisions",
                               str(tmp / "sheet" / "test_sheet.decisions.json")], capture_output=True, text=True)
         check(chk.returncode == 0, "biome sheet passes check_sheet.py")
-        rb2 = art_sheet.generate_biome("RM_Test", cen, bout, "T")
+        rb2 = art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")
         check(rb2["wrote_decisions"] and rb2["snapshotId"] == rb["snapshotId"], "biome rebuild: untouched prefill regenerated, letters stable")
         bdec["savedBy"], bdec["writeCount"] = "serve_sheet.py", 1
         (tmp / "sheet" / "test_sheet.decisions.json").write_text(json.dumps(bdec))
-        check(not art_sheet.generate_biome("RM_Test", cen, bout, "T")["wrote_decisions"],
+        check(not art_sheet.generate_biome("RM_Test", cen, bout, "T", allow_failing="selftest fixture")["wrote_decisions"],
               "biome rebuild never overwrites a decisions file the sidecar wrote")
         # ART_SHEET_DONOR_JOIN_GAPS_1: a donor-prefixed texPath (RG_Brambles) must still join its finished render
         # `brambles_v1`, and a render that failed the canon gate shows as a candidate badged as such
@@ -233,7 +234,7 @@ def main():
         cen2.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
                                     "biomes": {"RM_Test": {"label": "Test", "rows": [row_c, row_d]}}}))
         bout2 = tmp / "sheet" / "test2_sheet.html"
-        art_sheet.generate_biome("RM_Test", cen2, bout2, "T")
+        art_sheet.generate_biome("RM_Test", cen2, bout2, "T", allow_failing="selftest fixture")
         items2 = {i["id"]: i for i in json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>',
                                                           bout2.read_text(), re.S).group(1))}
         cols_c = [c for g in items2["RG_Plant_Brambles"]["graphics"] for c in g["cols"]]

@@ -1,6 +1,6 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-05T19:21:00-0700",
+ "built": "2026-10-05T20:49:06-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -143,7 +143,7 @@
     "A": "Things/Pawn/Animal/Glurro/RM_Glurro"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime"
+    "A": "render RM_Glurro"
    },
    "res": "Things/Pawn/Animal/Glurro/RM_Glurro",
    "reserved": [
@@ -168,7 +168,7 @@
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render gapall_RM_Plant_Bellows_v1"
    },
-   "res": "Things/Plant/Bush",
+   "res": null,
    "reserved": [
     "A",
     "B"
@@ -192,7 +192,7 @@
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Readerbloom"
    },
-   "res": "Things/Plant/Dandelion",
+   "res": null,
    "reserved": [
     "A",
     "B"
@@ -201,27 +201,17 @@
   },
   "RM_Plant_SlimeGrass": {
    "columns": {
-    "A": {
-     "single": "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a"
-    },
-    "B": {
-     "single": "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f"
-    },
     "C": {
      "single": "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Grass",
-    "B": "Things/Plant/Grass",
     "C": "_byname"
    },
    "labels": {
-    "A": "render gapall_Plant_Grass_v1",
-    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render RM_SlimeGrass"
    },
-   "res": "Things/Plant/Grass",
+   "res": null,
    "reserved": [
     "A",
     "B",
@@ -231,22 +221,17 @@
   },
   "RM_Plant_Thumbstalk": {
    "columns": {
-    "A": {
-     "single": "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
-    },
     "B": {
      "single": "b84959459d9c7b751194c408e0cf90db375b4a3ba4239cad646ec7c68778547e"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Bush",
     "B": "_byname"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Thumbstalk"
    },
-   "res": "Things/Plant/Bush",
+   "res": null,
    "reserved": [
     "A",
     "B"
@@ -275,5 +260,5 @@
   }
  },
  "sheetId": "gelatinousslime_sheet_2026-10-05",
- "snapshotId": "a9b381d8897cf9b5"
+ "snapshotId": "07c80d591b695bfb"
 }

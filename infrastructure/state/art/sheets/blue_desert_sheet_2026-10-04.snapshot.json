@@ -1,54 +1,30 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T19:18:25-0700",
+ "built": "2026-10-05T20:39:04-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
-    "A": {
-     "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
-     "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
-    },
     "B": {
      "east": "ead6ba6a8e111e442ae9c076c42b853adff72be02b8e1686c13eb07265aa83a2",
      "north": "851362b552407cac05db5cedc0a8f936d2148db0d637ad7621af74040f4964f3",
      "south": "bace543529b12aa37082cbef81e5061c70f4df069300323c69bee2ed9c8c7d7e"
     },
-    "C": {
-     "north": "5866c53a7295cca4ec96343575514e321a5a17d38011f72a251158d893dde138"
-    },
-    "D": {
-     "north": "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa",
-     "south": "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a"
-    },
     "E": {
      "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
      "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
      "south": "4f847ed83f33280906d5a4eec36d8682c6f56a5e88a73b553e384c7e5e3954ef"
-    },
-    "F": {
-     "east": "09ea0a49cc844b15badce028738b38c2c4120aeecd8ffc26102ef4bf34e10bd0",
-     "north": "3d47e4cd574d6ccc4155dff45f708ed9f356201d4f1c245149d0387b719f4edb",
-     "south": "19c0fa186245ff23eae8bbc484c9d4426bd0a19445567a25c967e3b67e5b5a55"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
     "B": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "C": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "D": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "E": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "F": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
+    "E": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
    },
    "labels": {
-    "A": "render bluedesert_Thunderbeast_v2",
     "B": "IN GAME \u2014 Alpha Animals",
-    "C": "render bluedesert_Thunderbeast_v4",
-    "D": "render bluedesert_Thunderbeast_v3",
-    "E": "render bluedesert_Thunderbeast_v2 \u2014 failed canon check",
-    "F": "render bluedesert_AA_Thunderbeast_v1"
+    "E": "render bluedesert_Thunderbeast_v2 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
    "reserved": [
@@ -282,11 +258,6 @@
   },
   "RM_Ossivel": {
    "columns": {
-    "A": {
-     "east": "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
-     "north": "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8",
-     "south": "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece"
-    },
     "B": {
      "east": "e315b2c1304721ac1d251d3815dfe99cef47fe38f3712b89ff64538b2813cfc5",
      "north": "32d5b2c6bc09f7f9d1ef2eedf05a76b041270e91784232404ea1db91a85340ac",
@@ -299,12 +270,10 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
     "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
     "D": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
-    "A": "render RM_Ossivel",
     "B": "IN GAME \u2014 BlueDesert",
     "D": "render bluedesert_Ossivel_v2"
    },
@@ -414,7 +383,7 @@
     "D": "Things/Plant/RM_Vashpuk/RM_Vashpuk"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert",
+    "A": "render RM_Vashpuk",
     "B": "render RM_Vashpuk_var1",
     "C": "render RM_Vashpuk_var2",
     "D": "render RM_Vashpuk_var3"
@@ -513,7 +482,7 @@
     "D": "Things/Plant/RM_Virr/RM_Virr"
    },
    "labels": {
-    "A": "IN GAME \u2014 BlueDesert",
+    "A": "render RM_Virr",
     "B": "render RM_Virr_var1",
     "C": "render RM_Virr_var3",
     "D": "render RM_Virr_var2"
@@ -572,11 +541,6 @@
   },
   "Vapaad": {
    "columns": {
-    "A": {
-     "east": "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
-     "north": "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
-     "south": "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803"
-    },
     "B": {
      "east": "8e7994cab2c04cd83d96ada09bfbe0817bc36688f1c0a68e2ad4feadc3567351",
      "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
@@ -587,9 +551,6 @@
      "north": "b8c53700fa5cce53c94548c7bab72bc799334a6d783f9a078b490335541ae7a6",
      "south": "39b0c64d52dac7d974485db77bab17eb114d45a0917c863d7db90ddfdee597a5"
     },
-    "D": {
-     "east": "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
-    },
     "G": {
      "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
      "north": "4328879aaf0f92e7279612a7c88aa56c33c2f37f4acb545aaff5a0c8190ea712",
@@ -597,17 +558,13 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Vapaad/Vapaad",
     "B": "swanimals/Vapaad/Vapaad",
     "C": "swanimals/Vapaad/Vapaad",
-    "D": "swanimals/Vapaad/Vapaad",
     "G": "swanimals/Vapaad/Vapaad"
    },
    "labels": {
-    "A": "render bluedesert_Vapaad_v1",
     "B": "render bluedesert_Vapaad_v2",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "D": "render vapaad_canon_v1",
     "G": "render vapaad_canon_v2"
    },
    "res": "swanimals/Vapaad/Vapaad",
@@ -624,5 +581,5 @@
   }
  },
  "sheetId": "blue_desert_sheet_2026-10-04",
- "snapshotId": "045e19884be72dee"
+ "snapshotId": "b570e81a50e03a02"
 }
