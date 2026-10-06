@@ -50,3 +50,4 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
   ⚠️ selftest_flowworks_northstar.py's settings-parity check fails until northstar/site_spec.py SETTINGS lists the
   four new settings (superdeepRoomsEnabled, captureDownEnabled, wardenFromLipEnabled, bottleRevertEnabled) — that
   file belongs to the northstar/densify owner this pass.
+- Bottle fill-job live failure: root cause in source (despawn fail-condition on the carried container), fixed in all four container drivers.
