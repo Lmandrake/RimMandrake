@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-06T06:05:11-0700",
+ "built": "2026-10-06T08:12:37-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -423,23 +423,29 @@
     },
     "C": {
      "single": "6695abbc217bc1fb4709bace0f038c5c3d85c817c9422bd76bef2780ea639431"
+    },
+    "D": {
+     "single": "4b20e44bc33c530edfff02fdfafae13a98ecb7706c60dcbc96490c40e3503d72"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
     "B": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
-    "C": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
+    "C": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
+    "D": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
    },
    "labels": {
     "A": "IN GAME \u2014 Contagion",
     "B": "render contagion_HalfmadeTree_var1",
-    "C": "render contagion_HalfmadeTree_var2"
+    "C": "render contagion_HalfmadeTree_var2",
+    "D": "render contagion_HalfmadeTree_var3"
    },
    "res": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "halfmadetree"
   },
@@ -483,17 +489,35 @@
    "columns": {
     "A": {
      "single": "ff50c7035183d622416b7acc23d935dfd24defe8a9b85773b1a72ffe5f58059b"
+    },
+    "B": {
+     "single": "714223c2a0b258d40e02b067fff64c625a292b7a65d8c5fce8a58deebec10a77"
+    },
+    "C": {
+     "single": "2a7f2d7e0975b07e0b750fda18efcd6e7efb20dfb8938637c9f28108e4b31555"
+    },
+    "D": {
+     "single": "7018dd868ef0d5708bf20e972f15785464e4d753683473f67da2d734cef31471"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Lashgrass/RM_Lashgrass"
+    "A": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
+    "B": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
+    "C": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
+    "D": "Things/Plant/RM_Lashgrass/RM_Lashgrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Lashgrass_var1",
+    "C": "render contagion_Lashgrass_var2",
+    "D": "render contagion_Lashgrass_var3"
    },
    "res": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "lashgrass"
   },
@@ -501,17 +525,35 @@
    "columns": {
     "A": {
      "single": "b0dda9e113d0566f9581c403e3519e9ca1ccd7b9f2dd761886ae3a0a15ba19e6"
+    },
+    "B": {
+     "single": "8ad6cb1855294c72f25a9e1116011a1755f864b4a24331cbae65a0a4df05b523"
+    },
+    "C": {
+     "single": "01ad00edbe3e818f7a8be7f37e320788af303ac59cb270af1b2cc77eb534e02a"
+    },
+    "D": {
+     "single": "d4b35f8751b2907d633fc5880b21387eda38b0b50cb7fef9d59e38dbfdc680ae"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Meatvine/RM_Meatvine"
+    "A": "Things/Plant/RM_Meatvine/RM_Meatvine",
+    "B": "Things/Plant/RM_Meatvine/RM_Meatvine",
+    "C": "Things/Plant/RM_Meatvine/RM_Meatvine",
+    "D": "Things/Plant/RM_Meatvine/RM_Meatvine"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Meatvine_var1",
+    "C": "render contagion_Meatvine_var2",
+    "D": "render contagion_Meatvine_var3"
    },
    "res": "Things/Plant/RM_Meatvine/RM_Meatvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "meatvine"
   },
@@ -579,17 +621,35 @@
    "columns": {
     "A": {
      "single": "9c7913080f7037acbbcccb8c54f765fb4a9df3b7a6bd4ec9a019b152a141edf3"
+    },
+    "B": {
+     "single": "fd65c3c4e3b1b6e66b67d6bc404fc9115c1a2ee803d1ff3685ec1f07d369b7fb"
+    },
+    "C": {
+     "single": "04eba407fd0eff545c4a19ff9463c79ac19151e5266208f9fa502e4a2f172fe6"
+    },
+    "D": {
+     "single": "8837bacd3e59f0e2b059ce03d1de68b02d0606c1678159a409ff4f29b191a992"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope"
+    "A": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
+    "B": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
+    "C": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
+    "D": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Rattlegrope_var1",
+    "C": "render contagion_Rattlegrope_var2",
+    "D": "render contagion_Rattlegrope_var3"
    },
    "res": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "rattlegrope"
   },
@@ -621,17 +681,35 @@
    "columns": {
     "A": {
      "single": "dd92c1c7fdb72a324094d83c64f60094a3fbe6586ee9854c4961f3550ee63416"
+    },
+    "B": {
+     "single": "574dcb393591bd7175aed8af1dd12d14ad9cb51a0f22a55aa8aa6db248fd32d2"
+    },
+    "C": {
+     "single": "6508cc609f89abd9448b66fc032c98f3e9f3be42e428b8c3562df09339de7c9b"
+    },
+    "D": {
+     "single": "3eb1b13d84af52f30e74bed00efdac71e38c4e5cf863102e7d85ca9308d983cb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Sapblister/RM_Sapblister"
+    "A": "Things/Plant/RM_Sapblister/RM_Sapblister",
+    "B": "Things/Plant/RM_Sapblister/RM_Sapblister",
+    "C": "Things/Plant/RM_Sapblister/RM_Sapblister",
+    "D": "Things/Plant/RM_Sapblister/RM_Sapblister"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Sapblister_var1",
+    "C": "render contagion_Sapblister_var2",
+    "D": "render contagion_Sapblister_var3"
    },
    "res": "Things/Plant/RM_Sapblister/RM_Sapblister",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "sapblister"
   },
@@ -785,17 +863,35 @@
    "columns": {
     "A": {
      "single": "1776e4b50139d2e1b6e23080214bbb87f620ba500fb0ad009697ee8cc7c021aa"
+    },
+    "B": {
+     "single": "14619255135f0df70dc4f21f7b2c3092b83189109094ba19c39302db15bcdf8b"
+    },
+    "C": {
+     "single": "48aabedc4916cabc5e3c88005ffe9e64e77dbcaa32917a693ce23dba943df754"
+    },
+    "D": {
+     "single": "c0ef884ee0a02ff86719dfb063a6f1670eaf9034a889b21be87af195d294e40e"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Toothmoss/RM_Toothmoss"
+    "A": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
+    "B": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
+    "C": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
+    "D": "Things/Plant/RM_Toothmoss/RM_Toothmoss"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Toothmoss_var1",
+    "C": "render contagion_Toothmoss_var2",
+    "D": "render contagion_Toothmoss_var3"
    },
    "res": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "toothmoss"
   },
@@ -803,17 +899,35 @@
    "columns": {
     "A": {
      "single": "33c57fb8cd84f56f90bd4ee9510ed0114b47caacba8a0209335a63ccd323ac17"
+    },
+    "B": {
+     "single": "941a1b7ed6a1dbca4d2bcc891c1f0409ceed49e6465679c9e95208293a39397d"
+    },
+    "C": {
+     "single": "689828f1ff353a2580d1ee449969238fe448d345c264c8d0d75813256a578322"
+    },
+    "D": {
+     "single": "423ee7e431c17fa042e7e20e6ebc185e1f6dabc85f88439bb835013e237b5a4b"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Wombpod/RM_Wombpod"
+    "A": "Things/Plant/RM_Wombpod/RM_Wombpod",
+    "B": "Things/Plant/RM_Wombpod/RM_Wombpod",
+    "C": "Things/Plant/RM_Wombpod/RM_Wombpod",
+    "D": "Things/Plant/RM_Wombpod/RM_Wombpod"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Wombpod_var1",
+    "C": "render contagion_Wombpod_var2",
+    "D": "render contagion_Wombpod_var3"
    },
    "res": "Things/Plant/RM_Wombpod/RM_Wombpod",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "wombpod"
   }

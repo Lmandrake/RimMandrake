@@ -1,25 +1,43 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-06T05:57:15-0700",
+ "built": "2026-10-06T08:12:25-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "live ModsConfig.xml: 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Brindeth": {
    "columns": {
     "A": {
      "single": "b8b30e331c24e7a90e230ee0e5eaf8a2cce8099cdfddaea037a709221f39d6dd"
+    },
+    "B": {
+     "single": "bc5301cb855d8f7f056836a14f19222fe883cdd9df53f616c3362c23288c22ef"
+    },
+    "C": {
+     "single": "16e9d586601eed8a647986067f4e4ce2384b363d36f05407e495b82b83eec247"
+    },
+    "D": {
+     "single": "00ef3a915e8a1d1a1adf164fee58287653c8db8ff119d99375fcac09aa745c61"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Brindeth/RM_Brindeth_a"
+    "A": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Brindeth_var1",
+    "C": "render thesump_Brindeth_var2",
+    "D": "render thesump_Brindeth_var3"
    },
    "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "brindeth"
   },
@@ -47,17 +65,35 @@
    "columns": {
     "A": {
      "single": "8a3a5377f0e6bf7823a5d137c2cb3c47b9134644c24e15bacb2f92f52ebfa4c2"
+    },
+    "B": {
+     "single": "96fb00a17ec7dcc1de38002c65b1a8509596274d8ecdf3a3ff53a06d85b6de55"
+    },
+    "C": {
+     "single": "657ce8f1528d3271977861d484107c9631047f9b42660b07f09e668aed0932f7"
+    },
+    "D": {
+     "single": "3794c7a5643911ad17b2296800fd9c5565626dae53ddd610972d28762f411ad3"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Dorvel/RM_Dorvel_a"
+    "A": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Dorvel_var1",
+    "C": "render thesump_Dorvel_var2",
+    "D": "render thesump_Dorvel_var3"
    },
    "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "dorvel"
   },
@@ -163,17 +199,35 @@
    "columns": {
     "A": {
      "single": "96fc2b8881c42a2253a58243e3202d58235a88472f4a888d43f3e479f0cf4567"
+    },
+    "B": {
+     "single": "bf78a9f28fb88d511c5d5f8d41d7399c22ca1f8d95a4e001422dfaa81a4b4d8d"
+    },
+    "C": {
+     "single": "dca3945380f147bac2602755f50812c2b52f9077d0da39dd9159399294f413d1"
+    },
+    "D": {
+     "single": "719c2a071879af479543afc4ea2c633bedf5776be717cee1f7aafc53c55aa637"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Korveth/RM_Korveth_a"
+    "A": "Things/Plant/RM_Korveth/RM_Korveth_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Korveth_var1",
+    "C": "render thesump_Korveth_var2",
+    "D": "render thesump_Korveth_var3"
    },
    "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "korveth"
   },
@@ -181,17 +235,29 @@
    "columns": {
     "A": {
      "single": "cf7f863be32a238c5d7c623bfd068b7c012276c954025bcc17c4f5ecf3b1af01"
+    },
+    "B": {
+     "single": "0b12cef9fdec259a68dec8257563af1dc91fc52f6d5d047e46eec97d12664dba"
+    },
+    "C": {
+     "single": "abd2406349eef79c35a782e2dce9bb03faed581920b5cf21fa9ef28250ac4f5a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+    "A": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Mirrelin_var2",
+    "C": "render thesump_Mirrelin_var3"
    },
    "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "mirrelin"
   },
@@ -199,17 +265,35 @@
    "columns": {
     "A": {
      "single": "74e65868b227230e88ee1f63a5975afe5a8d9305eaa80e0f92ed704218f7e52a"
+    },
+    "B": {
+     "single": "2424336f51239167dd097e738aa674fa55d638c35a5f350af9e64bfcd33f15b1"
+    },
+    "C": {
+     "single": "91a808842627871d4aeb1ad08aebcbd548c39f9dad555befe27ecd9d5bae729a"
+    },
+    "D": {
+     "single": "34c9e8237e63444cceef601d0e6ff7e573d02123350ddd0fff06c16e7bcb51d2"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Pallick/RM_Pallick_a"
+    "A": "Things/Plant/RM_Pallick/RM_Pallick_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Pallick_var1",
+    "C": "render thesump_Pallick_var2",
+    "D": "render thesump_Pallick_var3"
    },
    "res": "Things/Plant/RM_Pallick/RM_Pallick_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "pallick"
   },
@@ -257,17 +341,35 @@
    "columns": {
     "A": {
      "single": "a45a5c53047768a6eabb657fbd92e43349e67c35ad2d8f092a8bdf72c1f4cb55"
+    },
+    "B": {
+     "single": "44e077a491c0d6c6a7ab0abb655ead9c09a40c78b3dcbe896049f56c8e859989"
+    },
+    "C": {
+     "single": "64c97066d9e1dc0bab751e4f57e7b33988925bfe916cf9f6216184e7670a9e07"
+    },
+    "D": {
+     "single": "94f8e511d02b1921d60e442bb7b554205288d6352e14ea00523635a77bc0fa5c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Skelver/RM_Skelver_a"
+    "A": "Things/Plant/RM_Skelver/RM_Skelver_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Skelver_var1",
+    "C": "render thesump_Skelver_var2",
+    "D": "render thesump_Skelver_var3"
    },
    "res": "Things/Plant/RM_Skelver/RM_Skelver_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "skelver"
   },
@@ -278,20 +380,38 @@
     },
     "B": {
      "single": "bc920d365c33b57705b18a066c84603a3da3000c9b0aea1a50621c197e51cb23"
+    },
+    "C": {
+     "single": "66ade52c39b84b34458f46e45407cdc9b2763bd4738f05751e5314baa10c65ac"
+    },
+    "D": {
+     "single": "c5880794764afc8ec36de7df1505f1ba02cb153e665ff534a88c367cc476d56c"
+    },
+    "E": {
+     "single": "9d3f549c60590cdf99b0cb5fda0e5ba9160299ffa06ebbfbfa60045e7807666e"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "B": "render thesump_Soffeth_v2"
+    "B": "render thesump_Soffeth_v2",
+    "C": "render thesump_Soffeth_var1",
+    "D": "render thesump_Soffeth_var2",
+    "E": "render thesump_Soffeth_var3"
    },
    "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "soffeth"
   },
@@ -330,22 +450,25 @@
      "north": "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
      "south": "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e"
     },
-    "B": {
-     "east": "688001e68c3ac6f6795eea5c7628e2c6e82f36c82a74535435b1c3c9293452c9"
+    "C": {
+     "east": "688001e68c3ac6f6795eea5c7628e2c6e82f36c82a74535435b1c3c9293452c9",
+     "north": "813369780f50ef21646581703d8ac56e2cc4067a1f59b13dccf8e27c6ff9f2bd",
+     "south": "839e79145c50c2e6c179db394060d5d01b7d41ab2001ceb0db4522b5f37e96a2"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
-    "B": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
+    "C": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "B": "render thesump_Thrummel_v2"
+    "C": "render thesump_Thrummel_v2"
    },
    "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "thrummel"
   },
@@ -356,22 +479,25 @@
      "north": "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
      "south": "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562"
     },
-    "B": {
-     "east": "b0902c3ccff93e8b3e9b45b3bffc5de70d2e2425194f5518db094a6511ac1295"
+    "C": {
+     "east": "b0902c3ccff93e8b3e9b45b3bffc5de70d2e2425194f5518db094a6511ac1295",
+     "north": "9d02c0460f9972ac08fb382c338c374d6500fd5e090817c2b20b6ebcaaed80ef",
+     "south": "719a5a401a92ae599271ddacf887b2a201824b9a3948e9279dfc83f7e2fbe86c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
-    "B": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
+    "C": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "B": "render thesump_ThrummelBroodmother_v2"
+    "C": "render thesump_ThrummelBroodmother_v2"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "thrummelbroodmother"
   },
@@ -382,22 +508,25 @@
      "north": "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
      "south": "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc"
     },
-    "B": {
-     "east": "173f909396efd7df29ea87c49b3cd5d7edb071c60af50ba771f3e202b5e69030"
+    "C": {
+     "east": "173f909396efd7df29ea87c49b3cd5d7edb071c60af50ba771f3e202b5e69030",
+     "north": "13b1a7e47cd4833db71839a47e806668b9597d8634791da7828c4c4bec9a9364",
+     "south": "54d94ca80a5b30c187803212a431767ba382a8c706aa81e3838336bf548601df"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
-    "B": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
+    "C": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "B": "render thesump_ThrummelWarden_v2"
+    "C": "render thesump_ThrummelWarden_v2"
    },
    "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "thrummelwarden"
   },
@@ -405,17 +534,35 @@
    "columns": {
     "A": {
      "single": "774ce307491f08cbf4cadf2a33bd28bf002a89ad28e237dd20745f57eb40d8a3"
+    },
+    "B": {
+     "single": "6b4a27ef92ff780bef553c967f9378210ef5426e4aa5d6db8c3c4205793b579a"
+    },
+    "C": {
+     "single": "a45189649e37e1d00dc3225044de758dbe69f0dda8896e713ffbf169e3ef4421"
+    },
+    "D": {
+     "single": "138fa3e31dc179d1a128578e35b20e7200c15d334569dedf1152c1e366cdcda8"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Tolleth/RM_Tolleth_a"
+    "A": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Tolleth_var1",
+    "C": "render thesump_Tolleth_var2",
+    "D": "render thesump_Tolleth_var3"
    },
    "res": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "tolleth"
   },
@@ -423,17 +570,23 @@
    "columns": {
     "A": {
      "single": "fa96726ed239fa9ca9f9ab671aef6596173e6ea878ab74c960fef86f992b30cb"
+    },
+    "B": {
+     "single": "07b9dfc9af0d6e90b492e043b3b3d99068e426219daf6c5033a39b7f3f0af4c7"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Velloch/RM_Velloch_a"
+    "A": "Things/Plant/RM_Velloch/RM_Velloch_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheSump"
+    "A": "IN GAME \u2014 TheSump",
+    "B": "render thesump_Velloch_var1"
    },
    "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "velloch"
   },
@@ -501,5 +654,5 @@
   }
  },
  "sheetId": "thesump_sheet_2026-10-05",
- "snapshotId": "82ce300e6ddfbbbe"
+ "snapshotId": "c8167694d308afa5"
 }
