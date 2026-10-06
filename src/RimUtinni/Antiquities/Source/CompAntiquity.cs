@@ -10,6 +10,17 @@ namespace RimMandrake.Utinni.Antiquities
         }
     }
 
+    // WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1: a sibling comp on an antiquity that
+    // wants to know when the Reading Station catalogues it (the pilgrim's
+    // journal moves the Scarlands lore ladder this way -- one item route for
+    // both lore systems, never a second read job). Called once, after the
+    // catalogued flag is set. An antiquity carrying a listener stays readable
+    // after VOICE is finished: it still has something to teach.
+    public interface IAntiquityCatalogueListener
+    {
+        void Notify_Catalogued(Pawn reader);
+    }
+
     // Non-destructive by design (design doc section 4.2: "spent for
     // knowledge but intact for silver") -- reading only ever flips this
     // flag. No per-instance narrative text field yet: the four-axis

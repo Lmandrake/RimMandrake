@@ -7,17 +7,6 @@ namespace RimMandrake.Utinni.Antiquities
 {
     public class WorkGiver_ExamineAntiquity : WorkGiver_Scanner
     {
-        // Every RUT_Antiquity_* item family, by defName -- RUT_Antiquity_Testament
-        // is slice 6's item and does not exist in slice 1's defs, but the check
-        // is future-proofed against it rather than hardcoded to today's three.
-        private static readonly HashSet<string> AntiquityDefNames = new HashSet<string>
-        {
-            "RUT_Antiquity_Urn",
-            "RUT_Antiquity_Stele",
-            "RUT_Antiquity_Gravegood",
-            "RUT_Antiquity_Testament",
-        };
-
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.HaulableEver);
 
         public override PathEndMode PathEndMode => PathEndMode.ClosestTouch;
@@ -29,17 +18,16 @@ namespace RimMandrake.Utinni.Antiquities
             {
                 return true;
             }
-            // Nothing left to advance once VOICE is finished -- stop offering
-            // the job rather than let pawns carry urns to a station for free.
-            return AntiquityUtility.CurrentStage() == null;
+            // Once VOICE is finished an urn has nothing left to teach; JobOnThing
+            // refuses those per thing, so a piece with a catalogue listener (the
+            // pilgrim's journal, WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1) can still be read.
+            return false;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!AntiquityDefNames.Contains(t.def.defName))
-            {
-                return null;
-            }
+            // An antiquity is any thing carrying CompAntiquity -- the comp is the
+            // family, so a new item (journal, testament) needs no list edit here.
             CompAntiquity comp = t.TryGetComp<CompAntiquity>();
             if (comp == null || comp.catalogued)
             {
@@ -49,7 +37,7 @@ namespace RimMandrake.Utinni.Antiquities
             {
                 return null;
             }
-            if (AntiquityUtility.CurrentStage() == null)
+            if (AntiquityUtility.CurrentStage() == null && !AntiquityUtility.HasCatalogueListener(t))
             {
                 return null;
             }

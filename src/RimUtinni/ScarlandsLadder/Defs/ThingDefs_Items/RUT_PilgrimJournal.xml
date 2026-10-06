@@ -2,7 +2,11 @@
 <!-- WARSCAR_PILGRIM_CAMPS_1: the pilgrim's journal. Reading it once moves the Scarlands lore ladder one
      rung (RUT_PilgrimJournals.Read); the letter quotes pages[n - 1] for the rung it reached. Pages are
      warscar_bedazzle_cast_2026-09-30.md section 6B, verbatim (ruled final by card 2026-09-30).
-     Art: RUT_PilgrimJournal (artpipe). -->
+     Art: RUT_PilgrimJournal (artpipe).
+     WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1: it is also an Antiquities artifact (CompProperties_Antiquity), and
+     cataloguing it at the Reading Station is the only read: that one job credits the current RUT_Antiq_*
+     stage like any artifact AND moves the Scarlands ladder. The read takes the station's duration (a day,
+     half once LANGUAGE is done), not the old 600-tick use job. Needs mandrake.rut.antiquities. -->
 <Defs>
   <ThingDef>
     <defName>RUT_PilgrimJournal</defName>
@@ -35,14 +39,7 @@
     <comps>
       <li Class="CompProperties_Forbiddable" />
       <li Class="RimMandrake.Utinni.ScarlandsLadder.CompProperties_RUT_PilgrimJournal" />
-      <li Class="CompProperties_Usable">
-        <useJob>UseItem</useJob>
-        <useLabel>Read {0_label}</useLabel>
-        <useDuration>600</useDuration>
-      </li>
-      <li Class="CompProperties_UseEffect">
-        <compClass>RimMandrake.Utinni.ScarlandsLadder.CompUseEffect_RUT_ReadPilgrimJournal</compClass>
-      </li>
+      <li Class="RimMandrake.Utinni.Antiquities.CompProperties_Antiquity" />
     </comps>
     <modExtensions>
       <li Class="RimMandrake.Utinni.ScarlandsLadder.RUT_PilgrimJournalExtension">

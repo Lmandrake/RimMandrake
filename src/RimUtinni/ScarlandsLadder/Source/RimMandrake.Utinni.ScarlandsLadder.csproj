@@ -53,6 +53,10 @@
       <HintPath>..\..\..\RimMandrake\LoreStages\Assemblies\RimMandrakeLoreStages.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="RimMandrake.Utinni.Antiquities">
+      <HintPath>..\..\Antiquities\Assemblies\RimMandrake.Utinni.Antiquities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
       <Private>false</Private>

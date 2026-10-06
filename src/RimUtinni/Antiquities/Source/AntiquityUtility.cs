@@ -30,6 +30,14 @@ namespace RimMandrake.Utinni.Antiquities
             return Stages.FirstOrDefault(s => s != null && !s.IsFinished);
         }
 
+        // True when some comp on the thing listens for cataloguing
+        // (IAntiquityCatalogueListener) -- such a piece is still worth reading
+        // once every stage is finished.
+        public static bool HasCatalogueListener(Thing t)
+        {
+            return t is ThingWithComps twc && twc.AllComps.Any(c => c is IAntiquityCatalogueListener);
+        }
+
         // Design doc section 4.2's "yield curve": LANGUAGE completing is
         // the one hard threshold that halves read duration and unlocks the
         // key-text chance at all.
