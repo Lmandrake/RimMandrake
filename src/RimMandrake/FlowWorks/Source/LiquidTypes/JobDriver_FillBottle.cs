@@ -24,7 +24,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            // LIQUID_BOTTLE_LOOP_1 live failure (2026-09-25, "fill never produced a filled bottle"): the container
+            // is DESPAWNED the moment StartCarryThing picks it up, so a despawn fail-condition on A ended every job
+            // right after pickup and the pawn dropped it. Destroyed/null/forbidden is the carry-safe condition.
+            this.FailOnDestroyedNullOrForbidden(TargetIndex.A);
 
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);

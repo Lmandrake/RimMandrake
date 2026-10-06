@@ -43,3 +43,6 @@
 - ladder art: A/B concepts unruled (owner) — placeholder kept
 - assert live (frame): dig D1..D4 cells side by side under open ground -> four visibly different north-face bands; a brimming cut shows no face; settings excavationWallFacesEnabled off -> faces gone after redraw
 - site_spec SETTINGS owed: excavationWallFacesEnabled True
+### LIQUID_BOTTLE_LOOP_1 fill-job failure: root cause found in source + fixed
+- cause: all four container JobDrivers had FailOnDespawnedNullOrForbidden(A); StartCarryThing despawns a 1-stack container on pickup, so the job failed the tick after pickup and the pawn dropped it (exactly the 2026-09-25 live symptom). Now FailOnDestroyedNullOrForbidden(A).
+  assert live: one RM_BottleEmpty near WaterShallow, prioritized fill -> an RM_Bottle_FreshWater appears; then drink/dirty/wash/tank pour+draw loop. settings: bottleLoopEnabled, bottleDirtyStageEnabled, tankLoopEnabled
