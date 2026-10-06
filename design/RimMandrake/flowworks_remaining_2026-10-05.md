@@ -36,12 +36,12 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · Rivers slice 
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
 | 12 | ✅ 456d00ca2 — Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry); merged into FlowWorks as Rivers (owner 2026-10-05); levee flood check, breach cascade order and ferry rope for undrafted colonists built with the merge | SURFACE_RIVER_WEIRS_1 | BUILT | yes | Live verify: northstar/extensions_rivers.py (not yet registered in validation.py) |
 | 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (Rivers half) | DEP | — | Gated on MINERALS_WHERE_THEY_BELONG_1: the rivers-carry column has 0 of 37 biome rows owner-approved (Transient/mineral_numbers_review_2026-10-03 decisions all pending) and no registry loader exists |
-| 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst; crude + household stills | LIQUID_THIRST_CHAIN_1 | BUILT (DBH patch) / BUILD (stills) | yes | DBH is not in the live mod list, so the patch is inert today; stills = machinery pass (row 20) |
-| 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | BUILD | yes | Found ruins via the shared scatterer (RM_GenStep_PlacedSetPieces, EnvironmentalHazards), restored in place; art owed |
+| 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst; crude + household stills | LIQUID_THIRST_CHAIN_1 | BUILT (DBH patch + stills 3e473f37c, live owed) | yes | DBH is not in the live mod list, so the patch is inert today |
+| 15 | ✅ 3e473f37c — Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | BUILT (live owed) | yes | Found ruins via the shared scatterer (RM_GenStep_PlacedSetPieces, EnvironmentalHazards), restored in place; art owed |
 | 16 | worldTag authoring + shore repaint on the frozen map | WORLDMAP_LIQUID_TAGS_1 | DEP | — | Code built and loads; authoring waits on the one-time world paint (CLAUDE.md: paint once at the end) |
-| 17 | Distillation module | WRECKED_DISTILLATION_MODULE_1 | BUILD | yes | FlowWorks ships the reusable converter comp; WreckedMachines' three tiers consume it |
+| 17 | ✅ 3e473f37c — Distillation module | WRECKED_DISTILLATION_MODULE_1 | BUILT (live owed) | yes | FlowWorks ships the reusable converter comp; WreckedMachines' three tiers consume it |
 | 18 | Slime pit solvent, rainbow pools, Forge cycle, Sump kits | GELATINOUSSLIME_PIT_SOLVENT_1, WARSCAR_RAINBOW_POOLS_1, FORGE_CYCLE_MECHANICS_1, SUMP_* | BUILD (liquid-side machinery only) | yes | The reusable liquid machinery they need is FlowWorks; their biome content stays with each biome kit |
-| 20 | Liquid machinery: hoses, VE adapters, universal cargo tank, converter kit (stills, desal, detox, tar refinery, pumping station) | FLOWWORKS_BUILD_PROGRAM_1 Phase 8, LIQUID_THIRST_CHAIN_1, LIQUID_INDUSTRY_SETPIECES_1, WRECKED_DISTILLATION_MODULE_1 | BUILD | yes | Log: Transient/belt_fwmachinery_20261005.md |
+| 20 | ✅ 3e473f37c — Liquid machinery: hoses, VE adapters, universal cargo tank, converter kit (stills, desal, detox, tar refinery, pumping station, ship distiller) | FLOWWORKS_BUILD_PROGRAM_1 Phase 8, LIQUID_THIRST_CHAIN_1, LIQUID_INDUSTRY_SETPIECES_1, WRECKED_DISTILLATION_MODULE_1 | BUILT (live owed) | yes | Log: Transient/belt_fwmachinery_20261005.md |
 | 19 | Workshop name check "FlowWorks" | FLOWWORKS_BUILD_PROGRAM_1 Phase 0 | OUT (web) | — | Not a mechanic |
 
 ## Progress log (appended as rows land)
@@ -60,3 +60,6 @@ Built: rows 1, 2, 4, 5, 6 (core), 7 (pump slice), 8 (audit), 10 (carrier + art q
 bottle fill-job bug. Already built before (closed this pass): 3, 9. Owner: 11 (ladder art pick) plus every PROVISIONAL
 number. Gated on other items: 13, 16. Not a mechanic: 19. Rows 14, 15, 17, 18, 20: liquid-machinery pass (owner 2026-10-05). Still owed: live verification of everything above
 (rows listed in Transient/belt_fwbuild_20261005.md); northstar/site_spec.py SETTINGS parity (14 new settings).
+
+- 3e473f37c: liquid machinery pass (rows 14 stills, 15, 17, 20). Row 18: the reusable side those kits need is the converter kit +
+  registry <conversions> steps — their biome content stays in each kit. Blood-bottle rot: blocked (no fill source designed).
