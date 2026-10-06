@@ -6,6 +6,14 @@
 
 ## NEW ROWS NEEDED
 
+🔴 selftest_flowworks_northstar.py FAILS (settings parity) until northstar/site_spec.py SETTINGS gains these 14 entries
+(defaults as shipped) — the northstar owner's file, not edited by this builder:
+    "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True,
+    "bottleRevertEnabled": True, "explosionIgnitesLiquidEnabled": True, "foamSmothersLiquidFireEnabled": True,
+    "rainDousesLiquidFireEnabled": True, "digFindsEnabled": True, "digFindsLocalOnly": True,
+    "digFindChanceMultiplier": 1.0, "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,
+    "liquidPumpEnabled": True, "excavationWallFacesEnabled": True,
+
 ### SUPERDEEP_PRISON_ROOM_1 (built offline, live owed)
 - feature: enclosed D=4 area is its own Room (region/district/room split at the pit wall, LAW 2 exception [D])
   assert live: 3x3 D=4 area ringed by D0 -> `cell.GetRoom()` of a pit cell != room of the lip cell; pit room ProperRoom, !TouchesMapEdge; adding a prisoner bed -> room.IsPrisonCell true; pathing still crosses (a pawn with a lowered ladder walks out); filling one cell in re-forms rooms. settings: superdeepRoomsEnabled (flip -> RebuildAllMaps; off => pit room == lip room)
