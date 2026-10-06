@@ -19,10 +19,10 @@
     <description>A screw press with a heated jacket and a drain. Feed it raw slime, wait, and it gives back pale blocks hard enough to build with. It is the single piece of equipment that makes a colony on the body possible, because there is no stone here to quarry and never will be.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/TableStonecutter</texPath>
+      <!-- PROVISIONAL drawSize: the art is square (256x256) on a 3x1 footprint; owner to judge in game. -->
+      <texPath>Things/Building/RM_SlimeCompressor/RM_SlimeCompressor</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3.5,1.5)</drawSize>
-      <color>(150, 180, 130)</color>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <castEdgeShadows>true</castEdgeShadows>
     <staticSunShadowHeight>0.20</staticSunShadowHeight>
