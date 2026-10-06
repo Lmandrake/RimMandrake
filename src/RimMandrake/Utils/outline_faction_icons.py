@@ -44,7 +44,7 @@ USAGE
 ⚠️ Writing the repo copy is not deploying it. The game reads
 `C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods`, and a TEXTURE is
 read once at startup — a running game will not pick this up. Deploy with
-`deploy_custom_mods.py --mod Jawa_Patches --apply`, then the icons change on the next
+`deploy_custom_mods.py --mod UtinniPatches --apply`, then the icons change on the next
 load.
 
 🔑 RE-RUNNING THIS IS SAFE AND IS *NOT* IDEMPOTENT-BY-LUCK — it refuses. An icon that
@@ -69,7 +69,7 @@ except ImportError:
     sys.exit("Pillow is required:  python3 -m pip install --user Pillow")
 
 ICON_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                        "..", "..", "Jawa", "Jawa_Patches",
+                        "..", "..", "RimUtinni", "UtinniPatches",
                         "Textures", "World", "JawaFactions")
 
 # 7 px on a 128 px canvas is 5.5% of the icon's width. Expandable world objects draw
@@ -280,8 +280,8 @@ def main():
         print("wrote %d, skipped %d, failed %d" % (wrote, skipped, failed))
         print("⚠️ The repo is not the game. Deploy, then it takes effect on the NEXT "
               "load:\n   python3 src/RimMandrake/Utils/deploy_custom_mods.py "
-              "--mod Jawa_Patches --apply")
-    return 0
+              "--mod UtinniPatches --apply")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

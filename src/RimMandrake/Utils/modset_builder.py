@@ -593,9 +593,17 @@ def read_about(path):
         return None
 
     def lst(tag):
-        node = r.find(tag)
         out = []
-        if node is not None:
+        # <tagByVersion><v1.6><li>…</li></v1.6></tagByVersion> is the shape 44 installed
+        # workshop About.xml files use (some ONLY that, no plain <tag>); ignoring it
+        # silently dropped their dependencies from the closure and the ordering.
+        nodes = [r.find(tag)]
+        bv = r.find(tag + "ByVersion")
+        if bv is not None:
+            nodes.append(bv.find("v1.6"))
+        for node in nodes:
+            if node is None:
+                continue
             for li in node.findall("li"):
                 # modDependencies entries are objects with a packageId child;
                 # loadAfter entries are bare strings. Handle both shapes.

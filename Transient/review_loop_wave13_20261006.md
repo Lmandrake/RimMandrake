@@ -1,0 +1,8 @@
+# Review loop wave 13 (2026-10-06), FOUNDRY, offline
+- run_selftests.py: CLEAN (selftest_run_selftests passes). Reachable: CLAUDE.md, hooks/block_ledger_lint.py.
+- art_checks.py: CLEAN, marked. Selftest PASS. Note: `--selftest` is not named selftest*.py so run_selftests never runs it (no wrapper; selftest_art_checks.py exists, 88 lines, not reviewed).
+- block_peer_messages.py: CLEAN (code), marked. POLICY DRIFT: hook still denies SendMessage to any non-hex target, but global CLAUDE.md (2026-09-26) allows peer messaging; project CLAUDE.md bridge section still says channel off. Owner call, not changed.
+- statusline.py: CLEAN, marked. Reachable via .claude/settings.json statusLine.
+- game_focus.py: CLEAN, marked. Minor: `timeout_s` unused; after focus_heal succeeds focus_game returns None so prior focus cannot be restored.
+- modset_builder.py: FIXED, left DIRTY. read_about() ignored <modDependenciesByVersion>/<loadAfterByVersion>/<loadBeforeByVersion> (44 installed workshop About.xml use them, some exclusively), so closure/order silently dropped deps. Now also reads the v1.6 child. `--tier bridge` plan still resolves 9 mods. Minor unfixed: applying tier B after tier A overwrites ModsConfig.before-tier-B only, fine; reapplying the same tier overwrites its own backup with the tier list (affects only the restore sanity warning).
+- outline_faction_icons.py: FIXED, left DIRTY. ICON_DIR pointed at src/Jawa/Jawa_Patches (gone since the split) so default run crashed FileNotFoundError; now src/RimUtinni/UtinniPatches/Textures/World/JawaFactions; deploy hint now --mod UtinniPatches; exit code 1 when any icon FAILED (was always 0).
