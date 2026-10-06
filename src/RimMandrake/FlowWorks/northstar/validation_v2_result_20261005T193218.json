@@ -1,0 +1,506 @@
+{
+ "script": "validation_v2",
+ "mod": "FlowWorks",
+ "mod_hash": "a1ca56feda1c747d3f9577dad7b1b04741cc13d1c729154ff1599d3646bacbc0",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.flowworks"
+  ],
+  "running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
+  "assembly_sha256": "256f8de768a727efdbf209a31069923c15137fa03a49ebde4a69f72aa997a223",
+  "assembly_matches": 1
+ },
+ "mode": "live",
+ "faults": [],
+ "started": "2026-10-05T19:28:17",
+ "wall_s": 240.5,
+ "ticks_spent": 10916,
+ "fresh_map": {
+  "menu": true,
+  "start": true,
+  "programState": "Playing",
+  "biomes": [
+   "TropicalRainforest"
+  ],
+  "wall_s": 10.7
+ },
+ "calls": 845,
+ "aborted": null,
+ "steps": [
+  {
+   "step": "L_preflight",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 10.36,
+   "calls": 130,
+   "error": null
+  },
+  {
+   "step": "SITE_paint",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 5.72,
+   "calls": 109,
+   "error": null
+  },
+  {
+   "step": "S_state",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 2.67,
+   "calls": 39,
+   "error": null
+  },
+  {
+   "step": "A_flow_defaults",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 4.78,
+   "calls": 90,
+   "error": null
+  },
+  {
+   "step": "B_budget",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 1.0,
+   "calls": 20,
+   "error": null
+  },
+  {
+   "step": "C_sink_toggle",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 1.65,
+   "calls": 33,
+   "error": null
+  },
+  {
+   "step": "R_determinism_rerun",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 0.35,
+   "calls": 7,
+   "error": null
+  },
+  {
+   "step": "J_jobs_scheduler",
+   "planned_ticks": "<= 2890 (job cap)",
+   "ticks": 1030,
+   "wall_s": 25.41,
+   "calls": 171,
+   "error": null
+  },
+  {
+   "step": "E6_rain",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 0.55,
+   "calls": 11,
+   "error": null
+  },
+  {
+   "step": "P_pits",
+   "planned_ticks": null,
+   "ticks": 6027,
+   "wall_s": 104.07,
+   "calls": 72,
+   "error": null
+  },
+  {
+   "step": "X_promoted",
+   "planned_ticks": null,
+   "ticks": 3859,
+   "wall_s": 70.35,
+   "calls": 122,
+   "error": null
+  },
+  {
+   "step": "T0_E9_tail",
+   "planned_ticks": 0,
+   "ticks": 0,
+   "wall_s": 0.2,
+   "calls": 5,
+   "error": null
+  }
+ ],
+ "rows": [
+  {
+   "id": "L1_fresh_map",
+   "status": "PASS",
+   "cls": "",
+   "detail": "loaded_paused: programState Playing, ticksGame 1 -> 1 over 1 s; map_250: map 250x250 biome TropicalRainforest; pristine: excavated 0 bodies 0 superdeep 0 activeFluidRaw RM_Fluid_Water; dry: weather Clear rainRate 0.0"
+  },
+  {
+   "id": "L2_tier_live",
+   "status": "PASS",
+   "cls": "",
+   "detail": "log_clean: no FlowWorks error in 14 warn+ entries (base seq 17); assembly_identity: loaded C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\FlowWorks\\Assemblies\\RimMandrakeFlowWorks.dll sha 256f8de768a7 mvidMatchesFile True; repo sha 256f8de768a7; settings_default: 119 settings read, all shipped defaults"
+  },
+  {
+   "id": "L3_defs_live",
+   "status": "PASS",
+   "cls": "",
+   "detail": "live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})"
+  },
+  {
+   "id": "E1a_cadence_shipped",
+   "status": "PASS",
+   "cls": "",
+   "detail": "pulseIntervalTicks 250, nextPulseTick 251 at tick 1"
+  },
+  {
+   "id": "L4_site_ready",
+   "status": "PASS",
+   "cls": "",
+   "detail": "no_pawn_in_plots: 3 pawns, none in 53 plot rects; painted_readback: 53 rects cleared+Soil, 9 bodies painted, every scene cell fresh Soil, every body exactly its sources"
+  },
+  {
+   "id": "S1_dig_ladder",
+   "status": "PASS",
+   "cls": "",
+   "detail": "D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1"
+  },
+  {
+   "id": "S1n_superdeep_is_max",
+   "status": "PASS",
+   "cls": "",
+   "detail": "deepen D=4 once more -> 4"
+  },
+  {
+   "id": "S1p_pit_is_grid_only",
+   "status": "PASS",
+   "cls": "",
+   "detail": "D4 cell: isSuperdeep True width 1 holders []; D3 cell: isSuperdeep False width 0 holders []"
+  },
+  {
+   "id": "S2_fill_clamp",
+   "status": "PASS",
+   "cls": "",
+   "detail": "setFill 9 on D=2 -> F=2; setFill 1 on undug -> fillSet=False F=0"
+  },
+  {
+   "id": "S3_classification",
+   "status": "PASS",
+   "cls": "",
+   "detail": "W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
+  },
+  {
+   "id": "S4_sink_band",
+   "status": "PASS",
+   "cls": "",
+   "detail": "isSink at edge distance 9: True; at 11: False"
+  },
+  {
+   "id": "S5_sticky_limitless",
+   "status": "PASS",
+   "cls": "",
+   "detail": "W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True"
+  },
+  {
+   "id": "S6_digToDepth_gate",
+   "status": "PASS",
+   "cls": "",
+   "detail": "Designator_DigCanal: D1 ON True; D4 False (Already SUPERDEEP \u2014 this is as far down ); D1 OFF False (Deepening is switched off in this mod's settings.); undug soil OFF True"
+  },
+  {
+   "id": "A0_instrument",
+   "status": "PASS",
+   "cls": "",
+   "detail": "sanity_probe: rect read of the prefilled E5_sink run: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (must see a known F=1); pulse_contract: 8 pulses, 0 ticks, scheduler untouched, paused"
+  },
+  {
+   "id": "E2_twins_identical",
+   "status": "PASS",
+   "cls": "",
+   "detail": "A [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] / B [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+  },
+  {
+   "id": "E2_channels_fill_every_direction",
+   "status": "PASS",
+   "cls": "",
+   "detail": "first-full pulse by direction {'E2_east_A': 4, 'E2_north': 4, 'E2_south': 4, 'E2_west': 4} (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)"
+  },
+  {
+   "id": "E2_dry_ring",
+   "status": "PASS",
+   "cls": "",
+   "detail": "every non-channel, non-body ring cell undug, F=0, Soil"
+  },
+  {
+   "id": "E3b_recession_shipped",
+   "status": "PASS",
+   "cls": "",
+   "detail": "final [0, 0, 0, 1], W2R {'stock': 4.001896, 'recededCount': 1, 'activeCellCount': 0}"
+  },
+  {
+   "id": "E5_sink_drains",
+   "status": "PASS",
+   "cls": "",
+   "detail": "band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
+  },
+  {
+   "id": "E5_inner_holds",
+   "status": "PASS",
+   "cls": "",
+   "detail": "interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+  },
+  {
+   "id": "E2s_shared_source_both_fill",
+   "status": "PASS",
+   "cls": "",
+   "detail": "all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}"
+  },
+  {
+   "id": "E3_budget_exhaustion",
+   "status": "PASS",
+   "cls": "",
+   "detail": "cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.00162504055"
+  },
+  {
+   "id": "E3n_budget_off_supplies",
+   "status": "PASS",
+   "cls": "",
+   "detail": "budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])"
+  },
+  {
+   "id": "E5n_sinks_off",
+   "status": "PASS",
+   "cls": "",
+   "detail": "sinks OFF: run [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], total 10.0->10.0, isSink any=False"
+  },
+  {
+   "id": "E5_sinks_back_on",
+   "status": "PASS",
+   "cls": "",
+   "detail": "sinks ON again: [1, 1, 0, 0, 0, 1, 0, 0, 0, 0], total +7.0 (oracle +7)"
+  },
+  {
+   "id": "E2_rerun_determinism",
+   "status": "PASS",
+   "cls": "",
+   "detail": "E2_east_A (phase A) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] vs E2_rerun (dug later, other body) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+  },
+  {
+   "id": "G_every_cell_vs_oracle",
+   "status": "PASS",
+   "cls": "",
+   "detail": "every excavated cell == oracle at every pulse in phases ['A', 'B', 'C', 'R'] (E2 east A/B, north, south, west, shared-source pairs, budget, sinks, rerun)"
+  },
+  {
+   "id": "J_workgiver_selection",
+   "status": "PASS",
+   "cls": "",
+   "detail": "E8_dig:dig/RM_DigCanalJob skip=False cell=True has=True prio=3; E7a_fillin:fillin/RM_FillInCanalJob skip=False cell=True has=True prio=3; E7b_overflow:fillin/RM_FillInCanalJob skip=False cell=True has=True prio=3; undesignated dug cell -> no job"
+  },
+  {
+   "id": "J_orders_accepted",
+   "status": "PASS",
+   "cls": "",
+   "detail": "[('E8_dig', True, None), ('E7a_fillin', True, None), ('E7b_overflow', True, None)]"
+  },
+  {
+   "id": "E4_engine_off",
+   "status": "PASS",
+   "cls": "",
+   "detail": "OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []"
+  },
+  {
+   "id": "E1b_pulse_clamp",
+   "status": "PASS",
+   "cls": "",
+   "detail": "pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)"
+  },
+  {
+   "id": "E1c_cadence_real_scheduler",
+   "status": "PASS",
+   "cls": "",
+   "detail": "12 chunks of 60 ticks: nextPulseTick advances [60], lead [1]"
+  },
+  {
+   "id": "E4_engine_on_scheduled",
+   "status": "PASS",
+   "cls": "",
+   "detail": "after 12 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]"
+  },
+  {
+   "id": "E6n_rain_toggle_off",
+   "status": "PASS",
+   "cls": "",
+   "detail": "rain fell (rate now 0.258) with rainFillsExcavations OFF over 12 pulses: no cell gained"
+  },
+  {
+   "id": "E7a_fillin_displaces",
+   "status": "PASS",
+   "cls": "",
+   "detail": "sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]"
+  },
+  {
+   "id": "E7b_overflow_sanctioned",
+   "status": "PASS",
+   "cls": "",
+   "detail": "no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)"
+  },
+  {
+   "id": "E8_player_dig",
+   "status": "PASS",
+   "cls": "",
+   "detail": "designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 720 ticks (cap 2890, MiningSpeed 1.57)"
+  },
+  {
+   "id": "E6_roof_readback",
+   "status": "PASS",
+   "cls": "",
+   "detail": "roofed excavated cells [(182, 60)]"
+  },
+  {
+   "id": "E6_rain_fills_unroofed",
+   "status": "PASS",
+   "cls": "",
+   "detail": "rate 0.258 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle"
+  },
+  {
+   "id": "P1_width_matrix",
+   "status": "PASS",
+   "cls": "",
+   "detail": "held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); trench_large large=False(reach 16/16); 2x2_small small=True(reach 0/12); 2x2_large large=True(reach 0/12)"
+  },
+  {
+   "id": "P2_fillin_releases_large",
+   "status": "PASS",
+   "cls": "",
+   "detail": "fill-in (161,101) -> D 3; large at (160,100): width 1 held False lip 12/12"
+  },
+  {
+   "id": "P3_walk_in_held",
+   "status": "PASS",
+   "cls": "",
+   "detail": "walked in True; held True spawned True; descents 0->1 (own 1) fall 4.9; lip 0/8; ordered out: canReach False, ended (166, 100)"
+  },
+  {
+   "id": "P4_ladder_frees",
+   "status": "PASS",
+   "cls": "",
+   "detail": "ladder spawned True hasLadder True; held False lip 8/8; ordered out: arrived True; pawn ok fill 0"
+  },
+  {
+   "id": "P4b_ladder_raised_strands",
+   "status": "PASS",
+   "cls": "",
+   "detail": "raised True (Ladder_raised:_nobody_can_climb_out.): held True lip 0/8, ordered out canReach False | lowered False (Ladder_lowered:_your_people_climb;_prisoners_only_in_a_prison_break.): held False lip 8/8; pawn ok fill 0"
+  },
+  {
+   "id": "P5n_own_faction_carveout",
+   "status": "PASS",
+   "cls": "",
+   "detail": "carve-out ON (shipped): colonist in True captured False held False descents 2->2; out True; pawn ok fill 0"
+  },
+  {
+   "id": "X1_pawn_height_ladder",
+   "status": "PASS",
+   "cls": "",
+   "detail": "sink/drawDz by depth (0.3/level PROVISIONAL, strictly deeper each step): D0 0/0; D1 0.3/-0.3; D2 0.6/-0.6; D3 0.9/-0.9; D4 1.2/-1.2"
+  },
+  {
+   "id": "X2_pawn_lowers_walking_in",
+   "status": "PASS",
+   "cls": "",
+   "detail": "walked D0->D4 arrived True: sink 0 -> 1.2 (drawDz -1.2) "
+  },
+  {
+   "id": "X3_pawn_rises_walking_out",
+   "status": "PASS",
+   "cls": "",
+   "detail": "walked D4->D0 arrived True: sink 1.2 -> 0 (drawDz 0) "
+  },
+  {
+   "id": "X4_pit_wall_over_head",
+   "status": "PASS",
+   "cls": "",
+   "detail": "colonist on D=4 drawn 1.2 cells down; wall over crown 1.2 x a person's height (owner: walls 20% above the head, >= 1.2)"
+  },
+  {
+   "id": "X5_slime_occupant_below_surface",
+   "status": "PASS",
+   "cls": "",
+   "detail": "D=4 cell holding RM_Fluid_SlimeGreen F=2: occupant drawn 1.2 down (dry D=4: 1.20), drawDz -1.2"
+  },
+  {
+   "id": "X7_tar_front_lags_water",
+   "status": "PASS",
+   "cls": "",
+   "detail": "gravity staircase D1..D4, one level each: after 3 pulses water at step 3, tar at 0; after 12 water 3, tar 2 (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels 1/1; pulse 200 viscosity True"
+  },
+  {
+   "id": "X6_two_fluids_distinct",
+   "status": "PASS",
+   "cls": "",
+   "detail": "tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix) | wrong-fluid cells []"
+  },
+  {
+   "id": "X7n_viscosity_off",
+   "status": "PASS",
+   "cls": "",
+   "detail": "viscosityEnabled OFF: a tar staircase moved like water, step 3 after 3 pulses (levels 1, ['RM_Fluid_Tar'])"
+  },
+  {
+   "id": "X8_cover_hides_pit",
+   "status": "PASS",
+   "cls": "",
+   "detail": "4 deck cells over D=4 (RM_Channel_Superdeep) print Soil, the surrounding surface; gives way: Gives_way_under_40_kg_on_the_whole_cover."
+  },
+  {
+   "id": "X9_cover_deck_uniform",
+   "status": "PASS",
+   "cls": "",
+   "detail": "deck prints ['Soil']; ring terrain ['Soil'] (one surface: no seam between deck cells or at the lip; the frame is still the judge's)"
+  },
+  {
+   "id": "X10_canal_fire",
+   "status": "FAIL",
+   "cls": "MOD",
+   "detail": "burning >=3 run cells ok, no flame off the run ok, persists 250 ticks ok, spent: all F=0 FAIL, spent: ashed FAIL, spent: none alight FAIL | flames 6 -> 5 -> 4, off-run [], ash 2, F>0 left [(131, 88), (132, 88), (133, 88)] | FIRE burning 4 | front pending 0 | burned levels 2"
+  },
+  {
+   "id": "T0n_fluid_switch_refused",
+   "status": "PASS",
+   "cls": "",
+   "detail": "set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water"
+  },
+  {
+   "id": "E9_log_budget",
+   "status": "PASS",
+   "cls": "",
+   "detail": "0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []"
+  },
+  {
+   "id": "Z_settings_restored",
+   "status": "PASS",
+   "cls": "",
+   "detail": "12 touched settings back to shipped defaults"
+  }
+ ],
+ "plan_budget": {
+  "v2_target_ticks": "1,000-2,000 (plan section 10, with flowworks_pulse)",
+  "v2_without_pulse_tool": "3,000-7,300",
+  "old_suite": 112921
+ },
+ "summary": {
+  "PASS": 58,
+  "FAIL": 1,
+  "UNMEASURED": 0,
+  "UNCOVERED": 0,
+  "UNBUILT": 0,
+  "SKIP": 0
+ },
+ "green": false
+}
