@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimMandrake.CreatureBehaviors;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -15,10 +16,12 @@ namespace RimMandrake.SolarMirrors
     //      stopped by walls, rock, closed doors and roofs (path and target);
     //   3. relays: a mirror whose footprint a spot lands on fires next, from that beam's
     //      direction, consuming its energy; each mirror fires at most once (acyclic), depth <= maxChain.
-    // On a change (quantised to 0.05) it asks the shade grid for one full Recompute, whose
-    // RebuildHeatLayers postfix (RM_MirrorPatches) writes the light into the cached exposure and
-    // the path-cost grid, so pathing and the herd patch graph see it under one GridVersion.
-    public class RM_MapComponent_MirrorLight : MapComponent
+    // On a change (quantised to 0.05) it asks the shade grid for one full Recompute. This
+    // component is the grid's registered light source (IRM_LightLayer, CreatureBehaviors'
+    // public hook, design §2.3): the grid pulls the light via AddLight inside every Recompute
+    // and folds it into ShadeAt, the cached exposure and the path-cost grid, so pathing and the
+    // herd patch graph see it under one GridVersion.
+    public class RM_MapComponent_MirrorLight : MapComponent, IRM_LightLayer
     {
         private const float MinUseful = 0.02f;
         private const int MinTicksBetweenGridRebuilds = 60; // PROVISIONAL throttle (design §2.8 risk 2)
@@ -34,6 +37,7 @@ namespace RimMandrake.SolarMirrors
         private bool passRequested = true;
         private bool gridRebuildPending;
         private int lastGridRebuildTick = -99999;
+        private RM_MapComponent_ShadeGrid registeredGrid;
 
         public struct Beam
         {
@@ -121,15 +125,63 @@ namespace RimMandrake.SolarMirrors
             passRequested = true;
         }
 
+        /// <summary>A setting the grid reads through AddLight changed: rebuild the grid even if
+        /// the light itself did not (the change hash would not see it).</summary>
+        public void RequestGridRebuild()
+        {
+            gridRebuildPending = true;
+        }
+
+        /// <summary>IRM_LightLayer (CreatureBehaviors, design §2.3): add this map's mirror light
+        /// to the shade grid's buffer. Called by the grid inside Recompute, main thread. No
+        /// allocation: one pass over the lit cells.</summary>
+        public bool AddLight(float[] into)
+        {
+            if (!RM_SolarMirrorsSettings.shadeEffect || light == null || into == null || into.Length != light.Length)
+            {
+                return false;
+            }
+            for (int k = 0; k < litCells.Count; k++)
+            {
+                int i = litCells[k];
+                into[i] += light[i];
+            }
+            return litCells.Count > 0;
+        }
+
+        private void EnsureRegistered()
+        {
+            if (registeredGrid != null)
+            {
+                return;
+            }
+            registeredGrid = RM_MapComponent_ShadeGrid.For(map);
+            registeredGrid?.RegisterLightSource(this);
+        }
+
         public override void FinalizeInit()
         {
             base.FinalizeInit();
             passRequested = true;
+            EnsureRegistered();
+        }
+
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            registeredGrid?.UnregisterLightSource(this);
+            registeredGrid = null;
+            if (cachedMap == map)
+            {
+                cachedMap = null;
+                cachedComp = null;
+            }
         }
 
         public override void MapComponentTick()
         {
             base.MapComponentTick();
+            EnsureRegistered();
             int now = Find.TickManager.TicksGame;
             int interval = Mathf.Clamp(RM_SolarMirrorsSettings.passIntervalTicks, 125, 1000);
             if (passRequested || now % interval == 0)
@@ -230,24 +282,14 @@ namespace RimMandrake.SolarMirrors
         {
             if (!cell.InBounds(map))
             {
-                return "RM_SolarMirrors_Blocker_Edge".Translate();
+                return BlockerEdge;
             }
             CellRect own = m.parent.OccupiedRect();
-            string why = null;
             IntVec3 from = m.parent.Position;
-            bool clear = RM_MirrorMath.LineClear(from.x, from.z, cell.x, cell.z, (x, z) =>
+            BeamWalk walk = new BeamWalk { comp = this, own = own, self = m.parent };
+            if (!RM_MirrorMath.LineClear(from.x, from.z, cell.x, cell.z, ref walk))
             {
-                IntVec3 c = new IntVec3(x, 0, z);
-                if (own.Contains(c))
-                {
-                    return false;
-                }
-                why = CellBlocks(c, m.parent);
-                return why != null;
-            });
-            if (!clear)
-            {
-                return why;
+                return walk.why;
             }
             if (!own.Contains(cell))
             {
@@ -256,6 +298,31 @@ namespace RimMandrake.SolarMirrors
             return null;
         }
 
+        private struct BeamWalk : IRM_LineVisitor
+        {
+            public RM_MapComponent_MirrorLight comp;
+            public CellRect own;
+            public Thing self;
+            public string why;
+
+            public bool Blocked(int x, int z)
+            {
+                IntVec3 c = new IntVec3(x, 0, z);
+                if (own.Contains(c))
+                {
+                    return false;
+                }
+                why = comp.CellBlocks(c, self);
+                return why != null;
+            }
+        }
+
+        // Translated once: a blocked beam is re-tested every pass, and Translate allocates.
+        private static string blockerRoof, blockerDoor, blockerEdge, blockerSky;
+
+        internal static string BlockerEdge => blockerEdge ??= "RM_SolarMirrors_Blocker_Edge".Translate();
+        internal static string BlockerSky => blockerSky ??= "RM_SolarMirrors_Blocker_Sky".Translate();
+
         /// <summary>Design §2.2 v1 blocker rule: any roof; a closed door; a wall-like or impassable
         /// edifice (natural rock included). Mirrors and receivers never block (they are the
         /// apertures and the targets). Pawns and open doors never block.</summary>
@@ -263,7 +330,7 @@ namespace RimMandrake.SolarMirrors
         {
             if (map.roofGrid.Roofed(c))
             {
-                return "RM_SolarMirrors_Blocker_Roof".Translate();
+                return blockerRoof ??= "RM_SolarMirrors_Blocker_Roof".Translate();
             }
             Building e = c.GetEdifice(map);
             if (e == null || e == self)
@@ -272,7 +339,7 @@ namespace RimMandrake.SolarMirrors
             }
             if (e is Building_Door door)
             {
-                return door.Open ? null : (string)"RM_SolarMirrors_Blocker_Door".Translate();
+                return door.Open ? null : (blockerDoor ??= "RM_SolarMirrors_Blocker_Door".Translate());
             }
             if (e.TryGetComp<RM_CompMirror>() != null || e.TryGetComp<RM_CompLightReceiver>() != null)
             {
@@ -428,14 +495,14 @@ namespace RimMandrake.SolarMirrors
                 Vector3 outDir = RM_MirrorMath.Reflect(shot.inDir, nrm);
                 if (!RM_MirrorMath.GroundHit(face.x, face.y, face.z, outDir, m.Props.maxRange, out float hx, out float hz))
                 {
-                    m.lastBlocker = "RM_SolarMirrors_Blocker_Sky".Translate();
+                    m.lastBlocker = BlockerSky;
                     return;
                 }
                 center = new IntVec3(Mathf.FloorToInt(hx), 0, Mathf.FloorToInt(hz));
             }
             if (!center.InBounds(map))
             {
-                m.lastBlocker = "RM_SolarMirrors_Blocker_Edge".Translate();
+                m.lastBlocker = BlockerEdge;
                 return;
             }
             scratchCells.Clear();
@@ -585,7 +652,9 @@ namespace RimMandrake.SolarMirrors
         {
             base.MapComponentUpdate();
             int mode = RM_SolarMirrorsSettings.beamRender;
-            if (mode <= 0 || map != Find.CurrentMap || litCells.Count == 0)
+            // Map.MapUpdate calls this on every map, world view open or not (it gates its own
+            // drawing on WorldRendererUtility.DrawingMap): never draw a spot over the planet.
+            if (mode <= 0 || map != Find.CurrentMap || litCells.Count == 0 || !WorldRendererUtility.DrawingMap)
             {
                 return;
             }

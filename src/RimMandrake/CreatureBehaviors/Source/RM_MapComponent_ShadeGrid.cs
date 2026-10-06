@@ -8,6 +8,26 @@ using Verse.AI;
 namespace RimMandrake.CreatureBehaviors
 {
 	/// <summary>
+	/// SOLAR_MIRRORS_MOD_DESIGN_1 §2.3 (design/RimMandrake/solar_mirrors_mod_design_2026-10-04.md):
+	/// a source of light that un-shades cells (Solar Mirrors' beam layer is the
+	/// first). Register with RM_MapComponent_ShadeGrid.RegisterLightSource; the
+	/// grid owns the buffer and calls AddLight once per Recompute, on the main
+	/// thread, before it composes exposure, path costs and the patch graph — so
+	/// all of them, and ShadeAt, see the same light under one GridVersion.
+	/// A provider whose light changed calls Recompute (throttle it yourself).
+	/// For its own input a provider must read only the mirror-free layers
+	/// (RoofShadeAt, CastShadeAt), never ShadeAt/ExposureAt, which carry light.
+	/// </summary>
+	public interface IRM_LightLayer
+	{
+		/// <summary>ADD (never assign) this source's light, 0..N per cell
+		/// (N &gt; 1 = several beams), into `into` (one float per cell index,
+		/// zero where nothing lit it yet). Return true if any cell got light.
+		/// Must not allocate: it runs inside every grid rebuild.</summary>
+		bool AddLight(float[] into);
+	}
+
+	/// <summary>
 	/// DESERT_SHADE_GRID_KEYSTONE_1. design/Jawa/worldbuilding/desert_ecology_feasibility.md
 	/// §2: neither GlowGrid nor outdoor temperature vary per cell — both are one
 	/// map-wide scalar. Nothing casts a shadow and no engine grid can be queried
@@ -42,6 +62,10 @@ namespace RimMandrake.CreatureBehaviors
 	/// Recompute is a full-map scan on a coarse interval, not dirty-event
 	/// driven: a few seconds of staleness after a build/dig for zero
 	/// event-wiring risk. The public ShadeAt contract is unchanged.
+	///
+	/// Light sources (IRM_LightLayer, RegisterLightSource) un-shade cells:
+	/// folded into ShadeAt and into the cached exposure, so sun path cost
+	/// and the patch graph see them too. None registered = no effect.
 	/// </summary>
 	public class RM_MapComponent_ShadeGrid : MapComponent
 	{
@@ -124,6 +148,14 @@ namespace RimMandrake.CreatureBehaviors
 		// since the last build. On a map with no sun heat it is never built.
 		private int gridVersion;
 		private int patchGraphVersion = -1;
+
+		// SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: registered light sources and the
+		// light they add (rebuilt each Recompute). With no source registered
+		// anyLight stays false and nothing below reads lightLayer, so every
+		// output is byte-for-byte what it was before the hook existed.
+		private readonly List<IRM_LightLayer> lightSources = new List<IRM_LightLayer>();
+		private float[] lightLayer;
+		private bool anyLight;
 		private RM_ShadePatchGraph patchGraph;
 		private bool[] patchShadeMask;
 		private bool[] patchWalkMask;
@@ -285,6 +317,8 @@ namespace RimMandrake.CreatureBehaviors
 				retiredCustomizers[i].Dispose();
 			}
 			retiredCustomizers.Clear();
+			lightSources.Clear();
+			anyLight = false;
 		}
 
 		public override void MapComponentTick()
@@ -463,6 +497,36 @@ namespace RimMandrake.CreatureBehaviors
 			}
 		}
 
+		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: add a light source. Takes
+		/// effect at the next Recompute (requested here, so the next tick).</summary>
+		public void RegisterLightSource(IRM_LightLayer source)
+		{
+			if (source != null && !lightSources.Contains(source))
+			{
+				lightSources.Add(source);
+				recomputeRequested = true;
+			}
+		}
+
+		public void UnregisterLightSource(IRM_LightLayer source)
+		{
+			if (source != null && lightSources.Remove(source))
+			{
+				recomputeRequested = true;
+			}
+		}
+
+		/// <summary>Registered light (0..N) at this cell as of the last
+		/// Recompute; 0 with no source, or before the first recompute.</summary>
+		public float LightAt(IntVec3 cell)
+		{
+			if (!anyLight || !Ready(cell))
+			{
+				return 0f;
+			}
+			return lightLayer[map.cellIndices.CellToIndex(cell)];
+		}
+
 		/// <summary>Shade 0..1 from shade gear alone at this cell (pitched and
 		/// parasol), already scaled by the heat kind.</summary>
 		public float GearShadeAt(IntVec3 cell)
@@ -506,6 +570,12 @@ namespace RimMandrake.CreatureBehaviors
 			}
 			int i = map.cellIndices.CellToIndex(cell);
 			float s = Mathf.Max(roofShade[i], castShade[i]);
+			if (anyLight)
+			{
+				// Light cuts roof/cast shade only; gear, parasols and living
+				// casters below still shade you inside a beam.
+				s = RM_SunHeatMath.ShadeWithLight(s, lightLayer[i]);
+			}
 			if (gearShade != null)
 			{
 				s = Mathf.Max(s, gearShade[i]);
@@ -628,10 +698,37 @@ namespace RimMandrake.CreatureBehaviors
 			BuildGearLayer();
 			RefreshParasolLayer();
 			RefreshMovingShade(true);
+			BuildLightLayer();
 			RebuildHeatLayers();
 			gridVersion++;
 			// STILLSAND_MIRAGE_CONDITION_1: hold or end the mirage to match the sun.
 			RM_Mirage.Sync(map, this);
+		}
+
+		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: zero the buffer (only if
+		/// the last build lit anything) and let each source add its light.</summary>
+		private void BuildLightLayer()
+		{
+			int n = map.cellIndices.NumGridCells;
+			if (lightSources.Count == 0)
+			{
+				anyLight = false;
+				return;
+			}
+			if (lightLayer == null || lightLayer.Length != n)
+			{
+				lightLayer = new float[n];
+			}
+			else if (anyLight)
+			{
+				System.Array.Clear(lightLayer, 0, n);
+			}
+			bool lit = false;
+			for (int k = 0; k < lightSources.Count; k++)
+			{
+				lit |= lightSources[k].AddLight(lightLayer);
+			}
+			anyLight = lit;
 		}
 
 		/// <summary>SHADE_GEAR_FAMILY_1: tent footprints and shield lees, at
@@ -837,6 +934,8 @@ namespace RimMandrake.CreatureBehaviors
 				cost = new NativeArray<ushort>(n, Allocator.Persistent);
 			}
 			float pathStrength = RM_CreatureBehaviorsSettings.sunPathCostMultiplier;
+			// Under ambient heat (steam, volcanic) shade does nothing, so light does nothing either.
+			bool applyLight = anyLight && kind != RM_HeatKind.ambient;
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
@@ -844,6 +943,10 @@ namespace RimMandrake.CreatureBehaviors
 				if (glareFloor != null)
 				{
 					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
+				}
+				if (applyLight)
+				{
+					ex = RM_SunHeatMath.WithLight(ex, lightLayer[i]);
 				}
 				exposure[i] = ex;
 				if (wantPath)
