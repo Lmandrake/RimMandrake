@@ -1,0 +1,184 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "proof_all.py",
+ "tier": "gimmesomeslack",
+ "mode": "live",
+ "started": "2026-10-05T01:26:55",
+ "no_shots": false,
+ "rows": [
+  {
+   "id": "P1_fresh_map",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "fresh": true,
+    "start": true,
+    "programState": "Playing",
+    "map": {
+     "sizeX": 250,
+     "sizeZ": 250,
+     "mapBiome": "TemperateForest",
+     "longitude": 12.3333969
+    },
+    "wait_s": 6.6
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "P2_tier_running_startup_log_clean",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "running": 10,
+    "mod_on": true,
+    "assembly_matches": 1,
+    "modSettingsEntries": [
+     "RimMandrake: Gimme Some Slack"
+    ],
+    "modHandles": 3,
+    "startupErrorsNamingMod": [],
+    "warnPlusEntries": 17,
+    "sanity_RimBridge_line_seen": true
+   },
+   "block": "preflight"
+  },
+  {
+   "id": "P3_probes_site_pinned_region_empty",
+   "status": "FAIL",
+   "class": "SITE",
+   "detail": {
+    "channels": {
+     "cord": true,
+     "aerial": true,
+     "hose": true
+    },
+    "weatherLocked": true,
+    "local_hour_before": 5,
+    "pinned_noon": true,
+    "nonColonistsDestroyed": 61,
+    "colonistsMoved": [
+     [
+      782,
+      [
+       119,
+       108
+      ],
+      [
+       125,
+       165
+      ],
+      true
+     ],
+     [
+      786,
+      [
+       123,
+       113
+      ],
+      [
+       127,
+       165
+      ],
+      false
+     ],
+     [
+      791,
+      [
+       120,
+       113
+      ],
+      [
+       129,
+       165
+      ],
+      true
+     ]
+    ],
+    "pawnsInRegion": [
+     "Human786"
+    ],
+    "boardPitch": "18 boards, every plot pair >= GAP 12 apart"
+   },
+   "block": "preflight"
+  }
+ ],
+ "blocks": {
+  "preflight": {
+   "wall_s": 15.1,
+   "rows": 3,
+   "raised": null
+  }
+ },
+ "doc": "design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md",
+ "offline": {
+  "red": [
+   "matrix_selftest:C2"
+  ],
+  "steps": {
+   "validation_offline": {
+    "rows": 7,
+    "not_pass": [],
+    "wall_s": 11.4
+   },
+   "matrix_selftest": {
+    "exit": 1,
+    "fail": [
+     "C2"
+    ],
+    "summary": [
+     "57/58 checks passed (17 negative controls among them)"
+    ],
+    "wall_s": 17.0
+   },
+   "human_review_plan": {
+    "exit": 0,
+    "tail": [
+     "layout ok: 33 stations (1-12 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/foundry/Transient/mc_human_review"
+    ],
+    "wall_s": 0.0
+   },
+   "selftest_human_review": {
+    "exit": 0,
+    "tail": [
+     "33/33 checks passed"
+    ],
+    "wall_s": 0.0
+   },
+   "design_spec": {
+    "exit": 0,
+    "tail": [
+     "wrote /mnt/d/Luke/dev/_rmscratch/gss_proof/scenes_design.json"
+    ],
+    "wall_s": 0.3
+   }
+  },
+  "spec_posix": "/mnt/d/Luke/dev/_rmscratch/gss_proof/scenes_design.json",
+  "spec_win": "D:\\Luke\\dev\\_rmscratch\\gss_proof\\scenes_design.json",
+  "wall_s": 28.9,
+  "accepted_red": [
+   "matrix_selftest:C2"
+  ]
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack"
+  ],
+  "running_sha256": "9fa295b6624d40cc57158fd5e39b2473cbf0255211534e6183c473a4f2f88851",
+  "assembly_matches": 1,
+  "assembly_sha256": "ca97871247858b225fea139cac5433685ea68a82464a0be4793b16a2aa32f3be"
+ },
+ "mod_hash": "03584d0c115af5251d2da288a8531b6a3718302faed93c745ed57561cfec46bd",
+ "aborted": "preflight not green",
+ "site_notes": [],
+ "wall_s": 16.5,
+ "out": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\src\\RimMandrake\\GimmeSomeSlack\\northstar\\proof_all_20261005T012712.json"
+}

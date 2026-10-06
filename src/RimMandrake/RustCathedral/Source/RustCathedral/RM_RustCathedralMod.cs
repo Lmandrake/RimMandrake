@@ -150,14 +150,14 @@ namespace RimMandrake.RustCathedral
             Widgets.EndScrollView();
         }
 
-        private const float OwnSectionHeight = 470f;
+        private const float OwnSectionHeight = 700f;
         private const float HumSectionHeight = 430f;
         private const float WallsSectionHeight = 240f;
         private Vector2 scrollPosition;
 
         private static void DoOwnSection(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width, maxOneColumn = true };
             list.Begin(inRect);
 
             list.Label("Worldgen — applies to planets generated afterwards, never one that already exists.");

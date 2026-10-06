@@ -1,0 +1,108 @@
+{
+ "mod": "MessyConduit",
+ "mode": "save-load",
+ "script": "validation_hose.py",
+ "started": "2026-10-04T11:09:09",
+ "rows": [
+  {
+   "id": "H10a_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "MC_REC_HOSE_B_20261004.rws"
+    ],
+    "changed": []
+   }
+  },
+  {
+   "id": "H10b_save_names_no_class",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "RM_MapComponent_Hoses": 0,
+    "RimMandrake.MessyConduit.Hose": 0,
+    "rmHoseState": 2
+   }
+  },
+  {
+   "id": "H10_save_load_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": [
+     [
+      [
+       42,
+       66
+      ],
+      [
+       66,
+       66
+      ],
+      "Nozzle",
+      "Plump",
+      true,
+      true,
+      "3106a51fa12db4c9",
+      6
+     ],
+     [
+      [
+       42,
+       74
+      ],
+      [
+       60,
+       74
+      ],
+      "Nozzle",
+      "Flat",
+      true,
+      false,
+      "e6853bd33122f43a",
+      4
+     ]
+    ],
+    "after": [
+     [
+      [
+       42,
+       66
+      ],
+      [
+       66,
+       66
+      ],
+      "Nozzle",
+      "Plump",
+      true,
+      true,
+      "3106a51fa12db4c9",
+      6
+     ],
+     [
+      [
+       42,
+       74
+      ],
+      [
+       60,
+       74
+      ],
+      "Nozzle",
+      "Flat",
+      true,
+      false,
+      "e6853bd33122f43a",
+      4
+     ]
+    ],
+    "loadSeconds": 2
+   }
+  }
+ ],
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\hose_03_after_save_load.png"
+ ]
+}

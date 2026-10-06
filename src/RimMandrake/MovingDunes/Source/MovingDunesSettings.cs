@@ -61,10 +61,16 @@ namespace RimMandrake.MovingDunes
             Scribe_Values.Look(ref clearYieldMultiplier, "clearYieldMultiplier", 1f);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Dune drift enabled", ref duneEngineEnabled,
                 "Sand erodes, hops downwind and banks up again. Off: sand on a dune-field "
@@ -93,7 +99,9 @@ namespace RimMandrake.MovingDunes
                 clearYieldMultiplier = list.Slider(clearYieldMultiplier, 0.1f, 3f);
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

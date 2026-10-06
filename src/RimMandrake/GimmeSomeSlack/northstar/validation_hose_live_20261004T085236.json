@@ -1,0 +1,214 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T08:49:20",
+ "rows": [
+  {
+   "id": "H0_probe_channel",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "defaults applied"
+  },
+  {
+   "id": "H1_reels_built",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reels": 2,
+    "build": true,
+    "walls": true,
+    "textures": true
+   }
+  },
+  {
+   "id": "H1b_install_validity",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "far": "too far",
+    "wall": "target blocked",
+    "ok": null
+   }
+  },
+  {
+   "id": "H2_hose_laid_as_hose_cord",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "kind": "Hose",
+    "layOk": true,
+    "pathLen": 24.3193,
+    "flatLen": 25.4927,
+    "plumpLen": 25.1871,
+    "straight": 23.55,
+    "points": 104,
+    "couplings": 5,
+    "fellBack": false,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "geometryHash": "543731693b4d4298",
+    "lay1": null,
+    "lay2": null,
+    "lastLayMs": 2
+   }
+  },
+  {
+   "id": "H3_width_ge_4x_wire",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "wireVisibleWidth": 0.0859
+   }
+  },
+  {
+   "id": "H4_bend_radius_ge_hose_min",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "setting": 1.2,
+    "hose1": {
+     "minBendFlat": 1.2796,
+     "minBendPlump": 1.4063
+    },
+    "hose2": {
+     "minBendFlat": 1.2572,
+     "minBendPlump": 3.1175
+    },
+    "wallInPath": true
+   }
+  },
+  {
+   "id": "H5_flat_when_not_flowing",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "state": "Flat",
+    "blend": 0,
+    "transitions": 0,
+    "provider": "debug",
+    "signal": false
+   }
+  },
+  {
+   "id": "H6_plump_within_transition",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "mid": {
+     "state": "Filling",
+     "blend": 0.4667,
+     "wobbling": true
+    },
+    "after": {
+     "state": "Plump",
+     "blend": 1,
+     "widthOverWire": 5.4109,
+     "poseLen": 25.1871,
+     "history": [
+      [
+       3064,
+       "Filling"
+      ],
+      [
+       3094,
+       "Plump"
+      ]
+     ]
+    },
+    "flat": {
+     "widthOverWire": 4.4218,
+     "poseLen": 25.4927
+    },
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "H7_no_flicker_fast_toggle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "toggles": 30,
+    "every": 40,
+    "history": [
+     [
+      3109,
+      "Filling"
+     ],
+     [
+      3139,
+      "Plump"
+     ]
+    ],
+    "state": "Plump",
+    "transitions": 2
+   }
+  },
+  {
+   "id": "H8_collapse_after_release",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "after400": {
+     "state": "Plump",
+     "blend": 1
+    },
+    "after1200": {
+     "state": "Flat",
+     "blend": 0,
+     "history": [
+      [
+       3064,
+       "Filling"
+      ],
+      [
+       3094,
+       "Plump"
+      ],
+      [
+       4808,
+       "Draining"
+      ],
+      [
+       4838,
+       "Flat"
+      ]
+     ]
+    },
+    "releaseTicks": 500,
+    "minPlumpDwell": 600
+   }
+  },
+  {
+   "id": "H9_stiffness_setting",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "minBend2": 3.3528,
+    "hash2": "c10fd7243ae10dab",
+    "hashDefault": "ea7853227c415c6d"
+   }
+  },
+  {
+   "id": "HZ_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "newWarnings": 0,
+    "siteClearErrors": 0
+   }
+  }
+ ],
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\hose_01_flat.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\hose_02_plump.png"
+ ],
+ "mod_hash": "846d551e0375485e6c81942bdb182b58f263f5b5a7bc0e916f68336cfa0515b5",
+ "log": []
+}

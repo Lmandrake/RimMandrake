@@ -1,0 +1,149 @@
+{
+ "mod": "MessyConduit",
+ "mode": "save-load",
+ "script": "validation_aerial.py",
+ "started": "2026-10-04T08:56:49",
+ "rows": [
+  {
+   "id": "M16a_save_landed_new_file_only",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "new": [
+     "MC_NS_AERIAL2_20261004.rws"
+    ],
+    "changed": []
+   }
+  },
+  {
+   "id": "M16b_component_not_in_save",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "RM_MapComponent_Aerial mentions": 0
+   }
+  },
+  {
+   "id": "M16_save_load_links",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "differs": [
+     "anchors",
+     "fallen",
+     "links",
+     "netGroups",
+     "taps"
+    ],
+    "links": 2,
+    "fallen": 2,
+    "netGroups": [],
+    "loadSeconds": 2,
+    "netRepairsAfterLoad": null
+   }
+  }
+ ],
+ "before": {
+  "anchors": [
+   [
+    92,
+    185
+   ],
+   [
+    104,
+    185
+   ],
+   [
+    110,
+    195
+   ],
+   [
+    116,
+    185
+   ]
+  ],
+  "links": [
+   [
+    [
+     92,
+     185
+    ],
+    [
+     104,
+     185
+    ],
+    "Up"
+   ],
+   [
+    [
+     104,
+     185
+    ],
+    [
+     116,
+     185
+    ],
+    "Cut"
+   ]
+  ],
+  "fallen": [
+   [
+    [
+     104,
+     185
+    ],
+    [
+     110,
+     185
+    ],
+    true
+   ],
+   [
+    [
+     116,
+     185
+    ],
+    [
+     110,
+     185
+    ],
+    true
+   ]
+  ],
+  "netGroups": [
+   [
+    [
+     92,
+     185
+    ],
+    [
+     104,
+     185
+    ]
+   ],
+   [
+    [
+     110,
+     195
+    ]
+   ],
+   [
+    [
+     116,
+     185
+    ]
+   ]
+  ],
+  "taps": 1
+ },
+ "after": {
+  "anchors": [],
+  "links": [],
+  "fallen": [],
+  "netGroups": [],
+  "taps": 0
+ },
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\aerial_05_after_save_load.png"
+ ]
+}

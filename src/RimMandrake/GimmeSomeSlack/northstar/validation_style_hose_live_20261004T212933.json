@@ -1,0 +1,919 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "script": "validation_style_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T21:29:20",
+ "rows": [
+  {
+   "id": "R1_pick_reaches_reel",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "finishbuild": {
+     "success": true,
+     "cmd": "finishbuild",
+     "worker": "Per",
+     "workerHasIdeo": true,
+     "frames": 2,
+     "built": 2,
+     "errors": []
+    },
+    "meaning": "PASS = each picked look is the designator's style and lands on the blueprint (build) or building (god)"
+   }
+  },
+  {
+   "id": "R2_built_reels_stored_art",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "defaultLook": "Scrapper",
+    "styleArtMissing": [],
+    "meaning": "PASS = blueprint -> frame -> building kept each look; each reel prints its look's STORED art and selects its look's hose set"
+   }
+  },
+  {
+   "id": "R3_laid_out_per_look",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "bad": [
+     [
+      "Modern",
+      "target blocked"
+     ],
+     [
+      "Futuristic",
+      "target blocked"
+     ],
+     [
+      "Modern",
+      "not laid"
+     ],
+     [
+      "Futuristic",
+      "not laid"
+     ]
+    ],
+    "reelsNotInDefaultLook": 1,
+    "defaultLook": "Scrapper",
+    "meaning": "PASS = each laid reel prints its look's EMPTY DRUM and its hose draws that look's pieces, including >= 3 reels whose look is not the global default"
+   }
+  },
+  {
+   "id": "R4_save_load_laid",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reels": 4,
+    "styleNamesInSave": {
+     "Scrapper": 1,
+     "Industrial": 1,
+     "Modern": 1,
+     "Futuristic": 1
+    },
+    "differs": [],
+    "loadSeconds": 2,
+    "meaning": "PASS = after save/load every laid reel keeps its stored style, deployed drum, hose look and hose geometry"
+   }
+  },
+  {
+   "id": "R5_reeled_in_per_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "bad": [],
+    "meaning": "PASS = reeling in restores each look's STORED art and keeps the stored style"
+   }
+  },
+  {
+   "id": "R6_reinstall_keeps_look",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reinstall": {
+     "success": true,
+     "cmd": "reinstall:50488:113,136",
+     "styleBefore": "RM_HoseReel_Industrial",
+     "minifiedStyle": "RM_HoseReel_Industrial",
+     "installBlueprint": 52722,
+     "installStyle": "RM_HoseReel_Industrial"
+    },
+    "after": {
+     "id": 50488,
+     "rawStyle": "RM_HoseReel_Industrial",
+     "look": "Industrial",
+     "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Reel_Deployed",
+     "laid": true
+    },
+    "art": ""
+   }
+  },
+  {
+   "id": "R7_legacy_reel_default_look",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "build": true,
+    "legacy": {
+     "rawStyle": null,
+     "style": null,
+     "look": null,
+     "reelTex": null,
+     "laid": null
+    },
+    "defaultLook": "Scrapper",
+    "art": "no legacy reel",
+    "meaning": "PASS = an unstyled reel stores NO style (an older save is unchanged) yet draws, and lays its hose in, the default look"
+   }
+  }
+ ],
+ "census_laid": {
+  "success": true,
+  "cmd": "census",
+  "tick": 16026,
+  "enabled": true,
+  "texturesInstalled": true,
+  "defaultLook": "Scrapper",
+  "styleArtMissing": [],
+  "wireVisibleWidth": 0.0859,
+  "minBendSetting": 1.2,
+  "transitionTicks": 30,
+  "releaseTicks": 500,
+  "minPlumpDwell": 600,
+  "relays": 69,
+  "lastLayMs": 1,
+  "feedDraws": 0,
+  "reelEndsHidden": 2,
+  "retracts": 0,
+  "hoses": [
+   {
+    "id": 50483,
+    "kind": "Hose",
+    "reel": [
+     124,
+     120
+    ],
+    "far": [
+     -1000,
+     -1000
+    ],
+    "laid": false,
+    "layOk": false,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "none",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     124,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     125.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Modern",
+    "rawStyle": "RM_HoseReel_Modern",
+    "style": "RM_HoseReel_Modern",
+    "reelState": "stored",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Modern/Reel_PumpHookup",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Modern/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Modern/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Modern/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Modern/Strand_Plump"
+    },
+    "history": []
+   },
+   {
+    "id": 50484,
+    "kind": "Hose",
+    "reel": [
+     131,
+     120
+    ],
+    "far": [
+     -1000,
+     -1000
+    ],
+    "laid": false,
+    "layOk": false,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "none",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     131,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     132.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Futuristic",
+    "rawStyle": "RM_HoseReel_Futuristic",
+    "style": "RM_HoseReel_Futuristic",
+    "reelState": "stored",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Reel_PumpHookup",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Strand_Plump"
+    },
+    "history": []
+   },
+   {
+    "id": 50487,
+    "kind": "Hose",
+    "reel": [
+     110,
+     120
+    ],
+    "far": [
+     111,
+     132
+    ],
+    "laid": true,
+    "layOk": true,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "debug",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     110,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     111.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Scrapper",
+    "rawStyle": "RM_HoseReel_Scrapper",
+    "style": "RM_HoseReel_Scrapper",
+    "reelState": "deployed",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Reel_Deployed",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Strand_Plump"
+    },
+    "history": [],
+    "pathLen": 11.4565,
+    "flatLen": 11.6391,
+    "plumpLen": 11.5085,
+    "poseLen": 11.6391,
+    "straight": 11.4565,
+    "minBendFlat": 1.2926,
+    "minBendPlump": 2.9888,
+    "minBendPose": 1.2926,
+    "selfIntersects": false,
+    "couplings": 2,
+    "reelGraphic": "deployed",
+    "joints": 0,
+    "points": 48,
+    "fellBack": false,
+    "bbox": [
+     111.2657,
+     121.0438,
+     111.8271,
+     132.5
+    ],
+    "centreCells": [
+     [
+      111,
+      121
+     ],
+     [
+      111,
+      122
+     ],
+     [
+      111,
+      123
+     ],
+     [
+      111,
+      124
+     ],
+     [
+      111,
+      125
+     ],
+     [
+      111,
+      126
+     ],
+     [
+      111,
+      127
+     ],
+     [
+      111,
+      128
+     ],
+     [
+      111,
+      129
+     ],
+     [
+      111,
+      130
+     ],
+     [
+      111,
+      131
+     ],
+     [
+      111,
+      132
+     ]
+    ],
+    "geometryHash": "ebd17863eec76098",
+    "unwalkablePoints": 0
+   },
+   {
+    "id": 50488,
+    "kind": "Hose",
+    "reel": [
+     117,
+     120
+    ],
+    "far": [
+     118,
+     132
+    ],
+    "laid": true,
+    "layOk": true,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "debug",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     117,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     118.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Industrial",
+    "rawStyle": "RM_HoseReel_Industrial",
+    "style": "RM_HoseReel_Industrial",
+    "reelState": "deployed",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Reel_Deployed",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Strand_Plump"
+    },
+    "history": [],
+    "pathLen": 11.4565,
+    "flatLen": 11.6029,
+    "plumpLen": 11.5065,
+    "poseLen": 11.6029,
+    "straight": 11.4565,
+    "minBendFlat": 1.2956,
+    "minBendPlump": 2.9425,
+    "minBendPose": 1.2956,
+    "selfIntersects": false,
+    "couplings": 2,
+    "reelGraphic": "deployed",
+    "joints": 0,
+    "points": 48,
+    "fellBack": false,
+    "bbox": [
+     118.2553,
+     121.0438,
+     118.802,
+     132.5
+    ],
+    "centreCells": [
+     [
+      118,
+      121
+     ],
+     [
+      118,
+      122
+     ],
+     [
+      118,
+      123
+     ],
+     [
+      118,
+      124
+     ],
+     [
+      118,
+      125
+     ],
+     [
+      118,
+      126
+     ],
+     [
+      118,
+      127
+     ],
+     [
+      118,
+      128
+     ],
+     [
+      118,
+      129
+     ],
+     [
+      118,
+      130
+     ],
+     [
+      118,
+      131
+     ],
+     [
+      118,
+      132
+     ]
+    ],
+    "geometryHash": "910e9cccda679646",
+    "unwalkablePoints": 0
+   }
+  ]
+ },
+ "census_end": {
+  "success": true,
+  "cmd": "census",
+  "tick": 16058,
+  "enabled": true,
+  "texturesInstalled": true,
+  "defaultLook": "Scrapper",
+  "styleArtMissing": [],
+  "wireVisibleWidth": 0.0859,
+  "minBendSetting": 1.2,
+  "transitionTicks": 30,
+  "releaseTicks": 500,
+  "minPlumpDwell": 600,
+  "relays": 72,
+  "lastLayMs": 1,
+  "feedDraws": 0,
+  "reelEndsHidden": 1,
+  "retracts": 0,
+  "hoses": [
+   {
+    "id": 50483,
+    "kind": "Hose",
+    "reel": [
+     124,
+     120
+    ],
+    "far": [
+     -1000,
+     -1000
+    ],
+    "laid": false,
+    "layOk": false,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "none",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     124,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     125.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Modern",
+    "rawStyle": "RM_HoseReel_Modern",
+    "style": "RM_HoseReel_Modern",
+    "reelState": "stored",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Modern/Reel_PumpHookup",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Modern/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Modern/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Modern/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Modern/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Modern/Strand_Plump"
+    },
+    "history": []
+   },
+   {
+    "id": 50484,
+    "kind": "Hose",
+    "reel": [
+     131,
+     120
+    ],
+    "far": [
+     -1000,
+     -1000
+    ],
+    "laid": false,
+    "layOk": false,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "none",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     131,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     132.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Futuristic",
+    "rawStyle": "RM_HoseReel_Futuristic",
+    "style": "RM_HoseReel_Futuristic",
+    "reelState": "stored",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Reel_PumpHookup",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Futuristic/Strand_Plump"
+    },
+    "history": []
+   },
+   {
+    "id": 50487,
+    "kind": "Hose",
+    "reel": [
+     110,
+     120
+    ],
+    "far": [
+     111,
+     132
+    ],
+    "laid": false,
+    "layOk": false,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "debug",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     110,
+     120,
+     2,
+     2
+    ],
+    "start": [
+     111.5688,
+     121.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Scrapper",
+    "rawStyle": "RM_HoseReel_Scrapper",
+    "style": "RM_HoseReel_Scrapper",
+    "reelState": "stored",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Reel_PumpHookup",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Strand_Plump"
+    },
+    "history": []
+   },
+   {
+    "id": 50488,
+    "kind": "Hose",
+    "reel": [
+     113,
+     136
+    ],
+    "far": [
+     124,
+     140
+    ],
+    "laid": true,
+    "layOk": true,
+    "end": "Open",
+    "state": "Flat",
+    "stateSince": 0,
+    "transitions": 0,
+    "blend": 0,
+    "eased": 0,
+    "wobbling": false,
+    "visibleWidth": 0.38,
+    "widthOverWire": 4.4218,
+    "meshWidthFlat": 0.4122,
+    "meshWidthPlump": 0.3923,
+    "provider": "debug",
+    "signal": false,
+    "debugFlowing": false,
+    "maxLength": 30,
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "portContact": [
+     0,
+     0
+    ],
+    "footprint": [
+     113,
+     136,
+     2,
+     2
+    ],
+    "start": [
+     114.5688,
+     137.0438
+    ],
+    "retractReason": null,
+    "retractTick": -1,
+    "look": "Industrial",
+    "rawStyle": "RM_HoseReel_Industrial",
+    "style": "RM_HoseReel_Industrial",
+    "reelState": "deployed",
+    "reelTex": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Reel_Deployed",
+    "hoseTex": {
+     "Binding": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Binding",
+     "Coupling_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Coupling_Bare",
+     "EndCap_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/EndCap_Bare",
+     "Mouth": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Mouth",
+     "Nozzle_Bare": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Nozzle_Bare",
+     "Strand_Flat": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Strand_Flat",
+     "Strand_Plump": "RimMandrake/MessyConduit/Hose/Styles/Industrial/Strand_Plump"
+    },
+    "history": [],
+    "pathLen": 10.5155,
+    "flatLen": 10.7236,
+    "plumpLen": 10.5803,
+    "poseLen": 10.7236,
+    "straight": 10.5155,
+    "minBendFlat": 1.3094,
+    "minBendPlump": 3.6508,
+    "minBendPose": 1.3094,
+    "selfIntersects": false,
+    "couplings": 2,
+    "reelGraphic": "deployed",
+    "joints": 0,
+    "points": 45,
+    "fellBack": false,
+    "bbox": [
+     114.5688,
+     137.0438,
+     124.5,
+     140.5
+    ],
+    "centreCells": [
+     [
+      114,
+      137
+     ],
+     [
+      115,
+      137
+     ],
+     [
+      116,
+      137
+     ],
+     [
+      117,
+      137
+     ],
+     [
+      117,
+      138
+     ],
+     [
+      118,
+      138
+     ],
+     [
+      119,
+      138
+     ],
+     [
+      120,
+      139
+     ],
+     [
+      121,
+      139
+     ],
+     [
+      122,
+      139
+     ],
+     [
+      123,
+      140
+     ],
+     [
+      124,
+      140
+     ]
+    ],
+    "geometryHash": "f55d317786ffef44",
+    "unwalkablePoints": 0
+   }
+  ]
+ }
+}

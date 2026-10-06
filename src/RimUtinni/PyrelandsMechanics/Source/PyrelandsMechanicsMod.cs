@@ -51,10 +51,16 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             Scribe_Values.Look(ref flameHarvestMinFires, "flameHarvestMinFires", RimMandrake.Pyrelands.PyrelandsTuning.FlameHarvestMinFires);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.Label("The Tribes answer the burn");
             list.CheckboxLabeled("Arson-justice raids", ref arsonJusticeEnabled,
@@ -98,7 +104,9 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                      + (fireRiteCarryPerPawn * fireRiteGroupMax) + " a rite)");
             fireRiteCarryPerPawn = Mathf.RoundToInt(list.Slider(fireRiteCarryPerPawn, 0f, 100f));
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

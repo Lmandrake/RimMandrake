@@ -45,10 +45,16 @@ namespace RimMandrake.Warcasket
             Scribe_Values.Look(ref coreDoseEnabled, "coreDoseEnabled", true);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Warcasket mechanics enabled", ref masterEnabled,
                 "Master switch. Off: warcaskets keep their base apparel stats (armor, insulation, "
@@ -95,7 +101,9 @@ namespace RimMandrake.Warcasket
                   + "core is inert cargo.");
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

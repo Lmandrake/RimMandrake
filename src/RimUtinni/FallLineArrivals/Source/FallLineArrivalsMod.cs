@@ -49,10 +49,16 @@ namespace RimMandrake.Utinni.FallLineArrivals
             Scribe_Values.Look(ref labRatFrequency, "labRatFrequency", 1f);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Only on Fall Line maps", ref onlyOnFallLine,
                 "On: these events fire only on a map whose tile is part of the Fall Line. Off: they fire on "
@@ -100,7 +106,9 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 labRatFrequency = list.Slider(labRatFrequency, 0.25f, 4f);
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
