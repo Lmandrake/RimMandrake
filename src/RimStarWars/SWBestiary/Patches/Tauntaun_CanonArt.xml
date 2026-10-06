@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    Tauntaun drawn to its canon entry (design/RimStarWars/canon_references/tauntaun/), owner,
+    Nightside Ice sheet 2026-10-05: "Follow the canon art CLOSELY."; artpipe job nightsideice_tauntaun_v1,
+    east/north/south. The def stays the donor's own (mlie.starwarsanimalcollection, no RSW_ port);
+    only its body graphic moves to our sprites at Things/Pawn/Animal/RSW_Tauntaun_Canon/ (a path the
+    donor does not use). All three life stages, the taunlet included, draw it at their own drawSize;
+    desiccated stays on donor art. Guarded with PatchOperationFindMod - MayRequire on an <Operation>
+    is ignored by 1.6.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Tauntaun"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Tauntaun"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Tauntaun"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

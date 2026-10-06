@@ -1,0 +1,146 @@
+[
+ {
+  "id": "deeps_facetmothlarvae_eyes_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else. Keep the silhouette strictly inside the original sprite's footprint: do not grow it wider or taller.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/c8/c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_facetmothlarvae_eyes_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else. Keep the silhouette strictly inside the original sprite's footprint: do not grow it wider or taller.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/d7/d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_facetmothlarvae_eyes_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else. Keep the silhouette strictly inside the original sprite's footprint: do not grow it wider or taller.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/32/32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_megapleura_eyes_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Megapleura",
+  "target_original": [
+   "RSW_Megapleura"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes, Mandrake tier\" Edit the attached accepted sprite of the megapleura, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else. Keep the silhouette strictly inside the original sprite's footprint: do not grow it wider or taller.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/94/9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes, Mandrake tier"
+ },
+ {
+  "id": "deeps_mossbeetlelarvae_eyes_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_MossBeetleLarvae",
+  "target_original": [
+   "RSW_MossBeetleLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes\" Edit the attached accepted sprite of the moss grub, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else. Keep the silhouette strictly inside the original sprite's footprint: do not grow it wider or taller.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.8,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/31/3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes"
+ },
+ {
+  "id": "deeps_quorrfern_varb_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_QuorrFern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the quorr fern: a fern-and-mushroom symbiosis, the undergrowth of the crystal voids), a DIFFERENT individual: vary the frond count and spread and the placement of the mushroom caps among them; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/f7/f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730.png"
+ },
+ {
+  "id": "deeps_twitchingpuffer_varc_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_TwitchingPuffer",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the twitching puffer: a swollen spore-bladder ringed with finger-length tentacles), a DIFFERENT individual: vary the bladder size and shape and the count and curl of the tentacles; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/df/df997c12f65024f99b4fa420fe477bbc9667d698559641f52cf58b0f081157ad.png"
+ }
+]

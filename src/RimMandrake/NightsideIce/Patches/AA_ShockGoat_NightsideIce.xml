@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    AA_ShockGoat (zhissa), the Nightside Ice visitor, drawn with our own render (owner, Nightside Ice
+    sheet 2026-10-05: "More alien, less goat like. Look at donor art closely."; artpipe job
+    nightsideice_shockgoat_v1, east/north/south). Donor: Alpha Animals (sarg.alphaanimals).
+    Our sprites live at Things/Pawn/Animal/AA_ShockGoat_NightsideIce/ (a path the donor does not use).
+    Body graphic only, every life stage; desiccated stays on donor art; drawSizes unchanged.
+    Guarded with PatchOperationFindMod - MayRequire on an <Operation> is ignored by 1.6.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_ShockGoat"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_ShockGoat"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_ShockGoat"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
