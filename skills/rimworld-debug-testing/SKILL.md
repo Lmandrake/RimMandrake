@@ -26,8 +26,9 @@ palette, debug actions, map authoring, speed, the companion DLL — is
 session; it is the one that stops you re-paying for a lesson.** This file only
 answers *what to test on, and what a result is worth.*
 
-A cold load costs **~23–30 minutes** and one game is shared by five seats. A dev
-quicktest colony costs **~30 seconds** and belongs to nobody.
+A cold load of the owner's FULL list costs **~15 minutes** (MEASURED 2026-09-07 on 599 mods; CLAUDE.md), a minimal
+list ~22 seconds, and one game is shared by both windows. A dev quicktest colony costs **~30 seconds** and belongs to
+nobody.
 
 > 🔴 **"Blocked on a map" is almost never real.** Owner's ruling,
 > `infrastructure/agents/POLICY.md` §"Nothing outside the repo is precious":
