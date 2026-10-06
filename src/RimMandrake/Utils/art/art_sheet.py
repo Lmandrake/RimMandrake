@@ -757,7 +757,7 @@ def _short(c: dict) -> str:
         return f"history {(c.get('date') or '')[:10]} · {lab.removeprefix('history ').rsplit(' ', 1)[0]}"
     if c.get("kind") == "kept":
         return "KEPT · your ruled pick, no longer found · " + lab
-    if c.get("kind") == "donor" and c.get("ours"):
+    if c.get("kind") == "donor" and c.get("oursRender"):
         return ("IN GAME · " if c.get("winner") else "our art, shadowed · ") + lab.split(" — ")[0]
     if c.get("kind") == "donor":
         if c.get("winner"):
@@ -1563,8 +1563,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
     _ph_shared = PD.shared_map(census)
     built, purged_hidden, hidden_kept = [], {}, {}
-    ours_shas = {ev["sha"] for (m_, _r), ev in idx.live.items() if ev.get("sha") and str(m_).startswith("src/")} | \
-        {s_ for s_, vv in idx.variants.items() if any(v.get("kind") == "artpipe" for v in vv)}
+    # only bytes an artpipe render MADE are ours: donor art copied into one of our mods is still the donor's original
+    ours_shas = {s_ for s_, vv in idx.variants.items() if any(v.get("kind") == "artpipe" for v in vv)}
     for r in rows:
         graphics, seen = [], set()
         for res in (r.get("art") or {}).get("resources") or []:
@@ -1635,12 +1635,12 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             g["cols"].append(c)
             allcols.append(c)
         for c in allcols:
-            # a "donor" column whose bytes OUR mods ship, or an artpipe render made, is our art under a donor-ported texPath
+            # a "donor" column whose bytes an artpipe render made is our art under a donor-ported texPath
             # (TheRot's RotSporeKit/... carries rot_*_v2 renders): it must not read as donor-only (gate req 3)
             if c["kind"] == "donor" and set(c["faces"].values()) & ours_shas:
                 jobs = sorted({v.get("job", "") for s_ in c["faces"].values() for v in idx.variants.get(s_, [])
                                if v.get("kind") == "artpipe" and v.get("job")})
-                c["ours"] = True
+                c["oursRender"] = True
                 c["label"] = "our deployed art" + (" (render %s)" % FAM_RE.sub("", jobs[0]) if jobs else "") + " — " + \
                     c.get("label", "").split("— ", 1)[-1]
             c["purgeable"] = c["kind"] not in ("live", "kept") and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
@@ -1709,7 +1709,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "ours")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive")}
                          | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
         no_art = not graphics
