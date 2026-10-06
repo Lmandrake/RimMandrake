@@ -237,7 +237,10 @@ def check(p, dump=DEFAULT_DUMP):
     list. Returns (problems, cut_provenance_line)."""
     if not os.path.exists(dump):
         return ["UNMEASURED: no def dump at %s - run refresh.py" % dump], None
-    cuts = cherrypicker.load()
+    try:
+        cuts = cherrypicker.load()
+    except IOError as exc:
+        return ["UNMEASURED: cannot read the Cherry Picker cut list - %s" % exc], None
     want = {}
     for name in self_defs(p):
         want[name] = None
