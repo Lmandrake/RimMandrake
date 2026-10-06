@@ -305,6 +305,7 @@ def main():
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    common.state_dir.require(common.QUEUE_ROOT)  # absent state dir would read as "0 flora rows"
     backfill = json.loads(BACKFILL_PATH.read_text())
     backfill_stems = backfill.get("stems", {})
 
@@ -317,14 +318,13 @@ def main():
     config = build_config(len(flora_rows), len(probe_rows))
 
     template_html = TEMPLATE.read_text()
-    template_html = re.sub(
-        r'(<script id="CONFIG" type="application/json">\n).*?(\n</script>)',
-        lambda m: m.group(1) + json.dumps(config, indent=2) + m.group(2),
-        template_html, count=1, flags=re.S)
-    template_html = re.sub(
-        r'(<script id="ITEMS" type="application/json">\n).*?(\n</script>)',
-        lambda m: m.group(1) + json.dumps(items, indent=2) + m.group(2),
-        template_html, count=1, flags=re.S)
+    for tag, payload in (("CONFIG", config), ("ITEMS", items)):
+        template_html, n_sub = re.subn(
+            r'(<script id="%s" type="application/json">\n).*?(\n</script>)' % tag,
+            lambda m, d=payload: m.group(1) + json.dumps(d, indent=2) + m.group(2),
+            template_html, count=1, flags=re.S)
+        if n_sub != 1:
+            raise SystemExit(f"template {TEMPLATE} has no <script id=\"{tag}\"> block; sheet would ship empty")
 
     out_html = out_dir / "sheet.html"
     out_html.write_text(template_html)

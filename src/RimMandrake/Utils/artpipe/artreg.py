@@ -973,6 +973,11 @@ def main(argv=None) -> int:
 
     args = ap.parse_args(argv)
 
+    if args.cmd in ("status", "render", "backfill"):
+        # An absent state dir (a Mac, a wrong $ARTPIPE_STATE_DIR) must not read as an empty
+        # registry: status would print "targets: 0" and backfill "manifests_scanned 0 MEASURED".
+        common.state_dir.require(common.QUEUE_ROOT)
+
     try:
         if args.cmd == "register":
             ev = record_registered(args.target, args.source, by=args.by)
