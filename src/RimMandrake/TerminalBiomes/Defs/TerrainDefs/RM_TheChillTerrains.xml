@@ -89,8 +89,8 @@
     <pathCost>12</pathCost>
     <!-- SEA_FLOOR_SINGLE_BAND_1, 2026-09-30: RM_TheChillShelf added — the
          shallow-floor half of the same tag pair, see RM_TheChillDeep's own
-         comment above. Four of the ten RM_TheChillFlora.xml plants
-         (Slackwax, Ghostpane, Keelgrass, Skyharp) need it. -->
+         comment above. Three of the nine RM_TheChillFlora.xml plants
+         (Slackwax, Ghostpane, Skyharp) need it. -->
     <tags>
       <li>Water</li>
       <li>RM_TheChillShelf</li>

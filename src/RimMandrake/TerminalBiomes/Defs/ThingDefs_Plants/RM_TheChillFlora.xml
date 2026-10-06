@@ -7,7 +7,7 @@
   design/Jawa/worldbuilding/biomes/the_propane_lake_flora_pass_2026-09-27.md
   (the REVISED doc, post-2026-09-27-sitting rulings — built from that file,
   not from the item's own ruling-summary bullets). Slackwax, Ghostpane,
-  Eldspar, Tarspool, Keelgrass, Stonewater, Fuselight, Skyharp, Stillbloom,
+  Eldspar, Tarspool, Stonewater, Fuselight, Skyharp, Stillbloom,
   Pitchpearl.
 
   Every plant here is `completelyIgnoreFertility` + `wildTerrainTags`
@@ -282,54 +282,6 @@
       <harvestWork>250</harvestWork>
       <growDays>8</growDays>
       <visualSizeRange>0.8~1.1</visualSizeRange>
-      <topWindExposure>0</topWindExposure>
-      <wildOrder>2</wildOrder>
-      <purpose>Misc</purpose>
-    </plant>
-  </ThingDef>
-
-  <!-- 5. RM_Keelgrass — ceiling-rooted fringe, shallow floor at the crust
-       edge. Inversion of down: the crust is its ground and the floor is
-       its sky. No harvest — shelter and hazard-dressing, per the doc. -->
-  <ThingDef ParentName="PlantBaseNonEdible">
-    <defName>RM_Keelgrass</defName>
-    <label>keelgrass</label>
-    <description>Down is negotiable in a sea lighter than everything that falls into it. Keelgrass roots in the underside of the frozen crust and grows downward into the black, long blades hanging keel-wise into the liquid, combing the top layer where the heemin swim. Heemin shoal into keelgrass fringes when a vaunoom's wake crosses the mirror above — the one shelter in the top layer — and the crews who lower ships through the crust learn to cut their entry hole clear of the fringes, because a curtain of keelgrass across a descending hull reads, for one bad moment, exactly like something reaching up.</description>
-    <graphicData>
-      <texPath>Things/Plant/RM_Keelgrass/RM_Keelgrass</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>1.3</drawSize>
-    </graphicData>
-    <selectable>true</selectable>
-    <pathCost>6</pathCost>
-    <statBases>
-      <MaxHitPoints>40</MaxHitPoints>
-      <Flammability>0.5</Flammability>
-    </statBases>
-    <plant>
-      <completelyIgnoreFertility>true</completelyIgnoreFertility>
-      <fertilitySensitivity>0</fertilitySensitivity>
-      <wildTerrainTags>
-        <li>RM_TheChillShelf</li>
-      </wildTerrainTags>
-      <minGrowthTemperature>-273</minGrowthTemperature>
-      <maxGrowthTemperature>-20</maxGrowthTemperature>
-      <!-- "No sun has ever reached this floor and none ever will" (doc,
-           Skyharp's own description) — growMinGlow/growOptimalGlow 0,
-           matching RM_GreyCrystalFloraBase's own established idiom for
-           this campaign's other lightless sea floor ("blind murk",
-           RM_GreySeaUnderstorey.xml). PlantBaseNonEdible's inherited
-           default (0.51/1.0, i.e. "needs real daylight") would otherwise
-           leave this whole roster unable to regrow after harvest or death
-           on a map with no sun and only occasional aurora/Fuselight light —
-           the same class of silent dead-content bug as the unset
-           plantDensity/animalDensity traps this file's own header warns
-           about. -->
-      <growMinGlow>0</growMinGlow>
-      <growOptimalGlow>0</growOptimalGlow>
-      <harvestFailable>false</harvestFailable>
-      <growDays>7</growDays>
-      <visualSizeRange>0.8~1.2</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <wildOrder>2</wildOrder>
       <purpose>Misc</purpose>

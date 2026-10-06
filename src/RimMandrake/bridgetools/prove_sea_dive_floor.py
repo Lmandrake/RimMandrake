@@ -26,7 +26,7 @@ SEAS = {
     "GreySea":     ("RM_GreySea",     ["RM_SeaFloorGround"], []),
     "TwilightSea": ("RM_TwilightSea", ["RM_SeaFloorGround"], []),
     "TheChill":    ("RM_TheChill",    ["RM_ChillIceBedrock", "RM_SolidPropane", "RM_TheChillDeep"],
-                    ["RM_Slackwax", "RM_Ghostpane", "RM_Keelgrass", "RM_Skyharp", "RM_Pitchpearl",
+                    ["RM_Slackwax", "RM_Ghostpane", "RM_Skyharp", "RM_Pitchpearl",
                      "RM_Eldspar", "RM_Tarspool", "RM_Stonewater", "RM_Fuselight", "RM_ChillStillbloom"]),
 }
 SETTINGS = "RimMandrake.DivingInteraction.RM_DivingSettings"
