@@ -78,6 +78,31 @@ below, fix the tool and add a selftest — never patch one HTML file.
 12. **Nothing installs from the sheet.** Picks become ledger rulings via `art.py ingest`; install is
     `art install` only.
 
+## Enforcement — what refuses, and where (2026-10-05)
+
+The requirements above are machine-checked by `src/RimMandrake/Utils/art/scaled_review_gate.py` (selftest:
+`selftest_scaled_review_gate.py`, one failing fixture per requirement). A check that cannot be measured FAILS and says
+UNMEASURED. Never weaken a check to pass a sheet — fix the tool, or report the failure.
+
+- **Build** — `art_sheet.py --biome` (and so `refresh_sheets.py`) builds to `<sheet>.gate.tmp`, runs the gate, and only a
+  pass moves the stamped HTML into place and writes the snapshot. A failure exits nonzero (3), names the rows and the
+  requirement number, and leaves the previous sheet, snapshot and decisions untouched. The 30-minute refresh keeps serving
+  the last good sheet, retries a failing one every cycle, and re-verifies sheets it did not rebuild.
+- **Serve** — `serve_gated.py` is the only server launcher; it refuses (exit 4) an HTML with no gate stamp or one edited
+  after the gate. The stamp is `<meta name="scaled-review-gate" content="v1 sha256:…">`.
+- **Ingest** — `art.py ingest <decisions> --redo-jobs <jobs.json>` refuses unless every regen job carries his note
+  verbatim as `owner_note` (req 9); redo decisions with no `--redo-jobs` are refused unless `--defer-redo-jobs`.
+- **Hook** — `.claude/hooks/block_hand_edited_sheet.py` (PreToolUse, Bash|Write|Edit|MultiEdit) refuses hand-writing or
+  hand-editing `Transient/biome_ffar/*_sheet_*.html` and starting `serve_sheet.py` directly.
+- **Renders for real** — req 13: the gate serves the built page through a throwaway sidecar on a copy of his decisions and loads
+  it in headless Edge (`gate_browser.py`); an uncaught console error, or far fewer `<img>` than the data's rows, fails. One row
+  with a null field once blanked a whole sheet. Each row also renders inside try/catch, and a sheet polls its own URL every
+  60 s and shows a "rebuilt — reload (your picks are saved)" banner (never auto-reloads).
+- **Override** — `art_sheet.py --allow-failing "<reason>"` (used by refresh only when the sheet being replaced is itself blank)
+  writes the sheet UNSTAMPED with a red banner naming what fails; the next passing build replaces it.
+- **Check any sheet** — `python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html> [--urls] [--stamp]`, or
+  `all` for every sheet; `--stamp` stamps only a passing sheet.
+
 ## Before you give him a sheet — the checklist
 
 - [ ] `check_sheet` exits 0

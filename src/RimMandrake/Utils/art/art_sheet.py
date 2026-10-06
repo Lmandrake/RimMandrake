@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import artledger as L  # noqa: E402
 import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
+import scaled_review_gate as SG  # noqa: E402  (the hard gate: a sheet failing a scaled-review requirement is never written)
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -922,7 +923,7 @@ BIOME_BODY = r"""
    thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
    the right show only this row's letters. */
 const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
-window.itemBody = it => {
+const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
@@ -944,7 +945,7 @@ window.itemBody = it => {
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
       <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
-      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : it.scale.drawSize[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
+      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
@@ -987,8 +988,8 @@ const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
   const s = it.scale; if (!s) return '';
   const size = s.kind === 'plant'
-    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt(s.drawSize[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
-    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt(s.drawSize[0])}×${fmt(s.drawSize[1])}</span> · bodySize ${fmt(s.bodySize)}`;
+    ? `<b>${fmt(s.quad)}-cell</b> plant <span class="sub">= drawSize.x ${fmt((s.drawSize||[])[0])} × visualSize.max ${fmt(s.visualMax)}</span>${s.mesh > 1 ? ` · <b>×${s.mesh}</b> per cell` : ''}`
+    : `<b>${fmt(s.cells)} cells</b> <span class="sub">adult drawSize ${fmt((s.drawSize||[])[0])}×${fmt((s.drawSize||[])[1])}</span> · bodySize ${fmt(s.bodySize)}`;
   const sizeTip = s.kind === 'plant' ? `Plant.Print draws a SQUARE quad of drawSize.x × visualSizeRange (max at maturity)${s.mesh > 1 ? `; maxMeshCount ${s.mesh} prints ${s.mesh} quads on a ${Math.round(Math.sqrt(s.mesh))}×${Math.round(Math.sqrt(s.mesh))} sub-grid of ONE cell` : '; one mesh, centred, lifted so its base sits on the cell edge'}` : 'the adult (last) life stage bodyGraphicData.drawSize — what the engine draws';
   const q = s.kind === 'plant' ? s.quad : (s.drawSize || [])[0];
   const vcls = !s.ppc ? '' : s.ppc < 64 ? 'bs-low' : s.ppc < 120 ? 'bs-mid' : s.ppc > 256 ? 'bs-over' : 'bs-ok';
@@ -1036,6 +1037,21 @@ document.addEventListener('click', e => {
     else alert('That row is hidden by the current filter.');
   }
 }, true);
+/* rebuilt-sheet notice: poll the served page every ~60 s; when its build stamp (the gate stamp, else a hash of the HTML) differs
+   from what this tab loaded, show a banner. NEVER auto-reloads: an unsaved note would be lost. */
+(() => {
+  const fp = t => { const m = t.match(/<meta name="scaled-review-gate" content="([^"]*)">/); if (m) return m[1];
+    let h = 2166136261; for (let i = 0; i < t.length; i += 7) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return 'h' + (h >>> 0) + ':' + t.length; };
+  const get = () => fetch(location.href, { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => t && fp(t)).catch(() => null);
+  let base = null, shown = false;
+  const banner = () => { if (shown) return; shown = true; const d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:#b8860b;color:#000;padding:10px 14px;font:600 15px sans-serif;display:flex;gap:14px;align-items:center;box-shadow:0 2px 8px #000';
+    d.innerHTML = '<span>This sheet was rebuilt with new content — reload (your picks are saved)</span><button style="font:600 14px sans-serif;padding:4px 12px;cursor:pointer">Reload now</button><button style="font:14px sans-serif;padding:4px 10px;cursor:pointer">dismiss</button>';
+    d.children[1].onclick = () => location.reload(); d.children[2].onclick = () => d.remove(); document.body.appendChild(d); };
+  get().then(f => { base = f; });
+  setInterval(() => get().then(f => { if (f && base && f !== base) banner(); }), 60000);
+})();
+window.itemBody = it => { try { return _itemBody(it); } catch (e) { return `<div class="bs-noart">row render error (this row only; the sheet is intact): ${esc(String(e && e.message || e))}</div>`; } };
 """
 
 BIOME_STYLE = """
@@ -1375,7 +1391,9 @@ def ruled_elsewhere_for(row_names: set[str], entries: list[dict]) -> dict | None
 
 
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
-                   date: str | None = None, thumb_size: int = 160, sheet_only: bool = False) -> dict:
+                   date: str | None = None, thumb_size: int = 160, sheet_only: bool = False,
+                   allow_failing: str | None = None) -> dict:
+    _FC_CACHE.clear()          # the gate reads the failed-canon record fresh; a cache from earlier in a long refresh run would disagree with it
     census = json.loads(Path(census_path).read_text())
     b = census["biomes"].get(biome)
     if b is None:
@@ -1569,7 +1587,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         tier, tier_text = _tier(r)
         if base:
             tier, tier_text = "canon", f"canon Star Wars creature (entry for the base species: {base})"
-        canon_tag = canon_state(key) if not canon else ""
+        canon_tag = (canon_state(key) or "no canon-library entry for this subject — judge on its own") if not canon else ""
         flags = []
         if no_art:
             flags.append("NO ART YET")
@@ -1609,6 +1627,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                                       "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
         if scale_res is not None:
             item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
+            if item["scale"].get("status") == "fallback":     # req 2: a FALLBACK size is allowed but must be flagged
+                item["flags"].append(f"{SG.SIZE_FALLBACK_FLAG} — {item['scale'].get('source')}")
         items.append(item)
         prefills[key] = (letter, picks)
         snap_rows[key] = {"subject_key": _stem(key).lower(), "res": (gitems[0]["res"] if gitems else None),
@@ -1669,8 +1689,6 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         snap_rows.get(rk, {}).get("columns", {}).get(l) == f
         for rk, pr in prev_rows.items() for l, f in (pr.get("columns") or {}).items())
     snap["snapshotId"] = prev.get("snapshotId") if superset and prev.get("snapshotId") else new_id
-    snap_path.parent.mkdir(parents=True, exist_ok=True)
-    snap_path.write_text(json.dumps(snap, indent=1, sort_keys=True))
 
     opts = pick_options(maxl)
     n_canon = sum(1 for it in ordered if it["canon"])
@@ -1700,7 +1718,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     }
     render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
     out_html.parent.mkdir(parents=True, exist_ok=True)
-    out_html.write_text(_fill_template(cfg, ordered, render, cfg["title"]))
+    # THE GATE (scaled-game-image-review): build to <sheet>.gate.tmp, check every requirement, and only then move the
+    # HTML (stamped) into place. A failure raises GateFailed with the previous sheet, snapshot and decisions untouched.
+    gate_ctx = {"sheet_id": sheet_id, "sheet_dir": out_html.parent, "snap": snap, "snap_path": snap_path,
+                "decisions": old, "decisions_path": decisions_path, "biome": biome, "census_rows": rows,
+                "ground": GROUND_LOG.get(biome)}
+    gate_checks = SG.enforce(_fill_template(cfg, ordered, render, cfg["title"]), gate_ctx, out_html, allow_failing)
+    snap_path.parent.mkdir(parents=True, exist_ok=True)
+    snap_path.write_text(json.dumps(snap, indent=1, sort_keys=True))
+    SG.commit(out_html.with_name(out_html.stem + ".gate.tmp.html"), out_html)
 
     # decisions: written when absent, or regenerated while it is still the untouched prefill
     wrote = False
@@ -1727,7 +1753,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                   f"different pictures than in snapshot {old.get('snapshotId')}: "
                   + ", ".join(f"{r}:{l}" for r, l in bad[:20]) + " — ingest will refuse until reconciled", file=sys.stderr)
     return {"biome": biome, "html": _rel(out_html), "decisions": _rel(decisions_path), "wrote_decisions": wrote,
-            "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"], "census_rows": len(rows), "rows": len(ordered),
+            "gate": ("PASS " if all(c.ok for c in gate_checks) else "OVERRIDE (unstamped, bannered) ") + SG.GATE_VERSION, "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"], "census_rows": len(rows), "rows": len(ordered),
             "ruled_rows_gone_kept_in_snapshot": sorted(k for k, v in snap_rows.items() if v.get("rowGone")),
             "collapsed_ruled_elsewhere": n_collapsed, "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
             "canon_rows_with_must_show": sum(1 for it in ordered if it["canon"] and it["canon"]["must"]),
@@ -1749,6 +1775,9 @@ def main(argv=None):
     ap.add_argument("--sheet-only", action="store_true",
                     help="with --biome: rewrite the HTML only, never the decisions file — use while a sheet is being "
                          "reviewed live (an untouched-prefill decisions file is otherwise regenerated)")
+    ap.add_argument("--allow-failing", metavar="REASON",
+                    help="with --biome: if the gate fails, still write the sheet UNSTAMPED with a red banner naming what fails — "
+                         "only for replacing a sheet that is itself unusable (blank). Never for a sheet that merely fails a requirement.")
     ap.add_argument("--res", action="append", default=[])
     ap.add_argument("--out")
     ap.add_argument("--title", default="Art: all versions compared")
@@ -1768,11 +1797,18 @@ def main(argv=None):
         keys = []
         for k in a.biome:
             keys += json.loads(Path(a.census).read_text())["biome_order"][:3] if k == "first3" else [k]
+        rc = 0
         for k in keys:
-            r = generate_biome(k, Path(a.census), Path(a.out) if a.out and len(keys) == 1 else None, a.date,
-                               sheet_only=a.sheet_only)
+            try:
+                r = generate_biome(k, Path(a.census), Path(a.out) if a.out and len(keys) == 1 else None, a.date,
+                                   sheet_only=a.sheet_only, allow_failing=a.allow_failing)
+            except SG.GateFailed as e:
+                print(f"GATE FAILED for {k}: sheet NOT written; the previous sheet (if any) is untouched\n"
+                      + SG.report(e.sheet, e.checks), file=sys.stderr)
+                rc = 3
+                continue
             print(json.dumps(r, indent=1))
-        return 0
+        return rc
     if not a.out:
         ap.error("--out is required without --biome")
     idx = L.Index()
