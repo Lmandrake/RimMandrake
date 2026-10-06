@@ -91,6 +91,18 @@ namespace RimMandrake.FlowWorks.SelfTest
             Console.WriteLine($"      {SequenceFuzz.Cases - c0} cases, {SequenceFuzz.Steps - s0} steps, {clock.Elapsed.TotalSeconds:F2} s");
         }
 
+        private static void KernelCase(string name, Func<List<string>> run)
+        {
+            long c0 = FlowKernelFuzz.Cases, p0 = FlowKernelFuzz.Pulses;
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            Case(name, () =>
+            {
+                List<string> fails = run();
+                if (fails.Count > 0) throw new Exception(fails.Count + " failing seed(s), shrunk:\n        " + string.Join("\n        ", fails));
+            });
+            Console.WriteLine($"      {FlowKernelFuzz.Cases - c0} scenes, {FlowKernelFuzz.Pulses - p0} pulses, {clock.Elapsed.TotalSeconds:F2} s");
+        }
+
         private static void Assert(bool cond, string msg)
         {
             if (!cond) throw new Exception(msg);
@@ -105,8 +117,19 @@ namespace RimMandrake.FlowWorks.SelfTest
         private static float WaterCapacity(int cells) =>
             RM_StockMath.BodyCapacity(cells, WaterCanalCellsPerSourceCell, WaterVolumePerTile, DefaultBudgetMultiplier);
 
-        private static int Main()
+        private static int Main(string[] args)
         {
+            // Differential mode: selftest_flowworks_kernel_oracle.py pipes scenes on stdin and compares the
+            // kernel's fill vectors with the Python PulseOracle (northstar/validation_v2.py).
+            if (args.Length > 0 && args[0] == "--oracle-scenes")
+            {
+                // A file, not stdin: a large pipe into dotnet.exe across the WSL boundary hangs (measured, 3000 scenes).
+                using (var reader = args.Length > 1 ? new System.IO.StreamReader(args[1]) : Console.In)
+                {
+                    return OracleScenes.Run(reader, Console.Out);
+                }
+            }
+
             // ═══════════════════════════════════ the 5:1 budget (§5 "Budget") ══
 
             Case("Capacity_is_cells_times_canalCells_times_volumePerTile", () =>
@@ -1123,6 +1146,26 @@ namespace RimMandrake.FlowWorks.SelfTest
             FuzzCase("Fuzz_converter_never_overspends", () => SequenceFuzz.Conversion(5000, 11));
             FuzzCase("Fuzz_pit_width_monotone", () => SequenceFuzz.PitWidth(20000, 13));
             Console.WriteLine($"fuzz total: {SequenceFuzz.Cases} cases, {SequenceFuzz.Steps} steps, {fuzzClock.Elapsed.TotalSeconds:F2} s");
+
+            // ═══════════ Approach B phase 2: the PRODUCTION pulse kernel (RM_FlowKernel.cs) on generated grids ══
+            var kernelClock = System.Diagnostics.Stopwatch.StartNew();
+            KernelCase("Kernel_fuzz_ledger_bounds_nomix_settles", () => FlowKernelFuzz.Fuzz(5000, 101));
+            KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
+            Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
+            // Known defects: these PASS while the defect reproduces and print what they saw. When a fix lands the
+            // case fails ("not reproduced") - turn it into a guard asserting the fixed behaviour.
+            Case("KnownDefect_1_touching_water_and_tar_merge", () =>
+            {
+                string r = FlowKernelFuzz.Finding1TouchingBodies();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("REPRODUCED"), r);
+            });
+            Case("KnownDefect_2_reload_changes_scarce_allocation", () =>
+            {
+                string r = FlowKernelFuzz.Finding2ReloadOrder();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("REPRODUCED"), r);
+            });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;

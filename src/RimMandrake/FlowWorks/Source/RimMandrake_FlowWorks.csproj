@@ -80,6 +80,7 @@
     <!-- The §5 stock arithmetic, Verse-free on purpose so Source/SelfTest/
          can compile the PRODUCTION file in directly. See its header. -->
     <Compile Include="RM_StockMath.cs" />
+    <Compile Include="RM_FlowKernel.cs" />
     <Compile Include="RM_LiquidBody.cs" />
     <Compile Include="RM_FluidIdentity.cs" />
     <Compile Include="RM_PromotionProofs.cs" />

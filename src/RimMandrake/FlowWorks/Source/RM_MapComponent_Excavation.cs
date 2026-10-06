@@ -33,7 +33,7 @@ namespace RimMandrake.FlowWorks
 	/// LIMITED stock with rain/season/seepage refill (rulings 2 and 4) is
 	/// bookkeeping this engine has the hooks for and does not yet do.
 	/// </summary>
-	public class RM_MapComponent_Excavation : MapComponent
+	public class RM_MapComponent_Excavation : MapComponent, RM_IFlowWorld
 	{
 		/// <summary>D. 0 = surface; 1..4 = shallow/mid/deep/SUPERDEEP.</summary>
 		private byte[] depthGrid;
@@ -107,31 +107,13 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Derived, never scribed: rebuilt from depthGrid on load.</summary>
 		private readonly HashSet<IntVec3> excavatedCells = new HashSet<IntVec3>();
 
-		private readonly HashSet<IntVec3> pulseVisited = new HashSet<IntVec3>();
+		/// <summary>Approach B phase 2: the pulse's grid transition lives in the Verse-free RM_FlowKernel
+		/// (component walk, sinks, flow order, recipient order, donor pick, ledger); this component is its
+		/// adapter (terrain, bodies, fluid palette, rendering). Derived, never scribed.</summary>
+		private RM_FlowKernel flowKernel;
 
-		/// <summary>FLOWWORKS_SHARED_SOURCE_STALL_1: source cells already in the
-		/// CURRENT component only — cleared per component, never shared.</summary>
-		private readonly HashSet<IntVec3> pulseComponentSources = new HashSet<IntVec3>();
-
-		private readonly List<IntVec3> pulseNeighbourScratch = new List<IntVec3>();
-
-		private readonly Queue<IntVec3> pulseQueue = new Queue<IntVec3>();
-
-		private readonly List<IntVec3> pulseComponent = new List<IntVec3>();
-
-		private readonly List<IntVec3> pulseRecipients = new List<IntVec3>();
-
-		/// <summary>FLOWWORKS_CHANNEL_OSCILLATION_1. Per component, per pulse: hops
-		/// from the nearest supplying source and to the nearest sink, through
-		/// excavated cells. Together they are the flow order RM_StockMath.MayFlowBetween
-		/// enforces. Derived, never scribed.</summary>
-		private readonly Dictionary<IntVec3, int> pulseSourceHops = new Dictionary<IntVec3, int>();
-
-		private readonly Dictionary<IntVec3, int> pulseSinkHops = new Dictionary<IntVec3, int>();
-
-		private readonly List<IntVec3> pulseHopFrontier = new List<IntVec3>();
-
-		private readonly HashSet<IntVec3> pulseComponentSet = new HashSet<IntVec3>();
+		/// <summary>excavatedCells as kernel indices, in the set's own iteration order, rebuilt per pulse.</summary>
+		private readonly List<int> pulseSeeds = new List<int>();
 
 		/// <summary>A single connected excavation this big is already far past
 		/// anything a colony digs by hand; the cap exists so one pathological
@@ -1062,372 +1044,93 @@ namespace RimMandrake.FlowWorks
 			// LIMITED body cannot pay every adjacent channel's inlet in a pulse,
 			// the earlier-seeded channel (dig order in a session; cell-index order
 			// after a load rebuilds the set) is paid first, unit by unit.
-			pulseVisited.Clear();
+			if (flowKernel == null || flowKernel.width != map.Size.x || flowKernel.height != map.Size.z)
+			{
+				flowKernel = new RM_FlowKernel(map.Size.x, map.Size.z) { world = this, maxComponentCells = MaxComponentCells };
+			}
+			flowKernel.depth = depthGrid;
+			flowKernel.fill = fillGrid;
+			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
+			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled;
+			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
+			pulseSeeds.Clear();
 			foreach (IntVec3 seed in excavatedCells)
 			{
-				if (pulseVisited.Contains(seed))
+				pulseSeeds.Add(map.cellIndices.CellToIndex(seed));
+			}
+			flowKernel.Pulse(pulseSeeds, pulseCount);
+			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
+			{
+				sinkTransferredTotal += flowKernel.sinkDrained;
+			}
+			if (Prefs.DevMode)
+			{
+				for (int i = 0; i < flowKernel.imbalanceReports.Count; i++)
 				{
-					continue;
+					// The ledger. Every transfer inside a component is -1 and +1, so the only legitimate changes in
+					// total fill are what sources credited in and what left down a sink. Anything else is a leak.
+					Log.Warning("[RimMandrake.FlowWorks] conservation ledger does not balance: " +
+						flowKernel.imbalanceReports[i] + ". This is a defect, not an overflow.");
 				}
-				RM_StockMath.CollectComponent(seed, isSourcePredicate, isExcavatedPredicate, cardinalNeighbours,
-					pulseVisited, pulseComponentSources, pulseQueue, pulseNeighbourScratch, pulseComponent,
-					MaxComponentCells);
-				ResolveComponent();
 			}
 			SyncFluidIdentity();
 		}
 
-		private System.Predicate<IntVec3> isSourcePredicateCache;
-		private System.Predicate<IntVec3> isExcavatedPredicateCache;
-		private System.Action<IntVec3, List<IntVec3>> cardinalNeighboursCache;
-		private System.Predicate<IntVec3> isSourcePredicate => isSourcePredicateCache ?? (isSourcePredicateCache = IsSourceCell);
-		private System.Predicate<IntVec3> isExcavatedPredicate => isExcavatedPredicateCache ?? (isExcavatedPredicateCache = IsExcavated);
-		private System.Action<IntVec3, List<IntVec3>> cardinalNeighbours => cardinalNeighboursCache ?? (cardinalNeighboursCache = CardinalNeighboursInBounds);
-
-		private void CardinalNeighboursInBounds(IntVec3 c, List<IntVec3> into)
-		{
-			for (int i = 0; i < 4; i++)
-			{
-				IntVec3 n = c + GenAdj.CardinalDirections[i];
-				if (n.InBounds(map))
-				{
-					into.Add(n);
-				}
-			}
-		}
-
-		private void ResolveComponent()
-		{
-			float before = 0f;
-			for (int i = 0; i < pulseComponent.Count; i++)
-			{
-				IntVec3 c = pulseComponent[i];
-				if (IsExcavated(c))
-				{
-					before += fillGrid[map.cellIndices.CellToIndex(c)];
-				}
-			}
-
-			// PHASE 4, ruling 9 — SINKS, drained before the flow so the room a
-			// sink opens is room this same pulse can pour into. That is what
-			// makes "breach into a sink and the moat empties" read as a drain
-			// rather than as a slow leak.
-			float externalDrain = 0f;
-			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
-			{
-				int drainPerCell = RimMandrakeFlowWorksSettings.FlowPerPulse;
-				for (int i = 0; i < pulseComponent.Count; i++)
-				{
-					IntVec3 c = pulseComponent[i];
-					if (!IsExcavated(c) || !IsSinkCell(c))
-					{
-						continue;
-					}
-					int ci = map.cellIndices.CellToIndex(c);
-					int take = fillGrid[ci] < drainPerCell ? fillGrid[ci] : drainPerCell;
-					if (take <= 0)
-					{
-						continue;
-					}
-					fillGrid[ci] -= (byte)take;
-					externalDrain += take;
-				}
-				sinkTransferredTotal += externalDrain;
-			}
-
-			ComputeFlowOrder();
-
-			pulseRecipients.Clear();
-			for (int i = 0; i < pulseComponent.Count; i++)
-			{
-				IntVec3 c = pulseComponent[i];
-				if (!IsExcavated(c))
-				{
-					continue;
-				}
-				int idx = map.cellIndices.CellToIndex(c);
-				if (fillGrid[idx] < depthGrid[idx])
-				{
-					pulseRecipients.Add(c);
-				}
-			}
-			if (pulseRecipients.Count == 0)
-			{
-				RenderComponentFill();
-				return;
-			}
-			// Step 1 of §21: deepest first, then along the flow order (nearest the
-			// source first, so a level entering at the mouth is carried down the
-			// channel the same pulse), with a cell-index tie-break only for true
-			// ties so the order is identical on every machine and survives a save.
-			pulseRecipients.Sort(CompareDeepestFirst);
-
-			float externalCredit = 0f;
-			int perCell = RimMandrakeFlowWorksSettings.FlowPerPulse;
-			for (int i = 0; i < pulseRecipients.Count; i++)
-			{
-				IntVec3 r = pulseRecipients[i];
-				int ri = map.cellIndices.CellToIndex(r);
-				int moved = 0;
-				while (moved < perCell && fillGrid[ri] < depthGrid[ri])
-				{
-					IntVec3 donor = PickDonor(r, depthGrid[ri]);
-					if (!donor.IsValid)
-					{
-						break;
-					}
-					if (IsSourceCell(donor))
-					{
-						// PHASE 4. The 5:1 budget bites HERE and nowhere else: a
-						// limitless body always pays, a limited one pays until
-						// its stock is gone and then stops feeding the canal.
-						// A failed debit must NOT move liquid — a transfer that
-						// happens after its debit failed is precisely the silent
-						// leak the ledger below exists to catch.
-						// Step 3: the debit unit is the SOURCE BODY's fluid, never the map's.
-						FluidDef sourceFluid = DonorFluid(donor, true) ?? ActiveFluid;
-						if (!stock.TryDebit(map, donor, sourceFluid != null ? sourceFluid.volumePerTile : 1f, this))
-						{
-							break;
-						}
-						// Credited from off-map / from the body itself. Under
-						// ruling 16 a source is sticky-limitless, so this is a
-						// real external credit and not an unbalanced ledger.
-						externalCredit += 1f;
-					}
-					else
-					{
-						fillGrid[map.cellIndices.CellToIndex(donor)] -= 1;
-					}
-					if (fillGrid[ri] == 0)
-					{
-						// First level into a dry cell claims it for the donor's fluid (step 2: identity at the writer).
-						byte key = PaletteKey(DonorFluid(donor, IsSourceCell(donor)) ?? ActiveFluid);
-						fluidGrid[ri] = key;
-					}
-					fillGrid[ri] += 1;
-					moved++;
-				}
-			}
-
-			float after = 0f;
-			for (int i = 0; i < pulseComponent.Count; i++)
-			{
-				IntVec3 c = pulseComponent[i];
-				if (IsExcavated(c))
-				{
-					after += fillGrid[map.cellIndices.CellToIndex(c)];
-				}
-			}
-			// The ledger. Every transfer inside the component is -1 and +1, so
-			// the only legitimate changes in total fill are what sources
-			// credited in and what left down a sink. Anything else is a leak,
-			// and a leak is a bug.
-			float imbalance = after - before - externalCredit + externalDrain;
-			if (Prefs.DevMode && Mathf.Abs(imbalance) > 0.001f)
-			{
-				Log.Warning("[RimMandrake.FlowWorks] conservation ledger does not balance: " +
-					"before=" + before.ToString("F1") + " after=" + after.ToString("F1") +
-					" sourceCredit=" + externalCredit.ToString("F1") +
-					" sinkDrain=" + externalDrain.ToString("F1") +
-					" imbalance=" + imbalance.ToString("F1") + ". This is a defect, not an overflow.");
-			}
-			RenderComponentFill();
-		}
-
-		private int CompareDeepestFirst(IntVec3 a, IntVec3 b)
-		{
-			int da = depthGrid[map.cellIndices.CellToIndex(a)];
-			int db = depthGrid[map.cellIndices.CellToIndex(b)];
-			if (da != db)
-			{
-				return db - da;
-			}
-			int sa = HopsOf(pulseSourceHops, a);
-			int sb = HopsOf(pulseSourceHops, b);
-			if (sa != sb)
-			{
-				return sa - sb;
-			}
-			int ka = HopsOf(pulseSinkHops, a);
-			int kb = HopsOf(pulseSinkHops, b);
-			if (ka != kb)
-			{
-				return kb - ka;
-			}
-			return map.cellIndices.CellToIndex(a) - map.cellIndices.CellToIndex(b);
-		}
-
-		private static int HopsOf(Dictionary<IntVec3, int> hops, IntVec3 c)
-		{
-			return hops.TryGetValue(c, out int h) ? h : 0;
-		}
-
-		/// <summary>FLOWWORKS_CHANNEL_OSCILLATION_1. Fills <see cref="pulseSourceHops"/>
-		/// (BFS from every source cell that can still supply; empty if none can) and
-		/// <see cref="pulseSinkHops"/> (BFS from every sink cell; empty if sinks are
-		/// off or absent) over this component's excavated cells. Reads only the grid
-		/// and the stock, so the order is fixed for the whole pulse.</summary>
-		private void ComputeFlowOrder()
-		{
-			pulseSourceHops.Clear();
-			pulseSinkHops.Clear();
-			pulseHopFrontier.Clear();
-			pulseComponentSet.Clear();
-			for (int i = 0; i < pulseComponent.Count; i++)
-			{
-				IntVec3 c = pulseComponent[i];
-				pulseComponentSet.Add(c);
-				if (IsSourceCell(c) && (stock == null || stock.CanSupply(map, c, this)))
-				{
-					pulseHopFrontier.Add(c);
-				}
-			}
-			HopsFrom(pulseSourceHops, false);
-			pulseHopFrontier.Clear();
-			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
-			{
-				for (int i = 0; i < pulseComponent.Count; i++)
-				{
-					IntVec3 c = pulseComponent[i];
-					if (IsExcavated(c) && IsSinkCell(c))
-					{
-						pulseHopFrontier.Add(c);
-					}
-				}
-			}
-			HopsFrom(pulseSinkHops, true);
-		}
-
-		/// <summary>Multi-seed BFS from <see cref="pulseHopFrontier"/> (hop 0) into
-		/// this component's excavated cells. A source seed is not excavated, so it is
-		/// a root only and is never recorded; a sink seed is excavated and records 0.</summary>
-		private void HopsFrom(Dictionary<IntVec3, int> hops, bool seedsAreExcavated)
-		{
-			if (pulseHopFrontier.Count == 0)
-			{
-				return;
-			}
-			if (seedsAreExcavated)
-			{
-				for (int i = 0; i < pulseHopFrontier.Count; i++)
-				{
-					hops[pulseHopFrontier[i]] = 0;
-				}
-			}
-			int head = 0;
-			while (head < pulseHopFrontier.Count)
-			{
-				IntVec3 c = pulseHopFrontier[head++];
-				int hc = hops.TryGetValue(c, out int h) ? h : 0;
-				for (int i = 0; i < 4; i++)
-				{
-					IntVec3 n = c + GenAdj.CardinalDirections[i];
-					if (hops.ContainsKey(n) || !pulseComponentSet.Contains(n) || !IsExcavated(n))
-					{
-						continue;
-					}
-					hops[n] = hc + 1;
-					pulseHopFrontier.Add(n);
-				}
-			}
-		}
-
-		/// <summary>The two clauses that are the entire flow model.
-		///
-		///   GRAVITY  — a neighbour gives to a DEEPER cell whether or not it is
-		///              brimming. That is what makes "a breach into a deeper
-		///              cell drains the shallower one" free, and it is what
-		///              fills terraces bottom-up.
-		///   OVERFLOW — a neighbour at F == D gives to ANY cell with room. This
-		///              is the step §21 calls out as load-bearing: without it a
-		///              SUPERDEEP source could never feed a shallower canal,
-		///              because liquid does not run uphill, and the whole canal
-		///              fantasy dies. A source is a full SUPERDEEP cell, so it
-		///              spills into any shallower channel dug at its edge.
-		///
-		/// Deterministic: fixed direction order, strict &gt; on the score, so
-		/// ties always resolve to the same neighbour.</summary>
-		private IntVec3 PickDonor(IntVec3 r, byte depthR)
-		{
-			IntVec3 best = IntVec3.Invalid;
-			int bestScore = -1;
-			for (int i = 0; i < 4; i++)
-			{
-				IntVec3 n = r + GenAdj.CardinalDirections[i];
-				if (!n.InBounds(map))
-				{
-					continue;
-				}
-				byte dn;
-				byte fn;
-				bool source = IsSourceCell(n);
-				if (source)
-				{
-					// PHASE 4. A spent LIMITED body is not a donor. Skipping it
-					// here rather than failing the debit later means the picker
-					// can still find a wet neighbour in the same iteration.
-					if (!stock.CanSupply(map, n, this))
-					{
-						continue;
-					}
-					dn = RM_ExcavationDepth.Superdeep;
-					fn = RM_ExcavationDepth.Superdeep;
-				}
-				else
-				{
-					int ni = map.cellIndices.CellToIndex(n);
-					dn = depthGrid[ni];
-					if (dn == 0)
-					{
-						continue;
-					}
-					fn = fillGrid[ni];
-				}
-				if (fn == 0)
-				{
-					continue;
-				}
-				// LIQUID_BODY_FLUID_IDENTITY_1 step 2: fluids never mix (owner Q3).
-				FluidDef donorFluid = DonorFluid(n, source);
-				if (!RM_StockMath.FluidsCompatible(fillGrid[map.cellIndices.CellToIndex(r)] > 0, FluidAt(r), donorFluid))
-				{
-					continue;
-				}
-				// VISCOSITY (Phase 3/7): a viscous donor gives only every Nth pulse (FluidDef.ticksPerTile /
-				// water's), so a tar front lags a water front. Removes candidates only: the ledger is untouched.
-				if (RimMandrakeFlowWorksSettings.viscosityEnabled
-					&& !RM_StockMath.FluidMovesThisPulse(pulseCount, (donorFluid ?? ActiveFluid)?.ticksPerTile ?? RM_StockMath.WaterTicksPerTile))
-				{
-					continue;
-				}
-				if (depthR <= dn && fn < dn)
-				{
-					continue; // neither deeper than the donor nor brimming
-				}
-				// FLOWWORKS_CHANNEL_OSCILLATION_1: a cell-to-cell level only moves
-				// strictly later in this pulse's flow order, or it could come back.
-				// A neighbour outside the component (truncated) has no order: no gift.
-				if (!source && (!pulseComponentSet.Contains(n)
-						|| !RM_StockMath.MayFlowBetween(
-							HopsOf(pulseSourceHops, n), HopsOf(pulseSinkHops, n), dn,
-							HopsOf(pulseSourceHops, r), HopsOf(pulseSinkHops, r), depthR)))
-				{
-					continue;
-				}
-				int score = source ? 1000 : (fn * 10 + dn);
-				if (score > bestScore)
-				{
-					bestScore = score;
-					best = n;
-				}
-			}
-			return best;
-		}
 		/// <summary>The fluid a donor cell would give: its body's for a source, the cell's own record otherwise.</summary>
 		private FluidDef DonorFluid(IntVec3 n, bool source)
 		{
 			return source ? stock.BodyAt(map, n, this)?.fluid : FluidAt(n);
+		}
+
+		// ── RM_IFlowWorld: what RM_FlowKernel reads and writes outside the depth/fill arrays ──
+
+		bool RM_IFlowWorld.IsNaturalLiquid(int idx)
+		{
+			return IsNaturalLiquid(map.cellIndices.IndexToCell(idx));
+		}
+
+		bool RM_IFlowWorld.CanSupply(int idx)
+		{
+			return stock == null || stock.CanSupply(map, map.cellIndices.IndexToCell(idx), this);
+		}
+
+		bool RM_IFlowWorld.TryDebitLevel(int idx)
+		{
+			// Step 3: the debit unit is the SOURCE BODY's fluid, never the map's.
+			IntVec3 c = map.cellIndices.IndexToCell(idx);
+			FluidDef sourceFluid = DonorFluid(c, true) ?? ActiveFluid;
+			return stock.TryDebit(map, c, sourceFluid != null ? sourceFluid.volumePerTile : 1f, this);
+		}
+
+		object RM_IFlowWorld.DonorFluid(int idx, bool source)
+		{
+			return DonorFluid(map.cellIndices.IndexToCell(idx), source);
+		}
+
+		object RM_IFlowWorld.CellFluid(int idx)
+		{
+			return FluidAt(map.cellIndices.IndexToCell(idx));
+		}
+
+		void RM_IFlowWorld.Claim(int idx, object fluid)
+		{
+			// First level into a dry cell claims it for the donor's fluid (step 2: identity at the writer).
+			fluidGrid[idx] = PaletteKey((fluid as FluidDef) ?? ActiveFluid);
+		}
+
+		int RM_IFlowWorld.TicksPerTile(object fluid)
+		{
+			return ((fluid as FluidDef) ?? ActiveFluid)?.ticksPerTile ?? RM_StockMath.WaterTicksPerTile;
+		}
+
+		bool RM_IFlowWorld.IsSink(int idx)
+		{
+			return IsSinkCell(map.cellIndices.IndexToCell(idx));
+		}
+
+		void RM_IFlowWorld.ComponentResolved(List<int> component)
+		{
+			RenderComponentFill(component);
 		}
 
 
@@ -1502,12 +1205,12 @@ namespace RimMandrake.FlowWorks
 
 		// ── rendering F ───────────────────────────────────────────────────
 
-		private void RenderComponentFill()
+		private void RenderComponentFill(List<int> component)
 		{
 			FluidDef fallback = ActiveFluid;
-			for (int i = 0; i < pulseComponent.Count; i++)
+			for (int i = 0; i < component.Count; i++)
 			{
-				IntVec3 c = pulseComponent[i];
+				IntVec3 c = map.cellIndices.IndexToCell(component[i]);
 				FluidDef fluid = FluidAt(c) ?? fallback;
 				if (fluid != null && IsExcavated(c))
 				{
