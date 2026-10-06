@@ -51,12 +51,19 @@ namespace RimMandrake.TerminalBiomes
             lastRegisteredPosition = parent.Position;
         }
 
-        // CompTickRare (~250 ticks, the ThingComp default rare cadence) is
-        // plenty: a walking creature moves at most one cell every several
-        // ticks, and a stale registration for a quarter of a second is
-        // invisible.
-        public override void CompTickRare()
+        // CompTickRare only runs when the PARENT def's tickerType is Rare; every
+        // mover this comp targets is a Pawn (TickerType.Normal), so a
+        // CompTickRare override never fired and the stranded-light fix never
+        // ran (TERMINALBIOMES_REVIEW_FIXES_1 #2). CompTick plus a hash gate at
+        // ~250 ticks matches RM_Comp_WarblingGlow: a walking creature moves at
+        // most one cell every several ticks, and a stale registration for a
+        // quarter of a second is invisible.
+        public override void CompTick()
         {
+            if (!parent.IsHashIntervalTick(250))
+            {
+                return;
+            }
             CheckAndReregister();
         }
 
