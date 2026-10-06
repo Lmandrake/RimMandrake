@@ -604,9 +604,14 @@ namespace JawaBench.BridgeTools
                 "AND the wasAlreadyGenerated reuse path) this now runs jawa/map_commit's own finalize " +
                 "sequence itself - regionAndRoomUpdater.Enabled=true, RebuildAllRegionsAndRooms, and " +
                 "mapDrawer.RegenerateEverythingNow - so a caller no longer has to remember a separate " +
-                "map_commit call to get a map that is actually consistent to look at or screenshot.",
+                "map_commit call to get a map that is actually consistent to look at or screenshot. " +
+                "LAYER (SEABED checkout): 'layer' names a PlanetLayerDef (e.g. RM_SeabedLayer) and the tile id " +
+                "is read on THAT layer; the map parent then defaults to the layer's DefaultWorldObject " +
+                "(RM_SeabedSite), so the floor generator its biome names runs - no ship landing needed. " +
+                "'biome' (test fixtures only) sets that tile's PrimaryBiome first, so a sea with no painted " +
+                "tiles can still be checked out.",
             ResultDescription =
-                "success, tile, mapParentDef, wasAlreadyGenerated, mapSize{x,z}, mapIndex " +
+                "success, tile, layer, mapParentDef, biome, biomeWas, wasAlreadyGenerated, mapSize{x,z}, mapIndex " +
                 "(Find.Maps position), pawnCount, thingCount, mapFinalize{failedSteps, steps[]}.")]
         public static async Task<object> WorldTileMapGenerate(
             IRimBridgeContext ctx,
@@ -616,7 +621,11 @@ namespace JawaBench.BridgeTools
             string suggestedMapParent = "Settlement",
             [ToolParameter(Description = "Map width. -1 uses Find.World.info.initialMapSize.")] int sizeX = -1,
             [ToolParameter(Description = "Map height. -1 uses Find.World.info.initialMapSize.")] int sizeZ = -1,
-            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false)
+            [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false,
+            [ToolParameter(Description = "PlanetLayerDef defName to read the tile on (e.g. RM_SeabedLayer). Empty = the surface.")]
+            string layer = "",
+            [ToolParameter(Description = "Test fixtures only: set the tile's PrimaryBiome to this BiomeDef before generating.")]
+            string biome = "")
         {
             if (tile < 0) return Fail("Give 'tile', a valid world tile id.");
             // Half a size is not a size: the pair is used only when BOTH are positive, so
@@ -630,12 +639,34 @@ namespace JawaBench.BridgeTools
                 cancellationToken.ThrowIfCancellationRequested();
                 var grid = Find.WorldGrid;
                 if (grid == null) return Fail("No WorldGrid. This needs a world loaded.");
-                if (tile >= grid.TilesCount) return Fail("Tile " + tile + " out of range (0.." + (grid.TilesCount - 1) + ").");
+                PlanetLayer pl = grid.Surface;
+                PlanetLayerDef layerDef = null;
+                if (!string.IsNullOrEmpty(layer))
+                {
+                    layerDef = DefDatabase<PlanetLayerDef>.GetNamedSilentFail(layer.Trim());
+                    if (layerDef == null) return Fail("No PlanetLayerDef '" + layer + "'.", DefSuggestions<PlanetLayerDef>(layer));
+                    pl = grid.FirstLayerOfDef(layerDef);
+                    if (pl == null) return Fail("PlanetLayerDef '" + layer + "' exists but no layer of it is registered on this world.");
+                }
+                if (tile >= pl.TilesCount) return Fail("Tile " + tile + " out of range (0.." + (pl.TilesCount - 1) + ") on layer " + (layerDef != null ? layerDef.defName : "Surface") + ".");
 
-                var wod = DefDatabase<WorldObjectDef>.GetNamedSilentFail((suggestedMapParent ?? "Settlement").Trim());
+                // the default parent is the layer's own map object (RM_SeabedSite picks the floor generator)
+                string parentName = (suggestedMapParent ?? "Settlement").Trim();
+                var wod = (layerDef != null && parentName == "Settlement") ? layerDef.DefaultWorldObject
+                    : DefDatabase<WorldObjectDef>.GetNamedSilentFail(parentName);
                 if (wod == null) return Fail("No WorldObjectDef '" + suggestedMapParent + "'.", DefSuggestions<WorldObjectDef>(suggestedMapParent));
 
-                var pt = new PlanetTile(tile, grid.Surface);
+                BiomeDef biomeDef = null;
+                if (!string.IsNullOrEmpty(biome))
+                {
+                    biomeDef = DefDatabase<BiomeDef>.GetNamedSilentFail(biome.Trim());
+                    if (biomeDef == null) return Fail("No BiomeDef '" + biome + "'.", DefSuggestions<BiomeDef>(biome));
+                }
+                var ptile = pl[tile] as SurfaceTile;
+                string biomeWas = ptile != null && ptile.PrimaryBiome != null ? ptile.PrimaryBiome.defName : null;
+                if (biomeDef != null && ptile == null) return Fail("Tile " + tile + " on this layer is not a SurfaceTile; cannot set its biome.");
+
+                var pt = new PlanetTile(tile, pl);
                 var existing = Current.Game != null ? Current.Game.FindMap(pt) : null;
 
                 var size = (sizeX > 0 && sizeZ > 0) ? new IntVec3(sizeX, 1, sizeZ)
@@ -647,6 +678,9 @@ namespace JawaBench.BridgeTools
                         success = true,
                         dryRun = true,
                         tile,
+                        layer = layerDef != null ? layerDef.defName : "Surface",
+                        biome = biomeDef != null ? biomeDef.defName : biomeWas,
+                        biomeWas,
                         mapParentDef = wod.defName,
                         wasAlreadyGenerated = existing != null,
                         mapSize = new { x = size.x, z = size.z }
@@ -666,6 +700,7 @@ namespace JawaBench.BridgeTools
                 // directly whether call 2's body runs with its own 'tile' in scope at
                 // all, or is somehow hit with call 1's state before GetOrGenerateMap
                 // for tile 2 is even invoked.
+                if (biomeDef != null && existing == null) ptile.PrimaryBiome = biomeDef;
                 int callSeq = Interlocked.Increment(ref _mapGenCallSeq);
                 int callThreadId = Thread.CurrentThread.ManagedThreadId;
                 Log.Message("[TILEGEN_SILENT_REUSE_1] call #" + callSeq + " thread=" + callThreadId +
@@ -716,6 +751,10 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     tile,
+                    layer = layerDef != null ? layerDef.defName : "Surface",
+                    biome = map.Biome != null ? map.Biome.defName : null,
+                    biomeWas,
+                    mapGenerator = map.generatorDef != null ? map.generatorDef.defName : null,
                     mapParentDef = wod.defName,
                     wasAlreadyGenerated = existing != null,
                     mapSize = new { x = map.Size.x, z = map.Size.z },
