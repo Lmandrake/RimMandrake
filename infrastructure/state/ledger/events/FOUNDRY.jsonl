@@ -3085,3 +3085,11 @@
 {"seat":"FOUNDRY","event":"note","id":"WEEPINGSTONES_STOCK_JOB_LOOP_1","text":"0ef6dd60b: source fixes for the 3 failing chains (stock despawn-on-carry, net/cull target freeze via StunFor). Unverified live. NEXT: when the bridge is up, rerun job_net, job_stock, job_stock_outside_pen, job_cull; then close. Findings: Transient/weepingstones_stock_findings_20261006.md","ts":"2026-10-06T16:32:25Z","tsn":1791304345523837909}
 {"seat":"FOUNDRY","event":"start","id":"PROOF_ALL_DURABLE_RESULTS_1","ts":"2026-10-06T16:44:23Z","tsn":1791305063095131719}
 {"seat":"FOUNDRY","event":"close","id":"PROOF_ALL_DURABLE_RESULTS_1","sha":"807ba7756","ts":"2026-10-06T16:44:23Z","tsn":1791305063705847919}
+{"seat":"FOUNDRY","event":"claim","id":"SELFTEST_RUNNER_SILENT_OOM_1","ts":"2026-10-06T17:01:28Z","tsn":1791306088657683150}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOURY_JUMPPACK_INVALID_IL_1","ts":"2026-10-06T17:01:30Z","tsn":1791306090227887738}
+{"seat":"FOUNDRY","event":"claim","id":"VOSSKA_SANDSWIM_GRAPHIC_WIRING_1","ts":"2026-10-06T17:01:31Z","tsn":1791306091153867162}
+{"seat":"FOUNDRY","event":"note","id":"ARMOURY_JUMPPACK_INVALID_IL_1","text":"Fix is the Postfix at 618463ba1 (transpiler removed). Only a live run confirms: no InvalidProgramException in Player.log, Harmony lists the patch, raiders jump. NEXT: confirm in the next live run, then close. Findings: Transient/armoury_jumppack_il_findings_20261006.md","ts":"2026-10-06T17:03:25Z","tsn":1791306205086566098}
+{"seat":"FOUNDRY","event":"start","id":"VOSSKA_SANDSWIM_GRAPHIC_WIRING_1","ts":"2026-10-06T17:03:27Z","tsn":1791306207720740329}
+{"seat":"FOUNDRY","event":"close","id":"VOSSKA_SANDSWIM_GRAPHIC_WIRING_1","sha":"28b41ccf5","ts":"2026-10-06T17:03:28Z","tsn":1791306208328200122}
+{"seat":"FOUNDRY","event":"start","id":"SELFTEST_RUNNER_SILENT_OOM_1","ts":"2026-10-06T17:08:56Z","tsn":1791306536566696401}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_RUNNER_SILENT_OOM_1","sha":"ff20caec5","ts":"2026-10-06T17:08:57Z","tsn":1791306537201602677}
