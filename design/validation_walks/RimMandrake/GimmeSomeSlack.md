@@ -2,7 +2,7 @@
 subject: src/RimMandrake/GimmeSomeSlack  (packageId mandrake.rm.gimmesomeslack)
 deps: brrainz.harmony (hard modDependency)
 list: gimmesomeslack (modset_builder tier: bridge + this mod + all five DLCs)
-checkout: src/RimMandrake/GimmeSomeSlack/proof_all.py  (the ONE live proof; its declared_rows() is the manifest's row list, its northstar/proof_all_*.json the result the report reads)
+checkout: src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py  (the ONE live proof; its declared_rows() is the manifest's row list, its northstar/proof_all_*.json the result the report reads)
 status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_conduit_design_2026-10-02.md (+ messy_conduit_phase2_design_2026-10-02.md, messyconduit_style_per_build_design.md) — conduit made invisible (runtime texPath swap, restorable), machine hookup wires hidden for our conduit only, and a cosmetic SectionLayer that draws loose too-long cords between the nodes of the conduit graph (reduction + A* + canned slack, Verse-free core in Source/Core), with a break readout (live ends spark, dead ends lie limp). Functional script: src/RimMandrake/GimmeSomeSlack/validation.py; the ONE live proof is proof_all.py (owner densification 2026-10-05, design/RimMandrake/gimmesomeslack_verification_consolidation_2026-10-05.md).
 
 ## must be true
@@ -21,7 +21,7 @@ status-hint: phases 1a/1b/2 + per-build styles of design/RimMandrake/messy_condu
 
 ## the walk
 1. [O] `python3 src/RimMandrake/GimmeSomeSlack/validation.py` — O1 files/csproj/textures, O2 settings defaults, O3 C# core SelfTest against the Python oracle (+ --probe must fail every scene), O4 the oracle's own selftest
-2. [B] `python3 src/RimMandrake/Utils/modset_builder.py --tier gimmesomeslack --apply`, launch via Steam, then `python.exe src/RimMandrake/GimmeSomeSlack/proof_all.py --live [--no-shots]` from the repo root: offline gate (in WSL), one fresh map, P1-P3 preflight, the reduced matrix (39 scenes), core, aerial, hose, maze, relay, carry, style, style-hose, D1/D2, ONE save + load (SL1-SL4), one log budget Z; one result JSON `northstar/proof_all_*.json` (state read through the mod's probes via `jawa/mod_settings_field`)
+2. [B] `python3 src/RimMandrake/Utils/modset_builder.py --tier gimmesomeslack --apply`, launch via Steam, then `python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live [--no-shots]` from the repo root: offline gate (in WSL), one fresh map, P1-P3 preflight, the reduced matrix (39 scenes), core, aerial, hose, maze, relay, carry, style, style-hose, D1/D2, ONE save + load (SL1-SL4), one log budget Z; one result JSON `northstar/proof_all_*.json` (state read through the mod's probes via `jawa/mod_settings_field`)
 3. [B] (the removal check is PAUSED, owner 2026-10-04: *"I don't want to do removal checks regularly"* — walk E1; on request: one cold load onto `--tier flowworks`, then `validation.py --removal-check <the proof_all save>`)
 4. [B] record: `python3 -m modcheck.cli record GimmeSomeSlack --result <northstar/proof_all_*.json> --tier gimmesomeslack`
 X. [S] (human pass) the look: `python.exe src/RimMandrake/GimmeSomeSlack/human_review.py --build --fresh-map` stages the labelled review map (33 stations + art board M + free build area F, key sheet built in Transient/mc_human_review/ and filed into src/RimMandrake/GimmeSomeSlack/review/ by save_review_map.py; principles: design/RimMandrake/northstar_human_review.md); screenshots under Transient/messy_conduit_live_20261002/ or a keeper save; never a pass bar

@@ -5,9 +5,9 @@ section 2 the cut-by-cut reasoning, section 3 the row table). Owner, typed: "red
 verifications and verification stations for the human review sheet as well. If so, remove them. Then run them;
 and finally handoff." and "Yes you should examine the hash bound ones too. This is a full densification."
 
-    python3    src/RimMandrake/GimmeSomeSlack/proof_all.py --offline-gate        # WSL: the offline tier only (seconds)
-    python.exe src/RimMandrake/GimmeSomeSlack/proof_all.py --live [--no-shots]   # gimmesomeslack tier, bridge held
-    python.exe src/RimMandrake/GimmeSomeSlack/proof_all.py --live --only core,aerial --no-fresh-map   # debug a block
+    python3    src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate        # WSL: the offline tier only (seconds)
+    python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live [--no-shots]   # gimmesomeslack tier, bridge held
+    python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live --only core,aerial --no-fresh-map   # debug a block
 
 Run python.exe from the repo root (bridge calls only work under python.exe; pipe through tr -d '\\r').
 
@@ -47,14 +47,14 @@ import subprocess
 import sys
 import time
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))      # .../GimmeSomeSlack/northstar (this file lives here, outside mod_hash)
+HERE = os.path.dirname(OUT_DIR)                           # the mod root: validation.py, human_review.py, northstar_matrix/
 MX_DIR = os.path.join(HERE, "northstar_matrix")
 for _p in (HERE, MX_DIR):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 import validation as V  # noqa: E402
 
-OUT_DIR = os.path.join(HERE, "northstar")
 SCRATCH_WIN = r"D:\Luke\dev\_rmscratch\gss_proof"
 SCRATCH_POSIX = "/mnt/d/Luke/dev/_rmscratch/gss_proof"
 SPEC_NAME = "scenes_design.json"
@@ -236,12 +236,49 @@ class Proof(object):
         print("%-34s %-10s %-8s %s" % (rid, status, cls, json.dumps(detail, default=str)[:150]), flush=True)
 
     def want(self, name):
-        return not self.args.only or name in self.args.only
+        # preflight is the precondition of every other block: --only never skips it (log_budget always ran too)
+        if name == "determinism":
+            name = "matrix"
+        return not self.args.only or name in ("preflight", "log_budget") or name in self.args.only
+
+    def checkpoint(self, final=False):
+        """Write the result JSON NOW (called after every block): a late exception loses nothing. Until the run
+        finishes cleanly it is marked mode "partial" + certifiable False, which `modcheck record` refuses."""
+        path = getattr(self, "out_path", None)
+        if not path:
+            return
+        res = self.res
+        res["wall_s"] = round(time.time() - self.t0, 1)
+        res["out"] = path
+        res["site_notes"] = V.SITE_NOTES
+        if not final:
+            res["mode"] = "partial"
+            res["certifiable"] = False
+            res["incomplete"] = "run not finished (checkpoint after block %s)" % (list(self.blocks)[-1:] or ["-"])[0]
+        else:
+            res.pop("incomplete", None)
+            res["mode"] = "live" if not (self.args.only or self.args.skip_offline) else "partial"
+            res["certifiable"] = (res["mode"] == "live" and not res.get("aborted") and not res.get("run_raised")
+                                  and not any(b.get("raised") for b in self.blocks.values()))
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            tmp = path + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(res, f, indent=1, default=str)
+            os.replace(tmp, path)
+        except Exception as ex:  # noqa: BLE001
+            print("CHECKPOINT WRITE FAILED: %r" % ex, flush=True)
 
     def block(self, name, fn):
         """Run one block; its rows are tagged; an exception is ONE harness FAIL row, never silence, and the session goes on."""
         if not self.want(name):
             return None
+        try:
+            return self._block(name, fn)
+        finally:
+            self.checkpoint()
+
+    def _block(self, name, fn):
         t = time.time()
         n0 = len(self.rows)
         print("== %s" % name, flush=True)
@@ -354,7 +391,7 @@ class Proof(object):
         pw = B.call("jawa/list_pawns", rect=rr, limit=50)
         left = [p.get("id") or p.get("label") for p in pw.get("pawns") or []]
         pitch = RL.board_overlap_check(boards) if boards is not None else []
-        ok = all(chans.values()) and w.get("success") is not False and not left and not pitch
+        ok = all(chans.values()) and w.get("success") is True and not left and not pitch
         self.row("preflight", "P3_probes_site_pinned_region_empty", "PASS" if ok else "FAIL", "HARNESS" if not all(chans.values()) else "SITE",
                  {"channels": chans, "weatherLocked": w.get("success"), "local_hour_before": hour, "pinned_noon": bool(pin and pin.get("success")),
                   "nonColonistsDestroyed": db.get("matchedCount"), "colonistsMoved": moved, "pawnsInRegion": left,
@@ -695,9 +732,9 @@ class Proof(object):
         self.block("style", lambda: self.take("style", VS.run_live(self.ns())))
         self.block("style_hose", lambda: self.take("style_hose", VSH.run_live(self.ns())))
         if self.want("matrix"):
-            self.determinism()
+            self.block("determinism", self.determinism)
         self.block("save_load", self.save_load)
-        self.log_budget()
+        self.block("log_budget", self.log_budget)
 
 
 def summary(res):
@@ -756,17 +793,16 @@ def main(argv=None):
     if a.skip_offline:
         P.res["offline"] = {"skipped": "--skip-offline"}
         P.res["mode"] = "partial"
+    out = a.out or os.path.join(OUT_DIR, "proof_all_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    P.out_path = out
     try:
         P.run(gate)
+    except BaseException as ex:  # noqa: BLE001
+        P.res["run_raised"] = repr(ex)
+        raise
     finally:
         P.restore()
-    P.res["site_notes"] = V.SITE_NOTES
-    P.res["wall_s"] = round(time.time() - P.t0, 1)
-    os.makedirs(OUT_DIR, exist_ok=True)
-    out = a.out or os.path.join(OUT_DIR, "proof_all_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
-    P.res["out"] = out
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump(P.res, f, indent=1, default=str)
+        P.checkpoint(final=True)
     summary(P.res)
     bad = [r for r in P.res["rows"] if r["status"] in ("FAIL", "UNMEASURED")]
     return 1 if bad or P.res.get("aborted") else 0

@@ -201,7 +201,7 @@ stations shrinks REGION and the north gallery; `--plan` must re-pass (spacing R=
 | human stations | 47 + M + F | **33 + M + F** |
 ## 6. One-shot full proof (proof_all.py)
 
-Write `src/RimMandrake/GimmeSomeSlack/proof_all.py` (excluded from `mod_hash` like `validation.py`/`human_review.py`).
+Write `src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py` (excluded from `mod_hash` like `validation.py`/`human_review.py`).
 It imports the existing scripts' functions; it does not reimplement checks. One results JSON in `northstar/`
 (`proof_all_<stamp>.json`), every row once, plus per-phase timing.
 
