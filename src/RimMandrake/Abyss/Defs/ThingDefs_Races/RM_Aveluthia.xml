@@ -8,7 +8,7 @@
     - leatherDef Leather_Night -> Leather_Plain (PROVISIONAL substitute)
     - the VEF stat extension dropped; the horns tool is relabelled "snout" to match the description
       (it has no horns); meatLabel "dark marbled steak" kept.
-  ART: abyss_aveluthia_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  ART: abyss_aveluthia_v3 (east/south/north, finished in the artpipe), installed 2026-10-06 via the art ledger at the texPath below.
   The owner's calf and female picks were the donor's own AA_NightMule_baby / _female art, so no femaleGraphicData
   and every life stage uses the adult set until owned calf/female art exists.
 -->

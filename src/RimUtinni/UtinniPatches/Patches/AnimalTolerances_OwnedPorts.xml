@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AnimalTolerances_OwnedPorts.xml - hand-written companion to the GENERATED
+     AnimalTolerances_Ashkarr.xml (design/Jawa/fauna/animal_tolerances.py; do not hand-edit that one).
+     ABYSS_SHEET_DONOR_PORT_1, 2026-10-06.
+
+     The generated file pins the donors' comfy bands (temperature is a HARD SPAWN GATE). The Abyss
+     now casts owned ports, which carry the donor's RAW band (e.g. the moravatha's raw minimum is -10
+     where the donor ran at -35.7), so these ops give each port the band its donor actually had in
+     the campaign. PROVISIONAL: delete once the generator fits the ports from the cast itself.
+     RM_Olumetha / RM_Sesserith: their donors (AA_NightRam / AA_Nightling) carry no op there.
+     RM_Lirrith: its donor AA_Murkling's -35..71.1 band is not carried; that pin was fitted while it
+     also lived in the Cracked Lands (where the donor still ships), and the port's -35 minimum already
+     matches it. -->
+<Patch>
+
+  <!-- RM_Aveluthia (port of AA_NightMule): -55..62.3 -->
+  <!-- RM_Aveluthia ComfyTemperatureMin -55 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-55</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-55</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Aveluthia ComfyTemperatureMax 62.3 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>62.3</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+        <value><ComfyTemperatureMax>62.3</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Moravatha (port of AA_CrepuscularBeetle): -35.7..40 -->
+  <!-- RM_Moravatha ComfyTemperatureMin -35.7 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Moravatha ComfyTemperatureMax 40 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+        <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Ossumatha (port of AA_DarkVandal): -35.7..40 -->
+  <!-- RM_Ossumatha ComfyTemperatureMin -35.7 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Ossumatha ComfyTemperatureMax 40 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+        <value><ComfyTemperatureMax>40</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Ysvaltha (port of AA_DuskProwler): -35.7..30 -->
+  <!-- RM_Ysvaltha ComfyTemperatureMin -35.7 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-35.7</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Ysvaltha ComfyTemperatureMax 30 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>30</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+        <value><ComfyTemperatureMax>30</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Nevarithia (port of AA_Darkbeast): -90.3..35 -->
+  <!-- RM_Nevarithia ComfyTemperatureMin -90.3 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/ComfyTemperatureMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/ComfyTemperatureMin</xpath>
+      <value><ComfyTemperatureMin>-90.3</ComfyTemperatureMin></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+        <value><ComfyTemperatureMin>-90.3</ComfyTemperatureMin></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Nevarithia ComfyTemperatureMax 35 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/ComfyTemperatureMax</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/ComfyTemperatureMax</xpath>
+      <value><ComfyTemperatureMax>35</ComfyTemperatureMax></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+        <value><ComfyTemperatureMax>35</ComfyTemperatureMax></value>
+      </match>
+    </nomatch>
+  </Operation>
+</Patch>

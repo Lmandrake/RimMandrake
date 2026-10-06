@@ -17,15 +17,14 @@
 
     Everything else — texture, terrain, weather, diseases — is the twin's content unchanged.
     wildAnimals/wildPlants: ABYSS_SHEET_DONOR_PORT_1 (owner's Abyss sheet 2026-10-05) replaced the 8 Alpha
-    Animals and 7 Alpha Biomes/Alpha Genes rows with owned RM_ ports at the same commonality; the one
-    donor row left is AB_GlowingGrass (its port is owed on the same item). Zero RSW_/SW_/RUT_ rows exist in the
+    Animals and 7 Alpha Biomes/Alpha Genes rows with owned RM_ ports at the same commonality, and AB_GlowingGrass with
+    RM_GlowingGrass (2026-10-06); no donor row remains in either list. Zero RSW_/SW_/RUT_ rows exist in the
     twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
     Cindermare and Skarnix are invented, not canon, so they ship inline here as RM_Cindermare/RM_Skarnix
     (ABYSS_INVENTED_CREATURES_TO_RM_1); no Star Wars patch wires them any more.
 
     ⚠️ NOT donor-free: terrain/texture still name Alpha Biomes defs with no guard
-    (inherited from the twin) — see About.xml for the disclosure. The AB_GlowingGrass
-    row keeps its MayRequire="sarg.alphabiomes" gate.
+    (inherited from the twin) — see About.xml for the disclosure.
   -->
 
   <BiomeDef>
@@ -114,7 +113,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_GlowingGrass MayRequire="sarg.alphabiomes">1.0</AB_GlowingGrass>  <!-- grass -->
+      <RM_GlowingGrass>1.0</RM_GlowingGrass>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_GlowingGrass -->
       <RM_SicklyGlowMushroom>0.6</RM_SicklyGlowMushroom>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_ToxicGamma (polluted ground only, as the donor) -->
       <RM_GiantGlowGlobe>0.5</RM_GiantGlowGlobe>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_GiantGamma -->
       <RM_GlowberryBush>0.5</RM_GlowberryBush>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_WildRadagast -->

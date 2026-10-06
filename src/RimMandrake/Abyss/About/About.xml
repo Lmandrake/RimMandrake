@@ -36,9 +36,9 @@ terrain and texture name Alpha Biomes defs with no guard, inherited unchanged
 from the frozen campaign twin, so Alpha Biomes is genuinely required for full
 function. Its fauna and flora are its own: the black, many-eyed kin (sesserith,
 olumetha, aveluthia, lirrith, moravatha, ossumatha, ysvaltha, nevarithia) and
-the glow globes, paddle vine, giant fibre stalk, tree mushroom and glowberry
-bush are owned defs ported from Alpha Animals/Biomes/Genes stats. Only the
-glowing grass row still names a donor def, MayRequire'd on Alpha Biomes.
+the glow globes, paddle vine, giant fibre stalk, tree mushroom, glowberry
+bush and glowing grass are owned defs ported from Alpha Animals/Biomes/Genes
+stats; no roster row names a donor def.
 
 Two invented predators, the cindermare (cold-drain grip) and the skarnix
 (flees firelight), hunt here as RM_Cindermare and RM_Skarnix. The six Forsaken vaults are campaign plot

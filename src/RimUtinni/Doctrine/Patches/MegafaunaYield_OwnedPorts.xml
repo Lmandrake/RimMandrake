@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MegafaunaYield_OwnedPorts.xml - hand-written companion to the GENERATED MegafaunaYield.xml
+     (gen_megafauna_yield.py; do not hand-edit that one). ABYSS_SHEET_DONOR_PORT_1, 2026-10-06.
+
+     The Abyss's donor creatures were ported to owned RM_ defs, so the generated ops that tune
+     the donors no longer reach the animals the Abyss casts. These ops carry the SAME values
+     (bodySize^2 rule: base = unit x bodySize) onto the ports, numbers copied from the generated
+     file's donor ops. PROVISIONAL until the generator is re-run on a def dump that holds the
+     ports; once it emits ops for them, delete this file (the generated ops would set the same
+     values). BoneAmount assumes the bones stat mod the generated file already assumes. -->
+<Patch>
+
+  <!-- RM_Olumetha (port of AA_NightRam), bodySize 2.5 -->
+  <!-- RM_Olumetha MeatAmount 350 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>350</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
+        <value><MeatAmount>350</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Olumetha BoneAmount 125 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>125</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Olumetha"]/statBases</xpath>
+        <value><BoneAmount>125</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Aveluthia (port of AA_NightMule), bodySize 2.8 -->
+  <!-- RM_Aveluthia MeatAmount 392 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>392</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+        <value><MeatAmount>392</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Aveluthia BoneAmount 140 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>140</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/statBases</xpath>
+        <value><BoneAmount>140</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Moravatha (port of AA_CrepuscularBeetle), bodySize 3.0 -->
+  <!-- RM_Moravatha MeatAmount 420 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>420</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Moravatha"]/statBases</xpath>
+        <value><MeatAmount>420</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Ossumatha (port of AA_DarkVandal), bodySize 1.2 -->
+  <!-- RM_Ossumatha MeatAmount 168 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>168</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+        <value><MeatAmount>168</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Ossumatha BoneAmount 60 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>60</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ossumatha"]/statBases</xpath>
+        <value><BoneAmount>60</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Ysvaltha (port of AA_DuskProwler), bodySize 1.5 -->
+  <!-- RM_Ysvaltha MeatAmount 210 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>210</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+        <value><MeatAmount>210</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Ysvaltha BoneAmount 75 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>75</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Ysvaltha"]/statBases</xpath>
+        <value><BoneAmount>75</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Nevarithia (port of AA_Darkbeast), bodySize 1.5 -->
+  <!-- RM_Nevarithia MeatAmount 210 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/MeatAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/MeatAmount</xpath>
+      <value><MeatAmount>210</MeatAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+        <value><MeatAmount>210</MeatAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+  <!-- RM_Nevarithia BoneAmount 75 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/BoneAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases/BoneAmount</xpath>
+      <value><BoneAmount>75</BoneAmount></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RM_Nevarithia"]/statBases</xpath>
+        <value><BoneAmount>75</BoneAmount></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <!-- RM_Aveluthia milkAmount 12 -> 16 (port of AA_NightMule; the generated file's milk op for it).
+       RM_Olumetha keeps 12, which the generated op leaves unchanged for AA_NightRam. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/comps/li[milkAmount]/milkAmount</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="RM_Aveluthia"]/comps/li[milkAmount]/milkAmount</xpath>
+      <value><milkAmount>16</milkAmount></value>
+    </match>
+  </Operation>
+</Patch>

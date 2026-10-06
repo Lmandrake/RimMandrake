@@ -10,8 +10,8 @@
       its release on death are OWED as our own mechanic on the Abyss's Dark (RM_MapComponentDark); not built here.
     - leatherDef Leather_RaptorPlates (an Alpha Animals item) -> Leather_Plain (PROVISIONAL substitute)
     - the horn tool is relabelled "spikes" to match the description.
-  ART: abyss_ugrothar_v1 (the owner's "wire as picked", east/south/north, finished in the artpipe), awaiting
-  install at the texPath below.
+  ART: abyss_ugrothar_v1 (the owner's "wire as picked", east/south/north, finished in the artpipe), installed 2026-10-06 via the art ledger
+  at the texPath below.
 -->
 <Defs>
 

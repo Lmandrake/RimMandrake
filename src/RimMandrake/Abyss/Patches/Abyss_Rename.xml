@@ -18,11 +18,39 @@
        LABEL ONLY on the identity; no defName, stat, or art field is touched.
 
        ABYSS_SHEET_DONOR_PORT_1 (2026-10-06): the blocks for the eight donors ported to owned
-       RM_ defs (AA_Nightling, AA_NightRam, AA_NightMule, AA_Murkling, AA_CrepuscularBeetle,
+       RM_ defs (AA_Nightling, AA_NightRam, AA_NightMule, AA_CrepuscularBeetle,
        AA_DarkVandal, AA_DuskProwler, AA_Darkbeast) are deleted; the owner's sheet superseded
-       those labels and the Abyss no longer casts the donors.
+       those labels and the Abyss no longer casts the donors. AA_Murkling's block is KEPT:
+       the Abyss casts its port RM_Lirrith instead, but the donor itself still ships in
+       RUT_CrackedLands and RM_FloodedCanyon (WildAnimals_CrackedLands.xml), which keep
+       showing it as "kessik".
        Not drafted here: AA_DuskRat (owner ruled the name IS the joke, kept),
        AA_SandProwler (already port-named RSW_Vosska "vosska"). -->
+
+  <!-- ============== AA_Murkling -> kessik ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Murkling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/label</xpath>
+          <value><label>kessik</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Murkling"]/description</xpath>
+          <value><description>A small, quick-witted scavenger that runs in packs, humming to its kin through organs on its snout that no other ear can follow. Sly enough to outwit prey twice its size, the kessik has a reputation across the crags as the thief of the night — and a bite that leaves more than a scar behind.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Murkling"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Murkling"]/label</xpath>
+      <value><label>kessik</label></value>
+    </match>
+  </Operation>
+
 
   <!-- ============== AA_NightAve -> zekkra ============== -->
   <Operation Class="PatchOperationConditional">

@@ -129,7 +129,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <AB_GlowingGrass>1.0</AB_GlowingGrass>  <!-- grass -->
+      <RM_GlowingGrass MayRequire="mandrake.rm.biomes">1.0</RM_GlowingGrass>  <!-- grass -->
       <RM_SicklyGlowMushroom MayRequire="mandrake.rm.biomes">0.6</RM_SicklyGlowMushroom>  <!-- toxic gamma - tree -->
       <RM_GiantGlowGlobe MayRequire="mandrake.rm.biomes">0.5</RM_GiantGlowGlobe>  <!-- giant gamma -->
       <RM_GlowberryBush MayRequire="mandrake.rm.biomes">0.5</RM_GlowberryBush>  <!-- wild ragadast -->

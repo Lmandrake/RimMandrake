@@ -8,7 +8,7 @@
     - SIZE x4 (owner's sheet): visualSizeRange 2~3.8 -> 8~15.2
     - descriptionHyperlinks kept (WoodLog, vanilla).
   ART (owner's sitting-2 pick, Graphic_Random of two): abyss_morkhul_v1 (_a) and abyss_treemushroom_c_v2 (_b, his C
-  re-rendered at 1024 for the x4 size), both finished in the artpipe, awaiting install as
+  re-rendered at 1024 for the x4 size), both finished in the artpipe, installed 2026-10-06 via the art ledger as
   RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_{a,b}.png.
 -->
 <Defs>

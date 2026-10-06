@@ -11,7 +11,7 @@
     - VEF CompProperties_InitialAbility AA_Quill (the quill throw) and the VEF stat extension dropped. The
       thrown-spine lunge in the description is OWED as our own mechanic (not built here).
     - wildBiomes dropped (one home: cast only in RM_Abyss).
-  ART: abyss_sesserith_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  ART: abyss_sesserith_v3 (east/south/north, finished in the artpipe), installed 2026-10-06 via the art ledger at the texPath below.
   The owner's pup pick was the donor's own AA_NightlingPuppy art, so every life stage uses the adult set
   until owned pup art exists.
 -->

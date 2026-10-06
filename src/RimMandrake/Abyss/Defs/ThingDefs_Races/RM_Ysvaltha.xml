@@ -10,7 +10,7 @@
       BodyDef or part group; not built here), so for now it fights with claws, bite and head only.
     - leatherDef Leather_Night -> Leather_Wolf (PROVISIONAL substitute)
     - the VEF stat extension dropped.
-  ART: abyss_ysvaltha_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  ART: abyss_ysvaltha_v3 (east/south/north, finished in the artpipe), installed 2026-10-06 via the art ledger at the texPath below.
 -->
 <Defs>
 

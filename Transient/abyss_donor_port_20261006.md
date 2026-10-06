@@ -28,11 +28,11 @@ replaced by vanilla or dropped; every substitution is named in each file's heade
 | job | install rel |
 |---|---|
 | abyss_sesserith_v3 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith_{east,south,north}.png |
-| abyss_olumetha_v3 east/south (NORTH FAILED, requeue) | RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_*.png |
+| abyss_olumetha_v3 east/north (SOUTH FAILED, requeue) | RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha_*.png |
 | abyss_aveluthia_v3 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia_*.png |
 | abyss_lirrith_v3 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith_*.png |
 | abyss_moravatha_v3 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha_*.png |
-| abyss_ossumatha_v3 one facing (NORTH+SOUTH FAILED, requeue) | RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_*.png |
+| abyss_ossumatha_v3 east (NORTH+SOUTH FAILED, requeue) | RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha_*.png |
 | abyss_ysvaltha_v3 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha_*.png |
 | abyss_ugrothar_v1 east/south/north | RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia_*.png |
 | abyss_bulgra_v1 / glowglobe_b_v2 / glowglobe_c_v2 | RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_{a,b,c}.png |
@@ -62,3 +62,33 @@ Until installed every new def renders a placeholder (validate_patch flags exactl
 - Owed mechanics named in headers (quill throw, dark-on-death, low rest, tail/blade attack, festering disease).
 - Outside Abyss: RimUtinni/Doctrine/Patches/MegafaunaYield.xml still tunes the donor defs (yield for the ports is lost);
   RUT_CrackedLands still casts AA_Murkling (now labelled "murkling" again: its rename block died with the port).
+
+## follow-up pass 2026-10-06 (FOUNDRY helper, offline, uncommitted)
+- (a) ART INSTALLED via artledger.install(reason=artpipe-collect), RIMFLOW_SEAT=FOUNDRY: 37 PNGs (the table above, minus the
+  failed facings, plus RM_GlowingGrass_{a,c}). Each checked first: in done/, alpha, transparent corners, coverage 0.17-0.50,
+  zero magenta; contact sheet looked at. `art.py guard worktree`: 0 unledgered. The 37 ledger events were already committed
+  by another window at 308a1c269; the PNGs under src/RimMandrake/Abyss/Textures/ are still UNTRACKED; commit them with the defs.
+- Correction: olumetha's failed facing is SOUTH, not north. All three failures (olumetha south, ossumatha north+south) are
+  failed_canon ("charcoal, not pitch black") after the daemon's own retry, so they were not installed. Requeued as NEW jobs via
+  fill_queue.py, derived from the accepted v3 east: abyss_ossumatha_v4_{north,south}, abyss_olumetha_v4_south (rows in
+  Transient/biome_ffar/abyss_v4_requeue_jobs_2026-10-06.json). Until they land, Graphic_Multi falls back: olumetha south
+  uses north; ossumatha north/south use east, drawn at a -90 degree offset (Graphic_Multi.Init), so they read wrong.
+- (b) RUT_CrackedLands + RM_FloodedCanyon (WildAnimals_CrackedLands.xml) still cast the donor AA_Murkling, so its
+  "kessik" label/description block is restored verbatim in Abyss_Rename.xml; header updated. RM_Lirrith stays Abyss-only.
+- (c) The generated files (MegafaunaYield.xml, AnimalTolerances_Ashkarr.xml, PlantTolerances_Ashkarr.xml) say do-not-hand-edit and
+  their generators read the def dump, which has no ports yet, so I added hand-written COMPANION patches that carry the donors'
+  values onto the ports, PROVISIONAL (delete each once its generator emits the ports):
+  Doctrine/Patches/MegafaunaYield_OwnedPorts.xml (6 ports' Meat/Bone, aveluthia milk 16);
+  UtinniPatches/Patches/AnimalTolerances_OwnedPorts.xml (5 comfy bands, e.g. moravatha -10 -> -35.7: temperature is a spawn gate);
+  UtinniPatches/Patches/PlantTolerances_OwnedPorts.xml (6 plants' four growth temps). NOT carried: glow globe and paddle vine,
+  whose donor refits target a hot biome (26.9..70.8), and lirrith's band, which is the Cracked Lands fit. BoneAmount in an RM_
+  def would hard-depend on the bones mod (StatModifier has no MayRequire, read in RimSage), which is why this lives in campaign patches.
+  An offline apply simulation over the Abyss defs confirms that every op lands.
+  Not touched: RM_ExplosiveGrowthRoster.xml still lists AB_GiantStikehr (a roster, not tuning; should RM_TreeMushroom join it?).
+- (d) RM_GlowingGrass ported (donor label/description kept, since no rename was asked; Graphic_Random). RM_Abyss and RUT_Abyss rows
+  swapped at 1.0, so no donor row is left in RM_Abyss. b's tint failed the sprite validator (footprint +3.9%) and is requeued as
+  abyss_glowinggrass_b_tint_v2. About.xml + RM_Abyss header updated.
+- Checks: Abyss validation.py static 12/12 PASS. validate_patch: the port texPath warnings are gone. Remaining: 4 pre-existing
+  Abyss_Rename xpath errors (Ops 4/6/8/10, not the restored block) and companion-patch "0 nodes" findings. Those are because the
+  live ModsConfig does not load the undeployed RM_ defs; the simulation above covers them.
+- Left: install the 3 v4 facings + grass b when they land; #3 Krizzak B-F / Summing B; #4 C# strings (skipped); owed mechanics.

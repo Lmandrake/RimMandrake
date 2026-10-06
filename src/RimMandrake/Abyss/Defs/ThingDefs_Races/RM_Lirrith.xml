@@ -10,7 +10,7 @@
       dropped; its weight folds into the vanilla ToxicBite "festering bite" (chance 0.2 + 0.7 = 0.9,
       PROVISIONAL). "Its bite festers" is carried by ToxicBite; a disease-on-bite mechanic is NOT built here.
     - VEF CompProperties_CorpseDecayer (dissolving corpses) and the VEF trainable/stat extension dropped.
-  ART: abyss_lirrith_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  ART: abyss_lirrith_v3 (east/south/north, finished in the artpipe), installed 2026-10-06 via the art ledger at the texPath below.
 -->
 <Defs>
 
