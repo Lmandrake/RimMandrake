@@ -9,20 +9,21 @@
   vanilla deconstruct/smash yields").
 
   ===========================================================================
-  CRIB TARGET — Core's own ShipChunkBase, read in full this pass
+  FAMILY PARENTS — SALVAGE_WRECKAGE_EVERYWHERE_1 slice 2, 2026-10-06
   ===========================================================================
-  Core/Defs/ThingDefs_Buildings/Buildings_Exotic.xml:130-180,
-  ParentName="BuildingBase" Name="ShipChunkBase" (defName ShipChunk): a
-  static, non-buildable (no designationCategory), non-claimable, always-
-  deconstructible salvage building — deconstruct for costList-derived
-  resources, no comps beyond a flavor inspect string, no pawn spawner, no
-  rot, no corpse. That is exactly S6's own "cooked clean: no rot, no
-  corpses, no hostiles" requirement, structurally, not by a linter rule
-  added after the fact. Three defs below crib this shape directly
-  (ParentName="ShipChunkBase" — same abstract vanilla already ships, no new
-  RM_/RUT_ abstract needed) rather than JawaGroundHulk's own PrefabDef
-  route, which is a hand-placed one-off stamp keyed to a specific ship
-  export, not a repeatable map-gen scatter candidate.
+  The three defs below are children of the shared wreck families in
+  mandrake.rm.wreckage (src/RimMandrake/Wreckage/Defs/ThingDefs_Buildings/
+  RM_WreckFamilies.xml): Hull -> RM_WreckFamily_Hull, Tank ->
+  RM_WreckFamily_Tank, Frame -> RM_WreckFamily_Frame. The families sit on
+  Core's ShipChunkBase (static, non-claimable, always deconstructible, no
+  rot, corpse or spawner: S6's "cooked clean" structurally) and carry the
+  footprint, Walkable affordance, base costList, killedLeavings and the
+  RM_CompSalvageLoot tier. Each child here carries only what the Scald did
+  to it: label, description, texPath, its art's measured shadow box, and
+  the RM_WreckWeathering_Cooked row (yieldFactor 0.75 becomes the
+  deconstruct fraction at resolve time, the same 0.75 these defs shipped
+  with). Same defNames, same yields, same art: nothing placed changes.
+  The RUT_ -> RM_ rename (design §5 tier defect) is a later slice.
 
   🔴 THREE SILHOUETTES, NOT THREE MECHANICS. Per the spec's own "(2-3
   silhouettes, art pass)" — distinct shapes for scatter variety, all
@@ -35,10 +36,9 @@
   §3c; the Scald's "Hull/Tank tiers, no sealed" row in §4). That comp is
   the "RUT_ScaldSalvage" loot the scald kit spec left open.
 
-  Values below are INVENTED, stated plainly: sized down from
-  ShipChunk_Mech's 40 Steel/15 GravlitePanel (a fresh mechanoid chunk) since
-  these have sat cooking in near-boiling water — corrosion costs some of
-  the yield back. No uranium/component on any of the three: this is hull
+  Values (now on the family parents) are INVENTED, stated plainly: sized
+  down from ShipChunk_Mech's 40 Steel/15 GravlitePanel (a fresh mechanoid
+  chunk); the Cooked weathering's 0.75 is the corrosion. No uranium/component on any of the three: this is hull
   and tankage, not the caskets JawaGroundHulk already owns.
 
   ⚠️ Ban 6 (no vanilla-Earth flora/fauna) and Ban 2 (no burn-immunity def)
@@ -48,15 +48,10 @@
   burnDamage/burnIntervalTicks), never waived — S6's own "the price is
   posted in burns per trip" line is the shipped terrain, unchanged.
 
-  🔴 TERRAIN AFFORDANCE — verified by direct read, not assumed.
-  BuildingBase's own default terrainAffordanceNeeded is Light (Core
-  Buildings_Base.xml:11). WaterShallowBase's affordance list (Core
-  Terrain_Water.xml:103-112) is ShallowWater/WaterproofConduitable/
-  Bridgeable/Walkable — no Light. Left at the inherited default, none of
-  these three defs could ever pass a placement/scatter affordance check on
-  the very terrain they are meant to scatter onto. All three explicitly
-  override terrainAffordanceNeeded to Walkable below, the one affordance
-  every RUT_ScaldWater*Shallow terrain actually carries.
+  🔴 TERRAIN AFFORDANCE: BuildingBase's default Light fails on every
+  RUT_ScaldWater*Shallow terrain (WaterShallowBase carries ShallowWater/
+  WaterproofConduitable/Bridgeable/Walkable, no Light); RM_WreckFamilyBase
+  sets Walkable for every family, so these inherit it.
 
   Art: SCALD_ART_UPGRADE_WAVE_1, wired 2026-09-26 — THREE Graphic_Random
   variants each (_A/_B/_C, 512px), from the already-finished artpipe renders
@@ -72,14 +67,12 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="ShipChunkBase">
+  <ThingDef ParentName="RM_WreckFamily_Hull">
     <defName>RUT_ScaldWreckHull</defName>
     <label>scalded hull section</label>
     <description>A broken length of hull plate, cooked in the shallows until the paint is gone and the seams have given. What the pan swallowed and gave back. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
     <graphicData>
       <texPath>Things/Building/Ruins/RUT_ScaldWreckHull</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <drawSize>(2,2)</drawSize>
       <!-- Owner review 2026-09-25 (SCALD_REVIEW walk): inherited ShipChunk's
            generic (1.39,0.5,1.25) box read as a flat dark box, not the
            sprite. Calibrated against ShipChunk's own art-to-shadow ratio
@@ -93,34 +86,19 @@
         <volume>(1.31,0.5,1.10)</volume>
       </shadowData>
     </graphicData>
-    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
-    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
-    <costList Inherit="False">
-      <Steel>30</Steel>
-      <ComponentIndustrial>1</ComponentIndustrial>
-    </costList>
-    <killedLeavings Inherit="False">
-      <ChunkSlagSteel>2</ChunkSlagSteel>
-    </killedLeavings>
-    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Hull-tier loot roll
-         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
-         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
-    <comps>
-      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
-        <lootTier>Hull</lootTier>
-        <rareChance>0.05</rareChance>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
       </li>
-    </comps>
+    </modExtensions>
   </ThingDef>
 
-  <ThingDef ParentName="ShipChunkBase">
+  <ThingDef ParentName="RM_WreckFamily_Tank">
     <defName>RUT_ScaldWreckTank</defName>
     <label>scalded tank wreck</label>
     <description>A ruptured pressure tank, half sunk and scoured smooth by the boil. Whatever it once held is long gone; the shell is still worth the walk. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
     <graphicData>
       <texPath>Things/Building/Ruins/RUT_ScaldWreckTank</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <drawSize>(2,2)</drawSize>
       <!-- Same fix as RUT_ScaldWreckHull, own measurement (mean of _A/_B/_C,
            2026-09-26): 96.4% x 84.3% bbox -> 0.70*0.964*2=1.35,
            0.63*0.843*2=1.06. -->
@@ -128,34 +106,19 @@
         <volume>(1.35,0.5,1.06)</volume>
       </shadowData>
     </graphicData>
-    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
-    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
-    <costList Inherit="False">
-      <Steel>20</Steel>
-      <GravlitePanel>5</GravlitePanel>
-    </costList>
-    <killedLeavings Inherit="False">
-      <ChunkSlagSteel>1</ChunkSlagSteel>
-    </killedLeavings>
-    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Tank-tier loot roll
-         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
-         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
-    <comps>
-      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
-        <lootTier>Tank</lootTier>
-        <rareChance>0.05</rareChance>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
       </li>
-    </comps>
+    </modExtensions>
   </ThingDef>
 
-  <ThingDef ParentName="ShipChunkBase">
+  <ThingDef ParentName="RM_WreckFamily_Frame">
     <defName>RUT_ScaldWreckFrame</defName>
     <label>scalded frame wreck</label>
     <description>A stripped strut and frame section, all its skin burned or boiled away, standing bare in the shallows like a rib cage. Deconstruct it for valuable resources — the water charges per trip standing in it.</description>
     <graphicData>
       <texPath>Things/Building/Ruins/RUT_ScaldWreckFrame</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <drawSize>(2,2)</drawSize>
       <!-- Same fix, own measurement (mean of _A/_B/_C, 2026-09-26): 96.5%
            x 90.6% bbox, nearly square — an upright rib-cage frame rather
            than lying wreckage, so this one still gets the tallest shadow of
@@ -164,23 +127,11 @@
         <volume>(1.35,0.5,1.14)</volume>
       </shadowData>
     </graphicData>
-    <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
-    <resourcesFractionWhenDeconstructed>0.75</resourcesFractionWhenDeconstructed>
-    <costList Inherit="False">
-      <Steel>15</Steel>
-    </costList>
-    <killedLeavings Inherit="False">
-      <ChunkSlagSteel>1</ChunkSlagSteel>
-    </killedLeavings>
-    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Scrap-tier loot roll
-         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
-         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
-    <comps>
-      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
-        <lootTier>Scrap</lootTier>
-        <rareChance>0</rareChance>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
       </li>
-    </comps>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

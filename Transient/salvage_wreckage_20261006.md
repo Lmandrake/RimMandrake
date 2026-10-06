@@ -46,3 +46,29 @@
 - Steps 3-9: per-biome lists (Riddled/High first), wreck falls, art waves, the RSW/RUT layers. Then the scavenge-system build.
 - New files are DIRTY under code review until a full review marks them clean.
 - The item cannot close. This is slice 1 of about 10.
+
+## Slice 2 (2026-10-06): family parents + the Scald's weathering as the template
+- Family parents (abstract, design §3a): RM_WreckFamilyBase (on ShipChunkBase; Walkable; fraction 1.0) and
+  RM_WreckFamily_{Hull,Tank,Frame,Speeder,Carapace,Tread}, each with Inherit="False" costList/killedLeavings and the
+  RM_CompSalvageLoot tier. Hull/Tank/Frame numbers are the Scald's shipped ones; Speeder/Carapace/Tread are INVENTED
+  (no child, no art, guessed footprints 2x2/1x1/3x3). Speeder and Tread roll the Hull table. All PROVISIONAL.
+- RM_WreckWeatheringDef (yieldFactor, lootTierShift, labelPrefix, extraLeavings) + RM_WreckWeathering extension.
+  The fold-in runs in DefModExtension.ResolveReferences(parentDef): yieldFactor -> resourcesFractionWhenDeconstructed
+  (not costList: 1-count components would truncate), label fallback, extraLeavings -> killedLeavings, tier shift on the
+  ladder Scrap < Hull/Tank/Carapace < Sealed (landing on Scrap zeroes rareChance).
+- One weathering row: RM_WreckWeathering_Cooked (0.75, shift 0, "scalded", no extraLeavings: the slag is the family's).
+- Scald reparented (defNames kept RUT_, no rename): the three defs now carry only label/description/texPath/shadow +
+  the Cooked extension. Same yields, tiers and art; validation.py proves the cost x fraction equals the 96f8113e9 values.
+- Files: src/RimMandrake/Wreckage/Source/RM_WreckWeathering.cs (+ csproj Compile line), .../Defs/ThingDefs_Buildings/
+  RM_WreckFamilies.xml, .../Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml, DLL+.srchash rebuilt,
+  .../validation.py, design/validation_walks/RimMandrake/Wreckage.md, TerminalBiomes/.../RUT_ScaldWrecks.xml (header
+  "no new abstract needed" paragraph replaced: it was false after this slice).
+- Checks: winbuild Wreckage 0 warn/0 err (new types confirmed in the DLL); validate_patch --defs (Data+workshop+Mods)
+  4 files 0 err 0 warn (info lines only: our own classes); Wreckage validation.py static PASS, sanity probes (bad
+  weathering name, changed family cost, Frame reparented to Hull) each caught; TerminalBiomes validation.py static PASS;
+  compose plan (not applied) puts Wreckage 6 files in Biomes/_Kits/Wreckage beside Biomes/TerminalBiomes.
+- Art: none owed this slice (Scald texPaths unchanged; artpipe find scald2_wreck = 56 hits, done). Owed when a biome
+  first casts Speeder/Carapace/Tread: ~2 variants per biome x family; search first (landspeeder/junk renders exist).
+- Left: RM_GenStep_WreckField (custom element-name loader) + the 3->1 Scald GenStep collapse and S6 alias; the RUT_->RM_
+  rename; RM_WreckDensityClassDef; the other ~7 weathering rows with their biomes (Riddled/High first); RM_WreckSurface
+  category; wreck-fall incident; the deconstruct bridge verb; a live load proving the fraction lands at 0.75.

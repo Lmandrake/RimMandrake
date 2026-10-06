@@ -33,6 +33,7 @@
     <Compile Include="RM_WreckageMod.cs" />
     <Compile Include="RM_CompSalvageLoot.cs" />
     <Compile Include="RM_Patch_DeconstructSalvager.cs" />
+    <Compile Include="RM_WreckWeathering.cs" />
   </ItemGroup>
 
   <ItemGroup>
