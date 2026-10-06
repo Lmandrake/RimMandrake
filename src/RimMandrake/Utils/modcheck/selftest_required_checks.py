@@ -2,8 +2,8 @@
 
 Every rule is paired with a CONTROL: the same fixture with the taint removed must count,
 so a rule that silently stops firing turns this red instead of passing vacuously.
-Also a sanity probe on the committed manifest: FlowWorks carries 38 owner bars
-(`modcheck floor --all`), so the manifest instrument can see owner bars at all.
+Also a sanity probe on the committed manifest: every mod with owner bars has a VALIDATED walk with that many
+must-show lines, and at least one exists, so the manifest instrument can see owner bars at all.
 """
 import datetime as dt
 import json
@@ -167,8 +167,23 @@ with tempfile.TemporaryDirectory() as d:
 # 12. sanity probe on the committed manifest
 try:
     m = json.load(open(R.MANIFEST, encoding="utf-8"))["mods"]
-    fw = [c for c in m["FlowWorks"]["checks"] if c["source"] == "north_star_bar"]
-    check("sanity: manifest sees FlowWorks' 38 owner bars", len(fw) == 38, len(fw))
+    # owner bars exist only for a VALIDATED walk; which walks are VALIDATED moves (FlowWorks was released to DRAFT
+    # 2026-10-05), so the probe reads them from the walks rather than naming one mod
+    import northstar as _ns
+    want = {}
+    for mod, row in m.items():
+        nb = [c for c in row["checks"] if c["source"] == "north_star_bar"]
+        if nb:
+            want[mod] = len(nb)
+    check("sanity: manifest carries owner bars for at least one VALIDATED walk", bool(want), want)
+    bad = {}
+    for mod, n in want.items():
+        hits = [p for p in __import__("glob").glob(os.path.join(os.path.dirname(R.MANIFEST), "..", "..", "..", "..",
+                                                                 "design", "validation_walks", "*", mod + ".md"))]
+        ns = _ns.parse(hits[0]) if hits else None
+        if not ns or ns.get("state") != "VALIDATED" or len(ns["must_show"]) != n:
+            bad[mod] = (n, ns and ns.get("state"), ns and len(ns["must_show"]))
+    check("sanity: each owner-bar count equals its VALIDATED walk's must-show count", not bad, bad)
 except (OSError, KeyError, ValueError) as e:
     check("sanity: manifest readable", False, e)
 

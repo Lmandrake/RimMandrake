@@ -17,7 +17,7 @@ CS = FW / "Source" / "Swale" / "RM_Swale.cs"
 MOD = FW / "Source" / "RimMandrakeFlowWorksMod.cs"
 PROJ = FW / "Source" / "RimMandrake_FlowWorks.csproj"
 DEFS = FW / "Defs" / "Canals" / "ThingDefs" / "FlowWorks_ThingDefs.xml"
-VAL = FW / "validation.py"
+VAL = FW / "northstar" / "extensions.py"   # the swale chain moved out of validation.py (densification 2026-10-05)
 
 
 def findings(cs, mod, proj, defs, val):
