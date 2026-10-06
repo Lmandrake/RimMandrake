@@ -257,7 +257,7 @@ namespace RimMandrake.Ninefold
         public void ApplyDelta(God god, float amount, string reason = null)
         {
             // MOD_OPTIONS_RETROFIT_1: the master switch. Every one of the
-            // eighteen Patch_*.cs event hooks routes through this one
+            // nineteen Patch_*.cs event hooks routes through this one
             // method, so gating it here turns the whole engine's effect
             // off in one place -- satiation simply stops moving, no NREs,
             // no orphaned state.

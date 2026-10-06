@@ -15,12 +15,12 @@ namespace RimMandrake.Ninefold
     // Ninefold's own "safe core" doctrine (GameComponent_Ninefold.cs class
     // header, §9: "the vector, all event-driven deltas, the fickle-Mood
     // random walk... pure read/compute/text. No live mutation") means every
-    // one of the eighteen Patch_*.cs event hooks funnels through exactly two
+    // one of the nineteen Patch_*.cs event hooks funnels through exactly two
     // choke points on GameComponent_Ninefold: ApplyDelta and TryFirstContact
     // (NotifyViolentDeath is the one extra caller of TryFirstContact).
     // Gating those, plus the tick that drives the Mood walk / Ta'Baa's
     // rooted erosion / the first-contact queue, turns the WHOLE engine on
-    // and off from one place without touching any of the eighteen patch
+    // and off from one place without touching any of the nineteen patch
     // files — the safest coarse gate available, per this item's own
     // instructions, and it degrades cleanly: no NREs, no orphaned state,
     // the engine just stops moving.
@@ -45,7 +45,7 @@ namespace RimMandrake.Ninefold
         // unveiled — fully reversible, nothing is lost by leaving it off.
         public static bool firstContactLettersEnabled = true;
 
-        // Scales every ApplyDelta call (all eighteen event hooks route
+        // Scales every ApplyDelta call (all nineteen event hooks route
         // through it) AND Ta'Baa's per-hour rooted erosion — the two
         // hardcoded numbers this engine's own comments call "UNTUNED, a
         // first-pass ordering" (EventMagnitude.cs, GameComponent_Ninefold's
