@@ -958,6 +958,18 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PitRoomMath.CaptureDown(true, true, true, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.OwnSide, "own people are not captured");
             });
 
+            // ── Phase 6 owed: explosions light, rain douses ──
+            Case("Fire_explosions_light_and_rain_douses", () =>
+            {
+                Assert(RM_FireMath.ExplosionIgnites("Flame") && RM_FireMath.ExplosionIgnites("Bomb"), "flame and bomb light liquid");
+                Assert(RM_FireMath.ExplosionIgnites("VWE_Incendiary"), "a mod incendiary lights liquid");
+                Assert(!RM_FireMath.ExplosionIgnites("EMP") && !RM_FireMath.ExplosionIgnites("Extinguish")
+                    && !RM_FireMath.ExplosionIgnites("Smoke") && !RM_FireMath.ExplosionIgnites(null), "EMP, foam, smoke never do");
+                AssertClose(RM_FireMath.RainDouseChance(0f), 0f, "no rain, no douse");
+                AssertClose(RM_FireMath.RainDouseChance(1f), 0.03f, "full rain 3% per check");
+                AssertClose(RM_FireMath.RainDouseChance(2f), 0.03f, "capped at full rain");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

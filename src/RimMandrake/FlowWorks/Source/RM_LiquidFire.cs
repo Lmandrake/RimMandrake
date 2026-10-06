@@ -24,8 +24,13 @@ namespace RimMandrake.FlowWorks
 	///   counted in <see cref="BurnedLevelsTotal"/>, debited outside the pulse's conservation ledger.
 	/// - EFFECT: pawns in the burning cell catch fire; one held in a D=4 pit always does (ruling 22).
 	/// - SPENT: a canal cell that burns dry is left scorched (ash) — the `canal_spent_after_burn` bar.
-	/// NOT built (owed): ignition from an explosion with no Fire; extinguishing (foam, rain); bespoke burning-
-	/// liquid and scorched-channel art (the flame is vanilla's fire graphic, the scorch is vanilla ash).
+	/// - EXPLOSIONS: a flame or bomb blast lights burnable liquid in every cell it touches, Fire or no Fire
+	///   (DamageWorker.ExplosionAffectCell postfix). A firefoam blast (Extinguish) smothers instead.
+	/// - PUTTING IT OUT: firefoam on a burning cell smothers it, and while the foam lies there the cell cannot
+	///   relight. Rain on an unroofed burning cell has a chance each check to douse it (oil and tar float, so
+	///   rain is slow, never instant; a neighbour still alight can relight it). Neither marks the cell spent.
+	/// NOT built (owed): bespoke burning-liquid and scorched-channel art (the flame is vanilla's fire graphic,
+	/// the scorch is vanilla ash).
 	/// </summary>
 	public class RM_LiquidFire : IExposable
 	{
@@ -139,7 +144,8 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			if (burning.ContainsKey(i) || pendingSet.Contains(i) || BurnableFluidAt(map, ex, c) == null)
+			if (burning.ContainsKey(i) || pendingSet.Contains(i) || BurnableFluidAt(map, ex, c) == null
+				|| IsSmothered(map, c))
 			{
 				return;
 			}
@@ -357,6 +363,51 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		// ── putting it out ────────────────────────────────────────────────
+
+		/// <summary>Firefoam lying on the cell: the fire is out and stays out while the foam is there.</summary>
+		public static bool IsSmothered(Map map, IntVec3 c)
+		{
+			return RimMandrakeFlowWorksSettings.foamSmothersLiquidFireEnabled && ThingDefOf.Filth_FireFoam != null
+				&& c.InBounds(map) && c.GetFirstThing(map, ThingDefOf.Filth_FireFoam) != null;
+		}
+
+		/// <summary>Rain on an open cell: a chance per effects check (every 60 ticks) scaled by the rain rate.
+		/// PROVISIONAL 0.03 at full rain ≈ a heavy downpour douses a cell in about half an hour.</summary>
+		private static bool RainDouses(Map map, IntVec3 c)
+		{
+			if (!RimMandrakeFlowWorksSettings.rainDousesLiquidFireEnabled || map.roofGrid.Roofed(c))
+			{
+				return false;
+			}
+			float rain = map.weatherManager.RainRate;
+			return rain > 0.01f && Rand.Chance(RM_FireMath.RainDouseChance(rain));
+		}
+
+		/// <summary>An explosion touched <paramref name="c"/>: smother (firefoam) or light (flame, bomb).</summary>
+		public void NotifyExplosionAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c, DamageDef dam)
+		{
+			if (dam == null || !c.InBounds(map))
+			{
+				return;
+			}
+			if (dam == DamageDefOf.Extinguish)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				if (burning.ContainsKey(i))
+				{
+					Extinguish(map, c, i, false);
+				}
+				return;
+			}
+			if (!RimMandrakeFlowWorksSettings.canalFireEnabled || !RimMandrakeFlowWorksSettings.explosionIgnitesLiquidEnabled
+				|| !RM_FireMath.ExplosionIgnites(dam.defName))
+			{
+				return;
+			}
+			TryQueue(map, ex, c, Find.TickManager.TicksGame, 0);
+		}
+
 		// ── flames ────────────────────────────────────────────────────────
 
 		private static void EnsureFlame(Map map, IntVec3 c)
@@ -416,6 +467,26 @@ namespace RimMandrake.FlowWorks
 			}
 			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
 			ex?.LiquidFire.NotifyFireAt(map, ex, __instance.Position);
+		}
+	}
+
+	/// <summary>Explosions: flame/bomb blasts light liquid in every cell they touch; firefoam smothers.</summary>
+	[HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.ExplosionAffectCell))]
+	public static class RM_Patch_ExplosionLightsLiquid
+	{
+		public static void Postfix(Explosion explosion, IntVec3 c)
+		{
+			Map map = explosion?.Map;
+			if (map == null)
+			{
+				return;
+			}
+			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
+			if (ex == null || (ex.LiquidFire.BurningCount == 0 && explosion.damType == DamageDefOf.Extinguish))
+			{
+				return;
+			}
+			ex.LiquidFire.NotifyExplosionAt(map, ex, c, explosion.damType);
 		}
 	}
 
