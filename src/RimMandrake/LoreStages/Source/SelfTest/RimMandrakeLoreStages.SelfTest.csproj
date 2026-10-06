@@ -18,7 +18,7 @@
     production file that needs GenTypes/DefDatabase, i.e. a loaded mod set.
 
     Run (Windows path required; dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\LoreStages\Source\SelfTest\RimMandrakeLoreStages.SelfTest.csproj -c Release
       (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 

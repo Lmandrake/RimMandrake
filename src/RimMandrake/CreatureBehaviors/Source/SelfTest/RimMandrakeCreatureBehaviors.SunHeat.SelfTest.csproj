@@ -14,7 +14,7 @@
 
     Run via src/RimMandrake/Utils/selftest_sun_heat.py, or directly
     (Windows path; dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\SelfTest\RimMandrakeCreatureBehaviors.SunHeat.SelfTest.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\CreatureBehaviors\Source\SelfTest\RimMandrakeCreatureBehaviors.SunHeat.SelfTest.csproj -c Release
   -->
 
   <PropertyGroup>

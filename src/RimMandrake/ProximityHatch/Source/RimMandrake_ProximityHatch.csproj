@@ -7,7 +7,7 @@
     CompHatcher extension point, not a patch.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\ProximityHatch\Source\RimMandrake_ProximityHatch.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\ProximityHatch\Source\RimMandrake_ProximityHatch.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

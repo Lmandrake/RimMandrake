@@ -15,7 +15,7 @@
     the reference assemblies from NuGet instead.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\JawaIonWeapons\Source\VehicleTier\JawaIonVehicleTier.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\JawaIonWeapons\Source\VehicleTier\JawaIonVehicleTier.csproj -c Release
 
     VF_UNGUARDED_EAGER_FIX_1 (2026-09-05): output moved from ../../Assemblies/ to
     ../../VehicleTier/Assemblies/. Sitting in the mod's unconditional Assemblies/

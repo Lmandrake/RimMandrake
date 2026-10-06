@@ -14,7 +14,7 @@
     Livestock project (../Livestock/RimMandrakeLivestockRSW.csproj).
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Source\BeastMechanics\RimMandrakeBeastMechanicsRSW.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimStarWars\SWBestiary\Source\BeastMechanics\RimMandrakeBeastMechanicsRSW.csproj -c Release
 
     Output lands in ../../Assemblies/ — the mod root's Assemblies folder, beside
     JawaIkee.dll and RimMandrakeLivestockRSW.dll, which is where RimWorld looks.

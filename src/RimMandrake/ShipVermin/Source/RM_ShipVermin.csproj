@@ -7,8 +7,8 @@
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path). Build
     RM_CreatureBehaviors.csproj FIRST — this project references its output DLL:
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\ShipVermin\Source\RM_ShipVermin.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\CreatureBehaviors\Source\RM_CreatureBehaviors.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\ShipVermin\Source\RM_ShipVermin.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 

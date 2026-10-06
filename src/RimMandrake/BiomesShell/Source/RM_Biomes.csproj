@@ -12,7 +12,7 @@
     (BiomeDef.generatesNaturally), set at startup and on settings write.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\BiomesShell\Source\RM_Biomes.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\BiomesShell\Source\RM_Biomes.csproj -c Release
   -->
 
   <PropertyGroup>

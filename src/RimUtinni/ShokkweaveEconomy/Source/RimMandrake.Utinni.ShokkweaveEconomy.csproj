@@ -9,7 +9,7 @@
     shape-consistency with the sibling csproj and costs nothing if unused.
 
     Build (dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\ShokkweaveEconomy\Source\RimMandrake.Utinni.ShokkweaveEconomy.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\ShokkweaveEconomy\Source\RimMandrake.Utinni.ShokkweaveEconomy.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

@@ -11,7 +11,7 @@
     text and defs) is a separate item - see GRAFFITI_FRAMEWORK_BUILD_1.md.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Graffiti\Source\Graffiti.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\Graffiti\Source\Graffiti.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

@@ -7,7 +7,7 @@
     HarmonyDll property); copy that file's header if this one goes stale.
 
     Build (dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\FungalSoilTrade\Source\RimMandrake.Utinni.FungalSoilTrade.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\FungalSoilTrade\Source\RimMandrake.Utinni.FungalSoilTrade.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks. NOT built this
     session (no bridge/game access; the .csproj/.cs are the compile-clean deliverable,

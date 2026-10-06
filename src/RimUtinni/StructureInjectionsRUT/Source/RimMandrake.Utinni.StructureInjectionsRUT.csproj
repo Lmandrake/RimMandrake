@@ -9,7 +9,7 @@
     (net472, OutputPath ..\Assemblies\, no Harmony reference).
 
     Build (the dotnet is WINDOWS NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\StructureInjectionsRUT\Source\RimMandrake.Utinni.StructureInjectionsRUT.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\StructureInjectionsRUT\Source\RimMandrake.Utinni.StructureInjectionsRUT.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

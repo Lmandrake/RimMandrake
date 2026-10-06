@@ -22,7 +22,7 @@
 
     Run via the wrapper (once written) or directly (Windows path required,
     dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\RimMandrake\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
       (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 

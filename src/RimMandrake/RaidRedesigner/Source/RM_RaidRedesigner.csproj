@@ -9,7 +9,7 @@
     RimMandrake.Property.PropertyEngine.Fire).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RaidRedesigner\Source\RM_RaidRedesigner.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\RaidRedesigner\Source\RM_RaidRedesigner.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->

@@ -10,7 +10,7 @@
     <workerClass>; no patch registration call needed.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\KyberTradePlot\Source\RimMandrake.Utinni.KyberTradePlot.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimUtinni\KyberTradePlot\Source\RimMandrake.Utinni.KyberTradePlot.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
   -->
