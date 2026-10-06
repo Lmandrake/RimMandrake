@@ -3039,3 +3039,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T11:14:45Z","tsn":1791285285130552879}
 {"seat":"FOUNDRY","event":"claim","id":"BIOME_KITS_PUSH_TO_TEST_1","ts":"2026-10-06T11:15:40Z","tsn":1791285340847463601}
 {"seat":"FOUNDRY","event":"start","id":"BIOME_KITS_PUSH_TO_TEST_1","ts":"2026-10-06T11:15:41Z","tsn":1791285341427172085}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"biome kits live run","ts":"2026-10-06T11:44:17Z","tsn":1791287057760103090}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-06T11:46:53Z","tsn":1791287213930495177}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-06T11:47:24Z","tsn":1791287244382663515}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T11:47:51Z","tsn":1791287271251736073}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T11:47:52Z","tsn":1791287272125372000}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T12:31:43Z","tsn":1791289903327967156}

@@ -60,15 +60,15 @@
           }
          }
         ],
-        "ticksGame": 105300,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_f32b9c05030646c1add4eb8286dea3ec",
+         "OperationId": "op_bda70677bc2b4dc9aba4684d604f2d59",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:39:56.2333755+00:00",
-         "CompletedAtUtc": "2026-10-03T10:39:56.2819277+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:01:58.8550046+00:00",
+         "CompletedAtUtc": "2026-10-06T12:01:58.9040514+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -101,6 +101,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -119,10 +128,10 @@
         "success": true,
         "things": [
          {
-          "id": "AncientAutocannonTurret89030",
+          "id": "AncientAutocannonTurret76022",
           "def": "AncientAutocannonTurret",
           "label": "Broken autocannon turret",
-          "x": 200,
+          "x": 50,
           "z": 50,
           "spawned": true,
           "rot": 0,
@@ -135,25 +144,25 @@
           "quality": null
          }
         ],
-        "scanned": 26164,
+        "scanned": 7663,
         "countReturned": 1,
         "countMatched": 1,
         "isCompleteList": true,
         "truncated": 0,
-        "pawnsSkipped": 41,
+        "pawnsSkipped": 4,
         "perDef": {
          "AncientAutocannonTurret": 1
         },
-        "ticksGame": 105300,
-        "message": "1 of 1 matching thing(s) returned, 26164 examined.",
+        "ticksGame": 362798,
+        "message": "1 of 1 matching thing(s) returned, 7663 examined.",
         "operation": {
-         "OperationId": "op_28a44be8f86b473bb2ed835d03e86a6c",
+         "OperationId": "op_7b883e23069a4a61af41a849a89de7f0",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:01.6355138+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:01.6730444+00:00",
-         "DurationMs": 37,
+         "StartedAtUtc": "2026-10-06T12:02:04.7690235+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:04.8039976+00:00",
+         "DurationMs": 34,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -175,14 +184,14 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human89031",
-          "name": "Thorn",
+          "id": "Human76023",
+          "name": "Kallax",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
           "faction": "PlayerColony",
           "hostile": false,
-          "x": 200,
+          "x": 50,
           "z": 50,
           "spawned": true,
           "xenotype": "Baseliner",
@@ -190,15 +199,15 @@
           "xenotypeApplied": true
          }
         ],
-        "ticksGame": 105300,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6ca281ecfb21498d8acd753744b275cd",
+         "OperationId": "op_bd16a6bebc43484580d7778961c3d4c7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:01.7245933+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:01.7736353+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:04.8554307+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:04.9034395+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -224,13 +233,13 @@
         "queueLength": 0,
         "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is '(none)', not 'Goto' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
         "operation": {
-         "OperationId": "op_612db0f1b11f4df0baf84556252745bd",
+         "OperationId": "op_e5928c9a257048328fc73cf3038997ae",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:01.7746356+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:18.9561376+00:00",
-         "DurationMs": 17181,
+         "StartedAtUtc": "2026-10-06T12:02:04.9044386+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:22.0203663+00:00",
+         "DurationMs": 17115,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -271,6 +280,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -336,15 +354,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_5d03eddf859648759da36f31f78e8ff2",
+         "OperationId": "op_87ec18147ebb4f0e84d46872e3ecaafd",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:27.7905339+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:27.8391025+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:02:29.804782+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:29.8539331+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -363,15 +381,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_9bc57e2801b0439eb4189143c8e1fc0c",
+         "OperationId": "op_33cb63f8e9b04f5f93d041bda1a66f72",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:27.8904745+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:28.0054104+00:00",
-         "DurationMs": 114,
+         "StartedAtUtc": "2026-10-06T12:02:29.9044793+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:30.0257622+00:00",
+         "DurationMs": 121,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -389,15 +407,15 @@
         "field": "turretRefitEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_2b60abd2587b40e89d989e900a21aa17",
+         "OperationId": "op_a35aa79469014215bbf58ef73ac97e5c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:28.0394382+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:28.1393817+00:00",
-         "DurationMs": 99,
+         "StartedAtUtc": "2026-10-06T12:02:30.0558246+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:30.1044582+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -430,6 +448,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -468,14 +495,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_8cb88309b7254ce69b2befdda2c82b0d",
+         "OperationId": "op_a024dbc5f59244c88dffe0d5d4bc5a1d",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:33.3564434+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:33.4044919+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:35.9384583+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:35.9872275+00:00",
          "DurationMs": 48,
          "Result": null,
          "HasResult": true,
@@ -522,6 +549,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -560,14 +596,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_bbd28d310ddf4cb1bccc436033195ffe",
+         "OperationId": "op_30bd5666a22c41c5831ba11ab5cecf4e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:37.9051559+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:37.9544244+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:41.0885502+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:41.1377529+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -614,6 +650,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -652,15 +697,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_0a778cb6969344f5944eef7b348d0bde",
+         "OperationId": "op_5bc1c758b2424f84bb6d9b8bb1e25263",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:42.4562138+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:42.5039684+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-06T12:02:46.2380314+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:46.2871758+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -696,14 +741,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_525d06dad89a4d34a4ae2d8338a5c7f6",
+         "OperationId": "op_c0916da67a1e441eafdba50e247cdfde",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:42.5555116+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:42.6045524+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:46.3382633+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:46.3877748+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -740,15 +785,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_609c3ef4c99f4ff0b69c0e668a927456",
+         "OperationId": "op_60f2016617e54e02b9489df8bbfda632",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:42.6558235+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:42.7046943+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:02:46.4384168+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:46.4880828+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -784,14 +829,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_5c962a96682d4fcaa7c971ba1fdfd9a0",
+         "OperationId": "op_16ed3db243314ece8b39ce4436a2b49c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:42.7552411+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:42.8042898+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:46.53826+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:46.5879281+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -838,6 +883,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -876,15 +930,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_47770104380c4a65b0e816ad2318f3b8",
+         "OperationId": "op_f70a8745ac7f4e999481a83059c413f2",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.2889368+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.3385354+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:51.6886223+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:51.737042+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -920,15 +974,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_cc9df3a5315749e0a42e8f30f757d129",
+         "OperationId": "op_b0d86f1a22844cc69db8bcd7a298b7ac",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.3882482+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.4383019+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:02:51.7876662+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:51.8376256+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -964,15 +1018,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_8ee3aed0d94f446a97175644e202a837",
+         "OperationId": "op_d13b57f89db14974b562b64b6070e2ad",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.4888418+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.53773+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:02:51.8879688+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:51.937222+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1008,15 +1062,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_34bce2c030da465a923a0761b75e9f55",
+         "OperationId": "op_4581b4feb0274898b2bc37c74377181b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.5882946+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.6379356+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:51.9881944+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:52.0371878+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1052,15 +1106,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_5940cd80848c4bf5aafb1ebbab16cc59",
+         "OperationId": "op_56374b32c55540d6bfcda6c5e870396c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.6884822+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.7380343+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:52.0889101+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:52.1371832+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1096,14 +1150,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_21b55f1ada9548329b4cd1d6fa025660",
+         "OperationId": "op_f560dfcec6234f14a21c9b3d54f26084",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.7885751+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.8381534+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:52.1880651+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:52.237695+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1140,15 +1194,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_6c29df32dc374cb5a93042d7bb43be4b",
+         "OperationId": "op_cc2ad5ad6ce4440c9e2fc4ddc8be4848",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:47.8897012+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:47.9375476+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-06T12:02:52.2883979+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:52.3378246+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1194,6 +1248,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1232,15 +1295,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_c354d2c1a2e14b489cc70905ebd987f9",
+         "OperationId": "op_cf79c8184ede42c5be2c58146f45ea3c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:52.43907+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:52.4883053+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:57.4373737+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:57.4878328+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1276,15 +1339,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_0d1b78e76960479eae5352289951a585",
+         "OperationId": "op_a979caefdb084f8c9b0abe7112db225f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:52.5389161+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:52.5880737+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:02:57.538145+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:57.5869355+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1320,15 +1383,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_9d37ace26a704183bc6b6fd57f94543b",
+         "OperationId": "op_5631eb38e99a44c992e757b1222bccba",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:52.6390369+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:52.6875872+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:02:57.6380609+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:57.6876977+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1364,14 +1427,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_408f77eb44f74f5bab2c5cb06c76dea2",
+         "OperationId": "op_41ca9921c4444962b8497c46f513658b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:52.739453+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:52.7875025+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:57.7386778+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:57.7872945+00:00",
          "DurationMs": 48,
          "Result": null,
          "HasResult": true,
@@ -1408,14 +1471,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_ccdd7ddb91c9421e9df5e524353f0937",
+         "OperationId": "op_4239551f9ee948939914cc896d5884a8",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:52.8382982+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:52.8879306+00:00",
+         "StartedAtUtc": "2026-10-06T12:02:57.8378875+00:00",
+         "CompletedAtUtc": "2026-10-06T12:02:57.8877258+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1475,6 +1538,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1513,15 +1585,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_dd040bc12c274c8f8db00712aebe14f3",
+         "OperationId": "op_45b1ed8b085e41a7a36c6583d8a821ec",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.3893379+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.4380644+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:03:02.9879163+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.0371343+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1557,14 +1629,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_2924c82a737a4becaae813869a9dcd01",
+         "OperationId": "op_22041a1264cb4de896c3fcee85aa662c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.4881856+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.5379937+00:00",
+         "StartedAtUtc": "2026-10-06T12:03:03.0878735+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.1370503+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1601,15 +1673,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_0cc8c4db084544799016a25e23fd04c9",
+         "OperationId": "op_80d4314d08b24f08a54e8c9fe41159ac",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.5880322+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.6381807+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:03:03.1879533+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.2369727+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1645,15 +1717,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_ad869583911043aea75fbee0371a72d8",
+         "OperationId": "op_28f6e7354acd494f90043595d4a53a81",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.6887176+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.7384556+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:03:03.2887962+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.3369522+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1689,15 +1761,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_40b5e447016d474a8296cba4e6df02ea",
+         "OperationId": "op_b3c02e3e3998432c916415917d36e024",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.7890021+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.8379984+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:03:03.3879866+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.4371867+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1733,14 +1805,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_51dd29ad6f8540878897a09588ec4cc8",
+         "OperationId": "op_0837a6d734ba4a85a05b9916c25ea606",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.8715264+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:57.9212298+00:00",
+         "StartedAtUtc": "2026-10-06T12:03:03.4879931+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.5374023+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1777,15 +1849,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_dff6c82e1fae4d34a8bbafcb7f155d4b",
+         "OperationId": "op_7f1e216c7cc64817b33ef01e975f2d1f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:57.9717665+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:58.0218163+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:03:03.588116+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.6375097+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1821,15 +1893,15 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_13ed932e77064ad49316a12f1d225012",
+         "OperationId": "op_2e715319e479498abc9831d87a336370",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:58.0721882+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:58.1222421+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:03:03.6887349+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.7369853+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1865,14 +1937,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_80768db92eaa4e768dc4b994e0411770",
+         "OperationId": "op_e96cd4298a054415866b18c7d9d45675",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:40:58.172144+00:00",
-         "CompletedAtUtc": "2026-10-03T10:40:58.2217439+00:00",
+         "StartedAtUtc": "2026-10-06T12:03:03.7878728+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:03.8371269+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1919,6 +1991,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1935,9 +2016,9 @@
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "7 of 7 def(s) resolved",
-        "requested": 7,
-        "foundCount": 7,
+        "message": "9 of 9 def(s) resolved",
+        "requested": 9,
+        "foundCount": 9,
         "notFound": [],
         "malformed": [],
         "fieldsAsked": [
@@ -2027,17 +2108,41 @@
           "fields": {
            "defName": "RM_TriggerOrdnance"
           }
+         },
+         {
+          "requested": "JobDef/RM_DustBlight",
+          "found": true,
+          "defName": "RM_DustBlight",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DustBlight"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_StretchDyeWithWarDust",
+          "found": true,
+          "defName": "RM_StretchDyeWithWarDust",
+          "defType": "RecipeDef",
+          "label": "stretch dye with war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_StretchDyeWithWarDust"
+          }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_825ea53b9df14319ad73b3bb19f1a912",
+         "OperationId": "op_ed45eb5ff7ce4af49f0ac0b5cfe6eabc",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:41:02.7219285+00:00",
-         "CompletedAtUtc": "2026-10-03T10:41:02.7714733+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:03:08.9385063+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:08.9867619+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2107,6 +2212,19 @@
      "surprises": null
     },
     {
+     "name": "war_dust_cures_blight",
+     "toggle": "warDustBlightCureEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: a grower carrying one RM_WarDust to a blighted crop (dev Blight incident on a sown zone) and the Blight thing being gone with the plant alive needs a live map and a pawn",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
      "name": "buried_ordnance_revealed_and_defusable",
      "toggle": null,
      "beyond_toggle": true,
@@ -2135,6 +2253,765 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "warscar_mark",
+   "components": [
+    {
+     "name": "mark_defs_resolve",
+     "toggle": "markEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "2 of 2 def(s) resolved",
+        "requested": 2,
+        "foundCount": 2,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RM_WarscarMark",
+          "found": true,
+          "defName": "RM_WarscarMark",
+          "defType": "HediffDef",
+          "label": "the Warscar mark",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WarscarMark"
+          }
+         },
+         {
+          "requested": "ThoughtDef/RM_WarscarMarkThought",
+          "found": true,
+          "defName": "RM_WarscarMarkThought",
+          "defType": "ThoughtDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WarscarMarkThought"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_1679ba31c1fc445480bbc690fcc5c915",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:14.1219799+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:14.1707209+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mark_accrues_and_pays",
+     "toggle": "markTradeBonusesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofAccrue(Verse.Map, Int32)",
+        "result": "PAWN Human75997 hours 24 marked 24 severity 0.3 stage mild mark floor armed=False | HackingSpeed 1.12 | SmeltingSpeed 1",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_ab2520636b5148a5842b84a8d61b46a3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:14.2223539+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:14.2702086+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mark_floor_arms",
+     "toggle": "markFloorEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofAccrue(Verse.Map, Int32)",
+        "result": "PAWN Human75997 hours 24 marked 24 severity 0.6 stage deepening mark floor armed=True | HackingSpeed 1.22 | SmeltingSpeed 1.1",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_6776808b7d084239a63e9f618393e0f9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:14.3218167+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:14.3704388+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mark_off_accrues_nothing",
+     "toggle": "markEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "markEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_a986dd6a31234ee6beac9e7c636c7c5f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:14.4213301+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:14.4704668+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofAccrue(Verse.Map, Int32)",
+        "result": "PAWN Human75997 hours 4 marked 0 severity 0.6 stage deepening mark floor armed=True | HackingSpeed 1.22 | SmeltingSpeed 1.1",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_a7c7bf3e5a4142bf8ca01cdc5856d1de",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:14.5212077+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:14.5709781+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050151\\Scarlands__warscar_mark__colonist_injured_unexpectedly__t362858__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050151\\Scarlands__warscar_mark__colonist_injured_unexpectedly__t362858__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 362858,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Bucky gained 1 new hediff(s) (RM_WarscarMark); cause_hint=unknown"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "chatrak_snap",
+   "components": [
+    {
+     "name": "snap_defs_resolve",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "2 of 2 def(s) resolved",
+        "requested": 2,
+        "foundCount": 2,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RM_ChatrakIncubation",
+          "found": true,
+          "defName": "RM_ChatrakIncubation",
+          "defType": "HediffDef",
+          "label": "the turn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChatrakIncubation"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Chatrak",
+          "found": true,
+          "defName": "RM_Chatrak",
+          "defType": "PawnKindDef",
+          "label": "chatrak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chatrak"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_1e7670a703c0460fa2cf5253812e143e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.3381316+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.3872108+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_stage_0_2",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76034 armed 1 severity 0.2 stage incubating visible=False plates=hidden hunger x1.00 circling=- snap=-",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_784004af12fc4fdeb75acbe0a0bc145e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.437769+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.4873667+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_stage_0_4",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76035 armed 1 severity 0.4 stage plates lifting visible=True plates=shown hunger x1.00 circling=- snap=-",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_ab9375379566461ea5cf5612c66bd71a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.5379323+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.5869922+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_stage_0_7",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76036 armed 1 severity 0.7 stage off its feed visible=True plates=shown hunger x0.00 circling=- snap=-",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_6688044380c443948469662685a2fa1f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.6375553+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.6871153+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_stage_0_9",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76037 armed 1 severity 0.9 stage circling visible=True plates=shown hunger x0.00 circling=ring@(137, 0, 119) r=2.8 snap=-",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_95939cf9bd8b403b85557bb133563f02",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.7376779+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.7872477+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_stage_1_0",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76038 armed 1 severity 1 stage the snap visible=True plates=shown hunger x0.00 circling=- snap=ManhunterPermanent",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_d1bc1bf0f8fc4ef0afd633fa586d0da2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.8378047+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.8873673+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clean_chatrak_never_armed",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofClean(Verse.Map)",
+        "result": "PAWN RM_Chatrak76039 clean armed=False",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_da787503d74240429e7d5bcf009a135d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:21.937945+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:21.9875224+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "snap_off_arms_nothing",
+     "toggle": "snapEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "snapEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_08b1913a09ff43c7af6a1c42f6244365",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:22.038062+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:22.0871338+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofStage(Verse.Map, Single)",
+        "result": "PAWN RM_Chatrak76040 armed 0 | NOT ARMED (snapEnabled=False)",
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_6c9c503f40bf4cecba58679a8e5c5285",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:22.137587+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:22.1875618+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050151\\Scarlands__chatrak_snap__wildlife_near_colonist__t362858__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050151\\Scarlands__chatrak_snap__wildlife_near_colonist__t362858__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 362858,
+      "detector": "wildlife_near_colonist",
+      "severity": "SURPRISE",
+      "summary": "4 wild animal(s) within 12 cells of a colonist (4 new since baseline); proximity only, hunting intent unmeasured"
+     },
+     {
+      "tick": 362858,
+      "detector": "mental_break",
+      "severity": "SURPRISE",
+      "summary": "Chatrak entered mental state ManhunterPermanent (aggro)"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "loosened_panel",
+   "components": [
+    {
+     "name": "below_deepening_is_refused",
+     "toggle": "loosenedPanelsEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: a mild-marked pawn was not refused with the line: ",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofWork with 2 params.",
+        "details": {
+         "available": [
+          "System.String ProofWork(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_6bb09f22bbba49dbb6faf43db61397f2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:29.0708463+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:29.1199983+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "deepening_opens_onto_a_sealed_crate",
+     "toggle": "loosenedPanelsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -2245,14 +3122,14 @@
           }
          }
         ],
-        "ticksGame": 105360,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_f5a8634d63d24eb2a9a316e72bc0577d",
+         "OperationId": "op_2eed25985a6f4997b04ebc7f171d4e80",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T10:41:07.255488+00:00",
-         "CompletedAtUtc": "2026-10-03T10:41:07.3046868+00:00",
+         "StartedAtUtc": "2026-10-06T12:03:34.221447+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:34.2705286+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -2325,14 +3202,3549 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "every_shipped_def_reads_back",
+   "components": [
+    {
+     "name": "every_shipped_def_is_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Warscar",
+          "found": true,
+          "defName": "RM_Warscar",
+          "defType": "BiomeDef",
+          "label": "Warscar",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Warscar"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_GeigerChoirDef/RM_GeigerChoir",
+          "found": true,
+          "defName": "RM_GeigerChoir",
+          "defType": "RM_GeigerChoirDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GeigerChoir"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_BloomAcid",
+          "found": true,
+          "defName": "RM_BloomAcid",
+          "defType": "DamageDef",
+          "label": "bloom acid",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BloomAcid"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_BloomBurn",
+          "found": true,
+          "defName": "RM_BloomBurn",
+          "defType": "HediffDef",
+          "label": "bloom burn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BloomBurn"
+          }
+         },
+         {
+          "requested": "GameConditionDef/RM_Settling",
+          "found": true,
+          "defName": "RM_Settling",
+          "defType": "GameConditionDef",
+          "label": "the Settling",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Settling"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_BuriedOrdnance",
+          "found": true,
+          "defName": "RM_BuriedOrdnance",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BuriedOrdnance"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_ChotrixOnMap",
+          "found": true,
+          "defName": "RM_ChotrixOnMap",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChotrixOnMap"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_InscribedPanels",
+          "found": true,
+          "defName": "RM_InscribedPanels",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_InscribedPanels"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_KneelingRings",
+          "found": true,
+          "defName": "RM_KneelingRings",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_KneelingRings"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_LoosenedPanels",
+          "found": true,
+          "defName": "RM_LoosenedPanels",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LoosenedPanels"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_ReactionPools",
+          "found": true,
+          "defName": "RM_ReactionPools",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ReactionPools"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_TotchakInWall",
+          "found": true,
+          "defName": "RM_TotchakInWall",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TotchakInWall"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_ChatrakIncubation",
+          "found": true,
+          "defName": "RM_ChatrakIncubation",
+          "defType": "HediffDef",
+          "label": "the turn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChatrakIncubation"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_ChotrixCloak",
+          "found": true,
+          "defName": "RM_ChotrixCloak",
+          "defType": "HediffDef",
+          "label": "cloaked",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChotrixCloak"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_LacquerStill",
+          "found": true,
+          "defName": "RM_LacquerStill",
+          "defType": "HediffDef",
+          "label": "lacquer-cloaked",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LacquerStill"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_GougedPort",
+          "found": true,
+          "defName": "RM_Dsr_GougedPort",
+          "defType": "HediffDef",
+          "label": "gouged control port",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_GougedPort"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_Tally",
+          "found": true,
+          "defName": "RM_Dsr_Tally",
+          "defType": "HediffDef",
+          "label": "tally scratches",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_Tally"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_WeldedBox",
+          "found": true,
+          "defName": "RM_Dsr_WeldedBox",
+          "defType": "HediffDef",
+          "label": "welded sealed box",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_WeldedBox"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_VoiceRemoved",
+          "found": true,
+          "defName": "RM_Dsr_VoiceRemoved",
+          "defType": "HediffDef",
+          "label": "voice box removed",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_VoiceRemoved"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_LichenSeams",
+          "found": true,
+          "defName": "RM_Dsr_LichenSeams",
+          "defType": "HediffDef",
+          "label": "lichen seams",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_LichenSeams"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_GraftedLimb",
+          "found": true,
+          "defName": "RM_Dsr_GraftedLimb",
+          "defType": "HediffDef",
+          "label": "grafted limb",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_GraftedLimb"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_OversizedArray",
+          "found": true,
+          "defName": "RM_Dsr_OversizedArray",
+          "defType": "HediffDef",
+          "label": "oversized array",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dsr_OversizedArray"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_WarscarMark",
+          "found": true,
+          "defName": "RM_WarscarMark",
+          "defType": "HediffDef",
+          "label": "the Warscar mark",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WarscarMark"
+          }
+         },
+         {
+          "requested": "JobDef/RM_HospiceHaul",
+          "found": true,
+          "defName": "RM_HospiceHaul",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HospiceHaul"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_HospiceHaul",
+          "found": true,
+          "defName": "RM_HospiceHaul",
+          "defType": "WorkGiverDef",
+          "label": "feed hospice cradle",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HospiceHaul"
+          }
+         },
+         {
+          "requested": "IncidentDef/RM_DeserterWalksIn",
+          "found": true,
+          "defName": "RM_DeserterWalksIn",
+          "defType": "IncidentDef",
+          "label": "deserter walks in",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DeserterWalksIn"
+          }
+         },
+         {
+          "requested": "JobDef/RM_WorkPanelLoose",
+          "found": true,
+          "defName": "RM_WorkPanelLoose",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WorkPanelLoose"
+          }
+         },
+         {
+          "requested": "JobDef/RM_DrawReagent",
+          "found": true,
+          "defName": "RM_DrawReagent",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DrawReagent"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DrawReagent",
+          "found": true,
+          "defName": "RM_DrawReagent",
+          "defType": "WorkGiverDef",
+          "label": "draw pool reagent",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DrawReagent"
+          }
+         },
+         {
+          "requested": "JobDef/RM_SweepWarDust",
+          "found": true,
+          "defName": "RM_SweepWarDust",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SweepWarDust"
+          }
+         },
+         {
+          "requested": "JobDef/RM_DefuseOrdnance",
+          "found": true,
+          "defName": "RM_DefuseOrdnance",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DefuseOrdnance"
+          }
+         },
+         {
+          "requested": "JobDef/RM_TriggerOrdnance",
+          "found": true,
+          "defName": "RM_TriggerOrdnance",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TriggerOrdnance"
+          }
+         },
+         {
+          "requested": "JobDef/RM_DustBlight",
+          "found": true,
+          "defName": "RM_DustBlight",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DustBlight"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DustBlight",
+          "found": true,
+          "defName": "RM_DustBlight",
+          "defType": "WorkGiverDef",
+          "label": "dust blight with war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DustBlight"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_SweepWarDust",
+          "found": true,
+          "defName": "RM_SweepWarDust",
+          "defType": "WorkGiverDef",
+          "label": "sweep war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SweepWarDust"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DefuseOrdnance",
+          "found": true,
+          "defName": "RM_DefuseOrdnance",
+          "defType": "WorkGiverDef",
+          "label": "defuse ordnance",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DefuseOrdnance"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_TriggerOrdnance",
+          "found": true,
+          "defName": "RM_TriggerOrdnance",
+          "defType": "WorkGiverDef",
+          "label": "set off ordnance from range",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TriggerOrdnance"
+          }
+         },
+         {
+          "requested": "JobDef/RM_TotchakGnaw",
+          "found": true,
+          "defName": "RM_TotchakGnaw",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TotchakGnaw"
+          }
+         },
+         {
+          "requested": "JobDef/RM_TotchakLieDown",
+          "found": true,
+          "defName": "RM_TotchakLieDown",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TotchakLieDown"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Leash",
+          "found": true,
+          "defName": "RM_Deserter_Leash",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the one who cut its own leash",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Leash"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_9436af1049d5467f804a14abb4a1fd9f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:39.8014666+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:39.836711+00:00",
+         "DurationMs": 35,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Counter",
+          "found": true,
+          "defName": "RM_Deserter_Counter",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the counter",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Counter"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Carrier",
+          "found": true,
+          "defName": "RM_Deserter_Carrier",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the carrier",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Carrier"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Quiet",
+          "found": true,
+          "defName": "RM_Deserter_Quiet",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the quiet one",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Quiet"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Gardener",
+          "found": true,
+          "defName": "RM_Deserter_Gardener",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the gardener",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Gardener"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Defector",
+          "found": true,
+          "defName": "RM_Deserter_Defector",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the defector",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Defector"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Listener",
+          "found": true,
+          "defName": "RM_Deserter_Listener",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the listener",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Deserter_Listener"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_MakeToxShellFromWarDust",
+          "found": true,
+          "defName": "RM_MakeToxShellFromWarDust",
+          "defType": "RecipeDef",
+          "label": "make tox shell from war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MakeToxShellFromWarDust"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_StretchDyeWithWarDust",
+          "found": true,
+          "defName": "RM_StretchDyeWithWarDust",
+          "defType": "RecipeDef",
+          "label": "stretch dye with war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_StretchDyeWithWarDust"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Hospice",
+          "found": true,
+          "defName": "RM_OldTongue_Hospice",
+          "defType": "ResearchProjectDef",
+          "label": "hospice protocols",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldTongue_Hospice"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Projector",
+          "found": true,
+          "defName": "RM_OldTongue_Projector",
+          "defType": "ResearchProjectDef",
+          "label": "projector calibration",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldTongue_Projector"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Pool",
+          "found": true,
+          "defName": "RM_OldTongue_Pool",
+          "defType": "ResearchProjectDef",
+          "label": "pool phase reading",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldTongue_Pool"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_GeigerTick",
+          "found": true,
+          "defName": "RM_GeigerTick",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GeigerTick"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_WindOnMetal",
+          "found": true,
+          "defName": "RM_WindOnMetal",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WindOnMetal"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_ProjectorHum",
+          "found": true,
+          "defName": "RM_ProjectorHum",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ProjectorHum"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_PoolBoil",
+          "found": true,
+          "defName": "RM_PoolBoil",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_PoolBoil"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BuriedOrdnance",
+          "found": true,
+          "defName": "RM_BuriedOrdnance",
+          "defType": "ThingDef",
+          "label": "unexploded shell",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BuriedOrdnance"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Slagged",
+          "found": true,
+          "defName": "RM_KneelingChassis_Slagged",
+          "defType": "ThingDef",
+          "label": "slagged kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_KneelingChassis_Slagged"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Posed",
+          "found": true,
+          "defName": "RM_KneelingChassis_Posed",
+          "defType": "ThingDef",
+          "label": "posed kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_KneelingChassis_Posed"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Intact",
+          "found": true,
+          "defName": "RM_KneelingChassis_Intact",
+          "defType": "ThingDef",
+          "label": "intact kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_KneelingChassis_Intact"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_HospiceCradle",
+          "found": true,
+          "defName": "RM_HospiceCradle",
+          "defType": "ThingDef",
+          "label": "hospice cradle",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HospiceCradle"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Hospice",
+          "found": true,
+          "defName": "RM_InscribedPanel_Hospice",
+          "defType": "ThingDef",
+          "label": "inscribed panel (hospice protocol)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_InscribedPanel_Hospice"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Projector",
+          "found": true,
+          "defName": "RM_InscribedPanel_Projector",
+          "defType": "ThingDef",
+          "label": "inscribed panel (projector calibration)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_InscribedPanel_Projector"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Pool",
+          "found": true,
+          "defName": "RM_InscribedPanel_Pool",
+          "defType": "ThingDef",
+          "label": "inscribed panel (pool phase)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_InscribedPanel_Pool"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LoosenedPanel",
+          "found": true,
+          "defName": "RM_LoosenedPanel",
+          "defType": "ThingDef",
+          "label": "loosened wall panel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LoosenedPanel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret",
+          "found": true,
+          "defName": "RM_OldLineTurret",
+          "defType": "ThingDef",
+          "label": "old-line turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldLineTurret"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret_Bullet",
+          "found": true,
+          "defName": "RM_OldLineTurret_Bullet",
+          "defType": "ThingDef",
+          "label": "old-line slug",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldLineTurret_Bullet"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret_Gun",
+          "found": true,
+          "defName": "RM_OldLineTurret_Gun",
+          "defType": "ThingDef",
+          "label": "old-line turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_OldLineTurret_Gun"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ReactionPool",
+          "found": true,
+          "defName": "RM_ReactionPool",
+          "defType": "ThingDef",
+          "label": "reaction pool",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ReactionPool"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ReactionTap",
+          "found": true,
+          "defName": "RM_ReactionTap",
+          "defType": "ThingDef",
+          "label": "reaction tap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ReactionTap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Filth_SettledFilm",
+          "found": true,
+          "defName": "RM_Filth_SettledFilm",
+          "defType": "ThingDef",
+          "label": "settled film",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Filth_SettledFilm"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CloakLacquer",
+          "found": true,
+          "defName": "RM_CloakLacquer",
+          "defType": "ThingDef",
+          "label": "cloak lacquer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CloakLacquer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Apparel_LacquerCloak",
+          "found": true,
+          "defName": "RM_Apparel_LacquerCloak",
+          "defType": "ThingDef",
+          "label": "lacquered cloak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Apparel_LacquerCloak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChassisCore",
+          "found": true,
+          "defName": "RM_ChassisCore",
+          "defType": "ThingDef",
+          "label": "chassis core",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChassisCore"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FailedChassis",
+          "found": true,
+          "defName": "RM_FailedChassis",
+          "defType": "ThingDef",
+          "label": "failed chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FailedChassis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_DielectricGel",
+          "found": true,
+          "defName": "RM_DielectricGel",
+          "defType": "ThingDef",
+          "label": "dielectric gel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DielectricGel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Etchant",
+          "found": true,
+          "defName": "RM_Etchant",
+          "defType": "ThingDef",
+          "label": "etchant",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Etchant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MedicalCoagulant",
+          "found": true,
+          "defName": "RM_MedicalCoagulant",
+          "defType": "ThingDef",
+          "label": "medical coagulant",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MedicalCoagulant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BloomLiquor",
+          "found": true,
+          "defName": "RM_BloomLiquor",
+          "defType": "ThingDef",
+          "label": "bloom liquor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BloomLiquor"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FilthBone",
+          "found": true,
+          "defName": "RM_FilthBone",
+          "defType": "ThingDef",
+          "label": "bone filth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FilthBone"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CapturedTetchik",
+          "found": true,
+          "defName": "RM_CapturedTetchik",
+          "defType": "ThingDef",
+          "label": "captured tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CapturedTetchik"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_30662289c865410ba223bb537b6902d0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:39.88749+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:39.936719+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "26 of 26 def(s) resolved",
+        "requested": 26,
+        "foundCount": 26,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_TetchikJar",
+          "found": true,
+          "defName": "RM_TetchikJar",
+          "defType": "ThingDef",
+          "label": "tetchik jar",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TetchikJar"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_MakeTetchikJar",
+          "found": true,
+          "defName": "RM_MakeTetchikJar",
+          "defType": "RecipeDef",
+          "label": "jar a tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MakeTetchikJar"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WarDust",
+          "found": true,
+          "defName": "RM_WarDust",
+          "defType": "ThingDef",
+          "label": "war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WarDust"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GlowerCrust",
+          "found": true,
+          "defName": "RM_GlowerCrust",
+          "defType": "ThingDef",
+          "label": "glower crust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GlowerCrust"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChatrakPlate",
+          "found": true,
+          "defName": "RM_ChatrakPlate",
+          "defType": "ThingDef",
+          "label": "chatrak plate",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChatrakPlate"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WreckLichenScrapings",
+          "found": true,
+          "defName": "RM_WreckLichenScrapings",
+          "defType": "ThingDef",
+          "label": "wreck-lichen scrapings",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WreckLichenScrapings"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ScorchedStars",
+          "found": true,
+          "defName": "RM_ScorchedStars",
+          "defType": "ThingDef",
+          "label": "scorched stars",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ScorchedStars"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WreckLichen",
+          "found": true,
+          "defName": "RM_WreckLichen",
+          "defType": "ThingDef",
+          "label": "wreck-lichen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WreckLichen"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Glower",
+          "found": true,
+          "defName": "RM_Glower",
+          "defType": "ThingDef",
+          "label": "the Glowers",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Glower"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_AncientServitor",
+          "found": true,
+          "defName": "RM_AncientServitor",
+          "defType": "ThingDef",
+          "label": "ancient servitor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AncientServitor"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_AncientServitor",
+          "found": true,
+          "defName": "RM_AncientServitor",
+          "defType": "PawnKindDef",
+          "label": "ancient servitor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AncientServitor"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "ThingDef",
+          "label": "chotrix",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chotrix"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "PawnKindDef",
+          "label": "chotrix",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chotrix"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "ThingDef",
+          "label": "totchak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Totchak"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "PawnKindDef",
+          "label": "totchak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Totchak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Chatrak",
+          "found": true,
+          "defName": "RM_Chatrak",
+          "defType": "ThingDef",
+          "label": "chatrak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chatrak"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Chatrak",
+          "found": true,
+          "defName": "RM_Chatrak",
+          "defType": "PawnKindDef",
+          "label": "chatrak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chatrak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tetchik",
+          "found": true,
+          "defName": "RM_Tetchik",
+          "defType": "ThingDef",
+          "label": "tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tetchik"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Tetchik",
+          "found": true,
+          "defName": "RM_Tetchik",
+          "defType": "PawnKindDef",
+          "label": "tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tetchik"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Pallbearer",
+          "found": true,
+          "defName": "RM_Pallbearer",
+          "defType": "ThingDef",
+          "label": "pallbearer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Pallbearer"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Pallbearer",
+          "found": true,
+          "defName": "RM_Pallbearer",
+          "defType": "PawnKindDef",
+          "label": "pallbearer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Pallbearer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ScarRoach",
+          "found": true,
+          "defName": "RM_ScarRoach",
+          "defType": "ThingDef",
+          "label": "scar-roach",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ScarRoach"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ScarRoach",
+          "found": true,
+          "defName": "RM_ScarRoach",
+          "defType": "PawnKindDef",
+          "label": "scar-roach",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ScarRoach"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Chotrix"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Totchak"
+          }
+         },
+         {
+          "requested": "ThoughtDef/RM_WarscarMarkThought",
+          "found": true,
+          "defName": "RM_WarscarMarkThought",
+          "defType": "ThoughtDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WarscarMarkThought"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_bcaf304c063f4a15870c1ad4460dc7a3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:39.9883536+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.0371776+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shipped_scalar_fields_match_xml",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "animalDensity",
+         "plantDensity",
+         "movementDifficulty",
+         "forageability",
+         "foragedFood",
+         "allowRoads",
+         "allowRivers",
+         "diseaseMtbDays",
+         "wildPlantRegrowDays"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_Warscar",
+          "found": true,
+          "defName": "RM_Warscar",
+          "defType": "BiomeDef",
+          "label": "Warscar",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "allowRoads": true,
+           "allowRivers": true,
+           "animalDensity": 1.0,
+           "plantDensity": 0.15,
+           "diseaseMtbDays": 50.0,
+           "forageability": 0.25,
+           "foragedFood": "RawBerries",
+           "wildPlantRegrowDays": 20.0,
+           "movementDifficulty": 1.0,
+           "label": "Warscar"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_3b8ab74535da4d5e8270e5755bc01b1a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.0884412+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.137392+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "DamageDef/RM_BloomAcid",
+          "found": true,
+          "defName": "RM_BloomAcid",
+          "defType": "DamageDef",
+          "label": "bloom acid",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "bloom acid"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_d5c048973ab54c1eb9fe3aa0956873cc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.1880396+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.2367131+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "GameConditionDef/RM_Settling",
+          "found": true,
+          "defName": "RM_Settling",
+          "defType": "GameConditionDef",
+          "label": "the Settling",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the Settling"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_03d2cf2ef2334621b8df2d65bce40021",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.2883631+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.3366124+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "order"
+        ],
+        "defs": [
+         {
+          "requested": "GenStepDef/RM_BuriedOrdnance",
+          "found": true,
+          "defName": "RM_BuriedOrdnance",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 535.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_ChotrixOnMap",
+          "found": true,
+          "defName": "RM_ChotrixOnMap",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 530.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_InscribedPanels",
+          "found": true,
+          "defName": "RM_InscribedPanels",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 530.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_KneelingRings",
+          "found": true,
+          "defName": "RM_KneelingRings",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 535.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_LoosenedPanels",
+          "found": true,
+          "defName": "RM_LoosenedPanels",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 531.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_ReactionPools",
+          "found": true,
+          "defName": "RM_ReactionPools",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 545.0
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_TotchakInWall",
+          "found": true,
+          "defName": "RM_TotchakInWall",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "order": 520.0
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_79d9df7f05244cebbc194b68c34880e2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.3875735+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.437596+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "12 of 12 def(s) resolved",
+        "requested": 12,
+        "foundCount": 12,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "isBad",
+         "initialSeverity",
+         "maxSeverity",
+         "tendable"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RM_BloomBurn",
+          "found": true,
+          "defName": "RM_BloomBurn",
+          "defType": "HediffDef",
+          "label": "bloom burn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": true,
+           "isBad": true,
+           "maxSeverity": 3.40282347e+38,
+           "label": "bloom burn"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_ChatrakIncubation",
+          "found": true,
+          "defName": "RM_ChatrakIncubation",
+          "defType": "HediffDef",
+          "label": "the turn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.0001,
+           "tendable": false,
+           "isBad": true,
+           "maxSeverity": 1.0,
+           "label": "the turn"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_ChotrixCloak",
+          "found": true,
+          "defName": "RM_ChotrixCloak",
+          "defType": "HediffDef",
+          "label": "cloaked",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 1.0,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 1.0,
+           "label": "cloaked"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_LacquerStill",
+          "found": true,
+          "defName": "RM_LacquerStill",
+          "defType": "HediffDef",
+          "label": "lacquer-cloaked",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 1.0,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 1.0,
+           "label": "lacquer-cloaked"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_GougedPort",
+          "found": true,
+          "defName": "RM_Dsr_GougedPort",
+          "defType": "HediffDef",
+          "label": "gouged control port",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "gouged control port"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_Tally",
+          "found": true,
+          "defName": "RM_Dsr_Tally",
+          "defType": "HediffDef",
+          "label": "tally scratches",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "tally scratches"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_WeldedBox",
+          "found": true,
+          "defName": "RM_Dsr_WeldedBox",
+          "defType": "HediffDef",
+          "label": "welded sealed box",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "welded sealed box"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_VoiceRemoved",
+          "found": true,
+          "defName": "RM_Dsr_VoiceRemoved",
+          "defType": "HediffDef",
+          "label": "voice box removed",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "voice box removed"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_LichenSeams",
+          "found": true,
+          "defName": "RM_Dsr_LichenSeams",
+          "defType": "HediffDef",
+          "label": "lichen seams",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "lichen seams"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_GraftedLimb",
+          "found": true,
+          "defName": "RM_Dsr_GraftedLimb",
+          "defType": "HediffDef",
+          "label": "grafted limb",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "grafted limb"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Dsr_OversizedArray",
+          "found": true,
+          "defName": "RM_Dsr_OversizedArray",
+          "defType": "HediffDef",
+          "label": "oversized array",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.5,
+           "tendable": false,
+           "isBad": false,
+           "maxSeverity": 3.40282347e+38,
+           "label": "oversized array"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_WarscarMark",
+          "found": true,
+          "defName": "RM_WarscarMark",
+          "defType": "HediffDef",
+          "label": "the Warscar mark",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "initialSeverity": 0.0001,
+           "tendable": false,
+           "isBad": true,
+           "maxSeverity": 1.0,
+           "label": "the Warscar mark"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_c7470430d50f4aeaa40154950e0208ed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.4887555+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.5372892+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "baseChance",
+         "minRefireDays"
+        ],
+        "defs": [
+         {
+          "requested": "IncidentDef/RM_DeserterWalksIn",
+          "found": true,
+          "defName": "RM_DeserterWalksIn",
+          "defType": "IncidentDef",
+          "label": "deserter walks in",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "baseChance": 0.4,
+           "minRefireDays": 40.0,
+           "label": "deserter walks in"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_82f6d341f66c4fec981f428f250c9588",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.5882325+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.6364811+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "9 of 9 def(s) resolved",
+        "requested": 9,
+        "foundCount": 9,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "JobDef/RM_HospiceHaul",
+          "found": true,
+          "defName": "RM_HospiceHaul",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_WorkPanelLoose",
+          "found": true,
+          "defName": "RM_WorkPanelLoose",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_DrawReagent",
+          "found": true,
+          "defName": "RM_DrawReagent",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_SweepWarDust",
+          "found": true,
+          "defName": "RM_SweepWarDust",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_DefuseOrdnance",
+          "found": true,
+          "defName": "RM_DefuseOrdnance",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_TriggerOrdnance",
+          "found": true,
+          "defName": "RM_TriggerOrdnance",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_DustBlight",
+          "found": true,
+          "defName": "RM_DustBlight",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_TotchakGnaw",
+          "found": true,
+          "defName": "RM_TotchakGnaw",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "JobDef/RM_TotchakLieDown",
+          "found": true,
+          "defName": "RM_TotchakLieDown",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_3ddb654af09e491b83829634952e6ade",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.6881121+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.7366675+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "race",
+         "combatPower",
+         "ecoSystemWeight"
+        ],
+        "defs": [
+         {
+          "requested": "PawnKindDef/RM_AncientServitor",
+          "found": true,
+          "defName": "RM_AncientServitor",
+          "defType": "PawnKindDef",
+          "label": "ancient servitor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_AncientServitor",
+           "combatPower": 20.0,
+           "ecoSystemWeight": 1.0,
+           "label": "ancient servitor"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "PawnKindDef",
+          "label": "chotrix",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_Chotrix",
+           "combatPower": 70.0,
+           "ecoSystemWeight": 0.2,
+           "label": "chotrix"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "PawnKindDef",
+          "label": "totchak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_Totchak",
+           "combatPower": 600.0,
+           "ecoSystemWeight": 0.0,
+           "label": "totchak"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Chatrak",
+          "found": true,
+          "defName": "RM_Chatrak",
+          "defType": "PawnKindDef",
+          "label": "chatrak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_Chatrak",
+           "combatPower": 150.0,
+           "ecoSystemWeight": 1.3,
+           "label": "chatrak"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Tetchik",
+          "found": true,
+          "defName": "RM_Tetchik",
+          "defType": "PawnKindDef",
+          "label": "tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_Tetchik",
+           "combatPower": 4.0,
+           "ecoSystemWeight": 0.05,
+           "label": "tetchik"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Pallbearer",
+          "found": true,
+          "defName": "RM_Pallbearer",
+          "defType": "PawnKindDef",
+          "label": "pallbearer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_Pallbearer",
+           "combatPower": 60.0,
+           "ecoSystemWeight": 0.6,
+           "label": "pallbearer"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ScarRoach",
+          "found": true,
+          "defName": "RM_ScarRoach",
+          "defType": "PawnKindDef",
+          "label": "scar-roach",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "race": "RM_ScarRoach",
+           "combatPower": 12.0,
+           "ecoSystemWeight": 0.08,
+           "label": "scar-roach"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_a4e903aded3443978a1910626437b624",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.7885175+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.837362+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "3 of 3 def(s) resolved",
+        "requested": 3,
+        "foundCount": 3,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "workAmount",
+         "workSkill"
+        ],
+        "defs": [
+         {
+          "requested": "RecipeDef/RM_MakeToxShellFromWarDust",
+          "found": true,
+          "defName": "RM_MakeToxShellFromWarDust",
+          "defType": "RecipeDef",
+          "label": "make tox shell from war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workAmount": 800.0,
+           "workSkill": "Crafting",
+           "label": "make tox shell from war dust"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_StretchDyeWithWarDust",
+          "found": true,
+          "defName": "RM_StretchDyeWithWarDust",
+          "defType": "RecipeDef",
+          "label": "stretch dye with war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workAmount": 400.0,
+           "workSkill": "Crafting",
+           "label": "stretch dye with war dust"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_MakeTetchikJar",
+          "found": true,
+          "defName": "RM_MakeTetchikJar",
+          "defType": "RecipeDef",
+          "label": "jar a tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workAmount": 400.0,
+           "workSkill": "Crafting",
+           "label": "jar a tetchik"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_22e79ab0a5d14efdb4cbea10dee11b3b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.8885941+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:40.9367969+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "3 of 3 def(s) resolved",
+        "requested": 3,
+        "foundCount": 3,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "baseCost",
+         "techLevel"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Hospice",
+          "found": true,
+          "defName": "RM_OldTongue_Hospice",
+          "defType": "ResearchProjectDef",
+          "label": "hospice protocols",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "baseCost": 400.0,
+           "techLevel": "Industrial",
+           "label": "hospice protocols"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Projector",
+          "found": true,
+          "defName": "RM_OldTongue_Projector",
+          "defType": "ResearchProjectDef",
+          "label": "projector calibration",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "baseCost": 400.0,
+           "techLevel": "Industrial",
+           "label": "projector calibration"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_OldTongue_Pool",
+          "found": true,
+          "defName": "RM_OldTongue_Pool",
+          "defType": "ResearchProjectDef",
+          "label": "pool phase reading",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "baseCost": 400.0,
+           "techLevel": "Industrial",
+           "label": "pool phase reading"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_d1924f785d1e4887a4f1d0c9c7e8f38b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:40.9884471+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.0367629+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Leash",
+          "found": true,
+          "defName": "RM_Deserter_Leash",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the one who cut its own leash",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the one who cut its own leash"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Counter",
+          "found": true,
+          "defName": "RM_Deserter_Counter",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the counter",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the counter"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Carrier",
+          "found": true,
+          "defName": "RM_Deserter_Carrier",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the carrier",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the carrier"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Quiet",
+          "found": true,
+          "defName": "RM_Deserter_Quiet",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the quiet one",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the quiet one"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Gardener",
+          "found": true,
+          "defName": "RM_Deserter_Gardener",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the gardener",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the gardener"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Defector",
+          "found": true,
+          "defName": "RM_Deserter_Defector",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the defector",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the defector"
+          }
+         },
+         {
+          "requested": "RimMandrake.Scarlands.RM_DeserterHistoryDef/RM_Deserter_Listener",
+          "found": true,
+          "defName": "RM_Deserter_Listener",
+          "defType": "RM_DeserterHistoryDef",
+          "label": "the listener",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": "the listener"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_dddb59c36878472db3309db4a6db6324",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.0882229+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.1373925+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "RimMandrake.Scarlands.RM_GeigerChoirDef/RM_GeigerChoir",
+          "found": true,
+          "defName": "RM_GeigerChoir",
+          "defType": "RM_GeigerChoirDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_70ab1f6f353540519ecd59d9d9fc93b9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.1880676+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.2367493+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "4 of 4 def(s) resolved",
+        "requested": 4,
+        "foundCount": 4,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "SoundDef/RM_GeigerTick",
+          "found": true,
+          "defName": "RM_GeigerTick",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "SoundDef/RM_WindOnMetal",
+          "found": true,
+          "defName": "RM_WindOnMetal",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "SoundDef/RM_ProjectorHum",
+          "found": true,
+          "defName": "RM_ProjectorHum",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "SoundDef/RM_PoolBoil",
+          "found": true,
+          "defName": "RM_PoolBoil",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_4a8a2ba526604d78a2e4513d0dbb8800",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.2878715+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.3366791+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "stackLimit"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_BuriedOrdnance",
+          "found": true,
+          "defName": "RM_BuriedOrdnance",
+          "defType": "ThingDef",
+          "label": "unexploded shell",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "unexploded shell"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Slagged",
+          "found": true,
+          "defName": "RM_KneelingChassis_Slagged",
+          "defType": "ThingDef",
+          "label": "slagged kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "slagged kneeling chassis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Posed",
+          "found": true,
+          "defName": "RM_KneelingChassis_Posed",
+          "defType": "ThingDef",
+          "label": "posed kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "posed kneeling chassis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_KneelingChassis_Intact",
+          "found": true,
+          "defName": "RM_KneelingChassis_Intact",
+          "defType": "ThingDef",
+          "label": "intact kneeling chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "intact kneeling chassis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_HospiceCradle",
+          "found": true,
+          "defName": "RM_HospiceCradle",
+          "defType": "ThingDef",
+          "label": "hospice cradle",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "hospice cradle"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Hospice",
+          "found": true,
+          "defName": "RM_InscribedPanel_Hospice",
+          "defType": "ThingDef",
+          "label": "inscribed panel (hospice protocol)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "inscribed panel (hospice protocol)"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Projector",
+          "found": true,
+          "defName": "RM_InscribedPanel_Projector",
+          "defType": "ThingDef",
+          "label": "inscribed panel (projector calibration)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "inscribed panel (projector calibration)"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_InscribedPanel_Pool",
+          "found": true,
+          "defName": "RM_InscribedPanel_Pool",
+          "defType": "ThingDef",
+          "label": "inscribed panel (pool phase)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "inscribed panel (pool phase)"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LoosenedPanel",
+          "found": true,
+          "defName": "RM_LoosenedPanel",
+          "defType": "ThingDef",
+          "label": "loosened wall panel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "loosened wall panel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret",
+          "found": true,
+          "defName": "RM_OldLineTurret",
+          "defType": "ThingDef",
+          "label": "old-line turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "old-line turret"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret_Bullet",
+          "found": true,
+          "defName": "RM_OldLineTurret_Bullet",
+          "defType": "ThingDef",
+          "label": "old-line slug",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "old-line slug"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_OldLineTurret_Gun",
+          "found": true,
+          "defName": "RM_OldLineTurret_Gun",
+          "defType": "ThingDef",
+          "label": "old-line turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "old-line turret"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ReactionPool",
+          "found": true,
+          "defName": "RM_ReactionPool",
+          "defType": "ThingDef",
+          "label": "reaction pool",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "reaction pool"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ReactionTap",
+          "found": true,
+          "defName": "RM_ReactionTap",
+          "defType": "ThingDef",
+          "label": "reaction tap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "reaction tap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Filth_SettledFilm",
+          "found": true,
+          "defName": "RM_Filth_SettledFilm",
+          "defType": "ThingDef",
+          "label": "settled film",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "settled film"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CloakLacquer",
+          "found": true,
+          "defName": "RM_CloakLacquer",
+          "defType": "ThingDef",
+          "label": "cloak lacquer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 25,
+           "label": "cloak lacquer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Apparel_LacquerCloak",
+          "found": true,
+          "defName": "RM_Apparel_LacquerCloak",
+          "defType": "ThingDef",
+          "label": "lacquered cloak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "lacquered cloak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChassisCore",
+          "found": true,
+          "defName": "RM_ChassisCore",
+          "defType": "ThingDef",
+          "label": "chassis core",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 5,
+           "label": "chassis core"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FailedChassis",
+          "found": true,
+          "defName": "RM_FailedChassis",
+          "defType": "ThingDef",
+          "label": "failed chassis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "failed chassis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_DielectricGel",
+          "found": true,
+          "defName": "RM_DielectricGel",
+          "defType": "ThingDef",
+          "label": "dielectric gel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 25,
+           "label": "dielectric gel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Etchant",
+          "found": true,
+          "defName": "RM_Etchant",
+          "defType": "ThingDef",
+          "label": "etchant",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 25,
+           "label": "etchant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MedicalCoagulant",
+          "found": true,
+          "defName": "RM_MedicalCoagulant",
+          "defType": "ThingDef",
+          "label": "medical coagulant",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 25,
+           "label": "medical coagulant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BloomLiquor",
+          "found": true,
+          "defName": "RM_BloomLiquor",
+          "defType": "ThingDef",
+          "label": "bloom liquor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 10,
+           "label": "bloom liquor"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FilthBone",
+          "found": true,
+          "defName": "RM_FilthBone",
+          "defType": "ThingDef",
+          "label": "bone filth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "bone filth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CapturedTetchik",
+          "found": true,
+          "defName": "RM_CapturedTetchik",
+          "defType": "ThingDef",
+          "label": "captured tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 5,
+           "label": "captured tetchik"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_TetchikJar",
+          "found": true,
+          "defName": "RM_TetchikJar",
+          "defType": "ThingDef",
+          "label": "tetchik jar",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "tetchik jar"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WarDust",
+          "found": true,
+          "defName": "RM_WarDust",
+          "defType": "ThingDef",
+          "label": "war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 75,
+           "label": "war dust"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GlowerCrust",
+          "found": true,
+          "defName": "RM_GlowerCrust",
+          "defType": "ThingDef",
+          "label": "glower crust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 50,
+           "label": "glower crust"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChatrakPlate",
+          "found": true,
+          "defName": "RM_ChatrakPlate",
+          "defType": "ThingDef",
+          "label": "chatrak plate",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 75,
+           "label": "chatrak plate"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WreckLichenScrapings",
+          "found": true,
+          "defName": "RM_WreckLichenScrapings",
+          "defType": "ThingDef",
+          "label": "wreck-lichen scrapings",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 75,
+           "label": "wreck-lichen scrapings"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ScorchedStars",
+          "found": true,
+          "defName": "RM_ScorchedStars",
+          "defType": "ThingDef",
+          "label": "scorched stars",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "scorched stars"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WreckLichen",
+          "found": true,
+          "defName": "RM_WreckLichen",
+          "defType": "ThingDef",
+          "label": "wreck-lichen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "wreck-lichen"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Glower",
+          "found": true,
+          "defName": "RM_Glower",
+          "defType": "ThingDef",
+          "label": "the Glowers",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "the Glowers"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_AncientServitor",
+          "found": true,
+          "defName": "RM_AncientServitor",
+          "defType": "ThingDef",
+          "label": "ancient servitor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "ancient servitor"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "ThingDef",
+          "label": "chotrix",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "chotrix"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "ThingDef",
+          "label": "totchak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "totchak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Chatrak",
+          "found": true,
+          "defName": "RM_Chatrak",
+          "defType": "ThingDef",
+          "label": "chatrak",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "chatrak"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tetchik",
+          "found": true,
+          "defName": "RM_Tetchik",
+          "defType": "ThingDef",
+          "label": "tetchik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "tetchik"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Pallbearer",
+          "found": true,
+          "defName": "RM_Pallbearer",
+          "defType": "ThingDef",
+          "label": "pallbearer",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "pallbearer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ScarRoach",
+          "found": true,
+          "defName": "RM_ScarRoach",
+          "defType": "ThingDef",
+          "label": "scar-roach",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "stackLimit": 1,
+           "label": "scar-roach"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_6f7cf85d26de443a9ab16fce391fadb4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.3880576+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.4372607+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "2 of 2 def(s) resolved",
+        "requested": 2,
+        "foundCount": 2,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "ThinkTreeDef/RM_Chotrix",
+          "found": true,
+          "defName": "RM_Chotrix",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RM_Totchak",
+          "found": true,
+          "defName": "RM_Totchak",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_4ad7ab96df394c0aa19894754aa27beb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.4875188+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.5364948+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "ThoughtDef/RM_WarscarMarkThought",
+          "found": true,
+          "defName": "RM_WarscarMarkThought",
+          "defType": "ThoughtDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "label": null
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_eefdc3f664d74a54a6ad82ae9add1d69",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.5880553+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.6375672+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "6 of 6 def(s) resolved",
+        "requested": 6,
+        "foundCount": 6,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "workType",
+         "priorityInType"
+        ],
+        "defs": [
+         {
+          "requested": "WorkGiverDef/RM_HospiceHaul",
+          "found": true,
+          "defName": "RM_HospiceHaul",
+          "defType": "WorkGiverDef",
+          "label": "feed hospice cradle",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Hauling",
+           "priorityInType": 60,
+           "label": "feed hospice cradle"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DrawReagent",
+          "found": true,
+          "defName": "RM_DrawReagent",
+          "defType": "WorkGiverDef",
+          "label": "draw pool reagent",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Hauling",
+           "priorityInType": 55,
+           "label": "draw pool reagent"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DustBlight",
+          "found": true,
+          "defName": "RM_DustBlight",
+          "defType": "WorkGiverDef",
+          "label": "dust blight with war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Growing",
+           "priorityInType": 60,
+           "label": "dust blight with war dust"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_SweepWarDust",
+          "found": true,
+          "defName": "RM_SweepWarDust",
+          "defType": "WorkGiverDef",
+          "label": "sweep war dust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Cleaning",
+           "priorityInType": 5,
+           "label": "sweep war dust"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DefuseOrdnance",
+          "found": true,
+          "defName": "RM_DefuseOrdnance",
+          "defType": "WorkGiverDef",
+          "label": "defuse ordnance",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Crafting",
+           "priorityInType": 60,
+           "label": "defuse ordnance"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_TriggerOrdnance",
+          "found": true,
+          "defName": "RM_TriggerOrdnance",
+          "defType": "WorkGiverDef",
+          "label": "set off ordnance from range",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "workType": "Hunting",
+           "priorityInType": 10,
+           "label": "set off ordnance from range"
+          }
+         }
+        ],
+        "ticksGame": 362858,
+        "operation": {
+         "OperationId": "op_b3c095f3c0db4175a6c70119e12d6087",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T12:03:41.6878767+00:00",
+         "CompletedAtUtc": "2026-10-06T12:03:41.7364277+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   }
  ],
  "all_green": false,
- "findings": [],
+ "findings": [
+  "<suite.Component object at 0x000001DA422B7C20>"
+ ],
  "refused": "",
- "walk": null,
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Scarlands.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": [
+   "corpses present: 1"
+  ]
+ },
  "visual": [],
  "visual_all_green": true,
- "state_all_green": false
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261006T045846-situational_rerun-97948",
+  "git": {
+   "source": "git",
+   "sha": "24e19306bdebbedb2bedd366b3b9ab90ad81768b"
+  },
+  "deploy_start": {
+   "mod": "Scarlands",
+   "at": "2026-10-06T05:01:22",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/Scarlands",
+   "src_hash": "c4f99a7a0b42be98",
+   "deployed_hash": "c4f99a7a0b42be98",
+   "n_src": 105,
+   "n_deployed": 105,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/Warscar/Assemblies/RimMandrake.Warscar.dll",
+     "sha": "dda6ac29ae3c0ffc",
+     "srchash": "# project: RimMandrake/Scarlands/Source/RM_Warscar.csproj\n# dll:"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "Scarlands",
+   "at": "2026-10-06T05:03:43",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/Scarlands",
+   "src_hash": "c4f99a7a0b42be98",
+   "deployed_hash": "c4f99a7a0b42be98",
+   "n_src": 105,
+   "n_deployed": 105,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/Warscar/Assemblies/RimMandrake.Warscar.dll",
+     "sha": "dda6ac29ae3c0ffc",
+     "srchash": "# project: RimMandrake/Scarlands/Source/RM_Warscar.csproj\n# dll:"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
 }

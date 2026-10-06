@@ -4,6 +4,366 @@
    "name": "settings_roundtrip",
    "components": [
     {
+     "name": "roundtrip_biomeRarityFactor",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "biomeRarityFactor",
+        "fieldKind": "static",
+        "value": "1",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_b164d248d59d4ea3816c09d2e6785d40",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:27.8659467+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:27.9819792+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "biomeRarityFactor",
+        "fieldKind": "static",
+        "valueBefore": "1",
+        "valueAfter": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_7637bef9ac9048818268d92c27489719",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.0155497+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.064384+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "biomeRarityFactor",
+        "fieldKind": "static",
+        "value": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_4baa08cc60604035af6de7749df2ec1b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.1156991+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.1638111+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "biomeRarityFactor",
+        "fieldKind": "static",
+        "valueBefore": "0.5",
+        "valueAfter": "1",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_9098da8708e14ae3845fe404f42425f7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.2157939+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.2643368+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_wardenSuccessionEnabled",
+     "toggle": "wardenSuccessionEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "wardenSuccessionEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_b96816be6e2c45328b93881728f99658",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.3146115+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.364441+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "wardenSuccessionEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_aff2f8b0645741b78b24615f1f98a749",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.4150563+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.4643192+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "wardenSuccessionEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_45ca0a25cf974bbb88d6bd713ffbdbd3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.5154293+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.5636805+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "wardenSuccessionEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_62d3dd61051e48ae866534fd68a3d91e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.6157604+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.6643111+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_selfTameChancePerCheck",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "selfTameChancePerCheck",
+        "fieldKind": "static",
+        "value": "0.12",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_0246dc34b44b4c39b3e5164b541b0cf6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.7153105+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.7645527+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "selfTameChancePerCheck",
+        "fieldKind": "static",
+        "valueBefore": "0.12",
+        "valueAfter": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_413dcd858d974e1b8c7f6d62f66830f2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.8149029+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.8644449+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "selfTameChancePerCheck",
+        "fieldKind": "static",
+        "value": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_3e1240a3a38f4820879a937a4fd980c4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:28.9156074+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:28.9637897+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "selfTameChancePerCheck",
+        "fieldKind": "static",
+        "valueBefore": "0.5",
+        "valueAfter": "0.12",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_a49ab0e96a1f4c20a99147c334c599f2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:29.0153447+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.0646368+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
      "name": "roundtrip_plantPredationEnabled",
      "toggle": "plantPredationEnabled",
      "beyond_toggle": false,
@@ -18,15 +378,15 @@
         "field": "plantPredationEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_839b819b343e4b0cbbc6b625267f5282",
+         "OperationId": "op_a549034affba4016a63aba5cb3d0fa79",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:19.3537536+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:20.1046118+00:00",
-         "DurationMs": 750,
+         "StartedAtUtc": "2026-10-06T11:59:29.114752+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.1639544+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -45,15 +405,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6d9b32daaea04c6699362ff9fa5bdb24",
+         "OperationId": "op_cc45712fe95a4d67b6d023b424d1c16c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:20.1392601+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:20.9032459+00:00",
-         "DurationMs": 763,
+         "StartedAtUtc": "2026-10-06T11:59:29.2155161+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.2639231+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -71,15 +431,15 @@
         "field": "plantPredationEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_b338267fbbcb4f72a20340bed7b5cbdc",
+         "OperationId": "op_75776509ca0f4aaa8e428af8a9354e48",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:20.9322672+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:21.6788711+00:00",
-         "DurationMs": 746,
+         "StartedAtUtc": "2026-10-06T11:59:29.3154705+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.3637747+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -98,15 +458,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_ab394fd341e941978fb74ec44638cccd",
+         "OperationId": "op_a9b58a858eaa4a01bfbbee98c0e9e276",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:21.7039385+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:22.4234678+00:00",
-         "DurationMs": 719,
+         "StartedAtUtc": "2026-10-06T11:59:29.4157375+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.4643917+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -138,15 +498,15 @@
         "field": "pollinationGateEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_a21001bfeb5d42909435efe4aa40dfd5",
+         "OperationId": "op_b26316099e0e4649bdd2d869ffae2baa",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:22.4444815+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:23.1609884+00:00",
-         "DurationMs": 716,
+         "StartedAtUtc": "2026-10-06T11:59:29.5150368+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.5645845+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -165,15 +525,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_e3cb55b205cf4e319cc58ee3b1a6b3c1",
+         "OperationId": "op_c7837ea671044fea98043ea6c9f7ef28",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:23.1985229+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:23.9582216+00:00",
-         "DurationMs": 759,
+         "StartedAtUtc": "2026-10-06T11:59:29.615666+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.6648929+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -191,15 +551,15 @@
         "field": "pollinationGateEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_87f0c2f0a51546f1b60e6a2d3911bcff",
+         "OperationId": "op_df63cc3b97b44957b6efbfe56645dac9",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:24.0195532+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:24.7228968+00:00",
-         "DurationMs": 703,
+         "StartedAtUtc": "2026-10-06T11:59:29.7159799+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.7645158+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -218,15 +578,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_759db2baeca94d31b9d4d0901f1e7711",
+         "OperationId": "op_1b0675f5d74d420fa20d9425b7c97762",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:24.7614624+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:25.5066993+00:00",
-         "DurationMs": 745,
+         "StartedAtUtc": "2026-10-06T11:59:29.8159291+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.8645232+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -258,15 +618,15 @@
         "field": "strandedDeformationEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_e00be219a9064b658fa992557631ff95",
+         "OperationId": "op_0b144b6280a549e583605446cc7a1326",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:25.5423629+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:26.2713904+00:00",
-         "DurationMs": 729,
+         "StartedAtUtc": "2026-10-06T11:59:29.9150064+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:29.9642872+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -285,15 +645,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_d5313480235247f9a35fce02f09d6f71",
+         "OperationId": "op_9068f05209534dfebd849a36040da2a5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:26.2985086+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:27.0438314+00:00",
-         "DurationMs": 745,
+         "StartedAtUtc": "2026-10-06T11:59:30.0147528+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.0642916+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -311,15 +671,15 @@
         "field": "strandedDeformationEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_1a48b0a9de934cda9c23d0de5444d7e4",
+         "OperationId": "op_a429cc1b9d1448cdb6830b348f84fb38",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:27.1032655+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:27.8582369+00:00",
-         "DurationMs": 754,
+         "StartedAtUtc": "2026-10-06T11:59:30.1150485+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.164535+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -338,15 +698,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_9f85c982a5ac46ffb81e48e5cc323e23",
+         "OperationId": "op_4bb029afba3f4c639098f4d4394fa0ad",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:27.9002637+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:28.6493243+00:00",
-         "DurationMs": 749,
+         "StartedAtUtc": "2026-10-06T11:59:30.2151359+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.2636716+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -378,15 +738,15 @@
         "field": "strandedDeformationChance",
         "fieldKind": "static",
         "value": "0.25",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_c78680a4cda9459e9cc2d8f261183262",
+         "OperationId": "op_fd9c373a5bb04ce7816047ddbb2e9129",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:28.6718472+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:29.3871431+00:00",
-         "DurationMs": 715,
+         "StartedAtUtc": "2026-10-06T11:59:30.3153519+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.3646533+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -405,15 +765,15 @@
         "fieldKind": "static",
         "valueBefore": "0.25",
         "valueAfter": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6e4d0dd3c5af4d89b2f8fe8afc8edf0f",
+         "OperationId": "op_5a7b54ed1e2c40b19463d8f4bc9f2ee3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:29.4228173+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:30.1796073+00:00",
-         "DurationMs": 756,
+         "StartedAtUtc": "2026-10-06T11:59:30.4157473+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.4638226+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -431,15 +791,15 @@
         "field": "strandedDeformationChance",
         "fieldKind": "static",
         "value": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_8227586d286f41f1ba61a2e8830e3e4a",
+         "OperationId": "op_902924caa5064b51a1b141cbdbda5968",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:30.2066852+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:30.9336886+00:00",
-         "DurationMs": 727,
+         "StartedAtUtc": "2026-10-06T11:59:30.515888+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.5644343+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -458,15 +818,15 @@
         "fieldKind": "static",
         "valueBefore": "0.5",
         "valueAfter": "0.25",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_00124dce9dc945f0b62aa3da589a6f64",
+         "OperationId": "op_de1944b566a04b00951cd31a6b0d428c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:30.9577098+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:31.7618608+00:00",
-         "DurationMs": 804,
+         "StartedAtUtc": "2026-10-06T11:59:30.6150536+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.6636322+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -498,15 +858,15 @@
         "field": "ambushFrogHunts",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_1d4a5f3aff024191b7b34abf904d7f05",
+         "OperationId": "op_6d2bea5ef5b147d7bd0f399406ab6e5a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:31.7846239+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:32.627898+00:00",
-         "DurationMs": 843,
+         "StartedAtUtc": "2026-10-06T11:59:30.7151924+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.7637355+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -525,15 +885,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_2dd6c2553950485bac15d569e683c593",
+         "OperationId": "op_fe2291683673476bb90909a7f5e91091",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:32.654997+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:33.4886616+00:00",
-         "DurationMs": 833,
+         "StartedAtUtc": "2026-10-06T11:59:30.8156097+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.8646879+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -551,15 +911,15 @@
         "field": "ambushFrogHunts",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_7e92439c76644e6b8b848a628c8374f3",
+         "OperationId": "op_a7bb75cc47c04911a4f5a03295b9a0b5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:33.5323382+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:34.3691525+00:00",
-         "DurationMs": 836,
+         "StartedAtUtc": "2026-10-06T11:59:30.9153934+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:30.9638678+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -578,15 +938,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_d26c5e51e2044c7fa6421a7e6a17c197",
+         "OperationId": "op_e1d9b3f46cf9441a8272e76b98c34ed8",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:34.3939631+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:35.2549163+00:00",
-         "DurationMs": 860,
+         "StartedAtUtc": "2026-10-06T11:59:31.0149301+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.0644785+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -604,8 +964,8 @@
      "surprises": null
     },
     {
-     "name": "roundtrip_attarEnabled",
-     "toggle": "attarEnabled",
+     "name": "roundtrip_flotsamEnabled",
+     "toggle": "flotsamEnabled",
      "beyond_toggle": false,
      "verdict": "PASS",
      "detail": "",
@@ -615,18 +975,18 @@
        "result": {
         "success": true,
         "action": "get",
-        "field": "attarEnabled",
+        "field": "flotsamEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_b612aa438e044cbd8a4e11ab64644c0b",
+         "OperationId": "op_110edb4e10aa4abfb94a243cef1979b8",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:35.2897482+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:36.101004+00:00",
-         "DurationMs": 811,
+         "StartedAtUtc": "2026-10-06T11:59:31.1153057+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.1643883+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -641,19 +1001,19 @@
        "result": {
         "success": true,
         "action": "set",
-        "field": "attarEnabled",
+        "field": "flotsamEnabled",
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_55fa6d36f56a4778a85f2b61f3839b31",
+         "OperationId": "op_2c34edc2770247a3baadf8a179c0d573",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:36.175663+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:36.9655719+00:00",
-         "DurationMs": 789,
+         "StartedAtUtc": "2026-10-06T11:59:31.2152038+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.2643789+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -668,18 +1028,18 @@
        "result": {
         "success": true,
         "action": "get",
-        "field": "attarEnabled",
+        "field": "flotsamEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_1e050575d99646578962983be0f57b3b",
+         "OperationId": "op_9358528e37d94393802f80669e03c6ef",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:37.03264+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:37.8259869+00:00",
-         "DurationMs": 793,
+         "StartedAtUtc": "2026-10-06T11:59:31.3152479+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.3637785+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -694,19 +1054,139 @@
        "result": {
         "success": true,
         "action": "set",
-        "field": "attarEnabled",
+        "field": "flotsamEnabled",
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_5d999a7c22194f7fadeb978aa7df6709",
+         "OperationId": "op_a85feb9ca75742899bbad6b024f73622",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:37.8461664+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:38.6723948+00:00",
-         "DurationMs": 826,
+         "StartedAtUtc": "2026-10-06T11:59:31.4155532+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.46332+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_flotsamAmount",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "flotsamAmount",
+        "fieldKind": "static",
+        "value": "1",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_de9f063d7ad341ddac6c64deb16a7530",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:31.5143258+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.5645362+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "flotsamAmount",
+        "fieldKind": "static",
+        "valueBefore": "1",
+        "valueAfter": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_d6396da4436a41c4aaac3dc5a3646aca",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:31.6161035+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.6646705+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "flotsamAmount",
+        "fieldKind": "static",
+        "value": "0.5",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_30ed659803ad487b8d40bffa1273fded",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:31.7153487+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.7640975+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "flotsamAmount",
+        "fieldKind": "static",
+        "valueBefore": "0.5",
+        "valueAfter": "1",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_8025c284e52c496b850e867876fcf72d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:31.8151533+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.8636851+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -738,15 +1218,15 @@
         "field": "youngCallEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_d63f08d383a848f08a66ad8ff79d087f",
+         "OperationId": "op_287b384d64134f1c8f4440a2f57a845b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:38.7024543+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:39.4837428+00:00",
-         "DurationMs": 781,
+         "StartedAtUtc": "2026-10-06T11:59:31.915348+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:31.9638786+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -765,15 +1245,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_4356f79a87c54576a1afa53dc8b940fb",
+         "OperationId": "op_f7e5530401d64ebe86771ebe9763f7fa",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:39.5410306+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:40.3316382+00:00",
-         "DurationMs": 790,
+         "StartedAtUtc": "2026-10-06T11:59:32.0152148+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.0647867+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -791,15 +1271,15 @@
         "field": "youngCallEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_dc9f7f1523e84621b654bf48d906a5ea",
+         "OperationId": "op_514a3c9897914b33b4fd06683dc422d2",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:40.3724073+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:41.1414838+00:00",
-         "DurationMs": 769,
+         "StartedAtUtc": "2026-10-06T11:59:32.1155579+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.1643789+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -818,15 +1298,135 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_2cf141a2a2734e858c1e5e8f0730901b",
+         "OperationId": "op_d4afe14d528d4060ba4ac3e90c89a439",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:41.1625939+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:41.9558491+00:00",
-         "DurationMs": 793,
+         "StartedAtUtc": "2026-10-06T11:59:32.2152241+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.2643868+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_attarEnabled",
+     "toggle": "attarEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_f09925bf513b4ad892d29f89a32ac647",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:32.31552+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.3637881+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_8dbf8df0ddce4c3a967ee380f529ad84",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:32.4154215+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.4641877+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_a224d3eb10f5447c9fe0a69a6fd65612",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:32.5151628+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.5637458+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 362798,
+        "operation": {
+         "OperationId": "op_339cd2de38e04ac8b873f0b9832328f5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:59:32.615441+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.6645262+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -858,15 +1458,15 @@
         "field": "decayCellsEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_d2df81130f2c473fb36b136c28aaff23",
+         "OperationId": "op_650f10fccb3b475cae0743de4b5402ec",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:41.9738697+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:42.7732573+00:00",
-         "DurationMs": 799,
+         "StartedAtUtc": "2026-10-06T11:59:32.7153982+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.7639119+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -885,15 +1485,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6f7f7a37d790446b92dedf6eea8a56dc",
+         "OperationId": "op_2a84be07f164475386a19a2f1495eba1",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:42.7955488+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:43.5352632+00:00",
-         "DurationMs": 739,
+         "StartedAtUtc": "2026-10-06T11:59:32.8149623+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.8645353+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -911,15 +1511,15 @@
         "field": "decayCellsEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6b8905cbc1b340c383f65987fd1bffe5",
+         "OperationId": "op_d1892fa1d10b429bbe1784c401508b3e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:43.5698508+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:44.3102796+00:00",
-         "DurationMs": 740,
+         "StartedAtUtc": "2026-10-06T11:59:32.9151463+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:32.9640315+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -938,15 +1538,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_3a5fb92849dc4ff4a475a1ba91d28d6c",
+         "OperationId": "op_a5ce96c9ec954ef7bad156da4443e6dd",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:44.3458327+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:45.099518+00:00",
-         "DurationMs": 753,
+         "StartedAtUtc": "2026-10-06T11:59:33.0154802+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.0643541+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -978,15 +1578,15 @@
         "field": "decayCellPowerMultiplier",
         "fieldKind": "static",
         "value": "1",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_f71599bbb8154870bd5f1227f18877e7",
+         "OperationId": "op_2b839c8aeb7948f3965422499e2ba3d5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:45.1345872+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:45.9077012+00:00",
-         "DurationMs": 773,
+         "StartedAtUtc": "2026-10-06T11:59:33.1154053+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.1641815+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1005,15 +1605,15 @@
         "fieldKind": "static",
         "valueBefore": "1",
         "valueAfter": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_1e9beb0b186c4413a9778b58e4434e61",
+         "OperationId": "op_68dd373bdb72496e9623b1b649ddda9f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:45.975968+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:46.7346394+00:00",
-         "DurationMs": 758,
+         "StartedAtUtc": "2026-10-06T11:59:33.2162397+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.2647842+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1031,15 +1631,15 @@
         "field": "decayCellPowerMultiplier",
         "fieldKind": "static",
         "value": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_e36add272cd744e58d04f4a114c2a418",
+         "OperationId": "op_cac587f81ddd48dd9db2dec0d648b9c3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:46.7696627+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:47.4991422+00:00",
-         "DurationMs": 729,
+         "StartedAtUtc": "2026-10-06T11:59:33.3155279+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.36381+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1058,15 +1658,15 @@
         "fieldKind": "static",
         "valueBefore": "0.5",
         "valueAfter": "1",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_0ed91d5546724111bc22fe5ea05d4cd8",
+         "OperationId": "op_dd8bb4c193ee426fafe4011232b9d7a6",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:47.5471652+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:48.2759181+00:00",
-         "DurationMs": 728,
+         "StartedAtUtc": "2026-10-06T11:59:33.4156052+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.4638392+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1098,15 +1698,15 @@
         "field": "rottingBedCorpsesEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_4a6f18729d734739a32151989a6966cd",
+         "OperationId": "op_b5a66d937d8e47eeb183e086c1d9cff6",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:48.3027412+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:49.054004+00:00",
-         "DurationMs": 751,
+         "StartedAtUtc": "2026-10-06T11:59:33.515189+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.5644622+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1125,15 +1725,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_c956b743820c4348b0b7a5532a0d215e",
+         "OperationId": "op_80e0322360774befa3b6fc866aabf4a5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:49.1245446+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:49.8477784+00:00",
-         "DurationMs": 723,
+         "StartedAtUtc": "2026-10-06T11:59:33.6154313+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.6646674+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1151,15 +1751,15 @@
         "field": "rottingBedCorpsesEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_0ec585898a86400aa21d976a73b054f8",
+         "OperationId": "op_695bf0d459fe40e19f7f2f2dcfa3af34",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:49.8854021+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:50.6426914+00:00",
-         "DurationMs": 757,
+         "StartedAtUtc": "2026-10-06T11:59:33.7151597+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.7640137+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1178,15 +1778,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_63dadad8d56548d1869fe9239e6329f6",
+         "OperationId": "op_542f9a4da24044e79f7d036ba5daac84",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:50.6665909+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:51.3813121+00:00",
-         "DurationMs": 714,
+         "StartedAtUtc": "2026-10-06T11:59:33.8150734+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.864622+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1218,15 +1818,15 @@
         "field": "rottingBedRotDays",
         "fieldKind": "static",
         "value": "3",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_8a1f0b66ba3042508dfb9f9085031bbe",
+         "OperationId": "op_a3539f4275a94446b27b4fa77f3dfa80",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:51.4183475+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:52.1691224+00:00",
-         "DurationMs": 750,
+         "StartedAtUtc": "2026-10-06T11:59:33.9154032+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:33.9639573+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1245,15 +1845,15 @@
         "fieldKind": "static",
         "valueBefore": "3",
         "valueAfter": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_d7cda603c94c4f68aec3288fbc633367",
+         "OperationId": "op_8163cab154de4bdf89884158e21fcbdb",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:52.2111475+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:52.9536752+00:00",
-         "DurationMs": 742,
+         "StartedAtUtc": "2026-10-06T11:59:34.0152842+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.0648307+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1271,15 +1871,15 @@
         "field": "rottingBedRotDays",
         "fieldKind": "static",
         "value": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_9542576f0edb4419b98adec8b68c0a05",
+         "OperationId": "op_2e364f52f3aa4f67b16a9919e3db031d",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:53.0360454+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:53.7541988+00:00",
-         "DurationMs": 718,
+         "StartedAtUtc": "2026-10-06T11:59:34.1155275+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.1637377+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1298,15 +1898,15 @@
         "fieldKind": "static",
         "valueBefore": "0.5",
         "valueAfter": "3",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_7980c2db93504053a44028008bb618b5",
+         "OperationId": "op_0a3fa70c43dd4ab5a3ff70a546b9307c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:53.7792198+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:54.5061187+00:00",
-         "DurationMs": 726,
+         "StartedAtUtc": "2026-10-06T11:59:34.2154524+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.2638201+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1338,15 +1938,15 @@
         "field": "mothersPriceEnabled",
         "fieldKind": "static",
         "value": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_15e8246489594b51addc2b02fd3209d5",
+         "OperationId": "op_07aeab291cb241c3a9c3f07cc48d93c1",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:54.5332289+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:55.3073187+00:00",
-         "DurationMs": 774,
+         "StartedAtUtc": "2026-10-06T11:59:34.3153936+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.3646419+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1365,15 +1965,15 @@
         "fieldKind": "static",
         "valueBefore": "True",
         "valueAfter": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_6e150aff61464e60905fb6cdceb4c1ef",
+         "OperationId": "op_4380ae987dde4312b1419fe108552276",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:55.3473455+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:56.0837069+00:00",
-         "DurationMs": 736,
+         "StartedAtUtc": "2026-10-06T11:59:34.4154069+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.4647341+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1391,15 +1991,15 @@
         "field": "mothersPriceEnabled",
         "fieldKind": "static",
         "value": "False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_1327ebd8930f4dc69c30b610f3fe21e8",
+         "OperationId": "op_ad3b72c8fed04f8097fbb386a78895c4",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:56.1427396+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:56.8585905+00:00",
-         "DurationMs": 715,
+         "StartedAtUtc": "2026-10-06T11:59:34.5153458+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.5634959+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1418,15 +2018,15 @@
         "fieldKind": "static",
         "valueBefore": "False",
         "valueAfter": "True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_f676dae164c64a70af777a0331c499ad",
+         "OperationId": "op_0b7313cd3b8946cda58cb75381199e93",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:56.9006166+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:57.6378758+00:00",
-         "DurationMs": 737,
+         "StartedAtUtc": "2026-10-06T11:59:34.6153269+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.6638833+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1458,15 +2058,15 @@
         "field": "youngPriceOffset",
         "fieldKind": "static",
         "value": "1500",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_45294c41d5784a2e9893814aa56a62e2",
+         "OperationId": "op_31337709303746bfa8c6a4d352177ef6",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:57.6693972+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:58.3895857+00:00",
-         "DurationMs": 720,
+         "StartedAtUtc": "2026-10-06T11:59:34.7152616+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.763828+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1485,15 +2085,15 @@
         "fieldKind": "static",
         "valueBefore": "1500",
         "valueAfter": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_8db696a4ca894aa3b514376fc1e1c0e4",
+         "OperationId": "op_f718b478b2ea4f3abde6324473289b1e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:58.4276189+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:59.1705641+00:00",
-         "DurationMs": 742,
+         "StartedAtUtc": "2026-10-06T11:59:34.8154864+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.8637569+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1511,15 +2111,15 @@
         "field": "youngPriceOffset",
         "fieldKind": "static",
         "value": "0.5",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_0a927551ab244f1f8a2fcfe08c2a0b49",
+         "OperationId": "op_0c2cfda779a147d9ab4f7722ce87b1e3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:52:59.2083881+00:00",
-         "CompletedAtUtc": "2026-10-04T05:52:59.967804+00:00",
-         "DurationMs": 759,
+         "StartedAtUtc": "2026-10-06T11:59:34.9154699+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:34.9634051+00:00",
+         "DurationMs": 47,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1538,15 +2138,15 @@
         "fieldKind": "static",
         "valueBefore": "0.5",
         "valueAfter": "1500",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_cb24b5685e6a40a3b3a61d2d0660b1ab",
+         "OperationId": "op_988f5a754e214b68ab7ccf3eeb619e2e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:00.0408788+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:00.7544918+00:00",
-         "DurationMs": 713,
+         "StartedAtUtc": "2026-10-06T11:59:35.0150635+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:35.0644702+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1583,13 +2183,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -1628,13 +2226,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -1673,13 +2269,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -1728,6 +2322,7 @@
            "disallowedTraits": null,
            "alternateGraphicChance": 0.0,
            "mutant": null,
+           "xenotypeSet": null,
            "useFactionXenotypes": true,
            "styleItemTags": null,
            "forcedHair": null,
@@ -1862,11 +2457,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 8415,
-           "index": 1518,
+           "index": 402,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 1159579465,
            "generated": false,
-           "debugRandomId": 37860
+           "debugRandomId": 63282
           }
          },
          {
@@ -1894,6 +2489,7 @@
            "disallowedTraits": null,
            "alternateGraphicChance": 0.0,
            "mutant": null,
+           "xenotypeSet": null,
            "useFactionXenotypes": true,
            "styleItemTags": null,
            "forcedHair": null,
@@ -2028,11 +2624,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 57521,
-           "index": 1520,
+           "index": 404,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": -1517541526,
            "generated": false,
-           "debugRandomId": 25173
+           "debugRandomId": 39138
           }
          },
          {
@@ -2060,6 +2656,7 @@
            "disallowedTraits": null,
            "alternateGraphicChance": 0.0,
            "mutant": null,
+           "xenotypeSet": null,
            "useFactionXenotypes": true,
            "styleItemTags": null,
            "forcedHair": null,
@@ -2194,11 +2791,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 44492,
-           "index": 1519,
+           "index": 403,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 1916376080,
            "generated": false,
-           "debugRandomId": 14643
+           "debugRandomId": 58062
           }
          },
          {
@@ -2226,6 +2823,7 @@
            "disallowedTraits": null,
            "alternateGraphicChance": 0.0,
            "mutant": null,
+           "xenotypeSet": null,
            "useFactionXenotypes": true,
            "styleItemTags": null,
            "forcedHair": null,
@@ -2360,11 +2958,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 35226,
-           "index": 1521,
+           "index": 405,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 219413694,
            "generated": false,
-           "debugRandomId": 29787
+           "debugRandomId": 9203
           }
          },
          {
@@ -2385,22 +2983,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -2450,41 +3035,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -2560,7 +3111,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -2578,10 +3128,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -2625,9 +3173,7 @@
            "blockWind": false,
            "blockWeather": false,
            "tradeability": "All",
-           "tradeTags": [
-            "GTGBuyableAnimal"
-           ],
+           "tradeTags": null,
            "tradeNeverStack": false,
            "tradeNeverGenerateStacked": false,
            "healthAffectsPrice": true,
@@ -2675,7 +3221,6 @@
            "canBeUsedUnderRoof": true,
            "interactionCellGraphic": null,
            "statBases": [
-            "StatModifier",
             "StatModifier",
             "StatModifier",
             "StatModifier",
@@ -2740,17 +3285,17 @@
            "uiIconAngle": 0.0,
            "defName": "RM_CrimsonOpeeJuv",
            "label": "young crimson opee",
-           "description": "A crimson opee too young to have its adult bulk or temper, still keeping to the shallows where the older ones will not follow.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A crimson opee too young to have its adult bulk or temper, still keeping to the shallows where the older ones will not follow.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
-           "shortHash": 8416,
-           "index": 12218,
+           "shortHash": 8415,
+           "index": 2682,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 1159579465,
            "generated": false,
-           "debugRandomId": 5580
+           "debugRandomId": 34321
           }
          },
          {
@@ -2771,22 +3316,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -2836,41 +3368,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -2946,7 +3444,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -2964,10 +3461,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -3011,9 +3506,7 @@
            "blockWind": false,
            "blockWeather": false,
            "tradeability": "All",
-           "tradeTags": [
-            "GTGBuyableAnimal"
-           ],
+           "tradeTags": null,
            "tradeNeverStack": false,
            "tradeNeverGenerateStacked": false,
            "healthAffectsPrice": true,
@@ -3060,7 +3553,6 @@
            "canBeUsedUnderRoof": true,
            "interactionCellGraphic": null,
            "statBases": [
-            "StatModifier",
             "StatModifier",
             "StatModifier",
             "StatModifier",
@@ -3124,17 +3616,17 @@
            "uiIconAngle": 0.0,
            "defName": "RM_ThornbackColoJuv",
            "label": "young thornback colo",
-           "description": "A thornback colo with its spines still soft and short, more nervous than dangerous.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A thornback colo with its spines still soft and short, more nervous than dangerous.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 57521,
-           "index": 12220,
+           "index": 2684,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": -1517541526,
            "generated": false,
-           "debugRandomId": 14593
+           "debugRandomId": 60539
           }
          },
          {
@@ -3155,22 +3647,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -3220,41 +3699,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -3330,7 +3775,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -3348,10 +3792,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -3395,9 +3837,7 @@
            "blockWind": false,
            "blockWeather": false,
            "tradeability": "All",
-           "tradeTags": [
-            "GTGBuyableAnimal"
-           ],
+           "tradeTags": null,
            "tradeNeverStack": false,
            "tradeNeverGenerateStacked": false,
            "healthAffectsPrice": true,
@@ -3444,7 +3884,6 @@
            "canBeUsedUnderRoof": true,
            "interactionCellGraphic": null,
            "statBases": [
-            "StatModifier",
             "StatModifier",
             "StatModifier",
             "StatModifier",
@@ -3509,17 +3948,17 @@
            "uiIconAngle": 0.0,
            "defName": "RM_ShaleGorgerJuv",
            "label": "young shale gorger",
-           "description": "A shale gorger whose plates have not yet thickened, grazing the same grit as its elders but easy prey for anything with patience.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A shale gorger whose plates have not yet thickened, grazing the same grit as its elders but easy prey for anything with patience.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 44492,
-           "index": 12219,
+           "index": 2683,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 1916376080,
            "generated": false,
-           "debugRandomId": 5688
+           "debugRandomId": 4422
           }
          },
          {
@@ -3540,23 +3979,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties",
-            "CompProperties_TitanicWake"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -3606,41 +4031,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -3716,7 +4107,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -3734,10 +4124,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -3781,9 +4169,7 @@
            "blockWind": false,
            "blockWeather": false,
            "tradeability": "All",
-           "tradeTags": [
-            "GTGBuyableAnimal"
-           ],
+           "tradeTags": null,
            "tradeNeverStack": false,
            "tradeNeverGenerateStacked": false,
            "healthAffectsPrice": true,
@@ -3828,7 +4214,6 @@
            "canBeUsedUnderRoof": true,
            "interactionCellGraphic": null,
            "statBases": [
-            "StatModifier",
             "StatModifier",
             "StatModifier",
             "StatModifier",
@@ -3893,29 +4278,29 @@
            "uiIconAngle": 0.0,
            "defName": "RM_ReefbackJuv",
            "label": "young reefback",
-           "description": "A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 35226,
-           "index": 12221,
+           "index": 2685,
            "fileName": "RM_SeaBeasts_Invented.xml",
            "defNameHash": 219413694,
            "generated": false,
-           "debugRandomId": 24121
+           "debugRandomId": 6820
           }
          }
         ],
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_39fb83e6c83e4d86bc674afe49e799bb",
+         "OperationId": "op_b612c0fb97ba41e5a2675650762ea686",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:15.9923759+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:16.0179101+00:00",
-         "DurationMs": 25,
+         "StartedAtUtc": "2026-10-06T11:59:50.9153762+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:50.963582+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3965,13 +4350,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -3990,15 +4373,15 @@
         "success": true,
         "method": "System.String ProofDecayCell(Verse.Map)",
         "result": "full=600 low=222 off=0 empty=0 feeds=8 becameBed=True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_a16d70bc346b4913ba407ce6071e05ea",
+         "OperationId": "op_bb3e1db6bc6b498fbecb9253ecda924e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:21.0512361+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:21.1093285+00:00",
-         "DurationMs": 58,
+         "StartedAtUtc": "2026-10-06T11:59:56.065091+00:00",
+         "CompletedAtUtc": "2026-10-06T11:59:56.1146996+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4061,13 +4444,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -4086,15 +4467,15 @@
         "success": true,
         "method": "System.String ProofCorpse(Verse.Map)",
         "result": "accepts=True corpseGone=True bones=8 skull=True skullNamesSource=True bodySize=1.00 expectBones=8",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_e9736a19d57a4d8987ab8b58f253eef7",
+         "OperationId": "op_8d30d28149844471bf1f8806dc346a8e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:26.7350439+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:26.8161341+00:00",
-         "DurationMs": 81,
+         "StartedAtUtc": "2026-10-06T12:00:01.8722773+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:01.9294393+00:00",
+         "DurationMs": 57,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4126,29 +4507,23 @@
     "ticks_spent": 0,
     "surprises": [
      {
-      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T225211\\Miasma__rotting_bed_corpses__colonist_died__t7743__001.json",
-      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T225211\\Miasma__rotting_bed_corpses__colonist_died__t7743__001.png",
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T045919\\Miasma__rotting_bed_corpses__colonist_died__t362798__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T045919\\Miasma__rotting_bed_corpses__colonist_died__t362798__001.png",
       "notes": []
      }
     ],
     "hits_seen": [
      {
-      "tick": 7743,
+      "tick": 362798,
       "detector": "colonist_died",
       "severity": "FATAL",
-      "summary": "colonist Dimitri died (death_letter)"
+      "summary": "colonist Human76009 died (damage_log_kill)"
      },
      {
-      "tick": 7743,
+      "tick": 362798,
       "detector": "colonist_died",
       "severity": "FATAL",
-      "summary": "colonist Human711 died (damage_log_kill)"
-     },
-     {
-      "tick": 7743,
-      "detector": "letter_unexpected",
-      "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Interment of Isolation opportunity"
+      "summary": "colonist Sheep died (death_letter)"
      }
     ],
     "close_problems": []
@@ -4156,13 +4531,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -4181,15 +4554,15 @@
         "success": true,
         "method": "System.String ProofReturn(Verse.Map)",
         "result": "RETURN taken=1 youngWild=True stillStranded=False mother=True betrayed=False tolerated=True ledger=False ledgerBetrayed=False successionVoid=False price=120",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_9f1cbe09b66540f99e3720bb6caffb21",
+         "OperationId": "op_90b5d04f6f80425aaa296c36b4b9c59c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:33.4072403+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:33.4685531+00:00",
-         "DurationMs": 61,
+         "StartedAtUtc": "2026-10-06T12:00:08.672271+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:08.7210975+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4219,15 +4592,15 @@
         "success": true,
         "method": "System.String ProofSell(Verse.Map)",
         "result": "SOLD betrayed marker=False mother=True anchor=True before[mother=True betrayed=False tolerated=True ledger=False ledgerBetrayed=False successionVoid=False price=1620] after[mother=True betrayed=True tolerated=False ledger=False ledgerBetrayed=False successionVoid=False price=1620]",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_c0e283968f4f4607b5e60cab4d6b9aa9",
+         "OperationId": "op_9eaabbf20a97407181f067c9152c9d0e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:33.5056542+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:33.5696286+00:00",
-         "DurationMs": 63,
+         "StartedAtUtc": "2026-10-06T12:00:08.7718564+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:08.8212501+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4257,22 +4630,34 @@
     "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
-    "surprises": [],
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T045919\\Miasma__mothers_price__wildlife_near_colonist__t362798__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T045919\\Miasma__mothers_price__wildlife_near_colonist__t362798__001.png",
+      "notes": []
+     }
+    ],
     "hits_seen": [
      {
-      "tick": 7743,
+      "tick": 362798,
+      "detector": "wildlife_near_colonist",
+      "severity": "SURPRISE",
+      "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured"
+     },
+     {
+      "tick": 362798,
       "detector": "pawn_roster_transition",
       "severity": "WARN",
-      "summary": "pawn Scoundrel (Muffalo127970) joined the roster"
+      "summary": "pawn Muffalo calf 2 (Muffalo76017) joined the roster"
      },
      {
-      "tick": 7743,
+      "tick": 362798,
       "detector": "letter_unexpected",
       "severity": "WARN",
-      "summary": "new letter [NegativeEvent] Sold: Scoundrel"
+      "summary": "new letter [NegativeEvent] Sold: Muffalo calf 2"
      },
      {
-      "tick": 7743,
+      "tick": 362798,
       "detector": "letter_unexpected",
       "severity": "INFO",
       "summary": "new letter [PositiveEvent] She takes it back"
@@ -4283,13 +4668,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -4328,13 +4711,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -4376,22 +4757,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -4441,41 +4809,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -4551,7 +4885,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -4569,10 +4902,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -4617,7 +4948,6 @@
            "blockWeather": false,
            "tradeability": "All",
            "tradeTags": [
-            "GTGBuyableAnimal",
             "AnimalExotic"
            ],
            "tradeNeverStack": false,
@@ -4727,17 +5057,17 @@
            "uiIconAngle": 0.0,
            "defName": "RM_Bozzuga",
            "label": "bozzuga",
-           "description": "A squat, wide-mouthed ambusher the colour of wet silt, mottled with salt-white warts, that sits half-sunk in the root-maze channels for days at a time with only its eyes showing. Nothing about it moves until something small comes within a lunge, and then the whole head is mouth. Karrolun, stranded young and anything else small enough to swallow whole are its diet; it has no interest in anything larger.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A squat, wide-mouthed ambusher the colour of wet silt, mottled with salt-white warts, that sits half-sunk in the root-maze channels for days at a time with only its eyes showing. Nothing about it moves until something small comes within a lunge, and then the whole head is mouth. Karrolun, stranded young and anything else small enough to swallow whole are its diet; it has no interest in anything larger.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 8899,
-           "index": 12375,
+           "index": 2849,
            "fileName": "RM_Bozzuga.xml",
            "defNameHash": 990072366,
            "generated": false,
-           "debugRandomId": 43229
+           "debugRandomId": 49706
           }
          },
          {
@@ -4766,6 +5096,7 @@
            "disallowedTraits": null,
            "alternateGraphicChance": 0.0,
            "mutant": null,
+           "xenotypeSet": null,
            "useFactionXenotypes": true,
            "styleItemTags": null,
            "forcedHair": null,
@@ -4898,23 +5229,23 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 8898,
-           "index": 1573,
+           "index": 467,
            "fileName": "RM_Bozzuga.xml",
            "defNameHash": 990072366,
            "generated": false,
-           "debugRandomId": 65050
+           "debugRandomId": 17136
           }
          }
         ],
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_5327a9403b544748b9232506f25b3548",
+         "OperationId": "op_cc845e3efe95404ba287314bb06158cb",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:44.3307081+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:44.3802855+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:00:20.6924395+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:20.7380077+00:00",
+         "DurationMs": 45,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4964,13 +5295,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -5012,22 +5341,9 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
-            "CompProperties_Studiable",
-            "CompProperties"
+            "CompProperties_Studiable"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -5077,41 +5393,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -5187,7 +5469,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -5205,10 +5486,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -5253,7 +5532,6 @@
            "blockWeather": false,
            "tradeability": "All",
            "tradeTags": [
-            "GTGBuyableAnimal",
             "AnimalInsect"
            ],
            "tradeNeverStack": false,
@@ -5362,17 +5640,17 @@
            "uiIconAngle": 0.0,
            "defName": "RM_FeverSwarm",
            "label": "fever swarm",
-           "description": "Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone \u2014 only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone \u2014 only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 52345,
-           "index": 12379,
+           "index": 2853,
            "fileName": "RM_Miasma_FeverSwarmKarrobel.xml",
            "defNameHash": -1079593278,
            "generated": false,
-           "debugRandomId": 6212
+           "debugRandomId": 14223
           }
          },
          {
@@ -5393,24 +5671,11 @@
            "useHitPoints": false,
            "receivesSignals": false,
            "comps": [
-            "CompProperties_PawnLookupCache",
-            "CompProperties_PawnRenderProperties",
-            "CompProperties",
-            "CompProperties_CombatAI",
-            "CompProperties_Statistics",
-            "CompProperties",
-            "CompProperties_RunAndGun",
-            "UniteComp_Properties",
-            "CompProperties",
-            "CompProperties",
-            "CompProperties_SidearmMemory",
-            "CompProperties",
             "CompProperties",
             "CompProperties_HoldingPlatformTarget",
             "CompProperties_Studiable",
             "CompProperties_GatherableGas",
-            "RM_CompProperties_VerminBreeder",
-            "CompProperties"
+            "RM_CompProperties_VerminBreeder"
            ],
            "virtualDefs": [],
            "virtualDefParent": null,
@@ -5460,41 +5725,7 @@
             "TerminatePregnancy",
             "SurgicalInspection",
             "RemovePorcupineQuill",
-            "ArtificialComa",
-            "GR_InstallBearLeg",
-            "GR_InstallLizardLeg",
-            "GR_InstallThrumboLeg",
-            "GR_InstallScytherTail",
-            "GR_InstallMechaTail",
-            "GR_InstallCanidEye",
-            "GR_InstallInsectileEye",
-            "GR_InstallThrumboEye",
-            "GR_InstallRodentEar",
-            "GR_InstallMothTympanalOrgan",
-            "GR_InstallMechaReceptors",
-            "GR_InstallRodentNose",
-            "GR_InstallInsectoidPheromones",
-            "GR_InstallMiniatureThrumboHorn",
-            "GR_InstallWolfJaws",
-            "GR_InstallInsectMandibles",
-            "GR_InstallThrumboJaws",
-            "GR_InstallMuffaloSpine",
-            "GR_InstallCrocodileSpine",
-            "GR_InstallMechaSpine",
-            "GR_InstallChickenBrains",
-            "GR_InstallMonitorLizardBrain",
-            "GR_InstallThrumboBrain",
-            "GR_InstallBoomalopeHeart",
-            "GR_InstallChitinousHeart",
-            "GR_InstallMechaHeart",
-            "GR_InstallMuffaloLung",
-            "GR_InstallBearLiver",
-            "GR_InstallChickenKidney",
-            "GR_InstallBoomalopeStomach",
-            "RSW_AdministerBactaPatch",
-            "RSW_AdministerBactaSpray",
-            "RM_ScrubTarred",
-            "RSW_RemoveBrainWorm"
+            "RM_ScrubTarred"
            ],
            "messageOnDeteriorateInStorage": true,
            "deteriorateFromEnvironmentalEffects": true,
@@ -5570,7 +5801,6 @@
             "RuntimeType",
             "RuntimeType",
             "RuntimeType",
-            "RuntimeType",
             "RuntimeType"
            ],
            "inspectorTabsResolved": [
@@ -5588,10 +5818,8 @@
             "ITab_Entity",
             "ITab_Pawn_FormingCaravan",
             "ITab_Pawn_Gear",
-            "ITab_ToggleDef",
             "ITab_Pawn_Log",
-            "ITab_AnimalGenes",
-            "ITab_Orientation"
+            "ITab_AnimalGenes"
            ],
            "seeThroughFog": false,
            "drawGUIOverlay": true,
@@ -5636,7 +5864,6 @@
            "blockWeather": false,
            "tradeability": "All",
            "tradeTags": [
-            "GTGBuyableAnimal",
             "AnimalExotic"
            ],
            "tradeNeverStack": false,
@@ -5746,7 +5973,7 @@
            "uiIconAngle": 0.0,
            "defName": "RM_Karrobel",
            "label": "karrobel",
-           "description": "A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole \u2014 mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
+           "description": "A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole \u2014 mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.",
            "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
@@ -5754,11 +5981,11 @@
             "RM_VerminPressureExtension"
            ],
            "shortHash": 62183,
-           "index": 12380,
+           "index": 2854,
            "fileName": "RM_Miasma_FeverSwarmKarrobel.xml",
            "defNameHash": 147780124,
            "generated": false,
-           "debugRandomId": 19273
+           "debugRandomId": 15357
           }
          },
          {
@@ -6020,31 +6247,29 @@
            "uiIconAngle": 0.0,
            "defName": "RM_DeltaLoam",
            "label": "delta loam",
-           "description": "Clean, fertile soil worked loose and cast up by karrobel burrowing through the Miasma's muck. Where the karrobel have been, the ground turns rich and dark \u2014 the one export from this biome that arrives already refined.\n\n<i><color=#66E0E4FF>RimMandrake: Baroque Biomes</color></i>",
-           "descriptionHyperlinks": [
-            "DefHyperlink"
-           ],
+           "description": "Clean, fertile soil worked loose and cast up by karrobel burrowing through the Miasma's muck. Where the karrobel have been, the ground turns rich and dark \u2014 the one export from this biome that arrives already refined.",
+           "descriptionHyperlinks": null,
            "ignoreConfigErrors": false,
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 38020,
-           "index": 12351,
+           "index": 2825,
            "fileName": "RM_DeltaLoam.xml",
            "defNameHash": 1899503427,
            "generated": false,
-           "debugRandomId": 35398
+           "debugRandomId": 23277
           }
          }
         ],
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_796b2c5c275840a7b3e4ac73b3afbd1c",
+         "OperationId": "op_1048b9cf857043728f405730e5565b6a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:49.380454+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:49.4290281+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:00:25.8388189+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:25.8881891+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -6094,13 +6319,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -6139,13 +6362,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -6164,15 +6385,15 @@
         "success": true,
         "method": "System.String ProofGlaze(Verse.Map)",
         "result": "glazable=True before=50.0 after=53.0 off=50.0 glazableAgain=False",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_5626461cc3bf4c008289596542e870cb",
+         "OperationId": "op_89901037786f489a9889fadaee56de45",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:59.4300849+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:59.4799034+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:00:36.0381194+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:36.0881809+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -6202,15 +6423,15 @@
         "success": true,
         "method": "System.String ProofBalm(Verse.Map)",
         "result": "scarBefore=5.0 scarAfter=2.0 freshBefore=2.0 freshAfter=2.0 freshStillThere=True",
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_7415c30fddad47049d1c290247a324e0",
+         "OperationId": "op_7bcf365d9c244d2aa10997ea66a58a66",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:59.5306018+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:59.6666868+00:00",
-         "DurationMs": 136,
+         "StartedAtUtc": "2026-10-06T12:00:36.1383219+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:36.1881511+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -6262,15 +6483,15 @@
           }
          }
         ],
-        "ticksGame": 7743,
+        "ticksGame": 362798,
         "operation": {
-         "OperationId": "op_af0221b0e9d743c783db7e7c4817417d",
+         "OperationId": "op_6a7a1751fb334390b477ee77fd80817c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:53:59.7051013+00:00",
-         "CompletedAtUtc": "2026-10-04T05:53:59.7538316+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T12:00:36.2382192+00:00",
+         "CompletedAtUtc": "2026-10-06T12:00:36.288177+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -6307,30 +6528,26 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   }
  ],
  "all_green": false,
  "findings": [],
  "refused": "",
- "walk": null,
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Miasma.md",
  "modal_check_final": {
   "found_open": false,
   "dialogs": {
-   "Dialog_NamePlayerFactionAndSettlement": null,
-   "Dialog_ModSettings": null
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
   },
-  "errors": [
-   "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-   "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-  ]
+  "errors": []
  },
  "bland_world": {
   "before": {
@@ -6361,7 +6578,7 @@
      "verified": true
     },
     "restore_colonists": {
-     "acted": 11,
+     "acted": 9,
      "verified": true,
      "residue": []
     },
@@ -6371,9 +6588,9 @@
     }
    },
    "retile": {
-    "tile": 1720,
-    "biome": "AridShrubland",
-    "temperature": 28.09801,
+    "tile": 440,
+    "biome": "Desert",
+    "temperature": 18.7159767,
     "applied": "RM_Miasma"
    },
    "pond": {
@@ -6391,22 +6608,64 @@
  "visual_all_green": true,
  "state_all_green": false,
  "run_identity": {
-  "run_id": "20261003T225154-situational_rerun-44552",
+  "run_id": "20261006T045846-situational_rerun-97948",
   "git": {
-   "source": "unknown",
-   "sha": null
+   "source": "git",
+   "sha": "24e19306bdebbedb2bedd366b3b9ab90ad81768b"
   },
   "deploy_start": {
    "mod": "Miasma",
-   "at": "2026-10-03T22:52:10",
-   "state": "unknown",
-   "reason": "no source dir with About/About.xml for Miasma"
+   "at": "2026-10-06T04:58:55",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/Miasma",
+   "src_hash": "22f2fdbb9319bed9",
+   "deployed_hash": "22f2fdbb9319bed9",
+   "n_src": 74,
+   "n_deployed": 74,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/Miasma/Assemblies/RimMandrake.Miasma.dll",
+     "sha": "c1706d8a075b64c3",
+     "srchash": "# project: RimMandrake/Miasma/Source/RM_Miasma.csproj\n# dll: c17"
+    }
+   ],
+   "src_dirty": false
   },
   "deploy_end": {
    "mod": "Miasma",
-   "at": "2026-10-03T22:54:01",
-   "state": "unknown",
-   "reason": "no source dir with About/About.xml for Miasma"
+   "at": "2026-10-06T05:00:38",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/Miasma",
+   "src_hash": "22f2fdbb9319bed9",
+   "deployed_hash": "22f2fdbb9319bed9",
+   "n_src": 74,
+   "n_deployed": 74,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/Miasma/Assemblies/RimMandrake.Miasma.dll",
+     "sha": "c1706d8a075b64c3",
+     "srchash": "# project: RimMandrake/Miasma/Source/RM_Miasma.csproj\n# dll: c17"
+    }
+   ],
+   "src_dirty": false
   }
  }
 }
