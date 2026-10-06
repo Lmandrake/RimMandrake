@@ -182,20 +182,22 @@ namespace RimMandrake.FlowWorks
 			}
 			CellRect r = new CellRect(x, z, w, h).ClipInsideMap(map);
 			int cells = 0, levels = 0, left = 0;
+			// ExcavatedDepthAt, not DepthAt: DepthAt reads a natural liquid cell as SUPERDEEP, and FillIn cannot raise it
+			// (the plot's Soil repaint removes it). MEASURED 2026-10-06: plot F "cells=1 levels=8 left=1".
 			foreach (IntVec3 c in r)
 			{
-				if (eng.DepthAt(c) == 0)
+				if (eng.ExcavatedDepthAt(c) == 0)
 				{
 					continue;
 				}
 				cells++;
 				eng.TrySetDriverFill(c, 0);
-				for (int i = 0; i < 8 && eng.DepthAt(c) > 0; i++)
+				for (int i = 0; i < 8 && eng.ExcavatedDepthAt(c) > 0; i++)
 				{
 					eng.FillIn(c);
 					levels++;
 				}
-				if (eng.DepthAt(c) > 0)
+				if (eng.ExcavatedDepthAt(c) > 0)
 				{
 					left++;
 				}
