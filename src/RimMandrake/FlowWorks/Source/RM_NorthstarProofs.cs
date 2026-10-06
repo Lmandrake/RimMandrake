@@ -160,5 +160,47 @@ namespace RimMandrake.FlowWorks
 			}
 			return "WALLS visible=" + layer.Visible + " verts=" + verts;
 		}
+
+		/// <summary>WRITES. arg "x;z;w;h": every excavated cell in the rect is drained (fill 0) and filled back in to the
+		/// surface through the engine's own FillIn, so a plot an earlier chain or run dug starts pristine (MEASURED
+		/// 2026-10-06: destroy_batch + Soil paint left a previous run's 3x3 pit under pit_fill_effects' 1x1 poison pit,
+		/// the pirate stood on a dry cell, "got {}"; wall_faces read 76 -> 76 verts on cells already cut).
+		/// "RESET cells=n levels=n left=n".</summary>
+		public static string ProofResetRect(string arg)
+		{
+			Map map = Find.CurrentMap;
+			string[] a = (arg ?? "").Split(';');
+			if (map == null || a.Length != 4 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)
+				|| !int.TryParse(a[2], out int w) || !int.TryParse(a[3], out int h))
+			{
+				return "REFUSED: arg must be x;z;w;h on the current map";
+			}
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null)
+			{
+				return "REFUSED: no excavation engine on the current map";
+			}
+			CellRect r = new CellRect(x, z, w, h).ClipInsideMap(map);
+			int cells = 0, levels = 0, left = 0;
+			foreach (IntVec3 c in r)
+			{
+				if (eng.DepthAt(c) == 0)
+				{
+					continue;
+				}
+				cells++;
+				eng.TrySetDriverFill(c, 0);
+				for (int i = 0; i < 8 && eng.DepthAt(c) > 0; i++)
+				{
+					eng.FillIn(c);
+					levels++;
+				}
+				if (eng.DepthAt(c) > 0)
+				{
+					left++;
+				}
+			}
+			return "RESET cells=" + cells + " levels=" + levels + " left=" + left;
+		}
 	}
 }
