@@ -3,7 +3,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// Owner card 1 (2026-10-03, typed): swept to the map edge = washed away, walks home later,
@@ -45,8 +45,8 @@ namespace RimMandrake.RiverWorks
 			{
 				return; // cannot hold them: leave the pawn at the edge rather than lose them
 			}
-			float min = RM_RiverWorksSettings.washedAwayMinDays;
-			float max = UnityEngine.Mathf.Max(min, RM_RiverWorksSettings.washedAwayMaxDays);
+			float min = RM_RiversSettings.washedAwayMinDays;
+			float max = UnityEngine.Mathf.Max(min, RM_RiversSettings.washedAwayMaxDays);
 			float days = Rand.Range(min, max);
 			int mapId = map.uniqueID;
 			p.DeSpawn();

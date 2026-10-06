@@ -126,8 +126,8 @@
       <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="RimMandrake.RiverWorks">
-      <HintPath>..\..\RiverWorks\Assemblies\RimMandrake.RiverWorks.dll</HintPath>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">

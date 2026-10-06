@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Offline static selftest for River Works (SURFACE_RIVER_WEIRS_1). No game, no bridge.
+"""Offline static selftest for FlowWorks Rivers (River Works, SURFACE_RIVER_WEIRS_1; merged into FlowWorks
+2026-10-05). No game, no bridge.
 
 Checks what goes silently wrong in this repo:
   * the csproj has EnableDefaultCompileItems=false, so a .cs missing a <Compile> line builds into nothing;
-  * every Mod Settings bool must be in validation.py's suite.toggles (CLAUDE.md "superb Mod Settings");
-  * About.xml carries the tier packageId;
+  * every Rivers settings bool must be in northstar/extensions_rivers.py's suite.toggles, every field is
+    scribed, the scribe keys are unique across FlowWorks' one settings file, and FlowWorks' settings
+    class actually calls RM_RiversSettings.ExposeData and draws the section;
+  * no RiverWorks mod folder or packageId survives the merge;
   * every Defs/Patches XML parses, and RM_FordStones needs the RM_Fordable affordance the patch adds.
 Sanity probe: the settings regex must find a field we know exists (surfaceCurrentEnabled).
 """
@@ -26,28 +29,40 @@ def check(name, ok, detail=""):
 
 def main():
     src = os.path.join(HERE, "Source")
-    csproj = open(os.path.join(src, "RimMandrake_RiverWorks.csproj"), encoding="utf-8").read()
-    listed = set(re.findall(r'<Compile Include="([^"]+)"', csproj))
-    on_disk = {os.path.basename(p) for p in glob.glob(os.path.join(src, "*.cs"))}
-    check("csproj compiles every .cs", on_disk <= listed, sorted(on_disk - listed))
-    check("csproj lists no missing .cs", listed <= on_disk, sorted(listed - on_disk))
+    csproj = open(os.path.join(src, "RimMandrake_FlowWorks.csproj"), encoding="utf-8").read()
+    listed = {p.replace("\\", "/") for p in re.findall(r'<Compile Include="([^"]+)"', csproj)}
+    listed_riv = {p for p in listed if p.startswith("Rivers/")}
+    on_disk = {"Rivers/" + os.path.basename(p) for p in glob.glob(os.path.join(src, "Rivers", "*.cs"))}
+    check("sanity: Rivers/ holds .cs files", len(on_disk) >= 10, sorted(on_disk))
+    check("csproj compiles every Rivers .cs", on_disk <= listed_riv, sorted(on_disk - listed_riv))
+    check("csproj lists no missing Rivers .cs", listed_riv <= on_disk, sorted(listed_riv - on_disk))
 
-    settings = open(os.path.join(src, "RM_RiverWorksMod.cs"), encoding="utf-8").read()
+    settings = open(os.path.join(src, "Rivers", "RM_RiversSettings.cs"), encoding="utf-8").read()
+    fw = open(os.path.join(src, "RimMandrakeFlowWorksMod.cs"), encoding="utf-8").read()
+    key = re.compile(r'Scribe_Values\.Look\(ref \w+, "(\w+)"')
+    k_fw, k_riv = key.findall(fw), key.findall(settings)
+    check("sanity: scribe-key regex sees swaleEnabled", "swaleEnabled" in k_fw)
+    check("Rivers scribe keys unique within FlowWorks' settings file",
+          not (set(k_fw) & set(k_riv)) and len(k_riv) == len(set(k_riv)), sorted(set(k_fw) & set(k_riv)))
+    check("FlowWorks settings scribe the Rivers section", "RM_RiversSettings.ExposeData()" in fw)
+    check("FlowWorks settings window draws the Rivers section", "RM_RiversSettingsWindow.DoSettingsSection(" in fw)
     bools = set(re.findall(r"public static bool (\w+)\s*=(?!>)", settings))
     check("sanity: settings regex sees surfaceCurrentEnabled", "surfaceCurrentEnabled" in bools, sorted(bools))
     for b in sorted(bools):
         check("setting %s is scribed" % b, ('"%s"' % b) in settings)
-    val = open(os.path.join(HERE, "validation.py"), encoding="utf-8").read()
+    val = open(os.path.join(HERE, "northstar", "extensions_rivers.py"), encoding="utf-8").read()
     m = re.search(r"suite\.toggles\s*=\s*\[(.*?)\]", val, re.S)
     toggles = set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
     check("suite.toggles == every settings bool", toggles == bools,
           "missing %s / extra %s" % (sorted(bools - toggles), sorted(toggles - bools)))
 
     about = ET.parse(os.path.join(HERE, "About", "About.xml")).getroot()
-    check("packageId mandrake.rm.riverworks", about.findtext("packageId") == "mandrake.rm.riverworks")
+    check("packageId mandrake.rm.flowworks", about.findtext("packageId") == "mandrake.rm.flowworks")
+    check("the RiverWorks mod folder is gone (merged)",
+          not os.path.exists(os.path.join(os.path.dirname(HERE), "RiverWorks", "About", "About.xml")))
 
-    xmls = glob.glob(os.path.join(HERE, "Defs", "**", "*.xml"), recursive=True) + \
-        glob.glob(os.path.join(HERE, "Patches", "**", "*.xml"), recursive=True)
+    xmls = glob.glob(os.path.join(HERE, "Defs", "Rivers", "*.xml")) + \
+        glob.glob(os.path.join(HERE, "Patches", "Rivers", "*.xml"))
     check("sanity: found def/patch XML", len(xmls) >= 2, xmls)
     defs_text = ""
     for p in xmls:
@@ -66,9 +81,9 @@ def main():
     # Slice 2: the works moved here from TerminalBiomes. A def defined in both mods is a clash.
     for dn in ("RM_BankStake", "RM_BankWeir", "RM_SiltTrap", "RM_FerryPost"):
         check("defines %s" % dn, "<defName>%s</defName>" % dn in defs_text)
-    check("weir carries RM_PlaceWorker_RiverWeir", "RimMandrake.RiverWorks.RM_PlaceWorker_RiverWeir" in defs_text)
-    check("silt-trap carries a swap table", "RimMandrake.RiverWorks.RM_SiltSwapExtension" in defs_text)
-    check("drift defs exist (owner: biome-relevant drift)", defs_text.count("<RimMandrake.RiverWorks.RM_RiverDriftDef>") >= 3)
+    check("weir carries RM_PlaceWorker_RiverWeir", "RimMandrake.FlowWorks.Rivers.RM_PlaceWorker_RiverWeir" in defs_text)
+    check("silt-trap carries a swap table", "RimMandrake.FlowWorks.Rivers.RM_SiltSwapExtension" in defs_text)
+    check("drift defs exist (owner: biome-relevant drift)", defs_text.count("<RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>") >= 3)
     check("no generic wood in drift (owner card 2)", "<thing>WoodLog</thing>" not in defs_text)
     tb = os.path.join(os.path.dirname(HERE), "TerminalBiomes")
     tb_text = ""
@@ -78,7 +93,11 @@ def main():
     for dn in ("RM_BankStake", "RM_BankWeir", "RM_SiltTrap", "RM_FerryPost"):
         check("TerminalBiomes does not also define %s" % dn, "<defName>%s</defName>" % dn not in tb_text)
     tb_about = open(os.path.join(tb, "About", "About.xml"), encoding="utf-8").read()
-    check("TerminalBiomes depends on River Works", "<packageId>mandrake.rm.riverworks</packageId>" in tb_about)
+    check("TerminalBiomes depends on FlowWorks", "<packageId>mandrake.rm.flowworks</packageId>" in tb_about)
+    check("TerminalBiomes names no riverworks packageId", "mandrake.rm.riverworks" not in tb_about)
+    tb_csproj = open(os.path.join(tb, "Source", "RM_TerminalBiomes.csproj"), encoding="utf-8").read()
+    check("TerminalBiomes references the FlowWorks assembly", "RimMandrakeFlowWorks.dll" in tb_csproj
+          and "RiverWorks" not in tb_csproj)
     tb_src = " ".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(tb, "Source", "*.cs")))
     for cls in ("class RM_Building_BankWeir", "class RM_Building_SiltTrap", "class CompChannelArrester"):
         check("TerminalBiomes no longer declares %s" % cls, cls not in tb_src)

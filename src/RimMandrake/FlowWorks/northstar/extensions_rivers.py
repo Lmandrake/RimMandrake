@@ -1,30 +1,39 @@
-"""validation.py -- modcheck suite for RimMandrake: River Works (mandrake.rm.riverworks). First script.
+"""northstar/extensions_rivers.py -- FlowWorks RIVERS extension suite (River Works, SURFACE_RIVER_WEIRS_1).
 
-Never deployed (deploy_custom_mods.py excludes `.py`). Run with:
+River Works was its own mod (mandrake.rm.riverworks) until 2026-10-05, when the owner ruled "I think river works
+needs to be part of flow works." and it merged into FlowWorks as Source/Rivers, Defs/Rivers, Patches/Rivers. This
+was that mod's first script; it is now a FlowWorks extension suite beside northstar/extensions.py.
 
-    python.exe src/RimMandrake/Utils/modcheck/cli.py run RiverWorks
+Run on request, bridge held, site map WITH a river (design §9: a quicktest river map):
+    python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live   (once validation.py registers it)
+NOT YET REGISTERED in FlowWorks/validation.py (another agent owns it). The append-only hook, after the
+`for _name, _fn in EXT.suite.chains` loop:
+    import extensions_rivers as RIV
+    suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
+    suite.chains += RIV.suite.chains
+Until then `modcheck floor FlowWorks` reports the 22 Rivers toggles as uncovered -- correct, not a regression.
 
-State: SLICE 2 (SURFACE_RIVER_WEIRS_1) -- slice 1's surface current, fords, floods-as-surge, washed-off-map
-and crossing hazards, plus the works moved out of TerminalBiomes: weir (bank-edge PlaceWorker, ~8-cell slack
-pool, fish from the river stock + biome drift, breach wash), stake-line levee, silt swap table, rope ferry.
-UNCOVERED still: levee.holds/gap_leaks as a live flood walk (only the engine fact is read), breach.cascade_order
-timing, sea.unchanged (TerminalBiomes' own suite). Every probe is a C# proof (RM_RiverWorksProof) reached through
-jawa/static_call; a result starting "UNMEASURED" (e.g. the site has no river) records UNMEASURED, never PASS.
-Needs a site map WITH a river (design §9: a quicktest river map).
+Covered: slice 1's surface current, fords, floods-as-surge, washed-off-map and crossing hazards; slice 2's
+works: weir (bank-edge PlaceWorker, ~8-cell slack pool, fish from the river stock + biome drift, breach wash),
+stake-line levee, silt swap table, rope ferry. Added 2026-10-05 with the merge: the levee flood check (a vanilla
+SeasonalFlood asked directly whether it may spread into a stake cell and a gap), the breach cascade order, and
+undrafted colonists using a ferry rope. UNCOVERED still: sea.unchanged (TerminalBiomes' own suite). Every probe is
+a C# proof (RM_RiverWorksProof / RM_RiverWorksProofWorks) reached through jawa/static_call; a result starting
+"UNMEASURED" (e.g. the site has no river) records UNMEASURED, never PASS.
 """
 from modcheck import Suite, ExpectationFailed
 
-suite = Suite("RiverWorks")
-SETTINGS = "RimMandrake.RiverWorks.RM_RiverWorksSettings"
+suite = Suite("FlowWorksRivers")
+SETTINGS = "RimMandrake.FlowWorks.Rivers.RM_RiversSettings"
 suite.toggles = [
     "riverWorksEnabled", "surfaceCurrentEnabled", "scaleWithRiverSize", "floodSurgeEnabled",
     "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
     "washOffMapEdge", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
     "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCatchesFish", "weirCatchesDrift",
-    "breachWashesCatch", "siltRichening", "ferryEnabled",
+    "breachWashesCatch", "siltRichening", "ferryEnabled", "ferryRopeGuidesColonists",
 ]
-WORKS = "RimMandrake.RiverWorks.RM_RiverWorksProofWorks"
-PROOF = "RimMandrake.RiverWorks.RM_RiverWorksProof"
+WORKS = "RimMandrake.FlowWorks.Rivers.RM_RiverWorksProofWorks"
+PROOF = "RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof"
 
 
 def _proof(t, method, args=""):
@@ -130,3 +139,20 @@ def works(t):
             kv = _kv(_works(t, "ProofLeveeFact"))
             if kv.get("stakeIsEdifice") != "True":
                 raise ExpectationFailed("a stake is not an edifice, so it cannot hold a flood: %r" % kv)
+    with t.component("levee_holds_and_gap_leaks", toggle="stakeLineLevee"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofLevee"))
+            if kv.get("stakeHolds") != "True" or kv.get("gapLeaks") != "True" or kv.get("offLetsThrough") != "True":
+                raise ExpectationFailed("levee wrong (stake must hold, gap must leak, off must let through): %r" % kv)
+    with t.component("breach_cascade_order", toggle="breachEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofCascadeOrder"))
+            if kv.get("anyDown") != "True":
+                raise ExpectationFailed("UNMEASURED: no dry ground downstream of the weir for stakes: %r" % kv)
+            if kv.get("monotone") != "True" or kv.get("upstreamSpared") != "True" or kv.get("allDownScheduled") != "True":
+                raise ExpectationFailed("stake cascade not nearest-downstream-first / upstream not spared: %r" % kv)
+    with t.component("ferry_rope_undrafted", toggle="ferryRopeGuidesColonists"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofFerryPath"))
+            if int(kv.get("onRope", -1)) != 0 or int(kv.get("offRope", 0)) <= 0:
+                raise ExpectationFailed("rope cell still reads as costly to undrafted colonists: %r" % kv)

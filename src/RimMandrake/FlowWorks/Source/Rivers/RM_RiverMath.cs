@@ -1,6 +1,6 @@
 using System;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// SURFACE_RIVER_WEIRS_1 (River Works slice 1) — the current's arithmetic, Verse-free so

@@ -548,15 +548,15 @@ namespace RimMandrake.TerminalBiomes
             RegisterRiverWorksSeams();
         }
 
-        // SURFACE_RIVER_WEIRS_1 slice 2: the weir/stake/silt-trap live in River Works (a hard
+        // SURFACE_RIVER_WEIRS_1 slice 2: the weir/stake/silt-trap live in FlowWorks (Rivers) (a hard
         // dependency). The sea plugs its channel current into two of its seams: the undersurge
         // counts as a flood (weir breach, as before the move), and channel cells count as moving
         // water (the weir PlaceWorker accepts a channel margin as its wet end).
         private static void RegisterRiverWorksSeams()
         {
-            RimMandrake.RiverWorks.RM_RiverWorks.RegisterFloodSource(
+            RimMandrake.FlowWorks.Rivers.RM_RiverWorks.RegisterFloodSource(
                 map => map.GetComponent<RM_MapComponent_ChannelCurrent>()?.SurgeActive == true);
-            RimMandrake.RiverWorks.RM_RiverWorks.RegisterCurrentCellRule(
+            RimMandrake.FlowWorks.Rivers.RM_RiverWorks.RegisterCurrentCellRule(
                 (map, c) => map.GetComponent<RM_MapComponent_ChannelCurrent>()?.HasCurrent(c) == true);
         }
 

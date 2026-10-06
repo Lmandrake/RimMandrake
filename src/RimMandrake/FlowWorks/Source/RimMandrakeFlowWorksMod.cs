@@ -366,6 +366,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref digFindLetterEnabled, "digFindLetterEnabled", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
+            // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
+            Rivers.RM_RiversSettings.ExposeData();
+            Machinery.RM_MachinerySettings.ExposeData();
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -377,8 +380,8 @@ namespace RimMandrake.FlowWorks
             // Phase 5's capture/ladder/shooting section did: this is a FIXED view
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
-            // edit or their block is invisible.
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5400f);
+            // edit or their block is invisible. (+2000 for the Rivers section.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 7400f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -870,6 +873,10 @@ namespace RimMandrake.FlowWorks
               + "swale does nothing; ground it already improved stays improved.");
             list.Label("Swale pace: " + SwaleRateMultiplier.ToString("F2") + "x  (1x = one step per fed day; first-guess number)");
             swaleRateMultiplier = list.Slider(swaleRateMultiplier, 0.1f, 10f);
+
+            // ── Rivers (River Works, merged 2026-10-05) ───────────────────
+            Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
+            Machinery.RM_MachinerySettings.DoSettingsSection(list);
 
             list.End();
             Widgets.EndScrollView();

@@ -65,16 +65,13 @@
            environmentalhazards/divinginteraction entries above, not the
            loadAfter-only kind. Promoted from loadAfter-only to make
            close_over() see it; without FlowWorks loaded those two BiomeDef
-           fields resolve to nothing. -->
+           fields resolve to nothing. ALSO a hard ASSEMBLY reference since
+           2026-10-05: RM_BankStake / RM_BankWeir / RM_SiltTrap and their
+           classes live in FlowWorks' Rivers (River Works merged into
+           FlowWorks); the Twilight genstep spawns them and the channel
+           current reads the weir's arrester. -->
       <packageId>mandrake.rm.flowworks</packageId>
       <displayName>RimMandrake: FlowWorks</displayName>
-    </li>
-    <li>
-      <!-- SURFACE_RIVER_WEIRS_1 slice 2: RM_BankStake / RM_BankWeir / RM_SiltTrap and their classes
-           moved to River Works; the Twilight genstep spawns them and the channel current reads the
-           weir's arrester. Hard assembly reference. -->
-      <packageId>mandrake.rm.riverworks</packageId>
-      <displayName>RimMandrake: River Works</displayName>
     </li>
   </modDependencies>
   <loadAfter>
@@ -83,7 +80,6 @@
     <li>mandrake.rm.divinginteraction</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.luminouspigment</li>
-    <li>mandrake.rm.riverworks</li>
   </loadAfter>
   <description>TERMINALBIOMES_RM_MOD_BUILD_1 (owner ruling, 2026-09-21, §7 Q1: four
 biomes, one mod, four independent toggles). Four terminal water biomes, fully

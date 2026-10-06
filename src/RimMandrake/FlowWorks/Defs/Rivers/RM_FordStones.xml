@@ -2,7 +2,7 @@
 <Defs>
 
   <!-- SURFACE_RIVER_WEIRS_1 design §3.7: ford stones, laid in SHALLOW moving water only (the
-       RM_Fordable affordance is patched onto WaterMovingShallow alone, Patches/RM_Fordable_Water.xml).
+       RM_Fordable affordance is patched onto WaterMovingShallow alone, Patches/Rivers/RM_Fordable_Water.xml).
        Nothing is carried on or beside a ford (RM_MapComponent_RiverCurrent.NearFord); the sea's
        channel current already exempts the same defName. Layered over the water like a bridge so
        removing it restores the river. Texture is a vanilla PLACEHOLDER (flagstone); art owed. -->

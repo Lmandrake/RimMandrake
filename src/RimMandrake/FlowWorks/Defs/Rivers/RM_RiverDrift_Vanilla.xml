@@ -8,7 +8,7 @@
 -->
 <Defs>
 
-  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
     <defName>RM_RiverDrift_Temperate</defName>
     <label>temperate river drift</label>
     <biomes>
@@ -20,9 +20,9 @@
       <li><thing>Hay</thing><weight>2</weight><count>5~15</count></li>
       <li><thing>Leather_Light</thing><weight>0.5</weight><count>3~8</count></li>
     </drift>
-  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
-  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
     <defName>RM_RiverDrift_Wetland</defName>
     <label>wetland river drift</label>
     <biomes>
@@ -34,9 +34,9 @@
       <li><thing>RawFungus</thing><weight>1</weight><count>2~6</count></li>
       <li><thing>Leather_Plain</thing><weight>0.5</weight><count>3~8</count></li>
     </drift>
-  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
-  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
     <defName>RM_RiverDrift_Cold</defName>
     <label>cold-country river drift</label>
     <biomes>
@@ -49,9 +49,9 @@
       <li><thing>Leather_Fox</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Wolf</thing><weight>0.5</weight><count>3~8</count></li>
     </drift>
-  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
-  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
     <defName>RM_RiverDrift_Arid</defName>
     <label>dry-country river drift</label>
     <biomes>
@@ -64,9 +64,9 @@
       <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Camel</thing><weight>0.5</weight><count>3~8</count></li>
     </drift>
-  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
-  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+  <RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
     <defName>RM_RiverDrift_Tropical</defName>
     <label>tropical river drift</label>
     <biomes>
@@ -79,6 +79,6 @@
       <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
       <li><thing>Leather_Panthera</thing><weight>0.3</weight><count>3~6</count></li>
     </drift>
-  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+  </RimMandrake.FlowWorks.Rivers.RM_RiverDriftDef>
 
 </Defs>

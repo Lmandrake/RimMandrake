@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  SURFACE_RIVER_WEIRS_1 slice 2. The silt-trap moved to River Works (a hard dependency of this mod), with
+  SURFACE_RIVER_WEIRS_1 slice 2. The silt-trap moved to FlowWorks (Rivers) (a hard dependency of this mod), with
   its swap table as data. The sea's own pair goes in here: a working trap on the Twilight bank turns
   RM_BankSilt into RM_BankSilt_Rich, and a breach reverts it.
 -->
 <Patch>
   <Operation Class="PatchOperationAdd">
-    <xpath>Defs/ThingDef[defName="RM_SiltTrap"]/modExtensions/li[@Class="RimMandrake.RiverWorks.RM_SiltSwapExtension"]/swaps</xpath>
+    <xpath>Defs/ThingDef[defName="RM_SiltTrap"]/modExtensions/li[@Class="RimMandrake.FlowWorks.Rivers.RM_SiltSwapExtension"]/swaps</xpath>
     <value>
       <li><from>RM_BankSilt</from><to>RM_BankSilt_Rich</to></li>
     </value>

@@ -1,3 +1,4 @@
+using Unity.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
@@ -5,14 +6,14 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// Rope ferry (owner card 3, 2026-10-03: ferry included). Two posts on opposite banks string a
 	/// rope between them when the straight line crosses moving water; every cell on the line is exempt
 	/// from the carry (and stops drift there - the rope catches it). Drafted colonists cross along
-	/// the rope. KNOWN LIMIT, deliberate for this slice: undrafted pathing still sees the water's
-	/// perceived cost, so ordinary jobs do not yet prefer the rope (design §4 "the hardest piece").
+	/// the rope; undrafted ones do too while ferryRopeGuidesColonists is on (RM_RopePathing zeroes
+	/// the water's undrafted perceived cost on rope cells, so the rope reads as a crossing).
 	/// </summary>
 	public class RM_Building_FerryPost : Building
 	{
@@ -58,7 +59,7 @@ namespace RimMandrake.RiverWorks
 					continue;
 				}
 				float d = other.Position.DistanceTo(Position);
-				if (d > RM_RiverWorksSettings.ferryMaxSpan || d >= bestDist || !LineCrossesWater(Position, other.Position))
+				if (d > RM_RiversSettings.ferryMaxSpan || d >= bestDist || !LineCrossesWater(Position, other.Position))
 				{
 					continue;
 				}
@@ -90,7 +91,7 @@ namespace RimMandrake.RiverWorks
 		public void AddRopeCells(HashSet<int> into)
 		{
 			RM_Building_FerryPost p = Partner;
-			if (p == null || !RM_RiverWorksSettings.ferryEnabled)
+			if (p == null || !RM_RiversSettings.ferryEnabled)
 			{
 				return;
 			}
@@ -117,7 +118,7 @@ namespace RimMandrake.RiverWorks
 		{
 			string s = base.GetInspectString();
 			string mine = Partner != null ? "Rope strung to the post across the river." : "No rope: build a second ferry post across moving water within "
-				+ RM_RiverWorksSettings.ferryMaxSpan + " cells.";
+				+ RM_RiversSettings.ferryMaxSpan + " cells.";
 			return s.NullOrEmpty() ? mine : s + "\n" + mine;
 		}
 
@@ -139,21 +140,22 @@ namespace RimMandrake.RiverWorks
 	{
 		static RM_RiverWorksHarmony()
 		{
-			Harmony h = new Harmony("mandrake.rm.riverworks");
+			Harmony h = new Harmony("mandrake.rm.flowworks.rivers");
 			MethodInfo target = AccessTools.Method(typeof(Flood), "CanFloodSpreadInto");
 			if (target == null)
 			{
-				Log.Warning("[River Works] Flood.CanFloodSpreadInto not found; the levee-off setting does nothing.");
+				Log.Warning("[FlowWorks Rivers] Flood.CanFloodSpreadInto not found; the levee-off setting does nothing.");
 				return;
 			}
 			h.Patch(target, postfix: new HarmonyMethod(typeof(RM_RiverWorksHarmony), nameof(LeveePostfix)));
+			RM_RopePathing.Patch(h);
 		}
 
 		private static MethodInfo potentially;
 
 		public static void LeveePostfix(Flood __instance, IntVec3 cell, ref bool __result)
 		{
-			if (__result || RM_RiverWorksSettings.stakeLineLevee || !RM_RiverWorksSettings.WorksActive)
+			if (__result || RM_RiversSettings.stakeLineLevee || !RM_RiversSettings.WorksActive)
 			{
 				return;
 			}
@@ -171,6 +173,92 @@ namespace RimMandrake.RiverWorks
 			{
 				__result = true;
 			}
+		}
+	}
+
+	/// <summary>
+	/// Ferry rope for undrafted colonists (taken over 2026-10-05; slice 2 left it as a known limit).
+	/// 1.6 keeps the undrafted perceived terrain cost in PerceptualSource.costUndrafted, filled from
+	/// TerrainDef.extraNonDraftedPerceivedPathCost in ComputeAll and re-read per changed cell in
+	/// UpdateIncrementally (RimSage, decompiled 1.6). A postfix on both zeroes it on rope cells, so
+	/// an everyday job routes along the rope instead of round to a bridge. The real move cost (the
+	/// water's pathCost) is untouched; only the reluctance goes. RM_MapComponent_RiverCurrent
+	/// notifies the path grid whenever the rope set or this setting changes.
+	/// </summary>
+	public static class RM_RopePathing
+	{
+		private static AccessTools.FieldRef<PerceptualSource, Map> mapRef;
+
+		private static AccessTools.FieldRef<PerceptualSource, NativeArray<ushort>> undraftedRef;
+
+		public static bool Active => RM_RiversSettings.WorksActive && RM_RiversSettings.ferryEnabled
+			&& RM_RiversSettings.ferryRopeGuidesColonists;
+
+		public static void Patch(Harmony h)
+		{
+			MethodInfo all = AccessTools.Method(typeof(PerceptualSource), "ComputeAll");
+			MethodInfo inc = AccessTools.Method(typeof(PerceptualSource), "UpdateIncrementally");
+			if (all == null || inc == null || AccessTools.Field(typeof(PerceptualSource), "costUndrafted") == null
+				|| AccessTools.Field(typeof(PerceptualSource), "map") == null)
+			{
+				Log.Warning("[FlowWorks Rivers] PerceptualSource members not found; undrafted colonists will not use ferry ropes.");
+				return;
+			}
+			mapRef = AccessTools.FieldRefAccess<PerceptualSource, Map>("map");
+			undraftedRef = AccessTools.FieldRefAccess<PerceptualSource, NativeArray<ushort>>("costUndrafted");
+			HarmonyMethod post = new HarmonyMethod(typeof(RM_RopePathing), nameof(ApplyRope));
+			h.Patch(all, postfix: post);
+			h.Patch(inc, postfix: post);
+		}
+
+		public static void ApplyRope(PerceptualSource __instance)
+		{
+			if (!Active || mapRef == null)
+			{
+				return;
+			}
+			Map map = mapRef(__instance);
+			HashSet<int> rope = map?.GetComponent<RM_MapComponent_RiverCurrent>()?.RopeIndicesNoRebuild;
+			if (rope == null || rope.Count == 0)
+			{
+				return;
+			}
+			NativeArray<ushort> cost = undraftedRef(__instance);
+			foreach (int i in rope)
+			{
+				if (i >= 0 && i < cost.Length)
+				{
+					cost[i] = 0;
+				}
+			}
+		}
+
+		/// <summary>Proof read: the undrafted perceived cost the path grid holds for a cell.</summary>
+		public static int UndraftedCostAt(Map map, IntVec3 c)
+		{
+			PerceptualSource src = PerceptualSourceOf(map);
+			if (src == null || undraftedRef == null)
+			{
+				return -1;
+			}
+			return undraftedRef(src)[map.cellIndices.CellToIndex(c)];
+		}
+
+		private static PerceptualSource PerceptualSourceOf(Map map)
+		{
+			PathFinderMapData data = map?.pathFinder?.MapData;
+			if (data == null)
+			{
+				return null;
+			}
+			foreach (System.Reflection.FieldInfo f in AccessTools.GetDeclaredFields(typeof(PathFinderMapData)))
+			{
+				if (f.FieldType == typeof(PerceptualSource))
+				{
+					return f.GetValue(data) as PerceptualSource;
+				}
+			}
+			return null;
 		}
 	}
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RM_BankWorks.xml                         River Works · SURFACE_RIVER_WEIRS_1 slice 2
-  Moved here from TerminalBiomes (TWILIGHT_CHANNEL_CURRENT_1 §4); TerminalBiomes now depends on River
-  Works and defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea
-  genstep and saves still name them; classes now live in RimMandrake.RiverWorks (owner card 3: no save
-  migration needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
-  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). PLACEHOLDER ART copied from TerminalBiomes' own
-  placeholders into this mod's Textures so it never depends on TerminalBiomes; real art owed.
+  RM_BankWorks.xml                         FlowWorks Rivers · SURFACE_RIVER_WEIRS_1 slice 2
+  Moved here from TerminalBiomes (TWILIGHT_CHANNEL_CURRENT_1 §4); TerminalBiomes depends on FlowWorks and
+  defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea genstep and
+  saves still name them; classes live in RimMandrake.FlowWorks.Rivers (owner card 3: no save migration
+  needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
+  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). PLACEHOLDER ART in Textures/Things/Building/FlowWorks/Rivers;
+  real art owed.
 -->
 <Defs>
 
@@ -18,7 +18,7 @@
     <description>A lamp-topped post driven into the bank. A continuous line of them holds back a flood like a levee - any gap lets it in. When a weir upstream breaches, the line below it snaps post by post.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/RiverWorks/RM_BankStake</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_BankStake</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(0.6, 0.6)</drawSize>
     </graphicData>
@@ -58,9 +58,9 @@
     <defName>RM_BankWeir</defName>
     <label>weir</label>
     <description>Lattice-timber and net-cord staked from the bank out into the current. It stops whatever the river carries into it, calms the water for a long stretch upstream so it can be crossed and worked, and catches fish - and whatever else this country's rivers bring down - from the same stock your fishing zones draw on. Haul its catch and keep it repaired: a weir left to wear down when a flood comes breaches, washes its catch downstream and takes the stake-line below it with it.</description>
-    <thingClass>RimMandrake.RiverWorks.RM_Building_BankWeir</thingClass>
+    <thingClass>RimMandrake.FlowWorks.Rivers.RM_Building_BankWeir</thingClass>
     <graphicData>
-      <texPath>Things/Building/RiverWorks/RM_BankWeir</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_BankWeir</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1.4, 2.2)</drawSize>
     </graphicData>
@@ -71,7 +71,7 @@
     <rotatable>true</rotatable>
     <terrainAffordanceNeeded></terrainAffordanceNeeded>
     <placeWorkers>
-      <li>RimMandrake.RiverWorks.RM_PlaceWorker_RiverWeir</li>
+      <li>RimMandrake.FlowWorks.Rivers.RM_PlaceWorker_RiverWeir</li>
     </placeWorkers>
     <scatterableOnMapGen>false</scatterableOnMapGen>
     <tickerType>Normal</tickerType>
@@ -89,7 +89,7 @@
       <repairable>true</repairable>
     </building>
     <comps>
-      <li Class="RimMandrake.RiverWorks.RM_CompProperties_RiverArrester" />
+      <li Class="RimMandrake.FlowWorks.Rivers.RM_CompProperties_RiverArrester" />
     </comps>
     <designationCategory>Structure</designationCategory>
     <constructEffect>ConstructWood</constructEffect>
@@ -101,9 +101,9 @@
     <defName>RM_SiltTrap</defName>
     <label>silt-trap</label>
     <description>A timber baffle set on the bank to slow the margin water and let its silt settle. Over days it turns the soil around it rich - until a breach upstream washes the bonus back out. Clogs as it wears; repair it to dredge.</description>
-    <thingClass>RimMandrake.RiverWorks.RM_Building_SiltTrap</thingClass>
+    <thingClass>RimMandrake.FlowWorks.Rivers.RM_Building_SiltTrap</thingClass>
     <graphicData>
-      <texPath>Things/Building/RiverWorks/RM_SiltTrap</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_SiltTrap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1.2, 1.2)</drawSize>
     </graphicData>
@@ -127,7 +127,7 @@
       <repairable>true</repairable>
     </building>
     <modExtensions>
-      <li Class="RimMandrake.RiverWorks.RM_SiltSwapExtension">
+      <li Class="RimMandrake.FlowWorks.Rivers.RM_SiltSwapExtension">
         <swaps>
           <li><from>Soil</from><to>SoilRich</to></li>
           <li><from>GrasslandSoil</from><to>SoilRich</to></li>
@@ -145,9 +145,9 @@
     <defName>RM_FerryPost</defName>
     <label>ferry post</label>
     <description>A heavy post with a rope reel. Build a second one on the far bank, facing across moving water, and they string a rope between them: anyone on the rope line holds on and is not swept away, so drafted colonists can cross deep water without a bridge.</description>
-    <thingClass>RimMandrake.RiverWorks.RM_Building_FerryPost</thingClass>
+    <thingClass>RimMandrake.FlowWorks.Rivers.RM_Building_FerryPost</thingClass>
     <graphicData>
-      <texPath>Things/Building/RiverWorks/RM_FerryPost</texPath>
+      <texPath>Things/Building/FlowWorks/Rivers/RM_FerryPost</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(0.8, 0.8)</drawSize>
     </graphicData>
