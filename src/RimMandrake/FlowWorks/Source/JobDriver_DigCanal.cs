@@ -44,7 +44,13 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation excavation = Map.GetComponent<RM_MapComponent_Excavation>();
 			if (excavation != null)
 			{
-				excavation.Deepen(c);
+				int before = excavation.ExcavatedDepthAt(c);
+				int after = excavation.Deepen(c);
+				// FLOWWORKS_QUARRY_DIGGING_1: a cut that went deeper may turn up something the land holds.
+				if (after > before)
+				{
+					excavation.DigDiscovery.OnCut(Map, c, after, pawn);
+				}
 			}
 			else
 			{

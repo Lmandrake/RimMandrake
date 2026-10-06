@@ -22,6 +22,11 @@
   <!-- LIQUID_BOTTLE_LOOP_1 revert timer. -->
   <RMFlow_RevertsIn>Becomes {0} in {1}.</RMFlow_RevertsIn>
 
+  <!-- FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds. -->
+  <RMFlow_DigFindLetterLabel>Found while digging: {0}</RMFlow_DigFindLetterLabel>
+  <RMFlow_DigFindLetterText>{1} turned up {0} while cutting a canal. The land here holds it — dig deeper, or mine the rock it came from.</RMFlow_DigFindLetterText>
+  <RMFlow_DigFindMessage>{0} dug up {1} {2} while cutting the canal.</RMFlow_DigFindMessage>
+
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->
   <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
   <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>
