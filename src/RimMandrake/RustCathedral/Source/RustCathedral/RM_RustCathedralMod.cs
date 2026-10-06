@@ -138,15 +138,22 @@ namespace RimMandrake.RustCathedral
             // since RustCathedralHumSettings/RustCathedralWallsSettings'
             // DoWindowContents() (unchanged from their satellite-mod days)
             // each call Begin/End on the Rect they are handed.
-            float thirdHeight = inRect.height / 3f;
-            Rect ownRect = new Rect(inRect.x, inRect.y, inRect.width, thirdHeight);
-            Rect humRect = new Rect(inRect.x, inRect.y + thirdHeight, inRect.width, thirdHeight);
-            Rect wallsRect = new Rect(inRect.x, inRect.y + thirdHeight * 2f, inRect.width, thirdHeight);
-
-            DoOwnSection(ownRect);
-            humSettings.DoWindowContents(humRect);
-            wallsSettings.DoWindowContents(wallsRect);
+            // Listing_Standard.Begin is a clipping BeginGroup, and the three
+            // sections need ~1000px against a ~570px dialog body, so equal
+            // thirds clipped the borehulk/cross-biome rows and the end of the
+            // Hum block out of reach. Fixed heights inside a scroll view.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, OwnSectionHeight + HumSectionHeight + WallsSectionHeight);
+            Widgets.BeginScrollView(inRect, ref scrollPosition, view);
+            DoOwnSection(new Rect(0f, 0f, view.width, OwnSectionHeight));
+            humSettings.DoWindowContents(new Rect(0f, OwnSectionHeight, view.width, HumSectionHeight));
+            wallsSettings.DoWindowContents(new Rect(0f, OwnSectionHeight + HumSectionHeight, view.width, WallsSectionHeight));
+            Widgets.EndScrollView();
         }
+
+        private const float OwnSectionHeight = 470f;
+        private const float HumSectionHeight = 430f;
+        private const float WallsSectionHeight = 240f;
+        private Vector2 scrollPosition;
 
         private static void DoOwnSection(Rect inRect)
         {

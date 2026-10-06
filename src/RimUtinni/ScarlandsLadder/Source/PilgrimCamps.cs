@@ -271,7 +271,9 @@ namespace RimMandrake.Utinni.ScarlandsLadder
             }
             IntVec3 bedCell = c + IntVec3.West;
             Thing bed = ThingMaker.MakeThing(ThingDefOf.Bedroll, ThingDefOf.Cloth);
-            GenSpawn.Spawn(bed, bedCell, map, Rot4.East);
+            // North: the 1x2 bedroll covers bedCell and bedCell+North (the journal's cell). Rot4.East
+            // covered bedCell+East == c, and spawning an edifice there wiped the campfire.
+            GenSpawn.Spawn(bed, bedCell, map, Rot4.North);
             ThingDef journal = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_PilgrimJournal");
             if (journal != null)
             {
