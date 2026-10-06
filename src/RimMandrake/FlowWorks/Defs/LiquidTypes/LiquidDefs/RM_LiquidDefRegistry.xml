@@ -320,15 +320,9 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <shader>Flow</shader>
-      <texture>Other/Perlin</texture>
-      <tint>(0.17,0.15,0.14)</tint>
-      <depthDarken>0.12</depthDarken>
-      <flowSpeed>0.03</flowSpeed>
-      <flowAmplitude>0.05</flowAmplitude>
-      <flowFrequency>1.0</flowFrequency>
-      <brightness>0.0</brightness>
-      <splashes>false</splashes>
+      <depthDarken>0.1</depthDarken>
+      <rippleDensity>0.5</rippleDensity>
+      <rippleIntensity>1.4</rippleIntensity>
       <overlay>false</overlay>
       <wake>0.0</wake>
     </surfaceLook>
