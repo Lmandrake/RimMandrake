@@ -1,0 +1,1 @@
+RM_LiquidLookProof.Tune re-applies only the members of the liquid or fluid it names: tune RM_Liquid_Tar for the pond (suite) and RM_Fluid_Tar for canal fill terrains, then read RM_LiquidLookProof.Material to confirm the real graphic colour before judging a screenshot.

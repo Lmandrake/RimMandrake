@@ -1,0 +1,1 @@
+OS-level screenshots (system_screenshot.py) capture whatever window is on top, including the owner's terminals; for in-game review shots use rimworld/take_screenshot, which saves under the game's own Screenshots folder.
