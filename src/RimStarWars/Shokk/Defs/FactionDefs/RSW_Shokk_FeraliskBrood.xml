@@ -14,14 +14,9 @@
   referencing Wyyyschokk directly here is the correct tier, not a shortcut.
 
   RM_MapComponent_TwoFrontLure (mandrake.rm.feverwood) looks this FactionDef
-  up by defName only — no assembly reference either direction. Absent this
-  mod (or SWAC), that lookup silently returns null and the Fever Wood's
-  raid simply never fires its second front: "ants only", same graceful-
-  degradation posture as every other MayRequire-gated class in this mod
-  set. The franchise-free RM_-tier's OWN second raider (a native, non-canon
-  brood predator — "skreth" is a proposed but NOT owner-ruled candidate
-  name, fever_wood_rm_cast_proposal_2026-09-24.md) is real owed work, not
-  invented here — see FEVERWOOD_FREE_TIER_FERALISK_1.
+  up by defName only — no assembly reference either direction. When this mod
+  (or SWAC) is absent the lure uses the franchise-free RM_ brood instead:
+  RM_FactionDef_SkrethBrood (skreth and skreth matron, FeverWood).
 -->
 <Defs>
 

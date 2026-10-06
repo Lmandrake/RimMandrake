@@ -360,8 +360,8 @@ namespace RimMandrake.FeverWood
             list.GapLine();
             list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
                 "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
-              + "staked, the Fever Wood's two raiders (the kurreth swarm, and — with the Star Wars "
-              + "animal collection installed — the feralisk/Wyyyschokk brood) may converge on it one "
+              + "staked, the Fever Wood's two raiders (the kurreth swarm, and the skreth brood from the "
+              + "webbed side of the wood) may converge on it one "
               + "after the other, never both at once. Off: the stake and staking still work, but no "
               + "raid is ever rolled.");
             list.Label("Mean hours until a first wave answers a staked lure: " + twoFrontLureRaidMtbHours.ToString("0.0"));
