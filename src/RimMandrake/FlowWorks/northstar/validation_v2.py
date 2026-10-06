@@ -2545,7 +2545,15 @@ def _x10_canal_fire(L):
         burn2 = _things_at(B, FLAME, run)
         # 6000, not 3000: a burned-out cell takes a level back from its neighbour by flow (tar, stride 6), which
         # relights it and stretches the burn (live 19:53: 5 of 6 spent at 4,000 ticks, the last still alight)
-        B.call("rimworld/step_game_ticks", ticks=6000)
+        trace = []                 # (ticks, nextPulseTick, engine pulse interval, F vector): why a burn stalls
+        for _ in range(6):
+            B.call("rimworld/step_game_ticks", ticks=1000)
+            e = B.call("jawa/flowworks_engine_state")
+            _, fr, _ = _fluid_row(L, run)
+            fv = [fr.get(c, {}).get("f") for c in run]
+            trace.append((e.get("ticksGame"), e.get("nextPulseTick"), e.get("pulseIntervalTicks"), "".join(str(f) for f in fv)))
+            if not any(fv):
+                break
         burn3 = _things_at(B, FLAME, run)
         ash = _things_at(B, ASH, run)
         _, rows, _ = _fluid_row(L, run)
@@ -2563,9 +2571,9 @@ def _x10_canal_fire(L):
              ("persists 250 ticks", len(burn2 & set(run)) >= 1), ("spent: all F=0", not left),
              ("spent: ashed", len(ash & set(run)) >= 3), ("spent: none alight", not burn3)]
     L.row("X10_canal_fire", all(p[1] for p in parts), "MOD",
-          "%s | flames %d -> %d -> %d, off-run %s, ash %d, F>0 left %s | %s" % (
+          "%s | flames %d -> %d -> %d, off-run %s, ash %d, F>0 left %s | %s | trace %s" % (
               ", ".join("%s %s" % (n, "ok" if v else "FAIL") for n, v in parts), len(burn1), len(burn2), len(burn3),
-              off_run[:3], len(ash & set(run)), left[:3], rep[:120]))
+              off_run[:3], len(ash & set(run)), left[:3], rep[:120], trace))
 
 
 def phase_tail(L, args):

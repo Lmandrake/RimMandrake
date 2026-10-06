@@ -1247,6 +1247,7 @@ def pit_fill_effects(t):
             hs = [h.get("def") for h in (((r or {}).get("pawns") or [{}])[0].get("hediffs") or [])]
             _expect(any("Burn" in str(h) for h in hs), "occupant of a burning oil pit has no burn: hediffs %s" % hs)
     _extinguish_all(t)
+    t.bridge_call("jawa/destroy_batch", rects=_rect(x0, z0, PW, PH), categories="All")
 
 
 @suite.chain("toggle_pit_fill_effects")
@@ -1488,6 +1489,10 @@ def _extinguish_all(t):
     (live 20:04: the oil pit's burning pirate left one Fire that aborted pit_prison_room and bottle_revert)."""
     if getattr(t, "session", None) is None or not t._guard():
         return
+    # the liquid fire first (a burning cell re-sets its occupant alight every 60 ticks): canalFireEnabled off runs
+    # RM_LiquidFire.ExtinguishAll on the next check
+    with _setting(t, "canalFireEnabled", False):
+        t.wait_ticks(60)
     from modcheck import helpers as H
     try:
         H.extinguish(t.session)
