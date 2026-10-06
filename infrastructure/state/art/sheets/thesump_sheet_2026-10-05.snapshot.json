@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-06T08:12:25-0700",
+ "built": "2026-10-06T09:25:18-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -241,23 +241,29 @@
     },
     "C": {
      "single": "abd2406349eef79c35a782e2dce9bb03faed581920b5cf21fa9ef28250ac4f5a"
+    },
+    "D": {
+     "single": "cf94d395b7ee3a9baf97fe329281b65867648ea358b25ba5b7bf58fe3d62826a"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
     "B": "render thesump_Mirrelin_var2",
-    "C": "render thesump_Mirrelin_var3"
+    "C": "render thesump_Mirrelin_var3",
+    "D": "render thesump_Mirrelin_var1"
    },
    "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "mirrelin"
   },
@@ -573,20 +579,32 @@
     },
     "B": {
      "single": "07b9dfc9af0d6e90b492e043b3b3d99068e426219daf6c5033a39b7f3f0af4c7"
+    },
+    "C": {
+     "single": "f8f4d818e62d7b1a30a723d0aded65650ef4e4c98f1f7c865f2eae32ec3e8862"
+    },
+    "D": {
+     "single": "742eced76678b8a4299c9a1f6051f21eaa4c6e3e52eb462ebace9de650a8af68"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Velloch/RM_Velloch_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TheSump",
-    "B": "render thesump_Velloch_var1"
+    "B": "render thesump_Velloch_var1",
+    "C": "render thesump_Velloch_var2",
+    "D": "render thesump_Velloch_var3"
    },
    "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "velloch"
   },

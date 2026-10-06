@@ -1,6 +1,6 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-06T08:02:22-0700",
+ "built": "2026-10-06T08:56:33-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -538,23 +538,29 @@
     },
     "C": {
      "single": "0f54828ff9fc95fe779e2f1eeea6fbdb8c4d06334a318397bfa505d9ac56afc5"
+    },
+    "D": {
+     "single": "2fc94015c2d5b3fb7c2c835c04997f33e6a8b9af57f93f6412479ee7db5126a8"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_GiantGamma",
     "B": "Things/Plants/AB_GiantGamma",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
     "B": "donor original \u2014 Alpha Biomes",
-    "C": "render abyss_greatbulgra_v1"
+    "C": "render abyss_greatbulgra_v1",
+    "D": "render abyss_giantglowglobe_b_v2"
    },
    "res": "Things/Plants/AB_GiantGamma",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "giantgamma"
   },
@@ -631,26 +637,44 @@
     },
     "D": {
      "single": "fc4a2b5a332b3c3d5c09628c9556160a65bac7a69e2e0eb77ca231bfb89f1a17"
+    },
+    "E": {
+     "single": "140c3c520f86463e574d2f51d91a08ad76cc8daa4f56a88dc94bf81a6728fa14"
+    },
+    "F": {
+     "single": "ea753fd27b571e35192bdebb610e91546ffec6a96e85d6346f36496f786b5a83"
+    },
+    "G": {
+     "single": "87fb2aa25e295d20699733066651f29a95f1bb183afa0a101cd7fb7ec1099333"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_GlowingGrass",
     "B": "Things/Plants/AB_GlowingGrass",
     "C": "Things/Plants/AB_GlowingGrass",
-    "D": "Things/Plants/AB_GlowingGrass"
+    "D": "Things/Plants/AB_GlowingGrass",
+    "E": "Things/Plants/AB_GlowingGrass",
+    "F": "Things/Plants/AB_GlowingGrass",
+    "G": "Things/Plants/AB_GlowingGrass"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Biomes",
     "B": "render abyss_glowinggrass_a_v1",
     "C": "render abyss_glowinggrass_b_v1 \u2014 failed canon check",
-    "D": "render abyss_glowinggrass_c_v1"
+    "D": "render abyss_glowinggrass_c_v1",
+    "E": "render abyss_glowinggrass_a_tint_v1",
+    "F": "render abyss_glowinggrass_b_tint_v1",
+    "G": "render abyss_glowinggrass_c_tint_v1"
    },
    "res": "Things/Plants/AB_GlowingGrass",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "glowinggrass"
   },
@@ -689,23 +713,35 @@
     },
     "C": {
      "single": "6d056346bcf41e0d780889996a542c627b74bb5c7d79ea482d5ac281176b20d2"
+    },
+    "D": {
+     "single": "59347c9dd89b250f23a8e8b18954ae679bf56a529d790a6d4df3b8d7636d2df1"
+    },
+    "E": {
+     "single": "7774c58aa2ff8319c5398c0348e545de01f0a7ebd95771a05687b72f348dc222"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_WildRadagast",
     "B": "Things/Plants/AB_WildRadagast",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "donor original \u2014 Alpha Biomes",
-    "C": "render abyss_vettrig_v1"
+    "C": "render abyss_vettrig_v1",
+    "D": "render abyss_glowberrybush_b_v2",
+    "E": "render abyss_glowberrybush_c_v2"
    },
    "res": "Things/Plants/AB_WildRadagast",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "wildradagast"
   },
@@ -716,20 +752,32 @@
     },
     "B": {
      "single": "6c0ba8c10a182eecd913fc072bb94611a6aad38eea8cf58178ee11a9fd3b92a7"
+    },
+    "C": {
+     "single": "265101ff1cdc3d72d0438dd9bee1d512c7e0973029a27591159c0498b0b99a5a"
+    },
+    "D": {
+     "single": "4c9054b1537363c6843db1a2651619e40bbf3a999c7577a6bf789f895052ca99"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/AG_Gamma",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Genes",
-    "B": "render abyss_bulgra_v1"
+    "B": "render abyss_bulgra_v1",
+    "C": "render abyss_glowglobe_b_v2",
+    "D": "render abyss_glowglobe_c_v2"
    },
    "res": "Things/Plant/AG_Gamma",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "ag_gamma"
   },
@@ -941,7 +989,7 @@
      "5_north": "265debbe7a7ee6186324765b5ceb52a2740d58b2524e4f7a07dbf6a7f72cff98",
      "5_south": "2945156e32b1124d0c137e0ef04008ed82b6c2269a364e16c367f087bbf34ca0"
     },
-    "K": {
+    "L": {
      "1_east": "7a3f6baca8c358fca6b0c7db6d76bdf937ca852f70147dfc19307a8c66141345",
      "1_north": "3d8a4b2da1d78b048d020a60980a722846c4a36e18bf1b24d91a9be93d9d9b6a",
      "1_south": "dc6cfbd21bf92576cc37e4a60a3e3383e5dde7e9c05642dec2b10a85b66b6c7e",
@@ -967,7 +1015,7 @@
     "E": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "F": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "G": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_",
-    "K": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
+    "L": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 Abyss",
@@ -977,7 +1025,7 @@
     "E": "render RM_Krizzak_Flying_4",
     "F": "render RM_Krizzak_Flying_5",
     "G": "IN GAME \u2014 RM_Krizzak_Flying_",
-    "K": "flight frames RM_Krizzak_Flying"
+    "L": "flight frames RM_Krizzak_Flying"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
    "reserved": [
@@ -991,7 +1039,8 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L"
    ],
    "subject_key": "krizzak"
   },
@@ -1120,5 +1169,5 @@
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "77ca312821c55897"
+ "snapshotId": "f7071c44fe70a5b0"
 }
