@@ -69,8 +69,13 @@ Source-level, not yet reproduced live. Paths are under `src/RimMandrake/FlowWork
 | 14 | The 34-station visual board is 700 bridge calls | `review_map_visuals.station_ops()` (run) |
 | 15 | Lip occlusion hides a pawn or item standing on the lip | `Source/Superdeep/RM_PitLipOcclusion.cs:21` |
 
-Two of these are intent questions for the owner, not bugs to fix blind: **#7** (should colonists take fall damage?)
-and **#9** (does a closed sluice hold liquid or pass it?).
+The owner ruled the two intent questions the same day (typed on a question card):
+**#7** — colonists never path in; they fall only when blown or forced in; enemies also fall into a concealed pit
+(`FLOWWORKS_PIT_FALL_ONLY_FORCED_1`). **#9** — two doors: a sealed sluice gate (standard) and a metal grate gate that
+always passes liquid (`FLOWWORKS_SLUICE_TWO_DOORS_1`).
+
+**Status: no plan adopted.** The owner, 2026-10-06: *"we're going to discuss the results with you first before we
+agree to any plan. We'd like to understand all the options presented first. We may have other thoughts."*
 
 ## Measured context the runs leaned on
 
