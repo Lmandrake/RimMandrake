@@ -121,11 +121,23 @@ LOCK_PATH = LOG_PATH + ".lock"
 _EXCLUDED_BASENAMES = {"validation.py", "__pycache__", "northstar", "human_review.py"}
 
 
+def _hashignore(mod_dir):
+    """Paths a mod lists in `<mod>/.hashignore` (one relpath prefix per line, `#` comments, trailing `*` = prefix).
+    Only for files that never ship or change what the mod does -- art sources, review tooling, held scaffolds -- so
+    adding them cannot make a finished run read STALE. A mod without the file hashes exactly as before."""
+    try:
+        with open(os.path.join(mod_dir, ".hashignore"), encoding="utf-8") as f:
+            return [l.split("#")[0].strip() for l in f if l.split("#")[0].strip()]
+    except OSError:
+        return []
+
+
 def mod_hash(mod_dir):
     """SHA-256 over every file under `mod_dir` except the validator itself
     and cache noise -- (relpath, content) pairs, sorted, so the hash is
     stable regardless of filesystem walk order."""
     parts = []
+    ignore = _hashignore(mod_dir)
     for root, dirs, files in os.walk(mod_dir):
         dirs[:] = [d for d in dirs if d.lower() not in _EXCLUDED_BASENAMES
                   and d != ".git"]
@@ -134,6 +146,9 @@ def mod_hash(mod_dir):
                 continue
             path = os.path.join(root, name)
             rel = os.path.relpath(path, mod_dir).replace(os.sep, "/")
+            if any(rel == g or rel.startswith(g.rstrip("/") + "/") or (g.endswith("*") and rel.startswith(g[:-1]))
+                   for g in ignore):
+                continue
             with open(path, "rb") as f:
                 parts.append((rel, f.read()))
     parts.sort(key=lambda kv: kv[0])

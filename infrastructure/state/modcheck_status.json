@@ -211,32 +211,29 @@
   "FlowWorks": {
     "components": {
       "counts": {
-        "FAIL": 1,
-        "PASS": 58
+        "PASS": 59
       },
-      "not_ok": [
-        "P4_ladder_frees"
-      ],
+      "not_ok": [],
       "unbuilt": [],
       "uncovered": []
     },
-    "hash": "38108c131e02771c6f60a3785e8e89b9fcac7a71746cafc0e9d461d5273380b8",
+    "hash": "dce644fa6472da676f67254fce36c01f683bd2dc8e880d78781f27717a61fede",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261005T203150.json",
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261006T064707.json",
     "source": {
-      "assembly_sha256": "72792d0b51eb2611647e2803ba38c0020e6f9e9209f4d973b6fa19e62500fc42",
+      "assembly_sha256": "5d44e05927dc76bf54e447bfd25d4a8d75476c7a629722ef3232b3b802ac8dcb",
       "env_running_count": 10,
       "env_running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
-      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T203150.json",
-      "started": "2026-10-05T20:28:13",
-      "ticks_spent": 11459,
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261006T064707.json",
+      "started": "2026-10-06T06:44:11",
+      "ticks_spent": 11460,
       "tier": "flowworks",
       "verb": "modcheck record"
     },
-    "status": "RED",
-    "ts": 1791258147.7687953
+    "status": "DRAFT-CHECKLIST",
+    "ts": 1791294443.3955693
   },
   "GelatinousSlime": {
     "hash": "472b58fa3d442801845240fb21604d3578b222bb6fd78a8d5175dcf3f033d484",

@@ -1,0 +1,12 @@
+# Files that never ship and never change what FlowWorks does. Listed so adding them cannot make a finished
+# northstar run read STALE (modcheck/status.py mod_hash). The shipped set is About, Assemblies, Defs, Languages,
+# Patches, Source, Textures.
+art_source
+Tools
+review_map.py
+review_map_visuals.py
+review_map_stations_visuals.json
+selftest_*
+# held scaffold, not built, not deployed (src/DEPLOY_HOLD.txt)
+Defs/Machinery/Kits
+Source/Machinery/Kits
