@@ -1,5 +1,10 @@
 # River Works — whole-mod design (SURFACE_RIVER_WEIRS_1), 2026-10-03
 
+> Built, then merged into FlowWorks 2026-10-05 (owner: *"I think river works needs to be part of flow works."*):
+> code `src/RimMandrake/FlowWorks/Source/Rivers/`, defs `Defs/Rivers/`, settings = the Rivers section of FlowWorks'
+> Mod Settings, script `src/RimMandrake/FlowWorks/northstar/extensions_rivers.py`, walk
+> `design/validation_walks/RimMandrake/FlowWorksRivers.md`. §6 and §7 below state the shipped packaging.
+
 Design only — nothing built, filed or claimed. Supersedes nothing: the 2026-10-02 port study
 (`design/RimMandrake/surface_river_weirs_design_2026-10-02.md`) stays the engine-fact record and is cited,
 not repeated. This doc defines the WHOLE mod the owner asked to see before it is built.
@@ -256,7 +261,7 @@ off and on is safe mid-game).
 | expansions | one toggle per shipped expansion | on | per §4 picks |
 ## 6. How the sea floor consumes River Works
 
-TerminalBiomes adds `mandrake.rm.riverworks` to `modDependencies` and loads after it. It keeps the Twilight
+TerminalBiomes depends on `mandrake.rm.flowworks` (which carries the rivers) and loads after it. It keeps the Twilight
 genstep, undersurge, sink, cargo float and its biome toggles. It talks to River Works through three seams:
 
 1. **Current field writer** — `RM_CurrentField.SetFlow(cell, dir, lane)` / `SetBankBand` (today's methods,
@@ -277,15 +282,15 @@ The other three sea biomes (Scald, Grey Sea, Propane Lake) have no current today
 cheap (author a grid), but none is proposed here.
 ## 7. Naming, packaging, save-compat
 
-- packageId `mandrake.rm.riverworks`, display name "RimMandrake: River Works", folder
-  `src/RimMandrake/RiverWorks/`, namespace `RimMandrake.RiverWorks`, prefix `RM_`. No reason found to deviate:
-  everything here is invented and franchise-free (Q11a). Free tier, any game.
-- **Biome-mod unification:** River Works is NOT a biome, so it stays its own top-level mod rather than
-  folding into `RimMandrake.Biomes` (Q17); it is a dependency of that and of TerminalBiomes.
+- Ships inside FlowWorks (`mandrake.rm.flowworks`): folder `src/RimMandrake/FlowWorks/{Source,Defs,Patches}/Rivers/`,
+  namespace `RimMandrake.FlowWorks.Rivers`, prefix `RM_`. Everything here is invented and franchise-free
+  (Q11a). Free tier, any game.
+- **Biome-mod unification:** rivers are NOT a biome, so they do not fold into `RimMandrake.Biomes` (Q17);
+  FlowWorks is a dependency of that and of TerminalBiomes.
 - **Kept defNames:** `RM_BankStake`, `RM_BankWeir`, `RM_SiltTrap`, `RM_FloatHarness` keep their names, so
   defs in saves still resolve.
 - **Class moves break saved instances:** `RimMandrake.TerminalBiomes.RM_Building_BankWeir` →
-  `RimMandrake.RiverWorks.…`. A saved weir loses its class. Fix cheaply with vanilla's
+  `RimMandrake.FlowWorks.Rivers.…`. A saved weir loses its class. Fix cheaply with vanilla's
   `BackCompatibilityConverter` type remap, or accept the loss — map state is disposable and the world remake
   is the last step. Recommend the remap (an hour) since TerminalBiomes saves exist for testing.
 - **Current grid save:** the moved component keeps its Scribe keys, so a Twilight map saved today loads
@@ -309,8 +314,8 @@ cheap (author a grid), but none is proposed here.
 ## 9. North star and first script
 
 Per `design/RimMandrake/debug_process.md` §2. **North star:** BENCH seeds a provisional `## north star` section
-in the walk below from §0's four rulings; only the owner validates it. **First script:** `src/RimMandrake/RiverWorks/validation.py`
-(a modcheck `Suite`) with walk `design/validation_walks/RimMandrake/RiverWorks.md`.
+in the walk below from §0's four rulings; only the owner validates it. **First script:** `src/RimMandrake/FlowWorks/northstar/extensions_rivers.py`
+(a modcheck `Suite`) with walk `design/validation_walks/RimMandrake/FlowWorksRivers.md`.
 
 `## must be true` (each line gets a cheap state-read component):
 
