@@ -121,6 +121,7 @@
       <li>RM_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
+      <RM_Shambles>0.5</RM_Shambles>  <!-- the shambles - the walking dead, a corpse steered by the fungus wearing it; moved from RM_Contagion on the owner's note 2026-10-05 ("this belongs in the Rot, not here."), commonality carried over -->
       <RM_Hwelgrue>0.02</RM_Hwelgrue>  <!-- hwelgrue - our own giant (ROT_HWELGRUE_GIANT_BUILD_1); at most 1 per map by RM_CompGutDigest's cap -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin -->
       <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native -->
