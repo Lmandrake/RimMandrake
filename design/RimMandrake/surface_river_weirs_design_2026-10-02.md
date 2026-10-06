@@ -113,7 +113,10 @@ between `RM_BankWorks.xml` + the two building classes and `RM_MapComponent_Chann
 | **B. New free-tier mod `mandrake.rm.riverworks` ("RimMandrake: River Works"), recommended** | one small generic mod: the three buildings, the breach state machine, the flood-source list, the silt table, the river PlaceWorker. TerminalBiomes then **depends on it** and registers the undersurge as one more flood source plus its own `RM_BankSilt` pair. Matches the standing rule that biome-kit mechanics are feature-gated so they work without the biome | a move: the thingClass namespace changes from `RimMandrake.TerminalBiomes` to `RimMandrake.RiverWorks`, so any weir already in a save loses its class. Acceptable: map state is disposable and the world remake is the last step. One more mod in the list |
 | **C. FlowWorks** | it is "the water mod" | measured no overlap: FlowWorks owns canals, excavation depth and fluid releases, never vanilla rivers; it carries a VALIDATED north star whose scope would grow; FlowWorks is the engine other mods call, not a building set. Wrong home |
 
-**Recommendation: B.** Keep defNames `RM_BankWeir`, `RM_SiltTrap`, `RM_BankStake` (they are
+**Ruled 2026-10-05: C.** Owner, typed: *"I think river works needs to be part of flow works."* River Works
+shipped as B for slices 1-2 and was then merged into FlowWorks (`Source/Rivers/`, `RimMandrake.FlowWorks.Rivers`).
+
+**Recommendation at the time: B.** Keep defNames `RM_BankWeir`, `RM_SiltTrap`, `RM_BankStake` (they are
 RM_-tier invented names already, Q11a), move them and the two classes into River Works, and leave
 the carry, arrester and undersurge in TerminalBiomes. The arrester comp stays a TerminalBiomes comp
 that TerminalBiomes patches onto the weir def, so River Works never knows a sea exists.
@@ -168,11 +171,11 @@ govern the sea.
 
 Sized as **one item, ~1 working session of C# plus one load round**, in this order:
 
-1. **Scaffold `src/RimMandrake/RiverWorks/`** — About.xml (`mandrake.rm.riverworks`, depends on
-   Core; Odyssey assumed per the all-DLC ruling), csproj (remember explicit `<Compile Include>` if
-   it follows the `EnableDefaultCompileItems false` pattern), Settings class.
+1. **Scaffold the rivers code** — now `src/RimMandrake/FlowWorks/Source/Rivers/` inside FlowWorks
+   (River Works merged into FlowWorks 2026-10-05); explicit `<Compile Include>` lines in the FlowWorks
+   csproj; settings are the Rivers section of FlowWorks' Mod Settings.
 2. **Move** `RM_BankWorks.xml`, `RM_Building_BankWeir.cs`, `RM_Building_SiltTrap.cs` and the breach
-   key into River Works; namespace `RimMandrake.RiverWorks`. TerminalBiomes: add the dependency,
+   key into the rivers code; namespace `RimMandrake.FlowWorks.Rivers`. TerminalBiomes: add the dependency,
    keep `CompChannelArrester` and patch it onto `RM_BankWeir`; keep its DefOf entries pointing at
    the same defNames.
 3. **Flood-source abstraction**: a static registry `RM_RiverWorks.FloodActive(Map)` answering true
@@ -189,8 +192,8 @@ Sized as **one item, ~1 working session of C# plus one load round**, in this ord
 7. **Weir catch** per Q1's answer.
 8. Real art (three placeholders today) — artpipe search first, per the art rule.
 
-**First script sketch** (`src/RimMandrake/RiverWorks/validation.py`, walk
-`design/validation_walks/RimMandrake/RiverWorks.md`):
+**First script sketch** (now `src/RimMandrake/FlowWorks/northstar/extensions_rivers.py`, walk
+`design/validation_walks/RimMandrake/FlowWorksRivers.md`):
 
 `## must be true`
 - The three defs load and `RM_BankWeir` carries the river PlaceWorker → `defs.weir_placeworker`

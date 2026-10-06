@@ -176,19 +176,19 @@ gold almost nowhere; most rivers would yield silver or nothing. Three ways out (
 | feature | home | why |
 |---|---|---|
 | canal-dig discovery | **FlowWorks** | its only hook is FlowWorks' own dig job; nothing about it involves rivers |
-| sluice box | **River Works** | it sits on moving water and its rate *is* the current field River Works owns; the 1×2 bank-edge pattern, the per-water-body stock and the flood refill are all River Works machinery (weir) |
-| panning | **River Works** | a bank job on moving water, sharing the sluice's stock; splitting the two across mods would split one stock |
+| sluice box | **FlowWorks (Rivers)** | it sits on moving water and its rate *is* the current field River Works owns; the 1×2 bank-edge pattern, the per-water-body stock and the flood refill are all River Works machinery (weir) |
+| panning | **FlowWorks (Rivers)** | a bank job on moving water, sharing the sluice's stock; splitting the two across mods would split one stock |
 | the draw (`QuarryDraw`, placer pool) | **the minerals registry mod** | already designed as the public API; FlowWorks and River Works both depend on it, neither owns it |
 
-So FlowWorks gets the part the owner asked about by name (digging), and the river halves go where
-rivers live. The alternative — all three in FlowWorks — would make FlowWorks reach into River Works'
-current field and fish-style stock, i.e. a hard dependency the other way round. Card asks.
+Since 2026-10-05 River Works is part of FlowWorks (owner: *"I think river works needs to be part of flow
+works."*), so all three live in FlowWorks: digging in the canal engine, sluice + panning in `Source/Rivers/`
+beside the current field and the weir's stock.
 
 ### 2f. Settings
 
 FlowWorks (dig): enable dig discovery (on); finds follow local minerals (on; off = any planet-allowed
 row); discovery chance multiplier (1.0); loose-find budget % of biome EPM (5%); first-find letter (on).
-River Works (sluice/panning): enable sluice box (on); enable panning (on); placer stock % (2%);
+FlowWorks Rivers section (sluice/panning): enable sluice box (on); enable panning (on); placer stock % (2%);
 sluice/panning yield multipliers (1.0); flood refill (on). All-off = vanilla behaviour. Labels say
 these are live (no map-gen effect).
 
