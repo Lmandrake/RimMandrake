@@ -53,12 +53,55 @@ except ImportError:
             os.write(fd, b"\0")
             os.fsync(fd)
 
+    # MEASURED 2026-10-06: since the seat clones moved to ext4 (2026-10-02) python.exe reaches the repo over
+    # \\wsl.localhost (9p), where byte-range locks are unsupported -- LK_LOCK raises OSError 36 (EDEADLK, surfacing
+    # as PermissionError) and LK_NBLCK OSError 22 -- so EVERY live run's record_run failed and no suite status was
+    # updated. There the mutex falls back to an atomic mkdir beside the lock file (stale after 120 s).
+    _MKDIR_HELD = {}
+
+    def _mkdir_lock(fd):
+        import time as _t
+        d = LOCK_PATH + ".d"
+        if any(_MKDIR_HELD.values()):         # re-entrant: save() locks its tmp fd inside _locked()
+            _MKDIR_HELD[fd] = None
+            return
+        deadline = _t.time() + 60
+        while True:
+            try:
+                os.mkdir(d)
+                _MKDIR_HELD[fd] = d
+                return
+            except FileExistsError:
+                try:
+                    if _t.time() - os.stat(d).st_mtime > 120:
+                        os.rmdir(d)
+                        continue
+                except OSError:
+                    pass
+                if _t.time() > deadline:
+                    raise
+                _t.sleep(0.2)
+
     def _lock(fd):
         _ensure_one_byte(fd)
         os.lseek(fd, 0, os.SEEK_SET)
-        msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+        try:
+            msvcrt.locking(fd, msvcrt.LK_NBLCK, 1)
+        except OSError as e:
+            if e.errno == 22:                 # EINVAL: no byte-range locks on this filesystem (9p)
+                _mkdir_lock(fd)
+            else:                             # genuinely held by another process: wait for it (LK_LOCK retries 10 s)
+                msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
 
     def _unlock(fd):
+        if fd in _MKDIR_HELD:
+            d = _MKDIR_HELD.pop(fd)
+            if d is not None:
+                try:
+                    os.rmdir(d)
+                except OSError:
+                    pass
+            return
         os.lseek(fd, 0, os.SEEK_SET)
         msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
 
