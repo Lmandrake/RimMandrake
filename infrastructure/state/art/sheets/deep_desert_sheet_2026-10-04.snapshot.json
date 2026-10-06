@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-06T00:01:38-0700",
+ "built": "2026-10-06T05:16:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -11,18 +11,26 @@
      "east": "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
      "north": "5f1ddc63c80bac5004161539c45367600c6ebabd2d7cffbd9f59c84257bffaec",
      "south": "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
+    },
+    "C": {
+     "east": "191b739b1efc6c336890bf7d95538979a7da5b7008e225b7a6f61274b7ceb136",
+     "north": "f47d7bdc7682a8bad7a9493c74a5df7beda6d28a4e49c88a58be1293b0599111",
+     "south": "57c742c9e5386b4946baa1af372ac05bd04eb696b210c841330afd27e1fee34f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
+    "C": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "C": "render stillsand_s2_RM_Aurrok_v3"
    },
    "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "aurrok"
   },
@@ -84,17 +92,26 @@
      "east": "0dedf4298d91bd298b17c36e5a0e8b384b1fbfcdb4eebe423b3608881e4e3247",
      "north": "e03e4b7df69582e41cf607e23a9c1cbfd32fd0dd8a5ad5550c933fabcddde995",
      "south": "479fc204200a9841128fe620e806c29b940d17f70697788dc23f1c4312ba26d6"
+    },
+    "C": {
+     "east": "db8e2fbae3a07f085e1bb22312f9af7a1d5da554474dccc51a30b17fab72dbfd",
+     "north": "9e3867fdcee445ea36911de6db7ba0d48fde1d98511ab9b6a1f59f552ae44a3a",
+     "south": "ae1c1365aa4a68fac702c652cf29463e2e0314ccf02124881cfc60b86ae6dc3f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Duumma/RM_Duumma"
+    "A": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
+    "C": "Things/Pawn/Animal/RM_Duumma/RM_Duumma"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand"
+    "A": "IN GAME \u2014 Stillsand",
+    "C": "render stillsand_s2_RM_Duumma_surfaced \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "duumma"
   },
@@ -138,6 +155,18 @@
     },
     "F": {
      "single": "23848771ed181e045232d64ac588203a44093a9fda3be3405bb217d430fdd914"
+    },
+    "G": {
+     "single": "66d9bb17b66cf8d51cdbf8b2d2759abf6a10ec49003607721c8a8056c156d67a"
+    },
+    "H": {
+     "single": "c26ddcac7ad96c66b873d19a03c3cd8fdda49bf39d96da740830885c927bdb18"
+    },
+    "I": {
+     "single": "8d02f3a2673d1797a8215651f1e3e324e7b6fc7acd6586b4eaf254ef1a2b1b2b"
+    },
+    "J": {
+     "single": "7b63862b7bdf38ea37af382f89a2dd7161b414c4aea0311e36eeb767cfa8e4ec"
     }
    },
    "graphic_of": {
@@ -146,15 +175,23 @@
     "C": "Things/Plant/RM_Glasscrust",
     "D": "Things/Plant/RM_Glasscrust",
     "E": "Things/Plant/RM_Glasscrust",
-    "F": "Things/Plant/RM_Glasscrust"
+    "F": "Things/Plant/RM_Glasscrust",
+    "G": "Things/Plant/RM_Glasscrust",
+    "H": "Things/Plant/RM_Glasscrust",
+    "I": "Things/Plant/RM_Glasscrust",
+    "J": "Things/Plant/RM_Glasscrust"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render RM_Glasscrust) \u2014 RimMandrake: Baroque Biomes",
     "B": "render stillsand_regen_RM_Glasscrust_var1",
     "C": "render stillsand_regen_RM_Glasscrust_var2 \u2014 failed canon check",
     "D": "render stillsand_regen_RM_Glasscrust_var3",
     "E": "render stillsand_regen_RM_Glasscrust_var4",
-    "F": "render stillsand_regen_RM_Glasscrust_var5 \u2014 failed canon check"
+    "F": "render stillsand_regen_RM_Glasscrust_var5 \u2014 failed canon check",
+    "G": "render stillsand_s2_RM_Glasscrust_var6",
+    "H": "render stillsand_s2_RM_Glasscrust_var7",
+    "I": "render stillsand_s2_RM_Glasscrust_var8",
+    "J": "render stillsand_s2_RM_Glasscrust_var9"
    },
    "res": "Things/Plant/RM_Glasscrust",
    "reserved": [
@@ -163,7 +200,11 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H",
+    "I",
+    "J"
    ],
    "subject_key": "glasscrust"
   },
@@ -200,13 +241,38 @@
    "columns": {
     "A": {
      "single": "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
+    },
+    "H": {
+     "single": "7a9179c24feb69629c9df7a7dbceb9e93ee3776661756b3117554e787f870f0a"
+    },
+    "I": {
+     "single": "593086a9db5ca71afc82d3811c06ed19f9c2898685c70fc778214af8f8e26c34"
+    },
+    "J": {
+     "single": "72d07d87611055828082c4f9262e93ab2dde5b5e6e94adfc057089e564c8fc90"
+    },
+    "K": {
+     "single": "895895b7bf4dd7def7f9fb8dc1eb1fc569059499fc9a48eba64cf89825b80f8a"
+    },
+    "L": {
+     "single": "f4ff6d6afd5e4b92a6e85a50658476a0dcca8d1b78286168ed847e35db75cbef"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_KneelOllim"
+    "A": "Things/Plant/RM_KneelOllim",
+    "H": "Things/Plant/RM_KneelOllim",
+    "I": "Things/Plant/RM_KneelOllim",
+    "J": "Things/Plant/RM_KneelOllim",
+    "K": "Things/Plant/RM_KneelOllim",
+    "L": "Things/Plant/RM_KneelOllim"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_KneelOllim_b) \u2014 RimMandrake: Baroque Biomes",
+    "H": "render stillsand_s2_RM_KneelOllim_var10",
+    "I": "render stillsand_s2_RM_KneelOllim_var6",
+    "J": "render stillsand_s2_RM_KneelOllim_var7",
+    "K": "render stillsand_s2_RM_KneelOllim_var8",
+    "L": "render stillsand_s2_RM_KneelOllim_var9"
    },
    "res": "Things/Plant/RM_KneelOllim",
    "reserved": [
@@ -216,7 +282,12 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L"
    ],
    "subject_key": "kneelollim"
   },
@@ -227,20 +298,26 @@
     },
     "B": {
      "single": "2731d919555cf53555e8270132b24825579a5a7efd0b638d943070e974c14400"
+    },
+    "C": {
+     "single": "9bcf4daf7e1eb13b59ee16f058d4c83e73a403143bbc6188e9b228160490a099"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_LightPipeNub",
-    "B": "Things/Plant/RM_LightPipeNub"
+    "B": "Things/Plant/RM_LightPipeNub",
+    "C": "Things/Plant/RM_LightPipeNub"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render stillsand_regen_RM_LightPipeNub_v1"
+    "A": "our deployed art (render rslpn_v1) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render stillsand_regen_RM_LightPipeNub_v1",
+    "C": "render stillsand_s2_RM_LightPipeNub_v2"
    },
    "res": "Things/Plant/RM_LightPipeNub",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "lightpipenub"
   },
@@ -320,7 +397,7 @@
     "B": "Things/Plant/RM_Ollim"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rswollim_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render stillsand_regen_RSW_Ollim_v1"
    },
    "res": "Things/Plant/RM_Ollim",
@@ -341,21 +418,30 @@
      "east": "827359f7258db2a77e60bde1143fc98e9598e8cb19e2e09e2fdc1320112fe824",
      "north": "1a39d81a3a7f9bef164328563cbfd525499df28c029d0bc832c1c0d8084be1f8",
      "south": "741d5bf04f41814fcc88bed4d179b6cad70ac59bbfabe0c5b0bf14b167c55b35"
+    },
+    "E": {
+     "east": "465ac43f9269f5442539b0dc590f87e3b3be401a829de00a13f3b421f42ac7bd",
+     "north": "3f97c59189da16e3649a8dee0d637ceb14f033f4c48634f1e207da36066dd14e",
+     "south": "b732c7e066b6b49e46ea589d6eecdb7b7cad4a7a841a993a3c367ed3e8c518b6"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
-    "C": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
+    "C": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
+    "E": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
    },
    "labels": {
     "A": "history Stillsand 2026-10-01",
-    "C": "IN GAME \u2014 Stillsand"
+    "C": "IN GAME \u2014 Stillsand",
+    "E": "render stillsand_s2_RM_Oommok_v3"
    },
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "oommok"
   },
@@ -412,23 +498,31 @@
      "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
      "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
      "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
+    },
+    "D": {
+     "east": "9e1f1fbf4334b155d9b23e6f9e97b33c3620f8f4dff4fbc41956e81582fbf9b8",
+     "north": "fe4f77a7a37999e51c9a5751f895c1f3c919b06a207fe0365291aab8bd0c6f14",
+     "south": "bfef350bbcd5d02ab62d6af73712910955525fe6de2384302ecb006e50e20087"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
     "B": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
-    "C": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+    "C": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "D": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
    },
    "labels": {
     "A": "history Stillsand 2026-10-01",
     "B": "render RM_ShadeMite_tint_v1",
-    "C": "IN GAME \u2014 Stillsand"
+    "C": "IN GAME \u2014 Stillsand",
+    "D": "render stillsand_s2_RM_ShadeMite_grey"
    },
    "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "shademite"
   },
@@ -463,22 +557,30 @@
      "east": "a079400929d6bf2502e9bfb97d971fe417f6730dc0d733b74c70f7cb40c5b882",
      "north": "e07f6bf1812fb724a93ca7d832c63a62d35a4a76084dfdf0a66d31385eefc6c4",
      "south": "fa087c1492f47c1a4bfd8f21fcbd0c59a72d759408c5f3699e5a8abc6c70de8d"
+    },
+    "E": {
+     "east": "7a7ca06c5a6840b4304f77e81e2871151f09bd1a97019429dde345ba75106378",
+     "north": "df039de2cd698f89aeba782bb624ee0d8807a5dab82f76c7ae7e7bb60ef15d64",
+     "south": "548fbd21c88e1f506b2fa2fc9ae3955faff2043d4bc1db32238e5bfaab20f21e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
-    "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
+    "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+    "E": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
     "A": "render RM_Soorrak_b",
-    "D": "IN GAME \u2014 Stillsand"
+    "D": "IN GAME \u2014 Stillsand",
+    "E": "render stillsand_s2_RM_Soorrak_v3 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "soorrak"
   },
@@ -526,7 +628,7 @@
     "B": "Things/Plant/RM_Ultracactus"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rswultracactus_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render longshade_rsw_ultracactus_v1"
    },
    "res": "Things/Plant/RM_Ultracactus",
@@ -705,21 +807,29 @@
      "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
      "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
      "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
+    },
+    "D": {
+     "east": "cae403ba359002e43bc61089bfa26b1155b6a7f6aad89b62d4a7cfb23baea7ea",
+     "north": "14dcdb69251f771c28241ab92fb30246c32c76563b9aac3951899bc57f4f7bc7",
+     "south": "ed17f9f93180fffdf1aa0e15204ab5344d7c18cba004305bdb031a7a44032f0a"
     }
    },
    "graphic_of": {
     "A": "swanimals/GraniteSlug/GraniteSlug",
-    "C": "swanimals/GraniteSlug/GraniteSlug"
+    "C": "swanimals/GraniteSlug/GraniteSlug",
+    "D": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-17",
-    "C": "IN GAME \u2014 SWBestiary"
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render stillsand_s2_RSW_GraniteSlug_v3"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "graniteslug"
   },
@@ -739,17 +849,22 @@
      "east": "c5ede570f7e950b87d962742260ee3d519beb7511db29608844795c1e60c4cb2",
      "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
      "south": "47ddd4cb149e691d9895589ac172f0d141ae55c0a27ddb21ee3d0344b129e816"
+    },
+    "F": {
+     "east": "4992d127ede20e98d5f21851706fe7123a82c6478873d26ee9577775ed17b34d"
     }
    },
    "graphic_of": {
     "A": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "C": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-    "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
+    "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
+    "F": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
     "A": "history GreaterKraytDragonArtOverride 2026-09-20",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
-    "E": "IN GAME \u2014 GreaterKraytDragonArtOverride"
+    "E": "IN GAME \u2014 GreaterKraytDragonArtOverride",
+    "F": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 failed canon check"
    },
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
    "reserved": [
@@ -757,7 +872,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "greaterkraytdragon"
   },
@@ -816,19 +932,24 @@
     },
     "E": {
      "east": "f5575bcffa2686fd5fa0cf195778c107a6fb0e19147d48aadd5a617c9e4257a7"
+    },
+    "F": {
+     "east": "ffdebb8da516b084e9f54ea4e845d6cc94b8afb2c6774f23ec6258dee1aff85c"
     }
    },
    "graphic_of": {
     "A": "swanimals/KraytDragon/KraytDragon_f",
     "B": "swanimals/KraytDragon/KraytDragon_j",
     "C": "swanimals/KraytDragon/KraytDragon_m",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
-    "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check"
+    "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check",
+    "F": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "reserved": [
@@ -836,7 +957,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "kraytdragon"
   },
@@ -859,19 +981,33 @@
     },
     "I": {
      "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16"
+    },
+    "J": {
+     "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16",
+     "north": "d816f59d547d4f94b9d06cc6e8fe28e55018b7c0e5b228b7969a9396c8f95d19",
+     "south": "fdde3cfaf5f9edcb93bf50dea73a32e1a76bfd52c757dc74981168b38f00b285"
+    },
+    "K": {
+     "east": "4276ef9859691a613dce4845c1ef91ab932c841f9aee7469b6a2b7e8d1b0ca33",
+     "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
+     "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kreetle/Kreetle",
     "D": "swanimals/Kreetle/Kreetle",
     "F": "swanimals/Kreetle/Kreetle_j",
-    "I": "swanimals/Kreetle/Kreetle"
+    "I": "swanimals/Kreetle/Kreetle",
+    "J": "swanimals/Kreetle/Kreetle",
+    "K": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "A": "IN GAME \u2014 KreetleArtOverride",
     "D": "history KreetleArtOverride 2026-09-11",
     "F": "IN GAME \u2014 SWBestiary",
-    "I": "render leaningscrub_kreetle_v1"
+    "I": "render leaningscrub_kreetle_v1",
+    "J": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
+    "K": "render stillsand_s2_RSW_Kreetle_v2"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -883,7 +1019,9 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J",
+    "K"
    ],
    "subject_key": "kreetle"
   },
@@ -927,6 +1065,18 @@
     },
     "G": {
      "single": "7e46a06226533de20765e8881bfee6075517ab29eea532cc5a4457b77d731bf8"
+    },
+    "H": {
+     "single": "4a2dbc4f27f86124be1d3884b210cb72c3e819d94c27b2d7a4a64cab99dee7f9"
+    },
+    "I": {
+     "single": "8a9467ec8215d4dee0bd9741fec70421d2b993a2195f8c48a73ad4d70bdeb76e"
+    },
+    "J": {
+     "single": "21f13693fa8e167b794939dd8242e6553851859352787094ea6f2b3e12127a42"
+    },
+    "K": {
+     "single": "dc7fe47e313e98d46afd06892c8a0df0c02b22323122fee76c329ee49466f73b"
     }
    },
    "graphic_of": {
@@ -936,7 +1086,11 @@
     "D": "Things/Plant/RSW_Plant_Bloddle",
     "E": "Things/Plant/RSW_Plant_Bloddle",
     "F": "Things/Plant/RSW_Plant_Bloddle",
-    "G": "Things/Plant/RSW_Plant_Bloddle"
+    "G": "Things/Plant/RSW_Plant_Bloddle",
+    "H": "Things/Plant/RSW_Plant_Bloddle",
+    "I": "Things/Plant/RSW_Plant_Bloddle",
+    "J": "Things/Plant/RSW_Plant_Bloddle",
+    "K": "Things/Plant/RSW_Plant_Bloddle"
    },
    "labels": {
     "A": "render desertportb_plant_bloddle",
@@ -945,7 +1099,11 @@
     "D": "render stillsand_regen_RSW_Plant_Bloddle_var2",
     "E": "render stillsand_regen_RSW_Plant_Bloddle_var3",
     "F": "render stillsand_regen_RSW_Plant_Bloddle_var5",
-    "G": "render stillsand_regen_RSW_Plant_Bloddle_var4"
+    "G": "render stillsand_regen_RSW_Plant_Bloddle_var4",
+    "H": "render stillsand_s2_RSW_Plant_Bloddle_var6",
+    "I": "render stillsand_s2_RSW_Plant_Bloddle_var7",
+    "J": "render stillsand_s2_RSW_Plant_Bloddle_var8",
+    "K": "render stillsand_s2_RSW_Plant_Bloddle_var9"
    },
    "res": "Things/Plant/RSW_Plant_Bloddle",
    "reserved": [
@@ -955,7 +1113,11 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
    ],
    "subject_key": "bloddle"
   },
@@ -975,17 +1137,24 @@
      "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
      "north": "27065f6cabf93b95c4686728998dab9f1d1a540d7c4179f6337dc98c9cd6bf4b",
      "south": "11f20107cbd58557d424e2238370e46ab0370879e13cbb58b61ac550758518ef"
+    },
+    "G": {
+     "east": "932391c6be270b100b5eda76bd76d26e92738bda0e2140775ef75816bcb1eda9",
+     "north": "531761298c19aa92e458d12ae52d76aaef121fc9a5d374568825f66448dc2926",
+     "south": "70961ccef88ed8960dc9ac969e19749bec7f28129a1c9414f7af39b2cd13ad21"
     }
    },
    "graphic_of": {
     "A": "swanimals/Scurrier/Scurrier_f",
     "B": "swanimals/Scurrier/Scurrier_m",
-    "E": "_byname"
+    "E": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "E": "render stillsand_regen_RSW_Scurrier_v2"
+    "E": "render stillsand_regen_RSW_Scurrier_v2",
+    "G": "render stillsand_s2_RSW_Scurrier_v3 \u2014 failed canon check"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
    "reserved": [
@@ -993,7 +1162,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "scurrier"
   },
@@ -1037,25 +1208,34 @@
      "east": "8cab92f7e37f047cef315f93133ff3acb6cd96c8dd70a2595468a859114557dc",
      "north": "400bf1437ae63181c3affd80fedcb780062e62e845bb3e2dd8f0d7c4bee4365f",
      "south": "3d53f451b1c0c3474ddf19622609b879303f460a00509a5347ae7ca541fe9677"
+    },
+    "E": {
+     "east": "0e49c427708df6f7d62d123353e87a4245a5514c0c12f881ff3ecca5e5184f23",
+     "north": "deecb384906c57f59a63ead7483d6000b91ac309fb2e98d8ce7977c2f98c821c",
+     "south": "a8e89ad6e79e80676dd1f5abce3f96c5e3012b947b344d5dc5f0563f1cc0ea73"
     }
    },
    "graphic_of": {
     "A": "swanimals/WarWyrm/WarWyrm",
-    "C": "swanimals/WarWyrm/WarWyrm"
+    "C": "swanimals/WarWyrm/WarWyrm",
+    "E": "swanimals/WarWyrm/WarWyrm"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-18",
-    "C": "IN GAME \u2014 SWBestiary"
+    "C": "IN GAME \u2014 SWBestiary",
+    "E": "render stillsand_s2_RSW_WarWyrm_v3"
    },
    "res": "swanimals/WarWyrm/WarWyrm",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "warwyrm"
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "9c3e4d9757a5a8c8"
+ "snapshotId": "e5bf187273b6577a"
 }

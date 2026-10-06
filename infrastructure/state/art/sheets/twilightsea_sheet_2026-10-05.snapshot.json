@@ -1,9 +1,9 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-06T01:09:36-0700",
+ "built": "2026-10-06T05:57:51-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
@@ -73,11 +73,14 @@
      "single": "2e2146683e3b48ce7e74088c9c4acb5420cfcc5372a65b361b94935846f4f539"
     },
     "B": {
+     "single": "a0adc3fa4a181430419fa6e0a0d6e3aed9547e040a0bd040371cf53b032ca63d"
+    },
+    "C": {
      "east": "bcd9d78558e398a9b3fb6b72a3418a7b40c4f86e6ffc437188b58e15afd93f62",
      "north": "395c267aab501f243c03c65c66852f6fae095390ba5a5b253f18e3cdda058362",
      "south": "2de592e0b9791d2b07fac09feed315cc713149e1ed2e47591c4ad16d801aabd5"
     },
-    "C": {
+    "D": {
      "east": "8bee7d9d34749900b7d6830a927e2e2fa300133945824c0b90362813b9263e7c",
      "north": "341334f0c670ccc872562b2027c4a5084aa4ee583ba2e574e86d3aaa4ad44667",
      "south": "5f2802b2959d32bbb452478cb51e6bc6d1f3acc854cb2879d869f8924e8a1f69"
@@ -86,18 +89,21 @@
    "graphic_of": {
     "A": "Things/Plant/AloeVera/AloeVeraC",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_aluun_v1",
-    "C": "render twilightsea_aluun_v2"
+    "B": "render phreg_RM_AluunCatch_v1",
+    "C": "render twilightsea_aluun_v1",
+    "D": "render twilightsea_aluun_v2"
    },
    "res": "Things/Plant/AloeVera/AloeVeraC",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "aluuncatch"
   },
@@ -150,11 +156,14 @@
      "single": "64f835039777c20aac43139b3e7f737aea6f7e12f25fb0be990aad2df3ab2319"
     },
     "B": {
+     "single": "2dfa2bc60692842ed2bb54dbede9d1c63e52ca25956b216836287fce1139296a"
+    },
+    "C": {
      "east": "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
      "north": "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e",
      "south": "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027"
     },
-    "C": {
+    "D": {
      "east": "f6ddd730d240fa4eb5ebd5ff18ee29568e7f9c8cfde895803754a3e76dead96d",
      "north": "013de853f0e07f694674ab3c55a85ce78c8935af18e58719bf9f978b14d75357",
      "south": "c3d1f93fe1e94e8d67093467dc5d40bd28ae0ca1efcf3dfea749e788f57843d8"
@@ -163,18 +172,21 @@
    "graphic_of": {
     "A": "Things/Plant/JadePlant/JadePlantB",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_hollu_v1",
-    "C": "render twilightsea_hollu_v2"
+    "B": "render phreg_RM_HolluCatch_v1",
+    "C": "render twilightsea_hollu_v1",
+    "D": "render twilightsea_hollu_v2"
    },
    "res": "Things/Plant/JadePlant/JadePlantB",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "hollucatch"
   },
@@ -251,11 +263,14 @@
      "single": "bc23d69257a8e760c709a7105ffd04fc598477a8ef33a265878598691134a572"
     },
     "B": {
+     "single": "e7c64935ed8ed70f5d33aafdaabc5a6b65c2e04e3a30362cbf7f5b90827b17c4"
+    },
+    "C": {
      "east": "d72c5ee8ae133f0d74874cb6eaf8e0cfdb6281b16d3818b9f84e484e3f5b543f",
      "north": "df5297877277d110ebe8a929a680f645da7db69a6b82863927f9d48313d09b4b",
      "south": "a9fe5f6b95b6b6ca399da4b6f521ceefed475d08f36ada44593b391351f0244b"
     },
-    "C": {
+    "D": {
      "east": "bcff1440862d5828493db1199f5bb104d6496ecf896201560e3aaa2f0ceb07d8",
      "north": "962ea7c5c82d2508a1424d36dee1da41726ed2a84f0ecef3edd6787bb1823145",
      "south": "a197a455b534a5915c77b3be58db1905a321bdfa59d66c55662b68b38f2a3a7a"
@@ -264,18 +279,21 @@
    "graphic_of": {
     "A": "Things/Plant/SnakePlant/SnakePlantB",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_kellu_v1",
-    "C": "render twilightsea_kellu_v2"
+    "B": "render phreg_RM_KelluCatch_v1",
+    "C": "render twilightsea_kellu_v1",
+    "D": "render twilightsea_kellu_v2"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantB",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "kellucatch"
   },
@@ -349,11 +367,14 @@
      "single": "6a202fe554c4dc915ca3ad5276387d1493fc7bb592fc11dbce767d9135dfbf18"
     },
     "B": {
+     "single": "54ef4916ec3cb481ad40c1220ef43933406e7d1d05e3ef4cb1dc08b5bb21f5b2"
+    },
+    "C": {
      "east": "b2189d737d1f265f0c07f73682ed2f7f56844b4c79c47aa1c39022388fffad5b",
      "north": "7f16b5f654fe495cf64ca9bf010e1168dc3bef4fb5414e8841eaffd8175ea88a",
      "south": "49a3c188292b90653523aec1ad745863e34b5b1f904d109d4ab1581bb61ab211"
     },
-    "C": {
+    "D": {
      "east": "874c0f82f6f33b4fdf7b99f2ff4e80bcc8f85fa94a5f32d70bf6b93220384837",
      "north": "b9f8c226a8bd4ace8091d1204224e56bc031ca411b0ca98fab414ae608f71ff5",
      "south": "ff4e703409a126409dfbbfa60d05daac6db6e598926155e1492c91252d26dad9"
@@ -362,18 +383,21 @@
    "graphic_of": {
     "A": "Things/Plant/Schlumbergera/SchlumbergeraD",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_liiru_v1",
-    "C": "render twilightsea_liiru_v2"
+    "B": "render phreg_RM_LiiruCatch_v1",
+    "C": "render twilightsea_liiru_v1",
+    "D": "render twilightsea_liiru_v2"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraD",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "liirucatch"
   },
@@ -496,11 +520,14 @@
      "single": "84b29691ed07d8ea67d0b3c1b77a63cad5629dc592e2dfd4358aaac8e3ebe88c"
     },
     "B": {
+     "single": "8629fc873f8febd283d4af58f83fe4ff102bb8434743f485bb946db5eb652092"
+    },
+    "C": {
      "east": "e3003ab20638c8d281b2198db6a749c5a3a40da03972badfad759386a33d58fc",
      "north": "cc458c0d2bb8e1fe27ce0118ffa9551c3ee0b7eee8b4cd578b397f0b47490bf2",
      "south": "55bae416cb7777a8751b0481123ca08fd92d6abc05f7d0624b0ab1a01731a67c"
     },
-    "C": {
+    "D": {
      "east": "7045f048960d685dc792873f849e1ce5173578f6436338be478944c22866d15a",
      "north": "ca636efbb46bfc3d17415b66de45b5c7fa943a8d4e11fe3e1d1d2809e3fdc918",
      "south": "1af6dc950eba223d77fd8abc3f015cd22cf27545f7a2cd9f10cc15bfadf64530"
@@ -509,18 +536,21 @@
    "graphic_of": {
     "A": "Things/Plant/Schlumbergera/SchlumbergeraB",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_murrol_v1",
-    "C": "render twilightsea_murrol_v2"
+    "B": "render phreg_RM_MurrolCatch_v1",
+    "C": "render twilightsea_murrol_v1",
+    "D": "render twilightsea_murrol_v2"
    },
    "res": "Things/Plant/Schlumbergera/SchlumbergeraB",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "murrolcatch"
   },
@@ -646,6 +676,9 @@
      "single": "8cde0233ae2e946775c4a44de323e2336c470b63e5e543875bc5e23915b5f8e6"
     },
     "B": {
+     "single": "954fbe4a974a41ded512cbf81f3c1ea8069040cd4208c6f6ee77fc72e52ca69f"
+    },
+    "C": {
      "east": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44",
      "north": "6f892917b55189462a64c9472e9b4ad1f1432a4595f0c3d19649aef0c9847f4c",
      "south": "ea96403d457aef906a2422c9e15d493910722c3938b15d4a648f548a4a54cf86"
@@ -653,16 +686,19 @@
    },
    "graphic_of": {
     "A": "Things/Item/ToxicMeat/ToxicMeat_c",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_noolim_v1"
+    "B": "render phreg_RM_NoolimCatch_v1",
+    "C": "render twilightsea_noolim_v1"
    },
    "res": "Things/Item/ToxicMeat/ToxicMeat_c",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "noolimcatch"
   },
@@ -739,11 +775,14 @@
      "single": "d551f5fc42e6930d86c7650a08c84e02fbe7befda2eca8cfe98d2d179aea3d6a"
     },
     "B": {
+     "single": "b819842072776ab306d67af224e63c8a5677ff39bf6b95315ee5d4d0536f4d44"
+    },
+    "C": {
      "east": "2efb4de65c8427caaa3a56c165b1d681289e79fefadc755fe46c647e891f7427",
      "north": "0bb78436b4b283317bf07fe3b6401795ec6a797e78971c151cf0a8b3ac33c27b",
      "south": "292ac98987cf4cbec53b6a1f37a4e293d7c7faa24e5c7bf4e8922c8366122e83"
     },
-    "C": {
+    "D": {
      "east": "d1d1bffa9d0ca04daa9f23e6c4402f010eb774649ca07b276eace318aa13a778",
      "north": "91a4434b80c62f465492d560c8a0305ec5824a4ecae33dac64dde403465806a5",
      "south": "a60853f4a9d7fc89bb522ea92c90dae948fb5fd58cbe6aa45a5fa41130f66f21"
@@ -752,18 +791,21 @@
    "graphic_of": {
     "A": "Things/Plant/SweetheartPlant/SweetheartPlantB",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_nuudal_v1",
-    "C": "render twilightsea_nuudal_v2"
+    "B": "render phreg_RM_NuudalCatch_v1",
+    "C": "render twilightsea_nuudal_v1",
+    "D": "render twilightsea_nuudal_v2"
    },
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "nuudalcatch"
   },
@@ -808,6 +850,9 @@
      "single": "2fa6a2cca57b4f30b7ac74813bca88632f2628a7855f3a60770faaf8285c1b3c"
     },
     "B": {
+     "single": "7013b750af7cc31e941d4775eb5a3a22848f58753a30cc715bf7063561156587"
+    },
+    "C": {
      "east": "262c39558da9367803eb8d2c55074bf903722c2a4ffdaceb2dc398ecc9610820",
      "north": "3e0c0d12f90f7ee9ee683c9d4f79946715d141d832a9acaeaea738b7b7115bff",
      "south": "e79e85090b4eab316b259d329979a5643372e32b01c03cac9299e7357535e65b"
@@ -815,16 +860,19 @@
    },
    "graphic_of": {
     "A": "Things/Plant/Echeveria/EcheveriaB",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_oobo_v1"
+    "B": "render phreg_RM_OoboCatch_v1",
+    "C": "render twilightsea_oobo_v1"
    },
    "res": "Things/Plant/Echeveria/EcheveriaB",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "oobocatch"
   },
@@ -877,11 +925,14 @@
      "single": "c8780a3c1715e106659c46385158e6fc55c49b7c0f75c3b7eb87fbf4794a2eb6"
     },
     "B": {
+     "single": "0373dfe005f0387305543de4060f7871172554a045a243dc7c157daaf94c7706"
+    },
+    "C": {
      "east": "40237eec51a48dac631a9e8a3ca846177af1c8f5c6316459d049513375420392",
      "north": "cbd2dfec048d351155c36b620c1cc7f720e10ee24cc0b9528a98d126c14f79ed",
      "south": "1929d1e09d08e180c5835bb9d9348c72cab340df38b5bacb801e64d601140974"
     },
-    "C": {
+    "D": {
      "east": "ceac945f4c05b9778b6809970c1d8bb22b6f343490e45564ae2ad26d01c7a513",
      "north": "78580c4b1ab26e89e87142e4093f6513923c0f989c2d3d974167c95bc8d436f9",
      "south": "e5219f820151822f9144d844a918b6d6effe125144934e1adae83483858fdbd1"
@@ -890,18 +941,21 @@
    "graphic_of": {
     "A": "Things/Plant/AloeVera/AloeVeraB",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_pallu_v1",
-    "C": "render twilightsea_pallu_v2"
+    "B": "render phreg_RM_PalluCatch_v1",
+    "C": "render twilightsea_pallu_v1",
+    "D": "render twilightsea_pallu_v2"
    },
    "res": "Things/Plant/AloeVera/AloeVeraB",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "pallucatch"
   },
@@ -909,17 +963,23 @@
    "columns": {
     "A": {
      "single": "8f10ec5eca34892dcfc51a8d5b127b36a92613d0952fc27e6479968757c63b5e"
+    },
+    "B": {
+     "single": "68fcbc8a8987d40ddd32675760f1d62f069e6ca6c7b00e67db2259b74048c457"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SnakePlant/SnakePlantA"
+    "A": "Things/Plant/SnakePlant/SnakePlantA",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render phreg_RM_SaltBladeTwilight_v1"
    },
    "res": "Things/Plant/SnakePlant/SnakePlantA",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "saltbladetwilight"
   },
@@ -964,6 +1024,9 @@
      "single": "ca34537bc671029f456ab0370df12fb06d20d305529509f2516e4a2a5ed5a22e"
     },
     "B": {
+     "single": "30edf6aa138289c92aad28e0f47d3d34da626eebd9059f24c5abb53d5379ac5d"
+    },
+    "C": {
      "east": "f8d8ded8cce151adc6544eb9bf2761fc48ab00f786738f4d41238a3ac76dd26e",
      "north": "5547d51276b88c1cc1f14f7051ebe94febf2ac2617245629441d047aa93b4b75",
      "south": "bf87dd55ac3a7e87e440782070e97769266074b8cf2f7190a6f2bd086953ec4b"
@@ -971,16 +1034,19 @@
    },
    "graphic_of": {
     "A": "Things/Plant/PincushionPlant/PincushionPlantB",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_tikkarr_v1"
+    "B": "render phreg_RM_TikkarrCatch_v1",
+    "C": "render twilightsea_tikkarr_v1"
    },
    "res": "Things/Plant/PincushionPlant/PincushionPlantB",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "tikkarrcatch"
   },
@@ -1025,6 +1091,9 @@
      "single": "53420fde655086f13df26dc695548ff9ba8bd04f565dbe516bbbc1cc8fdcbfee"
     },
     "B": {
+     "single": "c203329fee5e8f496e5f007946e7cf5d38423f0da00360e5d9a677dabfef759c"
+    },
+    "C": {
      "east": "98ea8d29fd8653055ed03b4961ce3044b8f3df3c1c628d67e4b67edc7f094828",
      "north": "81844d0aeec38e4ee4b9609d5d8b2115cd91789233ded8f1618533acbca04e24",
      "south": "b544f0d3ec425aeb8842600af415e5d1a6340dc63bdd3d2e97ac6fef4fee3cb6"
@@ -1032,16 +1101,19 @@
    },
    "graphic_of": {
     "A": "Things/Plant/Echeveria/EcheveriaD",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render twilightsea_weloon_v1"
+    "B": "render phreg_RM_WeloonCatch_v1",
+    "C": "render twilightsea_weloon_v1"
    },
    "res": "Things/Plant/Echeveria/EcheveriaD",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "welooncatch"
   },
@@ -1110,5 +1182,5 @@
   }
  },
  "sheetId": "twilightsea_sheet_2026-10-05",
- "snapshotId": "f32691c041c0b145"
+ "snapshotId": "ebbd4f3d0ca364db"
 }

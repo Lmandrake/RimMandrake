@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-06T01:36:26-0700",
+ "built": "2026-10-06T05:56:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -74,13 +74,28 @@
    "columns": {
     "A": {
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
+    },
+    "H": {
+     "single": "e78c1ebf58d5d062751ff2a903f62c248ef1b42f336f0f07ef449088e5454757"
+    },
+    "I": {
+     "single": "87945bb8d369ed2f04123119b7bf06fb1b6bf50713de111bc7bed8db46280261"
+    },
+    "J": {
+     "single": "f2223e7c768ca5558ad6c9a17bb986b9bd6ad9cc064ddd2059e1a6c9a8103b15"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Ambrosia"
+    "A": "Things/Plant/Ambrosia",
+    "H": "_byname",
+    "I": "_byname",
+    "J": "_byname"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimUtinni Patches (Jawa campaign)"
+    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "H": "render scald3_crowncarpet_a",
+    "I": "render scald3_crowncarpet_b",
+    "J": "render scald3_crowncarpet_c"
    },
    "res": "Things/Plant/Ambrosia",
    "reserved": [
@@ -90,7 +105,10 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I",
+    "J"
    ],
    "subject_key": "crowncarpet"
   },
@@ -100,18 +118,26 @@
      "east": "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c",
      "north": "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
      "south": "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c"
+    },
+    "C": {
+     "east": "1a0da401355631432adac68a84476db252ad05a19c0c4b08d656e56a76b11b26",
+     "north": "c81b1d6c0a48e89bd1d91fa190b21f291962aea8ae9e90c2c197144accab9a51",
+     "south": "e84253857c716e7d9a3840f6cccbfd331141084f896092a9c5c9cb8af09bc0cd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Doss/RM_Doss"
+    "A": "Things/Pawn/Animal/RM_Doss/RM_Doss",
+    "C": "Things/Pawn/Animal/RM_Doss/RM_Doss"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "C": "render scald3_doss"
    },
    "res": "Things/Pawn/Animal/RM_Doss/RM_Doss",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "doss"
   },
@@ -130,26 +156,34 @@
      "east": "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c",
      "north": "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
      "south": "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c"
+    },
+    "E": {
+     "east": "1a0da401355631432adac68a84476db252ad05a19c0c4b08d656e56a76b11b26",
+     "north": "c81b1d6c0a48e89bd1d91fa190b21f291962aea8ae9e90c2c197144accab9a51",
+     "south": "e84253857c716e7d9a3840f6cccbfd331141084f896092a9c5c9cb8af09bc0cd"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_DossCatch",
     "B": "Things/Item/Resource/RM_DossCatch",
     "C": "Things/Item/Resource/RM_DossCatch",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "our deployed art (render scald2_dosscatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_dosscatch_b",
     "C": "render scald2_dosscatch_c",
-    "D": "render scaldfloor_doss"
+    "D": "render scaldfloor_doss",
+    "E": "render scald3_doss"
    },
    "res": "Things/Item/Resource/RM_DossCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "dosscatch"
   },
@@ -651,17 +685,25 @@
      "north": "6c0d7a9305245ff64de72771f22aca82e09540cf07901fdd178f98f58c5572b7",
      "south": "b64315e675535d5302fae141290d83033849914d6cc7099e3875b322e7f44d1e",
      "west": "30da36bc36699593963d3913844677f9c353d3c31ffff64ba56e09971eca9690"
+    },
+    "B": {
+     "east": "0f492d4f0603953ea64a8f7130bcf9fdd26cd83ceb342d9fc06e9bd449b7efec",
+     "north": "e38a8d815a79d86cceb56b4521b615104e4959ee6997f9c1223466ad1ba13503",
+     "south": "c82bbf707bfac8ad96de6ae55c053bec3ea18ec638044499522ccf9d3b7738d8"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster"
+    "A": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
+    "B": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render scald3_sandoaquamonster"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sandoaquamonster"
   }

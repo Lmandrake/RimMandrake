@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheChill",
- "built": "2026-10-06T00:58:54-0700",
+ "built": "2026-10-06T05:45:55-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "RM_ChillStillbloom": {
    "columns": {
@@ -148,20 +148,26 @@
      "east": "5df0d1fd79af411f2a70c2b491b755c5ae0a97c1b47bc329cba3d4e1092073bf",
      "north": "72d98fc2a7c3fc37aa43f3fc006a196f2fa945e07074dbd7fbf417f3e6127ca9",
      "south": "5f81fe9fa659d0882f3a5525fcafbc1bc240b1b967b3da84b3b8d562540cf15f"
+    },
+    "C": {
+     "single": "b3e0546eb5158a3caf030f918106c0166205c6327838ea8c9a93d614fb6f10b0"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
-    "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
+    "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render propanelake_heemin_v1"
+    "B": "render propanelake_heemin_v1",
+    "C": "render phreg_RM_HeeminCatch_v1"
    },
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "heemincatch"
   },
@@ -169,17 +175,25 @@
    "columns": {
     "A": {
      "single": "fd2be0d9aa13e0b408f5b85fe34a70a75554f6baf80ce8320dc36b7f37d1b324"
+    },
+    "B": {
+     "east": "d12e939d9acf287024a715e761500a0a7fde592f0312695f3d9994a44ad30630",
+     "north": "d8b4079de6abd7734bd552b518faf863aa96bafc2feb806c8fd8713d998c5e08",
+     "south": "47100d220df89bd107649f59ada95f014835b249de0c7b6b79749286449073e4"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
+    "A": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
+    "B": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phreg_RM_Hesuun_v1"
    },
    "res": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "hesuun"
   },
@@ -344,20 +358,26 @@
      "east": "5ea9060ecb9139098666d28151ac601df577bc01b529e5753e9c46f0793d5962",
      "north": "673f71514662384b4c254d9997049b6ae346cd3c91f0b477eaea2d780b2c3596",
      "south": "c52f12d551a71e1efe953e5806d6379732cc292d1ab480ba7942ef476cf4dcd1"
+    },
+    "C": {
+     "single": "09b9ec74cfee157b6436a24f9d7b5adf6a670b327b16977974bf44fcecc4c174"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
-    "B": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
+    "B": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render propanelake_oovanam_v1"
+    "B": "render propanelake_oovanam_v1",
+    "C": "render phreg_RM_OovanamCatch_v1"
    },
    "res": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "oovanamcatch"
   },
@@ -527,17 +547,25 @@
    "columns": {
     "A": {
      "single": "14a7ec1cbc93c4b1945274c9c5fbe68dbc30e33de81a074172fb4817fa42dd3f"
+    },
+    "B": {
+     "east": "cbde695992fec9e09106fe0fcb63d14360c124e110a3acc104628172691e04d1",
+     "north": "816581e76f8b4097c72ed6a40e962c8032e98f5b1efbeca7fadf8f3179422754",
+     "south": "79a419f9e2a6b0cfb9511afea1bd1d64b4184aff3e3d3147513ec952eaacf6f4"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
+    "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+    "B": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phreg_RM_Zhiil_v1"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "zhiil"
   },
@@ -545,17 +573,31 @@
    "columns": {
     "A": {
      "single": "14a7ec1cbc93c4b1945274c9c5fbe68dbc30e33de81a074172fb4817fa42dd3f"
+    },
+    "B": {
+     "east": "cbde695992fec9e09106fe0fcb63d14360c124e110a3acc104628172691e04d1",
+     "north": "816581e76f8b4097c72ed6a40e962c8032e98f5b1efbeca7fadf8f3179422754",
+     "south": "79a419f9e2a6b0cfb9511afea1bd1d64b4184aff3e3d3147513ec952eaacf6f4"
+    },
+    "C": {
+     "single": "c87b9984159fe33afe733d8c0c5e6c4a3677de0c7e6b0a8bebae10c3ce1c2eb3"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
+    "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+    "B": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phreg_RM_Zhiil_v1",
+    "C": "render phreg_RM_ZhiilCatch_v1"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "zhiilcatch"
   }

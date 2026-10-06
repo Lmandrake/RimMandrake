@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-06T00:42:07-0700",
+ "built": "2026-10-06T05:38:34-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 610 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -219,23 +219,25 @@
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
     },
-    "B": {
+    "C": {
      "east": "3aff39b50076cfc20a0b9e8dc1411e9f6550727621bd96155f7f0f04f4d5a402",
-     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7"
+     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7",
+     "south": "c3662e00889d96e4939cd4ae3212ed037280e1d9950c6a0c31f4a9a938f07bfe"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
-    "B": "_byname"
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps",
-    "B": "render deeps_facetmothlarvae_eyes_v1"
+    "C": "render deeps_facetmothlarvae_eyes_v1"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "facetmothlarvae"
   },
@@ -349,7 +351,7 @@
     "C": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render lanternstonemedium_b_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render lanternstonemedium_c_v1",
     "C": "render lanternstonemedium_a_v1"
    },
@@ -395,17 +397,26 @@
      "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
      "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
      "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
+    },
+    "C": {
+     "east": "2e6016b8bce6ef348f6d47bf140e08cac289b2958b8ca44a7620355dbb5af5c6",
+     "north": "2bc110c105922848c01b5f12138342cb5121349bfae29538fe0eb1a2af95ac53",
+     "south": "76a5e1619812f504d0fb6c1ce28e99cddd47c68e6424756c1c6dded28339aa9d"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub"
+    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "C": "render deeps_mossbeetlelarvae_eyes_v1 \u2014 failed canon check"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "mossbeetlelarvae"
   },
@@ -778,24 +789,26 @@
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
     },
-    "C": {
+    "D": {
      "east": "3aff39b50076cfc20a0b9e8dc1411e9f6550727621bd96155f7f0f04f4d5a402",
-     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7"
+     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7",
+     "south": "c3662e00889d96e4939cd4ae3212ed037280e1d9950c6a0c31f4a9a938f07bfe"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
-    "C": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "C": "render deeps_facetmothlarvae_eyes_v1"
+    "D": "render deeps_facetmothlarvae_eyes_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "facetmothlarvae"
   },
@@ -905,18 +918,27 @@
      "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
      "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
      "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
+    },
+    "D": {
+     "east": "2e6016b8bce6ef348f6d47bf140e08cac289b2958b8ca44a7620355dbb5af5c6",
+     "north": "2bc110c105922848c01b5f12138342cb5121349bfae29538fe0eb1a2af95ac53",
+     "south": "76a5e1619812f504d0fb6c1ce28e99cddd47c68e6424756c1c6dded28339aa9d"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+    "D": "_byname"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-20"
+    "A": "history SWBestiary 2026-09-20",
+    "D": "render deeps_mossbeetlelarvae_eyes_v1 \u2014 failed canon check"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "mossbeetlelarvae"
   },
@@ -950,5 +972,5 @@
   }
  },
  "sheetId": "lanterndeeps_sheet_2026-10-05",
- "snapshotId": "73a33e03b3c29cfe"
+ "snapshotId": "42ceb2178f3ce99d"
 }
