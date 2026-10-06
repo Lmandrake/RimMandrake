@@ -131,7 +131,7 @@ has 0 hits in any sibling roster or shipped `<defName>`/`<label>` (sweep in Pyth
 
 **Recommendation: ONE defName, `RM_Ollathrix`, in the free mod; the campaign layer patches label,
 description, `labelPlural`, `graphicData.texPath` (all facings + masks) and the leather label onto
-that same def. No separate `RSW_Wyyyschokk` race.** Reasons, in order of weight:
+that same def. No separate Star Wars race def.** Reasons, in order of weight:
 
 1. **The Shokkweave precedent already set "label, never defName" as this campaign's rename law**
    (`kits/shokkweave_sole_source_spec.md` §1: Hyperweave keeps its defName because hundreds of

@@ -41,20 +41,8 @@ mod's mechanics.
   through this RSW-tier mod per Q11a) — unrelated to the skin/mechanism split
   above and untouched by `SHOKK_SKIN_SHRINK_1`.
 
-**⚠️ Open naming question, flagged not resolved (`SHOKK_SKIN_SHRINK_1`
-close report has the full analysis):** `MLIE_FAUNA_ABSORPTION_1` (2026-09-18)
-separately ported the donor's Wyyyschokk in full as its own def,
-`RSW_Wyyyschokk` (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/
-RSW_Wyyyschokk.xml`) — a tameable, egg-laying, shearable, `TropicalRainforest`/
-`TropicalSwamp`-weighted generic bestiary entry with `combatPower 600`,
-unrelated in every mechanical respect to `RM_Ollathrix` (untameable,
-ambush-hunting, `combatPower 160`, its own invented body/mechanics). Once
-this mod is loaded, a full campaign install carries TWO things labelled
-"wyyyschokk" — `RSW_Wyyyschokk` (its own defName, homeless, not wired into
-any biome's wildAnimals) and `RM_Ollathrix` wearing this mod's skin patch.
-Not a defName collision (the game loads both fine) but a genuine identity
-collision this item did not adjudicate. See the design doc's own §1c note
-and this item's close report.
+`RM_Ollathrix` is THE wyyyschokk (owner ruling 2026-10-03, `WYYYSCHOKK_IDENTITY_COLLISION_1`); no second
+wyyyschokk def exists, and the TrophyCraft fang drop follows the Ollathrix.
 
 Live proof is OWED beyond this mod's own prior quicktest verification of the
 mechanisms this description now says moved out — nothing left here to

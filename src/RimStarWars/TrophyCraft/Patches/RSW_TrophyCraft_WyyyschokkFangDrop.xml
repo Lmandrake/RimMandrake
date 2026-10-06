@@ -40,4 +40,16 @@
     </nomatch>
   </Operation>
 
+  <!-- RM_Ollathrix is THE wyyyschokk (owner ruling 2026-10-03, WYYYSCHOKK_IDENTITY_COLLISION_1): it drops the same fangs.
+       Its butcherProducts exists (Hyperweave), so a plain Add; no-op when the Webwork mod is absent. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/butcherProducts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/butcherProducts</xpath>
+      <value>
+        <RSW_WyyyschokkFang>3</RSW_WyyyschokkFang>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
