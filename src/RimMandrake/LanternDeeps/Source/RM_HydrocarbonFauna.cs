@@ -120,11 +120,6 @@ namespace RimMandrake.LanternDeeps
         }
     }
 
-    public class RM_CompHeatPusherGated : CompHeatPusher
-    {
-        public override bool ShouldPushHeatNow => LanternDeepsSettings.chillerColdEnabled && base.ShouldPushHeatNow;
-    }
-
     public class RM_GenStep_Galuush : GenStep
     {
         public PawnKindDef kind;

@@ -20,23 +20,6 @@
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RM_Biomes_BovineBeetle_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/BovineBeetle/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RM_Biomes_Pillbug_Death</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -88,41 +71,6 @@
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RM_Biomes_GlowSnail_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/GlowSnail/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RM_Biomes_BovineBeetle_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/BovineBeetle/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RM_Biomes_ChemSnail_Death</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -135,40 +83,6 @@
         <volumeRange>25~35</volumeRange>
         <pitchRange>0.9311764~1.068824</pitchRange>
         <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RM_Biomes_GlowSnail_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/GlowSnail/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RM_Biomes_BovineBeetle_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/BovineBeetle/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>
@@ -209,23 +123,6 @@
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RM_Biomes_GlowSnail_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/GlowSnail/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RM_Biomes_ChemSnail_Call</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -238,41 +135,6 @@
         <volumeRange>20~28</volumeRange>
         <pitchRange>0.9770588~1.137647</pitchRange>
         <distRange>0~50.40025</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RM_Biomes_BovineBeetle_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/BovineBeetle/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RM_Biomes_GlowSnail_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>RM_LanternDeeps/Fauna/GlowSnail/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>

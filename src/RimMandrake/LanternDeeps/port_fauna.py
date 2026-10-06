@@ -12,8 +12,10 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 SW = os.path.join(HERE, '..', '..', 'RimStarWars', 'SWBestiary')
 SRC = os.path.join(SW, 'Defs', 'BiomesTeamPort')
-SEEDS = ['RSW_BloodropMoth', 'RSW_GlowSlug', 'RSW_BovineBeetle', 'RSW_FacetMothLarvae',
-         'RSW_Gembug', 'RSW_Megapleura', 'RSW_MossBeetleLarvae', 'RSW_ShatterjawBeetle']
+# Lantern Deeps sheet 2026-10-05: the owner cut glowbulb (GlowSlug), grabber (BovineBeetle) and
+# shatterjaw beetle from this biome ("cut dont need"); five residents remain.
+SEEDS = ['RSW_BloodropMoth', 'RSW_FacetMothLarvae', 'RSW_Gembug', 'RSW_Megapleura',
+         'RSW_MossBeetleLarvae']
 # name that already exists in TheRot as a different def of the same concept: rename, do not reuse
 SPECIAL = {'RSW_ChitinStuff': 'RM_DeepChitinStuff'}
 TEX_OLD, TEX_NEW = 'swanimals/BiomesTeam/', 'RM_LanternDeeps/Fauna/'
@@ -49,8 +51,12 @@ snd_src = os.path.join(SW, 'Sounds')
 out_defs = os.path.join(HERE, 'Defs', 'Fauna')
 out_tex = os.path.join(HERE, 'Textures', 'RM_LanternDeeps', 'Fauna')
 out_snd = os.path.join(HERE, 'Sounds', 'RM_LanternDeeps', 'Fauna')
-for p in (out_defs, out_snd):
-    shutil.rmtree(p, ignore_errors=True); os.makedirs(p)
+# Defs/Fauna also holds hand-authored files (Hydrocarbon waves, CrystalLife, OrunGhal):
+# remove only this generator's own output, never the directory.
+os.makedirs(out_defs, exist_ok=True)
+for p in glob.glob(os.path.join(out_defs, 'RM_LanternDeeps_Fauna_*.xml')):
+    os.remove(p)
+shutil.rmtree(out_snd, ignore_errors=True); os.makedirs(out_snd)
 # Textures go through the art ledger (ART_VERSION_WRANGLING_1): no rmtree; stale PNGs are
 # retired by tw.sync() after the run, and an owner-kept picture is never overwritten.
 sys.path.insert(0, os.path.join(HERE, '..', 'Utils', 'art'))
@@ -113,5 +119,11 @@ for grp, ds in groups.items():
     ET.ElementTree(root).write(os.path.join(out_defs, 'RM_LanternDeeps_Fauna_%s.xml' % grp),
                                encoding='utf-8', xml_declaration=True)
 bad = [p for p in glob.glob(out_defs + '/*.xml') if 'RSW_' in open(p, encoding='utf8').read()]
-tw.sync(out_tex); tw.report()
+# Retire stale PNGs only inside the subtrees this generator writes (BMT_Caverns/, BiomesCore_*):
+# Textures/RM_LanternDeeps/Fauna also holds hand-authored art (Hydrocarbon/, Crystal/, OrunGhal/),
+# which a whole-root sync retired on the 2026-10-05 run.
+for sub in sorted({os.path.relpath(str(w), out_tex).split(os.sep)[0] for w in tw.written
+                   if os.path.realpath(str(w)).startswith(os.path.realpath(out_tex) + os.sep)}):
+    tw.sync(os.path.join(out_tex, sub))
+tw.report()
 print('defs', len(seen), 'groups', {g: len(v) for g, v in groups.items()}, 'copied', copied, 'RSW left in', bad)
