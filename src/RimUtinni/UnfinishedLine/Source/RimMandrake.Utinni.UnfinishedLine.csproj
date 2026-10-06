@@ -35,6 +35,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="UnfinishedLineMod.cs" />
     <Compile Include="UnfinishedLineSpine.cs" />
@@ -42,6 +46,7 @@
     <Compile Include="UnfinishedLineTruce.cs" />
     <Compile Include="UnfinishedLineCores.cs" />
     <Compile Include="UnfinishedLineFirstLight.cs" />
+    <Compile Include="UnfinishedLineTithe.cs" />
   </ItemGroup>
 
 
@@ -64,6 +69,10 @@
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">

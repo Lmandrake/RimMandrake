@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
-suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled"]
+suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled", "lendSkillGateEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
@@ -31,6 +31,7 @@ PARENT = "RUT_UnfinishedLine"
 BEAT1 = "RUT_UnfinishedLine_1_Count"
 BEAT2 = "RUT_UnfinishedLine_2_Envoy"
 BEAT3 = "RUT_UnfinishedLine_3_Cores"
+BEAT4 = "RUT_UnfinishedLine_4_Tithe"
 NEEDLES = ("mandrake.rut.unfinishedline", "UnfinishedLine", "RUT_LineCount", "QuestPart_RUT_SequentialSubquests")
 
 
@@ -56,7 +57,8 @@ def load_clean(t):
 @suite.chain("defs")
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
-        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "QuestScriptDef/%s" % BEAT3, "QuestScriptDef/RUT_UnfinishedLine_5_FirstLight",
+        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "QuestScriptDef/%s" % BEAT3, "QuestScriptDef/%s" % BEAT4, "QuestScriptDef/RUT_UnfinishedLine_5_FirstLight",
+                "HistoryEventDef/RUT_LineHandsLost",
                 "HistoryEventDef/RUT_UnfinishedLineCompleted",
                 "IncidentDef/RUT_UnfinishedLine_Offer", "SitePartDef/RUT_SilicaxFoundryRuin", "ThingDef/RUT_FoundryPatternCore",
                 "MentalStateDef/RUT_WildDroidPack", "LetterDef/RUT_CoreBrokerOffer",
@@ -211,6 +213,34 @@ def static_checks():
             bad.append("The Pattern Cores must tell the parent LineSold on the sell-out")
         if not any(n.findtext("inSignal") == "LineSold" and n.get("Class") == "QuestNode_End" for n in parent.iter("li")):
             bad.append("the parent has no End on LineSold (the sell-out would not end the chain)")
+    beat4 = quests.get(BEAT4)
+    if beat4 is None or BEAT4 not in beats:
+        bad.append("%s missing or not on the spine" % BEAT4)
+    else:
+        if BEAT3 in beats and beats.index(BEAT4) != beats.index(BEAT3) + 1:
+            bad.append("The Tithe must follow The Pattern Cores on the spine: %r" % beats)
+        classes = [(n.get("Class") or "") for n in beat4.iter("li")]
+        for need in ("QuestNode_RUT_TitheSetup", "QuestNode_RUT_TitheShuttleGate", "QuestNode_RUT_LineHands"):
+            if not any(c.endswith(need) for c in classes):
+                bad.append("The Tithe has no %s" % need)
+        subs = [n for n in beat4.iter("li") if n.get("Class") == "QuestNode_SubScript" and n.findtext("def") == "Util_TransportShip_Pickup"]
+        if not subs or subs[0].findtext("parms/requiredItems") != "$titheItems" or subs[0].findtext("parms/requireColonistCount") != "1":
+            bad.append("The Tithe's shuttle must require the tithe ($titheItems) and one colonist")
+        hands = [n for n in beat4.iter("li") if (n.get("Class") or "").endswith("QuestNode_RUT_LineHands")]
+        died = hands[0].findtext("outSignalColonistsDied") if hands else None
+        done = hands[0].findtext("outSignalComplete") if hands else None
+        on_died = [n for n in beat4.iter("li") if n.findtext("inSignal") == died]
+        if not died or not any(n.get("Class") == "QuestNode_End" and n.findtext("outcome") == "Fail" for n in on_died) \
+                or sum(1 for n in on_died if n.get("Class") == "QuestNode_ChangeFactionGoodwill") < 2:
+            bad.append("the lent crafter dying must Fail the beat and cost both factions goodwill")
+        if not done or not any(n.findtext("inSignal") == done and n.get("Class") == "QuestNode_End"
+                               and n.findtext("outcome") == "Success" for n in beat4.iter("li")):
+            bad.append("the crafter's return must end The Tithe in Success")
+        if not any(n.get("Class") == "QuestNode_Delay" and n.findtext("isQuestTimeout") == "true" for n in beat4.iter("li")):
+            bad.append("The Tithe has no shown deadline (QuestNode_Delay isQuestTimeout)")
+    about = open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8").read()
+    if "brrainz.harmony" not in about:
+        bad.append("About.xml does not depend on Harmony (the tithe's shuttle skill gate is a Harmony patch)")
     for rel in ("SitePartDefs/RUT_SilicaxFoundryRuin.xml", "ThingDefs_Items/RUT_FoundryPatternCore.xml",
                 "MentalStateDefs/RUT_WildDroidPack.xml", "LetterDefs/RUT_CoreBrokerOffer.xml"):
         if not os.path.exists(os.path.join(HERE, "Defs", rel)):
@@ -260,3 +290,27 @@ def first_light(t):
         text = str((r or {}).get("result", ""))
         if t._guard() and (not text.startswith("STRIKE ") or "STRIKE none" in text or "hostile=True" not in text):
             raise ExpectationFailed("no hostile strike faction for First Light: %s" % text)
+
+
+@suite.chain("tithe")
+def tithe(t):
+    """UNFINISHED_LINE_TITHE_BEAT_1: the basket scales, the lend has a faction, and the skill gate follows its toggle. Not
+    proven here: the shuttle refusing an unskilled colonist (CompShuttle.IsAllowed postfix), the shuttle leaving with the
+    tithe, the 10-day lend and the XP gift -- first poke: force beats to 4 (ProofEndBeat true + ProofNextBeat x3), accept,
+    try to load a Crafting-2 colonist (the load dialog must not list them), load the tithe and a Crafting-8 colonist,
+    then dev-end the lend part and read the colonist's Crafting XP."""
+    tp = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineTitheProof"
+    with t.component("basket_and_lend_faction", beyond_toggle=True):
+        r = t.bridge_call("jawa/static_call", type=tp, method="ProofTitheSetup")
+        text = str((r or {}).get("result", ""))
+        if t._guard() and (not text.startswith("TITHE ") or "lend to none" in text or "plasteel" not in text):
+            raise ExpectationFailed("tithe setup unreadable: %s" % text)
+    with t.component("skill_gate_off_drops_the_floor", toggle="lendSkillGateEnabled"):
+        t.set_setting(SETTINGS_TYPE, {"lendSkillGateEnabled": False})
+        try:
+            r = t.bridge_call("jawa/static_call", type=tp, method="ProofTitheSetup")
+            text = str((r or {}).get("result", ""))
+        finally:
+            t.set_setting(SETTINGS_TYPE, {"lendSkillGateEnabled": True})
+        if t._guard() and "min crafting 0" not in text:
+            raise ExpectationFailed("lendSkillGateEnabled OFF but a Crafting floor remains: %s" % text)

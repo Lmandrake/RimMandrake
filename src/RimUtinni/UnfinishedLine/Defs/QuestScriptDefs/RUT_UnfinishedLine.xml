@@ -68,7 +68,7 @@
             <li>RUT_UnfinishedLine_1_Count</li>
             <li>RUT_UnfinishedLine_2_Envoy</li>
             <li>RUT_UnfinishedLine_3_Cores</li>
-            <!-- beat 4 (UNFINISHED_LINE_TITHE_BEAT_1) is not built yet; it goes between 3 and 5 when it is -->
+            <li>RUT_UnfinishedLine_4_Tithe</li>
             <li>RUT_UnfinishedLine_5_FirstLight</li>
           </beats>
           <totalBeats>5</totalBeats>
@@ -872,6 +872,201 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
         <li Class="QuestNode_End">
           <inSignal>CoresSold</inSignal>
           <outcome>Success</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    BEAT 4 — "The Tithe and the Hands" (design §2.4), UNFINISHED_LINE_TITHE_BEAT_1. Not a rite.
+
+    SPEC: ask - a large material tithe (plasteel, components, steel, uranium; scaled by the Mod Setting) and one colonist
+                with Crafting 8 or better, lent to the line for 10 days.
+          reason - the Hive's gap is resources and capacity (the owner's words): the patterns and cores are in one place,
+                   and there is nothing to build with and too few hands. Organic hands beside droid hands that have never
+                   built.
+          choice - which crafter goes (any colonist at the skill floor may board), and whether the colony can spare the
+                   material at all.
+          failure - the shuttle leaves unloaded (deadline), or is destroyed: Fail, the spine offers the beat again. The lent
+                    crafter dies on the line: Fail, Hive -10 and Enclaves -10.
+          reward - the crafter comes home with Crafting experience; the line is assembled, and beat 5 follows.
+          deadline - 20 days (Mod Setting) to load the shuttle, the quest's own shown timer; then the 10-day lend.
+    WHERE: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked), so, like beats 3 and 5, the beat happens at your
+    colony: ONE Enclave shuttle (Script_PawnLend's shape: QuestNode_ShuttleDelay + Util_TransportShip_Pickup) carries the
+    tithe as its requiredItems and the crafter as its one required colonist. The design's caravan TradeRequests to the site
+    (sites A/C/D) and monument blueprint (site B) wait on that ruling. The skill floor is a Harmony postfix on
+    CompShuttle.IsAllowed scoped to this shuttle (UnfinishedLineTithe.cs). The lend goes to the Hive, or to the Enclaves
+    while the Hive is hostile to you.
+  -->
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine_4_Tithe</defName>
+    <epicParent>RUT_UnfinishedLine</epicParent>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>5~8</expireDaysRange>
+    <defaultChallengeRating>2</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Tithe and the Hands</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The patterns and the cores are in one place again, and still nothing is being built. [hiveFaction_name] have the knowledge and not the means: the company took its stockpiles when it left, and the Hive's workers are too few to run a line that was built for thousands. [enclaveFaction_name] have hands that have never built anything.\n\nSo the line asks the Jawa for both. An Enclave shuttle will land at your colony and wait [titheTicks_duration] to be loaded with the tithe: [titheText]. It will also carry [handsAsk], who will work the line beside the droids for [lendTicks_duration] before coming home.\n\nThe shuttle leaves as soon as it holds both.</li>
+        <li>handsAsk(minCrafting==0)->one healthy colonist</li>
+        <li>handsAsk(minCrafting>0)->one colonist with Crafting [minCrafting] or better</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <!-- titheItems, titheText, titheMass, lendFaction, titheTicks, lendTicks, minCrafting: Mod Settings. TestRun fails
+             (the spine waits) while no free colonist reaches the skill floor. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_TitheSetup" />
+
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+          <signalListenMode>NotYetAcceptedOnly</signalListenMode>
+        </li>
+
+        <li Class="QuestNode_ShuttleDelay">
+          <delayTicks>3500</delayTicks>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_SubScript">
+                <def>Util_TransportShip_Pickup</def>
+                <parms>
+                  <leaveDelayTicks>$titheTicks</leaveDelayTicks>
+                  <leaveImmediatelyWhenSatisfied>true</leaveImmediatelyWhenSatisfied>
+                  <requiredItems>$titheItems</requiredItems>
+                  <overrideMass>$titheMass</overrideMass>
+                  <owningFaction>$enclaveFaction</owningFaction>
+                  <acceptColonists>true</acceptColonists>
+                  <acceptChildren>false</acceptChildren>
+                  <onlyAcceptColonists>true</onlyAcceptColonists>
+                  <onlyAcceptHealthy>true</onlyAcceptHealthy>
+                  <requireColonistCount>1</requireColonistCount>
+                </parms>
+              </li>
+              <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_TitheShuttleGate" />
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineTitheShuttle">The Tithe: the shuttle has landed</label>
+                <letterDef>NeutralEvent</letterDef>
+                <text TKey="LetterTextLineTitheShuttle">[enclaveFaction_name]'s shuttle has landed. It waits for the tithe, [titheText], and for one crafter to work the line. It leaves the moment it holds both, or in [titheTicks_duration] if it never does.</text>
+                <lookTargets>$pickupShipThing</lookTargets>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$titheTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inSignalDisable>pickupShipThing.SentSatisfied</inSignalDisable>
+          <inspectString TKey="InspectStringLineTitheTimeLeft">The Enclave shuttle leaves in: {0}</inspectString>
+          <outSignalComplete>TitheTimeout</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>TitheTimeout</inSignal>
+          <label TKey="LetterLabelLineTitheTimeout">The Tithe: the shuttle left empty</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineTitheTimeout">The Enclave shuttle waited as long as it was told to, and left with nothing. [hiveFaction_name] will not say what they think of that. The line stands idle a while longer.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TitheTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>pickupShipThing.SentUnsatisfied</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>pickupShipThing.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineTitheShuttleLost">The Tithe: the shuttle is gone</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextLineTitheShuttleLost">The shuttle [enclaveFaction_name] sent for the tithe was destroyed at your colony. They will send another when they have one to send.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <!-- Loaded and gone: the tithe is paid, and the hands go to work. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>pickupShipThing.SentSatisfied</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineHands">
+                <outSignalComplete>HandsReturned</outSignalComplete>
+                <outSignalColonistsDied>HandsLost</outSignalColonistsDied>
+              </li>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineTithePaid">The Tithe: paid</label>
+                <letterDef>PositiveEvent</letterDef>
+                <text TKey="LetterTextLineTithePaid">The shuttle lifted heavy. The tithe is on its way to the line, and so is your crafter, who will work beside [enclaveFaction_name]'s droids and under [lendFaction_name]'s overseers for [lendTicks_duration].\n\nNeither people has ever worked one line with the other. Now they will have to.</text>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>HandsReturned</inSignal>
+          <label TKey="LetterLabelLineHandsReturned">The Hands: the line is assembled</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineHandsReturned">{PAWNS} came home from the line, quieter than they left and a much better crafter for it.\n\nThe line is assembled. [hiveFaction_name] and [enclaveFaction_name] worked it together for ten days and nobody died of it. The first run is next.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>HandsReturned</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>HandsLost</inSignal>
+          <label TKey="LetterLabelLineHandsLost">The Hands: lost on the line</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineHandsLost">The crafter you lent to the line died there. [lendFaction_name] sent the body home. [hiveFaction_name] and [enclaveFaction_name] blame each other, and both of them blame the line. The work stops until someone is willing to try again.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>HandsLost</inSignal>
+          <faction>$hiveFaction</faction>
+          <change>-10</change>
+          <reason>RUT_LineHandsLost</reason>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>HandsLost</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>-10</change>
+          <reason>RUT_LineHandsLost</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>HandsLost</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
         </li>
 
         <li Class="QuestNode_End">

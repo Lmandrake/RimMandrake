@@ -61,4 +61,9 @@
     <defName>RUT_UnfinishedLineCompleted</defName>
     <label>finished the line neither people could build alone</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_TITHE_BEAT_1 -->
+  <HistoryEventDef>
+    <defName>RUT_LineHandsLost</defName>
+    <label>lost the crafter lent to the line</label>
+  </HistoryEventDef>
 </Defs>

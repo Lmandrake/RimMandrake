@@ -27,6 +27,13 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static float firstLightRunDays = 2f;
         public static float firstLightStrikeDelayHours = 6f;
         public static float firstLightHoldDays = 3f;
+        // UNFINISHED_LINE_TITHE_BEAT_1 (all PROVISIONAL)
+        public static float titheScale = 1f;
+        public static int titheDeadlineDays = 20;
+        public static int lendDays = 10;
+        public static bool lendSkillGateEnabled = true;
+        public static int lendMinCrafting = 8;
+        public static int lendCraftingXp = 6000;
 
         public override void ExposeData()
         {
@@ -47,10 +54,16 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref firstLightRunDays, "firstLightRunDays", 2f);
             Scribe_Values.Look(ref firstLightStrikeDelayHours, "firstLightStrikeDelayHours", 6f);
             Scribe_Values.Look(ref firstLightHoldDays, "firstLightHoldDays", 3f);
+            Scribe_Values.Look(ref titheScale, "titheScale", 1f);
+            Scribe_Values.Look(ref titheDeadlineDays, "titheDeadlineDays", 20);
+            Scribe_Values.Look(ref lendDays, "lendDays", 10);
+            Scribe_Values.Look(ref lendSkillGateEnabled, "lendSkillGateEnabled", true);
+            Scribe_Values.Look(ref lendMinCrafting, "lendMinCrafting", 8);
+            Scribe_Values.Look(ref lendCraftingXp, "lendCraftingXp", 6000);
         }
 
         private static Vector2 scroll = Vector2.zero;
-        private static float viewHeight = 900f;
+        private static float viewHeight = 1300f;
 
         public void DoWindowContents(Rect inRect)
         {
@@ -111,6 +124,23 @@ namespace RimMandrake.Utinni.UnfinishedLine
             firstLightStrikeDelayHours = Mathf.Round(list.Slider(firstLightStrikeDelayHours, 0f, 24f));
             list.Label("Days the strike may hold your colony after the run before the beat fails: " + firstLightHoldDays.ToString("0.0"));
             firstLightHoldDays = Mathf.Round(list.Slider(firstLightHoldDays, 1f, 10f) * 2f) / 2f;
+            list.GapLine();
+
+            list.Label("The Tithe and the Hands (beat 4)");
+            list.Label("Tithe scale: " + titheScale.ToString("0.00") + "x (at 1x: " + LineTithe.BasePlasteel + " plasteel, "
+                + LineTithe.BaseComponents + " components, " + LineTithe.BaseSteel + " steel, " + LineTithe.BaseUranium + " uranium)");
+            titheScale = Mathf.Round(list.Slider(titheScale, 0.25f, 3f) * 20f) / 20f;
+            list.Label("Days to load the Enclave shuttle with the tithe and the crafter: " + titheDeadlineDays);
+            titheDeadlineDays = Mathf.RoundToInt(list.Slider(titheDeadlineDays, 5f, 40f));
+            list.Label("Days the crafter works the line before coming home: " + lendDays);
+            lendDays = Mathf.RoundToInt(list.Slider(lendDays, 2f, 30f));
+            list.CheckboxLabeled("The line asks for a skilled crafter", ref lendSkillGateEnabled,
+                "On: only a colonist with at least the Crafting level below may board the Enclave shuttle, and the beat is "
+              + "not offered while you have no such colonist. Off: any healthy colonist may go.");
+            list.Label("Lowest Crafting skill the line accepts: " + lendMinCrafting);
+            lendMinCrafting = Mathf.RoundToInt(list.Slider(lendMinCrafting, 1f, 20f));
+            list.Label("Crafting experience the crafter brings home: " + lendCraftingXp);
+            lendCraftingXp = Mathf.RoundToInt(list.Slider(lendCraftingXp, 0f, 30000f) / 500f) * 500;
 
             viewHeight = list.CurHeight + 20f;
             list.End();
