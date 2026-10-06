@@ -21,6 +21,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 	/// The pump never writes terrain or stock itself — the excavation engine and the body stock do.
 	/// Mod Setting: liquidPumpEnabled (off: a built pump sits idle and draws no power).
 	/// </summary>
+	/// <summary>Per-def pump tuning (the pumping station: several levels a cycle, reaching water a few cells
+	/// off). Absent = the first-slice pump: one level, touching cells only.</summary>
+	public class RM_PumpExtension : DefModExtension
+	{
+		public int levelsPerCycle = 1;
+		public float reach = 1.5f;
+	}
+
 	public class Building_LiquidPump : Building
 	{
 		public bool pourMode;
@@ -45,7 +53,32 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		}
 
 		private bool Running => RimMandrakeFlowWorksSettings.liquidPumpEnabled
+			&& Machinery.RM_MachinerySettings.MachineOn(def)
 			&& (power == null || power.PowerOn) && (flick == null || flick.SwitchIsOn);
+
+		private RM_PumpExtension Ext => def.GetModExtension<RM_PumpExtension>();
+
+		/// <summary>Cells the pump draws from / pours into: touching cells, or a radius for a station.</summary>
+		private IEnumerable<IntVec3> ReachCells()
+		{
+			float reach = Ext?.reach ?? 1.5f;
+			if (reach <= 1.5f)
+			{
+				foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
+				{
+					yield return c;
+				}
+				yield break;
+			}
+			CellRect rect = this.OccupiedRect();
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(Position, reach + rect.Width / 2f, true))
+			{
+				if (!rect.Contains(c))
+				{
+					yield return c;
+				}
+			}
+		}
 
 		protected override void Tick()
 		{
@@ -58,24 +91,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			{
 				return;
 			}
-			lastStatus = pourMode ? TryPour() : TryDraw();
-		}
-
-		private Building_LiquidTank AdjacentTank()
-		{
-			foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
+			int levels = System.Math.Max(1, Ext?.levelsPerCycle ?? 1);
+			for (int i = 0; i < levels; i++)
 			{
-				if (!c.InBounds(Map))
+				int before = Moved;
+				lastStatus = pourMode ? TryPour() : TryDraw();
+				if (Moved == before)
 				{
-					continue;
-				}
-				if (c.GetFirstBuilding(Map) is Building_LiquidTank tank)
-				{
-					return tank;
+					break;
 				}
 			}
-			return null;
 		}
+
+		/// <summary>Phase 8 slice 2: every tank on this pump's liquid net (touching it, or on a hose run that
+		/// touches it) — RM_LiquidNet. With hoses off in Mod Settings this is the touching tanks only.</summary>
+		private List<Building_LiquidTank> NetTanks() => Machinery.RM_LiquidNet.TanksFor(this);
 
 		private static LiquidDef LiquidFor(FluidDef fluid)
 		{
@@ -96,13 +126,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		private string TryDraw()
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
-			Building_LiquidTank tank = AdjacentTank();
-			if (ex == null || tank == null)
+			List<Building_LiquidTank> tanks = NetTanks();
+			if (ex == null || tanks.Count == 0)
 			{
 				return "RMFlow_PumpNoTank".Translate();
 			}
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
+			foreach (IntVec3 c in ReachCells())
 			{
 				if (!c.InBounds(Map))
 				{
@@ -112,7 +142,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					FluidDef f = ex.FluidAt(c) ?? ex.ActiveFluid;
 					LiquidDef l = LiquidFor(f);
-					if (l == null || !tank.CanAccept(l, units))
+					Building_LiquidTank tank = l == null ? null : Machinery.RM_LiquidNet.TankToFill(this, l, units);
+					if (tank == null)
 					{
 						continue;
 					}
@@ -128,7 +159,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 					RM_LiquidBody body = ex.Stock.BodyAt(Map, c, ex);
 					FluidDef f = body?.fluid ?? ex.ActiveFluid;
 					LiquidDef l = LiquidFor(f);
-					if (l == null || !tank.CanAccept(l, units))
+					Building_LiquidTank tank = l == null ? null : Machinery.RM_LiquidNet.TankToFill(this, l, units);
+					if (tank == null)
 					{
 						continue;
 					}
@@ -146,9 +178,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 		private string TryPour()
 		{
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(Map);
-			Building_LiquidTank tank = AdjacentTank();
 			int units = RM_PumpMath.TankUnitsPerLevel;
-			if (ex == null || tank == null || !tank.CanProvide(units))
+			Building_LiquidTank tank = null;
+			foreach (Building_LiquidTank t in NetTanks())
+			{
+				if (t.CanProvide(units) && t.storedLiquid?.canalFluid != null)
+				{
+					tank = t;
+					break;
+				}
+				tank = tank ?? (t.CanProvide(units) ? t : null);
+			}
+			if (ex == null || tank == null)
 			{
 				return "RMFlow_PumpTankEmpty".Translate();
 			}
@@ -160,7 +201,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			// Deepest-emptiest first, so a pump at the head of a channel fills it the way flow would.
 			IntVec3 best = IntVec3.Invalid;
 			int bestRoom = 0;
-			foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
+			foreach (IntVec3 c in ReachCells())
 			{
 				if (!c.InBounds(Map) || !ex.IsExcavated(c))
 				{

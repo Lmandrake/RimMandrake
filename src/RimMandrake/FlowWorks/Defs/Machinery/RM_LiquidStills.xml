@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Liquid converters, crude and household tiers (LIQUID_THIRST_CHAIN_1: crude = solar still, drip filter —
+  slow, free, always buildable; household = fueled still — research). Owner 2026-10-05: "Build the
+  distillation and other associated machinery for liquids part of this mod."
+  Every machine is CompLiquidConverter: WHAT it converts is the registry's data (a LiquidDef row's
+  <conversions>, generator table LIQUID_CONVERSIONS), filtered by this def's <processes> and <tier>.
+  Input: a liquid tank touching it or on its hose line. Output: another tank on the line.
+  PROVISIONAL: every rate, cost, fuel and research number below (agent guesses, 2026-10-05).
+  ART OWED (placeholders are vanilla): solar still (SolarCollector), drip filter (FermentingBarrel),
+  fueled still (ChemfuelPoweredGenerator).
+-->
+<Defs>
+
+  <ThingDef Name="RM_LiquidConverterBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>Building</thingClass>
+    <tickerType>Rare</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <designationCategory>Production</designationCategory>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+  </ThingDef>
+
+  <!-- Crude: sun-driven still. Salt water and brine-free distilling at crude tier, and cools boiling/icy
+       water back to fresh. Daylight under open sky only. 30 input units/day PROVISIONAL. -->
+  <ThingDef ParentName="RM_LiquidConverterBase">
+    <defName>RM_SunPanStill</defName>
+    <label>sun-pan still</label>
+    <description>A shallow pan under a sloped sheet of salvaged glass. The sun lifts clean water off whatever is in the pan and it runs down the glass into the gutter. Slow, free, and useless at night or under a roof. Stand it beside a tank of salt water and a tank to catch the fresh.</description>
+    <graphicData>
+      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(170,200,215)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <statBases>
+      <WorkToBuild>1400</WorkToBuild>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Beauty>-2</Beauty>
+      <Mass>20</Mass>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+        <tier>Crude</tier>
+        <processes>
+          <li>distill</li>
+          <li>cool</li>
+        </processes>
+        <inputUnitsPerDay>30</inputUnitsPerDay>
+        <needsSun>true</needsSun>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Sun-pan still</label>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Crude: drip filter — charcoal, sand and cloth in a barrel. Toxic water to fresh, slow. -->
+  <ThingDef ParentName="RM_LiquidConverterBase">
+    <defName>RM_DripFilter</defName>
+    <label>drip filter</label>
+    <description>A barrel packed with charcoal, sand and rags, dripping into a pan. Poisoned water poured in the top comes out drinkable at the bottom, a slow drop at a time; it wastes most of what it is given. Needs no power and no fuel.</description>
+    <graphicData>
+      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <color>(150,150,135)</color>
+    </graphicData>
+    <size>(1,1)</size>
+    <statBases>
+      <WorkToBuild>900</WorkToBuild>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <Beauty>-2</Beauty>
+      <Mass>10</Mass>
+    </statBases>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+        <tier>Crude</tier>
+        <processes>
+          <li>filter</li>
+        </processes>
+        <inputUnitsPerDay>24</inputUnitsPerDay>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Drip filter</label>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- Household: fueled still. Distils salt water and brine, filters, cools. Burns wood or chemfuel.
+       Research: vanilla Brewing (PROVISIONAL — the closest vanilla "boil and condense" project). -->
+  <ThingDef ParentName="RM_LiquidConverterBase">
+    <defName>RM_FueledStill</defName>
+    <label>fueled still</label>
+    <description>A riveted boiler over a firebox, a coil of pipe and a cooling drum. Whatever goes into the boiler comes out of the coil as clean water: salt water, brine, even poisoned water. It burns wood or chemfuel and works day and night.</description>
+    <graphicData>
+      <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(205,175,140)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <statBases>
+      <WorkToBuild>3000</WorkToBuild>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>45</Mass>
+    </statBases>
+    <costList>
+      <Steel>90</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>Brewing</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>12</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelCapacity>40</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>WoodLog</li>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+        <tier>Household</tier>
+        <processes>
+          <li>distill</li>
+          <li>cool</li>
+          <li>filter</li>
+        </processes>
+        <inputUnitsPerDay>120</inputUnitsPerDay>
+        <fuelPerDay>12</fuelPerDay>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Fueled still</label>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

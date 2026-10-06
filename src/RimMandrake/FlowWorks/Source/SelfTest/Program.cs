@@ -992,6 +992,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PumpMath.CyclesToFill(300) == 60 && RM_PumpMath.CyclesToFill(1) == 1 && RM_PumpMath.CyclesToFill(0) == 0, "cycles to fill round up");
             });
 
+            // ── Liquid machinery: converter cycle arithmetic ──
+            Case("Converter_cycle_math", () =>
+            {
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 1f, 1f, 1f), 1f, "240 a day is one per rare tick");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 0.5f, 1f, 1f), 0.5f, "kludged tier runs at half");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.BudgetPerRareTick(240f, 1f, 1f, 0f), 0f, "no sun, no work");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(4f, 2, 1, 100, 100) == 2, "budget bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 2, 1, 3, 100) == 1, "input bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 2, 3, 100, 7) == 2, "output room bounds batches");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(40f, 4, 1, 100, -1) == 10, "item fallback is unbounded");
+                Assert(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.Batches(1.9f, 2, 1, 100, 100) == 0, "a part batch waits");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.CapAccrued(50f, 2, 0.25f), 2f, "idle budget never bursts");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.8f, false), 1f, "open daylight");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.8f, true), 0f, "roofed");
+                AssertClose(RimMandrake.FlowWorks.Machinery.RM_ConversionMath.SunFactor(0.2f, false), 0f, "night");
+            });
+
             // ── EXCAVATION_WALL_ART_1: every depth reads differently ──
             Case("WallFaces_every_depth_differs", () =>
             {

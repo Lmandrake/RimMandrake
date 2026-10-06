@@ -303,6 +303,23 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public LiquidDef product;
         public RecipeDef recipe;
         public ThingDef building;
+
+        /// <summary>What kind of work this step is ("distill", "cool",
+        /// "filter", "detox", "desalinate", "refine"). A converter machine
+        /// (CompLiquidConverter) runs a step when the step's process is in
+        /// its own process list and the step's tier is at or below the
+        /// machine's tier -- so a new liquid joins a machine by DATA.</summary>
+        public string process;
+
+        /// <summary>Units of THIS liquid consumed per <see cref="outputUnits"/>
+        /// of product. PROVISIONAL ratios live in the generator table.</summary>
+        public int inputUnits = 1;
+        public int outputUnits = 1;
+
+        /// <summary>Item fallback when no connected tank takes the product
+        /// liquid (tar → vanilla Chemfuel): outputUnits of this ThingDef are
+        /// dropped beside the machine instead.</summary>
+        public ThingDef productThing;
     }
 
     public class LiquidTradeSpec

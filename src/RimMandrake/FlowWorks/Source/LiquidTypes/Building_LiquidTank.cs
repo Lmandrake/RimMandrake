@@ -19,6 +19,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// sub-tanks, no C# per liquid -- the same "one property block, read
     /// generically" discipline <see cref="LiquidDef"/> itself follows.
     /// </summary>
+    /// <summary>Per-def tank size (the universal cargo tank is bigger than the scavenger tank). Absent =
+    /// the 300-unit base. Both scale with the tankCapacityMultiplier setting.</summary>
+    public class RM_LiquidTankExtension : DefModExtension
+    {
+        public int baseCapacityUnits = 300;
+    }
+
     public class Building_LiquidTank : Building
     {
         /// <summary>Design "big fixed liquid store" -- a base stock a
@@ -33,7 +40,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public int storedUnits;
 
         public int Capacity => Mathf.Max(25,
-            Mathf.RoundToInt(BaseCapacityUnits * RimMandrakeFlowWorksSettings.tankCapacityMultiplier));
+            Mathf.RoundToInt((def.GetModExtension<RM_LiquidTankExtension>()?.baseCapacityUnits ?? BaseCapacityUnits)
+                * RimMandrakeFlowWorksSettings.tankCapacityMultiplier));
 
         public bool Empty => storedLiquid == null || storedUnits <= 0;
 

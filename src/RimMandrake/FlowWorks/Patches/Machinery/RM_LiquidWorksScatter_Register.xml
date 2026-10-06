@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Register the wrecked-liquid-works scatters (Defs/Machinery/RM_LiquidWorksScatter.xml) onto Base_Player.
+  PatchOperationFindMod on the Environmental Hazards kit, the shared scatterer's home: without it the
+  GenStepDefs do not exist (MayRequire) and this patch must not add dangling names.
+  Order 760: after vanilla ScatterRuinsSimple (750) so a works never lands inside a ruin wall.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Environmental Hazards Kit</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li>RM_DesalPlant_RuinScatter</li>
+        <li>RM_DetoxWorks_RuinScatter</li>
+        <li>RM_TarRefinery_RuinScatter</li>
+        <li>RM_PumpingStation_RuinScatter</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

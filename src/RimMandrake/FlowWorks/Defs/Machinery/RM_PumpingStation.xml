@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_INDUSTRY_SETPIECES_1 — the pumping station, fourth found works. A Building_LiquidPump with
+  RM_PumpExtension: several levels a cycle, reaching water up to 4 cells off, into every tank on its hose
+  line. Same Wrecked -> Kludged -> Repaired grammar as RM_IndustrialLiquidWorks.xml (ruin scattered beside
+  any registered liquid). Draw/pour gizmo as the small pump.
+  PROVISIONAL: levels per cycle (kludged 2, repaired 4), reach 4, power, costs.
+  ART OWED: three tiers; placeholder vanilla PipelineSection, tinted.
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_LiquidWorksRuinBase">
+    <defName>RM_PumpingStation_Wrecked</defName>
+    <label>wrecked pumping station</label>
+    <description>What is left of a pumping station: a manifold of big-bore pipe and a dead motor the size of a cart. It can be patched back to work where it stands: build a kludged pumping station over it.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <color>(110,95,85)</color>
+    </graphicData>
+    <replaceTags>
+      <li>RM_PumpingStation</li>
+    </replaceTags>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidWorksRuin">
+        <tankDef>RM_LiquidTank</tankDef>
+        <stockLiquids>
+          <li>RM_Liquid_FreshWater</li>
+          <li>RM_Liquid_SaltWater</li>
+          <li>RM_Liquid_Tar</li>
+        </stockLiquids>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef Name="RM_PumpingStationBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump</thingClass>
+    <tickerType>Normal</tickerType>
+    <size>(3,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.75</fillPercent>
+    <pathCost>50</pathCost>
+    <selectable>true</selectable>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Machinery.PlaceWorker_RM_OverRuin</li>
+    </placeWorkers>
+    <replaceTags>
+      <li>RM_PumpingStation</li>
+    </replaceTags>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PumpingStationBase">
+    <defName>RM_PumpingStation_Kludged</defName>
+    <label>kludged pumping station</label>
+    <description>A pumping station patched back to work with mismatched plate and a borrowed motor. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel. Half its old rate.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <color>(170,150,130)</color>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>4000</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_PumpExtension">
+        <levelsPerCycle>2</levelsPerCycle>
+        <reach>4</reach>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <key>RM_PumpingStation</key>
+        <label>Pumping station (found works)</label>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_RestoreOverExtension">
+        <over>
+          <li>RM_PumpingStation_Wrecked</li>
+        </over>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PumpingStationBase">
+    <defName>RM_PumpingStation_Repaired</defName>
+    <label>repaired pumping station</label>
+    <description>A pumping station restored properly. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel, at its full industrial rate.</description>
+    <graphicData>
+      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,2)</drawSize>
+      <color>(185,195,205)</color>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>8000</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>180</Steel>
+      <ComponentIndustrial>8</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>600</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_PumpExtension">
+        <levelsPerCycle>4</levelsPerCycle>
+        <reach>4</reach>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <key>RM_PumpingStation</key>
+        <label>Pumping station (found works)</label>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_RestoreOverExtension">
+        <over>
+          <li>RM_PumpingStation_Wrecked</li>
+          <li>RM_PumpingStation_Kludged</li>
+        </over>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
