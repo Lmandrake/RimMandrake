@@ -5,7 +5,7 @@
   "gate": "v1"
  },
  "blue_desert_sheet_2026-10-04": {
-  "built": "2026-10-05T22:52:42",
+  "built": "2026-10-05T23:50:45",
   "fp": "262a2c5142d274d37a7c",
   "gate": "v1"
  },
@@ -14,12 +14,12 @@
   "fp": "52e73a5d5d80f524fdab"
  },
  "contagion_sheet_2026-10-04": {
-  "built": "2026-10-05T22:53:53",
+  "built": "2026-10-06T00:00:02",
   "fp": "5e8880da87c347bef8d7",
   "gate": "v1"
  },
  "deep_desert_sheet_2026-10-04": {
-  "built": "2026-10-05T22:54:32",
+  "built": "2026-10-06T00:00:44",
   "fp": "7758bb6e5f98fb9f736b",
   "gate": "v1"
  },
@@ -37,7 +37,7 @@
   "fp": "d775e6407f1a3bbee117"
  },
  "gelatinousslime_sheet_2026-10-05": {
-  "built": "2026-10-05T23:00:58",
+  "built": "2026-10-06T00:31:50",
   "fp": "2b5a94a63e1f8aaa984e",
   "gate": "v1"
  },
@@ -47,13 +47,13 @@
   "gate": "v1"
  },
  "greysea_sheet_2026-10-05": {
-  "built": "2026-10-05T23:02:27",
-  "fp": "2f0eaffc7d0b4a26423e",
+  "built": "2026-10-06T00:41:40",
+  "fp": "08e98e2708d6a4b6faf5",
   "gate": "v1"
  },
  "lanterndeeps_sheet_2026-10-05": {
-  "built": "2026-10-05T23:02:56",
-  "fp": "8e0877eae18e27293d5b",
+  "built": "2026-10-06T00:42:13",
+  "fp": "a9bfe9da71ef919de63f",
   "gate": "v1"
  },
  "leaningscrub_sheet_2026-10-05": {
@@ -65,7 +65,7 @@
   "fp": "26a8be2b7942d2319161"
  },
  "nightsideice_sheet_2026-10-05": {
-  "built": "2026-10-05T23:09:06",
+  "built": "2026-10-06T00:55:59",
   "fp": "52a8bb912a7eed9976fa",
   "gate": "v1"
  },
@@ -75,12 +75,12 @@
   "gate": "v1"
  },
  "rustcathedral_sheet_2026-10-05": {
-  "built": "2026-10-05T23:10:05",
+  "built": "2026-10-06T00:58:24",
   "fp": "36ab01d8e1a710631e6d",
   "gate": "v1"
  },
  "thechill_sheet_2026-10-05": {
-  "built": "2026-10-05T23:10:38",
+  "built": "2026-10-06T00:58:52",
   "fp": "eb2535a6a2e5f8ece814",
   "gate": "v1"
  },
@@ -117,7 +117,7 @@
   "fp": "15648496335e940285e9"
  },
  "webwork_sheet_2026-10-05": {
-  "built": "2026-10-05T23:15:05",
+  "built": "2026-10-06T01:19:19",
   "fp": "554ea36f3ab7f26916d6",
   "gate": "v1"
  },
