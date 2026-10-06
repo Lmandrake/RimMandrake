@@ -65,7 +65,7 @@ FW_TOGGLES = [
     "canalFireEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
     "pitDrowningEnabled", "poisonFillEnabled",   # PIT_FILL_EFFECTS_1
     "viscosityEnabled",          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)
-    # 2026-10-05 build pass (belt_fwbuild): chains fire_put_out, pit_prison_room, liquid_pump, bottle_revert,
+    # 2026-10-05 build pass (belt_fwbuild): chains fire_explosion/fire_foam/fire_rain, pit_prison_room, liquid_pump, bottle_revert,
     # wall_faces, dig_finds
     "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled",
     "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled",
@@ -1219,9 +1219,13 @@ def pit_fill_effects(t):
     _fill_fluid(t, a[0], a[1], 4, "RM_Fluid_Water")
     _fill_fluid(t, b[0], b[1], 4, "RM_Fluid_Poison")
     _fill_fluid(t, c[0], c[1], 4, "RM_Fluid_Oil")
-    pa = _spawn_pawn_at(t, "Colonist", a[0], a[1])
-    pb = _spawn_pawn_at(t, "Colonist", b[0], b[1])
-    pc = _spawn_pawn_at(t, "Colonist", c[0], c[1])
+    # held hostiles, not colonists: an undrafted colonist is not held (own-faction carve-out) and walked OUT of the
+    # pit before the census (live 19:38: "FILLFX 0" -- nobody standing in liquid)
+    pa = _spawn_pawn_at(t, "Pirate", a[0], a[1], faction="hostile")
+    pb = _spawn_pawn_at(t, "Pirate", b[0], b[1], faction="hostile")
+    pc = _spawn_pawn_at(t, "Pirate", c[0], c[1], faction="hostile")
+    for p in (pa, pb, pc):
+        t.bridge_call("jawa/pawn_gear", pawn=p, action="clear")
     with t.component("pit_fluid_effects_per_cell", toggle="pitDrowningEnabled"):
         _wait(t, 4 * 250)
         rep = _fill_fx(t)
@@ -1468,49 +1472,66 @@ def _flames(t, cells):
     return out
 
 
+def _foam(t, c):
+    """Lay firefoam on one cell WITHOUT an Extinguish blast (that is NotifyExplosionAt's own route): a Stun blast of
+    radius 0.5 that scatters Filth_FireFoam at chance 1. jawa/spawn_batch makes no filth (measured live 19:38:
+    0 Filth_FireFoam after a spawn_batch of two)."""
+    t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType="Stun", radius=0.5, spawnThing="Filth_FireFoam",
+                  spawnChance=1.0, screenShake=0)
+    if t._guard():
+        r = t.bridge_call("jawa/list_things", defName="Filth_FireFoam", rect=_rect(c[0], c[1], 1, 1), limit=2) or {}
+        _expect(bool(r.get("things")), "no firefoam lies on %s after the scatter: %r" % (c, r))
+
+
 def _tar_cells(t, cells):
     for x, z in cells:
         _dig(t, x, z, 1)
         _fill_fluid(t, x, z, 1, "RM_Fluid_Tar")
 
 
-@suite.chain("fire_put_out")
-def fire_put_out(t):
-    """Phase 6 owed (330a510d8 + the 2026-10-05 fix that gave foam and rain their first caller). Every burnable cell
-    is an ISOLATED 1x1 tar cut (3 apart), so no neighbour can relight a cell and each read is one cell's own fate.
-    explosion: a Bomb lights tar with no Fire anywhere, an EMP does not, and with the setting off a Bomb does not.
-    foam: firefoam on two burning cells puts them out within one 60-tick check, the two without foam burn on; with the
-    setting off foam is inert. rain: steady rain (filling off) douses open cells over 50 checks (0.03/check: P(an
-    open cell survives) ~0.22) while a roofed twin row stays alight; with the setting off the open row stays lit."""
+def _boom(t, c, dam):
+    t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType=dam, radius=0.9, screenShake=0)
+
+
+# Phase 6 owed (330a510d8 + the 2026-10-05 fix that gave foam and rain their first caller). Three chains so one red
+# mechanism does not blank the other two. Every burnable cell is an ISOLATED 1x1 tar cut (3 apart): no neighbour can
+# relight it, so each read is one cell's own fate.
+
+@suite.chain("fire_explosion")
+def fire_explosion(t):
+    """A Bomb lights tar with no Fire anywhere, an EMP does not, and with the setting off a Bomb does not."""
     x0, z0 = _prep_plot(t, "E")
     bomb_off, emp_on, bomb_on = (x0 + 2, z0 + 1), (x0 + 9, z0 + 1), (x0 + 16, z0 + 1)
-    foam = [(x0 + 2 + 3 * i, z0 + 4) for i in range(4)]
-    open_row = [(x0 + 2 + 3 * i, z0 + 8) for i in range(6)]
-    roof_row = [(x0 + 2 + 3 * i, z0 + 11) for i in range(6)]
-    _tar_cells(t, [bomb_off, emp_on, bomb_on] + foam + open_row + roof_row)
-    t.bridge_call("jawa/set_roof_batch", ops=";".join("RoofConstructed:%d,%d,1,1" % c for c in roof_row))
-
-    def boom(c, dam):
-        t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType=dam, radius=0.9, screenShake=0)
-
+    _tar_cells(t, [bomb_off, emp_on, bomb_on])
     with _setting(t, "canalFireEnabled", True):
         with t.component("explosion_off_does_not_light", toggle="explosionIgnitesLiquidEnabled"):
             with _setting(t, "explosionIgnitesLiquidEnabled", False):
-                boom(bomb_off, "Bomb")
+                _boom(t, bomb_off, "Bomb")
                 _wait(t, PULSE)
                 _expect(not _flames(t, [bomb_off]) if t._guard() else None, "Bomb lit tar with the setting OFF")
         with t.component("explosion_lights_liquid", toggle="explosionIgnitesLiquidEnabled"):
-            boom(emp_on, "EMP")
-            boom(bomb_on, "Bomb")
+            _boom(t, emp_on, "EMP")
+            _boom(t, bomb_on, "Bomb")
             _wait(t, PULSE)
             if t._guard():
                 _expect(not _flames(t, [emp_on]), "an EMP blast lit tar")
                 _expect(_flames(t, [bomb_on]) == {bomb_on}, "a Bomb blast did not light tar (no Fire involved)")
+
+
+@suite.chain("fire_foam")
+def fire_foam(t):
+    """Firefoam lying on two burning cells puts them out within one 60-tick check while the two without foam burn
+    on; with the setting off foam on a burning cell is inert."""
+    x0, z0 = _prep_plot(t, "E")
+    foam = [(x0 + 2 + 3 * i, z0 + 4) for i in range(4)]
+    _tar_cells(t, foam)
+    with _setting(t, "canalFireEnabled", True):
         for c in foam:
             _light(t, *c)
         with t.component("foam_smothers_burning_liquid", toggle="foamSmothersLiquidFireEnabled"):
             lit0 = _flames(t, foam)
-            t.bridge_call("jawa/spawn_batch", ops=";".join("Filth_FireFoam:%d,%d" % c for c in foam[:2]))
+            for c in foam[:2]:
+                _foam(t, c)
             t.wait_ticks(90)
             lit1 = _flames(t, foam)
             if t._guard():
@@ -1519,31 +1540,44 @@ def fire_put_out(t):
                 _expect(lit1 >= set(foam[2:]), "unfoamed cells went out too: %s" % sorted(lit1))
         with t.component("foam_off_is_inert", toggle="foamSmothersLiquidFireEnabled"):
             with _setting(t, "foamSmothersLiquidFireEnabled", False):
-                t.bridge_call("jawa/spawn_batch", ops="Filth_FireFoam:%d,%d" % foam[2])
+                _foam(t, foam[2])
                 t.wait_ticks(90)
                 _expect(foam[2] in _flames(t, [foam[2]]) if t._guard() else None,
                         "foam put a cell out with foamSmothersLiquidFireEnabled OFF")
-        with _setting(t, "rainFillsExcavationsEnabled", False):
-            t.bridge_call("jawa/weather_set", weather="Rain", lockWeather=True)
-            try:
-                with t.component("rain_douses_open_fire", toggle="rainDousesLiquidFireEnabled"):
-                    for c in open_row + roof_row:
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(x0, z0, PW, PH))
+
+
+@suite.chain("fire_rain")
+def fire_rain(t):
+    """Steady rain (filling off) douses open cells over 50 checks (0.03/check: P(an open cell survives) ~0.22) while a
+    roofed twin row stays alight; with the setting off a relit open row stays lit."""
+    x0, z0 = _prep_plot(t, "E")
+    open_row = [(x0 + 2 + 3 * i, z0 + 8) for i in range(6)]
+    roof_row = [(x0 + 2 + 3 * i, z0 + 11) for i in range(6)]
+    _tar_cells(t, open_row + roof_row)
+    t.bridge_call("jawa/set_roof_batch", ops=";".join("RoofConstructed:%d,%d,1,1" % c for c in roof_row))
+    with _setting(t, "canalFireEnabled", True), _setting(t, "rainFillsExcavationsEnabled", False):
+        t.bridge_call("jawa/weather_set", weather="Rain", lockWeather=True)
+        try:
+            with t.component("rain_douses_open_fire", toggle="rainDousesLiquidFireEnabled"):
+                for c in open_row + roof_row:
+                    _light(t, *c)
+                t.wait_ticks(3000)
+                lo, lr = _flames(t, open_row), _flames(t, roof_row)
+                if t._guard():
+                    _expect(lr == set(roof_row), "a ROOFED cell went out in the rain: %d/6 lit" % len(lr))
+                    _expect(len(lo) < 6, "no open cell doused after 3000 ticks of rain: %d/6 lit" % len(lo))
+            with t.component("rain_off_leaves_fire", toggle="rainDousesLiquidFireEnabled"):
+                with _setting(t, "rainDousesLiquidFireEnabled", False):
+                    for c in open_row:
                         _light(t, *c)
-                    t.wait_ticks(3000)
-                    lo, lr = _flames(t, open_row), _flames(t, roof_row)
-                    if t._guard():
-                        _expect(lr == set(roof_row), "a ROOFED cell went out in the rain: %d/6 lit" % len(lr))
-                        _expect(len(lo) < 6, "no open cell doused after 3000 ticks of rain: %d/6 lit" % len(lo))
-                with t.component("rain_off_leaves_fire", toggle="rainDousesLiquidFireEnabled"):
-                    with _setting(t, "rainDousesLiquidFireEnabled", False):
-                        for c in open_row:
-                            _light(t, *c)
-                        t.wait_ticks(1500)
-                        lo = _flames(t, open_row)
-                        _expect(len(lo) == 6 if t._guard() else None,
-                                "open cells went out in rain with the setting OFF: %d/6 lit" % len(lo))
-            finally:
-                t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+                    t.wait_ticks(1500)
+                    lo = _flames(t, open_row)
+                    _expect(len(lo) == 6 if t._guard() else None,
+                            "open cells went out in rain with the setting OFF: %d/6 lit" % len(lo))
+        finally:
+            t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rect(x0, z0, PW, PH))
 
 
 @suite.chain("pit_prison_room")
@@ -1561,7 +1595,7 @@ def pit_prison_room(t):
     far = (x0 + 1, centre[1])
 
     def room():
-        return _kv(_sc(t, NS_PROOF, "ProofRoom", "%d,%d|%d,%d" % (centre + far)))
+        return _kv(_sc(t, NS_PROOF, "ProofRoom", "%d,%d;%d,%d" % (centre + far)))
 
     with t.component("pit_is_its_own_room", toggle="superdeepRoomsEnabled"):
         k = room()
@@ -1605,13 +1639,13 @@ def pit_prison_room(t):
             v = _sc(t, NS_PROOF, "ProofCaptureDown", str(h2))
             _expect(v.startswith("VERDICT SettingOff") if t._guard() else None, "capture-down offered with the setting OFF: %s" % v)
     with t.component("warden_served_from_lip", toggle="wardenFromLipEnabled"):
-        k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s|%d,%d|PrisonerConvert" % ((col,) + centre)))
+        k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)))
         if t._guard():
             _expect(k.get("serve") == "True" and k.get("kind") == "Interact" and k.get("lipSuperdeep") == "False"
                     and float(k.get("dist", 99)) <= 6.0, "convert on a pit prisoner not served from a lip cell: %s" % k)
     with t.component("warden_lip_off", toggle="wardenFromLipEnabled"):
         with _setting(t, "wardenFromLipEnabled", False):
-            k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s|%d,%d|PrisonerConvert" % ((col,) + centre)))
+            k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)))
             _expect(k.get("serve") == "False" if t._guard() else None, "lip service with the setting OFF: %s" % k)
 
 
@@ -1629,7 +1663,7 @@ def liquid_pump(t):
     t.bridge_call("jawa/build_batch", ops="RM_LiquidPump:%d,%d;RM_LiquidTank:%d,%d" % (pump + tank), faction="player")
 
     def rd(mode=""):
-        return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d%s" % (pump + (("|" + mode) if mode else ""),)))
+        return _kv(_sc(t, NS_PROOF, "ProofPump", "%d,%d" % pump + ((";" + mode) if mode else "")))
 
     def level():
         return sum((f or 0) for _, f in _state(t, ch))
@@ -1691,6 +1725,8 @@ def bottle_revert(t):
         if t._guard():
             b, f = count("RM_Bottle_BoilingWater"), count("RM_Bottle_FreshWater")
             _expect(b == 0 and f == 3, "after 2750 ticks: %d boiling, %d fresh (want 0 / 3)" % (b, f))
+    # a fresh bottle left lying is emptied into the nearest tank by a colonist (1 unit): it once read as a hose leak
+    t.bridge_call("jawa/destroy_batch", rects=_rect(x0 + 3, z0 + 5, 8, 3), categories="All")
 
 
 @suite.chain("wall_faces")
@@ -1714,13 +1750,14 @@ def wall_faces(t):
 
 
 def _dig_by_hand(t, pid, c):
-    """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut)."""
+    """One real canal cut by a colonist's RM_DigCanalJob (the only caller of RM_DigDiscoveryState.OnCut). Done means
+    the cell's DEPTH rose (live 19:38: a designation query reading 'gone' proved nothing -- no cut had happened)."""
+    d0 = _rep(t, *c).get("depth") or 0
     t.bridge_call("jawa/designate_batch", action="add", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
     t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="RM_DigCanalJob", targetAX=c[0], targetAZ=c[1])
-    for _ in range(12):
+    for _ in range(16):
         t.wait_ticks(500)
-        q = t.bridge_call("jawa/designate_batch", action="query", designation="RM_DigCanal", rect=_rect(c[0], c[1], 1, 1))
-        if not (q or {}).get("totalNow"):
+        if (_rep(t, *c).get("depth") or 0) > d0:
             return True
     return False
 
@@ -1739,6 +1776,9 @@ def dig_finds(t):
     x0, z0 = _prep_plot(t, "A")
     c = (x0 + 10, z0 + 7)
     pid = _spawn_pawn_at(t, "Colonist", c[0] - 2, c[1])
+    t.bridge_call("jawa/set_pawn_skill", pawn=pid, skill="Mining", level=10)
+    t.bridge_call("jawa/set_work_priority", pawnId=pid, workType="Mining", priority=1)
+    t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
 
     def letters():
         return int((t.bridge_call("jawa/letter_list") or {}).get("count") or 0)
@@ -1844,6 +1884,7 @@ def machinery_found_works(t):
     for name, tog, why in (("ruins_mapgen", "liquidWorksRuinsEnabled", "worldgen: needs two fresh shore maps"),
                            ("ruin_stock_mapgen", "liquidWorksRuinStockEnabled", "worldgen: needs a fresh shore map"),
                            ("pipe_adapters", "pipeAdaptersEnabled", "VE PipeSystem is on no test list")):
+        t.upstream_failed = False          # each declared row carries its OWN reason, not the previous row's
         with t.component(name, toggle=tog):
             if t._guard():
                 t.upstream_reason = "UNMEASURED: %s" % why
