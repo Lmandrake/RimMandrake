@@ -182,7 +182,9 @@ def load():
 def save(data):
     tmp = "%s.tmp.%d.%d" % (LOG_PATH, os.getpid(), time.time_ns())
     os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
-    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    # O_BINARY: on Windows os.open defaults to TEXT mode and turned every \n into \r\n (MEASURED 2026-10-06, the first
+    # python.exe recording rewrote all 676 lines of the file).
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_BINARY", 0), 0o644)
     try:
         try:
             _lock(fd)
