@@ -1,0 +1,23 @@
+[
+ {"id": "RM_WallFace_North", "rimflow_item_id": "EXCAVATION_WALL_ART_1",
+  "prompt": "A seamless horizontal strip texture of the inner earthen face of a freshly dug trench wall, seen from slightly above and to the south (RimWorld top-down three-quarter view, like the Quarry mod's pit walls). Top edge: a thin sunlit rim of dry tan topsoil with a few roots and pebbles. Below it the wall face: packed sandy-brown earth with faint horizontal strata and pick marks, darkening steadily toward the bottom edge, which is deep shadowed umber. The strip tiles seamlessly left-to-right. Painterly RimWorld art style, flat even lighting from above.",
+  "canvas_w": 256, "canvas_h": 128, "background": "transparent", "priority": 60,
+  "style_notes": "The whole canvas is covered by the earth face; the left and right edges match so copies placed side by side join without a seam. It is stretched vertically in game from 0.2 to 0.9 of a cell tall, so strata are soft, not fine detail.",
+  "no_subject": "texture strip for SectionLayer_RMExcavationWalls (drawn by code, no def)",
+  "biome_neutral": true,
+  "install_to": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Excavation/RM_WallFace_North.png"},
+ {"id": "RM_WallFace_Side", "rimflow_item_id": "EXCAVATION_WALL_ART_1",
+  "prompt": "A seamless vertical strip texture of the side wall of a dug trench seen nearly edge-on from above in RimWorld's top-down three-quarter view: a narrow band of packed sandy-brown earth with soft vertical shading, a lighter thin rim on the outer long edge and a darker shadowed inner long edge. Tiles seamlessly top-to-bottom. Painterly RimWorld art style.",
+  "canvas_w": 64, "canvas_h": 256, "background": "transparent", "priority": 60,
+  "style_notes": "The whole canvas is covered by the earth band; top and bottom edges match so it stacks without a seam. It is drawn 0.06 to 0.24 of a cell wide.",
+  "no_subject": "texture strip for SectionLayer_RMExcavationWalls (drawn by code, no def)",
+  "biome_neutral": true,
+  "install_to": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Excavation/RM_WallFace_Side.png"},
+ {"id": "RM_Spikes", "rimflow_item_id": "EXCAVATION_WALL_ART_1", "target_def": "RM_Spikes",
+  "prompt": "RimWorld building sprite: a cluster of sharpened wooden and scrap-metal stakes planted upright in the dark floor of a deep pit, seen from above and slightly to the south in RimWorld's top-down three-quarter view. About nine stakes of uneven height, points angled upward, tips pale and splintered, a few stained dark. Only the upper third of each stake catches light; the bases sit in deep shadow. Painterly RimWorld art style.",
+  "canvas_w": 128, "canvas_h": 128, "background": "transparent", "priority": 60,
+  "style_notes": "Owner, 2026-09-17: the spikes will barely be tall enough to see from this camera, but something must show their presence; keep the cluster inside the central 80% of the canvas, readable at one cell.",
+  "biome_neutral": true,
+  "target_texpath": "Things/Building/FlowWorks/RM_Spikes",
+  "install_to": "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/RM_Spikes.png"}
+]

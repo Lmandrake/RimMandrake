@@ -37,3 +37,9 @@
   assert live: pump between a 3-cell water channel and a tank -> after 750 ticks channel levels -3, tank +15 RM_Liquid_FreshWater; pour mode with tar in tank -> dry channel gains tar levels; water channel refuses tar; unpowered -> nothing. settings: liquidPumpEnabled
 - art owed: RM_LiquidPump uses the vanilla MoisturePump texture as placeholder
 - site_spec SETTINGS owed: liquidPumpEnabled True
+### EXCAVATION_WALL_ART_1 (form decided + carrier built; art queued; ladder stays OWNER)
+- form: SectionLayer_RMExcavationWalls over the depth grid (north face band grows/darkens with drop, side strips, liquid covers the foot); procedural vertex-colour placeholder now, uses Textures/Things/Building/FlowWorks/Excavation/RM_WallFace_North/_Side when installed
+- art queued (artpipe pending, list infrastructure/artpipe/art_lists/excavation_wall_art_2026-10-05.json): RM_WallFace_North, RM_WallFace_Side, RM_Spikes. On install: flip RM_Spikes texPath from Skullspike placeholder to Things/Building/FlowWorks/RM_Spikes.
+- ladder art: A/B concepts unruled (owner) — placeholder kept
+- assert live (frame): dig D1..D4 cells side by side under open ground -> four visibly different north-face bands; a brimming cut shows no face; settings excavationWallFacesEnabled off -> faces gone after redraw
+- site_spec SETTINGS owed: excavationWallFacesEnabled True

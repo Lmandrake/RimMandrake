@@ -137,6 +137,8 @@
     <Compile Include="LiquidTypes\RM_CompLiquidRevert.cs" />
     <Compile Include="LiquidTypes\Building_LiquidPump.cs" />
     <Compile Include="RM_PumpMath.cs" />
+    <Compile Include="RM_WallFaceMath.cs" />
+    <Compile Include="Superdeep\RM_ExcavationWalls.cs" />
     <Compile Include="LiquidTypes\RM_LiquidProperties.cs" />
     <Compile Include="LiquidTypes\LiquidCorrosion.cs" />
     <Compile Include="LiquidTypes\LiquidIgnition.cs" />

@@ -168,6 +168,8 @@ namespace RimMandrake.FlowWorks
         // PIT_DEPTH_DRAW_OFFSET_1 (PROVISIONAL 0.3 cells/level: D=4 lip 1.2x a person's height): pawns drawn lower on dug cells.
         public static bool pitDepthDrawOffsetEnabled = true;
         public static float pitSinkPerLevel = 0.3f;
+        // EXCAVATION_WALL_ART_1: wall faces drawn by SectionLayer_RMExcavationWalls (procedural until art lands).
+        public static bool excavationWallFacesEnabled = true;
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors that pass liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
         public static bool sluiceLetsBigThroughEnabled = true;
@@ -338,6 +340,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
             Scribe_Values.Look(ref pitDepthDrawOffsetEnabled, "pitDepthDrawOffsetEnabled", true);
             Scribe_Values.Look(ref pitSinkPerLevel, "pitSinkPerLevel", 0.3f);
+            Scribe_Values.Look(ref excavationWallFacesEnabled, "excavationWallFacesEnabled", true);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
             Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
             Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
@@ -677,6 +680,17 @@ namespace RimMandrake.FlowWorks
                 list.Label("Sink per depth level (cells): " + pitSinkPerLevel.ToString("F2")
                   + "  (superdeep: " + (pitSinkPerLevel * 4f).ToString("F2") + ")");
                 pitSinkPerLevel = list.Slider(pitSinkPerLevel, 0.05f, 0.5f);
+            }
+
+            bool wallsWas = excavationWallFacesEnabled;
+            list.CheckboxLabeled("Dug cells show their walls", ref excavationWallFacesEnabled,
+                "Every cut draws the faces of its banks the way you would see them from above and to the south: the far "
+              + "(north) bank's face is a band that grows taller and darker the deeper the cut, and the side banks show "
+              + "as narrow faces. Liquid standing in a cut covers the foot of its walls. Drawing only. Off: a dug cell "
+              + "shows only its ground.");
+            if (wallsWas != excavationWallFacesEnabled)
+            {
+                SectionLayer_RMExcavationWalls.RedrawAll();
             }
 
             list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
