@@ -1,0 +1,677 @@
+[
+ {
+  "id": "deeps_bloodropmoth_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_BloodropMoth",
+  "target_original": [
+   "RSW_BloodropMoth"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it, but take eway its eyes. RimMandrake tier.\" Edit the attached accepted sprite of the drinker, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.8,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/8e/8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it, but take eway its eyes. RimMandrake tier. "
+ },
+ {
+  "id": "deeps_bloodropmoth_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_BloodropMoth",
+  "target_original": [
+   "RSW_BloodropMoth"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it, but take eway its eyes. RimMandrake tier.\" Edit the attached accepted sprite of the drinker, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.8,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/ef/ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it, but take eway its eyes. RimMandrake tier. "
+ },
+ {
+  "id": "deeps_bloodropmoth_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_BloodropMoth",
+  "target_original": [
+   "RSW_BloodropMoth"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it, but take eway its eyes. RimMandrake tier.\" Edit the attached accepted sprite of the drinker, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.8,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/c2/c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it, but take eway its eyes. RimMandrake tier. "
+ },
+ {
+  "id": "deeps_facetmothlarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/c8/c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_facetmothlarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/d7/d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_facetmothlarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_FacetMothLarvae",
+  "target_original": [
+   "RSW_FacetMothLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes. Rimmandrake tier\" Edit the attached accepted sprite of the soulchime, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/32/32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes. Rimmandrake tier"
+ },
+ {
+  "id": "deeps_megapleura_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Megapleura",
+  "target_original": [
+   "RSW_Megapleura"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes, Mandrake tier\" Edit the attached accepted sprite of the megapleura, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/8b/8bbd6c1a909c7f81011b64e14b51b5f831be1ddcfc17a4127adec012039672f5.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes, Mandrake tier"
+ },
+ {
+  "id": "deeps_megapleura_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Megapleura",
+  "target_original": [
+   "RSW_Megapleura"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes, Mandrake tier\" Edit the attached accepted sprite of the megapleura, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/8e/8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes, Mandrake tier"
+ },
+ {
+  "id": "deeps_megapleura_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Megapleura",
+  "target_original": [
+   "RSW_Megapleura"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes, Mandrake tier\" Edit the attached accepted sprite of the megapleura, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/94/9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes, Mandrake tier"
+ },
+ {
+  "id": "deeps_mossbeetlelarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_MossBeetleLarvae",
+  "target_original": [
+   "RSW_MossBeetleLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes\" Edit the attached accepted sprite of the moss grub, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.8,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/31/3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes"
+ },
+ {
+  "id": "deeps_mossbeetlelarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_MossBeetleLarvae",
+  "target_original": [
+   "RSW_MossBeetleLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes\" Edit the attached accepted sprite of the moss grub, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.8,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/de/decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes"
+ },
+ {
+  "id": "deeps_mossbeetlelarvae_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_MossBeetleLarvae",
+  "target_original": [
+   "RSW_MossBeetleLarvae"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like but remove eyes\" Edit the attached accepted sprite of the moss grub, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY remove its eyes entirely: paint every eye over with the surrounding skin or carapace so the head reads eyeless, with no eye spots, glints or sockets left. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.8,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/0a/0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like but remove eyes"
+ },
+ {
+  "id": "deeps_gembug_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Gembug",
+  "target_original": [
+   "RSW_Gembug"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier.\" Edit the attached accepted sprite of the gembug, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY its eyes only: make them small faceted gems of pale cool blue, crystalline and hard-edged with a soft inner glow, nothing like the warm, wet, dark eyes of a warm-blooded animal. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": [
+   "east"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/09/09ea2845f712e69ccf7f38057b46b860fe35823657fb576fa5b7577df1cdaf4f.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier. "
+ },
+ {
+  "id": "deeps_gembug_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Gembug",
+  "target_original": [
+   "RSW_Gembug"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier.\" Edit the attached accepted sprite of the gembug, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY its eyes only: make them small faceted gems of pale cool blue, crystalline and hard-edged with a soft inner glow, nothing like the warm, wet, dark eyes of a warm-blooded animal. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": [
+   "north"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/4f/4fe4f2b1eb78fddec42f0f0f33f6acd1f2b72fd09318b966a857de0b4e3e1dc4.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier. "
+ },
+ {
+  "id": "deeps_gembug_eyes_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Gembug",
+  "target_original": [
+   "RSW_Gembug"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier.\" Edit the attached accepted sprite of the gembug, a creature of the Lantern Deeps. Keep the same individual, the same pose and view, the same silhouette, proportions, colours and painted style exactly; change ONLY its eyes only: make them small faceted gems of pale cool blue, crystalline and hard-edged with a soft inner glow, nothing like the warm, wet, dark eyes of a warm-blooded animal. Change nothing else.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 1.5,
+  "facings": [
+   "south"
+  ],
+  "reference": "/mnt/d/Luke/dev/_artstore/86/86c21cd513be958bc8ba859d8a594427979a2674abfeedc96769cd0e18cbdee1.png",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier. "
+ },
+ {
+  "id": "deeps_blinker_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Blinker",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nice image, but make it have three \"arms\" radiating out, pushing itself along, as though legless and clumsy.\" Edit the attached accepted sprite of the blinker, a hydrocarbon animal of the Lantern Deeps: keep its soft upright pale lilac-blue translucent teardrop body, the single large lens-window of lamp-yellow fluid, its palette and painted style. Change its limbs: exactly THREE arm-like limbs radiating out from the lower body, evenly spread, which it plants and shoves against the ground to drag itself along. No legs at all; the body tilts and slumps so it reads legless and clumsy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "RM_Blinker_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Nice image, but make it have three \"arms\" radiating out, pushing itself along, as though legless and clumsy. "
+ },
+ {
+  "id": "deeps_blinker_v2",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_Blinker",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nice image, but make it have three \"arms\" radiating out, pushing itself along, as though legless and clumsy.\" Edit the attached accepted sprite of the blinker, a hydrocarbon animal of the Lantern Deeps: keep its soft upright pale lilac-blue translucent teardrop body, the single large lens-window of lamp-yellow fluid, its palette and painted style. Change its limbs: exactly THREE arm-like limbs radiating out from the lower body, evenly spread, which it plants and shoves against the ground to drag itself along. No legs at all; the body tilts and slumps so it reads legless and clumsy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "north",
+   "south"
+  ],
+  "derive_from": "deeps_blinker_v2_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Hydrocarbon life of the Lantern Deeps (our own invention): pale glowing blue skin, yellow hydrocarbon internal fluids visible through it, never red blood, never fur. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Nice image, but make it have three \"arms\" radiating out, pushing itself along, as though legless and clumsy. "
+ },
+ {
+  "id": "deeps_brellikbulb_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_BrellikBulb",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the brellik bulb: a fungal plant with brightly glowing amber tips), a DIFFERENT individual: vary the number, height and lean of its stalks and the size and spread of the glowing tips; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/ad/ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335.png"
+ },
+ {
+  "id": "deeps_brellikbulb_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_BrellikBulb",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the brellik bulb: a fungal plant with brightly glowing amber tips), a DIFFERENT individual: vary the number, height and lean of its stalks and the size and spread of the glowing tips; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/ad/ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335.png"
+ },
+ {
+  "id": "deeps_deepmycelium_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_DeepMycelium",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the mycelium: a low carpet of many interwoven fungal threads and tiny caps), a DIFFERENT individual: vary the shape and density of the mat and the scatter of small caps; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "derive_from": "gapall_RM_DeepMycelium_v1"
+ },
+ {
+  "id": "deeps_deepmycelium_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_DeepMycelium",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the mycelium: a low carpet of many interwoven fungal threads and tiny caps), a DIFFERENT individual: vary the shape and density of the mat and the scatter of small caps; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "derive_from": "gapall_RM_DeepMycelium_v1"
+ },
+ {
+  "id": "deeps_kuvraspout_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_KuvraSpout",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the kuvra spout: an aquatic fungus growing as an upside-down glowing cone), a DIFFERENT individual: vary the height, flare and tilt of the cone and the count of smaller cones around it; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/30/30ea2119cdef2ba9e390575e56bd6d04ed5ee57bd1a7a4dca53aeca9e3d72509.png"
+ },
+ {
+  "id": "deeps_kuvraspout_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_KuvraSpout",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the kuvra spout: an aquatic fungus growing as an upside-down glowing cone), a DIFFERENT individual: vary the height, flare and tilt of the cone and the count of smaller cones around it; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/30/30ea2119cdef2ba9e390575e56bd6d04ed5ee57bd1a7a4dca53aeca9e3d72509.png"
+ },
+ {
+  "id": "deeps_nurrikgill_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_NurrikGill",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variant\" Same species as the attached accepted render (the nurrik gill: a near-black cap over brightly glowing gills), a DIFFERENT individual: vary the cap width and tilt, stem height and how many caps cluster together; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variant",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/24/2471506b87421a2e465a0db717570d710673fe8ac21874372612f10aaa262ff5.png"
+ },
+ {
+  "id": "deeps_nurrikgill_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_NurrikGill",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variant\" Same species as the attached accepted render (the nurrik gill: a near-black cap over brightly glowing gills), a DIFFERENT individual: vary the cap width and tilt, stem height and how many caps cluster together; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variant",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/24/2471506b87421a2e465a0db717570d710673fe8ac21874372612f10aaa262ff5.png"
+ },
+ {
+  "id": "deeps_prennalace_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_PrennaLace",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the prenna lace: a grey fungus hanging cloth-like lace from under its cap), a DIFFERENT individual: vary the cap shape, the length and drape of the lace and the cluster size; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/8c/8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d.png"
+ },
+ {
+  "id": "deeps_prennalace_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_PrennaLace",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the prenna lace: a grey fungus hanging cloth-like lace from under its cap), a DIFFERENT individual: vary the cap shape, the length and drape of the lace and the cluster size; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/8c/8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d.png"
+ },
+ {
+  "id": "deeps_quorrfern_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_QuorrFern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the quorr fern: a fern-and-mushroom symbiosis, the undergrowth of the crystal voids), a DIFFERENT individual: vary the frond count and spread and the placement of the mushroom caps among them; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/f7/f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730.png"
+ },
+ {
+  "id": "deeps_quorrfern_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_QuorrFern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the quorr fern: a fern-and-mushroom symbiosis, the undergrowth of the crystal voids), a DIFFERENT individual: vary the frond count and spread and the placement of the mushroom caps among them; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/f7/f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730.png"
+ },
+ {
+  "id": "deeps_twitchingpuffer_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_TwitchingPuffer",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the twitching puffer: a swollen spore-bladder ringed with finger-length tentacles), a DIFFERENT individual: vary the bladder size and shape and the count and curl of the tentacles; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/df/df997c12f65024f99b4fa420fe477bbc9667d698559641f52cf58b0f081157ad.png"
+ },
+ {
+  "id": "deeps_twitchingpuffer_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_TwitchingPuffer",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the twitching puffer: a swollen spore-bladder ringed with finger-length tentacles), a DIFFERENT individual: vary the bladder size and shape and the count and curl of the tentacles; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/df/df997c12f65024f99b4fa420fe477bbc9667d698559641f52cf58b0f081157ad.png"
+ },
+ {
+  "id": "deeps_vellokreed_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_VellokReed",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the vellok reed: a tall aquatic fungus lit from inside), a DIFFERENT individual: vary the number, height and lean of the reeds; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/3d/3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578.png"
+ },
+ {
+  "id": "deeps_vellokreed_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_VellokReed",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the vellok reed: a tall aquatic fungus lit from inside), a DIFFERENT individual: vary the number, height and lean of the reeds; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/3d/3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578.png"
+ },
+ {
+  "id": "deeps_zivvittaper_varb_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_ZivvitTaper",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the zivvit taper: a mushroom with a long narrow cap glowing at the tip), a DIFFERENT individual: vary the height, curve and count of the tapers; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/57/573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd.png"
+ },
+ {
+  "id": "deeps_zivvittaper_varc_v1",
+  "rimflow_item_id": "LANTERNDEEPS_SHEET_ART_REDO_1",
+  "target_def": "RM_ZivvitTaper",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" Same species as the attached accepted render (the zivvit taper: a mushroom with a long narrow cap glowing at the tip), a DIFFERENT individual: vary the height, curve and count of the tapers; keep the same material, palette family, glow, painterly quality and clean silhouette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "drawsize": 1.0,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred plant on a transparent background, no ground, no props.",
+  "owner_note": "add variants",
+  "canon_reference": "/mnt/d/Luke/dev/_artstore/57/573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd.png"
+ }
+]
