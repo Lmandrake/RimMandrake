@@ -3056,3 +3056,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:47:35Z","tsn":1791294455717590538}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY liquid kits load check","ts":"2026-10-06T13:50:12Z","tsn":1791294612153485819}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:51:34Z","tsn":1791294694470232016}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY FlowWorks human review map","ts":"2026-10-06T13:55:57Z","tsn":1791294957812299707}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T14:07:13Z","tsn":1791295633444140546}
