@@ -284,8 +284,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
             fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
                              "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
     for fam, faces in sorted(fams.items(), key=lambda kv: fam_meta[kv[0]]["date"], reverse=True):
-        if not fam_meta[fam]["bound"] and NOT_BODY_JOB.search(fam):
-            continue
+        if not fam_meta[fam]["bound"] and (NOT_BODY_JOB.search(fam) or FLIP_FAM_RE.match(fam)):
+            continue          # a flight frame joined by name is not a body candidate (flipbook_cols shows it)
         m = fam_meta[fam]
         cols.append({"kind": "artpipe", "faces": faces, "date": m["date"],
                      "label": f"render {fam}" + (FAILED_CANON_BADGE if _is_failed_canon(fam, _fc) else ""),
@@ -842,6 +842,70 @@ def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
             for k, f in sorted(fams.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
 
 
+# FLYER_FLIPBOOK_ART_1: a wing-beat is a whole-animal flip-book, `<prefix><N>_<facing>` for N = 1..8. Each frame
+# is its own artpipe job (`<seq>_<N>_<facing>`), so by name they would show as eight one-frame sets nobody can
+# judge. They are joined into ONE set per sequence (faces keyed "N_facing"), drawn as a frames grid with a looping
+# playback per facing, and picked as a whole.
+FLIP_FAM_RE = re.compile(r"^(?P<seq>.*fl(?:y|ight|ying)\w*?)_(?P<n>\d{1,2})$", re.I)
+FLIP_RES_RE = re.compile(r"^(?P<prefix>.*_fly(?:ing)?_?)(?P<n>\d{1,2})$", re.I)
+FLIP_FACINGS = ("east", "south", "north")
+FLIP_ROLE = "wing-beat flight frames"
+
+
+def flip_key(n, facing) -> str:
+    return f"{int(n)}_{facing}"
+
+
+def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
+    """Flip-book sets for a row: artpipe frame sequences found by name (word-bounded, like name_render_cols), and
+    live frame sets under any of the row's flyingAnimationFramePathPrefix values."""
+    keys = [S.norm(w) for w in words if w and len(S.norm(w)) >= 4]
+    exact = {e.lower() for e in exact}
+    seqs, meta = defaultdict(dict), {}
+    for sha, vs in idx.variants.items():
+        if idx.is_purged(sha):
+            continue
+        for v in vs:
+            if v.get("kind") != "artpipe":
+                continue
+            job = v.get("job", "")
+            fm = FLIP_FAM_RE.match(FAM_RE.sub("", job))
+            fac = v.get("facing") if v.get("facing") in FLIP_FACINGS else (FAM_RE.search(job) or [None, None])[1]
+            if not fm or fac not in FLIP_FACINGS:
+                continue
+            seq = fm.group("seq")
+            sl = seq.lower()
+            if not (sl in exact or any(S.token_match(sl, k) for k in keys)):
+                continue
+            seqs[seq].setdefault(flip_key(fm.group("n"), fac), sha)
+            m = meta.setdefault(seq, {"date": "", "prompt": v.get("prompt", ""), "item": v.get("item")})
+            m["date"] = max(m["date"], v.get("date", "") or "")
+    out = [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "label": f"flight frames {k}",
+            "detail": f"{meta[k]['date']} · {len(f)} frames · {meta[k]['item'] or ''}",
+            "prompt": (meta[k]["prompt"] or "")[:240], "bound": False}
+           for k, f in sorted(seqs.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
+    for pre in prefixes:
+        faces = {}
+        for (mod, rel), ev in idx.live.items():
+            pt = L.parse_texfile(rel)
+            fm = FLIP_RES_RE.match(pt["res"])
+            if fm and not pt["mask"] and pt["res"].startswith(pre) and pt["facing"] in FLIP_FACINGS:
+                faces.setdefault(flip_key(fm.group("n"), pt["facing"]), ev["sha"])
+        if faces:
+            out.insert(0, {"kind": "live", "faces": faces, "date": "", "winner": True, "bound": True,
+                           "label": f"IN GAME — {pre.rsplit('/', 1)[-1]}", "prompt": "",
+                           "detail": f"the flip-book the game draws now ({len(faces)} frames under {pre})"})
+    return out
+
+
+def flip_layout(cols: list[dict]) -> tuple[list[str], int, list[str]]:
+    """(face keys in grid order, frame count, facings present) for a flip-book graphic."""
+    keys = {k for c in cols for k in c["faces"]}
+    n = max([int(k.split("_")[0]) for k in keys] + [0])
+    fac = [f for f in FLIP_FACINGS if any(k.endswith("_" + f) for k in keys)]
+    return [flip_key(i, f) for f in fac for i in range(1, n + 1)], n, fac
+
+
 def _assign_letters(cols: list[dict], prev: dict, reserved=()) -> None:
     """Reuse the remembered letter for a column whose pictures are unchanged; new columns take the next letter
     never used on this row before (remembered or reserved). Letters are append-only: a set keeps its letter for
@@ -928,6 +992,11 @@ BIOME_BODY = r"""
    thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
    the right show only this row's letters. */
 const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
+const faceAbbr = f => f in FACE_ABBR ? FACE_ABBR[f] : f.replace(/^(\d+)_(\w).*$/, (m, n, d) => n + d.toUpperCase());
+if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelectorAll('.bs-play[data-anim]').forEach(el => {
+  const fr = el.dataset.anim.split('|'), i = ((+el.dataset.i || 0) + 1) % fr.length;
+  el.dataset.i = i; const im = el.querySelector('img'); if (im) im.src = fr[i];
+}), 66);
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
@@ -940,7 +1009,19 @@ const _itemBody = it => {
     if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
     const p = purge.has(s);
     const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="reject + PURGE: delete this picture from the art store so it never appears again" onclick="event.stopPropagation();artTogglePurge('${it.id}','${s}')">${p ? '✕ purging' : '✕'}</button>` : '';
-    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${FACE_ABBR[f] ? `<span class="bs-face">${FACE_ABBR[f]}</span>` : ''}${btn}</div>`;
+    const ab = faceAbbr(f);
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
+  };
+  /* flip-book (wing-beat) sets: one grid row per facing, a looping playback cell first, then frames 1..N */
+  const faces = (c, g) => {
+    if (!g.flip) return `<div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>`;
+    const rows = g.flipFacings.map(face => {
+      const ks = g.facings.filter(k => k.endsWith('_' + face));
+      const fr = ks.map(k => c.faces[k] && it.thumbs[c.faces[k]]).filter(Boolean);
+      const play = fr.length ? `<div class="bs-cell bs-play" title="${face}: the frames looping at half game speed" data-anim="${fr.join('|')}"><img src="${fr[0]}" alt=""><span class="bs-face">▶${FACE_ABBR[face]}</span></div>` : '<div class="bs-cell bs-gap">—</div>';
+      return play + ks.map(k => cell(c, k)).join('');
+    }).join('');
+    return `<div class="bs-faces bs-frames" style="grid-template-columns:repeat(${g.nframes + 1},auto)">${rows}</div>`;
   };
   const col = (c, g) => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
@@ -949,7 +1030,7 @@ const _itemBody = it => {
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
       <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
-      <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
+      ${faces(c, g)}
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
@@ -1084,6 +1165,8 @@ BIOME_STYLE = """
 .bs-set.ac-win .bs-head span{color:#8ac3e8;font-weight:600}
 .bs-pick{cursor:pointer}.bs-set:hover{border-color:#3d4653}.bs-set.ac-picked:hover{border-color:var(--ok)}
 .bs-faces{display:flex;gap:3px;cursor:default}
+.bs-frames{display:grid;gap:3px}
+.bs-play{outline:2px solid #e8b64c;outline-offset:-2px}
 .bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
 .bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
 .bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
@@ -1481,6 +1564,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     for r in rows:
         graphics, seen = [], set()
         for res in (r.get("art") or {}).get("resources") or []:
+            if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1"):
+                continue          # a flip-book prefix: its frames join one set below, never per-frame columns
             br = build_row(idx, res["res"], order, slots)
             cols = [c for c in br["cols"] if _fkey(c) not in seen]
             seen.update(_fkey(c) for c in cols)
@@ -1490,8 +1575,16 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         have = {s for g in graphics for c in g["cols"] for s in c["faces"].values()}
         words = {_stem(x) for x in [r["key"], r.get("port")] + list(r.get("defNames") or []) if x}
         words |= {(r.get("label") or "").replace(" ", "")}
+        prefixes = [res["res"] for res in (r.get("art") or {}).get("resources") or []
+                    if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1")]
+        flips = [c for c in flipbook_cols(idx, words, r.get("artpipe_state_jobs") or [], prefixes)
+                 if not (set(c["faces"].values()) & have)]
+        flip_shas = {s for c in flips for s in c["faces"].values()}
         named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [])
-                 if _fkey(c) not in seen and not (set(c["faces"].values()) & have)]
+                 if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))]
+        if flips:
+            graphics.append({"res": "_flip:" + (prefixes[0] if prefixes else r["key"]), "role": FLIP_ROLE,
+                             "cols": flips, "prior_raw": None, "flip": True})
         if named:
             graphics.append({"res": None, "role": ROLE_TEXT[None], "cols": named, "prior_raw": None})
         # req 14: a picture the ledger has PURGED (his reject+purge, on any sheet) is never shown as a column
@@ -1574,6 +1667,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             elif g["res"] is not None and pf[0]:
                 picks[gkey] = pf[0]
             facings = [f for f in FACINGS if any(f in c["faces"] for c in g["cols"])]
+            flip = {}
+            if g.get("flip"):
+                facings, nfr, ffac = flip_layout(g["cols"])
+                flip = {"flip": True, "nframes": nfr, "flipFacings": ffac}
             for c in g["cols"]:
                 for f, s in list(c["faces"].items()):
                     if s in thumbs:
@@ -1598,7 +1695,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 prior = {"text": text, "note": pr.get("note", ""), "was": was}
             gitems.append({
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
-                "prior": prior,
+                "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
                           if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive")}
                          | {"short": _short(c)} for c in g["cols"]]})
