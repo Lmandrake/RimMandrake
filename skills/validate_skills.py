@@ -44,6 +44,8 @@ def main():
         if not raw.startswith("---"):
             add(sk, "ERROR", "no YAML frontmatter"); continue
         end = raw.find("\n---", 3)
+        if end < 0:
+            add(sk, "ERROR", "YAML frontmatter is never closed (no second '---')"); continue
         fm, body = raw[3:end], raw[end+4:]
 
         name = re.search(r"^name:\s*(.+)$", fm, re.M)
