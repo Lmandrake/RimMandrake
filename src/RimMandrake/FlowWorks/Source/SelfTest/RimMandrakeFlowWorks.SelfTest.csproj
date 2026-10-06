@@ -49,6 +49,7 @@
     <Compile Include="..\RM_PitDrawMath.cs" />
     <Compile Include="..\RM_FireMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
+    <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

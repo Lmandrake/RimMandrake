@@ -29,10 +29,9 @@
   build_bottle_thingdef_xml's own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
-  Still deliberately NOT built (LIQUID_BOTTLE_LOOP_1's own stopping note):
-  revertsTo/rotsTo row data (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
-  requires a real revertTicks/rotTicks the moment either is set, and nothing
-  reads them yet).
+  Revert-on-bottle (boiling/icy -> fresh) is row data read by
+  RM_CompLiquidRevert, injected per size at startup. Rot (blood -> hemopack)
+  is NOT built: no blood row exists (blood is deferred in LIQUID_BOTTLE_LOOP_1).
   ============================================================================
 -->
 <Defs>

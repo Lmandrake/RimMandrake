@@ -12,8 +12,9 @@ namespace RimMandrake.FlowWorks
 	///      Hypothermia do the harm; nothing new is a "kind" of heat.
 	///   2. Exposure: every 250 ticks a spawned pawn on an unroofed, uncovered D=4 cell gains RM_PitExposure
 	///      severity; a colony prisoner also loses guest resistance (recruitment first). Two independent dials.
-	///   3. RM_ExposedPrisoner memory for free colonists (psychopaths nullify it by trait). 🔴 PROVISIONAL: hard
-	///      morality precepts are not yet nullifying; the exact def shape and numbers go to the owner.
+	///   3. RM_ExposedPrisoner memory for free colonists whose ideoligion minds refused beggars (the Charity
+	///      precepts' own structure — FeelsForExposedPrisoners); psychopaths nullify it by trait. The mood
+	///      number (-3, 1 day) is PROVISIONAL and goes to the owner.
 	/// </summary>
 	public static class RM_PitExposure
 	{
@@ -24,6 +25,60 @@ namespace RimMandrake.FlowWorks
 			IntVec3 c = p.Position;
 			return eng.IsSuperdeepExcavation(c) && !map.roofGrid.Roofed(c) && !Pits.RM_PitCoverUtility.IsCovered(map, c);
 		}
+
+		/// <summary>
+		/// Owner, 2026-09-17: <i>"it should hit compassionate folks like when you turn beggars away and ignore
+		/// psychopaths or "hard" morality cultures. Borrow their structure and piggyback, so we don't end up
+		/// making a whole new moral axis."</i> MEASURED (SUPERDEEP_SEAM_MEASURE_1 item 6): refusing beggars hurts
+		/// exactly the members of an ideoligion holding a Charity precept whose PreceptComp_KnowsMemoryThought
+		/// listens for CharityRefused_Beggars (Charity_Worthwhile / _Important / _Essential); an ideoligion
+		/// without one does not care. This reads that same fact, so the two can never disagree — no precept
+		/// is named here and no new axis exists. Psychopaths are nulled by the ThoughtDef's nullifyingTraits.
+		/// </summary>
+		public static bool FeelsForExposedPrisoners(Pawn colonist)
+		{
+			if (!ModsConfig.IdeologyActive || colonist?.Ideo == null)
+			{
+				return true;
+			}
+			Ideo ideo = colonist.Ideo;
+			if (charityCache.TryGetValue(ideo, out CharityEntry e) && e.tick == Find.TickManager.TicksGame)
+			{
+				return e.cares;
+			}
+			bool cares = false;
+			List<Precept> precepts = ideo.PreceptsListForReading;
+			for (int i = 0; i < precepts.Count && !cares; i++)
+			{
+				List<PreceptComp> comps = precepts[i].def.comps;
+				if (comps == null)
+				{
+					continue;
+				}
+				for (int j = 0; j < comps.Count; j++)
+				{
+					if (comps[j] is PreceptComp_KnowsMemoryThought k && k.eventDef != null
+						&& k.eventDef.defName == BeggarRefusalEvent)
+					{
+						cares = true;
+						break;
+					}
+				}
+			}
+			charityCache[ideo] = new CharityEntry { tick = Find.TickManager.TicksGame, cares = cares };
+			return cares;
+		}
+
+		/// <summary>Vanilla Ideology's HistoryEventDef (Precepts_Charity.xml).</summary>
+		public const string BeggarRefusalEvent = "CharityRefused_Beggars";
+
+		private struct CharityEntry
+		{
+			public int tick;
+			public bool cares;
+		}
+
+		private static readonly Dictionary<Ideo, CharityEntry> charityCache = new Dictionary<Ideo, CharityEntry>();
 
 		public static void Tick(Map map, RM_MapComponent_Excavation eng)
 		{
@@ -70,7 +125,7 @@ namespace RimMandrake.FlowWorks
 			{
 				foreach (Pawn colonist in map.mapPawns.FreeColonistsSpawned)
 				{
-					if (colonist.needs?.mood == null)
+					if (colonist.needs?.mood == null || !FeelsForExposedPrisoners(colonist))
 					{
 						continue;
 					}

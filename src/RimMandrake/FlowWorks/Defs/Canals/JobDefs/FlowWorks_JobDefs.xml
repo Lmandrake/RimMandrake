@@ -15,4 +15,13 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- SUPERDEEP_PRISON_ROOM_1: capture a held person from the lip, never by entering the pit. -->
+  <JobDef>
+    <defName>RM_CaptureDown</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_CaptureDown</driverClass>
+    <reportString>capturing TargetA from the edge of the pit.</reportString>
+    <makeTargetPrisoner>true</makeTargetPrisoner>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
 </Defs>

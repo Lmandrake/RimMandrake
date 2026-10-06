@@ -86,6 +86,8 @@
       <unitsPerBucket>5</unitsPerBucket>
       <barrel>RM_Barrel_BoilingWater</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
+      <revertsTo>RM_Liquid_FreshWater</revertsTo>
+      <revertTicks>2500</revertTicks>
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
@@ -117,6 +119,8 @@
       <unitsPerBucket>5</unitsPerBucket>
       <barrel>RM_Barrel_IcyWater</barrel>
       <unitsPerBarrel>25</unitsPerBarrel>
+      <revertsTo>RM_Liquid_FreshWater</revertsTo>
+      <revertTicks>5000</revertTicks>
     </bottled>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 

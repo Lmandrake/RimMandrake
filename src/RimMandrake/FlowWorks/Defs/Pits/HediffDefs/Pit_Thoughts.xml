@@ -2,7 +2,9 @@
 <Defs>
   <!-- PIT_TEMPERATURE_SOFTENING_1. PROVISIONAL numbers and shape - proposal to the owner, not his ruling.
        Compassionate colonists mind a captive left to roast in an open pit; psychopaths do not (nullifyingTraits).
-       Hard-morality precepts do not yet nullify it (owed once the owner picks the precepts). -->
+       Ideoligion: felt only by members of an ideoligion that minds refused beggars (a Charity precept
+       listening for CharityRefused_Beggars) - the owner's "borrow their structure" ruling, read in
+       RM_PitExposure.FeelsForExposedPrisoners. -->
   <ThoughtDef>
     <defName>RM_ExposedPrisoner</defName>
     <thoughtClass>Thought_Memory</thoughtClass>

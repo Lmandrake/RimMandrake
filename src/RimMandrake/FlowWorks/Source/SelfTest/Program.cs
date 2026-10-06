@@ -932,6 +932,32 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_FillEffectMath.ToxinPerCheck(3, 3, 0f, 0f, false), 0f, "water is not poison");
             });
 
+            // ── SUPERDEEP_PRISON_ROOM_1: the pit wall bounds rooms; capture down from the lip ──
+            Case("PitRoom_wall_splits_sides_and_lip_jobs_never_stand_in_the_pit", () =>
+            {
+                Assert(RM_PitRoomMath.SameSide(true, true) && RM_PitRoomMath.SameSide(false, false), "same side shares a room");
+                Assert(!RM_PitRoomMath.SameSide(true, false), "the pit wall splits rooms");
+                Assert(!RM_PitRoomMath.LipCandidate(true, true, 1f, 1.5f), "a superdeep cell is never a lip cell");
+                Assert(!RM_PitRoomMath.LipCandidate(false, false, 1f, 1.5f), "an unstandable cell is not a lip");
+                Assert(RM_PitRoomMath.LipCandidate(false, true, 1.41f, 1.5f), "a diagonal neighbour is a lip cell for touch");
+                Assert(!RM_PitRoomMath.LipCandidate(false, true, 2f, 1.5f), "two cells away cannot touch");
+                Assert(RM_PitRoomMath.KindOf("PrisonerConvert") == RM_PitRoomMath.LipKind.Interact, "convert down is an interaction");
+                Assert(RM_PitRoomMath.KindOf("PrisonerAttemptRecruit") == RM_PitRoomMath.LipKind.Interact, "recruit is an interaction");
+                Assert(RM_PitRoomMath.KindOf("DeliverFood") == RM_PitRoomMath.LipKind.Drop, "food is dropped down");
+                Assert(RM_PitRoomMath.KindOf("TendPatient") == RM_PitRoomMath.LipKind.Touch, "tending touches");
+                Assert(RM_PitRoomMath.KindOf("Mine") == RM_PitRoomMath.LipKind.None, "other jobs untouched");
+                AssertClose(RM_PitRoomMath.RadiusFor(RM_PitRoomMath.LipKind.Interact), 6f, "vanilla interaction range");
+            });
+            Case("PitRoom_capture_down_needs_a_held_person_and_a_prison_bed", () =>
+            {
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.Allowed, "held + prison = capture");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, false, true) == RM_PitRoomMath.CaptureDownVerdict.NotHeld, "too wide for the pit: not offered (Q4)");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, false, false, true, false) == RM_PitRoomMath.CaptureDownVerdict.NoPrisonBed, "a bare pit holds trapped enemies, not prisoners");
+                Assert(RM_PitRoomMath.CaptureDown(true, false, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.NotAPerson, "animals are not captured");
+                Assert(RM_PitRoomMath.CaptureDown(false, true, false, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.SettingOff, "setting off");
+                Assert(RM_PitRoomMath.CaptureDown(true, true, true, false, true, true) == RM_PitRoomMath.CaptureDownVerdict.OwnSide, "own people are not captured");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
