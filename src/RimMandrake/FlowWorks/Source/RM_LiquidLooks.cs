@@ -430,6 +430,22 @@ namespace RimMandrake.FlowWorks
 			return look == null ? "no FluidDef/LiquidDef " + defName : RM_LiquidLooks.Describe(look);
 		}
 
+		/// <summary>What a terrain actually draws with: shader, colour, texture, queue of its graphic and of its water-depth
+		/// overlay. For finding why a look change shows nothing (tar rendering flat black, 2026-10-06).</summary>
+		public static string Material(string terrainDefName)
+		{
+			TerrainDef t = DefDatabase<TerrainDef>.GetNamedSilentFail(terrainDefName);
+			if (t == null) return "no TerrainDef " + terrainDefName;
+			StringBuilder sb = new StringBuilder();
+			Material m = t.graphic?.MatSingle;
+			sb.Append("def.color=").Append(t.color).Append(" edge=").Append(t.edgeType).Append(" prec=").Append(t.renderPrecedence);
+			sb.Append(" | graphic=").Append(m == null ? "null" : m.shader.name + " color=" + m.color + " tex=" + (m.mainTexture != null ? m.mainTexture.name : "null") + " queue=" + m.renderQueue);
+			Material wd = t.waterDepthMaterial;
+			sb.Append(" | depth=").Append(wd == null ? "null" : wd.shader.name + " color=" + (wd.HasProperty("_Color") ? wd.color.ToString() : "n/a") + " queue=" + wd.renderQueue);
+			sb.Append(" | edgeMat=").Append(t.edgeType);
+			return sb.ToString();
+		}
+
 		/// <summary>"on" re-applies every look; "off" restores every fill's plain XML look (the Mod Setting's fallback).</summary>
 		public static string All(string onOff)
 		{
