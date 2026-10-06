@@ -179,7 +179,6 @@
       <RM_Scorchpod>0.85</RM_Scorchpod>  <!-- scorchpod - the-leaker -->
       <RM_BloodyMess>0.75</RM_BloodyMess>  <!-- bloody mess - the-body -->
       <RM_ContagionIkee>0.6</RM_ContagionIkee>  <!-- ikee - the-wretched-small; defName disambiguated from RM_Ikee (Stillsand's own RM_Ikee.xml collides — see the fauna file's own note and CONTAGION_IKEE_NAME_COLLISION_1) -->
-      <RM_Shambles>0.5</RM_Shambles>  <!-- the shambles - the-walking-dead -->
       <RM_Peeper>0.5</RM_Peeper>  <!-- peeper - the-watcher-kin -->
       <RM_Ogleknot>0.3</RM_Ogleknot>  <!-- ogleknot - the eye-knot (OGLEKNOT_CREATURE_BUILD_1) -->
       <RM_Eyestinger>0.5</RM_Eyestinger>  <!-- eyestinger - the-tail -->

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Shambles — moved here from src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml
+  on the owner's Contagion sheet note (2026-10-05): "this belongs in the Rot, not here."
+  Cast in RM_TheRot's wildAnimals; no longer cast in RM_Contagion. Art (sheet pick A) moved with it.
+  The <color> tint was removed the same night ("Why tinted green?"): the art is full-colour, and the
+  default Cutout shader multiplies the whole sprite by <color>.
+-->
+<Defs>
+
+  <!-- ======================================================================
+       THE SHAMBLES (RM_Shambles) — the walking dead — drawSize fixed at 2 across all stages per the carried sitting ruling (2026-09-10); baseHungerRate 0 (a fungal puppet doesn't eat). The disease-vector melee special is flavour text this wave (no HediffGiver wired), same deferral as Doublemaw's infection bite.
+       ====================================================================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Shambles</defName>
+    <label>the shambles</label>
+    <description>A dead thing still going somewhere, held up and steered by the fungus wearing it. Slow, virulent, and treatable if you catch it before it finishes catching you.</description>
+    <statBases>
+      <MoveSpeed>1.3</MoveSpeed>
+      <Mass>50</Mass>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>diseased claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHump</body>
+      <bloodDef>Filth_Slime</bloodDef>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.0</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>1</lifeExpectancy>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Shambles</defName>
+    <label>the shambles</label>
+    <race>RM_Shambles</race>
+    <combatPower>30</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

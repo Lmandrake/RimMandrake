@@ -218,7 +218,6 @@
           <texPath>Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
-          <color>(205,78,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
@@ -230,7 +229,6 @@
           <texPath>Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
-          <color>(205,78,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
@@ -242,7 +240,6 @@
           <texPath>Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-          <color>(205,78,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
@@ -753,7 +750,6 @@
           <texPath>Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
-          <color>(70,188,226)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -765,7 +761,6 @@
           <texPath>Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
-          <color>(70,188,226)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -777,7 +772,6 @@
           <texPath>Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
-          <color>(70,188,226)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -1079,7 +1073,6 @@
           <texPath>Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
-          <color>(140,34,44)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -1091,7 +1084,6 @@
           <texPath>Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.65</drawSize>
-          <color>(140,34,44)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -1103,7 +1095,6 @@
           <texPath>Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.75</drawSize>
-          <color>(140,34,44)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
@@ -1144,7 +1135,7 @@
       <body>QuadrupedAnimalWithPaws</body>
       <bloodDef>Filth_Blood</bloodDef>
       <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
-      <baseBodySize>0.25</baseBodySize>
+      <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.25</baseHealthScale>
       <baseHungerRate>0.25</baseHungerRate>
       <foodType>OmnivoreRoughAnimal</foodType>
@@ -1184,36 +1175,36 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.28</drawSize>
+          <drawSize>0.8</drawSize>
           <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.28</drawSize>
+          <drawSize>0.8</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.32</drawSize>
+          <drawSize>0.91</drawSize>
           <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.32</drawSize>
+          <drawSize>0.91</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.35</drawSize>
+          <drawSize>1.0</drawSize>
           <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.35</drawSize>
+          <drawSize>1.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
@@ -1321,111 +1312,6 @@
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
           <drawSize>0.45</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-    </lifeStages>
-  </PawnKindDef>
-
-  <!-- ======================================================================
-       THE SHAMBLES (RM_Shambles) — the walking dead — drawSize fixed at 2 across all stages per the carried sitting ruling (2026-09-10); baseHungerRate 0 (a fungal puppet doesn't eat). The disease-vector melee special is flavour text this wave (no HediffGiver wired), same deferral as Doublemaw's infection bite.
-       ====================================================================== -->
-  <ThingDef ParentName="AnimalThingBase">
-    <defName>RM_Shambles</defName>
-    <label>the shambles</label>
-    <description>A dead thing still going somewhere, held up and steered by the fungus wearing it. Slow, virulent, and treatable if you catch it before it finishes catching you.</description>
-    <statBases>
-      <MoveSpeed>1.3</MoveSpeed>
-      <Mass>50</Mass>
-      <MeatAmount>0</MeatAmount>
-      <LeatherAmount>0</LeatherAmount>
-      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
-      <ComfyTemperatureMin>0</ComfyTemperatureMin>
-      <ComfyTemperatureMax>60</ComfyTemperatureMax>
-      <Wildness>1.0</Wildness>
-    </statBases>
-    <tools>
-      <li>
-        <label>diseased claw</label>
-        <capacities>
-          <li>Scratch</li>
-        </capacities>
-        <power>6</power>
-        <cooldownTime>2.6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
-      </li>
-    </tools>
-    <race>
-      <body>QuadrupedAnimalWithHoovesAndHump</body>
-      <bloodDef>Filth_Slime</bloodDef>
-      <baseBodySize>1.6</baseBodySize>
-      <baseHealthScale>1.2</baseHealthScale>
-      <baseHungerRate>0.0</baseHungerRate>
-      <foodType>OmnivoreRoughAnimal</foodType>
-      <predator>false</predator>
-      <trainability>None</trainability>
-      <lifeExpectancy>1</lifeExpectancy>
-      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
-      <lifeStageAges>
-        <li>
-          <def>AnimalBaby</def>
-          <minAge>0</minAge>
-        </li>
-        <li>
-          <def>AnimalJuvenile</def>
-          <minAge>0.3</minAge>
-        </li>
-        <li>
-          <def>AnimalAdult</def>
-          <minAge>0.6</minAge>
-        </li>
-      </lifeStageAges>
-    </race>
-    <tradeTags>
-      <li>AnimalUncommon</li>
-    </tradeTags>
-  </ThingDef>
-  <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Shambles</defName>
-    <label>the shambles</label>
-    <race>RM_Shambles</race>
-    <combatPower>30</combatPower>
-    <wildGroupSize>1~1</wildGroupSize>
-    <ecoSystemWeight>0.5</ecoSystemWeight>
-    <lifeStages>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.0</drawSize>
-          <color>(78,98,68)</color>
-        </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
-          <drawSize>2.0</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.0</drawSize>
-          <color>(78,98,68)</color>
-        </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
-          <drawSize>2.0</drawSize>
-        </dessicatedBodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Shambles/RM_Shambles</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.0</drawSize>
-          <color>(78,98,68)</color>
-        </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Warg/Dessicated_Warg</texPath>
-          <drawSize>2.0</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
@@ -1620,7 +1506,6 @@
           <texPath>Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(118,46,56)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -1628,7 +1513,6 @@
           <texPath>Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.2</drawSize>
-          <color>(118,46,56)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -1636,7 +1520,6 @@
           <texPath>Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.3</drawSize>
-          <color>(118,46,56)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -1672,7 +1555,7 @@
     <race>
       <body>QuadrupedAnimalWithPaws</body>
       <bloodDef>Filth_Slime</bloodDef>
-      <baseBodySize>0.2</baseBodySize>
+      <baseBodySize>0.8</baseBodySize>
       <baseHealthScale>0.25</baseHealthScale>
       <baseHungerRate>0.2</baseHungerRate>
       <foodType>OmnivoreRoughAnimal</foodType>
@@ -1711,36 +1594,36 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.22</drawSize>
+          <drawSize>0.62</drawSize>
           <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.22</drawSize>
+          <drawSize>0.62</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.26</drawSize>
+          <drawSize>0.74</drawSize>
           <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.26</drawSize>
+          <drawSize>0.74</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.3</drawSize>
+          <drawSize>0.85</drawSize>
           <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
-          <drawSize>0.3</drawSize>
+          <drawSize>0.85</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
