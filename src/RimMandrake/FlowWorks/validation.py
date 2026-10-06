@@ -195,8 +195,17 @@ def core_live_rows(t):
     _report_rows(t, rows, declare=CORE_LIVE_IDS)
 
 
-# the extension suite, registered unchanged (its chains carry their own toggle=/shows= claims)
-for _name, _fn in EXT.suite.chains:
-    suite.chains.append((_name, _fn))
-    if _name in EXT.suite.chain_caps:
-        suite.chain_caps[_name] = EXT.suite.chain_caps[_name]
+# the extension suites, registered unchanged (their chains carry their own toggle=/shows= claims): the main
+# extensions and, since the River Works merge (409d1f57c), the rivers suite
+import extensions_rivers as RIV  # noqa: E402
+# Rivers toggles NO component of extensions_rivers.py claims yet (the merge agent's file, 2026-10-05). Named here so
+# the hole is visible and fixed-size: selftest_extensions fails if it grows OR shrinks without this list changing.
+RIVER_TOGGLES_OWED = ["carryAnimals", "carryItems", "carryStrangers", "countSeasonalFloods", "countTorrentialRainFloods",
+                      "crossingHazardsEnabled", "floodSurgeEnabled", "pathfinderAvoidsCurrents", "riverWorksEnabled",
+                      "scaleWithRiverSize", "weirCatchesDrift"]
+suite.toggles += [t for t in RIV.suite.toggles if t not in suite.toggles]
+for _src in (EXT.suite, RIV.suite):
+    for _name, _fn in _src.chains:
+        suite.chains.append((_name, _fn))
+        if _name in _src.chain_caps:
+            suite.chain_caps[_name] = _src.chain_caps[_name]

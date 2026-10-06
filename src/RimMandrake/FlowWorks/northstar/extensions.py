@@ -74,15 +74,19 @@ FW_TOGGLES = [
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
-suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES
+S_MACH = "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings"
+MACH_TOGGLES = ["liquidHosesEnabled", "liquidWorksRuinsEnabled", "liquidWorksRuinStockEnabled",
+                "industrialWorksBuildAnywhere", "pipeAdaptersEnabled"]       # liquid machinery pass (3e473f37c)
+suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES + MACH_TOGGLES
 
 DEFAULTS = {t: True for t in suite.toggles}
 DEFAULTS.update({"liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False,
-                 "superdeepCapturesOwnFaction": False})
+                 "superdeepCapturesOwnFaction": False, "industrialWorksBuildAnywhere": False})
 SETTINGS_OF = {}
 SETTINGS_OF.update({k: S_FW for k in FW_TOGGLES})
 SETTINGS_OF.update({k: S_FW for k in PITS_TOGGLES})
 SETTINGS_OF.update({k: S_RIVER for k in RIVER_TOGGLES})
+SETTINGS_OF.update({k: S_MACH for k in MACH_TOGGLES})
 
 PULSE = 250
 TAR, SLIME = "RM_Fluid_Tar", "RM_Fluid_SlimeGreen"
@@ -1773,3 +1777,74 @@ def dig_finds(t):
                 t.upstream_failed = True
                 return
             _expect(done and l1 == l0 + 1, "no letter for the first find of a material (%d -> %d): %s" % (l0, l1, rep))
+
+
+# =============================================================== LIQUID MACHINERY (3e473f37c)
+# Rows owed by Transient/belt_fwmachinery_20261005.md. Wired here: the hose net (the one mechanism every other
+# machine rides) and the build-anywhere placement law. Declared, not proven, with the reason in the row:
+# found-works ruins (worldgen: two fresh maps), pipe adapters (VE PipeSystem is on no test list). NOT wired yet
+# (owed, each needs its own powered tank pair + a day of ticks): the converter rates of each still / found work,
+# the cargo tank's minify round trip, the ship distiller.
+
+def _tank_text(t, x, z):
+    r = t.bridge_call("jawa/inspect_string", defName="RM_LiquidTank", rect=_rect(x, z, 2, 2), limit=2) or {}
+    return " ".join(str(th.get("inspect") or "") for th in (r.get("things") or []))
+
+
+@suite.chain("machinery_hoses")
+def machinery_hoses(t):
+    """Phase 8 slice 2: a powered pump on a 3-cell water channel feeds a tank 5 hose cells away (not touching the
+    pump); with liquidHosesEnabled off the far tank gains nothing more."""
+    x0, z0 = _prep_plot(t, "B")
+    ch = _line(x0 + 2, z0 + 6, 3)
+    pump, batt = (x0 + 3, z0 + 7), (x0 + 1, z0 + 8)
+    hose = [(x0 + 4 + i, z0 + 7) for i in range(5)]
+    tank = (x0 + 9, z0 + 7)
+    _dig_run(t, ch, 2)
+    for x, z in ch:
+        _fill(t, x, z, 2)
+    ops = ["RM_LiquidPump:%d,%d" % pump, "RM_LiquidTank:%d,%d" % tank, "Battery:%d,%d" % batt] + \
+          ["RM_LiquidHose:%d,%d" % c for c in hose]
+    t.bridge_call("jawa/build_batch", ops=";".join(ops), faction="player")
+    bat = ((t.bridge_call("jawa/list_things", defName="Battery", rect=_rect(batt[0], batt[1], 1, 2), limit=2) or {})
+           .get("things") or [{}])[0].get("id")
+    t.bridge_call("jawa/battery_set", thing=bat, mode="setPct", value=1.0)
+    with t.component("hose_feeds_far_tank", toggle="liquidHosesEnabled"):
+        before = _tank_text(t, *tank)
+        t.wait_ticks(800)
+        after = _tank_text(t, *tank)
+        if t._guard():
+            _expect(after != before and "water" in after.lower(), "far tank unchanged through the hose: %r -> %r" % (before, after))
+    with t.component("hoses_off_far_tank_idle", toggle="liquidHosesEnabled"):
+        with _setting(t, "liquidHosesEnabled", False):
+            a0 = _tank_text(t, *tank)
+            t.wait_ticks(600)
+            a1 = _tank_text(t, *tank)
+            _expect(a0 == a1 if t._guard() else None, "far tank kept gaining with hoses OFF: %r -> %r" % (a0, a1))
+
+
+@suite.chain("machinery_found_works")
+def machinery_found_works(t):
+    """Campaign law: industrial works are FOUND. A kludged desal plant is refused on open ground by default and
+    placeable there with industrialWorksBuildAnywhere on. Ruins/ruin stock are worldgen (declared, unmeasured);
+    pipe adapters need VE PipeSystem (declared, unmeasured)."""
+    x0, z0 = _prep_plot(t, "C")
+    rect = _rect(x0 + 8, z0 + 5, 1, 1)
+
+    def can():
+        r = t.bridge_call("jawa/build_check", **{"def": "RM_DesalPlant_Kludged", "rect": rect})
+        return ((r or {}).get("cells") or [{}])[0]
+    with t.component("works_only_over_ruin", toggle="industrialWorksBuildAnywhere"):
+        c = can()
+        _expect(c.get("canPlace") is False if t._guard() else None, "kludged desal placeable on open ground: %s" % c)
+    with t.component("build_anywhere_on", toggle="industrialWorksBuildAnywhere"):
+        with _setting(t, "industrialWorksBuildAnywhere", True):
+            c = can()
+            _expect(c.get("canPlace") is True if t._guard() else None, "build-anywhere ON but still refused: %s" % c)
+    for name, tog, why in (("ruins_mapgen", "liquidWorksRuinsEnabled", "worldgen: needs two fresh shore maps"),
+                           ("ruin_stock_mapgen", "liquidWorksRuinStockEnabled", "worldgen: needs a fresh shore map"),
+                           ("pipe_adapters", "pipeAdaptersEnabled", "VE PipeSystem is on no test list")):
+        with t.component(name, toggle=tog):
+            if t._guard():
+                t.upstream_reason = "UNMEASURED: %s" % why
+                t.upstream_failed = True

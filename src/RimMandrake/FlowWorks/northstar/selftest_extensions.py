@@ -69,8 +69,8 @@ def main():
     if unc or orph or bars - claimed:
         probs.append("coverage: uncovered %s orphans %s unclaimed %s" % (unc, orph, sorted(bars - claimed)))
     tog_unc = floor.uncovered(V.toggles, comps)
-    if tog_unc:
-        probs.append("toggles uncovered: %s" % tog_unc)
+    if sorted(tog_unc) != sorted(vm.RIVER_TOGGLES_OWED):
+        probs.append("toggles uncovered %s != the named owed list RIVER_TOGGLES_OWED %s" % (tog_unc, vm.RIVER_TOGGLES_OWED))
     core_bars = {b for v in vm.ROW_SHOWS.values() for b in v}
     if sorted(bars - core_bars) != sorted(vm.EXTENSION_ONLY_BARS):
         probs.append("EXTENSION_ONLY_BARS drifted: actual %s" % sorted(bars - core_bars))
@@ -93,7 +93,7 @@ def main():
     if floor.uncovered_shows(list(ns["must_show"]) + ["zz_planted_bar"], comps) != ["zz_planted_bar"]:
         probs.append("sanity: a planted unclaimed bar did not come back uncovered")
     stripped = [dict(c, toggle=None) if c["toggle"] == "viscosityEnabled" else c for c in comps]
-    if floor.uncovered(V.toggles, stripped) != ["viscosityEnabled"]:
+    if "viscosityEnabled" not in floor.uncovered(V.toggles, stripped):
         probs.append("sanity: stripping viscosityEnabled claims did not uncover it")
 
     print("selftest_extensions: %s -- %d core rows, %d extension chains / %d components, %d bars (%d core, %d "

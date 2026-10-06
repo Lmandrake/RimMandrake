@@ -24,13 +24,14 @@ for _p in (HERE, UTILS, os.path.join(UTILS, "modcheck")):
         sys.path.insert(0, _p)
 
 import extensions as EXT  # noqa: E402
+import extensions_rivers as RIV  # noqa: E402  (River Works merge 409d1f57c: its chains run here too)
 
 
 def declared():
     """[(chain, component, toggle, shows)] for every extension component, read with modcheck's declaration probe."""
     from modcheck.suite import _DeclarationProbe
     out = []
-    for name, fn in EXT.suite.chains:
+    for name, fn in EXT.suite.chains + RIV.suite.chains:
         p = _DeclarationProbe()
         fn(p)
         out.extend((name, c.name, c.toggle, list(c.shows)) for c in p.components)
@@ -40,13 +41,14 @@ def declared():
 def pick(chains_arg):
     from modcheck import Suite
     want = [c for c in (chains_arg or "").split(",") if c]
-    names = [n for n, _ in EXT.suite.chains]
+    allc = EXT.suite.chains + RIV.suite.chains
+    names = [n for n, _ in allc]
     bad = [c for c in want if c not in names]
     if bad:
         raise SystemExit("unknown chain(s) %s; --list shows them" % bad)
     sub = Suite("FlowWorksExtensions")
-    sub.toggles = list(EXT.suite.toggles)
-    sub.chains = [(n, f) for n, f in EXT.suite.chains if not want or n in want]
+    sub.toggles = list(EXT.suite.toggles) + [x for x in RIV.suite.toggles if x not in EXT.suite.toggles]
+    sub.chains = [(n, f) for n, f in allc if not want or n in want]
     return sub
 
 

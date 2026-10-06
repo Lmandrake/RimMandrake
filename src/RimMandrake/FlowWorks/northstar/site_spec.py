@@ -80,10 +80,32 @@ SETTINGS = {
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,
     },
+    # River Works merged into FlowWorks 2026-10-05 (409d1f57c); its own static settings class
+    "RimMandrake.FlowWorks.Rivers.RM_RiversSettings": {
+        "riverWorksEnabled": True, "surfaceCurrentEnabled": True, "currentStrength": 1.0, "centreTicksPerCell": 45.0,
+        "marginTicksPerCell": 90.0, "itemDriftFactor": 2.0, "scaleWithRiverSize": True, "floodSurgeEnabled": True,
+        "countSeasonalFloods": True, "countTorrentialRainFloods": True, "carryAnimals": True, "carryStrangers": True,
+        "carryItems": True, "washOffMapEdge": True, "washedAwayMinDays": 1.0, "washedAwayMaxDays": 3.0,
+        "pathfinderAvoidsCurrents": True, "crossingHazardsEnabled": True, "bruiseChancePerStep": 0.15,
+        "dropChancePerStep": 0.25, "fordsEnabled": True, "bankWorksEnabled": True, "wearRateMultiplier": 1.0,
+        "breachEnabled": True, "breachHpFraction": 0.5, "stakeSnapTicksPerCell": 150.0, "stakeLineLevee": True,
+        "weirPoolLength": 8.0, "weirCatchesFish": True, "weirCatchIntervalHours": 6.0, "weirHeldCatchCap": 30.0,
+        "weirCatchesDrift": True, "weirDriftChance": 0.25, "breachWashesCatch": True, "breachWashCells": 4.0,
+        "siltRichening": True, "siltIntervalDays": 0.5, "ferryEnabled": True, "ferryMaxSpan": 40.0,
+        "ferryRopeGuidesColonists": True,
+    },
+    # liquid machinery pass 2026-10-05 (3e473f37c); disabledLiquidMachines is a private list (per-machine switches),
+    # not a field this table can hold
+    "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": {
+        "liquidHosesEnabled": True, "converterRateMultiplier": 1.0, "liquidWorksRuinsEnabled": True,
+        "liquidWorksRuinStockEnabled": True, "industrialWorksBuildAnywhere": False, "pipeAdaptersEnabled": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": os.path.join("ManyWaters", "RiverSteamSettings.cs"),
+    "RimMandrake.FlowWorks.Rivers.RM_RiversSettings": os.path.join("Rivers", "RM_RiversSettings.cs"),
+    "RimMandrake.FlowWorks.Machinery.RM_MachinerySettings": os.path.join("Machinery", "RM_MachinerySettings.cs"),
 }
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
