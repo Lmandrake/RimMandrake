@@ -323,3 +323,8 @@ infrastructure/state/LESSONS_INBOX.md
 infrastructure/state/art/index.json
 infrastructure/state/art/phash_cache.json
 infrastructure/state/art/git_backfill_done.txt
+
+# sheet gate scratch (art_sheet/scaled_review_gate): never tracked
+Transient/**/.gatecheck_*/
+Transient/**/*.gate.tmp.html
+Transient/**/*.gate.tmp.json
