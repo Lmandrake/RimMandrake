@@ -1,7 +1,7 @@
 # Rich-screenshot art pre-review — the contact board (2026-10-06)
 
 Status: DRAFT design. Offline half built and selftested at `src/RimMandrake/Utils/artboard/`
-(26/26 on synthetic boards); first real trial in §12. The live half needs the bridge tools in §11.
+(26/26 on synthetic boards); first real trial in §12. Live half BUILT, compiled, NOT yet run live (§11).
 Authorized by the owner 2026-10-06: *"Pre-working some art review before the human's check is pretty
 important. And there it feels like taking very rich screenshots that can test MANY items at once and be
 segmented down into individual checks MIGHT be a way forward."*
@@ -197,25 +197,64 @@ Per board, compared with today's 34-station FlowWorks visual board:
 The dominant saving is the agent turns, not the bridge: one deliberation per board instead of per item.
 Measured offline: the 13-subject trial (§12) segmented and checked in well under a second.
 
-## 11. Bridge tools needed (spec for the runner owner — no C# written here)
+## 11. Bridge tools (built 2026-10-06, compiled clean, not yet run live)
 
-1. **`jawa/artboard_stage`** — one call stages a whole recipe. Input: the recipe's subjects
-   (`{id, kind: pawn|thing|plant|terrain|pit, def, cell, rot, lockRotation, growth, stuff, strip,
-   fluid, fill, depth}`), ground terrain + rect, `clearRect:true`, `killHostiles:true`. Output per subject:
-   `{id, thingId, actualCell, drawRect:{x,z,w,h} in world units, ok, error}`. **Refuses to relocate**: if
-   the cell is blocked it reports `ok:false` instead of silently picking a neighbour (the trial shows that
-   fallback breaks geometry — `stage_xenotype_grid.py` does it today).
-2. **`jawa/artboard_capture`** — renders a world rect to an off-screen RenderTexture at a requested
-   px/cell, with UI, labels, selection boxes and overlays suppressed, **without resizing, focusing or
-   fullscreening the window**. Input `{x, z, w, h, ppc, fileName, plateFirst:bool}`. Output
-   `{path, platePath, ppc, origin_px, frame:[W,H], cameraState}`. `plateFirst` hides the staged subjects
-   for one render (or the runner captures the plate before staging). This makes §4 exact.
-3. Optional **`jawa/thing_screen_rects`** — for things already on a map (a review map someone else
-   built), return each thing's draw rect in pixel coordinates of the last capture, so an existing scene
-   can be segmented without a recipe.
+Source: `src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArtboardTools.cs`. Python:
+`src/RimMandrake/Utils/artboard/{live.py, recipes.py, recipes/*.json, selftest_live.py}`.
 
-Until they exist, the method runs with today's tools: batch terrain/spawn ops, `jawa/screenshot_mode`,
-`rimworld/frame_cell_rect` + `jawa/take_screenshot`, and **markers** for the mapping.
+1. **`jawa/artboard_stage`** — one call stages a board from an ops FILE (`opsPath`) or string, one op per line,
+   `key=value` joined by `|`: `kind=pit|x|z|w|h|depth|fill|fluid`, `kind=terrain|x|z|w|h|def`,
+   `kind=thing|x|z|def|stuff|rot`, `kind=plant|x|z|def|growth`, `kind=pawn|x|z|def(PawnKindDef)|rot|faction`.
+   `phase=ground` clears `clearRect` (non-player things and plants destroyed, excavations filled back to the
+   surface via `FillIn`, roof/snow/fog removed) and lays `ground`; `phase=subjects` runs the ops; `all` does both.
+   **Refuses, never relocates:** out of bounds, blocked footprint, non-standable pawn cell, a pit cell already
+   dug deeper than asked (D only goes down), or an engine that spawned elsewhere (the thing is destroyed) all
+   return `ok:false` with the reason. Pits are dug for every op first, then filled, then read back through
+   `DepthAt/FillAt/FluidAt`. Per op: `{id, ok, error, requested, actual, def, thingId, drawRect, readBack}`.
+   Player pawns inside `clearRect` refuse the ground phase. Pauses the game; staged pawns get a long Wait job.
+2. **`jawa/artboard_capture`** — **off-screen, exact.** Renders `x,z,w,h` at an integer `ppc` to a PNG of
+   `w·ppc × h·ppc` and returns the mapping (`origin_px = [-x·ppc, (z+h)·ppc]`, the board-JSON `camera`
+   convention), plus `frameArmed/frameRendered`, `ticksGame`, `skyGlow`, `foggedCells`, `roofedCells`,
+   `cameraRestored`. How (read from decompiled 1.6): `Map.MapUpdate` culls section meshes and dynamic things to
+   `CameraDriver.CurrentViewRect` and queues them with `Graphics.DrawMesh(camera=null)`. A Harmony postfix
+   **encapsulates** the capture rect into that view rect while armed, so the game's own MapUpdate regenerates
+   the rect's dirty sections and queues its draws (no draws of ours, so nothing is drawn twice). A coroutine on
+   the CameraDriver waits `frames` (≥2) frames, then — after Update, before the frame is drawn — points the
+   main camera (and the WaterDepth subcamera, whose RT the water shader samples by screen UV) at the rect,
+   renders into a RenderTexture, reads it back, and restores both. The user's view never moves, the window is
+   never resized or focused, and IMGUI (names, alerts, `review_label` boxes) is not in the image. Times out with
+   a reason if frames stop (window minimised with Run-in-background off). The clean plate is taken by the
+   runner BEFORE staging subjects (`phase=ground` → plate → `phase=subjects` → board), not by hiding things —
+   plants and terrain are section meshes and cannot be hidden per-frame.
+3. **`jawa/thing_screen_rects`** — things in a rect with world draw rects and the same rects in pixels of a
+   capture of that rect at `ppc`; for cutting up a review map someone else built.
+
+**Unproven until the live trial, in order of risk:** (a) that a manual `Camera.Render()` after Update picks up
+the frame's `Graphics.DrawMesh` queue (Unity's documented behaviour, not yet observed here); (b) the water shader
+under a non-screen aspect; (c) the humanlike `drawRect` (a nominal 1.5 cells — real head/body offsets are not
+read). If (a) fails the image is ground-coloured or empty: the fallback is the on-screen route
+(`rimworld/frame_cell_rect` + `jawa/take_screenshot` + marker cells, §4 method 2), which needs no code.
+
+**The FlowWorks recipe** (`recipes/flowworks_pit_states.json`, generated by `recipes.flowworks_pit_states()`):
+all 14 legal (D,F) × {water, tar} as 3×3 plots at pitch 5 (28 subjects; F0 water and F0 tar are both dry and
+look the same by design), an undug soil plot, vanilla `WaterShallow` and `WaterDeep`, and the lip-occlusion
+case — a Colonist (no faction) standing in the middle of a dry D2 and a dry D3 pit, and one standing on the undug
+cell just south of (in front of) a dry D3 pit's near lip. `differs_from` runs along fill, along depth for dry
+pits, water-vs-tar at each wet state, every pit vs undug, and pawn-in-pit vs the same pit empty (so a pawn
+fully hidden by the lip trips IDENTICAL). 34 subjects, 37 ops, a 74×23-cell rect, 3552×1104 px at 48 px/cell.
+
+Run (from WSL; each bridge call is relayed through Windows `python.exe` and the mirror's `rimbridge_client.py`;
+the analysis needs numpy, which only WSL has):
+
+    cd src/RimMandrake/Utils
+    python3 -m artboard.live flowworks_pit_states --origin X,Z --dry-run     # prints the rect; touches nothing
+    python3 -m artboard.live flowworks_pit_states --origin X,Z               # out: D:\Luke\dev\_rmscratch\artboard\…
+
+Output folder: `stage_ops.txt`, `plate.png`, `board.png`, `board.json`, the §5–7 report/mosaics, and
+`live_report.json` (stage + capture results, refused subjects, warnings for fog, roof, dusk light, camera).
+A subject with any refused op is dropped from the board and printed as `STAGE_REFUSED`.
+`selftest_live.py` (23 checks) paints a synthetic frame with the C# mapping formula and requires zero findings,
+and a one-cell origin error to be caught.
 
 ## 12. First real trial — 2026-10-06
 
