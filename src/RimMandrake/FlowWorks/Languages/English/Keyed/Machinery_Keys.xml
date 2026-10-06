@@ -25,5 +25,10 @@
   <RMFlow_AdapterModeDraw>Mode: draw from pipe net</RMFlow_AdapterModeDraw>
   <RMFlow_AdapterModeDesc>Feed: move liquid from the tanks on this adapter's line into the pipe net. Draw: move it from the pipe net into the tanks.</RMFlow_AdapterModeDesc>
   <RMFlow_AdapterMoved>Moved {0} units</RMFlow_AdapterMoved>
+  <RMFlow_ReactorWorking>Reacting: {0} + {1} -> {2}</RMFlow_ReactorWorking>
+  <RMFlow_ReactorVented>vented as gas</RMFlow_ReactorVented>
+  <RMFlow_ReactorNoPair>No tanks on this line hold a pair of liquids that react</RMFlow_ReactorNoPair>
+  <RMFlow_ReactorTotals>Batches run: {0}. Gas vented: {1}.</RMFlow_ReactorTotals>
+  <RMFlow_BathNeedsLiquid>needs {0} in a tank on the bench's line</RMFlow_BathNeedsLiquid>
 
 </LanguageData>

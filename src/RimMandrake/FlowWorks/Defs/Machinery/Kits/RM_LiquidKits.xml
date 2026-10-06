@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Liquid kits (flowworks_remaining row 18, 2026-10-05): the liquid-side machinery biome kits borrow.
+       Source: Source/Machinery/Kits/. Settings: RM_KitSettings (FlowWorks Mod Settings, "Liquid kits").
+       Every number here is PROVISIONAL (owner ruling 2026-10-03: ship first-guess numbers, tune live). -->
+
+  <!-- SUMP_GASLIGHT_1 piece 1, liquid side: tar + acid -> gas. FlowWorks' own fact is that the two react and
+       the gas comes off; with nothing to catch it, it vents as a toxic cloud (a readable sign, never a silent
+       loss). TheSump patches productThing to its gaslight fuel RM_TarGas (Patches/Kits/RM_TarAcidReaction_Sump.xml).
+       PROVISIONAL: 2 tar + 1 acid water per batch, 1 product per batch, 40 gas when vented. -->
+  <RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>
+    <defName>RM_Reaction_TarAcid</defName>
+    <label>tar and acid</label>
+    <description>Tar worked with acid gives off a green, heavy gas — the same reaction that lifts tar off skin and stone.</description>
+    <reactantA>RM_Liquid_Tar</reactantA>
+    <reactantB>RM_Liquid_AcidWater</reactantB>
+    <unitsA>2</unitsA>
+    <unitsB>1</unitsB>
+    <productUnits>1</productUnits>
+    <ventGas>ToxGas</ventGas>
+    <ventGasAmount>40</ventGasAmount>
+  </RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>
+
+  <!-- The reaction vat: two tanks of reactants on its hose line (or touching it), product into a third tank or
+       dropped as items. Placeholder graphic (vanilla barrel, tinted): art owed (Transient/belt_fwkits_20261005.md). -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ReactionVat</defName>
+    <label>reaction vat</label>
+    <description>A lidded, acid-proof crock with two feed lines and a vent. Liquids that react are metered into it from the tanks on its line, a little at a time; what comes off is caught as product where there is something to catch it, and vented where there is not. Stand upwind.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/FermentingBarrel</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <color>(110,140,95)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.45</fillPercent>
+    <tickerType>Rare</tickerType>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <designationCategory>Production</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsProduction</li>
+    </thingCategories>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>18</Mass>
+    </statBases>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Flickable" />
+      <li Class="RimMandrake.FlowWorks.Machinery.Kits.CompProperties_LiquidReactor">
+        <batchesPerDay>12</batchesPerDay>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Reaction vat</label>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

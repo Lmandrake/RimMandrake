@@ -394,6 +394,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Logistics.RM_TankerSettings.ExposeData();
             Machinery.Logistics.RM_SluiceGateSettings.ExposeData();
             Machinery.Logistics.RM_BloodDrawSettings.ExposeData();
+            Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
         }
 
@@ -965,6 +966,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Logistics.RM_TankerSettings.DoSettingsSection(list);
             Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
             Machinery.Logistics.RM_BloodDrawSettings.DoSettingsSection(list);
+            Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
 
             list.End();
