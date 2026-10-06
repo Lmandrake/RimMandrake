@@ -39,10 +39,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         private static int Main(string[] args)
         {
+            if (args.Contains("--fuzz-only")) { GssFuzz.Run(args); Console.WriteLine($"{checks - fails}/{checks} checks passed (fuzz only)"); return fails == 0 ? 0 : 1; }
             bool probe = args.Contains("--probe");
             int di = Array.IndexOf(args, "--dump");
             if (di >= 0) { dumpDir = args[di + 1]; Directory.CreateDirectory(dumpDir); }
-            string path = args.Where((a, i) => !a.StartsWith("--") && (i == 0 || args[i - 1] != "--dump")).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
+            string path = args.Where((a, i) => !a.StartsWith("--") && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path));
             var scenes = doc.RootElement.GetProperty("scenes").EnumerateArray().ToList();
             Console.WriteLine($"oracle: {path} ({scenes.Count} scenes)");
@@ -78,6 +79,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs
             LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
+            GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
         }
