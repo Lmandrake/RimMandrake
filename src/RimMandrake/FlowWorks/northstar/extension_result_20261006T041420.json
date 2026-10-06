@@ -1,0 +1,660 @@
+{
+ "chains": [
+  {
+   "name": "plot_A_dug_channel",
+   "components": [
+    {
+     "name": "canal_dug_channel_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_1baf715773804212aa09e80412b139e4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:15.6717011+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:15.7207915+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_d8a5910bc2614ac4bd72546d418b3187",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:15.7713529+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:15.8211167+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_386287220c324a69b4b9db212052f8ab",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:15.8714854+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:15.9207868+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_13ae8a176eaf409ab889f1c30e7a5e39",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:15.9712117+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.0207505+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 85,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_7f67f2a8c3c442478f620f0a51c48c25",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:16.0713253+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.1208686+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 86,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_68349c387c7d496b97fc3c89521a34fd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:16.1719434+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.2208465+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_9dade53f0bab4f639a6b1cebde3c4cd8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:16.2713947+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.3201858+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 88,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_870dda88f60348c8ab7a5462f46b8079",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:16.3714082+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.4211079+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/canal_cell_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 88
+        },
+        "terrain": "RM_Channel_Empty",
+        "isWater": false,
+        "tempTerrain": "none",
+        "underneath": "RM_Channel_Empty",
+        "things": [],
+        "flowWorksLoaded": true,
+        "mapId": 0,
+        "mapTile": "71706,0",
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_f566955b35be4e54a036aa62f4e88517",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/canal-cell-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:16.4712315+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:16.5207242+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\canal_dug_channel_look_1791285256621_1__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "canal_reads_as_dug_channel",
+      "never_gravel_path"
+     ],
+     "surprises": null
+    },
+    {
+     "name": "canal_dry_obstacle_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "TerrainDef/RM_Channel_Empty",
+          "found": true,
+          "defName": "RM_Channel_Empty",
+          "defType": "TerrainDef",
+          "label": "shallow channel",
+          "modName": "RimMandrake: FlowWorks",
+          "packageId": "mandrake.rm.flowworks",
+          "fields": {
+           "texturePath": "Terrain/Surfaces/Gravel",
+           "edgeType": "FadeRough",
+           "customShader": null,
+           "customShaderParameters": null,
+           "waterDepthShader": null,
+           "waterDepthShaderParameters": null,
+           "renderPrecedence": 325,
+           "affordances": [
+            "Walkable",
+            "Walkable",
+            "Light",
+            "Diggable"
+           ],
+           "layerable": false,
+           "scatterType": "Rocky",
+           "takeFootprints": false,
+           "natural": true,
+           "takeSplashes": false,
+           "avoidWander": false,
+           "changeable": true,
+           "smoothedTerrain": null,
+           "gravshipReplacementTerrain": null,
+           "holdSnowOrSand": true,
+           "isPaintable": false,
+           "extinguishesFire": false,
+           "colorDef": null,
+           "driesTo": null,
+           "tags": [
+            "Soil"
+           ],
+           "burnedDef": null,
+           "tools": null,
+           "extraDeteriorationFactor": 0.0,
+           "destroyOnBombDamageThreshold": -1.0,
+           "destroyBuildingsOnDestroyed": false,
+           "traversedThought": null,
+           "extraDraftedPerceivedPathCost": 0,
+           "extraNonDraftedPerceivedPathCost": 0,
+           "destroyEffect": null,
+           "destroyEffectWater": null,
+           "autoRebuildable": false,
+           "categoryType": "Misc",
+           "meltSnowRadius": 0.0,
+           "heatPerTick": 0.0,
+           "igniteRadius": 0.0,
+           "ignitePawnsIntervalTicks": 0.0,
+           "burnDamage": 0,
+           "burnIntervalTicks": 0.0,
+           "supportsRock": true,
+           "toxicBuildupFactor": 0.0,
+           "dontRender": false,
+           "exposesToVacuum": false,
+           "canFreeze": false,
+           "dangerous": false,
+           "preventCraters": false,
+           "canEverTerraform": true,
+           "waterBodyType": "None",
+           "cropIcon": true,
+           "glowRadius": 0.0,
+           "throwFleckChance": 0.0,
+           "fleckData": null,
+           "isFoundation": false,
+           "bridge": false,
+           "bridgePropsPath": null,
+           "spaceBridgePropsPath": null,
+           "temporary": false,
+           "tempTerrain": null,
+           "floodTerrain": null,
+           "canBePolluted": true,
+           "pollutedTexturePath": null,
+           "pollutionOverlayTexturePath": "Terrain/Surfaces/PollutionSoil",
+           "pollutionShaderType": null,
+           "generatedFilth": null,
+           "filthAcceptanceMask": "Unnatural",
+           "waterDepthMaterial": null,
+           "statBases": [
+            "StatModifier"
+           ],
+           "passability": "Standable",
+           "pathCost": 30,
+           "pathCostIgnoreRepeat": true,
+           "fertility": 0.0,
+           "costList": null,
+           "costStuffCount": 0,
+           "stuffCategories": null,
+           "stuffCategorySummary": null,
+           "costListForDifficulty": null,
+           "drawStyleCategory": "Floors",
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "blocksAltitudes": null,
+           "dominantStyleCategory": null,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": null,
+           "buildingPrerequisites": null,
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": null,
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 0,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Item",
+           "repairEffect": null,
+           "constructEffect": null,
+           "colorPerStuff": null,
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "placeWorkers": null,
+           "designationCategory": null,
+           "designatorDropdown": null,
+           "designationHotKey": null,
+           "uiOrder": 2999.0,
+           "uiIconPath": null,
+           "uiIconPathsStuff": null,
+           "uiIconForStackCount": -1,
+           "blueprintDef": null,
+           "installBlueprintDef": null,
+           "frameDef": null,
+           "uiIconMaterial": null,
+           "stuffUiIcons": null,
+           "uiIconAngle": 0.0,
+           "defName": "RM_Channel_Empty",
+           "label": "shallow channel",
+           "description": "A shallow channel, dug one level below the surface. Dry, it is a soft barrier \u2014 crossing it costs as much as wading shallow water. Dig it again to deepen it.",
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 20821,
+           "index": 139,
+           "fileName": "FlowWorks_Terrain.xml",
+           "defNameHash": -2100010335,
+           "generated": false,
+           "debugRandomId": 25300
+          }
+         }
+        ],
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_c3f6dcd44a1d47ea896bd9428e72f54f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:17.0183015+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:17.0623251+00:00",
+         "DurationMs": 44,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\canal_dry_obstacle_look_1791285257163_2__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "canal_dry_reads_as_obstacle"
+     ],
+     "surprises": null
+    },
+    {
+     "name": "filled_excavation_obstacle_look",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_drive",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 88
+        },
+        "depth": 1,
+        "fillSet": true,
+        "fill": 1,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_0050e0a61845461b8b8c55fe95c2c0ed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-drive",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:17.5630562+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:17.58808+00:00",
+         "DurationMs": 25,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 88
+        },
+        "depth": 1,
+        "fill": 1,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 193,
+        "ticksGame": 19251,
+        "operation": {
+         "OperationId": "op_0969d622e763403bb5e012a7eb424c43",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T11:14:17.6387407+00:00",
+         "CompletedAtUtc": "2026-10-06T11:14:17.6883494+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\filled_excavation_obstacle_look_1791285257789_3__cell_rect.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [
+      "filled_excavation_reads_as_obstacle"
+     ],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 12.4,
+ "chains_run": [
+  "plot_A_dug_channel"
+ ]
+}
