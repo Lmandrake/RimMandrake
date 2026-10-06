@@ -285,6 +285,10 @@ def main() -> int:
               f"{len(results)} results came back — the sweep is NOT a clean signal")
         return 1
 
+    killed = [r for r in results if "KILLED by signal" in r[3]]
+    if killed:
+        print("KILLED (%d) - died on a signal (rc 137 = SIGKILL, usually the OOM killer), NOT real assertion failures; "
+              "rerun alone: " % len(killed) + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in killed))
     if timed_out:
         print("TIMEOUT (%d) — NOT passes, exceeded their cap: " % len(timed_out)
               + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in timed_out))
