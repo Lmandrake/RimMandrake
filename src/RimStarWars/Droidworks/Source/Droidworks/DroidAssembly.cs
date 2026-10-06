@@ -18,10 +18,12 @@ namespace RimMandrake.StarWars.Droidworks
         /// DROIDWORKS_HEADS_BRAINS_SPIKES_1 (B3) already picked one donor
         /// race per family for, plus the Primitive family's own G2
         /// (DROIDWORKS_PRIMITIVE_TIER_1, packet B9). RSW_DW_Head_Mindstone
-        /// is deliberately absent: MECHANOID_ORIGIN_CANON_1 (the "chassis +
-        /// this head = a new race" mechanic) is still unruled, so the
-        /// harness does not accept it as an ingredient at all (see
-        /// PartRecipes_AssemblyDroidworks.xml's own ingredient filter).
+        /// (MINDSTONE_MATRIX_KINDLED_BUILD_1) is ruled "a Droidworks chassis
+        /// with a special head", body incidental, so it maps to an existing
+        /// kind; Recipe_AssembleDroid then marks the droid with
+        /// RSW_DW_MindstoneMind and formats it SAPIENT (KindleMindstoneMind).
+        /// PROVISIONAL: the protocol chassis is FOUNDRY's pick, since which
+        /// kind the Kindled assemble as is still open on the item.
         /// </summary>
         public static PawnKindDef KindForHeadDef(ThingDef headDef)
         {
@@ -36,8 +38,41 @@ namespace RimMandrake.StarWars.Droidworks
                 case "RSW_DW_Head_Probe": return DroidworksDefOf.RSW_DW_KotORDroidColonist_KX12UPD;
                 case "RSW_DW_Head_Power": return DroidworksDefOf.RSW_DW_OuterRim_GNKDroid;
                 case "RSW_DW_Head_Primitive": return DroidworksDefOf.RSW_DW_Primitive_G2;
+                case "RSW_DW_Head_Mindstone": return DroidworksDefOf.RSW_DW_OuterRim_ProtocolDroid;
                 default: return null;
             }
+        }
+
+        /// <summary>
+        /// MINDSTONE_MATRIX_KINDLED_BUILD_1. True when this droid's mind sits in
+        /// a mindstone. Read by the memory wipe, the data spike, the format
+        /// bills (all fail with text: wipe/spike immunity is RATIFIED in
+        /// RUT_mechanoid_origin_canon.md) and CompDWHeadDropper.
+        /// </summary>
+        public static bool IsMindstoneMind(Pawn pawn) =>
+            pawn?.health?.hediffSet != null
+            && DroidworksDefOf.RSW_DW_MindstoneMind != null
+            && pawn.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_MindstoneMind);
+
+        /// <summary>
+        /// Marks a freshly assembled droid as a mindstone mind and formats it
+        /// SAPIENT (framework ruling 4: full needs, always). Idempotent.
+        /// </summary>
+        public static void KindleMindstoneMind(Pawn pawn)
+        {
+            if (pawn?.health?.hediffSet == null) return;
+            if (!IsMindstoneMind(pawn))
+                pawn.health.AddHediff(DroidworksDefOf.RSW_DW_MindstoneMind);
+            DroidFormatTierUtility.SetTier(pawn, DroidFormatTier.Sapient);
+        }
+
+        /// <summary>The one line every refused wipe/spike/format shows.</summary>
+        public static void MessageMindstoneRefuses(Pawn pawn, string attempt)
+        {
+            Messages.Message(
+                attempt + " fails. Nothing written to " + pawn.LabelShortCap
+                + "'s memory takes hold; the mind is in the stone, and the stone hums on.",
+                pawn, MessageTypeDefOf.RejectInput, historical: false);
         }
 
         /// <summary>

@@ -124,6 +124,14 @@ namespace RimMandrake.StarWars.Droidworks
         public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer,
                                          List<Thing> ingredients, Bill bill)
         {
+            // MINDSTONE_MATRIX_KINDLED_BUILD_1: wipe immunity (RATIFIED). The
+            // bill runs and fails with text; nothing below touches the pawn.
+            if (DroidAssembly.IsMindstoneMind(pawn))
+            {
+                DroidAssembly.MessageMindstoneRefuses(pawn, "The memory wipe");
+                return;
+            }
+
             // 2026-09-18 offline pass (DROIDWORKS_WIPE_SEVERITY_1): a live-verify
             // attempt this session watched the bill's repeatCount reach 0
             // (Bill_Medical.Notify_IterationCompleted, read from source via

@@ -231,23 +231,14 @@
 
   <!-- ========================================================================
        RSW_DW_Head_Mindstone - MECHANOID_ORIGIN_CANON_1's race, per ruling 3
-       ("Mindstone race = a Droidworks chassis with a special head"). That
-       item is still `proposed`/`needs owner` (filed 2026-09-06, no numeric
-       stats ever ruled) - so despite packet B3's verify line reading
-       "mindstone head yields the ruled stats", nothing has literally been
-       ruled yet. FOUNDRY's own call, recorded here rather than blocking on
-       it: distinctly higher-tier than a family head (Archotech, not Spacer;
-       ~8x the market value) so the item exists and is judgeable, WITHOUT
-       inventing the mindstone's actual sourcing (findable/craftable/found-
-       only) or the "chassis + this head = a new race" mechanic itself - both
-       of those are MECHANOID_ORIGIN_CANON_1's to decide. No donor pawn
-       carries this head, so CompDWHeadDropper never spawns one; it exists
-       today only as a standalone item (spawn/debug, future quest loot).
-       Art: vanilla Biotech's own Mechlink texPath (an archotech implant that
-       psychically links a mind to a mechanoid) - reused for the same reason
-       Items_Droidworks.xml reuses donor-mod textures verbatim, but vanilla
-       here rather than a sibling mod, so there is no cross-mod texPath
-       fragility at all.
+       ("Mindstone race = a Droidworks chassis with a special head"). Made by
+       the campaign's RUT_CaseMindstoneHead at the reassembly harness
+       (UtinniPatches, MINDSTONE_MATRIX_KINDLED_BUILD_1) and accepted by
+       RSW_DW_AssembleDroid; the droid it makes carries RSW_DW_MindstoneMind
+       and refuses wipes, spikes and formats with text. A dying mindstone
+       droid drops this head (CompDWHeadDropper). Stats are FOUNDRY's
+       PLACEHOLDER: no numbers have been ruled (owed, open on that item).
+       Art: vanilla Biotech's Mechlink texPath, PLACEHOLDER; own art owed.
   ======================================================================== -->
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_DW_Head_Mindstone</defName>

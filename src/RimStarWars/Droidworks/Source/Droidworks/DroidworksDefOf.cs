@@ -75,6 +75,11 @@ namespace RimMandrake.StarWars.Droidworks
         public static ThingDef RSW_DW_Part_PowerCell_Primitive;
         public static PawnKindDef RSW_DW_Primitive_G2;
 
+        // MINDSTONE_MATRIX_KINDLED_BUILD_1 - the mindstone head and the marker a
+        // droid assembled from it carries (DroidAssembly.IsMindstoneMind).
+        public static ThingDef RSW_DW_Head_Mindstone;
+        public static HediffDef RSW_DW_MindstoneMind;
+
         static DroidworksDefOf() =>
             DefOfHelper.EnsureInitializedInCtor(typeof(DroidworksDefOf));
     }

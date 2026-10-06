@@ -31,7 +31,11 @@ namespace RimMandrake.StarWars.Droidworks
             // specific) DroidworksExtension always sorts after the family
             // abstract's inherited copy.
             DroidworksExtension ext = pawn.def.modExtensions?.OfType<DroidworksExtension>().LastOrDefault();
-            ThingDef headDef = HeadDefFor(ext?.chassisClass ?? 0);
+            // MINDSTONE_MATRIX_KINDLED_BUILD_1: a mindstone mind drops the
+            // mindstone head whatever chassis it wore - the person is the crystal.
+            ThingDef headDef = DroidAssembly.IsMindstoneMind(pawn)
+                ? DroidworksDefOf.RSW_DW_Head_Mindstone
+                : HeadDefFor(ext?.chassisClass ?? 0);
             if (headDef == null) return;
             Thing head = ThingMaker.MakeThing(headDef);
             (head as ThingWithComps)?.GetComp<CompHeadIdentity>()?.SnapshotFrom(pawn);

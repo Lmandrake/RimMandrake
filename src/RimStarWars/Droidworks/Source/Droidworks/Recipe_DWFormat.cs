@@ -44,6 +44,14 @@ namespace RimMandrake.StarWars.Droidworks
         public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer,
                                          List<Thing> ingredients, Bill bill)
         {
+            // MINDSTONE_MATRIX_KINDLED_BUILD_1: a mindstone mind is SAPIENT always
+            // (framework ruling 4) and cannot be rewritten; the bill fails with text.
+            if (DroidAssembly.IsMindstoneMind(pawn))
+            {
+                DroidAssembly.MessageMindstoneRefuses(pawn, "The " + recipe.label);
+                return;
+            }
+
             DroidFormatTier before = DroidFormatTierUtility.EffectiveTierOf(pawn);
             DroidFormatTierUtility.SetTier(pawn, TargetTier);
 

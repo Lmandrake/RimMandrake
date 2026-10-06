@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MindstoneMatrix.xml   UtinniPatches · MINDSTONE_MATRIX_KINDLED_BUILD_1
+  Route (RUT_mechanoid_origin_canon.md §2b): RUT_Mindstone -> RUT_MindstoneMatrix -> RSW_DW_Head_Mindstone,
+  both steps at the Droidworks reassembly harness (Defs/RecipeDefs/RUT_MindstoneMatrix_Recipes.xml).
+  The matrix takes the personality matrix's place in the brain trio; processor and databank stay imported.
+  Knowledge gate: no text here names the Kindled or says what the matrix becomes.
+  Art: PLACEHOLDER, reuses the RUT_Mindstone texture smaller. Owed: an artpipe job for RUT_MindstoneMatrix.
+  Stats PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_MindstoneMatrix</defName>
+    <label>mindstone matrix</label>
+    <description>A mindstone cut and wired to sit where a droid's personality matrix would. The pale light inside it has not changed, and it still hums a half-beat after anyone speaks. The contacts are droid standard. What it does once it is closed inside a head is something nobody has seen.</description>
+    <graphicData>
+      <texPath>Things/Item/RUT_Mindstone/RUT_Mindstone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.65</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <MarketValue>1400</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <techLevel>Archotech</techLevel>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>
