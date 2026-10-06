@@ -1,9 +1,9 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T21:18:39-0700",
+ "built": "2026-10-05T22:11:06-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
@@ -267,22 +267,30 @@
      "east": "cece482e80bf30135073ae5542f439b7e94b25beab5222609d5472ab127edf1a",
      "north": "ca1f6642164f4403f6edd00351153c044d60424a6a7b37c8f7664ff724450cee",
      "south": "d6ab02fbf76b45d84a7896d06e9405c5fcb9ece5b1aa5085bda41d7cf71686ef"
+    },
+    "E": {
+     "east": "1546ea7ca7cfa4b76944720589e0ba0648553b9113dd9d20d46c17746f1fd5ad",
+     "north": "958321a0a3f8bfeac8e856bed567af389c0c1c764447d9dd319ba59271e09b67",
+     "south": "bdbce84c6f7c45560be963c1982e7396e4d57c18ec18bf0f5eb9014177c59c93"
     }
    },
    "graphic_of": {
     "B": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
-    "D": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
+    "D": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
+    "E": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
     "B": "IN GAME \u2014 BlueDesert",
-    "D": "render bluedesert_Ossivel_v2"
+    "D": "render bluedesert_Ossivel_v2",
+    "E": "render bluedesert_Ossivel_v4"
    },
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "ossivel"
   },
