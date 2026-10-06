@@ -958,6 +958,39 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
+		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 8: a pump lifts one level out of an excavated cell. The level
+		/// is MOVED (into a tank), not lost, so it sits outside the pulse ledger exactly like a burn does.</summary>
+		public bool TryTakeLevel(IntVec3 c, out FluidDef fluid)
+		{
+			fluid = null;
+			if (!IsExcavated(c))
+			{
+				return false;
+			}
+			int i = map.cellIndices.CellToIndex(c);
+			if (fillGrid[i] == 0)
+			{
+				return false;
+			}
+			fluid = FluidAt(c) ?? ActiveFluid;
+			return BurnOffLevel(c);
+		}
+
+		/// <summary>Phase 8: a pump pours one level into an excavated cell with room (fluids never mix).</summary>
+		public bool TryPourLevel(IntVec3 c, FluidDef fluid)
+		{
+			if (!IsExcavated(c) || fluid == null)
+			{
+				return false;
+			}
+			int f = FillAt(c);
+			if (f >= DepthAt(c))
+			{
+				return false;
+			}
+			return TrySetDriverFill(c, f + 1, fluid);
+		}
+
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();

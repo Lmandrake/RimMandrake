@@ -984,6 +984,14 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
             });
 
+            // ── Phase 8: the pump ──
+            Case("Pump_unit_bridge", () =>
+            {
+                Assert(RM_PumpMath.TankUnitsPerLevel == 5, "a channel level is a bucket");
+                Assert(RM_PumpMath.LevelsPerDay() == 240, "one level per pulse");
+                Assert(RM_PumpMath.CyclesToFill(300) == 60 && RM_PumpMath.CyclesToFill(1) == 1 && RM_PumpMath.CyclesToFill(0) == 0, "cycles to fill round up");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FLOWWORKS_BUILD_PROGRAM_1 Phase 8 - the universal pump, first slice (no hoses yet: it works on what
+  touches it). Draws one level per 250 ticks from an adjacent wet cell into an adjacent liquid tank, or
+  pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
+  PROVISIONAL: power 150 W, cost, work. Art: PLACEHOLDER (vanilla moisture pump) until its own render.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LiquidPump</defName>
+    <label>liquid pump</label>
+    <description>A salvaged motor driving a rotary pump, with a suction hose on one side and a delivery spout on the other. Set it beside a liquid tank and a pond, lake or dug channel. Drawing, it lifts liquid from the water beside it into the tank; pouring, it runs the tank's liquid into a dug channel beside it - the way to fill a channel no spring feeds, or keep a moat topped up with something that burns. It will not mix one liquid into another.</description>
+    <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>42</pathCost>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Production</designationCategory>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>1800</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>25</Mass>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Breakdownable" />
+    </comps>
+    <building>
+      <expandHomeArea>true</expandHomeArea>
+    </building>
+    <researchPrerequisites>
+      <li>MoisturePump</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>
