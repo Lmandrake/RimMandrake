@@ -5,8 +5,7 @@ Source: owner's Warscar sheet, ruled 2026-10-05 (`Transient/biome_ffar/warscar_s
 
 His picks on donor defs (no owned texture path, so NOT installed; labels/descriptions are already patched in
 `src/RimUtinni/UtinniPatches/Patches/Warscar_Rename.xml`):
-- `AA_Helixien` B (render `gapall_AA_Helixien_v1`), "Rename to Bileworm" — label/description patched. ⚠️ `Contagion_Rename.xml` still carries
-  the old "vulloth" block for the same def (a def has one label); drop it when the Contagion sheet closes.
+- `AA_Helixien` B (render `gapall_AA_Helixien_v1`), "Rename to Bileworm" — label/description patched.
 - `SW_Juggernautbeetles` B (`gapall_SW_Juggernautbeetles_v1`), "Redo description" — description patched.
 - `SW_Electricgryllotalpa` B (`gapall_SW_Electricgryllotalpa_v1`), `SW_Electrictick` B (`gapall_SW_Electrictick_v1`) — art picks only.
 - `RG_Rimclaw` A with the in-game RimclawArtOverride picture, "redo description" — description patched; art already live.

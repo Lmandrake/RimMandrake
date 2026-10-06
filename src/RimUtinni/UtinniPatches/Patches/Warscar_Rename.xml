@@ -3,8 +3,7 @@
   Warscar_Rename.xml — owner's Warscar sheet, ruled 2026-10-05 (warscar_sheet_2026-10-05.decisions.json).
   Label / description only; no defName, stat or art field is touched.
     AA_Helixien           "Rename to Bileworm" — text written from the picked render (gapall_AA_Helixien_v1).
-                          Sorts AFTER Contagion_Rename.xml, so this replaces its "vulloth" for the donor def
-                          (one def, one label; Contagion_Rename.xml still carries the old block until that sheet closes).
+                          The only patch naming this def (owner: "Bileworm everywhere"), so it holds for every biome.
     RG_Rimclaw            "redo description" — written from the in-game RimclawArtOverride picture.
     SW_Juggernautbeetles  "Redo description" — written from the picked render (gapall_SW_Juggernautbeetles_v1).
 -->

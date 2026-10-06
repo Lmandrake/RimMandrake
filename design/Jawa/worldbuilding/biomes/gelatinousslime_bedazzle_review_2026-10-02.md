@@ -87,7 +87,7 @@ The campaign layer adds the frozen twin `RUT_Slime` (Alpha Biomes terrain and fl
      nothing replaced it. The standing flyer rule (*"we make flyers flyers"*) would apply to whatever is built.
   3. **The resistant characters** (sheet §4: the trash-eating amoeba, the corrosive slug, the iron-shelled
      snail, *"rendered down or milked, the resistant natives supply the resistance economy"*): exist only as
-     `AA_` donors on the frozen twin (named oomb, vulloth, bezzul by the 2026-09-24 batch). Q14 bars them
+     `AA_` donors on the frozen twin (named oomb, bileworm, bezzul by the 2026-09-24 batch). Q14 bars them
      from the free def; **no remake of ours exists**, and nothing is rendered down or milked anywhere.
   4. **The trace tail of experiments** (sheet §4, 0.001 to 0.07): donor-only on the twin (hennul, mubbaro,
      wuppik, yollum).
@@ -154,7 +154,7 @@ arriving part-read, about one every day and a half, capped.
 
 **The frozen twin, `RUT_Slime/wildAnimals` (11 rows, `animalDensity 2.0`):** `AA_GreenGoo` 2.0 (wuum),
 `RUT_SlimeGrazer` 0.5, `AA_AcanthamoebaGiganteaLarge` 0.15 (oomb), `RM_Titanoslime` 0.12, `AA_Plasmorph` 0.1
-(bezzul), `AA_Helixien` 0.075 (vulloth), `AA_DecayDrake` 0.02 (mubbaro), `AA_Mime` 0.01 (hennul),
+(bezzul), `AA_Helixien` 0.075 (bileworm), `AA_DecayDrake` 0.02 (mubbaro), `AA_Mime` 0.01 (hennul),
 `AA_Thunderbeast` 0.005 (ruled moved away), `GR_Chickenrabbit` 0.005 (wuppik), `GR_Manbear` 0.002 (yollum).
 Nine donors, all retired from the free def by Q14; at the repaint the world moves onto the two-animal def.
 
@@ -258,7 +258,7 @@ API (probe *dewback* returns its page).
 | The substrate | gelatid 3.0 (draws as a tortoise) | wuum 2.0 (donor) | none owed; **commission the gelatid's own art** (zero artpipe hits) |
 | The filter-feeder line (owner's ruling: *"a whole family"*) | none | `RUT_SlimeGrazer` 0.5, twin only, art finished twice and unwired | **the gappo family**: move the grazer to `RM_` as the **gappo** (the family's middle size; wire its finished `v2` art, artpipe `done/rutslimegrazer_v2_*`, after checking for a ruling on it), add a **lesser gappo** (a skimming swarm) and a **greater gappo** (a slow bs-3 bulk feeder whose scoop leaves a clean channel behind it). One stem, three sizes, the oomb precedent |
 | The fliers (owner's ruling: *"the aristocracy… immune to the wading trap"*) | none | none | **the dwommo**: a gas-float lobe-eater, a translucent amber bladder trailing feeding fronds, drifting over the body and landing only on hardened slime; real flight (`MaxFlightTime`, no flip-book needed). The template the sheet names (the aerofleet's hydrogen-float) is a donor and stays in reserve |
-| The resistant characters (*"rendered down or milked… the resistance economy"*) | none | oomb, vulloth, bezzul (donors) | **the glurro**: a solid-bodied, iron-crusted crawler that grazes the liquid channels and is never read; tamed and **milked**, its sweat is a resistance salve (slows slimification; it does not stop it), and **rendered down** in the pit it is the salve's concentrate. Lands the resistance economy on one creature of ours |
+| The resistant characters (*"rendered down or milked… the resistance economy"*) | none | oomb, bileworm, bezzul (donors) | **the glurro**: a solid-bodied, iron-crusted crawler that grazes the liquid channels and is never read; tamed and **milked**, its sweat is a resistance salve (slows slimification; it does not stop it), and **rendered down** in the pit it is the salve's concentrate. Lands the resistance economy on one creature of ours |
 | The conventional munchers (*"browse the pseudo-plants and hunt the pseudo-herds"*) | none | none | **the fubbum**: the body's one hunter, a low, leathery, wide-footed stalker that hunts gelatid herds at their night pooling and is resistant by its hide. Rare (about 0.15) and never hunts a pawn first |
 | The trace tail (*"the database running experiments"*) | the visitors (built: neighbours wander in part-read) | hennul, mubbaro, wuppik, yollum (donors) | **none owed: the visitors are the tail.** Q14 bars the donor experiments; the built visitor pipe already delivers *"recombinations walking around in small numbers"*, honestly sourced from the real neighbours |
 | The giant | titanoslime 0.12 | same | **the card asks which story it carries** (below) |

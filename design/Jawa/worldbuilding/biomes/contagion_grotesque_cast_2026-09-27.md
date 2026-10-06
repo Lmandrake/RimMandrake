@@ -41,7 +41,7 @@ design doc) — not a collision; cited so nobody rediscovers it.
 donor rows already have finished 3-facing art in `infrastructure/artpipe/done/` +
 `_artsrc/` under the superseded exotic ids (`contagion_ghaaz_*`, `contagion_zhool_*`,
 `contagion_blisteredbulloo_*`, `contagion_greaterbulloo_*`, `contagion_vezzok_*`,
-`contagion_zhirrik_*`, `contagion_vulloth_*`, `contagion_fezzira_*` + larva,
+`contagion_zhirrik_*`, `contagion_bileworm_*`, `contagion_fezzira_*` + larva,
 `contagion_brossak_*`, `contagion_ghuvv_*`, `contagion_gollivra_*`,
 `contagion_pellorax_*`, `contagion_pibbo_*`), plus `bloodbouquet_v1` and
 `halfalientree_v1`. **All of it is in the retired "painterly vanilla + heavy black

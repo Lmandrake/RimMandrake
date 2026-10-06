@@ -396,7 +396,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `AA_Gigantelope` | gigantelope | desert | NONCANON | port-named · RSW_Sandhorn thurra (per the 2026-09-21 sheet) |
 | `AA_GreenGoo` | green goo | the_slime | NONCANON | batch 1 · wummo |
 | `AA_Groundrunner` | groundrunner | desert | NONCANON | batch 2 · dobbak (as RSW_Groundrunner) |
-| `AA_Helixien` | helixien | poison_forest, the_contagion, the_miasma, the_scarlands, the_slime | NONCANON | batch 1 · vulloth |
+| `AA_Helixien` | helixien | poison_forest, the_contagion, the_miasma, the_scarlands, the_slime | NONCANON | batch 1 · bileworm |
 | `AA_InfectedAerofleet` | infected aerofleet | poison_forest, the_contagion | NONCANON | batch 1 · blistered bulloo |
 | `AA_LarvalAtispec` | larval atispec | the_scald | NONCANON | SEA BATCH — blocked on TERMINALBIOMES_RM_MOD_BUILD_1 |
 | `AA_Lockjaw` | lockjaw | the_miasma | NONCANON | batch 2 · enduk |

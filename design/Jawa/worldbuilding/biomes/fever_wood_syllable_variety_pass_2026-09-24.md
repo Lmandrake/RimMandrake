@@ -57,7 +57,7 @@ zero hits on all three), and a Wookieepedia `list=search` probe, 2026-09-24, **0
 each with a positive control (`dewback` → 3 hits) proving the instrument**.
 
 - **vaulm** — no name anywhere opens `vaul`. Nearest: *vaumeen* (an unadopted batch-5a
-  alternate; `vaum` ≠ `vaul` at the fourth letter), *vulloth* (`vull`), and the flora
+  alternate; `vaum` ≠ `vaul` at the fourth letter), *bileworm* (`vull`), and the flora
   **maulith** (`maul`) — first syllables rhyme but the onsets differ cleanly aloud. SW
   canon: 0 Wookieepedia hits. No UNCERTAIN.
 - **lommerel** — no name opens `lomm`. Nearest by sound: *thollum*, *mollith*, *ghemmel*,
