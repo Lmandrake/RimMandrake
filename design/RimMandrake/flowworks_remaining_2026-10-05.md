@@ -30,9 +30,9 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 | 5 | ✅ (see log) — Fire: ignition from an explosion with no Fire; extinguishing (rain, foam) | FLOWWORKS_BUILD_PROGRAM_1 Phase 6 owed | BUILD | yes | — |
 | 6 | ✅ core (see log) — Canal-dig finds (Quarry concept): lump on the bank, letter on first find per material per map, deep cuts reach deep-drill minerals, mineral-less biome → local rock chunks | FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half) | BUILD (core) | yes | Per-biome numbers come from MINERALS_WHERE_THEY_BELONG_1's registry (owner numbers review unapproved) — core reads the MAP's own geology until the registry lands |
 | 7 | ✅ pump slice (see log) — Phase 8 hardware: universal pump (body ↔ tank through §8 TryDebit/TryCredit), barrels | FLOWWORKS_BUILD_PROGRAM_1 Phase 8 | BUILD (slice) | yes | Hoses, per-net adapters (VE PipeSystem) are a later slice |
-| 8 | Every mechanic has a Mod Settings toggle | MOD_OPTIONS_RETROFIT_1 (FlowWorks part) | BUILD (audit) | yes | — |
+| 8 | ✅ audit: every FlowWorks mechanic has a toggle (the no-sand-swim guard is a correctness guard, deliberately untoggled) — Every mechanic has a Mod Settings toggle | MOD_OPTIONS_RETROFIT_1 (FlowWorks part) | BUILD (audit) | yes | — |
 | 9 | Sluice-opening route for drowning; occupant effects live | PIT_FILL_EFFECTS_1 | BUILT | — | live verify; scripting belongs to the validation owner |
-| 10 | Wall-face art at 4 depths, spikes art | EXCAVATION_WALL_ART_1 | see below | partly | Census 2026-10-05: no art exists or is ruled |
+| 10 | ✅ carrier + queued art (see log) — Wall-face art at 4 depths, spikes art | EXCAVATION_WALL_ART_1 | BUILT (procedural) / art QUEUED | yes | Form chosen: SectionLayer over the depth grid; textures queued in artpipe |
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
 | 12 | Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
 | 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | DEP | — | Rivers-carry column of MINERALS_WHERE_THEY_BELONG_1 not built |

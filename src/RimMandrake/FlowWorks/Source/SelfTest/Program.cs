@@ -992,6 +992,23 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PumpMath.CyclesToFill(300) == 60 && RM_PumpMath.CyclesToFill(1) == 1 && RM_PumpMath.CyclesToFill(0) == 0, "cycles to fill round up");
             });
 
+            // ── EXCAVATION_WALL_ART_1: every depth reads differently ──
+            Case("WallFaces_every_depth_differs", () =>
+            {
+                float last = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float h = RM_WallFaceMath.NorthFaceHeight(RM_WallFaceMath.ExposedDrop(d, 0, 0));
+                    Assert(h > last, "north face grows with depth at D=" + d);
+                    last = h;
+                }
+                Assert(RM_WallFaceMath.FootDarkness(4) > RM_WallFaceMath.FootDarkness(3), "deeper foot is darker");
+                Assert(RM_WallFaceMath.ExposedDrop(2, 3, 0) == 0, "no wall where the neighbour is deeper");
+                Assert(RM_WallFaceMath.ExposedDrop(4, 0, 3) == 1, "liquid covers the foot");
+                Assert(RM_WallFaceMath.ExposedDrop(3, 0, 3) == 0, "a brimming cut shows no face");
+                Assert(RM_WallFaceMath.NorthFaceHeight(9) <= RM_WallFaceMath.NorthMax, "never taller than a cell");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
