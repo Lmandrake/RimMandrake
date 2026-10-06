@@ -104,10 +104,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             AerialSettings.Apply();
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var l = new Listing_Standard();
-            l.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            var l = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            l.Begin(settingsView);
             l.CheckboxLabeled("Aerial power lines (master switch)", ref AerialSettings.enabled,
                 "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
                 "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks.");
@@ -134,7 +140,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             l.CheckboxLabeled("Report taps to consequence systems (event hook only; no alerts or raids exist yet)", ref AerialSettings.tapEvents);
             l.GapLine();
             if (l.ButtonText("Reset to defaults")) AerialSettings.ResetToDefaults();
+            settingsViewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
             l.End();
+            Widgets.EndScrollView();
         }
     }
 }

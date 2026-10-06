@@ -83,10 +83,16 @@ namespace RimMandrake.StarWars.JawaRules
             return worldLabelLiftEnabled ? worldLabelLift : Patch_WorldFeatureText_Lift.VanillaLift;
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.Label("Colony rules");
             list.CheckboxLabeled("Jawa may not sow", ref sowBanEnabled,
@@ -128,7 +134,9 @@ namespace RimMandrake.StarWars.JawaRules
                 worldLabelLift = list.Slider(worldLabelLift, 0.4f, 3f);
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

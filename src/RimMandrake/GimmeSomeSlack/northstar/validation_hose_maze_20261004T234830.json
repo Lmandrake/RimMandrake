@@ -1,0 +1,134 @@
+{
+ "mod": "MessyConduit",
+ "mode": "maze",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T23:47:47",
+ "rows": [
+  {
+   "id": "M1_open_maze_short_route",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "layOk": true,
+    "pathLen": 10.9448,
+    "bbox": [
+     45.5688,
+     86.4906,
+     56.5,
+     87.0438
+    ],
+    "fellBack": false,
+    "minBendFlat": 1.4852,
+    "unwalkablePoints": 0,
+    "lay": null,
+    "viaGap": true
+   }
+  },
+  {
+   "id": "M2_gap_walled_reroutes",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": true,
+    "layOk": true,
+    "pathLen": 25.2937,
+    "bbox": [
+     41.6187,
+     86.5,
+     56.5,
+     89.4987
+    ],
+    "fellBack": false,
+    "minBendFlat": 0.3669,
+    "unwalkablePoints": 0,
+    "selfIntersects": false,
+    "relays": 1,
+    "before": 10.9448
+   }
+  },
+  {
+   "id": "M3_length_cap_install",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "reason": "route too long",
+    "maxLength": 20
+   }
+  },
+  {
+   "id": "M3b_laid_hose_over_cap_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "pathLen": null,
+    "maxLength": 20,
+    "retractReason": "route too long",
+    "retractTick": 18609,
+    "retracts": 1,
+    "note": "HOSE_BLOCKED_REROUTE_RETRACT_1: a re-plan enforces the cap; expected reeled in, reason 'route too long'"
+   }
+  },
+  {
+   "id": "M4_unreachable_retracts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "state": "Flat",
+    "reelGraphic": null,
+    "retractReason": "no route",
+    "retractTick": 18859,
+    "check": "no route",
+    "relay": null,
+    "retracts": 2,
+    "note": "expected: reeled in at the next 250-tick check, retractReason 'no route'"
+   }
+  },
+  {
+   "id": "M5_walls_removed_recovers",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "laid": false,
+    "layOk": false,
+    "pathLen": null,
+    "bbox": null,
+    "lay": "no route"
+   }
+  },
+  {
+   "id": "P1_reel_couples_to_tank",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "port": null,
+    "portKind": "None",
+    "portSide": [
+     0,
+     0
+    ],
+    "feedDraws": 0
+   }
+  },
+  {
+   "id": "P2_lone_reel_not_coupled",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "port": null,
+    "portKind": "None"
+   }
+  }
+ ],
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_01_open.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_02_gap_walled.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\maze_04_unreachable.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\ports_01_reel_tank.png"
+ ],
+ "log": []
+}

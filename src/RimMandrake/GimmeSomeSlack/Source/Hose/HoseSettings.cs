@@ -127,10 +127,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>B27: empty, so RimWorld lists no separate entry; drawn as a tab of GimmeSomeSlackMod's one window.</summary>
         public override string SettingsCategory() => "";
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            var l = new Listing_Standard();
-            l.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            var l = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            l.Begin(settingsView);
             l.CheckboxLabeled("Flexible hoses (master switch)", ref HoseSettings.enabled,
                 "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
                 "Off: hoses are hidden; reels stay and keep their hose ends, so no save breaks.");
@@ -167,7 +173,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             l.CheckboxLabeled("Read FlowWorks pumps beside a reel (when FlowWorks has them)", ref HoseSettings.useFlowWorksPumps);
             l.GapLine();
             if (l.ButtonText("Reset to defaults")) HoseSettings.ResetToDefaults();
+            settingsViewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
             l.End();
+            Widgets.EndScrollView();
         }
     }
 }

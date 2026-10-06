@@ -104,12 +104,13 @@ namespace RimMandrake.ExplosiveGrowth
         }
 
         private static Vector2 scroll;
+        private static float settingsViewHeight = 1600f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 1150f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(settingsViewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.CheckboxLabeled("Explosive plant growth enabled", ref enabled,
@@ -165,6 +166,7 @@ namespace RimMandrake.ExplosiveGrowth
             list.CheckboxLabeled("Grazing and dry air suppress encroachment", ref suppressionEnabled,
                 "Where animals graze (and where a dry-air blower runs), soak is refused and charging plants relax for a few days.");
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
         }

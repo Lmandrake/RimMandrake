@@ -73,15 +73,16 @@ namespace RimMandrake.StarWars.GizkaStowaway
         public override string SettingsCategory() => "RimMandrake: SW — Gizka Stowaway";
 
         private Vector2 scrollPos = Vector2.zero;
+        private float viewHeight = 1300f;
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
             // The content is taller than a settings window at 1080p, so it
             // scrolls rather than clipping the bottom rows off.
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, 780f);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
 
-            Listing_Standard l = new Listing_Standard();
+            Listing_Standard l = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             l.Begin(viewRect);
 
             GUI.color = new Color(0.7f, 0.7f, 0.7f);
@@ -166,6 +167,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
                 RSW_GizkaDonorTuning.Apply();
             }
 
+            viewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
             l.End();
             Widgets.EndScrollView();
         }

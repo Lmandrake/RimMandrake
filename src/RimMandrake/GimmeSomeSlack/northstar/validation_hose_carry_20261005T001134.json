@@ -1,0 +1,404 @@
+{
+ "mod": "MessyConduit",
+ "mode": "carry",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-05T00:10:29",
+ "rows": [
+  {
+   "id": "CR0_scene",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "pawn": {
+     "id": 1021,
+     "name": "Manny",
+     "pos": [
+      85,
+      68
+     ],
+     "drafted": false,
+     "downed": false,
+     "job": null,
+     "forced": false,
+     "driver": null,
+     "toil": -1
+    },
+    "reel": [
+     82,
+     68
+    ]
+   }
+  },
+  {
+   "id": "CR1_deploy_carrying",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=deploy:106,68",
+     "reason": null,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "carry": "Stored"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;1021",
+     "job": "RM_CarryHoseEnd",
+     "curJob": "RM_CarryHoseEnd",
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    },
+    "ticks": 90,
+    "seen": [
+     "Stored",
+     "Carrying"
+    ],
+    "hose": {
+     "carry": "Carrying",
+     "carrier": 1021,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 3,
+     "trailLast": [
+      85,
+      68
+     ],
+     "pulled": 2.0063,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   }
+  },
+  {
+   "id": "CR2_trail_follows_walk",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "before": {
+     "carry": "Carrying",
+     "carrier": 1021,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 3,
+     "trailLast": [
+      85,
+      68
+     ],
+     "pulled": 2.0063,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "after": {
+     "carry": "Carrying",
+     "carrier": 1021,
+     "far": [
+      -1000,
+      -1000
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pulled": 5.9561,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "pawnPos": [
+     89,
+     68
+    ]
+   }
+  },
+  {
+   "id": "CR3_draft_drops_end",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "draft": true,
+    "pawn": {
+     "id": 1021,
+     "name": "Manny",
+     "pos": [
+      89,
+      68
+     ],
+     "drafted": true,
+     "downed": false,
+     "job": "Wait_Combat",
+     "forced": false,
+     "driver": "JobDriver_Wait",
+     "toil": 0
+    },
+    "hose": {
+     "carry": "Dropped",
+     "carrier": null,
+     "far": [
+      89,
+      68
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pulled": 5.9561,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   }
+  },
+  {
+   "id": "CR4a_save_load_dropped",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "io": {
+     "saved": "RM_hosecarry_20261005001029_dropped.rws",
+     "loadSeconds": 3
+    },
+    "before": {
+     "carry": "Dropped",
+     "far": [
+      89,
+      68
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    },
+    "after": {
+     "carry": "Dropped",
+     "far": [
+      89,
+      68
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ]
+    }
+   }
+  },
+  {
+   "id": "CR4b_save_load_carrying",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "io": {
+     "saved": "RM_hosecarry_20261005001029_carrying.rws",
+     "loadSeconds": 2
+    },
+    "before": {
+     "carry": "Carrying",
+     "carrier": 1021,
+     "far": [
+      89,
+      68
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pulled": 5.9561,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    },
+    "after": {
+     "carry": "Carrying",
+     "carrier": 1021,
+     "far": [
+      89,
+      68
+     ],
+     "trailCount": 7,
+     "trailLast": [
+      89,
+      68
+     ],
+     "pulled": 5.9561,
+     "pending": "Deploy",
+     "pendingAt": [
+      106,
+      68
+     ],
+     "wound": 0,
+     "state": "Flat"
+    }
+   }
+  },
+  {
+   "id": "CR5_resume_laid_at_target",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "startjob": "work",
+    "resumeTicks": 60,
+    "layTicks": 300,
+    "seen": [
+     "Dropped",
+     "Carrying",
+     "Carrying",
+     "Laid"
+    ],
+    "hose": {
+     "carry": "Laid",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 24,
+     "trailLast": [
+      106,
+      68
+     ],
+     "pulled": 22.9377,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   }
+  },
+  {
+   "id": "CR5b_laid_hose_plumps",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "state": "Plump",
+    "provider": "debug",
+    "signal": true
+   }
+  },
+  {
+   "id": "CR5c_end_kind",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "endKind": "Free",
+    "note": "endKind is stage S4"
+   }
+  },
+  {
+   "id": "CR6_retract_stored",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "order": {
+     "success": true,
+     "cmd": "order:82,68=retract",
+     "reason": null,
+     "pending": "Retract",
+     "pendingAt": null,
+     "carry": "Laid"
+    },
+    "startjob": {
+     "success": true,
+     "cmd": "startjob:82,68=forced;1021",
+     "job": "RM_RetractHose",
+     "curJob": "RM_RetractHose",
+     "pending": "Retract",
+     "pendingAt": null
+    },
+    "ticks": 750,
+    "budget": 1446,
+    "seen": [
+     "Laid",
+     "Retracting",
+     "Stored"
+    ],
+    "hose": {
+     "carry": "Stored",
+     "carrier": null,
+     "far": [
+      106,
+      68
+     ],
+     "trailCount": 0,
+     "trailLast": null,
+     "pulled": 0,
+     "pending": "None",
+     "pendingAt": null,
+     "wound": 0,
+     "state": "Flat"
+    }
+   }
+  },
+  {
+   "id": "CR7_no_instant_gizmos_without_devmode",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "devModeOff_labels": [
+     "Deploy hose",
+     "Free end: open"
+    ],
+    "offending": [],
+    "devModeOn_labels": [
+     "Deploy hose",
+     "Free end: open",
+     "DEV: lay hose instantly"
+    ],
+    "control_found_in_devmode": [],
+    "devModeBefore": true
+   }
+  }
+ ],
+ "saves": [
+  "RM_hosecarry_20261005001029_dropped.rws",
+  "RM_hosecarry_20261005001029_carrying.rws"
+ ]
+}

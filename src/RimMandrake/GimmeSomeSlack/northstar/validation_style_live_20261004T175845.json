@@ -1,0 +1,19 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "script": "validation_style.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T17:58:24",
+ "rows": [
+  {
+   "id": "S_probe_channel",
+   "status": "FAIL",
+   "class": "HARNESS",
+   "detail": {
+    "success": false,
+    "error": "aerial probe timed out (no frame serviced it)"
+   }
+  }
+ ],
+ "aborted": "aerial probe dead"
+}

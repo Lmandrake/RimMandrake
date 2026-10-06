@@ -79,7 +79,7 @@ namespace RimMandrake.Contagion
             // Scrolls: the screen outgrew one page with the mechanics build.
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPos, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());

@@ -40,10 +40,16 @@ namespace RimMandrake.Utinni.ScavengerEvents
             Scribe_Values.Look(ref thanksgivingThresholdMultiplier, "thanksgivingThresholdMultiplier", 1f);
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.Label("Each incident below can be turned off without affecting the others.");
             list.GapLine();
@@ -77,7 +83,9 @@ namespace RimMandrake.Utinni.ScavengerEvents
             list.Label("Fires when food is below " + thanksgivingThresholdMultiplier.ToString("0.00") + "x the normal hunger threshold");
             thanksgivingThresholdMultiplier = list.Slider(thanksgivingThresholdMultiplier, 0.5f, 2f);
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

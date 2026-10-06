@@ -53,12 +53,13 @@ namespace RimMandrake.Utinni.Atlas
         }
 
         private static Vector2 scroll;
+        private static float settingsViewHeight = 1000f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 760f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(settingsViewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard();
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("<b>Discovery</b>");
@@ -118,6 +119,7 @@ namespace RimMandrake.Utinni.Atlas
                 lightsPulse = true; rewardsEnabled = false; rewardScale = 1f; disabledCategories.Clear();
             }
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
         }

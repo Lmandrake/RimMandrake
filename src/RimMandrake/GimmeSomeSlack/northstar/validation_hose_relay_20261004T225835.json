@@ -1,0 +1,19 @@
+{
+ "mod": "MessyConduit",
+ "mode": "relay",
+ "script": "validation_hose.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T22:58:14",
+ "rows": [
+  {
+   "id": "RL0_probe_channel",
+   "status": "FAIL",
+   "class": "HARNESS",
+   "detail": {
+    "success": false,
+    "error": "hose probe timed out (no frame serviced it)"
+   }
+  }
+ ],
+ "aborted": "hose probe dead"
+}
