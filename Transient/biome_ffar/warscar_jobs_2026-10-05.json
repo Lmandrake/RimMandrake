@@ -1,0 +1,51 @@
+[
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Warscar: a poisoned battlefield of crater fields and slag hills under an ash-grey overcast; scorched grey-brown ground, rust and burnt metal, bleak flat light",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject on a transparent background, no ground shadow, no props. Same individual in every view.",
+  "id": "warscar_MegaphoridLarva_v2",
+  "target_def": "RSW_MegaphoridLarva",
+  "prompt": "RimWorld creature sprite: the megaphorid maggot, the larval form of the megaphorid fly: a fat, ravenous, boneless grub about the length of a forearm, pale grey-brown segmented body ringed with soft ridges, tapering to a small blunt head with a ring of tiny teeth, wet and glistening, slumped low to the ground and dragging itself along. Make it read clearly as a living grub, not a lump of rock or a loaf.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "redo (no note)",
+  "target_original": [
+   "Megaphorid larva"
+  ]
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Warscar: a poisoned battlefield of crater fields and slag hills under an ash-grey overcast; scorched grey-brown ground, rust and burnt metal, bleak flat light",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject on a transparent background, no ground shadow, no props. Same individual in every view.",
+  "id": "warscar_Mynock_v2",
+  "target_def": "RSW_Mynock",
+  "prompt": "The attached image is the owner's ACCEPTED sprite of this exact individual, not merely an anatomy guide: keep the same warty olive-brown hide, ragged leathery wings with thumb-claws, long thin spiked tail, two bulging eyes on stalks and round bristle-ringed sucker mouth, the same colours and proportions, and draw only a different viewing angle of it. The mynock is a small flying bat-like parasite hanging in the air with wings spread; it is a flyer, so show it airborne, never perched on the ground. This view is a profile seen from the creature's side with its sucker mouth turned to the right, one wing raised toward the viewer and one beyond it, tail trailing behind.",
+  "facings": [
+   "east",
+   "north"
+  ],
+  "owner_note": "I like the mynok there, but needs north and east",
+  "canon": "mynock",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock.png"
+  ],
+  "target_original": [
+   "Mynock"
+  ]
+ }
+]
