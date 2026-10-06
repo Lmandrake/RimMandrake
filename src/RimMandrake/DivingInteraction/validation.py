@@ -297,7 +297,7 @@ def seabed_floor_ambient_carryover(t):
         t.screenshot()
     with t.component("floor_biomes_carry_sea_life", beyond_toggle=False):
         r = t.bridge_call("jawa/get_defs", defs=";".join("BiomeDef/%s" % f for f in SEAS.values()),
-                          fields="plantDensity;animalDensity")
+                          fields="plantDensity,animalDensity")   # comma: ';' reads as ONE unknown field (MEASURED 2026-10-06)
         if _live(t):
             if (r or {}).get("success") is False or (r or {}).get("notFound"):
                 raise ExpectationFailed("floor biome query failed: %r" % r)

@@ -22,6 +22,7 @@ Sources: `Defs/PlanetLayerDefs/` (RM_SeabedLayer, RM_SeabedFloorBiomes), `Defs/M
 ## anti-guessing notes
 RULED OUT: "the Grey floor cannot be checked until the planet is painted" — the floor-map chain sets the layer tile's biome itself (`biome=`), so an unpainted world checks out; 0 RM_GreySea tiles is the expected mid-migration state (CLAUDE.md).
 RULED OUT: "a floor map needs a gravship landing" — `world_tile_map_generate layer=RM_SeabedLayer` makes the layer's DefaultWorldObject (RM_SeabedSite), whose MapGeneratorDef override is the same one a landing uses (RM_SeabedSiteParent.cs).
+FOUND 2026-10-06 (first live run, grey_floor_grows_its_flora RED, 0 of 16 plants): Map Designer (zylle.mapdesigner) snapshots biome densities at its static ctor (835 of 1610) and writes them back at game start, undoing RM_SeabedFloorLife's copy (ctor 1607): lists survive, both densities read 0.0. Fixed by re-asserting before floor generation and on Game.FinalizeInit; the log line "densities were reset by another mod" names each restore.
 RULED OUT: "the floor biome's animalDensity 0 means an empty floor" — RM_SeabedFloorLife copies the sea's cast at startup; only a live census of the floor map answers it.
 
 ## north star
