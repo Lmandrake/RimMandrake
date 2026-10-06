@@ -2525,6 +2525,9 @@ def _x10_canal_fire(L):
         L.row("X10_canal_fire", False, "HARNESS", "ProofFillWithFluid: %s" % [f[1] for f in fills if not f[0]][:2],
               status="UNMEASURED")
         return
+    # Live 2026-10-05 19:12: unlocked weather turned to rain mid-row and rain (rainDousesLiquidFireEnabled, ON by
+    # default) doused one cell before it burned dry -> "F>0 left (134,88)" on a working mod. Pin Clear, locked.
+    B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     L.sset(S_FW, "canalBurnDaysPerLevel", FIRE_FAST_BURN_DAYS)
     try:
         ok, _, lit = _proof(B, "ProofIgnite", "%d,%d" % run[-1], typ=FIRE_TYPE)
