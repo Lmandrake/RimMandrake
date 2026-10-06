@@ -8,8 +8,9 @@
     - leatherDef Leather_Night -> Leather_Plain (PROVISIONAL substitute)
     - useMeatFrom AA_NightMule -> RM_Aveluthia (that donor's own port, this pass)
     - the VEF stat extension dropped; the horn tool is relabelled "plated brow" to match the description.
-  ART: abyss_olumetha_v3 east+south finished in the artpipe; NORTH FAILED and is owed a requeue. Awaiting install
-  at the texPath below (the owner's pick dugrath, recoloured).
+  ART: abyss_olumetha_v3 east+north installed 2026-10-06 (art ledger; the owner's pick dugrath, recoloured). Its
+  SOUTH failed the owner-note gate (read charcoal) and is requeued as abyss_olumetha_v4_south, derived from the
+  accepted east; until it lands Graphic_Multi shows the north view for south.
 -->
 <Defs>
 

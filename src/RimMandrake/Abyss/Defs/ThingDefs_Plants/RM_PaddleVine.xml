@@ -6,7 +6,7 @@
     - harvestedThingDef AG_Ultima (an Alpha Genes item) -> vanilla Cloth (PROVISIONAL: "a tough, glossy fibre that
       weaves into hard-wearing cloth"; an owned fibre item is owed if wanted)
     - Graphic_Random over the donor's set -> Graphic_Single (one ruled render); uiIconPath dropped.
-  ART: abyss_paddlevine_v1, finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_PaddleVine.png.
+  ART: abyss_paddlevine_v1, finished in the artpipe, installed 2026-10-06 via the art ledger as RM_Abyss/Things/Plant/RM_PaddleVine.png.
 -->
 <Defs>
   <ThingDef ParentName="PlantBase">

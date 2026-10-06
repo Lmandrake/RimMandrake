@@ -7,7 +7,7 @@
       good to eat"; an owned glowberry item is owed if wanted)
     - Graphic_Single -> Graphic_Random over the owner's three picks.
   ART (owner's "wire as picked"): abyss_vettrig_v1 (_a), abyss_glowberrybush_b_v2 (_b), abyss_glowberrybush_c_v2 (_c),
-  all finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_{a,b,c}.png.
+  all finished in the artpipe, installed 2026-10-06 via the art ledger as RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_{a,b,c}.png.
 -->
 <Defs>
   <ThingDef ParentName="BushBase">

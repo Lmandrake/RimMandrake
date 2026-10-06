@@ -6,7 +6,7 @@
     - placeWorker AlphaBiomes.PlaceWorker_ShowGammaRadius (donor C#) dropped; the overlight radius still works.
   Its CompGlower overlightRadius 7 is the sunlamp (GlowGrid.GroundGlowAt reads 1.0 inside it; see RM_Wickwood).
   ART (owner's "wire as picked"): abyss_greatbulgra_v1 (_a), abyss_giantglowglobe_b_v2 (_b),
-  abyss_giantglowglobe_c_v2 (_c), all finished in the artpipe, awaiting install as
+  abyss_giantglowglobe_c_v2 (_c), all finished in the artpipe, installed 2026-10-06 via the art ledger as
   RM_Abyss/Things/Plant/RM_GiantGlowGlobe/RM_GiantGlowGlobe_{a,b,c}.png.
 -->
 <Defs>

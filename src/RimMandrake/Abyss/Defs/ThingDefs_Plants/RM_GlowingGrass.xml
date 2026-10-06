@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1 item note 1. The Abyss's ground grass: owned port of Alpha Biomes' glowing grass
+  (sarg.alphabiomes AB_GlowingGrass, 1.6/Defs/ThingDefs_Plants/Plants_ForsakenCrags.xml). The owner asked for
+  "More realistic, more variations." and no rename, so label and description are the donor's own. Every
+  stat/plant field is the donor's own EXCEPT:
+    - texPath -> our Graphic_Random folder of his kept variants re-tinted dull glowing yellow-green
+      (abyss_glowinggrass_{a,b,c}_tint_v1). a and c are installed; b's tint failed the sprite validator and is
+      requeued as abyss_glowinggrass_b_tint_v2. Graphic_Random picks up b when it lands.
+  Growth temperatures are left to PlantBase here; the campaign carries the donor's refit in
+  RimUtinni/UtinniPatches/Patches/PlantTolerances_OwnedPorts.xml (PROVISIONAL).
+-->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_GlowingGrass</defName>
+    <label>grass</label>
+    <description>Wild grass. Grows anywhere there is a little light and minimally fertile ground.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_GlowingGrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <ingestible/>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>2.5</growDays>
+      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>9</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+    </plant>
+  </ThingDef>
+</Defs>

@@ -7,7 +7,7 @@
     - Graphic_Single -> Graphic_Random over the owner's three picks.
   The donor carries no poison mechanic; "deeply poisonous" is description only (as on the donor).
   ART (owner's "wire as picked"): abyss_bulgra_v1 (_a), abyss_glowglobe_b_v2 (_b), abyss_glowglobe_c_v2 (_c),
-  all finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_{a,b,c}.png.
+  all finished in the artpipe, installed 2026-10-06 via the art ledger as RM_Abyss/Things/Plant/RM_GlowGlobe/RM_GlowGlobe_{a,b,c}.png.
 -->
 <Defs>
   <ThingDef ParentName="PlantBase">

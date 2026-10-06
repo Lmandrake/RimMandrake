@@ -8,8 +8,10 @@
     - leatherDef Leather_Night -> Leather_Pig (PROVISIONAL; it already takes its meat from Pig)
     - the tusk tool is relabelled "shovel jaw" to match the description
     - VEF CompProperties_DigWhenHungry (digs AA_BlackTruffles), the VEF trainable and stat extension dropped.
-  ART: abyss_ossumatha_v3 has only ONE facing finished; north and south FAILED in the artpipe and are owed a
-  requeue. Awaiting install at the texPath below.
+  ART: abyss_ossumatha_v3_east installed 2026-10-06 (art ledger). Its north and south failed the owner-note gate
+  (read charcoal, not pitch black) and are requeued as abyss_ossumatha_v4_{north,south}, derived from the
+  accepted east; until they land Graphic_Multi falls back to the east image for north/south
+  (drawn with a -90 degree offset, Graphic_Multi.Init), so those facings read wrong.
 -->
 <Defs>
 

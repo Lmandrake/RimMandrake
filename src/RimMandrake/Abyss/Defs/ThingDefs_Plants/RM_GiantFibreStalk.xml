@@ -4,7 +4,7 @@
   AB_GiantSeptimum, 1.6/Defs/ThingDefs_Plants/Plants_ForsakenCrags.xml); plain name and description are the
   owner's (sheet 2026-10-05; sitting 2 "Looks good."). Every plant/stat field is the donor's own EXCEPT:
     - SIZE x2 (owner's sheet): visualSizeRange 1.3~2.5 -> 2.6~5.0
-  ART (owner's "wire as picked"): abyss_elderskeddra_v1, finished in the artpipe, awaiting install as
+  ART (owner's "wire as picked"): abyss_elderskeddra_v1, finished in the artpipe, installed 2026-10-06 via the art ledger as
   RM_Abyss/Things/Plant/RM_GiantFibreStalk.png.
 -->
 <Defs>

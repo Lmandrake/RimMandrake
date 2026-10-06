@@ -12,7 +12,7 @@
       PROVISIONAL (set to the donor's eggLayIntervalDays), litterSizeCurve the donor's own
     - VEF CompProperties_InitialHediff AA_LowRest ("hardly sleeps") and the VEF stat extension dropped; the
       low-rest trait is OWED as our own mechanic (not built here).
-  ART: abyss_moravatha_v3 (east/south/north, 512 px, finished in the artpipe), awaiting install at the texPath below.
+  ART: abyss_moravatha_v3 (east/south/north, 512 px, finished in the artpipe), installed 2026-10-06 via the art ledger at the texPath below.
 -->
 <Defs>
 
