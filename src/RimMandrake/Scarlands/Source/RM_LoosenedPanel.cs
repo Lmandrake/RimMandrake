@@ -205,11 +205,12 @@ namespace RimMandrake.Scarlands
     {
         /// <summary>Spawns a panel and a colonist whose mark is at `severity`, reads the gate, and opens the panel
         /// when the gate allows. "sev 0.30 deepening 0.50 canWork False opened False crate - refusal ..."</summary>
-        public static string ProofWork(string arg)
+        /// jawa/static_call splits its args on '|' into PARAMETERS, so "current|0.3" needs two of them (LIVE
+        /// 2026-10-06: the one-string signature was never callable and the script read an empty reply as a FAIL).
+        public static string ProofWork(string mapArg, string sevArg)
         {
-            string[] parts = (arg ?? "current|0.5").Split('|');
             Map map = Find.CurrentMap;
-            float sev = parts.Length > 1 && float.TryParse(parts[1], System.Globalization.NumberStyles.Float,
+            float sev = sevArg != null && float.TryParse(sevArg, System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture, out float v) ? v : 0.5f;
             ThingDef panelDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_LoosenedPanel");
             if (map == null || panelDef == null || RM_WarscarMark.MarkDef == null)
