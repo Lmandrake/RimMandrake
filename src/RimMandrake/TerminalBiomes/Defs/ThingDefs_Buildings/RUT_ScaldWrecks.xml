@@ -26,18 +26,14 @@
 
   🔴 THREE SILHOUETTES, NOT THREE MECHANICS. Per the spec's own "(2-3
   silhouettes, art pass)" — distinct shapes for scatter variety, all
-  carrying the identical salvage mechanism (deconstruct-only, vanilla
-  costList/killedLeavings). No new comp, no loot ThingSetMaker: the spec's
-  own §S6 text flags "a small RUT_ScaldSalvage loot ThingSetMaker" with a
-  ❓ (an open idea, never resolved) alongside the RESOLVED claim that S6
-  needs "zero new C#" for the scatter mechanism itself — a ThingSetMaker
-  wired to fire extra loot ON deconstruct would need a comp to hook
-  Notify_Deconstructed or similar, which is new C# the spec's own build-
-  order item never asked for at S6's "S" effort rating. Deferred to the
-  loot pass (scald_kit_spec.md §S6: "Loot REGISTER ... is the items pass's,
-  per sheet economy convention") rather than invented here. v1 ships the
-  vanilla costList/killedLeavings salvage only, same mechanism ShipChunk
-  itself already uses.
+  carrying the identical salvage mechanism: vanilla costList on
+  deconstruct, killedLeavings slag when smashed, PLUS (SALVAGE_WRECKAGE_
+  EVERYWHERE_1, 2026-10-06) the shared RM_CompSalvageLoot from
+  mandrake.rm.wreckage, which adds a tiered loot roll on careful
+  deconstruction only — hull = Hull tier, tank = Tank tier, frame = Scrap
+  tier (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3c; the Scald's "Hull/Tank tiers, no sealed" row in §4). That comp is
+  the "RUT_ScaldSalvage" loot the scald kit spec left open.
 
   Values below are INVENTED, stated plainly: sized down from
   ShipChunk_Mech's 40 Steel/15 GravlitePanel (a fresh mechanoid chunk) since
@@ -106,6 +102,15 @@
     <killedLeavings Inherit="False">
       <ChunkSlagSteel>2</ChunkSlagSteel>
     </killedLeavings>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Hull-tier loot roll
+         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
+         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
+    <comps>
+      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
+        <lootTier>Hull</lootTier>
+        <rareChance>0.05</rareChance>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="ShipChunkBase">
@@ -132,6 +137,15 @@
     <killedLeavings Inherit="False">
       <ChunkSlagSteel>1</ChunkSlagSteel>
     </killedLeavings>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Tank-tier loot roll
+         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
+         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
+    <comps>
+      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
+        <lootTier>Tank</lootTier>
+        <rareChance>0.05</rareChance>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="ShipChunkBase">
@@ -158,6 +172,15 @@
     <killedLeavings Inherit="False">
       <ChunkSlagSteel>1</ChunkSlagSteel>
     </killedLeavings>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: careful deconstruction adds a Scrap-tier loot roll
+         (mandrake.rm.wreckage, Defs/ThingSetMakerDefs/RM_SalvageLoot.xml); smashing leaves
+         the slag above only. rareChance PROVISIONAL. Appends to ShipChunkBase's comps. -->
+    <comps>
+      <li Class="RimMandrake.Wreckage.RM_CompProperties_SalvageLoot">
+        <lootTier>Scrap</lootTier>
+        <rareChance>0</rareChance>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>
