@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheChill",
- "built": "2026-10-06T08:05:02-0700",
+ "built": "2026-10-06T09:17:54-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -114,20 +114,26 @@
     },
     "B": {
      "single": "7608a48ca959a36f2caa659fac9e74c410c09bbf524fd02e50f54ce1a7dfab2a"
+    },
+    "C": {
+     "single": "eb3ea7730e636adb18c57ba2ec7badda1447aac9fcd3512cefa99a3f372a68a8"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Fuselight/RM_Fuselight",
-    "B": "Things/Plant/RM_Fuselight/RM_Fuselight"
+    "B": "Things/Plant/RM_Fuselight/RM_Fuselight",
+    "C": "Things/Plant/RM_Fuselight/RM_Fuselight"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render chill_fuselight_var2_v1"
+    "B": "render chill_fuselight_var2_v1",
+    "C": "render chill_fuselight_var3_v1"
    },
    "res": "Things/Plant/RM_Fuselight/RM_Fuselight",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "fuselight"
   },
