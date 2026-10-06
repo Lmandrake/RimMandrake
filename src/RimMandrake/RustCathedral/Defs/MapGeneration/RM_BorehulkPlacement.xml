@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §2. At most one borehulk per Rust
+  Cathedral map, chance from Mod Settings (default 0.6). Order 1205: after
+  vanilla Animals (1200), before Fog (1500), and after the sacred walls (323)
+  so their clearance can be read. Self-gated in C#; added to MapCommonBase by
+  Patches/RM_Borehulk_MapGenPatch.xml. sacredClearance 8 is PROVISIONAL.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_BorehulkPlacement</defName>
+    <order>1205</order>
+    <genStep Class="RimMandrake.RustCathedral.RM_GenStep_BorehulkPlacement">
+      <pawnKind>RM_Borehulk</pawnKind>
+      <sacredWallDef>RM_SacredWall_Conduit</sacredWallDef>
+      <sacredClearance>8</sacredClearance>
+      <minEdgeDistance>12</minEdgeDistance>
+    </genStep>
+  </GenStepDef>
+</Defs>

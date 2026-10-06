@@ -51,6 +51,9 @@
     <Compile Include="RM_RustCathedralMod.cs" />
     <Compile Include="RM_BiomeWorker_RustCathedral.cs" />
     <Compile Include="RM_ThinkNode_ConditionalRoachCleaningEnabled.cs" />
+    <Compile Include="RM_CompBorehulkDrill.cs" />
+    <Compile Include="RM_JobGiver_BorehulkBackAway.cs" />
+    <Compile Include="RM_GenStep_BorehulkPlacement.cs" />
   </ItemGroup>
 
   <ItemGroup>

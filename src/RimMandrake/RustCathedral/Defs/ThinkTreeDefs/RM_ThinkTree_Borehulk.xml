@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §3. Whole-tree shape copied from
+  RM_ThinkTree_LivingBolt.xml (see its header for why a mechanoid needs its
+  own tree: vanilla Mechanoid has no insertTag and is built around fighting).
+
+  ORDER IS THE MECHANISM:
+    1-2. Despawned / Downed.
+    3.   BACK AWAY - RM_JobGiver_BorehulkBackAway: recently harmed, it walks
+         away from whoever harmed it. There is NO attack or fight node
+         anywhere in this tree, so it never attacks and never retaliates.
+    4.   THE FREEZE - the bolts' own RM_ThinkNode_ConditionalAttitudeBand,
+         same band (4, the silent band) as RM_ThinkTree_LivingBolt.
+         NOT YET HERE: the line-cycle stop (RM_Job_LineCycleStill) - it
+         belongs to RUSTCATHEDRAL_BASE_FINISH_BUILD_1, which has not built it;
+         add its node here when it exists.
+    5.   Queued job.
+    6.   Slow wander with long pauses (PROVISIONAL numbers). Sacred wall
+         cells are impassable buildings, so it never enters one; it mines
+         nothing in any state (RM_CompBorehulkDrill).
+    7.   IdleError backstop.
+-->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_Borehulk</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+
+        <li Class="RimMandrake.RustCathedral.RM_JobGiver_BorehulkBackAway">
+          <harmWindowTicks>600</harmWindowTicks>
+          <backAwayDistance>10</backAwayDistance>
+        </li>
+
+        <li Class="RimMandrake.RustCathedral.Hum.RM_ThinkNode_ConditionalAttitudeBand">
+          <freezeAtBandAtLeast>4</freezeAtBandAtLeast>
+          <subNodes>
+            <li Class="JobGiver_Idle">
+              <ticks>250</ticks>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="ThinkNode_QueuedJob" />
+
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+              <ticksBetweenWandersRange>900~3000</ticksBetweenWandersRange>
+              <locomotionUrgency>Amble</locomotionUrgency>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_IdleError" />
+
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

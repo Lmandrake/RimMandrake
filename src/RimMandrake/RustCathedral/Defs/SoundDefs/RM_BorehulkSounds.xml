@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §4: the worn drill's grinding moan.
+  🔴 PLACEHOLDER AUDIO, same convention as RM_HumLayers.xml: the clip folder
+  is copied verbatim from Royalty's MeleeHit_DrillArm (read from the
+  installed Defs, not guessed), pitched down for a colossal machine. Owned
+  audio rides design/RimMandrake/sound_sourcing_options_2026-10-02.md;
+  swapping the grain is the whole migration. The "grinding horn" on damage is
+  the race's soundWounded (vanilla Pawn_Mech_Tunneler_Wounded), no new def.
+-->
+<Defs>
+  <SoundDef>
+    <defName>RM_BorehulkGrind</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Impact/DrillArm_Hit</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>30</volumeRange>
+        <pitchRange>0.45~0.6</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>
