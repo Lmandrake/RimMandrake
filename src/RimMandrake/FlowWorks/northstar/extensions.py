@@ -1676,6 +1676,12 @@ def pit_prison_room(t):
         with _setting(t, "wardenFromLipEnabled", False):
             k = _kv(_sc(t, NS_PROOF, "ProofLip", "%s;%d,%d;PrisonerConvert" % ((col,) + centre)))
             _expect(k.get("serve") == "False" if t._guard() else None, "lip service with the setting OFF: %s" % k)
+    # Leave nothing behind: the drafted warden stayed on the lip beside the captured prisoner and, MEASURED 2026-10-06,
+    # took fist bruises/cracks through the next THREE chains (liquid_pump, dig_finds, machinery_hoses read UNMEASURED on
+    # colonist_injured_unexpectedly at (82,160)). Vanish: no death, no corpse, no death action.
+    for pid in (hid, col, locals().get("h2")):
+        if pid:
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
 
 
 @suite.chain("liquid_pump")
