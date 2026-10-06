@@ -1,6 +1,6 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-06T09:45:32-0700",
+ "built": "2026-10-06T10:28:09-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -203,19 +203,37 @@
    "columns": {
     "C": {
      "single": "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512"
+    },
+    "D": {
+     "single": "2e75b78addc3a38873cab44f8cc7b3e702f268881836594ddde86fcb70d19003"
+    },
+    "E": {
+     "single": "7d9651538d17128007f185e3eeb584ef3e88d375db5c31a5dae0b098c382dec0"
+    },
+    "F": {
+     "single": "7f7689a8174c9864451409cca9d7003e78c383c876f2be12d8be4254e98b5121"
     }
    },
    "graphic_of": {
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
-    "C": "render RM_SlimeGrass"
+    "C": "render RM_SlimeGrass",
+    "D": "render slime_slimegrass_var_b",
+    "E": "render slime_slimegrass_var_c",
+    "F": "render slime_slimegrass_var_d"
    },
    "res": null,
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "slimegrass"
   },
@@ -223,18 +241,36 @@
    "columns": {
     "B": {
      "single": "b84959459d9c7b751194c408e0cf90db375b4a3ba4239cad646ec7c68778547e"
+    },
+    "C": {
+     "single": "f0a4549d68981b869090c9da7e5e902718135c0f93542921157e6dc48a1be62c"
+    },
+    "D": {
+     "single": "4055f76ce7b9bbaf50d79289eda0c27641251251f65e413c0b63c81e03ba3091"
+    },
+    "E": {
+     "single": "d3a008894495ef0487b5228fb81b92ae65432f5b72bee1164dbbb940634b02e4"
     }
    },
    "graphic_of": {
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
-    "B": "render RM_Thumbstalk"
+    "B": "render RM_Thumbstalk",
+    "C": "render slime_thumbstalk_var_b",
+    "D": "render slime_thumbstalk_var_c",
+    "E": "render slime_thumbstalk_var_d"
    },
    "res": null,
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "thumbstalk"
   },
