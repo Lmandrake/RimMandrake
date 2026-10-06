@@ -1,9 +1,9 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-10-05T13:24:00-0700",
+ "built": "2026-10-05T16:33:40-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_Brambles": {
    "columns": {
@@ -193,17 +193,23 @@
    "columns": {
     "A": {
      "single": "810e3146c4842506194f27ca661243850494848a2cd111f612f1e7d97ee54d8c"
+    },
+    "B": {
+     "single": "9fdb88f5f5e22ec0f684b950362d7717eac5a585191514f9b615c3988803f59c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Fuzz"
+    "A": "Things/Plant/RM_Fuzz",
+    "B": "Things/Plant/RM_Fuzz"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_Fuzz_v1"
    },
    "res": "Things/Plant/RM_Fuzz",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "fuzz"
   },
@@ -846,20 +852,28 @@
     },
     "B": {
      "south": "b79e42041ed9db672e0ac634a5028c2c123f2ae5afabaf9c6febf45b6120e41f"
+    },
+    "C": {
+     "east": "3b0fbffa8b21c521026e99bda90f31511ab9f74ac432c719766713d0fd854276",
+     "north": "b7170508075867b21adb28429af817032af5697f531a4c4435f31d8e75e2d82f",
+     "south": "1c241278983478bae22d75c3174c1e6d71fbfb04cf6d9f68ade92305f677df02"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
-    "B": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine"
+    "B": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "donor original \u2014 1541721856"
+    "B": "donor original \u2014 1541721856",
+    "C": "render gapall_RSW_Chikka_v1"
    },
    "res": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "chikka"
   },
@@ -2421,20 +2435,28 @@
     },
     "B": {
      "south": "0162c5a9e32c6f50bae1473c9d8e68c7ddfc8635a90be0b374bbbef4090e487d"
+    },
+    "C": {
+     "east": "74c74673fbe481a27a6dc9f504e65050c0fa3fe475d260faa45dd46f68ac2fbe",
+     "north": "e929f76da989a66e0e667ee010f38c4b2d0dbc96c3d67a1facae509ba32e629e",
+     "south": "2cdd2f723f7b00829d615417835a266350de9f4f9fe5308852c23a9d715ab34e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
-    "B": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost"
+    "B": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "donor original \u2014 1541721856"
+    "B": "donor original \u2014 1541721856",
+    "C": "render gapall_RSW_Skorra_v1"
    },
    "res": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "skorra"
   },
@@ -2590,17 +2612,25 @@
      "east": "8f0494aa1204d2cbd555bd66cd37034296e465b89abca1356633d8a709dbbcf2",
      "north": "92c388bd8151f2f922a4446532ceae98bc551564fe942494f147c0ea1fa5002f",
      "south": "84712d97a056d008c2e7d8e428c06cf4b2ab59f607bbb3dfda6faf1beb0769a0"
+    },
+    "B": {
+     "east": "d69453ddae76999c2f877c00d99c94065faf4e6f9c8419a37919268c083c5aa7",
+     "north": "60dcb8daee30a33b1621618a9269f9cf167d4bf282bffb444671fe3b203daa7c",
+     "south": "e95dc4defd553f749b8532d7bbb6ff31ca5c30d8328316ab8dbda1ca539b22bf"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Terrorworm/TerrorWorm"
+    "A": "Things/Pawn/Animal/Terrorworm/TerrorWorm",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.horrors"
+    "A": "IN GAME \u2014 mlie.horrors",
+    "B": "render gapall_RSW_Vurra_v1"
    },
    "res": "Things/Pawn/Animal/Terrorworm/TerrorWorm",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "vurra"
   },

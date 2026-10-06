@@ -2,7 +2,7 @@
  "sheetId": "cauldron_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
- "snapshotId": "bf3efc4334cd1d10",
+ "snapshotId": "5a9e040111089ab8",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Cauldron",
  "reviewStatus": {
@@ -164,7 +164,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Silooth/Silooth_j": "B"
+    "swanimals/Silooth/Silooth_j": "C"
    }
   },
   "Visceral": {
@@ -172,8 +172,8 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "Things/Pawn/Animal/Visceral/VisceralBaby": "B",
-    "Things/Pawn/Animal/Visceral/VisceralTeen": "C"
+    "Things/Pawn/Animal/Visceral/VisceralBaby": "C",
+    "Things/Pawn/Animal/Visceral/VisceralTeen": "D"
    }
   },
   "RM_BloodBouquet": {

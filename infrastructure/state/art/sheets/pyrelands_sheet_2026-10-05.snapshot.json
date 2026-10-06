@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-05T09:16:33-0700",
+ "built": "2026-10-05T15:31:18-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "live ModsConfig.xml: 639 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -109,15 +109,18 @@
      "single": "3f430db650aa121a64d5802ac2720666790bd746f6cdb60df4c7ac8f84790b33"
     },
     "B": {
-     "single": "0d8d54bee6d0d5f9bd68212d99175e60ddb2cfd3276235f8135c64afeee9c07e"
+     "single": "e47e415cbe640ff6c6f5c964fdfd308730d4a5ddd7d7153b0c3d3cb217decc2d"
     },
     "C": {
-     "single": "ff8c248a2769b25349ecb64d82a19a4177b6d3b79f26b8bb44d641d6b81589e4"
+     "single": "0d8d54bee6d0d5f9bd68212d99175e60ddb2cfd3276235f8135c64afeee9c07e"
     },
     "D": {
-     "single": "2109f4a60f0f08c7271619aad3d0fd8fd864984eb79efe0b1f66924199d512e1"
+     "single": "ff8c248a2769b25349ecb64d82a19a4177b6d3b79f26b8bb44d641d6b81589e4"
     },
     "E": {
+     "single": "2109f4a60f0f08c7271619aad3d0fd8fd864984eb79efe0b1f66924199d512e1"
+    },
+    "F": {
      "single": "2c0503ecfb1fb06cda73df0943e9e44d0bde5db65516256bc2e93dd3229d479a"
     }
    },
@@ -126,14 +129,16 @@
     "B": "_byname",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render pyre_embergrass_leafless_v2",
-    "C": "render pyre_embergrass_a_v1",
-    "D": "render pyre_embergrass_b_v1",
-    "E": "render pyre_embergrass_c_v2"
+    "B": "render gapall_RM_FE_Plant_EmberGrass_v1",
+    "C": "render pyre_embergrass_leafless_v2",
+    "D": "render pyre_embergrass_a_v1",
+    "E": "render pyre_embergrass_b_v1",
+    "F": "render pyre_embergrass_c_v2"
    },
    "res": "Things/Plant/RM_FE_EmberGrass",
    "reserved": [
@@ -141,7 +146,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "fe_plant_embergrass"
   },
@@ -151,12 +157,15 @@
      "single": "08dc732d63613ce4bebe9b19e1c7706d95d05f02f1ea7c3a150cb10dcde733a2"
     },
     "B": {
-     "single": "c9cc4c51b723f96aa667907a047a4410941d143e34a04929b4ace7f8f68f7263"
+     "single": "a4bce7a1fbb8cf2363ca25699ad67f6b194d4afac2f728ec748b0ed4893d628a"
     },
     "C": {
-     "single": "6195d0b0f4a002bdeea1865a5aa3c91596224d5c1e69620f0fea04bbf1b9bbb6"
+     "single": "c9cc4c51b723f96aa667907a047a4410941d143e34a04929b4ace7f8f68f7263"
     },
     "D": {
+     "single": "6195d0b0f4a002bdeea1865a5aa3c91596224d5c1e69620f0fea04bbf1b9bbb6"
+    },
+    "E": {
      "single": "1d328e3d7ec29a2bff3b12d188303acf73a42d4e933345232103ccfef03bee0e"
     }
    },
@@ -164,20 +173,23 @@
     "A": "Things/Plant/RM_FE_Quickgrass",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render pyre_quickgrass_leafless_v2",
-    "C": "render pyre_quickgrass_a_v1",
-    "D": "render pyre_quickgrass_b_v1"
+    "B": "render gapall_RM_FE_Plant_Quickgrass_v1",
+    "C": "render pyre_quickgrass_leafless_v2",
+    "D": "render pyre_quickgrass_a_v1",
+    "E": "render pyre_quickgrass_b_v1"
    },
    "res": "Things/Plant/RM_FE_Quickgrass",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "fe_plant_quickgrass"
   },
@@ -1041,5 +1053,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "92f626aec4b9eb30"
+ "snapshotId": "fa751fabbec44d5c"
 }

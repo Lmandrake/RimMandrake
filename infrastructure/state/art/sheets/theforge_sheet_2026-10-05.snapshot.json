@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-05T15:00:09-0700",
+ "built": "2026-10-05T17:04:57-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -121,17 +121,23 @@
    "columns": {
     "A": {
      "single": "1ce93b8ab9c992f7511af3a48b99ac3b3a0d6fb897fc6787be73fd4371a08f23"
+    },
+    "B": {
+     "single": "0d9294c9be6c0315a014a164245b8a93ec87666cea610cf74192c5ffea0d4929"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/AB_FirevineTree"
+    "A": "Things/Plants/AB_FirevineTree",
+    "B": "Things/Plants/AB_FirevineTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes"
+    "A": "IN GAME \u2014 Alpha Biomes",
+    "B": "render gapbs_AB_FirevineTree_v1"
    },
    "res": "Things/Plants/AB_FirevineTree",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "firevinetree"
   },
@@ -211,17 +217,23 @@
    "columns": {
     "A": {
      "single": "2563b5ba28f4cf097c14ef113cf9a8a92af98586f232778e1ea9ba022c8c0f22"
+    },
+    "B": {
+     "single": "46989061d02cfc20e661b3ab50003cf1b58c19d13bbfb7c862409800fe4f5f9e"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/IronScruff_PrimordialGrassPlant"
+    "A": "Things/Plants/IronScruff_PrimordialGrassPlant",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Primordial Geysers"
+    "A": "IN GAME \u2014 Primordial Geysers",
+    "B": "render gapall_IronScruff_PrimordialTallGrass_v1"
    },
    "res": "Things/Plants/IronScruff_PrimordialGrassPlant",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ironscruff_primordialtallgrass"
   },
@@ -231,17 +243,25 @@
      "east": "8a58406a812138cf74cfb20b22950f44202eea3f2d446bd127ec416ce87a8a60",
      "north": "75a940cc510eb43196c7ed0187459ae3eabb62042a1fcd4414e46c471b852cc1",
      "south": "e2fd16d23aa0d4b1f44aa83adcfda7630d1e05e02532eedfccf1d642876418e2"
+    },
+    "B": {
+     "east": "462650a7b617eef3f89099eefacf5674089a903a93c9861603043e57cf7d0ad4",
+     "north": "adb82828e159e730bbc51240b60cf5760435f7050c43dd9093fd01693122454a",
+     "south": "589e21a2c69ac252c5e18f01803ddfbc38280dde3a8dd14fcb6f41aeb9dd5207"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/LavaSnail/LavaSnail"
+    "A": "Things/Pawn/Animal/LavaSnail/LavaSnail",
+    "B": "Things/Pawn/Animal/LavaSnail/LavaSnail"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
+    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "B": "render gapall_LavaSnail_v1"
    },
    "res": "Things/Pawn/Animal/LavaSnail/LavaSnail",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "lavasnail"
   },
@@ -525,17 +545,25 @@
      "east": "728b30c429198a545d2bc728d61e1cbb1dbd380da93f64a4e95e72cc80748dca",
      "north": "d5dae432bd68f6a7d8c668c63e8d3f158111333581fdda9cdb23047cddf262a4",
      "south": "e080036eeccf9ddf3143255ca76fa1f05699b28d9271437890e824d82699b8b1"
+    },
+    "B": {
+     "east": "792033b45e93dacae14fe5bb5cfa4fbcb9e70877eb5b2f28e6e92878fc448de9",
+     "north": "6a90fbae268b52c40f15b3c379d8d9f9c2f4029167ab71573798c80e61db6c23",
+     "south": "2e5f0262ee6951e9eec8a61c52f35b5f2a2d5f3daf9517c51e79864d90c1e96b"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Tibidee/Tibidee"
+    "A": "swanimals/Tibidee/Tibidee",
+    "B": "swanimals/Tibidee/Tibidee"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "B": "render gapall_Tibidee_v1"
    },
    "res": "swanimals/Tibidee/Tibidee",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "tibidee"
   }

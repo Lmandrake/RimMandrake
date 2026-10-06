@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-05T14:28:37-0700",
+ "built": "2026-10-05T17:04:51-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -1726,17 +1726,25 @@
      "east": "7aa96b68dfce545903dc75f64de720912d1d3323c9cc4014fff87123779b2666",
      "north": "a006783fdf04aadaaf3a9588b1040b58e0d29cb227aa21fb2e4984d86e5453ed",
      "south": "a71bb907f3d02671b8e0651457dfb5142650c32167e7d39eece8579ea8b4f667"
+    },
+    "B": {
+     "east": "c83f52635183737be3bb56a5d01e118d002337dcd4307372b13ed3119aa835e4",
+     "north": "9cb5744dea8d463b0fccd2ab8dd0c788afb8c31f653b2ea327c219d17cb413a1",
+     "south": "f13eacd83ea3ca0bf5cc857c4edda133be07062797c625cc1bee09c1c4542691"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling"
+    "A": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
+    "B": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals"
+    "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render gapall_VFEI2_BlackSwarmling_v1"
    },
    "res": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "blackswarmling"
   },
