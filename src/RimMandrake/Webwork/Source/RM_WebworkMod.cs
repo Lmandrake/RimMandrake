@@ -68,10 +68,13 @@ namespace RimMandrake.Webwork
 		public void DoWindowContents(Rect inRect)
 		{
 			// Scrolls: ~25 rows against a ~570px settings window clipped the lower
-			// sections. View height = last measured content height.
+			// sections. View height = last measured content height. maxOneColumn is
+			// load-bearing: lastContentHeight starts at 0, and without it the overflow
+			// wraps into an off-screen second column, CurHeight resets, and the view
+			// never grows past the window.
 			Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastContentHeight, inRect.height));
 			Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
-			Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+			Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
 			list.Begin(viewRect);
 
 			list.Label("World generation");
