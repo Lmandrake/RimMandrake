@@ -663,10 +663,24 @@ def _cond_present(t):
     return any(c.get("def") == COND and c.get("affectsThisMap") is not False for c in (r.get("conditions") or []))
 
 
+def _drop_weather_locks(t):
+    """SITE: other suites on a shared map leave PERMANENT `jawa/weather_set lockWeather=True` Clear locks
+    (Greentide, Pyrelands, Stillsand ... lock per site build and several never unlock), and
+    WeatherDecider.ForcedWeather takes the LAST forcing condition, so a lock can outrank the pulse's boiling rain.
+    Each unlock ends one lock (it leaves the list on the next tick), so loop until none is in force."""
+    for _ in range(40):
+        r = t.bridge_call("jawa/weather_set", unlock=True)
+        if not _live(t) or not isinstance(r, dict) or not r.get("lockInForce"):
+            return
+        t.wait_ticks(2)
+    _fail("SITE: weather locks still in force after 40 unlocks")
+
+
 def _start_cycle(t):
     """A FRESH RM_ForgePulse on the current map (ends any running one first)."""
     if not _live(t):
         return
+    _drop_weather_locks(t)
     if _cond_present(t):
         t.bridge_call("jawa/game_condition", action="end", condition=COND)
         t.wait_ticks(120)
