@@ -696,7 +696,6 @@ SWBestiary,PawnKindDef,RSW_Baseopsis,Baseopsis,STRUCTURAL (no description in van
 SWBestiary,PawnKindDef,RSW_Basilisk,basilisk,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BloodletterPetrel,bloodletter petrel,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BloodropLarvae,bloodrop larvae,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_BloodropMoth,bloodrop moth,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BloodropPupa,bloodrop pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BovineBeetle,bovine beetle,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_BovineBeetleLarvae,bovine beetle grub,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
@@ -719,7 +718,6 @@ SWBestiary,PawnKindDef,RSW_ElderSando,elder sando,STRUCTURAL (no description in 
 SWBestiary,PawnKindDef,RSW_Faa,faa scalefish,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_Scalefish.xml
 SWBestiary,PawnKindDef,RSW_FaaJuv,young faa scalefish,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/SeaBeasts/ThingDefs_Races/SeaBeasts_NurseryJuveniles.xml
 SWBestiary,PawnKindDef,RSW_FacetMoth,facet moth,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_FacetMothLarvae,facet larvae,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_FacetMothPupa,facet pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_FleeceSpider,fleece spider,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_FoundryBeetle,foundry beetle,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
@@ -728,7 +726,6 @@ SWBestiary,PawnKindDef,RSW_FoundryBeetlePupa,foundry pupa,STRUCTURAL (no descrip
 SWBestiary,PawnKindDef,RSW_FungalMantis,fungal mimic mantis,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_FungalWeevil,fungal weevil,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_GastroToad,gastro toad,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_Gembug,gembug,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_GlowSlug,glowslug,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_Glowtail,glowtail,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_Holcorobeus,Holcorobeus,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Holcorobeus.xml
@@ -749,9 +746,7 @@ SWBestiary,PawnKindDef,RSW_MeeJuv,young mee scalefish,STRUCTURAL (no description
 SWBestiary,PawnKindDef,RSW_Megakrill,megakrill,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_Megaphorid,megaphorid,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_MegaphoridLarva,megaphorid maggot,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_Megapleura,megapleura,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_MossBeetle,moss beetle,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
-SWBestiary,PawnKindDef,RSW_MossBeetleLarvae,moss larva,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_MossBeetlePupa,moss pupa,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_MutagenicNorphea,mutagenic norphea,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml
 SWBestiary,PawnKindDef,RSW_MutatingTumorfishAdult,mutating tumorfish,STRUCTURAL (no description in vanilla either),SWBestiary/Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml

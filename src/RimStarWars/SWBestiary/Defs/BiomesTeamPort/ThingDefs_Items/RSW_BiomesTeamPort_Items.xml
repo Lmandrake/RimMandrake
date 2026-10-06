@@ -598,19 +598,6 @@ copied verbatim from the donor mods' own Textures trees.
     </comps>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggMegapleuraUnfertilized</defName>
-    <label>megapleura egg (unfert.)</label>
-    <description>An unfertilized megapleura egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(104,168,141)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_SmogMothEggUnfertilized</defName>
     <label>smog moth egg (unfert.)</label>
     <description>An unfertilized smog moth egg. It can be eaten raw, but it's much, much better cooked.</description>
@@ -949,57 +936,6 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggMossBeetleFertilized</defName>
-    <label>moss beetle egg (fert.)</label>
-    <description>A moss beetle egg. If all goes well, it should hatch into a moss grub. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(118,135,137)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>8</hatcherDaystoHatch>
-        <hatcherPawn>RSW_MossBeetleLarvae</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggGembugUnfertilized</defName>
-    <label>gembug egg (unfert.)</label>
-    <description>An unfertilized gembug egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(183,239,245)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>5.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggGembugFertilized</defName>
-    <label>gembug egg (fert.)</label>
-    <description>A gembug egg. If all goes well, it should hatch into a baby gembug. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(193,249,255)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>10.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Gembug</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggBloodletterPetrelUnfertilized</defName>
     <label>bloodletter petrel egg (unfert.)</label>
@@ -1143,19 +1079,6 @@ copied verbatim from the donor mods' own Textures trees.
     </comps>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggBloodropMothUnfertilized</defName>
-    <label>bloodrop moth egg (unfert.)</label>
-    <description>An unfertilized bloodrop moth egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(188,131,131)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggGastroToadUnfertilized</defName>
     <label>gastro toad egg (unfert.)</label>
     <description>An unfertilized gastro toad egg. It can be eaten raw, but it's much, much better cooked.</description>
@@ -1223,19 +1146,6 @@ copied verbatim from the donor mods' own Textures trees.
       <MarketValue>5.0</MarketValue>
     </statBases>
   </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggFacetMothUnfertilized</defName>
-    <label>facet moth egg (unfert.)</label>
-    <description>An unfertilized facet moth egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(220,202,183)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
   <ThingDef ParentName="RSW_MeatBase">
     <defName>RSW_GastropodMeat</defName>
     <label>gastropod meat</label>
@@ -1286,25 +1196,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>2.0</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggFacetMothFertilized</defName>
-    <label>facet moth egg (fert.)</label>
-    <description>A fertilized facet moth egg. If all goes well, it should hatch into a facet larvae. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(230,212,193)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_FacetMothLarvae</hatcherPawn>
-      </li>
-    </comps>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggFungalWeevilFertilized</defName>
@@ -1500,19 +1391,6 @@ copied verbatim from the donor mods' own Textures trees.
         <cooldownTime>2</cooldownTime>
       </li>
     </tools>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RSW_EggMossBeetleUnfertilized</defName>
-    <label>moss beetle egg (unfert.)</label>
-    <description>An unfertilized moss beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(108,125,127)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>5.0</MarketValue>
-    </statBases>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggSacapillarFertilized</defName>
@@ -1763,25 +1641,6 @@ copied verbatim from the donor mods' own Textures trees.
       <MarketValue>12.0</MarketValue>
     </statBases>
   </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggMegapleuraFertilized</defName>
-    <label>megapleura egg (fert.)</label>
-    <description>A fertilized megapleura egg. If all goes well, it should hatch into a baby megapleura. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Item/Eggs/BeanBugEggs</texPath>
-      <color>(114,178,151)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_Megapleura</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
   <ThingDef ParentName="BaseGrenadeProjectile">
     <defName>RSW_Proj_ThrumbungusShroom</defName>
     <label>thrumbungus mushroom</label>
@@ -1881,25 +1740,6 @@ copied verbatim from the donor mods' own Textures trees.
         <Beauty>4</Beauty>
       </statFactors>
     </stuffProps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RSW_EggBloodropMothFertilized</defName>
-    <label>bloodrop moth egg (fert.)</label>
-    <description>A fertilized bloodrop moth egg. If all goes well, it should hatch into a bloodrop larva. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(198,151,151)</color>
-      <drawSize>0.8</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
-        <hatcherPawn>RSW_BloodropMoth</hatcherPawn>
-      </li>
-    </comps>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggFleeceSpiderFertilized</defName>
