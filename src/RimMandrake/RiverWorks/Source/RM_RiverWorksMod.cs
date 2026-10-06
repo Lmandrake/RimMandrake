@@ -38,7 +38,35 @@ namespace RimMandrake.RiverWorks
 		public static float dropChancePerStep = 0.25f;     // PROVISIONAL
 		public static bool fordsEnabled = true;
 
+		// ── the works (slice 2: moved out of TerminalBiomes) ─────────────────
+		public static bool bankWorksEnabled = true;
+		public static float wearRateMultiplier = 1f;          // PROVISIONAL
+		// Owner on TWILIGHT_CHANNEL_CURRENT_1: "breach at default".
+		public static bool breachEnabled = true;
+		public static float breachHpFraction = 0.5f;          // PROVISIONAL
+		public static int stakeSnapTicksPerCell = 150;        // PROVISIONAL
+		// Owner card (2026-10-03): a continuous stake-line holds spring floods like a levee.
+		public static bool stakeLineLevee = true;
+		// Owner card 2: the weir calms a long stretch, ~8 cells upstream.
+		public static int weirPoolLength = 8;
+		public static bool weirCatchesFish = true;
+		public static float weirCatchIntervalHours = 6f;      // PROVISIONAL
+		public static int weirHeldCatchCap = 30;              // PROVISIONAL
+		// Owner card 2: plus drift, BIOME-RELEVANT per biome (RM_RiverDriftDef), never generic wood.
+		public static bool weirCatchesDrift = true;
+		public static float weirDriftChance = 0.25f;          // PROVISIONAL, per catch interval
+		// Owner ruling 4: a breach washes the held catch a few cells downstream.
+		public static bool breachWashesCatch = true;
+		public static int breachWashCells = 4;                // PROVISIONAL
+		public static bool siltRichening = true;
+		public static float siltIntervalDays = 0.5f;          // PROVISIONAL
+		// Owner card 3: the rope ferry is in the first version.
+		public static bool ferryEnabled = true;
+		public static int ferryMaxSpan = 40;                  // PROVISIONAL
+
 		public static bool CurrentActive => riverWorksEnabled && surfaceCurrentEnabled;
+
+		public static bool WorksActive => riverWorksEnabled && bankWorksEnabled;
 
 		public override void ExposeData()
 		{
@@ -64,6 +92,24 @@ namespace RimMandrake.RiverWorks
 			Scribe_Values.Look(ref bruiseChancePerStep, "bruiseChancePerStep", 0.15f);
 			Scribe_Values.Look(ref dropChancePerStep, "dropChancePerStep", 0.25f);
 			Scribe_Values.Look(ref fordsEnabled, "fordsEnabled", true);
+			Scribe_Values.Look(ref bankWorksEnabled, "bankWorksEnabled", true);
+			Scribe_Values.Look(ref wearRateMultiplier, "wearRateMultiplier", 1f);
+			Scribe_Values.Look(ref breachEnabled, "breachEnabled", true);
+			Scribe_Values.Look(ref breachHpFraction, "breachHpFraction", 0.5f);
+			Scribe_Values.Look(ref stakeSnapTicksPerCell, "stakeSnapTicksPerCell", 150);
+			Scribe_Values.Look(ref stakeLineLevee, "stakeLineLevee", true);
+			Scribe_Values.Look(ref weirPoolLength, "weirPoolLength", 8);
+			Scribe_Values.Look(ref weirCatchesFish, "weirCatchesFish", true);
+			Scribe_Values.Look(ref weirCatchIntervalHours, "weirCatchIntervalHours", 6f);
+			Scribe_Values.Look(ref weirHeldCatchCap, "weirHeldCatchCap", 30);
+			Scribe_Values.Look(ref weirCatchesDrift, "weirCatchesDrift", true);
+			Scribe_Values.Look(ref weirDriftChance, "weirDriftChance", 0.25f);
+			Scribe_Values.Look(ref breachWashesCatch, "breachWashesCatch", true);
+			Scribe_Values.Look(ref breachWashCells, "breachWashCells", 4);
+			Scribe_Values.Look(ref siltRichening, "siltRichening", true);
+			Scribe_Values.Look(ref siltIntervalDays, "siltIntervalDays", 0.5f);
+			Scribe_Values.Look(ref ferryEnabled, "ferryEnabled", true);
+			Scribe_Values.Look(ref ferryMaxSpan, "ferryMaxSpan", 40);
 		}
 	}
 
@@ -83,7 +129,7 @@ namespace RimMandrake.RiverWorks
 
 		public override void DoSettingsWindowContents(Rect inRect)
 		{
-			Rect view = new Rect(0f, 0f, inRect.width - 20f, 1100f);
+			Rect view = new Rect(0f, 0f, inRect.width - 20f, 2000f);
 			Widgets.BeginScrollView(inRect, ref scroll, view);
 			Listing_Standard l = new Listing_Standard();
 			l.Begin(view);
@@ -144,6 +190,54 @@ namespace RimMandrake.RiverWorks
 			l.Label("WORKS");
 			l.CheckboxLabeled("Fords stop the current", ref RM_RiverWorksSettings.fordsEnabled,
 				"Nothing is carried on or beside ford stones. Off: fords are just stone footing.");
+			l.CheckboxLabeled("Bank works active (weir, stakes, silt-trap, ferry)", ref RM_RiverWorksSettings.bankWorksEnabled,
+				"Off: the works stand inert - no wear, no catch, no breach, no richening, no ferry rope.");
+			l.Label("Wear rate: x" + RM_RiverWorksSettings.wearRateMultiplier.ToString("F2"));
+			RM_RiverWorksSettings.wearRateMultiplier = l.Slider(RM_RiverWorksSettings.wearRateMultiplier, 0f, 3f);
+			l.CheckboxLabeled("Untended weirs breach in a flood", ref RM_RiverWorksSettings.breachEnabled,
+				"A weir run below the threshold when a flood arrives breaks: its catch washes downstream, the "
+			  + "stake-line below it snaps post by post, and nearby silt-traps lose their richened ground.");
+			if (RM_RiverWorksSettings.breachEnabled)
+			{
+				l.Label("Breach below HP: " + RM_RiverWorksSettings.breachHpFraction.ToStringPercent());
+				RM_RiverWorksSettings.breachHpFraction = l.Slider(RM_RiverWorksSettings.breachHpFraction, 0.05f, 1f);
+				l.Label("Stake snap: ticks per cell " + RM_RiverWorksSettings.stakeSnapTicksPerCell);
+				RM_RiverWorksSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.stakeSnapTicksPerCell, 10f, 1000f));
+				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiverWorksSettings.breachWashesCatch);
+				if (RM_RiverWorksSettings.breachWashesCatch)
+				{
+					l.Label("  Washed this many cells: " + RM_RiverWorksSettings.breachWashCells);
+					RM_RiverWorksSettings.breachWashCells = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.breachWashCells, 1f, 20f));
+				}
+			}
+			l.CheckboxLabeled("A continuous stake-line holds floods (levee)", ref RM_RiverWorksSettings.stakeLineLevee,
+				"Floodwater cannot pass a stake. Any gap lets it in. Off: floods flow through stake-lines.");
+			l.Label("Weir calms this many cells upstream: " + RM_RiverWorksSettings.weirPoolLength + " (0 = its own cell only)");
+			RM_RiverWorksSettings.weirPoolLength = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.weirPoolLength, 0f, 20f));
+			l.CheckboxLabeled("Weirs catch fish", ref RM_RiverWorksSettings.weirCatchesFish,
+				"From the river's own stock, the same stock your fishing zones draw on.");
+			l.CheckboxLabeled("Weirs catch drift from upriver", ref RM_RiverWorksSettings.weirCatchesDrift,
+				"Things that belong to this biome's rivers wash into the weir now and then.");
+			l.Label("Catch every " + RM_RiverWorksSettings.weirCatchIntervalHours.ToString("F1") + " hours");
+			RM_RiverWorksSettings.weirCatchIntervalHours = l.Slider(RM_RiverWorksSettings.weirCatchIntervalHours, 1f, 48f);
+			l.Label("Drift chance per catch: " + RM_RiverWorksSettings.weirDriftChance.ToStringPercent());
+			RM_RiverWorksSettings.weirDriftChance = l.Slider(RM_RiverWorksSettings.weirDriftChance, 0f, 1f);
+			l.Label("Weir holds at most " + RM_RiverWorksSettings.weirHeldCatchCap + " items before it stops catching");
+			RM_RiverWorksSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.weirHeldCatchCap, 5f, 200f));
+			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiverWorksSettings.siltRichening);
+			if (RM_RiverWorksSettings.siltRichening)
+			{
+				l.Label("One cell richened every " + RM_RiverWorksSettings.siltIntervalDays.ToString("F2") + " days");
+				RM_RiverWorksSettings.siltIntervalDays = l.Slider(RM_RiverWorksSettings.siltIntervalDays, 0.1f, 5f);
+			}
+			l.CheckboxLabeled("Rope ferries", ref RM_RiverWorksSettings.ferryEnabled,
+				"Two ferry posts facing each other across a river string a rope: nothing standing on the rope "
+			  + "line is carried. Drafted colonists cross along it.");
+			if (RM_RiverWorksSettings.ferryEnabled)
+			{
+				l.Label("Longest rope: " + RM_RiverWorksSettings.ferryMaxSpan + " cells");
+				RM_RiverWorksSettings.ferryMaxSpan = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.ferryMaxSpan, 5f, 80f));
+			}
 
 			l.End();
 			Widgets.EndScrollView();

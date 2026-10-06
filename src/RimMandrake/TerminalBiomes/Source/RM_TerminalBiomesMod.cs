@@ -545,6 +545,19 @@ namespace RimMandrake.TerminalBiomes
             // patch target always resolves, and the postfix itself is a
             // no-op on any map with no RM_VeilPane things on it.
             new Harmony("mandrake.rm.terminalbiomes").PatchAll(typeof(RM_TerminalBiomesMod).Assembly);
+            RegisterRiverWorksSeams();
+        }
+
+        // SURFACE_RIVER_WEIRS_1 slice 2: the weir/stake/silt-trap live in River Works (a hard
+        // dependency). The sea plugs its channel current into two of its seams: the undersurge
+        // counts as a flood (weir breach, as before the move), and channel cells count as moving
+        // water (the weir PlaceWorker accepts a channel margin as its wet end).
+        private static void RegisterRiverWorksSeams()
+        {
+            RimMandrake.RiverWorks.RM_RiverWorks.RegisterFloodSource(
+                map => map.GetComponent<RM_MapComponent_ChannelCurrent>()?.SurgeActive == true);
+            RimMandrake.RiverWorks.RM_RiverWorks.RegisterCurrentCellRule(
+                (map, c) => map.GetComponent<RM_MapComponent_ChannelCurrent>()?.HasCurrent(c) == true);
         }
 
         // Kept in its own non-inlined method so the JIT only resolves the

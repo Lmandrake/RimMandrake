@@ -251,17 +251,46 @@ namespace RimMandrake.TerminalBiomes
                 // breaches.
                 if (i == 0 && weirDef != null)
                 {
-                    IntVec3 weirCell = FindStandableNear(map, centre);
+                    // The weir is 1x2 since it moved to River Works: find a cell AND a
+                    // rotation whose whole footprint is free, so the spawn wipes nothing.
+                    IntVec3 weirCell = FindWeirSpot(map, centre, weirDef, out Rot4 weirRot);
                     if (weirCell.IsValid)
                     {
-                        Thing weir = GenSpawn.Spawn(weirDef, weirCell, map);
-                        if (weir is RM_Building_BankWeir bw)
+                        Thing weir = GenSpawn.Spawn(weirDef, weirCell, map, weirRot);
+                        if (weir is RimMandrake.RiverWorks.RM_Building_BankWeir bw)
                         {
                             bw.neverBreaches = true;
                         }
                     }
                 }
             }
+        }
+
+        private static IntVec3 FindWeirSpot(Map map, IntVec3 centre, ThingDef def, out Rot4 rot)
+        {
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, 3f, useCenter: true))
+            {
+                for (int r = 0; r < 4; r++)
+                {
+                    Rot4 tryRot = new Rot4(r);
+                    bool ok = true;
+                    foreach (IntVec3 o in GenAdj.OccupiedRect(c, tryRot, def.Size))
+                    {
+                        if (!o.InBounds(map) || !o.Standable(map) || o.GetEdifice(map) != null)
+                        {
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if (ok)
+                    {
+                        rot = tryRot;
+                        return c;
+                    }
+                }
+            }
+            rot = Rot4.North;
+            return IntVec3.Invalid;
         }
 
         private static IntVec3 FindStandableNear(Map map, IntVec3 centre)

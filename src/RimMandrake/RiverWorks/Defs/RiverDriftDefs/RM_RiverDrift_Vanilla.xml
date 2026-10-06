@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Owner card 2 (2026-10-03): a weir catches fish "plus drift, but the drift must be BIOME-RELEVANT items
+  per biome, not generic wood". One RM_RiverDriftDef per biome group; a biome with none gives fish only.
+  Our own biomes add their own defs in their own mods (owed, per-biome sitting - never a sweep).
+  ALL TABLES PROVISIONAL: picked as "what this country's banks would shed into a river" - fruit and
+  forage off the banks, hides of what drowns upstream. Every defName checked against RimSage 2026-10-05.
+-->
+<Defs>
+
+  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+    <defName>RM_RiverDrift_Temperate</defName>
+    <label>temperate river drift</label>
+    <biomes>
+      <li>TemperateForest</li>
+      <li>Grasslands</li>
+    </biomes>
+    <drift>
+      <li><thing>RawBerries</thing><weight>3</weight><count>3~8</count></li>
+      <li><thing>Hay</thing><weight>2</weight><count>5~15</count></li>
+      <li><thing>Leather_Light</thing><weight>0.5</weight><count>3~8</count></li>
+    </drift>
+  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+
+  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+    <defName>RM_RiverDrift_Wetland</defName>
+    <label>wetland river drift</label>
+    <biomes>
+      <li>TemperateSwamp</li>
+      <li>ColdBog</li>
+    </biomes>
+    <drift>
+      <li><thing>RawRice</thing><weight>2</weight><count>3~8</count></li>
+      <li><thing>RawFungus</thing><weight>1</weight><count>2~6</count></li>
+      <li><thing>Leather_Plain</thing><weight>0.5</weight><count>3~8</count></li>
+    </drift>
+  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+
+  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+    <defName>RM_RiverDrift_Cold</defName>
+    <label>cold-country river drift</label>
+    <biomes>
+      <li>BorealForest</li>
+      <li>Tundra</li>
+      <li>GlacialPlain</li>
+    </biomes>
+    <drift>
+      <li><thing>RawBerries</thing><weight>2</weight><count>2~5</count></li>
+      <li><thing>Leather_Fox</thing><weight>1</weight><count>3~8</count></li>
+      <li><thing>Leather_Wolf</thing><weight>0.5</weight><count>3~8</count></li>
+    </drift>
+  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+
+  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+    <defName>RM_RiverDrift_Arid</defName>
+    <label>dry-country river drift</label>
+    <biomes>
+      <li>AridShrubland</li>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+    </biomes>
+    <drift>
+      <li><thing>RawAgave</thing><weight>3</weight><count>2~6</count></li>
+      <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
+      <li><thing>Leather_Camel</thing><weight>0.5</weight><count>3~8</count></li>
+    </drift>
+  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+
+  <RimMandrake.RiverWorks.RM_RiverDriftDef>
+    <defName>RM_RiverDrift_Tropical</defName>
+    <label>tropical river drift</label>
+    <biomes>
+      <li>TropicalRainforest</li>
+      <li>TropicalSwamp</li>
+    </biomes>
+    <drift>
+      <li><thing>RawBerries</thing><weight>2</weight><count>3~8</count></li>
+      <li><thing>RawFungus</thing><weight>1</weight><count>2~6</count></li>
+      <li><thing>Leather_Lizard</thing><weight>1</weight><count>3~8</count></li>
+      <li><thing>Leather_Panthera</thing><weight>0.3</weight><count>3~6</count></li>
+    </drift>
+  </RimMandrake.RiverWorks.RM_RiverDriftDef>
+
+</Defs>

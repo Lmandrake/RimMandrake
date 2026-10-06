@@ -70,7 +70,7 @@ namespace RimMandrake.TerminalBiomes
             List<Thing> here = Position.GetThingList(Map);
             for (int i = 0; i < here.Count; i++)
             {
-                if (here[i] != this && (here[i] as ThingWithComps)?.GetComp<CompChannelArrester>()?.Active == true)
+                if (here[i] != this && (here[i] as ThingWithComps)?.GetComp<RimMandrake.RiverWorks.RM_CompRiverArrester>()?.Active == true)
                 {
                     return true;
                 }

@@ -47,6 +47,14 @@ namespace RimMandrake.RiverWorks
 
 		private bool fordLooked;
 
+		// Slice 2: the works' footprint on the current - weir slack pools (lane drops one) and ferry
+		// rope lines (not carried). Derived from the buildings, never saved; rebuilt when dirty.
+		private readonly HashSet<int> poolCells = new HashSet<int>();
+
+		private readonly HashSet<int> ropeCells = new HashSet<int>();
+
+		private bool worksDirty = true;
+
 		public RM_MapComponent_RiverCurrent(Map map) : base(map)
 		{
 		}
@@ -61,6 +69,75 @@ namespace RimMandrake.RiverWorks
 		}
 
 		public bool SurgeActive => surge;
+
+		public void MarkWorksDirty()
+		{
+			worksDirty = true;
+		}
+
+		public int PoolCellCount
+		{
+			get
+			{
+				EnsureWorks();
+				return poolCells.Count;
+			}
+		}
+
+		public int RopeCellCount
+		{
+			get
+			{
+				EnsureWorks();
+				return ropeCells.Count;
+			}
+		}
+
+		public bool InPool(IntVec3 c)
+		{
+			EnsureWorks();
+			return c.InBounds(map) && poolCells.Contains(map.cellIndices.CellToIndex(c));
+		}
+
+		public bool OnRope(IntVec3 c)
+		{
+			EnsureWorks();
+			return c.InBounds(map) && ropeCells.Contains(map.cellIndices.CellToIndex(c));
+		}
+
+		private void EnsureWorks()
+		{
+			if (!worksDirty)
+			{
+				return;
+			}
+			worksDirty = false;
+			poolCells.Clear();
+			ropeCells.Clear();
+			if (!RM_RiverWorksSettings.WorksActive)
+			{
+				return;
+			}
+			EnsureGrid();
+			ThingDef weir = RM_RiverWorksDefOf.RM_BankWeir;
+			if (weir != null && anyCurrent)
+			{
+				List<Thing> ws = map.listerThings.ThingsOfDef(weir);
+				for (int i = 0; i < ws.Count; i++)
+				{
+					(ws[i] as RM_Building_BankWeir)?.AddPoolCells(this, poolCells);
+				}
+			}
+			ThingDef post = RM_RiverWorksDefOf.RM_FerryPost;
+			if (post != null && RM_RiverWorksSettings.ferryEnabled)
+			{
+				List<Thing> ps = map.listerThings.ThingsOfDef(post);
+				for (int i = 0; i < ps.Count; i++)
+				{
+					(ps[i] as RM_Building_FerryPost)?.AddRopeCells(ropeCells);
+				}
+			}
+		}
 
 		public float SizeFactor => sizeFactor;
 
@@ -138,7 +215,12 @@ namespace RimMandrake.RiverWorks
 			{
 				return RM_RiverMath.LaneNone;
 			}
-			return RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
+			int lane = RM_RiverCurrentLanes.LaneOf(c.GetTerrain(map));
+			if (lane != RM_RiverMath.LaneNone && InPool(c))
+			{
+				lane = RM_RiverMath.PoolLane(lane); // the weir's slack water drops one lane
+			}
+			return lane;
 		}
 
 		public bool HasCurrent(IntVec3 c)
@@ -166,6 +248,7 @@ namespace RimMandrake.RiverWorks
 			if (--scanCooldown <= 0)
 			{
 				scanCooldown = ScanIntervalTicks;
+				worksDirty = true; // cheap: a weir's HP-driven re-arm or a settings flip shows up within 250 ticks
 				surge = RM_RiverWorksSettings.floodSurgeEnabled && RM_RiverWorks.FloodActive(map);
 				Scan();
 			}
@@ -368,7 +451,15 @@ namespace RimMandrake.RiverWorks
 
 		private bool IsArrestedOrFord(IntVec3 c)
 		{
-			return NearFord(c) || RM_RiverWorks.IsArrested(map, c);
+			if (NearFord(c) || RM_RiverWorks.IsArrested(map, c))
+			{
+				return true;
+			}
+			if (!RM_RiverWorksSettings.WorksActive)
+			{
+				return false;
+			}
+			return RM_CompRiverArrester.CellArrested(map, c) || (RM_RiverWorksSettings.ferryEnabled && OnRope(c));
 		}
 
 		/// <summary>Cells on and beside RM_FordStones are not carried (design §3.7). The sea's
