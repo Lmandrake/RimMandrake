@@ -67,7 +67,6 @@ namespace RimMandrake.LanternDeeps
         public static bool orunGhalStudyEnabled = true;         // live: colonists study and befriend it
         // LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1
         public static bool hydrocarbonIgnitionEnabled = true;   // live: drifter/galuush detonate when killed hot
-        public static bool chillerColdEnabled = true;           // live: a chiller cools the room around it
         public static bool galuushEnabled = true;               // new Deeps: a galuush may hang in the biggest chamber
         // LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1
         public static bool creepEnabled = true;                 // new Deeps: a Creep may be seeded; live: it grows
@@ -214,7 +213,6 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref orunGhalEnabled, "orunGhalEnabled", true);
             Scribe_Values.Look(ref orunGhalStudyEnabled, "orunGhalStudyEnabled", true);
             Scribe_Values.Look(ref hydrocarbonIgnitionEnabled, "hydrocarbonIgnitionEnabled", true);
-            Scribe_Values.Look(ref chillerColdEnabled, "chillerColdEnabled", true);
             Scribe_Values.Look(ref galuushEnabled, "galuushEnabled", true);
             Scribe_Values.Look(ref creepEnabled, "creepEnabled", true);
             Scribe_Values.Look(ref creepGrowthMultiplier, "creepGrowthMultiplier", 1f);
@@ -332,9 +330,6 @@ namespace RimMandrake.LanternDeeps
             list.CheckboxLabeled("Methane bodies ignite when killed hot", ref hydrocarbonIgnitionEnabled,
                 "On: a drifter or a galuush killed by fire, a burn, a bullet or a blast detonates (the galuush fills its chamber); "
               + "killed by a blade or a blow it collapses harmlessly. Off: they never detonate. Safe mid-game.");
-            list.CheckboxLabeled("Chillers cool the room around them", ref chillerColdEnabled,
-                "On: a chiller pumps heat out of the air wherever it stands, down to -40 C, with no power. "
-              + "Off: it is an ordinary animal. Safe mid-game.");
             list.CheckboxLabeled("A galuush may hang in a Deep", ref galuushEnabled,
                 "On: about half of newly generated Deeps have one galuush, a living sun hung in the biggest chamber. "
               + "Off: none. Affects newly generated Deeps only.");

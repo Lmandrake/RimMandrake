@@ -25,32 +25,6 @@
     </stuffProps>
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
-    <defName>RM_EggBovineBeetleUnfertilized</defName>
-    <label>bovine beetle egg (unfert.)</label>
-    <description>An unfertilized bovine beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(213,222,194)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>20.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RM_EggShatterjawUnfertilized</defName>
-    <label>shatterjaw beetle egg (unfert.)</label>
-    <description>An unfertilized shatterjaw beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(64, 41, 77)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
     <defName>RM_EggMegapleuraUnfertilized</defName>
     <label>megapleura egg (unfert.)</label>
     <description>An unfertilized megapleura egg. It can be eaten raw, but it's much, much better cooked.</description>
@@ -96,51 +70,6 @@
       </statFactors>
     </stuffProps>
   </ThingDef>
-  <ThingDef ParentName="LeatherBase">
-    <defName>RM_Leather_Gastropoda</defName>
-    <label>gastropodskin</label>
-    <description>The tanned skin of a gastropod, like a slug or snail. Gastropodskin feels crumbly and mushy at the same time.</description>
-    <statBases>
-      <MarketValue>1.9</MarketValue>
-      <Flammability>0.2</Flammability>
-      <StuffPower_Armor_Sharp>0.64</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.81</StuffPower_Armor_Blunt>
-      <StuffPower_Armor_Heat>2</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
-      <RM_BC_StuffPower_FlammabilityOffset>-0.05</RM_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <graphicData>
-      <color>(153,150,117)</color>
-    </graphicData>
-    <stuffProps>
-      <color>(153,150,117)</color>
-      <commonality>0.025</commonality>
-      <statFactors>
-        <MaxHitPoints>0.8</MaxHitPoints>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RM_EggGlowSlugFertilized</defName>
-    <label>glowslug egg (fert.)</label>
-    <description>A fertilized glowslug egg. If all goes well, it should hatch into a baby slug. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(137,227,227)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>23.0</MarketValue>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6</hatcherDaystoHatch>
-        <hatcherPawn>RM_GlowSlug</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RM_EggGembugUnfertilized</defName>
     <label>gembug egg (unfert.)</label>
@@ -173,60 +102,6 @@
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="RM_BiomesCore_ChitinBase">
-    <defName>RM_BiomesCore_GreenChitin</defName>
-    <label>green shell</label>
-    <description>A strong, green, chitinous shell.</description>
-    <graphicData>
-      <color>(134,190,105)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>4</MarketValue>
-      <StuffPower_Armor_Sharp>0.6</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.7</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
-      <RM_BC_StuffPower_FlammabilityOffset>-0.3</RM_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(134,190,105)</color>
-      <statFactors>
-        <Beauty>1.4</Beauty>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
-  <ThingDef Abstract="True" Name="RM_MeatBase" ParentName="ResourceBase">
-    <graphicData>
-      <graphicClass>Graphic_StackCount</graphicClass>
-    </graphicData>
-    <statBases>
-      <MaxHitPoints>60</MaxHitPoints>
-      <DeteriorationRate>6</DeteriorationRate>
-      <Mass>0.03</Mass>
-      <Flammability>0.5</Flammability>
-      <Nutrition>0.05</Nutrition>
-      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Rottable">
-        <daysToRotStart>2</daysToRotStart>
-        <rotDestroys>True</rotDestroys>
-      </li>
-    </comps>
-    <tickerType>Rare</tickerType>
-    <socialPropernessMatters>true</socialPropernessMatters>
-    <healthAffectsPrice>false</healthAffectsPrice>
-    <thingCategories>
-      <li>MeatRaw</li>
-    </thingCategories>
-    <ingestible>
-      <foodType>Meat</foodType>
-      <preferability>RawBad</preferability>
-      <tasteThought>AteRawFood</tasteThought>
-      <ingestEffect>EatMeat</ingestEffect>
-      <ingestSound>RawMeat_Eat</ingestSound>
-    </ingestible>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RM_EggBloodropMothUnfertilized</defName>
     <label>bloodrop moth egg (unfert.)</label>
@@ -239,44 +114,6 @@
     <statBases>
       <MarketValue>20.0</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="RM_MeatBase">
-    <defName>RM_GastropodMeat</defName>
-    <label>gastropod meat</label>
-    <description>Meat from snail or slug-like creatures.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BiomesCore_Things/Items/Meat/MeatGastropod</texPath>
-    </graphicData>
-    <statBases>
-      <MarketValue>2</MarketValue>
-    </statBases>
-    <ingestible>
-      <tasteThought>RM_AteRawGastropod</tasteThought>
-    </ingestible>
-    <ingredient>
-      <mergeCompatibilityTags>
-        <li MayRequire="Ludeon.RimWorld.Ideology">MeatEating</li>
-      </mergeCompatibilityTags>
-    </ingredient>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RM_EggBovineBeetleFertilized</defName>
-    <label>bovine beetle egg (fert.)</label>
-    <description>A bovine beetle egg. If all goes well, it should hatch into a bovine grub. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(223,232,204)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>40.0</MarketValue>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>6.5</hatcherDaystoHatch>
-        <hatcherPawn>RM_BovineBeetleLarvae</hatcherPawn>
-      </li>
-    </comps>
   </ThingDef>
   <ThingDef ParentName="RM_BiomesCore_ChitinBase">
     <defName>RM_GrayChitin</defName>
@@ -382,40 +219,6 @@
       <li Class="CompProperties_Hatcher">
         <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
         <hatcherPawn>RM_BloodropMoth</hatcherPawn>
-      </li>
-    </comps>
-  </ThingDef>
-  <ThingDef ParentName="EggUnfertBase">
-    <defName>RM_EggGlowSlugUnfertilized</defName>
-    <label>glowslug egg (unfert.)</label>
-    <description>An unfertilized glowslug egg. It can be eaten raw, but it's much, much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(127,217,217)</color>
-      <drawSize>0.7</drawSize>
-    </graphicData>
-    <statBases>
-      <MarketValue>12.0</MarketValue>
-    </statBases>
-  </ThingDef>
-  <ThingDef ParentName="EggFertBase">
-    <defName>RM_EggShatterjawFertilized</defName>
-    <label>shatterjaw beetle egg (fert.)</label>
-    <description>A shatterjaw beetle egg. If all goes well, it should hatch into a shatter grub. It can be eaten raw, but it's much better cooked.</description>
-    <graphicData>
-      <texPath>RM_LanternDeeps/Fauna/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
-      <color>(74, 51, 87)</color>
-      <drawSize>1</drawSize>
-    </graphicData>
-    <statBases>
-      <Mass>0.50</Mass>
-      <MarketValue>70.0</MarketValue>
-      <MaxHitPoints>60</MaxHitPoints>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Hatcher">
-        <hatcherDaystoHatch>2</hatcherDaystoHatch>
-        <hatcherPawn>RM_ShatterjawBeetleLarvae</hatcherPawn>
       </li>
     </comps>
   </ThingDef>

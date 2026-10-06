@@ -42,12 +42,12 @@ namespace RimMandrake.LanternDeeps
 
 		// CAVERNS_PARITY_BUILD_1: the predators that actually live in
 		// RM_LanternDeeps.wildAnimals, in order of preference. Bloodrop moth is
-		// the donor biome's own predator, RM_BloodropMoth; shatterjaw
-		// is the fallback if the moth line is ever dropped.
+		// the donor biome's own predator, RM_BloodropMoth. (The shatterjaw
+		// fallback left with the beetle: owner cut it from the Deeps, sheet
+		// 2026-10-05.)
 		private static readonly string[] DeepPredatorKindNames =
 		{
 			"RM_BloodropMoth",
-			"RM_ShatterjawBeetle",
 		};
 
 		private float lightExposure;

@@ -394,12 +394,13 @@ def chance_multiplier_sliders_flip(t):
 
 @suite.chain("fauna_residents_loaded")
 def fauna_residents_loaded(t):
-    """LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1 (Q12): the eight RM_ residents loaded (a def with an unresolvable
-    field is silently discarded) and RM_LanternDeeps names all eight. Whether light draws one is the darkness
-    walk, not this chain. A false theory worth keeping: the old RSW_ rows were patch-added, so reading the
-    BiomeDef alone showed an EMPTY roster; it is inline now."""
-    kinds = ["BloodropMoth", "GlowSlug", "BovineBeetle", "FacetMothLarvae",
-             "Gembug", "Megapleura", "MossBeetleLarvae", "ShatterjawBeetle"]
+    """LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1 (Q12): the RM_ residents loaded (a def with an unresolvable
+    field is silently discarded) and RM_LanternDeeps names all of them. Five since the 2026-10-05 sheet, which cut
+    glowbulb, grabber and shatterjaw beetle (and the chiller) from the Deeps; the cut three must be ABSENT from the
+    roster. Whether light draws one is the darkness walk, not this chain. A false theory worth keeping: the old RSW_
+    rows were patch-added, so reading the BiomeDef alone showed an EMPTY roster; it is inline now."""
+    kinds = ["BloodropMoth", "FacetMothLarvae", "Gembug", "Megapleura", "MossBeetleLarvae"]
+    cut = ["GlowSlug", "BovineBeetle", "ShatterjawBeetle", "Chiller"]
     with t.component("fauna_kinds_loaded", beyond_toggle=True):
         for k in kinds:
             r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/RM_%s" % k)
@@ -416,6 +417,9 @@ def fauna_residents_loaded(t):
             raise ExpectationFailed("biome_probe returned no roster for RM_LanternDeeps: %r" % (r,))
         if t._guard() and miss:
             raise ExpectationFailed("RM_LanternDeeps roster missing %r (live roster: %s)" % (miss, sorted(names)))
+        back = [k for k in cut if "RM_" + k in names]
+        if t._guard() and back:
+            raise ExpectationFailed("RM_LanternDeeps roster still casts owner-cut %r" % (back,))
 
 
 @suite.chain("lanternstone_deep_gate_toggle")
@@ -485,13 +489,13 @@ def orun_ghal(t):
 
 @suite.chain("hydrocarbon_wave1")
 def hydrocarbon_wave1(t):
-    """LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1: drifter, candler, galuush, chiller, shoal load; a drifter killed with a blade
-    is judged a cold kill and one killed by burns a hot kill (the ignition gate); a galuush can be hung in a Deep.
-    Not proven here: the explosion itself on screen, the chiller's cooling (vanilla CompHeatPusher on a pawn -- read a
-    penned chiller's room temperature over an hour), milking a candler, and the shoal's shared wounds."""
+    """LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1: drifter, candler, galuush, shoal load (the chiller was cut on the
+    2026-10-05 sheet); a drifter killed with a blade is judged a cold kill and one killed by burns a hot kill (the
+    ignition gate); a galuush can be hung in a Deep. Not proven here: the explosion itself on screen, milking a
+    candler, and the shoal's shared wounds."""
     HP = "RimMandrake.LanternDeeps.RM_HydrocarbonProof"
     with t.component("wave1_defs_loaded", beyond_toggle=True):
-        for d in ("ThingDef/RM_Drifter", "ThingDef/RM_Candler", "ThingDef/RM_Galuush", "ThingDef/RM_Chiller",
+        for d in ("ThingDef/RM_Drifter", "ThingDef/RM_Candler", "ThingDef/RM_Galuush",
                   "ThingDef/RM_Shoal", "HediffDef/RM_ShoalSharedCirculation", "GenStepDef/RM_DeepGaluush"):
             r = t.bridge_call("jawa/get_defs", defs=d)
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
