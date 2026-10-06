@@ -10,13 +10,14 @@
   nothing else can produce it.
     - Temperature immunity: stuffProps Flammability factor 0, heat armour
       power high, insulation stats left at 0 (it neither holds nor sheds heat).
-    - Acid immunity: there is no vanilla acid stat. It is NOT expressed here;
-      it belongs with the mechanics ticket (CAULDRON_MECHANICS_BUILD_1) and
-      needs C# or a GameCondition/damage-def hook. Stubbed, not faked.
-    - stuffCategories is Metallic only because the material must be workable
-      at a bench and no non-metal category exists that recipes accept; the
-      fiction ("not metal") lives in the label/description. A dedicated
-      StuffCategoryDef is a follow-on.
+    - Acid immunity (VEXXITH_CLOSED_LOOP_BUILD_1): RM_AcidImmuneExtension
+      below; anything made of this stuff takes no damage from a DamageDef
+      carrying RM_AcidDamageExtension (Patches/RM_Cauldron_AcidDamage.xml).
+      Harmony prefix in Source/RM_VexxithAcidImmunity.cs; Mod Settings toggle.
+    - stuffCategories: Metallic, so it works wherever steel does (owner ruling
+      2026-10-03: it stays a strong general material, HP x1.6), plus
+      RM_VexxithPlate, which only it carries, so a def can be plate-only
+      (RM_VexxithDoor). The fiction ("not metal") lives in the description.
 
   RM_ZisskaMeat: owner-ruled "toxic prized meat" for the zisska. Same shape
   as RUT_NeebrayMeat in UtinniPatches (hand-authored specificMeatDef target,
@@ -62,6 +63,7 @@
     <stuffProps>
       <categories>
         <li>Metallic</li>
+        <li>RM_VexxithPlate</li>
       </categories>
       <color>(46,38,52)</color>
       <commonality>0</commonality>
@@ -78,6 +80,9 @@
         <MeleeWeapon_CooldownMultiplier>1.1</MeleeWeapon_CooldownMultiplier>
       </statFactors>
     </stuffProps>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="OrganicProductBase">

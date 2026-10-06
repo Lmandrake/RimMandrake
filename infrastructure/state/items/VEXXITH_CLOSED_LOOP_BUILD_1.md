@@ -3,7 +3,8 @@
 Split from `CAULDRON_GPT_ENRICHMENT_1` part 3. What already exists: `RM_Vexxith`
 (`src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml`) is a Metallic stuff with
 Flammability 0, high heat armour, MaxHitPoints factor 1.6. Spec: makes durable filter vessels,
-vent-cap liners, fireproof doors and gravship scab-scrapers; poor weapons and ordinary walls.
+vent-cap liners, an acid-proof door and gravship scab-scrapers. It stays a strong general material
+(owner ruling 2026-10-03, HP x1.6).
 
 ## open questions
 

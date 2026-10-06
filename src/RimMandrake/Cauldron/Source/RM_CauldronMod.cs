@@ -54,6 +54,10 @@ namespace RimMandrake.Cauldron
         // CAULDRON_FLORA_EXPANSION_BUILD_1: the six admitted flora in the wild roster (applies on restart) and fexxil's venom.
         public static bool floraExpansionEnabled = true;
         public static bool fexxilVenomEnabled = true;
+        // VEXXITH_CLOSED_LOOP_BUILD_1: vexxith (and the vexxith door) takes no acid damage; the door in the
+        // architect menu (restart to apply).
+        public static bool vexxithAcidImmunityEnabled = true;
+        public static bool vexxithDoorEnabled = true;
 
         public override void ExposeData()
         {
@@ -78,12 +82,19 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref ventSilenceDays, "ventSilenceDays", 4f, true);
             Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
             Scribe_Values.Look(ref fexxilVenomEnabled, "fexxilVenomEnabled", true, true);
+            Scribe_Values.Look(ref vexxithAcidImmunityEnabled, "vexxithAcidImmunityEnabled", true, true);
+            Scribe_Values.Look(ref vexxithDoorEnabled, "vexxithDoorEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls (cfdba9344 pattern): ~30 rows overflow the settings window. View height = last measured
+            // content height. maxOneColumn is load-bearing: lastContentHeight starts at 0, and without it the
+            // overflow wraps into an off-screen second column and the view never grows past the window.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastContentHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Cauldron never generates on a new planet. "
@@ -183,8 +194,23 @@ namespace RimMandrake.Cauldron
                 ref fexxilVenomEnabled,
                 "Walking through fexxil gives a toxic scratch. Off: the thicket only slows you down.");
 
+            list.GapLine();
+            list.CheckboxLabeled("Vexxith is acid-proof",
+                ref vexxithAcidImmunityEnabled,
+                "Anything made of vexxith plate, and the acid-proof door, takes no acid damage. Off: acid burns "
+                + "vexxith like anything else. A pawn in vexxith armour is still burned; the armour is not.");
+            list.CheckboxLabeled("Acid-proof vexxith door (restart to apply)",
+                ref vexxithDoorEnabled,
+                "A door that can only be built from vexxith plate. Off: it leaves the architect menu on the next "
+                + "launch; doors already built stay.");
+
+            lastContentHeight = list.CurHeight + 12f;
             list.End();
+            Widgets.EndScrollView();
         }
+
+        private Vector2 scrollPosition;
+        private float lastContentHeight;
 
         private static string RarityLabel()
         {

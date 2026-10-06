@@ -92,7 +92,7 @@ TYPES = tuple(NS + n for n in (
     "RM_CauldronSettings", "RM_BiomeWorker_Cauldron", "RM_MapComponent_VentBloomExposure",
     "RM_MapComponent_CondensateGardens", "RM_CompVexxissBehaviour", "RM_CompMetalYield",
     "RM_Building_CauldronVent", "RM_MapComponent_CauldronVents", "RM_JobDriver_VexxissDrinkVent",
-    "RM_VentExtension"))
+    "RM_VentExtension", "RM_AcidDamageExtension", "RM_AcidImmuneExtension"))
 
 BIOME = "RM_Cauldron"
 WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
@@ -110,6 +110,7 @@ HERBIVORES = ("Deer", "Muffalo", "Elk", "Alpaca", "Hare", "Chicken", "Squirrel",
 
 # Pad offsets from the map centre (the driver's anchor); each chain clears its own pad first.
 VENT, DRINK_JOB = "RM_CauldronVent", "RM_VexxissDrinkVent"
+VEXXITH, VDOOR, ACID = "RM_Vexxith", "RM_VexxithDoor", "AcidBurn"     # VEXXITH_CLOSED_LOOP_BUILD_1
 VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak",
                "RM_GiantToxicFlower": "RecentBlowout"}
 PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
@@ -129,6 +130,14 @@ def _def_text(rel):
     if rel in _OVERRIDE:
         return _OVERRIDE[rel]
     with open(os.path.join(HERE, "Defs", rel), encoding="utf-8") as fh:
+        return fh.read()
+
+
+def _patch_text(rel):
+    key = "Patches/" + rel
+    if key in _OVERRIDE:
+        return _OVERRIDE[key]
+    with open(os.path.join(HERE, "Patches", rel), encoding="utf-8") as fh:
         return fh.read()
 
 
@@ -592,6 +601,35 @@ def load_chain(t):
                 _fail("sanity probe: an absent def was not reported in notFound: %r" % probe)
             _note(t, "shipped defs resolved", len(SHIPPED))
 
+    with _comp(t, "acid_wiring_shape", toggle="vexxithAcidImmunityEnabled"):
+        # VEXXITH_CLOSED_LOOP_BUILD_1: the data the Harmony prefix keys on, parsed from the mod's own XML.
+        def _strip(x):
+            return re.sub(r"<!--.*?-->", "", x, flags=re.S)
+        items = _strip(_def_text("ThingDefs_Items/RM_CauldronItems.xml"))
+        door = _strip(_def_text("ThingDefs_Buildings/RM_VexxithDoor.xml"))
+        patch = _strip(_patch_text("RM_Cauldron_AcidDamage.xml"))
+        vx = re.search(r"<defName>%s</defName>(.*?)</ThingDef>" % VEXXITH, items, flags=re.S)
+        bad = []
+        if not vx:
+            bad.append("control: %s not found in RM_CauldronItems.xml, parser broke" % VEXXITH)
+        else:
+            b = vx.group(1)
+            if NS + "RM_AcidImmuneExtension" not in b:
+                bad.append("%s carries no RM_AcidImmuneExtension: nothing made of it is acid-proof" % VEXXITH)
+            if "<li>RM_VexxithPlate</li>" not in b or "<li>Metallic</li>" not in b:
+                bad.append("%s must be both Metallic (strong general material) and RM_VexxithPlate" % VEXXITH)
+        cats = re.search(r"<stuffCategories[^>]*>(.*?)</stuffCategories>", door, flags=re.S)
+        if not cats or re.findall(r"<li>([^<]+)</li>", cats.group(1)) != ["RM_VexxithPlate"]:
+            bad.append("%s must accept RM_VexxithPlate and nothing else (plate-only)" % VDOOR)
+        if 'Inherit="False"' not in door:
+            bad.append("%s stuffCategories must not inherit DoorBase's Metallic/Woody/Stony" % VDOOR)
+        if not re.search(r'DamageDef\[defName="%s"\]' % ACID, patch) or NS + "RM_AcidDamageExtension" not in patch:
+            bad.append("Patches/RM_Cauldron_AcidDamage.xml does not mark %s as acid" % ACID)
+        if "PatchOperationConditional" not in patch or 'DamageDef[defName="RM_BloomAcid"]' not in patch:
+            bad.append("Patches/RM_Cauldron_AcidDamage.xml does not mark Warscar's RM_BloomAcid (guarded) as acid")
+        if bad:
+            _fail("; ".join(bad))
+
     with _comp(t, "flora_expansion_shape", toggle="floraExpansionEnabled"):
         # CAULDRON_FLORA_EXPANSION_BUILD_1: parsed from the mod's own XML, so it needs no live game.
         def _body(rel, name, tag="ThingDef"):
@@ -835,8 +873,9 @@ def settings_chain(t):
     # CAULDRON_VENT_ENRICHMENT_HOOKS_1: ventsEnabled is worldgen (a new Cauldron map is needed to see it),
     # ventFalterMessage is a Messages.Message the bridge cannot list, ventGardensEnabled only acts on a map whose
     # biome roster names the flowers (a Cauldron-biome map) and takes days of ticks.
+    # vexxithDoorEnabled acts at startup (restart to apply), which a live session cannot cross.
     for field in ("vexxissAttacksIgniter", "condensateGardensEnabled", "ventsEnabled", "ventFalterMessage",
-                  "ventGardensEnabled"):
+                  "ventGardensEnabled", "vexxithDoorEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -908,6 +947,59 @@ def items_chain(t):
                 _unmeasured(t, "RM_ZisskaMeat ingestible.outcomeDoers unreadable: %r" % (ing,))
             if not any(isinstance(d, dict) and d.get("hediffDef") == "ToxicBuildup" for d in docs):
                 _fail("RM_ZisskaMeat gives no ToxicBuildup when eaten (the toxic prized meat): %r" % docs)
+
+
+# --------------------------------------------------------------------------- chain: vexxith ignores acid
+
+def _acid_hit(t, x, z, want_def):
+    """AcidBurn at one cell; (hpBefore, hpAfter) of the `want_def` row, UNMEASURED when unreadable."""
+    r = t.bridge_call("jawa/damage", damageDef=ACID, amount=20.0, x=x, z=z)
+    _ok(r, "damage(%s at %d,%d)" % (ACID, x, z))
+    rows = [w for w in (r.get("results") or []) if isinstance(w, dict) and w.get("def") == want_def]
+    if not rows or rows[0].get("hitPointsBefore") is None or rows[0].get("hitPointsAfter") is None:
+        _unmeasured(t, "damage at %d,%d returned no readable %s row: %r" % (x, z, want_def, r))
+    return rows[0]["hitPointsBefore"], rows[0]["hitPointsAfter"]
+
+
+@suite.chain("acid")
+def acid_chain(t):
+    """VEXXITH_CLOSED_LOOP_BUILD_1: a vexxith wall and the vexxith door take no AcidBurn; a steel wall
+    beside them does (the control), and with the toggle off the vexxith wall burns too."""
+    _prep(t, "spawn")
+    x, z = t.anchor
+    cells = {"vwall": (x - 4, z, "Wall", VEXXITH), "vdoor": (x, z, VDOOR, VEXXITH),
+             "swall": (x + 4, z, "Wall", "Steel"), "vwall2": (x - 4, z + 4, "Wall", VEXXITH)}
+
+    def body():
+        with _comp(t, "acid_site_ready", poison=True):
+            if _live(t):
+                for key, (cx, cz, d, stuff) in sorted(cells.items()):
+                    r = _ok(t.bridge_call("jawa/build_batch", ops="%s:%d,%d" % (d, cx, cz), stuff=stuff,
+                                          readBack=2), "build_batch %s/%s" % (d, stuff))
+                    back = [w for w in (r.get("things") or []) if isinstance(w, dict)]
+                    if r.get("survived") != 1 or not back or back[0].get("stuff") != stuff:
+                        _unmeasured(t, "%s of %s did not stand: %r" % (d, stuff, r))
+        with _comp(t, "vexxith_acid_proof", toggle="vexxithAcidImmunityEnabled"):
+            if _live(t):
+                got = dict((k, _acid_hit(t, cx, cz, d)) for k, (cx, cz, d, _) in sorted(cells.items())
+                           if k != "vwall2")
+                _note(t, "AcidBurn 20: hp before/after", got)
+                if not got["swall"][1] < got["swall"][0]:
+                    _unmeasured(t, "control: AcidBurn did not hurt a steel wall %r, so it proves nothing"
+                                   % (got["swall"],))
+                for k in ("vwall", "vdoor"):
+                    if got[k][1] != got[k][0]:
+                        _fail("%s lost hit points to acid: %r (it must be acid-proof)" % (k, got[k]))
+        with _comp(t, "vexxith_acid_toggle_off", toggle="vexxithAcidImmunityEnabled"):
+            if _live(t):
+                cx, cz, d, _ = cells["vwall2"]
+                with _setting(t, "vexxithAcidImmunityEnabled", False):
+                    before, after = _acid_hit(t, cx, cz, d)
+                _note(t, "AcidBurn 20 with the toggle OFF: vexxith wall hp before/after", [before, after])
+                if not after < before:
+                    _fail("vexxithAcidImmunityEnabled OFF but the vexxith wall still ignored acid (%r -> %r)"
+                          % (before, after))
+    _stable(t, body)
 
 
 # --------------------------------------------------------------------------- chain: fauna

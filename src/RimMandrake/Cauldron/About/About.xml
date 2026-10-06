@@ -8,12 +8,18 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards Kit</displayName>
       <steamWorkshopUrl />
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.environmentalhazards</li>
     <li>sarg.alphaanimals</li>
     <li>sarg.alphamemes</li>
@@ -58,8 +64,12 @@ CAULDRON_MECHANICS_BUILD_1: the biome's four own weathers (scatter-dusk, vapour
 bank, dewfall, vent bloom) replace the donor fog; a vent bloom builds a slow
 metal-load condition on anyone outdoors under open sky. The vexxiss puts out
 fires, goes for whoever started them, and turns the water it wades through
-toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear
-job and vent inhaling.
+toxic. Each is a Mod Settings toggle. Not yet built: the vexxiss's wild-shear job.
+
+VEXXITH_CLOSED_LOOP_BUILD_1: anything made of vexxith, and the plate-only
+acid-proof vexxith door, takes no acid damage (vanilla acid burn, and the
+Warscar bloom acid when that biome is present). This is the mod's one Harmony
+patch, so it now needs Harmony. Both are Mod Settings toggles.
 
 ⚠️ Not fully donor-free: the world-map texture (Biomes/PoisonForest, BiomesPlus)
 carries no MayRequire, inherited unchanged from the frozen campaign twin. The
