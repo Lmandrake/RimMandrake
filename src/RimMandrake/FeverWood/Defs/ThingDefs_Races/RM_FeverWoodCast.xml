@@ -336,4 +336,364 @@
     </lifeStages>
   </PawnKindDef>
 
+  <!-- ============================================================ -->
+  <!-- Pass 2 (2026-10-06): gorrameth, brathek, silloch.              -->
+  <!-- Descriptions: cast proposal table + fauna roster rows 5 and 7. -->
+  <!-- ============================================================ -->
+
+  <!-- ============================================================ -->
+  <!-- RM_Gorrameth — the terribly lost                                -->
+  <!-- Plain vanilla herbivore. Its doomed-herd incident is a later   -->
+  <!-- wave (item §3), not built here.                                 -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gorrameth</defName>
+    <label>gorrameth</label>
+    <description>A huge, round-backed grey browser with a low-slung drinking head, built so that it always looks about to kneel at the wrong pool. It wanders the Fever Wood placidly and alone, drinks from the still black mirrors, and every so often one of them takes it. Nothing in the wood hunts it. Nothing needs to.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>  <!-- PROVISIONAL: placid, slower than an elephant -->
+      <MarketValue>450</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <LeatherAmount>40</LeatherAmount>  <!-- PROVISIONAL -->
+      <Wildness>0.7</Wildness>  <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <labelNoLocation>foot</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>false</herdAnimal>  <!-- lone at 0.02 (2026-09-24 card) -->
+      <predator>false</predator>
+      <baseBodySize>4.0</baseBodySize>  <!-- ruled ~4.0 -->
+      <baseHealthScale>3.0</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>1.5</baseHungerRate>  <!-- PROVISIONAL -->
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>  <!-- PROVISIONAL: placid -->
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>  <!-- PROVISIONAL -->
+      <trainability>None</trainability>
+      <gestationPeriodDays>30</gestationPeriodDays>  <!-- PROVISIONAL -->
+      <lifeExpectancy>45</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>Pawn_Elephant_Injured</soundWounded>
+          <soundDeath>Pawn_Elephant_Dead</soundDeath>
+          <soundCall>Pawn_Elephant_Call</soundCall>
+          <soundAngry>Pawn_Elephant_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gorrameth</defName>
+    <label>gorrameth</label>
+    <race>RM_Gorrameth</race>
+    <combatPower>180</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~1</wildGroupSize>  <!-- lone (card); the herd is the later incident -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorrameth/RM_Gorrameth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorrameth/RM_Gorrameth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gorrameth/RM_Gorrameth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- RM_Brathek — the wood-borer that keeps digging                  -->
+  <!-- The roster leaves its dig RATE and whether it can be DIRECTED   -->
+  <!-- open, so this build does not guess either: it ships no wall,    -->
+  <!-- building or boughway damage at all. Its only wood damage is     -->
+  <!-- vanilla tree-eating (foodType Tree, the megathrips-like "wood   -->
+  <!-- pulp" diet the item allows "at most"), and the Mod Settings     -->
+  <!-- toggle "Brathek bores into living wood" strips that flag at     -->
+  <!-- startup (RM_BrathekBoring.cs). Every number is INVENTED.        -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Brathek</defName>
+    <label>brathek</label>
+    <description>A heavy ringed grub the length of a forearm, pale and wet, with a dark rasping head-plate broader than the rest of it, so the tunnel it cuts is always wider than the animal. It is usually seen head-on in a gallery mouth, or as a slow moving bulge under bark. It eats wood, and it keeps eating.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>  <!-- INVENTED / PROVISIONAL: slow and visible -->
+      <MarketValue>120</MarketValue>  <!-- INVENTED / PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- INVENTED / PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- INVENTED / PROVISIONAL -->
+      <Wildness>0.8</Wildness>  <!-- INVENTED / PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>rasping head-plate</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>9</power>  <!-- INVENTED / PROVISIONAL -->
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>  <!-- ruled ~0.9 -->
+      <baseHealthScale>1.0</baseHealthScale>  <!-- INVENTED / PROVISIONAL -->
+      <baseHungerRate>0.5</baseHungerRate>  <!-- INVENTED / PROVISIONAL -->
+      <foodType>VegetarianRoughAnimal, Tree</foodType>  <!-- wood pulp; Tree stripped when the setting is off -->
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>  <!-- INVENTED / PROVISIONAL -->
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>  <!-- "directed" is an open ruling; not guessed -->
+      <lifeExpectancy>6</lifeExpectancy>  <!-- INVENTED / PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Brathek</defName>
+    <label>brathek</label>
+    <race>RM_Brathek</race>
+    <combatPower>40</combatPower>  <!-- INVENTED / PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~3</wildGroupSize>  <!-- INVENTED / PROVISIONAL -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brathek/RM_Brathek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brathek/RM_Brathek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Brathek/RM_Brathek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- RM_Silloch — the crown's patient predator                       -->
+  <!-- predator=false, so vanilla never hunts with it (ban 3). Its     -->
+  <!-- only attack is RM_CompSillochAmbush (this mod's own source):    -->
+  <!-- it waits pressed against a tree trunk, strikes what steps       -->
+  <!-- within reach, and gives up the moment the victim gets clear.    -->
+  <!-- The FeverWoodCrown tag answers the ollareth's scream            -->
+  <!-- (RM_SapSuckerGuild.xml) — the one-line finish that file named.  -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Silloch</defName>
+    <label>silloch</label>
+    <description>There is almost nothing to see: a flat mottled wedge the colour of wet bark, folded utterly motionless against a trunk, with only a pair of forward limbs held cocked. It does not stalk. It waits, sometimes for days, and then it is simply attached to something.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>  <!-- PROVISIONAL: never needs to be fast -->
+      <MarketValue>150</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <Wildness>0.9</Wildness>  <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>cocked forelimbs</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>10</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_SillochAmbush">
+        <strikeRangeCells>1.9</strikeRangeCells>  <!-- adjacent only -->
+        <maxPreyBodySize>1.0</maxPreyBodySize>  <!-- PROVISIONAL: up to a lommerel -->
+        <strikeDamageRange>8~14</strikeDamageRange>  <!-- PROVISIONAL -->
+        <leashCells>4</leashCells>  <!-- PROVISIONAL: past this it lets go, never chases -->
+        <trunkSearchRadius>10</trunkSearchRadius>  <!-- PROVISIONAL -->
+        <waitTicks>2500</waitTicks>  <!-- PROVISIONAL -->
+      </li>
+    </comps>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>  <!-- ban 3: the comp ambushes, vanilla never hunts -->
+      <baseBodySize>0.6</baseBodySize>  <!-- ruled ~0.6 -->
+      <baseHealthScale>0.8</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>0.3</baseHungerRate>  <!-- PROVISIONAL: waits for days -->
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.3</manhunterOnDamageChance>  <!-- PROVISIONAL -->
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>  <!-- PROVISIONAL -->
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>FeverWoodCrown</tag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Silloch</defName>
+    <label>silloch</label>
+    <race>RM_Silloch</race>
+    <combatPower>50</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Silloch/RM_Silloch</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Silloch/RM_Silloch</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Silloch/RM_Silloch</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
 </Defs>

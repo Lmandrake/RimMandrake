@@ -218,6 +218,17 @@ namespace RimMandrake.FeverWood
         /// behavior.</summary>
         public static bool sapSuckerMishandleRefusalEnabled = true;
 
+        /// <summary>FEVERWOOD_RM_CAST_COMPLETION_1: the silloch's bark wait-ambush
+        /// (RM_CompSillochAmbush). Off: it is an ordinary wandering animal that
+        /// never strikes unprovoked. Default ON.</summary>
+        public static bool sillochAmbushEnabled = true;
+
+        /// <summary>FEVERWOOD_RM_CAST_COMPLETION_1: the brathek eats living trees
+        /// (its wood-pulp diet; RM_BrathekBoring). It never damages walls,
+        /// buildings or boughways in this build. Off: it grazes like any other
+        /// animal. Default ON.</summary>
+        public static bool brathekBoresWood = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -249,6 +260,8 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureMinThreatPoints, "twoFrontLureMinThreatPoints", 80f);
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
+            Scribe_Values.Look(ref sillochAmbushEnabled, "sillochAmbushEnabled", true);
+            Scribe_Values.Look(ref brathekBoresWood, "brathekBoresWood", true);
             Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
             Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
             Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
@@ -373,6 +386,13 @@ namespace RimMandrake.FeverWood
                 "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
               + "seals itself, the drommath swells, the ollareth screams — just as being hurt does. Off: only "
               + "being hurt sets it off.");
+            list.CheckboxLabeled("Silloch ambush from the bark", ref sillochAmbushEnabled,
+                "On: a silloch presses itself against a tree trunk and waits, and strikes any small creature (or "
+              + "person) that steps right beside it. It never chases: once the victim gets a few steps clear, it lets "
+              + "go. Off: it wanders like an ordinary animal and never strikes unprovoked.");
+            list.CheckboxLabeled("Brathek bores into living wood", ref brathekBoresWood,
+                "On: a brathek eats living trees as well as ground cover, so a grove with brathek in it slowly thins. "
+              + "It never digs through walls, buildings or boughways. Off: it grazes like any other animal.");
             list.GapLine();
             list.CheckboxLabeled("Kurreth carry animals off alive", ref antTheftEnabled,
                 "On: a kurreth raid fights as before, but up to a third of the column pins a thornbug (then any "
@@ -433,6 +453,7 @@ namespace RimMandrake.FeverWood
         {
             base.WriteSettings();
             RM_OilBoil.ApplySettings();
+            RM_BrathekBoring.ApplySettings();
         }
 
         public override string SettingsCategory()

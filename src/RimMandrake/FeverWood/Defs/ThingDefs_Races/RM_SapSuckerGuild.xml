@@ -28,17 +28,10 @@
   the same shape as "sets the chorus off, pulls the crown's predators
   toward whatever is bothering it" — content-blind (no species hardcoded),
   and mandrake.rm.creaturebehaviors is already a hard modDependency/
-  loadAfter of this mod's own About.xml. ⚠️ No RM_AlarmResponderExtension
-  is tagged onto any Fever Wood race yet — the crown's own predator
-  (RM_Silloch, fauna roster row 7) is not built by any item yet, and the
-  current wait-ambush occupant is the Star Wars-tier RSW_LongtailGorg
-  (WildAnimals_FeverWood.xml, RUT layer) which this franchise-free RM mod
-  may not reference (Q11a). So this pass wires the trigger for real but it
-  currently has zero responders to wake — the same "proved, not yet wired"
-  posture FEVER_WOOD_MECHANICS_1's own F2 shipped in. Tagging
-  RM_Silloch (or, on the RUT/RSW patch layer, RSW_LongtailGorg) with
+  loadAfter of this mod's own About.xml. The crown's responder is
+  RM_Silloch (RM_FeverWoodCast.xml), which carries
   <RM_AlarmResponderExtension><tag>FeverWoodCrown</tag></RM_AlarmResponderExtension>
-  is that future roster/patch item's own one-line finish, not invented here.
+  (FEVERWOOD_RM_CAST_COMPLETION_1).
 
   Vaulm/drommath use the new local RM_CompProperties_SapSuckerRefusal (this
   mod, RM_CompSapSuckerRefusal.cs) — see that class for why a shared hediff-
@@ -264,7 +257,7 @@
     </statBases>
     <comps>
       <!-- Reused, not new — see file header. INVENTED radius/cooldown;
-           no responder is tagged onto any Fever Wood race yet. -->
+           the responder is RM_Silloch (tag FeverWoodCrown). -->
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_PlantAlarm">
         <radius>24</radius>
         <tag>FeverWoodCrown</tag>
