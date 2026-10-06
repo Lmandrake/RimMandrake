@@ -41,7 +41,10 @@ def declared():
 def pick(chains_arg):
     from modcheck import Suite
     want = [c for c in (chains_arg or "").split(",") if c]
-    allc = EXT.suite.chains + RIV.suite.chains
+    # RIVERS FIRST: they read the site's own river, and every plot chain repaints a 40x30 Soil block that can cut
+    # across it (MEASURED 2026-10-06, map 5: the weir site sat where plot T's paint ended, its pool ran over painted
+    # Soil, "POOL cells=21 dropped=0"; the same chain passed 16/16 on a map nothing had painted).
+    allc = RIV.suite.chains + EXT.suite.chains
     names = [n for n, _ in allc]
     bad = [c for c in want if c not in names]
     if bad:

@@ -4,7 +4,7 @@
     python.exe src/RimMandrake/FlowWorks/northstar/river_site.py            # bridge held, a Playing game
 
 The rivers chains read "UNMEASURED: the site map has no river current" on a quicktest map without a river. This founds a
-colony on a flat MILD (12-24 C mean, |lat| <= 25 so winter stays mild) tile that HAS a river (largest river first), generates its map, makes it current, removes every
+colony on a flat MILD (18-26 C mean, |lat| <= 15 so nights and winter stay mild: map 5 at 12-24/25 hit frostbite) tile that HAS a river (largest river first), generates its map, makes it current, removes every
 non-colonist, spawns colonists and runs bland_world.reset() so the watch starts bland. Mild on purpose: on a 38 C
 quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain and five components read UNMEASURED. bland_world.setup() is the same
 recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems; exit 0 only
@@ -31,8 +31,8 @@ def river_candidates(rows):
     for r in rows:
         try:
             if (r.get("hilliness") in ("Flat", "SmallHills") and float(r.get("swampiness") or 0) < 0.3
-                    and 0 <= float(r.get("elevation") or -1) < 600 and 12 <= float(r.get("temperature") or -99) <= 24
-                    and abs(float(r.get("lat") or 90)) <= 25
+                    and 0 <= float(r.get("elevation") or -1) < 600 and 18 <= float(r.get("temperature") or -99) <= 26
+                    and abs(float(r.get("lat") or 90)) <= 15
                     and r.get("biome") not in ("Ocean", "Lake", "SeaIce", "IceSheet")):
                 out.append(int(r.get("tile") if r.get("tile") is not None else r.get("index")))
         except (TypeError, ValueError):
@@ -89,9 +89,14 @@ def main():
             return 2
         d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         mi = s.call("jawa/map_info")
-        cx, cz = int(mi.get("sizeX", 250)) // 2, int(mi.get("sizeZ", 250)) // 2
+        # OFF the extension plot grid (centred on the map, +-~56 cells) and DRAFTED: colonists spawned at the centre
+        # wandered into the plots' pits and read as colonist_damaged "Blunt by nobody" (the mod's fall damage) in five
+        # components (MEASURED 2026-10-06, map 5).
+        cx, cz = int(mi.get("sizeX", 250)) // 2, 30
         for i in range(3):
-            s.call("jawa/spawn_pawn", kindDef="Colonist", x=cx + 2 * i, z=cz, faction="player", count=1)
+            sp = s.call("jawa/spawn_pawn", kindDef="Colonist", x=cx + 2 * i, z=cz, faction="player", count=1)
+            for p in sp.get("pawns") or []:
+                s.call("jawa/set_draft", pawnId=p.get("id"), drafted=True)
         BW.close_naming_dialogs(s)
         rep = BW.reset(s)
         print("map", g["mapIndex"], "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
