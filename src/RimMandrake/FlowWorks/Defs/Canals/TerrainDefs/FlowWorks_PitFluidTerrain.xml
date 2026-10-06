@@ -6,6 +6,9 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Oil_Trace</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>shallow channel oil</label>
     <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
@@ -26,6 +29,9 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Oil_Half</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>half-full channel oil</label>
     <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
@@ -49,6 +55,9 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Oil_Brim</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>brimming channel oil</label>
     <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
@@ -72,6 +81,9 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Oil_Superdeep</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>flooded excavation, oil</label>
     <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>

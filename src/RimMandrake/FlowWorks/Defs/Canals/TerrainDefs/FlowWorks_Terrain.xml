@@ -297,6 +297,9 @@
   <!-- Tier 1 of 3 — a trace of tar, read as shallow but already thick. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Trace</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>shallow channel tar</label>
     <description>A channel carrying a trace of tar -- black, patient, and already sucking at a boot even this shallow.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
@@ -318,6 +321,9 @@
   <!-- Tier 2 of 3 — half full, read as chest-deep. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Half</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>half-full channel tar</label>
     <description>A channel filling with tar to about half its depth. Wading it is chest-deep, sucking work.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
@@ -342,6 +348,9 @@
   <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Brim</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>brimming channel tar</label>
     <description>A channel filled to its brim with tar. Crossing it is punishing, but it is a tax, not a wall -- depth captures, fill does not.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
@@ -371,6 +380,9 @@
        would silently become the barrier the ruling says it is not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Tar_Superdeep</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
     <label>flooded excavation, tar</label>
     <description>A superdeep excavation holding tar. Whatever falls in is held there, and the tar then goes to work on it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
