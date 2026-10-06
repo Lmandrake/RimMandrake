@@ -246,7 +246,17 @@ class FakeWorld(object):
         if p is None:
             return {"success": False, "message": "no such pawn"}
         before = p["dead"]
+        if action == "vanish":                           # Destroy(Vanish): gone, no death, no death action
+            if "kill_noop" not in self.modes:
+                del self.pawns[pawn]
+            return {"success": pawn not in self.pawns, "action": action, "deadBefore": before,
+                    "destroyedAfter": pawn not in self.pawns}
         if action == "kill" and "kill_noop" not in self.modes:
+            if "kill_divides" in self.modes and p["kind"] == "Toughspike":
+                for i in range(2):                       # MEASURED 2026-10-05: DeathActionWorker_Divide -> fingerspikes
+                    cid = "%s_child%d" % (pawn, i)
+                    self.pawns[cid] = pawn_row(cid, kind="Fingerspike", faction="Entities", is_player=False,
+                                               hostile=True, intelligence="Animal", x=p["x"] + i, z=p["z"])
             if "kill_explodes" in self.modes and p["kind"] == "Boomalope":
                 for i in range(25):                      # MEASURED: 25 fires within 5 ticks of one death
                     self.add_fire(p["x"] + i % 5, p["z"] + i // 5)

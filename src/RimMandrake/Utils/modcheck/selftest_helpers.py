@@ -57,7 +57,8 @@ def main():
     r = H.kill_hostiles(w, expected_ids=["Raider1"])
     check("expected hostile is spared", not w.pawns["Raider1"]["dead"] and r.acted == 0)
     r = H.kill_hostiles(w)
-    check("kill_hostiles kills the raider and verifies", w.pawns["Raider1"]["dead"] and r.verified and r.acted == 1)
+    check("kill_hostiles removes the raider (vanish, no corpse) and verifies",
+          "Raider1" not in w.pawns and r.verified and r.acted == 1)
     check("kill_hostiles leaves wildlife/colonists alone",
           not w.pawns["Wolf1"]["dead"] and not w.pawns["Col1"]["dead"])
     r2 = H.kill_hostiles(w)
@@ -67,6 +68,21 @@ def main():
     w.modes.add("kill_noop")
     r = H.kill_hostiles(w)
     check("a no-op kill is reported unverified with residue", (not r.verified) and r.residue == ["Raider1"], repr(r))
+
+    # --- a dividing fleshbeast: a KILL breeds hostiles, the vanish route does not (measured 2026-10-05)
+    w = messy()
+    w.pawns["Tough1"] = pawn_row("Tough1", kind="Toughspike", faction="Entities", is_player=False, hostile=True,
+                                 intelligence="Animal")
+    w.modes.add("kill_divides")
+    r = H.kill_hostiles(w)
+    check("kill_hostiles leaves no fleshbeast children (no death action ran)",
+          r.verified and not any(H.is_hostile(p) for p in w.pawns.values()), repr(r))
+    w2 = messy()
+    w2.pawns["Tough1"] = pawn_row("Tough1", kind="Toughspike", faction="Entities", is_player=False, hostile=True,
+                                  intelligence="Animal")
+    w2.modes.add("kill_divides")
+    w2.call("jawa/pawn_force_incapacitate", pawn="Tough1", action="kill")
+    check("control: a plain kill really divides in the fake", any(k.startswith("Tough1_child") for k in w2.pawns))
 
     # --- wildlife and strangers
     w = messy()

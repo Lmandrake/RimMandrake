@@ -163,15 +163,17 @@ namespace JawaBench.BridgeTools
                 "HealthUtility.DamageUntilDowned, action='dead' calls " +
                 "HealthUtility.DamageUntilDead, action='kill' calls Pawn.Kill(null) directly " +
                 "(a clean death with no damage source, skipping HealthUtility's injury " +
-                "simulation entirely). All three mutate health in place and return nothing, " +
-                "so this reads p.Downed/p.Dead back afterward rather than assuming the call " +
-                "worked.",
+                "simulation entirely), action='vanish' calls Destroy(DestroyMode.Vanish): the pawn " +
+                "is removed with NO death, so no death action runs (a fleshbeast's Divide, a " +
+                "boomalope's explosion) and no corpse is left. The first three mutate health in place " +
+                "and return nothing, so this reads p.Downed/p.Dead back afterward rather than assuming " +
+                "the call worked; 'vanish' reports destroyedAfter instead.",
             ResultDescription = "success, action, downed/dead BEFORE and AFTER (so a no-op is visible), allowBleedingWoundsHonoured (false for 'dead' and 'kill' - see the parameter), and a health snapshot.")]
         public static async Task<object> PawnForceIncapacitate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
-            [ToolParameter(Description = "'downed' | 'dead' | 'kill'.")] string action = "downed",
+            [ToolParameter(Description = "'downed' | 'dead' | 'kill' | 'vanish'.")] string action = "downed",
             [ToolParameter(Description = "Allow bleeding wounds. ⚠️ action='downed' ONLY - HealthUtility.DamageUntilDead(Pawn, DamageDef, ThingDef, BodyPartGroupDef) has no such parameter and Pawn.Kill deals no damage at all, so this is silently ignored for 'dead' and 'kill'. The result says which. Default true.")]
             bool allowBleedingWounds = true)
         {
@@ -187,7 +189,19 @@ namespace JawaBench.BridgeTools
                 if (A == "downed") HealthUtility.DamageUntilDowned(p, allowBleedingWounds);
                 else if (A == "dead") HealthUtility.DamageUntilDead(p);
                 else if (A == "kill") p.Kill(null);
-                else return Fail("action must be downed|dead|kill.");
+                else if (A == "vanish")
+                {
+                    if (!p.Destroyed) p.Destroy(DestroyMode.Vanish);
+                    return (object)new
+                    {
+                        success = p.Destroyed,
+                        action = A,
+                        downedBefore, deadBefore,
+                        destroyedAfter = p.Destroyed,
+                        ticksGame = TicksGameSafe(),
+                    };
+                }
+                else return Fail("action must be downed|dead|kill|vanish.");
 
                 return (object)new
                 {
