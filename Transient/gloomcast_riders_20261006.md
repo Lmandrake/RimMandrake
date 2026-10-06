@@ -1,0 +1,1 @@
+GLOOMCAST_WAKE_RIDERS_1: added RM_ShadowFollowerExtension (searchRadius 60, PROVISIONAL, copied from ShadeMite/Pirrik) to RM_Gennok and RM_Tebbra in src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fillers.xml. No C# change. No scar (ruled: dung enough). LongShade has no settings screen/toggle; none required by item.

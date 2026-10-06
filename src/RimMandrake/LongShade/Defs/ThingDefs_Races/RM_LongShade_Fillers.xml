@@ -186,6 +186,11 @@
     </tools>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+      <!-- GLOOMCAST_WAKE_RIDERS_1 (owner ruling 2026-10-03: tebbra and gennok follow the
+           gloomcast's shadow). searchRadius 60 copies the other consumers; PROVISIONAL. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
     </modExtensions>
     <race>
       <body>QuadrupedAnimalWithHooves</body>
@@ -285,6 +290,11 @@
     </tools>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+      <!-- GLOOMCAST_WAKE_RIDERS_1 (owner ruling 2026-10-03: tebbra and gennok follow the
+           gloomcast's shadow). searchRadius 60 copies the other consumers; PROVISIONAL. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
     </modExtensions>
     <race>
       <body>QuadrupedAnimalWithPawsAndTail</body>
