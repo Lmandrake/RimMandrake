@@ -90,27 +90,28 @@ def main():
     scenes = [scene(s) for s in range(n)]
     want = [oracle(sc) for sc in scenes]
     t1 = time.time()
-    proj = stock_wrapper._to_windows_path(stock_wrapper.CSPROJ)
-    # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
-    b = subprocess.run([dotnet, "build", proj, "-c", "Release", "-nologo", "-v", "q", "-nodeReuse:false", "-p:UseSharedCompilation=false"], capture_output=True, text=True)
-    if b.returncode != 0:
-        print(b.stdout[-2000:], b.stderr[-2000:])
-        sys.exit("selftest build failed")
-    dll = stock_wrapper._to_windows_path(os.path.join(HERE, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
-    scene_file = os.path.join(HERE, "bin", "oracle_scenes.txt")   # bin/ is gitignored
-    with open(scene_file, "w") as f:
-        f.write("\n".join(encode(sc) for sc in scenes) + "\n")
-    res = subprocess.run([dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)],
-                         capture_output=True, text=True, timeout=300)
-    t2 = time.time()
-    if res.returncode != 0:
-        print(res.stdout[-2000:], res.stderr[-2000:])
-        sys.exit("kernel run failed")
-    got = [ln for ln in res.stdout.replace("\r", "").split("\n") if ln.strip()]
-    if len(got) != n:
-        sys.exit("kernel answered %d scenes of %d" % (len(got), n))
-    bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
-    pulses = sum(sc[2] for sc in scenes)
+    with stock_wrapper.dotnet_lock():
+        proj = stock_wrapper._to_windows_path(stock_wrapper.CSPROJ)
+        # `dotnet run` does not forward a piped stdin here (it hangs), so build, then run the dll directly.
+        b = subprocess.run([dotnet, "build", proj, "-c", "Release", "-nologo", "-v", "q", "-nodeReuse:false", "-p:UseSharedCompilation=false"], capture_output=True, text=True)
+        if b.returncode != 0:
+            print(b.stdout[-2000:], b.stderr[-2000:])
+            sys.exit("selftest build failed")
+        dll = stock_wrapper._to_windows_path(os.path.join(HERE, "bin", "Release", "net8.0", "RimMandrakeFlowWorks.SelfTest.dll"))
+        scene_file = os.path.join(HERE, "bin", "oracle_scenes.txt")   # bin/ is gitignored
+        with open(scene_file, "w") as f:
+            f.write("\n".join(encode(sc) for sc in scenes) + "\n")
+        res = subprocess.run([dotnet, dll, "--oracle-scenes", stock_wrapper._to_windows_path(scene_file)],
+                             capture_output=True, text=True, timeout=300)
+        t2 = time.time()
+        if res.returncode != 0:
+            print(res.stdout[-2000:], res.stderr[-2000:])
+            sys.exit("kernel run failed")
+        got = [ln for ln in res.stdout.replace("\r", "").split("\n") if ln.strip()]
+        if len(got) != n:
+            sys.exit("kernel answered %d scenes of %d" % (len(got), n))
+        bad = [i for i in range(n) if norm(got[i]) != norm(want[i])]
+        pulses = sum(sc[2] for sc in scenes)
     print("%d scenes, %d pulses: oracle %.2f s, kernel (incl. dotnet build check) %.2f s" % (n, pulses, t1 - t0, t2 - t1))
     for i in bad[:5]:
         print("DISAGREE seed %d: %s\n  oracle %s\n  kernel %s" % (i, encode(scenes[i]), want[i][:300], got[i][:300]))

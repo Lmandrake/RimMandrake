@@ -82,25 +82,26 @@ One invariant I first wrote was wrong and is recorded so nobody re-adds it: *"a 
 across a pulse"*. Seed 4764: a sink cell drains its last oil level, then tar claims it the same pulse. Legal.
 "Never mix" is enforced as per-fluid conservation instead.
 
-## Regression cases for confirmed findings #1 and #2 — both REPRODUCED by the kernel
+## Owner rulings 2026-10-06 (question card) — fixed, now regression guards
 
-Both are `KnownDefect_*` cases: they PASS while the defect reproduces and print what they saw; when a fix lands
-they fail ("not reproduced") and should be turned into guards.
+1. **Touching natural liquids of different fluids stay separate bodies.** `RM_FlowKernel.CollectBody` takes
+   `sameFluidAsSeed`; `RM_LiquidStock.FormBody` passes the seed terrain's fluid, so the walk neither joins nor adopts
+   an owned body of another fluid. A channel touching both pools fills with whichever fluid claims it first (donor
+   order is fixed: N,E,S,W, sources score equal) and `FluidsCompatible` refuses the other afterwards: nothing mixes.
+   Guards: `Ruling1_touching_water_and_tar_stay_separate`, `Ruling1_channel_touching_both_pools_never_mixes`.
+2. **Scarce supply is paid by map position.** `RM_FlowKernel.Pulse` sorts its seeds by cell index, so session and
+   post-load orders agree. Guard: `Ruling2_scarce_supply_paid_by_cell_index` (dug B-then-A and A-then-B both pay A).
+   The Python `PulseOracle` (`northstar/validation_v2.py`) now seeds in cell-index order too; a live
+   `validation_v2` run against a DLL older than this change disagrees on exactly that case.
 
-- **#1 touching water and tar merge** (`RM_LiquidStock.cs` FormBody → now `RM_FlowKernel.CollectBody`): a row
-  `water water tar tar`, body formed from a water cell, one-cell channel dug over the tar. Output:
-  `REPRODUCED: water+tar formed one 4-cell water body; the channel over the TAR filled with water`.
-  The walk adds every natural-liquid neighbour without looking at which liquid it is.
-- **#2 reload changes scarce allocation** (`RM_MapComponent_Excavation.cs` DoPulse seed order): a 1-cell pond
-  with stock 1 between channels A (x=1) and B (x=3); B dug first. Output:
-  `REPRODUCED: same world, session order paid (A,B)=(0, 1), after reload (1, 0)`. In session the seed order
-  is dig order (HashSet insertion); after a load `RebuildExcavatedSet` walks cell-index order.
+Test-harness note: `run_selftests.py` runs the stock and oracle wrappers in parallel on one SelfTest project; both
+now take `dotnet_lock()` (flock in the temp dir) around every dotnet call, so they serialise instead of racing.
 
 ## Timing summary (whole Approach B offline suite)
 
 | run | wall |
 |---|---|
-| `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py` (100 cases: 92 old + 4 math fuzz + 2 kernel fuzz + 2 known defects; 252k generated cases, 0.92M kernel pulses) | ~5–6 s, of which fuzz 1.5 s + kernel 1.7 s |
+| `python3 src/RimMandrake/Utils/selftest_flowworks_stock.py` (101 cases: 92 old + 4 math fuzz + 2 kernel fuzz + 3 ruling guards; 252k generated cases, 0.92M kernel pulses) | ~5–6 s, of which fuzz 1.5 s + kernel 1.7 s |
 | `python3 src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py` (3,000 scenes) | 6.6 s |
 
 ## Not done / next
@@ -108,5 +109,3 @@ they fail ("not reproduced") and should be turned into guards.
 - Live adapter check of the refactored DLL (one short bridge session: run the existing FlowWorks core flow rows).
 - The fill-in displacement walk (`Displace`) and rain are still adapter-only; extracting them is the obvious next
   slice if this approach is kept.
-- Fixes for #1 and #2 are design decisions (which liquid wins at a seam; a declared seed order that survives a
-  load), not done here.

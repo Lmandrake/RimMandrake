@@ -154,6 +154,24 @@ def test_loop(spec, tmp):
         ok(rc == 3, "no actions after the deadline")
         rc, out = run(["--runs", runs2, "report", "--json"])
         ok(json.loads(out)["verdict"] == "TIMEOUT", "FAIL past the deadline reads TIMEOUT")
+        # a goal met only AFTER the game-time deadline is TIMEOUT, never PASS
+        runs5 = os.path.join(tmp, "runs5")
+        run(["--runs", runs5, "start", "canal", "--dry-run"])
+        run(["--runs", runs5, "act", "rimworld/apply_architect_designator",
+             json.dumps({"designatorId": "Designator_DigCanal_fake", "x": 50, "z": 58, "width": 17, "height": 1})])
+        run(["--runs", runs5, "act", "rimworld/apply_architect_designator",
+             json.dumps({"designatorId": "Designator_DigCanal_fake", "x": 65, "z": 52, "width": 1, "height": 16})])
+        for _ in range(6):
+            run(["--runs", runs5, "act", "rimworld/step_game_ticks", json.dumps({"ticks": 2000})])
+        rd5 = pm.current_run_in(runs5)
+        p5 = os.path.join(rd5, "fake.pickle")
+        st5 = pickle.load(open(p5, "rb"))
+        st5["ticks"] += spec["missions"]["canal"]["deadline"]["ticks"] + 1000
+        pickle.dump(st5, open(p5, "wb"))
+        rc, out = run(["--runs", runs5, "report", "--json"])
+        rep5 = json.loads(out)
+        ok(rep5["verdict"] == "TIMEOUT" and "game-time deadline" in (rep5["deadline"] or ""),
+           "goal met past the tick deadline is TIMEOUT, not PASS (got %s)" % rep5["verdict"])
         # wall deadline
         runs3 = os.path.join(tmp, "runs3")
         run(["--runs", runs3, "start", "canal", "--dry-run"])

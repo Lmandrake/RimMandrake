@@ -116,10 +116,12 @@ namespace RimMandrake.FlowWorks
 			// FormBody and re-walk the owned cells into an overlapping duplicate body. Touching an owned cell
 			// means this region IS that body: CollectBody stops and names it, and what was found is indexed to it.
 			int sizeX = map.Size.x;
+			FluidDef seedFluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
 			int ownedId = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed),
 				i => owner.IsSourceCell(map.cellIndices.IndexToCell(i)),
 				i => cellToBody.TryGetValue(i, out int id) && byId.ContainsKey(id) ? id : -1,
-				MaxBodyCells, fillFound, fillQueue, fillSeen, out bool touchesEdge, out bool truncated);
+				MaxBodyCells, fillFound, fillQueue, fillSeen, out bool touchesEdge, out bool truncated,
+				i => (RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(i)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water) == seedFluid);
 			if (ownedId >= 0)
 			{
 				for (int f = 0; f < fillFound.Count; f++)

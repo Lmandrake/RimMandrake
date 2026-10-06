@@ -1152,19 +1152,24 @@ namespace RimMandrake.FlowWorks.SelfTest
             KernelCase("Kernel_fuzz_ledger_bounds_nomix_settles", () => FlowKernelFuzz.Fuzz(5000, 101));
             KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
             Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
-            // Known defects: these PASS while the defect reproduces and print what they saw. When a fix lands the
-            // case fails ("not reproduced") - turn it into a guard asserting the fixed behaviour.
-            Case("KnownDefect_1_touching_water_and_tar_merge", () =>
+            // Owner rulings 2026-10-06 (design/RimMandrake/flowworks_offline_kernel_B.md): regression guards.
+            Case("Ruling1_touching_water_and_tar_stay_separate", () =>
             {
-                string r = FlowKernelFuzz.Finding1TouchingBodies();
+                string r = FlowKernelFuzz.TouchingFluidsStaySeparate();
                 Console.WriteLine("      " + r);
-                Assert(r.StartsWith("REPRODUCED"), r);
+                Assert(r.StartsWith("OK"), r);
             });
-            Case("KnownDefect_2_reload_changes_scarce_allocation", () =>
+            Case("Ruling1_channel_touching_both_pools_never_mixes", () =>
             {
-                string r = FlowKernelFuzz.Finding2ReloadOrder();
+                string r = FlowKernelFuzz.ChannelTouchingBothNeverMixes();
                 Console.WriteLine("      " + r);
-                Assert(r.StartsWith("REPRODUCED"), r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("Ruling2_scarce_supply_paid_by_cell_index", () =>
+            {
+                string r = FlowKernelFuzz.ScarceSupplyPaidByPosition();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
             });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

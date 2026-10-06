@@ -67,6 +67,7 @@ namespace RimMandrake.FlowWorks
 		private readonly HashSet<int> componentSources = new HashSet<int>();
 		private readonly List<int> neighbourScratch = new List<int>();
 		private readonly Queue<int> queue = new Queue<int>();
+		private readonly List<int> seedScratch = new List<int>();
 		private readonly List<int> component = new List<int>();
 		private readonly List<int> recipients = new List<int>();
 		private readonly Dictionary<int, int> sourceHops = new Dictionary<int, int>();
@@ -126,7 +127,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>The flow half of one pulse: every component reachable from <paramref name="seedOrder"/> (the
-		/// excavated cells, in the adapter's iteration order — which decides who a scarce LIMITED body pays first),
+		/// excavated cells; sorted here by cell index, which decides who a scarce LIMITED body pays first),
 		/// resolved in that order.</summary>
 		public void Pulse(IEnumerable<int> seedOrder, long pulseCount)
 		{
@@ -134,7 +135,12 @@ namespace RimMandrake.FlowWorks
 			worstImbalance = 0f;
 			imbalanceReports.Clear();
 			visited.Clear();
-			foreach (int seed in seedOrder)
+			// Owner ruling 2026-10-06: a scarce body pays its channels by MAP POSITION (cell index), never by dig
+			// order, so a session and a reload that rebuilds the set in index order give the same outcome.
+			seedScratch.Clear();
+			seedScratch.AddRange(seedOrder);
+			seedScratch.Sort();
+			foreach (int seed in seedScratch)
 			{
 				if (visited.Contains(seed))
 				{
@@ -426,12 +432,11 @@ namespace RimMandrake.FlowWorks
 		/// says is already in a body (id &gt;= 0), it stops and returns that id: the region IS that body. Otherwise
 		/// returns -1 with the footprint in <paramref name="found"/>.
 		///
-		/// 🔴 It does not look at WHICH liquid a cell is: every natural-liquid neighbour joins. Finding #1 of
-		/// flowworks_playtest_automation_2026-10-06.md (touching water and tar merge into one body carrying the
-		/// seed's fluid) lives exactly here; FlowKernelFuzz's regression case pins it.</summary>
+		/// <paramref name="sameFluidAsSeed"/> (optional) limits the walk to cells of the seed's fluid: touching
+		/// water and tar are separate bodies (owner ruling 2026-10-06).</summary>
 		public static int CollectBody(int width, int height, int seed, Func<int, bool> isSource, Func<int, int> ownedBody,
 			int maxCells, List<int> found, List<int> fillQueue, HashSet<int> fillSeen,
-			out bool touchesEdge, out bool truncated)
+			out bool touchesEdge, out bool truncated, Func<int, bool> sameFluidAsSeed = null)
 		{
 			fillQueue.Clear();
 			fillSeen.Clear();
@@ -470,6 +475,12 @@ namespace RimMandrake.FlowWorks
 						continue;
 					}
 					fillSeen.Add(n);
+					// Owner ruling 2026-10-06: touching natural liquids of DIFFERENT fluids stay separate bodies, so
+					// a neighbour of another fluid neither joins this body nor claims it for an owned one.
+					if (sameFluidAsSeed != null && !sameFluidAsSeed(n))
+					{
+						continue;
+					}
 					int owned = ownedBody(n);
 					if (owned >= 0)
 					{

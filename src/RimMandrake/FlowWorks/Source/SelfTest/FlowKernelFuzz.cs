@@ -50,7 +50,8 @@ namespace RimMandrake.FlowWorks.SelfTest
 			if (!k.IsSource(idx)) return null;
 			var found = new List<int>();
 			int owned = RM_FlowKernel.CollectBody(w, h, idx, i => k.IsSource(i), i => bodyOf[i], 4000, found,
-				new List<int>(), new HashSet<int>(), out bool edge, out bool trunc);
+				new List<int>(), new HashSet<int>(), out bool edge, out bool trunc,
+				i => (terrainFluid[i] ?? Water) == (terrainFluid[idx] ?? Water));
 			if (owned >= 0) { foreach (int f in found) bodyOf[f] = owned; return bodies[owned]; }
 			var b = new Body { id = bodies.Count, limitless = limitless, fluid = terrainFluid[idx] ?? Water, cells = found };
 			b.stock = (float)Math.Floor(found.Count * 5 * stockFraction);
@@ -292,28 +293,51 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		// ── regression cases for the confirmed findings (flowworks_playtest_automation_2026-10-06.md) ──
 
-		/// <summary>Finding #1: touching water and tar terrain form ONE body carrying the seed's fluid, so a channel
-		/// dug beside the tar fills with water. Returns the observed outcome; REPRODUCED means the defect is live.</summary>
-		public static string Finding1TouchingBodies()
+		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies; a channel over the tar
+		/// fills only with tar (or stays dry), never water. Returns "OK ..." or "BROKEN ...".</summary>
+		public static string TouchingFluidsStaySeparate()
 		{
 			// row z=0: W W T T ; channel at (3,1) above the tar
 			var w = new ArrayWorld(4, 3);
 			for (int x = 0; x < 4; x++) { w.natural[x] = true; w.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }
-			var body = w.BodyAt(0, 1f, false); // the game forms lazily from whichever cell is asked first
+			var water = w.BodyAt(0, 1f, false);
+			var tar = w.BodyAt(3, 1f, false);
 			int chan = 1 * 4 + 3;
 			w.k.depth[chan] = 1;
 			for (int p = 0; p < 12; p++) w.Pulse(new[] { chan });
-			bool merged = body.cells.Count == 4;
-			bool wrong = w.k.fill[chan] > 0 && w.cellFluid[chan] == ArrayWorld.Water;
-			return merged && wrong
-				? $"REPRODUCED: water+tar formed one {body.cells.Count}-cell {body.fluid} body; the channel over the TAR filled with {w.cellFluid[chan]}"
-				: $"not reproduced (merged={merged}, channel {w.k.fill[chan]}/{w.k.depth[chan]} {w.cellFluid[chan]})";
+			bool separate = water != tar && water.cells.Count == 2 && tar.cells.Count == 2
+				&& water.fluid == ArrayWorld.Water && tar.fluid == ArrayWorld.Tar;
+			bool ok = w.k.fill[chan] == 0 || w.cellFluid[chan] == ArrayWorld.Tar;
+			// reverse formation order must give the same bodies
+			var w2 = new ArrayWorld(4, 3);
+			for (int x = 0; x < 4; x++) { w2.natural[x] = true; w2.terrainFluid[x] = x < 2 ? ArrayWorld.Water : ArrayWorld.Tar; }
+			var tar2 = w2.BodyAt(3, 1f, false); var water2 = w2.BodyAt(0, 1f, false);
+			bool sameReverse = tar2 != water2 && tar2.cells.Count == 2 && water2.cells.Count == 2;
+			return separate && ok && sameReverse
+				? $"OK: water {water.cells.Count} cells, tar {tar.cells.Count} cells; channel over the tar holds {w.k.fill[chan]} {w.cellFluid[chan]?.name}"
+				: $"BROKEN: separate={separate} channelOk={ok} reverseOk={sameReverse} (channel {w.k.fill[chan]}/{w.k.depth[chan]} {w.cellFluid[chan]})";
 		}
 
-		/// <summary>Finding #2: a LIMITED body that cannot pay every inlet pays the first-SEEDED component first.
-		/// In session the seed order is dig order; after a load RebuildExcavatedSet walks the depth grid in cell
-		/// index order. So dig B (higher index) then A, and the reload gives the scarce level to A instead.</summary>
-		public static string Finding2ReloadOrder()
+		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>
+		public static string ChannelTouchingBothNeverMixes()
+		{
+			// W at (0,0), T at (2,0), channel (1,0)-(1,1)... channel cells at (1,0) touch both; (1,1) is its neighbour
+			var w = new ArrayWorld(3, 3);
+			w.natural[0] = true; w.terrainFluid[0] = ArrayWorld.Water;
+			w.natural[2] = true; w.terrainFluid[2] = ArrayWorld.Tar;
+			w.BodyAt(0, 1f, false); w.BodyAt(2, 1f, false);
+			w.k.depth[1] = 2; w.k.depth[4] = 2;
+			for (int p = 0; p < 40; p++) w.Pulse(new[] { 1, 4 });
+			var f1 = w.cellFluid[1]; var f4 = w.cellFluid[4];
+			bool mixed = f1 != null && f4 != null && f1 != f4 && w.k.fill[1] > 0 && w.k.fill[4] > 0;
+			return !mixed && f1 != null
+				? $"OK: channel holds only {f1.name} ({w.k.fill[1]}/{w.k.depth[1]}, {w.k.fill[4]}/{w.k.depth[4]})"
+				: $"BROKEN: mixed={mixed} fluids {f1?.name}/{f4?.name}";
+		}
+
+		/// <summary>Ruling 2 (owner, 2026-10-06): a LIMITED body that cannot pay every inlet pays by cell index, so
+		/// dig order (session) and index order (reload) give the same outcome, and the lower index is paid.</summary>
+		public static string ScarceSupplyPaidByPosition()
 		{
 			Func<int[], (int a, int b)> run = order =>
 			{
@@ -327,9 +351,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 			};
 			var session = run(new[] { 3, 1 });   // dug B first
 			var reload = run(new[] { 1, 3 });    // RebuildExcavatedSet: index order
-			return session != reload
-				? $"REPRODUCED: same world, session order paid (A,B)={session}, after reload {reload}"
-				: $"not reproduced: both orders give {session}";
+			return session == reload && session == (1, 0)
+				? $"OK: both orders pay (A,B)={session}"
+				: $"BROKEN: session (A,B)={session}, reload {reload}, expected (1, 0) for both";
 		}
 	}
 
