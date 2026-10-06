@@ -3356,6 +3356,20 @@ def run_live(args, B=None, quiet=False):
     return res
 
 
+def declared_rows():
+    """Every row id a `--live --fresh-map` run emits, enumerated offline by a clean --mock run of the same tier (the
+    walk's `checkout:` header names this file; modcheck/required_checks.py calls this; NORTHSTAR_RESULTS_JOIN_1)."""
+    class A(object):
+        mock, fresh_map, reset_settings, progress, max_job_ticks = True, True, False, None, 4000
+        fault = []
+    with open(os.devnull, "w") as dn:
+        so, sys.stdout = sys.stdout, dn
+        try:
+            return [r["id"] for r in run_live(A, quiet=True)["rows"]]
+        finally:
+            sys.stdout = so
+
+
 def selftest_live_mock():
     """The negative-control harness for the LIVE tier: a clean mock run is green, and every
     fault makes its named row(s) go non-PASS."""
