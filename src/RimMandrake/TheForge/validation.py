@@ -1650,7 +1650,11 @@ def voices(t):
     toggle is on."""
     _enter(t)
     _declare_cycle_events(t)
+    haz = contextlib.ExitStack()
     try:
+        # LIVE 2026-10-06: entering the Rain scalded all three colonists (RUT_Scald) and the watch aborted the cue
+        # check as a surprise. The scald is cycle_walk's subject, not this chain's: hazard damage off, as there.
+        haz.enter_context(_settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False))
         with _comp(t, "site_ready_voices"):
             _reset_pad(t)
             _start_cycle(t)
@@ -1686,6 +1690,7 @@ def voices(t):
     finally:
         _wind_down(t)
         _teardown(t)
+        haz.close()
 
 
 # --------------------------------------------------------------------------- spunstone & floatstone

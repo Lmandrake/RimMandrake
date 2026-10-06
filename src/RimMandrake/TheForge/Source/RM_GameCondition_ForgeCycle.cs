@@ -537,15 +537,29 @@ namespace RimMandrake.TheForge
 
         private void GasWashWave(Map map, RM_ForgeCycleExtension ext)
         {
-            IntVec3 center = CellFinderLoose.RandomCellWith(c => !c.Roofed(map) && HasFlammableGround(c, map), map, 400);
-            if (!center.IsValid)
+            // The wave bursts out where there is fuel: its origin is drawn from the unroofed flammable plants
+            // themselves. A 400-try random cell over the whole map missed the fuel on a sparse map (LIVE
+            // 2026-10-06, desert test map, 375 plants on 62,500 cells: the wave lit nothing), and the origin cell
+            // then rolled the same 30% as its neighbours, so a wave could find fuel and still fizzle unseen.
+            List<IntVec3> fuel = new List<IntVec3>();
+            List<Thing> plants = map.listerThings.ThingsInGroup(ThingRequestGroup.Plant);
+            for (int i = 0; i < plants.Count; i++)
+            {
+                Thing p = plants[i];
+                if (p.Spawned && p.FlammableNow && !p.Position.Roofed(map))
+                {
+                    fuel.Add(p.Position);
+                }
+            }
+            if (fuel.Count == 0)
             {
                 return;
             }
+            IntVec3 center = fuel.RandomElement();
             int lit = 0;
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, ext.gasWashRadius, true))
             {
-                if (!c.InBounds(map) || c.Roofed(map) || !Rand.Chance(ext.gasWashCellChance) || !HasFlammableGround(c, map))
+                if (!c.InBounds(map) || c.Roofed(map) || (c != center && !Rand.Chance(ext.gasWashCellChance)) || !HasFlammableGround(c, map))
                 {
                     continue;
                 }
