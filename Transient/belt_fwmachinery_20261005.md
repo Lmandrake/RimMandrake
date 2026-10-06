@@ -46,3 +46,5 @@ RM_WM_Distillation x3, RM_PipeAdapter_Chemfuel/Propane. RM_LiquidPump still borr
 ## Blocked
 - Blood-bottle rot row (LIQUID_BOTTLE_LOOP_1): no FILL SOURCE for bottled blood is designed (item-only, no terrain, no extraction route), so a blood bottle could never exist in play — owner must say where bottled blood comes from; then it is one generator row + CompRottable + a household hemopack recipe.
 - River items (sluice box + panning, levee flood check, order-stake breaks, ferry rope): taken by the RiverWorks->FlowWorks merge agent (coordinator, 2026-10-05).
+
+- DONE: machinery 3e473f37c; docs+ledger b4ffc8db7 (pushed via plumbing merge e9626a29c). Closed: none (every verify bar is live). Blocked: blood rot (no fill source).
