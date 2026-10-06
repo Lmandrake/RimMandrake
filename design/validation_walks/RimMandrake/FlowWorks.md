@@ -37,8 +37,8 @@ Until then this walk proves digging and terrain recovery, not filling.
 7. [S] LOOK at the dug channel and the flooded cells at play zoom: the channel reads as a dug channel rather than a gravel path, flooded cells read as the liquid they hold, and a partly-filled canal is distinguishable from a full one
 
 ## north star
-state: VALIDATED
-validated-hash: 34e2ec9f267cdaf684c55bcc08183c30366e1dd38a135675deb63f8d55652471
+state: DRAFT
+validated-hash: 
 
 The `state:` line above is authoritative;
 `design/RimMandrake/north_star_validation_spec.md` defines what each state means, and a
