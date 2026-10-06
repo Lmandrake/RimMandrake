@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BankWorks.xml                         River Works · SURFACE_RIVER_WEIRS_1 slice 2
+  Moved here from TerminalBiomes (TWILIGHT_CHANNEL_CURRENT_1 §4); TerminalBiomes now depends on River
+  Works and defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea
+  genstep and saves still name them; classes now live in RimMandrake.RiverWorks (owner card 3: no save
+  migration needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
+  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). PLACEHOLDER ART copied from TerminalBiomes' own
+  placeholders into this mod's Textures so it never depends on TerminalBiomes; real art owed.
+-->
+<Defs>
+
+  <!-- Stake. A continuous line is a levee by engine fact (Flood.CanFloodSpreadInto refuses edifice
+       cells); a gap leaks. Snapped post by post, downstream first, by a breaching weir. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BankStake</defName>
+    <label>bank stake</label>
+    <description>A lamp-topped post driven into the bank. A continuous line of them holds back a flood like a levee - any gap lets it in. When a weir upstream breaches, the line below it snaps post by post.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RiverWorks/RM_BankStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.6, 0.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.15</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>0.6</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(220, 235, 200, 0)</glowColor>
+      </li>
+    </comps>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <!-- Weir. 1x2 across the bank edge (RM_PlaceWorker_RiverWeir): one end in moving water, one on
+       solid ground. Arrests drift, calms ~8 cells upstream (owner card 2), catches fish from the
+       river's stock + biome drift onto its bank end, breaches when run down in a flood. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BankWeir</defName>
+    <label>weir</label>
+    <description>Lattice-timber and net-cord staked from the bank out into the current. It stops whatever the river carries into it, calms the water for a long stretch upstream so it can be crossed and worked, and catches fish - and whatever else this country's rivers bring down - from the same stock your fishing zones draw on. Haul its catch and keep it repaired: a weir left to wear down when a flood comes breaches, washes its catch downstream and takes the stake-line below it with it.</description>
+    <thingClass>RimMandrake.RiverWorks.RM_Building_BankWeir</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RiverWorks/RM_BankWeir</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.4, 2.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <terrainAffordanceNeeded></terrainAffordanceNeeded>
+    <placeWorkers>
+      <li>RimMandrake.RiverWorks.RM_PlaceWorker_RiverWeir</li>
+    </placeWorkers>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>2600</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>60</WoodLog>
+      <Cloth>20</Cloth>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <comps>
+      <li Class="RimMandrake.RiverWorks.RM_CompProperties_RiverArrester" />
+    </comps>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <!-- Silt-trap. Richens one swappable cell within r=3.5 per half-day while healthy; a breach
+       reverts. Swap table is data: TerminalBiomes patches its sea pair in. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SiltTrap</defName>
+    <label>silt-trap</label>
+    <description>A timber baffle set on the bank to slow the margin water and let its silt settle. Over days it turns the soil around it rich - until a breach upstream washes the bonus back out. Clogs as it wears; repair it to dredge.</description>
+    <thingClass>RimMandrake.RiverWorks.RM_Building_SiltTrap</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RiverWorks/RM_SiltTrap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.2, 1.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.35</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <WorkToBuild>2200</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>50</WoodLog>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.RiverWorks.RM_SiltSwapExtension">
+        <swaps>
+          <li><from>Soil</from><to>SoilRich</to></li>
+          <li><from>GrasslandSoil</from><to>SoilRich</to></li>
+          <li><from>MarshyTerrain</from><to>SoilRich</to></li>
+        </swaps>
+      </li>
+    </modExtensions>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+  <!-- Rope ferry post (owner card 3). Two posts across moving water within the span string a rope;
+       nothing on the rope line is carried. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FerryPost</defName>
+    <label>ferry post</label>
+    <description>A heavy post with a rope reel. Build a second one on the far bank, facing across moving water, and they string a rope between them: anyone on the rope line holds on and is not swept away, so drafted colonists can cross deep water without a bridge.</description>
+    <thingClass>RimMandrake.RiverWorks.RM_Building_FerryPost</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RiverWorks/RM_FerryPost</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.2</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>1200</WorkToBuild>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <costList>
+      <WoodLog>40</WoodLog>
+      <Cloth>30</Cloth>
+    </costList>
+    <building>
+      <repairable>true</repairable>
+    </building>
+    <designationCategory>Structure</designationCategory>
+    <constructEffect>ConstructWood</constructEffect>
+  </ThingDef>
+
+</Defs>

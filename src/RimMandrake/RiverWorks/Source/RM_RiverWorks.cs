@@ -81,6 +81,48 @@ namespace RimMandrake.RiverWorks
 			return false;
 		}
 
+		private static readonly List<Func<Map, IntVec3, bool>> currentCellRules = new List<Func<Map, IntVec3, bool>>();
+
+		/// <summary>Register "this cell is moving water" for a current River Works does not own (the
+		/// sea's channel current). The weir PlaceWorker and the works read it via IsWaterCell.</summary>
+		public static void RegisterCurrentCellRule(Func<Map, IntVec3, bool> isCurrent)
+		{
+			if (isCurrent != null && !currentCellRules.Contains(isCurrent))
+			{
+				currentCellRules.Add(isCurrent);
+			}
+		}
+
+		/// <summary>Moving water a weir's wet end may stand in: vanilla MovingFluid affordance (rivers),
+		/// a cell River Works' own surface current reaches, or a registered current (the sea).</summary>
+		public static bool IsWaterCell(Map map, IntVec3 c)
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			TerrainDef t = c.GetTerrain(map);
+			if (t != null && (t.IsRiver || (t.affordances != null && t.affordances.Contains(TerrainAffordanceDefOf.MovingFluid))))
+			{
+				return true;
+			}
+			for (int i = 0; i < currentCellRules.Count; i++)
+			{
+				try
+				{
+					if (currentCellRules[i](map, c))
+					{
+						return true;
+					}
+				}
+				catch (Exception ex)
+				{
+					Log.ErrorOnce("[River Works] a registered current-cell rule threw: " + ex, 0x52570101 + i);
+				}
+			}
+			return false;
+		}
+
 		public static bool IsArrested(Map map, IntVec3 c)
 		{
 			for (int i = 0; i < arrestRules.Count; i++)

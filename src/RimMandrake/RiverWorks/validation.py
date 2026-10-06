@@ -4,9 +4,11 @@ Never deployed (deploy_custom_mods.py excludes `.py`). Run with:
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run RiverWorks
 
-State: SLICE 1 (SURFACE_RIVER_WEIRS_1) -- the surface current, fords, floods-as-surge, washed-off-map
-and crossing hazards. The weir / stake-line levee / silt-trap move out of TerminalBiomes in slice 2, so
-those walk lines are UNCOVERED here. Every probe is a C# proof (RM_RiverWorksProof) reached through
+State: SLICE 2 (SURFACE_RIVER_WEIRS_1) -- slice 1's surface current, fords, floods-as-surge, washed-off-map
+and crossing hazards, plus the works moved out of TerminalBiomes: weir (bank-edge PlaceWorker, ~8-cell slack
+pool, fish from the river stock + biome drift, breach wash), stake-line levee, silt swap table, rope ferry.
+UNCOVERED still: levee.holds/gap_leaks as a live flood walk (only the engine fact is read), breach.cascade_order
+timing, sea.unchanged (TerminalBiomes' own suite). Every probe is a C# proof (RM_RiverWorksProof) reached through
 jawa/static_call; a result starting "UNMEASURED" (e.g. the site has no river) records UNMEASURED, never PASS.
 Needs a site map WITH a river (design §9: a quicktest river map).
 """
@@ -18,7 +20,10 @@ suite.toggles = [
     "riverWorksEnabled", "surfaceCurrentEnabled", "scaleWithRiverSize", "floodSurgeEnabled",
     "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
     "washOffMapEdge", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
+    "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCatchesFish", "weirCatchesDrift",
+    "breachWashesCatch", "siltRichening", "ferryEnabled",
 ]
+WORKS = "RimMandrake.RiverWorks.RM_RiverWorksProofWorks"
 PROOF = "RimMandrake.RiverWorks.RM_RiverWorksProof"
 
 
@@ -75,3 +80,53 @@ def swept(t):
             res = _proof(t, "ProofSwept", "return")
             if not res.startswith("SWEPT pending=0"):
                 raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
+
+
+def _works(t, method, args=""):
+    r = t.bridge_call("jawa/static_call", type=WORKS, method=method, args=args or "-")
+    if not isinstance(r, dict) or r.get("success") is False:
+        raise ExpectationFailed("UNMEASURED: static_call %s did not answer: %r" % (method, r))
+    res = str(r.get("result", ""))
+    if res.startswith("UNMEASURED"):
+        raise ExpectationFailed(res)
+    return res
+
+
+@suite.chain("works")
+def works(t):
+    """Slice 2: the bank works on the site's own river (each probe builds and removes its own works)."""
+    with t.component("place_weir_bank_edge", toggle="bankWorksEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofWeirPlace"))
+            if kv.get("edge") != "True" or kv.get("dry") != "False" or kv.get("wet") != "False":
+                raise ExpectationFailed("weir PlaceWorker wrong: %r" % kv)
+    with t.component("weir_arrest_and_pool", toggle="bankWorksEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofWeirPool"))
+            if kv.get("arrestedWet") != "True" or int(kv.get("dropped", 0)) <= 0:
+                raise ExpectationFailed("weir did not arrest or calm upstream: %r" % kv)
+    with t.component("weir_fish_draws_stock", toggle="weirCatchesFish"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofWeirCatch", "20"))
+            if int(kv.get("fishRolls", 0)) <= 0 or float(kv.get("after", 0)) >= float(kv.get("before", 0)):
+                raise ExpectationFailed("weir caught no fish or the stock did not drop: %r" % kv)
+    with t.component("breach_wash", toggle="breachWashesCatch"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofBreach"))
+            if kv.get("breaching") != "True" or int(kv.get("heldAfter", 99)) >= int(kv.get("heldBefore", 0)):
+                raise ExpectationFailed("breach did not wash the held catch away: %r" % kv)
+    with t.component("silt_richen_and_revert", toggle="siltRichening"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofSilt"))
+            if kv.get("changed") != "True":
+                raise ExpectationFailed("silt-trap did not richen and revert: %r" % kv)
+    with t.component("ferry_rope", toggle="ferryEnabled"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofFerry"))
+            if kv.get("paired") != "True" or kv.get("ropeExempt") != "True":
+                raise ExpectationFailed("ferry posts did not string an exempt rope: %r" % kv)
+    with t.component("levee_engine_fact", toggle="stakeLineLevee"):
+        if t._guard():
+            kv = _kv(_works(t, "ProofLeveeFact"))
+            if kv.get("stakeIsEdifice") != "True":
+                raise ExpectationFailed("a stake is not an edifice, so it cannot hold a flood: %r" % kv)

@@ -77,6 +77,22 @@ namespace RimMandrake.RiverWorks
 			return Math.Max(1, t);
 		}
 
+		/// <summary>A weir's slack pool drops one lane: Centre -> Margin, Margin -> none.</summary>
+		public static int PoolLane(int lane)
+		{
+			return lane == LaneCentre ? LaneMargin : LaneNone;
+		}
+
+		/// <summary>Signed distance of offset (dx, dz) along compass direction dir (positive =
+		/// downstream). Orders a breach's stake cascade.</summary>
+		public static float DownstreamDistance(int dx, int dz, int dir)
+		{
+			float ux = StepX[dir];
+			float uz = StepZ[dir];
+			float len = (float)Math.Sqrt(ux * ux + uz * uz);
+			return (dx * ux + dz * uz) / len;
+		}
+
 		/// <summary>Effective Centre behaviour (inescapable, hazards apply).</summary>
 		public static bool BehavesAsCentre(int lane, bool surge)
 		{

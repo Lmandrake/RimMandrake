@@ -69,6 +69,13 @@
       <packageId>mandrake.rm.flowworks</packageId>
       <displayName>RimMandrake: FlowWorks</displayName>
     </li>
+    <li>
+      <!-- SURFACE_RIVER_WEIRS_1 slice 2: RM_BankStake / RM_BankWeir / RM_SiltTrap and their classes
+           moved to River Works; the Twilight genstep spawns them and the channel current reads the
+           weir's arrester. Hard assembly reference. -->
+      <packageId>mandrake.rm.riverworks</packageId>
+      <displayName>RimMandrake: River Works</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
@@ -76,6 +83,7 @@
     <li>mandrake.rm.divinginteraction</li>
     <li>mandrake.rm.flowworks</li>
     <li>mandrake.rm.luminouspigment</li>
+    <li>mandrake.rm.riverworks</li>
   </loadAfter>
   <description>TERMINALBIOMES_RM_MOD_BUILD_1 (owner ruling, 2026-09-21, §7 Q1: four
 biomes, one mod, four independent toggles). Four terminal water biomes, fully

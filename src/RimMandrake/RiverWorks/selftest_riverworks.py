@@ -63,6 +63,26 @@ def main():
     check("RM_Fordable is defined and patched onto WaterMovingShallow",
           "<defName>RM_Fordable</defName>" in defs_text and 'defName="WaterMovingShallow"' in defs_text)
 
+    # Slice 2: the works moved here from TerminalBiomes. A def defined in both mods is a clash.
+    for dn in ("RM_BankStake", "RM_BankWeir", "RM_SiltTrap", "RM_FerryPost"):
+        check("defines %s" % dn, "<defName>%s</defName>" % dn in defs_text)
+    check("weir carries RM_PlaceWorker_RiverWeir", "RimMandrake.RiverWorks.RM_PlaceWorker_RiverWeir" in defs_text)
+    check("silt-trap carries a swap table", "RimMandrake.RiverWorks.RM_SiltSwapExtension" in defs_text)
+    check("drift defs exist (owner: biome-relevant drift)", defs_text.count("<RimMandrake.RiverWorks.RM_RiverDriftDef>") >= 3)
+    check("no generic wood in drift (owner card 2)", "<thing>WoodLog</thing>" not in defs_text)
+    tb = os.path.join(os.path.dirname(HERE), "TerminalBiomes")
+    tb_text = ""
+    for p in glob.glob(os.path.join(tb, "Defs", "**", "*.xml"), recursive=True):
+        tb_text += open(p, encoding="utf-8").read()
+    check("sanity: read TerminalBiomes defs", "RM_BankSilt" in tb_text)
+    for dn in ("RM_BankStake", "RM_BankWeir", "RM_SiltTrap", "RM_FerryPost"):
+        check("TerminalBiomes does not also define %s" % dn, "<defName>%s</defName>" % dn not in tb_text)
+    tb_about = open(os.path.join(tb, "About", "About.xml"), encoding="utf-8").read()
+    check("TerminalBiomes depends on River Works", "<packageId>mandrake.rm.riverworks</packageId>" in tb_about)
+    tb_src = " ".join(open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(tb, "Source", "*.cs")))
+    for cls in ("class RM_Building_BankWeir", "class RM_Building_SiltTrap", "class CompChannelArrester"):
+        check("TerminalBiomes no longer declares %s" % cls, cls not in tb_src)
+
     print("\n%s" % ("PASS: 0 failure(s)" if not FAILS else "FAIL: %d failure(s): %s" % (len(FAILS), FAILS)))
     return 1 if FAILS else 0
 

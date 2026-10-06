@@ -93,8 +93,6 @@
     <Compile Include="RM_HediffComp_Sunk.cs" />
     <Compile Include="RM_GameCondition_Undersurge.cs" />
     <Compile Include="RM_Apparel_FloatHarness.cs" />
-    <Compile Include="RM_Building_BankWeir.cs" />
-    <Compile Include="RM_Building_SiltTrap.cs" />
     <Compile Include="RM_Thing_CargoFloat.cs" />
     <Compile Include="RM_GenStep_TwilightChannels.cs" />
     <!-- GREYSEA_HULL_CRUST_BUILD_1 -->
@@ -126,6 +124,10 @@
     </Reference>
     <Reference Include="RimMandrake.EnvironmentalHazards">
       <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.RiverWorks">
+      <HintPath>..\..\RiverWorks\Assemblies\RimMandrake.RiverWorks.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">

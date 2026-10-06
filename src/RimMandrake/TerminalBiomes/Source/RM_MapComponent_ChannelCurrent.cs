@@ -48,7 +48,7 @@ namespace RimMandrake.TerminalBiomes
     // EXEMPTIONS (§1.3): a Building never drifts; a race carrying
     // RM_ChannelNativeExtension never registers; anything on or adjacent to
     // RM_FordStones terrain is skipped for that scan; anything on a cell an
-    // arresting building claims (CompChannelArrester, §4's weir) is never
+    // arresting building claims (River Works' RM_CompRiverArrester, §4's weir) is never
     // registered — it sits there, caught, until a colonist or the building
     // itself moves it.
     //
@@ -107,28 +107,9 @@ namespace RimMandrake.TerminalBiomes
     {
     }
 
-    // §4's arresting-building marker. Presence on a spawned ThingWithComps
-    // stops the carry dead at that cell (Q2: "weirs catch people too").
-    // `Active` lets RM_Building_BankWeir's breach state disable the catch
-    // without removing/re-adding the comp.
-    public class CompProperties_ChannelArrester : CompProperties
-    {
-        public CompProperties_ChannelArrester()
-        {
-            compClass = typeof(CompChannelArrester);
-        }
-    }
-
-    public class CompChannelArrester : ThingComp
-    {
-        public bool Active = true;
-
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
-            Scribe_Values.Look(ref Active, "channelArresterActive", true);
-        }
-    }
+    // §4's arresting-building marker moved to River Works with the weir
+    // (SURFACE_RIVER_WEIRS_1 slice 2): RimMandrake.RiverWorks.RM_CompRiverArrester.
+    // IsArrestedCell below reads it.
 
     public class RM_MapComponent_ChannelCurrent : MapComponent
     {
@@ -631,16 +612,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return false;
             }
-            List<Thing> things = c.GetThingList(map);
-            for (int i = 0; i < things.Count; i++)
-            {
-                CompChannelArrester comp = (things[i] as ThingWithComps)?.GetComp<CompChannelArrester>();
-                if (comp != null && comp.Active)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return RimMandrake.RiverWorks.RM_CompRiverArrester.CellArrested(map, c);
         }
 
         // Public for the same reason IsArrestedCell is: RM_Thing_CargoFloat
