@@ -1,0 +1,67 @@
+[
+ {
+  "id": "nightsideice_shockgoat_v1",
+  "rimflow_item_id": "NIGHTSIDEICE_SHEET_ART_REDO_1",
+  "target_def": "AA_ShockGoat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More alien, less goat like. Look at donor art closely.\" RimWorld creature sprite, painterly: the shock goat. A domesticated cattle-like animal that stores static electricity on its bony structures and releases it defensively; it has three pairs of eyes and a pair of horns, a fertile cross of two different creatures. LOOK CLOSELY at the attached donor art and keep its anatomy, proportions, colouring and the strange details that make it alien (the six eyes, the bony charged structures); push those alien traits further and do not let it read as an ordinary goat.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "More alien, less goat like. Look at donor art closely.",
+  "biome_register": "frozen night-side ice sheet under a dark star-lit sky, cold blue-white ambient light; the subject keeps its own natural colours, no strong biome grade",
+  "canon_reference": [
+   "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/1541721856/Textures/Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat_east.png"
+  ]
+ },
+ {
+  "id": "nightsideice_cavelemming_v1",
+  "rimflow_item_id": "NIGHTSIDEICE_SHEET_ART_REDO_1",
+  "target_def": "RSW_CaveLemming",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it small, silkily furred, with long flowing tassles of silky fur trailing behind it in an alien manner.\" RimWorld creature sprite, painterly: the mahllik (cave lemming), a solitary grazer of the ice sheet, a soft lump at rest that becomes a sudden springing leap when danger closes. Small body. Silky fur, with long flowing tassels of silky fur trailing out behind it in an alien manner. Pale frost-toned fur that suits a night-side ice sheet.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Make it small, silkily furred, with long flowing tassles of silky fur trailing behind it in an alien manner.",
+  "biome_register": "frozen night-side ice sheet under a dark star-lit sky, cold blue-white ambient light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "nightsideice_tauntaun_v1",
+  "rimflow_item_id": "NIGHTSIDEICE_SHEET_ART_REDO_1",
+  "target_def": "Tauntaun",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow the canon art CLOSELY.\" RimWorld creature sprite, painterly: the tauntaun, a semi-sentient reptomammal of the snowy plains of Hoth, in the SAME PROPORTIONS as the canon renders: an upright biped on two long legs with big broad three-toed clawed feet, a long vertical neck, narrow chest and pale rounded belly, short clawed forearms held against the chest, a flat pig-like snout with big nostrils, small dark deep-set eyes, two large pointed ears, two thick ridged ram-like horns curling back and around beside the face, shaggy off-white to pale grey fur, scaly grey skin on the feet, and a long thin pointed tail for balance. It is not a goat, deer, horse or camel and has no hooves. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Follow the canon art CLOSELY.",
+  "biome_register": "frozen night-side ice sheet under a dark star-lit sky, cold blue-white ambient light; the subject keeps its own natural colours, no strong biome grade",
+  "canon": "tauntaun",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/tauntaun/wookieepedia_tauntaun_swe.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/tauntaun/wookieepedia_tauntaun_riders_boxart.png"
+  ]
+ }
+]
