@@ -189,30 +189,6 @@
     </match>
   </Operation>
 
-  <!-- ============== AA_Helixien -> vulloth (also Slime, Poison Forest, Miasma, Scarlands) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/label</xpath>
-          <value><label>vulloth</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AA_Helixien"]/description</xpath>
-          <value><description>A vast, slow slug that breathes out a foul, corrosive gas wherever it goes — mostly harmless to the living, but murder on the dead: anything it passes near rots in minutes into a black, reeking fluid, which the vulloth then happily drinks. Watching one clear a field of corpses is not a sight anyone forgets.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]/label</xpath>
-      <value><label>vulloth</label></value>
-    </match>
-  </Operation>
-
   <!-- ============== AA_Drainer -> fezzira ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_Drainer"]</xpath>

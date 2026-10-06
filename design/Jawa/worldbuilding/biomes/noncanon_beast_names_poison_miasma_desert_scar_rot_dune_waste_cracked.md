@@ -27,7 +27,7 @@ acceptance, never the label alone; life stages, eggs and items that carry the st
 - **The Rot's ruled fauna** (rennok, gromma, durrok, mullgoth, vorrugath, chittik, skerrith,
   grellik) stand. **The Wasteland's** grutt, grithe, kroffa, puffmite stand. **The ikee** stands.
 - **Batch 3's drafts** are cross-referenced, not re-drafted: *ozhilla* (ocular jelly),
-  *blistered bulloo* (infected aerofleet), *vulloth* (helixien), *mubbrak* (decay drake),
+  *blistered bulloo* (infected aerofleet), *bileworm* (helixien), *mubbrak* (decay drake),
   *bezzul* (plasmorph), *thollum* (slurrypede), *kessik* (murkling), *lesser wollub* (small
   amoeba), *vosska*/*ommok*/*khorrak*/*korrum*/*vozzik*/*kudda* (ports).
 - **Three census corrections, MEASURED this pass against Wookieepedia's own text** (corrected in
@@ -100,7 +100,7 @@ hissing clusters, clipped endings. 10 stems, 12 defs.
 | `AA_RipperHound` | ripper hound | hulking chitin-ripping canine bred against insectoids; affectionate (bs 1.5) | **tharrix** | vixxar | *th-* the breath of a big dog, *-arr-* the growl, *-ix* the claw. "Ripper hound" is two English words. |
 
 **Not drafted:** `AA_OcularJelly` *ozhilla*, `AA_InfectedAerofleet` *blistered bulloo*,
-`AA_Helixien` *vulloth*, `AA_DecayDrake` *mubbrak*, `AA_Plasmorph` *bezzul* — batch 3.
+`AA_Helixien` *bileworm*, `AA_DecayDrake` *mubbrak*, `AA_Plasmorph` *bezzul* — batch 3.
 `AA_Wildpod` *mullgoth* — ruled (see batch 3 flag 2 for its second name). Canon kept: Neebray,
 Lylek, Mynock, Silooth, Skalder, Granite slug.
 
@@ -127,7 +127,7 @@ which the Slime owns. 9 stems, 11 roster defs.
 | `RSW_PodWorm` | pod worm | large, passive glow-pod caste of the hives, wanders off (bs 4.0) | **lundoba** | ongollu | Three slow open syllables for a bs-4 body that hurts nothing; *lund-* the bulk, *-oba* the pod. |
 | `JRWBeelzebufo` | (giant ambush frog; owner ruled 2026-09-10: **rename + redefine**, keep the body plan, alienise) | the biome's big sit-and-wait frog | **onggada** | dubbong | The owner asked for this rename in the roster. A croak made nasal — *ong-* from the throat, *-gada* the jump. "Beelzebufo" is an Earth fossil genus. |
 
-**Not drafted:** `AA_Helixien` *vulloth*, `AA_DecayDrake` *mubbrak*, `AA_Slurrypede` *thollum*
+**Not drafted:** `AA_Helixien` *bileworm*, `AA_DecayDrake` *mubbrak*, `AA_Slurrypede` *thollum*
 — batch 3. `RSW_SiltLampreyJuv`, `RSW_RustNipperJuv` — the sea nursery, sea batch (blocked on
 `TERMINALBIOMES_RM_MOD_BUILD_1`). Canon kept: the Naboo fish juveniles, Blarth, Blixus, Bogwing,
 Grank, Marsh haunt, Runyip, Shiro, Vornskyr, Whisperbird, Zakkeg, Sando.
@@ -209,7 +209,7 @@ down into names: t, k, ts, ch, x; short vowels; -t/-ak/-ix. 9 stems, 12 defs wit
 | `RSW_CrystalFairyMole` | crystal fairy mole | small crystal-plated-back mole, 1 cell (bs 0.86) | **pittok** | sottik | *pitt-* the small digging body, *-ok* the plate. "Fairy" is the word that must go. |
 | `RSW_MegaphoridLarva` (+ `RSW_Megaphorid` adult, not rostered) | megaphorid maggot | ravenous larva that bursts out of an infected animal; the adult is a glass-cannon fly that injects its young (bs 0.32) | **tsutta maggot** · **tsutta** (adult) | oxxit | The larva keeps its plain stage word (rule 4); the adult owns the stem. *tsu-* the buzz, *-tta* the bite. |
 
-**Not drafted:** `AA_Helixien` *vulloth*, `AA_AcanthamoebaGiganteaSmall` *lesser wollub* —
+**Not drafted:** `AA_Helixien` *bileworm*, `AA_AcanthamoebaGiganteaSmall` *lesser wollub* —
 batch 3. `RSW_ShaleGorger` — a **sea beast** misfiled here (see the settled list above); sea
 batch. `RSW_Korrum` *korrum*, `RUT_ScarRoach` — ours. Canon kept: Mynock.
 

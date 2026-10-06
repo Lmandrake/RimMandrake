@@ -52,7 +52,7 @@ pigment recipe, and no dose loop (the header defers that to `SCARLANDS_MECHANICS
 |---|---:|---:|---|---|
 | `AA_SpinedGow` | 0.15 | — | inline, Alpha Animals | the **interim plated grazer**, the scaria host (roster `new_defs`: "AA_SpinedGow is the interim body") |
 | `RG_Rimclaw` | 0.1 | 1.0 | inline, Regrowth | pollution-adapted predator, bursts into a toxic cloud on death. Drafted label **kettix** (batch 4e) |
-| `AA_Helixien` | 0.08 | — | inline, Alpha Animals | the interim Mortuary Guild corpse-decayer (drafted *vulloth*, batch 3) |
+| `AA_Helixien` | 0.08 | — | inline, Alpha Animals | the interim Mortuary Guild corpse-decayer (drafted *bileworm*, batch 3) |
 | `SW_Electrictick` | 0.3 | 0.25 | patch, isopoda | runs on a discharge organ, dies when it empties, explodes: *a munition with legs* (drafted **tzikket**) |
 | `SW_Electricgryllotalpa` | 0.15 | 1.5 | patch, isopoda | a caste that **shoots** arcs (drafted **katchit**) |
 | `SW_Juggernautbeetles` | 0.05 | 3.0 | patch, isopoda | thick-shelled charger with a burning blade (drafted **kroxxat**) |

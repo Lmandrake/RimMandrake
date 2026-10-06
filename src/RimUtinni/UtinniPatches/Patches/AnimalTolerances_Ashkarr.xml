@@ -2769,7 +2769,7 @@
     </match>
   </Operation>
 
-  <!-- vulloth (AA_Helixien) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -21.1..77.8 -->
+  <!-- bileworm (AA_Helixien) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -21.1..77.8 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_Helixien"]</xpath>
     <match Class="PatchOperationConditional">

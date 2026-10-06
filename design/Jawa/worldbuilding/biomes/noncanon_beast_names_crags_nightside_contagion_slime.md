@@ -150,7 +150,7 @@ is named in the Contagion batch below (*ghaaz*, slime law), where it is the body
 > vezzok, …) are NOT used for the Contagion cast; the biome's register is English
 > grotesque description. The ruled replacement map lives in
 > `contagion_grotesque_cast_2026-09-27.md`. This table stays as the record of the
-> accent work and for names shared with OTHER biomes (vulloth outside the Contagion,
+> accent work and for names shared with OTHER biomes (bileworm outside the Contagion,
 > ikee in the deserts, chittik in the Rot) — those biomes are unaffected.
 
 *A red valley under a storm that never stops, where the clear sky is the thing to fear.*
@@ -169,7 +169,7 @@ syllable for variety (rule 7).
 | `AA_InfectedAerofleet` | infected aerofleet | **the sower** — spore-loaded hydrogen float that rides the updraft and pops in sunlight | **blistered bulloo** | red bulloo | The base **aerofleet** (Forge, Grey Sea, Twilight Sea, Slime) becomes **bulloo** — a bounce of a word for a thing that bounces off everything — and the infected variant takes the canon variant shape (*jungle worrt*): plain modifier on the coined stem. Sibling rule: `AA_ColossalAerofleet` → **greater bulloo**. |
 | `AA_RedSpore` | red spore | **the leaker** — gallium-based, unstable, walks into the light and cooks; the rare survivor seeds a bloom | **vezzok** | skovva | The pop: *vezz-* a fizz building, *-ok* the burst. Not carbon-based, so it gets the valley's one hard *k* — it does not belong to the wet register and should not. |
 | `AA_BloodShrimp` | blood shrimp | **the drinker** — vampiric and fast; why visitors die at the red pools | **zhirrik** | sivvra | Small and fast in the shallows: *zh-* under the water, *-irr-* the dart, *-ik* the bite. "Shrimp" is the Earth animal, "blood" the English kenning. |
-| `AA_Helixien` | helixien | **the undertaker** — giant corrosive slug, bs 4 / spd 0.6 (also Slime, Poison Forest, Miasma, Scarlands — one name) | **vulloth** | ghessum | The slowest word in the set: *vull-* the wet bulk, *-oth* the corrosive exhale. Named here because the Contagion is where its job is written. |
+| `AA_Helixien` | helixien | **the undertaker** — giant corrosive slug, bs 4 / spd 0.6 (also Slime, Poison Forest, Miasma, Scarlands — one name) | **bileworm** | ghessum | The slowest word in the set: *vull-* the wet bulk, *-oth* the corrosive exhale. Named here because the Contagion is where its job is written. |
 | `AA_Drainer` · `AA_DrainerLarva` | drainer · drainer larva | **the thieves** — cat-sized bright electrovore butterfly that taps the ocular trees; short larval stage | **fezzira** · **fezzira larva** | nixxa | A flicker with a static sting: *fezz-* the wingbeat and the crackle, *-ira* bright. The larva keeps the plain stage word (as *megaspider* / *megascarab* do), not a second stem. |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | **the basker** — acid-immune, UV-armoured; comes OUT in the Burn; eggs that explode | **brossak** | ghorrix | Plate on plate: *br-* and *-ss-* the scrape of armour, *-ak* the snap. The predator of the window gets the hardest name in the valley after the leaker. |
 | `AA_Razorjack` | razorjack | **the pickers** — dual-jawed rodent-canine omnivore; infecting bites (also Pyrelands) | **skezzar** | vrizzo | Two jaws: *sk-* one, *-zz-* the other, *-ar* the tearing. |
@@ -182,7 +182,7 @@ syllable for variety (rule 7).
 owner ruling 2026-08-15 (⚠️ see flag 2 below: its DesertPort port `RSW_Stareling` carries a
 second ruled name, *oxxa*).
 
-Read aloud: ghaaz, zhool, bulloo, vezzok, zhirrik, vulloth, fezzira, brossak, skezzar,
+Read aloud: ghaaz, zhool, bulloo, vezzok, zhirrik, bileworm, fezzira, brossak, skezzar,
 ghuvv, gollivra, pellorax, pibbo — 3 × one syllable, 7 × two, 3 × three.
 
 ---
@@ -208,7 +208,7 @@ endings. The Latin binomials go first: nobody in a cantina says "acanthamoeba gi
 | `AA_OvergrownColossus` | overgrown colossus | six-legged, six-eyed grove-walker with trees on its back (bs 6.0) | **thummorak** | dhollumar | Three syllables for a bs-6 body, as the Rot's vorrugath (its mycoid sibling) has: *thumm-* the footfall, *-orak* the ridge of trees. Own stem; kinship in the description. |
 | `AA_TeratogenicOriginator` | teratogenic originator | translucent stem-cell colony with limbs floating in it; drawSize ruled 3, tinted green | ~~vubbola~~ **vohhm** | luul | Slime law (rule 8): a wobble held on one breath — *v-* the tremble, *-ohh-* drawn out, *-m* closed round. The current label reads as a lab report. |
 
-**Not drafted:** `AA_Helixien` — *vulloth*, Contagion batch (a slug, not a slime — rule 8
+**Not drafted:** `AA_Helixien` — *bileworm*, Contagion batch (a slug, not a slime — rule 8
 does not take it). `RM_Titanoslime` — the owner's own creature, named in his ask of
 2026-09-20; "titanoslime" is an English compound but it is his word. If he wants it in
 register the offer is now slime-law shaped: **baahm** (alt *ghoom*) — ~~mogguloth~~ is
@@ -508,7 +508,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_Gigantelope` | gigantelope | desert | Alpha Animals | NONCANON | donor art | port-named: RSW_Sandhorn thurra (per the 2026-09-21 sheet) |
 | `AA_GreenGoo` | green goo | the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: wuum |
 | `AA_Groundrunner` | groundrunner | desert | Alpha Animals | NONCANON | donor art |  |
-| `AA_Helixien` | helixien | poison_forest, the_contagion, the_miasma, the_scarlands, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: vulloth |
+| `AA_Helixien` | helixien | poison_forest, the_contagion, the_miasma, the_scarlands, the_slime | Alpha Animals | NONCANON | donor art | DRAFTED HERE: bileworm |
 | `AA_InfectedAerofleet` | infected aerofleet | poison_forest, the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: blistered bulloo |
 | `AA_LarvalAtispec` | larval atispec | the_scald | Alpha Animals | NONCANON | donor art |  |
 | `AA_Lockjaw` | lockjaw | the_miasma | Alpha Animals | NONCANON | regen:21 |  |
