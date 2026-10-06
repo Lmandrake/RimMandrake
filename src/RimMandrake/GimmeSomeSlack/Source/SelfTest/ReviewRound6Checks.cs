@@ -38,8 +38,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // vanilla's numbers (RimSage, Verse.Altitudes): PawnState+5 inc = 25*0.36585367 + 5*0.03658537
             Check(Near(DrawOrder.SpanAltitude, 9.32927) && Near(DrawOrder.Alt(DrawOrder.LayerConduits), 1.82927),
                 "altitudes are vanilla's: span " + DrawOrder.SpanAltitude.ToString("0.00000") + ", Conduits " + DrawOrder.Alt(DrawOrder.LayerConduits).ToString("0.00000"));
-            Check(DrawOrder.HoseTopAltitude(HoseMath.CrossBand, HoseMath.CrossRanks) < DrawOrder.Alt(DrawOrder.LayerConduits + 1),
-                "the top hose band stays below the next altitude layer (FloorCoverings)");
+            Check(DrawOrder.HoseTopAltitude(HoseMath.CrossBand, HoseMath.CrossRanks) < DrawOrder.Alt(DrawOrder.LayerHose + 1),
+                "the top hose band stays below the next altitude layer (DoorMoveable)");
+            // 2026-10-05: the hose's lowest piece (its own shadow strip, 0.0004 under the strand) sits above vanilla's sun-shadow
+            // quads, so its depth pre-pass hides wall shadows (owner screenshot: hard rectangles across the hose)
+            Check(DrawOrder.Alt(DrawOrder.LayerHose) + DrawOrder.HoseBaseLift - 0.0008 > DrawOrder.Alt(DrawOrder.LayerShadows),
+                "the hose band sits above the Shadows layer");
             // can-fail: round 5 -- the span cable and pole heads were plain Transparent (queue 3000), the hose 3003
             Check(!OverheadAboveGround(3003, 3004, 3000, DrawOrder.HoseTopAltitude(HoseMath.CrossBand, HoseMath.CrossRanks), DrawOrder.SpanAltitude, DrawOrder.TopAltitude),
                 "can-fail: the round-5 queues (overhead 3000 < hose 3003) are caught although the altitudes were right");
