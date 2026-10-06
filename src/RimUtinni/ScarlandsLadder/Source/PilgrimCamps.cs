@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RimMandrake.LoreStages;
+using RimMandrake.Utinni.Antiquities;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -14,6 +15,10 @@ namespace RimMandrake.Utinni.ScarlandsLadder
     // Scarlands ladder up one rung, and the letter quotes the journal page that belongs to the new rung.
     // A sixth journal, past the top rung, says nothing new. The body stays: pilgrims never vanish, they
     // are found.
+    // WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1: the journal is an Antiquities artifact, and the Reading Station
+    // is the ONLY way to read it -- cataloguing it there (RimMandrake.Utinni.Antiquities.JobDriver_
+    // ExamineAntiquity) calls Notify_Catalogued below, which is this same Read. One item route, not two:
+    // the old standalone CompUsable read was removed.
 
     public class ScarlandsLadderSettings : ModSettings
     {
@@ -82,7 +87,7 @@ namespace RimMandrake.Utinni.ScarlandsLadder
         }
     }
 
-    public class CompRUT_PilgrimJournal : ThingComp
+    public class CompRUT_PilgrimJournal : ThingComp, IAntiquityCatalogueListener
     {
         public bool read;
 
@@ -95,24 +100,10 @@ namespace RimMandrake.Utinni.ScarlandsLadder
         {
             return read ? "Read." : "Unread.";
         }
-    }
 
-    public class CompUseEffect_RUT_ReadPilgrimJournal : CompUseEffect
-    {
-        public override void DoEffect(Pawn usedBy)
+        public void Notify_Catalogued(Pawn reader)
         {
-            base.DoEffect(usedBy);
-            RUT_PilgrimJournals.Read(parent, usedBy, true);
-        }
-
-        public override AcceptanceReport CanBeUsedBy(Pawn p)
-        {
-            CompRUT_PilgrimJournal c = parent.TryGetComp<CompRUT_PilgrimJournal>();
-            if (c != null && c.read)
-            {
-                return "Already read.";
-            }
-            return base.CanBeUsedBy(p);
+            RUT_PilgrimJournals.Read(parent, reader, true);
         }
     }
 

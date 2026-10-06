@@ -4,7 +4,8 @@ WARSCAR_PILGRIM_CAMPS_1: the pilgrim camps are the gate of the Scarlands lore la
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run ScarlandsLadder
 
-Environment: minimal + every DLC + mandrake.rm.lorestages + mandrake.rut.patches (RUT_Scarlands) + this mod.
+Environment: minimal + every DLC + mandrake.rm.lorestages + mandrake.rut.patches (RUT_Scarlands) + mandrake.rut.antiquities
+(hard dependency since WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1) + this mod.
 
 WHAT IT PROVES (state reads through jawa/static_call proofs):
   * reading_walks_the_ladder: five journals read in sequence walk rungs 1-5, a sixth moves nothing, and
@@ -12,8 +13,11 @@ WHAT IT PROVES (state reads through jawa/static_call proofs):
   * reading_off_teaches_nothing: with journalsAdvanceLadder off a read leaves the ladder where it was.
   * camps_place: the camp genstep places a cold fire, the pilgrim's body and a journal per camp.
 NOT PROVEN HERE: a camp generating on a real RUT_Scarlands map through the biome's extraGenSteps (first
-poke: generate a RUT_Scarlands quicktest and list RUT_PilgrimJournal), the read JOB itself (a colonist
-ordered to read it), the letter text on screen. ProofReadSequence resets the ladder to 0: test maps only.
+poke: generate a RUT_Scarlands quicktest and list RUT_PilgrimJournal), the read JOB itself (since
+WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1 the only read is RUT_ExamineAntiquity at the Antiquities Reading Station,
+which calls the journal comp's Notify_Catalogued -> RUT_PilgrimJournals.Read; first poke: jawa/ordered_job
+RUT_ExamineAntiquity on a journal + RUT_AntiquityReadingStation, then the ladder stage and the journal's
+CompAntiquity "catalogued" both read back changed), the letter text on screen. ProofReadSequence resets the ladder to 0: test maps only.
 
 STATIC (offline): `python3 validation.py` checks the five shipped rung texts equal the ruled cast bible
 section 6B, the journal pages equal its journal column, and every setting is Scribed and exposed.

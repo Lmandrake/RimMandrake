@@ -41,7 +41,7 @@ namespace RimMandrake.Utinni.Antiquities
             // Fix: only the FIRST toil (walking to a still-on-the-map antiquity)
             // needs that check; chain it there instead of driver-wide.
             this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
-            this.FailOn(() => AntiquityUtility.CurrentStage() == null);
+            this.FailOn(() => AntiquityUtility.CurrentStage() == null && !AntiquityUtility.HasCatalogueListener(Antiquity));
 
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
                 .FailOnDespawnedNullOrForbidden(TargetIndex.A);
@@ -98,11 +98,26 @@ namespace RimMandrake.Utinni.Antiquities
                 return;
             }
             ResearchProjectDef stage = AntiquityUtility.CurrentStage();
-            if (stage == null)
+            bool listened = AntiquityUtility.HasCatalogueListener(Antiquity);
+            if (stage == null && !listened)
             {
                 return;
             }
             comp.catalogued = true;
+            pawn.skills?.Learn(SkillDefOf.Intellectual, 40f);
+            pawn.skills?.Learn(SkillDefOf.Artistic, 40f);
+
+            // WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1: the piece's own listeners hear
+            // the catalogue (the pilgrim's journal moves the Scarlands ladder and
+            // sends its own letter). Past VOICE that is all a read does.
+            foreach (ThingComp c in ((ThingWithComps)Antiquity).AllComps)
+            {
+                (c as IAntiquityCatalogueListener)?.Notify_Catalogued(pawn);
+            }
+            if (stage == null)
+            {
+                return;
+            }
 
             AntiquityStageExtension ext = stage.GetModExtension<AntiquityStageExtension>();
             int required = (ext != null && ext.artifactsRequired > 0) ? ext.artifactsRequired : 1;
@@ -118,8 +133,6 @@ namespace RimMandrake.Utinni.Antiquities
             float amount = keyText ? perRead * 2f : perRead;
 
             Find.ResearchManager.AddProgress(stage, amount, pawn);
-            pawn.skills?.Learn(SkillDefOf.Intellectual, 40f);
-            pawn.skills?.Learn(SkillDefOf.Artistic, 40f);
 
             // Placeholder letter text -- the Narrator's actual intoned register
             // (design doc section 2.1) and the per-god integration reactions are
