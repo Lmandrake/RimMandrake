@@ -80,6 +80,7 @@
       <RM_Zhiil>0.25</RM_Zhiil>
       <!-- CHILL_WAX_PROCESSION_GIANT_1: the floor's giant (Q4b), a slow file. -->
       <RM_Hesuun>0.12</RM_Hesuun>
+      <RM_Ulkhoss>0.08</RM_Ulkhoss>  <!-- ulkhoss: the kept bluedesert_Vapaad_v2 render, moved here by the owner 2026-10-04 (PROPANE_LAKE_HYDROCARBON_TENTACLER_1) -->
     </wildAnimals>
     <!-- PROPANELAKE_ANIMALDENSITY_ZERO_1, 2026-09-26 — animalDensity was UNSET (engine
          default 0f), so WildAnimalSpawner.DesiredTotalAnimalWeight was 0 and the six
