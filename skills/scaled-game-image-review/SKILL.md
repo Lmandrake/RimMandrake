@@ -52,6 +52,7 @@ below, fix the tool and add a selftest — never patch one HTML file.
    first, serve second.
    **Placeholder art is not art of ours** (2026-10-05, Grey Sea): script-drawn flat shapes and vanilla textures borrowed for
    another subject (`placeholder_detect.py`) get a red PLACEHOLDER badge and count as no art — such a row also needs a render or a pending/active job.
+   Vanilla Core/DLC art counts as donor art (owner card, 2026-10-05): a row whose only art is vanilla also needs a render of ours; vanilla stays visible as past art.
 4. **Donor and older art stay visible as past art** (2026-10-05: *"I DO want to see donor art in
    'past art' so I can see where something came from though, please. I just don't want it to be all
    there is."*). Column order ranks recency and runtime, never worth: live first, shadowed copies,
