@@ -3030,3 +3030,4 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T05:15:21Z","tsn":1791263721557122486}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-06T06:07:58Z","tsn":1791266878615143886}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T06:08:30Z","tsn":1791266910718793680}
+{"seat":"FOUNDRY","event":"verify","id":"FLOWWORKS_NORTHSTAR_BASELINE_RUN_1","result":"pass","config":"flowworks-minimal","evidence":"src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T232201.json","sha":"8fb5106e8","ts":"2026-10-06T06:22:36Z","tsn":1791267756721166805}
