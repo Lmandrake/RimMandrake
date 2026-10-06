@@ -462,3 +462,5 @@ UtinniPatches/Patches/RUT_FoundryTowerHoistFrame.xml          # 2026-10-03 belt 
 # --- GimmeSomeSlack review sheet: a human-review artifact, never part of the shipped mod (owner 2026-10-05) ---
 GimmeSomeSlack/review/*   # review sheet + key kept beside the mod for quick review; not game content
 GimmeSomeSlack/northstar/*   # proof/validation result JSONs: evidence, not game content
+# --- FlowWorks capability review sheet: a human-review artifact, never part of the shipped mod (2026-10-05) ---
+FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside the mod; not game content

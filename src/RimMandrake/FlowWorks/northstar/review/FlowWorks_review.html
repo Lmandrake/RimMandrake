@@ -1,0 +1,5197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FlowWorks capability review</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. script#CONFIG   the brief, posture, criterion, options
+    2. script#ITEMS   the rows
+    3. (optional) script#RENDER                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+ "sheetId": "flowworks_capability_review",
+ "title": "FlowWorks \u2014 what exists, what works, what remains",
+ "subtitle": "139 capabilities \u00b7 39 PROVEN-LIVE \u00b7 63 BUILT-UNPROVEN \u00b7 14 PARTIAL \u00b7 23 NOT BUILT",
+ "briefHtml": "<p><b>139 intended capabilities<\/b> of FlowWorks, built or not. <span style=\"color:#5ac37f\"><b>39<\/b> PROVEN-LIVE<\/span> \u00b7 <span style=\"color:#6aa6e8\"><b>63<\/b> BUILT-UNPROVEN<\/span> \u00b7 <span style=\"color:#e8b64c\"><b>14<\/b> PARTIAL<\/span> \u00b7 <span style=\"color:#e06c6c\"><b>23<\/b> NOT BUILT<\/span> \u00b7<\/p><p><b>Status is derived, never typed:<\/b> PROVEN-LIVE = a mapped mechanism row PASSed in <code>validation_v2_result_20261005T162414.json<\/code>; BUILT-UNPROVEN = every declared probe (class / def / setting / texture) exists on disk; PARTIAL = some do; NOT BUILT = none. Each row lists its probes (\u2713/\u2717), its live rows, its north-star bars (\u2605) and the owning item with its ledger state. North-star walk state: <b>DRAFT<\/b>; 43 of 43 bars carried by a row.<\/p><p><b>Your controls:<\/b> <i>Looks right<\/i> / <i>Wrong<\/i> (say why in the note) / <i>Wanted<\/i> (not built, and you still want it). Rows the ledger says are open and unbuilt start on <i>Wanted<\/i> because their item is open; nothing else is pre-filled. Thumbnails: the 2026-10-05 live run (load <code>NS_FlowWorks_Review_20261005<\/code> to walk it) and the Quarry reference (ruling 33). Canon: no canon entry for any FlowWorks subject (checked 214 entries).<\/p><h3 style='margin:8px 0 2px'>What remains to build (open items, from the ledger)<\/h3><ul style='margin:0;padding-left:18px'><li><b>CRACKEDLANDS_MECHANICS_BUILD_1<\/b> <i>(doing)<\/i> Build the Cracked Lands mechanics: the Swale (FlowWorks-normal, Utinni-locked biome discov: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1<\/b> <i>(proposed)<\/i> Utinni lock for RM_Swale: locked in the campaign until discovered in the Cracked Lands (fi: L06 Swale locked in the campaign until discovered [NOT BUILT]<\/li><li><b>EXCAVATION_WALL_ART_1<\/b> <i>(proposed)<\/i> Wall-face art for all four depths, spikes and ladder (Quarry perspective): H12 No pit def borrows vanilla&#x27;s spike-trap art [NOT BUILT], J05 Occupant reads as down in the hole; occupied vs empty at a glance [PARTIAL], J06 Wall-face art for all four depths (Quarry perspective) [NOT BUILT], J07 Spike art: some spike visibly projects [PARTIAL], J08 Ladder art: raised vs lowered drawn on the wall [PARTIAL], J09 A dug channel looks dug (recessed bed, earthen walls), not gravel [NOT BUILT], J10 A superdeep cell reads as a big dark hole at play zoom [PARTIAL], J11 A multi-cell pit reads as one place, not a tile grid [NOT BUILT], J12 The bare excavation never reads as a building [PARTIAL], J13 Depth and fill legible together in one view [PARTIAL], J14 Dry and filled channels read as obstacles without a tooltip [PARTIAL]<\/li><li><b>FLOWWORKS_BUILD_PROGRAM_1<\/b> <i>(doing)<\/i> FlowWorks - the phased build program for one liquid mod built on excavation depth as the p: C09 Pumping into tanks draws a source down [NOT BUILT], D08 Slime reads thick and opaque, not recoloured water [PARTIAL], D09 Slime is nearly impossible to cross, slow to escape [NOT BUILT], E05 Burning liquid reads as the surface alight [PARTIAL], E06 A burned-out channel reads scorched and empty [PARTIAL], E08 Explosions ignite liquid [NOT BUILT], E09 Burning liquid can be put out [NOT BUILT], K08 Pumps [NOT BUILT], K10 Per-net adapters [NOT BUILT], L08 Irrigation: plants beside a filled canal act watered [NOT BUILT] \u00b7 <i>16 built, unproven<\/i><\/li><li><b>FLOWWORKS_NORTHSTAR_SHIP_1<\/b> <i>(proposed)<\/i> FlowWorks SHIPPED: settings superb, art complete, code review CLEAN, deployed: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><li><b>FLOWWORKS_QUARRY_DIGGING_1<\/b> <i>(proposed)<\/i> Design pass: extend FlowWorks with the quarry concept - digging a canal can uncover local : M01 Digging a canal turns up local materials (a lump on the bank) [NOT BUILT], M02 A letter on the first find of each material per map [NOT BUILT], M03 Deep cuts reach deep-drill minerals; mineral-less biomes give rock chunks [NOT BUILT], M04 Reads the mineral abundance registry [NOT BUILT], M05 Sluice box: a stream slowly yields ore [NOT BUILT], M06 Panning for gold in a river [NOT BUILT]<\/li><li><b>LIQUID_BODY_FLUID_IDENTITY_1<\/b> <i>(proposed)<\/i> Fluid identity per liquid body (retire per-map ActiveFluid); the merge rule: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><li><b>LIQUID_BOTTLE_LOOP_1<\/b> <i>(doing)<\/i> Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), rever: K04 Special bottle behaviours: boiling reverts, blood rots [PARTIAL] \u00b7 <i>4 built, unproven<\/i><\/li><li><b>LIQUID_INDUSTRY_SETPIECES_1<\/b> <i>(doing)<\/i> Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumpin: K11 Found liquid industry: desal, detox, tar refinery, pumping station [NOT BUILT]<\/li><li><b>LIQUID_THIRST_CHAIN_1<\/b> <i>(doing)<\/i> Water cleaning chain crude/household/industrial wired to DBH thirst (DBHThirst MEASURED in: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>MOD_OPTIONS_RETROFIT_1<\/b> <i>(doing)<\/i> Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStar: nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>PIT_FILL_EFFECTS_1<\/b> <i>(proposed)<\/i> What a fluid does to a pit occupant: drowning at D=4, poison keyed to fill, burning oil wi: H11 Flood an occupied pit by opening a sluice [NOT BUILT] \u00b7 <i>3 built, unproven<\/i><\/li><li><b>PIT_SUPERDEEP_COLLAPSE_1<\/b> <i>(proposed)<\/i> Collapse the pit onto the D/F primitive: a superdeep cell you cannot climb out of, a room : F10 Blast / blowback can knock a pawn into a pit [NOT BUILT] \u00b7 <i>1 built, unproven<\/i><\/li><li><b>PIT_TEMPERATURE_SOFTENING_1<\/b> <i>(proposed)<\/i> Pit temperature couples hard to ambient and wears down resistance; Exposed Prisoner though: G08 &#x27;Exposed Prisoner&#x27; thought: cruel, and reads as cruel [PARTIAL] \u00b7 <i>2 built, unproven<\/i><\/li><li><b>RIVER_STEAM_ANIMATION_1<\/b> <i>(doing)<\/i> Animated steam rising from the rivers (Pyrelands weather visual): nothing unbuilt \u00b7 <i>1 built, unproven<\/i><\/li><li><b>SUPERDEEP_PRISON_ROOM_1<\/b> <i>(proposed)<\/i> An enclosed superdeep area is a room; a prisoner bed makes it a prison; capture down / con: G04 Convert down (recruit from the lip) [NOT BUILT] \u00b7 <i>4 built, unproven<\/i><\/li><li><b>SURFACE_RIVER_WEIRS_1<\/b> <i>(proposed)<\/i> Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 20: L11 Silt-trap, stake-line and hopper bank-works [PARTIAL] \u00b7 <i>4 built, unproven<\/i><\/li><li><b>SWALE_CANAL_ART_REFERENCE_1<\/b> <i>(doing)<\/i> Swale art from live reference: build a real FlowWorks canal in game, screenshot it, spec t: L07 Swale art from a real canal [NOT BUILT]<\/li><li><b>WORLDMAP_LIQUID_TAGS_1<\/b> <i>(doing)<\/i> worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenSte: nothing unbuilt \u00b7 <i>2 built, unproven<\/i><\/li><\/ul>",
+ "criterion": "Rows follow the build program's subsystems; status comes from probes + the newest live result, which proves a mechanism exists, never that it looks right.",
+ "invented": [],
+ "posture": {
+  "mode": "whitelist",
+  "explain": "Looks right and Wanted keep a capability in scope; Wrong reopens it. Undecided = not yet looked at."
+ },
+ "options": [
+  {
+   "key": "right",
+   "label": "Looks right",
+   "hotkey": "1",
+   "color": "#5ac37f",
+   "counts": "in"
+  },
+  {
+   "key": "wrong",
+   "label": "Wrong",
+   "hotkey": "2",
+   "color": "#e06c6c",
+   "counts": "out"
+  },
+  {
+   "key": "wanted",
+   "label": "Wanted",
+   "hotkey": "3",
+   "color": "#e8b64c",
+   "counts": "in"
+  }
+ ],
+ "groupLabel": "subsystem",
+ "media": true,
+ "decisionsFile": "FlowWorks_review.decisions.json",
+ "decisionsPath": "",
+ "sheetPath": ""
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[
+{
+"id": "A01",
+"label": "[PROVEN-LIVE] Dig-canal order: a colonist carves a channel",
+"group": "A \u00b7 Digging & depth",
+"effect": "Designate soil; a colonist digs it to D=1 (RM_Channel_Empty). Refuses edifices, water, existing channel.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program Ph2",
+"bars": [],
+"probes": [
+[
+"cs:class Designator_DigCanal",
+true
+],
+[
+"cs:class WorkGiver_DigCanal",
+true
+],
+[
+"cs:class JobDriver_DigCanal",
+true
+]
+],
+"live": [
+[
+"E8_player_dig",
+"PASS",
+"designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 720 ticks (cap 2178, MiningSpeed 2.15)"
+],
+[
+"J_workgiver_selection",
+"PASS",
+"E8_dig:dig/RM_DigCanalJob skip=False cell=True has=True prio=3; E7a_fillin:fillin/RM_FillInCanalJob skip=False cell=True has=True prio=3; E7b_overflow:fillin/RM_FillInCanalJob skip=False cell=True has"
+],
+[
+"J_orders_accepted",
+"PASS",
+"[('E8_dig', True, None), ('E7a_fillin', True, None), ('E7b_overflow', True, None)]"
+]
+]
+},
+"thumb": "shots/J_jobs.jpg"
+},
+{
+"id": "A02",
+"label": "[PROVEN-LIVE] Four dug depths D1..D4 (shallow/mid/deep/SUPERDEEP)",
+"group": "A \u00b7 Digging & depth",
+"effect": "Every excavated cell carries depth D 0-4; each level is its own terrain (Empty/Mid/Deep/Superdeep).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 19",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_Channel_Empty<",
+true
+],
+[
+"xml:defName>RM_Channel_Mid<",
+true
+],
+[
+"xml:defName>RM_Channel_Deep<",
+true
+],
+[
+"xml:defName>RM_Channel_Superdeep<",
+true
+]
+],
+"live": [
+[
+"S1_dig_ladder",
+"PASS",
+"D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1"
+]
+]
+},
+"thumb": "shots/S_ladder.jpg"
+},
+{
+"id": "A03",
+"label": "[PROVEN-LIVE] Deepen an existing channel (dig to depth)",
+"group": "A \u00b7 Digging & depth",
+"effect": "Re-designating a dug cell deepens it one level; refused at SUPERDEEP (as far down as it goes).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program Ph2",
+"bars": [],
+"probes": [
+[
+"set:digToDepthEnabled",
+true
+]
+],
+"live": [
+[
+"S6_digToDepth_gate",
+"PASS",
+"Designator_DigCanal: D1 ON True; D4 False (Already SUPERDEEP \u2014 this is as far down ); D1 OFF False (Deepening is switched off in this mod's settings.); undug soil OFF True"
+],
+[
+"S1n_superdeep_is_max",
+"PASS",
+"deepen D=4 once more -> 4"
+]
+]
+}
+},
+{
+"id": "A04",
+"label": "[PROVEN-LIVE] Depth + fill grid saved with the map",
+"group": "A \u00b7 Digging & depth",
+"effect": "Per-map D and F grids live on one MapComponent and survive save/load; F is clamped 0 <= F <= D.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program Ph2",
+"bars": [],
+"probes": [
+[
+"cs:class RM_MapComponent_Excavation",
+true
+],
+[
+"cs:Scribe",
+true
+]
+],
+"live": [
+[
+"S2_fill_clamp",
+"PASS",
+"setFill 9 on D=2 -> F=2; setFill 1 on undug -> fillSet=False F=0"
+]
+]
+}
+},
+{
+"id": "A05",
+"label": "[PROVEN-LIVE] Fill-in order: lower a channel back toward ground",
+"group": "A \u00b7 Digging & depth",
+"effect": "A fill-in designation lowers D; liquid in the cell is pushed back into the network (see B12).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "CANAL_FILL_IN_DISPLACEMENT_1",
+"itemState": "done",
+"src": "Build program Ph2",
+"bars": [],
+"probes": [
+[
+"cs:class Designator_FillInCanal",
+true
+],
+[
+"cs:class WorkGiver_FillInCanal",
+true
+],
+[
+"cs:class JobDriver_FillInCanal",
+true
+]
+],
+"live": [
+[
+"E7a_fillin_displaces",
+"PASS",
+"sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]"
+]
+]
+},
+"thumb": "shots/J_jobs.jpg"
+},
+{
+"id": "A06",
+"label": "[BUILT-UNPROVEN] Dry depth slows movement (30/45/80, superdeep impassable)",
+"group": "A \u00b7 Digging & depth",
+"effect": "Dry path cost climbs with depth so an unfilled trench is a real barrier (ruling 17).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 17 / Ph5",
+"bars": [
+"canal_dry_reads_as_obstacle"
+],
+"probes": [
+[
+"xml:<pathCost>30<\/pathCost>",
+true
+],
+[
+"xml:<pathCost>45<\/pathCost>",
+true
+],
+[
+"xml:<pathCost>80<\/pathCost>",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "A07",
+"label": "[BUILT-UNPROVEN] Flooded is always slower than dry (depth x fill cost matrix)",
+"group": "A \u00b7 Digging & depth",
+"effect": "Each fluid has a cost per depth x fill tier, strictly worse flooded than the same depth dry.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "DEPTH_FILL_COST_MATRIX_1",
+"itemState": "done",
+"src": "Collapse [E]",
+"bars": [
+"filled_excavation_reads_as_obstacle"
+],
+"probes": [
+[
+"xml:defName>RM_Fill_Water_Half",
+true
+],
+[
+"cs:pathCost|PathCost",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "A08",
+"label": "[PROVEN-LIVE] A pit is only a D=4 cell (no holder Thing, no old pit building)",
+"group": "A \u00b7 Digging & depth",
+"effect": "Trapping is a grid rule on a spawned pawn; the old Building_OpenPit / RM_SuperdeepPit model is gone.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "SUPERDEEP_HOLDER_RETIRE_1",
+"itemState": "done",
+"src": "Collapse ruling",
+"bars": [],
+"probes": [
+[
+"cs:class RM_SuperdeepTrap",
+true
+],
+[
+"!cs:class Building_OpenPit",
+true
+]
+],
+"live": [
+[
+"S1p_pit_is_grid_only",
+"PASS",
+"D4 cell: isSuperdeep True width 1 holders []; D3 cell: isSuperdeep False width 0 holders []"
+]
+]
+}
+},
+{
+"id": "B01",
+"label": "[PROVEN-LIVE] Flow runs on a pulse, never per tick",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Liquid moves only at pulse boundaries (default every 250 ticks); the cadence is a setting.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Framework pillar 2",
+"bars": [],
+"probes": [
+[
+"set:pulseIntervalTicks",
+true
+]
+],
+"live": [
+[
+"E1a_cadence_shipped",
+"PASS",
+"pulseIntervalTicks 250, nextPulseTick 251 at tick 1"
+],
+[
+"E1c_cadence_real_scheduler",
+"PASS",
+"12 chunks of 60 ticks: nextPulseTick advances [60], lead [1]"
+],
+[
+"A_pulse_contract",
+"PASS",
+"8 pulses, 0 ticks, scheduler untouched, paused"
+]
+]
+}
+},
+{
+"id": "B02",
+"label": "[PROVEN-LIVE] Pulse interval cannot be set below 60 ticks",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "A too-fast pulse setting is clamped to 60 so the engine cannot become a per-tick sim.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program Ph3",
+"bars": [],
+"probes": [
+[
+"set:pulseIntervalTicks",
+true
+]
+],
+"live": [
+[
+"E1b_pulse_clamp",
+"PASS",
+"pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)"
+]
+]
+}
+},
+{
+"id": "B03",
+"label": "[PROVEN-LIVE] Sort + overflow: a canal fills from its source in every direction",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Deepest-first pour to F=D, full cells overflow into neighbours; E/N/S/W channels all fill, bottom-up.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_CHANNEL_OSCILLATION_1",
+"itemState": "done",
+"src": "Build program Ph3",
+"bars": [
+"canal_fill_spreads_along_itself",
+"canal_fill_front_watchable"
+],
+"probes": [
+[
+"cs:PickDonor",
+true
+]
+],
+"live": [
+[
+"E2_east_A",
+"PASS",
+"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"E2_north",
+"PASS",
+"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"E2_south",
+"PASS",
+"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"E2_west",
+"PASS",
+"8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"E2_channels_fill_every_direction",
+"PASS",
+"first-full pulse by direction {'E2_east_A': 4, 'E2_north': 4, 'E2_south': 4, 'E2_west': 4} (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)"
+],
+[
+"A_global_vs_oracle",
+"PASS",
+"every excavated cell == oracle at every pulse"
+],
+[
+"G_every_cell_vs_oracle",
+"absent",
+""
+]
+]
+},
+"thumb": "shots/E2_flow.jpg"
+},
+{
+"id": "B04",
+"label": "[PROVEN-LIVE] Two channels off one source both fill",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "A source cell shared by several channels feeds all of them (the old shared-visited stall is fixed).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_SHARED_SOURCE_STALL_1",
+"itemState": "done",
+"src": "Bug item",
+"bars": [],
+"probes": [
+[
+"cs:PickDonor",
+true
+]
+],
+"live": [
+[
+"E2s_shared_source_oracle",
+"PASS",
+"both pairs == oracle (every channel gets the shared source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}"
+],
+[
+"E2s_shared_source_both_fill",
+"PASS",
+"all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}"
+],
+[
+"G_every_cell_vs_oracle",
+"absent",
+""
+]
+]
+}
+},
+{
+"id": "B05",
+"label": "[PROVEN-LIVE] Flow is deterministic (twins and re-runs identical)",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Identical channels and a re-run produce the same pulse-by-pulse fill vectors.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program verify",
+"bars": [],
+"probes": [
+[
+"cs:class RM_StockMath",
+true
+]
+],
+"live": [
+[
+"E2_twins_identical",
+"PASS",
+"A [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] / B [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"E2_rerun_determinism",
+"PASS",
+"E2_east_A (phase A) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] vs E2_rerun (dug later, other body) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]"
+],
+[
+"R_global_vs_oracle",
+"PASS",
+"all cells == oracle"
+],
+[
+"G_every_cell_vs_oracle",
+"absent",
+""
+]
+]
+}
+},
+{
+"id": "B06",
+"label": "[PROVEN-LIVE] Liquid stays in the dug channel",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Fill never spreads onto undug ground beside a channel; confinement is a setting (default ON).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"canal_holds_only_the_channel",
+"never_liquid_on_open_ground"
+],
+"probes": [
+[
+"set:channelConfinementEnabled",
+true
+],
+[
+"cs:CanLiquidEnter",
+true
+]
+],
+"live": [
+[
+"E2_dry_ring",
+"PASS",
+"every non-channel, non-body ring cell undug, F=0, Soil"
+]
+]
+},
+"thumb": "shots/E2_flow.jpg"
+},
+{
+"id": "B07",
+"label": "[PROVEN-LIVE] Master switch: depth engine off freezes all flow",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "With the engine off no cell moves past its due pulse; turning it back on resumes on schedule.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Settings rule 2026-09-12",
+"bars": [],
+"probes": [
+[
+"set:depthEngineEnabled",
+true
+]
+],
+"live": [
+[
+"E4_engine_off",
+"PASS",
+"OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []"
+],
+[
+"E4_engine_on_scheduled",
+"PASS",
+"after 12 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]"
+]
+]
+},
+"thumb": "shots/E3_E4.jpg"
+},
+{
+"id": "B08",
+"label": "[BUILT-UNPROVEN] Partial fill tiers: trace / half / brim / superdeep per fluid",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "A part-filled canal draws a lighter tier than a full one; four fill terrains per fluid (ruling 5).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 5",
+"bars": [
+"canal_partial_fill_distinct",
+"fill_tier_legible"
+],
+"probes": [
+[
+"xml:defName>RM_Fill_Water_Trace",
+true
+],
+[
+"xml:defName>RM_Fill_Water_Half",
+true
+],
+[
+"xml:defName>RM_Fill_Water_Brim",
+true
+]
+],
+"live": []
+},
+"thumb": "shots/S_ladder.jpg"
+},
+{
+"id": "B09",
+"label": "[PROVEN-LIVE] Canal reads as the same liquid as its reservoir",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "A filled canal draws the fill ladder of the fluid it came from (water from water, tar from tar).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"canal_reads_as_same_liquid_as_reservoir"
+],
+"probes": [
+[
+"xml:defName>RM_Fill_Tar_Brim",
+true
+],
+[
+"cs:fillTerrain|FillTerrain",
+true
+]
+],
+"live": [
+[
+"X6_two_fluids_distinct",
+"PASS",
+"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "B10",
+"label": "[PROVEN-LIVE] Fill-in pushes liquid back (conserved)",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Filling a wet cell credits its liquid to connected channel/source cells with room; nothing vanishes.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "CANAL_FILL_IN_DISPLACEMENT_1",
+"itemState": "done",
+"src": "Ph4",
+"bars": [],
+"probes": [
+[
+"set:fillInDisplacementEnabled",
+true
+]
+],
+"live": [
+[
+"E7a_fillin_displaces",
+"PASS",
+"sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]"
+]
+]
+},
+"thumb": "shots/J_jobs.jpg"
+},
+{
+"id": "B11",
+"label": "[PROVEN-LIVE] Disclosed overflow: only liquid with nowhere to go is destroyed",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "The single conservation exception, counted and disclosed (overflowDestroyedTotal), never silent.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "CANAL_FILL_IN_DISPLACEMENT_1",
+"itemState": "done",
+"src": "Ph4",
+"bars": [],
+"probes": [
+[
+"cs:overflowDestroyed|OverflowDestroyed",
+true
+]
+],
+"live": [
+[
+"E7b_overflow_sanctioned",
+"PASS",
+"no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)"
+]
+]
+}
+},
+{
+"id": "B12",
+"label": "[PROVEN-LIVE] Every pulse balances against an oracle (no leaks)",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "Whole-map fill matches an independent oracle every pulse across the scripted phases.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Build program verify",
+"bars": [],
+"probes": [
+[
+"cs:class RM_StockMath",
+true
+]
+],
+"live": [
+[
+"B_global_vs_oracle",
+"PASS",
+"all cells == oracle"
+],
+[
+"C_global_vs_oracle",
+"PASS",
+"all cells == oracle"
+],
+[
+"G_every_cell_vs_oracle",
+"absent",
+""
+]
+]
+}
+},
+{
+"id": "B13",
+"label": "[BUILT-UNPROVEN] Canyon floods drive FlowWorks instead of erasing canals",
+"group": "B \u00b7 Fill & flow engine",
+"effect": "FloodedCanyon is a flood-driver client; its floods use FlowWorks' recoverable temp-terrain release.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "CANYON_FLOOD_ERASES_CANALS_1",
+"itemState": "done",
+"src": "Ruling 8",
+"bars": [],
+"probes": [
+[
+"cs:class Flood_FlowWorks",
+true
+],
+[
+"cs:SetTempTerrain",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "C01",
+"label": "[PROVEN-LIVE] A source is just deep liquid terrain (no reservoir building)",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "Ruling 24/34: placed deep liquid tiles ARE the reservoir; the old CompFluidReservoir is deleted.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Rulings 24/34",
+"bars": [],
+"probes": [
+[
+"cs:class RM_LiquidBody",
+true
+],
+[
+"!cs:class CompFluidReservoir",
+true
+]
+],
+"live": [
+[
+"S3_classification",
+"PASS",
+"W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
+]
+]
+}
+},
+{
+"id": "C02",
+"label": "[PROVEN-LIVE] Limited vs limitless: touching the map edge (and big enough)",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "A body touching the edge with >= min cells is limitless; an enclosed body is limited stock.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [],
+"probes": [
+[
+"set:minLimitlessBodyCells",
+true
+],
+[
+"cs:touchesEdge",
+true
+]
+],
+"live": [
+[
+"S3_classification",
+"PASS",
+"W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED"
+]
+]
+}
+},
+{
+"id": "C03",
+"label": "[PROVEN-LIVE] Limitless is sticky (classified once, never flickers)",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "Once limitless, a body stays limitless even as it recedes; a setting can turn stickiness off.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph4",
+"bars": [],
+"probes": [
+[
+"set:stickyLimitlessEnabled",
+true
+]
+],
+"live": [
+[
+"S5_sticky_limitless",
+"PASS",
+"W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True"
+]
+]
+}
+},
+{
+"id": "C04",
+"label": "[PROVEN-LIVE] 5:1 budget: each source cell feeds five canal cells, then stops",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "An enclosed pond supplies exactly its budget, then the wet front stops; budget OFF = old behaviour.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"empty_reservoir_stops_flow",
+"never_full_reservoir_after_heavy_draw"
+],
+"probes": [
+[
+"set:sourceBudgetEnabled",
+true
+],
+[
+"set:sourceBudgetMultiplier",
+true
+]
+],
+"live": [
+[
+"E3_budget_exhaustion",
+"PASS",
+"cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.004062602"
+],
+[
+"E3n_budget_off_supplies",
+"PASS",
+"budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])"
+]
+]
+},
+"thumb": "shots/E3_E4.jpg"
+},
+{
+"id": "C05",
+"label": "[PROVEN-LIVE] The source visibly recedes as it pays out",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "Supplying a canal shrinks an enclosed body cell by cell from the outside in, restoring the old ground.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"reservoir_fill_visibly_drops",
+"reservoir_shoreline_recedes"
+],
+"probes": [
+[
+"set:recessionEnabled",
+true
+],
+[
+"cs:recededCount|Recede",
+true
+]
+],
+"live": [
+[
+"E3b_recession_shipped",
+"PASS",
+"final [0, 0, 0, 1], W2R {'stock': 4.00473976, 'recededCount': 1, 'activeCellCount': 0}"
+]
+]
+},
+"thumb": "shots/E3_E4.jpg"
+},
+{
+"id": "C06",
+"label": "[BUILT-UNPROVEN] Slow refill from rain, season and seepage",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "A drawn-down body slowly regains level; a very small body refills slowest.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner scarcity ruling",
+"bars": [
+"reservoir_recharge_progress_visible"
+],
+"probes": [
+[
+"set:refillEnabled",
+true
+],
+[
+"set:refillRateMultiplier",
+true
+],
+[
+"cs:void Refill",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "C07",
+"label": "[PROVEN-LIVE] Rain fills unroofed excavations only",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "Rain adds fill to open dug cells; a roofed twin stays dry; the toggle stops it.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 25",
+"bars": [],
+"probes": [
+[
+"set:rainFillsExcavationsEnabled",
+true
+],
+[
+"set:rainFillPerPulse",
+true
+]
+],
+"live": [
+[
+"E6_rain_fills_unroofed",
+"PASS",
+"rate 0.258 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle"
+],
+[
+"E6_roof_readback",
+"PASS",
+"roofed excavated cells [(182, 60)]"
+],
+[
+"E6n_rain_toggle_off",
+"PASS",
+"rain fell (rate now 0.258) with rainFillsExcavations OFF over 12 pulses: no cell gained"
+]
+]
+},
+"thumb": "shots/J_jobs.jpg"
+},
+{
+"id": "C08",
+"label": "[PROVEN-LIVE] Map-edge sinks drain a canal off-map",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "A channel reaching the edge band transfers liquid off-map (counted), an interior twin holds.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "LIQUID_SINK_DRAINAGE_1",
+"itemState": "done",
+"src": "Ph4",
+"bars": [],
+"probes": [
+[
+"set:edgeSinksEnabled",
+true
+]
+],
+"live": [
+[
+"S4_sink_band",
+"PASS",
+"isSink at edge distance 9: True; at 11: False"
+],
+[
+"E5_sink_drains",
+"PASS",
+"band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
+],
+[
+"E5_inner_holds",
+"PASS",
+"interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
+],
+[
+"E5n_sinks_off",
+"PASS",
+"sinks OFF: run [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], total 10.0->10.0, isSink any=False"
+],
+[
+"E5_sinks_back_on",
+"PASS",
+"sinks ON again: [1, 1, 0, 0, 0, 1, 0, 0, 0, 0], total +7.0 (oracle +7)"
+]
+]
+},
+"thumb": "shots/E5_sinks.jpg"
+},
+{
+"id": "C09",
+"label": "[NOT BUILT] Pumping into tanks draws a source down",
+"group": "C \u00b7 Reservoirs: stock, budget, recession, rain, sinks",
+"effect": "A pump moves liquid from a source or canal into a tank; one full tank = 5 canal cells of stock.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience; Ph8",
+"bars": [],
+"probes": [
+[
+"cs:class \\w*Pump",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "D01",
+"label": "[PROVEN-LIVE] Viscosity: tar flows slower than water",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Each fluid moves on its own stride; from equal starts tar trails water. Toggle restores equal speed.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner: tar needs viscosity most",
+"bars": [
+"tar_fill_front_lags_water"
+],
+"probes": [
+[
+"set:viscosityEnabled",
+true
+],
+[
+"cs:ViscosityStride",
+true
+]
+],
+"live": [
+[
+"X7_tar_front_lags_water",
+"PASS",
+"gravity staircase D1..D4, one level each: after 3 pulses water at step 3, tar at 0; after 12 water 3, tar 2 (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels 1/1; pulse 200 viscosity True"
+],
+[
+"X7n_viscosity_off",
+"PASS",
+"viscosityEnabled OFF: a tar staircase moved like water, step 3 after 3 pulses (levels 1, ['RM_Fluid_Tar'])"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "D02",
+"label": "[PROVEN-LIVE] Fluid identity per cell / body",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Each wet cell and body records its own fluid, so oil in one pit and water in the next can coexist.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "LIQUID_BODY_FLUID_IDENTITY_1",
+"itemState": "proposed",
+"src": "Collapse [F]",
+"bars": [],
+"probes": [
+[
+"cs:fluidGrid",
+true
+],
+[
+"cs:FluidAt",
+true
+]
+],
+"live": [
+[
+"X6_two_fluids_distinct",
+"PASS",
+"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
+]
+]
+}
+},
+{
+"id": "D03",
+"label": "[BUILT-UNPROVEN] Fluids never mix: fronts meet and stop",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "A dry cell is claimed by the first fluid to reach it; the other front stops; drain one side and the other advances.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BODY_FLUID_IDENTITY_1",
+"itemState": "proposed",
+"src": "Owner Q3 2026-10-02",
+"bars": [],
+"probes": [
+[
+"cs:FluidsCompatible",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D04",
+"label": "[BUILT-UNPROVEN] Old saves migrate; lost fluids are warned, not converted",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "A save with only the per-map fluid stamps it onto every wet cell; a removed FluidDef warns once.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BODY_FLUID_IDENTITY_1",
+"itemState": "proposed",
+"src": "Identity step 4",
+"bars": [],
+"probes": [
+[
+"cs:ReportLostPaletteFluids",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D05",
+"label": "[PROVEN-LIVE] Map fluid cannot be switched after filling",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Changing the map's active fluid after classification is refused (no silent conversion).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "LIQUID_BODY_FLUID_IDENTITY_1",
+"itemState": "proposed",
+"src": "Identity",
+"bars": [],
+"probes": [
+[
+"cs:ActiveFluid",
+true
+]
+],
+"live": [
+[
+"T0n_fluid_switch_refused",
+"PASS",
+"set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water"
+]
+]
+}
+},
+{
+"id": "D06",
+"label": "[PROVEN-LIVE] Different fluids look different in a canal",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "A tar row and a water row draw different fill terrains; bespoke per-fluid art is still placeholder.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "LIQUID_BODY_FLUID_IDENTITY_1",
+"itemState": "proposed",
+"src": "Bar ruling 2026-09-17",
+"bars": [
+"fill_fluid_distinct"
+],
+"probes": [
+[
+"xml:defName>RM_Fill_Tar_Brim",
+true
+],
+[
+"xml:defName>RM_Fill_Water_Brim",
+true
+]
+],
+"live": [
+[
+"X6_two_fluids_distinct",
+"PASS",
+"tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix)"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "D07",
+"label": "[BUILT-UNPROVEN] Tar has a viscous surface, not tinted water",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Tar adopts Alpha Biomes' tar surfaces when present (MayRequire), else a tinted fallback.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "TAR_VISCOUS_SURFACE_ART_1",
+"itemState": "done",
+"src": "Ph7",
+"bars": [],
+"probes": [
+[
+"xml:AB_Tar",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D08",
+"label": "[PARTIAL] Slime reads thick and opaque, not recoloured water",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Slime canals draw a thick opaque surface. Today slime fill is a tint on the water ramp.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"slime_reads_as_viscous_not_water"
+],
+"probes": [
+[
+"xml:defName>RM_Fluid_SlimeGreen",
+true
+],
+[
+"tex:(?i)slime",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "D09",
+"label": "[NOT BUILT] Slime is nearly impossible to cross, slow to escape",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Owner: slime is so slippery it is nearly uncrossable and escape takes a long time.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [],
+"probes": [
+[
+"cs:(?i)slime\\w*(slip|escape)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "D10",
+"label": "[PROVEN-LIVE] A pawn in slime is drawn sunk into it",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "An occupant of a slime-filled D=4 cell is drawn down in the slime, not on its surface.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_DEPTH_DRAW_OFFSET_1",
+"itemState": "proposed",
+"src": "Bar",
+"bars": [
+"slime_occupant_below_surface"
+],
+"probes": [
+[
+"cs:class RM_Patch_PitDepthDraw",
+true
+]
+],
+"live": [
+[
+"X5_slime_occupant_below_surface",
+"PASS",
+"D=4 cell holding RM_Fluid_SlimeGreen F=2: occupant drawn 1.2 down (dry D=4: 1.20), drawDz -1.2"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "D11",
+"label": "[BUILT-UNPROVEN] Liquid registry: one row per liquid",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "LiquidDef rows carry properties + form slots (terrain, bottle, trade) for every liquid.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_REGISTRY_CORE_1",
+"itemState": "done",
+"src": "Registry",
+"bars": [],
+"probes": [
+[
+"cs:class LiquidDef",
+true
+],
+[
+"xml:defName>RM_Liquid_Tar<",
+true
+],
+[
+"xml:defName>RM_Liquid_FreshWater<",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D12",
+"label": "[BUILT-UNPROVEN] Canal fluids: water, tar, oil, poison, four slimes",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "FluidDefs that a canal can hold; oil and poison are contents, not pit fittings (collapse Q7).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Collapse Q7",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_Fluid_Water<",
+true
+],
+[
+"xml:defName>RM_Fluid_Tar<",
+true
+],
+[
+"xml:defName>RM_Fluid_Oil<",
+true
+],
+[
+"xml:defName>RM_Fluid_Poison<",
+true
+],
+[
+"xml:defName>RM_Fluid_SlimeRed<",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D13",
+"label": "[BUILT-UNPROVEN] Many Waters liquid terrains (brine, boiling, propane, acid...)",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Shallow/deep terrain pairs for the whole roster, plus coloured waters with bottles.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_TYPES_MOD_1",
+"itemState": "done",
+"src": "Roster",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_WaterBrineDeep<",
+true
+],
+[
+"xml:defName>RM_PropaneDeep<",
+true
+],
+[
+"xml:defName>RM_Water_Amber<",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "D14",
+"label": "[BUILT-UNPROVEN] Each liquid has its faces: flood, rain, river, lake, ocean",
+"group": "D \u00b7 Fluids: viscosity, identity, roster",
+"effect": "Every registry liquid declares how it appears as a flood, rain, river, lake and ocean.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_LIQUID_FACES_1",
+"itemState": "done",
+"src": "Faces item",
+"bars": [],
+"probes": [
+[
+"cs:class LiquidTerrainSuite",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E01",
+"label": "[BUILT-UNPROVEN] Burnable liquid catches from any fire",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "A vanilla fire on or beside tar/oil/propane lights the liquid (Harmony on Fire.SpawnSetup).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_FireLightsLiquid",
+true
+],
+[
+"set:canalFireEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E02",
+"label": "[BUILT-UNPROVEN] One travelling front: creeping fuse or detonation",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Per fluid: tar/propane creep, astrofuel/chemfuel detonate; one front a player can outrun.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6",
+"bars": [],
+"probes": [
+[
+"cs:RM_FluidFireKind",
+true
+],
+[
+"set:fireFrontSpeedMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E03",
+"label": "[BUILT-UNPROVEN] Burns for a long time: 1 canal level/day, 1 source level/5 days",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Burn is a rate on the depth ladder; a limitless source burns effectively forever.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 7",
+"bars": [
+"canal_fire_persists"
+],
+"probes": [
+[
+"set:canalBurnDaysPerLevel",
+true
+],
+[
+"set:sourceBurnDaysPerLevel",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E04",
+"label": "[BUILT-UNPROVEN] Fire travels back into the source",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "A lit canal lights its connected reservoir (up to sourceFireReach cells in).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [
+"canal_fire_reaches_reservoir"
+],
+"probes": [
+[
+"set:sourceFireReach",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E05",
+"label": "[PARTIAL] Burning liquid reads as the surface alight",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "A flame per burning cell (vanilla fire graphic today); bespoke burning-liquid art is owed.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6 owed art",
+"bars": [
+"canal_burning_reads_as_burning_liquid"
+],
+"probes": [
+[
+"xml:defName>RM_LiquidFlame<",
+true
+],
+[
+"tex:(?i)(burning|liquidflame)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "E06",
+"label": "[PARTIAL] A burned-out channel reads scorched and empty",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Burned-dry canal cells get ash today; bespoke scorched art is owed.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6 owed art",
+"bars": [
+"canal_spent_after_burn"
+],
+"probes": [
+[
+"cs:Ash",
+true
+],
+[
+"tex:(?i)scorch",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "E07",
+"label": "[BUILT-UNPROVEN] Pawns in a burning cell catch fire (D=4 occupant always)",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Fire harms whoever stands in the burning liquid; a trapped occupant always catches (ruling 22).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 22",
+"bars": [],
+"probes": [
+[
+"cs:class RM_LiquidFire",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "E08",
+"label": "[NOT BUILT] Explosions ignite liquid",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "An explosion (not only a fire) over burnable liquid lights it. Owed per Ph6.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6 owed",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_\\w*Explosion",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "E09",
+"label": "[NOT BUILT] Burning liquid can be put out",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Firefighting / rain can extinguish burning liquid. Owed per Ph6 (only burn-out exists).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph6 owed",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_\\w*Extinguish",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "E10",
+"label": "[BUILT-UNPROVEN] Liquid corrosion spike (ships OFF)",
+"group": "E \u00b7 Fire, ignition, corrosion",
+"effect": "Corrosive liquids damage what stands in them; an older spike, default off.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph1 escalation",
+"bars": [],
+"probes": [
+[
+"cs:class LiquidCorrosionMapComponent",
+true
+],
+[
+"set:liquidCorrosionEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F01",
+"label": "[PROVEN-LIVE] SUPERDEEP traps absolutely: no climbing out",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "A pawn that walks or falls into D=4 stays spawned and cannot path out; no lip cell is reachable.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "SUPERDEEP_HOLDER_RETIRE_1",
+"itemState": "done",
+"src": "Collapse ruling",
+"bars": [
+"never_snared_standing"
+],
+"probes": [
+[
+"set:superdeepCaptureEnabled",
+true
+],
+[
+"cs:class RM_Patch_Reachability_SuperdeepVeto",
+true
+]
+],
+"live": [
+[
+"P3_walk_in_held",
+"PASS",
+"walked in True; held True spawned True; descents 0->2 (own 1) fall 3.9; lip 0/8; ordered out: canReach False, ended (166, 100)"
+],
+[
+"P1_width_matrix",
+"PASS",
+"held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); "
+]
+]
+},
+"thumb": "shots/P_pits.jpg"
+},
+{
+"id": "F02",
+"label": "[PROVEN-LIVE] Pit must be as wide as the creature to hold it",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Owner Q4: a creature too large for the pit's width walks out; fill-in that narrows a pit frees it.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "SUPERDEEP_HOLDER_RETIRE_1",
+"itemState": "done",
+"src": "Owner Q4 2026-10-02",
+"bars": [],
+"probes": [
+[
+"set:pitWidthBodySizeMultiplier",
+true
+]
+],
+"live": [
+[
+"P1_width_matrix",
+"PASS",
+"held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); "
+],
+[
+"P2_fillin_releases_large",
+"PASS",
+"fill-in (161,101) -> D 3; large at (160,100): width 1 held False lip 12/12"
+]
+]
+},
+"thumb": "shots/P_pits.jpg"
+},
+{
+"id": "F03",
+"label": "[PROVEN-LIVE] Own colonists are not captured (shipped carve-out)",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "By default a colonist entering D=4 is not trapped; a setting makes the pit catch your own too.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_PIT_PAWN_ROWS_RED_1",
+"itemState": "done",
+"src": "Settings",
+"bars": [],
+"probes": [
+[
+"set:superdeepCapturesOwnFaction",
+true
+]
+],
+"live": [
+[
+"P5n_own_faction_carveout",
+"PASS",
+"carve-out ON (shipped): colonist in True captured False held False descents 6->6; out True; pawn ok fill 0"
+]
+]
+},
+"thumb": "shots/P_pits.jpg"
+},
+{
+"id": "F04",
+"label": "[PROVEN-LIVE] Falling in hurts",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "A descent into a deep cell deals fall damage (setting + multiplier).",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Pit model",
+"bars": [],
+"probes": [
+[
+"set:fallDamageEnabled",
+true
+],
+[
+"set:fallDamageMultiplier",
+true
+]
+],
+"live": [
+[
+"P3_walk_in_held",
+"PASS",
+"walked in True; held True spawned True; descents 0->2 (own 1) fall 3.9; lip 0/8; ordered out: canReach False, ended (166, 100)"
+]
+]
+}
+},
+{
+"id": "F05",
+"label": "[BUILT-UNPROVEN] 'Jump into pit' button strands the jumper",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "A gizmo lets a pawn jump into a superdeep cell (warns and confirms); they are stuck there too.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_SUPERDEEP_COLLAPSE_1",
+"itemState": "proposed",
+"src": "Collapse ruling",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_Pawn_JumpIntoPitGizmo",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F06",
+"label": "[BUILT-UNPROVEN] Superdeep occupant fires only at its 8 neighbours",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Ruling 23, the one sight exception: a D=4 pawn trades fire only with pawns at its own lip.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ruling 23",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_Verb_CanHitTargetFrom",
+true
+],
+[
+"set:superdeepShootingRuleEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F07",
+"label": "[BUILT-UNPROVEN] AI does not pick a pit occupant as a ranged target",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Raiders skip SUPERDEEP occupants in target selection instead of failing shots.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph5",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_AttackTargetFinder_BestAttackTarget",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F08",
+"label": "[BUILT-UNPROVEN] A trapped pawn is not counted as able to reach the map edge",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Flee/exit logic treats a trapped pawn as stuck rather than walking it off-map.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Pit model",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_Reachability_SuperdeepMapEdge",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F09",
+"label": "[BUILT-UNPROVEN] Inspect line names the pit state",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Selecting a pit occupant says it is trapped (and why).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Pit model",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_Pawn_PitInspectLine",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "F10",
+"label": "[NOT BUILT] Blast / blowback can knock a pawn into a pit",
+"group": "F \u00b7 Pits: superdeep capture & escape",
+"effect": "Involuntary entry by anything that moves a pawn against its will (weapon blowback, explosions).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "PIT_SUPERDEEP_COLLAPSE_1",
+"itemState": "proposed",
+"src": "Collapse ruling 6",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_\\w*(Knockback|Blowback|Stagger)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "G01",
+"label": "[BUILT-UNPROVEN] An enclosed superdeep area is a ROOM",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "LAW 2 exception [D]: depth bounds a room, so a dug pit area is one room (holds trapped enemies).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SUPERDEEP_PRISON_ROOM_1",
+"itemState": "proposed",
+"src": "Collapse [D]",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_\\w*(Region|District|RoomFromDepth)",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G02",
+"label": "[BUILT-UNPROVEN] A prisoner bed makes the pit a prison; fed and tended from the lip",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "With a vanilla prisoner bed the room is a prison on vanilla's terms; wardens never enter.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SUPERDEEP_PRISON_ROOM_1",
+"itemState": "proposed",
+"src": "Collapse Q1",
+"bars": [],
+"probes": [
+[
+"cs:(?i)(WardenFromLip|FeedFromLip|PitPrison)",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G03",
+"label": "[BUILT-UNPROVEN] Capture down (from the lip)",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "A warden ADJACENT to the lip captures a trapped/downed pawn without entering the pit.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SUPERDEEP_PRISON_ROOM_1",
+"itemState": "proposed",
+"src": "Collapse Q1 / [B-item]",
+"bars": [],
+"probes": [
+[
+"cs:(?i)capturedown|capture_down",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G04",
+"label": "[NOT BUILT] Convert down (recruit from the lip)",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "Recruitment/conversion interaction works from the lip; nobody climbs down.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "SUPERDEEP_PRISON_ROOM_1",
+"itemState": "proposed",
+"src": "Collapse Q1",
+"bars": [],
+"probes": [
+[
+"cs:(?i)convertdown|convert_down",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "G05",
+"label": "[BUILT-UNPROVEN] Too-wide creature is not offered capture down",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "A pawn the pit cannot hold (width rule) is not 'trapped' and gets no capture-down option.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SUPERDEEP_PRISON_ROOM_1",
+"itemState": "proposed",
+"src": "Owner Q4",
+"bars": [],
+"probes": [
+[
+"cs:(?i)capturedown|capture_down",
+true
+],
+[
+"set:pitWidthBodySizeMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G06",
+"label": "[BUILT-UNPROVEN] Open pit heats fast in sun, chills fast at night",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "An unroofed superdeep room tracks ambient faster than a roofed room (coupling multiplier).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_TEMPERATURE_SOFTENING_1",
+"itemState": "proposed",
+"src": "Collapse Q5",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_PitRoomCoupling",
+true
+],
+[
+"set:pitTemperatureCoupling",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G07",
+"label": "[BUILT-UNPROVEN] Exposure wears down resistance",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "RM_PitExposure accumulates on an exposed occupant and lowers recruitment resistance; vanilla heat/cold does the harm.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_TEMPERATURE_SOFTENING_1",
+"itemState": "proposed",
+"src": "Collapse [H]",
+"bars": [],
+"probes": [
+[
+"cs:class RM_PitExposure",
+true
+],
+[
+"xml:defName>RM_PitExposure<",
+true
+],
+[
+"set:pitExposureEnabled",
+true
+],
+[
+"set:pitResistanceLossMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "G08",
+"label": "[PARTIAL] 'Exposed Prisoner' thought: cruel, and reads as cruel",
+"group": "G \u00b7 Pits: prison room, capture down, temperature",
+"effect": "Compassionate colonists feel it; psychopaths (built) and hard-morality cultures (NOT yet) do not.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "PIT_TEMPERATURE_SOFTENING_1",
+"itemState": "proposed",
+"src": "Collapse [A-item]",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_ExposedPrisoner<",
+true
+],
+[
+"rx:src/RimMandrake/FlowWorks/Defs:(?i)precept.*ExposedPrisoner|ExposedPrisoner.*precept",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "H01",
+"label": "[PROVEN-LIVE] Ladder: lowered lets people out, raised strands them",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "A ladder in the D=4 cell works like a prison door: lowered = held False, raised = nobody climbs out.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "LADDER_PRISON_DOOR_1",
+"itemState": "done",
+"src": "Collapse ruling 4",
+"bars": [
+"ladder_state_legible"
+],
+"probes": [
+[
+"cs:class RM_CompLadder",
+true
+],
+[
+"xml:defName>RM_Ladder<",
+true
+],
+[
+"set:ladderPrisonDoorEnabled",
+true
+],
+[
+"set:ladderRequiredToExitEnabled",
+true
+]
+],
+"live": [
+[
+"P4_ladder_frees",
+"PASS",
+"ladder spawned True hasLadder True; held False lip 8/8; ordered out: arrived True; pawn ok fill 0"
+],
+[
+"P4b_ladder_raised_strands",
+"PASS",
+"raised True (Ladder_raised:_nobody_can_climb_out.): held True lip 0/8, ordered out canReach False | lowered False (Ladder_lowered:_your_people_climb;_prisoners_only_in_a_prison_break.): held False lip"
+]
+]
+},
+"thumb": "shots/P_pits.jpg"
+},
+{
+"id": "H02",
+"label": "[BUILT-UNPROVEN] Ladders only on an excavation",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Placement refuses a ladder anywhere but a dug cell.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LADDER_PRISON_DOOR_1",
+"itemState": "done",
+"src": "Ladder item",
+"bars": [],
+"probes": [
+[
+"cs:class PlaceWorker_LadderOnExcavation",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H03",
+"label": "[BUILT-UNPROVEN] Spikes: per-cell, D=4 only, hurt only on a fall in",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Spikes in one superdeep cell; walking up to them is harmless; any descent into that cell triggers them.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "CANAL_BOTTOM_SPIKES_1",
+"itemState": "done",
+"src": "Collapse Q6 / [G]",
+"bars": [],
+"probes": [
+[
+"cs:class RM_SpikeUtility",
+true
+],
+[
+"xml:defName>RM_Spikes<",
+true
+],
+[
+"cs:class PlaceWorker_SpikesOnSuperdeep",
+true
+],
+[
+"set:spikesEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H04",
+"label": "[BUILT-UNPROVEN] Spike damage: massive Sharp, scaled by body size, survivable",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Regular Stab damage (3 hits ~40 x BodySize PROPOSED), never instant death; armour applies.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SPIKE_DAMAGE_NUMBERS_RULING_1",
+"itemState": "done",
+"src": "Collapse [G]",
+"bars": [],
+"probes": [
+[
+"set:spikeDamageMultiplier",
+true
+],
+[
+"cs:BodySize",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H05",
+"label": "[PROVEN-LIVE] Pit cover hides the hole (looks like the ground)",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "A multi-cell terrain-mimic deck over D=4 prints the surrounding surface; slight seam at max zoom.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_COVER_FALL_REWIRE_1",
+"itemState": "done",
+"src": "Collapse ruling 6",
+"bars": [
+"pit_covered_invisible",
+"pit_covered_seam_at_max_zoom"
+],
+"probes": [
+[
+"cs:class TerrainMimicPrinter",
+true
+],
+[
+"cs:class Building_PitCover",
+true
+]
+],
+"live": [
+[
+"X8_cover_hides_pit",
+"PASS",
+"4 deck cells over D=4 (RM_Channel_Superdeep) print Soil, the surrounding surface; gives way: Gives_way_under_40_kg_on_the_whole_cover."
+],
+[
+"X9_cover_deck_uniform",
+"PASS",
+"deck prints ['Soil']; ring terrain ['Soil'] (one surface: no seam between deck cells or at the lip; the frame is still the judge's)"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "H06",
+"label": "[BUILT-UNPROVEN] Covered pit drops whoever steps on it",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Weight on a cover makes it give way and the pawn falls into the superdeep cell below.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_COVER_FALL_REWIRE_1",
+"itemState": "done",
+"src": "Collapse ruling 6",
+"bars": [],
+"probes": [
+[
+"cs:class CompPitCoverTrigger",
+true
+],
+[
+"set:trapTriggerEnabled",
+true
+],
+[
+"set:trapSensitivityMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H07",
+"label": "[BUILT-UNPROVEN] Three cover builds (plank lattice, woven scrap, reinforced frame)",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Cover tiers differ in what weight they bear; placed only over superdeep cells.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_COVER_FALL_REWIRE_1",
+"itemState": "done",
+"src": "Cover item",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_PitCover_PlankLattice<",
+true
+],
+[
+"xml:defName>RM_PitCover_WovenScrap<",
+true
+],
+[
+"xml:defName>RM_PitCover_ReinforcedFrame<",
+true
+],
+[
+"cs:class PlaceWorker_PitCoverOnSuperdeep",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H08",
+"label": "[BUILT-UNPROVEN] Drowning: liquid in an occupied D=4 cell drowns non-swimmers",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "F>0 at D=4 builds RM_PitDrowning on non-swimmers (swimmers and fliers spared).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_FILL_EFFECTS_1",
+"itemState": "proposed",
+"src": "Collapse Q3",
+"bars": [],
+"probes": [
+[
+"cs:class RM_PitFillEffects",
+true
+],
+[
+"xml:defName>RM_PitDrowning<",
+true
+],
+[
+"set:pitDrowningEnabled",
+true
+],
+[
+"set:pitDrowningRateMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H09",
+"label": "[BUILT-UNPROVEN] Poison fill: toxin keyed to fill level",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "A poison-filled cell applies toxic buildup scaled by F/D and toxic resistance, any depth.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_FILL_EFFECTS_1",
+"itemState": "proposed",
+"src": "Collapse Q7",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_Fluid_Poison<",
+true
+],
+[
+"cs:toxicPerDayAtBrim",
+true
+],
+[
+"set:poisonFillEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H10",
+"label": "[BUILT-UNPROVEN] Oil fill: ignitable, burns the occupant",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Oil is a creeping-fuse FluidDef; lit oil in an occupied pit burns the occupant (ruling 22).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "PIT_FILL_EFFECTS_1",
+"itemState": "proposed",
+"src": "Collapse Q7",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_Fluid_Oil<",
+true
+],
+[
+"cs:CreepingFuse",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "H11",
+"label": "[NOT BUILT] Flood an occupied pit by opening a sluice",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Opening a sluice onto an occupied pit lets liquid in (the scripted route is not written yet).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "PIT_FILL_EFFECTS_1",
+"itemState": "proposed",
+"src": "Fill-effects verify",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/FlowWorks:(?i)sluice.{0,40}drown|drown.{0,40}sluice",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "H12",
+"label": "[NOT BUILT] No pit def borrows vanilla's spike-trap art",
+"group": "H \u00b7 Pit hardware: ladder, spikes, cover, fill effects",
+"effect": "Nothing ships Things/Building/Security/TrapSpikeArmed (today the ladder still does).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Collapse verify",
+"bars": [
+"pit_not_vanilla_trap"
+],
+"probes": [
+[
+"!xml:TrapSpikeArmed",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "I01",
+"label": "[BUILT-UNPROVEN] Sluice: cheap stuffable door that passes liquid, holds small creatures",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "Two defs, both stuffable; stuff decides armour and fire survival ('learn what happens if made of wood').",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Door commission",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_Sluice<",
+true
+],
+[
+"cs:class Building_RM_FlowDoor",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "I02",
+"label": "[BUILT-UNPROVEN] Security grate door: passes liquid AND holds a real prisoner",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "The prisoner door at a canal's end: fluid enters without opening it.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Door commission",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_SecurityGrateDoor<",
+true
+],
+[
+"cs:class RM_FlowDoorRules",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "I03",
+"label": "[BUILT-UNPROVEN] Doors cannot be opened from inside the pit",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "A sluice/grate on a superdeep cell opens from outside or above only.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Collapse ruling 7",
+"bars": [],
+"probes": [
+[
+"set:flowDoorsSealedFromPitEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "I04",
+"label": "[BUILT-UNPROVEN] Release a held mech/creature through a sluice",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "Opening a sluice lets a big trapped creature walk out: the pit is a holding pen.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Collapse [C]",
+"bars": [],
+"probes": [
+[
+"set:sluiceLetsBigThroughEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "I05",
+"label": "[BUILT-UNPROVEN] Liquid flows through an open sluice / any grate",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "The flow engine treats an open sluice and a grate as passable for liquid.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Door commission",
+"bars": [],
+"probes": [
+[
+"cs:IsFlowDoor\\(edifice\\)",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "I06",
+"label": "[PARTIAL] Sluice open vs shut is visible without selecting it",
+"group": "I \u00b7 Doors: sluice & security grate",
+"effect": "Own art for both doors; today they borrow vanilla DoorSimple_Mover.",
+"prefill": null,
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "FLOWWORKS_DOOR_FAMILY_1",
+"itemState": "done",
+"src": "Bar",
+"bars": [
+"sluice_gate_state_legible"
+],
+"probes": [
+[
+"xml:defName>RM_Sluice<",
+true
+],
+[
+"tex:(?i)(sluice|grate)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "J01",
+"label": "[PROVEN-LIVE] Pawns sit lower at every deeper step",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Draw offset per depth (0.3 cell/level PROVISIONAL): D0..D4 strictly lower.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_DEPTH_DRAW_OFFSET_1",
+"itemState": "proposed",
+"src": "Depth ruling",
+"bars": [
+"pawn_height_ladder_legible"
+],
+"probes": [
+[
+"cs:class RM_Patch_PitDepthDraw",
+true
+],
+[
+"set:pitDepthDrawOffsetEnabled",
+true
+],
+[
+"set:pitSinkPerLevel",
+true
+]
+],
+"live": [
+[
+"X1_pawn_height_ladder",
+"PASS",
+"sink/drawDz by depth (0.3/level PROVISIONAL, strictly deeper each step): D0 0/0; D1 0.3/-0.3; D2 0.6/-0.6; D3 0.9/-0.9; D4 1.2/-1.2"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "J02",
+"label": "[PROVEN-LIVE] A pawn walking into a deeper cell visibly lowers",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "The offset is lerped along the step, so descending reads as movement down.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_DEPTH_DRAW_OFFSET_1",
+"itemState": "proposed",
+"src": "Depth ruling",
+"bars": [
+"pawn_lowers_on_deeper_cell"
+],
+"probes": [
+[
+"cs:class RM_Patch_PitDepthDraw",
+true
+]
+],
+"live": [
+[
+"X2_pawn_lowers_walking_in",
+"PASS",
+"walked D0->D4 arrived True: sink 0 -> 1.2 (drawDz -1.2) "
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "J03",
+"label": "[PROVEN-LIVE] A pawn walking out visibly rises",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Climbing out (by ladder) lifts the pawn back to ground level along the step.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_DEPTH_DRAW_OFFSET_1",
+"itemState": "proposed",
+"src": "Depth ruling",
+"bars": [
+"pawn_rises_on_shallower_cell"
+],
+"probes": [
+[
+"cs:class RM_Patch_PitDepthDraw",
+true
+]
+],
+"live": [
+[
+"X3_pawn_rises_walking_out",
+"PASS",
+"walked D4->D0 arrived True: sink 1.2 -> 0 (drawDz 0) "
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "J04",
+"label": "[PROVEN-LIVE] At D=4 the walls stand 20% above the occupant's head",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Owner's only number: wall top >= 1.2 x head height, so climbing out is visibly impossible.",
+"prefill": null,
+"fw": {
+"status": "PROVEN-LIVE",
+"color": "#5ac37f",
+"item": "PIT_DEPTH_DRAW_OFFSET_1",
+"itemState": "proposed",
+"src": "Depth ruling",
+"bars": [
+"pit_trapped_reads_as_trapped"
+],
+"probes": [
+[
+"cs:class RM_PitDrawMath",
+true
+]
+],
+"live": [
+[
+"X4_pit_wall_over_head",
+"PASS",
+"colonist on D=4 drawn 1.2 cells down; wall over crown 1.2 x a person's height (owner: walls 20% above the head, >= 1.2)"
+]
+]
+},
+"thumb": "shots/X_promoted.jpg"
+},
+{
+"id": "J05",
+"label": "[PARTIAL] Occupant reads as down in the hole; occupied vs empty at a glance",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Draw offset (built) + wall faces rising around the pawn (art owed).",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Rulings 33 + depth",
+"bars": [
+"pit_occupant_below_floor",
+"pit_occupied_distinguishable"
+],
+"probes": [
+[
+"cs:class RM_Patch_PitDepthDraw",
+true
+],
+[
+"tex:(?i)(excavation|pitwall|wallface|channel)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/REF_quarry.jpg"
+},
+{
+"id": "J06",
+"label": "[NOT BUILT] Wall-face art for all four depths (Quarry perspective)",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Shared rim + per-depth wall gradient; every depth legible and different from the others.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Ruling 33 / depth ruling",
+"bars": [
+"pit_depth_ladder_legible",
+"pit_walls_have_visible_depth"
+],
+"probes": [
+[
+"tex:(?i)(excavation|pitwall|wallface|rim)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/REF_quarry.jpg"
+},
+{
+"id": "J07",
+"label": "[PARTIAL] Spike art: some spike visibly projects",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Camera angle must let some spike show; today spikes borrow Skullspike.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Spike/camera ruling",
+"bars": [
+"spikes_read_distinct"
+],
+"probes": [
+[
+"xml:defName>RM_Spikes<",
+true
+],
+[
+"tex:(?i)spike",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "J08",
+"label": "[PARTIAL] Ladder art: raised vs lowered drawn on the wall",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Ladders drawn in perspective, raised beside the rim vs lowered into the hole.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Ruling 33",
+"bars": [
+"ladder_state_legible"
+],
+"probes": [
+[
+"xml:defName>RM_Ladder<",
+true
+],
+[
+"tex:(?i)ladder",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/REF_quarry.jpg"
+},
+{
+"id": "J09",
+"label": "[NOT BUILT] A dug channel looks dug (recessed bed, earthen walls), not gravel",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Today the channel borrows Terrain/Surfaces/Gravel.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Bar",
+"bars": [
+"canal_reads_as_dug_channel",
+"never_gravel_path"
+],
+"probes": [
+[
+"tex:(?i)(channel|excavation)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/S_ladder.jpg"
+},
+{
+"id": "J10",
+"label": "[PARTIAL] A superdeep cell reads as a big dark hole at play zoom",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Owner: 'we need a big dark pit', not a trap graphic.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Owner 2026-09-13",
+"bars": [
+"pit_reads_as_hole"
+],
+"probes": [
+[
+"xml:defName>RM_Channel_Superdeep<",
+true
+],
+[
+"tex:(?i)(superdeep|pit)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/REF_quarry.jpg"
+},
+{
+"id": "J11",
+"label": "[NOT BUILT] A multi-cell pit reads as one place, not a tile grid",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Irregular organic edges, Quarry-style, so an area reads as one excavation (and as a room).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Ruling 33",
+"bars": [
+"pit_reads_at_size"
+],
+"probes": [
+[
+"tex:(?i)(superdeep|pit|excavation)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/REF_quarry.jpg"
+},
+{
+"id": "J12",
+"label": "[PARTIAL] The bare excavation never reads as a building",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "The pit is terrain (built); its art must not look like a placed object on the floor (owed).",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Bar",
+"bars": [
+"never_reads_as_building"
+],
+"probes": [
+[
+"xml:defName>RM_Channel_Superdeep<",
+true
+],
+[
+"!cs:class Building_OpenPit",
+true
+],
+[
+"tex:(?i)(superdeep|excavation)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "J13",
+"label": "[PARTIAL] Depth and fill legible together in one view",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Same fill/different depth and same depth/different fill all distinguishable.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Bar",
+"bars": [
+"depth_and_fill_jointly_legible"
+],
+"probes": [
+[
+"xml:defName>RM_Fill_Water_Half",
+true
+],
+[
+"tex:(?i)(excavation|wallface|rim)",
+false
+]
+],
+"live": []
+},
+"thumb": "shots/S_ladder.jpg"
+},
+{
+"id": "J14",
+"label": "[PARTIAL] Dry and filled channels read as obstacles without a tooltip",
+"group": "J \u00b7 Pawn height draw & excavation art",
+"effect": "Path cost exists (A06/A07); the look of impeding is the art's job.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "EXCAVATION_WALL_ART_1",
+"itemState": "proposed",
+"src": "Bar",
+"bars": [
+"canal_dry_reads_as_obstacle",
+"filled_excavation_reads_as_obstacle"
+],
+"probes": [
+[
+"xml:<pathCost>30<\/pathCost>",
+true
+],
+[
+"tex:(?i)(channel|excavation)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "K01",
+"label": "[BUILT-UNPROVEN] Bottles: fill at a shore or tank, drink/use",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Empty bottle -> fill job -> per-liquid bottle -> use.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BOTTLE_LOOP_1",
+"itemState": "doing",
+"src": "Liquids framework \u00a74",
+"bars": [],
+"probes": [
+[
+"cs:class JobDriver_FillBottle",
+true
+],
+[
+"cs:class JobDriver_FillBottleFromTank",
+true
+],
+[
+"xml:defName>RM_Bottle_FreshWater<",
+true
+],
+[
+"set:bottleLoopEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K02",
+"label": "[BUILT-UNPROVEN] Dirty bottles and washing (toggle, default ON)",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Use leaves a dirty bottle; washing consumes water and returns an empty one.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BOTTLE_LOOP_1",
+"itemState": "doing",
+"src": "Bottle item",
+"bars": [],
+"probes": [
+[
+"cs:class JobDriver_WashBottle",
+true
+],
+[
+"xml:defName>RM_BottleDirty<",
+true
+],
+[
+"set:bottleDirtyStageEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K03",
+"label": "[BUILT-UNPROVEN] Buckets and barrels: bigger bottles, same chain",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Buckets and ~25-unit barrels; barrels are the vanilla-native bulk trade route.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BOTTLE_LOOP_1",
+"itemState": "doing",
+"src": "Owner 2026-09-13",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_BucketEmpty<",
+true
+],
+[
+"xml:defName>RM_BarrelEmpty<",
+true
+],
+[
+"tex:RM_Barrel",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K04",
+"label": "[PARTIAL] Special bottle behaviours: boiling reverts, blood rots",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Row data, no per-liquid C#: a revert timer (boiling/icy -> fresh) and rot (blood -> hemopack race).",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "LIQUID_BOTTLE_LOOP_1",
+"itemState": "doing",
+"src": "Bottle item",
+"bars": [],
+"probes": [
+[
+"cs:(?i)revert",
+true
+],
+[
+"xml:(?i)hemopack",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "K05",
+"label": "[BUILT-UNPROVEN] Bottles carry cuisine tags",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "ThingCategories so a future cuisine mod cooks against tags, never defNames.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_BOTTLE_LOOP_1",
+"itemState": "doing",
+"src": "Bottle item",
+"bars": [],
+"probes": [
+[
+"xml:(?i)cuisine",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K06",
+"label": "[BUILT-UNPROVEN] Liquid tank: fill from and empty into bottles",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "A universal container building; bottles empty into it and fill from it.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph8",
+"bars": [],
+"probes": [
+[
+"cs:class Building_LiquidTank",
+true
+],
+[
+"xml:defName>RM_LiquidTank<",
+true
+],
+[
+"cs:class JobDriver_EmptyBottleIntoTank",
+true
+],
+[
+"set:tankLoopEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K07",
+"label": "[BUILT-UNPROVEN] Liquid drill and tap raise subsurface liquid",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "On maps whose biome yields it, a drill/tap brings liquid up into an excavated outlet.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "MANY_WATERS_DRILL_BUILDINGS_1",
+"itemState": "done",
+"src": "Drill item",
+"bars": [],
+"probes": [
+[
+"cs:class Building_LiquidDrill",
+true
+],
+[
+"xml:defName>RM_LiquidDrill<",
+true
+],
+[
+"xml:defName>RM_LiquidTap<",
+true
+],
+[
+"cs:class PlaceWorker_DrillNeedsExcavatedOutlet",
+true
+],
+[
+"set:liquidDrillingEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K08",
+"label": "[NOT BUILT] Pumps",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Universal pump moving liquid between sources, canals and tanks.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph8",
+"bars": [],
+"probes": [
+[
+"xml:defName>RM_\\w*Pump\\w*<",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "K09",
+"label": "[BUILT-UNPROVEN] Flexible hoses (built in Gimme Some Slack)",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Hose reels a colonist drags out; lives in GimmeSomeSlack, carries no real liquid yet.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_HOSE_DEPLOY_DRAG_1",
+"itemState": "done",
+"src": "Ph8 / hose item",
+"bars": [],
+"probes": [
+[
+"file:src/RimMandrake/GimmeSomeSlack/Source/Hose/CompHoseReel.cs",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "K10",
+"label": "[NOT BUILT] Per-net adapters",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Adapters joining pipe/hose nets (the Ph8 internal interface boundary).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Ph8",
+"bars": [],
+"probes": [
+[
+"cs:class \\w*Adapter",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "K11",
+"label": "[NOT BUILT] Found liquid industry: desal, detox, tar refinery, pumping station",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Industrial scale is FOUND (wrecked -> repaired), never built from the menu in the campaign.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "LIQUID_INDUSTRY_SETPIECES_1",
+"itemState": "doing",
+"src": "Liquids framework \u00a74",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake:(?i)defName>\\w*(Desal|TarRefiner|PumpingStation)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "K12",
+"label": "[BUILT-UNPROVEN] Water cleaning chain wired to thirst",
+"group": "K \u00b7 Bottles, tanks, drilling, industry",
+"effect": "Crude/household/industrial cleaning tiers feed Dubs Bad Hygiene thirst.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "LIQUID_THIRST_CHAIN_1",
+"itemState": "doing",
+"src": "Thirst item",
+"bars": [],
+"probes": [
+[
+"cs:LiquidThirstQuality",
+true
+],
+[
+"rx:src/RimMandrake/FlowWorks/Defs:(?i)DBHThirst",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L01",
+"label": "[BUILT-UNPROVEN] Typed liquid shores on new maps",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "A landing GenStep repaints shores to the tile's liquid (affects newly generated maps).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "WORLDMAP_LIQUID_TAGS_1",
+"itemState": "doing",
+"src": "Liquid tags item",
+"bars": [],
+"probes": [
+[
+"cs:class RM_GenStep_LiquidShores",
+true
+],
+[
+"set:typedLiquidShoresEnabled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L02",
+"label": "[BUILT-UNPROVEN] World liquid tags on the frozen map",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "worldTags mark which tiles carry which liquid, read by shores and set-piece siting.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "WORLDMAP_LIQUID_TAGS_1",
+"itemState": "doing",
+"src": "Liquid tags item",
+"bars": [],
+"probes": [
+[
+"cs:class RM_WorldComponent_LiquidTags",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L03",
+"label": "[BUILT-UNPROVEN] Coloured steam rising from rivers",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Animated steam flecks over hot rivers, coloured per river.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "RIVER_STEAM_ANIMATION_1",
+"itemState": "doing",
+"src": "Steam item",
+"bars": [],
+"probes": [
+[
+"cs:class MapComponent_RiverSteam",
+true
+],
+[
+"xml:defName>RM_Fleck_Steam_Amber<",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L04",
+"label": "[BUILT-UNPROVEN] Nobody goes recreational swimming in sand",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Swim joy is refused on sand-like liquid terrains.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Many Waters",
+"bars": [],
+"probes": [
+[
+"cs:class RM_Patch_JoyGiver_GoSwimming_NoSandSwim",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L05",
+"label": "[BUILT-UNPROVEN] Swale: a fed canal slowly improves the soil beside it",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "While carrying water, adjacent cells climb sand -> soil -> rich soil, capped, slow.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "CRACKEDLANDS_MECHANICS_BUILD_1",
+"itemState": "doing",
+"src": "Cracked Lands ruling",
+"bars": [],
+"probes": [
+[
+"cs:class RM_CompSwale",
+true
+],
+[
+"xml:defName>RM_Swale<",
+true
+],
+[
+"set:swaleEnabled",
+true
+],
+[
+"set:swaleRateMultiplier",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L06",
+"label": "[NOT BUILT] Swale locked in the campaign until discovered",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "World-level unlock earned in the Cracked Lands; free tier stays a normal buildable.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1",
+"itemState": "proposed",
+"src": "Cracked Lands ruling",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake:(?i)swale\\w*(unlock|discover)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "L07",
+"label": "[NOT BUILT] Swale art from a real canal",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Today the swale borrows GraveEmpty; its art waits on screenshots of a real canal.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "SWALE_CANAL_ART_REFERENCE_1",
+"itemState": "doing",
+"src": "Owner art sheet",
+"bars": [],
+"probes": [
+[
+"tex:(?i)swale",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "L08",
+"label": "[NOT BUILT] Irrigation: plants beside a filled canal act watered",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Owner experience: 'natural irrigation of crops'. Solved in FloodedCanyon, not wired here.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_BUILD_PROGRAM_1",
+"itemState": "doing",
+"src": "Owner experience",
+"bars": [],
+"probes": [
+[
+"cs:class \\w*Irrigat",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "L09",
+"label": "[BUILT-UNPROVEN] River Works slice 1: river current + ford stones",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Surface current on vanilla rivers, fordable stones, swept-away pawns (new mod RiverWorks).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SURFACE_RIVER_WEIRS_1",
+"itemState": "proposed",
+"src": "River works design",
+"bars": [],
+"probes": [
+[
+"file:src/RimMandrake/RiverWorks/Source/RM_MapComponent_RiverCurrent.cs",
+true
+],
+[
+"file:src/RimMandrake/RiverWorks/Defs/TerrainDefs/RM_FordStones.xml",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L10",
+"label": "[BUILT-UNPROVEN] Weirs on ordinary rivers",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "Build a weir across a surface river to hold and raise water.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SURFACE_RIVER_WEIRS_1",
+"itemState": "proposed",
+"src": "Owner-typed 2026-09-26",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/RiverWorks:(?i)weir",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L11",
+"label": "[PARTIAL] Silt-trap, stake-line and hopper bank-works",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "The bank-works family from the weir system, on surface rivers.",
+"prefill": "wanted",
+"fw": {
+"status": "PARTIAL",
+"color": "#e8b64c",
+"item": "SURFACE_RIVER_WEIRS_1",
+"itemState": "proposed",
+"src": "Owner-typed 2026-09-26",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/RiverWorks:(?i)silt",
+true
+],
+[
+"rx:src/RimMandrake/RiverWorks:(?i)stake",
+true
+],
+[
+"rx:src/RimMandrake/RiverWorks:(?i)hopper",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "L12",
+"label": "[BUILT-UNPROVEN] Untended weir + flood = breach cascade",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "A weir left untended when a flood comes breaches and cascades downstream.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SURFACE_RIVER_WEIRS_1",
+"itemState": "proposed",
+"src": "Owner-typed 2026-09-26",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/RiverWorks:(?i)breach",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "L13",
+"label": "[BUILT-UNPROVEN] River Works slice 2: fish catch, drift, ferry",
+"group": "L \u00b7 Shores, rivers, weirs, swale, irrigation",
+"effect": "The rest of the surface-river works beyond weirs and bank-works.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "SURFACE_RIVER_WEIRS_1",
+"itemState": "proposed",
+"src": "Remaining inventory #12",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/RiverWorks:(?i)ferry",
+true
+],
+[
+"rx:src/RimMandrake/RiverWorks:(?i)drift",
+true
+],
+[
+"rx:src/RimMandrake/RiverWorks:(?i)fish",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "M01",
+"label": "[NOT BUILT] Digging a canal turns up local materials (a lump on the bank)",
+"group": "M \u00b7 Quarry digging",
+"effect": "Excavation can yield biome-local materials dropped on the bank (availability by biome, configurable).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Quarry item / remaining inventory #6",
+"bars": [],
+"probes": [
+[
+"cs:(?i)quarry|canaldigfind|digfind",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "M02",
+"label": "[NOT BUILT] A letter on the first find of each material per map",
+"group": "M \u00b7 Quarry digging",
+"effect": "The first time a material turns up on a map, a letter says what and where.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Remaining inventory #6",
+"bars": [],
+"probes": [
+[
+"cs:(?i)(firstfind|first_find)",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "M03",
+"label": "[NOT BUILT] Deep cuts reach deep-drill minerals; mineral-less biomes give rock chunks",
+"group": "M \u00b7 Quarry digging",
+"effect": "Depth decides what can turn up; a biome with no minerals yields local rock chunks instead.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Remaining inventory #6",
+"bars": [],
+"probes": [
+[
+"cs:(?i)quarry\\w*(deep|depth)|deepdrillmineral",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "M04",
+"label": "[NOT BUILT] Reads the mineral abundance registry",
+"group": "M \u00b7 Quarry digging",
+"effect": "What can turn up comes from the shared mineral abundance registry, not a FlowWorks list.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Quarry item",
+"bars": [],
+"probes": [
+[
+"cs:(?i)mineralabundance|MineralRegistry",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "M05",
+"label": "[NOT BUILT] Sluice box: a stream slowly yields ore",
+"group": "M \u00b7 Quarry digging",
+"effect": "River Works half; waits on the rivers-carry column of MINERALS_WHERE_THEY_BELONG_1.",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Quarry item",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake:(?i)defName>\\w*SluiceBox",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "M06",
+"label": "[NOT BUILT] Panning for gold in a river",
+"group": "M \u00b7 Quarry digging",
+"effect": "A colonist pans a river cell for a slow trickle of gold (River Works half).",
+"prefill": "wanted",
+"fw": {
+"status": "NOT BUILT",
+"color": "#e06c6c",
+"item": "FLOWWORKS_QUARRY_DIGGING_1",
+"itemState": "proposed",
+"src": "Quarry item",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake:(?i)defName>\\w*(GoldPan|Panning)\\w*<",
+false
+]
+],
+"live": []
+}
+},
+{
+"id": "N01",
+"label": "[BUILT-UNPROVEN] Every mechanic has a Mod Settings toggle, grouped by section",
+"group": "N \u00b7 Settings, proofs, shipping",
+"effect": "Defaults = shipped behaviour; the settings screen is grouped (excavation, stock, fire, pits, containers...).",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "MOD_OPTIONS_RETROFIT_1",
+"itemState": "doing",
+"src": "Standing rule 2026-09-12",
+"bars": [],
+"probes": [
+[
+"cs:class RimMandrakeFlowWorksSettings",
+true
+],
+[
+"cs:CheckboxLabeled",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "N02",
+"label": "[BUILT-UNPROVEN] All mechanics off still digs dry channels",
+"group": "N \u00b7 Settings, proofs, shipping",
+"effect": "An all-off component proves the mod degrades to a channel digger.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_NORTHSTAR_SHIP_1",
+"itemState": "proposed",
+"src": "Ship item",
+"bars": [],
+"probes": [
+[
+"rx:src/RimMandrake/FlowWorks:all_off_still_digs",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "N03",
+"label": "[BUILT-UNPROVEN] Worldgen-affecting toggle labelled as such",
+"group": "N \u00b7 Settings, proofs, shipping",
+"effect": "The shores toggle says it affects newly generated maps.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_NORTHSTAR_SHIP_1",
+"itemState": "proposed",
+"src": "Settings rule",
+"bars": [],
+"probes": [
+[
+"cs:affects newly generated maps",
+true
+]
+],
+"live": []
+}
+},
+{
+"id": "N04",
+"label": "[BUILT-UNPROVEN] Bridge proof surface (static calls) for every promoted row",
+"group": "N \u00b7 Settings, proofs, shipping",
+"effect": "Proof*/Report static calls the north-star driver reads state through.",
+"prefill": null,
+"fw": {
+"status": "BUILT-UNPROVEN",
+"color": "#6aa6e8",
+"item": "FLOWWORKS_NORTHSTAR_WIRE_1",
+"itemState": "done",
+"src": "North star",
+"bars": [],
+"probes": [
+[
+"cs:class RM_PromotionProofs",
+true
+],
+[
+"cs:class RM_LiquidFireProof",
+true
+],
+[
+"cs:class FlowWorksDebugActions",
+true
+]
+],
+"live": []
+}
+}
+]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<!-- ══ FILL IN #3 (optional) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+<script id="RENDER">
+window.itemBody = it => {
+  const e = window.esc, s = it.fw || {};
+  const pr = (s.probes || []).map(p => `<span class="mark ${p[1] ? '' : 'inferred'}" style="${p[1] ? 'color:#8fd3a8;border-color:#2b5a3b' : ''}" title="declared probe">${p[1] ? '✓' : '✗'} ${e(p[0])}</span>`).join('');
+  const lv = (s.live || []).map(r => `<span class="mark" style="${r[1] === 'PASS' ? 'color:#5ac37f;border-color:#2b5a3b' : 'color:#e06c6c;border-color:#5a2b2b'}" title="${e(r[2] || '')}">${e(r[0])} ${e(r[1])}</span>`).join('');
+  const bars = (s.bars || []).map(b => `<span class="mark absent" title="north-star bar">★ ${e(b)}</span>`).join('');
+  return `<div class="effect"><b style="color:${e(s.color)}">${e(s.status)}</b> · ${e(it.effect)}</div>
+    <div class="marks"><span class="mark absent">${e(s.item)} <b>${e(s.itemState)}</b></span><span class="mark absent">intent: ${e(s.src)}</span>${bars}</div>
+    <div class="marks">${lv}${pr}</div>`;
+};
+</script>
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  rec.decidedAt = new Date().toISOString();      // a human act: prefilled vs yours is countable
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  /* window.itemOptions(it) -> option list for THIS row (default: all). A sheet whose options
+     differ per row (column letters) shows only the ones that row has. */
+  const rowOpts = (window.itemOptions && window.itemOptions(it)) || OPTS;
+  const opts = rowOpts.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    /* an option with bulk:false gets no "all X" button (e.g. per-row column letters, where
+       the same key means a different picture on every row) */
+    const bulk = OPTS.filter(op => op.bulk !== false).map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0, yours = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1;
+      const d = decOf(it.id);
+      if (d.decidedAt || isOverride(it.id) || prefillOf(it) == null) yours++; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${yours}</b>/${total} decided by you`
+    + (decided - yours ? ` · <b>${decided - yours}</b> still the agent's prefill` : '')
+    + ` · <b>${total - decided}</b> empty`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+</body>
+</html>
