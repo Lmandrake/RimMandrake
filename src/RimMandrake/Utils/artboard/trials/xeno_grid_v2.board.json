@@ -1,0 +1,145 @@
+{
+ "_note": "First real trial (2026-10-06): Transient/xenotype_review/xeno_grid_v2.png, staged by stage_xenotype_grid.py (13 xenotypes, 5 cols, spread 7). No geometry was recorded with the shot, so the mapping is fitted from three pawns used as markers (cell centre ~ 24 px above the name label); local cells, not map cells.",
+ "image": "../../../../../Transient/xenotype_review/xeno_grid_v2.png",
+ "markers": [
+  {
+   "cell": [
+    0,
+    0
+   ],
+   "px": [
+    236,
+    357
+   ]
+  },
+  {
+   "cell": [
+    28,
+    -7
+   ],
+   "px": [
+    936,
+    532
+   ]
+  },
+  {
+   "cell": [
+    0,
+    -14
+   ],
+   "px": [
+    236,
+    707
+   ]
+  }
+ ],
+ "pad": 1.0,
+ "overhang": 0.3,
+ "subjects": [
+  {
+   "id": "k00_Noob",
+   "label": "Noob",
+   "cell": [
+    0,
+    0
+   ]
+  },
+  {
+   "id": "k01_Fernandez",
+   "label": "Fernandez",
+   "cell": [
+    7,
+    0
+   ]
+  },
+  {
+   "id": "k02_Nails",
+   "label": "Nails",
+   "cell": [
+    14,
+    0
+   ]
+  },
+  {
+   "id": "k03_Sophie",
+   "label": "Sophie",
+   "cell": [
+    21,
+    0
+   ]
+  },
+  {
+   "id": "k04_Rynyk",
+   "label": "Rynyk",
+   "cell": [
+    28,
+    0
+   ]
+  },
+  {
+   "id": "k05_Sayuri",
+   "label": "Sayuri",
+   "cell": [
+    0,
+    -7
+   ]
+  },
+  {
+   "id": "k06_Ems",
+   "label": "Ems",
+   "cell": [
+    7,
+    -7
+   ]
+  },
+  {
+   "id": "k07_Zihao",
+   "label": "Zihao",
+   "cell": [
+    14,
+    -7
+   ]
+  },
+  {
+   "id": "k08_Pam",
+   "label": "Pam",
+   "cell": [
+    21,
+    -7
+   ]
+  },
+  {
+   "id": "k09_Snuggler",
+   "label": "Snuggler",
+   "cell": [
+    28,
+    -7
+   ]
+  },
+  {
+   "id": "k10_Eddie",
+   "label": "Eddie",
+   "cell": [
+    0,
+    -14
+   ]
+  },
+  {
+   "id": "k11_Dutch",
+   "label": "Dutch",
+   "cell": [
+    7,
+    -14
+   ]
+  },
+  {
+   "id": "k12_McCann",
+   "label": "McCann",
+   "cell": [
+    14,
+    -14
+   ]
+  }
+ ],
+ "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?"
+}

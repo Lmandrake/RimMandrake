@@ -1,0 +1,548 @@
+{
+ "board": "/home/mandrake/rm/bench/src/RimMandrake/Utils/artboard/trials/xeno_grid_v2.board.json",
+ "frame": [
+  1298,
+  950
+ ],
+ "mapping": {
+  "ax": 25.0,
+  "bx": 223.5,
+  "az": -25.0,
+  "bz": 369.5,
+  "ppc": 25.0,
+  "residual_px": 0.0
+ },
+ "fg_mode": "ring",
+ "subjects": 13,
+ "passed_tier_a": 8,
+ "flagged": 5,
+ "by_check": {
+  "HOLE": [
+   "k00_Noob",
+   "k06_Ems"
+  ],
+  "OFF_CELL": [
+   "k02_Nails",
+   "k07_Zihao"
+  ],
+  "OVERFLOW": [
+   "k07_Zihao"
+  ],
+  "EMPTY": [
+   "k08_Pam"
+  ]
+ },
+ "rows": [
+  {
+   "id": "k00_Noob",
+   "label": "Noob",
+   "cell": [
+    0,
+    0
+   ],
+   "box": [
+    191,
+    312,
+    281,
+    402
+   ],
+   "findings": [
+    {
+     "check": "HOLE",
+     "detail": "67% of the silhouette is enclosed ground-coloured pixels: an alpha hole, a missing layer, OR a body filled with the ground's own colour \u2014 ring mode cannot tell these apart; reshoot with a clean plate"
+    }
+   ],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.138,
+    "ring_fg": 0.018,
+    "ground_rgb": [
+     97,
+     76,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.14,
+    "colours": {
+     "black": 0.611,
+     "brown": 0.29,
+     "orange": 0.045,
+     "red": 0.032
+    },
+    "edge_solidity": {
+     "left": 0.26,
+     "right": 0.03,
+     "bottom": 0.33
+    },
+    "holes": 0.666
+   }
+  },
+  {
+   "id": "k01_Fernandez",
+   "label": "Fernandez",
+   "cell": [
+    7,
+    0
+   ],
+   "box": [
+    366,
+    312,
+    456,
+    402
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.11,
+    "ring_fg": 0.026,
+    "ground_rgb": [
+     97,
+     76,
+     57
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.03,
+    "colours": {
+     "grey": 0.551,
+     "white": 0.216,
+     "black": 0.159,
+     "red": 0.057
+    },
+    "edge_solidity": {
+     "left": 0.09,
+     "right": 0.26,
+     "top": 0.46,
+     "bottom": 0.31
+    },
+    "holes": 0.011
+   }
+  },
+  {
+   "id": "k02_Nails",
+   "label": "Nails",
+   "cell": [
+    14,
+    0
+   ],
+   "box": [
+    541,
+    312,
+    631,
+    402
+   ],
+   "findings": [
+    {
+     "check": "OFF_CELL",
+     "detail": "the drawn mass sits 0.70 cells from the cell centre \u2014 subject displaced, or the board geometry is wrong"
+    }
+   ],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.049,
+    "ring_fg": 0.03,
+    "ground_rgb": [
+     98,
+     77,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.7,
+    "colours": {
+     "grey": 0.722,
+     "black": 0.228,
+     "red": 0.025,
+     "brown": 0.013
+    },
+    "holes": 0.013
+   }
+  },
+  {
+   "id": "k03_Sophie",
+   "label": "Sophie",
+   "cell": [
+    21,
+    0
+   ],
+   "box": [
+    716,
+    312,
+    806,
+    402
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.043,
+    "ring_fg": 0.015,
+    "ground_rgb": [
+     96,
+     76,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.16,
+    "colours": {
+     "black": 0.75,
+     "brown": 0.235,
+     "red": 0.015
+    },
+    "edge_solidity": {
+     "left": 0.09,
+     "right": 0.04,
+     "top": 0.08,
+     "bottom": 0.08
+    },
+    "holes": 0.0
+   }
+  },
+  {
+   "id": "k04_Rynyk",
+   "label": "Rynyk",
+   "cell": [
+    28,
+    0
+   ],
+   "box": [
+    891,
+    312,
+    981,
+    402
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.198,
+    "ring_fg": 0.011,
+    "ground_rgb": [
+     84,
+     65,
+     55
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.18,
+    "colours": {
+     "magenta": 0.779,
+     "black": 0.221
+    },
+    "edge_solidity": {
+     "left": 0.03,
+     "right": 0.07,
+     "top": 0.5
+    },
+    "holes": 0.048
+   }
+  },
+  {
+   "id": "k05_Sayuri",
+   "label": "Sayuri",
+   "cell": [
+    0,
+    -7
+   ],
+   "box": [
+    191,
+    487,
+    281,
+    577
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.133,
+    "ring_fg": 0.017,
+    "ground_rgb": [
+     98,
+     77,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.13,
+    "colours": {
+     "grey": 0.821,
+     "black": 0.165,
+     "red": 0.009,
+     "yellow": 0.005
+    },
+    "edge_solidity": {
+     "left": 0.26,
+     "right": 0.13,
+     "top": 0.46,
+     "bottom": 0.31
+    },
+    "holes": 0.045
+   }
+  },
+  {
+   "id": "k06_Ems",
+   "label": "Ems",
+   "cell": [
+    7,
+    -7
+   ],
+   "box": [
+    366,
+    487,
+    456,
+    577
+   ],
+   "findings": [
+    {
+     "check": "HOLE",
+     "detail": "20% of the silhouette is enclosed ground-coloured pixels: an alpha hole, a missing layer, OR a body filled with the ground's own colour \u2014 ring mode cannot tell these apart; reshoot with a clean plate"
+    }
+   ],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.444,
+    "ring_fg": 0.022,
+    "ground_rgb": [
+     97,
+     76,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.05,
+    "colours": {
+     "yellow": 0.459,
+     "black": 0.249,
+     "blue": 0.221,
+     "brown": 0.066
+    },
+    "edge_solidity": {
+     "left": 0.15,
+     "right": 0.23
+    },
+    "holes": 0.205
+   }
+  },
+  {
+   "id": "k07_Zihao",
+   "label": "Zihao",
+   "cell": [
+    14,
+    -7
+   ],
+   "box": [
+    541,
+    487,
+    631,
+    577
+   ],
+   "findings": [
+    {
+     "check": "OFF_CELL",
+     "detail": "the drawn mass sits 0.78 cells from the cell centre \u2014 subject displaced, or the board geometry is wrong"
+    },
+    {
+     "check": "OVERFLOW",
+     "detail": "8% of the surrounding ground is covered \u2014 the sprite draws outside its cells (or a neighbour/foreign object intrudes)"
+    }
+   ],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.063,
+    "ring_fg": 0.081,
+    "ground_rgb": [
+     98,
+     77,
+     59
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.78,
+    "colours": {
+     "blue": 0.772,
+     "black": 0.228
+    },
+    "holes": 0.0
+   }
+  },
+  {
+   "id": "k08_Pam",
+   "label": "Pam",
+   "cell": [
+    21,
+    -7
+   ],
+   "box": [
+    716,
+    487,
+    806,
+    577
+   ],
+   "findings": [
+    {
+     "check": "EMPTY",
+     "detail": "only 0.4% of the cell differs from the ground (ring mode) \u2014 but 5% of the surrounding ring is foreground, so the subject is probably DISPLACED off its declared cell"
+    }
+   ],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.004,
+    "ring_fg": 0.053,
+    "ground_rgb": [
+     98,
+     76,
+     58
+    ],
+    "magenta": 0.0
+   }
+  },
+  {
+   "id": "k09_Snuggler",
+   "label": "Snuggler",
+   "cell": [
+    28,
+    -7
+   ],
+   "box": [
+    891,
+    487,
+    981,
+    577
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.073,
+    "ring_fg": 0.017,
+    "ground_rgb": [
+     85,
+     66,
+     55
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.28,
+    "colours": {
+     "red": 0.846,
+     "black": 0.154
+    },
+    "edge_solidity": {
+     "left": 0.05,
+     "right": 0.1,
+     "top": 0.15,
+     "bottom": 0.31
+    },
+    "holes": 0.064
+   }
+  },
+  {
+   "id": "k10_Eddie",
+   "label": "Eddie",
+   "cell": [
+    0,
+    -14
+   ],
+   "box": [
+    191,
+    662,
+    281,
+    752
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.171,
+    "ring_fg": 0.019,
+    "ground_rgb": [
+     98,
+     76,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.13,
+    "colours": {
+     "blue": 0.872,
+     "black": 0.106,
+     "brown": 0.007,
+     "red": 0.007
+    },
+    "edge_solidity": {
+     "left": 0.18,
+     "right": 0.03,
+     "top": 0.07
+    },
+    "holes": 0.0
+   }
+  },
+  {
+   "id": "k11_Dutch",
+   "label": "Dutch",
+   "cell": [
+    7,
+    -14
+   ],
+   "box": [
+    366,
+    662,
+    456,
+    752
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.349,
+    "ring_fg": 0.017,
+    "ground_rgb": [
+     97,
+     76,
+     58
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.05,
+    "colours": {
+     "black": 0.71,
+     "blue": 0.185,
+     "grey": 0.093,
+     "cyan": 0.009
+    },
+    "edge_solidity": {
+     "left": 0.03,
+     "right": 0.09,
+     "top": 0.24,
+     "bottom": 0.28
+    },
+    "holes": 0.009
+   }
+  },
+  {
+   "id": "k12_McCann",
+   "label": "McCann",
+   "cell": [
+    14,
+    -14
+   ],
+   "box": [
+    541,
+    662,
+    631,
+    752
+   ],
+   "findings": [],
+   "metrics": {
+    "fg_mode": "ring",
+    "core_fg": 0.151,
+    "ring_fg": 0.018,
+    "ground_rgb": [
+     96,
+     75,
+     56
+    ],
+    "magenta": 0.0,
+    "centroid_offset_cells": 0.1,
+    "colours": {
+     "grey": 0.752,
+     "black": 0.227,
+     "blue": 0.008,
+     "brown": 0.008
+    },
+    "edge_solidity": {
+     "left": 0.14,
+     "right": 0.21,
+     "top": 0.38,
+     "bottom": 0.31
+    },
+    "holes": 0.028
+   }
+  }
+ ]
+}
