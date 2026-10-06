@@ -23,18 +23,27 @@ namespace RimMandrake.FeverWood
     // keeps advancing once nothing closer is left alive, so a raid that
     // kills the bait simply continues on toward the colony by itself.
     //
-    // Ants (RM_FactionDef_KurrethSwarm, this mod) are always available.
-    // The second front (RSW_Shokk_FeraliskBrood, the canon Wyyyschokk under
-    // this world's "Feralisk" name) lives in the RSW-tier Shokk mod per
-    // Q11a and is looked up by defName only — absent that mod, the second
-    // front simply never fires ("ants only"), the same graceful-
-    // degradation posture as every other MayRequire-gated class here.
+    // Both fronts are always available. Ants: RM_FactionDef_KurrethSwarm.
+    // The Webwork front: RSW_Shokk_FeraliskBrood (the canon Wyyyschokk under
+    // this world's "Feralisk" name, RSW-tier Shokk mod per Q11a, looked up by
+    // defName only) when that mod is loaded, otherwise this mod's own
+    // RM_FactionDef_SkrethBrood (FEVERWOOD_RM_CAST_COMPLETION_1 spec 2: "the
+    // skreth IS the free-tier face of the Webwork brood ... The two-front war
+    // is identical in both tiers"). There is no ants-for-both fallback.
     public class RM_MapComponent_TwoFrontLure : MapComponent
     {
         private const int CheckIntervalTicks = 2500; // 1 in-game hour
         private const float TicksPerDay = 60000f;
         private const string AntFactionDefName = "RM_FactionDef_KurrethSwarm";
         private const string FeraliskFactionDefName = "RSW_Shokk_FeraliskBrood";
+        private const string SkrethFactionDefName = "RM_FactionDef_SkrethBrood";
+
+        // The Webwork front for this mod set: the campaign's feralisk brood
+        // when loaded, else the free skreth brood. Never the ants.
+        public static string WebworkFrontFactionDefName =>
+            DefDatabase<FactionDef>.GetNamedSilentFail(FeraliskFactionDefName) != null
+                ? FeraliskFactionDefName
+                : SkrethFactionDefName;
 
         private readonly List<RM_CompLureStake> activeLures = new List<RM_CompLureStake>();
 
@@ -103,6 +112,12 @@ namespace RimMandrake.FeverWood
             pendingSecondWaveTick = -1;
             pendingSecondWaveFactionDefName = null;
 
+            if (factionDefName == FeraliskFactionDefName || factionDefName == SkrethFactionDefName)
+            {
+                // A wave scheduled before a mod-list change re-resolves to
+                // whichever Webwork front this session actually has.
+                factionDefName = WebworkFrontFactionDefName;
+            }
             FactionDef def = DefDatabase<FactionDef>.GetNamedSilentFail(factionDefName);
             if (def != null)
             {
@@ -114,20 +129,14 @@ namespace RimMandrake.FeverWood
         {
             IntVec3 originCell = originStake.parent.Position;
             bool antsFirst = Rand.Bool;
+            string webworkDefName = WebworkFrontFactionDefName;
             FactionDef firstDef = DefDatabase<FactionDef>.GetNamedSilentFail(
-                antsFirst ? AntFactionDefName : FeraliskFactionDefName);
-            string secondDefName = antsFirst ? FeraliskFactionDefName : AntFactionDefName;
-
+                antsFirst ? AntFactionDefName : webworkDefName);
+            string secondDefName = antsFirst ? webworkDefName : AntFactionDefName;
             if (firstDef == null)
             {
-                // The randomly-picked front isn't loaded this session (e.g.
-                // Shokk/SWAC absent) — fall back to the one that IS,
-                // instead of silently doing nothing this hour.
-                firstDef = DefDatabase<FactionDef>.GetNamedSilentFail(AntFactionDefName);
-                secondDefName = FeraliskFactionDefName;
-            }
-            if (firstDef == null)
-            {
+                // Both fronts ship in this mod, so this only happens on a
+                // broken def load; do nothing rather than substitute a front.
                 return;
             }
 

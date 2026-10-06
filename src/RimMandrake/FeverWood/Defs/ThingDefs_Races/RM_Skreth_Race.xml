@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_RM_CAST_COMPLETION_1 spec 2: the skreth, the free second front.
+     fever_wood_rm_cast_proposal_2026-09-24.md (new row "skreth", RM_Skreth): "large (bs ~2.5); the brood
+     predator, the raider from the Webwork direction; hunts in a matron-led brood (skreth matron); F9 off-map
+     raider, the second front; carnivore; 0, off-map only". Art brief: "low eight-limbed silk-grey ambusher,
+     forelimbs raised in a strike cock, egg-clutch sheen on the matron".
+     Ruling (same doc): "The skreth IS the free-tier face of the Webwork brood ... The two-front war is
+     identical in both tiers."
+
+     🔴 Never a wildAnimals row (commonality 0, off-map only). It exists to populate
+     RM_FactionDef_SkrethBrood, which RM_MapComponent_TwoFrontLure uses as the second front whenever the
+     campaign's RSW_Shokk_FeraliskBrood is not loaded. Same shape as RM_Kurreth (RM_Kurreth_Race.xml).
+
+     ONE race, two PawnKindDefs: RM_Skreth and RM_SkrethMatron. A PawnKindDef cannot change bodySize, so the
+     matron is the same race drawn larger, always female, with a higher combatPower; she reuses the skreth
+     renders (the prompt already carries the egg-clutch sheen; separate matron art only if the owner asks).
+
+     Every number not ruled (bodySize 2.5 and carnivore are ruled) is PROVISIONAL, tuned against
+     RM_Ollathrix (bs 2.6, combatPower 160) and vanilla Megaspider. No flight (not airborne in the fiction).
+     Art: feverwood_skreth_{east,north,south} installed by art.py install (reason artpipe-collect). -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skreth</defName>
+    <label>skreth</label>
+    <description>A low, wide, eight-limbed hunter the colour of old silk, carried so close to the ground that its body barely clears the mud. It moves in a brood behind a larger female, and when it closes it rears its two forelimbs up and back in a cocked strike that falls like a pair of blades.\n\nThe skreth come from the webbed side of the wood, and they do not take prey home. They kill where they find it.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>  <!-- PROVISIONAL: a raider, it must close -->
+      <MarketValue>300</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>  <!-- PROVISIONAL -->
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>  <!-- PROVISIONAL -->
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>strike forelimbs</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>16</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2.2</cooldownTime>  <!-- PROVISIONAL -->
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>  <!-- PROVISIONAL -->
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>  <!-- PROVISIONAL -->
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>  <!-- one of the sheet's two raiders: only they pursue (ban 3) -->
+      <baseBodySize>2.5</baseBodySize>  <!-- ruled ~2.5 -->
+      <baseHealthScale>1.6</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>0.6</baseHungerRate>  <!-- PROVISIONAL -->
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>  <!-- PROVISIONAL -->
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>  <!-- PROVISIONAL -->
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>10</gestationPeriodDays>  <!-- PROVISIONAL -->
+      <lifeExpectancy>10</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skreth</defName>
+    <label>skreth</label>
+    <race>RM_Skreth</race>
+    <combatPower>140</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The matron leads the brood: same race, always female, drawn larger. -->
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_SkrethMatron</defName>
+    <label>skreth matron</label>
+    <race>RM_Skreth</race>
+    <combatPower>200</combatPower>  <!-- PROVISIONAL -->
+    <fixedGender>Female</fixedGender>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.4</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Skreth/RM_Skreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>  <!-- PROVISIONAL -->
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

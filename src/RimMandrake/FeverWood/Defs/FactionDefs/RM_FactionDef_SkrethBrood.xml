@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FactionDef_SkrethBrood.xml                FEVERWOOD_RM_CAST_COMPLETION_1 spec 2
+
+  The free tier's second hidden FactionDef, cloned from RM_FactionDef_KurrethSwarm (same hidden /
+  permanentEnemy posture; see that file's header). permanentEnemy makes it hostile to the player AND to
+  the kurreth swarm both ways, exactly as the kurreth/feralisk pair already is.
+
+  RM_MapComponent_TwoFrontLure uses this as the Webwork-side front whenever the campaign's
+  RSW_Shokk_FeraliskBrood (mandrake.rsw.shokk) is not loaded. When it IS loaded the campaign keeps the
+  feralisk brood (one creature, two skins, 2026-09-24 ruling).
+
+  Brood shape: skreth workers led by matrons. The 10:2 option weights are PROVISIONAL.
+-->
+<Defs>
+
+  <FactionDef>
+    <defName>RM_FactionDef_SkrethBrood</defName>
+    <label>skreth brood</label>
+    <pawnSingular>skreth</pawnSingular>
+    <pawnsPlural>skreth</pawnsPlural>
+    <!-- fixedName: required, see RM_FactionDef_KurrethSwarm (NameGenerator NRE without it). -->
+    <fixedName>the skreth brood</fixedName>
+    <categoryTag>FeverWoodTwoFrontRaiders</categoryTag>
+    <humanlikeFaction>false</humanlikeFaction>
+    <hidden>true</hidden>
+    <permanentEnemy>true</permanentEnemy>
+    <canSiege>false</canSiege>
+    <canStageAttacks>false</canStageAttacks>
+    <canGenerateQuestSites>false</canGenerateQuestSites>
+    <canRequestTraders>false</canRequestTraders>
+    <canRequestMilitaryAid>false</canRequestMilitaryAid>
+    <canRequestOrbitalTrader>false</canRequestOrbitalTrader>
+    <requiredCountAtGameStart>0</requiredCountAtGameStart>
+    <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+    <startingCountAtWorldCreation>0</startingCountAtWorldCreation>
+    <displayInFactionSelection>false</displayInFactionSelection>
+    <settlementGenerationWeight>0</settlementGenerationWeight>
+    <techLevel>Animal</techLevel>
+    <maxPawnCostPerTotalPointsCurve>
+      <points>
+        <li>(100,100)</li>
+        <li>(10000,10000)</li>
+      </points>
+    </maxPawnCostPerTotalPointsCurve>
+    <raidLootValueFromPointsCurve>
+      <points>
+        <li>(35,     15)</li>
+        <li>(100,   120)</li>
+        <li>(1000,  500)</li>
+        <li>(2000,  800)</li>
+        <li>(4000, 1000)</li>
+      </points>
+    </raidLootValueFromPointsCurve>
+    <pawnGroupMakers>
+      <li>
+        <kindDef>Combat</kindDef>
+        <options>
+          <RM_Skreth>10</RM_Skreth>  <!-- PROVISIONAL -->
+          <RM_SkrethMatron>2</RM_SkrethMatron>  <!-- PROVISIONAL -->
+        </options>
+      </li>
+    </pawnGroupMakers>
+  </FactionDef>
+
+</Defs>
