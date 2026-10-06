@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><meta name="scaled-review-gate" content="v1 sha256:0483b8304b49ccaac8a2368fbf57a8ec9423c86a226722ffe8b8c7cd19105ba8">
+<head><meta name="scaled-review-gate" content="v1 sha256:1965a6528ad8ce2660f2d504fc6a8d4721e8dd7edeafa627f0d09a9e2fbb1f1a">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>the Blue Desert — flora & fauna art</title>
@@ -370,6 +370,11 @@ body.grid .row.sel-tint{border-color:currentColor}
    thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
    the right show only this row's letters. */
 const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
+const faceAbbr = f => f in FACE_ABBR ? FACE_ABBR[f] : f.replace(/^(\d+)_(\w).*$/, (m, n, d) => n + d.toUpperCase());
+if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelectorAll('.bs-play[data-anim]').forEach(el => {
+  const fr = el.dataset.anim.split('|'), i = ((+el.dataset.i || 0) + 1) % fr.length;
+  el.dataset.i = i; const im = el.querySelector('img'); if (im) im.src = fr[i];
+}), 66);
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
@@ -382,7 +387,19 @@ const _itemBody = it => {
     if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
     const p = purge.has(s);
     const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="reject + PURGE: delete this picture from the art store so it never appears again" onclick="event.stopPropagation();artTogglePurge('${it.id}','${s}')">${p ? '✕ purging' : '✕'}</button>` : '';
-    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${FACE_ABBR[f] ? `<span class="bs-face">${FACE_ABBR[f]}</span>` : ''}${btn}</div>`;
+    const ab = faceAbbr(f);
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
+  };
+  /* flip-book (wing-beat) sets: one grid row per facing, a looping playback cell first, then frames 1..N */
+  const faces = (c, g) => {
+    if (!g.flip) return `<div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>`;
+    const rows = g.flipFacings.map(face => {
+      const ks = g.facings.filter(k => k.endsWith('_' + face));
+      const fr = ks.map(k => c.faces[k] && it.thumbs[c.faces[k]]).filter(Boolean);
+      const play = fr.length ? `<div class="bs-cell bs-play" title="${face}: the frames looping at half game speed" data-anim="${fr.join('|')}"><img src="${fr[0]}" alt=""><span class="bs-face">▶${FACE_ABBR[face]}</span></div>` : '<div class="bs-cell bs-gap">—</div>';
+      return play + ks.map(k => cell(c, k)).join('');
+    }).join('');
+    return `<div class="bs-faces bs-frames" style="grid-template-columns:repeat(${g.nframes + 1},auto)">${rows}</div>`;
   };
   const col = (c, g) => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
@@ -390,8 +407,8 @@ const _itemBody = it => {
     const vr = variants.has(c.letter);
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
-      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
-      <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
+      <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      ${faces(c, g)}
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
@@ -587,6 +604,8 @@ window.itemOptions = it => OPTS.filter(o => !(o.key.length === 1 && /[A-Za-z]/.t
 .bs-set.ac-win .bs-head span{color:#8ac3e8;font-weight:600}
 .bs-pick{cursor:pointer}.bs-set:hover{border-color:#3d4653}.bs-set.ac-picked:hover{border-color:var(--ok)}
 .bs-faces{display:flex;gap:3px;cursor:default}
+.bs-frames{display:grid;gap:3px}
+.bs-play{outline:2px solid #e8b64c;outline-offset:-2px}
 .bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
 .bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
 .bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}

@@ -1,6 +1,6 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-05T22:20:46-0700",
+ "built": "2026-10-06T00:42:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,17 +11,25 @@
      "east": "758a687ab0765a7560d6d31c97d03b695e8d203598dab57042e760a51a2c4350",
      "north": "ffe6a84d80810b4edf48ca624bb7899a45e84001c8ed7f5199291ac97d4d1dfa",
      "south": "b2a7c63e9e1c2278dcceb7aa26296a933f8b563ab55fd8d065da6a0e256f290b"
+    },
+    "B": {
+     "east": "b5cff32443b79f7854da63ff13a9f82a2dbddfea73788d3e5a92ef45695f3c54",
+     "north": "4506f56c3903cfdb36d8f15d2ba3b1752636b12075500e4cda697d7d6f5c6385",
+     "south": "f450a5acef92b171fe3e1b239c97d70fbb63d193885f000ac97681d395256133"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker"
+    "A": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker",
+    "B": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render deeps_blinker_v2"
    },
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "blinker"
   },
@@ -31,17 +39,25 @@
      "east": "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
      "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
      "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
+    },
+    "B": {
+     "east": "222073ce96a005711533593c89a3e6ee964f10c7ea0d0d03027dc688927f4550",
+     "north": "d71c6df7312e75854d4215401fd5e8a472bb3a706b7e826b52d6c2eb14aa3f6a",
+     "south": "c8bbebfd50dbcd4fb1265ed48a5905edf96f7dcd0e40b300999a89419726c6fe"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
+    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+    "B": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render deeps_bloodropmoth_eyes_v1"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "bloodropmoth"
   },
@@ -202,17 +218,24 @@
      "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
+    },
+    "B": {
+     "east": "3aff39b50076cfc20a0b9e8dc1411e9f6550727621bd96155f7f0f04f4d5a402",
+     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar"
+    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render deeps_facetmothlarvae_eyes_v1"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "facetmothlarvae"
   },
@@ -222,17 +245,25 @@
      "east": "09ea2845f712e69ccf7f38057b46b860fe35823657fb576fa5b7577df1cdaf4f",
      "north": "4fe4f2b1eb78fddec42f0f0f33f6acd1f2b72fd09318b966a857de0b4e3e1dc4",
      "south": "86c21cd513be958bc8ba859d8a594427979a2674abfeedc96769cd0e18cbdee1"
+    },
+    "B": {
+     "east": "e7df7f4ca206018ccfcdee85bbd00502a95596ffa84c6933bf7f8ab325c57def",
+     "north": "e6db323954bee911a9d16c426c212cd20e9c152a3427721cbc210188f8c3c691",
+     "south": "5ba8d22e8c76ceb56169084303e9836f9d2292acae23ab514f9c3306802ec0e6"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render deeps_gembug_eyes_v1"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gembug"
   },
@@ -336,17 +367,25 @@
      "east": "8bbd6c1a909c7f81011b64e14b51b5f831be1ddcfc17a4127adec012039672f5",
      "north": "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
      "south": "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
+    },
+    "B": {
+     "east": "85e9c23db595ea47cde14eee32081ee1a06399380aac6424e6e6ef27f1fed33f",
+     "north": "34ca785f18039e31b538d5c43205c3cce4b97b39d14fe99e74575438219162dc",
+     "south": "2925c0283dd1c0b655523d3a98724eba597c30af4e1fc83e794677d3d64e239e"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura"
+    "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+    "B": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura"
    },
    "labels": {
-    "A": "IN GAME \u2014 LanternDeeps"
+    "A": "IN GAME \u2014 LanternDeeps",
+    "B": "render deeps_megapleura_eyes_v1 \u2014 failed canon check"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "megapleura"
   },
@@ -687,18 +726,26 @@
      "east": "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
      "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
      "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
+    },
+    "C": {
+     "east": "222073ce96a005711533593c89a3e6ee964f10c7ea0d0d03027dc688927f4550",
+     "north": "d71c6df7312e75854d4215401fd5e8a472bb3a706b7e826b52d6c2eb14aa3f6a",
+     "south": "c8bbebfd50dbcd4fb1265ed48a5905edf96f7dcd0e40b300999a89419726c6fe"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-20"
+    "A": "history SWBestiary 2026-09-20",
+    "C": "render deeps_bloodropmoth_eyes_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "bloodropmoth"
   },
@@ -730,18 +777,25 @@
      "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
+    },
+    "C": {
+     "east": "3aff39b50076cfc20a0b9e8dc1411e9f6550727621bd96155f7f0f04f4d5a402",
+     "north": "db983cb71daeb92fd621e75d7ec455716d23421585f5cd1db27ba94cfb1364d7"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "C": "render deeps_facetmothlarvae_eyes_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "facetmothlarvae"
   },
@@ -756,20 +810,28 @@
      "east": "551971d8bc3de5fd268c88b11a7b6da236e97a871c377afb6384f6dfc791d313",
      "north": "ec81cc37deb82b2d62c8e426ffd9eed42677e76db4203f1d829689bfbaf69d4a",
      "south": "e62afccd40fbd8ac4e468abd7320b375c239ac5bc9fc7e763896c55b9a9947ee"
+    },
+    "C": {
+     "east": "e7df7f4ca206018ccfcdee85bbd00502a95596ffa84c6933bf7f8ab325c57def",
+     "north": "e6db323954bee911a9d16c426c212cd20e9c152a3427721cbc210188f8c3c691",
+     "south": "5ba8d22e8c76ceb56169084303e9836f9d2292acae23ab514f9c3306802ec0e6"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug"
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "B": "history SWBestiary 2026-09-11",
+    "C": "render deeps_gembug_eyes_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "gembug"
   },
@@ -812,20 +874,28 @@
      "east": "a289f9f95fe41ca2bb7ac790f42a5825a58e50b145408c7caf7510ff7d9ecfac",
      "north": "89b7d6e9da7c5409afb3c885ff704577002aa9800b961124efec5bf7a7d6aaa7",
      "south": "137728981d034a4e3ef283ecf5ff775ab42f1d97209a5e8dc25e5b4b56cf8879"
+    },
+    "C": {
+     "east": "85e9c23db595ea47cde14eee32081ee1a06399380aac6424e6e6ef27f1fed33f",
+     "north": "34ca785f18039e31b538d5c43205c3cce4b97b39d14fe99e74575438219162dc",
+     "south": "2925c0283dd1c0b655523d3a98724eba597c30af4e1fc83e794677d3d64e239e"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura"
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "B": "history SWBestiary 2026-09-11",
+    "C": "render deeps_megapleura_eyes_v1 \u2014 failed canon check"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "megapleura"
   },

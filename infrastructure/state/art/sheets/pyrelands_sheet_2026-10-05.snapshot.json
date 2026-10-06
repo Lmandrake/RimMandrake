@@ -1,6 +1,6 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-05T22:23:07-0700",
+ "built": "2026-10-06T00:56:26-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -32,24 +32,6 @@
      "north": "b690d85f1fee3de081bb9a73525c2b10bf95aba1b9f291b8c02b74708618a995",
      "south": "d2217327b73ce22b3e05a66ef32d66aaa375998b1f8ad09b14422868b0b8def3"
     },
-    "B": {
-     "north": "89374e228c4a6c3da90bd7e182ef2c0d83a4ff0126737ee96f602b1e741ccf70",
-     "south": "cc94d65e29c22a15752476b65348e7a7cb97f37a35a4b9cb96d201f954d1544a"
-    },
-    "C": {
-     "east": "3a669bf78631e0db8565ad63ca943e946e9e32cf048c42016f5c70b35f9d94fe",
-     "north": "50bbbb378ab0ec38fd57a3fde953d69f787c7dfd58e241df6ddb54a516e0fdf4",
-     "south": "7e2e72918bd1f92e57e5c6dd1d57174db237a41fc84a1264838cd770a10f7e5a"
-    },
-    "D": {
-     "north": "68c85de5f21d0fda16ef444b6422587bd86b2ff56ea595ba2cb7a0512cc0a604",
-     "south": "b3e322c82f14641bc2c68e001c6f603bf9db1e3294ef0a2d908121896ee13651"
-    },
-    "E": {
-     "east": "1c0ab3f7c7050f41bacf76a7e4bd35d0d77766f442c9c9cefb90c71df57d6b95",
-     "north": "d72d6a24a40481d7b6ed3bdff4a6489a4dbb397f5c2b1bcb0442debe59639a97",
-     "south": "69c6c56ad5dc1be193865dc285103dc755fb6d120db2cc95f5f1873f9d6b1b75"
-    },
     "F": {
      "east": "6739f014389c2279c081ff88bb9dbc5d19ba3965c3d71e66ab9f163543a2ae91",
      "north": "2b0e247f3049d7b25fc5ce64faeb59cfaeecbcfe5ee7245a76699f9c32820454",
@@ -58,18 +40,10 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
-    "B": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
-    "C": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
-    "D": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
-    "E": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
     "F": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
    },
    "labels": {
     "A": "IN GAME \u2014 Pyrelands",
-    "B": "render pyrelands_barbslinger_v5",
-    "C": "render barbslinger_scorpion_v1",
-    "D": "render pyrelands_barbslinger_v3",
-    "E": "render pyrelands_barbslinger_v2",
     "F": "history UtinniPatches 2026-09-20"
    },
    "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
@@ -164,24 +138,19 @@
     },
     "D": {
      "single": "6195d0b0f4a002bdeea1865a5aa3c91596224d5c1e69620f0fea04bbf1b9bbb6"
-    },
-    "E": {
-     "single": "1d328e3d7ec29a2bff3b12d188303acf73a42d4e933345232103ccfef03bee0e"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_FE_Quickgrass",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapall_RM_FE_Plant_Quickgrass_v1",
     "C": "render pyre_quickgrass_leafless_v2",
-    "D": "render pyre_quickgrass_a_v1",
-    "E": "render pyre_quickgrass_b_v1"
+    "D": "render pyre_quickgrass_a_v1"
    },
    "res": "Things/Plant/RM_FE_Quickgrass",
    "reserved": [
@@ -195,143 +164,96 @@
   },
   "RM_FireHawk": {
    "columns": {
-    "A": {
-     "east": "ec49a1aebd9834fd111d25b330de6801c30c2557ef3a2124312352ab7a2d2aae",
-     "north": "ebfead4641858a295dee37b980f8ecee44f50e8f854c525120d725e9b6090ed6",
-     "south": "726f6ddd2c497239d88cba9a1036d3075fb10ee8b1700a4d96f5397479c6f995"
-    },
-    "B": {
-     "east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
-     "north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
-     "south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4"
-    },
-    "C": {
-     "east": "4c0f57a61eb46b1a9ed242cce8a60030e4919f99938284decd4ac6b0ca66276b",
-     "north": "3e21e343fbc1aa8b2bd7ecfbd9802106f357e92db61603a4ce3101edaede9840",
-     "south": "3e52403b15d551ef3e0e2bf00f04be70354febc5211d747632cfec3f6d4a430f"
-    },
-    "D": {
-     "east": "dbae4bdc10ae3c702b9c23033a96e1f0418c219ff82540cfeb4886f9df5e9338",
-     "north": "252b2f6aa58577cc10549b8d83d96c71ede54036fd25c43c66bd5023b14b5829",
-     "south": "11fde2cfba52548d4512f064efb94a487532bf54f9b6cf0fbd2691dead398a05"
-    },
-    "E": {
-     "east": "7071d460b1c592bc99c091b7411acc5e15baabbe4752195c0cdab037b1f13e22",
-     "north": "479dac28994e8ea03496da5ba4abee5030237572b979c121b05b82b826d3f585",
-     "south": "dd16d965285703af5759f3b6b9cee6a90a4c9d8a372fca9e38bd602c101ddf13"
-    },
-    "F": {
-     "east": "2e25e4c541156c8d519d610f0523115f87025c10ab721117afe65b441f35cf5f",
-     "north": "fc29e18d36c76d0d772e5184c24271bdd623382bdde38fd930c72a9d44ab5609",
-     "south": "3d4cfc8204d50162390e6ade881006eb9837e79fcadf60f627b3b72edf327229"
-    },
-    "G": {
-     "east": "db259b0ee99bc6f1ca113cd129c5db907f5c619fba84120e464b10f981b9d1c9",
-     "north": "05434a84b7811298b05d5cf16f4f506639be007704bdfebb78f246fe578fc761",
-     "south": "798cf6c4303c62522bf0a73d59067e9dff89d51d9c2dee5dee08db09b11761b4"
-    },
-    "H": {
-     "east": "17886c37d3fa6ee7d26a4d67f097634c293c543f1083e639e260d026d2386a5d",
-     "north": "bf634e7328a93e4d22a60e70a54615e9f18d7bfdb277140cd3611da7fdbc07c3",
-     "south": "88e12af7baa3965f07aff771311a52832752aaead2b5e016225273f9ce7f4762"
-    },
-    "I": {
-     "east": "c1b4e32fac9003ca1cef2befa5239ce7af48be81fab5e9e2e1bc241a49d5c753",
-     "north": "7fe620ffc53a97c381cab278f5261e0f3c1e488a64aec6aabeac92376ed04b3a",
-     "south": "9ec1cd4818e3a425d42fd2ad022040a78c2f623db8d6416e3003f7e18cf48e43"
-    },
-    "J": {
-     "east": "65161659b9d39ed362e6f7628c6a7f3d10af17b468df6ad0c09dc97ad9865d16",
-     "north": "d153962b1552d2d98d075580eeb8f578f3b37cfe1ebc1f7d9e958d80fdc0ce74",
-     "south": "8c49d529b7c7c541bb40c09a38354d09a2c06d0b0795978167fb8cf63b97f04a"
-    },
-    "K": {
-     "east": "a3a13634de06b087981fc9f7eb46b78b5cf21b06454f346fe9f30ea94617fdfa",
-     "north": "d1b5f79f41ff8c2c436e07552c509e981accd81d2276a894ff4ab8a1bc5c3992",
-     "south": "d22e9d450800fe075d4c3527cdbb5110428e98c7058f31b6e92e90dbfcf715f1"
-    },
-    "L": {
-     "east": "d3253c60356579f24de598caa428fa2c4103627ea309b027526caf33c4ddc6fd",
-     "north": "d965d30f4f1c7883b2df9ef5e400df65da7d72b757ea9d56c0f9b4a544066fa6",
-     "south": "1be0dd0e54766a813f472ca97d1c717043d817adb14253ef733cbad063c4ca24"
-    },
     "M": {
      "east": "cfb637c25dcfcb570704886e8442e6f49533214417dba4df33ae3d0fd77c7fce",
      "north": "0f3136027bd8ef8348f5d409915756be0c31b0809679b2fe396fa49c3eae706e",
      "south": "0c9e2df5386b98d10b2f3d987cbe6df82fe67aefac92d464b831cbf1e2f3b2f8"
     },
-    "N": {
-     "single": "cd30479d3747bf15561de62ad683428b9babc6954b192e8cd4c7b16b2393a40f"
-    },
     "O": {
      "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3"
     },
-    "P": {
+    "T": {
      "east": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3",
-     "north": "d9635d98af987ab27273bed4493ae90e7b4555dd2e4b8eb3d46768418afb5062",
-     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3",
-     "south": "5b90badf1ca321749fa6771c44d3edb963887df0b71eee63cb769df5d1878471"
+     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3"
     },
-    "Q": {
-     "east": "53217893e4066d82f7bb18cdfa8c03378938dc773533361bdc6da0db914be046",
-     "north": "34ee4049e3eea3808451e01480d7277a87ccc71da8e288aab0ad374eabb1a52c",
-     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3",
-     "south": "e3fa5e9b18d36d47ee96ff9eab46aeb9d5344d50c35b10e8d0f93a5ad608c9cc"
-    },
-    "R": {
-     "east": "53217893e4066d82f7bb18cdfa8c03378938dc773533361bdc6da0db914be046",
-     "north": "34ee4049e3eea3808451e01480d7277a87ccc71da8e288aab0ad374eabb1a52c",
-     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3",
-     "south": "cd30479d3747bf15561de62ad683428b9babc6954b192e8cd4c7b16b2393a40f"
-    },
-    "S": {
+    "U": {
      "east": "ec49a1aebd9834fd111d25b330de6801c30c2557ef3a2124312352ab7a2d2aae",
-     "north": "ebfead4641858a295dee37b980f8ecee44f50e8f854c525120d725e9b6090ed6",
-     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3",
-     "south": "726f6ddd2c497239d88cba9a1036d3075fb10ee8b1700a4d96f5397479c6f995"
+     "single": "55949a609b0825794ad1bd26154ec1f9efbf04399add41fe81fa95622af7a4a3"
+    },
+    "V": {
+     "east": "ec49a1aebd9834fd111d25b330de6801c30c2557ef3a2124312352ab7a2d2aae"
+    },
+    "W": {
+     "1_east": "17886c37d3fa6ee7d26a4d67f097634c293c543f1083e639e260d026d2386a5d",
+     "1_north": "bf634e7328a93e4d22a60e70a54615e9f18d7bfdb277140cd3611da7fdbc07c3",
+     "1_south": "88e12af7baa3965f07aff771311a52832752aaead2b5e016225273f9ce7f4762",
+     "2_east": "c1b4e32fac9003ca1cef2befa5239ce7af48be81fab5e9e2e1bc241a49d5c753",
+     "2_north": "7fe620ffc53a97c381cab278f5261e0f3c1e488a64aec6aabeac92376ed04b3a",
+     "2_south": "9ec1cd4818e3a425d42fd2ad022040a78c2f623db8d6416e3003f7e18cf48e43",
+     "3_east": "65161659b9d39ed362e6f7628c6a7f3d10af17b468df6ad0c09dc97ad9865d16",
+     "3_north": "d153962b1552d2d98d075580eeb8f578f3b37cfe1ebc1f7d9e958d80fdc0ce74",
+     "3_south": "8c49d529b7c7c541bb40c09a38354d09a2c06d0b0795978167fb8cf63b97f04a",
+     "4_east": "a3a13634de06b087981fc9f7eb46b78b5cf21b06454f346fe9f30ea94617fdfa",
+     "4_north": "d1b5f79f41ff8c2c436e07552c509e981accd81d2276a894ff4ab8a1bc5c3992",
+     "4_south": "d22e9d450800fe075d4c3527cdbb5110428e98c7058f31b6e92e90dbfcf715f1",
+     "5_east": "d3253c60356579f24de598caa428fa2c4103627ea309b027526caf33c4ddc6fd",
+     "5_north": "d965d30f4f1c7883b2df9ef5e400df65da7d72b757ea9d56c0f9b4a544066fa6",
+     "5_south": "1be0dd0e54766a813f472ca97d1c717043d817adb14253ef733cbad063c4ca24"
+    },
+    "X": {
+     "1_east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
+     "1_north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
+     "1_south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4",
+     "2_east": "4c0f57a61eb46b1a9ed242cce8a60030e4919f99938284decd4ac6b0ca66276b",
+     "2_north": "3e21e343fbc1aa8b2bd7ecfbd9802106f357e92db61603a4ce3101edaede9840",
+     "2_south": "3e52403b15d551ef3e0e2bf00f04be70354febc5211d747632cfec3f6d4a430f",
+     "3_east": "dbae4bdc10ae3c702b9c23033a96e1f0418c219ff82540cfeb4886f9df5e9338",
+     "3_north": "252b2f6aa58577cc10549b8d83d96c71ede54036fd25c43c66bd5023b14b5829",
+     "3_south": "11fde2cfba52548d4512f064efb94a487532bf54f9b6cf0fbd2691dead398a05",
+     "4_east": "7071d460b1c592bc99c091b7411acc5e15baabbe4752195c0cdab037b1f13e22",
+     "4_north": "479dac28994e8ea03496da5ba4abee5030237572b979c121b05b82b826d3f585",
+     "4_south": "dd16d965285703af5759f3b6b9cee6a90a4c9d8a372fca9e38bd602c101ddf13",
+     "5_east": "2e25e4c541156c8d519d610f0523115f87025c10ab721117afe65b441f35cf5f",
+     "5_north": "fc29e18d36c76d0d772e5184c24271bdd623382bdde38fd930c72a9d44ab5609",
+     "5_south": "3d4cfc8204d50162390e6ade881006eb9837e79fcadf60f627b3b72edf327229"
+    },
+    "Y": {
+     "1_east": "17886c37d3fa6ee7d26a4d67f097634c293c543f1083e639e260d026d2386a5d",
+     "1_north": "bf634e7328a93e4d22a60e70a54615e9f18d7bfdb277140cd3611da7fdbc07c3",
+     "1_south": "88e12af7baa3965f07aff771311a52832752aaead2b5e016225273f9ce7f4762",
+     "2_east": "c1b4e32fac9003ca1cef2befa5239ce7af48be81fab5e9e2e1bc241a49d5c753",
+     "2_north": "7fe620ffc53a97c381cab278f5261e0f3c1e488a64aec6aabeac92376ed04b3a",
+     "2_south": "9ec1cd4818e3a425d42fd2ad022040a78c2f623db8d6416e3003f7e18cf48e43",
+     "3_east": "65161659b9d39ed362e6f7628c6a7f3d10af17b468df6ad0c09dc97ad9865d16",
+     "3_north": "d153962b1552d2d98d075580eeb8f578f3b37cfe1ebc1f7d9e958d80fdc0ce74",
+     "3_south": "8c49d529b7c7c541bb40c09a38354d09a2c06d0b0795978167fb8cf63b97f04a",
+     "4_east": "a3a13634de06b087981fc9f7eb46b78b5cf21b06454f346fe9f30ea94617fdfa",
+     "4_north": "d1b5f79f41ff8c2c436e07552c509e981accd81d2276a894ff4ab8a1bc5c3992",
+     "4_south": "d22e9d450800fe075d4c3527cdbb5110428e98c7058f31b6e92e90dbfcf715f1",
+     "5_east": "d3253c60356579f24de598caa428fa2c4103627ea309b027526caf33c4ddc6fd",
+     "5_north": "d965d30f4f1c7883b2df9ef5e400df65da7d72b757ea9d56c0f9b4a544066fa6",
+     "5_south": "1be0dd0e54766a813f472ca97d1c717043d817adb14253ef733cbad063c4ca24"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "B": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "C": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "D": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "E": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "F": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "G": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "H": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "I": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "J": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "K": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "L": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
     "M": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "N": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
     "O": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "P": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "Q": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "R": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
-    "S": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk"
+    "T": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
+    "U": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
+    "V": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
+    "W": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+    "X": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+    "Y": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
    },
    "labels": {
-    "A": "IN GAME \u2014 Pyrelands",
-    "B": "render rut_firehawk_flying_v2_1",
-    "C": "render rut_firehawk_flying_v2_2",
-    "D": "render rut_firehawk_flying_v2_3",
-    "E": "render rut_firehawk_flying_v2_4",
-    "F": "render rut_firehawk_flying_v2_5",
-    "G": "render rut_firehawk_grounded_v3",
-    "H": "render rut_firehawk_flying_1",
-    "I": "render rut_firehawk_flying_2",
-    "J": "render rut_firehawk_flying_3",
-    "K": "render rut_firehawk_flying_4",
-    "L": "render rut_firehawk_flying_5",
-    "M": "render firehawk_wingsplit_v1",
-    "N": "render firehawk_south_symmetric_v1",
+    "M": "IN GAME \u2014 Pyrelands",
     "O": "history UtinniPatches 2026-09-10",
-    "P": "history UtinniPatches 2026-09-11",
-    "Q": "history UtinniPatches 2026-09-13",
-    "R": "history UtinniPatches 2026-09-17",
-    "S": "history UtinniPatches 2026-09-20"
+    "T": "history UtinniPatches 2026-09-11",
+    "U": "history UtinniPatches 2026-09-20",
+    "V": "history Pyrelands 2026-10-03",
+    "W": "IN GAME \u2014 FireHawk_Flying_",
+    "X": "flight frames rut_firehawk_flying_v2",
+    "Y": "flight frames rut_firehawk_flying"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
    "reserved": [
@@ -353,7 +275,13 @@
     "P",
     "Q",
     "R",
-    "S"
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y"
    ],
    "subject_key": "firehawk"
   },
@@ -367,11 +295,6 @@
     "B": {
      "single": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
     },
-    "C": {
-     "east": "21d3853b42ae9c6e4404f2b450a1d5b9e76a3c4544ccd2abd7c70208d8343c9d",
-     "north": "2cc908c2e3469549739514e4851b5af909d5670fe96cb71cd037f505294130e3",
-     "south": "3b6432a8bbbf8cdeca28c51beaf344711ef5662bb16ce53d2f26e8e4d910f806"
-    },
     "D": {
      "east": "774c704211a6cb102a453d75109b1358b727a1752769d5b0aefd1682e548ceb9",
      "north": "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd",
@@ -381,13 +304,11 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
     "B": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
-    "C": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
     "D": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
    },
    "labels": {
     "A": "IN GAME \u2014 Pyrelands",
     "B": "render AA_FireWasp_south_eyelevel_v1",
-    "C": "render pyrelands_firewasp_v2",
     "D": "history UtinniPatches 2026-09-19"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
@@ -433,18 +354,13 @@
      "east": "41f69d0ecf8904682e0f5867503b166f79a2239ef04ae8fa64ea4ecc69f5cafc",
      "north": "514019df85afb284c582666ad3bee2eba9abab90752bc03dbe15fb158a14e14c",
      "south": "6479dd3fcc1f7b003c875dfff88748826cbe2d4504566284d1e606c7ccf45729"
-    },
-    "B": {
-     "single": "ec412996d2fe26988db6e9c841a551462c4cd188f5a4118894e35e5074ddf008"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
-    "B": "_byname"
+    "A": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
    },
    "labels": {
-    "A": "IN GAME \u2014 Pyrelands",
-    "B": "render FurnaceBeast_south_eyelevel_v1"
+    "A": "IN GAME \u2014 Pyrelands"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
    "reserved": [
@@ -565,21 +481,6 @@
      "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
      "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
     },
-    "C": {
-     "east": "177fe5d88928c813a9017c032a60866ad108d74ff6f1f8df4f2f9f2d0371060f",
-     "north": "76f1b6981244f2e7faeeae6c0e7c17e8063b4226374afa247029edd8430797d5",
-     "south": "997de7f18e8cc4f29ebff17230a5dbcf317c4f782b77db7efb743accc4532427"
-    },
-    "D": {
-     "east": "328c71d44c7c4f4505a461304e61496d796f4c2168c27860c78e722a705c2a7a",
-     "north": "9e0d33f13e0ed8ab7ff57735410e63716ef012779f8e8d6c823f990ed84ffe83",
-     "south": "09fb257cfcfaec36e7e2afd694aebe7cf9a531e79d94fba60649bc758fdc6020"
-    },
-    "E": {
-     "east": "643948896b78d9de069d59cdc0bb992c9f654e5a8c4fb67f5db527079cdff79c",
-     "north": "4d9a16d4e273cf5e0ceb2c1cf1bc338186e20b039411d15279cc104728c8e3cf",
-     "south": "d225abbb3e1d8abf6ef216f11bb42be0c4c7c11c0870b4a9cf9a872177960b03"
-    },
     "F": {
      "east": "bad7d8226b8670e33a087cfa443ff8d797c80c5613cc614917489480c04f4792",
      "north": "cc17fdc77fd524ef160b8f5631987d489b4e1f74e2017c0620a3333ce6d9ee8d",
@@ -594,18 +495,12 @@
    "graphic_of": {
     "A": "swanimals/Dalgo/Dalgo",
     "B": "swanimals/Dalgo/Dalgo",
-    "C": "swanimals/Dalgo/Dalgo",
-    "D": "swanimals/Dalgo/Dalgo",
-    "E": "swanimals/Dalgo/Dalgo",
     "F": "swanimals/Dalgo/Dalgo",
     "G": "swanimals/Dalgo/Dalgo"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 DalgoArtOverride",
-    "C": "render doubles_redo_dalgo_v1",
-    "D": "render pyrelands_dalgo_v1",
-    "E": "history DalgoArtOverride 2026-09-14",
+    "A": "history SWBestiary 2026-09-12",
+    "B": "IN GAME \u2014 SWBestiary",
     "F": "history DalgoArtOverride 2026-09-17",
     "G": "donor original \u2014 mlie.starwarsanimalcollection"
    },
@@ -761,19 +656,6 @@
     "B": {
      "south": "55d50a866c937783c3585e8e2277913a5db0d5efa78bebdf0ae2b460628fe3fa"
     },
-    "C": {
-     "south": "e6da57dc16bd50fc156a2865d2da67778e94fc3ca27e6be5aeead14854c73d92"
-    },
-    "D": {
-     "east": "0a35834849b195df79099d1dda541fbbe3e54776721855ec116da7cec669bb3e",
-     "north": "690accc5cfba18066a3f402ac9d6467100f42979d33134a271532601ec182ff5",
-     "south": "d5ea4a653dce76f664f47a6599011e404bb35f7f10ec8a47dd007340d88cbf61"
-    },
-    "E": {
-     "east": "d8413897803f253d1a867598efcc5ddf472c310a7933b4901ca220cc9dce06af",
-     "north": "bba04964aeb4d03621cf4bad28812ffa7e6bfa5f732f381fc0e25544be456e70",
-     "south": "7b169ad25b5ab6d57f881cdc0a966b8d9ef823d1a9ee9a42955b954c09284ecd"
-    },
     "F": {
      "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
      "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
@@ -783,32 +665,19 @@
      "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
      "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
      "south": "2a7aa4433e9f46bfe7d1367b546e43dd578b908d65729f2622c4c909ae8a8d44"
-    },
-    "H": {
-     "east": "b858ab4575adc031878565895d64cc4c2d47d100b45713d556d3ad9a217ae075",
-     "north": "ec3d539d34254713f31773793a861fd18c72fdd835a00d575a79d8e155ef7ffb",
-     "south": "5d12dcb8a06da66f5cd52d27e16869ba7926929fba49582f96d471d39f06ee33"
     }
    },
    "graphic_of": {
     "A": "swanimals/Orray/Orray",
     "B": "swanimals/Orray/Orray",
-    "C": "swanimals/Orray/Orray",
-    "D": "swanimals/Orray/Orray",
-    "E": "swanimals/Orray/Orray",
     "F": "swanimals/Orray/Orray",
-    "G": "swanimals/Orray/Orray",
-    "H": "swanimals/Orray/Orray"
+    "G": "swanimals/Orray/Orray"
    },
    "labels": {
-    "A": "IN GAME \u2014 OrrayArtOverride",
+    "A": "history OrrayArtOverride 2026-09-20",
     "B": "render facingrepair_orray_v1",
-    "C": "render orray_v3",
-    "D": "render pyrelands_orray_v1",
-    "E": "history OrrayArtOverride 2026-09-13",
-    "F": "history OrrayArtOverride 2026-09-17",
-    "G": "history OrrayArtOverride 2026-09-18",
-    "H": "donor original \u2014 mlie.starwarsanimalcollection"
+    "F": "IN GAME \u2014 OrrayArtOverride",
+    "G": "history OrrayArtOverride 2026-09-18"
    },
    "res": "swanimals/Orray/Orray",
    "reserved": [
@@ -859,5 +728,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "00e5e1ab0ef65476"
+ "snapshotId": "d0f9f4be530bcd2d"
 }
