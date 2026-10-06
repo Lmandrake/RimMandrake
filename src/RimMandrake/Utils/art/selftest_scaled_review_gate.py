@@ -193,6 +193,20 @@ def main():
         check(f and "purged" in f[0].problems[0], "req 14 FAILS: a ledger-purged picture shown as a column")
         f = failing(dict(ctx, is_purged=lambda sh: sh == "a" * 64), "14")
         check(f and "RM_Alpha" in f[0].problems[0], "req 14 names the row and set")
+        # req 14 exception: a purged picture that is still the live IN GAME column is allowed, but only non-pickable
+        def _pl(it, c2, **kw):
+            cc = it[0]["graphics"][0]["cols"][0]       # RM_Alpha A, the live column (faces "a"*64)
+            cc.update(winner=True, purgeable=False, faces={"south": "p" * 64}, **kw)
+            it[0]["letters"] = ["B"] if kw.get("purgedLive") else ["A", "B"]
+        _pu = dict(ctx, is_purged=lambda sh: sh == "p" * 64)
+        check(not failing(dict(mut(lambda it, c2: _pl(it, c2, purgedLive=True)), is_purged=_pu["is_purged"]), "14"),
+              "req 14 passes: a purged picture that is still live is shown as the non-pickable IN GAME column")
+        f = failing(dict(mut(lambda it, c2: _pl(it, c2)), is_purged=_pu["is_purged"]), "14")
+        check(f and "purged" in f[0].problems[0], "req 14 FAILS: a purged picture that is NOT flagged purgedLive")
+        def _pk(it, c2):
+            _pl(it, c2, purgedLive=True); it[0]["letters"] = ["A", "B"]
+        f = failing(dict(mut(_pk), is_purged=_pu["is_purged"]), "14")
+        check(f and "pickable" in f[0].problems[0], "req 14 FAILS: a purged-but-live picture that is pickable")
         # req 13
         f = failing(dict(ctx, browser_fn=lambda p: (0, [], "")), "13")
         check(f and "renders blank" in f[0].problems[0], "req 13 FAILS: a sheet that renders far fewer images than its rows")

@@ -948,7 +948,7 @@ const _itemBody = it => {
     const vr = variants.has(c.letter);
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
-      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
@@ -1500,6 +1500,11 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             kept_cols = []
             for c in g["cols"]:
                 live = {f: sh for f, sh in c["faces"].items() if not idx.is_purged(sh)}
+                if c.get("winner") and len(live) < len(c["faces"]):
+                    # purged but STILL what the game shows today: keep it as the IN GAME column, flagged, never pickable
+                    c["purgedLive"] = True
+                    kept_cols.append(c)
+                    continue
                 n_hidden += len(c["faces"]) - len(live)
                 if live:
                     c["faces"] = live
@@ -1534,6 +1539,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             allcols.append(c)
         for c in allcols:
             c["purgeable"] = c["kind"] not in ("live", "kept") and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
+            if c.get("purgedLive"):
+                c["purgeable"] = False
         try:   # placeholder_detect: a row drawn by script-flat shapes or borrowed vanilla textures has no art of ours
             _pv = PD.classify_row(r, _ph_shared)
         except Exception as e:                              # noqa: BLE001
@@ -1593,7 +1600,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "prior": prior,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive")}
                          | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
         no_art = not graphics
@@ -1639,7 +1646,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
             "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "canon": canon,
-            "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"]],
+            "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"] if not c.get("purgedLive")],
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
             "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0),

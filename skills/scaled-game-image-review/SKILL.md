@@ -80,6 +80,11 @@ below, fix the tool and add a selftest — never patch one HTML file.
     picture still live elsewhere (the ledger refuses; say where it is live and ask).
 12. **Nothing installs from the sheet.** Picks become ledger rulings via `art.py ingest`; install is
     `art install` only.
+13. **A sheet renders** (no blank page, no uncaught console error) — gate req 13.
+14. **No purged picture is rendered as a column** — except one that is still LIVE in the game today (its
+    replacement is not installed yet): it appears as the IN GAME column only, badged "you purged this — still
+    live until a replacement is installed", non-pickable (no pick header, no ✕, absent from the row's letters).
+    A purged picture that is not live still fails the gate.
 
 ## Enforcement — what refuses, and where (2026-10-05)
 
