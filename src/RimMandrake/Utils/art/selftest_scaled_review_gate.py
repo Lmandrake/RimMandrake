@@ -157,6 +157,12 @@ def main():
         def no_donor_col(it, c2): it[1]["graphics"][0]["cols"] = [it[1]["graphics"][0]["cols"][1]]
         f = failing(mut(no_donor_col), "4")
         check(f and "RSW_Beta" in f[0].problems[0], "req 4 FAILS: donor-sourced row lost its donor column")
+        def own_copy_only(it, c2): it[1]["graphics"][0]["cols"] = [col("A", "donor", "our deployed art - X", ours=True)]
+        f = failing(mut(own_copy_only), "4")
+        check(f and "RSW_Beta" in f[0].problems[0], "req 4 FAILS: our own deployed copy (kind donor, ours) is not the donor column")
+        def purged_donor(it, c2):
+            own_copy_only(it, c2); it[1]["donorPurged"] = True
+        check(not failing(mut(purged_donor), "4"), "req 4 PASSES: the donor original was purged by the owner (shown and rejected)")
         # req 5
         def canon_missing(it, c2): it[1]["canon"] = None; it[1]["canonTag"] = "no canon-library entry"
         f = failing(mut(canon_missing), "5")
