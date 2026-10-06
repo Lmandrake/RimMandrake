@@ -5,7 +5,7 @@
     python.exe src/RimMandrake/FlowWorks/northstar/river_site.py --dry      # the same, on a tile with NO river
 
 The rivers chains read "UNMEASURED: the site map has no river current" on a quicktest map without a river. This founds a
-colony on a flat MILD (18-26 C mean, |lat| <= 15 so nights and winter stay mild: map 5 at 12-24/25 hit frostbite) tile that HAS a river (largest river first), generates its map, makes it current, removes every
+colony on a flat MILD (14-20 C mean, 15 <= |lat| <= 32: map 5 at |lat| <= 25 hit frostbite at night; |lat| <= 15 is PermanentSummer, 42 C at noon on a 22 C-mean tile, heatstroke) tile that HAS a river (largest river first), generates its map, makes it current, removes every
 non-colonist, spawns colonists and runs bland_world.reset() so the watch starts bland. Mild on purpose: on a 38 C
 quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain and five components read UNMEASURED. bland_world.setup() is the same
 recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems; exit 0 only
@@ -32,8 +32,8 @@ def river_candidates(rows):
     for r in rows:
         try:
             if (r.get("hilliness") in ("Flat", "SmallHills") and float(r.get("swampiness") or 0) < 0.3
-                    and 0 <= float(r.get("elevation") or -1) < 600 and 18 <= float(r.get("temperature") or -99) <= 26
-                    and abs(float(r.get("lat") or 90)) <= 15
+                    and 0 <= float(r.get("elevation") or -1) < 600 and 14 <= float(r.get("temperature") or -99) <= 20
+                    and 15 <= abs(float(r.get("lat") or 90)) <= 32
                     and r.get("biome") not in ("Ocean", "Lake", "SeaIce", "IceSheet", "Desert", "ExtremeDesert", "AridShrubland")):
                 out.append(int(r.get("tile") if r.get("tile") is not None else r.get("index")))
         except (TypeError, ValueError):
