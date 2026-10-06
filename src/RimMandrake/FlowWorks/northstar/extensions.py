@@ -1237,6 +1237,7 @@ def pit_fill_effects(t):
             _expect(rb.get("fluid") == "RM_Fluid_Poison" and float(rb.get("tox", 0)) > 0,
                     "poison pit: toxic buildup, got %r" % rb)
     with t.component("oil_pit_burns_occupant", toggle="canalFireEnabled"):
+        t.expect("fire", {"def": "Fire"})          # the burning occupant sets vanilla Fire: that is the point
         _light(t, c[0], c[1])
         _wait(t, 2 * 250)
         rc = _fx_row(_fill_fx(t), pc)
@@ -1245,6 +1246,7 @@ def pit_fill_effects(t):
             r = t.bridge_call("jawa/pawn_get", pawn=pc)      # jawa/pawn_health ADDS a hediff; pawn_get lists them
             hs = [h.get("def") for h in (((r or {}).get("pawns") or [{}])[0].get("hediffs") or [])]
             _expect(any("Burn" in str(h) for h in hs), "occupant of a burning oil pit has no burn: hediffs %s" % hs)
+    _extinguish_all(t)
 
 
 @suite.chain("toggle_pit_fill_effects")
@@ -1478,6 +1480,19 @@ def _foam(t, c):
     (Foam LYING on a liquid cell is not testable: fill terrains are water-tagged and take no filth -- live 19:47, a
     blast scattering Filth_FireFoam at chance 1 left none, and jawa/spawn_batch makes no filth at all.)"""
     t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType="Extinguish", radius=0.5, screenShake=0)
+
+
+def _extinguish_all(t):
+    """Put every fire on the map out with the SHARED helper (modcheck.helpers.extinguish: map_fire extinguish + a
+    complete-list re-read), so a chain that sets fire on purpose cannot hand the next chain a fire_on_map surprise
+    (live 20:04: the oil pit's burning pirate left one Fire that aborted pit_prison_room and bottle_revert)."""
+    if getattr(t, "session", None) is None or not t._guard():
+        return
+    from modcheck import helpers as H
+    try:
+        H.extinguish(t.session)
+    except Exception:              # noqa: BLE001 -- a residue fire is the detector's to report, not a crash here
+        pass
 
 
 def _tar_cells(t, cells):
