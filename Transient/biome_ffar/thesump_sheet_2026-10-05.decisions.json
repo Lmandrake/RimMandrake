@@ -1,166 +1,168 @@
 {
-  "biome": "RM_TheSump",
-  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 21,
-  "decisions": {
-    "RM_Brindeth": {
-      "at": "2026-10-06T03:58:38.793Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Brommet": {
-      "at": "2026-10-06T03:54:23.393Z",
-      "decidedAt": "2026-10-06T03:54:19.697Z",
-      "decision": "hold",
-      "note": "terrestrial, cut",
-      "prefill": "A"
-    },
-    "RM_Dorvel": {
-      "at": "2026-10-06T03:58:51.850Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Dredgel": {
-      "at": "2026-10-06T03:55:03.945Z",
-      "decidedAt": "2026-10-06T03:54:49.614Z",
-      "decision": "redo",
-      "note": "I like the image, not make it go all the different directions properly. ",
-      "prefill": "A",
-      "purge": [
-        "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
-        "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac",
-        "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Gulveth": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Kethrel": {
-      "at": "2026-10-06T03:56:13.464Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
-        "B",
-        "C",
-        "D"
-      ],
-      "variantsAt": "2026-10-06T03:56:13.464Z"
-    },
-    "RM_Korveth": {
-      "at": "2026-10-06T03:58:58.487Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Mirrelin": {
-      "at": "2026-10-06T03:59:06.199Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Pallick": {
-      "at": "2026-10-06T03:59:11.441Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Skarrid": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Skellarn": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Skelver": {
-      "at": "2026-10-06T03:59:20.259Z",
-      "decidedAt": "2026-10-06T03:59:17.156Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Soffeth": {
-      "at": "2026-10-06T03:59:29.513Z",
-      "decidedAt": "2026-10-06T03:59:25.296Z",
-      "decision": "redo",
-      "note": "more realistic, variants please",
-      "prefill": "A"
-    },
-    "RM_SumpMouse": {
-      "at": "2026-10-06T03:57:04.708Z",
-      "decidedAt": "2026-10-06T03:56:49.804Z",
-      "decision": "redo",
-      "note": "Great idea and I love the huge paws, but make it less mouse-like and more alien please. Can still call it a sump mouse. ",
-      "prefill": "A"
-    },
-    "RM_Thrummel": {
-      "at": "2026-10-06T03:57:27.965Z",
-      "decidedAt": "2026-10-06T03:57:19.050Z",
-      "decision": "redo",
-      "note": "less terrestrial, more spherical ",
-      "prefill": "A"
-    },
-    "RM_ThrummelBroodmother": {
-      "at": "2026-10-06T03:57:54.584Z",
-      "decidedAt": "2026-10-06T03:57:47.159Z",
-      "decision": "redo",
-      "note": "This needs to match the Thrummel above. ",
-      "prefill": "A"
-    },
-    "RM_ThrummelWarden": {
-      "at": "2026-10-06T03:58:22.660Z",
-      "decidedAt": "2026-10-06T03:58:17.470Z",
-      "decision": "redo",
-      "note": "Needs to match the thrummels above",
-      "prefill": "A"
-    },
-    "RM_Tolleth": {
-      "at": "2026-10-06T03:59:35.717Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RM_Velloch": {
-      "at": "2026-10-06T03:59:41.938Z",
-      "decision": "A",
-      "note": "variants please",
-      "prefill": "A"
-    },
-    "RSW_Hssiss": {
-      "at": "2026-10-06T03:55:47.386Z",
-      "decidedAt": "2026-10-06T03:55:42.840Z",
-      "decision": "redo",
-      "note": "follow canon precisely ",
-      "picks": {
-        "swanimals/Hssiss/Hssiss_Swimming": "B"
-      },
-      "prefill": "A"
-    },
-    "RUT_Plant_Wick": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    }
+ "biome": "RM_TheSump",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "decidedCount": 21,
+ "decisions": {
+  "RM_Brindeth": {
+   "at": "2026-10-06T03:58:38.793Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
   },
-  "posture": "pick-one",
-  "reviewStatus": {
-    "at": null,
-    "by": null,
-    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
-    "state": "prefill"
+  "RM_Brommet": {
+   "at": "2026-10-06T03:54:23.393Z",
+   "decidedAt": "2026-10-06T03:54:19.697Z",
+   "decision": "hold",
+   "note": "terrestrial, cut",
+   "prefill": "A"
   },
-  "savedAt": "2026-10-05T20:59:42-0700",
-  "savedBy": "review-sheet-sidecar",
-  "sheetId": "thesump_sheet_2026-10-05",
-  "snapshot": "infrastructure/state/art/sheets/thesump_sheet_2026-10-05.snapshot.json",
-  "snapshotId": "510550e340f7c58b",
-  "writeCount": 36
+  "RM_Dorvel": {
+   "at": "2026-10-06T03:58:51.850Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Dredgel": {
+   "at": "2026-10-06T03:55:03.945Z",
+   "decidedAt": "2026-10-06T03:54:49.614Z",
+   "decision": "redo",
+   "note": "I like the image, not make it go all the different directions properly. ",
+   "prefill": "A",
+   "purge": [
+    "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+    "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac",
+    "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76"
+   ],
+   "purgeTouched": true
+  },
+  "RM_Gulveth": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Kethrel": {
+   "at": "2026-10-06T03:56:13.464Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B",
+    "C",
+    "D"
+   ],
+   "variantsAt": "2026-10-06T03:56:13.464Z"
+  },
+  "RM_Korveth": {
+   "at": "2026-10-06T03:58:58.487Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Mirrelin": {
+   "at": "2026-10-06T03:59:06.199Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Pallick": {
+   "at": "2026-10-06T03:59:11.441Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Skarrid": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Skellarn": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Skelver": {
+   "at": "2026-10-06T03:59:20.259Z",
+   "decidedAt": "2026-10-06T03:59:17.156Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Soffeth": {
+   "at": "2026-10-06T03:59:29.513Z",
+   "decidedAt": "2026-10-06T03:59:25.296Z",
+   "decision": "redo",
+   "note": "more realistic, variants please",
+   "prefill": "A"
+  },
+  "RM_SumpMouse": {
+   "at": "2026-10-06T03:57:04.708Z",
+   "decidedAt": "2026-10-06T03:56:49.804Z",
+   "decision": "redo",
+   "note": "Great idea and I love the huge paws, but make it less mouse-like and more alien please. Can still call it a sump mouse. ",
+   "prefill": "A"
+  },
+  "RM_Thrummel": {
+   "at": "2026-10-06T03:57:27.965Z",
+   "decidedAt": "2026-10-06T03:57:19.050Z",
+   "decision": "redo",
+   "note": "less terrestrial, more spherical ",
+   "prefill": "A"
+  },
+  "RM_ThrummelBroodmother": {
+   "at": "2026-10-06T03:57:54.584Z",
+   "decidedAt": "2026-10-06T03:57:47.159Z",
+   "decision": "redo",
+   "note": "This needs to match the Thrummel above. ",
+   "prefill": "A"
+  },
+  "RM_ThrummelWarden": {
+   "at": "2026-10-06T03:58:22.660Z",
+   "decidedAt": "2026-10-06T03:58:17.470Z",
+   "decision": "redo",
+   "note": "Needs to match the thrummels above",
+   "prefill": "A"
+  },
+  "RM_Tolleth": {
+   "at": "2026-10-06T03:59:35.717Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RM_Velloch": {
+   "at": "2026-10-06T03:59:41.938Z",
+   "decision": "A",
+   "note": "variants please",
+   "prefill": "A"
+  },
+  "RSW_Hssiss": {
+   "at": "2026-10-06T03:55:47.386Z",
+   "decidedAt": "2026-10-06T03:55:42.840Z",
+   "decision": "redo",
+   "note": "follow canon precisely ",
+   "picks": {
+    "swanimals/Hssiss/Hssiss_Swimming": "B"
+   },
+   "prefill": "A"
+  },
+  "RUT_Plant_Wick": {
+   "at": "2026-10-06T03:59:54.939Z",
+   "decidedAt": "2026-10-06T03:59:51.558Z",
+   "decision": "hold",
+   "note": "cut this no longer needed",
+   "prefill": "A"
+  }
+ },
+ "posture": "pick-one",
+ "reviewStatus": {
+  "at": "2026-10-05T21:00:00-0700",
+  "by": "owner (Lukas)",
+  "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 38, savedAt 2026-10-05T20:59:55-0700; owner typed 'Sump done' (BENCH relay)",
+  "state": "ruled"
+ },
+ "savedAt": "2026-10-05T20:59:55-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "thesump_sheet_2026-10-05",
+ "snapshot": "infrastructure/state/art/sheets/thesump_sheet_2026-10-05.snapshot.json",
+ "snapshotId": "510550e340f7c58b",
+ "writeCount": 38
 }
