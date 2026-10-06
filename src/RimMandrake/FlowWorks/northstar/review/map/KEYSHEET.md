@@ -1,6 +1,6 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261005_b). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261006). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
