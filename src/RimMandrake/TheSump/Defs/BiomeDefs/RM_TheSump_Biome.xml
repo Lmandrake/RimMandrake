@@ -154,7 +154,7 @@
       <!-- SUMP_FAUNA_ROSTER_1: the four rows above are our replacements of the former donor
            rows; the five below are wholly new, no donor slot evicted (see header). -->
       <RM_SumpMouse>0.8</RM_SumpMouse>  <!-- sump-mouse - the instrument, the prey base -->
-      <RM_Brommet>0.4</RM_Brommet>  <!-- brommet - the ring's ordinary grazer -->
+      <!-- RM_Brommet CUT from this roster (owner, Sump sheet 2026-10-05: "terrestrial, cut"). -->
       <RM_Dredgel>0.2</RM_Dredgel>  <!-- dredgel - the archive's janitor -->
       <RM_Skarrid>0.25</RM_Skarrid>  <!-- skarrid - the still hunter -->
       <RM_Skellarn>0.15</RM_Skellarn>  <!-- skellarn - the stilt-flier, ruled 2026-09-24 -->
@@ -170,7 +170,7 @@
            Commonalities: INVENTED-BUILD except RM_Dorvel (0.05) and
            RM_Velloch (0.6), both named exactly in the doc; see
            RM_SumpFlora.xml's header for the full rationale. -->
-      <RUT_Plant_Wick>0.03</RUT_Plant_Wick>  <!-- wick-plant - starter stock -->
+      <!-- RUT_Plant_Wick CUT from this roster (owner, Sump sheet 2026-10-05: "cut this no longer needed"). -->
       <RM_Dorvel>0.05</RM_Dorvel>  <!-- dorvel - starter stock, doc-named -->
       <RM_Skelver>0.4</RM_Skelver>  <!-- skelver - forage staple, baseline green -->
       <RM_Korveth>0.15</RM_Korveth>  <!-- korveth - bitumen accumulator -->
