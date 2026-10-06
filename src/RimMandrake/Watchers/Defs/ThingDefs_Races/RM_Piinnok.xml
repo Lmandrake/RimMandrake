@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Piinnok.xml        Watchers - WATCHER_CREATURES_MOD_1, first member (design §7)
+
+  The piinnok, "the watching glass" (design/Jawa/worldbuilding/biomes/stillsand_bedazzle_review_2026-09-29.md
+  row 2; admitted in stillsand_bedazzle_cast_2026-09-30.md, owned by this item). Invented name, Q11a:
+  RM_ tier. ONE home: the Stillsand. Its RM_Stillsand roster row is STILLSAND_BEDAZZLE_CONTENT_1's
+  to add (that item's own note), not this file's.
+
+  Owner rulings 2026-10-03 (decision taken by question card):
+    Q1 lives on deep sand only            -> mediumTerrains RM_DeepSand (FlowWorks), waterSeeker +
+                                             waterCellCost so vanilla wander and pathing prefer it
+    Q2 two pictures                       -> stationaryGraphicData = the peek pose, bodyGraphicData =
+                                             the whole creature (seen only when it moves). NO
+                                             swimmingGraphicData: on deep sand (IsWater) it would win
+                                             over the stationary sprite in every state (design §5 trap)
+    Q3 tamed always stays on deep sand    -> the kit's medium lock applies to tame and wild alike
+    Q4 hunting is flush-only              -> the kit's Flush order; a Hunt order on a peeking one sinks it
+
+  Cross-mod content, each guarded by MayRequire so this mod stands alone:
+    RM_DeepSand (mandrake.rm.flowworks); the filter-feed extension and RM_Biosilica (both ship in
+    mandrake.rm.biomes, where CreatureBehaviors and Stillsand are composed).
+
+  🔴 ART PLACEHOLDER: no piinnok art exists (artpipe_state.py find piinnok: 0 hits of 20,592, sanity
+  probe hawkbat found; 2026-10-06). These are vanilla Odyssey hermit-crab textures (every DLC is
+  assumed present), the closest vanilla still/moving pair. Owed, one artpipe job: the peek pose (lens
+  dome + sand rim, iris direction readable N/E/S), the whole-body move sprite, dessicated.
+
+  Numbers marked PROVISIONAL are invented for this build; design §7 fixed only bodySize ~0.15,
+  group 2-4, geophone >= ~2.5 within 14, flinch 6.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Piinnok</defName>
+    <label>piinnok</label>
+    <description>Half the glassy nubs poking out of a deep-sand field are not plants. They are the lenses of piinnok: sessile burrowers whose one exposed organ is a water-clear dome. In a land where nothing tracks the sun, the piinnok is the one thing that tracks anything, and what it tracks is you. Walk past a field and a few glints turn to follow; walk too close and they are gone, leaving only a neat dimple in the sand. They are harmless and good to eat, and a butchered piinnok gives up fine biosilica: its lens was built to see.
+
+Their real value is as living geophones. When every lens in a field sinks at once and nothing is walking nearby, something large is moving under that sand.
+
+A piinnok lives only in deep sand and will not stay anywhere else. It cannot be hunted where it hides: mark its dimple to be flushed, and hunt it while it runs.</description>
+    <statBases>
+      <MoveSpeed>1.4</MoveSpeed>            <!-- PROVISIONAL -->
+      <MarketValue>30</MarketValue>         <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <MeatAmount>3</MeatAmount>            <!-- PROVISIONAL -->
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.9</Wildness>              <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <butcherProducts>
+      <RM_Biosilica MayRequire="mandrake.rm.biomes">3</RM_Biosilica>   <!-- PROVISIONAL count; see open question in the item: no grade above RM_Biosilica exists -->
+    </butcherProducts>
+    <modExtensions>
+      <li Class="RimMandrake.Watchers.RM_WatcherExtension">
+        <mediumTerrains>
+          <li MayRequire="mandrake.rm.flowworks">RM_DeepSand</li>
+        </mediumTerrains>
+        <flinchRadius>6</flinchRadius>
+        <watchRadius>14</watchRadius>
+        <hideTicks>2500~7500</hideTicks>
+        <hiddenHediff>RM_WatcherHidden</hiddenHediff>
+        <signDef>RM_WatcherSign_SandDimple</signDef>
+        <geophoneMinBodySize>2.5</geophoneMinBodySize>
+        <maxWatchTicks>2500</maxWatchTicks>     <!-- PROVISIONAL -->
+        <wanderChance>0.1</wanderChance>        <!-- PROVISIONAL: sessile, it rarely moves -->
+        <boltTicks>1200</boltTicks>             <!-- PROVISIONAL: the hunt window after a flush -->
+        <emergeWhenFoodBelow>0.25</emergeWhenFoodBelow>
+      </li>
+      <!-- It strains the deep sand it lives in (the likka likka's shipped filter-feed stack). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_FilterFeedExtension" MayRequire="mandrake.rm.biomes">
+        <feedTerrainDefNames>
+          <li>RM_DeepSand</li>
+        </feedTerrainDefNames>
+        <beginBelowFoodPercent>0.6</beginBelowFoodPercent>   <!-- PROVISIONAL -->
+        <foodPercentPerBout>0.3</foodPercentPerBout>         <!-- PROVISIONAL -->
+        <boutDurationTicks>600</boutDurationTicks>
+        <searchRadius>6</searchRadius>
+      </li>
+    </modExtensions>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>     <!-- PROVISIONAL -->
+      <baseHungerRate>0.06</baseHungerRate>      <!-- PROVISIONAL -->
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <!-- Deep sand is IsWater to the engine (FlowWorks RM_DeepSand carries the Water tag). waterSeeker
+           lets vanilla wander use it despite avoidWander; waterCellCost replaces its pathCost 300 for
+           this race (Pawn_PathFollower, PathFinderCostTuning; design §1). Walrus/sea turtle value. -->
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeExpectancy>6</lifeExpectancy>         <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.25</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Piinnok</defName>
+    <label>piinnok</label>
+    <labelPlural>piinnok</labelPlural>
+    <race>RM_Piinnok</race>
+    <combatPower>3</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA</texPath>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA_Stationary</texPath>
+          <drawSize>0.3</drawSize>
+        </stationaryGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/Dessicated_HermitCrabA</texPath>
+          <drawSize>0.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA</texPath>
+          <drawSize>0.38</drawSize>
+        </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA_Stationary</texPath>
+          <drawSize>0.38</drawSize>
+        </stationaryGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/Dessicated_HermitCrabA</texPath>
+          <drawSize>0.38</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA</texPath>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+        <stationaryGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/HermitCrabA_Stationary</texPath>
+          <drawSize>0.45</drawSize>
+        </stationaryGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/HermitCrab/Dessicated_HermitCrabA</texPath>
+          <drawSize>0.45</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WATCHER_CREATURES_MOD_1. The Flush order on a watcher's sign. Same shape as Core's Hunt
+     DesignationDef, and its icon (no art of our own yet). -->
+<Defs>
+
+  <DesignationDef>
+    <defName>RM_WatcherFlushMark</defName>
+    <targetType>Thing</targetType>
+    <texturePath>Designations/Hunt</texturePath>
+  </DesignationDef>
+
+</Defs>

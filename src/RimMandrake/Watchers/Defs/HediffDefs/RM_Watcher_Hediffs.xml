@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Watcher_Hediffs.xml        Watchers - WATCHER_CREATURES_MOD_1
+
+  RM_WatcherHidden   the kit's default hidden state, copied from CreatureBehaviors'
+                     RM_SandSubmerged (vanilla HediffComp_Invisibility). visibleToPlayer false is
+                     what stops the whole pawn draw and its selection (InvisibilityUtility.
+                     IsHiddenFromPlayer, PawnRenderer, ThingSelectionUtility; RimSage 1.6), so the
+                     cell's readable sign is a separate Thing (RM_WatcherSign). Applied and removed
+                     only by RM_JobDriver_Watch; RM_CompWatcher removes an orphan.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_WatcherHidden</defName>
+    <label>hiding</label>
+    <description>Pulled down out of sight, just under the surface. It comes back up when the coast is clear.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>20</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

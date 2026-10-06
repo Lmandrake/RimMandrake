@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    WATCHER_CREATURES_MOD_1. Same recipe as src/RimMandrake/Wreckage/Source/RM_Wreckage.csproj.
+    Build from an ext4 clone: python3 src/RimMandrake/Utils/winbuild.py Watchers
+    Output lands in ../Assemblies/.
+    No Harmony and no compile-time reference to another of our assemblies: the geophone reaches
+    CreatureBehaviors' RM_SandSwimUtility by reflection, because that assembly ships inside
+    mandrake.rm.biomes and this mod is standalone (owner ruling 2026-09-30).
+    EnableDefaultCompileItems is false: every .cs needs a Compile line.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Watchers</AssemblyName>
+    <RootNamespace>RimMandrake.Watchers</RootNamespace>
+    <Version>1.0.0</Version>
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RM_WatchersMod.cs" />
+    <Compile Include="RM_WatchersDefOf.cs" />
+    <Compile Include="RM_WatcherExtension.cs" />
+    <Compile Include="RM_CompWatcher.cs" />
+    <Compile Include="RM_WatcherSign.cs" />
+    <Compile Include="RM_WatcherUtility.cs" />
+    <Compile Include="RM_JobGiver_Watch.cs" />
+    <Compile Include="RM_JobDriver_Watch.cs" />
+    <Compile Include="RM_JobGiver_WanderInMedium.cs" />
+    <Compile Include="RM_Flush.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
