@@ -69,6 +69,8 @@ namespace RimMandrake.FlowWorks
 		{
 			if (!RimMandrakeFlowWorksSettings.digFindsEnabled || map == null || !c.InBounds(map))
 			{
+				// a cut happened: an armed debug force is spent on it, never carried into a later, unrelated cut
+				ForceNextRoll = false;
 				return;
 			}
 			Ensure(map);

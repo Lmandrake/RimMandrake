@@ -118,6 +118,13 @@ def _prep_plot(t, key, terrain="Soil"):
     x0, z0 = _plot(t, key)
     b = 8
     r = _rect(x0 - b, z0 - b, PW + 2 * b, PH + 2 * b)
+    # Excavation is ENGINE state, not a Thing or terrain: destroy_batch + Soil leave an earlier chain's (or an earlier
+    # run's, on the same map) cuts in place (MEASURED 2026-10-06: three chains FAILed on a re-used map). Fill them in.
+    rs = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
+                       args="%d;%d;%d;%d" % (x0 - b, z0 - b, PW + 2 * b, PH + 2 * b))
+    res = str((rs or {}).get("result", ""))
+    if t._guard() and not (res.startswith("RESET") and res.endswith("left=0")):
+        raise ExpectationFailed("plot %s excavation reset failed: %s" % (key, res or rs))
     t.bridge_call("jawa/destroy_batch", rects=r, categories="All")
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, r))
     t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
