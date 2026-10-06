@@ -56,3 +56,12 @@ tinted by floatstone colour.
    declined)?
 2. "Light": nothing in vanilla gravship cost reads mass. Fiction only, or should the hull carry a
    mechanical effect (e.g. a fuel saving), which would need new C#?
+
+## campaign half (2026-10-06, uncommitted)
+- NEW `src/RimUtinni/UtinniPatches/Patches/RUT_FoundrySalvageCache_SpunstoneStudy.xml`: nested PatchOperationConditional
+  (RM_SpunstoneBonding exists -> RUT_FoundrySalvageCache exists) -> Replace tickerType Never->Rare, then add
+  `RimMandrake.TheForge.CompProperties_SpunstoneStudy` (same fields as the garden, no minGrowth) to `comps` (creates `<comps>` via nomatch; cache has none).
+- Ticker finding: RM_CompFoundTechStudy.Refresh() runs only from CompTick (hash 250), CompTickRare, CompTickLong. A Never-ticker building gets none,
+  so Rare is required for the study to switch off after reveal / on toggle flip. Comp inspect line only shows while unrevealed.
+- Validation: validate_patch --defs reports 0-match only because its load set is the 10 active mods (TheForge/UtinniPatches not in it);
+  offline lxml simulation over TheForge+EnvironmentalHazards+UtinniPatches Defs: both guards hit, Replace 1 node, comps Add 1 node, result correct.

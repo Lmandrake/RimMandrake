@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FORGE_SPUNSTONE_SOURCES_1 (campaign half): the foundry salvage cache is a second source of the
+     spunstone study (owner card 2026-10-03). Same comp declaration as the floatstone garden in
+     TheForge's RM_TheForge_Flora.xml, minus minGrowth (a Building, not a Plant).
+     Guards are Conditionals on the defs themselves (a top-level MayRequire on an <Operation> is inert in 1.6):
+       - RM_SpunstoneBonding exists (TheForge active) AND RUT_FoundrySalvageCache exists, else nothing happens.
+     The comp's Refresh runs from CompTick / CompTickRare / CompTickLong; the cache is tickerType Never, so
+     it gets Rare, otherwise the study would be set once at spawn and never switch off after the reveal
+     or on a toggle flip. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ResearchProjectDef[defName="RM_SpunstoneBonding"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/tickerType</xpath>
+            <value>
+              <tickerType>Rare</tickerType>
+            </value>
+          </li>
+          <li Class="PatchOperationConditional">
+            <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/comps</xpath>
+            <match Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]/comps</xpath>
+              <value>
+                <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">
+                  <project>RM_SpunstoneBonding</project>
+                  <frequencyTicks>30000</frequencyTicks>
+                  <studyEnabledByDefault>false</studyEnabledByDefault>
+                  <knowledgeToReveal>12</knowledgeToReveal>
+                </li>
+              </value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>/Defs/ThingDef[defName="RUT_FoundrySalvageCache"]</xpath>
+              <value>
+                <comps>
+                  <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">
+                    <project>RM_SpunstoneBonding</project>
+                    <frequencyTicks>30000</frequencyTicks>
+                    <studyEnabledByDefault>false</studyEnabledByDefault>
+                    <knowledgeToReveal>12</knowledgeToReveal>
+                  </li>
+                </comps>
+              </value>
+            </nomatch>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+</Patch>
