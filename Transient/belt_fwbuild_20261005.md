@@ -20,3 +20,11 @@
 ### LIQUID_BOTTLE_LOOP_1 revert timer (built)
 - feature: bottled boiling/icy water reverts to fresh after revertTicks (2500/5000 PROVISIONAL) via injected RM_CompLiquidRevert
   assert live: spawn RM_Bottle_BoilingWater x3, step 2500+ ticks -> RM_Bottle_FreshWater x3 at the cell; merged stacks average age; settings off -> no change. settings: bottleRevertEnabled
+### FLOWWORKS_BUILD_PROGRAM_1 Phase 6 owed (built)
+- feature: explosions light liquid (DamageWorker.ExplosionAffectCell postfix; Flame/Bomb/*incendiary*/*thermobaric*/*napalm*)
+  assert live: tar channel, DoExplosion Bomb r=2 on it with no Fire left -> LiquidFire.BurningCount > 0; EMP blast -> 0. settings: explosionIgnitesLiquidEnabled, canalFireEnabled
+- feature: firefoam smothers (Filth_FireFoam on a burning cell -> extinguished, cannot relight while foam lies; Extinguish blasts smother directly)
+  assert live: lit tar row, firefoam popper over half of it -> those cells stop burning and stay out while neighbours burn. settings: foamSmothersLiquidFireEnabled
+- feature: rain douses (unroofed burning cell, 0.03 x rainRate per 60-tick check)
+  assert live: force rain on a lit open channel vs a roofed twin -> open burning count falls, roofed unchanged. settings: rainDousesLiquidFireEnabled
+- site_spec SETTINGS owed: explosionIgnitesLiquidEnabled, foamSmothersLiquidFireEnabled, rainDousesLiquidFireEnabled (all True)

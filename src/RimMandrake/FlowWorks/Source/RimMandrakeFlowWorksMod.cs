@@ -70,6 +70,9 @@ namespace RimMandrake.FlowWorks
         public static float sourceBurnDaysPerLevel = 5f;
         public static float fireFrontSpeedMultiplier = 1f;
         public static float sourceFireReach = 3f;
+        public static bool explosionIgnitesLiquidEnabled = true;
+        public static bool foamSmothersLiquidFireEnabled = true;
+        public static bool rainDousesLiquidFireEnabled = true;
         public static int SourceFireReach => Mathf.Clamp(Mathf.RoundToInt(sourceFireReach), 0, 30);
 
         // ══════════════════════════════════════════════════════════════════
@@ -287,6 +290,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref sourceBurnDaysPerLevel, "sourceBurnDaysPerLevel", 5f);
             Scribe_Values.Look(ref fireFrontSpeedMultiplier, "fireFrontSpeedMultiplier", 1f);
             Scribe_Values.Look(ref sourceFireReach, "sourceFireReach", 3f);
+            Scribe_Values.Look(ref explosionIgnitesLiquidEnabled, "explosionIgnitesLiquidEnabled", true);
+            Scribe_Values.Look(ref foamSmothersLiquidFireEnabled, "foamSmothersLiquidFireEnabled", true);
+            Scribe_Values.Look(ref rainDousesLiquidFireEnabled, "rainDousesLiquidFireEnabled", true);
             // ── Phase 4 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref fillInEnabled, "fillInEnabled", true);
             Scribe_Values.Look(ref fillInDisplacementEnabled, "fillInDisplacementEnabled", true);
@@ -532,6 +538,16 @@ namespace RimMandrake.FlowWorks
                 fireFrontSpeedMultiplier = list.Slider(fireFrontSpeedMultiplier, 0.25f, 4f);
                 list.Label("How far fire walks into a pond from where it enters: " + SourceFireReach + " cell(s)");
                 sourceFireReach = list.Slider(sourceFireReach, 0f, 30f);
+                list.CheckboxLabeled("Explosions light burnable liquid", ref explosionIgnitesLiquidEnabled,
+                    "A flame or bomb blast lights tar, oil and the like in every cell it reaches, even where no fire "
+                  + "is left burning. Off: only an actual fire lights liquid.");
+                list.CheckboxLabeled("Firefoam smothers burning liquid", ref foamSmothersLiquidFireEnabled,
+                    "Firefoam on a burning cell puts it out, and the cell cannot relight while the foam lies there. "
+                  + "Off: foam does nothing to burning liquid.");
+                list.CheckboxLabeled("Rain slowly douses burning liquid", ref rainDousesLiquidFireEnabled,
+                    "Rain on an open burning cell has a small chance to put it out every second; a downpour clears an "
+                  + "open channel in about half an hour, though a cell still burning beside it can relight it. "
+                  + "Roofed cells are untouched. Off: rain does nothing to burning liquid.");
             }
 
             // ══════════════════════════════════════════════════════════════

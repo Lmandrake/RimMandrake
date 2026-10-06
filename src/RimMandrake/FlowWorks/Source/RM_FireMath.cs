@@ -70,5 +70,22 @@ namespace RimMandrake.FlowWorks
 		{
 			return heldInPit ? 1f : 0.35f;
 		}
+	
+		/// <summary>Rain douse chance per 60-tick check on an open burning cell. PROVISIONAL: 0.03 at full rain.</summary>
+		public static float RainDouseChance(float rainRate)
+		{
+			if (rainRate <= 0f) return 0f;
+			return 0.03f * (rainRate > 1f ? 1f : rainRate);
+		}
+
+		/// <summary>Which blasts light liquid: flame and bomb (vanilla), and any damage named incendiary or
+		/// thermobaric (mods). EMP, smoke, firefoam, stun and the rest never do.</summary>
+		public static bool ExplosionIgnites(string damageDefName)
+		{
+			if (string.IsNullOrEmpty(damageDefName)) return false;
+			if (damageDefName == "Flame" || damageDefName == "Bomb") return true;
+			string d = damageDefName.ToLowerInvariant();
+			return d.Contains("incendiary") || d.Contains("thermobaric") || d.Contains("napalm");
+		}
 	}
 }
