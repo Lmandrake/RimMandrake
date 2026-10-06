@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FORGE_SPUNSTONE_SOURCES_1 — what spunstone bonding unlocks besides the keel brace.
+  Owner ruling 2026-10-03 (question card): "a light fast floatstone door AND floatstone
+  structural parts (light wall/beam for the ship)".
+
+  Both are floatstone-only: stuffCategories is RM_SpunstoneWeave alone, which only
+  RM_Floatstone carries (Defs/StuffCategoryDefs/RM_SpunstoneWeave.xml). Floatstone stays
+  Stony too, so a plain floatstone wall or door still builds from the vanilla defs; these
+  two exist because the ruling asked for distinct ones.
+
+  AIRTIGHT, unlike a vanilla floatstone wall or door: stone stuff carries no
+  stuffProps.isAirtight (RimSage 1.6: only metals such as Steel/Plasteel/Uranium do), and
+  ThingDef/Building read building.isAirtight before the stuff, so both set it outright. A
+  ship part that leaks in vacuum would not be a ship part.
+
+  "LIGHT" IS FICTION, NOT A MECHANIC: MEASURED (RimSage 1.6, GravshipUtility.TryGetPathFuelCost,
+  Building_GravEngine.FuelSavingsPercent) a gravship's launch fuel depends on distance and on
+  linked facilities, never on mass. Floatstone's 0.1 mass per block is what it weighs
+  minified or hauled, no more.
+
+  Mod Settings: floatstoneDoorEnabled / spunstoneHullEnabled remove each from the architect
+  menu (restart to apply; built ones stay). Gate: Source/RM_ForgeSpunstoneParts.cs.
+
+  PROVISIONAL numbers (invented, not ruled): door DoorOpenSpeed base 2.5 (x0.8 floatstone
+  factor = 200%, twice a steel door; an unpowered door, so still slower than a powered
+  autodoor's 4x), costStuffCount 25 (vanilla Door), WorkToBuild 1100 (vanilla Autodoor);
+  hull keeps GravshipHull's 420 HP / 300 work / 7 per cell, scaled by floatstone's stuff
+  factors (HP x2.2, work x3.5).
+  PLACEHOLDER ART: the door uses vanilla simple-door textures, the hull the vanilla
+  gravship-hull atlas, both tinted by floatstone's stuff colour. Own art is owed (none
+  found by artpipe_state.py find floatstone/spunstone, 2026-10-06).
+-->
+<Defs>
+
+  <ThingDef ParentName="DoorBase">
+    <defName>RM_FloatstoneDoor</defName>
+    <label>floatstone door</label>
+    <description>A door of spun floatstone, so light that a push swings it wide and it falls shut on its own weight a breath later. Nobody slows for it. The threads are laid in the grain the Forge taught, so it seals tight enough to hold air in a gravship's hull.</description>
+    <statBases>
+      <WorkToBuild>1100</WorkToBuild>
+      <DoorOpenSpeed>2.5</DoorOpenSpeed>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <stuffCategories Inherit="False">
+      <li>RM_SpunstoneWeave</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <uiOrder>2016</uiOrder>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>RM_SpunstoneBonding</li>
+    </researchPrerequisites>
+    <building>
+      <isAirtight>true</isAirtight>
+    </building>
+  </ThingDef>
+
+  <!-- Odyssey's GravshipHull carries no Name= attribute, so it cannot be a ParentName (validate_patch with
+       the installed game defs, 2026-10-06). Its body is copied here onto the same vanilla "Wall" parent it uses
+       (Data/Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml). -->
+  <ThingDef ParentName="Wall">
+    <defName>RM_SpunstoneHull</defName>
+    <label>spunstone hull</label>
+    <description>Gravship hull laid from floatstone in the grain, every thread carrying strain to its neighbours. Pearl-white, airtight, and far tougher than its weight has any right to be. Like any hull it binds into the substructure, so it can only be built on a gravship.</description>
+    <designationCategory>Odyssey</designationCategory>
+    <uiOrder>1801</uiOrder>
+    <uiIconPath>Things/Building/Linked/GravshipHull/GravshipHull_MenuIcon</uiIconPath>
+    <graphicData>
+      <texPath>Things/Building/Linked/GravshipHull/GravshipHull_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <researchPrerequisites>
+      <li>RM_SpunstoneBonding</li>
+    </researchPrerequisites>
+    <statBases>
+      <MaxHitPoints>420</MaxHitPoints>
+      <WorkToBuild>300</WorkToBuild>
+      <Flammability>0</Flammability>
+    </statBases>
+    <costStuffCount>7</costStuffCount>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <building>
+      <isAirtight>true</isAirtight>
+    </building>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <stuffCategories Inherit="False">
+      <li>RM_SpunstoneWeave</li>
+    </stuffCategories>
+    <comps Inherit="False"/>
+  </ThingDef>
+
+</Defs>

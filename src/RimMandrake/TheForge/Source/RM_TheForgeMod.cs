@@ -50,6 +50,10 @@ namespace RimMandrake.TheForge
         public static bool keelworkEnabled = true;
         public static bool keelRingEnabled = true;
         public static bool spunstoneStudyEnabled = true;
+        // FORGE_SPUNSTONE_SOURCES_1: the two floatstone-only builds spunstone bonding
+        // unlocks. Read once at startup (RM_SpunstonePartsGate), so restart to apply.
+        public static bool floatstoneDoorEnabled = true;
+        public static bool spunstoneHullEnabled = true;
         public static bool forgeVoicesEnabled = true;
         public static bool forgeVoicesVisualCues = false;
         public static bool dhuvvoxClockEnabled = true;
@@ -102,6 +106,8 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref keelworkEnabled, "keelworkEnabled", true);
             Scribe_Values.Look(ref keelRingEnabled, "keelRingEnabled", true);
             Scribe_Values.Look(ref spunstoneStudyEnabled, "spunstoneStudyEnabled", true);
+            Scribe_Values.Look(ref floatstoneDoorEnabled, "floatstoneDoorEnabled", true);
+            Scribe_Values.Look(ref spunstoneHullEnabled, "spunstoneHullEnabled", true);
             Scribe_Values.Look(ref forgeVoicesEnabled, "forgeVoicesEnabled", true);
             Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
             Scribe_Values.Look(ref dhuvvoxClockEnabled, "dhuvvoxClockEnabled", true);
@@ -176,6 +182,13 @@ namespace RimMandrake.TheForge
                 "The spunstone bonding research stays hidden until colonists have studied "
               + "enough mature floatstone gardens. Off: the project is visible and "
               + "researchable from the start, and gardens are not studied.");
+            list.CheckboxLabeled("  Floatstone door (restart to apply)", ref floatstoneDoorEnabled,
+                "A fast, airtight door that can only be built from floatstone, unlocked by spunstone "
+              + "bonding. Off: it leaves the architect menu on the next launch; doors already built stay.");
+            list.CheckboxLabeled("  Spunstone hull (restart to apply)", ref spunstoneHullEnabled,
+                "An airtight gravship hull wall that can only be built from floatstone, unlocked by "
+              + "spunstone bonding. Off: it leaves the architect menu on the next launch; hull already "
+              + "built stays.");
             list.CheckboxLabeled("Four voices of the Forge", ref forgeVoicesEnabled,
                 "Each phase of the grand cycle has its own sound: a turbine throb in the still "
               + "heat, coughing vents in the gas wash, a hiss under the boiling rain, ticking "

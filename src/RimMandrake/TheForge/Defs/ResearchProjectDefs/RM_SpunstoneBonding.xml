@@ -3,9 +3,9 @@
   FORGE_GPT_ENRICHMENT_1 §2 — spunstone bonding. Hidden (ResearchProjectDef.IsHidden,
   Harmony postfix in Source/RM_ForgeSpunstone.cs) until colonists have studied enough
   mature floatstone gardens; the toggle "Spunstone bonding is learned in the Forge"
-  off leaves it visible like any project. Unlocks RM_FloatstoneKeelBrace; the spec's
-  high-speed doors and advanced structural parts are not defined yet
-  (FORGE_SPUNSTONE_SOURCES_1).
+  off leaves it visible like any project. Unlocks RM_FloatstoneKeelBrace, RM_FloatstoneDoor
+  and RM_SpunstoneHull (owner ruling 2026-10-03, FORGE_SPUNSTONE_SOURCES_1;
+  Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml).
   Prerequisite BasicGravtech (Odyssey, RimSage 2026-10-01: X 9 / Y 4.8). TUNED:
   baseCost 800; placed X 10 / Y 6.4, below RM_AcousticSounding (10 / 5.6).
 -->
@@ -13,7 +13,7 @@
   <ResearchProjectDef>
     <defName>RM_SpunstoneBonding</defName>
     <label>spunstone bonding</label>
-    <description>Floatstone is strong the way a woven thing is strong: its glass threads hand strain to one another. Learn to lay it in the grain and it can brace a gravship's frame for almost no weight.</description>
+    <description>Floatstone is strong the way a woven thing is strong: its glass threads hand strain to one another. Learn to lay it in the grain and it can brace a gravship's frame for almost no weight, hang a door that nobody slows for, and lay an airtight hull.</description>
     <baseCost>800</baseCost>
     <techLevel>Industrial</techLevel>
     <prerequisites>

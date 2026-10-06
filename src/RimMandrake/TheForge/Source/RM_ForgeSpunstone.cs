@@ -20,10 +20,11 @@ namespace RimMandrake.TheForge
     // tab hides a project and how CanStartNow refuses it. At the threshold a
     // letter announces the breakthrough and names who studied the samples.
     //
-    // NOT here, each its own open question (FORGE_SPUNSTONE_SOURCES_1): the
-    // spec's "foundry salvage" caches are campaign-tier (RUT_) content this
-    // RM mod cannot name, and the "high-speed doors and advanced structural
-    // parts" the project unlocks are not defined anywhere yet.
+    // FORGE_SPUNSTONE_SOURCES_1 (owner ruling 2026-10-03): the project also
+    // unlocks RM_FloatstoneDoor and RM_SpunstoneHull (RM_SpunstoneParts.xml).
+    // The ruled second source, foundry salvage caches, is campaign-only: the
+    // comp that adds it to RUT_FoundrySalvageCache belongs in the Utinni
+    // layer (owed there); this RM mod never names it.
     //
     // Toggle off: the project is never hidden and gardens are not studied.
     // ════════════════════════════════════════════════════════════════════
