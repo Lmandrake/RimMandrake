@@ -66,12 +66,12 @@ def current(t):
                 raise ExpectationFailed("current grid has cells but no lanes: %r" % kv)
     with t.component("shoves", toggle="surfaceCurrentEnabled"):
         if t._guard():
-            res = _proof(t, "ProofShove", "fast|3")
+            res = _proof(t, "ProofShove", "fast;3")
             if not res.startswith("MOVED") or int(res.split()[1]) < 3:
                 raise ExpectationFailed("fast lane did not carry a colonist 3 cells: %s" % res)
     with t.component("ford_exempt", toggle="fordsEnabled"):
         if t._guard():
-            res = _proof(t, "ProofShove", "ford|3")
+            res = _proof(t, "ProofShove", "ford;3")
             if not res.startswith("MOVED 0"):
                 raise ExpectationFailed("a colonist on ford stones was carried: %s" % res)
     with t.component("exemptions", beyond_toggle=True):
