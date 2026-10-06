@@ -1,0 +1,95 @@
+{
+ "run": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\player_missions\\canal_20261006T105024",
+ "mission": "canal",
+ "dry_run": false,
+ "verdict": "PASS",
+ "evidence": {
+  "band": "129,117,3,16",
+  "filledCanalCells": 12,
+  "needed": 10
+ },
+ "deadline": null,
+ "timing": {
+  "mission_wall_s": 129.921,
+  "fixture_s": 0.84,
+  "bridge_s": 40.417,
+  "overhead_s": 0.599,
+  "think_s": 88.887,
+  "ticks_by_actions": 66918,
+  "ticks_during_think": 0,
+  "screenshots": 0,
+  "screenshot_s": 0.0,
+  "actions": 20,
+  "observes": 6,
+  "refused": 0,
+  "internal_reads": 0,
+  "by_class": {
+   "read": {
+    "n": 10,
+    "bridge_s": 0.625,
+    "think_s": 25.617,
+    "ticks": 0
+   },
+   "designate": {
+    "n": 2,
+    "bridge_s": 0.114,
+    "think_s": 18.106,
+    "ticks": 0
+   },
+   "order": {
+    "n": 3,
+    "bridge_s": 0.27,
+    "think_s": 19.57,
+    "ticks": 0
+   },
+   "time": {
+    "n": 5,
+    "bridge_s": 38.199,
+    "think_s": 17.41,
+    "ticks": 66918
+   }
+  }
+ },
+ "friction": [
+  {
+   "i": 16,
+   "kind": "act",
+   "tool": "rimworld/step_game_ticks",
+   "flags": [
+    "failed_action"
+   ],
+   "message": "Timed out after advancing 601 of 2000 requested tick(s).",
+   "intent": "let colonists dig"
+  },
+  {
+   "i": 18,
+   "kind": "act",
+   "tool": "rimworld/play_for",
+   "flags": [
+    "failed_action"
+   ],
+   "message": "RimWorld is busy with a long event.",
+   "intent": "run time at ultrafast so the canal gets dug"
+  },
+  {
+   "i": 22,
+   "kind": "act",
+   "tool": "rimworld/play_for",
+   "flags": [
+    "failed_action"
+   ],
+   "message": "RimWorld is busy with a long event.",
+   "intent": "keep time moving while the canal is dug"
+  },
+  {
+   "i": 24,
+   "kind": "act",
+   "tool": "rimworld/play_for",
+   "flags": [
+    "failed_action"
+   ],
+   "message": "RimWorld is busy with a long event.",
+   "intent": "keep time moving while the canal is dug"
+  }
+ ]
+}
