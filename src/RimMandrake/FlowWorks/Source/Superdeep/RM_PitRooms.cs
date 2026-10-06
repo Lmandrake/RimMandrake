@@ -235,13 +235,19 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Whether a worker's path to <paramref name="dest"/> should be served from the lip.</summary>
 		public static bool ShouldServeFromLip(Pawn worker, LocalTargetInfo dest, out RM_PitRoomMath.LipKind kind)
 		{
+			return ShouldServeFromLipFor(worker, worker?.CurJobDef, dest, out kind);
+		}
+
+		/// <summary>The same gate for a named job (the northstar proof asks it without a running job).</summary>
+		public static bool ShouldServeFromLipFor(Pawn worker, JobDef job, LocalTargetInfo dest, out RM_PitRoomMath.LipKind kind)
+		{
 			kind = RM_PitRoomMath.LipKind.None;
 			if (!RimMandrakeFlowWorksSettings.wardenFromLipEnabled || worker == null || !worker.Spawned
 				|| worker.Faction != Faction.OfPlayer || !dest.IsValid)
 			{
 				return false;
 			}
-			kind = KindOf(worker.CurJobDef);
+			kind = KindOf(job);
 			if (kind == RM_PitRoomMath.LipKind.None)
 			{
 				return false;

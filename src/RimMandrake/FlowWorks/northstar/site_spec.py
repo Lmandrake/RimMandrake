@@ -68,6 +68,14 @@ SETTINGS = {
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
         "typedLiquidShoresEnabled": True,
         "swaleEnabled": True, "swaleRateMultiplier": 1.0,     # CRACKEDLANDS_MECHANICS_BUILD_1 swale
+        "explosionIgnitesLiquidEnabled": True, "foamSmothersLiquidFireEnabled": True,
+        "rainDousesLiquidFireEnabled": True,                    # Phase 6 owed (ignition by explosion, extinguishing)
+        "superdeepRoomsEnabled": True, "captureDownEnabled": True, "wardenFromLipEnabled": True,   # SUPERDEEP_PRISON_ROOM_1
+        "excavationWallFacesEnabled": True,                     # EXCAVATION_WALL_ART_1 carrier
+        "bottleRevertEnabled": True,                            # LIQUID_BOTTLE_LOOP_1 revert timer
+        "liquidPumpEnabled": True,                              # Phase 8 slice 1 (universal pump)
+        "digFindsEnabled": True, "digFindsLocalOnly": True, "digFindChanceMultiplier": 1.0,
+        "digFindBudgetPercent": 5.0, "digFindLetterEnabled": True,   # FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half)
     },
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,
