@@ -27,6 +27,16 @@ namespace RimMandrake.WeepingStones
 			"RM_Loomu", "RM_Huldu", "RM_Ivvol",
 		};
 
+		/// <summary>WEEPINGSTONES_STOCK_JOB_LOOP_1: a wild target keeps wandering (or flees) while the handler walks up and
+		/// waits, so FailOnCannotTouch ends NET/CULL with the target still alive. Hold it in place for the job's span.</summary>
+		public static void HoldStill(Pawn target, Pawn handler, int ticks)
+		{
+			if (target != null && target.Spawned && !target.Dead)
+			{
+				target.stances.stunner.StunFor(ticks, handler, false, false);
+			}
+		}
+
 		public static string BreedingStockDefNameFor(string pawnKindDefName)
 		{
 			return pawnKindDefName + BreedingStockSuffix;

@@ -41,6 +41,12 @@ namespace RimMandrake.WeepingStones
 		{
 			this.FailOn(() => Vhorrin == null || Vhorrin.Dead || !Vhorrin.Spawned);
 
+			// WEEPINGSTONES_STOCK_JOB_LOOP_1: freeze the wild target for the whole approach + wait; it otherwise wanders/flees out of touch
+			Toil hold = ToilMaker.MakeToil("MakeNewToils");
+			hold.initAction = delegate { RM_PoolBreederUtility.HoldStill(Vhorrin, pawn, 900 + CullTicks); };
+			hold.defaultCompleteMode = ToilCompleteMode.Instant;
+			yield return hold;
+
 			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 
 			Toil cull = Toils_General.Wait(CullTicks).WithProgressBarToilDelay(TargetIndex.A);
