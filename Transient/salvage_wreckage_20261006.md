@@ -72,3 +72,41 @@
 - Left: RM_GenStep_WreckField (custom element-name loader) + the 3->1 Scald GenStep collapse and S6 alias; the RUT_->RM_
   rename; RM_WreckDensityClassDef; the other ~7 weathering rows with their biomes (Riddled/High first); RM_WreckSurface
   category; wreck-fall incident; the deconstruct bridge verb; a live load proving the fraction lands at 0.75.
+
+## Slice 3 (2026-10-06): the wreck-field placement step, the Scald merged 3 -> 1, Riddled/High weathering rows
+- RM_GenStep_WreckField (new file Source/RM_GenStep_WreckField.cs + csproj Compile line; RM_WreckWeathering.cs untouched):
+  on GenStep_Scatterer (ScatterThings' tag lists are private and its rotation check is per its single thingDef).
+  Weighted <wrecks> in element-name form (RM_WreckFieldEntry.LoadDataFromXmlCustom, the BiomeAnimalRecord pattern),
+  densityClass, own countPer10kCellsRange override, cluster chance/size (class default), tag-based terrain validation
+  over terrainValidationRadius, placement via GenSpawn.CanSpawnAt (affordance) + never wiping a non-plant/filth thing.
+  Clusters ignore minSpacing (spacing separates fields, not a field's pieces). warnOnFail off by default.
+- RM_WreckDensityClassDef + Defs/RM_WreckDensityClassDefs/RM_WreckDensityClasses.xml: Riddled 6~10/0.5, High 4~6/0.3,
+  Moderate 1.5~3/0.2, Low 0.3~0.8/0, Eroded 1~2/0 (design §3d-i; Moderate cluster and all sizes INVENTED). No Cleaned or
+  Fresh row by design. The law's "+1 tier" rides the weathering rows (a tier is per-def), not the class.
+- Settings (RM_WreckageMod.cs): wreckFields, wreckDensity (0-3), disabledFields (comma string, so the bridge's settings
+  tool can flip one field). FieldActive(key) = master && key not disabled && RM_MechanicGates.Enabled(key).
+  Gates: Wreckage.fields (ctor); Wreckage.field.<key> + each gateAliases entry, registered by RM_WreckFieldStartup
+  ([StaticConstructorOnStartup], after def load and after every Mod ctor).
+- Scald: RUT_ScaldWreckScatter.xml now holds ONE RM_WreckField_Scald (order 965, key Scald, alias Scald.S6, Moderate,
+  ceiling 1.2~1.8 = the old 3 x 0.4~0.6, same tag/radius/minSpacing/allowInWaterBiome); register patch adds it to
+  RM_TheScald/RUT_TheScald. The new GenStepDef is RM_-named (new def, not a rename); the wreck defs stay RUT_.
+  Behaviour change, flagged: minSpacing 6 now spaces any wreck kind, and 2-3 can cluster.
+- S6 fold (TerminalBiomes): scaldS6WreckSalvageEnabled, its Scribe line, checkbox and Scald.S6 registration removed;
+  RM_GenStep_ScaldWreckScatter deleted; ScaldActive made public and registered as the bare gate "Scald", which the field
+  reads so the Scald's biome switch still stops its wrecks. A saved S6=false is lost (defaults on). TerminalBiomes
+  validation.py's S6 UNMEASURED chain and its walk line moved to Wreckage.
+- Weathering rows: Frozen (1.0, +1; Nightside Ice/Lantern Deeps), Picked (0.2, -2; Twilight Deep), CrystalJacketed
+  (1.0, +1, INVENTED from the High default; Grey Deep). No child def names them yet. Known gaps: Picked still gets a
+  Scrap roll (no noLoot field: that needs RM_WreckWeathering.cs); the crystal jacket and shard table are not expressible.
+- Checks: winbuild Wreckage 0/0 and TerminalBiomes 0/0; validate_patch --defs (Data+workshop+Mods) 4 files 0 errors,
+  4 advisory warnings on the register patch's unchanged nomatch shape; Wreckage validation.py static PASS (new
+  _field_checks: field XML elements vs C#+base fields, li-form, class/tag/def refs, density law order, pinned weathering
+  numbers, both register arms, stale refs to the 3 old steps/S6 bool across src/, TB gate registrations), 9 injected
+  faults each caught; TerminalBiomes validation.py static PASS; compose plan (not applied) puts 7 Wreckage files in.
+- Art: none owed this slice (no new child def). Search: scald2_wreck 56 hits (probe), landspeeder 36, PickedWreck 0,
+  wreck_frozen 0, expedition 0. Owed when step 3's biome children exist: Riddled expedition rig/hull/tank (Nightside Ice,
+  Lantern Deeps), Twilight picked hull-rib, Grey crystal-jacketed hull, ~2 variants each.
+- Left: biome children + fields for Riddled/High (Nightside Ice, Lantern Deeps, Cauldron edge; sea floors in their floor
+  map generators, not extraGenSteps); the repairable-few entry; Picked noLoot + an extraTable field (after the review of
+  RM_WreckWeathering.cs); RUT_->RM_ wreck rename; RM_WreckSurface; wreck falls; the deconstruct bridge verb; a live
+  fresh-Scald-map pass for the three mapgen components.

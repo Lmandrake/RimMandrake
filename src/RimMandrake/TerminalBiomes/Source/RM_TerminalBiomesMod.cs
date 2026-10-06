@@ -19,10 +19,12 @@ namespace RimMandrake.TerminalBiomes
     //
     // TERMINALBIOMES_RM_MOD_BUILD_1 §11 step 1: five toggles (master + one
     // per biome, all default ON), plus one sub-toggle per Scald mechanic the
-    // kit spec names (S1/S2/S4/S5/S6 — S3 is unbuilt, so it gets no toggle),
+    // kit spec names (S1/S2/S4/S5/S7; S3 is unbuilt, and S6 wreck salvage
+    // moved to the Wreckage engine's per-biome "Wreck field: Scald" checkbox,
+    // SALVAGE_WRECKAGE_EVERYWHERE_1 slice 3),
     // plus a cross-biome block matching Greentide's own shape.
     //
-    // The five Scald sub-toggles are LIVE. Each is read as
+    // The Scald sub-toggles are LIVE. Each is read as
     // masterEnabled && scaldEnabled && its own flag (the Scald*Active
     // properties below) and reaches its mechanic one of two ways:
     //   - Mechanics whose C# lives in the SHARED mandrake.rm.environmental
@@ -37,16 +39,19 @@ namespace RimMandrake.TerminalBiomes
     //       Scald.S4 -> RUT_ScaldVent, as the condenser sees it
     //       Scald.S5 -> RUT_WalkerSurfacing, RUT_GenStep_ScaldSailScatterer
     //       Scald.S7 -> RUT_ScaldSteamCarrier (GameCondition_EnvironmentalWeather)
+    //       Scald    -> the biome switch alone (ScaldActive). Read by the Wreckage
+    //                   engine's RM_WreckField_Scald, whose own checkbox lives in
+    //                   the Wreckage settings; that engine registers "Scald.S6" as
+    //                   an alias of the field.
     //       Scald.S1.flash -> RUT_WeatherEvent_VentFlash (no def of its own; the
     //                         event checks the key directly, since a WeatherEvent
     //                         is constructed from a Type and carries no Def)
     //   - Mechanics whose engine class was vanilla (the vent's
-    //     Building_SteamGeyser, the wrecks' GenStep_ScatterThings): thin
-    //     subclasses in RM_TerminalBiomesScaldKit.cs read these settings
-    //     directly.
+    //     Building_SteamGeyser): a thin subclass in RM_TerminalBiomesScaldKit.cs
+    //     reads these settings directly.
     // Every gate acts at its comp/condition/incident/GenStep entry point,
     // never by removing a def, so a flip takes effect on the next tick (or,
-    // for the two scatter GenSteps, on the next NEW map) and flipping back
+    // for a scatter GenStep, on the next NEW map) and flipping back
     // restores the mechanic. The shared assembly is loadAfter, not a hard
     // dependency: registration is skipped when it is not active.
     //
@@ -79,24 +84,22 @@ namespace RimMandrake.TerminalBiomes
         public static bool ChillCryoponicsActive => masterEnabled && chillEnabled && chillCryoponicsEnabled;
         public static bool ChillFloorBedActive => masterEnabled && chillEnabled && chillFloorBedEnabled;
 
-        // ── Scald mechanic sub-toggles (kit spec S1/S2/S4/S5/S6; S3 unbuilt) ─
+        // ── Scald mechanic sub-toggles (kit spec S1/S2/S4/S5/S7; S3 unbuilt; S6 is Wreckage's) ─
         public static bool scaldS1SteamSkyEnabled = true;
         public static bool scaldS2SteamCatchEnabled = true;
         public static bool scaldS4VentFieldsEnabled = true;
         public static bool scaldS5SailWalkerEnabled = true;
-        public static bool scaldS6WreckSalvageEnabled = true;
         public static bool scaldS7SteamExposureEnabled = true;
         public static bool scaldS1bVentFlashEnabled = true;
 
         // Effective state: a sub-toggle only counts while the mod and the
         // Scald are both on. Everything that gates reads these, never the
         // raw fields.
-        private static bool ScaldActive => masterEnabled && scaldEnabled;
+        public static bool ScaldActive => masterEnabled && scaldEnabled;
         public static bool ScaldS1SteamSkyActive => ScaldActive && scaldS1SteamSkyEnabled;
         public static bool ScaldS2SteamCatchActive => ScaldActive && scaldS2SteamCatchEnabled;
         public static bool ScaldS4VentFieldsActive => ScaldActive && scaldS4VentFieldsEnabled;
         public static bool ScaldS5SailWalkerActive => ScaldActive && scaldS5SailWalkerEnabled;
-        public static bool ScaldS6WreckSalvageActive => ScaldActive && scaldS6WreckSalvageEnabled;
         public static bool ScaldS7SteamExposureActive => ScaldActive && scaldS7SteamExposureEnabled;
         // S1b rides S1: a flash in a sky that is not the boil's breath makes no sense.
         public static bool ScaldS1bVentFlashActive => ScaldS1SteamSkyActive && scaldS1bVentFlashEnabled;
@@ -229,7 +232,6 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref scaldS2SteamCatchEnabled, "scaldS2SteamCatchEnabled", true);
             Scribe_Values.Look(ref scaldS4VentFieldsEnabled, "scaldS4VentFieldsEnabled", true);
             Scribe_Values.Look(ref scaldS5SailWalkerEnabled, "scaldS5SailWalkerEnabled", true);
-            Scribe_Values.Look(ref scaldS6WreckSalvageEnabled, "scaldS6WreckSalvageEnabled", true);
             Scribe_Values.Look(ref scaldS7SteamExposureEnabled, "scaldS7SteamExposureEnabled", true);
             Scribe_Values.Look(ref scaldS1bVentFlashEnabled, "scaldS1bVentFlashEnabled", true);
             Scribe_Values.Look(ref suulkEnabled, "suulkEnabled", true);
@@ -326,8 +328,6 @@ namespace RimMandrake.TerminalBiomes
                 "Natural vents S2's condenser and S5's set-pieces key on.");
             list.CheckboxLabeled("S5 — sail + walker set-pieces", ref scaldS5SailWalkerEnabled,
                 "Drifting bubble-sail wrecks and the bottom-walker surfacing sighting.");
-            list.CheckboxLabeled("S6 — wreck salvage", ref scaldS6WreckSalvageEnabled,
-                "Salvageable wrecks scattered in the burning shallows.");
             list.CheckboxLabeled("S7 — steam exposure", ref scaldS7SteamExposureEnabled,
                 "The clock that makes the standing steam lethal to an unprotected pawn. Off: "
               + "nobody accumulates scald exposure and any exposure already carried heals off. "
@@ -569,7 +569,9 @@ namespace RimMandrake.TerminalBiomes
             RM_MechanicGates.Register("Scald.S2", () => RM_TerminalBiomesSettings.ScaldS2SteamCatchActive);
             RM_MechanicGates.Register("Scald.S4", () => RM_TerminalBiomesSettings.ScaldS4VentFieldsActive);
             RM_MechanicGates.Register("Scald.S5", () => RM_TerminalBiomesSettings.ScaldS5SailWalkerActive);
-            RM_MechanicGates.Register("Scald.S6", () => RM_TerminalBiomesSettings.ScaldS6WreckSalvageActive);
+            // S6 (wreck salvage) is the Wreckage engine's field "Scald"; it registers
+            // "Scald.S6" as an alias and reads this bare key for the biome switch.
+            RM_MechanicGates.Register("Scald", () => RM_TerminalBiomesSettings.ScaldActive);
             RM_MechanicGates.Register("Scald.S7", () => RM_TerminalBiomesSettings.ScaldS7SteamExposureActive);
             RM_MechanicGates.Register("Scald.S1.flash", () => RM_TerminalBiomesSettings.ScaldS1bVentFlashActive);
         }

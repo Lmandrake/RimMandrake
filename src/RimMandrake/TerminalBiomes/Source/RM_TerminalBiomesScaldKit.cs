@@ -5,11 +5,11 @@ using Verse.Sound;
 
 namespace RimMandrake.TerminalBiomes
 {
-    // SCALD_FLOOR_PASS_1. The two Scald kit pieces whose engine class was
+    // SCALD_FLOOR_PASS_1. The Scald kit piece whose engine class was
     // VANILLA (not mandrake.rm.environmentalhazards), so the only way to gate
-    // them was a thin subclass here that reads this mod's own settings
-    // directly. Neither needs the shared assembly, so the wrecks and vents
-    // keep loading with or without it.
+    // it is a thin subclass here that reads this mod's own settings
+    // directly. It does not need the shared assembly, so the vents keep
+    // loading with or without it.
 
     // S4 — vent fields. RUT_ScaldVent's thingClass. Off: the vent stops
     // spraying (no steam puff, no sound) and any spray already sounding is
@@ -50,20 +50,6 @@ namespace RimMandrake.TerminalBiomes
             }
             string dormant = "RM_TerminalBiomes_VentDormant".Translate();
             return text.NullOrEmpty() ? dormant : text + "\n" + dormant;
-        }
-    }
-
-    // S6 — wreck salvage. The class of RUT_ScaldWreckScatter.xml's three
-    // GenStepDefs; otherwise vanilla GenStep_ScatterThings, unchanged. Off:
-    // NEW maps generate no Scald wrecks. Maps already generated keep the
-    // wrecks they have — a map-generation step cannot un-place anything,
-    // and deleting a player's standing salvage on a settings flip would be
-    // destructive.
-    public class RM_GenStep_ScaldWreckScatter : GenStep_ScatterThings
-    {
-        protected override bool ShouldSkipMap(Map map)
-        {
-            return base.ShouldSkipMap(map) || !RM_TerminalBiomesSettings.ScaldS6WreckSalvageActive;
         }
     }
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   SALVAGE_WRECKAGE_EVERYWHERE_1, design §3b: weathering rows, one shared by every biome
-  with that weathering. This slice ships ONE row, the Scald's, as the template; the other
-  ~7 (Sand-scoured, Sealed, Stripped, Irradiated, Ice-locked, Frozen, Eroded ...) arrive with
-  the biome step that first uses each (design §7 steps 3-6).
+  with that weathering. Slice 2 shipped the Scald's row as the template; slice 3 adds the
+  Riddled/High rows (design §7 step 3 comes first): Frozen, Picked, Crystal-jacketed. No biome
+  child names the slice-3 rows yet: each waits for its biome's families and art. The rest
+  (Sand-scoured, Sealed, Stripped, Irradiated, Ice-locked, Eroded ...) arrive with steps 4-6.
+  The density law's "+1 tier" for Riddled/High places lives HERE (a tier is per-def), not on
+  RM_WreckDensityClassDef.
   ALL NUMBERS PROVISIONAL.
 -->
 <Defs>
@@ -19,6 +22,43 @@
     <yieldFactor>0.75</yieldFactor>
     <lootTierShift>0</lootTierShift>
     <labelPrefix>scalded</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Nightside Ice, Lantern Deeps (Riddled; design §4 "Frozen: x1.0, +1 tier, no corrosion").
+       Hull/Tank families shift to Sealed; Frame (Scrap) shifts to Hull. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Frozen</defName>
+    <label>frozen</label>
+    <description>Locked in the nightside cold since it fell: no rust, no rot, nothing taken. What was inside is still inside.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>1</lootTierShift>
+    <labelPrefix>frost-locked</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Twilight Deep floor (High, but its own sheet's law: RM_PickedWreck, "nothing inside";
+       design §4 "Picked: x0.2, no loot roll"). KNOWN GAP: the weathering def has no "no roll"
+       field yet, so -2 lands every family on Scrap (rareChance zeroed) and the Scrap table can
+       still give 0-1 component. A noLoot field is owed with the Twilight Deep sitting. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Picked</defName>
+    <label>picked</label>
+    <description>Someone got here first. A salvage-mark is scratched on the rib, and almost nothing is left inside.</description>
+    <yieldFactor>0.2</yieldFactor>
+    <lootTierShift>-2</lootTierShift>
+    <labelPrefix>picked-clean</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Grey Deep floor (High; design §4 "Crystal-jacketed: mine the jacket first", Hull + crystal
+       shards). The design gives no yield number, so x1.0 and +1 are the High class's default
+       (§3d-i), INVENTED. KNOWN GAPS: the mineable jacket (a RockBase shell) and the crystal-shard
+       extra table are not expressible yet and arrive with the Grey Deep's floor step. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_CrystalJacketed</defName>
+    <label>crystal-jacketed</label>
+    <description>Grown over by the deep's crystal until the hull is a stone. Whatever the jacket closed over, it kept.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>1</lootTierShift>
+    <labelPrefix>crystal-jacketed</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
 </Defs>

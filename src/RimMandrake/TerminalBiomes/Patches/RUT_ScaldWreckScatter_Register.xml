@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RUT_ScaldWreckScatter_Register.xml
-  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers the three Scald wreck scatters (RUT_ScaldWreckScatter.xml) on its OWN biome(s)
+  MAPGEN_SCATTER_NRE_1 (2026-09-30): registers the Scald wreck field (RM_WreckField_Scald in RUT_ScaldWreckScatter.xml;
+  one weighted-list step since SALVAGE_WRECKAGE_EVERYWHERE_1 slice 3) on its OWN biome(s)
   via BiomeDef.extraGenSteps, which Verse.MapGenerator.GenerateMap appends
   only when map.Biome is that biome (decompiled 1.6, MapGenerator.cs). It
   used to be added to the global Base_Player genSteps and relied on a
@@ -21,18 +22,14 @@
       <match Class="PatchOperationAdd">
         <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/extraGenSteps</xpath>
         <value>
-          <li>RUT_Jawa_ScatterScaldWreckHull</li>
-          <li>RUT_Jawa_ScatterScaldWreckTank</li>
-          <li>RUT_Jawa_ScatterScaldWreckFrame</li>
+          <li>RM_WreckField_Scald</li>
         </value>
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
         <value>
           <extraGenSteps>
-            <li>RUT_Jawa_ScatterScaldWreckHull</li>
-            <li>RUT_Jawa_ScatterScaldWreckTank</li>
-            <li>RUT_Jawa_ScatterScaldWreckFrame</li>
+            <li>RM_WreckField_Scald</li>
           </extraGenSteps>
         </value>
       </nomatch>
@@ -46,18 +43,14 @@
       <match Class="PatchOperationAdd">
         <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/extraGenSteps</xpath>
         <value>
-          <li>RUT_Jawa_ScatterScaldWreckHull</li>
-          <li>RUT_Jawa_ScatterScaldWreckTank</li>
-          <li>RUT_Jawa_ScatterScaldWreckFrame</li>
+          <li>RM_WreckField_Scald</li>
         </value>
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]</xpath>
         <value>
           <extraGenSteps>
-            <li>RUT_Jawa_ScatterScaldWreckHull</li>
-            <li>RUT_Jawa_ScatterScaldWreckTank</li>
-            <li>RUT_Jawa_ScatterScaldWreckFrame</li>
+            <li>RM_WreckField_Scald</li>
           </extraGenSteps>
         </value>
       </nomatch>
