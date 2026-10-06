@@ -1473,14 +1473,10 @@ def _flames(t, cells):
 
 
 def _foam(t, c):
-    """Lay firefoam on one cell WITHOUT an Extinguish blast (that is NotifyExplosionAt's own route): a Stun blast of
-    radius 0.5 that scatters Filth_FireFoam at chance 1. jawa/spawn_batch makes no filth (measured live 19:38:
-    0 Filth_FireFoam after a spawn_batch of two)."""
-    t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType="Stun", radius=0.5, spawnThing="Filth_FireFoam",
-                  spawnChance=1.0, screenShake=0)
-    if t._guard():
-        r = t.bridge_call("jawa/list_things", defName="Filth_FireFoam", rect=_rect(c[0], c[1], 1, 1), limit=2) or {}
-        _expect(bool(r.get("things")), "no firefoam lies on %s after the scatter: %r" % (c, r))
+    """Firefoam on one burning cell the way a firefoam popper delivers it: an Extinguish blast of radius 0.5.
+    (Foam LYING on a liquid cell is not testable: fill terrains are water-tagged and take no filth -- live 19:47, a
+    blast scattering Filth_FireFoam at chance 1 left none, and jawa/spawn_batch makes no filth at all.)"""
+    t.bridge_call("jawa/map_explosion", center="%d,%d" % c, damType="Extinguish", radius=0.5, screenShake=0)
 
 
 def _tar_cells(t, cells):
@@ -1520,8 +1516,8 @@ def fire_explosion(t):
 
 @suite.chain("fire_foam")
 def fire_foam(t):
-    """Firefoam lying on two burning cells puts them out within one 60-tick check while the two without foam burn
-    on; with the setting off foam on a burning cell is inert."""
+    """A firefoam blast on two burning cells puts them out while the two it missed burn on; with the setting off the
+    same blast leaves the liquid burning."""
     x0, z0 = _prep_plot(t, "E")
     foam = [(x0 + 2 + 3 * i, z0 + 4) for i in range(4)]
     _tar_cells(t, foam)
@@ -1613,6 +1609,9 @@ def pit_prison_room(t):
         beds = (t.bridge_call("jawa/list_things", defName="Bed", rect=_rect(pit[0][0], pit[0][1], 3, 3), limit=5) or {})
         bid = ((beds.get("things") or [{}])[0]).get("id")
         t.bridge_call("jawa/set_bed_owner_type", thing=bid, ownerType="Prisoner")
+        # the raw ForOwnerType write does not re-derive the room's role the way the gizmo does (the tool says so):
+        # rebuild rooms once so Room.IsPrisonCell is recomputed (live 19:47: prison=False with the bed in place)
+        t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_PitRooms", method="RebuildAllMaps", args="")
         k = room()
         if t._guard():
             _expect(bid is not None and k.get("prison") == "True", "pit with a prisoner bed is not a prison cell: %s" % k)
@@ -1654,7 +1653,7 @@ def liquid_pump(t):
     """FLOWWORKS_BUILD_PROGRAM_1 Phase 8 slice 1 (f3ab74a1b): a powered pump between a 3-cell D=2 water channel
     (F=2 each) and a 2x2 tank draws one level per 250-tick cycle into the tank as 5 units, and in pour mode returns
     them. Unpowered it does nothing; with liquidPumpEnabled off it does nothing even powered."""
-    x0, z0 = _prep_plot(t, "T")
+    x0, z0 = _prep_plot(t, "D")
     ch = _line(x0 + 4, z0 + 6, 3)
     pump, tank, batt = (x0 + 5, z0 + 7), (x0 + 5, z0 + 8), (x0 + 9, z0 + 8)
     _dig_run(t, ch, 2)
@@ -1781,7 +1780,10 @@ def dig_finds(t):
     t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
 
     def letters():
-        return int((t.bridge_call("jawa/letter_list") or {}).get("count") or 0)
+        """Dig-find letters only ("Found while digging: X"): live 19:47 an unrelated 'Area revealed' letter arrived
+        mid-row and read as a find letter with the setting OFF."""
+        ls = (t.bridge_call("jawa/letter_list") or {}).get("letters") or []
+        return sum(1 for x in ls if "Found while digging" in str((x.get("label") or {}).get("RawText", x.get("label"))))
 
     with t.component("finds_off_none", toggle="digFindsEnabled"):
         with _setting(t, "digFindsEnabled", False):
