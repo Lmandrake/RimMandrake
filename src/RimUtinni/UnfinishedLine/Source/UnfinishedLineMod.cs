@@ -57,7 +57,7 @@ namespace RimMandrake.Utinni.UnfinishedLine
             // the page outgrew one screen with beat 5: the whole of it scrolls
             Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, viewHeight));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.CheckboxLabeled("Enable The Unfinished Line quest chain", ref chainEnabled,

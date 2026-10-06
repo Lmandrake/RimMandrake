@@ -110,7 +110,7 @@ namespace RimMandrake.BlueDesert
             // Scrolls: the enrichment toggles pushed the list past one screen.
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, lastListHeight));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.Label("Blue Desert");

@@ -170,10 +170,10 @@ namespace RimMandrake.StarWars.Droidworks
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 24f, lastContentHeight);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(lastContentHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             // ── Restraining bolts ──────────────────────────────────────────
