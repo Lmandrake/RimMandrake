@@ -642,5 +642,35 @@
     },
     "status": "RED",
     "ts": 1791234245.9989803
+  },
+  "FlowWorks": {
+    "components": {
+      "counts": {
+        "FAIL": 1,
+        "PASS": 58
+      },
+      "not_ok": [
+        "P4_ladder_frees"
+      ],
+      "unbuilt": [],
+      "uncovered": []
+    },
+    "hash": "38108c131e02771c6f60a3785e8e89b9fcac7a71746cafc0e9d461d5273380b8",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "FlowWorks/validation_v2@validation_v2_result_20261005T203150.json",
+    "source": {
+      "assembly_sha256": "72792d0b51eb2611647e2803ba38c0020e6f9e9209f4d973b6fa19e62500fc42",
+      "env_running_count": 10,
+      "env_running_sha256": "3beae3c43ddd756d4f19a4a346e92bdfc441ddb817803103981e125e76d33794",
+      "result": "src/RimMandrake/FlowWorks/northstar/validation_v2_result_20261005T203150.json",
+      "started": "2026-10-05T20:28:13",
+      "ticks_spent": 11459,
+      "tier": "flowworks",
+      "verb": "modcheck record"
+    },
+    "status": "RED",
+    "ts": 1791258147.7687953
   }
 }
