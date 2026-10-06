@@ -1,6 +1,6 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-05T19:21:04-0700",
+ "built": "2026-10-05T20:55:29-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -1480,60 +1480,32 @@
      "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
     },
     "C": {
-     "east": "ad77184e33f462a7a66adf0635e9953e664fac97a15c0e4790a2510269c320d9",
-     "north": "758b2b01eb82d06f18c09316f3d834a715f416e35660790c3648267d9ab14935",
-     "south": "664e965fd886511bbf5dece1cf18e400f856df00e68104b5f211f0702792441b"
-    },
-    "D": {
      "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
     },
-    "E": {
-     "east": "88aaff25c565b25b88bbd5fab5cf0ceb510a35bcb6af84b6f8ca62e0e48e9f2a"
-    },
-    "F": {
-     "east": "5a292707ae8df49da5c560f19251c73beae3c9343d29dfdf0f20fe3d6d83d137"
-    },
-    "G": {
+    "D": {
      "east": "be61243d6dab85d4e64e372f0d6f7519b3933cdae0bbc6cb0f22693c2fe7e8f3",
      "north": "5da6c3b2f118ac58e94313a620e372e4e5dfc1e9b21730fd54041a4cd5f1dc86",
      "south": "8abaefe6bee04fae0aaf92bb16968ef2a3e5123ea519ef9184908e9bebe5d98d"
-    },
-    "H": {
-     "east": "a7def6a5f6a13e56811fdbc071606cbaf3b814f8c9d92700fb3cd77a9c193c85",
-     "north": "9ba728db4a92098cd09ed5466f3a36321a618db1c9460c6dc68dea8e10b4ac56",
-     "south": "2e4e730329d3448cfc411753dbe994f83e9d5846644cffdeb8cc48104ebffb9d"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dewback/Dewback",
     "B": "swanimals/Dewback/Dewback",
     "C": "swanimals/Dewback/Dewback",
-    "D": "swanimals/Dewback/Dewback",
-    "E": "swanimals/Dewback/Dewback",
-    "F": "swanimals/Dewback/Dewback",
-    "G": "swanimals/Dewback/Dewback",
-    "H": "swanimals/Dewback/Dewback"
+    "D": "swanimals/Dewback/Dewback"
    },
    "labels": {
     "A": "IN GAME \u2014 DewbackArtOverride",
     "B": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
-    "C": "render canon_dewback_v1",
-    "D": "render facingrepair_dewback_v1",
-    "E": "render dewback_toyfig_a",
-    "F": "render dewback_toyfig_b",
-    "G": "history DewbackArtOverride 2026-09-11",
-    "H": "history SWBestiary 2026-09-09"
+    "C": "render facingrepair_dewback_v1",
+    "D": "history DewbackArtOverride 2026-09-11"
    },
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "D"
    ],
    "subject_key": "dewback"
   },
@@ -1642,11 +1614,6 @@
      "south": "8a4f2642b6956d2c534d4a137d3beb82c2620fd9f887b61e13ebc5a502ca1807"
     },
     "C": {
-     "east": "3c6876c1ddd627e60cebadab157daa74da2dfbb9afdf8946ed9294d696aefbcd",
-     "north": "d7e33c9d85e3bad84472dbf08d4e7aec637b47107bfacb80529d1e180e751e31",
-     "south": "3537446a7d74add5d4e44e5d9f4e9a3aeb75dc9a48a5fc04d866233d737afaaa"
-    },
-    "D": {
      "east": "95c106d6e9eee79d456afff41d9180af629a08ce423c6d046b9afe68850a2687",
      "north": "7295dd0c4760d6ec67cdd34ee4e0d876c3bee50c451286b22f361cdda734397b",
      "south": "e548fd0a3439f73bbc57cba7c481e1b0924bb18f380b3280945946ae05bb3f99"
@@ -1655,21 +1622,18 @@
    "graphic_of": {
     "A": "swanimals/Jamel/Jamel",
     "B": "swanimals/Jamel/Jamel",
-    "C": "swanimals/Jamel/Jamel",
-    "D": "swanimals/Jamel/Jamel"
+    "C": "swanimals/Jamel/Jamel"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render longshade_rsw_jamel_v1",
-    "C": "render desert_swaca_jamel",
-    "D": "history SWBestiary 2026-09-17"
+    "C": "history SWBestiary 2026-09-17"
    },
    "res": "swanimals/Jamel/Jamel",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "subject_key": "jamel"
   },
@@ -1719,5 +1683,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "48fcd5b932dd4e2b"
+ "snapshotId": "c182e376732dc888"
 }

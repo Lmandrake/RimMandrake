@@ -1,6 +1,6 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-05T20:23:20-0700",
+ "built": "2026-10-05T20:46:22-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -836,76 +836,28 @@
      "south": "61c39c921e30e016711f771a5ccc23879e58e59679ede620c3da5746bcd8dff2"
     },
     "C": {
-     "east": "dbe0e454471a6530262efac1b3a096ac85e9dbb4dc6e2f575c78a55a2c263d32",
-     "north": "25c4cbb7fe58d27e490e6d269b28394d69402ed2fb0ceb4a04e517f9fddbfaf9",
-     "south": "ae37acfaa7da9df4f8cf87de69e90167cd368749c665bf098d2112881739834a"
-    },
-    "D": {
-     "east": "5960814d6a766c839d563066f29b9d15b99e16b1a70f2cf73970b3b39cb14610"
-    },
-    "E": {
-     "east": "ee3fd25271cd30015ab07db10d20362dc40d96cc515a022602dac46cfdbb6e08",
-     "north": "b72b209a71f3d5e72a52b6f511d0f1d532fc8f1e9d3c4105c50ef59243ec2371",
-     "south": "a0357d174d6941afe5c9c0aabd7b8d1519d2c174bb0afc1ee849d41fc30aeafa"
-    },
-    "F": {
-     "east": "ece63d10dd3b4a82dcb26dcaf16d897bb44662caf0df6f00173f7884568cd8d0",
-     "north": "0b382d5eb4845a0db25b86cb4cfe5508eaef621e376a0be9e2680aae72aa9964",
-     "south": "97f08847047fb9ebbcb673e48570a4cbb3d9feeb1792ea7914577f3018bd6784"
-    },
-    "G": {
-     "east": "ff3962d86f0b3b971609b579b5841d425f682d6aa0e60279a81dd0418e2e9f8d",
-     "north": "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
-     "south": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d"
-    },
-    "H": {
-     "east": "78762395edf4512b5ddbb4f975a7d8f9efb09976a5843c96d25981b500bbfbc5",
-     "north": "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
-     "south": "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d"
-    },
-    "I": {
-     "east": "042237a607981a393462b87c9587b7d52894725901be120fadbbd77ef53f6f9c",
-     "north": "b02e70a42b8ea6e80ac29545ddfabedc380e23d0f690893fb9b32be2cb090217",
-     "south": "64faa7145d816db15dd1936d2068331c5c170026785d1df6df9a177c64074c01"
+     "east": "78762395edf4512b5ddbb4f975a7d8f9efb09976a5843c96d25981b500bbfbc5"
     }
    },
    "graphic_of": {
     "A": "swanimals/Zeer/Zeer",
     "B": "swanimals/Zeer/Zeer",
-    "C": "swanimals/Zeer/Zeer",
-    "D": "swanimals/Zeer/Zeer",
-    "E": "swanimals/Zeer/Zeer",
-    "F": "swanimals/Zeer/Zeer",
-    "G": "swanimals/Zeer/Zeer",
-    "H": "swanimals/Zeer/Zeer",
-    "I": "swanimals/Zeer/Zeer"
+    "C": "swanimals/Zeer/Zeer"
    },
    "labels": {
     "A": "IN GAME \u2014 ZeerArtOverride",
     "B": "render longshade_rsw_zeer_v1",
-    "C": "render desertportb_zeer",
-    "D": "render pyrelands_zeer_v2",
-    "E": "render pyrelands_zeer_v1",
-    "F": "history ZeerArtOverride 2026-09-14",
-    "G": "history ZeerArtOverride 2026-09-17",
-    "H": "history ZeerArtOverride 2026-09-18",
-    "I": "donor original \u2014 mlie.starwarsanimalcollection"
+    "C": "history ZeerArtOverride 2026-09-18"
    },
    "res": "swanimals/Zeer/Zeer",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I"
+    "C"
    ],
    "subject_key": "zeer"
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "734ed8b1de0c1dd5"
+ "snapshotId": "00e5e1ab0ef65476"
 }
