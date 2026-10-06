@@ -1,6 +1,6 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-05T22:12:10-0700",
+ "built": "2026-10-05T22:53:47-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -87,20 +87,13 @@
      "east": "0d84f5d7210f26867ad7a688107efc6c3a0d671af5a7d4ded77dd9128900f91f",
      "north": "cdd3752f3f9e0c36cd4e432e9105b92a067d849b0dde066cb52b82c7e9688dd2",
      "south": "bbc70a31fbe937705f1e84b9c1f17f0fac9d6b831d7a6db98073f54cad863c39"
-    },
-    "B": {
-     "east": "a566f3bd25d3a9446e9c946b057cb48314262b64fd7d661a4d493dba0d2801db",
-     "north": "85ba049a987e3de73556e69eb3a6177c2942d3b7c423de63d35e1e3af2552200",
-     "south": "30f3b7e11cc1cf3fa0c7293e4f117e4fcd09f8f017293466ae84733089bebea7"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess",
-    "B": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess"
+    "A": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion",
-    "B": "render RM_BloodyMess"
+    "A": "IN GAME \u2014 Contagion"
    },
    "res": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess",
    "reserved": [
@@ -120,20 +113,28 @@
      "east": "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
      "north": "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
      "south": "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
+    },
+    "C": {
+     "east": "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+     "north": "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab",
+     "south": "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion",
-    "B": "render stillsand_regen_RSW_Ikee_v2"
+    "A": "history Contagion 2026-09-29",
+    "B": "render stillsand_regen_RSW_Ikee_v2",
+    "C": "IN GAME \u2014 Contagion"
    },
    "res": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "contagionikee"
   },
@@ -247,20 +248,13 @@
      "east": "854cf9e717567ddba2094e6acc22bcf164e99c15974c6ea5e168c823145ce40e",
      "north": "e811433e27f0f33781ccf6d35e3b4d81ea61a4ed5eea1098ca7af5cb9a9fc902",
      "south": "c2e784c442c5b090b3269604291530056fd42952d3d1365be39773d817f2b6e5"
-    },
-    "B": {
-     "east": "b7de49a65193201380aefcad3f4ddb3a3a6a3ba4c5985ccadc2898e927ee862e",
-     "north": "2b462d6401cffb6dc102ee9b4a80ce5b3d5e486c5fc191cdd8d1c2b7e170387e",
-     "south": "7e03bae1276fb73b215aff8e29109eb0142b96bf7378a3a2295bde3c54dbe778"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
-    "B": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
+    "A": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion",
-    "B": "render RM_Fleshsop"
+    "A": "IN GAME \u2014 Contagion"
    },
    "res": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
    "reserved": [
@@ -597,7 +591,7 @@
     "A": "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 TheRot"
    },
    "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
    "reserved": [
@@ -723,5 +717,5 @@
   }
  },
  "sheetId": "contagion_sheet_2026-10-04",
- "snapshotId": "a264d24f368495d6"
+ "snapshotId": "77236c3da3561e4b"
 }
