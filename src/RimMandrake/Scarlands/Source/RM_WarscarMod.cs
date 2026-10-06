@@ -209,9 +209,11 @@ namespace RimMandrake.Scarlands
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            // maxOneColumn is load-bearing: once content outgrows viewHeight, Listing wraps into an off-screen second
+            // column and CurHeight then reports that column's height, so the view shrinks and the tail is unreachable.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());
