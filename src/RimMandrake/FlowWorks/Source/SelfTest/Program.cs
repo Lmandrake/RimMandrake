@@ -970,6 +970,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_FireMath.RainDouseChance(2f), 0.03f, "capped at full rain");
             });
 
+            // ── FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds ──
+            Case("DigFinds_guard_depth_size_budget", () =>
+            {
+                Assert(RM_DigDiscoveryMath.RollsAt(0, 1) && RM_DigDiscoveryMath.RollsAt(2, 3), "a deeper cut rolls");
+                Assert(!RM_DigDiscoveryMath.RollsAt(3, 3) && !RM_DigDiscoveryMath.RollsAt(4, 2), "fill and re-dig pays nothing twice");
+                Assert(!RM_DigDiscoveryMath.ReachesDeep(2) && RM_DigDiscoveryMath.ReachesDeep(3) && RM_DigDiscoveryMath.ReachesDeep(4), "deep and superdeep reach the deep grid");
+                Assert(RM_DigDiscoveryMath.LumpSize(0f, 75) == 10 && RM_DigDiscoveryMath.LumpSize(0.9999f, 75) == 25, "a lump is 10-25");
+                Assert(RM_DigDiscoveryMath.LumpSize(0.99f, 5) == 5, "never past the stack limit");
+                AssertClose(RM_DigDiscoveryMath.Chance(1f), 0.015f, "1.5% per cut");
+                AssertClose(RM_DigDiscoveryMath.Chance(0f), 0f, "multiplier 0 = never");
+                AssertClose(RM_DigDiscoveryMath.Budget(1200f, 5f), 60f, "5% of the rock's units");
+                AssertClose(RM_DigDiscoveryMath.Budget(0f, 5f), 0f, "no ore, no loose budget");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

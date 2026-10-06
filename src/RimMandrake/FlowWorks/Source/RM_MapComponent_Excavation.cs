@@ -363,6 +363,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref sinkTransferredTotal, "RM_sinkTransferredTotal", 0f);
 			Scribe_Deep.Look(ref superdeepTrap, "RM_superdeepTrap");
 			Scribe_Deep.Look(ref liquidFire, "RM_liquidFire");
+			Scribe_Deep.Look(ref digDiscovery, "RM_digDiscovery");
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (superdeepTrap == null)
@@ -372,6 +373,10 @@ namespace RimMandrake.FlowWorks
 				if (liquidFire == null)
 				{
 					liquidFire = new RM_LiquidFire();
+				}
+				if (digDiscovery == null)
+				{
+					digDiscovery = new RM_DigDiscoveryState();
 				}
 				EnsureGrids();
 				if (originalTerrain == null)
@@ -921,6 +926,11 @@ namespace RimMandrake.FlowWorks
 		private RM_LiquidFire liquidFire = new RM_LiquidFire();
 
 		public RM_LiquidFire LiquidFire => liquidFire;
+
+		/// <summary>FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds (RM_DigDiscovery).</summary>
+		private RM_DigDiscoveryState digDiscovery = new RM_DigDiscoveryState();
+
+		public RM_DigDiscoveryState DigDiscovery => digDiscovery;
 
 		/// <summary>Phase 6, ruling 7: burning takes one fill level off an excavated cell. Burned liquid leaves the
 		/// world (the fire's disclosed exit, counted by RM_LiquidFire). Runs outside ResolveComponent's ledger.</summary>

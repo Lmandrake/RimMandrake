@@ -65,6 +65,8 @@
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="FluidDef.cs" />
     <Compile Include="RM_PitRoomMath.cs" />
+    <Compile Include="RM_DigDiscovery.cs" />
+    <Compile Include="RM_DigDiscoveryMath.cs" />
     <Compile Include="Superdeep\RM_PitRooms.cs" />
     <Compile Include="RM_FireMath.cs" />
     <Compile Include="RM_LiquidFire.cs" />

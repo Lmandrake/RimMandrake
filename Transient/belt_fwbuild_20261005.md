@@ -28,3 +28,7 @@
 - feature: rain douses (unroofed burning cell, 0.03 x rainRate per 60-tick check)
   assert live: force rain on a lit open channel vs a roofed twin -> open burning count falls, roofed unchanged. settings: rainDousesLiquidFireEnabled
 - site_spec SETTINGS owed: explosionIgnitesLiquidEnabled, foamSmothersLiquidFireEnabled, rainDousesLiquidFireEnabled (all True)
+### FLOWWORKS_QUARRY_DIGGING_1 FlowWorks half (built; registry-independent core)
+- feature: canal-dig finds (JobDriver_DigCanal.DoEffect -> RM_DigDiscoveryState.OnCut). Pool = this map's resource rock by cell count; D>=3 cut also draws the deep resource grid under the cell (50%); none -> local rock chunk; components/plasteel/Manufactured never; rolledDepth guard; budget = digFindBudgetPercent% of map ore units; letter on first find per material.
+  assert live: static_call RimMandrake.FlowWorks.RM_DigDiscoveryProof.ProofReport("force") then dig one cell one level -> a find item on a non-excavated lip cell, Finds+1, def is a mineableThing of a rock on the map (or a chunk); fill in + re-dig after "force" -> no find (rolledDepth); 200 forced finds -> zero ComponentIndustrial/Plasteel. settings: digFindsEnabled, digFindsLocalOnly, digFindChanceMultiplier, digFindBudgetPercent, digFindLetterEnabled
+- site_spec SETTINGS owed: digFindsEnabled True, digFindsLocalOnly True, digFindChanceMultiplier 1.0, digFindBudgetPercent 5.0, digFindLetterEnabled True

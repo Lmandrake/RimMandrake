@@ -262,6 +262,12 @@ namespace RimMandrake.FlowWorks
         //      the fertility ladder (Source/Swale/RM_Swale.cs). Off: a built
         //      swale is an inert liner; terrain it already improved stays.
         //  swaleRateMultiplier — PROVISIONAL tuning on the one-rung-per-fed-day pace.
+        // FLOWWORKS_QUARRY_DIGGING_1: canal-dig finds (all numbers PROVISIONAL).
+        public static bool digFindsEnabled = true;
+        public static bool digFindsLocalOnly = true;
+        public static float digFindChanceMultiplier = 1f;
+        public static float digFindBudgetPercent = 5f;
+        public static bool digFindLetterEnabled = true;
         public static bool swaleEnabled = true;
         public static float swaleRateMultiplier = 1f;
 
@@ -347,6 +353,11 @@ namespace RimMandrake.FlowWorks
             // ── WORLDMAP_LIQUID_TAGS_1 (see the block above; contiguous) ───
             Scribe_Values.Look(ref typedLiquidShoresEnabled, "typedLiquidShoresEnabled", true);
             // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 swale (contiguous) ───────
+            Scribe_Values.Look(ref digFindsEnabled, "digFindsEnabled", true);
+            Scribe_Values.Look(ref digFindsLocalOnly, "digFindsLocalOnly", true);
+            Scribe_Values.Look(ref digFindChanceMultiplier, "digFindChanceMultiplier", 1f);
+            Scribe_Values.Look(ref digFindBudgetPercent, "digFindBudgetPercent", 5f);
+            Scribe_Values.Look(ref digFindLetterEnabled, "digFindLetterEnabled", true);
             Scribe_Values.Look(ref swaleEnabled, "swaleEnabled", true);
             Scribe_Values.Look(ref swaleRateMultiplier, "swaleRateMultiplier", 1f);
         }
@@ -798,6 +809,31 @@ namespace RimMandrake.FlowWorks
               + "river feeding a brine sea is still fresh — and neither is shore sand. Off: "
               + "every map generates exactly as it would without this mod. Either way, a map "
               + "you have already generated keeps the terrain it was generated with.");
+
+            // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Finds while digging");
+            Text.Font = GameFont.Small;
+            list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
+                "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
+              + "thrown up onto the bank. Deep and superdeep cuts can reach what a deep drill would find under that cell. "
+              + "Where the land holds nothing, you get chunks of the local rock. Filling a cell in and digging it again "
+              + "pays nothing twice. Off: digging only digs.");
+            if (digFindsEnabled)
+            {
+                list.CheckboxLabeled("Finds come only from this map's own rock", ref digFindsLocalOnly,
+                    "On: a find is one of the ores actually in this map's rock (or under the cell, for a deep cut). "
+                  + "Off: any ore the game knows can turn up. Components and plasteel never come out of a hole either way.");
+                list.Label("Find chance: x" + digFindChanceMultiplier.ToString("F2") + "  (1x = 1.5% per cut; first-guess number)");
+                digFindChanceMultiplier = list.Slider(digFindChanceMultiplier, 0f, 10f);
+                list.Label("Loose-find ceiling: " + digFindBudgetPercent.ToString("F1") + "% of the ore in this map's rock");
+                digFindBudgetPercent = list.Slider(digFindBudgetPercent, 0f, 50f);
+                list.Label("Once a map's share is dug out, cuts only turn up rock. Set when the map first finds something.");
+                list.CheckboxLabeled("A letter on the first find of each material", ref digFindLetterEnabled,
+                    "The first time a material turns up on a map you get a letter saying the land holds it; later finds "
+                  + "are a short message. Off: messages only.");
+            }
 
             // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
             list.GapLine();
