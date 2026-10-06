@@ -74,9 +74,13 @@ for k in ("freshwater", "saltwater", "brine", "toxic", "boiling", "icy"):
     look = G.SURFACE_LOOKS[k]
     check(not look.get("overlay") and not look.get("wake") and look.get("shader", "Water") == "Water",
           "%s is vanilla water: no overlay, no custom wake" % k)
-for k in ("tar", "slime_red"):
+for k in ("slime_red",):
     check(G.SURFACE_LOOKS[k].get("shader") == "Flow" and G.SURFACE_LOOKS[k].get("splashes") is False,
           "%s is a thick liquid: flow shader, no splash" % k)
+
+# tar is deliberately water-shader + wading splash since 2026-10-06 (owner), not a thick liquid
+check(G.SURFACE_LOOKS["tar"].get("shader", "Water") == "Water" and G.SURFACE_LOOKS["tar"].get("wake") == 0.0,
+      "tar uses the water shader with a near-black tint (owner 2026-10-06)")
 
 # 5 generated output in sync
 with tempfile.TemporaryDirectory() as td:
