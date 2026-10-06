@@ -3054,3 +3054,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:40:49Z","tsn":1791294049565905019}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY FlowWorks fresh validation_v2 run","ts":"2026-10-06T13:43:03Z","tsn":1791294183326798171}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:47:35Z","tsn":1791294455717590538}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY liquid kits load check","ts":"2026-10-06T13:50:12Z","tsn":1791294612153485819}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:51:34Z","tsn":1791294694470232016}
