@@ -835,6 +835,17 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		/// <summary>Read-only: the terrain this cell had before it was dug (or dried), or null when none is recorded.
+		/// The wall faces use it to show what the cut was dug through (FLOWWORKS_VISUAL_PRINCIPLES_1).</summary>
+		public TerrainDef OriginalTerrainAt(IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return null;
+			}
+			return originalTerrain.TryGetValue(map.cellIndices.CellToIndex(c), out TerrainDef t) ? t : null;
+		}
+
 		/// <summary>Put back exactly what was there. Falls back to the cell's
 		/// current terrain when nothing was recorded — which can only happen for
 		/// a cell dug by a save that predates this record, and handing back what

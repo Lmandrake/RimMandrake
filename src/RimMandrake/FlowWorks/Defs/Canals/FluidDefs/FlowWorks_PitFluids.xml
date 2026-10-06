@@ -14,6 +14,17 @@
     <fillTerrainHalf>RM_Fill_Oil_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Oil_Brim</fillTerrainBrim>
     <fillTerrainSuperdeep>RM_Fill_Oil_Superdeep</fillTerrainSuperdeep>
+    <!-- FLOWWORKS_VISUAL_PRINCIPLES_1: a dark wet gloss with a rainbow film, slow (no LiquidDef row to carry it). PROVISIONAL. -->
+    <surfaceLook>
+      <highlight>(0.90,0.82,0.67)</highlight>
+      <strength>0.40</strength>
+      <scale>2.4</scale>
+      <speed>0.10</speed>
+      <sharpness>2.0</sharpness>
+      <stretch>1.6</stretch>
+      <sheen>0.6</sheen>
+      <wake>0.4</wake>
+    </surfaceLook>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>180</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
@@ -33,6 +44,15 @@
     <fillTerrainHalf>RM_Fill_Poison_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Poison_Brim</fillTerrainBrim>
     <fillTerrainSuperdeep>RM_Fill_Poison_Superdeep</fillTerrainSuperdeep>
+    <!-- FLOWWORKS_VISUAL_PRINCIPLES_1: moves like water, sickly green glints. PROVISIONAL. -->
+    <surfaceLook>
+      <highlight>(0.75,0.95,0.55)</highlight>
+      <strength>0.30</strength>
+      <scale>2.0</scale>
+      <speed>0.30</speed>
+      <sharpness>4.0</sharpness>
+      <wake>0.8</wake>
+    </surfaceLook>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
