@@ -364,13 +364,11 @@ class PulseOracle(object):
         if self.recession:
             self._recede()
         seen = set()
-        # Seeds in DIG order: C# iterates excavatedCells, a HashSet<IntVec3>, which enumerates in
-        # insertion order while nothing is removed. Since FLOWWORKS_SHARED_SOURCE_STALL_1's fix it
-        # matters only for a LIMITED body that cannot pay every adjacent inlet in one pulse: the
-        # earlier-seeded component resolves first, so it is paid first, unit by unit. (claim_sources:
-        # the FIRST seeded claimed the source and the other got no flow order -- measured live
-        # 2026-10-02, prove_flowworks_pulse P2 [1,0,0,0] stock 3, and v2's E2s pairs, exactly.)
-        for seed in list(self.D):
+        # Seeds in CELL-INDEX order (z*width+x) - owner ruling 2026-10-06, RM_FlowKernel.Pulse sorts them. It matters
+        # only for a LIMITED body that cannot pay every adjacent inlet in one pulse: the lower-index component is
+        # paid first, unit by unit, identically in a session and after a load. (Before that ruling this was DIG
+        # order; a live run against a DLL older than the ruling will disagree on exactly that case.)
+        for seed in sorted(self.D, key=lambda c: (c[1], c[0])):
             if seed in seen or not self.exc(seed):
                 continue
             comp, queue, comp_src = [], [seed], set()

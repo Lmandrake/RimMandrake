@@ -1042,8 +1042,8 @@ namespace RimMandrake.FlowWorks
 			// across components: every channel touching it gets it as a donor and
 			// a flow order. Components resolve in excavatedCells order, so when a
 			// LIMITED body cannot pay every adjacent channel's inlet in a pulse,
-			// the earlier-seeded channel (dig order in a session; cell-index order
-			// after a load rebuilds the set) is paid first, unit by unit.
+			// the lower-cell-index channel is paid first, unit by unit (the kernel sorts
+			// the seeds, so session and post-load orders agree - owner ruling 2026-10-06).
 			if (flowKernel == null || flowKernel.width != map.Size.x || flowKernel.height != map.Size.z)
 			{
 				flowKernel = new RM_FlowKernel(map.Size.x, map.Size.z) { world = this, maxComponentCells = MaxComponentCells };

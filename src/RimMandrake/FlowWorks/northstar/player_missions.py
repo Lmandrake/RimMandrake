@@ -740,10 +740,15 @@ def cmd_report(a, spec):
     B = bridge_for(run, run_dir)
     try:
         verdict, ev = goal_check(B, run)
+        tnow = ticks_of(B)
     finally:
         B.close()
     over = next((r["message"] for r in rows if r["kind"] == "deadline"), None)
-    if verdict == "FAIL" and over:
+    # A goal reached after the game-time deadline is not a PASS (a run printed PASS at 66,918 ticks vs 60,000):
+    # the deadline gate only fires on the next action, so the report re-checks elapsed ticks itself.
+    if over is None and tnow is not None and run.get("tick0") is not None and tnow - run["tick0"] > run["deadline"]["ticks"]:
+        over = "game-time deadline %d ticks (mission ran %d)" % (run["deadline"]["ticks"], tnow - run["tick0"])
+    if verdict in ("FAIL", "PASS") and over:
         verdict = "TIMEOUT"
     t, friction = summarize(run, rows)
     rep = {"run": run_dir, "mission": run["mission"], "dry_run": run["dry_run"], "verdict": verdict,

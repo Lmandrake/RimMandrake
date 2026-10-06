@@ -61,6 +61,23 @@ def _to_windows_path(posix_path):
     return p.replace("/", "\\")
 
 
+import contextlib
+
+
+@contextlib.contextmanager
+def dotnet_lock():
+    """Both FlowWorks selftest wrappers build the same SelfTest project; run_selftests.py runs them in parallel,
+    so they take this lock around every dotnet call (a rebuild under a running dll raced before)."""
+    import fcntl
+    import tempfile
+    with open(os.path.join(tempfile.gettempdir(), "flowworks_selftest_dotnet.lock"), "w") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(f, fcntl.LOCK_UN)
+
+
 def main():
     if not os.path.isfile(CSPROJ):
         sys.exit("RimMandrakeFlowWorks.SelfTest.csproj not found at %s — the "
@@ -75,7 +92,8 @@ def main():
 
     win_csproj = _to_windows_path(CSPROJ)
     cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    with dotnet_lock():
+        result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
         print(result.stderr, end="", file=sys.stderr)
