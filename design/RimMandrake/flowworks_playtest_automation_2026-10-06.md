@@ -115,3 +115,20 @@ Lead measures: **player-facing faults fixed, owner judgments per sitting, invali
   recurrences.
 - Several copies of defaults/settings/status (`BOOL_DEFAULTS`, `site_spec.SETTINGS`, extension defaults).
 - "Keep the bridge busy" as a goal; an idle seat while agents fix mod code is fine.
+
+## Where live-testing time actually goes — MEASURED 2026-10-06 (BENCH)
+
+Owner asked for proof that Python→bridge is slow enough to matter. It is not.
+
+- **One core checkout** (`validation_v2_result_20261006T064707.json`, 176 s): 9 zero-tick steps = 10.4 s for 561 calls
+  (≈6–20 ms per call including harness Python); the pits and promoted steps = 151 s advancing 10,430 ticks at
+  60–88 ticks/s, i.e. ~1× game speed. Bridge latency ≈5% of the run; **waiting on game ticks ≈85%**. (The two runs
+  before it paid ≈50 ms/call; the bridge got faster between them, so GPT's figures overstated it.)
+- **Whole sessions:** 17 FOUNDRY/BENCH live-testing sessions since 2026-09-28, 49.1 active hours (idle gaps >10 min
+  excluded): **model generation/thinking between tool calls 65.9%**, bridge-script runs 4.4%, screenshots 0.9%, image
+  reads 0.2%, model time interpreting an image 0.8% (298 interpretations, median 3.7 s), sleep/wait loops 5.9%, git
+  4.8%. Method and caveats: `Transient/flowworks_playtest_review_2026-10-06/time_attribution_2026-10-06.md`
+  (script `time_attribution_attr2.py`). "Model time" includes API latency; background subagents are not counted.
+- **Consequence:** the expensive resource is agent deliberation per step, not the bridge and not screenshots. Any
+  approach that makes an agent decide each step (approach C especially) pays that; approach A's one-call runs and
+  approach B's no-game runs avoid it. Ticks at 1× speed are the second lever for the in-game route.
