@@ -1,0 +1,55 @@
+{
+ "sheetId": "flowworks_visual_principles_2026-10-05",
+ "reviewStatus": {
+  "state": "prefill",
+  "by": "FOUNDRY agent",
+  "at": "2026-10-05T20:10:22",
+  "evidence": "agent pre-fill: every row guessed 'Looks right'; owner has not ruled"
+ },
+ "decisions": {
+  "p1_dirt": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p1_stone": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p2_material": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p3_dirt": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p3_stone": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p4_dirt": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p4_stone": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p4_oil": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p4_slime": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p5_dirt": {
+   "decision": "right",
+   "source": "prefill"
+  },
+  "p5_stone": {
+   "decision": "right",
+   "source": "prefill"
+  }
+ }
+}
