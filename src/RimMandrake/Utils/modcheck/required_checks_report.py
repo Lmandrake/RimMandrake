@@ -340,11 +340,48 @@ def _fmt_counts(d):
     return ", ".join("%s %d" % (k, n) for k, n in sorted(d.items(), key=lambda kv: -kv[1])) or "-"
 
 
+# A mod's own checkout (GimmeSomeSlack proof_all.py, FlowWorks northstar/validation_v2.py) writes its result JSON
+# beside the mod, in a shape this report does not join yet. It is NAMED, never counted: the report must say a
+# manifest mod has evidence it cannot read, rather than leave it out of the table and the denominator silently
+# (2026-10-06: the two finished checkouts were absent from "proven 0 of 1543"). Join: NORTHSTAR_RESULTS_JOIN_1.
+RESULT_GLOBS = ("northstar/*.json", "*_result_*.json", "proof_all_*.json")
+RESULT_WORDS = re.compile(r"result|proof|matrix|validation", re.I)
+
+
+def results_elsewhere(mrow):
+    """[(path relative to ROOT, mtime, rows or None)] newest first: checkout result files beside the mod's script."""
+    script = (mrow or {}).get("script") or ""
+    if not script:
+        return []
+    d = os.path.dirname(os.path.join(ROOT, script))
+    found = {}
+    for g in RESULT_GLOBS:
+        for f in glob.glob(os.path.join(d, g)):
+            if RESULT_WORDS.search(os.path.basename(f)):
+                found[f] = os.path.getmtime(f)
+    out = []
+    for f, mt in sorted(found.items(), key=lambda kv: -kv[1]):
+        n = None
+        try:
+            r = json.load(open(f, encoding="utf-8"))
+            n = len(r["rows"]) if isinstance(r, dict) and isinstance(r.get("rows"), list) else None
+        except (OSError, ValueError, KeyError):
+            pass
+        out.append((os.path.relpath(f, ROOT), _dt.datetime.fromtimestamp(mt), n))
+    return out
+
+
 def build_report(manifest, records_dir, amend_path, since=None, only=None):
     runs = load_runs(os.path.join(records_dir, "live_queue_results.jsonl"))
     amendments = load_amendments(amend_path)
     out = []
-    for mod, (path, mt) in sorted(latest_summaries(records_dir, since).items()):
+    summaries = latest_summaries(records_dir, since)
+    for mod, mrow in sorted((manifest.get("mods") or {}).items()):
+        if mod in summaries or (only and mod != only):
+            continue
+        req = sum(1 for c in mrow.get("checks") or [] if c.get("required", True))
+        out.append({"mod": mod, "unread": True, "required": req, "elsewhere": results_elsewhere(mrow)})
+    for mod, (path, mt) in sorted(summaries.items()):
         if only and mod != only:
             continue
         mrow = manifest["mods"].get(mod)
@@ -390,7 +427,10 @@ def render(report, runs, since, detail=False):
     lines.append("%-22s %-11s %5s %-16s %-8s %-9s  %s" % (
         "mod", "run", "req", "proven (P/F)", "bars", "deploy?", "why the rest is not proven"))
     tot = {"required": 0, "proven": 0, "pending_deploy": 0, "owner_bars": 0, "owner_bars_proven": 0}
+    unread = [e for e in report if e.get("unread")]
     for e in report:
+        if e.get("unread"):
+            continue
         when = e["when"].strftime("%m-%d %H:%M")
         if e.get("missing_manifest"):
             lines.append("%-22s %-11s  -- no manifest row (no validation.py/walk of that name)" % (e["mod"], when))
@@ -424,6 +464,16 @@ def render(report, runs, since, detail=False):
                  "run's deploy were recorded fresh" % (tot["proven"], tot["required"],
                                                        tot["owner_bars_proven"], tot["owner_bars"],
                                                        tot["pending_deploy"]))
+    if unread:
+        seen = [e for e in unread if e["elsewhere"]]
+        lines.append("NOT IN THE TOTAL: %d mods (%d required checks) have a manifest row and no record this report "
+                     "reads; %d of them hold checkout results it cannot join (NORTHSTAR_RESULTS_JOIN_1):"
+                     % (len(unread), sum(e["required"] for e in unread), len(seen)))
+        for e in seen:
+            f, mt, n = e["elsewhere"][0]
+            lines.append("  %-22s req %4d  newest %s (%s%s), %d result file(s)" % (
+                e["mod"][:22], e["required"], f, mt.strftime("%m-%d %H:%M"),
+                ", %d rows" % n if n is not None else "", len(e["elsewhere"])))
     lines.append("diagnostics (never targets):")
     lines.extend(diagnostics(report, runs, since))
     return "\n".join(lines)
@@ -443,8 +493,11 @@ def main(argv=None):
     manifest = json.load(open(a.manifest, encoding="utf-8"))
     report, runs = build_report(manifest, a.records, a.amend, since, a.mod)
     if a.json:
-        print(json.dumps([{"mod": e["mod"], "when": e["when"].isoformat(),
-                           "head": e.get("head"), "extras": e.get("extras")} for e in report], indent=1))
+        print(json.dumps([{"mod": e["mod"], "when": e["when"].isoformat() if e.get("when") else None,
+                           "head": e.get("head"), "extras": e.get("extras"), "unread": bool(e.get("unread")),
+                           "required": e.get("required"),
+                           "elsewhere": [(f, mt.isoformat(), n) for f, mt, n in e.get("elsewhere") or []]}
+                          for e in report], indent=1))
     else:
         print(render(report, runs, since, a.detail))
     return 0
