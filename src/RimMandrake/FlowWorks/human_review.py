@@ -10,7 +10,7 @@ remains to be built easily."*
 One row per INTENDED capability (the CAPS table below, data). Nothing on a row is a hand-typed verdict:
   * BUILT is DERIVED from declared probes (a class / def / setting / texture / file that must exist on disk);
   * PROVEN-LIVE is DERIVED from a PASS row in the newest northstar/validation_v2_result_*.json (+ any proof_*.json),
-    mapped to MECHANISM rows only (never the harness rows L*, SITE*, A0, E9, Z);
+    mapped to MECHANISM rows only (never the harness rows L1/L2/L4, SITE*, A0, E9, Z; L3_defs_live is a MOD row);
   * the owning item's state is read from the rimflow ledger at generation time, and the "what remains to build"
     list is derived from it (open items only).
 Status: PROVEN-LIVE (a mapped row PASSed) > BUILT-UNPROVEN (every probe present) > PARTIAL (some) > NOT BUILT (none).
@@ -37,7 +37,8 @@ TEMPLATE = os.path.expanduser("~/.claude/skills/review-sheets/assets/sheet_templ
 SETTINGS_CS = os.path.join(HERE, "Source", "RimMandrakeFlowWorksMod.cs")
 CANON = os.path.join(REPO, "design", "RimStarWars", "canon_references")
 SELF_FILES = ("human_review.py", "selftest_human_review.py")   # never let a probe match its own declaration
-HARNESS_PREFIXES = ("L", "SITE", "A0", "E9", "Z")     # never map a capability to these (they may be renamed)
+HARNESS_PREFIXES = ("L0", "L1", "L2", "L4", "L5", "SITE", "A0", "E9", "Z")   # harness rows: never capability evidence
+# (L3_defs_live is a MOD row since the 2026-10-05 densification: the live path costs of the four channel defs)
 
 STATUSES = ("PROVEN-LIVE", "BUILT-UNPROVEN", "PARTIAL", "NOT BUILT")
 COLOR = {"PROVEN-LIVE": "#5ac37f", "BUILT-UNPROVEN": "#6aa6e8", "PARTIAL": "#e8b64c", "NOT BUILT": "#e06c6c"}
@@ -103,7 +104,7 @@ CAPS = [
     dict(id="A06", g="A", label="Dry depth slows movement (30/45/80, superdeep impassable)", item=BP,
          effect="Dry path cost climbs with depth so an unfilled trench is a real barrier (ruling 17).",
          probes=["xml:<pathCost>30</pathCost>", "xml:<pathCost>45</pathCost>", "xml:<pathCost>80</pathCost>"],
-         bars=["canal_dry_reads_as_obstacle"], src="Ruling 17 / Ph5"),
+         rows=["L3_defs_live"], bars=["canal_dry_reads_as_obstacle"], src="Ruling 17 / Ph5"),
     dict(id="A07", g="A", label="Flooded is always slower than dry (depth x fill cost matrix)", item="DEPTH_FILL_COST_MATRIX_1",
          effect="Each fluid has a cost per depth x fill tier, strictly worse flooded than the same depth dry.",
          probes=["xml:defName>RM_Fill_Water_Half", "cs:pathCost|PathCost"], bars=["filled_excavation_reads_as_obstacle"],

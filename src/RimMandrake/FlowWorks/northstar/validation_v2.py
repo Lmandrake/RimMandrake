@@ -1230,6 +1230,7 @@ class Live(object):
         self.ids = {}               # body name -> live body id
         self.jobcells = set()
         self.touched = set()        # (typeName, field) the run changed -> restored in finally
+        self.gmism = {}             # phase -> {scene: mismatches} for G_every_cell_vs_oracle
 
     # ------------------------------------------------------------------ bookkeeping
     def row(self, cid, ok, cls, detail, status=None):
@@ -1457,7 +1458,24 @@ def site_rects():
 
 
 # ---------------------------------------------------------------------------- phase L
+def _fold(L, cid, parts):
+    """ONE row over several harness sub-checks (densified 2026-10-05, GSS lesson: harness rows are not
+    mechanism rows). parts: (name, ok, cls, detail) with ok None = could not ask. The row FAILs whenever any
+    part would have (class of the first failing part), is UNMEASURED if a part could not be asked, and its
+    detail names every failing part -- so no detection is lost, only lines to read."""
+    bad = [p for p in parts if p[1] is False]
+    unm = [p for p in parts if p[1] is None]
+    det = "; ".join("%s: %s" % (p[0], p[3]) for p in (bad or unm or parts))
+    if bad:
+        return L.row(cid, False, bad[0][2], det)
+    if unm:
+        return L.row(cid, False, "HARNESS", det, status="UNMEASURED")
+    return L.row(cid, True, "", det)
+
+
 def phase_L(L, args):
+    """L1 fresh map (loaded, paused, 250x250, pristine engine, dry), L2 tier live (log clean, this DLL, shipped
+    settings), L3 the four channel defs' live path costs (a MOD row: the obstacle bars), E1a shipped cadence."""
     B = L.B
     with L.step("L_preflight", 0):
         ui = B.call("rimworld/get_ui_state")
@@ -1465,37 +1483,41 @@ def phase_L(L, args):
         if not args.mock:
             time.sleep(1.0)
         e2 = L.eng()
-        L.row("L0_loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") == e2.get("ticksGame"),
-              "SITE", "programState %s, ticksGame %s -> %s over 1 s" % (ui.get("programState"), e1.get("ticksGame"),
-                                                                       e2.get("ticksGame")))
         mi = B.call("jawa/map_info")
-        if not L.row("L0_map_250", mi.get("sizeX") == MAP_W and mi.get("sizeZ") == MAP_H, "SITE",
-                     "map %sx%s biome %s" % (mi.get("sizeX"), mi.get("sizeZ"), mi.get("mapBiome"))):
+        e = L.eng()
+        w = B.call("jawa/weather_get")
+        rate = ((w.get("weather") or {}).get("rainRate"))
+        size_ok = mi.get("sizeX") == MAP_W and mi.get("sizeZ") == MAP_H
+        pristine = e.get("excavatedCellCount") == 0 and e.get("bodyCount") == 0 and e.get("superdeepCellCount") == 0
+        dry = rate is not None and rate <= 0.01
+        _fold(L, "L1_fresh_map", [
+            ("loaded_paused", ui.get("programState") == "Playing" and e1.get("ticksGame") == e2.get("ticksGame"), "SITE",
+             "programState %s, ticksGame %s -> %s over 1 s" % (ui.get("programState"), e1.get("ticksGame"), e2.get("ticksGame"))),
+            ("map_250", size_ok, "SITE", "map %sx%s biome %s" % (mi.get("sizeX"), mi.get("sizeZ"), mi.get("mapBiome"))),
+            ("pristine", pristine, "SITE", "excavated %s bodies %s superdeep %s activeFluidRaw %s" % (
+                e.get("excavatedCellCount"), e.get("bodyCount"), e.get("superdeepCellCount"), e.get("activeFluidRaw"))),
+            ("dry", dry, "SITE", "weather %s rainRate %s" % ((w.get("weather") or {}).get("current"), rate))])
+        if not size_ok:
             raise Abort("map size")
-        # L1: log gate + sanity probe (the journal must hold the RimBridge start line)
+        if not pristine:
+            raise Abort("site not pristine -- start a fresh quicktest map (--fresh-map)")
+        if not dry:
+            raise Abort("raining at start: every 0-tick vector would carry rain")
+        # log gate + sanity probe (the journal must hold the RimBridge start line)
         lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         logs = lg.get("logs") or []
         L.log_base = max([x.get("Sequence", 0) for x in logs] or [0])
         bridge_line = any("[RimBridge]" in (x.get("Message") or "") for x in logs)
         fw_err = [x.get("Message", "")[:160] for x in logs if (x.get("Level") or "").lower() in ("error", "exception")
                   and any(m in (x.get("Message", "") + x.get("StackTrace", "")) for m in LOG_MARKERS)]
-        if not bridge_line:
-            L.row("L1_log_clean", False, "HARNESS", "sanity probe failed: no [RimBridge] line in %d entries" % len(logs),
-                  status="UNMEASURED")
-        else:
-            L.row("L1_log_clean", not fw_err, "MOD", fw_err or "no FlowWorks error in %d warn+ entries (base seq %d)"
-                  % (len(logs), L.log_base))
+        log_part = ("log_clean", None, "HARNESS", "sanity probe failed: no [RimBridge] line in %d entries" % len(logs)) \
+            if not bridge_line else ("log_clean", not fw_err, "MOD", fw_err or "no FlowWorks error in %d warn+ entries "
+                                     "(base seq %d)" % (len(logs), L.log_base))
         tp = B.call("jawa/type_probe", typeName="RimMandrake.FlowWorks.RM_MapComponent_Excavation")
         want = _sha256(os.path.join(MOD, "Assemblies", "RimMandrakeFlowWorks.dll"))
-        L.row("L2_assembly_identity", tp.get("assemblyFileSha256") == want and tp.get("mvidMatchesFile") is True,
-              "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
-                  tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
-        gd = B.call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty;TerrainDef/RM_Channel_Mid;"
-                    "TerrainDef/RM_Channel_Deep;TerrainDef/RM_Channel_Superdeep", fields="pathCost")
-        got = {d.get("defName"): (d.get("fields") or {}).get("pathCost") for d in gd.get("defs") or [] if d.get("found")}
-        exp = {"RM_Channel_Empty": 30, "RM_Channel_Mid": 45, "RM_Channel_Deep": 80, "RM_Channel_Superdeep": 300}
-        L.row("L3_defs_live", gd.get("foundCount") == 4 and not gd.get("notFound") and got == exp, "MOD",
-              "live pathCost %s (want %s)" % (got, exp))
+        asm_part = ("assembly_identity", tp.get("assemblyFileSha256") == want and tp.get("mvidMatchesFile") is True,
+                    "HARNESS", "loaded %s sha %s mvidMatchesFile %s; repo sha %s" % (
+                        tp.get("assemblyLocation"), (tp.get("assemblyFileSha256") or "")[:12], tp.get("mvidMatchesFile"), want[:12]))
         drift = []
         for typ, fields in sorted(_SETTINGS.items()):
             for f, want_v in sorted(fields.items()):
@@ -1508,24 +1530,23 @@ def phase_L(L, args):
                 for f, want_v in fields.items():
                     L.touched.add((typ, f))
             L.restore_settings()
-            L.row("L4_settings_default", False, "HARNESS", "drift RESET by --reset-settings: %s" % drift[:6])
-        elif not L.row("L4_settings_default", not drift and n_set >= 31, "HARNESS",
-                       drift[:6] or "%d settings read, all shipped defaults" % n_set):
+            set_part = ("settings_default", False, "HARNESS", "drift RESET by --reset-settings: %s" % drift[:6])
+        else:
+            set_part = ("settings_default", not drift and n_set >= 31, "HARNESS",
+                        drift[:6] or "%d settings read, all shipped defaults" % n_set)
+        _fold(L, "L2_tier_live", [log_part, asm_part, set_part])
+        if drift and not args.reset_settings:
             raise Abort("settings drift")
-        e = L.eng()
-        pristine = e.get("excavatedCellCount") == 0 and e.get("bodyCount") == 0 and e.get("superdeepCellCount") == 0
-        if not L.row("L5_site_pristine", pristine, "SITE", "excavated %s bodies %s superdeep %s activeFluidRaw %s" % (
-                e.get("excavatedCellCount"), e.get("bodyCount"), e.get("superdeepCellCount"), e.get("activeFluidRaw"))):
-            raise Abort("site not pristine -- start a fresh quicktest map (--fresh-map)")
+        gd = B.call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty;TerrainDef/RM_Channel_Mid;"
+                    "TerrainDef/RM_Channel_Deep;TerrainDef/RM_Channel_Superdeep", fields="pathCost")
+        got = {d.get("defName"): (d.get("fields") or {}).get("pathCost") for d in gd.get("defs") or [] if d.get("found")}
+        exp = {"RM_Channel_Empty": 30, "RM_Channel_Mid": 45, "RM_Channel_Deep": 80, "RM_Channel_Superdeep": 300}
+        L.row("L3_defs_live", gd.get("foundCount") == 4 and not gd.get("notFound") and got == exp, "MOD",
+              "live pathCost %s (want %s)" % (got, exp))
         L.row("E1a_cadence_shipped", e.get("pulseIntervalTicks") == PULSE_SHIPPED and
               0 < e.get("nextPulseTick") - e.get("ticksGame") <= PULSE_SHIPPED, "MOD",
               "pulseIntervalTicks %s, nextPulseTick %s at tick %s" % (e.get("pulseIntervalTicks"), e.get("nextPulseTick"),
                                                                     e.get("ticksGame")))
-        w = B.call("jawa/weather_get")
-        rate = ((w.get("weather") or {}).get("rainRate"))
-        if not L.row("L5_dry_weather", rate is not None and rate <= 0.01, "SITE", "weather %s rainRate %s" % (
-                (w.get("weather") or {}).get("current"), rate)):
-            raise Abort("raining at start: every 0-tick vector would carry rain")
 
 
 def _sha256(p):
@@ -1550,8 +1571,10 @@ def phase_site(L, args):
         pw = B.call("jawa/list_pawns", limit=500)
         inside = [(p.get("id") or p.get("thingId"), p.get("position") or (p.get("x"), p.get("z"))) for p in pw.get("pawns") or []
                   if _in_any(_pos(p), rects)]
-        if not L.row("SITE0_no_pawn_in_plots", not inside, "SITE", inside or "%d pawns, none in %d plot rects" % (
-                len(pw.get("pawns") or []), len(rects))):
+        pawn_part = ("no_pawn_in_plots", not inside, "SITE", inside or "%d pawns, none in %d plot rects" % (
+            len(pw.get("pawns") or []), len(rects)))
+        if inside:
+            _fold(L, "L4_site_ready", [pawn_part])
             raise Abort("a pawn stands in a plot rect")
         for r in rects:
             c = B.call("jawa/clear_area", rect="%d,%d,%d,%d" % r, dryRun=False)
@@ -1575,8 +1598,9 @@ def phase_site(L, args):
                 q = m[c]
                 if q["d"] or q["f"] or q["isSource"] or q.get("terrain") != "Soil":
                     bad.append("%s %s not fresh Soil: %s" % (name, c, {k: q.get(k) for k in ("d", "f", "isSource", "terrain")}))
-        L.row("SITE1_painted_readback", ok and not bad, "SITE", bad[:5] or "%d rects cleared+Soil, %d bodies painted, "
-              "every scene cell fresh Soil, every body exactly its sources" % (len(rects), len(BODIES)))
+        _fold(L, "L4_site_ready", [pawn_part, (
+            "painted_readback", ok and not bad, "SITE", bad[:5] or "%d rects cleared+Soil, %d bodies painted, "
+            "every scene cell fresh Soil, every body exactly its sources" % (len(rects), len(BODIES)))])
         if bad:
             raise Abort("site readback")
         # the global oracle: every body as authored, every scene cell undug
@@ -1713,15 +1737,19 @@ def phase_A(L, args):
                   "E2s_shared_N8", "E2s_shared_E8", "E3b_recede", "E5_sink", "E5_inner"):
             L.dig_scene(k)
         pre = L.cells_read(SCENES["E5_sink"]["cells"])
-        if not L.row("A0_sanity_probe", [q["f"] for q in pre] == [1] * 10, "HARNESS",
-                     "rect read of the prefilled E5_sink run: %s (must see a known F=1)" % [q["f"] for q in pre]):
+        probe = ("sanity_probe", [q["f"] for q in pre] == [1] * 10, "HARNESS",
+                 "rect read of the prefilled E5_sink run: %s (must see a known F=1)" % [q["f"] for q in pre])
+        if not probe[1]:
+            _fold(L, "A0_instrument", [probe])
             raise Abort("instrument blind")
         sink0, drained0 = L.eng().get("sinkTransferredTotal"), L.o.drained
         probs, mism, vec, rec = L.pulses(8, "A")
-        L.row("A_pulse_contract", not probs, "HARNESS", probs or "8 pulses, 0 ticks, scheduler untouched, paused")
+        _fold(L, "A0_instrument", [probe, ("pulse_contract", not probs, "HARNESS",
+                                           probs or "8 pulses, 0 ticks, scheduler untouched, paused")])
         L.vec.update(vec)
-        for k in ("E2_east_A", "E2_east_B", "E2_north", "E2_south", "E2_west"):
-            L.row(k, k not in mism, "MOD", mism.get(k, "")[:4] or "8/8 pulse vectors == oracle; %s" % vec[k][:4])
+        # the per-direction E2_east_A/B/north/south/west rows and E2s_shared_source_oracle were each "scene == oracle
+        # at every pulse": G_every_cell_vs_oracle fails whenever any of them would, naming the scene (cut 2026-10-05)
+        L.gmism["A"] = mism
         L.row("E2_twins_identical", vec.get("E2_east_A") == vec.get("E2_east_B"), "MOD",
               "A %s / B %s" % (vec.get("E2_east_A", [])[:4], vec.get("E2_east_B", [])[:4]))
         full = {k: next((p + 1 for p, v in enumerate(vec.get(k, [])) if v == [1] * 4), None)
@@ -1751,14 +1779,10 @@ def phase_A(L, args):
         L.row("E5_inner_holds", "E5_inner" not in mism and vec.get("E5_inner", [[]])[-1] == [1] * 10, "MOD",
               "interior prefilled twin final %s" % vec.get("E5_inner", [[]])[-1])
         sh = {k: vec.get(k, [[]])[-1] for k in ("E2s_shared_E7", "E2s_shared_N7", "E2s_shared_N8", "E2s_shared_E8")}
-        L.row("E2s_shared_source_oracle", not any(k in mism for k in sh), "HARNESS",
-              {k: mism[k][:2] for k in sh if k in mism} or "both pairs == oracle (every channel gets the shared source): %s" % sh)
         full_all = all(v == [1] * 4 for v in sh.values())
         L.row("E2s_shared_source_both_fill", full_all, "MOD", "all four shared-source channels full: %s" % sh if full_all
               else "two channels off ONE source cell after 8 pulses: %s -- the second-dug channel stalls at its inlet "
               "(FLOWWORKS_SHARED_SOURCE_STALL_1)" % sh)
-        L.row("A_global_vs_oracle", not mism, "MOD", {k: v[:2] for k, v in mism.items()} or
-              "every excavated cell == oracle at every pulse")
 
 
 # ---------------------------------------------------------------------------- phase B (0 ticks)
@@ -1783,7 +1807,7 @@ def phase_B(L, args):
                 L.row("E3n_budget_off_supplies", not probs and "E3_budget" not in mism and sum(v2[-1]) > 5, "MOD",
                       (probs, mism.get("E3_budget", "")[:3]) if (probs or mism) else
                       "budget OFF: a spent pond supplies again (%s -> %s)" % (v[-1], v2[-1]))
-                L.row("B_global_vs_oracle", not mism, "MOD", {k: x[:2] for k, x in mism.items()} or "all cells == oracle")
+                L.gmism["B"] = mism
             finally:
                 L.sset(S_FW, "sourceBudgetEnabled", True)
                 L.o.budget = True
@@ -1816,7 +1840,7 @@ def phase_C(L, args):
         L.row("E5_sinks_back_on", not probs and "E5_sink_off" not in mism and abs((s1 - s0) - (L.o.drained - d0)) < 1e-3
               and L.o.drained > d0, "MOD", "sinks ON again: %s, total +%s (oracle +%s)" % (
                   vec.get("E5_sink_off", [[]])[-1], s1 - s0, L.o.drained - d0))
-        L.row("C_global_vs_oracle", not mism, "MOD", {k: x[:2] for k, x in mism.items()} or "all cells == oracle")
+        L.gmism["C"] = mism
 
 
 # ---------------------------------------------------------------------------- phase R (0 ticks)
@@ -1827,7 +1851,13 @@ def phase_R(L, args):
         a, r = L.vec.get("E2_east_A"), vec.get("E2_rerun")
         L.row("E2_rerun_determinism", not probs and a is not None and a == r and "E2_rerun" not in mism, "MOD",
               "E2_east_A (phase A) %s vs E2_rerun (dug later, other body) %s" % ((a or [])[:4], (r or [])[:4]))
-        L.row("R_global_vs_oracle", not mism, "MOD", {k: x[:2] for k, x in mism.items()} or "all cells == oracle")
+        L.gmism["R"] = mism
+        # ONE row for the four 0-tick phases (was A/B/C/R_global_vs_oracle + five per-direction E2 rows + the
+        # shared-source oracle row): every excavated cell == the oracle at every pulse, failing scenes named
+        bad = {ph: {k: v[:2] for k, v in m.items()} for ph, m in sorted(L.gmism.items()) if m}
+        L.row("G_every_cell_vs_oracle", not bad and sorted(L.gmism) == ["A", "B", "C", "R"], "MOD",
+              bad or "every excavated cell == oracle at every pulse in phases %s (E2 east A/B, north, south, west, "
+              "shared-source pairs, budget, sinks, rerun)" % sorted(L.gmism))
 
 
 # ---------------------------------------------------------------------------- phase J (the ONLY ticks)
@@ -2499,7 +2529,7 @@ class MockBridge(object):
     would, and selftest_live_mock() asserts the named row goes non-PASS. Not a model of
     RimWorld beyond what the runner reads."""
     FAULTS = {   # fault -> rows that must NOT pass
-        "oscillate": ["E2_east_A", "E2_channels_fill_every_direction"],
+        "oscillate": ["G_every_cell_vs_oracle", "E2_channels_fill_every_direction"],
         "no_recession": ["E3b_recession_shipped"],
         "budget_ignored": ["E3_budget_exhaustion"],
         "roof_ignored": ["E6_rain_fills_unroofed"],
@@ -2507,13 +2537,13 @@ class MockBridge(object):
         "engine_toggle_ignored": ["E4_engine_off"],
         "fillin_leak": ["E7a_fillin_displaces"],
         "flowworks_error": ["E9_log_budget"],
-        "dll_stale": ["L2_assembly_identity"],
+        "dll_stale": ["L2_tier_live"],
         "no_clamp": ["E1b_pulse_clamp"],
         "sticky_ignored": ["S5_sticky_limitless"],
         "clamp_broken": ["S2_fill_clamp"],
         "dig_never": ["E8_player_dig"],
         "fluid_switch_allowed": ["T0n_fluid_switch_refused"],
-        "settings_drift": ["L4_settings_default"],
+        "settings_drift": ["L2_tier_live"],
         "rain_toggle_ignored": ["E6n_rain_toggle_off"],
         "deepen_gate_ignored": ["S6_digToDepth_gate"],
         "workgiver_blind": ["J_workgiver_selection"],
@@ -3102,7 +3132,7 @@ def run_live(args, B=None, quiet=False):
         # Live run 6 (2026-10-02) drew an IceSheet map: map gen leaves ThinIce on the TEMP terrain
         # layer over painted Soil (get_terrain_layers temp=ThinIce, base Soil), set_terrain_batch
         # writes the base layer only and set_terrain_layer cannot clear temp ("Give a TerrainDef"),
-        # so SITE1 refused. The engine renders fill on the temp layer too. -> re-roll such maps.
+        # so the site readback (now L4_site_ready) refused. The engine renders fill on the temp layer too. -> re-roll such maps.
         rolls = []
         for _roll in range(4):
             m = B.call("rimworld/go_to_main_menu")
@@ -3204,7 +3234,7 @@ def selftest_live_mock():
                  % (len(res["rows"]), res["ticks_spent"] or 0, len(MockBridge.FAULTS)))
 
 
-ZERO_TICK_PREFIXES = ("S1", "S2", "S3", "S4", "S5", "A", "E2", "E3", "E5", "B_", "C_", "R_")
+ZERO_TICK_PREFIXES = ("S1", "S2", "S3", "S4", "S5", "A", "E2", "E3", "E5", "G_")
 
 
 def compare_runs(pa, pb):
