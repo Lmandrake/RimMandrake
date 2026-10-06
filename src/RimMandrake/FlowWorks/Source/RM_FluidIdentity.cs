@@ -74,7 +74,9 @@ namespace RimMandrake.FlowWorks
 			var fluids = new HashSet<string>();
 			foreach (IntVec3 c in map.AllCells)
 			{
-				if (ex.FillAt(c) == 0) continue;
+				// EXCAVATED cells only, as the doc above says: FillAt reads natural water as full, so a river map counted
+				// 2,347 river cells as "wet, unrecorded" (MEASURED 2026-10-06). A natural body's fluid is the bodies list.
+				if (ex.ExcavatedDepthAt(c) == 0 || ex.FillAt(c) == 0) continue;
 				wet++;
 				FluidDef f = ex.FluidAt(c);
 				if (f != null) { rec++; fluids.Add(f.defName); }

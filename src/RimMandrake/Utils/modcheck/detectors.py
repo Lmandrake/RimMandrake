@@ -74,7 +74,9 @@ WEAPON_CAUSES = ("weapon",)
 # Cauldron/LeaningScrub/BlueDesert). A chain that TESTS one asserts it with its own component.
 # MCR_MoodChainWatcher is the donor mod "Mood Chain Reaction"'s passive marker, added to every colonist on spawn (13:23 2026-10-03).
 AMBIENT_WEATHER_HEDIFFS = frozenset(("RM_SheenCoating", "RM_HazeFilm", "RM_GaleDeafened", "MCR_MoodChainWatcher", "RM_VentMetalLoad",
-                                      "PregnantHuman"))   # random pregnancy from the donor romance mods: not an injury
+                                      "PregnantHuman",    # random pregnancy from the donor romance mods: not an injury
+                                      "RM_PitExposure"))  # FlowWorks: open-sky exposure of anyone standing in a D=4 pit, by design
+                                                          # (PIT_TEMPERATURE_SOFTENING_1); flow_doors' pit colonist read as injured 2026-10-06
 HOSTILE_NEAR_CELLS = 30
 FAR_CELLS = 40
 RAID_WINDOW_TICKS = 600

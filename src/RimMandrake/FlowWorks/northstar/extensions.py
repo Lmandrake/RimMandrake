@@ -261,8 +261,11 @@ def _setting(t, field, value):
     try:
         yield
     finally:
+        # NOT t.set_setting: it is a no-op once the chain's guard is down, so a component that FAILED inside this block
+        # left the setting flipped for every later chain (MEASURED 2026-10-06: superdeepCaptureEnabled stuck False ->
+        # capture-down "NotHeld", sluice "held=False", pit occupants walking out: four FAILs in other chains).
         try:
-            t.set_setting(typ, {field: DEFAULTS[field]})
+            t.session.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(DEFAULTS[field]))
         except Exception:
             pass
 
@@ -1040,7 +1043,9 @@ def pit_cover_fall(t):
         if t._guard():
             r = t.bridge_call("jawa/list_things", defName="RM_PitCover_ReinforcedFrame", rect=_rect(twin[0][0] - 1, twin[0][1] - 1, 5, 5))
             _expect((r or {}).get("countMatched") == 9, "reinforced cover sprang under one ~70 kg pawn (220 kg tier): %r" % r)
-            _expect(_pit_held(t, lid, twin) is False, "pawn on an intact cover reads as held")
+            # `is not True`: jawa/flowworks_pit_report lists no pawn on a COVERED cell (an intact cover is ground), so
+            # _pit_held answers None there, never False (MEASURED 2026-10-06: the pirate stood on the intact frame, free)
+            _expect(_pit_held(t, lid, twin) is not True, "pawn on an intact cover reads as held")
 
 
 def _spike_proof(t, method, x, z):
@@ -1124,9 +1129,12 @@ def flow_doors(t):
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
     sl, gr, lip = (x0 + 2, z0 + 3), (x0 + 4, z0 + 3), (pit[1][0] - 1, pit[1][1])
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
-                  stuff="WoodLog")
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
+    # PLAYER-owned, as a built door is: spawn_batch leaves a door factionless, and vanilla Building_Door lets anyone
+    # open a factionless door -- the hare walked through (MEASURED 2026-10-06: "Hare OPEN"), which says nothing
+    # about the sluice rule.
+    t.bridge_call("jawa/build_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
+                  stuff="WoodLog", faction="player")
+    t.bridge_call("jawa/build_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel", faction="player")
     hum = _spawn_pawn_at(t, "Pirate", x0 + 3, z0 + 2, faction="hostile")
     muf = _spawn_pawn_at(t, "Muffalo", x0 + 1, z0 + 4, faction="none")
     hare = _spawn_pawn_at(t, "Hare", x0 + 1, z0 + 2, faction="none")
@@ -1219,6 +1227,9 @@ def toggle_pit_depth_draw(t):
     with _setting(t, "superdeepCaptureEnabled", False):
         with t.component("pit_depth_draw_on", toggle="pitDepthDrawOffsetEnabled"):
             pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
+            # drafted: capture is OFF here, so an undrafted colonist walks out of the pit and the read lands on a
+            # D=0 cell mid-step (MEASURED 2026-10-06: depth 0, moving True, drawDz -2 = the step tween, not the mod)
+            t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)
             _wait(t, 30)
             if t._guard():
                 kv = _pawn_sink(t, pid)
@@ -1227,6 +1238,7 @@ def toggle_pit_depth_draw(t):
         with t.component("pit_depth_draw_off", toggle="pitDepthDrawOffsetEnabled"):
             with _setting(t, "pitDepthDrawOffsetEnabled", False):
                 pid2 = _spawn_pawn_at(t, "Colonist", pit[3][0], pit[3][1])
+                t.bridge_call("jawa/set_draft", pawnId=pid2, drafted=True)
                 _wait(t, 30)
                 if t._guard():
                     kv = _pawn_sink(t, pid2)
