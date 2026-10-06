@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §2. Same shape as
+     RM_CathedralWallScatter_MapGenPatch.xml: the step self-gates to
+     RM_RustCathedral, so it no-ops on every other biome's map. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_BorehulkPlacement</li>
+    </value>
+  </Operation>
+</Patch>

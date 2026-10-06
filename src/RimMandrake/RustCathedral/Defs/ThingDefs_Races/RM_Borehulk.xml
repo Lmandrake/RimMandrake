@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §1/§4/§5. The borehulk: a colossal,
+  peaceful, dim mining droid with a worn-out drill.
+
+  Shape copied from RM_CathedralRoach (wild, factionless, BaseMechanoidWalker,
+  own think tree). Body is vanilla Biotech Mech_Tunneler (the vanilla mining
+  mech; all DLC are assumed). Its two power-claw groups carry the boom and
+  the scoop; the melee is never chosen, because RM_ThinkTree_Borehulk has no
+  attack node.
+
+  ARMOUR is measured against the installed vanilla mechanoid races
+  (Core/Biotech/Odyssey Races_Mechanoid*.xml, 2026-10-06): highest Sharp is
+  Mech_Tunneler 0.80, highest Blunt is Mech_Tunneler / Mech_Apocriton 0.40.
+  Sharp 1.40 / Blunt 0.90 clear both. Heat stays BaseMechanoid's 2.00.
+  PROVISIONAL (invented): every number below not quoted from the item -
+  armour values, baseHealthScale 12, MoveSpeed 1.2, combatPower, tool power,
+  butcher yield. Item-quoted: body size about 6, drawSize about 5,
+  manhunterOnDamageChance 0, animal-class intelligence.
+
+  NOT YET: the drill head in the butcher yield - RM_WornDrillHead is defined
+  by RUSTCATHEDRAL_WORN_BIT_ARC_1, which has not built it.
+  ART: texPath below is where the art install is expected to put the Worn
+  sprite (RM_Borehulk, rustcathedral_turn1_2026-10-02.csv). Not installed
+  yet: east/north are generated, south failed in the artpipe.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseMechanoidWalker">
+    <defName>RM_Borehulk</defName>
+    <label>borehulk</label>
+    <description>A colossal old mining machine, more a digging tank than a robot: a long low hull on two broad tracks, slabs of riveted armour bolted over everything, a heavy boom ending in a drill, a bucket scoop slung beneath, and a tiny sensor head almost lost on top. It trundles the deck plate slowly and harms nothing. Its plating is thicker than anything else that walks.</description>
+    <statBases>
+      <ArmorRating_Blunt>0.90</ArmorRating_Blunt>
+      <ArmorRating_Sharp>1.40</ArmorRating_Sharp>
+      <StaggerDurationFactor>0</StaggerDurationFactor>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>2500</MarketValue>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <tools>
+      <li>
+        <label>drill boom</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>LeftPowerClaw</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>bucket scoop</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>RightPowerClaw</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>Mech_Tunneler</body>
+      <baseBodySize>6</baseBodySize>
+      <baseHealthScale>12</baseHealthScale>
+      <intelligence>Animal</intelligence>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <thinkTreeMain>RM_ThinkTree_Borehulk</thinkTreeMain>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>MechanoidFullyFormed</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Tunneler_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Tunneler_Death</soundDeath>
+          <soundCall>Pawn_Mech_Tunneler_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <mechWeightClass>UltraHeavy</mechWeightClass>
+    </race>
+    <butcherProducts>
+      <Steel>120</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentIndustrial>12</ComponentIndustrial>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.RustCathedral.RM_CompProperties_BorehulkDrill">
+        <grindSound>RM_BorehulkGrind</grindSound>
+        <checkIntervalTicks>250</checkIntervalTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BaseMechanoidKind">
+    <defName>RM_Borehulk</defName>
+    <label>borehulk</label>
+    <labelPlural>borehulks</labelPlural>
+    <race>RM_Borehulk</race>
+    <combatPower>400</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Borehulk/RM_Borehulk</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5</drawSize>
+          <shadowData>
+            <volume>(2.4, 1.2, 2.0)</volume>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

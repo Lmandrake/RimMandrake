@@ -40,6 +40,16 @@ namespace RimMandrake.RustCathedral
         // seeks out filth/wastepacks to eat.
         public static bool roachCleaningEnabled = true;
 
+        // RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1 §6. borehulkEnabled is a MAP
+        // GENERATION toggle (RM_GenStep_BorehulkPlacement): it affects maps
+        // generated afterwards, never a borehulk already placed.
+        // borehulkSpawnChance default 0.6 is the item's number;
+        // borehulkGrindMtbHours default 4 is PROVISIONAL ("every so often").
+        public static bool borehulkEnabled = true;
+        public static float borehulkSpawnChance = 0.6f;
+        public static bool borehulkGrindEnabled = true;
+        public static float borehulkGrindMtbHours = 4f;
+
         // RUSTCATHEDRAL_RM_MOD_BUILD_1 §6a / MOD_OPTIONS_RETROFIT_1: reserved
         // fields for letting this biome's mechanics run on OTHER biomes too.
         // Persisted and exposed here honestly as NOT YET WIRED to any
@@ -58,6 +68,10 @@ namespace RimMandrake.RustCathedral
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref roachCleaningEnabled, "roachCleaningEnabled", true);
+            Scribe_Values.Look(ref borehulkEnabled, "borehulkEnabled", true);
+            Scribe_Values.Look(ref borehulkSpawnChance, "borehulkSpawnChance", 0.6f);
+            Scribe_Values.Look(ref borehulkGrindEnabled, "borehulkGrindEnabled", true);
+            Scribe_Values.Look(ref borehulkGrindMtbHours, "borehulkGrindMtbHours", 4f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -149,6 +163,21 @@ namespace RimMandrake.RustCathedral
             list.CheckboxLabeled("Roaches clean filth and wastepacks", ref roachCleaningEnabled,
                 "Off: the cathedral roach still spawns and wanders, it just never seeks out filth or wastepacks to eat.");
             RM_RustCathedralSettings.roachCleaningEnabled = roachCleaningEnabled;
+            list.GapLine();
+
+            list.Label("The borehulk (one colossal peaceful mining droid)");
+            bool borehulkEnabled = RM_RustCathedralSettings.borehulkEnabled;
+            list.CheckboxLabeled("Map generation: may place a borehulk", ref borehulkEnabled,
+                "Map generation only: applies to maps generated afterwards. Off: no new map gets a borehulk; one already placed stays.");
+            RM_RustCathedralSettings.borehulkEnabled = borehulkEnabled;
+            list.Label("Borehulk chance per map: " + RM_RustCathedralSettings.borehulkSpawnChance.ToStringPercent());
+            RM_RustCathedralSettings.borehulkSpawnChance = list.Slider(RM_RustCathedralSettings.borehulkSpawnChance, 0f, 1f);
+            bool borehulkGrindEnabled = RM_RustCathedralSettings.borehulkGrindEnabled;
+            list.CheckboxLabeled("Worn borehulk grinds its stub on the plate", ref borehulkGrindEnabled,
+                "Off: the worn borehulk never lowers its drill to scrape (no sound, no sparks).");
+            RM_RustCathedralSettings.borehulkGrindEnabled = borehulkGrindEnabled;
+            list.Label("Grind roughly every " + RM_RustCathedralSettings.borehulkGrindMtbHours.ToString("0.0") + " hours");
+            RM_RustCathedralSettings.borehulkGrindMtbHours = list.Slider(RM_RustCathedralSettings.borehulkGrindMtbHours, 0.5f, 24f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");
