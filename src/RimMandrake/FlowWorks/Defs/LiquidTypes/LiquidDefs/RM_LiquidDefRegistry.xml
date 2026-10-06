@@ -45,13 +45,8 @@
     </bottled>
     <thirstQuality>Potable</thirstQuality>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.35</strength>
-      <scale>2.0</scale>
-      <speed>0.45</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -76,13 +71,8 @@
     </bottled>
     <thirstQuality>Fouled</thirstQuality>
     <surfaceLook>
-      <highlight>(0.80,0.92,0.92)</highlight>
-      <strength>0.35</strength>
-      <scale>2.0</scale>
-      <speed>0.45</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -125,13 +115,13 @@
     </bottled>
     <worldTag>RM_Liquid_BoilingWater</worldTag>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.45</strength>
-      <scale>2.0</scale>
-      <speed>0.9</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>0.8</wake>
+      <texture>Terrain/Surfaces/HotSpringRamp</texture>
+      <rippleDensity>1.8</rippleDensity>
+      <rippleIntensity>1.3</rippleIntensity>
+      <fleck>AirPuff</fleck>
+      <fleckChance>0.25</fleckChance>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -175,13 +165,11 @@
       <revertTicks>5000</revertTicks>
     </bottled>
     <surfaceLook>
-      <highlight>(0.88,0.95,1.0)</highlight>
-      <strength>0.3</strength>
-      <scale>2.0</scale>
-      <speed>0.2</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <texture>Terrain/Surfaces/Ice</texture>
+      <tint>(0.80,0.88,0.95)</tint>
+      <rippleDensity>0.4</rippleDensity>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -215,13 +203,9 @@
     </bottled>
     <thirstQuality>Toxic</thirstQuality>
     <surfaceLook>
-      <highlight>(0.75,0.95,0.55)</highlight>
-      <strength>0.3</strength>
-      <scale>2.0</scale>
-      <speed>0.35</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -269,13 +253,11 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <highlight>(0.85,1.0,0.60)</highlight>
-      <strength>0.35</strength>
-      <scale>2.0</scale>
-      <speed>0.4</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
+      <tint>(1.25,1.20,0.55)</tint>
+      <rippleDensity>1.4</rippleDensity>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -308,14 +290,13 @@
       <deep>RM_ReactionLiquorDeep</deep>
     </terrainSuite>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.35</strength>
+      <tint>(0.95,0.88,1.08)</tint>
+      <overlay>true</overlay>
+      <strength>0.0</strength>
       <scale>2.0</scale>
-      <speed>0.45</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <sheen>0.6</sheen>
-      <wake>1.0</wake>
+      <speed>0.2</speed>
+      <sheen>0.5</sheen>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -339,13 +320,17 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <highlight>(0.80,0.76,0.69)</highlight>
-      <strength>0.45</strength>
-      <scale>2.2</scale>
-      <speed>0.05</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>2.5</stretch>
-      <wake>0.15</wake>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.17,0.15,0.14)</tint>
+      <depthDarken>0.12</depthDarken>
+      <flowSpeed>0.03</flowSpeed>
+      <flowAmplitude>0.05</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>false</splashes>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -382,13 +367,10 @@
     <worldTag>RM_Liquid_Brine</worldTag>
     <thirstQuality>Fouled</thirstQuality>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.3</strength>
-      <scale>2.0</scale>
-      <speed>0.3</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <tint>(0.86,0.97,0.93)</tint>
+      <rippleDensity>0.7</rippleDensity>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
     <conversions>
       <li>
@@ -430,13 +412,12 @@
     </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.3</strength>
-      <scale>2.0</scale>
-      <speed>0.6</speed>
-      <sharpness>5.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>1.0</wake>
+      <tint>(0.92,0.96,1.05)</tint>
+      <rippleDensity>1.6</rippleDensity>
+      <fleck>AirPuff</fleck>
+      <fleckChance>0.05</fleckChance>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -452,14 +433,13 @@
       <unitsPerBottle>1</unitsPerBottle>
     </bottled>
     <surfaceLook>
-      <highlight>(0.84,0.91,0.96)</highlight>
-      <strength>0.35</strength>
+      <tint>(1.10,0.95,0.70)</tint>
+      <overlay>true</overlay>
+      <strength>0.0</strength>
       <scale>2.0</scale>
       <speed>0.2</speed>
-      <sharpness>4.0</sharpness>
-      <stretch>1.0</stretch>
-      <sheen>0.5</sheen>
-      <wake>1.0</wake>
+      <sheen>0.3</sheen>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -484,13 +464,17 @@
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeRed</canalFluid>
     <surfaceLook>
-      <highlight>(1.0,0.70,0.66)</highlight>
-      <strength>0.35</strength>
-      <scale>1.6</scale>
-      <speed>0.06</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>0.3</wake>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.62,0.16,0.14)</tint>
+      <depthDarken>0.1</depthDarken>
+      <flowSpeed>0.05</flowSpeed>
+      <flowAmplitude>0.08</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>false</splashes>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -511,13 +495,17 @@
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeGreen</canalFluid>
     <surfaceLook>
-      <highlight>(0.82,0.96,0.62)</highlight>
-      <strength>0.35</strength>
-      <scale>1.6</scale>
-      <speed>0.06</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>0.3</wake>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.30,0.55,0.18)</tint>
+      <depthDarken>0.1</depthDarken>
+      <flowSpeed>0.05</flowSpeed>
+      <flowAmplitude>0.08</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>false</splashes>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -535,13 +523,17 @@
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeWhite</canalFluid>
     <surfaceLook>
-      <highlight>(1.0,0.98,0.92)</highlight>
-      <strength>0.35</strength>
-      <scale>1.6</scale>
-      <speed>0.06</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>0.3</wake>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.80,0.78,0.70)</tint>
+      <depthDarken>0.1</depthDarken>
+      <flowSpeed>0.05</flowSpeed>
+      <flowAmplitude>0.08</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>false</splashes>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -557,13 +549,17 @@
     </terrainSuite>
     <canalFluid>RM_Fluid_SlimeYellow</canalFluid>
     <surfaceLook>
-      <highlight>(1.0,0.95,0.62)</highlight>
-      <strength>0.35</strength>
-      <scale>1.6</scale>
-      <speed>0.06</speed>
-      <sharpness>3.0</sharpness>
-      <stretch>1.0</stretch>
-      <wake>0.3</wake>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.78,0.68,0.22)</tint>
+      <depthDarken>0.1</depthDarken>
+      <flowSpeed>0.05</flowSpeed>
+      <flowAmplitude>0.08</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>false</splashes>
+      <overlay>false</overlay>
+      <wake>0.0</wake>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 

@@ -32,8 +32,49 @@ namespace RimMandrake.FlowWorks
 		/// <summary>0..1 rainbow film over the gloss (oil).</summary>
 		public float sheen;
 
-		/// <summary>0..1 strength of the V-shaped wake behind anything moving through it (water 1, tar ~0.15).</summary>
-		public float wake = 1f;
+		/// <summary>0..1 strength of the V-shaped wake behind anything moving through it. 0 = none (vanilla's own
+		/// wading splash, <see cref="splashes"/>, is the water family's wading effect).</summary>
+		public float wake;
+
+		/// <summary>Draw the procedural glint/sheen overlay above (fields above). Off by default: the engine shader
+		/// below carries the look (owner, 2026-10-05, of the overlay's drifting white specks on water:
+		/// <i>"Can't we make the water just look like Shallow water?"</i>).</summary>
+		public bool overlay;
+
+		// ── engine look (RM_LiquidLooks applies these to the liquid's own terrains) ──
+
+		/// <summary>"Water" (default): the terrain's own vanilla water shader. "Flow": the base game's slow
+		/// distorting lava-flow shader, for thick liquids.</summary>
+		public string shader;
+
+		/// <summary>Surface texture (any game texture path); null = the terrain's own (vanilla's depth ramps).</summary>
+		public string texture;
+
+		/// <summary>Flow only: mask texture, white = flows. Null = all flows.</summary>
+		public string mask;
+
+		/// <summary>Surface colour multiplier. White = keep the terrain def's own &lt;color&gt;.</summary>
+		public Color tint = Color.white;
+
+		/// <summary>0..1 darkening per fill tier (trace 0, half 1, brim/deep 2): deeper reads darker.</summary>
+		public float depthDarken;
+
+		/// <summary>Flow shader parameters; negative = the shader's own default.</summary>
+		public float flowSpeed = -1f, flowAmplitude = -1f, flowFrequency = -1f, brightness = -1f,
+			spotScale = -1f, spotSpeed = -1f, spotMin = -1f, spotMax = -1f;
+
+		/// <summary>Water shader ripple pass (_WaterRippleDensity / _WaterDepthIntensity, vanilla 1/1); negative = vanilla.</summary>
+		public float rippleDensity = -1f, rippleIntensity = -1f;
+
+		/// <summary>A vanilla FleckDef the surface throws now and then (vanilla's per-terrain emitter, as hot springs
+		/// steam): e.g. AirPuff. Null = none.</summary>
+		public string fleck;
+
+		/// <summary>Per-cell chance per steady-effects pass of throwing <see cref="fleck"/> (hot spring 0.25).</summary>
+		public float fleckChance;
+
+		/// <summary>Vanilla's wading splash (takeSplashes). Thick liquids do not splash.</summary>
+		public bool splashes = true;
 	}
 
 	/// <summary>
@@ -51,6 +92,9 @@ namespace RimMandrake.FlowWorks
 	/// No flow direction: the canal engine keeps no per-cell flow vector, so the drift is a standing shimmer, not a
 	/// current (assumption A4). The face band of a cut is left uncovered (liquid only shows below it).
 	/// Mod Settings: liquidSurfaceMotionEnabled (off: the flat vanilla-tinted look), liquidWakesEnabled.
+	///
+	/// FLOWWORKS_LIQUID_LOOKS_1: the overlay now draws only for a look that asks for it (<c>overlay</c>); the
+	/// surface itself is an engine shader applied by RM_LiquidLooks. Wakes only where <c>wake</c> &gt; 0.
 	/// </summary>
 	public class RM_LiquidSurface : MapComponent
 	{
@@ -164,8 +208,11 @@ namespace RimMandrake.FlowWorks
 				float s = look.speed / Mathf.Max(0.1f, look.scale);
 				lm[0].mainTextureOffset = new Vector2(t * s * 0.5f, t * s);
 				lm[1].mainTextureOffset = new Vector2(-t * s, -t * s * 0.5f);
-				Graphics.DrawMesh(kv.Value, m, lm[0], 0);
-				Graphics.DrawMesh(kv.Value, m, lm[1], 0);
+				if (look.strength > 0f)
+				{
+					Graphics.DrawMesh(kv.Value, m, lm[0], 0);
+					Graphics.DrawMesh(kv.Value, m, lm[1], 0);
+				}
 				if (lm[2] != null)
 				{
 					lm[2].mainTextureOffset = new Vector2(t * s * 0.3f, -t * s * 0.2f);
@@ -185,7 +232,7 @@ namespace RimMandrake.FlowWorks
 			foreach (IntVec3 c in view)
 			{
 				RM_LiquidSurfaceLook look = LookFor(tg.TerrainAt(c));
-				if (look == null)
+				if (look == null || !look.overlay)
 				{
 					continue;
 				}

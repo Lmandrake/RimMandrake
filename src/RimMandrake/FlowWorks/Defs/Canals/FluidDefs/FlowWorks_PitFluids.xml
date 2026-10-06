@@ -3,7 +3,9 @@
   <!-- PIT_FILL_EFFECTS_1 (owner ruling 7 of PIT_SUPERDEEP_COLLAPSE_1: "oil and poison ARE FluidDefs").
        What a pit does to its occupant comes from the fluid, never from a pit def. Numbers PROVISIONAL.
        Neither row is yet the canalFluid of a natural LiquidDef, so a pond cannot feed them: they reach a
-       cell by a driver/debug fill (RM_FluidIdentityProof.ProofFillWithFluid) or by flowing from such a cell. -->
+       cell by a driver/debug fill (RM_FluidIdentityProof.ProofFillWithFluid) or by flowing from such a cell.
+       Their surface looks are generated (Tools/generate_liquid_suite.py FLUID_SURFACE_LOOKS ->
+       Patches/LiquidTypes/RM_FluidSurfaceLooks.xml). -->
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_Oil</defName>
     <label>oil</label>
@@ -14,17 +16,6 @@
     <fillTerrainHalf>RM_Fill_Oil_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Oil_Brim</fillTerrainBrim>
     <fillTerrainSuperdeep>RM_Fill_Oil_Superdeep</fillTerrainSuperdeep>
-    <!-- FLOWWORKS_VISUAL_PRINCIPLES_1: a dark wet gloss with a rainbow film, slow (no LiquidDef row to carry it). PROVISIONAL. -->
-    <surfaceLook>
-      <highlight>(0.90,0.82,0.67)</highlight>
-      <strength>0.40</strength>
-      <scale>2.4</scale>
-      <speed>0.10</speed>
-      <sharpness>2.0</sharpness>
-      <stretch>1.6</stretch>
-      <sheen>0.6</sheen>
-      <wake>0.4</wake>
-    </surfaceLook>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>180</ticksPerTile>
     <floodedTicks>300000</floodedTicks>
@@ -44,15 +35,6 @@
     <fillTerrainHalf>RM_Fill_Poison_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_Poison_Brim</fillTerrainBrim>
     <fillTerrainSuperdeep>RM_Fill_Poison_Superdeep</fillTerrainSuperdeep>
-    <!-- FLOWWORKS_VISUAL_PRINCIPLES_1: moves like water, sickly green glints. PROVISIONAL. -->
-    <surfaceLook>
-      <highlight>(0.75,0.95,0.55)</highlight>
-      <strength>0.30</strength>
-      <scale>2.0</scale>
-      <speed>0.30</speed>
-      <sharpness>4.0</sharpness>
-      <wake>0.8</wake>
-    </surfaceLook>
     <volumePerTile>1</volumePerTile>
     <ticksPerTile>60</ticksPerTile>
     <floodedTicks>300000</floodedTicks>

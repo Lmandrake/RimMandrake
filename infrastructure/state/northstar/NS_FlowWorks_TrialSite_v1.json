@@ -1,13 +1,13 @@
 {
  "item": "FLOWWORKS_NORTHSTAR_SITE_PREP_1",
  "save": "NS_FlowWorks_TrialSite_v1.rws",
- "built": "2026-10-05T14:50:47",
+ "built": "2026-10-05T16:18:14",
  "seat": "FOUNDRY",
  "contract": {
-  "save_sha256": "ecd96de520ad7c4b3bc437c3fa9126d8756a2c3b42ba1f737a0395fe45075f46",
+  "save_sha256": "f2a4ec189cc661849ca3af481bd6920bb5d2c537c9447ffffd9767ebf3f33022",
   "game_build": "1.6.4871 rev591",
-  "flowworks_dll_sha256": "598ed6241dc656e3b35ea8ec4c04757395c6ef3d45c8b2de3d5f0feec9eb7922",
-  "flowworks_srchash_sha256": "24a2cb54ef155b7313944ff100dfd136ab123d01393c18f58e863c5a5058d846",
+  "flowworks_dll_sha256": "548915a83e94813afa316e72ae76916118c6991a77bca368fdb55ce3476922ad",
+  "flowworks_srchash_sha256": "42281420b2b93549aafd6cf49302a38b31825f106e217ea80410059105a28ef9",
   "defs_hash": "8d00e78d67e63b98c1772e96e07e3217a25138beba8b483960e86a24f7523db5",
   "settings": {
    "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
@@ -57,6 +57,7 @@
     "pitDrowningEnabled": "True",
     "pitDrowningRateMultiplier": "1",
     "poisonFillEnabled": "True",
+    "viscosityEnabled": "True",
     "bottleLoopEnabled": "True",
     "bottleDirtyStageEnabled": "True",
     "tankLoopEnabled": "True",
@@ -77,10 +78,10 @@
  },
  "generation": {
   "mapId": 0,
-  "tile": 7303,
+  "tile": 73698,
   "sizeX": 250,
   "sizeZ": 250,
-  "biome": "TropicalRainforest",
+  "biome": "AridShrubland",
   "season": "PermanentSummer",
   "seed": "UNMEASURED (no bridge read of the world seed)"
  },

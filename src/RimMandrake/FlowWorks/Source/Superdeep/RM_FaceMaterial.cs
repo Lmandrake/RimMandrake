@@ -16,7 +16,7 @@ namespace RimMandrake.FlowWorks
 	/// mud, ice …) is DIRT. The face is drawn with the ground's OWN terrain material, so it is that ground's exact
 	/// texture and colour; this class only decides which terrain and which detail (strata vs block joints) to add.
 	///
-	/// Also owns the procedural detail/soot/ash textures (generated, not art: nothing to install, nothing to queue)
+	/// Also owns the procedural strata/joint textures (generated, not art: nothing to install, nothing to queue)
 	/// and the render-queue clones of terrain materials the faces and the near-lip occluder draw with.
 	/// </summary>
 	public static class RM_FaceMaterial
@@ -34,8 +34,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The occluder must draw AFTER pawns so it can cover the part of one hanging below the lip.</summary>
 		public const int OccluderQueue = 3050;
 
-		private static Texture2D strataTex, jointTex, sootTex, ashTex;
-		private static Material strataMat, jointMat, sootMat, ashMat, shadeMat;
+		private static Texture2D strataTex, jointTex;
+		private static Material strataMat, jointMat, shadeMat;
 
 		public static bool IsStone(TerrainDef t)
 		{
@@ -141,30 +141,6 @@ namespace RimMandrake.FlowWorks
 
 		public static Material StrataMat => strataMat ?? (strataMat = DetailMat(strataTex = MakeStrata()));
 		public static Material JointMat => jointMat ?? (jointMat = DetailMat(jointTex = MakeJoints()));
-		public static Material SootMat => sootMat ?? (sootMat = DetailMat(sootTex = MakeSoot()));
-		public static Material AshMat => ashMat ?? (ashMat = DetailMat(ashTex = MakeAsh()));
-
-		private static readonly Dictionary<int, Material> fadeMats = new Dictionary<int, Material>();
-
-		/// <summary>The soot or ash material at scorch strength <paramref name="s"/> (quantised to quarters by
-		/// RM_WallFaceMath.ScorchStrength): the fade is carried by the material colour's alpha, because the
-		/// Transparent shader does not read vertex alpha.</summary>
-		public static Material ScorchMat(bool ash, float s)
-		{
-			int q = Mathf.Clamp(Mathf.CeilToInt(s * 4f), 0, 4);
-			if (q == 0)
-			{
-				return null;
-			}
-			int key = (ash ? 10 : 0) + q;
-			if (!fadeMats.TryGetValue(key, out Material m) || m == null)
-			{
-				Material b = ash ? AshMat : SootMat;
-				m = new Material(b) { renderQueue = DetailQueue, color = new Color(1f, 1f, 1f, q / 4f) };
-				fadeMats[key] = m;
-			}
-			return m;
-		}
 
 		private static Material DetailMat(Texture2D tex)
 		{
@@ -214,41 +190,6 @@ namespace RimMandrake.FlowWorks
 					float grain = Mathf.PerlinNoise(x * 0.2f + 1.3f, y * 0.2f + 5.1f);
 					float a = joint ? 0.55f : 0.06f + 0.10f * grain;
 					t.SetPixel(x, y, new Color(0.05f, 0.05f, 0.06f, a));
-				}
-			}
-			t.Apply(false, true);
-			return t;
-		}
-
-		/// <summary>Soot: streaks climbing from the foot (v = 0) and thinning toward the rim.</summary>
-		private static Texture2D MakeSoot()
-		{
-			Texture2D t = NewTex(64, 64);
-			for (int x = 0; x < 64; x++)
-			{
-				float reach = 0.35f + 0.65f * Mathf.PerlinNoise(x * 0.17f + 9.3f, 2.2f);
-				for (int y = 0; y < 64; y++)
-				{
-					float v = y / 63f;
-					float a = v < reach ? 0.85f * (1f - v / reach) + 0.15f : 0.15f;
-					t.SetPixel(x, y, new Color(0.03f, 0.025f, 0.02f, Mathf.Clamp01(a)));
-				}
-			}
-			t.Apply(false, true);
-			return t;
-		}
-
-		/// <summary>Ash and char for a burned floor: near-black with grey ash drifts.</summary>
-		private static Texture2D MakeAsh()
-		{
-			Texture2D t = NewTex(64, 64);
-			for (int y = 0; y < 64; y++)
-			{
-				for (int x = 0; x < 64; x++)
-				{
-					float n = Mathf.PerlinNoise(x * 0.11f + 4.4f, y * 0.11f + 8.8f);
-					float g = Mathf.Lerp(0.07f, 0.32f, Mathf.Clamp01((n - 0.45f) * 2.2f));
-					t.SetPixel(x, y, new Color(g, g * 0.95f, g * 0.9f, 0.88f));
 				}
 			}
 			t.Apply(false, true);

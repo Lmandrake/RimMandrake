@@ -90,4 +90,36 @@ namespace RimMandrake.FlowWorks
 			return cachedComp;
 		}
 	}
+
+	/// <summary>
+	/// FLOWWORKS_VISUAL_PRINCIPLES_1 — owner, 2026-10-05, looking at a sunk colonist in game: <i>"Is there a way to
+	/// stop the shadow of a person showing through like this?"</i>
+	///
+	/// 1.6 draws a standing pawn's ground shadow in PawnRenderer.DrawShadowInternal (decompiled, read via RimSage):
+	/// the race's specialShadowData blob, else the body graphic's ShadowGraphic, at the pawn's (sunk) draw position —
+	/// so it lands below the near bank and shows through. Vanilla itself skips it for a swimming pawn. This skips it
+	/// the same way for anything sunk in a dug cell (humans, animals, mechs; filled or dry cut). Flying pawns keep
+	/// vanilla's flight shadow (that branch is not ours: a flier is above the pit). Setting off, or no sink: vanilla.
+	/// </summary>
+	[HarmonyPatch(typeof(PawnRenderer), "DrawShadowInternal")]
+	public static class RM_Patch_PitHidesShadow
+	{
+		private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnOf =
+			AccessTools.FieldRefAccess<PawnRenderer, Pawn>("pawn");
+
+		[HarmonyPrefix]
+		public static bool Prefix(PawnRenderer __instance, Vector3 drawLoc)
+		{
+			if (!RimMandrakeFlowWorksSettings.pitHidesShadowEnabled || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled)
+			{
+				return true;
+			}
+			Pawn pawn = PawnOf(__instance);
+			if (pawn == null || !pawn.Spawned || pawn.Flying)
+			{
+				return true;
+			}
+			return !(RM_Patch_PitDepthDrawOffset.SinkOf(pawn, drawLoc) > 0f);
+		}
+	}
 }

@@ -30,8 +30,12 @@ PIT_R0, PIT_R1 = 1, 4        # pit rows (screen rows, 0 = north) [r0, r1)
 FRAMES = 8
 
 # ---- the numbers the C# uses (keep in step with RM_WallFaceMath / RM_LiquidSurface) ----
-NORTH = {1: 0.10, 2: 0.18, 3: 0.30, 4: 0.50}      # north face height, cells (vanilla wall face ~0.25)
-SIDE = {1: 0.04, 2: 0.07, 3: 0.12, 4: 0.18}       # side face width, cells
+# MEASURED from the owner's steel-wall shot (2026-10-05): south bevel 0.35 cell (x1.85 light), side bevel 0.17 (x1.29),
+# black outline 0.04 on every edge, 45-degree mitres. D3 = the wall; keep in step with RM_WallFaceMath.
+NORTH = {1: 0.12, 2: 0.23, 3: 0.35, 4: 0.50}
+SIDE = {1: 0.06, 2: 0.11, 3: 0.17, 4: 0.23}
+OUTLINE = 0.04
+SOUTH_LINING = {1: 0.045, 2: 0.055, 3: 0.065, 4: 0.08}
 FLOOR_TINT = {1: 1.0, 2: 0.78, 3: 0.58, 4: 0.38}  # RM_Channel_* <color> ramp (unchanged)
 SINK = 0.3                                         # PIT_DEPTH_DRAW_OFFSET_1 (unchanged)
 
@@ -246,6 +250,137 @@ def draw_scene(material, depth, state, after, frame=0, look=None):
     return out
 
 
+def light_alpha(mult, g=0.30):
+    return max(0.0, min(1.0, (g * mult - g) / (1 - g)))
+
+
+def blotch_field(h, w, seed=31):
+    """Low-frequency world noise, features ~2 cells, two octaves (mirrors RM_ExcavationWalls.Blotch)."""
+    a = noise(PX * 6, seed, 1.0, grid=3)
+    b = noise(PX * 6, seed + 7, 1.0, grid=9)
+    f = 0.65 * a + 0.35 * b
+    f = (f - f.min()) / max(1e-6, f.max() - f.min())
+    return f[:h, :w]
+
+
+def floor_char_alpha(s, bl, dist):
+    wall = np.clip(1 - dist / 0.6, 0, 1)
+    wall = wall * wall * (3 - 2 * wall)
+    return np.minimum(0.72, 0.36 + 0.30 * bl + 0.08 * wall) * s
+
+
+def face_soot_alpha(s, v):
+    foot = 1 - v
+    rim = np.clip((v - 0.75) / 0.25, 0, 1)
+    return np.minimum(0.7, 0.22 + 0.40 * foot * foot + 0.20 * rim) * s
+
+
+def draw_structure(material, depth, state, frame=0):
+    """AFTER, pit structure as the C# draws it now: steel-wall bevels + black outline (+ scorch redo)."""
+    ground = load("Soil") if material == "dirt" else load("RoughStone", tint=(118, 108, 104))
+    gravel = load("Gravel")
+    img = ground.copy()
+    py0, py1 = PIT_R0 * PX, PIT_R1 * PX
+    px0, px1 = PIT_X0 * PX, PIT_X1 * PX
+    img[py0:py1, px0:px1] = gravel[py0:py1, px0:px1] * FLOOR_TINT[depth]
+    scorched = state == "scorched"
+    H, W = img.shape[:2]
+    bl = blotch_field(H, W)
+    warm = np.array((1.0, 0.973, 0.91), np.float32)
+    fh = int(round(NORTH[depth] * PX))
+    sw = int(round(SIDE[depth] * PX))
+    if scorched:
+        ys, xs = np.mgrid[py0:py1, px0:px1]
+        dist = np.minimum.reduce([(ys - py0 - fh) / PX, (py1 - ys) / PX, (xs - px0) / PX, (px1 - xs) / PX])
+        dist = np.clip(dist, 0, 9)
+        a = floor_char_alpha(1.0, bl[py0:py1, px0:px1], dist)[..., None]
+        img[py0:py1, px0:px1] = img[py0:py1, px0:px1] * (1 - a) + np.array((30, 21, 14), np.float32) / 255 * a
+        away = np.clip((dist - 0.15) / 0.35, 0, 1)
+        ash = np.where(bl[py0:py1, px0:px1] > 0.62, (bl[py0:py1, px0:px1] - 0.62) / 0.38 * 0.35 * away, 0)[..., None]
+        img[py0:py1, px0:px1] = img[py0:py1, px0:px1] * (1 - ash) + np.array((132, 124, 114), np.float32) / 255 * ash
+        rng = random.Random(7)
+        for cx in range(PIT_X0, PIT_X1):
+            for cr in range(PIT_R0, PIT_R1):
+                for _ in range(rng.randrange(2)):
+                    x = int((cx + 0.12 + 0.76 * rng.random()) * PX)
+                    y = int((cr + 0.12 + 0.76 * rng.random()) * PX)
+                    sz = max(1, int((0.025 + 0.03 * rng.random()) * PX))
+                    if y > py0 + fh:
+                        img[y:y + sz, x:x + int(sz * 1.6)] = img[y:y + sz, x:x + int(sz * 1.6)] * 0.65 + np.array((150, 142, 132), np.float32) / 255 * 0.35
+        # scorch ring on the bank, irregular, 0.4 cell
+        ring = int(0.4 * PX)
+        yy, xx = np.mgrid[0:H, 0:W]
+        dx = np.maximum(np.maximum(px0 - xx, xx - (px1 - 1)), 0)
+        dy = np.maximum(np.maximum(py0 - yy, yy - (py1 - 1)), 0)
+        outside = (dx > 0) | (dy > 0)
+        dd = np.maximum(dx, dy) / ring
+        ra = np.where(outside, np.clip(1 - dd, 0, 1) * (0.25 + 0.55 * bl), 0)[..., None]
+        img = img * (1 - ra) + np.array((30, 21, 14), np.float32) / 255 * ra
+    # north face: trapezoid, mitred where the side bevels meet it
+    for j in range(fh):
+        y = py0 + j
+        inset = int(round(sw * (j + 1) / max(1, fh)))
+        x0, x1 = px0 + inset, px1 - inset
+        row = ground[y, x0:x1].copy()
+        a = light_alpha(1.85) - (12 * depth / 255.0) * (j / max(1, fh - 1))
+        row = row * (1 - a) + warm * a
+        if material == "dirt":
+            row *= 0.90 + 0.10 * math.sin(j / PX * 30) ** 2
+        elif j % max(3, fh // 3) == 0:
+            row *= 0.6
+        if scorched:
+            sa = face_soot_alpha(1.0, 1 - j / max(1, fh - 1))
+            row = row * (1 - sa) + np.array((22, 15, 10), np.float32) / 255 * sa
+        img[y, x0:x1] = row
+    if scorched and fh > 2:
+        rng = random.Random(3)
+        for _ in range(5):
+            w = max(1, int((0.02 + 0.04 * rng.random()) * PX))
+            x = rng.randrange(px0 + sw, px1 - sw - w)
+            ln = int(fh * (0.35 + 0.5 * rng.random()))
+            for k in range(ln):
+                a = 0.67 * (1 - k / ln)
+                y = py0 + fh - 1 - k
+                img[y, x:x + w] = img[y, x:x + w] * (1 - a) + np.array((14, 10, 7), np.float32) / 255 * a
+    # side bevels: full height, top mitred
+    for side in ("w", "e"):
+        for i in range(sw):
+            x = px0 + i if side == "w" else px1 - 1 - i
+            top = py0 + int(round(fh * (i + 1) / max(1, sw)))
+            col = ground[top:py1, x].copy()
+            a = light_alpha(1.29)
+            col = col * (1 - a) + warm * a
+            if scorched:
+                sa = face_soot_alpha(1.0, 0.3)
+                col = col * (1 - sa) + np.array((22, 15, 10), np.float32) / 255 * sa
+            img[top:py1, x] = col
+    # black outline, all four edges; the near (south) edge heavier
+    o = max(2, int(round(OUTLINE * PX)))
+    so = max(2, int(round(SOUTH_LINING[depth] * PX)))
+    img[py0:py0 + o, px0:px1] = 0
+    img[py0:py1, px0:px0 + o] = 0
+    img[py0:py1, px1 - o:px1] = 0
+    img[py1 - so:py1, px0:px1] = 0
+    return Image.fromarray((np.clip(img, 0, 1) * 255).astype(np.uint8))
+
+
+def structure_review():
+    """The owner's current asks: dry and scorched at D1/D2/D4 (+D3) x dirt/stone, one PNG each."""
+    made = []
+    for state in ("dry", "scorched"):
+        for material in ("dirt", "stone"):
+            tiles = [label(draw_structure(material, d, state), f"D{d}") for d in (1, 2, 3, 4)]
+            row = Image.new("RGB", (sum(t.width for t in tiles) + 18, tiles[0].height), (34, 26, 20))
+            x = 0
+            for t in tiles:
+                row.paste(t, (x, 0))
+                x += t.width + 6
+            name = f"structure_{state}_{material}.png"
+            row.save(os.path.join(HERE, name))
+            made.append(name)
+    return made
+
+
 def label(im, text):
     pad = Image.new("RGB", (im.width, im.height + 26), (34, 26, 20))
     pad.paste(im, (0, 26))
@@ -291,4 +426,8 @@ def main():
 
 
 if __name__ == "__main__":
+    if "--structure" in sys.argv:
+        for m in structure_review():
+            print("WROTE", m)
+        sys.exit(0)
     sys.exit(main())
