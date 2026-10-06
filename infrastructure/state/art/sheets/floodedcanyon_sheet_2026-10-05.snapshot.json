@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-05T15:30:58-0700",
+ "built": "2026-10-05T18:44:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "live ModsConfig.xml: 639 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -387,11 +387,6 @@
      "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "B": {
-     "east": "586ae4a057862efe2606653a554a52399658aef0373b6a4b521edd0d496ec611",
-     "north": "bf5ec7d615598a43b741ecf4a22ea06a6179f5e8ce4db206aeafe6dbef9e7cc0",
-     "south": "56000d2ee80f577c13e6df605e08bf340ff2e3608a21aa9a91aeba6557b6dad6"
-    },
-    "C": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
      "north": "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
      "south": "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
@@ -399,19 +394,16 @@
    },
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
-    "B": "swanimals/Convor/Convor",
-    "C": "swanimals/Convor/Convor_f"
+    "B": "swanimals/Convor/Convor_f"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_convor",
-    "C": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "subject_key": "convor"
   },
@@ -649,5 +641,5 @@
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "589131f78b2c5381"
+ "snapshotId": "767410bf7addbf93"
 }

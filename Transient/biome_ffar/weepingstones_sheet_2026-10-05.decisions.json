@@ -2,7 +2,7 @@
  "sheetId": "weepingstones_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/weepingstones_sheet_2026-10-05.snapshot.json",
- "snapshotId": "23e16b752a330f98",
+ "snapshotId": "cbed561b57c88162",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_WeepingStones",
  "reviewStatus": {
@@ -102,7 +102,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Bantha/BanthaW_j": "D"
+    "swanimals/Bantha/BanthaW_j": "C"
    }
   },
   "RSW_Boma": {
@@ -121,11 +121,11 @@
    "prefill": "A"
   },
   "RSW_Eopie": {
-   "decision": "B",
+   "decision": "C",
    "note": "",
-   "prefill": "B",
+   "prefill": "C",
    "picks": {
-    "swanimals/Eopie/Eopie_j": "H"
+    "swanimals/Eopie/Eopie_j": "D"
    }
   },
   "RSW_Fanback": {

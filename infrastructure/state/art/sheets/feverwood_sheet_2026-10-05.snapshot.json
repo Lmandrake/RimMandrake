@@ -1,6 +1,6 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-05T17:04:44-0700",
+ "built": "2026-10-05T18:44:28-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -714,11 +714,6 @@
      "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "B": {
-     "east": "586ae4a057862efe2606653a554a52399658aef0373b6a4b521edd0d496ec611",
-     "north": "bf5ec7d615598a43b741ecf4a22ea06a6179f5e8ce4db206aeafe6dbef9e7cc0",
-     "south": "56000d2ee80f577c13e6df605e08bf340ff2e3608a21aa9a91aeba6557b6dad6"
-    },
-    "C": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
      "north": "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
      "south": "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
@@ -726,19 +721,16 @@
    },
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
-    "B": "swanimals/Convor/Convor",
-    "C": "swanimals/Convor/Convor_f"
+    "B": "swanimals/Convor/Convor_f"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_convor",
-    "C": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "subject_key": "convor"
   },
@@ -825,9 +817,9 @@
   "RSW_LongtailGorg": {
    "columns": {
     "A": {
-     "east": "07ab933f1ae0e91ce571e0dcabbfe894015e4719aeed2712f66edb240c7e4028",
-     "north": "1c83168a0137eb0c05d06502a04b6e7d20dfe462be5592784c4f8f4064cb1608",
-     "south": "61dc060c32b633a0e2aed41504f5af9c656efccd6ba7e1263fe6f6e610be56d2"
+     "east": "94a7bc9b2e957f2908b8ec9fbd1fa96c31f611df5dfbf22b11d060a39515c8f8",
+     "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
+     "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
     },
     "B": {
      "east": "922744c0d5c845a460e2166509a34c6cbe7c33095249db2dd33cf14e69eb175a",
@@ -845,29 +837,29 @@
      "south": "f01ec92b6ca1b2a978d48291864a11495292fcecaab22eaf34f28bafb64573fc"
     },
     "E": {
-     "east": "94a7bc9b2e957f2908b8ec9fbd1fa96c31f611df5dfbf22b11d060a39515c8f8",
-     "north": "a25eb22b2b48e84acc22caf68e532a6c2e1366957bb5c6bcb02634b18a5f4a3d",
-     "south": "29e65439316caebc0954a20f1897c6e4556a2b5e3a2ecb410c888efe78e8403b"
-    },
-    "F": {
      "east": "7d765b4e5cfaa4a9007b48837cdbb2e50a44c0eef0ee99b25030d60fe315f0d8",
      "north": "593713551df225dce4717d36b62e7f9e5e546dff77ebc9b1a6f6b4870cb954a1",
      "south": "404320615879e39af5c214a8c239560304f00d06d6a1f27d9b11828e36aad516"
     },
-    "G": {
+    "F": {
      "east": "beee62668832199955fa0076dcc80ea162634c9a3ccf474676d38120fcfc55bf",
      "north": "a29455b5b8182d689e2fce25c2323ff856d1d4b6d9ab0c29e00b0897af8c6262",
      "south": "47e54403e4871a7028969fe2aadf3bb708f331fe08722c75319d66c15eea9ac9"
     },
-    "H": {
+    "G": {
      "east": "ab4d592ab2bbdbe695218e768d7248359f25dcbd655236862b6f35441c383f32",
      "north": "e010dcef817cbc7c40330cd78aad32e7d385e68f647123426083d6c91fb127fa",
      "south": "0feb85d378cbbf31c69501f185e2b42c9e89ff66a178e76ae053410421ac22de"
     },
-    "I": {
+    "H": {
      "east": "d99538682a448084a448ea2f8bd8c2522e770053ee6a6d9a22cae032fdc93967",
      "north": "b1af40525b8033f45c21405495c25c26225ee8163d58e1d2f141231290450a21",
      "south": "57f4519230ba07c20fe89d91c9acc286d7a3d9932f6449efcc19bb2faf4b4153"
+    },
+    "I": {
+     "east": "07ab933f1ae0e91ce571e0dcabbfe894015e4719aeed2712f66edb240c7e4028",
+     "north": "1c83168a0137eb0c05d06502a04b6e7d20dfe462be5592784c4f8f4064cb1608",
+     "south": "61dc060c32b633a0e2aed41504f5af9c656efccd6ba7e1263fe6f6e610be56d2"
     },
     "J": {
      "east": "2e4f61064bc92d7704fd15661861e56845869a55a6f545aeefb936a0641f5c10",
@@ -904,11 +896,11 @@
     "B": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
     "C": "render longshade_rsw_longtailgorg_v1",
     "D": "render longshade_rsw_longtailgorg_v2",
-    "E": "render longshade_rsw_longtailgorg_v3",
-    "F": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
-    "G": "render longshade_rsw_longtailgorg_v5",
-    "H": "render longshade_rsw_longtailgorg_v6",
-    "I": "render desert_swaca_longtailgorg",
+    "E": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
+    "F": "render longshade_rsw_longtailgorg_v5",
+    "G": "render longshade_rsw_longtailgorg_v6",
+    "H": "render desert_swaca_longtailgorg",
+    "I": "history SWBestiary 2026-09-17",
     "J": "IN GAME \u2014 SWBestiary",
     "K": "IN GAME \u2014 SWBestiary",
     "L": "IN GAME \u2014 SWBestiary"
@@ -938,69 +930,39 @@
      "south": "cd9244f5a57e7a021b068852551e540e656ec50fc817222f218bf7e96934661b"
     },
     "B": {
-     "east": "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
-     "north": "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
-     "south": "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201"
-    },
-    "C": {
-     "east": "be8c539adf93e9502fb56372c9666142c352b0c59dacd710ae0d8283849ce83d"
-    },
-    "D": {
      "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
      "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
      "south": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847"
     },
-    "E": {
-     "east": "65c74d2b395db00a4fde2484de1eca85695d63cfcd6962282f9a76d18fca08c8",
-     "north": "98f37666c7df36beebabb3e58bf908d5631747abcedd0522ee3b1b73fbe416fb",
-     "south": "b12317061a53c913cd657f739d5477c9f9e82cd95fc66b0e8a7602f2aa8dfa65"
-    },
-    "F": {
+    "C": {
      "east": "faa1dc986f17054cb20da7c577288428e364f18581ad97f80cabeecf5caa63d7",
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "G": {
+    "D": {
      "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
      "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
      "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
-    "H": {
-     "east": "bb31936d090a504a8a3c3fdb3096792b6284d7e6ba9f63077d763b63a0831bc0",
-     "north": "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167",
-     "south": "9006f37f9c6b7b3fca57cdba873c5106ce5955695342a46a6ad14484e0e9a5e0"
     }
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
     "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_f",
-    "D": "swanimals/Nuna/Nuna_f",
-    "E": "swanimals/Nuna/Nuna_f",
-    "F": "swanimals/Nuna/Nuna_m",
-    "G": "swanimals/Nuna/Nuna_m",
-    "H": "swanimals/Nuna/Nuna_m"
+    "C": "swanimals/Nuna/Nuna_m",
+    "D": "swanimals/Nuna/Nuna_m"
    },
    "labels": {
     "A": "IN GAME \u2014 NunaArtOverride",
-    "B": "history NunaArtOverride 2026-09-13",
-    "C": "history NunaArtOverride 2026-09-14",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "history SWBestiary 2026-09-09",
-    "F": "IN GAME \u2014 NunaArtOverride",
-    "G": "history NunaArtOverride 2026-09-17",
-    "H": "history SWBestiary 2026-09-09"
+    "B": "history NunaArtOverride 2026-09-17",
+    "C": "IN GAME \u2014 NunaArtOverride",
+    "D": "history NunaArtOverride 2026-09-17"
    },
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "D"
    ],
    "subject_key": "nuna"
   },
@@ -1034,25 +996,17 @@
      "east": "2f152f938b6bdf3753eb2a476cbce50ee4e493d83cfbb6a9fc5f50f8efcf3c48",
      "north": "939926fe3b36410f0dfee0c136cf2a7f98d3955bdc8cfc8c5c81f6ac7615da8e",
      "south": "adda04cbe6ddb4f59e7455a73ea6e6e5f86184ce961546dd62d99e00e9dccc45"
-    },
-    "B": {
-     "east": "15eb2cf446afc8c630c42ab471c59e85cc996b7883622ea8e5373cef53e52483",
-     "north": "447718bba6754a462915a301b161c91c23ca351a92e6c3320257e8d06b48630f",
-     "south": "6a747e6205d11b738bc84058531b6485a7f1c27c4fe34e03b9cdaee3a01d072e"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Urusai/Urusai",
-    "B": "swanimals/Urusai/Urusai"
+    "A": "swanimals/Urusai/Urusai"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desert_swaca_urusai"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Urusai/Urusai",
    "reserved": [
-    "A",
-    "B"
+    "A"
    ],
    "subject_key": "urusai"
   },
@@ -1069,42 +1023,26 @@
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
     },
     "C": {
-     "east": "0d25d843fffa5876615e905f0ccc249c63882e21874343320f599fa5c68d9980",
-     "north": "e06d8c5f61a6f72acc2911ec27c16efefa22270b68a1b3f863127107cfec76be",
-     "south": "05d180675dea6c60656c6a44da57d97c2b8e915aaf6c938e9fa30f3f76977f16"
-    },
-    "D": {
      "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
      "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
      "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
-    },
-    "E": {
-     "east": "48b2bd134fbf6255e5dd5dd7f93e03c9d819dbd20b27659a7027fb2406c53fa1",
-     "north": "2bd6aed2c2d677168663716d5323dca6c002b9e8878da367acd111c740238be2",
-     "south": "e9021f2cd5c90f25fc1a524af6a857b2fc5a0da0a14706599ea7a23269c7b290"
     }
    },
    "graphic_of": {
     "A": "swanimals/Whisperbird/Whisperbird",
     "B": "swanimals/Whisperbird/Whisperbird",
-    "C": "swanimals/Whisperbird/Whisperbird",
-    "D": "swanimals/Whisperbird/Whisperbird",
-    "E": "swanimals/Whisperbird/Whisperbird"
+    "C": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
     "A": "IN GAME \u2014 WhisperbirdArtOverride",
     "B": "render canon_whisperbird_v1",
-    "C": "render desertportb_whisperbird",
-    "D": "history WhisperbirdArtOverride 2026-09-13",
-    "E": "donor original \u2014 mlie.starwarsanimalcollection"
+    "C": "history WhisperbirdArtOverride 2026-09-13"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E"
+    "C"
    ],
    "subject_key": "whisperbird"
   },
@@ -1116,7 +1054,9 @@
      "south": "b4e3eea4840ad110c94019078b2c5f30f5ed9a556f91c3cb8eb07aacaf7363d1"
     },
     "B": {
-     "east": "7f718bc25e76bd86e28a23a7fabb6383b986fd676e8ccc21738c8ca652629971"
+     "east": "7f718bc25e76bd86e28a23a7fabb6383b986fd676e8ccc21738c8ca652629971",
+     "north": "332f4e6dedd7f38df2ae36804ff6acaf0485700d18f309d9ce98087d4b84fea6",
+     "south": "f9788bf543648cdcd5857aa9bc1750c1903868b6b2b6852c7088d16482a20113"
     }
    },
    "graphic_of": {
@@ -1136,5 +1076,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "05ef1681de224008"
+ "snapshotId": "5ab46a1204d5e1f1"
 }

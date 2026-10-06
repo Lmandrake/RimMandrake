@@ -1,0 +1,39 @@
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\deep_desert_sheet_2026-10-04.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\deep_desert_sheet_2026-10-04.decisions.json
+             33 rows · 33 decided · reviewed
+  serving    http://localhost:39451/?t=Uc_k1mDMtAeUXu57r3fPnw
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
+  "GET /?t=Uc_k1mDMtAeUXu57r3fPnw HTTP/1.1" 200 -
