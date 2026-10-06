@@ -1,9 +1,9 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-05T09:16:52-0700",
+ "built": "2026-10-05T16:33:48-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_GrayGrass": {
    "columns": {
@@ -45,17 +45,23 @@
    "columns": {
     "A": {
      "single": "d9d4182f04ce7437a9f09bf32386040ca939222072d75c98e35591c674de7dd8"
+    },
+    "B": {
+     "single": "174964f06783f9ecf619d914cf01100e5bdd621ac311a201225148de8e74b5af"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RG_PoluxTree"
+    "A": "Things/Plant/RG_PoluxTree",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 regrowth.botr.core"
+    "A": "IN GAME \u2014 regrowth.botr.core",
+    "B": "render gapall_Plant_TreePolux_v1"
    },
    "res": "Things/Plant/RG_PoluxTree",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "treepolux"
   },
@@ -207,17 +213,23 @@
    "columns": {
     "A": {
      "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
+    },
+    "B": {
+     "single": "fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/ScorchedStars"
+    "A": "Things/Plant/ScorchedStars",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_WastelandScorchedStars_v1"
    },
    "res": "Things/Plant/ScorchedStars",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "wastelandscorchedstars"
   },

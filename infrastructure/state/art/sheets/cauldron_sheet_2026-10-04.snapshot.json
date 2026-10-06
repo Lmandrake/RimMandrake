@@ -1,6 +1,6 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-05T15:00:01-0700",
+ "built": "2026-10-05T17:04:40-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -799,17 +799,23 @@
    "columns": {
     "A": {
      "single": "66b3a5c0e029fa4032e8b9a913bd9e74db95662678bd53f0361d7b46143989ad"
+    },
+    "B": {
+     "single": "c61901582438d937a3f179165f85c928458bf8ad3fb10244c51b23f0245d40e5"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_TreeMartyr"
+    "A": "Things/Plant/RM_TreeMartyr",
+    "B": "Things/Plant/RM_TreeMartyr"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_TreeMartyr_v1"
    },
    "res": "Things/Plant/RM_TreeMartyr",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "treemartyr"
   },
@@ -1191,6 +1197,10 @@
      "south": "0f73e9092f41ee7beac27c033f2fbb3968a4c041438f872e682cecc713be7252"
     },
     "B": {
+     "east": "3614c4d699690864f47a0f962ce2a0445db5d3d41776c42f34588709590485ed",
+     "north": "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8"
+    },
+    "C": {
      "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
      "north": "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
      "south": "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
@@ -1198,16 +1208,19 @@
    },
    "graphic_of": {
     "A": "swanimals/Silooth/Silooth",
-    "B": "swanimals/Silooth/Silooth_j"
+    "B": "swanimals/Silooth/Silooth",
+    "C": "swanimals/Silooth/Silooth_j"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "B": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "B": "render gapall_Silooth_v1",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Silooth/Silooth",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "silooth"
   },
@@ -1219,11 +1232,14 @@
      "south": "5ed9d2ac34a60f0acf5a65137c922848d7d9f5ea1c0ea5e54c0ab0854b49bf5e"
     },
     "B": {
+     "east": "087d730e92380879a935209343f2a09c418cf3732a37b3e63f226a037ce63b73"
+    },
+    "C": {
      "east": "e3af7da6b94634b659bfb888425fea05e8607ef8f6f8d83487f5cfe9dd43478d",
      "north": "0ca7cfe2b679b5c5dba0a2de8fc8f6ce93ccd9379dfa290663e1df0d52bcd57e",
      "south": "a3cfe63bb45f46ddf53d73f7b846e72cc3eea522e150d01f3c355c61394d9763"
     },
-    "C": {
+    "D": {
      "east": "4a5e7cc324b3f2d5bd2ea647fd17118a3d45641c47773900ab17e5929927bd5a",
      "north": "dd2c10d78f62905230a5d5b5fa3e52450e7b607febd0959cd6edb72e8d8189b6",
      "south": "67fd185ae37de3610c272a4c6d84d3f2cf53a909899a18da6795371da153bc65"
@@ -1231,23 +1247,26 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Visceral/Visceral",
-    "B": "Things/Pawn/Animal/Visceral/VisceralBaby",
-    "C": "Things/Pawn/Animal/Visceral/VisceralTeen"
+    "B": "Things/Pawn/Animal/Visceral/Visceral",
+    "C": "Things/Pawn/Animal/Visceral/VisceralBaby",
+    "D": "Things/Pawn/Animal/Visceral/VisceralTeen"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.horrors",
-    "B": "IN GAME \u2014 mlie.horrors",
-    "C": "IN GAME \u2014 mlie.horrors"
+    "B": "render gapall_Visceral_v1",
+    "C": "IN GAME \u2014 mlie.horrors",
+    "D": "IN GAME \u2014 mlie.horrors"
    },
    "res": "Things/Pawn/Animal/Visceral/Visceral",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "visceral"
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "bf3efc4334cd1d10"
+ "snapshotId": "5a9e040111089ab8"
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-05T09:16:33-0700",
+ "built": "2026-10-05T16:02:42-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "GR_Mecharat": {
    "columns": {
@@ -11,17 +11,25 @@
      "east": "2d1a9740ae520f8b2bc034acb96d33b09d685d6d85f80c9b4547cc9fbe0e0869",
      "north": "cb49bfa37b578144511b6ee55ef71fc1968416683c0983a9ad1160e4d0b2543c",
      "south": "6632172e7079874a79b12ed39a4ed60b4367b9651ead833761069574ed382c90"
+    },
+    "B": {
+     "east": "4e63a45b0fea357b1798a13314fb82448ec6060086499a3f45f7264f8efbf23a",
+     "north": "5e928ea6cc12916e356d9455fe55381ac6a1c4d276fea66554cd02fdbb2834b8",
+     "south": "b0bfdaf085761579daea784c6ae7980f667cee2183187eb85091d11034996b83"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat"
+    "A": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Vanilla Genetics Expanded"
+    "A": "IN GAME \u2014 Vanilla Genetics Expanded",
+    "B": "render gapall_GR_Mecharat_v1"
    },
    "res": "Things/Pawn/Animal/Mechanoid/Mecharat/GR_Mechanoid_Rat",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gr_mecharat"
   },
@@ -51,6 +59,9 @@
      "single": "74b6b33887d032ca8b0fe92280bb5a396eb72adf057f413b2021272db0b10034"
     },
     "B": {
+     "single": "9bde039faa3fd7fa12e88cc2a035060d378098a6610d696d40ea01431f637424"
+    },
+    "C": {
      "east": "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374",
      "north": "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
      "south": "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63"
@@ -58,16 +69,19 @@
    },
    "graphic_of": {
     "A": "Things/Item/Fish/Dogfish",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
-    "B": "render RM_CoolantEel"
+    "B": "render gapall_RM_CoolantEelCatch_v1",
+    "C": "render RM_CoolantEel"
    },
    "res": "Things/Item/Fish/Dogfish",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "coolanteelcatch"
   },
@@ -129,5 +143,5 @@
   }
  },
  "sheetId": "rustcathedral_sheet_2026-10-05",
- "snapshotId": "59dc9d397f2d4975"
+ "snapshotId": "fd0ec4cb2368d3e8"
 }

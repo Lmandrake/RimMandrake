@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-05T13:24:17-0700",
+ "built": "2026-10-05T17:05:01-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -1405,6 +1405,10 @@
      "south": "84b5aed6c720ce44907c2bf4ca7505fafe26191f222ec7982396057411308791"
     },
     "B": {
+     "east": "47dc7d82cdf263c00066aac708f0fb84df47e93230415eef535752be258e7f24",
+     "north": "1de37148349b8a4492a9578d91b777f30205ad688f6deb2dcb90c288e63a95ff"
+    },
+    "C": {
      "east": "a4c6a36277e72f754db3e208f1bdca0309973219ab05c048d80aa43208642a6d",
      "north": "e1c8c25f1b10ea4d4116fcba2276664be2f4e7fd25b2c5d6518b9a355e796c53",
      "south": "a8e85102baba028883b2ac9e634b854e9cb05be8adb57269c9e3a07d2321a25b"
@@ -1412,20 +1416,23 @@
    },
    "graphic_of": {
     "A": "swanimals/Snoruuk/Snoruuk",
-    "B": "swanimals/Snoruuk/Snoruuk_j"
+    "B": "swanimals/Snoruuk/Snoruuk",
+    "C": "swanimals/Snoruuk/Snoruuk_j"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "B": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "B": "render gapall_Snoruuk_v1",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Snoruuk/Snoruuk",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "snoruuk"
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "3207988db8ab1c66"
+ "snapshotId": "d80fbdfaa506c480"
 }

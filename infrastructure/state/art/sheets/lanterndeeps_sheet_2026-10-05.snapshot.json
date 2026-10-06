@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-05T09:16:18-0700",
+ "built": "2026-10-05T16:33:32-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -69,17 +69,23 @@
    "columns": {
     "A": {
      "single": "ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335"
+    },
+    "B": {
+     "single": "8929ed215e73bfd524c4508d339747a392075d66f5b7608b257a1aaad927026c"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb"
+    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb",
+    "B": "RM_LanternDeeps/Things/Plant/BrellikBulb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_BrellikBulb_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "brellikbulb"
   },
@@ -156,26 +162,32 @@
     },
     "D": {
      "single": "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51"
+    },
+    "E": {
+     "single": "e47f72c83faa47ecd5aa5fea88331a7465870e7804dc2ddd72cd9a9b413d99f2"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/Mycelium",
     "B": "RM_LanternDeeps/Things/Plant/Mycelium",
     "C": "RM_LanternDeeps/Things/Plant/Mycelium",
-    "D": "RM_LanternDeeps/Things/Plant/Mycelium"
+    "D": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render mycelium_a_v1",
     "C": "render mycelium_b_v1",
-    "D": "render mycelium_c_v1"
+    "D": "render mycelium_c_v1",
+    "E": "render gapall_RM_DeepMycelium_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "deepmycelium"
   },
@@ -283,17 +295,23 @@
    "columns": {
     "A": {
      "single": "30ea2119cdef2ba9e390575e56bd6d04ed5ee57bd1a7a4dca53aeca9e3d72509"
+    },
+    "B": {
+     "single": "a78960c4c638ceb3196998cfeeaefb3b1bf9d5fb787b55e230fea514c18c7b9a"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/KuvraSpout"
+    "A": "RM_LanternDeeps/Things/Plant/KuvraSpout",
+    "B": "RM_LanternDeeps/Things/Plant/KuvraSpout"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_KuvraSpout_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/KuvraSpout",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "kuvraspout"
   },
@@ -371,17 +389,23 @@
    "columns": {
     "A": {
      "single": "2471506b87421a2e465a0db717570d710673fe8ac21874372612f10aaa262ff5"
+    },
+    "B": {
+     "single": "9f5e05f27e1d5133863aa328d5251ae33847acf1a41fae68b86fb4696749f00a"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/NurrikGill"
+    "A": "RM_LanternDeeps/Things/Plant/NurrikGill",
+    "B": "RM_LanternDeeps/Things/Plant/NurrikGill"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_NurrikGill_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "nurrikgill"
   },
@@ -389,17 +413,23 @@
    "columns": {
     "A": {
      "single": "48a5bacf2b0088b1239e333885f6a4ad35f7dfd1fd75d67df5ddcee250fbeccf"
+    },
+    "B": {
+     "single": "d33ebfe9f30fd0893246acc05f6553d9b6211eed9af7e48570ba63a4bfcdddc5"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/OsskBramble"
+    "A": "RM_LanternDeeps/Things/Plant/OsskBramble",
+    "B": "RM_LanternDeeps/Things/Plant/OsskBramble"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_OsskBramble_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/OsskBramble",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "osskbramble"
   },
@@ -427,17 +457,23 @@
    "columns": {
     "A": {
      "single": "8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d"
+    },
+    "B": {
+     "single": "8fa4fe85a54fcfb04378ca925ec1284b3766cf261bd5604861153dfec5e773fe"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown"
+    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_PrennaLace_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "prennalace"
   },
@@ -445,17 +481,23 @@
    "columns": {
     "A": {
      "single": "f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730"
+    },
+    "B": {
+     "single": "95f377bf312efb42ffaa888a44f3e6341628f0e4591f67408e2e95caa4e4e73f"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/QuorrFern"
+    "A": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "B": "RM_LanternDeeps/Things/Plant/QuorrFern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_QuorrFern_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "quorrfern"
   },
@@ -563,17 +605,23 @@
    "columns": {
     "A": {
      "single": "264cc2edceaffda72d3ccb0388c51057f753f0f9da8b6060d1f31a7ed64497c3"
+    },
+    "B": {
+     "single": "a9d09128ea1181a4d43af7e236e1034f87a8bf750b7198b0283ee27af30a770c"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/ThrakkCap"
+    "A": "RM_LanternDeeps/Things/Plant/ThrakkCap",
+    "B": "RM_LanternDeeps/Things/Plant/ThrakkCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_ThrakkCap_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/ThrakkCap",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "thrakkcap"
   },
@@ -629,17 +677,23 @@
    "columns": {
     "A": {
      "single": "3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578"
+    },
+    "B": {
+     "single": "ba87b34f7a9436d65feefa5c33109cb5c626dffd1895c961ef48c99e0307d5ba"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/VellokReed"
+    "A": "RM_LanternDeeps/Things/Plant/VellokReed",
+    "B": "RM_LanternDeeps/Things/Plant/VellokReed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_VellokReed_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "vellokreed"
   },
@@ -647,17 +701,23 @@
    "columns": {
     "A": {
      "single": "573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd"
+    },
+    "B": {
+     "single": "259c71777f6263a9158e731add420ce12bd91a51fde29943102488c41dab1b7e"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
+    "B": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapall_RM_ZivvitTaper_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "zivvittaper"
   },

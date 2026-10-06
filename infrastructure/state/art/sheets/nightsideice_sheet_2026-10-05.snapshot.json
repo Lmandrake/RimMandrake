@@ -1,6 +1,6 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-05T15:00:06-0700",
+ "built": "2026-10-05T17:04:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -105,6 +105,11 @@
      "south": "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9"
     },
     "B": {
+     "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
+     "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
+     "south": "4e688911e696993db0b5a5417c08d8feebbe689d1d37e727526fe4aa44e6ee40"
+    },
+    "C": {
      "east": "dd44f62b3b53bb50cdba2ca90021db2d919e92d678930420aeafa2c5161d830e",
      "north": "7c6c193a9b5f8e1923dcd54d22bcdadd814469aca2b5ecf9118bd7d1fb70ac5d",
      "south": "f600c0a4770bba2397e303d9c166dfe60b7f594b3bf5ff921b0644e3e3aa676c"
@@ -112,20 +117,23 @@
    },
    "graphic_of": {
     "A": "swanimals/Tauntaun/Tauntaun",
-    "B": "swanimals/Tauntaun/Tauntaun_j"
+    "B": "swanimals/Tauntaun/Tauntaun",
+    "C": "swanimals/Tauntaun/Tauntaun_j"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "B": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "B": "render gapall_Tauntaun_v1",
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Tauntaun/Tauntaun",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "tauntaun"
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "62d9e15003db5f5e"
+ "snapshotId": "5d9f13d8190e2ea6"
 }

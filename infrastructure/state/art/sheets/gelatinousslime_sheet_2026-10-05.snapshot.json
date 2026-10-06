@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-05T09:16:07-0700",
+ "built": "2026-10-05T16:02:34-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -155,17 +155,23 @@
    "columns": {
     "A": {
      "single": "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+    },
+    "B": {
+     "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Bush"
+    "A": "Things/Plant/Bush",
+    "B": "_byname"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Textures Expanded"
+    "A": "donor original \u2014 Vanilla Textures Expanded",
+    "B": "render gapall_RM_Plant_Bellows_v1"
    },
    "res": "Things/Plant/Bush",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "bellows"
   },
@@ -196,24 +202,30 @@
   "RM_Plant_SlimeGrass": {
    "columns": {
     "A": {
-     "single": "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f"
+     "single": "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a"
     },
     "B": {
+     "single": "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f"
+    },
+    "C": {
      "single": "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Grass",
-    "B": "_byname"
+    "B": "Things/Plant/Grass",
+    "C": "_byname"
    },
    "labels": {
-    "A": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
-    "B": "render RM_SlimeGrass"
+    "A": "render gapall_Plant_Grass_v1",
+    "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
+    "C": "render RM_SlimeGrass"
    },
    "res": "Things/Plant/Grass",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "slimegrass"
   },
@@ -263,5 +275,5 @@
   }
  },
  "sheetId": "gelatinousslime_sheet_2026-10-05",
- "snapshotId": "0141a5075626ad24"
+ "snapshotId": "a9b381d8897cf9b5"
 }
