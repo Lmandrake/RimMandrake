@@ -1,6 +1,6 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T22:12:40-0700",
+ "built": "2026-10-05T22:54:24-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,20 +11,13 @@
      "east": "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
      "north": "5f1ddc63c80bac5004161539c45367600c6ebabd2d7cffbd9f59c84257bffaec",
      "south": "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
-    },
-    "B": {
-     "east": "8338e43008c3547baff4aeb1ec5dace671c5d0068aad11887a9ab6cfcfa579ea",
-     "north": "45ab167eb5ca151aeb203108bbfa488139927082549bca8a622337ef4d459d9e",
-     "south": "ed9b579d555577fb5c0e421888c20282e29ba7809f52d253ea242ee0c55ee26f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
-    "B": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
+    "A": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "B": "render stillsand_regen_RM_Aurrok_v1"
+    "A": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
    "reserved": [
@@ -207,38 +200,13 @@
    "columns": {
     "A": {
      "single": "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
-    },
-    "C": {
-     "single": "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df"
-    },
-    "D": {
-     "single": "5c855498e32cba323c4efbeea6d46d042fcfda1c644b59f5b3bccf4be8063b09"
-    },
-    "E": {
-     "single": "b9403600f0716e62745e0675366243fe3d04c82983f0435bdc14aa285cf50a37"
-    },
-    "F": {
-     "single": "927f08c9e0b7d4802ca7bf077cc47d6a9876ba3bdaa5b918b90d0f1a4230da4b"
-    },
-    "G": {
-     "single": "8b8bf8d353731b01f93bfd6af5b57b77c939cb4b009ff0bf074ca29db8ea85bb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_KneelOllim",
-    "C": "Things/Plant/RM_KneelOllim",
-    "D": "Things/Plant/RM_KneelOllim",
-    "E": "Things/Plant/RM_KneelOllim",
-    "F": "Things/Plant/RM_KneelOllim",
-    "G": "Things/Plant/RM_KneelOllim"
+    "A": "Things/Plant/RM_KneelOllim"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render stillsand_regen_RM_KneelOllim_var1",
-    "D": "render stillsand_regen_RM_KneelOllim_var2",
-    "E": "render stillsand_regen_RM_KneelOllim_var3",
-    "F": "render stillsand_regen_RM_KneelOllim_var4",
-    "G": "render stillsand_regen_RM_KneelOllim_var5"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_KneelOllim",
    "reserved": [
@@ -380,8 +348,8 @@
     "C": "Things/Pawn/Animal/RM_Oommok/RM_Oommok"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "C": "render stillsand_regen_RM_Oommok_v2"
+    "A": "history Stillsand 2026-10-01",
+    "C": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
    "reserved": [
@@ -439,20 +407,28 @@
      "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
      "single": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
      "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
+    },
+    "C": {
+     "east": "6fa56459e2e756650df1059d832fd38065f151fc3cb799d9794223f5d873fd79",
+     "north": "4eb7206a6d3f4e71bcaa182eb72c782e86b76b8d6e1d187c7d40429ef251a4f6",
+     "south": "1c625c5726eb0986ce7e83f3babbf32337dc518c4ba7bdead7fe0f6efaf79083"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
-    "B": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
+    "B": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
+    "C": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "B": "render RM_ShadeMite_tint_v1"
+    "A": "history Stillsand 2026-10-01",
+    "B": "render RM_ShadeMite_tint_v1",
+    "C": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "shademite"
   },
@@ -494,8 +470,8 @@
     "D": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak"
    },
    "labels": {
-    "A": "IN GAME \u2014 Stillsand",
-    "D": "render stillsand_regen_RM_Soorrak_v2"
+    "A": "render RM_Soorrak_b",
+    "D": "IN GAME \u2014 Stillsand"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "reserved": [
@@ -736,8 +712,8 @@
     "C": "swanimals/GraniteSlug/GraniteSlug"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "C": "render stillsand_regen_RSW_GraniteSlug_v2"
+    "A": "history SWBestiary 2026-09-17",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
    "reserved": [
@@ -759,11 +735,6 @@
      "north": "ab22d6f418d8e24f68329c1fa79f32d73c14faf631b0c93f7ed3d82665316f96",
      "south": "0ae6f02d7cd50beb9125731c496de0c0f88be26aa3014b824a414a64ae8c6c20"
     },
-    "D": {
-     "east": "162477ddb4152e6fbd677c80ec69a60abdcd4134bba6280f1f406971aa14200c",
-     "north": "ab0561c0c4f92b088271783daeb4e3a07f8a0ec75e80c05f79102e5d76ef164d",
-     "south": "971257281ef89ad736ddfc885fe231a5efff3638c49da74d747dfa53a8be77a2"
-    },
     "E": {
      "east": "c5ede570f7e950b87d962742260ee3d519beb7511db29608844795c1e60c4cb2",
      "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
@@ -773,14 +744,12 @@
    "graphic_of": {
     "A": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "C": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-    "D": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
-    "A": "IN GAME \u2014 GreaterKraytDragonArtOverride",
+    "A": "history GreaterKraytDragonArtOverride 2026-09-20",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "render stillsand_regen_RSW_GreaterKraytDragon_v2"
+    "E": "IN GAME \u2014 GreaterKraytDragonArtOverride"
    },
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
    "reserved": [
@@ -1075,8 +1044,8 @@
     "C": "swanimals/WarWyrm/WarWyrm"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "C": "render stillsand_regen_RSW_WarWyrm_v2"
+    "A": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/WarWyrm/WarWyrm",
    "reserved": [
@@ -1088,5 +1057,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "25d0a9b299acdda1"
+ "snapshotId": "9c3e4d9757a5a8c8"
 }
