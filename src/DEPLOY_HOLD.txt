@@ -464,3 +464,5 @@ GimmeSomeSlack/review/*   # review sheet + key kept beside the mod for quick rev
 GimmeSomeSlack/northstar/*   # proof/validation result JSONs: evidence, not game content
 # --- FlowWorks capability review sheet: a human-review artifact, never part of the shipped mod (2026-10-05) ---
 FlowWorks/northstar/review/*   # review sheet + decisions + shots kept beside the mod; not game content
+# --- FlowWorks review MAP data: read by review_map.py on the Windows side, never game content (2026-10-05) ---
+FlowWorks/review_map_stations_visuals.json   # visuals station data for the review map builder; not game content
