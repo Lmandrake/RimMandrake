@@ -32,15 +32,15 @@
           "defName": "RM_RustCathedralNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_f4c73a1c421249a4a41382825f641004",
+         "OperationId": "op_f8b83a5a2ad84bfe84cda9bc821778a9",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:13:11.8444084+00:00",
-         "CompletedAtUtc": "2026-10-04T04:13:11.8935651+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T13:31:02.1982653+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:02.2470241+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -402,15 +402,15 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_e2a6052752a5445e82e85b1d49c7d53c",
+         "OperationId": "op_27b95d6c7273467eb049b0bfd7de2735",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:13:11.9450847+00:00",
-         "CompletedAtUtc": "2026-10-04T04:13:11.993822+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T13:31:02.2974416+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:02.3472096+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -460,15 +460,15 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_c0a9381804d143c78a66356e4c4bca2a",
+         "OperationId": "op_01d1e9a5d4a34f7bb2c0a0fd88585d4a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:13:12.0449513+00:00",
-         "CompletedAtUtc": "2026-10-04T04:13:12.0937307+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T13:31:02.3995719+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:02.447326+00:00",
+         "DurationMs": 47,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -491,7 +491,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -499,8 +499,36 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [],
+    "hits_seen": [
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Takeru: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Ana: 2 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Lizz: 1 existing hediff(s) worsened"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -772,16 +800,56 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
     "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
-    "surprises": [],
-    "hits_seen": [],
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T063053\\RustCathedral__settings_roundtrip__modal_open__t350766__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T063053\\RustCathedral__settings_roundtrip__modal_open__t350766__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 350766,
+      "detector": "modal_open",
+      "severity": "SURPRISE",
+      "summary": "1 force-pause modal(s) open: Verse.Dialog_InfoCard"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Takeru: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Ana: 2 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Lizz: 1 existing hediff(s) worsened"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -826,15 +894,15 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_5ace58ab823b4196b78bd438988fcbce",
+         "OperationId": "op_06c80f25747f4eff8c15f83124e7e955",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:37.1359754+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:37.1801153+00:00",
-         "DurationMs": 44,
+         "StartedAtUtc": "2026-10-06T13:31:20.5010401+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:20.5478348+00:00",
+         "DurationMs": 46,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -904,15 +972,15 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_284c54c1c2f24fa78483ee0f476c8b36",
+         "OperationId": "op_9287e3ff36d7477ab6892352c39f4862",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:37.2305038+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:37.2803202+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T13:31:20.5971899+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:20.6472613+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -949,15 +1017,11 @@
           "forageability": 0.0,
           "foragedFood": null,
           "settlementSelectionWeight": 1.0,
-          "wildAnimalCount": 3,
+          "wildAnimalCount": 2,
           "wildPlantCount": 0,
-          "animalsListed": 3,
+          "animalsListed": 2,
           "plantsListed": 0,
           "animals": [
-           {
-            "defName": "GR_Mecharat",
-            "commonality": 0.5
-           },
            {
             "defName": "RM_CathedralRoach",
             "commonality": 0.12
@@ -971,15 +1035,15 @@
           "findResults": null
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_313e549645b944d49767a5e20eec85af",
+         "OperationId": "op_7163317fc1004faca2c2c0c0280ddbb7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:37.3309192+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:37.3810653+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T13:31:20.6979872+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:20.7475627+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1030,15 +1094,11 @@
           "forageability": 0.0,
           "foragedFood": null,
           "settlementSelectionWeight": 1.0,
-          "wildAnimalCount": 3,
+          "wildAnimalCount": 2,
           "wildPlantCount": 0,
-          "animalsListed": 3,
+          "animalsListed": 2,
           "plantsListed": 0,
           "animals": [
-           {
-            "defName": "GR_Mecharat",
-            "commonality": 0.5
-           },
            {
             "defName": "RM_CathedralRoach",
             "commonality": 0.12
@@ -1052,15 +1112,15 @@
           "findResults": null
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_08f54e6a92c44c0d8b412c19de750524",
+         "OperationId": "op_9e34105df58a44648f358eb36873d9cf",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:37.43134+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:37.4795805+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T13:31:20.7971189+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:20.8470125+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1106,15 +1166,15 @@
           "defName": "MapCommonBase"
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_d88aea9e446a4de6b09fbdb0d54acc0c",
+         "OperationId": "op_2d18eec2fcc94c03a9828a42ec658c55",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:37.5321336+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:37.5802267+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T13:31:20.8974836+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:20.9484972+00:00",
+         "DurationMs": 51,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1137,7 +1197,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1147,6 +1207,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1192,14 +1261,14 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_884a0eefc8f8425ab3068fc8311353d7",
+         "OperationId": "op_302003b2c8d945febd02072a6f75544e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:43.9805145+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:44.0300693+00:00",
+         "StartedAtUtc": "2026-10-06T13:31:26.3807001+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:26.4303196+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1223,7 +1292,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1231,8 +1300,36 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [],
+    "hits_seen": [
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Takeru: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Ana: 2 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Lizz: 1 existing hediff(s) worsened"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1280,16 +1377,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "note": null,
         "operation": {
-         "OperationId": "op_09a0eee9a71149f8a7d14783bb72deb0",
+         "OperationId": "op_c10cea1a79f64b3da5e6b75f64028eb7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:51.3830614+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:51.4095983+00:00",
-         "DurationMs": 26,
+         "StartedAtUtc": "2026-10-06T13:31:32.513781+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:32.5329414+00:00",
+         "DurationMs": 19,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1325,17 +1422,11 @@
           "method": "Kill",
           "declaringType": "Verse.Pawn",
           "patchInfoError": null,
-          "prefixCount": 11,
-          "postfixCount": 16,
-          "transpilerCount": 1,
-          "finalizerCount": 2,
+          "prefixCount": 3,
+          "postfixCount": 3,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
           "prefixes": [
-           {
-            "owner": "SmashPhil.VehicleFramework",
-            "priority": 400,
-            "patchMethod": "Vehicles.Patch_Misc.MoveOnDeath",
-            "patchAssembly": "Vehicles"
-           },
            {
             "owner": "OskarPotocki.VEF",
             "priority": 400,
@@ -1349,48 +1440,6 @@
             "patchAssembly": "VEF"
            },
            {
-            "owner": "ChezhouLib.lib",
-            "priority": 400,
-            "patchMethod": "ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath.Prefix",
-            "patchAssembly": "ChezhouLib"
-           },
-           {
-            "owner": "Font.Rimesis",
-            "priority": 400,
-            "patchMethod": "Rimesis.Patch_Pawn_Kill.Prefix",
-            "patchAssembly": "Rimesis"
-           },
-           {
-            "owner": "RedMattis.BetterPrerequisites",
-            "priority": 400,
-            "patchMethod": "BigAndSmall.NotifyEvents.PawnKillPrefix",
-            "patchAssembly": "BigAndSmall"
-           },
-           {
-            "owner": "llunak.MorePrecepts",
-            "priority": 400,
-            "patchMethod": "MorePrecepts.Pawn2_Patch.Kill",
-            "patchAssembly": "MorePrecepts"
-           },
-           {
-            "owner": "VanillaApparelExpanded.Accessories",
-            "priority": 400,
-            "patchMethod": "VAE_Accessories.HarmonyPatches.BeltsOnDeath",
-            "patchAssembly": "VAE Accessories"
-           },
-           {
-            "owner": "lordfelix.rimcontrol",
-            "priority": 400,
-            "patchMethod": "ItemControl.Patch_Pawn_Kill_PinataWindow.Prefix",
-            "patchAssembly": "ItemControl"
-           },
-           {
-            "owner": "mandrake.rsw.gizkastowaway",
-            "priority": 400,
-            "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Pawn_Kill_CullGuilt.Prefix",
-            "patchAssembly": "RimMandrakeGizkaStowaway"
-           },
-           {
             "owner": "mandrake.rut.rustcathedralhum",
             "priority": 400,
             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill.Prefix",
@@ -1398,12 +1447,6 @@
            }
           ],
           "postfixes": [
-           {
-            "owner": "UnlimitedHugs.AllowTool",
-            "priority": 400,
-            "patchMethod": "AllowTool.Patches.Pawn_Kill_Patch.UnforbidDraftedHuntBody",
-            "patchAssembly": "AllowTool"
-           },
            {
             "owner": "OskarPotocki.VEF",
             "priority": 400,
@@ -1417,118 +1460,26 @@
             "patchAssembly": "VEF"
            },
            {
-            "owner": "iforgotmysocks.CaravanAdventures",
-            "priority": 400,
-            "patchMethod": "CaravanAdventures.Patches.KillBountyPatches.PawnKillPostfix",
-            "patchAssembly": "CaravanAdventures"
-           },
-           {
-            "owner": "com.alphagenes",
-            "priority": 400,
-            "patchMethod": "AlphaGenes.AlphaGenes_Pawn_Kill_Patch.RemovePocketPlanes",
-            "patchAssembly": "AlphaGenes"
-           },
-           {
-            "owner": "ChezhouLib.lib",
-            "priority": 400,
-            "patchMethod": "ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath.Postfix",
-            "patchAssembly": "ChezhouLib"
-           },
-           {
-            "owner": "Font.Rimesis",
-            "priority": 400,
-            "patchMethod": "Rimesis.Patch_Pawn_Kill.Postfix",
-            "patchAssembly": "Rimesis"
-           },
-           {
-            "owner": "RedMattis.BetterPrerequisites",
-            "priority": 400,
-            "patchMethod": "BigAndSmall.OnKillPatch.OnKillPostfix",
-            "patchAssembly": "BigAndSmall"
-           },
-           {
-            "owner": "llunak.MorePrecepts",
-            "priority": 400,
-            "patchMethod": "MorePrecepts.Pawn3_Patch.Kill",
-            "patchAssembly": "MorePrecepts"
-           },
-           {
-            "owner": "mandrake.rm.ninefold",
-            "priority": 400,
-            "patchMethod": "RimMandrake.Ninefold.Patch_BattleResolved.Postfix",
-            "patchAssembly": "RimMandrakeNinefold"
-           },
-           {
-            "owner": "mandrake.rm.ninefold",
-            "priority": 400,
-            "patchMethod": "RimMandrake.Ninefold.Patch_KillManner.Postfix",
-            "patchAssembly": "RimMandrakeNinefold"
-           },
-           {
-            "owner": "mandrake.rm.aftermath",
-            "priority": 400,
-            "patchMethod": "RimMandrake.Aftermath.Patch_ColonistCasualty.Postfix",
-            "patchAssembly": "RimMandrakeAftermath"
-           },
-           {
-            "owner": "vlvop.tormentmaster.expansion",
-            "priority": 400,
-            "patchMethod": "TormentMaster.Patches.Pawn_Kill_DropSkinSuit_Patch.Postfix",
-            "patchAssembly": "TormentMaster"
-           },
-           {
-            "owner": "VRF.VehicleRaidFramework",
-            "priority": 400,
-            "patchMethod": "VehicleRaidFramework.Patch_CrewCasualty.Postfix",
-            "patchAssembly": "VehicleRaidFramework"
-           },
-           {
-            "owner": "lordfelix.rimcontrol",
-            "priority": 0,
-            "patchMethod": "ItemControl.Patch_Pawn_Kill_UnforbidCorpse.Postfix",
-            "patchAssembly": "ItemControl"
-           },
-           {
             "owner": "mandrake.jawabench.eventrecorder",
             "priority": 400,
             "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
             "patchAssembly": "JawaBench.BridgeTools"
            }
           ],
-          "transpilers": [
-           {
-            "owner": "net.avilmask.rimworld.mod.NonUnoPinata",
-            "priority": 400,
-            "patchMethod": "NonUnoPinata.Patches.Pawn_Kill_NonUnoPinataPatch.Transpiler",
-            "patchAssembly": "NonUnoPinata"
-           }
-          ],
-          "finalizers": [
-           {
-            "owner": "Font.Rimesis",
-            "priority": 400,
-            "patchMethod": "Rimesis.Patch_Pawn_Kill.Finalizer",
-            "patchAssembly": "Rimesis"
-           },
-           {
-            "owner": "lordfelix.rimcontrol",
-            "priority": 400,
-            "patchMethod": "ItemControl.Patch_Pawn_Kill_PinataWindow.Finalizer",
-            "patchAssembly": "ItemControl"
-           }
-          ]
+          "transpilers": [],
+          "finalizers": []
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "note": null,
         "operation": {
-         "OperationId": "op_02414092a6a34bafa652d775f5edc8a5",
+         "OperationId": "op_53851cdb511d4a38b7e81fffc44d6135",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:51.4487752+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:51.4953142+00:00",
-         "DurationMs": 46,
+         "StartedAtUtc": "2026-10-06T13:31:32.5806763+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:32.5986977+00:00",
+         "DurationMs": 18,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1581,16 +1532,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "note": null,
         "operation": {
-         "OperationId": "op_d5045d5a6cb849068be3be89a306baaf",
+         "OperationId": "op_a05f493b74f74fb0b09217606240da36",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:51.5213346+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:51.5393521+00:00",
-         "DurationMs": 18,
+         "StartedAtUtc": "2026-10-06T13:31:32.6479693+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:32.6645443+00:00",
+         "DurationMs": 16,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1643,16 +1594,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "note": null,
         "operation": {
-         "OperationId": "op_018728228855493988e23ffaac327f3c",
+         "OperationId": "op_aca6fdd93d6f4a2ea1a7f98e7ce3d807",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:51.5821526+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:51.6074145+00:00",
-         "DurationMs": 25,
+         "StartedAtUtc": "2026-10-06T13:31:32.7135615+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:32.7315796+00:00",
+         "DurationMs": 18,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1705,16 +1656,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "note": null,
         "operation": {
-         "OperationId": "op_d93c4a682fd34919af74330d902e6c0a",
+         "OperationId": "op_9a9895ae4e4743dcb597026a0b81685f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:51.6487447+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:51.6732873+00:00",
-         "DurationMs": 24,
+         "StartedAtUtc": "2026-10-06T13:31:32.7800054+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:32.7975355+00:00",
+         "DurationMs": 17,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1737,7 +1688,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1745,8 +1696,36 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [],
+    "hits_seen": [
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Takeru: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Ana: 2 existing hediff(s) worsened"
+     },
+     {
+      "tick": 350766,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Lizz: 1 existing hediff(s) worsened"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1839,15 +1818,15 @@
           }
          }
         ],
-        "ticksGame": 8427,
+        "ticksGame": 350766,
         "operation": {
-         "OperationId": "op_18f02c25efb2490c8c58113b067a1848",
+         "OperationId": "op_b9b0ce99e8414d7ebb41846840a1a9f8",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T04:14:58.7154269+00:00",
-         "CompletedAtUtc": "2026-10-04T04:14:58.7640702+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-06T13:31:38.9138526+00:00",
+         "CompletedAtUtc": "2026-10-06T13:31:38.9628928+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1870,7 +1849,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1880,6 +1859,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -2008,7 +1996,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -2018,6 +2006,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   }
  ],
@@ -2025,6 +2022,15 @@
  "findings": [],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\RustCathedral.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
  "bland_world": {
   "before": {
    "bland": true,
@@ -2047,26 +2053,26 @@
      "residue": []
     },
     "incident_queue_cleared": 0,
-    "corpses_destroyed": 0,
+    "corpses_destroyed": 3,
     "corpses_left": 0,
     "extinguish": {
      "acted": 0,
      "verified": true
     },
     "restore_colonists": {
-     "acted": 21,
+     "acted": 12,
      "verified": true,
      "residue": []
     },
     "restore_needs": {
-     "acted": 21,
+     "acted": 12,
      "verified": true
     }
    },
    "retile": {
-    "tile": 16419,
-    "biome": "ZBiome_Grasslands",
-    "temperature": 15.5066452,
+    "tile": 3,
+    "biome": "AridShrubland",
+    "temperature": 27.5669746,
     "applied": "RM_RustCathedral"
    }
   },
@@ -2074,5 +2080,86 @@
  },
  "visual": [],
  "visual_all_green": true,
- "state_all_green": false
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261006T060834-situational_rerun-89868",
+  "git": {
+   "source": "git",
+   "sha": "949cd022250de0edd392da0362a5e77966e44d70"
+  },
+  "deploy_start": {
+   "mod": "RustCathedral",
+   "at": "2026-10-06T06:30:27",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/RustCathedral",
+   "src_hash": "d0ed8320ba3b14f8",
+   "deployed_hash": "d0ed8320ba3b14f8",
+   "n_src": 37,
+   "n_deployed": 37,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll",
+     "sha": "3d15365f1a3ca310",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/Hum/RimMandrake.Rust"
+    },
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Walls.dll",
+     "sha": "cd7f4dfe7c1aeeab",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/Walls/RimMandrake.Ru"
+    },
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.dll",
+     "sha": "cb55f0716f732f1a",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/RustCathedral/RM_Rus"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "RustCathedral",
+   "at": "2026-10-06T06:31:45",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/RustCathedral",
+   "src_hash": "d0ed8320ba3b14f8",
+   "deployed_hash": "d0ed8320ba3b14f8",
+   "n_src": 37,
+   "n_deployed": 37,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll",
+     "sha": "3d15365f1a3ca310",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/Hum/RimMandrake.Rust"
+    },
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Walls.dll",
+     "sha": "cd7f4dfe7c1aeeab",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/Walls/RimMandrake.Ru"
+    },
+    {
+     "dll": "Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.dll",
+     "sha": "cb55f0716f732f1a",
+     "srchash": "# project: RimMandrake/RustCathedral/Source/RustCathedral/RM_Rus"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
 }
