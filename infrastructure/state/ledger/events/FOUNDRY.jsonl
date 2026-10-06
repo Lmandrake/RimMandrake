@@ -3045,3 +3045,10 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T11:47:51Z","tsn":1791287271251736073}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T11:47:52Z","tsn":1791287272125372000}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T12:31:43Z","tsn":1791289903327967156}
+{"seat":"FOUNDRY","event":"claim","id":"NORTHSTAR_RESULTS_JOIN_1","ts":"2026-10-06T12:39:43Z","tsn":1791290383777165507}
+{"seat":"FOUNDRY","event":"start","id":"NORTHSTAR_RESULTS_JOIN_1","ts":"2026-10-06T12:39:44Z","tsn":1791290384376122437}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY biome kits redeploy+rerun, FlowWorks preflight","ts":"2026-10-06T13:02:27Z","tsn":1791291747333887952}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-06T13:02:29Z","tsn":1791291749408947067}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T13:04:23Z","tsn":1791291863977372489}
+{"seat":"FOUNDRY","event":"close","id":"NORTHSTAR_RESULTS_JOIN_1","sha":"6dfd31920","ts":"2026-10-06T13:04:33Z","tsn":1791291873051990521}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:40:49Z","tsn":1791294049565905019}
