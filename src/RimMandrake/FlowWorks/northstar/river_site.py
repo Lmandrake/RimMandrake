@@ -49,6 +49,11 @@ DRY = "--dry" in sys.argv     # the opposite site: NO river, for the plot/toggle
 def main():
     from rimdrive import Session
     with Session(lock=None) as s:
+        # the colonists left on the map we are leaving: vanished once the new site stands. Left alone they starve or
+        # cook there, and their deaths are game-wide letters the watch reads as colonist_died in whatever chain is
+        # running (MEASURED 2026-10-06: three chains UNMEASURED on deaths of map-0 quicktest colonists)
+        old_cols = [p["id"] for p in (s.call("jawa/list_pawns", limit=500).get("pawns") or [])
+                    if p.get("isPlayer") and not p.get("dead")]
         path = os.path.join(os.environ.get("TEMP") or tempfile.gettempdir(), "river_site_tiles.csv")
         r = s.call("jawa/world_tile_export", path=path)
         if not r.get("success") or not os.path.isfile(path):
@@ -87,6 +92,13 @@ def main():
             kv = dict(p.split("=", 1) for p in grid.split() if "=" in p)
             print("tile", t, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
             # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
+            # no indestructible scenery under the extension plot grid (centred, ~ +-64 cells with buffers): a steam geyser
+            # in plot D took the pump's cell and ProofPump read it as "no pump" (MEASURED 2026-10-06, tile 45)
+            scenery = [d for d in BW.NATURAL_SCENERY
+                       if s.call("jawa/list_things", defName=d, rect="61,61,130,130", limit=5).get("things")]
+            if scenery:
+                print("tile", t, "has", scenery, "inside the plot grid: next tile")
+                continue
             if DRY or (int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0):
                 tile, info = t, row
                 break
@@ -104,6 +116,8 @@ def main():
             for p in sp.get("pawns") or []:
                 s.call("jawa/set_draft", pawnId=p.get("id"), drafted=True)
         BW.close_naming_dialogs(s)
+        for pid in old_cols:
+            s.call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
         rep = BW.reset(s)
         print("map", g["mapIndex"], "size", mi.get("sizeX"), "biome", mi.get("mapBiome"), "destroyed", d.get("matchedCount"),
               "reset problems", rep.get("problems"))

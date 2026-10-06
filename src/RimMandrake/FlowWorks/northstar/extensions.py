@@ -244,11 +244,13 @@ def _ring(cells):
     return sorted(ring)
 
 
-def _expect_dry_ring(t, cells):
-    """Cannot-show scan: every un-dug cell in the 1-cell ring has D=0 and F=0."""
+def _expect_dry_ring(t, cells, skip=()):
+    """Cannot-show scan: every un-dug cell in the 1-cell ring has D=0 and F=0. `skip`: the painted source the run
+    is fed from (natural liquid reads D=4 F=4 by design, and the mouth's ring touches it)."""
     if not t._guard():
         return
-    bad = [(c, d, f) for c, (d, f) in zip(_ring(cells), _state(t, _ring(cells))) if d or f]
+    ring = [c for c in _ring(cells) if c not in set(skip)]
+    bad = [(c, d, f) for c, (d, f) in zip(ring, _state(t, ring)) if d or f]
     if bad:
         raise ExpectationFailed("liquid/excavation on un-dug ground beside the run: %s" % bad[:5])
 
@@ -786,16 +788,20 @@ def _mini_channel(t, key, n=6, levels=1):
 
 @suite.chain("toggle_confinement")
 def toggle_confinement(t):
+    # the mini channel's mouth (x0+10) abuts the painted WaterDeep source (x0..x0+9, z0+4..z0+9): those ring cells are
+    # the source itself, D=4 F=4 by design -- MEASURED 2026-10-06 (122,87..89) read as a leak ON and would have
+    # passed the OFF row with no leak at all
     x0, z0, cells = _mini_channel(t, "B")
+    src = set((x, z) for x in range(x0, x0 + 10) for z in range(z0 + 4, z0 + 10))
     with t.component("confinement_on", toggle="channelConfinementEnabled"):
         _settle(t, cells, 20)
-        _expect_dry_ring(t, cells)
+        _expect_dry_ring(t, cells, skip=src)
     x0, z0, cells = _mini_channel(t, "B")
     with t.component("confinement_off_leaks", toggle="channelConfinementEnabled"):
         with _setting(t, "channelConfinementEnabled", False):
             _wait(t, 20 * PULSE)
             if t._guard():
-                ring = _state(t, _ring(cells))
+                ring = _state(t, [c for c in _ring(cells) if c not in src])
                 _expect(any(d or f for d, f in ring),
                         "no ring cell took liquid with confinement OFF: the toggle is not live")
 
