@@ -27,9 +27,10 @@ namespace RimMandrake.WeepingStones
 
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
-			this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+			// the carried thing is despawned once picked up, so only the pre-pickup goto may demand it spawned
+			this.FailOnDestroyedNullOrForbidden(TargetIndex.A);
 
-			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
+			yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.A);
 			yield return Toils_Haul.StartCarryThing(TargetIndex.A);
 			yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.Touch);
 
