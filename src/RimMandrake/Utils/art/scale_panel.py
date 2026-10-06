@@ -48,6 +48,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import game_paths as GP  # noqa: E402
 from art_zoom_sim import BG as TERRAIN  # noqa: E402   (Ash'karr desert brown, the zoom-sim's own)
+DEFAULT_TERRAIN = tuple(TERRAIN)
 
 
 def set_terrain(rgb):

@@ -974,11 +974,14 @@ window.itemBody = it => {
     : dtext.length > 260 ? `<details class="bs-desc" title="${esc(ds.source)}"><summary><b>${esc(ds.label)}</b> — <span class="bs-dclamp">${esc(dtext)}</span></summary></details>`
     : `<div class="bs-desc" title="${esc(ds.source)}"><b>${esc(ds.label)}</b> — ${esc(dtext || '(the def has no description)')}</div>`;
   const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
-  return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
+  const re = it.ruledElsewhere;
+  const reHead = re ? `<summary class="bs-ruledsum" title="You already ruled on this subject on another sheet, so it needs no pick here. Expand to see the pictures and change your mind.">Already ruled on <b>${esc(re.sheet)}</b>: ${esc(re.pick)}${re.label ? ' — ' + esc(re.label) : ''}${re.note ? ' · “' + esc(re.note) + '”' : ''} <span class="sub">${esc(re.at)} · expand to change your mind</span></summary>` : '';
+  const inner = `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
+  return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
@@ -1107,6 +1110,10 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-scsrc.bs-fallback{color:#e06c6c}
 .bs-set{position:relative}
 .bs-ppc{font-style:normal;white-space:nowrap;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
+/* a subject already ruled on another sheet: dimmed pick column until expanded */
+.row:has(.bs-ruled:not([open])) .ctrl{opacity:.35}
+.bs-ruledsum{cursor:pointer;color:#9fb6c9;padding:2px 0;font-size:12px}
+.bs-ruled[open]>.bs-ruledsum{margin-bottom:6px}
 /* right-hand pick column: only this row's letters, readable redo/hold */
 .row .ctrl{width:200px}
 .row .opts{flex-wrap:wrap}
@@ -1176,13 +1183,76 @@ never casts it. Rows you already ruled on in <b>desert sitting 1</b> are prefill
 prefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
 
 
-# biome -> ground colour behind the panel (None = scale_panel's default Ash'karr tan). Measured as the mean opaque
-# RGB of the biome's own ground texture (vanilla Core bundle_textures): Sand.png (Stillsand terrainsByFertility
-# Sand), Ice.png (Blue Desert terrain Ice). The dump carries no terrain colour, so these are texture means.
+# Ground colour behind the scaled portrayal (owner 2026-10-05: "You also did not include the scaled portrayal on that
+# sheet"): the panel is UNCONDITIONAL, on every biome sheet. The colour is MEASURED per biome by measure_ground():
+# the mean opaque RGB of the texture of the biome's lowest-fertility terrain (terrainsByFertility, first threshold =
+# the dominant ground at low fertility) from the def dump -> TerrainDef.texturePath -> an installed texture (our src/,
+# vanilla bundle_textures by basename, then the Steam Mods / workshop folders). Where nothing can be measured the panel
+# uses scale_panel's default tan and the sheet's progress record lists the biome. Hand measurements below predate the
+# function and are kept as overrides only where they were taken from the texture the owner named.
 SCALE_BIOMES = {"RM_LongShade": None, "RM_Stillsand": (126, 110, 91), "RM_BlueDesert": (155, 164, 172),
                 # Abyss: AB_ForsakenSands.png (near-black, 25,25,35); Cauldron: RM_CauldronSoil -> Soil.png (93,76,61);
                 # Contagion: GU_AlienSand/GU_AlienSandFine mean (fine sand dominates fertility < 0.2)
                 "RM_Abyss": (24, 24, 34), "RM_Cauldron": (93, 76, 61), "RM_Contagion": (145, 113, 115)}
+STEAM_ROOTS = [Path("/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"),
+               Path("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100")]
+_GROUND: dict = {}
+GROUND_LOG: dict = {}
+
+
+def _find_terrain_png(tex_path: str):
+    base = tex_path.replace("\\", "/")
+    hits = list((L.REPO_ROOT / "src").glob(f"**/Textures/{base}.png"))
+    if hits:
+        return hits[0]
+    van = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core") / (base.split("/")[-1] + ".png")
+    if van.is_file():
+        return van
+    for root in STEAM_ROOTS:
+        if root.is_dir():
+            for mod in root.iterdir():
+                for sub in ("Textures", "1.6/Textures", "Common/Textures"):
+                    f = mod / sub / (base + ".png")
+                    if f.is_file():
+                        return f
+    return None
+
+
+def measure_ground(biome: str):
+    """(rgb, source) — mean opaque RGB of the biome's low-fertility ground texture — or (None, why it is unmeasurable)."""
+    if biome in _GROUND:
+        return _GROUND[biome]
+    import sqlite3
+    from PIL import Image
+    why = ""
+    try:
+        import scale_panel
+        db = sqlite3.connect(str(scale_panel.DB))
+        r = db.execute("select json from defs where def_name=? and def_type='BiomeDef'", (biome,)).fetchone()
+        tbf = sorted(((json.loads(r[0]).get("fields") or {}).get("terrainsByFertility") or []),
+                     key=lambda t: t.get("min", 0)) if r else []
+        if not tbf:
+            why = "BiomeDef has no terrainsByFertility in the def dump"
+        for t in tbf:
+            tr = db.execute("select json from defs where def_name=? and def_type='TerrainDef'", (t.get("terrain"),)).fetchone()
+            tp = ((json.loads(tr[0]).get("fields") or {}).get("texturePath")) if tr else None
+            f = _find_terrain_png(tp) if tp else None
+            if not f:
+                why = f"terrain {t.get('terrain')}: texture {tp or 'not in dump'} not found"
+                continue
+            im = Image.open(f).convert("RGBA")
+            px = [p for p in im.getdata() if p[3] > 8]
+            if not px:
+                continue
+            rgb = tuple(round(sum(p[i] for p in px) / len(px)) for i in range(3))
+            _GROUND[biome] = (rgb, f"{t.get('terrain')} -> {tp} ({f.name}, mean of {len(px)} opaque px)")
+            return _GROUND[biome]
+    except Exception as e:                                  # noqa: BLE001
+        why = f"{type(e).__name__}: {e}"
+    _GROUND[biome] = (None, why or "no terrain texture measurable")
+    return _GROUND[biome]
+
+
 SCALE_FACE = ("east", "south", "single", "west", "north")
 SCALE_RENDER_VERSION = 6   # 2 = max-zoom primary scene (owner 2026-10-04: enhanced zoom, "don't down-resolve")
 
@@ -1246,6 +1316,64 @@ def _scale_for(R, row: dict, gitems: list, prefill_letter: str, dec: dict | None
     return out
 
 
+def _subject_names(name: str) -> set[str]:
+    """Every spelling of ONE subject: the normalised stem ('RSW_Plant_Nysyllin_Wild' -> 'nysyllin_wild' -> 'nysyllinwild')
+    and, when the name carries a variant word ('WraidAlpha'), the base species ('wraid'). Matching goes through subject.py
+    so a tier prefix, a Plant_ prefix or a variant word never makes a ruled subject look new."""
+    out = {S.norm(S.stem(name))}
+    v = S.variant_stripped(name)
+    if v:
+        out.add(S.norm(v))
+    out.discard("")
+    return out
+
+
+def ruled_elsewhere(sheet_dir: Path, sheet_id: str, labels: dict | None = None) -> list[dict]:
+    """Rows the owner has ALREADY ruled on some OTHER sheet in sheet_dir (owner, 2026-10-05: "a lot of redundant
+    creatures from other forms listed on here as well that I've already reviewed").
+
+    A ruling is a row of another *.decisions.json that the sidecar wrote (savedBy + writeCount, or reviewStatus
+    ruled), carrying an owner `at` stamp and a decision (a purge-only touch is not a ruling). Each entry:
+    {names, sheet, sheet_id, row, decision, label, note, at}. The pick's label comes from that sheet's snapshot."""
+    out = []
+    for f in sorted(sheet_dir.glob("*.decisions.json")):
+        if f.name == sheet_id + ".decisions.json":
+            continue
+        try:
+            doc = json.loads(f.read_text())
+        except (OSError, ValueError):
+            continue
+        rs = doc.get("reviewStatus") if isinstance(doc.get("reviewStatus"), dict) else {}
+        if not ((doc.get("savedBy") and int(doc.get("writeCount") or 0) > 0) or rs.get("state") == "ruled"):
+            continue
+        snap = {}
+        sp = doc.get("snapshot")
+        if sp:
+            sp = Path(sp) if Path(sp).is_absolute() else L.REPO_ROOT / sp
+            try:
+                snap = json.loads(sp.read_text()).get("rows") or {}
+            except (OSError, ValueError):
+                snap = {}
+        nice = (labels or {}).get(doc.get("biome") or "") or f.name.replace(".decisions.json", "")
+        for row, v in (doc.get("decisions") or {}).items():
+            if not isinstance(v, dict) or not v.get("at") or not (v.get("decision") or "").strip():
+                continue
+            if not (v.get("decidedAt") or not v.get("purgeTouched")):
+                continue
+            dec = v["decision"].strip()
+            lab = ((snap.get(row) or {}).get("labels") or {}).get(dec, "")
+            out.append({"names": _subject_names(row), "sheet": nice, "sheet_id": f.stem.replace(".decisions", ""),
+                        "row": row, "decision": dec, "label": lab, "note": (v.get("note") or "").strip(),
+                        "at": v.get("at")})
+    return out
+
+
+def ruled_elsewhere_for(row_names: set[str], entries: list[dict]) -> dict | None:
+    """The newest other-sheet ruling on any spelling of this subject, or None."""
+    hit = [e for e in entries if e["names"] & row_names]
+    return max(hit, key=lambda e: e["at"] or "") if hit else None
+
+
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
                    date: str | None = None, thumb_size: int = 160, sheet_only: bool = False) -> dict:
     census = json.loads(Path(census_path).read_text())
@@ -1283,12 +1411,27 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     slots = L.scan_def_slots()
     order, fp = load_order()
     rows = b["rows"]
+    _elsewhere = ruled_elsewhere(out_html.parent, sheet_id, {k: v.get("label", k) for k, v in census["biomes"].items()})
+    _own_touched = {k for k, v in ((old or {}).get("decisions") or {}).items() if isinstance(v, dict) and v.get("at")}
     scale_res = None
-    if biome in SCALE_BIOMES:             # owner 2026-10-04: "Let's fix just the first sheet."
+    if True:                              # owner 2026-10-05: the scaled portrayal is on EVERY biome sheet
         import scale_panel
-        if SCALE_BIOMES[biome]:
-            scale_panel.set_terrain(SCALE_BIOMES[biome])
+        _rgb, _src = measure_ground(biome)
+        _rgb = SCALE_BIOMES.get(biome) or _rgb
+        if _rgb:
+            scale_panel.set_terrain(_rgb)
+        else:
+            scale_panel.set_terrain(scale_panel.DEFAULT_TERRAIN)
         scale_res = scale_panel.Resolver()
+        GROUND_LOG[biome] = {"rgb": list(_rgb) if _rgb else None, "source": _src if not SCALE_BIOMES.get(biome) else "hand-measured override"}
+        _gp = BIOME_OUT / "scale_ground_measured.json"
+        try:
+            _g = json.loads(_gp.read_text()) if _gp.is_file() else {}
+            if _g.get(biome) != GROUND_LOG[biome]:
+                _g[biome] = GROUND_LOG[biome]
+                _gp.write_text(json.dumps(_g, indent=1, sort_keys=True))
+        except (OSError, ValueError):
+            pass
     # the in-game label + description on every row (owner, Vapaad note 2026-10-04: "Your sheets need to include
     # the animal descriptions as well for reference") — from the live dump, post-patch
     try:
@@ -1457,6 +1600,13 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                         for x in sorted(rul, key=lambda x: x.get("at") or "") if x.get("trust") not in ("prefill",)],
         }
         item["desc"] = desc_res.describe(r) if desc_res is not None else {}
+        # a subject the owner already ruled on another sheet renders collapsed at the bottom (never deleted), unless he
+        # has himself touched this row on THIS sheet
+        _re = None if key in _own_touched else ruled_elsewhere_for(
+            set().union(*[_subject_names(x) for x in [key] + list(r.get("defNames") or []) if x]), _elsewhere)
+        if _re:
+            item["ruledElsewhere"] = {"sheet": _re["sheet"], "sheetId": _re["sheet_id"], "pick": _re["decision"],
+                                      "label": _re["label"], "note": _re["note"][:300], "at": (_re["at"] or "")[:10]}
         if scale_res is not None:
             item["scale"] = _scale_for(scale_res, r, gitems, letter, (old or {}).get("decisions", {}).get(key), imgdir)
         items.append(item)
@@ -1507,6 +1657,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     for it in ordered:
         it.pop("_root", None)
         it.pop("_clustered", None)
+    # already-ruled subjects sink to the bottom under one group, in their old order
+    ordered = [it for it in ordered if not it.get("ruledElsewhere")] + \
+        [dict(it, group="Already ruled on another sheet", band=None) for it in ordered if it.get("ruledElsewhere")]
+    n_collapsed = sum(1 for it in ordered if it.get("ruledElsewhere"))
 
     snap = {"sheetId": sheet_id, "built": L.now(), "loadOrder": fp, "census": _rel(Path(census_path)),
             "census_git_head": census.get("git_head"), "biome": biome, "rows": snap_rows}
@@ -1525,7 +1679,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     cfg = {
         "sheetId": sheet_id, "title": f"{b.get('label', biome)} — flora & fauna art",
         "subtitle": (f"{len(ordered)} rows · {n_canon} canon · {n_link} linked · {n_sit1} prefilled from {SIT1} · "
-                     f"{len(n_noart)} NO ART YET" + (f" · IN GAME judged on {fp.split(':')[0]}" if "FULL.LATEST" in fp else "")),
+                     f"{len(n_noart)} NO ART YET" + (f" · {n_collapsed} already ruled on another sheet (collapsed at the bottom)" if n_collapsed else "") + (f" · IN GAME judged on {fp.split(':')[0]}" if "FULL.LATEST" in fp else "")),
         "briefHtml": BIOME_BRIEF.format(label=b.get("label", biome), n=len(ordered)),
         "criterion": ("Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows "
                       "now first, then shadowed copies, renders newest first, history oldest first, donor last. "
@@ -1575,7 +1729,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     return {"biome": biome, "html": _rel(out_html), "decisions": _rel(decisions_path), "wrote_decisions": wrote,
             "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"], "census_rows": len(rows), "rows": len(ordered),
             "ruled_rows_gone_kept_in_snapshot": sorted(k for k, v in snap_rows.items() if v.get("rowGone")),
-            "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
+            "collapsed_ruled_elsewhere": n_collapsed, "canon_rows": n_canon, "canon_rows_with_images": sum(1 for it in ordered if it["canon"] and it["canon"]["imgs"]),
             "canon_rows_with_must_show": sum(1 for it in ordered if it["canon"] and it["canon"]["must"]),
             "linked_rows": n_link, "prefilled_sit1": n_sit1, "no_art": n_noart,
             "sets": sum(len(g["cols"]) for it in ordered for g in it["graphics"]),
