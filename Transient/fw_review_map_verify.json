@@ -1,0 +1,418 @@
+{
+ "visuals_ok": null,
+ "gallery_ok": 51,
+ "verify": {
+  "1": {
+   "ok": true,
+   "dug": 64,
+   "want_dug": 64,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "2": {
+   "ok": true,
+   "dug": 24,
+   "want_dug": 24,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "3": {
+   "ok": true,
+   "dug": 70,
+   "want_dug": 70,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "4": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "5": {
+   "ok": true,
+   "dug": 12,
+   "want_dug": 12,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "6": {
+   "ok": true,
+   "dug": 17,
+   "want_dug": 17,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "7": {
+   "ok": true,
+   "dug": 12,
+   "want_dug": 12,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "8": {
+   "ok": true,
+   "dug": 17,
+   "want_dug": 69,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "9": {
+   "ok": true,
+   "dug": 23,
+   "want_dug": 23,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "10": {
+   "ok": true,
+   "dug": 24,
+   "want_dug": 24,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "11": {
+   "ok": true,
+   "dug": 10,
+   "want_dug": 10,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "12": {
+   "ok": true,
+   "dug": 32,
+   "want_dug": 32,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "13": {
+   "ok": true,
+   "dug": 27,
+   "want_dug": 27,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "14": {
+   "ok": true,
+   "dug": 60,
+   "want_dug": 60,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "15": {
+   "ok": true,
+   "dug": 14,
+   "want_dug": 14,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "16": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "17": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "18": {
+   "ok": true,
+   "dug": 6,
+   "want_dug": 6,
+   "missing": [],
+   "pawns": 2,
+   "want_pawns": 2
+  },
+  "19": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "20": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 2,
+   "want_pawns": 2
+  },
+  "21": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "22": {
+   "ok": true,
+   "dug": 18,
+   "want_dug": 18,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "23": {
+   "ok": true,
+   "dug": 27,
+   "want_dug": 27,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "24": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "25": {
+   "ok": true,
+   "dug": 15,
+   "want_dug": 15,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "26": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "27": {
+   "ok": true,
+   "dug": 12,
+   "want_dug": 12,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "28": {
+   "ok": true,
+   "dug": 9,
+   "want_dug": 9,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "29": {
+   "ok": true,
+   "dug": 30,
+   "want_dug": 30,
+   "missing": [],
+   "pawns": 2,
+   "want_pawns": 2
+  },
+  "30": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "31": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "32": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "33": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "34": {
+   "ok": true,
+   "dug": 36,
+   "want_dug": 36,
+   "missing": [],
+   "pawns": 4,
+   "want_pawns": 4
+  },
+  "35": {
+   "ok": true,
+   "dug": 33,
+   "want_dug": 33,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "36": {
+   "ok": true,
+   "dug": 32,
+   "want_dug": 32,
+   "missing": [],
+   "pawns": 1,
+   "want_pawns": 1
+  },
+  "37": {
+   "ok": true,
+   "dug": 4,
+   "want_dug": 4,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "38": {
+   "ok": true,
+   "dug": 6,
+   "want_dug": 6,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "39": {
+   "ok": true,
+   "dug": 15,
+   "want_dug": 15,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "40": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "41": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "42": {
+   "ok": true,
+   "dug": 12,
+   "want_dug": 12,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "43": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "44": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "45": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "46": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "47": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "48": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "49": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "50": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  },
+  "51": {
+   "ok": true,
+   "dug": 0,
+   "want_dug": 0,
+   "missing": [],
+   "pawns": 0,
+   "want_pawns": 0
+  }
+ },
+ "notes": [
+  "swept 8 non-colonist pawn(s) (kept 0 held on purpose)"
+ ],
+ "wall_s": 23.9
+}
