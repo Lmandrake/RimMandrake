@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_MindstoneMatrix_Recipes.xml   UtinniPatches · MINDSTONE_MATRIX_KINDLED_BUILD_1
+  The two campaign-tier steps from RUT_Mindstone to RSW_DW_Head_Mindstone, both at the Droidworks
+  reassembly harness. recipeUsers names RSW_DW_ReassemblyHarness by defName (same shape as
+  RUT_PropaneCatch_Refining.xml), and every def carries MayRequire="mandrake.rsw.droidworks" on its
+  root (same guard RUT_TradeMootDroids.xml uses), so without Droidworks they are not loaded at all.
+
+  1. RUT_CutMindstoneMatrix: 1 RUT_Mindstone -> 1 RUT_MindstoneMatrix.
+  2. RUT_CaseMindstoneHead: 1 RUT_MindstoneMatrix + 1 RSW_DW_Processor + 1 RSW_DW_Databank
+     + 1 salvaged droid head as the casing -> 1 RSW_DW_Head_Mindstone.
+     PROVISIONAL reading of "a droid head casing": no casing def exists, so any salvaged head
+     (the 8 family heads or the generic RSW_DW_DroidHead) serves. Its own brain parts are spent with it;
+     nothing returns a personality matrix, so the brain-trio head-gate (BrainTrio_Droidworks.xml) holds.
+  Research gate: RSW_DW_Research_Reassembly, the harness's own. No new project, because nobody in-world
+  knows this route (knowledge gate). Work and skill numbers PROVISIONAL.
+  Assembling the head into a droid is Droidworks' own RSW_DW_AssembleDroid.
+-->
+<Defs>
+
+  <RecipeDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_CutMindstoneMatrix</defName>
+    <label>cut mindstone matrix</label>
+    <description>Cut a mindstone to the shape of a droid personality matrix and wire it with standard contacts.</description>
+    <jobString>Cutting a mindstone matrix.</jobString>
+    <workAmount>4000</workAmount>
+    <effectWorking>Repair</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>RSW_DW_ReassemblyHarness</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Mindstone</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_Mindstone</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_MindstoneMatrix>1</RUT_MindstoneMatrix>
+    </products>
+    <researchPrerequisite>RSW_DW_Research_Reassembly</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+  <RecipeDef MayRequire="mandrake.rsw.droidworks">
+    <defName>RUT_CaseMindstoneHead</defName>
+    <label>case mindstone head</label>
+    <description>Close a mindstone matrix inside a salvaged droid head with an imported processor and databank. The head's old brain parts are spent in the refit.</description>
+    <jobString>Casing a mindstone head.</jobString>
+    <workAmount>3000</workAmount>
+    <effectWorking>Repair</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>RSW_DW_ReassemblyHarness</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_MindstoneMatrix</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Processor</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_DW_Databank</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <customSummary>droid head (casing)</customSummary>
+          <thingDefs>
+            <li>RSW_DW_DroidHead</li>
+            <li>RSW_DW_Head_Labour</li>
+            <li>RSW_DW_Head_Protocol</li>
+            <li>RSW_DW_Head_Astromech</li>
+            <li>RSW_DW_Head_Battle</li>
+            <li>RSW_DW_Head_Heavy</li>
+            <li>RSW_DW_Head_Probe</li>
+            <li>RSW_DW_Head_Power</li>
+            <li>RSW_DW_Head_Primitive</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RUT_MindstoneMatrix</li>
+        <li>RSW_DW_Processor</li>
+        <li>RSW_DW_Databank</li>
+        <li>RSW_DW_DroidHead</li>
+        <li>RSW_DW_Head_Labour</li>
+        <li>RSW_DW_Head_Protocol</li>
+        <li>RSW_DW_Head_Astromech</li>
+        <li>RSW_DW_Head_Battle</li>
+        <li>RSW_DW_Head_Heavy</li>
+        <li>RSW_DW_Head_Probe</li>
+        <li>RSW_DW_Head_Power</li>
+        <li>RSW_DW_Head_Primitive</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_DW_Head_Mindstone>1</RSW_DW_Head_Mindstone>
+    </products>
+    <researchPrerequisite>RSW_DW_Research_Reassembly</researchPrerequisite>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+  </RecipeDef>
+
+</Defs>

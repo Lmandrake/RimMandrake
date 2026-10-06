@@ -13,14 +13,15 @@
 <Defs>
 
   <!-- ========================================================================
-       RSW_DW_AssembleDroid — "head+frame+set -> pawn". The head filter
-       deliberately excludes RSW_DW_Head_Mindstone
-       (MECHANOID_ORIGIN_CANON_1 unruled - DroidAssembly.KindForHeadDef's own
-       header) and is why the ingredient list spells out each one rather
-       than a shared thingCategory: no category currently separates "the
-       family heads" from "the mindstone head" without inventing one just
-       for this filter. "No head, no droid" (section 1.3) needs no extra
-       code: a bill with zero heads available simply cannot start.
+       RSW_DW_AssembleDroid — "head+frame+set -> pawn". The ingredient list
+       spells out each head rather than a shared thingCategory. "No head, no
+       droid" (section 1.3) needs no extra code: a bill with zero heads
+       available simply cannot start.
+
+       RSW_DW_Head_Mindstone accepted (MINDSTONE_MATRIX_KINDLED_BUILD_1): the
+       campaign's RUT_CaseMindstoneHead makes it, and Recipe_AssembleDroid
+       marks the droid it becomes (RSW_DW_MindstoneMind, SAPIENT) via
+       DroidAssembly.KindleMindstoneMind.
 
        RSW_DW_Head_Primitive and RSW_DW_Part_Frame_Primitive added
        (DROIDWORKS_PRIMITIVE_TIER_1, packet B9): without this, the
@@ -54,6 +55,7 @@
             <li>RSW_DW_Head_Probe</li>
             <li>RSW_DW_Head_Power</li>
             <li>RSW_DW_Head_Primitive</li>
+            <li>RSW_DW_Head_Mindstone</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -126,6 +128,7 @@
         <li>RSW_DW_Head_Probe</li>
         <li>RSW_DW_Head_Power</li>
         <li>RSW_DW_Head_Primitive</li>
+        <li>RSW_DW_Head_Mindstone</li>
         <li>RSW_DW_Part_Frame</li>
         <li>RSW_DW_Part_Frame_Primitive</li>
         <li>RSW_DW_Part_Leg</li>

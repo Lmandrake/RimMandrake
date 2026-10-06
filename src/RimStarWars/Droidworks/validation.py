@@ -638,3 +638,45 @@ def ion_overload_shutdown(t):
         t.wait_ticks(60)
         _expect_hediff(t, droid, "RSW_DW_PoweredDown", present=True)
         t.screenshot()
+
+
+# ================================================================= mindstone head (offline)
+@suite.chain("mindstone_head_wiring")
+def mindstone_head_wiring(t):
+    """MINDSTONE_MATRIX_KINDLED_BUILD_1, offline half (source + XML text, no bridge): the assembly bill accepts
+    RSW_DW_Head_Mindstone, KindForHeadDef maps it, the assembled droid is kindled, and the wipe, spike, format
+    and head-drop paths all read DroidAssembly.IsMindstoneMind. NOT proven here: that a live bill run makes a
+    SAPIENT droid carrying RSW_DW_MindstoneMind, and that a wipe/spike on it leaves its traits and faction alone
+    (needs a bill+doctor pipeline, module docstring gap #4)."""
+    import os
+    import xml.etree.ElementTree as ET
+    mod = os.path.dirname(os.path.abspath(__file__))
+    src = os.path.join(mod, "Source", "Droidworks")
+
+    def read(*p):
+        with open(os.path.join(*p), encoding="utf-8-sig") as f:
+            return f.read()
+
+    with t.component("assemble_bill_accepts_mindstone_head", beyond_toggle=True):
+        root = ET.parse(os.path.join(mod, "Defs", "RecipeDefs", "AssemblyRecipes_Droidworks.xml")).getroot()
+        rd = [r for r in root.findall("RecipeDef") if r.findtext("defName") == "RSW_DW_AssembleDroid"][0]
+        heads = [li.text for li in rd.find("ingredients")[0].find("filter").find("thingDefs")]
+        fixed = [li.text for li in rd.find("fixedIngredientFilter").find("thingDefs")]
+        if "RSW_DW_Head_Mindstone" not in heads or "RSW_DW_Head_Mindstone" not in fixed:
+            raise ExpectationFailed("RSW_DW_AssembleDroid does not accept RSW_DW_Head_Mindstone: %r / %r" % (heads, fixed))
+    with t.component("mindstone_marker_and_immunity_wired", beyond_toggle=True):
+        hd = read(mod, "Defs", "HediffDefs", "HediffDefs_Droidworks.xml")
+        if "<defName>RSW_DW_MindstoneMind</defName>" not in hd:
+            raise ExpectationFailed("HediffDef RSW_DW_MindstoneMind missing")
+        need = {
+            "DroidAssembly.cs": ['case "RSW_DW_Head_Mindstone":', "SetTier(pawn, DroidFormatTier.Sapient)"],
+            "Recipe_AssembleDroid.cs": ["KindleMindstoneMind(droid)"],
+            "Recipe_DWMemoryWipe.cs": ["IsMindstoneMind(pawn)"],
+            "CompDWDataSpike.cs": ["IsMindstoneMind(target)"],
+            "Recipe_DWFormat.cs": ["IsMindstoneMind(pawn)"],
+            "CompDWHeadDropper.cs": ["IsMindstoneMind(pawn)", "RSW_DW_Head_Mindstone"],
+            "DroidworksDefOf.cs": ["RSW_DW_Head_Mindstone;", "RSW_DW_MindstoneMind;"],
+        }
+        missing = ["%s: %s" % (f, s) for f, ss in need.items() for s in ss if s not in read(src, f)]
+        if missing:
+            raise ExpectationFailed("mindstone wiring missing: %s" % "; ".join(missing))

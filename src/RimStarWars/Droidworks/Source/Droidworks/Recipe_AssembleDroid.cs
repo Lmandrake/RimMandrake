@@ -19,10 +19,10 @@ namespace RimMandrake.StarWars.Droidworks
     /// after - a destroyed Thing's comps are not guaranteed readable.
     ///
     /// "No head, no droid" (section 1.3) needs no code: the RecipeDef's own
-    /// ingredient filter requires exactly one RSW_DW_Head_* (never
-    /// RSW_DW_Head_Mindstone - MECHANOID_ORIGIN_CANON_1 unruled, see
-    /// DroidAssembly.KindForHeadDef's own header), so a bill with none
-    /// available simply cannot be started.
+    /// ingredient filter requires exactly one RSW_DW_Head_*, so a bill with
+    /// none available simply cannot be started. RSW_DW_Head_Mindstone is
+    /// accepted (MINDSTONE_MATRIX_KINDLED_BUILD_1): the droid it makes is
+    /// marked and formatted SAPIENT by DroidAssembly.KindleMindstoneMind.
     /// </summary>
     public class Recipe_AssembleDroid : RecipeWorker
     {
@@ -69,9 +69,13 @@ namespace RimMandrake.StarWars.Droidworks
                     .Where(td => td != null)
                     .ToList();
 
-                DroidAssembly.SpawnDroid(
+                Pawn droid = DroidAssembly.SpawnDroid(
                     kind, billDoer.Map, billDoer.Position, Faction.OfPlayer,
                     name, traits, capturedParts);
+                // After SpawnDroid: CompDWFormatTier's spawn-time EnsureTier has
+                // already set the default tier, which this then lifts to Sapient.
+                if (droid != null && capturedHeadDef == DroidworksDefOf.RSW_DW_Head_Mindstone)
+                    DroidAssembly.KindleMindstoneMind(droid);
             }
 
             capturedHeadDef = null;

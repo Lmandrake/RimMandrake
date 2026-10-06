@@ -108,6 +108,14 @@ namespace RimMandrake.StarWars.Droidworks
         {
             if (target == null || target.Dead) return false;
 
+            // MINDSTONE_MATRIX_KINDLED_BUILD_1: spike immunity (RATIFIED). The
+            // spike is still spent (JobDriver_DWDataSpike destroys it on any end).
+            if (DroidAssembly.IsMindstoneMind(target))
+            {
+                DroidAssembly.MessageMindstoneRefuses(target, "The data spike");
+                return false;
+            }
+
             if (Props.resistancePerUse > 0f && target.guest != null)
             {
                 if (target.guest.resistance < 0f)

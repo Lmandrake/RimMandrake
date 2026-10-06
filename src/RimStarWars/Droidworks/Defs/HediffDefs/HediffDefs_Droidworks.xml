@@ -449,4 +449,26 @@
     </stages>
   </HediffDef>
 
+  <!-- ========================================================================
+       RSW_DW_MindstoneMind - MINDSTONE_MATRIX_KINDLED_BUILD_1. The marker a droid
+       assembled from RSW_DW_Head_Mindstone carries (added by
+       Recipe_AssembleDroid; read through DroidAssembly.IsMindstoneMind).
+       Memory wipe, data spike and every format bill read it and fail with text
+       (ruled: RUT_mechanoid_origin_canon.md, "Wipe/spike immunity - RATIFIED"),
+       and CompDWHeadDropper drops the mindstone head, not a family head, so the
+       person goes with the crystal. Platform slot (RSW_), filled by the
+       campaign's RUT_ recipes. No stat effects: the ruled stats are still owed
+       (open on the item), so none are invented here.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>RSW_DW_MindstoneMind</defName>
+    <label>mindstone mind</label>
+    <description>This droid's mind is not an imported matrix. It sits in a mindstone, and nothing written to a droid's memory reaches it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.82, 0.95)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+  </HediffDef>
+
 </Defs>

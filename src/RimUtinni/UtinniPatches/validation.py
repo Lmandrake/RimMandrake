@@ -577,3 +577,35 @@ def infestation_ban_static(t):
             return
         if bad:
             raise ExpectationFailed("; ".join(bad))
+
+
+@suite.chain("mindstone_matrix_recipes")
+def mindstone_matrix_recipes(t):
+    """MINDSTONE_MATRIX_KINDLED_BUILD_1: RUT_Mindstone -> RUT_MindstoneMatrix -> RSW_DW_Head_Mindstone, both at
+    RSW_DW_ReassemblyHarness. The XML half runs offline; the def read-back needs Droidworks loaded. Not proven
+    here: a pawn completing both bills (needs a bill pipeline), and the assembly half, which is Droidworks'
+    own mindstone_head_wiring chain."""
+    import xml.etree.ElementTree as ET
+    with t.component("matrix_recipes_shaped", beyond_toggle=True):
+        root = ET.parse(os.path.join(_MOD_DIR, "Defs", "RecipeDefs", "RUT_MindstoneMatrix_Recipes.xml")).getroot()
+        want = {"RUT_CutMindstoneMatrix": ("RUT_Mindstone", "RUT_MindstoneMatrix"),
+                "RUT_CaseMindstoneHead": ("RUT_MindstoneMatrix", "RSW_DW_Head_Mindstone")}
+        for rd in root.findall("RecipeDef"):
+            name = rd.findtext("defName")
+            if name not in want:
+                continue
+            ing, prod = want.pop(name)
+            if rd.get("MayRequire") != "mandrake.rsw.droidworks":
+                raise ExpectationFailed("%s lacks MayRequire=mandrake.rsw.droidworks on its root" % name)
+            if [li.text for li in rd.find("recipeUsers")] != ["RSW_DW_ReassemblyHarness"]:
+                raise ExpectationFailed("%s is not on RSW_DW_ReassemblyHarness" % name)
+            firsts = [li.find("filter").find("thingDefs")[0].text for li in rd.find("ingredients")]
+            if ing not in firsts or [p.tag for p in rd.find("products")] != [prod]:
+                raise ExpectationFailed("%s: ingredients %r / products %r" % (name, firsts, [p.tag for p in rd.find("products")]))
+        if want:
+            raise ExpectationFailed("recipes missing: %r" % sorted(want))
+    with t.component("matrix_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RUT_MindstoneMatrix", "RecipeDef/RUT_CutMindstoneMatrix", "RecipeDef/RUT_CaseMindstoneHead"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
