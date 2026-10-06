@@ -12,6 +12,16 @@
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedSuperdeep>Spikes go only on the floor of a superdeep pit (depth 4). This cell is depth {0}.</RMFlow_SpikesNeedSuperdeep>
 
+  <!-- SUPERDEEP_PRISON_ROOM_1: capture down from the lip. -->
+  <RMFlow_CaptureDown>Capture {0} from the edge of the pit</RMFlow_CaptureDown>
+  <RMFlow_CaptureDownNotHeld>the pit is not holding them</RMFlow_CaptureDownNotHeld>
+  <RMFlow_CaptureDownNoPrisonBed>needs a prisoner bed in the pit</RMFlow_CaptureDownNoPrisonBed>
+  <RMFlow_CaptureDownNoLip>no reachable edge cell next to them</RMFlow_CaptureDownNoLip>
+  <RMFlow_CapturedDown>{0} took {1} prisoner from the edge of the pit.</RMFlow_CapturedDown>
+
+  <!-- LIQUID_BOTTLE_LOOP_1 revert timer. -->
+  <RMFlow_RevertsIn>Becomes {0} in {1}.</RMFlow_RevertsIn>
+
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->
   <RM_SubsurfaceUnsurveyed>Subsurface: unsurveyed.</RM_SubsurfaceUnsurveyed>
   <RM_SubsurfaceNoYield>Subsurface: nothing drillable found under this map.</RM_SubsurfaceNoYield>

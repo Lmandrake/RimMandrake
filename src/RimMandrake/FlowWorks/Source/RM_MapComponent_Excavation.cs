@@ -167,6 +167,14 @@ namespace RimMandrake.FlowWorks
 
 		public int SuperdeepCellCount => superdeepCellCount;
 
+		/// <summary>SUPERDEEP_PRISON_ROOM_1: the same test, null-safe on the grid, for region
+		/// building (which runs in Map.FinalizeInit before this component's FinalizeInit).</summary>
+		public bool IsSuperdeepRaw(IntVec3 c)
+		{
+			return depthGrid != null && c.InBounds(map)
+				&& depthGrid[map.cellIndices.CellToIndex(c)] >= RM_ExcavationDepth.Superdeep;
+		}
+
 		public bool IsSuperdeepExcavation(IntVec3 c)
 		{
 			return c.InBounds(map)
@@ -543,6 +551,8 @@ namespace RimMandrake.FlowWorks
 			if (d >= RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount++;
+				// SUPERDEEP_PRISON_ROOM_1: the cell just crossed the pit wall; its rooms re-form.
+				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
 			return d;
 		}
@@ -620,6 +630,7 @@ namespace RimMandrake.FlowWorks
 			if (d >= RM_ExcavationDepth.Superdeep)
 			{
 				superdeepCellCount--;
+				RM_PitRooms.NotifyPitnessChanged(map, c);
 			}
 			if (newD == RM_ExcavationDepth.Surface)
 			{

@@ -869,14 +869,12 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
         "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
         "distillable": True,
-        # revertsTo/revertTicks (bottled boiling -> fresh once it cools) is
-        # the item's own named special behavior but is DEFERRED this pass,
-        # same reasoning as icy below: LiquidBottledForm.ConfigErrors
-        # requires revertTicks >= 1 the moment revertsTo is set, and nothing
-        # in this build consumes it yet -- see LIQUID_BOTTLE_LOOP_1's
-        # stopping note. Row data only, no invented timer duration.
+        # revertsTo/revertTicks: bottled boiling water cools to fresh. Read by
+        # RM_CompLiquidRevert (injected per container size at startup by
+        # RM_LiquidRevertInjector). 2500 ticks = one in-game hour: PROVISIONAL.
         "bottled": {"bottle": "RM_Bottle_BoilingWater", "unitsPerBottle": 1,
-                    "bucket": "RM_Bucket_BoilingWater", "barrel": "RM_Barrel_BoilingWater"},
+                    "bucket": "RM_Bucket_BoilingWater", "barrel": "RM_Barrel_BoilingWater",
+                    "revertsTo": "RM_Liquid_FreshWater", "revertTicks": 2500},
     },
     "icy": {
         "defName": "RM_Liquid_IcyWater",
@@ -889,9 +887,10 @@ LIQUID_DEF_ROWS = {
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
         "distillable": True,
-        # See "boiling" above -- revert-on-bottle deferred, no consumer yet.
+        # Bottled icy water warms to fresh: 5000 ticks = two in-game hours, PROVISIONAL.
         "bottled": {"bottle": "RM_Bottle_IcyWater", "unitsPerBottle": 1,
-                    "bucket": "RM_Bucket_IcyWater", "barrel": "RM_Barrel_IcyWater"},
+                    "bucket": "RM_Bucket_IcyWater", "barrel": "RM_Barrel_IcyWater",
+                    "revertsTo": "RM_Liquid_FreshWater", "revertTicks": 5000},
     },
     "toxic": {
         "defName": "RM_Liquid_ToxicWater",
@@ -1329,10 +1328,9 @@ def build_bottle_thingdefs(out_dir: Path):
   build_bottle_thingdef_xml's own comment.
 
   Filling from a tank ships separately (RM_LiquidTank, Building_LiquidTank).
-  Still deliberately NOT built (LIQUID_BOTTLE_LOOP_1's own stopping note):
-  revertsTo/rotsTo row data (boiling/icy revert-on-bottle, blood-rot — LiquidBottledForm.ConfigErrors
-  requires a real revertTicks/rotTicks the moment either is set, and nothing
-  reads them yet).
+  Revert-on-bottle (boiling/icy -> fresh) is row data read by
+  RM_CompLiquidRevert, injected per size at startup. Rot (blood -> hemopack)
+  is NOT built: no blood row exists (blood is deferred in LIQUID_BOTTLE_LOOP_1).
   ============================================================================
 -->
 <Defs>

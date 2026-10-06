@@ -135,6 +135,11 @@ namespace RimMandrake.FlowWorks
         // LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a ladder is a prison door. Off = any ladder lets anyone out.
         public static bool ladderPrisonDoorEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
+        // SUPERDEEP_PRISON_ROOM_1 (LAW 2 exception [D]): an enclosed superdeep area is its own room;
+        // capture down / convert down are done from the lip.
+        public static bool superdeepRoomsEnabled = true;
+        public static bool captureDownEnabled = true;
+        public static bool wardenFromLipEnabled = true;
         // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
         // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
         public static float pitWidthBodySizeMultiplier = 1f;
@@ -187,6 +192,8 @@ namespace RimMandrake.FlowWorks
         //      on this toggle.
         public static bool bottleLoopEnabled = true;
         public static bool bottleDirtyStageEnabled = true;
+        // LIQUID_BOTTLE_LOOP_1 revert timer: bottled boiling/icy water returns to fresh (row data).
+        public static bool bottleRevertEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — THE TANK (fill/empty at Building_LiquidTank).
@@ -299,6 +306,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
+            Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
+            Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
+            Scribe_Values.Look(ref wardenFromLipEnabled, "wardenFromLipEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
@@ -320,6 +330,7 @@ namespace RimMandrake.FlowWorks
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
+            Scribe_Values.Look(ref bottleRevertEnabled, "bottleRevertEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 tank (see the block above; contiguous) ─
             Scribe_Values.Look(ref tankLoopEnabled, "tankLoopEnabled", true);
             Scribe_Values.Look(ref tankCapacityMultiplier, "tankCapacityMultiplier", 1f);
@@ -563,6 +574,29 @@ namespace RimMandrake.FlowWorks
               + "anything under 12.25. A creature too big for its pit walks out.");
             pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
 
+            bool roomsWas = superdeepRoomsEnabled;
+            list.CheckboxLabeled("An enclosed pit is its own room", ref superdeepRoomsEnabled,
+                "A superdeep area with ordinary ground all round it counts as a room of its own, separate "
+              + "from the ground above, so it has its own temperature and can hold prisoners. Bare, it holds "
+              + "trapped enemies; put a prisoner bed in it and it is a prison cell. Shallower cuts never "
+              + "make rooms. Off: a pit is part of whatever room surrounds it (rooms are rebuilt at once).");
+            if (roomsWas != superdeepRoomsEnabled)
+            {
+                RM_PitRooms.RebuildAllMaps();
+            }
+            if (superdeepRoomsEnabled)
+            {
+                list.CheckboxLabeled("Capture down from the lip", ref captureDownEnabled,
+                    "Right-click a trapped person in a pit that has a prisoner bed: a colonist walks to the edge "
+                  + "and takes them prisoner from above, without climbing in. Only someone the pit actually holds "
+                  + "(a creature too wide for it is not trapped). Off: no capture-down order.");
+            }
+            list.CheckboxLabeled("Wardens and doctors work from the lip", ref wardenFromLipEnabled,
+                "Recruiting, converting, enslaving, wearing down, interrogating, tending and bringing food to "
+              + "someone in a pit is done from the edge: food is dropped down onto its spot, talk happens "
+              + "within speaking distance, tending from a cell touching them. Only if no edge cell will do "
+              + "does the colonist climb down as usual. Off: they always climb down.");
+
             list.CheckboxLabeled("A flooded pit drowns whoever cannot swim", ref pitDrowningEnabled,
                 "Any liquid in a superdeep cell drowns a trapped non-swimmer, faster the fuller it is "
               + "(about an hour when brimming). Swimming creatures tread water. Off: liquid in a pit is harmless.");
@@ -667,6 +701,11 @@ namespace RimMandrake.FlowWorks
               + "be filled again — the shipped campaign behaviour. Off: drinking returns a clean empty "
               + "container directly and no dirty ones are minted; any a save already holds are still "
               + "washable. Barrels are the bulk trade good and are never drunk from directly.");
+
+            list.CheckboxLabeled("Bottled boiling or icy water returns to normal", ref bottleRevertEnabled,
+                "A bottle, bucket or barrel filled with boiling water cools to fresh water, and one filled with "
+              + "icy water warms to it, after a while (each liquid's own timer — about an hour for boiling, two for "
+              + "icy). Off: bottled liquid keeps the state it was filled in.");
 
             // ══════════════════════════════════════════════════════════════
             // LIQUID_BOTTLE_LOOP_1 TANK SECTION — kept whole and kept last.

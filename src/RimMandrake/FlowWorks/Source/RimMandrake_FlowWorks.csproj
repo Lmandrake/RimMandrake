@@ -64,6 +64,8 @@
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="FluidDef.cs" />
+    <Compile Include="RM_PitRoomMath.cs" />
+    <Compile Include="Superdeep\RM_PitRooms.cs" />
     <Compile Include="RM_FireMath.cs" />
     <Compile Include="RM_LiquidFire.cs" />
     <Compile Include="RM_FillEffectMath.cs" />
@@ -130,6 +132,7 @@
   <!-- The liquid registry, merged 2026-09-16 (ruling 14). Namespace
        RimMandrake.FlowWorks.LiquidTypes. -->
   <ItemGroup>
+    <Compile Include="LiquidTypes\RM_CompLiquidRevert.cs" />
     <Compile Include="LiquidTypes\RM_LiquidProperties.cs" />
     <Compile Include="LiquidTypes\LiquidCorrosion.cs" />
     <Compile Include="LiquidTypes\LiquidIgnition.cs" />

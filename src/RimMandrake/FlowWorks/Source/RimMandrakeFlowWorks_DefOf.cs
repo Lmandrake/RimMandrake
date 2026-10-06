@@ -15,6 +15,7 @@ namespace RimMandrake.FlowWorks
 		public static DesignationDef RM_FillInCanal;
 
 		public static JobDef RM_FillInCanalJob;
+		public static JobDef RM_CaptureDown;
 
 		/// <summary>D = 1. Keeps its original defName so every save's dug cells
 		/// survive the arrival of the depth ladder.</summary>
