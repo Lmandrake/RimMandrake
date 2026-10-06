@@ -705,8 +705,8 @@ namespace RimMandrake.CreatureBehaviors
 			RM_Mirage.Sync(map, this);
 		}
 
-		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: zero the buffer (only if
-		/// the last build lit anything) and let each source add its light.</summary>
+		/// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: zero the buffer and let
+		/// each source add its light.</summary>
 		private void BuildLightLayer()
 		{
 			int n = map.cellIndices.NumGridCells;
@@ -719,8 +719,10 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				lightLayer = new float[n];
 			}
-			else if (anyLight)
+			else
 			{
+				// Always: a source that returned false (e.g. its setting toggled
+				// off) leaves anyLight false over a buffer it filled earlier.
 				System.Array.Clear(lightLayer, 0, n);
 			}
 			bool lit = false;
@@ -939,14 +941,20 @@ namespace RimMandrake.CreatureBehaviors
 			for (int i = 0; i < n; i++)
 			{
 				// outdoors=true here: the enclosed-room test is live in ExposureAt.
-				float ex = RM_SunHeatMath.Exposure(kind, true, roofShade[i], thickRoof[i], castShade[i], gearShade[i]);
-				if (glareFloor != null)
-				{
-					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
-				}
+				// Light cuts roof/cast shade only, then gear covers (as in ShadeAt):
+				// a tent in a beam still shades. No light: identical to before.
+				float ex = RM_SunHeatMath.Exposure(kind, true, roofShade[i], thickRoof[i], castShade[i]);
 				if (applyLight)
 				{
 					ex = RM_SunHeatMath.WithLight(ex, lightLayer[i]);
+				}
+				if (kind != RM_HeatKind.ambient)
+				{
+					ex = RM_SunHeatMath.WithCover(ex, gearShade[i]);
+				}
+				if (glareFloor != null)
+				{
+					ex = RM_SunHeatMath.WithGlareFloor(ex, glareFloor[i]);
 				}
 				exposure[i] = ex;
 				if (wantPath)
