@@ -384,6 +384,11 @@ namespace RimMandrake.FlowWorks
             // ── Rivers (River Works, merged 2026-10-05): one settings file, unique keys ──
             Rivers.RM_RiversSettings.ExposeData();
             Machinery.RM_MachinerySettings.ExposeData();
+            // Builder Y sections (2026-10-05): tanker, sluice gates, bottled blood, quarry. One line each.
+            Machinery.Logistics.RM_TankerSettings.ExposeData();
+            Machinery.Logistics.RM_SluiceGateSettings.ExposeData();
+            Machinery.Logistics.RM_BloodDrawSettings.ExposeData();
+            Quarry.RM_QuarrySettings.ExposeData();
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -395,8 +400,9 @@ namespace RimMandrake.FlowWorks
             // Phase 5's capture/ladder/shooting section did: this is a FIXED view
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
-            // edit or their block is invisible. (+2000 for the Rivers section.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 7900f);
+            // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
+            // tanker / sluice-gate / blood / quarry sections, 2026-10-05.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10300f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -929,6 +935,10 @@ namespace RimMandrake.FlowWorks
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
             Machinery.RM_MachinerySettings.DoSettingsSection(list);
+            Machinery.Logistics.RM_TankerSettings.DoSettingsSection(list);
+            Machinery.Logistics.RM_SluiceGateSettings.DoSettingsSection(list);
+            Machinery.Logistics.RM_BloodDrawSettings.DoSettingsSection(list);
+            Quarry.RM_QuarrySettings.DoSettingsSection(list);
 
             list.End();
             Widgets.EndScrollView();
