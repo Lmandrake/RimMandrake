@@ -1148,7 +1148,7 @@ SURFACE_LOOKS = {
     # the thick family: black/coloured liquid that creeps, never a flat colour, never a burn scar
     # tar is black WATER (owner, 2026-10-06: "make the black tar look/act like water, just black and much more slowly
     # oscillating"): the vanilla water shader, near-black tint, broad low-density ripples, wading splash kept.
-    "tar":            dict(_WATER, depthDarken=0.1, rippleDensity=0.5, rippleIntensity=1.4),
+    "tar":            dict(_WATER, tint="(0.58,0.56,0.60)", depthDarken=0.09, rippleDensity=0.5, rippleIntensity=1.4),
     "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
     "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
