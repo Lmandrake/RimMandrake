@@ -1211,3 +1211,4 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T13:02:51Z","tsn":1791291771219928907}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-06T13:06:23Z","tsn":1791291983628714935}
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T13:06:26Z","tsn":1791291986073961735}
+{"seat":"BENCH","event":"note","id":"CHILL_SURFACE_SITTING_1","text":"NEXT: when chill_{eldspar,fuselight,ghostpane}_var{2,3}_v1 land (6 jobs filed 2026-10-06, derived from the kept A, owner: keep A + variants): move each plant's A + variants into one texPath folder, switch graphicClass to Graphic_Random, install through art.py install.","ts":"2026-10-06T13:37:05Z","tsn":1791293825454002382}
