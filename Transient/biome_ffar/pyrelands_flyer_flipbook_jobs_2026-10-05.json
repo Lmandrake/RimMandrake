@@ -1,0 +1,966 @@
+[
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_1",
+  "facings": [
+   "east"
+  ],
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_east.png"
+  ],
+  "prompt": "The attached image is the owner's ACCEPTED grounded sprite of this exact individual, not merely an anatomy guide: keep its colours, markings and proportions and draw the same animal flying. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_1",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_1_east",
+  "prompt": "The attached image is frame 1 of this flight loop. Keep the same individual, the same wing position and the same size; draw it from the view described. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_1",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_1_east",
+  "prompt": "The attached image is frame 1 of this flight loop. Keep the same individual, the same wing position and the same size; draw it from the view described. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_2",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_1_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_2",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_1_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_2",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_1_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_3",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_2_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_3",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_2_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_3",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_2_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_4",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_3_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_4",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_3_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_4",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_3_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_5",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_4_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_5",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_4_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_5",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_4_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_6",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_5_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_6",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_5_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_6",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_5_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_7",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_6_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_7",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_6_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_7",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_6_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_8",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_7_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_8",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_7_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.35,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireHawk",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
+  "owner_note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist.",
+  "id": "pyrelands_firehawk_flight8_8",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firehawk_flight8_7_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The fire-hawk of the pyrelands: a lean ash-grey raptor with ember-orange feather edges, a swept-back flame crest, hooked beak and long ragged tail, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_1",
+  "facings": [
+   "east"
+  ],
+  "canon_reference": [
+   "/home/mandrake/rm/bench/src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_east.png"
+  ],
+  "prompt": "The attached image is the owner's ACCEPTED grounded sprite of this exact individual, not merely an anatomy guide: keep its colours, markings and proportions and draw the same animal flying. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_1",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_1_east",
+  "prompt": "The attached image is frame 1 of this flight loop. Keep the same individual, the same wing position and the same size; draw it from the view described. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_1",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_1_east",
+  "prompt": "The attached image is frame 1 of this flight loop. Keep the same individual, the same wing position and the same size; draw it from the view described. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne, legs tucked. Frame 1 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings folded tight against the body, the moment before the upstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_2",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_1_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_2",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_1_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_2",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_1_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 2 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings lifting away from the body, about a quarter raised."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_3",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_2_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_3",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_2_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_3",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_2_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 3 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings raised high on the upstroke, about three-quarters up."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_4",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_3_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_4",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_3_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_4",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_3_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 4 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings at the top of the upstroke, fully raised, tips highest."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_5",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_4_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_5",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_4_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_5",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_4_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 5 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings fully spread out level at their widest span, the downstroke beginning."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_6",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_5_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_6",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_5_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_6",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_5_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 6 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings driving down on the power stroke, about a quarter below level."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_7",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_6_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_7",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_6_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_7",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_6_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 7 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings swept low at the bottom of the downstroke."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_8",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_7_east",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_8",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_7_south",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ },
+ {
+  "rimflow_item_id": "FLYER_FLIPBOOK_ART_1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "The Pyrelands: a dayside grassland that burns in rolling fire-lines under a hard low sun; ash-grey and charcoal ground, ember-orange flame light, smoke haze",
+  "style_notes": "Painted RimWorld creature sprite, one centred subject in mid-air on a transparent background, no ground, no perch, no shadow, no props. Same individual in every frame: identical palette, markings, proportions and scale; only the wing position changes from frame to frame.",
+  "target_def": "RM_FireWasp",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Flying_",
+  "owner_note": "Needs flyer art now",
+  "id": "pyrelands_firewasp_flight8_8",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "pyrelands_firewasp_flight8_7_north",
+  "prompt": "The attached image is the previous frame of this flight loop. Keep the same individual, the same view, the same body position and size in the canvas; change only the wings. The pyrelands fire wasp: a large predatory wasp with charcoal-black chitin banded in molten ember-gold, a narrow waist, long antennae and translucent amber wings with dark veins, airborne. Frame 8 of an 8-frame wing-beat loop (frame 1 wings tucked, frame 5 wings fully spread, back to tucked by frame 8). This frame: wings sweeping back in toward the body, about to fold."
+ }
+]
