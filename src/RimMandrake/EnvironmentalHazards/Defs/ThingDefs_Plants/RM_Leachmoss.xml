@@ -76,7 +76,6 @@
       <!-- Job rmleachmoss_v1, filed this pass. Pending until the daemon lands it. -->
       <texPath>Things/Plant/RM_Leachmoss</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(98,92,60)</color>
       <!-- dull olive-umber, darker/duller than the ultracactus, no lush green -->
     </graphicData>
     <selectable>true</selectable>

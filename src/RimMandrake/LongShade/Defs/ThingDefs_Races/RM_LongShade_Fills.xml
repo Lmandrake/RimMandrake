@@ -222,14 +222,12 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vrekka/RM_Vrekka</texPath>
-          <color>(185, 175, 165)</color>
           <drawSize>0.7</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vrekka/RM_Vrekka</texPath>
-          <color>(185, 175, 165)</color>
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.25, 0.2, 0.2)</volume>
@@ -240,7 +238,6 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Vrekka/RM_Vrekka</texPath>
-          <color>(185, 175, 165)</color>
           <drawSize>1.2</drawSize>
           <shadowData>
             <volume>(0.3, 0.25, 0.25)</volume>

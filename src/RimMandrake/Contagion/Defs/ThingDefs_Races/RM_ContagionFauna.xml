@@ -114,7 +114,6 @@
           <texPath>Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-          <color>(120,12,22)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
@@ -126,7 +125,6 @@
           <texPath>Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
-          <color>(120,12,22)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
@@ -138,7 +136,6 @@
           <texPath>Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(120,12,22)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Dromedary/Dessicated_Dromedary</texPath>
@@ -324,7 +321,6 @@
           <texPath>Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-          <color>(192,142,172)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -336,7 +332,6 @@
           <texPath>Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
-          <color>(192,142,172)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -348,7 +343,6 @@
           <texPath>Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(192,142,172)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
@@ -431,7 +425,6 @@
           <texPath>Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
-          <color>(138,112,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -443,7 +436,6 @@
           <texPath>Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
-          <color>(138,112,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -455,7 +447,6 @@
           <texPath>Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.55</drawSize>
-          <color>(138,112,64)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -548,7 +539,6 @@
           <texPath>Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.65</drawSize>
-          <color>(42,8,14)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -560,7 +550,6 @@
           <texPath>Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.78</drawSize>
-          <color>(42,8,14)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -572,7 +561,6 @@
           <texPath>Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
-          <color>(42,8,14)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -654,7 +642,6 @@
           <texPath>Things/Pawn/Animal/RM_Meltgut/RM_Meltgut</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.2</drawSize>
-          <color>(96,128,100)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -662,7 +649,6 @@
           <texPath>Things/Pawn/Animal/RM_Meltgut/RM_Meltgut</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
-          <color>(96,128,100)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -670,7 +656,6 @@
           <texPath>Things/Pawn/Animal/RM_Meltgut/RM_Meltgut</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.8</drawSize>
-          <color>(96,128,100)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -851,7 +836,6 @@
           <texPath>Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.2</drawSize>
-          <color>(58,140,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -863,7 +847,6 @@
           <texPath>Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.28</drawSize>
-          <color>(58,140,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -875,7 +858,6 @@
           <texPath>Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.32</drawSize>
-          <color>(58,140,168)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -959,7 +941,6 @@
           <texPath>Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
-          <color>(112,86,70)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -971,7 +952,6 @@
           <texPath>Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(112,86,70)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -983,7 +963,6 @@
           <texPath>Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.15</drawSize>
-          <color>(112,86,70)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -1176,7 +1155,6 @@
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
-          <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -1188,7 +1166,6 @@
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.91</drawSize>
-          <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -1200,7 +1177,6 @@
           <texPath>Things/Pawn/Animal/RM_Gnashling/RM_Gnashling</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(168,148,128)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -1283,7 +1259,6 @@
           <texPath>Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.32</drawSize>
-          <color>(190,170,202)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -1295,7 +1270,6 @@
           <texPath>Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
-          <color>(190,170,202)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -1307,7 +1281,6 @@
           <texPath>Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
-          <color>(190,170,202)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Squirrel/Dessicated_Squirrel</texPath>
@@ -1390,7 +1363,6 @@
           <texPath>Things/Pawn/Animal/RM_Peeper/RM_Peeper</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.65</drawSize>
-          <color>(148,158,190)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -1402,7 +1374,6 @@
           <texPath>Things/Pawn/Animal/RM_Peeper/RM_Peeper</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.8</drawSize>
-          <color>(148,158,190)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -1414,7 +1385,6 @@
           <texPath>Things/Pawn/Animal/RM_Peeper/RM_Peeper</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
-          <color>(148,158,190)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Monkey/Dessicated_Monkey</texPath>
@@ -1595,7 +1565,6 @@
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.62</drawSize>
-          <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -1607,7 +1576,6 @@
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.74</drawSize>
-          <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
@@ -1619,7 +1587,6 @@
           <texPath>Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
-          <color>(224,198,198)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>

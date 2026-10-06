@@ -43,7 +43,6 @@
     <graphicData>
       <texPath>Things/Plant/RM_FE_EmberGrass</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(198, 142, 68)</color>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />

@@ -196,7 +196,6 @@
           <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-          <color>(96, 40, 110)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -204,7 +203,6 @@
           <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
-          <color>(96, 40, 110)</color>
         </bodyGraphicData>
       </li>
       <li>
@@ -212,7 +210,6 @@
           <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
-          <color>(96, 40, 110)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>

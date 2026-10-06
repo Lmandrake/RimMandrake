@@ -61,7 +61,6 @@
       <texPath>Things/Plant/RUT_DyingCreep</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
-      <color>(196, 30, 30, 255)</color>
       <drawSize>0.9</drawSize>
     </graphicData>
     <plant>

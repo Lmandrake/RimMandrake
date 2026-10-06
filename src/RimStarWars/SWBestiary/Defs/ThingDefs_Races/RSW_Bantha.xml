@@ -199,7 +199,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Bantha/BanthaW_j</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -209,7 +208,6 @@
         <femaleGraphicData>
           <texPath>swanimals/Bantha/BanthaW_j</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
           <drawSize>1.3</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -225,7 +223,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Bantha/BanthaW</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -235,7 +232,6 @@
         <femaleGraphicData>
           <texPath>swanimals/Bantha/BanthaW</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
           <drawSize>1.8</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -251,7 +247,6 @@
         <bodyGraphicData>
           <texPath>swanimals/Bantha/BanthaW</texPath>
           <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
           <drawSize>3.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

@@ -40,7 +40,6 @@
            texPath carried over unchanged. -->
       <texPath>Things/Plant/RM_Ultracactus</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <color>(176,196,158)</color>
       <!-- pale green, per desert.md §4b -->
     </graphicData>
     <selectable>true</selectable>

@@ -159,7 +159,6 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Kinrath/Kinrath</texPath>
-          <color>(60, 55, 65)</color> <!-- dark slate-purple, reskin over the shared Kinrath art: reads as pressed flat against a wet-black trunk in scatter-dusk, zero new PNGs -->
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -170,7 +169,6 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Kinrath/Kinrath</texPath>
-          <color>(60, 55, 65)</color>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -181,7 +179,6 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Kinrath/Kinrath</texPath>
-          <color>(60, 55, 65)</color>
           <drawSize>2.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.6, 0.33)</volume>
