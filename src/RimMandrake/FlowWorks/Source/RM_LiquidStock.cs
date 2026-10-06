@@ -41,9 +41,10 @@ namespace RimMandrake.FlowWorks
 
 		private readonly Dictionary<int, RM_LiquidBody> byId = new Dictionary<int, RM_LiquidBody>();
 
-		private readonly List<IntVec3> fillQueue = new List<IntVec3>();
+		private readonly List<int> fillQueue = new List<int>();
+		private readonly List<int> fillFound = new List<int>();
 
-		private readonly HashSet<IntVec3> fillSeen = new HashSet<IntVec3>();
+		private readonly HashSet<int> fillSeen = new HashSet<int>();
 
 		public IReadOnlyList<RM_LiquidBody> Bodies => bodies;
 
@@ -110,57 +111,28 @@ namespace RimMandrake.FlowWorks
 
 		private RM_LiquidBody FormBody(Map map, IntVec3 seed, RM_MapComponent_Excavation owner)
 		{
-			fillQueue.Clear();
-			fillSeen.Clear();
-			List<IntVec3> found = new List<IntVec3>();
-			fillQueue.Add(seed);
-			fillSeen.Add(seed);
-			bool touchesEdge = false;
-			bool truncated = false;
-			int head = 0;
-			while (head < fillQueue.Count)
+			// The 8-way footprint walk is RM_FlowKernel.CollectBody (Verse-free, so the selftest runs it).
+			// A body truncated at MaxBodyCells leaves its far cells unindexed, so contact there would re-enter
+			// FormBody and re-walk the owned cells into an overlapping duplicate body. Touching an owned cell
+			// means this region IS that body: CollectBody stops and names it, and what was found is indexed to it.
+			int sizeX = map.Size.x;
+			int ownedId = RM_FlowKernel.CollectBody(sizeX, map.Size.z, map.cellIndices.CellToIndex(seed),
+				i => owner.IsSourceCell(map.cellIndices.IndexToCell(i)),
+				i => cellToBody.TryGetValue(i, out int id) && byId.ContainsKey(id) ? id : -1,
+				MaxBodyCells, fillFound, fillQueue, fillSeen, out bool touchesEdge, out bool truncated);
+			if (ownedId >= 0)
 			{
-				IntVec3 c = fillQueue[head++];
-				found.Add(c);
-				if (c.OnEdge(map))
+				for (int f = 0; f < fillFound.Count; f++)
 				{
-					touchesEdge = true;
+					cellToBody[fillFound[f]] = ownedId;
 				}
-				if (found.Count >= MaxBodyCells)
-				{
-					truncated = true;
-					break;
-				}
-				for (int i = 0; i < 8; i++)
-				{
-					IntVec3 n = c + GenAdj.AdjacentCells[i];
-					if (!n.InBounds(map) || fillSeen.Contains(n))
-					{
-						continue;
-					}
-					fillSeen.Add(n);
-					// A body truncated at MaxBodyCells leaves its far cells unindexed, so
-					// contact there re-entered FormBody and re-walked the owned cells into
-					// an overlapping duplicate body. Touching an owned cell means this
-					// region IS that body: index what was found to it and return it.
-					int ownedId;
-					RM_LiquidBody owned;
-					if (cellToBody.TryGetValue(map.cellIndices.CellToIndex(n), out ownedId)
-						&& byId.TryGetValue(ownedId, out owned))
-					{
-						for (int f = 0; f < found.Count; f++)
-						{
-							cellToBody[map.cellIndices.CellToIndex(found[f])] = ownedId;
-						}
-						return owned;
-					}
-					if (owner.IsSourceCell(n))
-					{
-						fillQueue.Add(n);
-					}
-				}
+				return byId[ownedId];
 			}
-
+			List<IntVec3> found = new List<IntVec3>(fillFound.Count);
+			for (int f = 0; f < fillFound.Count; f++)
+			{
+				found.Add(map.cellIndices.IndexToCell(fillFound[f]));
+			}
 			RM_LiquidBody body = new RM_LiquidBody(nextBodyId++);
 			body.cells = found;
 			body.truncated = truncated;
