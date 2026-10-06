@@ -34,7 +34,7 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 | 9 | Sluice-opening route for drowning; occupant effects live | PIT_FILL_EFFECTS_1 | BUILT | — | live verify; scripting belongs to the validation owner |
 | 10 | ✅ carrier + queued art (see log) — Wall-face art at 4 depths, spikes art | EXCAVATION_WALL_ART_1 | BUILT (procedural) / art QUEUED | yes | Form chosen: SectionLayer over the depth grid; textures queued in artpipe |
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
-| 12 | Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
+| 12 | ✅ 456d00ca2 — Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
 | 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | DEP | — | Rivers-carry column of MINERALS_WHERE_THEY_BELONG_1 not built |
 | 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst | LIQUID_THIRST_CHAIN_1 | BUILT (FlowWorks part) / OUT (stills = technology) | — | DBH is not in the live mod list, so the patch is inert today |
 | 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | DEP/OUT | — | Wreck-tier set pieces: art + Phase 8 hardware; transformation machines are technology |
@@ -51,3 +51,11 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
   four new settings (superdeepRoomsEnabled, captureDownEnabled, wardenFromLipEnabled, bottleRevertEnabled) — that
   file belongs to the northstar/densify owner this pass.
 - Bottle fill-job live failure: root cause in source (despawn fail-condition on the carried container), fixed in all four container drivers.
+- 456d00ca2 River Works slice 2 (parallel builder) + bd25c2f21 art-ledger records.
+
+## Outcome of this pass
+Built: rows 1, 2, 4, 5, 6 (core), 7 (pump slice), 8 (audit), 10 (carrier + art queued), 12, 14 (FlowWorks part) and the
+bottle fill-job bug. Already built before (closed this pass): 3, 9. Owner: 11 (ladder art pick) plus every PROVISIONAL
+number. Gated on other items: 13 (registry rivers-carry column), 15, 16. Out of scope: 17, 18, 19, conversion stills.
+Still owed inside FlowWorks: Phase 8 hoses / per-net adapters / universal cargo tank; live verification of everything above
+(rows listed in Transient/belt_fwbuild_20261005.md); northstar/site_spec.py SETTINGS parity (14 new settings).
