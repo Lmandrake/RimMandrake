@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SOLAR_MIRRORS_MOD_DESIGN_1 §3.2: re-aiming is Construction work. priorityInType PROVISIONAL. -->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_ReAimMirror</defName>
+    <label>re-aim mirrors</label>
+    <giverClass>RimMandrake.SolarMirrors.RM_WorkGiver_ReAimMirror</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>45</priorityInType>
+    <verb>re-aim</verb>
+    <gerund>re-aiming</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

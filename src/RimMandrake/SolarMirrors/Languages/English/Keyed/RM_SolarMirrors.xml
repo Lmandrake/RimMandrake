@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_SolarMirrors_SettingsCategory>Solar Mirrors</RM_SolarMirrors_SettingsCategory>
+
+  <RM_SolarMirrors_Section_Light>Mirror light</RM_SolarMirrors_Section_Light>
+  <RM_SolarMirrors_Setting_Shade>Mirror light takes away shade</RM_SolarMirrors_Setting_Shade>
+  <RM_SolarMirrors_Setting_Shade_Tip>A patch of mirror light counts as full sun: it is hot there (vanilla heatstroke), pawns that avoid the sun path around it, and animals that hide in shade move elsewhere. Off: mirrors change nothing about shade or heat.</RM_SolarMirrors_Setting_Shade_Tip>
+  <RM_SolarMirrors_Setting_Glow>Mirror light brightens the ground</RM_SolarMirrors_Setting_Glow>
+  <RM_SolarMirrors_Setting_Glow_Tip>Where the sky is dim (dusk, or a sun that never climbs), a patch of mirror light counts as brighter for plant growth, sowing and working. In full daylight it changes nothing. Off: mirrors never change how bright a cell is.</RM_SolarMirrors_Setting_Glow_Tip>
+  <RM_SolarMirrors_Setting_Sweep>Static mirrors drift as the sun moves</RM_SolarMirrors_Setting_Sweep>
+  <RM_SolarMirrors_Setting_Sweep_Tip>On: a mirror that does not track the sun keeps its angle, so when the sun moves across the sky its patch of light slowly drifts off the target, and only a powered heliostat holds a target all day. Off: every mirror holds its target as if the sun stood still. Where the sun never moves, this makes no difference.</RM_SolarMirrors_Setting_Sweep_Tip>
+  <RM_SolarMirrors_Setting_Reflectivity>Mirror strength: {0}</RM_SolarMirrors_Setting_Reflectivity>
+  <RM_SolarMirrors_Setting_Reflectivity_Tip>Multiplies how much light every mirror passes on.</RM_SolarMirrors_Setting_Reflectivity_Tip>
+  <RM_SolarMirrors_Setting_Chain>Longest mirror chain: {0}</RM_SolarMirrors_Setting_Chain>
+  <RM_SolarMirrors_Setting_Chain_Tip>A mirror standing in shadow can pass on the light of another mirror aimed at it. This is how many mirrors one beam may pass through. Each mirror loses some of the light.</RM_SolarMirrors_Setting_Chain_Tip>
+
+  <RM_SolarMirrors_Section_Look>Appearance</RM_SolarMirrors_Section_Look>
+  <RM_SolarMirrors_Setting_Render>Show mirror light: {0}</RM_SolarMirrors_Setting_Render>
+  <RM_SolarMirrors_Setting_Render_Tip>How mirror light is drawn on the map. It changes only the picture, never what the light does.</RM_SolarMirrors_Setting_Render_Tip>
+  <RM_SolarMirrors_Render_Off>not drawn</RM_SolarMirrors_Render_Off>
+  <RM_SolarMirrors_Render_Spot>warm patch only</RM_SolarMirrors_Render_Spot>
+  <RM_SolarMirrors_Render_Beam>warm patch and a faint beam</RM_SolarMirrors_Render_Beam>
+
+  <RM_SolarMirrors_Section_Uses>Uses</RM_SolarMirrors_Section_Uses>
+  <RM_SolarMirrors_Setting_Blind>Mirrors dazzle enemies</RM_SolarMirrors_Setting_Blind>
+  <RM_SolarMirrors_Setting_Blind_Tip>Hostile people standing in a strong patch of mirror light slowly go glare-blind (worse sight), unless goggles or a gene protect their eyes. It wears off in shade. Off: mirror light never dazzles anyone.</RM_SolarMirrors_Setting_Blind_Tip>
+  <RM_SolarMirrors_Setting_BlindRate>Dazzle speed: {0} per day in full light</RM_SolarMirrors_Setting_BlindRate>
+  <RM_SolarMirrors_Setting_Furnace>Solar furnace works under focused light</RM_SolarMirrors_Setting_Furnace>
+  <RM_SolarMirrors_Setting_Furnace_Tip>The solar furnace smelts with no fuel and no power while two or more mirrors focus on it. Off: the furnace never works.</RM_SolarMirrors_Setting_Furnace_Tip>
+
+  <RM_SolarMirrors_Section_Work>Work and timing</RM_SolarMirrors_Section_Work>
+  <RM_SolarMirrors_Setting_ReAim>Time to turn a mirror by hand: {0}</RM_SolarMirrors_Setting_ReAim>
+  <RM_SolarMirrors_Setting_Interval>Light update every {0} ticks</RM_SolarMirrors_Setting_Interval>
+  <RM_SolarMirrors_Setting_Interval_Tip>How often mirror light is worked out again when nothing has changed. Building, aiming or losing power updates it at once. Lower is smoother, higher is cheaper.</RM_SolarMirrors_Setting_Interval_Tip>
+  <RM_SolarMirrors_Setting_Reset>Reset to defaults</RM_SolarMirrors_Setting_Reset>
+
+  <RM_SolarMirrors_AimAt>Aim at…</RM_SolarMirrors_AimAt>
+  <RM_SolarMirrors_AimAt_DescInstant>Choose the cell this mirror throws its light onto. While it has power it turns at once and follows the sun to hold that cell.</RM_SolarMirrors_AimAt_DescInstant>
+  <RM_SolarMirrors_AimAt_DescJob>Choose the cell this mirror throws its light onto. A colonist (Construction) walks over and turns it.</RM_SolarMirrors_AimAt_DescJob>
+  <RM_SolarMirrors_ClearAim>Stop aiming</RM_SolarMirrors_ClearAim>
+  <RM_SolarMirrors_ClearAim_Desc>Turn this mirror away so it throws no light.</RM_SolarMirrors_ClearAim_Desc>
+
+  <RM_SolarMirrors_Preview_Blocked>Blocked: {0}</RM_SolarMirrors_Preview_Blocked>
+  <RM_SolarMirrors_Preview_NoSun>No sun to reflect now</RM_SolarMirrors_Preview_NoSun>
+  <RM_SolarMirrors_Preview_Eff>Reflects {0} of the light it gets</RM_SolarMirrors_Preview_Eff>
+
+  <RM_SolarMirrors_Blocker_Edge>edge of the map</RM_SolarMirrors_Blocker_Edge>
+  <RM_SolarMirrors_Blocker_Roof>a roof</RM_SolarMirrors_Blocker_Roof>
+  <RM_SolarMirrors_Blocker_Door>a closed door</RM_SolarMirrors_Blocker_Door>
+  <RM_SolarMirrors_Blocker_Sky>it points at the sky</RM_SolarMirrors_Blocker_Sky>
+
+  <RM_SolarMirrors_Inspect_Pending>Waiting to be turned toward {0}</RM_SolarMirrors_Inspect_Pending>
+  <RM_SolarMirrors_Inspect_Unaimed>Not aimed</RM_SolarMirrors_Inspect_Unaimed>
+  <RM_SolarMirrors_Inspect_Target>Aimed at {0}</RM_SolarMirrors_Inspect_Target>
+  <RM_SolarMirrors_Inspect_Tracking>Following the sun</RM_SolarMirrors_Inspect_Tracking>
+  <RM_SolarMirrors_Inspect_Frozen>No power: stopped where it is</RM_SolarMirrors_Inspect_Frozen>
+  <RM_SolarMirrors_Inspect_Blocked>Throws no light: {0}</RM_SolarMirrors_Inspect_Blocked>
+  <RM_SolarMirrors_Inspect_Dark>Throws no light: it stands in shadow, or there is no sun</RM_SolarMirrors_Inspect_Dark>
+  <RM_SolarMirrors_Inspect_Light>Delivers {0} light ({1} of what it gets, {2})</RM_SolarMirrors_Inspect_Light>
+  <RM_SolarMirrors_Inspect_FromSun>from the sun</RM_SolarMirrors_Inspect_FromSun>
+  <RM_SolarMirrors_Inspect_FromMirror>from another mirror</RM_SolarMirrors_Inspect_FromMirror>
+  <RM_SolarMirrors_Inspect_PartBlocked>Part of the patch is blocked: {0}</RM_SolarMirrors_Inspect_PartBlocked>
+
+  <RM_SolarMirrors_Receiver_Lit>Lit by mirrors ({0}; lights at {1})</RM_SolarMirrors_Receiver_Lit>
+  <RM_SolarMirrors_Receiver_Unlit>Unlit ({0}; lights at {1})</RM_SolarMirrors_Receiver_Unlit>
+  <RM_SolarMirrors_Furnace_Working>Hot enough to work</RM_SolarMirrors_Furnace_Working>
+  <RM_SolarMirrors_Furnace_Idle>Too little focused light to work</RM_SolarMirrors_Furnace_Idle>
+</LanguageData>

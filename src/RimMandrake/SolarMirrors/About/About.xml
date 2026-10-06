@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.solarmirrors</packageId>
+  <name>RimMandrake: Solar Mirrors</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Biomes</displayName>
+    </li>
+  </modDependencies>
+  <!-- The shade grid, pinned sun and glare-blind hediff live in CreatureBehaviors, which is folded
+       into mandrake.rm.biomes (BAROQUE_BIOMES_WAVE2_FOLD_1). A loadAfter naming the old standalone
+       packageId would be a silent no-op (GASDAMAGING_PARENTNAME_UNRESOLVED_1), so name the unified mod. -->
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.biomes</li>
+  </loadAfter>
+  <description>Mirrors that move sunlight. SOLAR_MIRRORS_MOD_DESIGN_1 (design/RimMandrake/solar_mirrors_mod_design_2026-10-04.md).
+
+A mirror throws a patch of sun onto a cell you pick. In that patch the shade is gone: it is hot, animals that hide from the sun route around it, and plants get more light where the sky is dim. Light reflects best back toward the sun's side and worst straight away from it. Walls, rock, closed doors and roofs stop a beam. A mirror standing in shadow throws nothing, unless another mirror lights it, so mirrors can be chained.
+
+Buildings:
+  - Signal mirror (1x1, no research). Aimed by a colonist (a re-aim job).
+  - Static mirror (2x2, any metal; silver and gold reflect best). Aimed by a colonist. It does not track the sun, so where the sun moves its patch of light slowly sweeps.
+  - Heliostat (3x3, powered). Aimed instantly and holds its target as the sun moves. Without power it freezes where it is and becomes a static mirror.
+  - Sun-stone (1x1). Reads lit or unlit.
+  - Solar furnace. Smelts with no fuel and no power, but only while concentrated light (two or more mirrors) falls on it.
+  - Blinding defence: hostile people standing in a beam slowly go glare-blind, unless goggles or a gene protect them.
+
+Every effect has its own switch in Mod Settings. Mirror light is our own grid on top of the shade grid; it never adds a new kind of heat.
+
+Not yet built: the Long Shade ancient mirror-field puzzle, heliograph signals, the mirror greenhouse, dust on mirrors.</description>
+</ModMetaData>
