@@ -1,25 +1,31 @@
 {
  "biome": "RM_TheChill",
- "built": "2026-10-06T05:45:55-0700",
+ "built": "2026-10-06T08:05:02-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "live ModsConfig.xml: 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_ChillStillbloom": {
    "columns": {
     "A": {
      "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
+    },
+    "B": {
+     "single": "fc0f8150a58621dfde952dd2eb6d0d50b9ed275f4c1d05d2a505f127aff4fbe2"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Stillbloom/RM_Stillbloom"
+    "A": "Things/Plant/RM_Stillbloom/RM_Stillbloom",
+    "B": "Things/Plant/RM_Stillbloom/RM_Stillbloom"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_stillbloom_v2"
    },
    "res": "Things/Plant/RM_Stillbloom/RM_Stillbloom",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "chillstillbloom"
   },
@@ -27,17 +33,29 @@
    "columns": {
     "A": {
      "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
+    },
+    "B": {
+     "single": "0a76d4f9eb1e921fc90308383982fe074ea88522ce83da5f65296dbef20bad59"
+    },
+    "C": {
+     "single": "2d3f65118192e0be5cae5edab0759ca867bde301aafb159628cb2341864fdd06"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Eldspar/RM_Eldspar"
+    "A": "Things/Plant/RM_Eldspar/RM_Eldspar",
+    "B": "Things/Plant/RM_Eldspar/RM_Eldspar",
+    "C": "Things/Plant/RM_Eldspar/RM_Eldspar"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_eldspar_var2_v1",
+    "C": "render chill_eldspar_var3_v1"
    },
    "res": "Things/Plant/RM_Eldspar/RM_Eldspar",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "eldspar"
   },
@@ -45,17 +63,23 @@
    "columns": {
     "A": {
      "single": "46c945b1527e041a4573c64c1885eab714e56e361156ab7d9fc78b53a374f3cd"
+    },
+    "B": {
+     "single": "234ce9d91841bc4c78caff7179979eefe44ddf2e1d7888bfd3dbd7d3ba94387f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
+    "A": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+    "B": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_fessu_v2"
    },
    "res": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "fessu"
   },
@@ -63,17 +87,23 @@
    "columns": {
     "A": {
      "single": "46c945b1527e041a4573c64c1885eab714e56e361156ab7d9fc78b53a374f3cd"
+    },
+    "B": {
+     "single": "234ce9d91841bc4c78caff7179979eefe44ddf2e1d7888bfd3dbd7d3ba94387f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
+    "A": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+    "B": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_fessu_v2"
    },
    "res": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "fessucatch"
   },
@@ -81,17 +111,23 @@
    "columns": {
     "A": {
      "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
+    },
+    "B": {
+     "single": "7608a48ca959a36f2caa659fac9e74c410c09bbf524fd02e50f54ce1a7dfab2a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Fuselight/RM_Fuselight"
+    "A": "Things/Plant/RM_Fuselight/RM_Fuselight",
+    "B": "Things/Plant/RM_Fuselight/RM_Fuselight"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_fuselight_var2_v1"
    },
    "res": "Things/Plant/RM_Fuselight/RM_Fuselight",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "fuselight"
   },
@@ -99,17 +135,29 @@
    "columns": {
     "A": {
      "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
+    },
+    "B": {
+     "single": "057fe22ed2f965d5c7033346ca8ee8895bb9246a18453fad97b1ceaeab4d7812"
+    },
+    "C": {
+     "single": "d95d00f4318a27bfe420e3536fb23c65db23ed83572d17ecdc824021728abac1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Ghostpane/RM_Ghostpane"
+    "A": "Things/Plant/RM_Ghostpane/RM_Ghostpane",
+    "B": "Things/Plant/RM_Ghostpane/RM_Ghostpane",
+    "C": "Things/Plant/RM_Ghostpane/RM_Ghostpane"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_ghostpane_var2_v1",
+    "C": "render chill_ghostpane_var3_v1"
    },
    "res": "Things/Plant/RM_Ghostpane/RM_Ghostpane",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "ghostpane"
   },
@@ -122,20 +170,28 @@
      "east": "5df0d1fd79af411f2a70c2b491b755c5ae0a97c1b47bc329cba3d4e1092073bf",
      "north": "72d98fc2a7c3fc37aa43f3fc006a196f2fa945e07074dbd7fbf417f3e6127ca9",
      "south": "5f81fe9fa659d0882f3a5525fcafbc1bc240b1b967b3da84b3b8d562540cf15f"
+    },
+    "C": {
+     "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
+     "north": "632a6457144ae783656f31dac3e8c68adcb1487cb3accc18724de30f4e2be88d",
+     "south": "fba7be68faff8ecec0a5a2b56518c77a8b4f0b2ebf2c118cbefa3262fc3e6a47"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
-    "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
+    "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
+    "C": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render propanelake_heemin_v1"
+    "B": "render propanelake_heemin_v1",
+    "C": "render chill_heemin_v2"
    },
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "heemin"
   },
@@ -151,23 +207,31 @@
     },
     "C": {
      "single": "b3e0546eb5158a3caf030f918106c0166205c6327838ea8c9a93d614fb6f10b0"
+    },
+    "D": {
+     "east": "a212a7f099413092aa961546ed8056109e80b4ae81363895673122af33c72968",
+     "north": "632a6457144ae783656f31dac3e8c68adcb1487cb3accc18724de30f4e2be88d",
+     "south": "fba7be68faff8ecec0a5a2b56518c77a8b4f0b2ebf2c118cbefa3262fc3e6a47"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
     "B": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "Things/Pawn/Animal/RM_Heemin/RM_Heemin"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "render propanelake_heemin_v1",
-    "C": "render phreg_RM_HeeminCatch_v1"
+    "C": "render phreg_RM_HeeminCatch_v1",
+    "D": "render chill_heemin_v2"
    },
    "res": "Things/Pawn/Animal/RM_Heemin/RM_Heemin",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "heemincatch"
   },
@@ -176,24 +240,23 @@
     "A": {
      "single": "fd2be0d9aa13e0b408f5b85fe34a70a75554f6baf80ce8320dc36b7f37d1b324"
     },
-    "B": {
-     "east": "d12e939d9acf287024a715e761500a0a7fde592f0312695f3d9994a44ad30630",
-     "north": "d8b4079de6abd7734bd552b518faf863aa96bafc2feb806c8fd8713d998c5e08",
-     "south": "47100d220df89bd107649f59ada95f014835b249de0c7b6b79749286449073e4"
+    "C": {
+     "single": "1702b1e88c5ae971b7e4805b703a0bb2178d9fa1110b5d7ae9c02ed4e46d1f80"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
-    "B": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
+    "C": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render phreg_RM_Hesuun_v1"
+    "C": "render chill_hesuun_v2"
    },
    "res": "Things/Pawn/Animal/RM_Hesuun/RM_Hesuun",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "hesuun"
   },
@@ -201,17 +264,25 @@
    "columns": {
     "A": {
      "single": "78ab266cd32958975ce5c37c6ee86a0fbae0ac34c45d7c38503844ddab1bd793"
+    },
+    "B": {
+     "east": "a661d661dcaa932ba8295b7e64d42abced9528e29efb12ea7acdd56458a3d03b",
+     "north": "b305f78d15ee5d4eb9ef771fea00694013574c2a186b8362c16346cecdaff3fb",
+     "south": "734ab19fecefc80999e709237b037ac3fcf928ce554d34818ca6f78058e79f03"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+    "A": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
+    "B": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_iliss_facings_v1"
    },
    "res": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "iliss"
   },
@@ -219,17 +290,25 @@
    "columns": {
     "A": {
      "single": "78ab266cd32958975ce5c37c6ee86a0fbae0ac34c45d7c38503844ddab1bd793"
+    },
+    "B": {
+     "east": "a661d661dcaa932ba8295b7e64d42abced9528e29efb12ea7acdd56458a3d03b",
+     "north": "b305f78d15ee5d4eb9ef771fea00694013574c2a186b8362c16346cecdaff3fb",
+     "south": "734ab19fecefc80999e709237b037ac3fcf928ce554d34818ca6f78058e79f03"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
+    "A": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
+    "B": "Things/Pawn/Animal/RM_Iliss/RM_Iliss"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_iliss_facings_v1"
    },
    "res": "Things/Pawn/Animal/RM_Iliss/RM_Iliss",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "ilisscatch"
   },
@@ -255,17 +334,23 @@
    "columns": {
     "A": {
      "single": "d82e01bbfaeef7e1c846f99871758aa3d03ae6120e40cfc77c83388874f6b882"
+    },
+    "B": {
+     "single": "7b33f5dd73f39861cb42d27d4f278631ec89ded48f9dc09e259c8b5c6beed394"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Krellik/RM_Krellik"
+    "A": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+    "B": "Things/Pawn/Animal/RM_Krellik/RM_Krellik"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_krellik_v2"
    },
    "res": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "krellik"
   },
@@ -273,17 +358,23 @@
    "columns": {
     "A": {
      "single": "d82e01bbfaeef7e1c846f99871758aa3d03ae6120e40cfc77c83388874f6b882"
+    },
+    "B": {
+     "single": "7b33f5dd73f39861cb42d27d4f278631ec89ded48f9dc09e259c8b5c6beed394"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Krellik/RM_Krellik"
+    "A": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+    "B": "Things/Pawn/Animal/RM_Krellik/RM_Krellik"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render chill_krellik_v2"
    },
    "res": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "krellikcatch"
   },
@@ -332,20 +423,26 @@
      "east": "5ea9060ecb9139098666d28151ac601df577bc01b529e5753e9c46f0793d5962",
      "north": "673f71514662384b4c254d9997049b6ae346cd3c91f0b477eaea2d780b2c3596",
      "south": "c52f12d551a71e1efe953e5806d6379732cc292d1ab480ba7942ef476cf4dcd1"
+    },
+    "C": {
+     "single": "c0bdbb3cf6eff1e64b5a71f0cb10e1a24ffd812050db23a4dc00bc52c47ba161"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
-    "B": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
+    "B": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
+    "C": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render propanelake_oovanam_v1"
+    "B": "render propanelake_oovanam_v1",
+    "C": "render chill_oovanam_v2 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "oovanam"
   },
@@ -361,23 +458,29 @@
     },
     "C": {
      "single": "09b9ec74cfee157b6436a24f9d7b5adf6a670b327b16977974bf44fcecc4c174"
+    },
+    "D": {
+     "single": "c0bdbb3cf6eff1e64b5a71f0cb10e1a24ffd812050db23a4dc00bc52c47ba161"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
     "B": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "render propanelake_oovanam_v1",
-    "C": "render phreg_RM_OovanamCatch_v1"
+    "C": "render phreg_RM_OovanamCatch_v1",
+    "D": "render chill_oovanam_v2 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Oovanam/RM_Oovanam",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "oovanamcatch"
   },
@@ -552,20 +655,26 @@
      "east": "cbde695992fec9e09106fe0fcb63d14360c124e110a3acc104628172691e04d1",
      "north": "816581e76f8b4097c72ed6a40e962c8032e98f5b1efbeca7fadf8f3179422754",
      "south": "79a419f9e2a6b0cfb9511afea1bd1d64b4184aff3e3d3147513ec952eaacf6f4"
+    },
+    "C": {
+     "single": "b3edf4f5f80cc82c87b10c43d42e72f792b1fef5ff98cbf4a8bfe589aaccb8b8"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
-    "B": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
+    "B": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
+    "C": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render phreg_RM_Zhiil_v1"
+    "B": "render phreg_RM_Zhiil_v1",
+    "C": "render chill_zhiil_v2"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "zhiil"
   },
@@ -581,27 +690,33 @@
     },
     "C": {
      "single": "c87b9984159fe33afe733d8c0c5e6c4a3677de0c7e6b0a8bebae10c3ce1c2eb3"
+    },
+    "D": {
+     "single": "b3edf4f5f80cc82c87b10c43d42e72f792b1fef5ff98cbf4a8bfe589aaccb8b8"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
     "B": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "render phreg_RM_Zhiil_v1",
-    "C": "render phreg_RM_ZhiilCatch_v1"
+    "C": "render phreg_RM_ZhiilCatch_v1",
+    "D": "render chill_zhiil_v2"
    },
    "res": "Things/Pawn/Animal/RM_Zhiil/RM_Zhiil",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "zhiilcatch"
   }
  },
  "sheetId": "thechill_sheet_2026-10-05",
- "snapshotId": "2629db1f0818863a"
+ "snapshotId": "3a8677d2656e5e45"
 }

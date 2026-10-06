@@ -2,7 +2,7 @@
  "sheetId": "cauldron_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
- "snapshotId": "a5098b1beffa60ce",
+ "snapshotId": "03d9116c14735686",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Cauldron",
  "reviewStatus": {
@@ -38,9 +38,9 @@
    }
   },
   "AA_Helixien": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "AA_InfectedAerofleet": {
    "decision": "A",
@@ -139,19 +139,25 @@
   "RSW_Neebray": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/Neebray/Neebray_Flying_": "B"
+   }
   },
   "RSW_Screecher": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_": "C"
+   }
   },
   "RSW_Skalder": {
-   "decision": "C",
+   "decision": "B",
    "note": "",
-   "prefill": "C",
+   "prefill": "B",
    "picks": {
-    "swanimals/Skalder/Skalder_Swimming": "D"
+    "swanimals/Skalder/Skalder_Swimming": "C"
    }
   },
   "RSW_VentStalker": {

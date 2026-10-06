@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-05T18:42:36-0700",
+ "built": "2026-10-06T07:21:15-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -924,19 +924,19 @@
   "RSW_GraniteSlug": {
    "columns": {
     "A": {
-     "east": "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
-     "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
-     "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
-    },
-    "B": {
      "east": "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
      "north": "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
      "south": "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365"
     },
+    "B": {
+     "east": "cae403ba359002e43bc61089bfa26b1155b6a7f6aad89b62d4a7cfb23baea7ea",
+     "north": "14dcdb69251f771c28241ab92fb30246c32c76563b9aac3951899bc57f4f7bc7",
+     "south": "ed17f9f93180fffdf1aa0e15204ab5344d7c18cba004305bdb031a7a44032f0a"
+    },
     "C": {
-     "east": "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
-     "north": "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3",
-     "south": "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534"
+     "east": "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
+     "north": "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
+     "south": "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d"
     }
    },
    "graphic_of": {
@@ -946,8 +946,8 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render stillsand_regen_RSW_GraniteSlug_v2",
-    "C": "render desertportb_graniteslug"
+    "B": "render stillsand_s2_RSW_GraniteSlug_v3",
+    "C": "history SWBestiary 2026-09-17"
    },
    "res": "swanimals/GraniteSlug/GraniteSlug",
    "reserved": [
@@ -1019,9 +1019,8 @@
      "single": "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5"
     },
     "B": {
-     "east": "0997c491f9fe2eabf9d93aad1a53f38fd55234bd786976b5b1a80cf44b4a87ad",
-     "north": "a0781a8ba736a2203889baae18105a288fe3520477c2a00424812a0bcd071cc8",
-     "south": "72ad8be3cf0844bf99cab8d878b50483c679db93f06dbea013a47313c289bc06"
+     "east": "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5",
+     "north": "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747"
     }
    },
    "graphic_of": {
@@ -1030,7 +1029,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desert_swaca_mynock"
+    "B": "render warscar_Mynock_v2"
    },
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
@@ -1045,17 +1044,34 @@
      "east": "9af38d3cb719c83277c9191da79217d6ebe2382cae9d6c244de821460dc121b2",
      "north": "d579a48c4fdfa24ee93241b781544f38fb43d50f4f5782a931969d0a22c3d14e",
      "south": "d9a29a8ebb4f7898cfd9a816290462e0c40fee5dea62e917dafbb31b0781fd11"
+    },
+    "B": {
+     "1_east": "4dc2530034706a30ab520a5362fbe64f17fbefa6bb65886a5ee2507b129adcd7",
+     "1_north": "a3902f829ec722c7c2a8497cdd1463c596f5b27daeee0e6d0b75417f5cf100a9",
+     "1_south": "96e821fca416fa241c828624e9f3f0ae64c58b80fdb03f4f7a8ca4f9ff2bea3f",
+     "2_east": "7459ebd4694cfe0fe527fe48b0f1691474b6d01057a317f2448e27e1b29fe356",
+     "2_north": "a1ae360a16d40e920d01419b511aee3b0ed9557e1f6931d0dec0adbffe6036f4",
+     "2_south": "49a3a4638e930c5474dfa4ade7fe68fd0481328aadb00b36093ae7fc42f63910",
+     "3_east": "e3fdbe782458a6f6bb618542f26321039104cd174eecb942ea74fb706efe4fb3",
+     "3_north": "c1f208605bd6294528e63d04c8554ca0471bc1dec78f0b9a70979d1c950d33f8",
+     "3_south": "31abfd6f66b85c947b5093bdc1cfdc0fbd98fc58313744d3514c03bdbbf600d2",
+     "4_east": "4dc2530034706a30ab520a5362fbe64f17fbefa6bb65886a5ee2507b129adcd7",
+     "4_north": "a3902f829ec722c7c2a8497cdd1463c596f5b27daeee0e6d0b75417f5cf100a9",
+     "4_south": "96e821fca416fa241c828624e9f3f0ae64c58b80fdb03f4f7a8ca4f9ff2bea3f"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Neebray/Neebray"
+    "A": "swanimals/Neebray/Neebray",
+    "B": "_flip:swanimals/Neebray/Neebray_Flying_"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "IN GAME \u2014 Neebray_Flying_"
    },
    "res": "swanimals/Neebray/Neebray",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "neebray"
   },
@@ -1070,20 +1086,28 @@
      "east": "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
      "north": "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
      "south": "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02"
+    },
+    "C": {
+     "1_east": "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
+     "1_north": "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
+     "1_south": "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "C": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "B": "history SWBestiary 2026-09-11",
+    "C": "IN GAME \u2014 Screecher_Flying_"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "screecher"
   },
@@ -1095,16 +1119,11 @@
      "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
     },
     "B": {
-     "east": "252ca13d89137e2c3f0ee2779c082fa504daef427fafa862e3f47b11fd43df20",
-     "north": "877c2f627c5b2b01be5806b0d2130540743c90614e402c54c4c025a471eda627",
-     "south": "2666d021500f1b73f1d61c6ab0901e5a118d7bd620747a975722de432a95f0f0"
-    },
-    "C": {
      "east": "5879e940a5c716b3ddb140b000d5158e38be97de0b5ac7d7b49c468d47804575",
      "north": "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34",
      "south": "9380c8568a951dfd511406ff6e3b5704614906dcc1f7e6a4b2e9e3b2e1bdf7b3"
     },
-    "D": {
+    "C": {
      "east": "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
      "north": "91578cd65de4259e1b5bc0916a045069dbc063b28ac48f320f48497c35594de6",
      "south": "8f631848c120023acff8586cff3b792f137d95a71f6f9f7547ebe5288b946d87"
@@ -1113,21 +1132,18 @@
    "graphic_of": {
     "A": "swanimals/Skalder/Skalder",
     "B": "swanimals/Skalder/Skalder",
-    "C": "swanimals/Skalder/Skalder",
-    "D": "swanimals/Skalder/Skalder_Swimming"
+    "C": "swanimals/Skalder/Skalder_Swimming"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desert_swaca_skalder",
-    "C": "history SWBestiary 2026-09-18",
-    "D": "IN GAME \u2014 SWBestiary"
+    "B": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Skalder/Skalder",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "subject_key": "skalder"
   },
@@ -1257,5 +1273,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "a5098b1beffa60ce"
+ "snapshotId": "03d9116c14735686"
 }
