@@ -36,6 +36,12 @@ namespace RimMandrake.Watchers
             {
                 return null;
             }
+            // Below the emerge threshold the job would hide then end at once (hungry), and this giver
+            // would re-issue it: a hide/emerge loop every ~60 ticks whenever food is out of reach.
+            if (pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow)
+            {
+                return null;
+            }
             if (Rand.Chance(ext.wanderChance))
             {
                 return null;

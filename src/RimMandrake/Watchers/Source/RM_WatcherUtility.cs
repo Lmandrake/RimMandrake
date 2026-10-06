@@ -223,7 +223,9 @@ namespace RimMandrake.Watchers
                 Emerge(watcher, ext, ref none, true);
             }
             Map map = watcher.Map;
+            // Designator_Hunt's own faction rule (RimSage 1.6): never mark a tamed or humanlike-faction animal.
             if (RM_WatchersSettings.flushMarksHunt && flusher.Faction == Faction.OfPlayer
+                && (watcher.Faction == null || !watcher.Faction.def.humanlikeFaction)
                 && map.designationManager.DesignationOn(watcher, DesignationDefOf.Hunt) == null)
             {
                 map.designationManager.AddDesignation(new Designation(watcher, DesignationDefOf.Hunt));
