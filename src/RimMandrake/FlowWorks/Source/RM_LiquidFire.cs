@@ -26,8 +26,9 @@ namespace RimMandrake.FlowWorks
 	/// - SPENT: a canal cell that burns dry is left scorched (ash) — the `canal_spent_after_burn` bar.
 	/// - EXPLOSIONS: a flame or bomb blast lights burnable liquid in every cell it touches, Fire or no Fire
 	///   (DamageWorker.ExplosionAffectCell postfix). A firefoam blast (Extinguish) smothers instead.
-	/// - PUTTING IT OUT: firefoam on a burning cell smothers it, and while the foam lies there the cell cannot
-	///   relight. Rain on an unroofed burning cell has a chance each check to douse it (oil and tar float, so
+	/// - PUTTING IT OUT: a firefoam blast (popper, Extinguish damage) puts a burning cell out; foam lying on a cell
+	///   would also keep it from relighting, but fill terrains are water-tagged and take no filth, so in practice
+	///   it is the blast that acts. Rain on an unroofed burning cell has a chance each check to douse it (oil and tar float, so
 	///   rain is slow, never instant; a neighbour still alight can relight it). Neither marks the cell spent.
 	/// NOT built (owed): bespoke burning-liquid and scorched-channel art (the flame is vanilla's fire graphic,
 	/// the scorch is vanilla ash).
@@ -396,6 +397,11 @@ namespace RimMandrake.FlowWorks
 			}
 			if (dam == DamageDefOf.Extinguish)
 			{
+				// foamSmothersLiquidFireEnabled gates BOTH foam routes; the popper's blast ignored it until 2026-10-05
+				if (!RimMandrakeFlowWorksSettings.foamSmothersLiquidFireEnabled)
+				{
+					return;
+				}
 				int i = map.cellIndices.CellToIndex(c);
 				if (burning.ContainsKey(i))
 				{

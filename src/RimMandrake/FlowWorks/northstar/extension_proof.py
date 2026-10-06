@@ -69,7 +69,13 @@ def main(argv=None):
     t0 = time.time()
     with Session(lock=None) as s:
         runner.ensure_playing_map()
-        summ = runner.run_suite(sub, s, mod=None, situational=True, policy="abort")
+        mi = s.call("jawa/map_info") or {}
+        # The plot grid (extensions.PLOTS, 3x3 at PITCH 36) is CENTRED on the map: live 2026-10-05 19:47 the default
+        # anchor put plot row 2 (G/H/T) inside the 10-cell edge-sink band, which drained every pit and channel there
+        # (pump channel F 0, pit_fill_effects "nobody in liquid").
+        anchor = (int(mi.get("sizeX", 250)) // 2 - 12, int(mi.get("sizeZ", 250)) // 2 - 7)
+        summ = runner.run_suite(sub, s, anchor=anchor, mod=None, situational=True, policy="abort")
+        summ["anchor"] = anchor
     summ["wall_s"] = round(time.time() - t0, 1)
     summ["chains_run"] = [n for n, _ in sub.chains]
     out = a.out or os.path.join(HERE, "extension_result_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
