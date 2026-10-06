@@ -229,9 +229,9 @@
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "at": "2026-10-05T07:37:47-0700",
+    "at": "2026-10-05T20:15:01-0700",
     "by": "owner (Lukas)",
-    "evidence": "sidecar writeCount 93 (next sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Done with blue desert.'",
+    "evidence": "sidecar writeCount 117 (third sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Blue Desert sheet done'",
     "state": "ruled"
   },
   "savedAt": "2026-10-05T20:15:01-0700",
