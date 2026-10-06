@@ -1,7 +1,551 @@
 {
- "visuals_ok": null,
+ "visuals_ok": 34,
  "gallery_ok": 51,
  "verify": {
+  "vis_dry_dirt_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    1,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_dirt_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    2,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    3,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_dirt_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    4,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_stone_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    1,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_stone_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    2,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_stone_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    3,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_dry_stone_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    4,
+    0
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_dirt_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    1,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_dirt_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    2,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_dirt_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    3
+   ],
+   "want": [
+    4,
+    3
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_stone_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    1,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_stone_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    2,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_stone_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_water_stone_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    3
+   ],
+   "want": [
+    4,
+    3
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_dirt_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    1,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_dirt_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    2,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_dirt_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    3
+   ],
+   "want": [
+    4,
+    3
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_stone_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    1,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_stone_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    1
+   ],
+   "want": [
+    2,
+    1
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_stone_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_tar_stone_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    3
+   ],
+   "want": [
+    4,
+    3
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_scorched_dirt_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    1,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_dirt_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    2,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    3,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_dirt_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    4,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_stone_D1": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    1
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    1,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_stone_D2": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    2
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    2,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_stone_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    3,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_scorched_stone_D4": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    4
+   ],
+   "f": [
+    0
+   ],
+   "want": [
+    4,
+    0
+   ],
+   "scorch": 1.0,
+   "pawns": 1
+  },
+  "vis_oil_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_slime_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
   "1": {
    "ok": true,
    "dug": 64,
@@ -412,7 +956,7 @@
   }
  },
  "notes": [
-  "swept 8 non-colonist pawn(s) (kept 0 held on purpose)"
+  "swept 47 non-colonist pawn(s) (kept 0 held on purpose)"
  ],
- "wall_s": 23.9
+ "wall_s": 128.2
 }
