@@ -1,0 +1,118 @@
+{
+ "tiles": [
+  {
+   "tile": "#1",
+   "id": "k01_Fernandez",
+   "label": "Fernandez",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#2",
+   "id": "k03_Sophie",
+   "label": "Sophie",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#3",
+   "id": "k04_Rynyk",
+   "label": "Rynyk",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#4",
+   "id": "k05_Sayuri",
+   "label": "Sayuri",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#5",
+   "id": "k09_Snuggler",
+   "label": "Snuggler",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#6",
+   "id": "k10_Eddie",
+   "label": "Eddie",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#7",
+   "id": "k11_Dutch",
+   "label": "Dutch",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  },
+  {
+   "tile": "#8",
+   "id": "k12_McCann",
+   "label": "McCann",
+   "question": "Is this a single naked humanoid facing south, with a skin colour (not grey/default), head and body both drawn?",
+   "canon": null
+  }
+ ],
+ "layout": [
+  {
+   "label": "#1",
+   "x": 8,
+   "y": 8,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#2",
+   "x": 208,
+   "y": 8,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#3",
+   "x": 408,
+   "y": 8,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#4",
+   "x": 8,
+   "y": 250,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#5",
+   "x": 208,
+   "y": 250,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#6",
+   "x": 408,
+   "y": 250,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#7",
+   "x": 8,
+   "y": 492,
+   "w": 192,
+   "h": 192
+  },
+  {
+   "label": "#8",
+   "x": 208,
+   "y": 492,
+   "w": 192,
+   "h": 192
+  }
+ ]
+}
