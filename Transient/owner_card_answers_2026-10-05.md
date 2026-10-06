@@ -5,8 +5,7 @@
   RSW_Megapleura, RSW_MossBeetleLarvae, RSW_Gembug. Their private closure: 10 egg ThingDefs (all five, fert + unfert),
   4 RSW_Biomes_Pillbug_* SoundDefs (+ the 4 mp3s), orphan hediff RSW_GembugDefense.
 - Kept (shared with other SWBestiary defs, so not ours to remove): RSW_ChitinStuff, RSW_MothWing, the larval/chitin bases.
-- Side effect: adults RSW_FacetMoth and RSW_MossBeetle laid the eggs of the deleted larvae; their CompProperties_EggLayer is removed
-  (they no longer breed).
+- Correction (coordinator): adults RSW_FacetMoth / RSW_MossBeetle keep their egg-laying; the 4 egg defs are kept and now hatch RM_FacetMothLarvae / RM_MossBeetleLarvae. SWBestiary About.xml gains a dependency on mandrake.rm.lanterndeeps. No growth chain larva -> adult exists in the defs.
 - References repointed/removed: RUT_Miasma roster row RSW_Gembug (frozen twin; a dead def would have errored), the RSW_Gembug temperature
   pin in AnimalTolerances_Ashkarr.xml, design roster the_lantern_deeps.json (-> RM_), 5 rows of armoury_bestiary_desc_remainder.csv.
 - Generator `port_fauna.py` retired (git rm); the five generated `RM_LanternDeeps_Fauna_*.xml` headers now say hand-owned.

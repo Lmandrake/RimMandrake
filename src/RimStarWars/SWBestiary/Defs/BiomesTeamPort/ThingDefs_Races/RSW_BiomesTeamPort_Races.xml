@@ -1688,6 +1688,14 @@ copied verbatim from the donor mods' own Textures trees.
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
     <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_EggFacetMothFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_EggFacetMothUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>20</eggFertilizationCountMax>
+        <eggLayIntervalDays>10</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>5~10</eggCountRange>
+      </li>
     </comps>
     <tools>
       <li>
@@ -4052,6 +4060,14 @@ copied verbatim from the donor mods' own Textures trees.
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
     <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_EggMossBeetleFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_EggMossBeetleUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>3</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
     </comps>
     <tradeTags>
       <li>AnimalUncommon</li>

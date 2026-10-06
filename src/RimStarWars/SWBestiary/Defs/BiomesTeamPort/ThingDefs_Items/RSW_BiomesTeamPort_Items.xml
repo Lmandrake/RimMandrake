@@ -1972,4 +1972,69 @@ copied verbatim from the donor mods' own Textures trees.
       <MarketValue>20.0</MarketValue>
     </statBases>
   </ThingDef>
+  <!-- Eggs of RSW_FacetMoth / RSW_MossBeetle hatch the RM_ larvae (LANTERNDEEPS_RSW_ORIGINALS_RETIRE_1, owner card 2026-10-05): the larvae moved to the RM tier. -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggFacetMothFertilized</defName>
+    <label>facet moth egg (fert.)</label>
+    <description>A fertilized facet moth egg. If all goes well, it should hatch into a facet larvae. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
+      <color>(230,212,193)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>40</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>5.5</hatcherDaystoHatch>
+        <hatcherPawn>RM_FacetMothLarvae</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggFacetMothUnfertilized</defName>
+    <label>facet moth egg (unfert.)</label>
+    <description>An unfertilized facet moth egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
+      <color>(220,202,183)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>20.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggMossBeetleFertilized</defName>
+    <label>moss beetle egg (fert.)</label>
+    <description>A moss beetle egg. If all goes well, it should hatch into a moss grub. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
+      <color>(118,135,137)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>8</hatcherDaystoHatch>
+        <hatcherPawn>RM_MossBeetleLarvae</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggMossBeetleUnfertilized</defName>
+    <label>moss beetle egg (unfert.)</label>
+    <description>An unfertilized moss beetle egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
+      <color>(108,125,127)</color>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.0</MarketValue>
+    </statBases>
+  </ThingDef>
 </Defs>
