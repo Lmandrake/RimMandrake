@@ -17,6 +17,8 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import validation as V  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+from modcheck import reviewmap as RMH  # noqa: E402  (the shared keeper save: before/after Saves stat)
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 SHEET_SRC = os.path.join(ROOT, "Transient", "mc_human_review")
@@ -28,19 +30,12 @@ def main():
     ap.add_argument("--name", default="RM_gss_review_%s" % time.strftime("%Y%m%d"))
     a = ap.parse_args()
     B = V.Bridge()
-    before = V._saves_stat()
-    if a.name + ".rws" in before:
-        print("REFUSED: %s.rws already exists (saves stay until he says delete; pass --name)" % a.name)
+    r = RMH.save_keeper(B, a.name, saves=V.SAVES)
+    if r.get("refused"):
+        print("REFUSED: %s (saves stay until he says delete; pass --name)" % r["refused"])
         return 1
-    r = B.call("rimworld/save_game", saveName=a.name)
-    time.sleep(3.0)
-    after = V._saves_stat()
-    new = sorted(set(after) - set(before))
-    changed = sorted(n for n in before if n in after and after[n] != before[n])
-    gone = sorted(set(before) - set(after))
-    ok = new == [a.name + ".rws"] and not changed and not gone
-    print("save: tool=%s new=%s changed=%s gone=%s %s" % (r.get("success"), new, changed, gone, "OK" if ok else "FAIL"))
-    if not ok:
+    print("save: tool=%s new=%s changed=%s gone=%s %s" % (r["tool"], r["new"], r["changed"], r["gone"], "OK" if r["ok"] else "FAIL"))
+    if not r["ok"]:
         return 1
     os.makedirs(REVIEW_DIR, exist_ok=True)
     for f in ("KEYSHEET.md", "keysheet.html"):
