@@ -165,6 +165,16 @@
       "def": "AA_Frostling",
       "disposition": "cut:owner Abyss sheet 2026-10-05",
       "reason": "cut: owner, Abyss sheet 2026-10-05: \"cut. no longer needed.\" (RM_Abyss only)"
+    },
+    {
+      "def": "AA_ShadowCharger",
+      "disposition": "cut:owner Abyss sheet 2026-10-05 (sitting 2)",
+      "reason": "cut: owner, Abyss sheet 2026-10-05 sitting 2: \"Cut this. Don't need it anymore.\" (RM_Abyss and its RUT_Abyss twin)"
+    },
+    {
+      "def": "AA_Thunderox",
+      "disposition": "cut:owner Abyss sheet 2026-10-05 (sitting 2)",
+      "reason": "cut: owner, Abyss sheet 2026-10-05 sitting 2: \"cut this, no longer needed\" (RM_Abyss and its RUT_Abyss twin)"
     }
   ],
   "fauna": [
@@ -202,20 +212,6 @@
       "commonality": 0.35,
       "def": "AA_CrepuscularBeetle",
       "law": "donor family §4 (crepuscular beetle)"
-    },
-    {
-      "action": "keep",
-      "band": "large",
-      "commonality": 0.09,
-      "def": "AA_ShadowCharger",
-      "law": "donor family §4 (shadow charger)"
-    },
-    {
-      "action": "keep",
-      "band": "large",
-      "commonality": 0.09,
-      "def": "AA_Thunderox",
-      "law": "donor family §4 (thunderox)"
     },
     {
       "action": "keep",

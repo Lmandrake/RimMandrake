@@ -111,8 +111,6 @@
       <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
       <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
       <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
-      <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
-      <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
       <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
     </wildAnimals>
     <coastalWildAnimals />
