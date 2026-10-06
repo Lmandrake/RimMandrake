@@ -7,8 +7,8 @@ register (now empty — every walk bar's feature has landed; live proof is separ
 
 Status key: **BUILT** = built offline this pass or earlier, live verify owed · **BUILD** = buildable
 offline, this pass · **OWNER** = needs his ruling · **DEP** = gated on an unbuilt non-FlowWorks item ·
-**OUT** = not FlowWorks (boundary: FlowWorks owns what a liquid IS and DOES; machines that transform
-one liquid into another live elsewhere).
+**OUT** = not a mod mechanic. Owner, 2026-10-05: *"Build the distillation and other associated machinery for liquids
+part of this mod. Build all flowworks components."* — liquid-transforming machinery is FlowWorks.
 
 ## Already done before this pass (for the record)
 
@@ -29,18 +29,19 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 | 4 | ✅ revert 73408b80e (rot: no blood row, deferred) — Bottle revert timer (boiling/icy → fresh) and rot (blood → hemopack) from row data | LIQUID_BOTTLE_LOOP_1 | BUILD | yes | Fill-job live failure (2026-09-25) needs a fresh-log live read; source review this pass |
 | 5 | ✅ (see log) — Fire: ignition from an explosion with no Fire; extinguishing (rain, foam) | FLOWWORKS_BUILD_PROGRAM_1 Phase 6 owed | BUILD | yes | — |
 | 6 | ✅ core (see log) — Canal-dig finds (Quarry concept): lump on the bank, letter on first find per material per map, deep cuts reach deep-drill minerals, mineral-less biome → local rock chunks | FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half) | BUILD (core) | yes | Per-biome numbers come from MINERALS_WHERE_THEY_BELONG_1's registry (owner numbers review unapproved) — core reads the MAP's own geology until the registry lands |
-| 7 | ✅ pump slice (see log) — Phase 8 hardware: universal pump (body ↔ tank through §8 TryDebit/TryCredit), barrels | FLOWWORKS_BUILD_PROGRAM_1 Phase 8 | BUILD (slice) | yes | Hoses, per-net adapters (VE PipeSystem) are a later slice |
+| 7 | ✅ pump slice (see log) — Phase 8 hardware: universal pump (body ↔ tank through §8 TryDebit/TryCredit), barrels | FLOWWORKS_BUILD_PROGRAM_1 Phase 8 | BUILD (slice) | yes | Hoses, per-net adapters (VE PipeSystem), universal cargo tank: machinery pass (row 20) |
 | 8 | ✅ audit: every FlowWorks mechanic has a toggle (the no-sand-swim guard is a correctness guard, deliberately untoggled) — Every mechanic has a Mod Settings toggle | MOD_OPTIONS_RETROFIT_1 (FlowWorks part) | BUILD (audit) | yes | — |
 | 9 | Sluice-opening route for drowning; occupant effects live | PIT_FILL_EFFECTS_1 | BUILT | — | live verify; scripting belongs to the validation owner |
 | 10 | ✅ carrier + queued art (see log) — Wall-face art at 4 depths, spikes art | EXCAVATION_WALL_ART_1 | BUILT (procedural) / art QUEUED | yes | Form chosen: SectionLayer over the depth grid; textures queued in artpipe |
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
 | 12 | ✅ 456d00ca2 — Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
-| 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | DEP | — | Rivers-carry column of MINERALS_WHERE_THEY_BELONG_1 not built |
-| 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst | LIQUID_THIRST_CHAIN_1 | BUILT (FlowWorks part) / OUT (stills = technology) | — | DBH is not in the live mod list, so the patch is inert today |
-| 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | DEP/OUT | — | Wreck-tier set pieces: art + Phase 8 hardware; transformation machines are technology |
+| 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | BUILD (River merge) | yes | Owner ruled River Works part of FlowWorks (2026-10-05); the RiverWorks→FlowWorks merge agent builds it after the move |
+| 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst; crude + household stills | LIQUID_THIRST_CHAIN_1 | BUILT (DBH patch) / BUILD (stills) | yes | DBH is not in the live mod list, so the patch is inert today; stills = machinery pass (row 20) |
+| 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | BUILD | yes | Found ruins via the shared scatterer (RM_GenStep_PlacedSetPieces, EnvironmentalHazards), restored in place; art owed |
 | 16 | worldTag authoring + shore repaint on the frozen map | WORLDMAP_LIQUID_TAGS_1 | DEP | — | Code built and loads; authoring waits on the one-time world paint (CLAUDE.md: paint once at the end) |
-| 17 | Distillation module | WRECKED_DISTILLATION_MODULE_1 | OUT | — | WreckedMachines; boundary rule |
-| 18 | Slime pit solvent, rainbow pools, Forge cycle, Sump kits | GELATINOUSSLIME_PIT_SOLVENT_1, WARSCAR_RAINBOW_POOLS_1, FORGE_CYCLE_MECHANICS_1, SUMP_* | OUT | — | Biome kits that consume FlowWorks; not FlowWorks mechanics |
+| 17 | Distillation module | WRECKED_DISTILLATION_MODULE_1 | BUILD | yes | FlowWorks ships the reusable converter comp; WreckedMachines' three tiers consume it |
+| 18 | Slime pit solvent, rainbow pools, Forge cycle, Sump kits | GELATINOUSSLIME_PIT_SOLVENT_1, WARSCAR_RAINBOW_POOLS_1, FORGE_CYCLE_MECHANICS_1, SUMP_* | BUILD (liquid-side machinery only) | yes | The reusable liquid machinery they need is FlowWorks; their biome content stays with each biome kit |
+| 20 | Liquid machinery: hoses, VE adapters, universal cargo tank, converter kit (stills, desal, detox, tar refinery, pumping station) | FLOWWORKS_BUILD_PROGRAM_1 Phase 8, LIQUID_THIRST_CHAIN_1, LIQUID_INDUSTRY_SETPIECES_1, WRECKED_DISTILLATION_MODULE_1 | BUILD | yes | Log: Transient/belt_fwmachinery_20261005.md |
 | 19 | Workshop name check "FlowWorks" | FLOWWORKS_BUILD_PROGRAM_1 Phase 0 | OUT (web) | — | Not a mechanic |
 
 ## Progress log (appended as rows land)
@@ -56,6 +57,6 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 ## Outcome of this pass
 Built: rows 1, 2, 4, 5, 6 (core), 7 (pump slice), 8 (audit), 10 (carrier + art queued), 12, 14 (FlowWorks part) and the
 bottle fill-job bug. Already built before (closed this pass): 3, 9. Owner: 11 (ladder art pick) plus every PROVISIONAL
-number. Gated on other items: 13 (registry rivers-carry column), 15, 16. Out of scope: 17, 18, 19, conversion stills.
-Still owed inside FlowWorks: Phase 8 hoses / per-net adapters / universal cargo tank; live verification of everything above
+number. Gated on other items: 16. Not a mechanic: 19. Rows 13–15, 17, 18, 20: liquid-machinery pass (owner 2026-10-05) and the River
+merge. Still owed: live verification of everything above
 (rows listed in Transient/belt_fwbuild_20261005.md); northstar/site_spec.py SETTINGS parity (14 new settings).
