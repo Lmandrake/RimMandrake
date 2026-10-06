@@ -176,8 +176,11 @@ namespace RimMandrake.FlowWorks
         public static float pitLipOcclusion = 0.85f;               // how much it hides (1 = fully)
         public static bool liquidSurfaceMotionEnabled = true;      // ripples / gloss / sheen on filled cuts
         public static bool liquidWakesEnabled = true;              // V wakes behind anything wading
+        public static bool liquidLooksEnabled = true;              // per-liquid engine surface look (off: plain XML look)
         public static bool pitScorchEnabled = true;                // a cut that burned dry reads scorched
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
+        public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
+        public static bool pitHidesShadowEnabled = true;           // no ground shadow under a pawn sunk in a cut
         // FLOWWORKS_DOOR_FAMILY_1: the sluice and security grate (two stuffable doors that pass liquid).
         public static bool flowDoorsSealedFromPitEnabled = true;
         public static bool sluiceLetsBigThroughEnabled = true;
@@ -354,6 +357,9 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitLipOcclusion, "pitLipOcclusion", 0.85f);
             Scribe_Values.Look(ref liquidSurfaceMotionEnabled, "liquidSurfaceMotionEnabled", true);
             Scribe_Values.Look(ref liquidWakesEnabled, "liquidWakesEnabled", true);
+            Scribe_Values.Look(ref liquidLooksEnabled, "liquidLooksEnabled", true);
+            Scribe_Values.Look(ref pitOutlineEnabled, "pitOutlineEnabled", true);
+            Scribe_Values.Look(ref pitHidesShadowEnabled, "pitHidesShadowEnabled", true);
             Scribe_Values.Look(ref pitScorchEnabled, "pitScorchEnabled", true);
             Scribe_Values.Look(ref pitScorchFadeDays, "pitScorchFadeDays", 20f);
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
@@ -401,8 +407,9 @@ namespace RimMandrake.FlowWorks
             // height, so content taller than it is clipped rather than scrolled
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
-            // tanker / sluice-gate / blood / quarry sections, 2026-10-05.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10300f);
+            // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
+            // pit shadow.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10800f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -721,6 +728,14 @@ namespace RimMandrake.FlowWorks
                   + "to hold a person shows a wall-height face, the deepest cut a taller one. Drawing only. Off: the plain "
                   + "earth-coloured band.");
             }
+            bool outlineWas = pitOutlineEnabled;
+            if (excavationWallFacesEnabled)
+            {
+                list.CheckboxLabeled("  Cuts are outlined, darkest along the near edge", ref pitOutlineEnabled,
+                    "Every cut gets a closed dark outline so you can see where it is: a thin line on the far and side "
+                  + "banks and a heavy dark lining on the near (south) edge that grows with depth. Shows even when "
+                  + "liquid fills the cut. Drawing only.");
+            }
             bool scorchWas = pitScorchEnabled;
             list.CheckboxLabeled("A cut that burned dry looks scorched", ref pitScorchEnabled,
                 "After a liquid fire burns a cut dry, it stays an empty pit with charred walls, an ash floor and a scorch "
@@ -731,7 +746,8 @@ namespace RimMandrake.FlowWorks
                 list.Label("Scorch fades after (days, 0 = never): " + pitScorchFadeDays.ToString("F0") + "  (rain on it: three times as fast)");
                 pitScorchFadeDays = Mathf.Round(list.Slider(pitScorchFadeDays, 0f, 60f));
             }
-            if (wallsWas != excavationWallFacesEnabled || matWas != excavationWallMaterialEnabled || scorchWas != pitScorchEnabled)
+            if (wallsWas != excavationWallFacesEnabled || matWas != excavationWallMaterialEnabled || scorchWas != pitScorchEnabled
+                || outlineWas != pitOutlineEnabled)
             {
                 SectionLayer_RMExcavationWalls.RedrawAll();
             }
@@ -740,19 +756,30 @@ namespace RimMandrake.FlowWorks
                 list.CheckboxLabeled("The near edge of a cut hides whoever stands deep in it", ref pitLipOcclusionEnabled,
                     "Seen from above and to the south, the near bank is in front of a pawn standing deep in a cut, so the "
                   + "part of them below its edge is hidden behind it. Drawing only.");
+                list.CheckboxLabeled("No ground shadow under someone down in a cut", ref pitHidesShadowEnabled,
+                    "A person or animal standing in a cut has no shadow drawn on the ground under them, so it cannot "
+                  + "show through the near bank. Drawing only. Off: the game's usual shadow.");
                 if (pitLipOcclusionEnabled)
                 {
                     list.Label("How much it hides: " + pitLipOcclusion.ToStringPercent() + "  (100% = completely; less leaves a faint outline)");
                     pitLipOcclusion = list.Slider(pitLipOcclusion, 0.5f, 1f);
                 }
             }
-            list.CheckboxLabeled("Liquids in cuts move", ref liquidSurfaceMotionEnabled,
-                "Water in a cut shimmers with drifting ripples; tar and oil show a slow wet gloss (oil with a rainbow "
-              + "film); slime moves in soft blobs. Each liquid's look is part of its definition. Drawing only. Off: the "
-              + "flat tinted surface.");
+            list.CheckboxLabeled("Extra sheen on liquids that have one", ref liquidSurfaceMotionEnabled,
+                "A drifting film drawn over the few liquids whose look asks for one (oil's rainbow sheen). "
+              + "Drawing only. Off: no film.");
             list.CheckboxLabeled("Wakes behind anything wading", ref liquidWakesEnabled,
                 "Anything walking through a liquid in a cut leaves a V-shaped wake, strong in water and faint in thick "
               + "liquids. Drawing only.");
+            bool looksWas = liquidLooksEnabled;
+            list.CheckboxLabeled("Each liquid has its own surface", ref liquidLooksEnabled,
+                "Water looks and moves like the game's own shallow water (tinted for brine, toxic or acid water, "
+              + "steaming when boiling); tar, oil and slime are thick dark liquids that slowly creep and shine. "
+              + "Each liquid's look is part of its definition. Drawing only. Off: every liquid is a flat tinted water.");
+            if (looksWas != liquidLooksEnabled)
+            {
+                if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
+            }
 
             list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,
                 "A pawn held in a superdeep pit cannot open a sluice or a security grate, even one it "

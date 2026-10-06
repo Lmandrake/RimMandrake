@@ -45,7 +45,7 @@ SETTINGS = {
         "liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,
-        "rainFillsExcavationsEnabled": True, "edgeSinksEnabled": True,
+        "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
         "sourceBudgetMultiplier": 1.0, "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1,
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,

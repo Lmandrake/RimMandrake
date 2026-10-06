@@ -1044,6 +1044,43 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.FaceFootLight(1) < RM_WallFaceMath.FaceTopLight, "the top of a face is its lit edge");
             });
 
+            // owner 2026-10-05 in game: "more of a black-lining on the southern edge of the pits"
+            Case("SouthLining_thicker_than_north_and_grows", () =>
+            {
+                float last = 0f;
+                for (int d = 1; d <= 4; d++)
+                {
+                    float w = RM_WallFaceMath.SouthLining(d);
+                    Assert(w > last, "south lining grows with depth at D=" + d);
+                    Assert(w > RM_WallFaceMath.RimLine, "south lining is thicker than the north rim line at D=" + d);
+                    last = w;
+                }
+                AssertClose(RM_WallFaceMath.SouthLining(0), 0f, "no drop, no lining");
+                Assert(RM_WallFaceMath.SouthLining(9) <= RM_WallFaceMath.SouthLining(4), "clamped past superdeep");
+            });
+
+            // owner 2026-10-05: "Scorched looks absolutely terrible" — char over the normal pit, never black
+            Case("Scorch_char_is_not_black_and_follows_walls", () =>
+            {
+                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 1f, 0f) <= 0.72f, "floor char never fully opaque");
+                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0f) > RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0.8f), "darker near the walls");
+                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.9f, 0.8f) > RM_WallFaceMath.FloorCharAlpha(1f, 0.1f, 0.8f), "blotches vary it");
+                AssertClose(RM_WallFaceMath.FloorCharAlpha(0f, 1f, 0f), 0f, "no scorch, no char");
+                AssertClose(RM_WallFaceMath.AshDriftAlpha(1f, 0.3f, 0.5f), 0f, "ash only where the noise is high");
+                Assert(RM_WallFaceMath.AshDriftAlpha(1f, 0.95f, 0.5f) > 0f, "ash drifts exist");
+                float foot = RM_WallFaceMath.FaceSootAlpha(1f, 0f), mid = RM_WallFaceMath.FaceSootAlpha(1f, 0.5f), rim = RM_WallFaceMath.FaceSootAlpha(1f, 1f);
+                Assert(foot > mid && rim > mid, "soot fades up from the floor and down from the rim");
+                Assert(foot <= 0.7f, "face soot never black");
+            });
+
+            Case("WallFace_mitre_and_measured_bevels", () =>
+            {
+                AssertClose(RM_WallFaceMath.NorthFaceHeight(3), 0.35f, "D3 = the measured steel-wall bevel band");
+                AssertClose(RM_WallFaceMath.SideFaceWidth(3), 0.17f, "D3 side = the measured side bevel");
+                AssertClose(RM_WallFaceMath.MitreInset(0.17f, 0.35f), 0.17f, "45-degree mitre steps in by the bevel width");
+                AssertClose(RM_WallFaceMath.MitreInset(0f, 0.35f), 0f, "no side bevel, no mitre");
+            });
+
             Case("LipOcclusion_band", () =>
             {
                 // pawn centre 1.2 below its cell centre (D4 sink): sprite 10.05..11.55, lip at z=11 -> band 10.05..11

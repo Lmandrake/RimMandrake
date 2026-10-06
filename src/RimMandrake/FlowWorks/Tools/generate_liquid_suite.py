@@ -1107,50 +1107,98 @@ LIQUID_DEF_ROWS = {
 }
 
 
-# FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 3 and 4, 2026-10-05): how each liquid's
-# surface MOVES and catches light, emitted as LiquidDef.surfaceLook and drawn by
-# Source/RM_LiquidSurface.cs over the (unchanged) vanilla water terrain. All values
-# [INVENTED, PROVISIONAL] and judged by looking -- review sheet
-# art_source/visual_principles_2026-10-05/. Fields: highlight (r,g,b 0..1), strength
-# (0..1), scale (cells per ripple repeat), speed (cells/s), sharpness (high = thin
-# glints, low = broad gloss), stretch (>1 = east-west slicks), sheen (rainbow film),
-# wake (V-wake strength). A row absent here gets no animated surface. RM_LiquidSurface
-# never applies a look to a base-game terrain (vanilla water already animates), so the
-# freshwater/saltwater rows reach only FlowWorks' own canal fills.
-_WATER = {"highlight": "(0.84,0.91,0.96)", "strength": 0.35, "scale": 2.0, "speed": 0.45,
-          "sharpness": 4.0, "stretch": 1.0, "wake": 1.0}
-_SLIME = {"strength": 0.35, "scale": 1.6, "speed": 0.06, "sharpness": 3.0, "stretch": 1.0, "wake": 0.3}
+# FLOWWORKS_LIQUID_LOOKS_1 (owner, 2026-10-05: "All of the liquid appearances need serious work."; "Can't we
+# make the water just look like Shallow water?"; tar "should look like black liquid"). Each liquid's SURFACE,
+# emitted as LiquidDef.surfaceLook (and, for the canal fluids with no row -- oil, poison -- as a FluidDef
+# surfaceLook patch, FLUID_SURFACE_LOOKS below) and applied by Source/RM_LiquidLooks.cs to the liquid's OWN
+# terrains (canal fill tiers + natural-body suite; never a base-game terrain). Engine assets only:
+#   shader "Water" (default) -- the terrain's own vanilla water shader + ripple pass: the shallow-water look and
+#     motion, tinted (tint, white = keep the def's colour), ripple pass tuned (rippleDensity / rippleIntensity,
+#     vanilla 1/1); texture may name a vanilla ramp family with {depth} -> Shallow/ChestDeep/Deep per fill tier.
+#   shader "Flow" -- the base game's slow distorting lava-flow shader (Map/TerrainLavaShallow) over a noise
+#     texture, tinted: a thick liquid that creeps and catches broad highlights (flowSpeed / flowAmplitude /
+#     flowFrequency / brightness / spot*). Tar, oil, slime.
+#   depthDarken -- tint x (1 - d)^tier, tier 0 trace/shallow, 1 half/chest-deep, 2 brim/superdeep/deep.
+#   fleck / fleckChance -- vanilla's per-terrain emitter (hot springs steam with AirPuff 0.25).
+#   splashes -- vanilla's wading splash (takeSplashes); thick liquids do not splash.
+#   overlay -- the old procedural glint/sheen layer (RM_LiquidSurface); only oil's rainbow film keeps it.
+#   wake -- the custom V-wake; 0 everywhere (vanilla has none; the water family uses vanilla's splash).
+# Values [INVENTED, PROVISIONAL], tuned by LOOKING in game (RM_LiquidLookProof.Tune on the review map's liquid
+# gallery). Mod Setting liquidLooksEnabled off = every fill keeps its plain XML look.
+_WATER = {"wake": 0.0, "overlay": False}
+_FLOW = {"shader": "Flow", "texture": "Other/Perlin", "splashes": False, "wake": 0.0, "overlay": False,
+         "depthDarken": 0.12, "flowSpeed": 0.03, "flowAmplitude": 0.05, "flowFrequency": 1.0, "brightness": 0.0}
+_SLIME = dict(_FLOW, flowSpeed=0.05, flowAmplitude=0.08, depthDarken=0.10)
 SURFACE_LOOKS = {
+    # the water family: vanilla shallow water, nothing drawn over it
     "freshwater":     dict(_WATER),
-    "saltwater":      dict(_WATER, highlight="(0.80,0.92,0.92)"),
-    "boiling":        dict(_WATER, speed=0.9, strength=0.45, sharpness=3.0, wake=0.8),
-    "icy":            dict(_WATER, speed=0.2, strength=0.30, highlight="(0.88,0.95,1.0)"),
-    "toxic":          dict(_WATER, highlight="(0.75,0.95,0.55)", strength=0.30, speed=0.35),
-    "acid":           dict(_WATER, highlight="(0.85,1.0,0.60)", strength=0.35, speed=0.40),
-    "reactionliquor": dict(_WATER, sheen=0.6),
-    # tar: black LIQUID, not a burn scar -- slow, broad, glossy slicks; barely wakes (viscosity)
-    "tar":            {"highlight": "(0.80,0.76,0.69)", "strength": 0.45, "scale": 2.2, "speed": 0.05,
-                       "sharpness": 3.0, "stretch": 2.5, "wake": 0.15},
-    "brine":          dict(_WATER, speed=0.30, strength=0.30),
-    "propane":        dict(_WATER, speed=0.60, strength=0.30, sharpness=5.0),
-    "chemfuel":       dict(_WATER, speed=0.20, sheen=0.5, strength=0.35),
-    "slime_red":      dict(_SLIME, highlight="(1.0,0.70,0.66)"),
-    "slime_green":    dict(_SLIME, highlight="(0.82,0.96,0.62)"),
-    "slime_white":    dict(_SLIME, highlight="(1.0,0.98,0.92)"),
-    "slime_yellow":   dict(_SLIME, highlight="(1.0,0.95,0.62)"),
+    "saltwater":      dict(_WATER),
+    "brine":          dict(_WATER, tint="(0.86,0.97,0.93)", rippleDensity=0.7),
+    "boiling":        dict(_WATER, texture="Terrain/Surfaces/HotSpringRamp", rippleDensity=1.8, rippleIntensity=1.3,
+                           fleck="AirPuff", fleckChance=0.25),
+    "icy":            dict(_WATER, texture="Terrain/Surfaces/Ice", tint="(0.80,0.88,0.95)", rippleDensity=0.4),
+    "toxic":          dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp"),
+    "acid":           dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(1.25,1.20,0.55)",
+                           rippleDensity=1.4),
+    "reactionliquor": dict(_WATER, tint="(0.95,0.88,1.08)", overlay=True, strength=0.0, sheen=0.5, scale=2.0,
+                           speed=0.2),
+    "propane":        dict(_WATER, tint="(0.92,0.96,1.05)", rippleDensity=1.6, fleck="AirPuff", fleckChance=0.05),
+    "chemfuel":       dict(_WATER, tint="(1.10,0.95,0.70)", overlay=True, strength=0.0, sheen=0.3, scale=2.0,
+                           speed=0.2),
+    # the thick family: black/coloured liquid that creeps, never a flat colour, never a burn scar
+    "tar":            dict(_FLOW, tint="(0.17,0.15,0.14)"),
+    "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
+    "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
+    "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
+    "slime_yellow":   dict(_SLIME, tint="(0.78,0.68,0.22)"),
 }
+# Canal fluids with no LiquidDef row, emitted as a FluidDef patch (Patches/LiquidTypes/RM_FluidSurfaceLooks.xml).
+FLUID_SURFACE_LOOKS = {
+    "RM_Fluid_Oil":    dict(_FLOW, tint="(0.24,0.17,0.09)", flowSpeed=0.05, overlay=True, strength=0.0, sheen=0.6,
+                            scale=2.4, speed=0.1, stretch=1.6),
+    "RM_Fluid_Poison": dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(0.75,1.15,0.60)"),
+}
+_LOOK_FIELDS = ("shader", "texture", "mask", "tint", "depthDarken", "flowSpeed", "flowAmplitude", "flowFrequency",
+                "brightness", "spotScale", "spotSpeed", "spotMin", "spotMax", "rippleDensity", "rippleIntensity",
+                "fleck", "fleckChance", "splashes", "overlay", "highlight", "strength", "scale", "speed", "sharpness",
+                "stretch", "sheen", "wake")
+
+
+def _look_lines(look, indent):
+    out = [f"{indent}<surfaceLook>"]
+    for f in _LOOK_FIELDS:
+        if f in look:
+            out.append(f"{indent}  <{f}>{_xv(look[f])}</{f}>")
+    out.append(f"{indent}</surfaceLook>")
+    return out
 
 
 def _surface_xml(key):
     look = SURFACE_LOOKS.get(key)
     if not look:
         return []
-    out = ["    <surfaceLook>"]
-    for f in ("highlight", "strength", "scale", "speed", "sharpness", "stretch", "sheen", "wake"):
-        if f in look:
-            out.append(f"      <{f}>{look[f]}</{f}>")
-    out.append("    </surfaceLook>")
-    return out
+    return _look_lines(look, "    ")
+
+
+def build_fluid_looks_patch(out_dir: Path):
+    ops = []
+    for fluid, look in FLUID_SURFACE_LOOKS.items():
+        ops.append("  <Operation Class=\"PatchOperationAdd\">")
+        ops.append(f"    <xpath>Defs/RimMandrake.FlowWorks.FluidDef[defName=\"{fluid}\"]</xpath>")
+        ops.append("    <value>")
+        ops += _look_lines(look, "      ")
+        ops.append("    </value>")
+        ops.append("  </Operation>")
+    xml = """<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FluidSurfaceLooks.xml         GENERATED by generate_liquid_suite.py (FLUID_SURFACE_LOOKS)
+  The surface look of the canal fluids that have no LiquidDef row (oil, poison). Edit the table, never this file.
+-->
+<Patch>
+""" + "\n".join(ops) + "\n</Patch>\n"
+    out_path = out_dir / "RM_FluidSurfaceLooks.xml"
+    out_path.write_text(xml, encoding="utf-8")
+    return out_path
 
 
 def _xv(v):
@@ -1481,6 +1529,9 @@ def main():
 
     liquiddef_path = build_liquiddef_registry(liquiddef_dir)
     print(f"WROTE {liquiddef_path}")
+
+    looks_path = build_fluid_looks_patch(patch_dir)
+    print(f"WROTE {looks_path}")
 
     bottle_path, generated_for = build_bottle_thingdefs(thingdef_dir)
     print(f"WROTE {bottle_path}")

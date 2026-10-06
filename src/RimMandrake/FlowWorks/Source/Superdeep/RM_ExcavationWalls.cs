@@ -61,6 +61,10 @@ namespace RimMandrake.FlowWorks
 				float sc = scorch != null ? scorch.StrengthAt(c) : 0f;
 				if (d == 0)
 				{
+					if (material && BordersCut(map, eng, c))
+					{
+						Collar(map, c, y - 0.001f);
+					}
 					if (scorch != null)
 					{
 						ScorchHalo(map, scorch, c, y);
@@ -71,14 +75,19 @@ namespace RimMandrake.FlowWorks
 				int north = NeighbourLevel(map, eng, c + IntVec3.North, d);
 				int west = NeighbourLevel(map, eng, c + IntVec3.West, d);
 				int east = NeighbourLevel(map, eng, c + IntVec3.East, d);
+				int south = NeighbourLevel(map, eng, c + IntVec3.South, d);
+				if (RimMandrakeFlowWorksSettings.pitOutlineEnabled)
+				{
+					Outline(c, d, north, south, west, east, y + 0.0009f);
+				}
 				int nd = RM_WallFaceMath.ExposedDrop(d, north, f);
 				int wd = RM_WallFaceMath.ExposedDrop(d, west, f);
 				int ed = RM_WallFaceMath.ExposedDrop(d, east, f);
 				float h = RM_WallFaceMath.NorthFaceHeight(nd);
 				if (sc > 0f && f == 0)
 				{
-					// principle 5: the burned floor — ash and char under the faces
-					Quad(RM_FaceMaterial.ScorchMat(true, sc), c.x, c.z, 1f, 1f - h, y - 0.0005f, White, White, UvWorld);
+					// principle 5: the SAME empty pit, charred — vertex-colour char over the normal floor
+					CharFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f);
 				}
 				if (!material)
 				{
@@ -98,107 +107,296 @@ namespace RimMandrake.FlowWorks
 					}
 					continue;
 				}
+				float ww = RM_WallFaceMath.SideFaceWidth(wd);
+				float ew = RM_WallFaceMath.SideFaceWidth(ed);
 				if (nd > 0)
 				{
-					NorthFace(map, eng, c, d, h, y, sc);
+					NorthFace(map, eng, c, d, h, ww, ew, y, sc);
 				}
 				if (wd > 0)
 				{
-					SideFace(map, eng, c, c + IntVec3.West, d, RM_WallFaceMath.SideFaceWidth(wd), h, false, y + 0.001f, sc);
+					SideFace(map, eng, c, c + IntVec3.West, d, ww, h, false, y + 0.001f, sc);
 				}
 				if (ed > 0)
 				{
-					SideFace(map, eng, c, c + IntVec3.East, d, RM_WallFaceMath.SideFaceWidth(ed), h, true, y + 0.001f, sc);
+					SideFace(map, eng, c, c + IntVec3.East, d, ew, h, true, y + 0.001f, sc);
 				}
 			}
 			FinalizeMesh(MeshParts.All);
 		}
 
-		private void NorthFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float h, float y, float scorch)
+		/// <summary>The far (north) bank's face, drawn as vanilla draws a wall's south bevel (MEASURED from the owner's
+		/// steel-wall shot): a flat band the ground's own material, lit x1.85 against the ground, hanging directly from
+		/// the rim, with 45-degree mitred lower corners where a side bevel meets it.</summary>
+		private void NorthFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, float h, float ww, float ew, float y, float scorch)
 		{
-			float z0 = c.z + 1f - h;
+			float top = c.z + 1f;
+			float bot = top - h;
+			float xl = c.x, xr = c.x + 1f;
+			float il = RM_WallFaceMath.MitreInset(ww, h), ir = RM_WallFaceMath.MitreInset(ew, h);
 			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool stone);
+			Material face = RM_FaceMaterial.FaceMat(ground);
+			// trapezoid: bottom-left, top-left, top-right, bottom-right
+			Vector3[] q = { new Vector3(xl + il, y, bot), new Vector3(xl, y, top), new Vector3(xr, y, top), new Vector3(xr - ir, y, bot) };
+			if (face != null)
+			{
+				Poly(face, q, White, White, false, h);
+			}
+			// lit like the wall bevel; only a touch darker at the foot the deeper the cut (depth still reads)
+			byte aTop = (byte)(255f * LightAlpha(RM_WallFaceMath.WallFaceLight));
+			byte aFoot = (byte)(Mathf.Max(0f, aTop - 12f * d));
+			Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0002f), new Color32(255, 248, 232, aFoot), new Color32(255, 248, 232, aTop), false, h);
+			Poly(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, Lift(q, 0.0004f), White, White, true, h);
+			if (scorch > 0f)
+			{
+				SootFace(c, xl + il, xr - ir, bot, top, scorch, y + 0.0007f);
+			}
+		}
+
+		/// <summary>A side bank as vanilla's side bevel: a strip lit x1.29, its top end mitred where the north face meets
+		/// it, running down to the near edge.</summary>
+		private void SideFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, IntVec3 n, int d, float w, float northH, bool east, float y, float scorch)
+		{
+			float top = c.z + 1f;
+			float x0 = east ? c.x + 1f - w : c.x;
+			float x1 = x0 + w;
+			// mitre: the edge touching the bank is full height; the inner edge stops where the north face's foot is
+			float innerTop = northH > 0f ? top - northH : top;
+			Vector3[] q = east
+				? new[] { new Vector3(x0, y, c.z), new Vector3(x0, y, innerTop), new Vector3(x1, y, top), new Vector3(x1, y, c.z) }
+				: new[] { new Vector3(x0, y, c.z), new Vector3(x0, y, top), new Vector3(x1, y, innerTop), new Vector3(x1, y, c.z) };
+			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, n, out bool _);
 			Material face = RM_FaceMaterial.FaceMat(ground);
 			if (face != null)
 			{
-				Quad(face, c.x, z0, 1f, h, y, White, White, UvWorld);
+				Poly(face, q, White, White, false, 1f);
 			}
-			// vanilla convention: a camera-facing face is the LIGHT tone; occluded toward the foot
-			float top = RM_WallFaceMath.FaceTopLight - 1f;                 // > 0: lighten
-			float foot = 1f - RM_WallFaceMath.FaceFootLight(d);            // > 0: darken
-			Color32 topC = new Color32(255, 246, 226, (byte)(255f * Mathf.Clamp01(top * 0.6f)));
-			Color32 footC = new Color32(0, 0, 0, (byte)(255f * Mathf.Clamp01(foot + 0.12f * d)));
-			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, z0, 1f, h, y + 0.0002f, footC, topC);
-			// strata (dirt) or block joints (stone), face-local v so the pattern stands upright
-			Quad(stone ? RM_FaceMaterial.JointMat : RM_FaceMaterial.StrataMat, c.x, z0, 1f, h, y + 0.0004f, White, White, UvFace);
+			byte a = (byte)(255f * LightAlpha(RM_WallFaceMath.WallSideLight));
+			Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0002f), new Color32(255, 248, 232, a), new Color32(255, 248, 232, a), false, 1f);
 			if (scorch > 0f)
 			{
-				Quad(RM_FaceMaterial.ScorchMat(false, scorch), c.x, z0, 1f, h, y + 0.0006f, White, White, UvFace);
-				byte a = (byte)(255f * (1f - RM_WallFaceMath.ScorchDarken(scorch)) * 0.7f);
-				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, z0, 1f, h, y + 0.0007f, new Color32(8, 6, 5, a), new Color32(8, 6, 5, (byte)(a / 2)));
+				byte s = (byte)(255f * RM_WallFaceMath.FaceSootAlpha(scorch, 0.3f));
+				Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0007f), new Color32(22, 15, 10, s), new Color32(22, 15, 10, (byte)(s * 0.75f)), false, 1f);
 			}
-			// dark rim line along the far edge, contact shadow at the foot
-			float rim = Mathf.Min(RM_WallFaceMath.RimLine, h * 0.4f);
-			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + 1f - rim, 1f, rim, y + 0.0008f, new Color32(10, 8, 6, 200), new Color32(10, 8, 6, 200));
-			float cs = RM_WallFaceMath.ContactShadow;
-			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, z0 - cs, 1f, cs, y + 0.0008f, new Color32(0, 0, 0, 0), new Color32(0, 0, 0, 120));
 		}
 
-		private void SideFace(Map map, RM_MapComponent_Excavation eng, IntVec3 c, IntVec3 n, int d, float w, float northH, bool lit, float y, float scorch)
+		/// <summary>White-blend alpha that brightens a mid-dark ground by <paramref name="mult"/> (alpha blend toward
+		/// white: g' = g(1-a) + a; solved at a typical ground value of 0.30).</summary>
+		private static float LightAlpha(float mult)
 		{
-			float x0 = lit ? c.x + 1f - w : c.x;
-			float h = 1f - northH;   // the side face runs from the foot of the north face to the near lip
-			if (h <= 0f)
+			const float g = 0.30f;
+			return Mathf.Clamp01((g * mult - g) / (1f - g));
+		}
+
+		private static Vector3[] Lift(Vector3[] q, float dy)
+		{
+			Vector3[] r = new Vector3[q.Length];
+			for (int i = 0; i < q.Length; i++)
+			{
+				r[i] = new Vector3(q[i].x, q[i].y + dy, q[i].z);
+			}
+			return r;
+		}
+
+		/// <summary>The pit's footprint as a closed BLACK outline — vanilla outlines every wall edge — drawn whether or
+		/// not liquid stands in it (it marks the edge, not the face). The near (south) edge is heavier and grows with
+		/// the drop: the owner's "black-lining on the southern edge".</summary>
+		private void Outline(IntVec3 c, int d, int north, int south, int west, int east, float y)
+		{
+			Material m = RM_FaceMaterial.ShadeMat;
+			Color32 k = new Color32(0, 0, 0, 255);
+			int sd = d - south;
+			if (sd > 0)
+			{
+				QuadVMat(m, c.x, c.z, 1f, RM_WallFaceMath.SouthLining(sd), y, k, k);
+			}
+			if (d - north > 0)
+			{
+				float r = RM_WallFaceMath.RimLine;
+				QuadVMat(m, c.x, c.z + 1f - r, 1f, r, y, k, k);
+			}
+			float sl = RM_WallFaceMath.SideLine;
+			if (d - west > 0)
+			{
+				QuadHMat(m, c.x, c.z, sl, 1f, y, k, k);
+			}
+			if (d - east > 0)
+			{
+				QuadHMat(m, c.x + 1f - sl, c.z, sl, 1f, y, k, k);
+			}
+		}
+
+		/// <summary>True when an undug cell touches (8-way) a dug cell.</summary>
+		private static bool BordersCut(Map map, RM_MapComponent_Excavation eng, IntVec3 c)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				IntVec3 n = c + GenAdj.AdjacentCells[i];
+				if (n.InBounds(map) && eng.ExcavatedDepthAt(n) > 0)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>The bank's own ground redrawn over a cell bordering a cut, so the cut's terrain (gravel, water)
+		/// no longer smears soft-edged over the bank: the edge stays crisp under the black outline, and the near-lip
+		/// occluder (same material) matches it with no seam.</summary>
+		private void Collar(Map map, IntVec3 c, float y)
+		{
+			TerrainDef t = map.terrainGrid.TerrainAt(c);
+			if (t == null || t.IsWater)
 			{
 				return;
 			}
-			TerrainDef ground = RM_FaceMaterial.GroundBeside(map, eng, c, n, out bool stone);
-			Material face = RM_FaceMaterial.FaceMat(ground);
-			if (face != null)
+			Material m = RM_FaceMaterial.FaceMat(t);
+			if (m != null)
 			{
-				Quad(face, x0, c.z, w, h, y, White, White, UvWorld);
-			}
-			Color32 tone = lit
-				? new Color32(255, 246, 226, (byte)(255f * Mathf.Clamp01((RM_WallFaceMath.FaceTopLight - 1f) * 0.45f)))
-				: new Color32(0, 0, 0, (byte)(255f * Mathf.Clamp01(0.40f + 0.05f * d)));
-			QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, w, h, y + 0.0002f, tone, tone);
-			if (scorch > 0f)
-			{
-				byte a = (byte)(255f * (1f - RM_WallFaceMath.ScorchDarken(scorch)));
-				QuadVMat(RM_FaceMaterial.ShadeMat, x0, c.z, w, h, y + 0.0007f, new Color32(8, 6, 5, a), new Color32(8, 6, 5, a));
+				Quad(m, c.x, c.z, 1f, 1f, y, White, White, UvWorld);
 			}
 		}
 
-		/// <summary>The scorch ring on undug ground round a burned cut: a soot gradient on the side touching it.</summary>
+		// ── scorch (principle 5, redone): vertex-colour char over the normal pit, no texture tiles ──
+
+		private static readonly Color32 Char = new Color32(30, 21, 14, 0);
+		private static readonly Color32 Ash = new Color32(132, 124, 114, 0);
+
+		private static float Blotch(float x, float z)
+		{
+			// two octaves of world-space Perlin: patches a couple of cells across, never a repeat inside a pit
+			return Mathf.Clamp01(0.65f * Mathf.PerlinNoise(x * 0.55f + 31.7f, z * 0.55f + 11.3f)
+				+ 0.35f * Mathf.PerlinNoise(x * 1.7f + 5.1f, z * 1.7f + 77.9f));
+		}
+
+		/// <summary>The burned floor: a 6x6 vertex grid per cell, char alpha from world noise and wall distance, warm
+		/// ash drifts where the noise is high, and a few pale ash flecks seeded per cell.</summary>
+		private void CharFloor(IntVec3 c, int d, int north, int south, int west, int east, float hTop, float s, float y)
+		{
+			const int N = 6;
+			bool wn = north < d, ws = south < d, ww = west < d, we = east < d;
+			Color32[,] charC = new Color32[N + 1, N + 1];
+			Color32[,] ashC = new Color32[N + 1, N + 1];
+			for (int i = 0; i <= N; i++)
+			{
+				for (int j = 0; j <= N; j++)
+				{
+					float lx = i / (float)N, lz = j / (float)N * hTop;
+					float x = c.x + lx, z = c.z + lz;
+					float dist = 9f;
+					if (wn) dist = Mathf.Min(dist, hTop - lz);
+					if (ws) dist = Mathf.Min(dist, lz);
+					if (ww) dist = Mathf.Min(dist, lx);
+					if (we) dist = Mathf.Min(dist, 1f - lx);
+					float b = Blotch(x, z);
+					Color32 k = Char;
+					k.a = (byte)(255f * RM_WallFaceMath.FloorCharAlpha(s, b, dist));
+					charC[i, j] = k;
+					Color32 a = Ash;
+					a.a = (byte)(255f * RM_WallFaceMath.AshDriftAlpha(s, b, dist));
+					ashC[i, j] = a;
+				}
+			}
+			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, charC, y);
+			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, ashC, y + 0.0001f);
+			// a few pale ash flecks, seeded per cell (not a pattern)
+			System.Random r = new System.Random(Gen.HashCombineInt(c.x * 7349, c.z * 2971));
+			int flecks = r.Next(2);   // sparse and soft: dense pale dots read as rain/specks (owner, 2026-10-05)
+			for (int k = 0; k < flecks; k++)
+			{
+				float fx = c.x + 0.12f + 0.76f * (float)r.NextDouble();
+				float fz = c.z + 0.12f + (hTop - 0.24f) * (float)r.NextDouble();
+				float sz = 0.025f + 0.03f * (float)r.NextDouble();
+				Color32 fc = new Color32(150, 142, 132, (byte)(90f * s));
+				QuadVMat(RM_FaceMaterial.ShadeMat, fx, fz, sz * 1.6f, sz, y + 0.0002f, fc, fc);
+			}
+		}
+
+		/// <summary>Soot on a north face: darkest at the foot, a band at the rim, plus a few short irregular streaks
+		/// climbing from the foot, seeded per cell.</summary>
+		private void SootFace(IntVec3 c, float xl, float xr, float bot, float top, float s, float y)
+		{
+			const int R = 4;
+			float h = top - bot;
+			Color32[,] g = new Color32[2, R + 1];
+			for (int j = 0; j <= R; j++)
+			{
+				Color32 k = new Color32(22, 15, 10, (byte)(255f * RM_WallFaceMath.FaceSootAlpha(s, j / (float)R)));
+				g[0, j] = k;
+				g[1, j] = k;
+			}
+			Grid(RM_FaceMaterial.ShadeMat, xl, bot, xr - xl, h, 1, g, y, R);
+			System.Random r = new System.Random(Gen.HashCombineInt(c.x * 4271, c.z * 9157));
+			int streaks = 1 + r.Next(3);
+			for (int k = 0; k < streaks; k++)
+			{
+				float w = 0.02f + 0.04f * (float)r.NextDouble();
+				float x = xl + (xr - xl - w) * (float)r.NextDouble();
+				float len = h * (0.35f + 0.5f * (float)r.NextDouble());
+				QuadVMat(RM_FaceMaterial.ShadeMat, x, bot, w, len, y + 0.0001f,
+					new Color32(14, 10, 7, (byte)(170f * s)), new Color32(14, 10, 7, 0));
+			}
+		}
+
+		/// <summary>The scorch ring on undug ground round a burned cut: soot fading out within 0.4 cell of the edge,
+		/// broken up by the same world noise so it is irregular, never a hard rectangle.</summary>
 		private void ScorchHalo(Map map, RM_PitScorch scorch, IntVec3 c, float y)
 		{
-			const float W = 0.35f;
-			for (int i = 0; i < 4; i++)
+			float sN = scorch.StrengthAt(c + IntVec3.North), sS = scorch.StrengthAt(c + IntVec3.South);
+			float sW = scorch.StrengthAt(c + IntVec3.West), sE = scorch.StrengthAt(c + IntVec3.East);
+			if (sN <= 0f && sS <= 0f && sW <= 0f && sE <= 0f)
 			{
-				IntVec3 n = c + GenAdj.CardinalDirections[i];
-				float s = scorch.StrengthAt(n);
-				if (s <= 0f)
+				return;
+			}
+			const int N = 6;
+			const float W = 0.4f;
+			Color32[,] g = new Color32[N + 1, N + 1];
+			for (int i = 0; i <= N; i++)
+			{
+				for (int j = 0; j <= N; j++)
 				{
-					continue;
+					float lx = i / (float)N, lz = j / (float)N;
+					float a = 0f;
+					if (sN > 0f) a = Mathf.Max(a, sN * Mathf.Clamp01(1f - (1f - lz) / W));
+					if (sS > 0f) a = Mathf.Max(a, sS * Mathf.Clamp01(1f - lz / W));
+					if (sW > 0f) a = Mathf.Max(a, sW * Mathf.Clamp01(1f - lx / W));
+					if (sE > 0f) a = Mathf.Max(a, sE * Mathf.Clamp01(1f - (1f - lx) / W));
+					float b = Blotch(c.x + lx, c.z + lz);
+					a *= 0.25f + 0.55f * b;
+					Color32 k = Char;
+					k.a = (byte)(255f * Mathf.Clamp01(a));
+					g[i, j] = k;
 				}
-				Color32 dark = new Color32(10, 8, 6, (byte)(150f * s));
-				Color32 clear = new Color32(10, 8, 6, 0);
-				IntVec3 dir = GenAdj.CardinalDirections[i];
-				if (dir == IntVec3.North)
+			}
+			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, 1f, N, g, y);
+		}
+
+		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>
+		private void Grid(Material mat, float x0, float z0, float w, float h, int nx, Color32[,] col, float y, int nz = -1)
+		{
+			if (nz < 0) nz = nx;
+			if (w <= 0f || h <= 0f)
+			{
+				return;
+			}
+			LayerSubMesh sm = GetSubMesh(mat);
+			int b = sm.verts.Count;
+			for (int i = 0; i <= nx; i++)
+			{
+				for (int j = 0; j <= nz; j++)
 				{
-					QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + 1f - W, 1f, W, y, clear, dark);
+					sm.verts.Add(new Vector3(x0 + w * i / nx, y, z0 + h * j / nz));
+					sm.uvs.Add(Vector3.zero);
+					sm.colors.Add(col[i, j]);
 				}
-				else if (dir == IntVec3.South)
+			}
+			for (int i = 0; i < nx; i++)
+			{
+				for (int j = 0; j < nz; j++)
 				{
-					QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, W, y, dark, clear);
-				}
-				else if (dir == IntVec3.East)
-				{
-					QuadHMat(RM_FaceMaterial.ShadeMat, c.x + 1f - W, c.z, W, 1f, y, clear, dark);
-				}
-				else
-				{
-					QuadHMat(RM_FaceMaterial.ShadeMat, c.x, c.z, W, 1f, y, dark, clear);
+					int v00 = b + i * (nz + 1) + j, v01 = v00 + 1, v10 = v00 + nz + 1, v11 = v10 + 1;
+					sm.tris.Add(v00); sm.tris.Add(v01); sm.tris.Add(v11);
+					sm.tris.Add(v00); sm.tris.Add(v11); sm.tris.Add(v10);
 				}
 			}
 		}
@@ -253,6 +451,26 @@ namespace RimMandrake.FlowWorks
 			sm.colors.Add(top);
 			sm.colors.Add(top);
 			sm.colors.Add(bottom);
+			Tris(sm, n);
+		}
+
+		/// <summary>An arbitrary convex quad q[0..3] = bottom-left, top-left, top-right, bottom-right; bottom/top colours;
+		/// faceUv: u along x, v from the foot (scaled by height), else world uv.</summary>
+		private void Poly(Material mat, Vector3[] q, Color32 bottom, Color32 top, bool faceUv, float h)
+		{
+			if (mat == null)
+			{
+				return;
+			}
+			LayerSubMesh sm = GetSubMesh(mat);
+			int n = sm.verts.Count;
+			float zb = Mathf.Min(q[0].z, q[3].z);
+			for (int i = 0; i < 4; i++)
+			{
+				sm.verts.Add(q[i]);
+				sm.uvs.Add(faceUv ? new Vector3(q[i].x, (q[i].z - zb) * 2f, 0f) : new Vector3(q[i].x, q[i].z, 0f));
+				sm.colors.Add(i == 0 || i == 3 ? bottom : top);
+			}
 			Tris(sm, n);
 		}
 

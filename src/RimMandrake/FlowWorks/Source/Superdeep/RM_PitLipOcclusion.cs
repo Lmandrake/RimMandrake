@@ -73,8 +73,17 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				// Stepping in or out (next cell at another depth): no cover. Position flips to the next cell at the START
+				// of a step while the drawn pawn is still tweening across the lip, so a cover computed from either cell
+				// sits on the wrong ground (owner's shots 2026-10-05: a brown block behind a pawn wading out, a darker
+				// strip round one stepping into a deep filled pit). The sink itself still eases in and out.
+				if (p.pather != null && p.pather.Moving && p.pather.nextCell.IsValid
+					&& eng.ExcavatedDepthAt(p.pather.nextCell) != d)
+				{
+					continue;
+				}
 				Vector3 dp = p.DrawPos;
-				float half = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(p.BodySize, 0.2f)) * 1.5f, 0.7f, 2.4f);
+				float half = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(p.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
 				float bottom = dp.z - half;
 				float top = dp.z + half;
 				if (bottom >= p.Position.z)
@@ -86,7 +95,7 @@ namespace RimMandrake.FlowWorks
 				for (int cx = x0; cx <= x1; cx++)
 				{
 					IntVec3 lipCell = IntVec3.Invalid;
-					for (int k = 0; k <= 3; k++)
+					for (int k = 1; k <= 3; k++)   // never the pawn's own row: the lip is SOUTH of it
 					{
 						IntVec3 cand = new IntVec3(cx, 0, p.Position.z - k);
 						if (!cand.InBounds(map))
