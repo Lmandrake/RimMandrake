@@ -63,6 +63,12 @@
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- WEBWORK_TRACTION_LANCE_BUILD_1: the capstan's pull lives in the shared RM_CompTetherPull. Hard
+         modDependency + loadAfter in About.xml. -->
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
       <Private>false</Private>

@@ -46,6 +46,8 @@
     <Compile Include="RM_CompEggClutchRelay.cs" />
     <Compile Include="RM_WebworkStartupGate.cs" />
     <Compile Include="RM_WebworkProof.cs" />
+    <Compile Include="RM_UrravethRemains.cs" />
+    <Compile Include="RM_UrravethProof.cs" />
   </ItemGroup>
 
   <ItemGroup>

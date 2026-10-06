@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEBWORK_DEAD_GIANT_BUILD_1: examine one piece of the urraveth remains (RM_UrravethRemains.cs). -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_ExamineUrravethRemains</defName>
+    <driverClass>RimMandrake.Webwork.RM_JobDriver_ExamineUrraveth</driverClass>
+    <reportString>examining TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

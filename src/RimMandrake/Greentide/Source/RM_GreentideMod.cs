@@ -116,6 +116,23 @@ namespace RimMandrake.Greentide
         // Owner ruling 2026-10-03: the first-ever reveal pauses the game and explains itself.
         public static bool vurrakFirstRevealPause = true;
 
+        // GREENTIDE_STELLOCK_LACE_BUILD_1 (RM_StellockLace.cs). Off: no branch
+        // drops and the project is never hidden-then-revealed (the shared
+        // found-tech gate, registered in RM_GreentideMod). Made laces still work.
+        public static bool stellockLaceEnabled = true;
+        // PROVISIONAL: spec's "about 1 in 8" per felled roster tree.
+        public static float stellockBranchChance = 0.125f;
+        // Spec default: 12 in-game hours.
+        public static float stellockLaceHours = 12f;
+
+        // GREENTIDE_THURROCK_HERD_BUILD_1 — the thurrock's RM_ThurrockShatter auras, written onto the live
+        // HediffDef by RM_ThurrockAuraApplier. Felling off: a big browser that fells nothing. Pace multiplies
+        // how often the resting aura bursts (trees felled per hour). Wall damage off: provoked, it still
+        // fells trees but never touches a building.
+        public static bool thurrockFellingEnabled = true;
+        public static float thurrockFellingPace = 1f;
+        public static bool thurrockProvokedWallDamage = true;
+
         private string biomeListBuffer;
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 1200f;
@@ -142,6 +159,12 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref vurrakAmbushEnabled, "vurrakAmbushEnabled", true);
             Scribe_Values.Look(ref vurrakTriggerBodySize, "vurrakTriggerBodySize", 0.6f);
             Scribe_Values.Look(ref vurrakFirstRevealPause, "vurrakFirstRevealPause", true);
+            Scribe_Values.Look(ref stellockLaceEnabled, "stellockLaceEnabled", true);
+            Scribe_Values.Look(ref stellockBranchChance, "stellockBranchChance", 0.125f);
+            Scribe_Values.Look(ref stellockLaceHours, "stellockLaceHours", 12f);
+            Scribe_Values.Look(ref thurrockFellingEnabled, "thurrockFellingEnabled", true);
+            Scribe_Values.Look(ref thurrockFellingPace, "thurrockFellingPace", 1f);
+            Scribe_Values.Look(ref thurrockProvokedWallDamage, "thurrockProvokedWallDamage", true);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -283,6 +306,20 @@ namespace RimMandrake.Greentide
               + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
             list.GapLine();
 
+            list.Label("Stellock lace");
+            list.CheckboxLabeled("Stellock branches and the lace research", ref stellockLaceEnabled,
+                "On: felling a Greentide tree on a Greentide map can drop a stellock branch; studying branches "
+              + "reveals the stellock lace research. Off: no branches drop and the research is an ordinary "
+              + "visible project. Laces already made still work either way.");
+            if (stellockLaceEnabled)
+            {
+                list.Label("  Branch drop chance per felled tree: " + stellockBranchChance.ToStringPercent());
+                stellockBranchChance = list.Slider(stellockBranchChance, 0f, 1f);
+            }
+            list.Label("  A lace stops bleeding for: " + stellockLaceHours.ToString("0.#") + " hours");
+            stellockLaceHours = list.Slider(stellockLaceHours, 1f, 48f);
+            list.GapLine();
+
             list.Label("The false bank (the vurrak)");
             list.CheckboxLabeled("Vurrak ambush", ref vurrakAmbushEnabled,
                 "On: a vurrak lies flat along the water's edge, invisible as silted bank, and bites whatever heavy "
@@ -298,6 +335,21 @@ namespace RimMandrake.Greentide
                   + "explains what happened. Once per game.");
             }
 
+            list.GapLine();
+
+            list.Label("The canopy-breaker (the thurrock)");
+            list.CheckboxLabeled("Thurrock fells trees", ref thurrockFellingEnabled,
+                "On: a thurrock herd batters the trees around it as it browses, and a tree beaten low enough comes "
+              + "down as a fallen trunk and wood. Off: it is a huge browser that fells nothing.");
+            if (thurrockFellingEnabled)
+            {
+                list.Label("  Felling pace: " + thurrockFellingPace.ToString("0.00") + "x (how often the herd's blows land; higher fells more trees per hour)");
+                thurrockFellingPace = list.Slider(thurrockFellingPace, 0.25f, 3f);
+            }
+            list.CheckboxLabeled("Provoked thurrocks batter walls", ref thurrockProvokedWallDamage,
+                "On: a manhunting thurrock shoulders walls and doors the way it shoulders trees. Natural rock is "
+              + "always spared, and a calm one never damages buildings. Off: no building damage even when provoked.");
+
             lastContentHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -311,6 +363,8 @@ namespace RimMandrake.Greentide
         public RM_GreentideMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_GreentideSettings>();
+            RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register(
+                RM_StellockLace.GateKey, () => RM_GreentideSettings.stellockLaceEnabled);
         }
 
         public override string SettingsCategory()
@@ -331,6 +385,7 @@ namespace RimMandrake.Greentide
             // (a world-tile stat read on demand, not cached at worldgen) is felt
             // immediately rather than waiting on the next game load.
             RM_GreentideDensityApplier.Apply();
+            RM_ThurrockAuraApplier.Apply();
         }
     }
 }

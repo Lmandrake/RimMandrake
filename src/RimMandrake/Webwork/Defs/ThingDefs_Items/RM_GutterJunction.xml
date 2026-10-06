@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TRACTION_LANCE_BUILD_1 step 4, Webwork door. An intact gutter junction, cut out of an RM_Webwork_Gutter by
+  deconstructing it (RM_CompProperties_SpecimenOnDeconstruct on the gutter; breaking it instead leaves only silk).
+  The cut registers like a touch in RM_MapComponent_SenseWeb, so the owners come. Studying it once finishes
+  RM_Research_TractionLance (RM_CompProperties_AnalyzableGrantResearch: the vanilla analyzable plus a grant).
+  analysisID: arbitrary unique int (repo-swept 2026-10-06). Texture PLACEHOLDER (the gutter's own) until
+  RM_GutterJunction is installed through the art ledger. MarketValue PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GutterJunction</defName>
+    <label>gutter junction</label>
+    <description>An intact hub of the web's silk irrigation, cut out whole and braced so it does not spring apart: four woven channels knotted into one, still taut with the pull that draws water through them.\n\nStudying it shows how the web's owners haul a load along a line, and teaches the traction lance. It is taken apart in the study.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Webwork_Gutter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Silver_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>150</MarketValue>
+      <Mass>3</Mass>
+      <Flammability>1.2</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AnalyzableGrantResearch">
+        <analysisID>61904533</analysisID>
+        <analysisRequiredRange>1~1</analysisRequiredRange>
+        <destroyedOnAnalyzed>true</destroyedOnAnalyzed>
+        <showProgress>false</showProgress>
+        <analysisDurationHours>2</analysisDurationHours>
+        <completedLetterLabel>Gutter junction studied</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has taken the gutter junction apart and seen how the web hauls water along a line: a ratchet of silk that pulls and holds and never lets go.</completedLetter>
+        <completedLetterDef>NeutralEvent</completedLetterDef>
+        <grantsResearch>
+          <li>RM_Research_TractionLance</li>
+        </grantsResearch>
+        <grantLetterLabel>{RESEARCH} learned</grantLetterLabel>
+        <grantLetter>From the gutter junction, {PAWN_labelShort} has worked out how to throw a tether and reel a load in along the ground.\n\n{RESEARCH} is now known: the traction lance can be built.</grantLetter>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Study...</activateLabelString>
+        <activateDescString>Take the gutter junction apart to learn how it pulls.</activateDescString>
+        <jobString>Study gutter junction</jobString>
+        <guiLabelString>Choose who should study this</guiLabelString>
+        <inspectString>Can be studied by a colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

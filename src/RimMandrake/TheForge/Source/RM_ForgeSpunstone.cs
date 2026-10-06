@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -14,9 +13,10 @@ namespace RimMandrake.TheForge
     // CompStudiable: core's WorkGiver_StudyInteract sends researchers to
     // study any thing with a knowledge-less CompStudiable (RimSage 1.6,
     // WorkGiver_StudyInteract.HasJobOnThing), and every study interaction
-    // adds to one colony-wide knowledge counter (RM_SpunstoneKnowledge).
+    // adds to one colony-wide knowledge counter (the kit's RM_FoundTechKnowledge,
+    // keyed by project).
     // Until the counter reaches the threshold, RM_SpunstoneBonding answers
-    // IsHidden = true (Harmony postfix below), which is how the research
+    // IsHidden = true (the kit's RM_Patch_FoundTechHidden postfix), which is how the research
     // tab hides a project and how CanStartNow refuses it. At the threshold a
     // letter announces the breakthrough and names who studied the samples.
     //
@@ -27,95 +27,50 @@ namespace RimMandrake.TheForge
     //
     // Toggle off: the project is never hidden and gardens are not studied.
     // ════════════════════════════════════════════════════════════════════
-    public class CompProperties_SpunstoneStudy : CompProperties_Studiable
+    // Since GREENTIDE_STELLOCK_LACE_BUILD_1 the mechanism lives once, in the
+    // shared kit: RimMandrake.EnvironmentalHazards.RM_CompFoundTechStudy
+    // (RM_FoundTechStudy.cs), which also serves the Greentide's stellock
+    // branch. These names stay so the Flora XML, the debug actions and the
+    // TheForge walk keep pointing at real classes; each project keeps its own
+    // counter, so the two never cross-talk.
+    public class CompProperties_SpunstoneStudy : RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy
     {
-        // Growth at which a garden counts as mature. Matches the garden's
-        // own harvestMinGrowth (0.9) in RM_TheForge_Flora.xml.
-        public float minGrowth = 0.9f;
-        // TUNED: one full study session (5 interactions x 0.87 base) is
-        // ~4.35 points at research speed 1, so 12 is about three sessions:
-        // a careful player reveals it within one growth phase.
-        public float knowledgeToReveal = 12f;
+        public const string GateKey = "TheForge.Spunstone";
 
         public CompProperties_SpunstoneStudy()
         {
             compClass = typeof(RM_CompSpunstoneStudy);
+            gateKey = GateKey;
+            // TUNED: one full study session (5 interactions x 0.87 base) is
+            // ~4.35 points at research speed 1, so 12 is about three sessions:
+            // a careful player reveals it within one growth phase.
+            knowledgeToReveal = 12f;
+            minGrowth = 0.9f;
+            letterLabel = "Spunstone bonding";
+            letterText = "Turning a floatstone garden in the light, {STUDIER} has seen it: the threads are not tangled at random. Each one carries strain to its neighbours, so the whole globe takes a load no single strand could. Lay it in the grain, and a beam of floatstone weighs almost nothing and bends almost not at all.";
+            inspectLabel = "Spunstone study (colony)";
         }
     }
 
-    public class RM_CompSpunstoneStudy : CompStudiable
+    public class RM_CompSpunstoneStudy : RimMandrake.EnvironmentalHazards.RM_CompFoundTechStudy
     {
-        public new CompProperties_SpunstoneStudy Props => (CompProperties_SpunstoneStudy)props;
-
-        private bool Mature
-        {
-            get
-            {
-                Plant plant = parent as Plant;
-                return plant == null || plant.Growth >= Props.minGrowth;
-            }
-        }
-
-        public override void PostSpawnSetup(bool respawningAfterLoad)
-        {
-            base.PostSpawnSetup(respawningAfterLoad);
-            Refresh();
-        }
-
-        // Plants run only the Long ticker (Plant overrides TickLong, never
-        // Tick), so this is the comp hook that fires on a garden.
-        public override void CompTickLong()
-        {
-            base.CompTickLong();
-            Refresh();
-        }
-
-        private void Refresh()
-        {
-            RM_SpunstoneKnowledge k = RM_SpunstoneKnowledge.Get();
-            SetStudyEnabled(RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneStudyEnabled)
-                && Mature && (k == null || !k.Revealed));
-        }
-
-        public override void Study(Pawn studier, float studyAmount, float anomalyKnowledgeAmount = 0f)
-        {
-            float before = studyPoints;
-            base.Study(studier, studyAmount, anomalyKnowledgeAmount);
-            float gained = studyPoints - before;
-            if (gained > 0f && RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneStudyEnabled))
-            {
-                RM_SpunstoneKnowledge.Get()?.Add(gained, studier, Props.knowledgeToReveal);
-            }
-        }
-
-        public override string CompInspectStringExtra()
-        {
-            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneStudyEnabled))
-            {
-                return null;
-            }
-            RM_SpunstoneKnowledge k = RM_SpunstoneKnowledge.Get();
-            if (k == null || k.Revealed)
-            {
-                return null;
-            }
-            string line = "Spunstone study (colony): " + k.Points.ToString("0.#") + " / " + Props.knowledgeToReveal.ToString("0.#");
-            if (!Mature)
-            {
-                line += ". Too young to study.";
-            }
-            return line;
-        }
     }
 
+    // Kept as a facade over the shared counter, and as the loader for saves
+    // written before the move: its old Scribe keys are read once and folded
+    // into RM_FoundTechKnowledge.
     public class RM_SpunstoneKnowledge : GameComponent
     {
-        private float points;
-        private bool revealed;
-        private List<string> studiers = new List<string>();
+        private float legacyPoints;
+        private bool legacyRevealed;
+        private List<string> legacyStudiers;
 
-        public float Points => points;
-        public bool Revealed => revealed;
+        private static ResearchProjectDef Project => RM_TheForgeDefOf.RM_SpunstoneBonding;
+        private static RimMandrake.EnvironmentalHazards.RM_FoundTechKnowledge Shared
+            => RimMandrake.EnvironmentalHazards.RM_FoundTechKnowledge.Get();
+
+        public float Points => Shared?.Points(Project) ?? 0f;
+        public bool Revealed => Shared != null && Shared.Revealed(Project);
 
         public RM_SpunstoneKnowledge(Game game)
         {
@@ -126,73 +81,38 @@ namespace RimMandrake.TheForge
             return Current.Game?.GetComponent<RM_SpunstoneKnowledge>();
         }
 
-        public void Add(float amount, Pawn studier, float threshold)
-        {
-            if (revealed)
-            {
-                return;
-            }
-            points += amount;
-            if (studier != null && !studiers.Contains(studier.LabelShort))
-            {
-                studiers.Add(studier.LabelShort);
-            }
-            if (points >= threshold)
-            {
-                Reveal(studier);
-            }
-        }
-
         public void Reveal(Pawn studier)
         {
-            revealed = true;
-            ResearchProjectDef project = RM_TheForgeDefOf.RM_SpunstoneBonding;
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Turning a floatstone garden in the light, ")
-              .Append(studier != null ? studier.LabelShort : "your researcher")
-              .Append(" has seen it: the threads are not tangled at random. Each one carries strain to its neighbours, so the whole globe takes a load no single strand could. Lay it in the grain, and a beam of floatstone weighs almost nothing and bends almost not at all.\n\n")
-              .Append("A new research project is open: ").Append(project.LabelCap).Append('.');
-            if (studiers.Count > 0)
+            CompProperties_SpunstoneStudy props = null;
+            ThingDef garden = DefDatabase<ThingDef>.AllDefsListForReading.Find(d => d.GetCompProperties<CompProperties_SpunstoneStudy>() != null);
+            if (garden != null)
             {
-                sb.Append("\n\nThe samples were studied by: ").Append(string.Join(", ", studiers)).Append('.');
+                props = garden.GetCompProperties<CompProperties_SpunstoneStudy>();
             }
-            Find.LetterStack.ReceiveLetter("Spunstone bonding", sb.ToString(), LetterDefOf.PositiveEvent);
+            Shared?.Reveal(Project, studier, props ?? new CompProperties_SpunstoneStudy());
+        }
+
+        public override void LoadedGame()
+        {
+            base.LoadedGame();
+            if ((legacyPoints > 0f || legacyRevealed) && Shared != null)
+            {
+                Shared.Import(Project, legacyPoints, legacyRevealed, legacyStudiers);
+                legacyPoints = 0f;
+                legacyRevealed = false;
+                legacyStudiers = null;
+            }
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref points, "spunstonePoints", 0f);
-            Scribe_Values.Look(ref revealed, "spunstoneRevealed", false);
-            Scribe_Collections.Look(ref studiers, "spunstoneStudiers", LookMode.Value);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && studiers == null)
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
             {
-                studiers = new List<string>();
+                Scribe_Values.Look(ref legacyPoints, "spunstonePoints", 0f);
+                Scribe_Values.Look(ref legacyRevealed, "spunstoneRevealed", false);
+                Scribe_Collections.Look(ref legacyStudiers, "spunstoneStudiers", LookMode.Value);
             }
-        }
-    }
-
-    // The research tab hides a project, and CanStartNow refuses it, while
-    // IsHidden is true (RimSage 1.6: MainTabWindow_Research, ResearchProjectDef.CanStartNow).
-    [HarmonyPatch(typeof(ResearchProjectDef), nameof(ResearchProjectDef.IsHidden), MethodType.Getter)]
-    public static class RM_Patch_SpunstoneHidden
-    {
-        public static void Postfix(ResearchProjectDef __instance, ref bool __result)
-        {
-            if (__result || __instance != RM_TheForgeDefOf.RM_SpunstoneBonding)
-            {
-                return;
-            }
-            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneStudyEnabled) || Current.Game == null)
-            {
-                return;
-            }
-            if (__instance.IsFinished)
-            {
-                return;
-            }
-            RM_SpunstoneKnowledge k = RM_SpunstoneKnowledge.Get();
-            __result = k == null || !k.Revealed;
         }
     }
 

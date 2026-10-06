@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_STELLOCK_LACE_BUILD_1 — the stellock branch (a found specimen) and the stellock lace
+  (the cartridge learned from it).
+
+  Branch: drops at the stump when a Greentide roster tree or the greatbole is felled on a
+  Greentide map (RM_CompStellockBranchDrop, Source/RM_StellockLace.cs, attached to each tree by
+  Patches/RM_StellockBranchDrop_Trees.xml). Studied through the shared kit's found-tech study
+  (RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy, the same mechanism the Forge's
+  spunstone gardens use) until RM_Research_StellockLace appears. The study does not consume it;
+  its own rot does.
+
+  Lace: used like the vanilla healer mech serum / RSW_BactaPatch (CompUsable + UseItem for self,
+  Recipe_AdministerUsableItem bill for a doctor, wired in Patches/RM_StellockLace_RecipeWiring.xml).
+  Adds RM_StellockLaced, whose stage carries totalBleedFactor 0 (RimSage 1.6:
+  HediffSet.CalculateBleedRate multiplies every hediff's CurStage.totalBleedFactor into the
+  pawn's total) — so every wound AND every missing-part stump stops bleeding, and nothing is
+  tended. thingCategories Drugs, not Medicine, on purpose (the MechSerumHealer / bacta
+  precedent): a Medicine-category item can be auto-burned by an ordinary Tend job.
+
+  Art: finished renders exist in the artpipe state dir (done/RM_StellockBranch,
+  done/RM_StellockLace) and are NOT installed yet; both texPaths below are vanilla placeholders
+  until `art install` lands them.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_StellockBranch</defName>
+    <label>stellock branch</label>
+    <description>A severed jungle branch whose cut end has drawn itself closed under a glossy amber film. Inside, the pale wood shows its vessels pinched shut in a neat ring, as if the tree had sealed the wound before the branch finished falling.\n\nA doctor or researcher can study it. It rots like any green cutting, in days, so it must be studied in the jungle or carried home quickly.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <!-- PLACEHOLDER texture: vanilla wood, tinted. Real art awaits art install. -->
+      <texPath>Things/Item/Resource/WoodLog</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(92, 70, 44)</color>
+    </graphicData>
+    <tickerType>Rare</tickerType>
+    <stackLimit>10</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <!-- PROVISIONAL: a curiosity, not a trade good. -->
+      <MarketValue>12</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0.8</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <techLevel>Neolithic</techLevel>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <!-- PROVISIONAL: "days, not seasons" (spec §1). -->
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_FoundTechStudy">
+        <project>RM_Research_StellockLace</project>
+        <gateKey>Greentide.StellockLace</gateKey>
+        <!-- PROVISIONAL: one branch can be studied every quarter day. -->
+        <frequencyTicks>15000</frequencyTicks>
+        <!-- PROVISIONAL: same scale as the Forge's spunstone (12 = about three full sessions). -->
+        <knowledgeToReveal>12</knowledgeToReveal>
+        <letterLabel>Stellock lace</letterLabel>
+        <letterText>Peeling the film back from a stellock cut, {STUDIER} has seen what the tree does: the moment it is wounded, a thin sap sheet draws across the cut and every vessel under it pinches shut. Laid over a person, the same film should hold every wound closed at once, until a doctor can get to them.</letterText>
+        <inspectLabel>Stellock study (colony)</inspectLabel>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_StellockLace</defName>
+    <label>stellock lace</label>
+    <description>A sealed cartridge of stellock film: a fine amber-green lace that, laid over a bleeding person, draws closed across every wound and stump at once and pinches the vessels shut.\n\nIt stops all bleeding for half a day (the length is a mod setting). It does not tend anything: wounds stay untended, still risk infection, and bleed again when the lace lets go. Used once and gone.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <!-- PLACEHOLDER texture: vanilla medicine, tinted amber-green. Real art awaits art install. -->
+      <texPath>Things/Item/Resource/Medicine/MedicineIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(170, 180, 90)</color>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <useHitPoints>true</useHitPoints>
+    <thingCategories>
+      <li>Drugs</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <!-- PROVISIONAL: costly on purpose (spec §3, balanced by cost not scope). -->
+      <MarketValue>220</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+      <!-- spec §3 first value: about 1500 ticks. -->
+      <WorkToMake>1500</WorkToMake>
+    </statBases>
+    <techLevel>Industrial</techLevel>
+    <recipeMaker>
+      <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+      <workSkill>Intellectual</workSkill>
+      <recipeUsers>
+        <li>DrugLab</li>
+      </recipeUsers>
+      <researchPrerequisite>RM_Research_StellockLace</researchPrerequisite>
+      <skillRequirements>
+        <!-- PROVISIONAL: vanilla medicine's own gate. -->
+        <Crafting>4</Crafting>
+        <Intellectual>4</Intellectual>
+      </skillRequirements>
+      <displayPriority>2010</displayPriority>
+    </recipeMaker>
+    <!-- spec §3 first values. -->
+    <costList>
+      <RM_SapResin>2</RM_SapResin>
+      <MedicineIndustrial>1</MedicineIndustrial>
+      <Cloth>4</Cloth>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Apply {0_label}</useLabel>
+        <!-- PROVISIONAL -->
+        <useDuration>240</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_UseEffectAddHediff">
+        <hediffDef>RM_StellockLaced</hediffDef>
+        <!-- A second lace merges into the first and keeps the longer time left
+             (HediffComp_Disappears.CompPostMerged), i.e. it refreshes the hold. -->
+        <allowRepeatedUse>true</allowRepeatedUse>
+      </li>
+      <li Class="CompProperties_UseEffectPlaySound">
+        <soundOnUsed>TechMedicineUsed</soundOnUsed>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_AdministerStellockLace</defName>
+    <label>apply stellock lace</label>
+    <description>Lay a stellock lace over a patient to stop all their bleeding for a while. It does not tend their wounds.</description>
+    <workerClass>Recipe_AdministerUsableItem</workerClass>
+    <jobString>Applying stellock lace.</jobString>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <!-- PROVISIONAL -->
+    <workAmount>240</workAmount>
+    <dontShowIfAnyIngredientMissing>true</dontShowIfAnyIngredientMissing>
+    <surgeryOutcomeEffect IsNull="True" />
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_StellockLace</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_StellockLace</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <ResearchProjectDef>
+    <defName>RM_Research_StellockLace</defName>
+    <label>stellock lace</label>
+    <description>The stellock tree seals its own wounds under a sap film that pinches every vessel shut. Learn to make that film, and a cartridge of it can stop all of a person's bleeding at once, anywhere.\n\nHidden until colonists have studied a stellock branch.</description>
+    <!-- spec §2 first value: about 1200. -->
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>MedicineProduction</li>
+    </prerequisites>
+    <!-- PROVISIONAL placement: one column right of MedicineProduction (11 / 0). -->
+    <researchViewX>12</researchViewX>
+    <researchViewY>0.3</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>

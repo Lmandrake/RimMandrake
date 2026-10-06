@@ -130,12 +130,24 @@
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
       <Flammability>1.2</Flammability>
+      <!-- WEBWORK_TRACTION_LANCE_BUILD_1: the work to brace and cut a junction out whole. PROVISIONAL. -->
+      <WorkToBuild>1200</WorkToBuild>
     </statBases>
     <killedLeavings>
       <Hyperweave>5</Hyperweave>
     </killedLeavings>
+    <!-- WEBWORK_TRACTION_LANCE_BUILD_1 step 4: a colonist may deconstruct a gutter the colony does not own
+         (vanilla building.alwaysDeconstructible). Cut out that way it leaves an intact RM_GutterJunction to study;
+         broken by damage it leaves only the silk above. The cut trips the sense-web on the cutter. -->
+    <building>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
     <comps>
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SpecimenOnDeconstruct">
+        <specimen>RM_GutterJunction</specimen>
+        <tripSenseWeb>true</tripSenseWeb>
+      </li>
     </comps>
   </ThingDef>
 

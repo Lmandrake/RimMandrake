@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_DEAD_GIANT_BUILD_1. Wires RM_GenStep_UrravethRemains into the GenStepDef system. The class self-gates on
+  map.Biome.defName == "RM_Webwork" and on the Mod Settings site chance, so the global add in
+  Patches/RM_UrravethRemains_MapGenPatch.xml no-ops on every other map. Order 325: just after the nest (324), so the
+  nest's own placement is never wiped by the skeleton's footprint search (which refuses any edifice).
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_UrravethRemainsScatter</defName>
+    <order>325</order>
+    <genStep Class="RimMandrake.Webwork.RM_GenStep_UrravethRemains" />
+  </GenStepDef>
+
+</Defs>

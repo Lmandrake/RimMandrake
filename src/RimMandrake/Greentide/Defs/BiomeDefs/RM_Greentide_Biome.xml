@@ -127,8 +127,8 @@
     <!-- GREENTIDE_FREE_ROSTER_OWNED_1: the free tier owns its animal list, nothing vanilla-borrowed. Values are
          invented first values from the bedazzle review's bands. The sytheclaw is multi-homed with the Pyrelands
          ON PURPOSE (owner has not ruled its home; evictions are stopped): do not "fix" it. Guard drops when both
-         biomes live in RimMandrake.Biomes. RM_Thurrock joins when GREENTIDE_THURROCK_HERD_BUILD_1 lands; the
-         Illisk when GREENTIDE_ILLISK_BUILD_1 builds it. The Vurrak (the false bank) is 0.15 by owner card
+         biomes live in RimMandrake.Biomes. RM_Thurrock is 0.08 (GREENTIDE_THURROCK_HERD_BUILD_1, first value: one
+         herd on many maps, none on some). The Illisk when GREENTIDE_ILLISK_BUILD_1 builds it. The Vurrak (the false bank) is 0.15 by owner card
          2026-10-03 (GREENTIDE_VURRAK_BUILD_1). The skerrel stays plant-spawned. -->
     <wildAnimals>
       <RM_Krannock>0.3</RM_Krannock>
@@ -137,6 +137,7 @@
       <RM_Vurrak>0.15</RM_Vurrak>
       <RM_Yammeth>1.0</RM_Yammeth>
       <RM_CanopySwinger>0.3</RM_CanopySwinger>
+      <RM_Thurrock>0.08</RM_Thurrock>
       <RM_Sytheclaw MayRequire="mandrake.rm.biomes">0.2</RM_Sytheclaw>
     </wildAnimals>
     <!-- GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26): replaces the two

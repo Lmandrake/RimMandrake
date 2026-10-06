@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Urraveth_Remains.xml            WEBWORK_DEAD_GIANT_BUILD_1
+  ============================================================================
+  The wrapped skeleton of an urraveth, the extinct grazer the ollathrix took.
+  Five piece defs; RM_GenStep_UrravethRemains places SEVEN pieces (two rib
+  sections, two limb piles) in a fixed 15 x 9 body layout, head east.
+  Each piece is RM_Building_UrravethPiece (RM_UrravethRemains.cs): wrapped
+  graphic until read, then the bare-bone graphic named in its extension.
+  No minifiedDef: too big to haul. Not claimable; deconstructible (for the
+  load rule "an adjacent piece removed").
+
+  Numbers marked PROVISIONAL are invented (footprints, draw sizes, hit points,
+  load capacities, examine ticks) and owe a live balance/look pass.
+  Art: ten finished artpipe renders exist (_artsrc/RM_Urraveth_*), NOT yet
+  installed — `art install` is owed before these texPaths resolve.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef Name="RM_UrravethPieceBase" ParentName="BuildingNaturalBase" Abstract="True">
+    <thingClass>RimMandrake.Webwork.RM_Building_UrravethPiece</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <rotatable>false</rotatable>
+    <fillPercent>0.75</fillPercent>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>false</castEdgeShadows>
+    <tickerType>Rare</tickerType>
+    <neverMultiSelect>true</neverMultiSelect>
+    <canOverlapZones>false</canOverlapZones>
+    <filthLeaving>Filth_RubbleRock</filthLeaving>
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints> <!-- PROVISIONAL -->
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <isInert>true</isInert>
+    </building>
+  </ThingDef>
+
+  <!-- ===== skull: cut (mandible scoring); also holds the last wrapping ===== -->
+  <ThingDef ParentName="RM_UrravethPieceBase">
+    <defName>RM_Urraveth_Skull</defName>
+    <label>wrapped urraveth skull</label>
+    <description>The skull of an urraveth, bound in old grey silk so thick it has the shape of a boulder. Whatever this grazer was, its head alone is longer than a colonist is tall. Examining it will cut the wrapping away and read what the bone has to say.</description>
+    <size>(3,3)</size> <!-- PROVISIONAL -->
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_Skull_Wrapped</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize> <!-- PROVISIONAL -->
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Webwork.RM_UrravethPieceExtension">
+        <bareTexPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_Skull_Bare</bareTexPath>
+        <bareLabel>urraveth skull</bareLabel>
+        <chapter>cut</chapter>
+        <isSkull>true</isSkull>
+        <supportRank>4</supportRank>
+        <loadCapacity>2</loadCapacity> <!-- PROVISIONAL -->
+        <examineTicks>4000</examineTicks> <!-- PROVISIONAL -->
+        <chapterLetterLabel>Urraveth remains: cut</chapterLetterLabel>
+        <chapterLetterText>Under the silk, the skull is scored. Long parallel grooves run along the jaw and up behind the eye, two at a time, the width of an ollathrix mandible apart. They are not the marks of feeding. Something held the head still and worked at the neck behind it until it came free.\n\nChapter read: CUT.</chapterLetterText>
+        <finalLetterLabel>Urraveth remains: the whole death</finalLetterLabel>
+        <finalLetterText>The last wrapping comes away from the inside of the skull, and the bones finally agree on what happened.\n\nThe urraveth was a grazer bigger than any house a colony builds, and it walked into the Webwork. The anchor lines took its legs first and snapped them where it fought: it was PINNED. While it still breathed, the ollathrix laid silk over it in living layers, each one cinched before the next: it was BOUND. Then they cut, working at the neck until the head came free: it was CUT. And then, over a long time and from the inside, they took everything until the bone was scraped clean: it was EATEN.\n\nThe ground around the remains still holds the shape of the body. Stand at the skull and look back along it. This is what the owners of the Webwork can do.</finalLetterText>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ===== neck run: cut ===== -->
+  <ThingDef ParentName="RM_UrravethPieceBase">
+    <defName>RM_Urraveth_NeckRun</defName>
+    <label>wrapped urraveth neck</label>
+    <description>A run of neck vertebrae the size of barrels, silk-wrapped where they lie. Examining it will cut the wrapping away and read the bone.</description>
+    <size>(3,2)</size> <!-- PROVISIONAL -->
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_NeckRun_Wrapped</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize> <!-- PROVISIONAL -->
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Webwork.RM_UrravethPieceExtension">
+        <bareTexPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_NeckRun_Bare</bareTexPath>
+        <bareLabel>urraveth neck</bareLabel>
+        <chapter>cut</chapter>
+        <supportRank>3</supportRank>
+        <loadCapacity>2</loadCapacity> <!-- PROVISIONAL -->
+        <examineTicks>3000</examineTicks> <!-- PROVISIONAL -->
+        <chapterLetterLabel>Urraveth remains: cut</chapterLetterLabel>
+        <chapterLetterText>The neck bones are notched on both sides in the same place, again and again, as if something had sawn at one joint for a long time. The last vertebra before the skull is split clean through.\n\nChapter read: CUT.</chapterLetterText>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ===== rib section: bound. Walkable under (Standable), drawn over pawns. ===== -->
+  <ThingDef ParentName="RM_UrravethPieceBase">
+    <defName>RM_Urraveth_RibSection</defName>
+    <label>wrapped urraveth ribs</label>
+    <description>A section of the urraveth's ribcage, the ribs arching high enough to walk under, every one of them sleeved in silk. Examining it will cut the wrapping away and read the bone. Bones this old do not like weight.</description>
+    <size>(3,5)</size> <!-- PROVISIONAL -->
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>20</pathCost> <!-- PROVISIONAL -->
+    <fillPercent>0.25</fillPercent>
+    <blockWind>false</blockWind>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_RibSection_Wrapped</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(5,5)</drawSize> <!-- PROVISIONAL -->
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Webwork.RM_UrravethPieceExtension">
+        <bareTexPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_RibSection_Bare</bareTexPath>
+        <bareLabel>urraveth ribs</bareLabel>
+        <chapter>bound</chapter>
+        <supportRank>2</supportRank>
+        <loadCapacity>3</loadCapacity> <!-- PROVISIONAL: about three colonists' body size -->
+        <examineTicks>3000</examineTicks> <!-- PROVISIONAL -->
+        <chapterLetterLabel>Urraveth remains: bound</chapterLetterLabel>
+        <chapterLetterText>The ribs were wrapped while the animal was alive. You can tell because the silk is in layers, each one pulled tight over the last, and between the layers the bone shows where the ribs flexed against it: breathing, then struggling, then not.\n\nChapter read: BOUND.</chapterLetterText>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ===== pelvis (and the spine's root): eaten ===== -->
+  <ThingDef ParentName="RM_UrravethPieceBase">
+    <defName>RM_Urraveth_Pelvis</defName>
+    <label>wrapped urraveth pelvis</label>
+    <description>The urraveth's pelvis and the last of its spine, a silk-wrapped mass as big as a shed. Examining it will cut the wrapping away and read the bone.</description>
+    <size>(3,3)</size> <!-- PROVISIONAL -->
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_Pelvis_Wrapped</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(4,4)</drawSize> <!-- PROVISIONAL -->
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Webwork.RM_UrravethPieceExtension">
+        <bareTexPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_Pelvis_Bare</bareTexPath>
+        <bareLabel>urraveth pelvis</bareLabel>
+        <chapter>eaten</chapter>
+        <supportRank>1</supportRank>
+        <loadCapacity>3</loadCapacity> <!-- PROVISIONAL -->
+        <examineTicks>3000</examineTicks> <!-- PROVISIONAL -->
+        <chapterLetterLabel>Urraveth remains: eaten</chapterLetterLabel>
+        <chapterLetterText>Inside the pelvis the bone is scraped clean, polished almost, in long even strokes that all run outward. Whatever ate the urraveth did it slowly and from the inside, and left nothing at all.\n\nChapter read: EATEN.</chapterLetterText>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ===== limb pile: pinned ===== -->
+  <ThingDef ParentName="RM_UrravethPieceBase">
+    <defName>RM_Urraveth_LimbPile</defName>
+    <label>wrapped urraveth legs</label>
+    <description>A heap of the urraveth's leg bones, snapped and folded under where it fell, the whole pile wrapped together. Examining it will cut the wrapping away and read the bone.</description>
+    <size>(2,2)</size> <!-- PROVISIONAL -->
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_LimbPile_Wrapped</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize> <!-- PROVISIONAL -->
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Webwork.RM_UrravethPieceExtension">
+        <bareTexPath>Things/Building/Natural/RM_Urraveth/RM_Urraveth_LimbPile_Bare</bareTexPath>
+        <bareLabel>urraveth legs</bareLabel>
+        <chapter>pinned</chapter>
+        <supportRank>0</supportRank>
+        <loadCapacity>2</loadCapacity> <!-- PROVISIONAL -->
+        <examineTicks>2500</examineTicks> <!-- PROVISIONAL -->
+        <chapterLetterLabel>Urraveth remains: pinned</chapterLetterLabel>
+        <chapterLetterText>The leg bones are broken in the middle, not at the joints, and each break has a stub of old anchor silk fused into it. The urraveth was held down by its legs and it pulled until they snapped.\n\nChapter read: PINNED.</chapterLetterText>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

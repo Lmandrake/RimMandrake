@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_TRACTION_LANCE_BUILD_1 step 4: "two places to learn it". One row, finished outright by either discovery:
+    - Webwork: study an intact gutter junction (RM_GutterJunction, cut out of an RM_Webwork_Gutter by deconstructing
+      it; RM_CompProperties_AnalyzableGrantResearch on the item).
+    - Sump: study the capstan's preserved draw-joints (RUT_PreservedDrawJoint in mandrake.rm.thesump grants this row
+      by defName; a silent no-op when this mod is absent).
+  1.6 has no "hidden" research flag (ResearchProjectDef.IsHidden is the Anomaly codex only), so, like the capstan's
+  row, this one is visible but locked: requiredAnalyzed keeps it off the bench until the junction is studied, and the
+  grant finishes it in the same moment. Learned once, buildable anywhere. baseCost PROVISIONAL (never paid at a bench
+  in normal play). researchView position PROVISIONAL.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_Research_TractionLance</defName>
+    <label>traction lance</label>
+    <description>A crewed emplacement that throws a barbed fabric tether and reels its target in along the ground. Learned by studying how the web's owners haul water through an intact gutter junction, or how the old tar-pit capstans pulled: the same pull, on a tether.</description>
+    <baseCost>900</baseCost>
+    <techLevel>Industrial</techLevel>
+    <requiredAnalyzed>
+      <li>RM_GutterJunction</li>
+    </requiredAnalyzed>
+    <researchViewX>7.10</researchViewX>
+    <researchViewY>8.40</researchViewY>
+  </ResearchProjectDef>
+</Defs>

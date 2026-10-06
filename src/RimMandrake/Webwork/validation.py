@@ -115,6 +115,54 @@ def _base_port_findings():
     return bad
 
 
+def _traction_lance_findings():
+    """WEBWORK_TRACTION_LANCE_BUILD_1, offline half: one pull, two buildings, two doors, fabric tether."""
+    bad = []
+    rm = os.path.normpath(os.path.join(HERE, ".."))
+    pull_cls = "RimMandrake.CreatureBehaviors.RM_CompProperties_TetherPull"
+    lance = _read(os.path.join("Defs", "ThingDefs_Buildings", "RM_TractionLance.xml"))
+    cap_p = os.path.join(rm, "TheSump", "Defs", "ThingDefs_Buildings", "RM_CapstanTurret.xml")
+    cap = open(cap_p, encoding="utf-8").read() if os.path.isfile(cap_p) else ""
+    if pull_cls not in lance:
+        bad.append("RM_TractionLance does not carry the shared RM_CompTetherPull")
+    if pull_cls not in cap:
+        bad.append("RM_CapstanTurret does not carry the shared RM_CompTetherPull")
+    for f in ("Cloth", "DevilstrandCloth", "Hyperweave"):
+        if "<stuff>%s</stuff>" % f not in lance:
+            bad.append("RM_TractionLance has no tether factor for %s" % f)
+    if "<li>Fabric</li>" not in lance or "RM_Research_TractionLance" not in lance:
+        bad.append("RM_TractionLance is not fabric-stuffed or not gated on RM_Research_TractionLance")
+    # One pull implementation: the forced-move call (Notify_Teleported in a reel) lives only in RM_CompTetherPull.
+    # Sanity probe: the search must find the shared class itself, or it is blind.
+    pull_sites, saw_shared = [], False
+    for mod in ("CreatureBehaviors", "TheSump", "Webwork"):
+        src = os.path.join(rm, mod, "Source")
+        for dp, _d, files in os.walk(src):
+            for fn in files:
+                if not fn.endswith(".cs"):
+                    continue
+                txt = open(os.path.join(dp, fn), encoding="utf-8").read()
+                if "Notify_Teleported(" in txt and ("ReelStep" in txt or "TryRope" in txt):
+                    if fn == "RM_CompTetherPull.cs":
+                        saw_shared = True
+                    else:
+                        pull_sites.append(fn)
+    if not saw_shared:
+        bad.append("sanity probe: the pull search did not find RM_CompTetherPull.cs (the check is blind)")
+    if pull_sites:
+        bad.append("a second pull implementation exists: %s" % sorted(pull_sites))
+    junction = _read(os.path.join("Defs", "ThingDefs_Items", "RM_GutterJunction.xml"))
+    if "RM_CompProperties_AnalyzableGrantResearch" not in junction or "RM_Research_TractionLance" not in junction:
+        bad.append("RM_GutterJunction does not grant RM_Research_TractionLance")
+    structures = _read(os.path.join("Defs", "ThingDefs_Buildings", "RM_WebworkStructures.xml"))
+    if "<specimen>RM_GutterJunction</specimen>" not in structures or "<alwaysDeconstructible>true</alwaysDeconstructible>" not in structures:
+        bad.append("RM_Webwork_Gutter cannot be cut out into an RM_GutterJunction")
+    dj_p = os.path.join(rm, "TheSump", "Defs", "ThingDefs_Items", "RUT_PreservedDrawJoint.xml")
+    if os.path.isfile(dj_p) and "RM_Research_TractionLance" not in open(dj_p, encoding="utf-8").read():
+        bad.append("the Sump draw-joint does not grant RM_Research_TractionLance")
+    return bad
+
+
 def static_checks():
     bad = []
     # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
@@ -160,6 +208,7 @@ def static_checks():
             bad.append("wildPlants has fewer than 16 rows")
     # WEBWORK_BASE_PORT_BUILD_1: structures, front extension, thrixweave rename, butcher yield (parsed from the XML)
     bad.extend(_base_port_findings())
+    bad.extend(_traction_lance_findings())
     for cls in ("RM_GenStep_WebworkNest", "RM_CompEggClutchRelay", "RM_CompEmergentSpawnOnDestroy", "RM_BiomeWorker_Webwork"):
         if not any(("class %s" % cls) in _read(os.path.join("Source", f)) for f in os.listdir(os.path.join(HERE, "Source")) if f.endswith(".cs")):
             bad.append("class %s not found in Source/" % cls)

@@ -254,6 +254,11 @@ namespace RimMandrake.TheForge
             RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register(
                 "TheForge.Pulse",
                 () => RM_TheForgeSettings.Active(RM_TheForgeSettings.weatherPulseEnabled));
+            // Spunstone study runs on the kit's shared found-tech mechanism
+            // (RM_FoundTechStudy.cs); this makes its toggle real.
+            RimMandrake.EnvironmentalHazards.RM_MechanicGates.Register(
+                CompProperties_SpunstoneStudy.GateKey,
+                () => RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneStudyEnabled));
         }
 
         public override void WriteSettings()

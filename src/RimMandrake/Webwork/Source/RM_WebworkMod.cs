@@ -40,6 +40,13 @@ namespace RimMandrake.Webwork
 		public static float frontCreepIntervalMultiplier = 1f;
 		public static bool thrixweaveTraderStripEnabled = true;
 
+		// WEBWORK_DEAD_GIANT_BUILD_1: the urraveth remains (RM_UrravethRemains.cs). Numbers PROVISIONAL.
+		public static bool urravethEnabled = true;
+		public static float urravethSiteChance = 0.25f;
+		public static int urravethThrixweavePerPiece = 8;
+		public static float urravethWarningHours = 6f;
+		public static float urravethCollapseDamageMultiplier = 1f;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -51,6 +58,11 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
 			Scribe_Values.Look(ref frontCreepIntervalMultiplier, "frontCreepIntervalMultiplier", 1f);
 			Scribe_Values.Look(ref thrixweaveTraderStripEnabled, "thrixweaveTraderStripEnabled", true);
+			Scribe_Values.Look(ref urravethEnabled, "urravethEnabled", true);
+			Scribe_Values.Look(ref urravethSiteChance, "urravethSiteChance", 0.25f);
+			Scribe_Values.Look(ref urravethThrixweavePerPiece, "urravethThrixweavePerPiece", 8);
+			Scribe_Values.Look(ref urravethWarningHours, "urravethWarningHours", 6f);
+			Scribe_Values.Look(ref urravethCollapseDamageMultiplier, "urravethCollapseDamageMultiplier", 1f);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -106,6 +118,24 @@ namespace RimMandrake.Webwork
 				"On: no trader stocks thrixweave (Hyperweave, renamed), it leaves the standard quest-reward "
 			  + "pool, and tailored gear is half as likely to be made of it - the Webwork is its only source. "
 			  + "Off: it trades like vanilla Hyperweave. The rename always applies. Applies at startup.");
+
+			list.Gap();
+			list.Label("The dead giant (urraveth remains)");
+			list.CheckboxLabeled("Urraveth remains enabled", ref urravethEnabled,
+				"MAP-GENERATION-AFFECTING. On: a new RM_Webwork map may hold the wrapped skeleton of an urraveth, read "
+			  + "bone by bone; loaded bones creak and can collapse. Off: no new site generates, and existing remains "
+			  + "cannot be examined and never creak. The planet is never changed either way.");
+			if (urravethEnabled)
+			{
+				list.Label("  Site chance per new Webwork map: " + urravethSiteChance.ToStringPercent());
+				urravethSiteChance = list.Slider(urravethSiteChance, 0f, 1f);
+				list.Label("  Thrixweave per piece read: " + urravethThrixweavePerPiece);
+				urravethThrixweavePerPiece = Mathf.RoundToInt(list.Slider(urravethThrixweavePerPiece, 0f, 40f));
+				list.Label("  Creak warning before a collapse: " + urravethWarningHours.ToString("0.#") + " in-game hours");
+				urravethWarningHours = list.Slider(urravethWarningHours, 1f, 24f);
+				list.Label("  Collapse damage: " + urravethCollapseDamageMultiplier.ToString("0.00") + "x (vanilla thin-roof collapse)");
+				urravethCollapseDamageMultiplier = list.Slider(urravethCollapseDamageMultiplier, 0f, 3f);
+			}
 
 			list.End();
 		}

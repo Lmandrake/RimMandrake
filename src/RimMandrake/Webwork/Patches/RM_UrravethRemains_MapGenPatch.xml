@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEBWORK_DEAD_GIANT_BUILD_1. Same shape as RM_WebworkNestScatter_MapGenPatch.xml: the step self-gates on biome and
+     site chance, so adding it to the shared base generator is safe. Every def it names is owned by this mod. -->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_UrravethRemainsScatter</li>
+    </value>
+  </Operation>
+
+</Patch>

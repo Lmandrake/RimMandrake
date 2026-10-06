@@ -416,6 +416,17 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sandBuriedGraphicEnabled = true;
         public static int trackPoolCap = RM_TrackPool.DefaultCapacity;
         public static float trackPrintOpacity = 0.7f;
+        // WEBWORK_TRACTION_LANCE_BUILD_1 — the traction lance (RM_Building_TractionLance + RM_CompTetherPull).
+        // Defaults PROVISIONAL (FOUNDRY's first values; tuned in live play).
+        public static bool lanceEnabled = true;
+        public static float lanceRange = 12f;
+        public static float lanceReelSpeed = 1f;
+        public static float lanceCooldownSeconds = 15f;
+        public static bool lanceFriendlyPull = true;
+        public static float lanceSnapChance = 0.06f;
+        public static float lanceClothMultiplier = 1f;
+        public static float lanceDevilstrandMultiplier = 1f;
+        public static float lanceThrixweaveMultiplier = 1f;
 
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
@@ -519,6 +530,15 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sandBuriedGraphicEnabled, "sandBuriedGraphicEnabled", true);
             Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
             Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
+            Scribe_Values.Look(ref lanceEnabled, "lanceEnabled", true);
+            Scribe_Values.Look(ref lanceRange, "lanceRange", 12f);
+            Scribe_Values.Look(ref lanceReelSpeed, "lanceReelSpeed", 1f);
+            Scribe_Values.Look(ref lanceCooldownSeconds, "lanceCooldownSeconds", 15f);
+            Scribe_Values.Look(ref lanceFriendlyPull, "lanceFriendlyPull", true);
+            Scribe_Values.Look(ref lanceSnapChance, "lanceSnapChance", 0.06f);
+            Scribe_Values.Look(ref lanceClothMultiplier, "lanceClothMultiplier", 1f);
+            Scribe_Values.Look(ref lanceDevilstrandMultiplier, "lanceDevilstrandMultiplier", 1f);
+            Scribe_Values.Look(ref lanceThrixweaveMultiplier, "lanceThrixweaveMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -928,6 +948,27 @@ namespace RimMandrake.CreatureBehaviors
                 trackPrintOpacity = list.Slider(trackPrintOpacity, 0.1f, 1f);
             }
 
+            list.GapLine();
+            list.CheckboxLabeled("Traction lance fires and reels", ref lanceEnabled,
+                "Shipped default: ON. A manned traction lance throws a fabric tether at a visible target in range and reels "
+              + "it in. Off: the lance stands idle even when crewed.");
+            list.Label("Lance range: " + lanceRange.ToString("0") + " cells (before the tether's fabric)");
+            lanceRange = Mathf.Round(list.Slider(lanceRange, 4f, 30f));
+            list.Label("Lance reel speed: " + lanceReelSpeed.ToStringPercent());
+            lanceReelSpeed = list.Slider(lanceReelSpeed, 0.25f, 4f);
+            list.Label("Lance cooldown between throws: " + lanceCooldownSeconds.ToString("0") + " s");
+            lanceCooldownSeconds = Mathf.Round(list.Slider(lanceCooldownSeconds, 2f, 120f));
+            list.CheckboxLabeled("Lance pulls downed colonists to safety", ref lanceFriendlyPull,
+                "Shipped default: ON. With no enemy in range, the crewed lance ropes a downed colonist and reels them in.");
+            list.Label("Chance per cell that a struggling target snaps the tether: " + lanceSnapChance.ToStringPercent());
+            lanceSnapChance = list.Slider(lanceSnapChance, 0f, 0.5f);
+            list.Label("Tether strength by fabric (scales reach and strength, divides snap chance):");
+            list.Label("  Cloth: " + lanceClothMultiplier.ToString("0.00") + "x");
+            lanceClothMultiplier = list.Slider(lanceClothMultiplier, 0.25f, 3f);
+            list.Label("  Devilstrand: " + lanceDevilstrandMultiplier.ToString("0.00") + "x");
+            lanceDevilstrandMultiplier = list.Slider(lanceDevilstrandMultiplier, 0.25f, 3f);
+            list.Label("  Thrixweave: " + lanceThrixweaveMultiplier.ToString("0.00") + "x");
+            lanceThrixweaveMultiplier = list.Slider(lanceThrixweaveMultiplier, 0.25f, 3f);
             list.End();
             lastContentHeight = list.CurHeight + 12f;
             Widgets.EndScrollView();

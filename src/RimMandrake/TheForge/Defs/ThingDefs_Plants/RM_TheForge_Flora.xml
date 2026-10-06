@@ -208,6 +208,7 @@
            hidden RM_SpunstoneBonding project is revealed. TUNED: one garden can
            be studied every half day (frequencyTicks 30000). -->
       <li Class="RimMandrake.TheForge.CompProperties_SpunstoneStudy">
+        <project>RM_SpunstoneBonding</project>
         <frequencyTicks>30000</frequencyTicks>
         <studyEnabledByDefault>false</studyEnabledByDefault>
         <minGrowth>0.9</minGrowth>
