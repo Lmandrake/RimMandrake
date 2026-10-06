@@ -41,6 +41,12 @@ namespace RimMandrake.FlowWorks
 
 		private Dictionary<int, int> burning = new Dictionary<int, int>();   // cell index -> burn accumulator
 		private Dictionary<int, int> hopsOf = new Dictionary<int, int>();    // cell index -> source hops
+		// The burn accumulator of a cell that went out UNSPENT because its level flowed away (fluid gone, not burned):
+		// the level that moved carries it into the cell it lands in. Without this a lone burning level hopping between
+		// equal cells of a sourceless channel restarted its clock on every hop and never burned out (live 2026-10-05:
+		// a 6-cell tar run held 3 cells alight at 7,000 ticks with the burn cut to 1,200 ticks a level). Not saved: on
+		// load a moving level restarts its clock once, as before.
+		private readonly Dictionary<int, int> carriedAcc = new Dictionary<int, int>();
 		private List<int> pendCell = new List<int>();
 		private List<int> pendDue = new List<int>();
 		private List<int> pendHops = new List<int>();
@@ -242,7 +248,17 @@ namespace RimMandrake.FlowWorks
 
 		private void Ignite(Map map, IntVec3 c, int i, int hops)
 		{
-			burning[i] = 0;
+			int acc = TakeCarried(i);
+			for (int d = 0; d < 4; d++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[d];
+				if (n.InBounds(map))
+				{
+					int a = TakeCarried(map.cellIndices.CellToIndex(n));
+					if (a > acc) acc = a;
+				}
+			}
+			burning[i] = acc;
 			hopsOf[i] = hops;
 			EnsureFlame(map, c);
 		}
@@ -264,6 +280,10 @@ namespace RimMandrake.FlowWorks
 				// until 2026-10-05: foam only stopped a NEW light, and RainDouses had no caller at all.
 				if (fluid == null || IsSmothered(map, c) || (effects && RainDouses(map, c)))
 				{
+					if (fluid == null && burning.TryGetValue(i, out int moving))
+					{
+						carriedAcc[i] = moving;
+					}
 					Extinguish(map, c, i, false);
 					continue;
 				}
@@ -429,6 +449,16 @@ namespace RimMandrake.FlowWorks
 			GenSpawn.Spawn(def, c, map);
 		}
 
+		private int TakeCarried(int i)
+		{
+			if (carriedAcc.TryGetValue(i, out int a))
+			{
+				carriedAcc.Remove(i);
+				return a;
+			}
+			return 0;
+		}
+
 		private void Extinguish(Map map, IntVec3 c, int i, bool spent)
 		{
 			burning.Remove(i);
@@ -455,6 +485,7 @@ namespace RimMandrake.FlowWorks
 				Extinguish(map, map.cellIndices.IndexToCell(i), i, false);
 			}
 			pendCell.Clear(); pendDue.Clear(); pendHops.Clear(); pendingSet.Clear();
+			carriedAcc.Clear();
 		}
 
 		public string Report()
