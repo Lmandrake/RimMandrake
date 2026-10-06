@@ -3093,3 +3093,8 @@
 {"seat":"FOUNDRY","event":"close","id":"VOSSKA_SANDSWIM_GRAPHIC_WIRING_1","sha":"28b41ccf5","ts":"2026-10-06T17:03:28Z","tsn":1791306208328200122}
 {"seat":"FOUNDRY","event":"start","id":"SELFTEST_RUNNER_SILENT_OOM_1","ts":"2026-10-06T17:08:56Z","tsn":1791306536566696401}
 {"seat":"FOUNDRY","event":"close","id":"SELFTEST_RUNNER_SILENT_OOM_1","sha":"ff20caec5","ts":"2026-10-06T17:08:57Z","tsn":1791306537201602677}
+{"seat":"FOUNDRY","event":"claim","id":"SEA_DIVE_HATCH_REMOVE_1","ts":"2026-10-06T18:18:57Z","tsn":1791310737673917840}
+{"seat":"FOUNDRY","event":"claim","id":"CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1","ts":"2026-10-06T18:18:58Z","tsn":1791310738255817728}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_SINKING_RITE_BUILD_1","ts":"2026-10-06T18:18:58Z","tsn":1791310738858289493}
+{"seat":"FOUNDRY","event":"block","id":"SEA_DIVE_HATCH_REMOVE_1","reason":"precondition unmet: SEABED_DESCENT_ASCENT_1 (ship descent, needs bridge) not landed; hatch is the only route to the floors. Progress: Transient/sea_dive_hatch_remove_20261006.md","ts":"2026-10-06T18:19:29Z","tsn":1791310769770418874}
+{"seat":"FOUNDRY","event":"claim","id":"WEBWORK_TRACTION_LANCE_BUILD_1","ts":"2026-10-06T18:19:30Z","tsn":1791310770366530323}
