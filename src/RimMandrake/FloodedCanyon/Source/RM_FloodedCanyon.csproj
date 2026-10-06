@@ -61,6 +61,7 @@
     <Compile Include="RM_MapComponent_RecedeAftermath.cs" />
     <Compile Include="RM_TarruqHushPatch.cs" />
     <Compile Include="RM_CrackedLandsFlora.cs" />
+    <Compile Include="RM_LedgeRefuge.cs" />
     <Compile Include="Debug\RM_FloodedCanyonDebugActions.cs" />
   </ItemGroup>
 
