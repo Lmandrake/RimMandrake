@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3b: weathering rows, one shared by every biome
+  with that weathering. This slice ships ONE row, the Scald's, as the template; the other
+  ~7 (Sand-scoured, Sealed, Stripped, Irradiated, Ice-locked, Frozen, Eroded ...) arrive with
+  the biome step that first uses each (design §7 steps 3-6).
+  ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <!-- The Scald (design §4 row 1): cooked in near-boiling shallows; corrosion costs a
+       quarter of the yield, no tier shift ("Hull/Tank tiers, no sealed"). The Scald's slag
+       is the family's own killedLeavings, so no extraLeavings here: adding it would double
+       the shipped smash yield. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Cooked</defName>
+    <label>cooked</label>
+    <description>Cooked clean in near-boiling water: paint gone, seams given, a quarter of the metal lost to corrosion.</description>
+    <yieldFactor>0.75</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>scalded</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+</Defs>
