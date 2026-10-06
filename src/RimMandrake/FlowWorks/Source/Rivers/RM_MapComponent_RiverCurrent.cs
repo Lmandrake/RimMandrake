@@ -4,7 +4,7 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// SURFACE_RIVER_WEIRS_1 slice 1 — the surface current (design §3.1).
@@ -99,6 +99,12 @@ namespace RimMandrake.RiverWorks
 			return c.InBounds(map) && poolCells.Contains(map.cellIndices.CellToIndex(c));
 		}
 
+		/// <summary>The rope cells as last built, WITHOUT rebuilding: read from inside the path grid's
+		/// own recompute (RM_RopePathing), where a rebuild would notify the grid re-entrantly.</summary>
+		public HashSet<int> RopeIndicesNoRebuild => ropeCells;
+
+		private bool ropeGuidedLast;
+
 		public bool OnRope(IntVec3 c)
 		{
 			EnsureWorks();
@@ -112,9 +118,49 @@ namespace RimMandrake.RiverWorks
 				return;
 			}
 			worksDirty = false;
+			HashSet<int> ropeBefore = new HashSet<int>(ropeCells);
+			bool guidedBefore = ropeGuidedLast;
 			poolCells.Clear();
 			ropeCells.Clear();
-			if (!RM_RiverWorksSettings.WorksActive)
+			try
+			{
+				RebuildWorks();
+			}
+			finally
+			{
+				ropeGuidedLast = RM_RopePathing.Active;
+				NotifyRopeDelta(ropeBefore, guidedBefore != ropeGuidedLast);
+			}
+		}
+
+		/// <summary>Rope cells that appeared or vanished (or all of them, when the guide setting
+		/// flipped) are re-read by the path grid, so undrafted routing follows the rope at once.</summary>
+		private void NotifyRopeDelta(HashSet<int> before, bool all)
+		{
+			PathFinderMapData data = map.pathFinder?.MapData;
+			if (data == null)
+			{
+				return;
+			}
+			foreach (int i in before)
+			{
+				if (all || !ropeCells.Contains(i))
+				{
+					data.Notify_CellDelta(map.cellIndices.IndexToCell(i));
+				}
+			}
+			foreach (int i in ropeCells)
+			{
+				if (all || !before.Contains(i))
+				{
+					data.Notify_CellDelta(map.cellIndices.IndexToCell(i));
+				}
+			}
+		}
+
+		private void RebuildWorks()
+		{
+			if (!RM_RiversSettings.WorksActive)
 			{
 				return;
 			}
@@ -129,7 +175,7 @@ namespace RimMandrake.RiverWorks
 				}
 			}
 			ThingDef post = RM_RiverWorksDefOf.RM_FerryPost;
-			if (post != null && RM_RiverWorksSettings.ferryEnabled)
+			if (post != null && RM_RiversSettings.ferryEnabled)
 			{
 				List<Thing> ps = map.listerThings.ThingsOfDef(post);
 				for (int i = 0; i < ps.Count; i++)
@@ -232,7 +278,7 @@ namespace RimMandrake.RiverWorks
 
 		public override void MapComponentTick()
 		{
-			if (!RM_RiverWorksSettings.CurrentActive)
+			if (!RM_RiversSettings.CurrentActive)
 			{
 				if (nextMoveTick.Count > 0)
 				{
@@ -249,7 +295,7 @@ namespace RimMandrake.RiverWorks
 			{
 				scanCooldown = ScanIntervalTicks;
 				worksDirty = true; // cheap: a weir's HP-driven re-arm or a settings flip shows up within 250 ticks
-				surge = RM_RiverWorksSettings.floodSurgeEnabled && RM_RiverWorks.FloodActive(map);
+				surge = RM_RiversSettings.floodSurgeEnabled && RM_RiverWorks.FloodActive(map);
 				Scan();
 			}
 			if (--processCooldown <= 0)
@@ -262,7 +308,7 @@ namespace RimMandrake.RiverWorks
 		private void Scan()
 		{
 			List<Thing> candidates = new List<Thing>(map.mapPawns.AllPawnsSpawned);
-			if (RM_RiverWorksSettings.carryItems)
+			if (RM_RiversSettings.carryItems)
 			{
 				candidates.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver));
 			}
@@ -340,7 +386,7 @@ namespace RimMandrake.RiverWorks
 			if (!next.InBounds(map))
 			{
 				nextMoveTick.Remove(t);
-				if (t is Pawn ep && RM_RiverWorksSettings.washOffMapEdge)
+				if (t is Pawn ep && RM_RiversSettings.washOffMapEdge)
 				{
 					RM_WorldComponent_SweptAway.WashAway(ep);
 				}
@@ -353,7 +399,7 @@ namespace RimMandrake.RiverWorks
 			}
 			bool centre = RM_RiverMath.BehavesAsCentre(lane, surge);
 			Move(t, next);
-			if (t is Pawn hp && centre && RM_RiverWorksSettings.crossingHazardsEnabled)
+			if (t is Pawn hp && centre && RM_RiversSettings.crossingHazardsEnabled)
 			{
 				ApplyHazards(hp);
 			}
@@ -386,11 +432,11 @@ namespace RimMandrake.RiverWorks
 				return;
 			}
 			// Owner card 2: "being swept bruises and can make a pawn drop what it carries".
-			if (Rand.Chance(RM_RiverWorksSettings.bruiseChancePerStep))
+			if (Rand.Chance(RM_RiversSettings.bruiseChancePerStep))
 			{
 				p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, Rand.Range(2f, 5f))); // PROVISIONAL amount
 			}
-			if (!p.Dead && p.carryTracker?.CarriedThing != null && Rand.Chance(RM_RiverWorksSettings.dropChancePerStep))
+			if (!p.Dead && p.carryTracker?.CarriedThing != null && Rand.Chance(RM_RiversSettings.dropChancePerStep))
 			{
 				p.carryTracker.TryDropCarriedThing(p.Position, ThingPlaceMode.Near, out Thing _);
 			}
@@ -399,10 +445,10 @@ namespace RimMandrake.RiverWorks
 		private int CadenceFor(Thing t, IntVec3 c)
 		{
 			return RM_RiverMath.Cadence(LaneAt(c), surge, t is Pawn,
-				RM_RiverWorksSettings.currentStrength,
-				RM_RiverWorksSettings.scaleWithRiverSize ? sizeFactor : 1f,
-				RM_RiverWorksSettings.centreTicksPerCell, RM_RiverWorksSettings.marginTicksPerCell,
-				RM_RiverWorksSettings.itemDriftFactor);
+				RM_RiversSettings.currentStrength,
+				RM_RiversSettings.scaleWithRiverSize ? sizeFactor : 1f,
+				RM_RiversSettings.centreTicksPerCell, RM_RiversSettings.marginTicksPerCell,
+				RM_RiversSettings.itemDriftFactor);
 		}
 
 		// ── who is carried ────────────────────────────────────────────────────
@@ -428,21 +474,21 @@ namespace RimMandrake.RiverWorks
 				}
 				if (!player)
 				{
-					if (p.RaceProps.Animal && !RM_RiverWorksSettings.carryAnimals)
+					if (p.RaceProps.Animal && !RM_RiversSettings.carryAnimals)
 					{
 						return false;
 					}
-					if (!p.RaceProps.Animal && !RM_RiverWorksSettings.carryStrangers)
+					if (!p.RaceProps.Animal && !RM_RiversSettings.carryStrangers)
 					{
 						return false;
 					}
 				}
-				else if (p.RaceProps.Animal && !RM_RiverWorksSettings.carryAnimals)
+				else if (p.RaceProps.Animal && !RM_RiversSettings.carryAnimals)
 				{
 					return false;
 				}
 			}
-			else if (!RM_RiverWorksSettings.carryItems)
+			else if (!RM_RiversSettings.carryItems)
 			{
 				return false;
 			}
@@ -455,18 +501,18 @@ namespace RimMandrake.RiverWorks
 			{
 				return true;
 			}
-			if (!RM_RiverWorksSettings.WorksActive)
+			if (!RM_RiversSettings.WorksActive)
 			{
 				return false;
 			}
-			return RM_CompRiverArrester.CellArrested(map, c) || (RM_RiverWorksSettings.ferryEnabled && OnRope(c));
+			return RM_CompRiverArrester.CellArrested(map, c) || (RM_RiversSettings.ferryEnabled && OnRope(c));
 		}
 
 		/// <summary>Cells on and beside RM_FordStones are not carried (design §3.7). The sea's
 		/// channel current reads the same defName, so this terrain makes its exemption real.</summary>
 		public bool NearFord(IntVec3 c)
 		{
-			if (!RM_RiverWorksSettings.fordsEnabled)
+			if (!RM_RiversSettings.fordsEnabled)
 			{
 				return false;
 			}

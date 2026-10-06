@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// The seams other mods plug into (design §6). River Works names no biome and no sea:
@@ -54,12 +54,12 @@ namespace RimMandrake.RiverWorks
 				torrentialFlood = DefDatabase<ThingDef>.GetNamedSilentFail("TorrentialRainFlood");
 				floodDefsLooked = true;
 			}
-			if (RM_RiverWorksSettings.countSeasonalFloods && seasonalFlood != null
+			if (RM_RiversSettings.countSeasonalFloods && seasonalFlood != null
 				&& map.listerThings.ThingsOfDef(seasonalFlood).Count > 0)
 			{
 				return true;
 			}
-			if (RM_RiverWorksSettings.countTorrentialRainFloods && torrentialFlood != null
+			if (RM_RiversSettings.countTorrentialRainFloods && torrentialFlood != null
 				&& map.listerThings.ThingsOfDef(torrentialFlood).Count > 0)
 			{
 				return true;
@@ -75,7 +75,7 @@ namespace RimMandrake.RiverWorks
 				}
 				catch (Exception ex)
 				{
-					Log.ErrorOnce("[River Works] a registered flood source threw: " + ex, 0x52570001 + i);
+					Log.ErrorOnce("[FlowWorks Rivers] a registered flood source threw: " + ex, 0x52570001 + i);
 				}
 			}
 			return false;
@@ -117,7 +117,7 @@ namespace RimMandrake.RiverWorks
 				}
 				catch (Exception ex)
 				{
-					Log.ErrorOnce("[River Works] a registered current-cell rule threw: " + ex, 0x52570101 + i);
+					Log.ErrorOnce("[FlowWorks Rivers] a registered current-cell rule threw: " + ex, 0x52570101 + i);
 				}
 			}
 			return false;
@@ -158,8 +158,8 @@ namespace RimMandrake.RiverWorks
 
 		static RM_RiverPathCost()
 		{
-			if (!RM_RiverWorksSettings.riverWorksEnabled || !RM_RiverWorksSettings.surfaceCurrentEnabled
-				|| !RM_RiverWorksSettings.pathfinderAvoidsCurrents)
+			if (!RM_RiversSettings.riverWorksEnabled || !RM_RiversSettings.surfaceCurrentEnabled
+				|| !RM_RiversSettings.pathfinderAvoidsCurrents)
 			{
 				return;
 			}

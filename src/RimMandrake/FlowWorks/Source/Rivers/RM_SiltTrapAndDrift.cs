@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>One terrain swap the silt-trap performs (design §3.4).</summary>
 	public class RM_SiltSwap
@@ -52,13 +52,13 @@ namespace RimMandrake.RiverWorks
 		protected override void Tick()
 		{
 			base.Tick();
-			if (!RM_RiverWorksSettings.WorksActive)
+			if (!RM_RiversSettings.WorksActive)
 			{
 				return;
 			}
 			if (this.IsHashIntervalTick(WearIntervalTicks) && HitPoints > 1)
 			{
-				wearDebt += RM_RiverWorksSettings.wearRateMultiplier;
+				wearDebt += RM_RiversSettings.wearRateMultiplier;
 				int n = (int)wearDebt;
 				if (n > 0)
 				{
@@ -66,12 +66,12 @@ namespace RimMandrake.RiverWorks
 					HitPoints = System.Math.Max(1, HitPoints - n);
 				}
 			}
-			if (!RM_RiverWorksSettings.siltRichening)
+			if (!RM_RiversSettings.siltRichening)
 			{
 				return;
 			}
 			int now = Find.TickManager.TicksGame;
-			int interval = Mathf.Max(250, Mathf.RoundToInt(RM_RiverWorksSettings.siltIntervalDays * 60000f));
+			int interval = Mathf.Max(250, Mathf.RoundToInt(RM_RiversSettings.siltIntervalDays * 60000f));
 			if (nextRichenTick < 0 || nextRichenTick > now + interval)
 			{
 				nextRichenTick = now + interval;

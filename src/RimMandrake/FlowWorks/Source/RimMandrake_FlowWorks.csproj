@@ -137,6 +137,12 @@
   <ItemGroup>
     <Compile Include="LiquidTypes\RM_CompLiquidRevert.cs" />
     <Compile Include="LiquidTypes\Building_LiquidPump.cs" />
+    <Compile Include="Machinery\RM_LiquidNet.cs" />
+    <Compile Include="Machinery\RM_MachinerySettings.cs" />
+    <Compile Include="Machinery\RM_ConversionMath.cs" />
+    <Compile Include="Machinery\CompLiquidConverter.cs" />
+    <Compile Include="Machinery\CompLiquidPipeAdapter.cs" />
+    <Compile Include="Machinery\RM_LiquidWorksRuins.cs" />
     <Compile Include="RM_PumpMath.cs" />
     <Compile Include="RM_WallFaceMath.cs" />
     <Compile Include="Superdeep\RM_ExcavationWalls.cs" />
@@ -176,6 +182,25 @@
     <Compile Include="Drilling\RM_MapComponent_SubsurfaceLiquid.cs" />
     <Compile Include="Drilling\RM_LiquidDrillExtension.cs" />
     <Compile Include="Drilling\Building_LiquidDrill.cs" />
+  </ItemGroup>
+
+  <!-- Rivers: River Works (was mandrake.rm.riverworks, SURFACE_RIVER_WEIRS_1 slices 1-2), merged
+       2026-10-05 (owner: "I think river works needs to be part of flow works."). Namespace
+       RimMandrake.FlowWorks.Rivers. Its settings are a section of RimMandrakeFlowWorksSettings;
+       its Harmony patches (Flood.CanFloodSpreadInto for the levee-off switch; PerceptualSource
+       ComputeAll/UpdateIncrementally for ferry ropes undrafted colonists use) are in RM_FerryAndLevee.cs.
+       TerminalBiomes references this assembly for the weir's arrester and the river seams. -->
+  <ItemGroup>
+    <Compile Include="Rivers\RM_RiverMath.cs" />
+    <Compile Include="Rivers\RM_RiversSettings.cs" />
+    <Compile Include="Rivers\RM_RiverWorks.cs" />
+    <Compile Include="Rivers\RM_MapComponent_RiverCurrent.cs" />
+    <Compile Include="Rivers\RM_WorldComponent_SweptAway.cs" />
+    <Compile Include="Rivers\RM_RiverWorksProof.cs" />
+    <Compile Include="Rivers\RM_Weir.cs" />
+    <Compile Include="Rivers\RM_SiltTrapAndDrift.cs" />
+    <Compile Include="Rivers\RM_FerryAndLevee.cs" />
+    <Compile Include="Rivers\RM_RiverWorksProofWorks.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// State reads and self-contained probes for River Works' first script

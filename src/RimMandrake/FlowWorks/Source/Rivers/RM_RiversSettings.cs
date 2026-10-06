@@ -1,15 +1,19 @@
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
-	/// River Works Mod Settings (design §5). Defaults = shipped behaviour; all-off degrades to
+	/// The Rivers section of FlowWorks' Mod Settings (design §5; River Works merged into FlowWorks
+	/// 2026-10-05, owner: "I think river works needs to be part of flow works."). Not a ModSettings of
+	/// its own: RimMandrakeFlowWorksSettings.ExposeData scribes these fields into FlowWorks' one settings
+	/// file, and its window draws DoSettingsSection under a "Rivers" heading. Keys are unique across
+	/// that file (selftest_flowworks_rivers.py checks). Defaults = shipped behaviour; all-off degrades to
 	/// still vanilla rivers, never an error. No toggle changes map generation: the current is
 	/// derived from vanilla's own saved riverFlowMap, so flipping it mid-game is safe.
 	/// Numbers marked PROVISIONAL are guesses awaiting a live look, not rulings.
 	/// </summary>
-	public class RM_RiverWorksSettings : ModSettings
+	public static class RM_RiversSettings
 	{
 		public static bool riverWorksEnabled = true;
 		public static bool surfaceCurrentEnabled = true;
@@ -63,14 +67,15 @@ namespace RimMandrake.RiverWorks
 		// Owner card 3: the rope ferry is in the first version.
 		public static bool ferryEnabled = true;
 		public static int ferryMaxSpan = 40;                  // PROVISIONAL
+		// Taken over 2026-10-05 (slice 2's known limit): undrafted colonists treat the rope as a crossing.
+		public static bool ferryRopeGuidesColonists = true;
 
 		public static bool CurrentActive => riverWorksEnabled && surfaceCurrentEnabled;
 
 		public static bool WorksActive => riverWorksEnabled && bankWorksEnabled;
 
-		public override void ExposeData()
+		public static void ExposeData()
 		{
-			base.ExposeData();
 			Scribe_Values.Look(ref riverWorksEnabled, "riverWorksEnabled", true);
 			Scribe_Values.Look(ref surfaceCurrentEnabled, "surfaceCurrentEnabled", true);
 			Scribe_Values.Look(ref currentStrength, "currentStrength", 1f);
@@ -110,137 +115,128 @@ namespace RimMandrake.RiverWorks
 			Scribe_Values.Look(ref siltIntervalDays, "siltIntervalDays", 0.5f);
 			Scribe_Values.Look(ref ferryEnabled, "ferryEnabled", true);
 			Scribe_Values.Look(ref ferryMaxSpan, "ferryMaxSpan", 40);
+			Scribe_Values.Look(ref ferryRopeGuidesColonists, "ferryRopeGuidesColonists", true);
 		}
 	}
 
-	public class RM_RiverWorksMod : Mod
+	public static class RM_RiversSettingsWindow
 	{
-		private static Vector2 scroll;
-
-		public RM_RiverWorksMod(ModContentPack content) : base(content)
+		/// <summary>Drawn inside FlowWorks' settings window, after its own sections.</summary>
+		public static void DoSettingsSection(Listing_Standard l)
 		{
-			GetSettings<RM_RiverWorksSettings>();
-		}
+			l.GapLine();
+			Text.Font = GameFont.Medium;
+			l.Label("Rivers");
+			Text.Font = GameFont.Small;
 
-		public override string SettingsCategory()
-		{
-			return "RimMandrake: River Works";
-		}
-
-		public override void DoSettingsWindowContents(Rect inRect)
-		{
-			Rect view = new Rect(0f, 0f, inRect.width - 20f, 2000f);
-			Widgets.BeginScrollView(inRect, ref scroll, view);
-			Listing_Standard l = new Listing_Standard();
-			l.Begin(view);
-
-			l.CheckboxLabeled("River Works enabled", ref RM_RiverWorksSettings.riverWorksEnabled,
-				"Master switch. Off: rivers are vanilla still water and nothing here does anything.");
+			l.CheckboxLabeled("Rivers enabled", ref RM_RiversSettings.riverWorksEnabled,
+				"Master switch for everything in this section. Off: rivers are vanilla still water and none of it does anything.");
 			l.GapLine();
 			l.Label("THE CURRENT");
-			l.CheckboxLabeled("Surface rivers have a current", ref RM_RiverWorksSettings.surfaceCurrentEnabled,
+			l.CheckboxLabeled("Surface rivers have a current", ref RM_RiversSettings.surfaceCurrentEnabled,
 				"Moving river water shoves pawns and loose items downstream. Chest-deep water is the fast "
 			  + "lane and cannot be waded out of; shallow water is the edge lane and can still be crossed. "
 			  + "Off: rivers are vanilla. Safe to change mid-game (the flow is read from the map itself).");
-			l.Label("Current strength: x" + RM_RiverWorksSettings.currentStrength.ToString("F2"));
-			RM_RiverWorksSettings.currentStrength = l.Slider(RM_RiverWorksSettings.currentStrength, 0.25f, 3f);
-			l.Label("Fast lane: ticks per cell " + RM_RiverWorksSettings.centreTicksPerCell);
-			RM_RiverWorksSettings.centreTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.centreTicksPerCell, 10f, 200f));
-			l.Label("Edge lane: ticks per cell " + RM_RiverWorksSettings.marginTicksPerCell);
-			RM_RiverWorksSettings.marginTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.marginTicksPerCell, 20f, 400f));
-			l.Label("Items drift slower by x" + RM_RiverWorksSettings.itemDriftFactor.ToString("F1"));
-			RM_RiverWorksSettings.itemDriftFactor = l.Slider(RM_RiverWorksSettings.itemDriftFactor, 1f, 5f);
-			l.CheckboxLabeled("Bigger rivers shove harder", ref RM_RiverWorksSettings.scaleWithRiverSize,
+			l.Label("Current strength: x" + RM_RiversSettings.currentStrength.ToString("F2"));
+			RM_RiversSettings.currentStrength = l.Slider(RM_RiversSettings.currentStrength, 0.25f, 3f);
+			l.Label("Fast lane: ticks per cell " + RM_RiversSettings.centreTicksPerCell);
+			RM_RiversSettings.centreTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.centreTicksPerCell, 10f, 200f));
+			l.Label("Edge lane: ticks per cell " + RM_RiversSettings.marginTicksPerCell);
+			RM_RiversSettings.marginTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.marginTicksPerCell, 20f, 400f));
+			l.Label("Items drift slower by x" + RM_RiversSettings.itemDriftFactor.ToString("F1"));
+			RM_RiversSettings.itemDriftFactor = l.Slider(RM_RiversSettings.itemDriftFactor, 1f, 5f);
+			l.CheckboxLabeled("Bigger rivers shove harder", ref RM_RiversSettings.scaleWithRiverSize,
 				"Creeks barely push; huge rivers are lethal. Off: every river shoves the same.");
-			l.CheckboxLabeled("Floods make the river fiercer", ref RM_RiverWorksSettings.floodSurgeEnabled,
+			l.CheckboxLabeled("Floods make the river fiercer", ref RM_RiversSettings.floodSurgeEnabled,
 				"While a flood is on the map the edge lane behaves as the fast lane and the fast lane "
 			  + "moves twice as fast.");
-			if (RM_RiverWorksSettings.floodSurgeEnabled)
+			if (RM_RiversSettings.floodSurgeEnabled)
 			{
-				l.CheckboxLabeled("  Spring (seasonal) floods count", ref RM_RiverWorksSettings.countSeasonalFloods);
-				l.CheckboxLabeled("  Torrential-rain floods count", ref RM_RiverWorksSettings.countTorrentialRainFloods);
+				l.CheckboxLabeled("  Spring (seasonal) floods count", ref RM_RiversSettings.countSeasonalFloods);
+				l.CheckboxLabeled("  Torrential-rain floods count", ref RM_RiversSettings.countTorrentialRainFloods);
 			}
-			l.CheckboxLabeled("Carry animals", ref RM_RiverWorksSettings.carryAnimals);
-			l.CheckboxLabeled("Carry visitors and raiders", ref RM_RiverWorksSettings.carryStrangers);
-			l.CheckboxLabeled("Carry loose items and corpses", ref RM_RiverWorksSettings.carryItems);
-			l.CheckboxLabeled("Washed off the map at the edge", ref RM_RiverWorksSettings.washOffMapEdge,
+			l.CheckboxLabeled("Carry animals", ref RM_RiversSettings.carryAnimals);
+			l.CheckboxLabeled("Carry visitors and raiders", ref RM_RiversSettings.carryStrangers);
+			l.CheckboxLabeled("Carry loose items and corpses", ref RM_RiversSettings.carryItems);
+			l.CheckboxLabeled("Washed off the map at the edge", ref RM_RiversSettings.washOffMapEdge,
 				"A pawn carried to the edge of the map is washed away. Your own people walk home a few days "
 			  + "later; a letter says so when it happens. Off: the current stops at the map edge.");
-			if (RM_RiverWorksSettings.washOffMapEdge)
+			if (RM_RiversSettings.washOffMapEdge)
 			{
 				l.Label("Days before a washed-away colonist walks home: "
-				  + RM_RiverWorksSettings.washedAwayMinDays.ToString("F1") + " to " + RM_RiverWorksSettings.washedAwayMaxDays.ToString("F1"));
-				RM_RiverWorksSettings.washedAwayMinDays = l.Slider(RM_RiverWorksSettings.washedAwayMinDays, 0.25f, 10f);
-				RM_RiverWorksSettings.washedAwayMaxDays = Mathf.Max(RM_RiverWorksSettings.washedAwayMinDays,
-					l.Slider(RM_RiverWorksSettings.washedAwayMaxDays, 0.25f, 15f));
+				  + RM_RiversSettings.washedAwayMinDays.ToString("F1") + " to " + RM_RiversSettings.washedAwayMaxDays.ToString("F1"));
+				RM_RiversSettings.washedAwayMinDays = l.Slider(RM_RiversSettings.washedAwayMinDays, 0.25f, 10f);
+				RM_RiversSettings.washedAwayMaxDays = Mathf.Max(RM_RiversSettings.washedAwayMinDays,
+					l.Slider(RM_RiversSettings.washedAwayMaxDays, 0.25f, 15f));
 			}
-			l.CheckboxLabeled("Colonists avoid strong water", ref RM_RiverWorksSettings.pathfinderAvoidsCurrents,
+			l.CheckboxLabeled("Colonists avoid strong water", ref RM_RiversSettings.pathfinderAvoidsCurrents,
 				"Undrafted colonists route around moving water to bridges and fords. Drafted orders still go "
 			  + "where they are told. Takes effect after a restart.");
-			l.CheckboxLabeled("Being swept is dangerous", ref RM_RiverWorksSettings.crossingHazardsEnabled,
+			l.CheckboxLabeled("Being swept is dangerous", ref RM_RiversSettings.crossingHazardsEnabled,
 				"In the fast lane a carried pawn can be bruised and can drop what it is carrying.");
-			if (RM_RiverWorksSettings.crossingHazardsEnabled)
+			if (RM_RiversSettings.crossingHazardsEnabled)
 			{
-				l.Label("Bruise chance per cell: " + RM_RiverWorksSettings.bruiseChancePerStep.ToStringPercent());
-				RM_RiverWorksSettings.bruiseChancePerStep = l.Slider(RM_RiverWorksSettings.bruiseChancePerStep, 0f, 1f);
-				l.Label("Drop-carried chance per cell: " + RM_RiverWorksSettings.dropChancePerStep.ToStringPercent());
-				RM_RiverWorksSettings.dropChancePerStep = l.Slider(RM_RiverWorksSettings.dropChancePerStep, 0f, 1f);
+				l.Label("Bruise chance per cell: " + RM_RiversSettings.bruiseChancePerStep.ToStringPercent());
+				RM_RiversSettings.bruiseChancePerStep = l.Slider(RM_RiversSettings.bruiseChancePerStep, 0f, 1f);
+				l.Label("Drop-carried chance per cell: " + RM_RiversSettings.dropChancePerStep.ToStringPercent());
+				RM_RiversSettings.dropChancePerStep = l.Slider(RM_RiversSettings.dropChancePerStep, 0f, 1f);
 			}
 			l.GapLine();
 			l.Label("WORKS");
-			l.CheckboxLabeled("Fords stop the current", ref RM_RiverWorksSettings.fordsEnabled,
+			l.CheckboxLabeled("Fords stop the current", ref RM_RiversSettings.fordsEnabled,
 				"Nothing is carried on or beside ford stones. Off: fords are just stone footing.");
-			l.CheckboxLabeled("Bank works active (weir, stakes, silt-trap, ferry)", ref RM_RiverWorksSettings.bankWorksEnabled,
+			l.CheckboxLabeled("Bank works active (weir, stakes, silt-trap, ferry)", ref RM_RiversSettings.bankWorksEnabled,
 				"Off: the works stand inert - no wear, no catch, no breach, no richening, no ferry rope.");
-			l.Label("Wear rate: x" + RM_RiverWorksSettings.wearRateMultiplier.ToString("F2"));
-			RM_RiverWorksSettings.wearRateMultiplier = l.Slider(RM_RiverWorksSettings.wearRateMultiplier, 0f, 3f);
-			l.CheckboxLabeled("Untended weirs breach in a flood", ref RM_RiverWorksSettings.breachEnabled,
+			l.Label("Wear rate: x" + RM_RiversSettings.wearRateMultiplier.ToString("F2"));
+			RM_RiversSettings.wearRateMultiplier = l.Slider(RM_RiversSettings.wearRateMultiplier, 0f, 3f);
+			l.CheckboxLabeled("Untended weirs breach in a flood", ref RM_RiversSettings.breachEnabled,
 				"A weir run below the threshold when a flood arrives breaks: its catch washes downstream, the "
 			  + "stake-line below it snaps post by post, and nearby silt-traps lose their richened ground.");
-			if (RM_RiverWorksSettings.breachEnabled)
+			if (RM_RiversSettings.breachEnabled)
 			{
-				l.Label("Breach below HP: " + RM_RiverWorksSettings.breachHpFraction.ToStringPercent());
-				RM_RiverWorksSettings.breachHpFraction = l.Slider(RM_RiverWorksSettings.breachHpFraction, 0.05f, 1f);
-				l.Label("Stake snap: ticks per cell " + RM_RiverWorksSettings.stakeSnapTicksPerCell);
-				RM_RiverWorksSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.stakeSnapTicksPerCell, 10f, 1000f));
-				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiverWorksSettings.breachWashesCatch);
-				if (RM_RiverWorksSettings.breachWashesCatch)
+				l.Label("Breach below HP: " + RM_RiversSettings.breachHpFraction.ToStringPercent());
+				RM_RiversSettings.breachHpFraction = l.Slider(RM_RiversSettings.breachHpFraction, 0.05f, 1f);
+				l.Label("Stake snap: ticks per cell " + RM_RiversSettings.stakeSnapTicksPerCell);
+				RM_RiversSettings.stakeSnapTicksPerCell = Mathf.RoundToInt(l.Slider(RM_RiversSettings.stakeSnapTicksPerCell, 10f, 1000f));
+				l.CheckboxLabeled("  Breach washes the held catch downstream", ref RM_RiversSettings.breachWashesCatch);
+				if (RM_RiversSettings.breachWashesCatch)
 				{
-					l.Label("  Washed this many cells: " + RM_RiverWorksSettings.breachWashCells);
-					RM_RiverWorksSettings.breachWashCells = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.breachWashCells, 1f, 20f));
+					l.Label("  Washed this many cells: " + RM_RiversSettings.breachWashCells);
+					RM_RiversSettings.breachWashCells = Mathf.RoundToInt(l.Slider(RM_RiversSettings.breachWashCells, 1f, 20f));
 				}
 			}
-			l.CheckboxLabeled("A continuous stake-line holds floods (levee)", ref RM_RiverWorksSettings.stakeLineLevee,
+			l.CheckboxLabeled("A continuous stake-line holds floods (levee)", ref RM_RiversSettings.stakeLineLevee,
 				"Floodwater cannot pass a stake. Any gap lets it in. Off: floods flow through stake-lines.");
-			l.Label("Weir calms this many cells upstream: " + RM_RiverWorksSettings.weirPoolLength + " (0 = its own cell only)");
-			RM_RiverWorksSettings.weirPoolLength = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.weirPoolLength, 0f, 20f));
-			l.CheckboxLabeled("Weirs catch fish", ref RM_RiverWorksSettings.weirCatchesFish,
+			l.Label("Weir calms this many cells upstream: " + RM_RiversSettings.weirPoolLength + " (0 = its own cell only)");
+			RM_RiversSettings.weirPoolLength = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirPoolLength, 0f, 20f));
+			l.CheckboxLabeled("Weirs catch fish", ref RM_RiversSettings.weirCatchesFish,
 				"From the river's own stock, the same stock your fishing zones draw on.");
-			l.CheckboxLabeled("Weirs catch drift from upriver", ref RM_RiverWorksSettings.weirCatchesDrift,
+			l.CheckboxLabeled("Weirs catch drift from upriver", ref RM_RiversSettings.weirCatchesDrift,
 				"Things that belong to this biome's rivers wash into the weir now and then.");
-			l.Label("Catch every " + RM_RiverWorksSettings.weirCatchIntervalHours.ToString("F1") + " hours");
-			RM_RiverWorksSettings.weirCatchIntervalHours = l.Slider(RM_RiverWorksSettings.weirCatchIntervalHours, 1f, 48f);
-			l.Label("Drift chance per catch: " + RM_RiverWorksSettings.weirDriftChance.ToStringPercent());
-			RM_RiverWorksSettings.weirDriftChance = l.Slider(RM_RiverWorksSettings.weirDriftChance, 0f, 1f);
-			l.Label("Weir holds at most " + RM_RiverWorksSettings.weirHeldCatchCap + " items before it stops catching");
-			RM_RiverWorksSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.weirHeldCatchCap, 5f, 200f));
-			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiverWorksSettings.siltRichening);
-			if (RM_RiverWorksSettings.siltRichening)
+			l.Label("Catch every " + RM_RiversSettings.weirCatchIntervalHours.ToString("F1") + " hours");
+			RM_RiversSettings.weirCatchIntervalHours = l.Slider(RM_RiversSettings.weirCatchIntervalHours, 1f, 48f);
+			l.Label("Drift chance per catch: " + RM_RiversSettings.weirDriftChance.ToStringPercent());
+			RM_RiversSettings.weirDriftChance = l.Slider(RM_RiversSettings.weirDriftChance, 0f, 1f);
+			l.Label("Weir holds at most " + RM_RiversSettings.weirHeldCatchCap + " items before it stops catching");
+			RM_RiversSettings.weirHeldCatchCap = Mathf.RoundToInt(l.Slider(RM_RiversSettings.weirHeldCatchCap, 5f, 200f));
+			l.CheckboxLabeled("Silt-traps richen the bank", ref RM_RiversSettings.siltRichening);
+			if (RM_RiversSettings.siltRichening)
 			{
-				l.Label("One cell richened every " + RM_RiverWorksSettings.siltIntervalDays.ToString("F2") + " days");
-				RM_RiverWorksSettings.siltIntervalDays = l.Slider(RM_RiverWorksSettings.siltIntervalDays, 0.1f, 5f);
+				l.Label("One cell richened every " + RM_RiversSettings.siltIntervalDays.ToString("F2") + " days");
+				RM_RiversSettings.siltIntervalDays = l.Slider(RM_RiversSettings.siltIntervalDays, 0.1f, 5f);
 			}
-			l.CheckboxLabeled("Rope ferries", ref RM_RiverWorksSettings.ferryEnabled,
+			l.CheckboxLabeled("Rope ferries", ref RM_RiversSettings.ferryEnabled,
 				"Two ferry posts facing each other across a river string a rope: nothing standing on the rope "
 			  + "line is carried. Drafted colonists cross along it.");
-			if (RM_RiverWorksSettings.ferryEnabled)
+			if (RM_RiversSettings.ferryEnabled)
 			{
-				l.Label("Longest rope: " + RM_RiverWorksSettings.ferryMaxSpan + " cells");
-				RM_RiverWorksSettings.ferryMaxSpan = Mathf.RoundToInt(l.Slider(RM_RiverWorksSettings.ferryMaxSpan, 5f, 80f));
+				l.Label("Longest rope: " + RM_RiversSettings.ferryMaxSpan + " cells");
+				RM_RiversSettings.ferryMaxSpan = Mathf.RoundToInt(l.Slider(RM_RiversSettings.ferryMaxSpan, 5f, 80f));
+				l.CheckboxLabeled("  Colonists use the rope to cross", ref RM_RiversSettings.ferryRopeGuidesColonists,
+					"On: everyday jobs treat a strung rope as a crossing, the way they treat a ford or a bridge, "
+				  + "instead of walking the long way round. Off: only drafted colonists cross on the rope.");
 			}
 
-			l.End();
-			Widgets.EndScrollView();
 		}
 	}
 }

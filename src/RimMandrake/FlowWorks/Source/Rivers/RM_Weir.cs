@@ -3,7 +3,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// The weir's arrest marker (moved from TerminalBiomes' CompChannelArrester, slice 2). A spawned
@@ -196,7 +196,7 @@ namespace RimMandrake.RiverWorks
 		protected override void Tick()
 		{
 			base.Tick();
-			if (!RM_RiverWorksSettings.WorksActive)
+			if (!RM_RiversSettings.WorksActive)
 			{
 				return;
 			}
@@ -207,7 +207,7 @@ namespace RimMandrake.RiverWorks
 			}
 			if (this.IsHashIntervalTick(WearIntervalTicks) && HitPoints > 1)
 			{
-				wearDebt += RM_RiverWorksSettings.wearRateMultiplier;
+				wearDebt += RM_RiversSettings.wearRateMultiplier;
 				int n = (int)wearDebt;
 				if (n > 0)
 				{
@@ -217,13 +217,13 @@ namespace RimMandrake.RiverWorks
 			}
 			if (this.IsHashIntervalTick(600))
 			{
-				bool sound = HitPoints >= MaxHitPoints * RM_RiverWorksSettings.breachHpFraction;
+				bool sound = HitPoints >= MaxHitPoints * RM_RiversSettings.breachHpFraction;
 				if (Arrester != null && !Arrester.Active && sound)
 				{
 					Arrester.Active = true; // repaired since the breach: catches again
 				}
 				bool alreadyBroken = Arrester != null && !Arrester.Active;
-				if (RM_RiverWorksSettings.breachEnabled && !neverBreaches && !sound && !alreadyBroken
+				if (RM_RiversSettings.breachEnabled && !neverBreaches && !sound && !alreadyBroken
 					&& RM_RiverWorks.FloodActive(Map))
 				{
 					Breach();
@@ -247,7 +247,7 @@ namespace RimMandrake.RiverWorks
 
 		private static int CatchIntervalTicks()
 		{
-			return Mathf.Max(250, Mathf.RoundToInt(RM_RiverWorksSettings.weirCatchIntervalHours * 2500f));
+			return Mathf.Max(250, Mathf.RoundToInt(RM_RiversSettings.weirCatchIntervalHours * 2500f));
 		}
 
 		// ── catch ────────────────────────────────────────────────────────────
@@ -256,14 +256,14 @@ namespace RimMandrake.RiverWorks
 		public string TryCatch()
 		{
 			string fishResult = "fish=off";
-			if (RM_RiverWorksSettings.weirCatchesFish)
+			if (RM_RiversSettings.weirCatchesFish)
 			{
 				fishResult = TryCatchFish();
 			}
 			string driftResult = "drift=off";
-			if (RM_RiverWorksSettings.weirCatchesDrift)
+			if (RM_RiversSettings.weirCatchesDrift)
 			{
-				driftResult = Rand.Chance(RM_RiverWorksSettings.weirDriftChance) ? TryCatchDrift() : "drift=missed";
+				driftResult = Rand.Chance(RM_RiversSettings.weirDriftChance) ? TryCatchDrift() : "drift=missed";
 			}
 			return fishResult + " " + driftResult;
 		}
@@ -342,7 +342,7 @@ namespace RimMandrake.RiverWorks
 			{
 				held += h[i].stackCount;
 			}
-			int room = RM_RiverWorksSettings.weirHeldCatchCap - held;
+			int room = RM_RiversSettings.weirHeldCatchCap - held;
 			if (room <= 0 || count <= 0)
 			{
 				return 0;
@@ -360,7 +360,7 @@ namespace RimMandrake.RiverWorks
 		{
 			breaching = true;
 			breachEndTick = Find.TickManager.TicksGame + BreachDurationTicks;
-			int washed = RM_RiverWorksSettings.breachWashesCatch ? WashCatch() : 0;
+			int washed = RM_RiversSettings.breachWashesCatch ? WashCatch() : 0;
 			if (Arrester != null)
 			{
 				Arrester.Active = false; // pool and arrest off; on the sea the channel re-carries what sat here
@@ -382,7 +382,7 @@ namespace RimMandrake.RiverWorks
 				return 0;
 			}
 			IntVec3 end = WaterCell;
-			for (int i = 0; i < RM_RiverWorksSettings.breachWashCells; i++)
+			for (int i = 0; i < RM_RiversSettings.breachWashCells; i++)
 			{
 				int dir = comp.FlowDirAt(end);
 				if (dir < 0)
@@ -456,7 +456,7 @@ namespace RimMandrake.RiverWorks
 				breaching = false;
 				if (Arrester != null)
 				{
-					Arrester.Active = HitPoints >= MaxHitPoints * RM_RiverWorksSettings.breachHpFraction;
+					Arrester.Active = HitPoints >= MaxHitPoints * RM_RiversSettings.breachHpFraction;
 				}
 				cascadeStakes = null;
 				cascadeFireTicks = null;
@@ -466,6 +466,22 @@ namespace RimMandrake.RiverWorks
 		/// <summary>The stake-line below the weir snaps post by post, nearest-downstream first. With a
 		/// surface flow direction, stakes are ordered by how far downstream they lie (upstream ones are
 		/// spared); with none (the sea), by distance, as before the move.</summary>
+		/// <summary>Proof read (breach.cascade_order): the tick a stake is scheduled to snap at, or -1
+		/// when the breach does not reach it.</summary>
+		public int CascadeTickFor(Thing stake)
+		{
+			int i = cascadeStakes != null ? cascadeStakes.IndexOf(stake) : -1;
+			return i >= 0 ? cascadeFireTicks[i] : -1;
+		}
+
+		public int FlowDirForProof
+		{
+			get
+			{
+				return Map?.GetComponent<RM_MapComponent_RiverCurrent>()?.FlowDirAt(WaterCell) ?? -1;
+			}
+		}
+
 		private void ScheduleStakeCascade()
 		{
 			cascadeStakes = new List<Thing>();
@@ -499,7 +515,7 @@ namespace RimMandrake.RiverWorks
 					order = t.Position.DistanceTo(Position);
 				}
 				cascadeStakes.Add(t);
-				cascadeFireTicks.Add(now + Mathf.RoundToInt(order) * RM_RiverWorksSettings.stakeSnapTicksPerCell);
+				cascadeFireTicks.Add(now + Mathf.RoundToInt(order) * RM_RiversSettings.stakeSnapTicksPerCell);
 			}
 		}
 
@@ -521,12 +537,12 @@ namespace RimMandrake.RiverWorks
 		/// pool, PROVISIONAL), so a colony can cross or work the river there.</summary>
 		public void AddPoolCells(RM_MapComponent_RiverCurrent comp, HashSet<int> into)
 		{
-			if (!Spawned || !ArrestActive || breaching || RM_RiverWorksSettings.weirPoolLength <= 0)
+			if (!Spawned || !ArrestActive || breaching || RM_RiversSettings.weirPoolLength <= 0)
 			{
 				return;
 			}
 			IntVec3 cur = WaterCell;
-			for (int k = 0; k < RM_RiverWorksSettings.weirPoolLength; k++)
+			for (int k = 0; k < RM_RiversSettings.weirPoolLength; k++)
 			{
 				IntVec3 up = Upstream(comp, cur);
 				if (!up.IsValid)
@@ -588,7 +604,7 @@ namespace RimMandrake.RiverWorks
 		{
 			string s = base.GetInspectString();
 			string mine = breaching ? "Breached - the flood is through." : (ArrestActive ? "Holding." : "Broken: repair above "
-				+ RM_RiverWorksSettings.breachHpFraction.ToStringPercent() + " to re-arm.");
+				+ RM_RiversSettings.breachHpFraction.ToStringPercent() + " to re-arm.");
 			return s.NullOrEmpty() ? mine : s + "\n" + mine;
 		}
 

@@ -251,13 +251,13 @@ namespace RimMandrake.TerminalBiomes
                 // breaches.
                 if (i == 0 && weirDef != null)
                 {
-                    // The weir is 1x2 since it moved to River Works: find a cell AND a
+                    // The weir is 1x2 since it moved to FlowWorks (Rivers): find a cell AND a
                     // rotation whose whole footprint is free, so the spawn wipes nothing.
                     IntVec3 weirCell = FindWeirSpot(map, centre, weirDef, out Rot4 weirRot);
                     if (weirCell.IsValid)
                     {
                         Thing weir = GenSpawn.Spawn(weirDef, weirCell, map, weirRot);
-                        if (weir is RimMandrake.RiverWorks.RM_Building_BankWeir bw)
+                        if (weir is RimMandrake.FlowWorks.Rivers.RM_Building_BankWeir bw)
                         {
                             bw.neverBreaches = true;
                         }

@@ -5,7 +5,7 @@
   RM_BankSilt is the plain silted bank; RM_BankSilt_Rich is what a working silt-trap leaves within its radius
   (the shipped terrain-swap idiom). They reuse the vanilla soil sprites tinted by `color`: placeholder art, a
   bespoke bank-silt texture is owed. Still unbuilt and read only through GetNamedSilentFail: RM_ChannelBed. (RM_FordStones is
-  authored by River Works.) The silt-trap itself moved to River Works; this mod patches its pair into
+  authored by FlowWorks (Rivers).) The silt-trap itself moved to FlowWorks (Rivers); this mod patches its pair into
   the trap's swap table (Patches/RM_SiltTrap_SeaSwap.xml).
 -->
 <Defs>

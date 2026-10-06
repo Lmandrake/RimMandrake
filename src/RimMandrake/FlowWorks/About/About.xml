@@ -46,8 +46,7 @@ nobody thinks they are missing: sluice gates and irrigation.
 
 The engine writes the map's temporary terrain layer, which
 is base-game machinery, and ships its own temporary terrains rather than
-naming the Odyssey-only ones. Harmony is required, for one patch: the
-superdeep shooting restriction.
+naming the Odyssey-only ones. Harmony is required.
 
 MERGED IN 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1) — one mod now owns
 the whole liquid domain, per the owner's ruling that depth is the single
@@ -70,6 +69,23 @@ brine, coolant, ichor and the rest — plus the RM_LiquidProperties extension
 the C# reads for what native fields cannot say (pH/corrosion, damage on
 immersion versus contact).
 
+RIVERS (was mandrake.rm.riverworks; merged 2026-10-05 — owner: "I think river
+works needs to be part of flow works."). Rivers that move: moving river water
+shoves pawns, corpses and loose items downstream. Chest-deep water is a fast
+lane nobody wades out of, shallow water an edge lane you can still cross;
+bigger rivers shove harder and a spring or torrential-rain flood makes every
+river fiercer. Swept to the edge of the map and you are washed away — your
+people walk home a few days later, and a letter tells you so. Ford stones laid
+across shallow water cross safely, and colonists route to fords and bridges on
+their own. The bank works: a weir built on the bank edge stops what the river
+carries, calms a long stretch upstream and catches fish from the river's own
+stock plus whatever this country's rivers bring down; a continuous line of bank
+stakes holds back a spring flood like a levee, and any gap lets it in; let a
+weir wear down and a flood breaches it, washing its catch downstream and
+snapping the stake-line below it post by post. Silt-traps turn the bank soil
+rich, and two ferry posts across a river string a rope nobody is swept off.
+Every piece has a toggle in the Rivers section of FlowWorks' Mod Settings.
+
 NOT merged, and staying siblings on the owner's boundary principle —
 FlowWorks owns what a liquid IS and DOES; a machine that TRANSFORMS one
 liquid into another is technology: GelatinousSlime (registers rows, keeps
@@ -91,5 +107,6 @@ FloodedCanyon (a flood-driver client).</description>
     <li>brrainz.harmony</li>
     <li>sarg.alphabiomes</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
   </loadAfter>
 </ModMetaData>

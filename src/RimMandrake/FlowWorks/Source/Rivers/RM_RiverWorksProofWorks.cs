@@ -1,8 +1,9 @@
+using System.Linq;
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.RiverWorks
+namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
 	/// Slice 2 probes for the first script (validation.py chain "works"), via jawa/static_call. Each
@@ -325,7 +326,211 @@ namespace RimMandrake.RiverWorks
 		public static string ProofLeveeFact(string arg)
 		{
 			ThingDef s = RM_RiverWorksDefOf.RM_BankStake;
-			return s == null ? "UNMEASURED no RM_BankStake" : "LEVEE stakeIsEdifice=" + s.IsEdifice() + " leveeSetting=" + RM_RiverWorksSettings.stakeLineLevee;
+			return s == null ? "UNMEASURED no RM_BankStake" : "LEVEE stakeIsEdifice=" + s.IsEdifice() + " leveeSetting=" + RM_RiversSettings.stakeLineLevee;
+		}
+
+		// ── taken over 2026-10-05 with the merge into FlowWorks ─────────────
+
+		/// <summary>breach.cascade_order: a weir with stakes placed around it on dry ground is breached;
+		/// reads the snap schedule. Every stake downstream of the weir is scheduled, nearest-downstream
+		/// first (ticks never decrease with downstream distance); every stake more than a cell upstream
+		/// is spared. "CASCADE stakes=N scheduled=S spared=U monotone=B upstreamSpared=B".</summary>
+		public static string ProofCascadeOrder(string arg)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null || RM_RiverWorksDefOf.RM_BankStake == null)
+			{
+				return "UNMEASURED no map or no RM_BankStake";
+			}
+			RM_Building_BankWeir w = SpawnWeir(map, out string why);
+			if (w == null)
+			{
+				return why;
+			}
+			int dir = w.FlowDirForProof;
+			if (dir < 0)
+			{
+				w.Destroy();
+				return "UNMEASURED the weir's wet cell has no flow direction";
+			}
+			List<Thing> stakes = new List<Thing>();
+			List<float> orders = new List<float>();
+			bool anyUp = false, anyDown = false;
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(w.Position, 12f, false))
+			{
+				if (stakes.Count >= 12)
+				{
+					break;
+				}
+				if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || RM_RiverWorks.IsWaterCell(map, c)
+					|| c.GetFirstPawn(map) != null || w.OccupiedRect().Contains(c))
+				{
+					continue;
+				}
+				float order = RM_RiverMath.DownstreamDistance(c.x - w.Position.x, c.z - w.Position.z, dir);
+				if (order < -1f && anyUp && stakes.Count >= 6 && !anyDown)
+				{
+					continue; // keep room for downstream stakes
+				}
+				Thing s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
+				s.SetFaction(Faction.OfPlayer);
+				GenSpawn.Spawn(s, c, map);
+				stakes.Add(s);
+				orders.Add(order);
+				anyUp |= order < -1f;
+				anyDown |= order > 1f;
+			}
+			w.HitPoints = 1;
+			w.Breach();
+			int scheduled = 0, spared = 0;
+			bool upstreamSpared = true;
+			List<KeyValuePair<float, int>> down = new List<KeyValuePair<float, int>>();
+			for (int i = 0; i < stakes.Count; i++)
+			{
+				int tick = w.CascadeTickFor(stakes[i]);
+				if (orders[i] < -1f)
+				{
+					if (tick >= 0) upstreamSpared = false;
+				}
+				else if (tick >= 0)
+				{
+					down.Add(new KeyValuePair<float, int>(orders[i], tick));
+				}
+				if (tick >= 0) scheduled++; else spared++;
+			}
+			down.Sort((a, b) => a.Key.CompareTo(b.Key));
+			bool monotone = true;
+			for (int i = 1; i < down.Count; i++)
+			{
+				if (down[i].Value < down[i - 1].Value) monotone = false;
+			}
+			int downCount = 0;
+			for (int i = 0; i < orders.Count; i++) if (orders[i] >= -1f) downCount++;
+			bool allDownScheduled = down.Count == downCount;
+			for (int i = 0; i < stakes.Count; i++)
+			{
+				if (!stakes[i].Destroyed) stakes[i].Destroy();
+			}
+			w.Destroy();
+			return "CASCADE stakes=" + stakes.Count + " scheduled=" + scheduled + " spared=" + spared + " anyUp=" + anyUp
+				+ " anyDown=" + anyDown + " monotone=" + monotone + " upstreamSpared=" + upstreamSpared
+				+ " allDownScheduled=" + allDownScheduled;
+		}
+
+		/// <summary>levee.holds / levee.gap_leaks (the flood check): spawns a vanilla SeasonalFlood on the
+		/// river, stakes one dry cell and leaves another bare, and asks the flood itself
+		/// (Flood.CanFloodSpreadInto, patched) whether it may spread into each - then flips stakeLineLevee
+		/// off and asks again. "LEVEE stakeHolds=B gapLeaks=B offLetsThrough=B".</summary>
+		public static string ProofLevee(string arg)
+		{
+			Map map = Find.CurrentMap;
+			ThingDef floodDef = DefDatabase<ThingDef>.GetNamedSilentFail("SeasonalFlood");
+			if (map == null || floodDef == null || RM_RiverWorksDefOf.RM_BankStake == null)
+			{
+				return "UNMEASURED no map, no SeasonalFlood (Odyssey) or no RM_BankStake";
+			}
+			RM_MapComponent_RiverCurrent comp = map.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null || !FindWeirSite(map, out IntVec3 site, out _))
+			{
+				return "UNMEASURED no river bank on this map";
+			}
+			System.Reflection.MethodInfo spread = HarmonyLib.AccessTools.Method(typeof(Flood), "CanFloodSpreadInto");
+			System.Reflection.MethodInfo pot = HarmonyLib.AccessTools.Method(typeof(Flood), "CanFloodPotentiallySpreadInto");
+			if (spread == null || pot == null)
+			{
+				return "UNMEASURED Flood members not found";
+			}
+			Flood flood = GenSpawn.Spawn(ThingMaker.MakeThing(floodDef), site, map) as Flood;
+			if (flood == null || flood.Destroyed)
+			{
+				return "UNMEASURED the flood found no cells to open from here";
+			}
+			IntVec3 stakeCell = IntVec3.Invalid, gapCell = IntVec3.Invalid;
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(site, 10f, false))
+			{
+				if (!c.InBounds(map) || !c.Standable(map) || c.GetEdifice(map) != null || c.GetFirstPawn(map) != null
+					|| !(bool)pot.Invoke(flood, new object[] { c }))
+				{
+					continue;
+				}
+				if (!stakeCell.IsValid) stakeCell = c;
+				else if (!gapCell.IsValid) { gapCell = c; break; }
+			}
+			if (!gapCell.IsValid)
+			{
+				flood.Destroy();
+				return "UNMEASURED no two dry cells the flood could reach";
+			}
+			Thing s = ThingMaker.MakeThing(RM_RiverWorksDefOf.RM_BankStake);
+			s.SetFaction(Faction.OfPlayer);
+			GenSpawn.Spawn(s, stakeCell, map);
+			bool stakeHolds = !(bool)spread.Invoke(flood, new object[] { stakeCell });
+			bool gapLeaks = (bool)spread.Invoke(flood, new object[] { gapCell });
+			bool was = RM_RiversSettings.stakeLineLevee;
+			bool offLetsThrough;
+			try
+			{
+				RM_RiversSettings.stakeLineLevee = false;
+				offLetsThrough = (bool)spread.Invoke(flood, new object[] { stakeCell });
+			}
+			finally
+			{
+				RM_RiversSettings.stakeLineLevee = was;
+			}
+			s.Destroy();
+			flood.Destroy();
+			return "LEVEE stakeHolds=" + stakeHolds + " gapLeaks=" + gapLeaks + " offLetsThrough=" + offLetsThrough
+				+ " stake=" + stakeCell + " gap=" + gapCell;
+		}
+
+		/// <summary>ferry.undrafted_rope: strings a ferry, forces the path grid to recompute, and reads the
+		/// undrafted perceived cost on a rope cell versus the same river off the rope.
+		/// "ROPEPATH onRope=N offRope=M guided=B".</summary>
+		public static string ProofFerryPath(string arg)
+		{
+			Map map = Find.CurrentMap;
+			RM_MapComponent_RiverCurrent comp = map?.GetComponent<RM_MapComponent_RiverCurrent>();
+			if (comp == null)
+			{
+				return "UNMEASURED no map or no current component";
+			}
+			string ferry = ProofFerry("keep");
+			if (!ferry.StartsWith("FERRY paired=True"))
+			{
+				return ferry.StartsWith("UNMEASURED") ? ferry : "UNMEASURED ferry did not pair: " + ferry;
+			}
+			IntVec3 onRope = IntVec3.Invalid, offRope = IntVec3.Invalid;
+			foreach (int i in comp.RopeIndicesNoRebuild)
+			{
+				IntVec3 c = map.cellIndices.IndexToCell(i);
+				if (RM_RiverWorks.IsWaterCell(map, c)) { onRope = c; break; }
+			}
+			if (onRope.IsValid)
+			{
+				TerrainDef ropeTerrain = onRope.GetTerrain(map);
+				foreach (IntVec3 c in GenRadial.RadialCellsAround(onRope, 12f, false))
+				{
+					if (c.InBounds(map) && c.GetTerrain(map) == ropeTerrain && !comp.OnRope(c)) { offRope = c; break; }
+				}
+			}
+			int costOn = -1, costOff = -1;
+			if (onRope.IsValid && offRope.IsValid)
+			{
+				PathFinderMapData data = map.pathFinder.MapData;
+				HarmonyLib.AccessTools.Method(typeof(PathFinderMapData), "Notify_MapDirtied")?.Invoke(data, null);
+				data.GatherData(new List<PathRequest>());
+				costOn = RM_RopePathing.UndraftedCostAt(map, onRope);
+				costOff = RM_RopePathing.UndraftedCostAt(map, offRope);
+			}
+			foreach (Thing p in map.listerThings.ThingsOfDef(RM_RiverWorksDefOf.RM_FerryPost).ToArray())
+			{
+				p.Destroy();
+			}
+			if (!onRope.IsValid || !offRope.IsValid)
+			{
+				return "UNMEASURED no river cell on/off the rope to compare";
+			}
+			return "ROPEPATH onRope=" + costOn + " offRope=" + costOff + " guided=" + RM_RopePathing.Active;
 		}
 	}
 }

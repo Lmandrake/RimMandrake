@@ -48,7 +48,7 @@ namespace RimMandrake.TerminalBiomes
     // EXEMPTIONS (§1.3): a Building never drifts; a race carrying
     // RM_ChannelNativeExtension never registers; anything on or adjacent to
     // RM_FordStones terrain is skipped for that scan; anything on a cell an
-    // arresting building claims (River Works' RM_CompRiverArrester, §4's weir) is never
+    // arresting building claims (FlowWorks Rivers' RM_CompRiverArrester, §4's weir) is never
     // registered — it sits there, caught, until a colonist or the building
     // itself moves it.
     //
@@ -107,8 +107,8 @@ namespace RimMandrake.TerminalBiomes
     {
     }
 
-    // §4's arresting-building marker moved to River Works with the weir
-    // (SURFACE_RIVER_WEIRS_1 slice 2): RimMandrake.RiverWorks.RM_CompRiverArrester.
+    // §4's arresting-building marker moved to FlowWorks (Rivers) with the weir
+    // (SURFACE_RIVER_WEIRS_1 slice 2): RimMandrake.FlowWorks.Rivers.RM_CompRiverArrester.
     // IsArrestedCell below reads it.
 
     public class RM_MapComponent_ChannelCurrent : MapComponent
@@ -612,7 +612,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return false;
             }
-            return RimMandrake.RiverWorks.RM_CompRiverArrester.CellArrested(map, c);
+            return RimMandrake.FlowWorks.Rivers.RM_CompRiverArrester.CellArrested(map, c);
         }
 
         // Public for the same reason IsArrestedCell is: RM_Thing_CargoFloat
