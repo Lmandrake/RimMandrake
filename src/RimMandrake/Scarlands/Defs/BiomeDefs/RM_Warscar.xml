@@ -33,10 +33,10 @@
       six extraGenSteps (AncientRuins_Scarlands, the three Craters sizes, the
       two ScarlandsJunk gensteps) are Odyssey's own first-party donor
       gensteps, not campaign content, and carry over unchanged.
-    - wildAnimals: the three non-Star-Wars, non-RimUtinni donor rows
-      (AA_SpinedGow, RG_Rimclaw, AA_Helixien) carry over inline, each keeping
-      its own MayRequire. The other ten rows of the frozen twin's live roster
-      (Mynock, RSW_CrystalFairyMole, RSW_MegaphoridLarva, SW_Electrictick,
+    - wildAnimals: the two non-Star-Wars, non-RimUtinni donor rows
+      (RG_Rimclaw, AA_Helixien) carry over inline, each keeping
+      its own MayRequire. The other seven rows of the frozen twin's live roster
+      (Mynock, RSW_MegaphoridLarva, SW_Electrictick,
       RSW_FoundryBeetle, RSW_Korrum, SW_Electricgryllotalpa,
       SW_Juggernautbeetles) are wired via
       mandrake.rut.patches' own WildAnimals_Warscar.xml PatchOperationAdd —
@@ -153,7 +153,6 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>
       <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>
       <!-- RM_Totchak is deliberately NOT a roster row: it exists only through the RM_TotchakInWall genstep (WARSCAR_TOTCHAK_WAKES_1). -->
