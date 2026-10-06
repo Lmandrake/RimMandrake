@@ -3120,3 +3120,14 @@
 {"seat":"FOUNDRY","event":"note","id":"WEBWORK_TRACTION_LANCE_BUILD_1","text":"598dec613: offline build published; live proof calls RM_TractionLanceProof.ProofPull/ProofStuffTable owed; lance base art not generated","ts":"2026-10-06T18:49:10Z","tsn":1791312550318070526}
 {"seat":"FOUNDRY","event":"note","id":"WEBWORK_DEAD_GIANT_BUILD_1","text":"598dec613: offline build published; art install, live check, validation.py chain owed","ts":"2026-10-06T18:49:10Z","tsn":1791312550941072953}
 {"seat":"FOUNDRY","event":"note","id":"RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1","text":"db013a05e: offline build published; art swaps, WornDrillHead, live criteria owed","ts":"2026-10-06T18:49:11Z","tsn":1791312551567624636}
+{"seat":"FOUNDRY","event":"claim","id":"MINDSTONE_MATRIX_KINDLED_BUILD_1","ts":"2026-10-06T18:58:50Z","tsn":1791313130413533080}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1","ts":"2026-10-06T19:02:05Z","tsn":1791313325394392048}
+{"seat":"FOUNDRY","event":"claim","id":"RUSTCATHEDRAL_SHEET_ART_REDO_1","ts":"2026-10-06T19:13:04Z","tsn":1791313984745515036}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_SHEET_ART_REDO_1","ts":"2026-10-06T19:13:05Z","tsn":1791313985331508010}
+{"seat":"FOUNDRY","event":"claim","id":"NIGHTSIDEICE_SHEET_ART_REDO_1","ts":"2026-10-06T19:13:05Z","tsn":1791313985905382057}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_SHEET_DONOR_PORT_1","ts":"2026-10-06T19:15:28Z","tsn":1791314128325692593}
+{"seat":"FOUNDRY","event":"claim","id":"SOLAR_MIRRORS_MOD_DESIGN_1","ts":"2026-10-06T19:29:33Z","tsn":1791314973235871109}
+{"seat":"FOUNDRY","event":"claim","id":"VEXXITH_CLOSED_LOOP_BUILD_1","ts":"2026-10-06T19:29:33Z","tsn":1791314973839869824}
+{"seat":"FOUNDRY","event":"claim","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","ts":"2026-10-06T19:29:34Z","tsn":1791314974444364553}
+{"seat":"FOUNDRY","event":"start","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","ts":"2026-10-06T19:33:03Z","tsn":1791315183960790793}
+{"seat":"FOUNDRY","event":"close","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","sha":"4583b5a75","ts":"2026-10-06T19:33:05Z","tsn":1791315185985262031}
