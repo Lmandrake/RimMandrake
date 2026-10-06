@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -425,45 +425,14 @@ def defs_static(t):
             if not float(live) > 0:
                 _fail("RM_Dwommo MaxFlightTime %r live; with dwommoFlies on it must be > 0" % live)
 
-    with _comp(t, "glurro_salve_defs", toggle="glurroSalve"):
-        # GELATINOUSSLIME_GLURRO_SALVE_1: creature milks the salve, butchers to the concentrate; both slow, neither cures.
-        gx = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "Glurro.xml")).getroot()
-        gl = next((e for e in gx.findall("ThingDef") if e.findtext("defName") == "RM_Glurro"), None)
-        if gl is None:
-            _fail("RM_Glurro ThingDef missing from Defs/ThingDefs_Races/Glurro.xml")
-        mk = gl.find("comps/li[@Class='CompProperties_Milkable']")
-        if mk is None or mk.findtext("milkDef") != "RM_GlurroSalve":
-            _fail("RM_Glurro must carry CompProperties_Milkable with milkDef RM_GlurroSalve")
-        if gl.findtext("butcherProducts/RM_GlurroSalveConcentrate") is not None:
-            _fail("RM_Glurro must NOT butcher to the concentrate; the slime pit renders it (RM_Render_GlurroConcentrate)")
-        if not any("SlimeResistantExtension" in (e.get("Class") or "") for e in gl.findall("modExtensions/li")):
-            _fail("RM_Glurro must be slime resistant (it is never read)")
-        ix = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "GlurroSalve.xml")).getroot()
-        st = {}
-        for e in ix.findall("ThingDef"):
-            try:
-                st[e.findtext("defName")] = float(e.findtext("modExtensions/li/strength"))
-            except (TypeError, ValueError):
-                st[e.findtext("defName")] = None
-        a, b = st.get("RM_GlurroSalve"), st.get("RM_GlurroSalveConcentrate")
-        if a is None or b is None:
-            _fail("salve/concentrate need a GlurroSalveExtension strength: %s" % st)
-        if not (0 < a < b < 1):
-            _fail("strengths must satisfy 0 < salve < concentrate < 1 (slows, never stops): %r %r" % (a, b))
-        if t._guard():
-            rows, nf = _defs(t, ["ThingDef/RM_Glurro", "ThingDef/RM_GlurroSalve", "ThingDef/RM_GlurroSalveConcentrate"])
-            if nf:
-                _fail("glurro defs not resolving live (foundCount != 3): %s" % nf)
-
     with _comp(t, "pit_solvent_defs", toggle="pitSolvent"):
-        # GELATINOUSSLIME_PIT_SOLVENT_1: the pit renders poison food safe and the glurro into concentrate.
+        # GELATINOUSSLIME_PIT_SOLVENT_1: the pit renders poison food safe.
         # Offline: each recipe is used by RM_SlimePit, has a nonempty input and a product; the toxic inputs
-        # are real vanilla defs and the products are not themselves poison sources. Live: foundCount == 3
+        # are real vanilla defs and the products are not themselves poison sources. Live: foundCount == 2
         # (the live bill outcome, one toxic input becoming a safe output, is UNMEASURED: no tool runs a bill).
         px = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "SlimePitSolvent.xml")).getroot()
         want = {"RM_Render_Toxipotato": ("RawToxipotato", "RawPotatoes"),
-                "RM_Render_TwistedMeat": ("Meat_Twisted", "MealSimple"),
-                "RM_Render_GlurroConcentrate": ("Corpse_RM_Glurro", "RM_GlurroSalveConcentrate")}
+                "RM_Render_TwistedMeat": ("Meat_Twisted", "MealSimple")}
         got = {e.findtext("defName"): e for e in px.findall("RecipeDef")}
         for name, (inp, out) in want.items():
             r = got.get(name)
@@ -479,7 +448,7 @@ def defs_static(t):
         if t._guard():
             rows, nf = _defs(t, ["RecipeDef/%s" % n for n in want])
             if nf:
-                _fail("pit solvent recipes not resolving live (foundCount != 3): %s" % nf)
+                _fail("pit solvent recipes not resolving live (foundCount != 2): %s" % nf)
 
     with _comp(t, "seal_breach_defs", toggle="sealBreach"):
         # GELATINOUSSLIME_VAULT_SEAL_BREACH_1 (Slime-side slice): chunk item is targetable on a breachable
@@ -721,13 +690,9 @@ def exposure_and_ladder(t):
                 xz = _slime_xz(t, 3) if slime else _plain_xz(t, {"revert": 1, "hold2": 2, "hold3": 3}[key])
                 P[key] = _spawn(t, "Colonist", *xz)
                 _add_hediff(t, P[key], HEDIFF, sev)
-            # GELATINOUSSLIME_GLURRO_SALVE_1: same seed as "grow" plus the salve hediff
-            P["salved"] = _spawn(t, "Colonist", *_slime_xz(t, 4))
-            _add_hediff(t, P["salved"], HEDIFF, 0.30)
-            _add_hediff(t, P["salved"], "RM_GlurroSalved", 0.5)
             _ST["biome"], _ST["decay"] = _map_decay(t)
             rows0 = _rows(t)
-            _ST["sev0"] = {k: (_hed(rows0.get(P[k])) or {}).get(HEDIFF) for k in ("grow", "revert", "hold2", "hold3", "salved")}
+            _ST["sev0"] = {k: (_hed(rows0.get(P[k])) or {}).get(HEDIFF) for k in ("grow", "revert", "hold2", "hold3")}
             if None in _ST["sev0"].values():
                 _unmeasured(t, "seeded hediff not readable back: %s" % _ST["sev0"])
             _ST["tick0"] = _clock(t)
@@ -770,22 +735,6 @@ def exposure_and_ladder(t):
             if g1 is not None:
                 _check_delta("seeded sev .30 on slime", _ST["sev0"]["grow"], g1,
                              _rate(True, 0.3, False, _ST["decay"]), ticks)
-    with _comp(t, "glurro_salve_slows_growth", toggle="glurroSalve"):
-        # salved pawn (salve strength 0.5) on slime: growth ~half the unsalved rate, still > 0 (never stops)
-        if t._guard():
-            if _ST["decay"] is not None:
-                _unmeasured(t, "map biome %s is a drying biome: growth is not running, a slowdown cannot be seen" % _ST["biome"])
-            rows, ticks = _ST["rows"], _ST["ticks"]
-            sv = (_hed(rows.get(P["salved"])) or {}).get(HEDIFF)
-            if sv is None:
-                _unmeasured(t, "salved pawn lost the hediff or was not readable")
-            if (_hed(rows.get(P["salved"])) or {}).get("RM_GlurroSalved") is None:
-                _unmeasured(t, "RM_GlurroSalved gone before the read (decays 0.25/day; expected present)")
-            if not sv > _ST["sev0"]["salved"]:
-                _fail("salved pawn's slimification did not advance at all (%.4f -> %.4f): the salve may only slow it"
-                      % (_ST["sev0"]["salved"], sv))
-            _check_delta("salved sev .30 on slime (half speed)", _ST["sev0"]["salved"], sv, GROW_PER_DAY * 0.5, ticks)
-
     with _comp(t, "stage1_wipes_off_stages_2_3_hold"):
         if t._guard():
             rows, ticks = _ST["rows"], _ST["ticks"]
@@ -1221,5 +1170,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):
+                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

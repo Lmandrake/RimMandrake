@@ -1,9 +1,9 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-05T18:48:05-0700",
+ "built": "2026-10-05T19:16:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
@@ -39,20 +39,13 @@
      "east": "22e9996b2a717b3e5eab916f893b770ec541a2605dec1b1d5a79dde316a7f86b",
      "north": "8e3d67c15d10edcd1cd1e041e98391c72a4088233d72a1dbf35e246dd8253126",
      "south": "ca95c92e524c096bbfad950d22fa8cb85864f93dfe5ea6419c9ac60b8b6c8012"
-    },
-    "B": {
-     "east": "b9f6559efb95f15fead851773008793243d820c9d123a7792bca283bf60d1b75",
-     "north": "9acaf96bc5dc1d938bde54e2eb673c32b5d0633864617f9cfdf7898ec263db54",
-     "south": "bd446d6bce804db2673b57b6c164bce5018f1444c2bf261e0b54834e26a5cc6b"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
-    "B": "_byname"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render nightside_mahllik"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
    "reserved": [
@@ -85,8 +78,8 @@
     "C": "swanimals/Wampa/Wampa_j"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_wampa_v1",
+    "A": "history SWBestiary 2026-09-09",
+    "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Wampa/Wampa",
@@ -135,5 +128,5 @@
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "5d9f13d8190e2ea6"
+ "snapshotId": "98bd1609fa1e8de3"
 }

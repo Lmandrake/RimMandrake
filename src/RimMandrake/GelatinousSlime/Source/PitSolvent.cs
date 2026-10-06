@@ -12,7 +12,7 @@ namespace RimMandrake.GelatinousSlime
     [StaticConstructorOnStartup]
     public static class PitSolvent
     {
-        static readonly string[] Recipes = { "RM_Render_Toxipotato", "RM_Render_TwistedMeat", "RM_Render_GlurroConcentrate" };
+        static readonly string[] Recipes = { "RM_Render_Toxipotato", "RM_Render_TwistedMeat" };
 
         static PitSolvent()
         {

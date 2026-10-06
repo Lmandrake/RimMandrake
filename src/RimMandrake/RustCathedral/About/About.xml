@@ -92,9 +92,7 @@ so Odyssey ships as a hard dependency too — per the owner's 2026-09-25
 standing design ruling ("always assume all the DLCs"), every RimMandrake
 biome mod may assume the full expansion set is present.
 
-wildAnimals: RM_CathedralRoach 0.12 (own, cleaner), GR_Mecharat 0.5 (donor
-mech-vermin, ruled — stays inline per Q11a: not Star Wars fauna, no Utinni
-patch owed), RM_LivingBolt 0.06 (the hum's own display organ, wired here
+wildAnimals: RM_CathedralRoach 0.12 (own, cleaner), RM_LivingBolt 0.06 (the hum's own display organ, wired here
 for the first time — the frozen twin's own copy never wired one, so the
 kit's §3 could never spawn). Ling_Cockroach is DROPPED — the roster's own
 2026-09-07 owner addendum supersedes the frozen twin's earlier reading that

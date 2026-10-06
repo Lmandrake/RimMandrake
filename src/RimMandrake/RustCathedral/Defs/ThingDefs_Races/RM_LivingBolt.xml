@@ -299,13 +299,13 @@
           <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.45</drawSize>
+          <drawSize>0.1</drawSize>
         </bodyGraphicData>
         <corpseGraphicData>
           <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.45</drawSize>
+          <drawSize>0.1</drawSize>
         </corpseGraphicData>
       </li>
     </lifeStages>
