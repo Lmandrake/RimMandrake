@@ -25,13 +25,17 @@ from modcheck import Suite, ExpectationFailed  # noqa: E402
 SRC = os.path.join(HERE, "Source")
 DEFS = os.path.join(HERE, "Defs")
 SHADE_GRID_CS = os.path.join(HERE, "..", "CreatureBehaviors", "Source", "RM_MapComponent_ShadeGrid.cs")
+CB_DLL = os.path.join(HERE, "..", "CreatureBehaviors", "Assemblies", "RimMandrake.CreatureBehaviors.dll")
 GLARE_HEDIFF_XML = os.path.join(HERE, "..", "CreatureBehaviors", "Defs", "HediffDefs", "RM_GlareBlind_Hediffs.xml")
 NS = "RimMandrake.SolarMirrors."
 MIRRORS = ("RM_SignalMirror", "RM_StaticMirror", "RM_Heliostat")
 RECEIVERS = ("RM_SunStone", "RM_SolarFurnace")
 ALL_DEFS = ["ThingDef/%s" % d for d in MIRRORS + RECEIVERS] + ["JobDef/RM_ReAimMirror", "WorkGiverDef/RM_ReAimMirror"]
 NEEDLES = ("mandrake.rm.solarmirrors", "RimMandrake.SolarMirrors", "RM_CompMirror", "RM_MirrorLight",
-           "RM_SolarFurnace", "RM_Heliostat", "RM_StaticMirror", "RM_SignalMirror", "RM_SunStone")
+           "RM_SolarFurnace", "RM_Heliostat", "RM_StaticMirror", "RM_SignalMirror", "RM_SunStone",
+           # The CreatureBehaviors light hook: a TypeLoad/MissingMethod naming it means the shipped
+           # Biomes DLL predates the hook and mirror light reaches nothing.
+           "IRM_LightLayer", "RegisterLightSource")
 SHADE_THRESHOLD = 0.8  # RM_MapComponent_ShadeGrid.ShadeCastingFillPercentThreshold
 
 suite = Suite("SolarMirrors")
@@ -69,6 +73,9 @@ def defs(t):
 
 # Lines that need a probe this repo does not have yet. Each stays UNMEASURED, never PASS.
 LIVE_OWED = [
+    ("hook", "registered", "shadeEffect",
+     "on a map with a lit mirror, RM_MapComponent_ShadeGrid.LightAt(cell) > 0 at the spot (the grid pulled the "
+     "light through IRM_LightLayer.AddLight). Needs RM_ShadeProbe"),
     ("light", "unshade", "shadeEffect",
      "aim a static mirror at a shaded cell: ShadeAt falls and ExposureAt rises there; un-aim restores both. "
      "Needs RM_ShadeProbe (a [Tool] reading ShadeAt/ExposureAt/LightAt at a cell)"),
@@ -150,6 +157,41 @@ def _def_files():
         for fn in fns:
             if fn.endswith(".xml"):
                 yield os.path.join(dp, fn)
+
+
+def _hook_checks(bad):
+    """The light reaches the shade grid ONLY through CreatureBehaviors' public hook (design §2.3).
+    If the hook is gone, or not folded into Recompute, mirrors light nothing for shade, heat or
+    pathing -- and nothing would say so. So each piece is checked, loudly."""
+    cb = open(SHADE_GRID_CS, encoding="utf-8").read()
+    for pat, what in ((r"public interface IRM_LightLayer\s*\{[^}]*bool AddLight\(float\[\] into\);", "interface IRM_LightLayer.AddLight(float[])"),
+                      (r"public void RegisterLightSource\(IRM_LightLayer source\)", "RegisterLightSource(IRM_LightLayer)"),
+                      (r"public void UnregisterLightSource\(IRM_LightLayer source\)", "UnregisterLightSource(IRM_LightLayer)"),
+                      (r"BuildLightLayer\(\);\s*RebuildHeatLayers\(\);", "Recompute building light BEFORE the heat layers"),
+                      (r"RM_SunHeatMath\.WithLight\(ex, lightLayer\[i\]\)", "light folded into the cached exposure"),
+                      (r"RM_SunHeatMath\.ShadeWithLight\(s, lightLayer\[i\]\)", "light folded into ShadeAt")):
+        if not re.search(pat, cb):
+            bad.append("HOOK MISSING: CreatureBehaviors' shade grid lacks %s -- mirror light reaches nothing" % what)
+    # The shipped CreatureBehaviors DLL must carry the hook too (source alone is not what loads).
+    # Metadata names are UTF-8 in the #Strings heap; sanity-probe a name that has always been there.
+    if os.path.isfile(CB_DLL):
+        blob = open(CB_DLL, "rb").read()
+        if b"RebuildHeatLayers" not in blob:
+            bad.append("sanity: RebuildHeatLayers not found in %s (the DLL scan is broken)" % CB_DLL)
+        for name in (b"IRM_LightLayer", b"RegisterLightSource", b"AddLight"):
+            if name not in blob:
+                bad.append("HOOK MISSING from the built DLL %s: %s (rebuild CreatureBehaviors)" % (CB_DLL, name.decode()))
+    else:
+        bad.append("no CreatureBehaviors DLL at %s" % CB_DLL)
+    src = {f: open(os.path.join(SRC, f), encoding="utf-8").read() for f in os.listdir(SRC) if f.endswith(".cs")}
+    light = src.get("RM_MapComponent_MirrorLight.cs", "")
+    if not re.search(r"class RM_MapComponent_MirrorLight\s*:\s*MapComponent,\s*IRM_LightLayer", light):
+        bad.append("RM_MapComponent_MirrorLight does not implement IRM_LightLayer")
+    if "RegisterLightSource(this)" not in light or "UnregisterLightSource(this)" not in light:
+        bad.append("RM_MapComponent_MirrorLight never registers/unregisters with the shade grid")
+    for f, text in src.items():
+        if re.search(r"HarmonyPatch\(typeof\(RM_MapComponent_ShadeGrid\)", text) or "FieldRefAccess<RM_MapComponent_ShadeGrid" in text:
+            bad.append("%s patches the shade grid's internals; use the public light hook" % f)
 
 
 def static_checks():
@@ -241,15 +283,7 @@ def static_checks():
         if any(li.get("Class") == "CompProperties_Power" for li in furnace.findall("comps/li")):
             bad.append("furnace has a power comp: it must run on light alone")
 
-    # The patches reach CreatureBehaviors' PRIVATE members by name; a rename there would fail at load.
-    cb = open(SHADE_GRID_CS, encoding="utf-8").read()
-    for pat, what in ((r"private void RebuildHeatLayers\(\)", "RebuildHeatLayers()"),
-                      (r"private float\[\] exposure;", "float[] exposure"),
-                      (r"private RM_SunPathCustomizer pathCustomizer", "RM_SunPathCustomizer pathCustomizer"),
-                      (r"public float ShadeAt\(IntVec3 cell\)", "ShadeAt(IntVec3)"),
-                      (r"public void Recompute\(\)", "Recompute()")):
-        if not re.search(pat, cb):
-            bad.append("CreatureBehaviors' shade grid no longer has %s, which RM_MirrorPatches reaches by name" % what)
+    _hook_checks(bad)
     if "<defName>RM_GlareBlind</defName>" not in open(GLARE_HEDIFF_XML, encoding="utf-8").read():
         bad.append("RM_GlareBlind hediff gone: the blinding defence would silently do nothing")
 

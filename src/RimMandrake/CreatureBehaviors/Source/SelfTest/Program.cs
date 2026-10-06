@@ -516,6 +516,24 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     + (0.35f / netPerDay * 24f).ToString("0.0") + " h; clears at " + (-decay).ToString("0.0") + "/day");
             });
 
+            // SOLAR_MIRRORS_MOD_DESIGN_1 §2.3, REAL from RM_SunHeatMath.cs (the light hook's two folds).
+            Case("light hook: light un-shades up to full sun, never past it; zero light changes nothing", () =>
+            {
+                Assert(RM_SunHeatMath.WithLight(0.3f, 0f) == 0.3f, "zero light moved exposure");
+                Assert(RM_SunHeatMath.ShadeWithLight(0.7f, 0f) == 0.7f, "zero light moved shade");
+                Assert(RM_SunHeatMath.WithLight(0.3f, 0.6f) == 0.6f, "base 0.3 + light 0.6 should read 0.6");
+                Assert(RM_SunHeatMath.WithLight(0.8f, 0.6f) == 0.8f, "light lowered exposure");
+                Assert(RM_SunHeatMath.WithLight(0.2f, 2.5f) == 1f, "concentration pushed exposure past 1");
+                Assert(System.Math.Abs(RM_SunHeatMath.ShadeWithLight(1f, 0.6f) - 0.4f) < 1e-6f, "full shade + 0.6 light should be 0.4");
+                Assert(RM_SunHeatMath.ShadeWithLight(0.2f, 0.6f) == 0.2f, "light raised shade");
+                // ShadeAt and exposure agree (the design's one-source-of-truth fix): shade = 1 - lit exposure.
+                float ex = RM_SunHeatMath.WithLight(0.3f, 0.6f);
+                float sh = RM_SunHeatMath.ShadeWithLight(0.7f, 0.6f);
+                Assert(System.Math.Abs(ex + sh - 1f) < 1e-6f, "shade " + sh + " and exposure " + ex + " disagree");
+                // A parasol in a beam still shades you: cover applies after the light.
+                Assert(System.Math.Abs(RM_SunHeatMath.WithCover(RM_SunHeatMath.WithLight(0f, 1f), 0.5f) - 0.5f) < 1e-6f, "parasol lost in a beam");
+            });
+
             Case("glare-blind: immunity is a gene on the Jawa, goggles carry the tag", () =>
             {
                 string root = FindModsRoot();

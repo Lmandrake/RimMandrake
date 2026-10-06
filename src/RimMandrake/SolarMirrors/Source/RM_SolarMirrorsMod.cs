@@ -146,7 +146,10 @@ namespace RimMandrake.SolarMirrors
             {
                 foreach (Map m in Find.Maps)
                 {
-                    RM_MapComponent_MirrorLight.For(m)?.RequestPass();
+                    RM_MapComponent_MirrorLight comp = RM_MapComponent_MirrorLight.For(m);
+                    // shadeEffect is read by the grid through AddLight, not by the change hash.
+                    comp?.RequestPass();
+                    comp?.RequestGridRebuild();
                 }
             }
         }

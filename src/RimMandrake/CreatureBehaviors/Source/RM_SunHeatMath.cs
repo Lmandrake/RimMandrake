@@ -319,6 +319,25 @@ namespace RimMandrake.CreatureBehaviors
             return exposure > f ? exposure : f;
         }
 
+        /// <summary>SOLAR_MIRRORS_MOD_DESIGN_1 §2.3: exposure where a light
+        /// provider (RM_MapComponent_ShadeGrid.RegisterLightSource) lands
+        /// `light` (0..N, N &gt; 1 = concentration): light un-shades, up to
+        /// full sun and never past it — max(exposure, min(1, light)). 0 light
+        /// returns the exposure unchanged.</summary>
+        public static float WithLight(float exposure, float light)
+        {
+            float l = Clamp01(light);
+            return exposure > l ? exposure : l;
+        }
+
+        /// <summary>Shade (0..1) after light: cut to 1 - min(1, light), never
+        /// raised. The ShadeAt counterpart of WithLight.</summary>
+        public static float ShadeWithLight(float shade, float light)
+        {
+            float cap = 1f - Clamp01(light);
+            return shade < cap ? shade : cap;
+        }
+
         /// <summary>STILLSAND_GLARE_BLIND_GOGGLES_1: the glare-blind severity a
         /// pawn gains over one check interval. Nothing below the full-glare
         /// threshold (shade on sand, which the glare floor holds at about

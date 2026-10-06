@@ -6,6 +6,13 @@ namespace RimMandrake.SolarMirrors
     // SOLAR_MIRRORS_MOD_DESIGN_1 §2.2. Pure maths, no Verse types, so it can be self-tested
     // offline. Axes: x east, y up, z north (RimWorld's map axes plus height). All direction
     // vectors are unit vectors.
+    /// <summary>A beam-walk visitor: true at the first cell that stops the beam. A struct
+    /// passed by ref, so a walk allocates nothing (no closure, no delegate).</summary>
+    public interface IRM_LineVisitor
+    {
+        bool Blocked(int x, int z);
+    }
+
     public static class RM_MirrorMath
     {
         /// <summary>Nominal height of a mirror's face above the ground, in cells (design §2.2).</summary>
@@ -106,8 +113,8 @@ namespace RimMandrake.SolarMirrors
         /// <summary>Walks the cells strictly between (x0,z0) and (x1,z1) on a 4-connected
         /// Bresenham line (the same walk as GenSight.PointsOnLineOfSight, which skips its end
         /// cell; the caller tests the target separately). Returns false at the first cell
-        /// blocked() says stops the beam.</summary>
-        public static bool LineClear(int x0, int z0, int x1, int z1, Func<int, int, bool> blocked)
+        /// visitor.Blocked says stops the beam.</summary>
+        public static bool LineClear<T>(int x0, int z0, int x1, int z1, ref T visitor) where T : struct, IRM_LineVisitor
         {
             int dx = Math.Abs(x1 - x0);
             int dz = Math.Abs(z1 - z0);
@@ -123,7 +130,7 @@ namespace RimMandrake.SolarMirrors
             bool first = true;
             while (n > 1)
             {
-                if (!first && blocked(x, z))
+                if (!first && visitor.Blocked(x, z))
                 {
                     return false;
                 }
