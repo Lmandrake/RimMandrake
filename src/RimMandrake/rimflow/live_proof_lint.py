@@ -148,7 +148,7 @@ def matched_phrase(body):
     return m.group(0).lower() if m else None
 
 
-def offline_only_unspawned_closes(root=None, ledger=None):
+def offline_only_unspawned_closes(root=None, ledger=None, stats=None):
     """-> [(id, sha, seat, phrase), ...] for every close whose commit body names
     live-proof debt and has no spawned successor anywhere in the ledger.
 
@@ -162,7 +162,10 @@ def offline_only_unspawned_closes(root=None, ledger=None):
     out = []
     for ev in close_events(ledger):
         iid, sha = ev["id"], ev.get("sha")
-        phrase = matched_phrase(commit_body(root, sha))
+        body = commit_body(root, sha)
+        if body is None and stats is not None:
+            stats["unreadable"] = stats.get("unreadable", 0) + 1   # no sha / sha not in this clone
+        phrase = matched_phrase(body)
         if not phrase:
             continue
         if has_spawned_successor(iid, froms):
@@ -172,9 +175,11 @@ def offline_only_unspawned_closes(root=None, ledger=None):
 
 
 def _sweep_main():
-    hits = offline_only_unspawned_closes()
+    stats = {}
+    hits = offline_only_unspawned_closes(stats=stats)
     print("CLOSE_OWED_LIVE_PROOF_1 baseline sweep — whole ledger, %d close event(s) "
           "checked." % len(close_events(LEDGER)))
+    print("%d close(s) had no readable commit body (unchecked, NOT clean)." % stats.get("unreadable", 0))
     print("%d close(s) name live-proof debt in the commit body with no spawned "
           "successor:\n" % len(hits))
     for iid, sha, seat, phrase in hits:

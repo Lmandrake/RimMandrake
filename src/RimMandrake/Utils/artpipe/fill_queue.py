@@ -282,7 +282,8 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
     binding = bind_subject(row, no_subject=no_subject, world=world)
-    unknown = sorted(k for k in row if k not in KNOWN_ROW_FIELDS and row[k] not in (None, ""))
+    # csv.DictReader keys a row's surplus cells under None; sorting str with None would crash the whole file
+    unknown = sorted((str(k) for k in row if k not in KNOWN_ROW_FIELDS and row[k] not in (None, "")))
     if unknown:
         print(f"WARNING: row {row.get('id', '?')!r} has unknown field(s) {unknown} — NOT carried onto the job "
               f"(typo, or a field fill_queue does not support)", file=sys.stderr)
