@@ -3052,3 +3052,5 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T13:04:23Z","tsn":1791291863977372489}
 {"seat":"FOUNDRY","event":"close","id":"NORTHSTAR_RESULTS_JOIN_1","sha":"6dfd31920","ts":"2026-10-06T13:04:33Z","tsn":1791291873051990521}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:40:49Z","tsn":1791294049565905019}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY FlowWorks fresh validation_v2 run","ts":"2026-10-06T13:43:03Z","tsn":1791294183326798171}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T13:47:35Z","tsn":1791294455717590538}
