@@ -9,6 +9,9 @@
   ⚠️ No <li>: BiomeAnimalRecord reads the node NAME as the animal. fishTypes is Odyssey-gated
   in RM_TwilightSea, so each catch op is conditional on its bucket existing.
   Greentide and Miasma keep their mee/faa rows (evictions stopped, owner 2026-09-22).
+  The sando aqua monster joined them 2026-10-05 (owner, Scald sheet, verbatim: "Move this to the
+  Twilight Sea, it does not belong in the Scald."), at the 0.03 the Scald carried. Its catch half is
+  owed (TWILIGHT_GIANT_CATCHES_1). WildAnimals_TheScald.xml is deleted: it carried nothing else.
 -->
 <Patch>
 
@@ -19,6 +22,7 @@
       <value>
         <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
         <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
+        <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
       </value>
     </match>
   </Operation>

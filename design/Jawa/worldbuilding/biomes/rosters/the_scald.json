@@ -33,13 +33,13 @@
   "evictions": [
     {
       "def": "RSW_ElderSando",
-      "disposition": "move:RUT_GreySea",
-      "reason": "owner review 2026-09 (round2 move mapping): Grey Sea"
+      "disposition": "move:RM_TwilightSea (as RM_GrippingTerror)",
+      "reason": "owner, Scald sheet 2026-10-05: \"Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier.\" RM_ElderSando (the redundant RM copy) cut from RM_TheScald/RUT_TheScald and renamed RM_GrippingTerror."
     },
     {
       "def": "RSW_SandoAquaMonster",
-      "disposition": "move:AB_MiasmicMangrove",
-      "reason": "owner review 2026-09 (round2 move mapping): Miasma"
+      "disposition": "move:RM_TwilightSea",
+      "reason": "owner, Scald sheet 2026-10-05: \"Move this to the Twilight Sea, it does not belong in the Scald.\""
     }
   ],
   "fauna": [

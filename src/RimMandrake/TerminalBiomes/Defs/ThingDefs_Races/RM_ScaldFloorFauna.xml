@@ -220,7 +220,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Doss</defName>
     <label>doss</label>
-    <description>A finger-length, hunch-backed shrimp-thing, pink from birth as though it had already been cooked, picking over whatever settles onto the mats before the muddal reach it. Where the eesh work the dung-fall from above, the doss work it from beneath. They cover the warm margins in numbers nobody has ever tried to count, and a single one is barely a mouthful.</description>
+    <description>A finger-length, hunch-backed shrimp-thing, pink from birth as though it had already been cooked, picking over whatever settles onto the mats before the iridai reach it. Where the eesh work the dung-fall from above, the doss work it from beneath. They cover the warm margins in numbers nobody has ever tried to count, and a single one is barely a mouthful.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>4</MarketValue>
@@ -318,8 +318,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Muddal</defName>
-    <label>muddal</label>
-    <description>The bottom-walkers' small cousin, and unmistakably of the same make: a hand-long armored thing with a heat-gloss on its plates, working along the crowncarpet mats at the margins where the boil gentles. It grazes the rainbow bands in order and takes the pigment into its own skin as it goes, so a muddal is banded down its back in whatever it has been eating — a little strip of the Scald's oldest truth, walking.</description>
+    <label>iridai</label>
+    <description>The iridesce's small cousin, and unmistakably of the same make: a hand-long armored thing with a heat-gloss on its plates, working along the crowncarpet mats at the margins where the boil gentles. It grazes the rainbow bands in order and takes the pigment into its own skin as it goes, so an iridai is banded down its back in whatever it has been eating — a little strip of the Scald's oldest truth, walking.</description>
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>10</MarketValue>
@@ -376,7 +376,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Muddal</defName>
-    <label>muddal</label>
+    <label>iridai</label>
     <race>RM_Muddal</race>
     <combatPower>8</combatPower>
     <wildGroupSize>3~8</wildGroupSize>
@@ -414,8 +414,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thuum</defName>
-    <label>thuum</label>
-    <description>An eel that never leaves the underside of the crowncarpet — it lives in the thin hot film between the mat and the rock, where the mat is thickest, and takes the pigment into its skin there, so a thuum is banded down its whole length in the mat's own colours. Lift a mat-edge at the baths and you may find one lying flat beneath it, perfectly still, looking like a strip of the Scald's oldest truth that has learned to move.</description>
+    <label>shimmer eel</label>
+    <description>An eel that never leaves the underside of the crowncarpet — it lives in the thin hot film between the mat and the rock, where the mat is thickest, and takes the pigment into its skin there, so a shimmer eel carries dull rainbows down its whole length in the mat's own colours. Its head is armored in overlapping plates, for shouldering its way under the mat. Lift a mat-edge at the baths and you may find one lying flat beneath it, perfectly still, looking like a strip of the Scald's oldest truth that has learned to move.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>12</MarketValue>
@@ -471,7 +471,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Thuum</defName>
-    <label>thuum</label>
+    <label>shimmer eel</label>
     <race>RM_Thuum</race>
     <combatPower>10</combatPower>
     <wildGroupSize>1~2</wildGroupSize>

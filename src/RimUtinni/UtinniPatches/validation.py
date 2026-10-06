@@ -179,17 +179,16 @@ def naboo_fish_checks():
                         out += [(c.tag, c.text) for c in v]
         return out
 
-    scald = [t for t, _ in added("WildAnimals_TheScald.xml", "RM_TheScald", "wildAnimals")]
-    if "RSW_SandoAquaMonster" not in scald:
-        bad.append("sanity probe: Scald patch lost RSW_SandoAquaMonster (reader broken or row cut)")
-    for n in ("RSW_Mee", "RSW_Faa"):
-        if n in scald:
-            bad.append("%s still on the Scald floor" % n)
+    # Owner, Scald sheet 2026-10-05: the sando aqua monster left the Scald too, so the Scald's
+    # Utinni wildAnimals patch is gone; nothing Star Wars may ride onto RM_TheScald any more.
+    if os.path.exists(os.path.join(pdir, "WildAnimals_TheScald.xml")):
+        bad.append("WildAnimals_TheScald.xml is back (the Scald carries no Star Wars resident)")
     tw = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "wildAnimals"))
-    for n in ("RSW_Mee", "RSW_Faa"):
+    for n in ("RSW_Mee", "RSW_Faa", "RSW_SandoAquaMonster"):
         if n not in tw:
             bad.append("%s missing from RM_TwilightSea wildAnimals" % n)
-    if any(c.tag == "li" for op in ops("WildAnimals_TwilightSea.xml") for c in op.iter("li")):
+    # only a <li> inside a <value> discards a roster entry; <mods><li> is FindMod's own syntax
+    if any(True for op in ops("WildAnimals_TwilightSea.xml") for v in op.iter("value") for _ in v.iter("li")):
         bad.append("<li> in WildAnimals_TwilightSea.xml (discards the entry)")
     c1 = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "fishTypes/saltwater_Common"))
     c2 = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "fishTypes/saltwater_Uncommon"))

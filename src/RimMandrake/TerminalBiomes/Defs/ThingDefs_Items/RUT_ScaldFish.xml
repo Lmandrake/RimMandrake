@@ -74,8 +74,8 @@
        own note: RawTasty because it comes up already cooked off the margin. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_MuddalCatch</defName>
-    <label>muddal</label>
-    <description>The bottom-walkers' small cousin: a hand-long, armored, heat-glossed thing that grazes the crowncarpet mats at the margins where the boil gentles, moving along the rainbow bands and taking the pigment into its skin, so a muddal is banded too — a little strip of the Scald's oldest truth. Pilgrims gather them at the baths with a cloth. Cooked the moment it leaves the water, which is to say already.</description>
+    <label>iridai</label>
+    <description>The iridesce's small cousin: a hand-long, armored, heat-glossed thing that grazes the crowncarpet mats at the margins where the boil gentles, moving along the rainbow bands and taking the pigment into its skin, so an iridai is banded too — a little strip of the Scald's oldest truth. Pilgrims gather them at the baths with a cloth. Cooked the moment it leaves the water, which is to say already.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_MuddalCatch</texPath>
     </graphicData>
@@ -179,7 +179,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_DossCatch</defName>
     <label>doss</label>
-    <description>The eesh's small competitor: a finger-length, hunch-backed shrimp-thing, boiled pink from birth, that works the dung-fall from below where the shoals work it from above — picking over what settles on the mats before the muddal get to it. It is everywhere at the margins in the warm season and it is the pilgrims' snack, gathered with a cloth and eaten from the hand, already cooked like everything here. There is very little to one. There are always more.</description>
+    <description>The eesh's small competitor: a finger-length, hunch-backed shrimp-thing, boiled pink from birth, that works the dung-fall from below where the shoals work it from above — picking over what settles on the mats before the iridai get to it. It is everywhere at the margins in the warm season and it is the pilgrims' snack, gathered with a cloth and eaten from the hand, already cooked like everything here. There is very little to one. There are always more.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_DossCatch</texPath>
     </graphicData>
@@ -204,8 +204,8 @@
        rot-profile than the eesh's precedent. -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_ThuumCatch</defName>
-    <label>thuum</label>
-    <description>An eel that lives under the crowncarpet mats — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the muddal does, so a thuum is banded down its whole length in the mat's own colours, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
+    <label>shimmer eel</label>
+    <description>An eel that lives under the crowncarpet mats — between the rainbow mat and the rock, in the thin hot film where the mat is thickest — and takes the pigment into its skin the way the iridai does, so a shimmer eel carries dull rainbows down its whole length in the mat's own colours, behind an armored head, and a pilgrim who lifts a mat-edge at the baths sometimes finds one lying there like a strip of the Scald's oldest truth that has learned to move. It comes up cooked, and it is the margin's best eating after the eesh — richer, and the bands hold in the pan.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_ThuumCatch</texPath>
     </graphicData>

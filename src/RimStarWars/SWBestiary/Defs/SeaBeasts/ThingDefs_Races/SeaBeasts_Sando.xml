@@ -7,25 +7,23 @@
      🔴 SEA_BEASTS_TIER_RULING_1 (2026-09-25): RSW_ElderSando and
      RSW_StormSando are INVENTED, not canon (verified via Wookieepedia's
      search API: no hit for either name) — they now also ship under the
-     franchise-free RM_ tier as RM_ElderSando/RM_StormSando
-     (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
-     RM_SeaBeasts_Invented.xml), wired inline into RM_TheScald.xml/
-     RM_ElderSando and left otherwise unwired (StormSando isn't currently
-     spawned by any biome, same as before this pass). The RSW_ElderSando
-     below is left UNTOUCHED rather than renamed: the frozen
-     RUT_TheScald.xml still references it directly in its own inline
-     wildAnimals ("stays as it is, byte-for-byte... do not edit here"), and
-     MegafaunaYield.xml/AnimalTolerances_Ashkarr.xml (Doctrine/UtinniPatches,
-     generated) key tuning to both exact defNames — renaming would break the
-     live save's biome def and silently orphan that tuning. RSW_StormSando is
-     untouched for the same generated-tuning reason. RSW_SandoAquaMonster
-     (this file's other creature) is genuine canon and is untouched/unmoved. -->
+     franchise-free RM_ tier as RM_GrippingTerror (the elder, renamed by the
+     owner on the Scald sheet 2026-10-05 and cast in RM_TwilightSea) and
+     RM_StormSando (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/
+     RM_SeaBeasts_Invented.xml; StormSando is not spawned by any biome).
+     RSW_ElderSando below is no longer cast anywhere; it is left defined
+     because MegafaunaYield.xml/AnimalTolerances_Ashkarr.xml (generated) key
+     tuning to its exact defName. RSW_StormSando likewise.
+     RSW_SandoAquaMonster is genuine canon: it rides the Utinni layer into
+     RM_TwilightSea (WildAnimals_TwilightSea.xml). Owner, Scald sheet
+     2026-10-05: "Move this to the Twilight Sea, it does not belong in the
+     Scald. look carefully at the canon art. It is NOT a giant feline thing." -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_SandoAquaMonster</defName>
     <label>sando aqua monster</label>
-    <description>The apex of the Naboo core: a grey, lion-faced swimming quadruped the length of a cargo hauler, mammalian and warm-blooded and utterly unhurried. It takes colo claw fish the way a diver takes a ration bar. There is always a bigger fish; this is it.</description>
+    <description>The apex of the Naboo core: a vast half-whale, half-reptile mammal the length of a cargo hauler, with a broad flat head split by a wide grinning mouth, smooth mottled grey-blue hide, webbed hands that end in dark talons and a long tail finished in a broad fluke. Warm-blooded and utterly unhurried. It takes colo claw fish the way a diver takes a ration bar. There is always a bigger fish; this is it.</description>
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>6000</MarketValue>
