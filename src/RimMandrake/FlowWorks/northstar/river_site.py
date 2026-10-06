@@ -4,7 +4,7 @@
     python.exe src/RimMandrake/FlowWorks/northstar/river_site.py            # bridge held, a Playing game
 
 The rivers chains read "UNMEASURED: the site map has no river current" on a quicktest map without a river. This founds a
-colony on a flat MILD (8-22 C mean) tile that HAS a river (largest river first), generates its map, makes it current, removes every
+colony on a flat MILD (12-24 C mean, |lat| <= 25 so winter stays mild) tile that HAS a river (largest river first), generates its map, makes it current, removes every
 non-colonist, spawns colonists and runs bland_world.reset() so the watch starts bland. Mild on purpose: on a 38 C
 quicktest tile (MEASURED 2026-10-06) idle colonists took Heatstroke mid-chain and five components read UNMEASURED. bland_world.setup() is the same
 recipe with the opposite tile filter (riverCount == 0). Prints the tile, its rivers and the reset problems; exit 0 only
@@ -31,7 +31,8 @@ def river_candidates(rows):
     for r in rows:
         try:
             if (r.get("hilliness") in ("Flat", "SmallHills") and float(r.get("swampiness") or 0) < 0.3
-                    and 0 <= float(r.get("elevation") or -1) < 600 and 8 <= float(r.get("temperature") or -99) <= 22
+                    and 0 <= float(r.get("elevation") or -1) < 600 and 12 <= float(r.get("temperature") or -99) <= 24
+                    and abs(float(r.get("lat") or 90)) <= 25
                     and r.get("biome") not in ("Ocean", "Lake", "SeaIce", "IceSheet")):
                 out.append(int(r.get("tile") if r.get("tile") is not None else r.get("index")))
         except (TypeError, ValueError):
