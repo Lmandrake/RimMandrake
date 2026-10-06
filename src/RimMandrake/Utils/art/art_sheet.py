@@ -34,6 +34,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import artledger as L  # noqa: E402
 import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
+import placeholder_detect as PD  # noqa: E402
 import scaled_review_gate as SG  # noqa: E402  (the hard gate: a sheet failing a scaled-review requirement is never written)
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
@@ -581,7 +582,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
             "prefill": letter, "prefillWhy": why, "contested": contested,
             "facings": facings, "thumbs": thumbs, "letters": [c["letter"] for c in row["cols"]],
             "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                      if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of")}
+                      if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder")}
                      for c in row["cols"]],
             "near": NEAR, "masks": masks, "canon": canon, "flags": flags,
             "rulings": [{"at": (r.get("at") or "")[:10], "verdict": r.get("raw_verdict") or r.get("verdict"),
@@ -943,7 +944,7 @@ const _itemBody = it => {
     const vr = variants.has(c.letter);
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
-      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
@@ -1112,7 +1113,7 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
 .bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
-.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
+.bs-ph{background:#b3261e;color:#fff;font-style:normal;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;font-size:.8em}.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
 .mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
 .bs-scale{flex:0 1 auto;width:min-content;min-width:350px;max-width:100%;box-sizing:border-box;border:1px solid #3a4a3a;background:#10140f;border-radius:6px;padding:3px 5px;font-size:11.5px}
@@ -1471,6 +1472,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
 
     census_canon = {cr["key"]: (cr.get("canon") or {}).get("entry") for bb in census["biomes"].values()
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
+    _ph_shared = PD.shared_map(census)
     built, purged_hidden, hidden_kept = [], {}, {}
     for r in rows:
         graphics, seen = [], set()
@@ -1528,6 +1530,14 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             allcols.append(c)
         for c in allcols:
             c["purgeable"] = c["kind"] not in ("live", "kept") and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
+        try:   # placeholder_detect: a row drawn by script-flat shapes or borrowed vanilla textures has no art of ours
+            _pv = PD.classify_row(r, _ph_shared)
+        except Exception as e:                              # noqa: BLE001
+            _pv = {"verdict": "UNMEASURED", "reasons": [f"{type(e).__name__}: {e}"]}
+        if _pv["verdict"] == "PLACEHOLDER":
+            for c in allcols:
+                if c["kind"] == "live":
+                    c["placeholder"] = "; ".join(_pv["reasons"])[:400]
         for g in graphics:
             letters = {id(c) for c in allcols}
             for c in g["cols"]:
@@ -1579,7 +1589,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "prior": prior,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder")}
                          | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
         no_art = not graphics

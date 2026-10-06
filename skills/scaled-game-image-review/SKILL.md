@@ -50,6 +50,8 @@ below, fix the tool and add a selftest — never patch one HTML file.
    keeping any."*). Every row whose art comes from a non-mandrake mod (MLIE, Alpha Animals, Alpha
    Biomes, VE, …) carries **at least one render of ours** before the sheet is his to sit. Gap-fill
    first, serve second.
+   **Placeholder art is not art of ours** (2026-10-05, Grey Sea): script-drawn flat shapes and vanilla textures borrowed for
+   another subject (`placeholder_detect.py`) get a red PLACEHOLDER badge and count as no art — such a row also needs a render or a pending/active job.
 4. **Donor and older art stay visible as past art** (2026-10-05: *"I DO want to see donor art in
    'past art' so I can see where something came from though, please. I just don't want it to be all
    there is."*). Column order ranks recency and runtime, never worth: live first, shadowed copies,
@@ -88,6 +90,7 @@ UNMEASURED. Never weaken a check to pass a sheet — fix the tool, or report the
   pass moves the stamped HTML into place and writes the snapshot. A failure exits nonzero (3), names the rows and the
   requirement number, and leaves the previous sheet, snapshot and decisions untouched. The 30-minute refresh keeps serving
   the last good sheet, retries a failing one every cycle, and re-verifies sheets it did not rebuild.
+- **Placeholder** — req 3 also fails a row whose only non-donor art carries the PLACEHOLDER badge (`placeholder_detect.py`) unless a pending/active artpipe job names its subject.
 - **Serve** — `serve_gated.py` is the only server launcher; it refuses (exit 4) an HTML with no gate stamp or one edited
   after the gate. The stamp is `<meta name="scaled-review-gate" content="v1 sha256:…">`.
 - **Ingest** — `art.py ingest <decisions> --redo-jobs <jobs.json>` refuses unless every regen job carries his note

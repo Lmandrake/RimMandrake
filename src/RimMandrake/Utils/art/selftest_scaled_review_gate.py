@@ -139,6 +139,15 @@ def main():
         c = mut(donor_only); c["census_rows"] = ctx["census_rows"] + [{"key": "RM_NoJob", "donors": [], "defNames": ["RM_NoJob"], "canon": {"entry": None}}]
         f = failing(c, "3")
         check(f and "RM_NoJob" in f[0].problems[0] and "RM_Gamma" not in " ".join(f[0].problems), "req 3 FAILS: a donor-only row with no pending/active job; the one WITH a job passes")
+        def ph_only(it, c2):
+            n = copy.deepcopy(it[0]); n["id"] = "RM_PhNoJob"
+            for g in n["graphics"]:
+                for col in g["cols"]:
+                    col["placeholder"] = "FLAT: 2 colours"
+            it.append(n)
+        c = mut(ph_only); c["census_rows"] = ctx["census_rows"] + [{"key": "RM_PhNoJob", "donors": [], "defNames": ["RM_PhNoJob"], "canon": {"entry": None}}]
+        f = failing(c, "3")
+        check(f and "RM_PhNoJob" in f[0].problems[0] and "placeholder art only" in f[0].problems[0], "req 3 FAILS: a placeholder-only row with no pending/active job")
         saved = os.environ["ARTPIPE_STATE_DIR"]
         os.environ["ARTPIPE_STATE_DIR"] = str(td / "nowhere")
         f = failing(ctx, "3")

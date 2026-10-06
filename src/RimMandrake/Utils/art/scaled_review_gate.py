@@ -199,9 +199,17 @@ def _is_ours_label(label: str) -> bool:
     return str(label or "").startswith("our deployed")
 
 
+def _has_ours(c: dict) -> bool:
+    """A column that is art of ours: not a donor original, and not a live placeholder (placeholder_detect)."""
+    if c.get("placeholder"):
+        return False
+    return c.get("kind") != "donor" or bool(c.get("ours")) or _is_ours_label(c.get("label"))
+
+
 def _donor_only(it: dict) -> bool:
+    """No art of ours: donor art only, or donor/placeholder art only (a placeholder badge counts as no art)."""
     cols = [c for g in it.get("graphics", []) for c in g.get("cols", [])]
-    return bool(cols) and not any(c.get("kind") != "donor" or c.get("ours") or _is_ours_label(c.get("label")) for c in cols)
+    return bool(cols) and not any(_has_ours(c) for c in cols)
 
 
 def check_one_biome(ctx, items) -> Check:
@@ -274,10 +282,10 @@ def check_donor_only(ctx, items) -> Check:
     p = []
     donors = [it for it in items if _donor_only(it)]
     if not donors:
-        return Check("3", "no donor-only row without a pending/active job", [], "0 donor-only rows")
+        return Check("3", "no donor-only or placeholder-only row without a pending/active job", [], "0 donor-only rows")
     subs, bad = job_ids()
     if bad:
-        return Check("3", "no donor-only row without a pending/active job",
+        return Check("3", "no donor-only or placeholder-only row without a pending/active job",
                      bad + [f"{len(donors)} donor-only row(s) cannot be matched to a job: " + ", ".join(d['id'] for d in donors[:8])])
     by_key = {r["key"]: r for r in (ctx.get("census_rows") or [])}
     waiting = 0
@@ -290,8 +298,10 @@ def check_donor_only(ctx, items) -> Check:
         if hit:
             waiting += 1
         else:
-            p.append(f"{it['id']}: donor art only and no pending/active render job")
-    return Check("3", "no donor-only row without a pending/active job", p, f"{waiting} donor-only awaiting a render")
+            ph = any(c.get("placeholder") for g in it.get("graphics", []) for c in g.get("cols", []))
+            p.append(f"{it['id']}: " + ("placeholder art only (script-drawn or borrowed vanilla texture)" if ph else "donor art only")
+                     + " and no pending/active render job")
+    return Check("3", "no donor-only or placeholder-only row without a pending/active job", p, f"{waiting} donor-only awaiting a render")
 
 
 def check_donor_column(ctx, items) -> Check:
