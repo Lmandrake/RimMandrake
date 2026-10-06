@@ -243,7 +243,9 @@ pillar 5 ("every client ships alone") no longer describes this family — one mo
 keeping: it is what stops the hardware writing stock bookkeeping directly.
 
 **Not yet ruled** — whether `LiquidTypes`/`RimMandrake: Liquids` (the registry), `GelatinousSlime` and
-`WreckedMachines`' distillation also dissolve into FlowWorks, or stay as siblings extending it. Until
+`WreckedMachines`' distillation also dissolve into FlowWorks, or stay as siblings extending it. (Liquid machinery —
+stills, found works, the distiller kit — was ruled FlowWorks' on 2026-10-05: *"Build the distillation and other
+associated machinery for liquids part of this mod."*) Until
 he rules, treat the rows below for those three as live. Design detail:
 `design/RimMandrake/flowworks_mod_definition.md` §16.
 
@@ -253,7 +255,7 @@ he rules, treat the rows below for those three as live. Design detail:
 | **FlowWorks** | the whole domain: occupancy engine, canals, sources, sinks, sluice gates, surface transient flow, roster, hardware. Named by ruling 20 (2026-09-16); the rename itself is `FLOWWORKS_BUILD_PROGRAM_1` Phase 1 work, not gated on anything |
 | ~~**ManyWaters**~~ | **absorbed into FlowWorks** — its coloured waters and slimes become FlowWorks' rows, with a tinted-vanilla fallback per row so no liquid vanishes without Alpha Biomes |
 | **GelatinousSlime** | slime-mechanics client: hediffs/genes stay; its terrains adopted — ⚠️ FlowWorks boundary unruled |
-| **WreckedMachines** | + Distillation module; wreck-tier grammar for found industry — ⚠️ FlowWorks boundary unruled |
+| **WreckedMachines** | + Distillation module (three tiers, a patch consuming FlowWorks' converter kit); the found industrial works themselves are FlowWorks' (owner 2026-10-05: liquid machinery is FlowWorks) |
 | **UtinniPatches (RUT)** | Ash'karr worldTag authoring pass; campaign settings defaults |
 | ~~**NEW `RimMandrake: Liquid Logistics`**~~ | **never ships as a mod** — hoses, portable pumps, universal cargo tank, universal pump, per-net adapters and trade-from-tank are FlowWorks' |
 | **FloodedCanyon** | 🔴 was missing from this map entirely. Becomes the **flood-driver client**: keeps its biome and phase clock, depends on FlowWorks for motion (ruling 8, 2026-09-16) |
