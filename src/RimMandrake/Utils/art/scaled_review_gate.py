@@ -313,9 +313,11 @@ def check_donor_column(ctx, items) -> Check:
         r = by_key.get(it["id"])
         if not r or not (r.get("donors") or it.get("tier") == "donor"):
             continue
+        if it.get("donorPurged"):
+            continue    # the owner purged the donor original: it was shown and rejected, not omitted
         if not any(c.get("kind") == "donor" and not _is_ours_label(c.get("label")) and not c.get("ours")
                    for g in it.get("graphics", []) for c in g.get("cols", [])):
-            p.append(f"{it['id']}: donor-sourced ({', '.join(r.get('donors') or ['donor tier'])[:60]}) but no donor column shown")
+            p.append(f"{it['id']}: UNMEASURED donor art - donor-sourced ({', '.join(r.get('donors') or ['donor tier'])[:60]}) but no donor original is shown or recorded as purged (only our own copy)")
     return Check("4", "donor-sourced rows keep their donor column", p)
 
 

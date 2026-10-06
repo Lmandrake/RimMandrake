@@ -332,10 +332,13 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
             cols.append(col)
 
     # drop purged pictures; fold exact duplicates into the first column carrying them
-    out, seen = [], {}
+    out, seen, donor_purged = [], {}, False
     for c in cols:
+        was = bool(c["faces"])
         c["faces"] = {f: s for f, s in c["faces"].items() if not idx.is_purged(s)}
         if not c["faces"]:
+            if was and c["kind"] == "donor" and not c.get("ours"):
+                donor_purged = True      # a donor ORIGINAL the owner purged: shown and rejected (gate req 4)
             continue
         key = tuple(sorted(c["faces"].items()))
         if key in seen:
@@ -364,7 +367,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         if pt["res"] == res and pt["mask"]:
             masks[mod.split("/")[-1]][pt["facing"]] = ev["sha"]
     subj = sorted({s["subject"] for s in slots.get(res, [])})
-    return {"res": res, "word": word, "cols": out, "masks": masks, "subjects": subj}
+    return {"res": res, "word": word, "cols": out, "masks": masks, "subjects": subj, "donorPurged": donor_purged}
 
 
 def prefill_for(row: dict, rulings: list[dict]) -> tuple[str, str, bool]:
@@ -586,7 +589,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
             "prefill": letter, "prefillWhy": why, "contested": contested,
             "facings": facings, "thumbs": thumbs, "letters": [c["letter"] for c in row["cols"]],
             "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                      if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder")}
+                      if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "ours")}
                      for c in row["cols"]],
             "near": NEAR, "masks": masks, "canon": canon, "flags": flags,
             "rulings": [{"at": (r.get("at") or "")[:10], "verdict": r.get("raw_verdict") or r.get("verdict"),
@@ -1563,6 +1566,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
     _ph_shared = PD.shared_map(census)
     built, purged_hidden, hidden_kept = [], {}, {}
+    donor_purged = set()
     # only bytes an artpipe render MADE are ours: donor art copied into one of our mods is still the donor's original
     ours_shas = {s_ for s_, vv in idx.variants.items() if any(v.get("kind") == "artpipe" for v in vv)}
     for r in rows:
@@ -1571,6 +1575,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1"):
                 continue          # a flip-book prefix: its frames join one set below, never per-frame columns
             br = build_row(idx, res["res"], order, slots)
+            if br.get("donorPurged"):
+                donor_purged.add(r["key"])
             cols = [c for c in br["cols"] if _fkey(c) not in seen]
             seen.update(_fkey(c) for c in cols)
             p = res.get("prior_selection")
@@ -1603,6 +1609,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     kept_cols.append(c)
                     continue
                 n_hidden += len(c["faces"]) - len(live)
+                if c["kind"] == "donor" and not c.get("ours") and not live:
+                    donor_purged.add(r["key"])   # a donor ORIGINAL the owner purged: shown and rejected (gate req 4)
                 if live:
                     c["faces"] = live
                     kept_cols.append(c)
@@ -1758,7 +1766,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"] if not c.get("purgedLive")],
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
-            "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0),
+            "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0), "donorPurged": key in donor_purged,
             "noArtWhy": ((r.get("art") or {}).get("searched") or "searched by graphic and by name: " + ", ".join(sorted(w for w in {_stem(key)} | set(r.get("defNames") or []) if w))
                          + ("; artpipe jobs on record: " + ", ".join(r.get("artpipe_state_jobs") or []) if r.get("artpipe_state_jobs") else "")),
             "rulings": [{"at": (x.get("at") or "")[:10], "verdict": x.get("raw_verdict") or x.get("verdict"),
