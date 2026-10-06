@@ -2529,7 +2529,7 @@ def _x10_canal_fire(L):
     # default) doused one cell before it burned dry -> "F>0 left (134,88)" on a working mod. Pin Clear, locked.
     # Live 19:32 (run 3): even pinned Clear, the rain a weather TRANSITION leaves behind kept refilling and dousing
     # the run (2 of 6 cells burned out in 4,000 ticks). Rain is not this row's subject: both rain couplings OFF for
-    # the row (restored in finally; fire_put_out in extensions proves the douse on its own).
+    # the row (restored in finally; fire_rain in extensions proves the douse on its own).
     B.call("jawa/weather_set", weather="Clear", lockWeather=True)
     L.sset(S_FW, "rainFillsExcavationsEnabled", False)
     L.sset(S_FW, "rainDousesLiquidFireEnabled", False)

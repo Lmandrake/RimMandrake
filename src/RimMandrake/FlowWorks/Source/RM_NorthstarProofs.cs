@@ -10,7 +10,8 @@ namespace RimMandrake.FlowWorks
 	/// jawa/static_call read surface for the 2026-10-05 build pass's extension rows
 	/// (northstar/extensions.py). Each method takes ONE string, reads live state through the shipping
 	/// code's own predicates, and writes nothing except where its doc says so. Dev surface only:
-	/// nothing in the game calls it.
+	/// nothing in the game calls it. Multi-part arguments are ';'-separated: jawa/static_call splits its args on '|'
+	/// into PARAMETERS, so a '|' inside one string arrives as a second argument and the call is refused.
 	/// </summary>
 	public static class RM_NorthstarProofs
 	{
@@ -38,16 +39,16 @@ namespace RimMandrake.FlowWorks
 			return null;
 		}
 
-		/// <summary>SUPERDEEP_PRISON_ROOM_1. arg "px,pz|lx,lz" (a pit cell, a lip cell):
+		/// <summary>SUPERDEEP_PRISON_ROOM_1. arg "px,pz;lx,lz" (a pit cell, a lip cell):
 		/// "ROOM split=b pitRoom=b proper=b edge=b prison=b roomsOn=b pitId=n lipId=n".</summary>
 		public static string ProofRoom(string arg)
 		{
 			Map map = Find.CurrentMap;
-			string[] a = (arg ?? "").Split('|');
+			string[] a = (arg ?? "").Split(';');
 			if (map == null || a.Length != 2 || !Cell(a[0], out IntVec3 pc) || !Cell(a[1], out IntVec3 lc)
 				|| !pc.InBounds(map) || !lc.InBounds(map))
 			{
-				return "REFUSED: arg must be px,pz|lx,lz on the current map";
+				return "REFUSED: arg must be px,pz;lx,lz on the current map";
 			}
 			Room pit = pc.GetRoom(map);
 			Room lip = lc.GetRoom(map);
@@ -73,15 +74,15 @@ namespace RimMandrake.FlowWorks
 				+ " prisoner=" + p.IsPrisonerOfColony + " cell=" + p.Position.x + "," + p.Position.z;
 		}
 
-		/// <summary>Lip service. arg "workerId|x,z|JobDefName": asks the PathFollower patch's own gate
+		/// <summary>Lip service. arg "workerId;x,z;JobDefName": asks the PathFollower patch's own gate
 		/// (ShouldServeFromLipFor) and the lip finder: "LIP serve=b kind=k lip=x,z lipSuperdeep=b dist=d".</summary>
 		public static string ProofLip(string arg)
 		{
 			Map map = Find.CurrentMap;
-			string[] a = (arg ?? "").Split('|');
+			string[] a = (arg ?? "").Split(';');
 			if (map == null || a.Length != 3 || !Cell(a[1], out IntVec3 target))
 			{
-				return "REFUSED: arg must be workerId|x,z|JobDefName";
+				return "REFUSED: arg must be workerId;x,z;JobDefName";
 			}
 			Pawn w = PawnById(map, a[0]);
 			JobDef job = DefDatabase<JobDef>.GetNamedSilentFail(a[2]);
@@ -103,15 +104,15 @@ namespace RimMandrake.FlowWorks
 				+ ex.IsSuperdeepExcavation(lip) + " dist=" + lip.DistanceTo(target).ToString("0.##");
 		}
 
-		/// <summary>Phase 8 pump. arg "x,z" reads; "x,z|pour" / "x,z|draw" flips the mode as the gizmo does.
+		/// <summary>Phase 8 pump. arg "x,z" reads; "x,z;pour" / "x,z;draw" flips the mode as the gizmo does.
 		/// "PUMP running=b moved=n pour=b tank=def:units".</summary>
 		public static string ProofPump(string arg)
 		{
 			Map map = Find.CurrentMap;
-			string[] a = (arg ?? "").Split('|');
+			string[] a = (arg ?? "").Split(';');
 			if (map == null || !Cell(a[0], out IntVec3 c) || !c.InBounds(map))
 			{
-				return "REFUSED: arg must be x,z[|pour|draw]";
+				return "REFUSED: arg must be x,z[;pour|draw]";
 			}
 			Building_LiquidPump pump = c.GetFirstBuilding(map) as Building_LiquidPump;
 			if (pump == null)
