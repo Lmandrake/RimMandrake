@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-05T18:48:23-0700",
+ "built": "2026-10-05T20:23:20-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -522,26 +522,34 @@
      "east": "9176e14b0bd117f519fc445dcb968fc49f77f8fe3e31c2390865a64c25598bda",
      "north": "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0",
      "south": "d1ac9b1fee217b3183ef3d0e7ed7dc9f5b8e8866800bd56b9b3d7daf0aa92da5"
+    },
+    "E": {
+     "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
+     "north": "4bad4bc4f761f8e3343f79b252f1b3070bf914a3058d7e26d06926046973fcf3",
+     "south": "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba"
     }
    },
    "graphic_of": {
     "A": "swanimals/Anooba/Anooba_f",
     "B": "swanimals/Anooba/Anooba_f",
     "C": "swanimals/Anooba/Anooba_m",
-    "D": "swanimals/Anooba/Anooba_m"
+    "D": "swanimals/Anooba/Anooba_m",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 AnoobaArtOverride",
     "B": "history AnoobaArtOverride 2026-09-17",
     "C": "IN GAME \u2014 AnoobaArtOverride",
-    "D": "history AnoobaArtOverride 2026-09-17"
+    "D": "history AnoobaArtOverride 2026-09-17",
+    "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Anooba/Anooba_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "anooba"
   },

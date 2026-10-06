@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-05T18:53:05-0700",
+ "built": "2026-10-05T19:21:04-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -1321,21 +1321,26 @@
      "south": "e39eb240a2d3fe1372ff2c5dab6d035b52b876b728862a5cdc470f59ea0d9f5c"
     },
     "D": {
+     "east": "339cc926addefa9d90c93ed3a2ab0dee3d6265f8515bdb0b7d2bd56607ff8228",
+     "north": "d8f9263efc046a9ba7c23662fd84b7e9a0b064f8407acabda8a93cccb4f5899f",
+     "south": "e3c454fd58dfc6ece273ec2e43009f4ed8fb33cf24f8fd847d128809e8047280"
+    },
+    "E": {
      "east": "4350080aa8a79f46d23e29677b4d0e2d1b6f44b6947883960d5184aec4422ae9",
      "north": "6af441e81822dbee1f0708cc151a41204f760bf10573e2833d03b923a29cd16c",
      "south": "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535"
     },
-    "E": {
+    "F": {
      "east": "6077aeca1b132c3e840ad80090a059dcc30077e23d2450307319a73e6077c099",
      "north": "ec8e236e1cb82eef53ee73525631c84e4f258669ac6a05604e1dba5e4a65e663",
      "south": "89c7de46f54d40f7562ca57549d66ac4a6022fb0a63a891b633f3e570fc24849"
     },
-    "F": {
+    "G": {
      "east": "a8a17698510e12145500936345c837c640c5765f4c583328fced65b6bb371e76",
      "north": "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d",
      "south": "ccb4302f09e86541c2ddd2e64d3aaf4de685cfc8fe820e0c3d42706141c3997a"
     },
-    "G": {
+    "H": {
      "east": "eb68da09a6e6e4408e9d44f1b6354527f7ac015a4f052e475da83c17238465da",
      "north": "2b86e472d073a580434e2976cc6448faa0657604ade31116d9d843fda75bed1f",
      "south": "9701636912ce4d4a3cd449a7ca29e4c35567a0d3ad1f0e0ea844b111eedc59b1"
@@ -1348,16 +1353,18 @@
     "D": "_byname",
     "E": "_byname",
     "F": "_byname",
-    "G": "_byname"
+    "G": "_byname",
+    "H": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "shipped, shadowed \u2014 StarWarsPatches",
     "C": "IN GAME \u2014 SWBestiary",
-    "D": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
-    "E": "render longshade_rsw_bantha_v2",
-    "F": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
-    "G": "render longshade_rsw_bantha_v4 \u2014 failed canon check"
+    "D": "render leaningscrub_bantha_v1",
+    "E": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
+    "F": "render longshade_rsw_bantha_v2",
+    "G": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
+    "H": "render longshade_rsw_bantha_v4 \u2014 failed canon check"
    },
    "res": "swanimals/Bantha/BanthaW",
    "reserved": [
@@ -1367,7 +1374,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "bantha"
   },
@@ -1711,5 +1719,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "cbed561b57c88162"
+ "snapshotId": "48fcd5b932dd4e2b"
 }

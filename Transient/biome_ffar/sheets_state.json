@@ -1,51 +1,60 @@
 {
  "abyss_sheet_2026-10-04": {
-  "built": "2026-10-05T18:41:57",
-  "fp": "80a3710536a2f449cb9b"
+  "built": "2026-10-05T19:09:51",
+  "fp": "80a3710536a2f449cb9b",
+  "gate": "v1"
  },
  "blue_desert_sheet_2026-10-04": {
-  "built": "2026-10-05T18:42:14",
-  "fp": "497c4517e762a8f0d24a"
+  "built": "2026-10-05T19:10:16",
+  "fp": "497c4517e762a8f0d24a",
+  "gate": "v1"
  },
  "cauldron_sheet_2026-10-04": {
   "built": "2026-10-05T18:42:37",
   "fp": "52e73a5d5d80f524fdab"
  },
  "contagion_sheet_2026-10-04": {
-  "built": "2026-10-05T18:42:54",
-  "fp": "915d65e7fffdaab6e38c"
+  "built": "2026-10-05T19:11:06",
+  "fp": "915d65e7fffdaab6e38c",
+  "gate": "v1"
  },
  "deep_desert_sheet_2026-10-04": {
-  "built": "2026-10-05T18:43:21",
-  "fp": "ea46e747dd1b571ca8f6"
+  "built": "2026-10-05T19:11:35",
+  "fp": "ea46e747dd1b571ca8f6",
+  "gate": "v1"
  },
  "desert_sheet_2026-10-04": {
   "built": "2026-10-05T18:43:54",
   "fp": "a04ec71ec11e5355d12f"
  },
  "feverwood_sheet_2026-10-05": {
-  "built": "2026-10-05T18:44:28",
-  "fp": "396282a87fbca5e42e1a"
+  "built": "2026-10-05T19:12:21",
+  "fp": "c85345d4f8378c1aab4c",
+  "gate": "v1"
  },
  "floodedcanyon_sheet_2026-10-05": {
   "built": "2026-10-05T18:44:53",
   "fp": "d775e6407f1a3bbee117"
  },
  "gelatinousslime_sheet_2026-10-05": {
-  "built": "2026-10-05T18:45:10",
-  "fp": "0e05207c983a0c6c5057"
+  "built": "2026-10-05T19:13:08",
+  "fp": "0e05207c983a0c6c5057",
+  "gate": "v1"
  },
  "greentide_sheet_2026-10-05": {
-  "built": "2026-10-05T18:46:08",
-  "fp": "34b9962c2c762ca37bbd"
+  "built": "2026-10-05T19:13:49",
+  "fp": "a9aae59367e587325e12",
+  "gate": "v1"
  },
  "greysea_sheet_2026-10-05": {
-  "built": "2026-10-05T18:46:34",
-  "fp": "848e09328f052330a1aa"
+  "built": "2026-10-05T19:14:21",
+  "fp": "848e09328f052330a1aa",
+  "gate": "v1"
  },
  "lanterndeeps_sheet_2026-10-05": {
-  "built": "2026-10-05T18:46:54",
-  "fp": "6083916fb95751f29441"
+  "built": "2026-10-05T19:14:51",
+  "fp": "6083916fb95751f29441",
+  "gate": "v1"
  },
  "leaningscrub_sheet_2026-10-05": {
   "built": "2026-10-05T18:47:24",
@@ -56,20 +65,24 @@
   "fp": "26a8be2b7942d2319161"
  },
  "nightsideice_sheet_2026-10-05": {
-  "built": "2026-10-05T18:48:05",
-  "fp": "56cb764078598ac7746d"
+  "built": "2026-10-05T19:16:08",
+  "fp": "52a8bb912a7eed9976fa",
+  "gate": "v1"
  },
  "pyrelands_sheet_2026-10-05": {
-  "built": "2026-10-05T18:48:23",
-  "fp": "e3f8d97f93e3379f1195"
+  "built": "2026-10-05T19:25:04",
+  "fp": "821d2abb2a53bd74bce2",
+  "gate": "v1"
  },
  "rustcathedral_sheet_2026-10-05": {
-  "built": "2026-10-05T18:48:46",
-  "fp": "36ab01d8e1a710631e6d"
+  "built": "2026-10-05T19:17:01",
+  "fp": "36ab01d8e1a710631e6d",
+  "gate": "v1"
  },
  "thechill_sheet_2026-10-05": {
-  "built": "2026-10-05T18:49:10",
-  "fp": "eb2535a6a2e5f8ece814"
+  "built": "2026-10-05T19:17:31",
+  "fp": "eb2535a6a2e5f8ece814",
+  "gate": "v1"
  },
  "theforge_sheet_2026-10-05": {
   "built": "2026-10-05T18:49:35",
@@ -80,31 +93,37 @@
   "fp": "a8e08f2ec0f696eb317c"
  },
  "thescald_sheet_2026-10-05": {
-  "built": "2026-10-05T18:50:47",
-  "fp": "a2bc43344bd1f76cd2b3"
+  "built": "2026-10-05T19:18:46",
+  "fp": "a2bc43344bd1f76cd2b3",
+  "gate": "v1"
  },
  "thesump_sheet_2026-10-05": {
-  "built": "2026-10-05T18:51:06",
-  "fp": "833a5cbfcc21138b6f79"
+  "built": "2026-10-05T19:19:08",
+  "fp": "833a5cbfcc21138b6f79",
+  "gate": "v1"
  },
  "twilightsea_sheet_2026-10-05": {
-  "built": "2026-10-05T18:51:35",
-  "fp": "c9cded64a181936e57ee"
+  "built": "2026-10-05T19:19:32",
+  "fp": "c9cded64a181936e57ee",
+  "gate": "v1"
  },
  "warscar_sheet_2026-10-05": {
-  "built": "2026-10-05T18:51:53",
-  "fp": "3318243bdb08da886a86"
+  "built": "2026-10-05T19:19:53",
+  "fp": "3318243bdb08da886a86",
+  "gate": "v1"
  },
  "wasteland_sheet_2026-10-05": {
   "built": "2026-10-05T18:52:14",
   "fp": "15648496335e940285e9"
  },
  "webwork_sheet_2026-10-05": {
-  "built": "2026-10-05T18:52:33",
-  "fp": "554ea36f3ab7f26916d6"
+  "built": "2026-10-05T19:20:37",
+  "fp": "554ea36f3ab7f26916d6",
+  "gate": "v1"
  },
  "weepingstones_sheet_2026-10-05": {
-  "built": "2026-10-05T18:53:05",
-  "fp": "aecffcd9976423a79402"
+  "built": "2026-10-05T19:21:05",
+  "fp": "1d0d3894bdfe313f6443",
+  "gate": "v1"
  }
 }

@@ -2,7 +2,7 @@
  "sheetId": "greentide_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/greentide_sheet_2026-10-05.snapshot.json",
- "snapshotId": "7024df55b69239af",
+ "snapshotId": "b0ff9711afe6bbde",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Greentide",
  "reviewStatus": {
