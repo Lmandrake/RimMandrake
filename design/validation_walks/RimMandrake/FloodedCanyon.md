@@ -24,6 +24,9 @@ Sources: `About/About.xml`, `Source/RM_FloodedCanyonMod.cs` (25 settings), `RM_M
 - The flood wakes the muttavaq (water reaching its pan) and at the dry it digs in. → UNCOVERED: needs a muttavaq on a flooded pan cell and a seeded footprint; chain muttavaq_wakes_and_digs_in records UNMEASURED
 - The recede brings a flier migrant group on a biome that rosters flight-capable animals (`recedeMigrantsEnabled`). → UNCOVERED: a plain biome has none, needs an RM_FloodedCanyon map; chain recede_migrants records UNMEASURED
 - The chime and herald audio and the water look. → UNCOVERED: audio and visual, judge pass or owner
+- Ledges of Mercy: at the warning a trained animal runs for the nearest refuge ledge and reaches it; the flood never takes a ledge cell; `ledgeRefugeEnabled` off sends nobody. → ledge_refuge.trained_animal_runs_for_ledge, ledge_refuge.refuge_off_sends_nobody
+- A neutral humanlike visitor runs for a ledge at the warning. → UNCOVERED: the suite's spawn_pawn makes only player or hostile pawns; chain ledge_refuge_neutral_visitor records UNMEASURED
+- The staged chimes toll from the nearest chime-line anchor (`chimeAnchorsEnabled`). → UNCOVERED: no anchor def exists until the owner rules the ledge/chime-line physical form; chain chime_anchors_used records UNMEASURED
 
 ## anti-guessing notes
 RULED OUT: "read the debug line with `jawa/drain_log contains=`" — it returns a stale first message (skills/rimbridge/references/map-authoring.md); the suite reads each action's own `effects.logs`.

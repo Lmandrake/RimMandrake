@@ -55,6 +55,14 @@ namespace RimMandrake.FloodedCanyon
         private RM_MapComponent_Excavation Excavation =>
             excavationInt ?? (excavationInt = map.GetComponent<RM_MapComponent_Excavation>());
 
+        // CRACKEDLANDS_LEDGES_OF_MERCY_1: refuge ledges and chime-line anchors.
+        // Same-mod component, so it is always present; looked up lazily all
+        // the same (construction order).
+        private RM_MapComponent_LedgeRefuge refugeInt;
+
+        private RM_MapComponent_LedgeRefuge Refuge =>
+            refugeInt ?? (refugeInt = map.GetComponent<RM_MapComponent_LedgeRefuge>());
+
         // Herald is appended LAST so a save written before it (bytes 0-2)
         // still reads back as the same phase.
         private enum Phase : byte { Dry, Warned, Flooding, Herald }
@@ -149,14 +157,36 @@ namespace RimMandrake.FloodedCanyon
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
                 + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
                 + "chimeStage={9} lastRecedeTick={10} peakstormConsidered={11} weather={12} "
-                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16}",
+                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17}",
                 phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
                 activeFloodCells.Count, raisedFillCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
                 RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)",
                 chimeStage, lastRecedeTick, peakstormPulledThisCycle,
                 map.weatherManager.curWeather?.defName ?? "null",
-                heraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced);
+                heraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
+                RefugeFloodedCount());
+        }
+
+        // Ledges of Mercy verify: footprint cells that are refuge cells. Must
+        // read 0 — Eligible excludes them.
+        private int RefugeFloodedCount()
+        {
+            RM_MapComponent_LedgeRefuge r = Refuge;
+            if (r == null)
+            {
+                return -1;
+            }
+            int n = 0;
+            for (int i = 0; i < activeFloodCells.Count; i++)
+            {
+                if (r.IsRefugeCell(activeFloodCells[i])) n++;
+            }
+            for (int i = 0; i < raisedFillCells.Count; i++)
+            {
+                if (r.IsRefugeCell(raisedFillCells[i])) n++;
+            }
+            return n;
         }
 
         public override void FinalizeInit()
@@ -177,6 +207,13 @@ namespace RimMandrake.FloodedCanyon
 
             int now = Find.TickManager.TicksGame;
 
+            // Ledges of Mercy: while the warning stands and the water is up,
+            // visitors and trained animals keep making for the ledges.
+            if (phase != Phase.Dry && now % RM_MapComponent_LedgeRefuge.SweepIntervalTicks == 0)
+            {
+                Refuge?.Sweep();
+            }
+
             switch (phase)
             {
                 case Phase.Dry:
@@ -195,6 +232,7 @@ namespace RimMandrake.FloodedCanyon
                         ChooseSeed();
                         heraldBeat = 1;
                         phase = Phase.Herald;
+                        Refuge?.Sweep();
                         break;
                     }
                     if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
@@ -345,10 +383,12 @@ namespace RimMandrake.FloodedCanyon
             RingChime(0);
             chimeStage = 1;
             phase = Phase.Warned;
+            Refuge?.Sweep();
         }
 
         private void ChooseSeed()
         {
+            Refuge?.RefreshCells();
             pendingSeed = CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out IntVec3 seed) ? seed : IntVec3.Invalid;
         }
 
@@ -396,9 +436,10 @@ namespace RimMandrake.FloodedCanyon
 
         // The chime for stage k tolls from a point on the line running from
         // the map corner farthest from where the water will arrive toward
-        // that arrival point: far, then nearer, then nearest. Until the map
-        // carries physical chime-line anchors (CRACKEDLANDS_LEDGES_OF_MERCY_1)
-        // these are positions, not things.
+        // that arrival point: far, then nearer, then nearest. Where the map
+        // carries chime-line anchor things (RM_ChimeAnchorExtension,
+        // CRACKEDLANDS_LEDGES_OF_MERCY_1) the chime tolls from the anchor
+        // nearest that position; with none, from the position itself.
         private static readonly float[] ChimeLinePositions = { 0f, 0.5f, 0.85f };
 
         private IntVec3 ChimeCell(int stage)
@@ -412,7 +453,8 @@ namespace RimMandrake.FloodedCanyon
             IntVec3 c = new IntVec3(
                 UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.x, pendingSeed.x, f)), 0,
                 UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.z, pendingSeed.z, f)));
-            return c.ClampInsideMap(map);
+            c = c.ClampInsideMap(map);
+            return Refuge != null ? Refuge.NearestAnchorTo(c) : c;
         }
 
         private IntVec3 FarCornerFrom(IntVec3 seed)
@@ -484,6 +526,7 @@ namespace RimMandrake.FloodedCanyon
         private void StartFlood(int now)
         {
             int target = UnityEngine.Mathf.Clamp(map.Area / 20, 40, 400);
+            Refuge?.RefreshCells();
             List<IntVec3> cells = ComputeFloodCells(target, pendingSeed);
             roarCell = cells.Count > 0 ? cells[0] : IntVec3.Invalid;
             pendingSeed = IntVec3.Invalid;
@@ -684,6 +727,11 @@ namespace RimMandrake.FloodedCanyon
             // eligible, and StartFlood routes it to the engine instead of
             // writing terrain on it (CANYON_FLOOD_ERASES_CANALS_1).
             if (c.GetEdifice(map) != null)
+            {
+                return false;
+            }
+            // A refuge ledge is never flooded, whatever its physical form.
+            if (Refuge != null && Refuge.IsRefugeCell(c))
             {
                 return false;
             }

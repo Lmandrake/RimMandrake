@@ -45,6 +45,10 @@ P_RECEDE = "Actions\\Recede flood NOW (current map)"
 P_AFTER = "Actions\\Report recede aftermath (current map)"
 P_SEAMS = "Actions\\Report fossil seams (current map)"
 P_EG_REPORT = "Actions\\Report state (current map)"
+P_REFUGE = "Actions\\Report ledge refuge (current map)"
+P_MARK_REFUGE = "Actions\\Mark debug refuge ledge at map centre (current map)"
+P_CLEAR_REFUGE = "Actions\\Clear debug refuge ledges (current map)"
+P_TEACH = "Actions\\Teach player animals Obedience (current map)"
 
 
 # --------------------------------------------------------------------------- parsed facts (never hand-listed)
@@ -544,6 +548,79 @@ if Suite is not None:
                     _unmeasured(t, "no new seam after a recede (%d -> %d): the footprint touched no natural, non-resource "
                                    "rock face on this site, or a real fault; the control above proves the off arm only" % (s1, s2))
 
+    # ----------------------------------------------------------------------- 3b. Ledges of Mercy
+
+    def _refuge(t):
+        """Parse the refuge report into {key: int} (booleans as 1/0)."""
+        lines = [l for l in _act(t, P_REFUGE) if "refuge:" in l]
+        if not _live(t):
+            return {}
+        if not lines:
+            _unmeasured(t, "refuge report has no 'refuge:' line")
+        d = {}
+        for k, v in re.findall(r"(\w+)=(\S+)", lines[-1]):
+            d[k] = 1 if v == "True" else 0 if v == "False" else (int(v) if re.fullmatch(r"-?\d+", v) else v)
+        need = ("refugeCells", "seekers", "onLedge", "enRoute", "sentTotal")
+        if any(k not in d for k in need):
+            _unmeasured(t, "refuge report shape not understood: %r" % lines[-1][:300])
+        t._record("refuge_state", d)
+        return d
+
+    def _refuge_site(t):
+        """Debug ledge at the map centre + one trained player animal. Returns the pre-arm refuge read."""
+        _act(t, P_CLEAR_REFUGE)
+        _act(t, P_MARK_REFUGE)
+        t.spawn_pawn("Muffalo")
+        _act(t, P_TEACH)
+        r = _refuge(t)
+        if _live(t):
+            if r.get("refugeCells", 0) <= 0:
+                _unmeasured(t, "SITE: debug mark found no standable dry unroofed cell near the map centre")
+            if r.get("seekers", 0) < 1:
+                _unmeasured(t, "SITE: no seeker on the map after spawning + teaching a Muffalo (spawn or teach failed)")
+            if r.get("onLedge", 0) > 0:
+                _unmeasured(t, "SITE: the test animal spawned ON the debug ledge (anchor is at the map centre); "
+                               "nothing to run for")
+        return r
+
+    @suite.chain("ledge_refuge")
+    def ledge_refuge(t):
+        """CRACKEDLANDS_LEDGES_OF_MERCY_1: at the warning a trained animal runs for the nearest ledge and
+        reaches it; the flood never takes a ledge cell; ledgeRefugeEnabled off sends nobody."""
+        with _comp(t, "trained_animal_runs_for_ledge", toggle="ledgeRefugeEnabled"):
+            with _arm(t, featureInOtherBiomes=True, floodCycleEnabled=True, fiveBeatsEnabled=True, ledgeRefugeEnabled=True):
+                _settle(t)
+                r0 = _refuge_site(t)
+                _act(t, P_ARM)
+                t.wait_ticks(30)
+                r1 = _refuge(t)
+                if _live(t) and not (r1.get("sentTotal", 0) > r0.get("sentTotal", 0) or r1.get("onLedge", 0) > 0):
+                    _fail("warning played but nobody was sent to the ledge: %r -> %r" % (r0, r1))
+                st = _state(t)
+                if _live(t) and _n(st, "refugeFlooded") != 0:
+                    _fail("the flood took %s refuge cell(s): Eligible must exclude them" % st.get("refugeFlooded"))
+                t.wait_ticks(1200)
+                r2 = _refuge(t)
+                if _live(t) and r2.get("onLedge", 0) < 1:
+                    if r2.get("enRoute", 0) > 0:
+                        _unmeasured(t, "still en route after 1200 ticks (a long path on this site): %r" % r2)
+                    _fail("trained animal neither on nor running for a ledge 1200 ticks into the flood: %r" % r2)
+                _act(t, P_RECEDE)
+                t.wait_ticks(30)
+                _act(t, P_CLEAR_REFUGE)
+        with _comp(t, "refuge_off_sends_nobody", toggle="ledgeRefugeEnabled"):
+            with _arm(t, featureInOtherBiomes=True, floodCycleEnabled=True, fiveBeatsEnabled=True, ledgeRefugeEnabled=False):
+                _settle(t)
+                r0 = _refuge_site(t)
+                _act(t, P_ARM)
+                t.wait_ticks(300)
+                r1 = _refuge(t)
+                if _live(t) and r1.get("sentTotal", 0) != r0.get("sentTotal", 0):
+                    _fail("ledgeRefugeEnabled off yet seekers were sent: %r -> %r" % (r0, r1))
+                _act(t, P_RECEDE)
+                t.wait_ticks(30)
+                _act(t, P_CLEAR_REFUGE)
+
     # ----------------------------------------------------------------------- 4. honest UNMEASURED
 
     def _um(chain, comp, why, toggle=None):
@@ -570,6 +647,13 @@ if Suite is not None:
     _um("muttavaq_wakes_and_digs_in", "muttavaq_wakes_on_water_and_seals_dry",
         "needs a pan-sleeping muttavaq spawned on a flooded cell and the dry-down watched; no seed control to put water on its pan",
         "muttavaqWaterWakeEnabled")
+    _um("ledge_refuge_neutral_visitor", "neutral_visitor_runs_for_ledge",
+        "t.spawn_pawn only spawns player or hostile pawns; needs a neutral-faction visitor spawn (a visitor incident "
+        "fired through the bridge, or a spawn_pawn faction=neutral) before the humanlike half is provable",
+        "ledgeRefugeEnabled")
+    _um("chime_anchors_used", "chime_tolls_from_nearest_anchor",
+        "no ThingDef carries RM_ChimeAnchorExtension yet (the chime-line's physical form waits on the ledge-form ruling), "
+        "and the chime position is not in the flood report", "chimeAnchorsEnabled")
     _um("recede_migrants", "flier_group_arrives_on_recede",
         "needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an "
         "RM_FloodedCanyon map", "recedeMigrantsEnabled")
@@ -616,6 +700,32 @@ def _tarruq_call_findings(race_xml=None, vanilla_dir=VANILLA_SOUNDDEF_DIR):
 
 
 
+def _ledge_refuge_findings():
+    """CRACKEDLANDS_LEDGES_OF_MERCY_1 wiring, read from the source: the flood excludes refuge cells, sweeps
+    on the warning, and chimes ask for anchors; the refuge gates on its setting. Control: a known hook
+    (Eligible's edifice test) must be found, or the reader is broken."""
+    src = lambda f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
+    flood, refuge = src("RM_MapComponent_CanyonFlood.cs"), src("RM_LedgeRefuge.cs")
+    bad = []
+    if "GetEdifice(map) != null" not in flood:
+        bad.append("ledge refuge: control hook (Eligible edifice test) not found, reader broken")
+    elig = flood.split("private bool Eligible(")[1].split("private void DamagePawnsInCells")[0] if "private bool Eligible(" in flood else ""
+    if "IsRefugeCell" not in elig:
+        bad.append("ledge refuge: Eligible does not exclude refuge cells (a non-edifice ledge would flood)")
+    if flood.count("Refuge?.Sweep()") < 3:
+        bad.append("ledge refuge: the flood clock does not sweep at herald entry, warned entry and on the interval")
+    if "NearestAnchorTo" not in flood.split("private IntVec3 ChimeCell(")[1].split("private IntVec3 FarCornerFrom")[0]:
+        bad.append("ledge refuge: ChimeCell does not snap to chime-line anchors")
+    sweep = refuge.split("public void Sweep()")[1].split("public static bool IsSeeker")[0]
+    if "ledgeRefugeEnabled" not in sweep:
+        bad.append("ledge refuge: Sweep is not gated on ledgeRefugeEnabled")
+    if "chimeAnchorsEnabled" not in refuge.split("public IntVec3 NearestAnchorTo(")[1].split("public int AnchorCount")[0]:
+        bad.append("ledge refuge: NearestAnchorTo is not gated on chimeAnchorsEnabled")
+    if "PROVISIONAL" not in refuge:
+        bad.append("ledge refuge: first-guess numbers are not marked PROVISIONAL")
+    return bad
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -647,11 +757,12 @@ def static_checks():
         if n not in names:
             bad.append("DefOf field %s names no shipped def" % n)
     dbg = open(os.path.join(HERE, "Source", "Debug", "RM_FloodedCanyonDebugActions.cs"), encoding="utf-8").read()
-    for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS):
+    for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS, P_REFUGE, P_MARK_REFUGE, P_CLEAR_REFUGE, P_TEACH):
         if p.split("\\")[1] not in dbg:
             bad.append("debug action label for path %r not in RM_FloodedCanyonDebugActions.cs" % p)
     bad.extend(_flora_shape_findings())
     bad.extend(_tarruq_call_findings())
+    bad.extend(_ledge_refuge_findings())
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad

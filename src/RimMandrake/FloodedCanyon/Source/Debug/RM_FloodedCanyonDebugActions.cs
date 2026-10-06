@@ -87,5 +87,60 @@ namespace RimMandrake.FloodedCanyon
             Log.Message("[RMFloodedCanyonDebug] fossil seams: impression=" + imp + " skeleton=" + skel
                 + " unique=" + uniq + " biome=" + map.Biome.defName);
         }
+
+        // CRACKEDLANDS_LEDGES_OF_MERCY_1 verify: a STATE read of the refuge
+        // (cells, seekers, who is on a ledge or running for one), never a
+        // screenshot hunt.
+        [DebugAction(CAT, "Report ledge refuge (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ReportRefuge()
+        {
+            RM_MapComponent_LedgeRefuge comp = Find.CurrentMap?.GetComponent<RM_MapComponent_LedgeRefuge>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_LedgeRefuge on this map."); return; }
+            Log.Message("[RMFloodedCanyonDebug] " + comp.DebugStateReport());
+        }
+
+        // Test surface until a ledge def exists: nine standable dry cells
+        // nearest the map centre become refuge cells.
+        [DebugAction(CAT, "Mark debug refuge ledge at map centre (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void MarkRefuge()
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_LedgeRefuge comp = map?.GetComponent<RM_MapComponent_LedgeRefuge>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_LedgeRefuge on this map."); return; }
+            int n = comp.DebugMarkRefugeNear(map.Center, 9);
+            Log.Message("[RMFloodedCanyonDebug] marked=" + n + " " + comp.DebugStateReport());
+        }
+
+        [DebugAction(CAT, "Clear debug refuge ledges (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ClearRefuge()
+        {
+            RM_MapComponent_LedgeRefuge comp = Find.CurrentMap?.GetComponent<RM_MapComponent_LedgeRefuge>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_LedgeRefuge on this map."); return; }
+            comp.DebugClearRefuge();
+            Log.Message("[RMFloodedCanyonDebug] cleared " + comp.DebugStateReport());
+        }
+
+        // Test surface: makes every player animal on the map a "trained
+        // animal" (Obedience, completed) so the refuge seek can be proven.
+        [DebugAction(CAT, "Teach player animals Obedience (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TeachObedience()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            int n = 0;
+            foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(RimWorld.Faction.OfPlayer))
+            {
+                if (p.RaceProps.Animal && p.training != null)
+                {
+                    p.training.Train(RimWorld.TrainableDefOf.Obedience, null, complete: true);
+                    n++;
+                }
+            }
+            Log.Message("[RMFloodedCanyonDebug] taught=" + n);
+        }
     }
 }

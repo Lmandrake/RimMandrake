@@ -106,6 +106,17 @@ namespace RimMandrake.FloodedCanyon
         public static bool floraExpansionEnabled = true;
         public static bool zennaqLightningPullEnabled = true;
 
+        // CRACKEDLANDS_LEDGES_OF_MERCY_1 — refuge ledges: while the warning
+        // stands and the water is up, neutral visitors and the player's
+        // trained animals make for the nearest refuge ledge and are held
+        // there. Inert until the map carries ledges (their physical form is
+        // an open owner question). Off = nobody seeks a ledge; the flood still
+        // never takes a ledge cell.
+        public static bool ledgeRefugeEnabled = true;
+        // Chime-line anchors: the staged chimes toll from the anchor nearest
+        // each staged position. Off (or no anchors on the map) = positions.
+        public static bool chimeAnchorsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -136,6 +147,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref salvageDecayDays, "salvageDecayDays", 3f, true);
             Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
             Scribe_Values.Look(ref zennaqLightningPullEnabled, "zennaqLightningPullEnabled", true, true);
+            Scribe_Values.Look(ref ledgeRefugeEnabled, "ledgeRefugeEnabled", true, true);
+            Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -143,9 +156,12 @@ namespace RimMandrake.FloodedCanyon
             // Scrolls: the CRACKEDLANDS_MECHANICS_BUILD_1 toggles pushed the
             // page past a settings window's height. viewHeight is measured
             // from the previous frame's listing (CurHeight), so it self-fits.
+            // maxOneColumn is load-bearing (the Webwork fix, cfdba9344): without
+            // it rows past the view's height wrap into an off-screen second
+            // column, CurHeight resets, and the view never grows to fit.
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.Label("Biome rarity: " + RarityLabel());
@@ -248,6 +264,18 @@ namespace RimMandrake.FloodedCanyon
             list.CheckboxLabeled("Lightning is drawn to zennaq", ref zennaqLightningPullEnabled,
                 "A random lightning strike that would land near a zennaq plant lands on it instead. "
                 + "Zennaq is dry as tinder, so a storm on the mesa tops can start a fire.");
+
+            list.GapLine();
+            list.CheckboxLabeled("Visitors and trained animals climb to the refuge ledges", ref ledgeRefugeEnabled,
+                "From the first sign of a flood until the water recedes, neutral visitors and your "
+                + "trained animals run for the nearest reachable refuge ledge and wait on it. The flood "
+                + "never covers a ledge. Only matters on a map that has ledges. "
+                + "PROVISIONAL numbers: they re-check every 250 ticks (a tenth of an hour), test the 12 "
+                + "nearest ledge cells for a path, and wait 500 ticks at a time.");
+            list.CheckboxLabeled("Chimes ring from the chime-line anchors", ref chimeAnchorsEnabled,
+                "Where the canyon has chime-line anchors, each staged chime tolls from the anchor nearest "
+                + "its point on the line toward the water. Off, or with no anchors, the chime tolls "
+                + "from the point itself.");
 
             viewHeight = list.CurHeight + 24f;
             list.End();
