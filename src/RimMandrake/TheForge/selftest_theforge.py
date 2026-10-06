@@ -672,6 +672,9 @@ class FGame(MockGame):
             f = {"researchPrerequisites": [] if "brace_no_research" in self.brk else ["RM_SpunstoneBonding"],
                  "comps": [{"Class": "CompProperties_GravshipFacility", "fuelSavingsPercent": self.keel,
                             "maxSimultaneous": 4}]}
+        elif name in V.SPUNSTONE_PARTS:
+            f = {"researchPrerequisites": [] if ("parts_no_research" in self.brk and name == "RM_SpunstoneHull")
+                 else ["RM_SpunstoneBonding"]}
         elif name == "GravEngine":
             links = ["Foo"] + ([] if "engine_unlinked" in self.brk else ["RM_FloatstoneKeelBrace"])
             f = {"comps": [{"Class": "CompProperties_AffectedByFacilities", "linkableFacilities": links}]}
@@ -758,7 +761,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("34 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 34, sorted(V.SETTINGS_DEFAULTS))
+    check("36 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 36, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -801,6 +804,7 @@ def main():
         ("flyer_no_stat", {"def_wiring.flyers_carry_flight_stat"}),
         ("floatstone_generated", {"def_wiring.floatstone_only_from_gardens"}),
         ("brace_no_research", {"def_wiring.keel_brace_needs_spunstone_research"}),
+        ("parts_no_research", {"def_wiring.spunstone_parts_need_spunstone_research"}),
         ("engine_unlinked", {"def_wiring.engine_links_keel_brace"}),
         ("zero_density", {"biome_wiring.biome_densities_live"}),
         ("roster_zero", {"biome_wiring.wild_animals_wired"}),
@@ -876,6 +880,24 @@ def main():
     finally:
         V._read_cs = real
     check("stripped keel ring source reddens keel_ring_wired", set(bad) == {"keelwork.keel_ring_wired"}, bad)
+
+    real = V._read_cs
+    try:
+        V._read_cs = lambda n: real(n).replace("spunstoneHullEnabled", "X") if n == "RM_ForgeSpunstoneParts.cs" else real(n)
+        bad = reds(run())
+    finally:
+        V._read_cs = real
+    check("stripped spunstone-hull gate reddens only the hull gate component",
+          set(bad) == {"keelwork.spunstone_hull_gate_keyed_on_toggle"}, bad)
+
+    real_t = V._read_text
+    try:
+        V._read_text = lambda r: real_t(r).replace("<li>RM_SpunstoneWeave</li>", "") if r.endswith("RM_TheForgeItems.xml") else real_t(r)
+        bad = reds(run())
+    finally:
+        V._read_text = real_t
+    check("floatstone without the weave category reddens the same component",
+          set(bad) == {"keelwork.spunstone_parts_source_floatstone_only_and_gated"}, bad)
 
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     un = unmeasured(run(("log_cap",)))

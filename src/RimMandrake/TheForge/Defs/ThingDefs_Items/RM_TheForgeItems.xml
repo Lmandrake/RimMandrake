@@ -46,6 +46,12 @@
       <Flammability>0</Flammability>
     </statBases>
     <stuffProps>
+      <!-- Appends to StoneBlocksBase's Stony (list inheritance merges). RM_SpunstoneWeave is
+           carried by floatstone alone, so RM_FloatstoneDoor / RM_SpunstoneHull are
+           floatstone-only (FORGE_SPUNSTONE_SOURCES_1). -->
+      <categories>
+        <li>RM_SpunstoneWeave</li>
+      </categories>
       <color>(236,226,210)</color>
       <commonality>0</commonality>
       <appearance>Smooth</appearance>

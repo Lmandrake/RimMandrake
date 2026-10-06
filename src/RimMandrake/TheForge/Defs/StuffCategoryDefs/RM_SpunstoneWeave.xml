@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FORGE_SPUNSTONE_SOURCES_1: a stuff category only floatstone carries, so a def can be
+  floatstone-only (RM_FloatstoneDoor, RM_SpunstoneHull) while floatstone itself stays Stony
+  and builds anything stone does. Same shape as Cauldron's RM_VexxithPlate (5dc8af767).
+  Sound fields copied from vanilla Stony.
+-->
+<Defs>
+  <StuffCategoryDef>
+    <defName>RM_SpunstoneWeave</defName>
+    <label>spunstone weave</label>
+    <noun>floatstone</noun>
+    <destroySoundSmall>BuildingDestroyed_Stone_Small</destroySoundSmall>
+    <destroySoundMedium>BuildingDestroyed_Stone_Medium</destroySoundMedium>
+    <destroySoundLarge>BuildingDestroyed_Stone_Big</destroySoundLarge>
+  </StuffCategoryDef>
+</Defs>

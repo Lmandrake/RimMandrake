@@ -16,7 +16,8 @@ GameCondition, `RM_ForgePulse` = `RM_GameCondition_ForgeCycle`, the six-phase fi
 temp-terrain layer) -> growth (floatstone gardens bloom on the crust) -> glowing cracks -> melt-back that burns what
 stands on the crust). Around it: four dormancy natives that keep the mountain's clock (dhokkur, julmox, dhuvvox
 seal and wake with the cycle; the dhuvvox also run a visible countdown), the floatstone economy (harvest, spunstone
-bonding research hidden until studied, gravship keel braces), the four phase voices, and 27 Mod Settings (six are the white-plume fronts).
+bonding research hidden until studied, gravship keel braces, the floatstone door and spunstone hull it also unlocks),
+the four phase voices, and the Mod Settings (count derived from the C# source, never written here).
 
 HOW THE CYCLE IS DRIVEN AND READ. A real cycle is ~5 in-game days, so this suite steps it with the mod's OWN
 `RMTheForge` debug actions (`Forge cycle: advance one phase`, `Forge cycle: report state`, the `Spunstone:`
@@ -222,7 +223,10 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled", "dhuvvoxSwarmEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
-         "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled"]
+         "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
+         "floatstoneDoorEnabled", "spunstoneHullEnabled"]
+# FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks besides the keel brace.
+SPUNSTONE_PARTS = ("RM_FloatstoneDoor", "RM_SpunstoneHull")
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED)
 suite.toggles = list(WIRED)
 
@@ -968,6 +972,17 @@ def def_wiring(t):
             if "RM_SpunstoneBonding" not in pre:
                 _fail("the keel brace is not gated by RM_SpunstoneBonding: %r" % pre)
 
+    with _comp(t, "spunstone_parts_need_spunstone_research", independent=True):
+        # FORGE_SPUNSTONE_SOURCES_1 (owner ruling 2026-10-03): the door and hull are unlocked by spunstone bonding.
+        for name in SPUNSTONE_PARTS:
+            f = _one_def(t, "ThingDef/%s" % name, "researchPrerequisites")
+            if _live(t):
+                pre = f.get("researchPrerequisites")
+                if not isinstance(pre, list):
+                    _unmeasured(t, "%s.researchPrerequisites unreadable: %r" % (name, pre))
+                if "RM_SpunstoneBonding" not in pre:
+                    _fail("%s is not gated by RM_SpunstoneBonding: %r" % (name, pre))
+
     with _comp(t, "engine_links_keel_brace", independent=True):
         # RM_TheForge_KeelBraceLink.xml is a PatchOperationConditional: a patch that matches nothing logs nothing,
         # so the brace would build and never link.
@@ -1084,7 +1099,7 @@ def biome_wiring(t):
 
 @suite.chain("settings")
 def settings(t):
-    """The Mod Settings screen: 27 fields, each at its shipped default (read from the C# source), the assembly loaded,
+    """The Mod Settings screen: every field, each at its shipped default (read from the C# source), the assembly loaded,
     and the five FORGE_MECHANICS_1 scaffolding fields present but inert."""
     with _comp(t, "settings_at_shipped_defaults", independent=True, toggle="modEnabled"):
         if _live(t):
@@ -1836,6 +1851,40 @@ def keelwork(t):
                 _fail("RM_CompForgeCycleDormancy.cs lacks %r: the scuttle is not wired" % n)
         if "RM_DhuvvoxScuttle" not in ALL_DEFNAMES:
             _fail("the RM_DhuvvoxScuttle SoundDef is not shipped in Defs/SoundDefs")
+
+    with _comp(t, "spunstone_parts_source_floatstone_only_and_gated", independent=True,
+               toggle="floatstoneDoorEnabled"):
+        # SOURCE claim (no bridge tool reads a designator list or a stuff-category restriction): both parts accept
+        # floatstone alone, are airtight outright (stone stuff is not), and each has a startup gate on its toggle.
+        xml = _read_text(os.path.join("Defs", "ThingDefs_Buildings", "RM_SpunstoneParts.xml"))
+        items = _read_text(os.path.join("Defs", "ThingDefs_Items", "RM_TheForgeItems.xml"))
+        cat = _read_text(os.path.join("Defs", "StuffCategoryDefs", "RM_SpunstoneWeave.xml"))
+        gate = _read_cs("RM_ForgeSpunstoneParts.cs")
+        prj = _read_cs("RM_TheForge.csproj")
+        checks = (
+            ("<defName>RM_SpunstoneWeave</defName>" in cat, "the RM_SpunstoneWeave StuffCategoryDef is not shipped"),
+            ("<li>RM_SpunstoneWeave</li>" in items, "RM_Floatstone does not carry RM_SpunstoneWeave: nothing can build the parts"),
+            (xml.count('<stuffCategories Inherit="False">') == 2 and xml.count("<li>RM_SpunstoneWeave</li>") >= 2,
+             "a spunstone part is not restricted to floatstone"),
+            ("<isAirtight>true</isAirtight>" in xml, "the floatstone door is not airtight (stone stuff is not)"),
+            ('"RM_FloatstoneDoor", RM_TheForgeSettings.Active(RM_TheForgeSettings.floatstoneDoorEnabled)' in gate,
+             "the floatstone door's architect-menu gate is not keyed on floatstoneDoorEnabled"),
+            ("designationCategory = null" in gate and "AllResolvedDesignators.RemoveAll" in gate,
+             "the gate does not remove the designator"),
+            ('Compile Include="RM_ForgeSpunstoneParts.cs"' in prj, "the csproj does not compile RM_ForgeSpunstoneParts.cs (a silent no-op)"),
+        )
+        if _live(t) or t.session is None:
+            for ok, msg in checks:
+                if not ok:
+                    _fail(msg)
+    with _comp(t, "spunstone_hull_gate_keyed_on_toggle", independent=True, toggle="spunstoneHullEnabled"):
+        gate = _read_cs("RM_ForgeSpunstoneParts.cs")
+        if (_live(t) or t.session is None) and \
+                '"RM_SpunstoneHull", RM_TheForgeSettings.Active(RM_TheForgeSettings.spunstoneHullEnabled)' not in gate:
+            _fail("the spunstone hull's architect-menu gate is not keyed on spunstoneHullEnabled")
+        if _live(t):
+            _note(t, "spunstone parts UNMEASURED", "door speed and airtightness in play, and the menu gate after a restart: "
+                  "no bridge tool reads them; the defs resolving is checked in defs_resolve")
 
 
 @suite.chain("plume_fronts")
