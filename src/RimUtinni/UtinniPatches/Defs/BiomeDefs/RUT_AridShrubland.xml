@@ -165,7 +165,6 @@
       <RSW_ScrapNestBird MayRequire="mandrake.rsw.swbestiary">0.45</RSW_ScrapNestBird>  <!-- SHRUBLAND_SCRAPNEST_BIRDS_1: the §4 scrap-nest bird-analog; the tunnel snake's own prey -->
       <Scurrier MayRequire="mlie.starwarsanimalcollection">0.8</Scurrier>  <!-- scurrier - small-runway, keep -->
       <Sketto MayRequire="mlie.starwarsanimalcollection">0.8</Sketto>  <!-- sketto - small-runway, keep -->
-      <RSW_ImperialToad MayRequire="mandrake.rsw.swbestiary">0.7</RSW_ImperialToad>  <!-- imperial toad - small-runway, keep -->
       <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - medium-tunnel, keep -->
       <Igitz MayRequire="mlie.starwarsanimalcollection">0.7</Igitz>  <!-- igitz - small-runway, keep -->
       <Urusai MayRequire="mlie.starwarsanimalcollection">0.7</Urusai>  <!-- urusai - medium-interface, keep -->
