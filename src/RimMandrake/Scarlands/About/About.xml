@@ -59,15 +59,16 @@ moved so neither twin gains a cross-mod dependency on the other). The frozen
 originals (`RUT_Glower`/`RUT_GlowerCrust`/`RUT_ScorchedStars`) are untouched and
 keep serving the campaign world exactly as before.
 
-Three donor wildlife rows ship inline (`AA_SpinedGow`, `AA_Helixien` --
-sarg.alphaanimals; `RG_Rimclaw` -- regrowth.botr.core), each individually
-MayRequire-gated. The remaining eight rows of the frozen twin's live roster --
-eight genuine Star Wars/donor-tier fauna (`Mynock`, `RSW_CrystalFairyMole`,
-`RSW_MegaphoridLarva`, `SW_Electrictick`, `RSW_FoundryBeetle`, `RSW_Korrum`,
-`SW_Electricgryllotalpa`, `SW_Juggernautbeetles`) -- are wired onto this biome
-from `mandrake.rut.patches`' own `WildAnimals_Warscar.xml` (`PatchOperationAdd`
-onto this def's `wildAnimals`) rather than referenced directly here, because an
-RM-tier def may not name RimUtinni- or RimStarWars-tier content directly
+Its fauna is its own: the chatrak, tetchik, pallbearer and scar roach, plus five
+owned ports of former donor rows (rimclaw, bileworm, electric tick, electric
+gryllotalpa, juggernaut beetle; ported from ReGrowth, Alpha Animals and
+Insectoids 2 Isopoda stats by WARSCAR_SHEET_DONOR_PORT_1). The four Star
+Wars-tier rows of the frozen twin's live roster (`RSW_Mynock`,
+`RSW_MegaphoridLarva`, `RSW_FoundryBeetle`, `RSW_Korrum`) are wired onto this
+biome from `mandrake.rut.patches`' own `WildAnimals_Warscar.xml`
+(`PatchOperationAdd` onto this def's `wildAnimals`) rather than referenced
+directly here, because an RM-tier def may not name RimUtinni- or
+RimStarWars-tier content directly
 (Q11a) -- same shape as every other split biome's Star-Wars-fauna routing.
 
 NOT absorbed here, on inspection: `mandrake.rut.scarlandsladder` (the reveal

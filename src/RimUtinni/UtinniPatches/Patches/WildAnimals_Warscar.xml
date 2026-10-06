@@ -8,9 +8,8 @@
   RUT_Scarlands.xml (see that file's <wildAnimals>, MEASURED fresh this pass —
   it has moved on since SCARLANDS_STANDALONE_MOD_1's own analysis, which
   predates COMMISSION_LEDGER_CLEANUP_1's RUT_MortuaryCrawler wiring) into
-  src/RimMandrake/Scarlands' RM_Warscar.xml, exactly as that mod's own two
-  non-Star-Wars, non-RimUtinni donor rows (RG_Rimclaw,
-  AA_Helixien) already ship inline there.
+  src/RimMandrake/Scarlands' RM_Warscar.xml. Its non-Star-Wars rows ship
+  inline there as owned ports (WARSCAR_SHEET_DONOR_PORT_1).
 
   WHY THESE GO THROUGH A PATCH, NOT THE BIOME DEF DIRECTLY: an RM-tier def
   may not name RimStarWars- or RimUtinni-tier content by defName (Q11a,
@@ -19,18 +18,17 @@
   every other split biome's Star-Wars-fauna routing uses (see
   WildAnimals_Pyrelands.xml, WildAnimals_Greentide.xml, WildAnimals_CrackedLands.xml).
 
-  ROSTER (all seven, MEASURED against the live RUT_Scarlands.xml, not the stale
-  item analysis):
+  ROSTER (the four Star Wars-tier rows):
 
   🔴 MLIE_ABSORPTION_BIOME_WIRING_1 (2026-09-25): the swap flagged below as
   "not this item's scope" is now done — Mynock retargeted to our own
   RSW_Mynock (mandrake.rsw.swbestiary), joining the other RSW_ ports below.
   This file no longer casts any bare mlie.starwarsanimalcollection defName.
 
-  who.vfee.isopodageneline (weapon-descendant insects):
-    SW_Electrictick        0.3
-    SW_Electricgryllotalpa 0.15
-    SW_Juggernautbeetles   0.05
+  The three Insectoids 2 Isopoda rows (SW_Electrictick 0.3, SW_Electricgryllotalpa
+  0.15, SW_Juggernautbeetles 0.05) are no longer added here: WARSCAR_SHEET_DONOR_PORT_1
+  (2026-10-06) ported them to RM_ElectricTick / RM_ElectricGryllotalpa /
+  RM_JuggernautBeetle, listed inline in RM_Warscar.xml at the same commonalities.
 
   mandrake.rsw.swbestiary (our own Star Wars-tier ports):
     RSW_MegaphoridLarva    0.5
@@ -49,21 +47,6 @@
   ============================================================================
 -->
 <Patch>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Insectoids 2 - Isopoda geneline</li></mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-        <value>
-          <SW_Electrictick MayRequire="Who.VFEE.IsopodaGeneline">0.3</SW_Electrictick>
-          <SW_Electricgryllotalpa MayRequire="Who.VFEE.IsopodaGeneline">0.15</SW_Electricgryllotalpa>
-          <SW_Juggernautbeetles MayRequire="Who.VFEE.IsopodaGeneline">0.05</SW_Juggernautbeetles>
-        </value>
-      </match>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>RimMandrake: SW — Bestiary</li></mods>

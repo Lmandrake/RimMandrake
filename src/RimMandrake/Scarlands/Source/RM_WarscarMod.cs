@@ -80,7 +80,12 @@ namespace RimMandrake.Scarlands
         public static bool enablePallbearer = true;
         public static bool enableScarRoach = true;
         public static bool enableWreckLichenSeeder = true;
-        public static bool enableInterimDonors = true;
+        // WARSCAR_SHEET_DONOR_PORT_1: the five owned ports that replaced the donor rows (was one "interim donors" switch).
+        public static bool enableRimclaw = true;
+        public static bool enableBileworm = true;
+        public static bool enableElectricTick = true;
+        public static bool enableElectricGryllotalpa = true;
+        public static bool enableJuggernautBeetle = true;
 
         // WARSCAR_SETTLING_WEATHER_1 toggles.
         public static bool settlingEnabled = true;           // calm starts the Settling at all
@@ -162,7 +167,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref enablePallbearer, "enablePallbearer", true);
             Scribe_Values.Look(ref enableScarRoach, "enableScarRoach", true);
             Scribe_Values.Look(ref enableWreckLichenSeeder, "enableWreckLichenSeeder", true);
-            Scribe_Values.Look(ref enableInterimDonors, "enableInterimDonors", true);
+            Scribe_Values.Look(ref enableRimclaw, "enableRimclaw", true);
+            Scribe_Values.Look(ref enableBileworm, "enableBileworm", true);
+            Scribe_Values.Look(ref enableElectricTick, "enableElectricTick", true);
+            Scribe_Values.Look(ref enableElectricGryllotalpa, "enableElectricGryllotalpa", true);
+            Scribe_Values.Look(ref enableJuggernautBeetle, "enableJuggernautBeetle", true);
             Scribe_Values.Look(ref settlingEnabled, "settlingEnabled", true);
             Scribe_Values.Look(ref settlingCalmThreshold, "settlingCalmThreshold", 0.35f);
             Scribe_Values.Look(ref settlingCalmHours, "settlingCalmHours", 4f);
@@ -366,7 +375,11 @@ namespace RimMandrake.Scarlands
             list.CheckboxLabeled("Tetchik (glower beetle)", ref enableTetchik);
             list.CheckboxLabeled("Pallbearer (carrion eater)", ref enablePallbearer);
             list.CheckboxLabeled("Scar roach (cleaner)", ref enableScarRoach);
-            list.CheckboxLabeled("Interim donor animals (spined gow, rimclaw, helixien)", ref enableInterimDonors);
+            list.CheckboxLabeled("Rimclaw (rust-plated scavenger)", ref enableRimclaw);
+            list.CheckboxLabeled("Bileworm (corpse slug)", ref enableBileworm);
+            list.CheckboxLabeled("Electric tick (short-lived, bursts on death)", ref enableElectricTick);
+            list.CheckboxLabeled("Electric gryllotalpa (throws arcs)", ref enableElectricGryllotalpa);
+            list.CheckboxLabeled("Juggernaut beetle (armoured giant)", ref enableJuggernautBeetle);
             list.CheckboxLabeled("Wreck-lichen grows beside ruins and wreck", ref enableWreckLichenSeeder,
                 "Places wreck-lichen on open cells next to ruins and wreck. Worldgen-affecting.");
             list.GapLine();
@@ -431,12 +444,11 @@ namespace RimMandrake.Scarlands
             if (!RM_WarscarSettings.enableTetchik) off.Add("RM_Tetchik");
             if (!RM_WarscarSettings.enablePallbearer) off.Add("RM_Pallbearer");
             if (!RM_WarscarSettings.enableScarRoach) off.Add("RM_ScarRoach");
-            if (!RM_WarscarSettings.enableInterimDonors)
-            {
-                off.Add("AA_SpinedGow");
-                off.Add("RG_Rimclaw");
-                off.Add("AA_Helixien");
-            }
+            if (!RM_WarscarSettings.enableRimclaw) off.Add("RM_Rimclaw");
+            if (!RM_WarscarSettings.enableBileworm) off.Add("RM_Bileworm");
+            if (!RM_WarscarSettings.enableElectricTick) off.Add("RM_ElectricTick");
+            if (!RM_WarscarSettings.enableElectricGryllotalpa) off.Add("RM_ElectricGryllotalpa");
+            if (!RM_WarscarSettings.enableJuggernautBeetle) off.Add("RM_JuggernautBeetle");
             if (off.Count == 0) return;
 
             FieldInfo wild = AccessTools.Field(typeof(BiomeDef), "wildAnimals");

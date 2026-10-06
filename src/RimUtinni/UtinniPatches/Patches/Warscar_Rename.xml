@@ -4,8 +4,10 @@
   Label / description only; no defName, stat or art field is touched.
     AA_Helixien           "Rename to Bileworm" — text written from the picked render (gapall_AA_Helixien_v1).
                           The only patch naming this def (owner: "Bileworm everywhere"), so it holds for every biome.
-    RG_Rimclaw            "redo description" — written from the in-game RimclawArtOverride picture.
-    SW_Juggernautbeetles  "Redo description" — written from the picked render (gapall_SW_Juggernautbeetles_v1).
+  RG_Rimclaw and SW_Juggernautbeetles had their "redo description" blocks here too; WARSCAR_SHEET_DONOR_PORT_1
+  (2026-10-06) ported both to RM_Rimclaw / RM_JuggernautBeetle (mandrake.rm.warscar), which carry those descriptions
+  themselves, and no biome casts either donor any more, so the blocks were deleted. AA_Helixien's block stays: the
+  donor is still cast in the Miasma, Cauldron, Slime and Contagion (the Warscar casts the port, RM_Bileworm).
 -->
 <Patch>
 
@@ -29,22 +31,6 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="AA_Helixien"]/label</xpath>
       <value><label>bileworm</label></value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RG_Rimclaw"]/description</xpath>
-      <value><description>A low, armoured scavenger the colour of old rust, its back a stack of jagged overlapping plates and its eyes two orange beads on short stalks. One enormous saw-toothed claw hangs from its side; it snaps the claw shut on whatever it catches and carries on. It picks across slag and scrap on sharp, dark-tipped legs, and nothing metal or meaty is safe near it.</description></value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="SW_Juggernautbeetles"]/description</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="SW_Juggernautbeetles"]/description</xpath>
-      <value><description>A heavy, domed beetle in dull slate-black armour, its back one great crown of overlapping plates and its head swept back into a long curved horn. Pale blue light glows in the joints of its limbs and around its jaws, and one oversized hooked forelimb is held ready in front of it. It walks slowly, because nothing it meets has ever made it hurry.</description></value>
     </match>
   </Operation>
 

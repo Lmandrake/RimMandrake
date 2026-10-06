@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_SHEET_DONOR_PORT_1. The bileworm: a vast corpse-rotting slug. Owned port of the Alpha Animals helixien
+  (sarg.alphaanimals AA_Helixien, 1.6/Defs/ThingDefs_Races/Races_Helixien.xml). Name is the owner's Warscar sheet
+  ruling 2026-10-05 ("Rename to Bileworm"); description is the one Warscar_Rename.xml already carries for the donor.
+  Free RM_ tier, ONE HOME: the Warscar. Stats, tools, race fields and pawnkind numbers are the donor's own, EXCEPT
+  these donor-only references:
+    - body AA_Slug -> vanilla Snake (HeadAttackTool kept, so the one tool still links) PROVISIONAL
+    - sounds AA_Helixien_Angry/_Death -> vanilla Pawn_Thrumbo_Angry/_Death/_Pain PROVISIONAL
+    - VEF CompProperties_CorpseDecayer (rots nearby corpses and drinks them) DROPPED; the "corpses rot into
+      bile near it" mechanic is OWED as ours (not built here). The description still says it.
+    - VEF CompProperties_ThoughtEffecter (AA_Disgust thought within 10 cells) DROPPED, owed with the above.
+    - VEF specialTrainables VEF_ControlledCorpseDecay and the VEF AnimalStatExtension dropped.
+    - wildBiomes dropped: the biome's own wildAnimals row casts it (RM_Warscar).
+    - dessicated graphic (donor art) dropped, as the Abyss ports; vanilla fallback.
+  The donor AA_Helixien still ships in the Miasma, the Cauldron, the Slime and the Contagion, which is why its
+  bileworm label block in Warscar_Rename.xml stays.
+  ART: gapall_AA_Helixien_v1 (east/south/north, the owner's B pick), installed 2026-10-06 via the art ledger
+  (ruling 20378bc0df2321dcfa7c) at the texPath below.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Bileworm</defName>
+    <label>bileworm</label>
+    <description>A vast, slow slug in mottled grey-green skin, ribbed along its pale underside and pitted with a row of dark breathing holes down each flank, its two eye-stalks nodding over a cluster of yellow, finger-like mouthparts. It breathes out a foul, corrosive gas wherever it goes: mostly harmless to the living, but murder on the dead. Anything it passes near rots in minutes into a black, reeking fluid, which the bileworm then happily drinks.</description>
+    <statBases>
+      <MoveSpeed>0.6</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>750</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <FilthRate>8</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1</ToxicEnvironmentResistance>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>body</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>28</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <body>Snake</body>
+      <baseBodySize>4.00</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>8</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <meatLabel>slug meat</meatLabel>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.2</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.99, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.01, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>74</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Bileworm</defName>
+    <label>bileworm</label>
+    <race>RM_Bileworm</race>
+    <combatPower>220</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bileworm/RM_Bileworm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bileworm/RM_Bileworm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bileworm/RM_Bileworm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.1</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

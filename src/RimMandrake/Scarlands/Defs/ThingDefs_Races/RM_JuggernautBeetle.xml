@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_SHEET_DONOR_PORT_1. The juggernaut beetle: a heavy, armoured war-insect. Owned port of the Insectoids 2
+  Isopoda geneline juggernaut beetle (Who.VFEE.IsopodaGeneline SW_Juggernautbeetles,
+  1.6/Defs/ThingDefs_Races/Juggernautbeetles.xml; its parent VFEI2_BaseInsect from VFE Insectoids 2 is inlined).
+  Name kept (owner's Warscar sheet 2026-10-05 asked only "Redo description"; the donor's "Juggernautbeetles" is
+  written as "juggernaut beetle"); description is the one Warscar_Rename.xml already carried for the donor.
+  Free RM_ tier, ONE HOME: the Warscar. Stats, tools, race fields and pawnkind numbers are the donor's own, EXCEPT
+  these donor-only references (all PROVISIONAL):
+    - tool capacity SW_FlameCut (a cut dealt by DamageWorker_Flame) -> vanilla Cut; the burn-on-hit is dropped.
+      The vanilla EMP extra damage (20, always) is kept.
+    - leatherDef VFEI2_Chitin dropped: no leather (LeatherAmount 0), as vanilla's own insectoids
+    - renderTree VFEI2_Unarmored dropped (vanilla animal render tree)
+    - VEF CompProperties_InitialAbility VFEI2_WideTunnels60S (tunnelling) dropped
+    - uiIconPath and the dessicated graphic (donor art) dropped; the body colour tint (66,73,81) and CutoutComplex
+      shader dropped because the ruled render carries its own colour.
+  ART: gapall_SW_Juggernautbeetles_v1 (east/south/north, the owner's B pick), installed 2026-10-06 via the art
+  ledger (ruling 2835dfc1040c75b749fe) at the texPath below.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_JuggernautBeetle</defName>
+    <label>juggernaut beetle</label>
+    <description>A heavy, domed beetle in dull slate-black armour, its back one great crown of overlapping plates and its head swept back into a long curved horn. Pale blue light glows in the joints of its limbs and around its jaws, and one oversized hooked forelimb is held ready in front of it. It walks slowly, because nothing it meets has ever made it hurry.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <Flammability>0</Flammability>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>160</ComfyTemperatureMax>
+      <MarketValue>1500</MarketValue>
+      <ArmorRating_Sharp>0.80</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.65</ArmorRating_Blunt>
+      <ArmorRating_Heat>2</ArmorRating_Heat>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.4</Wildness>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.5</cooldownTime>
+        <armorPenetration>0.80</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>EMP</def>
+            <amount>20</amount>
+            <chance>1</chance>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>1.5</cooldownTime>
+        <armorPenetration>0.80</armorPenetration>
+        <extraMeleeDamages>
+          <li>
+            <def>EMP</def>
+            <amount>20</amount>
+            <chance>1</chance>
+          </li>
+        </extraMeleeDamages>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <baseHungerRate>0.25</baseHungerRate>
+      <baseBodySize>3.00</baseBodySize>
+      <baseHealthScale>6.00</baseHealthScale>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>6</lifeExpectancy>
+      <trainability>Intermediate</trainability>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.03</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_JuggernautBeetle</defName>
+    <label>juggernaut beetle</label>
+    <race>RM_JuggernautBeetle</race>
+    <combatPower>300</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <defaultFactionType>Insect</defaultFactionType>
+    <aiAvoidCover>false</aiAvoidCover>
+    <defendPointRadius>0</defendPointRadius>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

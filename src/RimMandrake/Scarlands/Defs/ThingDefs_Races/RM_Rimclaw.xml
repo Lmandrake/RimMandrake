@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_SHEET_DONOR_PORT_1. The rimclaw: an armoured, rust-plated scavenger-predator of the slag fields. Owned port
+  of the ReGrowth rimclaw (regrowth.botr.core RG_Rimclaw, 1.6/Defs/ThingDefs_Races/Races_Animal_Special.xml). Name
+  kept; description is the one Warscar_Rename.xml already carried for the donor (owner's Warscar sheet 2026-10-05,
+  "redo description"). Free RM_ tier, ONE HOME: the Warscar. Stats, tools, race fields and pawnkind numbers are the
+  donor's own, EXCEPT these donor-only references (all PROVISIONAL):
+    - body RG_HumanoidWithHornsAndClaws -> vanilla QuadrupedAnimalWithClawsTailAndJowl (vanilla's iguana body; the
+      donor is a mutated iguana). It has no horn group, so the horn tool links to HeadAttackTool.
+    - sounds RG_Pawn_Rimclaw_* -> vanilla Pawn_Iguana_*
+    - CompProperties_EggLayer (donor RG_RimclawEgg* items) dropped: it bears live young; gestationPeriodDays 30 is
+      set to the donor's eggLayIntervalDays (litter 1, the engine default), as the Abyss ports did
+    - wildBiomes dropped: the biome's own wildAnimals row casts it (RM_Warscar).
+    - dessicated graphics and the baby texture (donor art) dropped; every life stage uses the ruled picture.
+  Kept from the donor because they are vanilla: Leather_Lizard, the Biotech DeathActionWorker_ToxCloud death burst.
+  ART: the owner's A pick, the picture the game already showed (src/RimUtinni/RimclawArtOverride, south/east/north),
+  copied 2026-10-06 through the art ledger to the texPath below. RimclawArtOverride itself is untouched: it still
+  dresses the donor RG_Rimclaw, which no biome of ours casts any more.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Rimclaw</defName>
+    <label>rimclaw</label>
+    <description>A low, armoured scavenger the colour of old rust, its back a stack of jagged overlapping plates and its eyes two orange beads on short stalks. One enormous saw-toothed claw hangs from its side; it snaps the claw shut on whatever it catches and carries on. It picks across slag and scrap on sharp, dark-tipped legs, and nothing metal or meaty is safe near it.</description>
+    <statBases>
+      <MoveSpeed>5.20</MoveSpeed>
+      <MarketValue>2500</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <ComfyTemperatureMax>75</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.50</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.25</ArmorRating_Heat>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1</ToxicEnvironmentResistance>
+      <FilthRate>8</FilthRate>
+    </statBases>
+    <race>
+      <deathAction>
+        <workerClass>DeathActionWorker_ToxCloud</workerClass>
+      </deathAction>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <predator>true</predator>
+      <baseBodySize>1</baseBodySize>
+      <baseHealthScale>4.5</baseHealthScale>
+      <baseHungerRate>1.2</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>250</lifeExpectancy>
+      <herdMigrationAllowed>false</herdMigrationAllowed>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.90</manhunterOnDamageChance>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tools>
+      <li>
+        <label>horn</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>32</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>32</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>25</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>1.95</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+    </tools>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BigBirdKindBase">
+    <defName>RM_Rimclaw</defName>
+    <label>rimclaw</label>
+    <race>RM_Rimclaw</race>
+    <combatPower>650</combatPower>
+    <canArriveManhunter>true</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
