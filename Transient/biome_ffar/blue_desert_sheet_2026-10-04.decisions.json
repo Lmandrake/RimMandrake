@@ -4,21 +4,31 @@
   "decidedCount": 20,
   "decisions": {
     "AA_Thunderbeast": {
-      "at": "2026-10-05T14:27:59.276Z",
-      "decidedAt": "2026-10-05T05:55:51.620Z",
-      "decision": "A",
+      "at": "2026-10-06T03:12:59.600Z",
+      "decidedAt": "2026-10-06T03:12:54.791Z",
+      "decision": "E",
       "note": "Looks good, but needs its other facings. Also needs improved description. Half the size. Still missing a north facing.",
-      "prefill": "hold"
+      "prefill": "hold",
+      "purge": [
+        "19c0fa186245ff23eae8bbc484c9d4426bd0a19445567a25c967e3b67e5b5a55",
+        "09ea0a49cc844b15badce028738b38c2c4120aeecd8ffc26102ef4bf34e10bd0",
+        "3d47e4cd574d6ccc4155dff45f708ed9f356201d4f1c245149d0387b719f4edb",
+        "5866c53a7295cca4ec96343575514e321a5a17d38011f72a251158d893dde138",
+        "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a",
+        "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa"
+      ],
+      "purgeTouched": true
     },
     "RM_Chimeglobe": {
-      "at": "2026-10-05T05:58:16.426Z",
+      "at": "2026-10-06T03:14:21.801Z",
       "decision": "A",
       "note": "",
       "prefill": "A",
       "variants": [
+        "A",
         "B"
       ],
-      "variantsAt": "2026-10-05T05:58:16.426Z"
+      "variantsAt": "2026-10-06T03:14:21.801Z"
     },
     "RM_Dorrak": {
       "decision": "A",
@@ -39,7 +49,7 @@
       "purgeTouched": true
     },
     "RM_Glassfern": {
-      "at": "2026-10-05T05:58:25.340Z",
+      "at": "2026-10-06T03:14:25.538Z",
       "decidedAt": "2026-10-04T23:42:36.375Z",
       "decision": "B",
       "note": "Keep B & C as valid variants.",
@@ -49,9 +59,10 @@
       ],
       "purgeTouched": true,
       "variants": [
+        "B",
         "C"
       ],
-      "variantsAt": "2026-10-05T05:58:25.340Z"
+      "variantsAt": "2026-10-06T03:14:25.538Z"
     },
     "RM_Kethevar": {
       "at": "2026-10-05T14:37:17.720Z",
@@ -92,11 +103,22 @@
       "prefill": "A"
     },
     "RM_Ossivel": {
-      "at": "2026-10-05T14:27:05.681Z",
+      "at": "2026-10-06T03:12:38.560Z",
       "decidedAt": "2026-10-05T14:27:05.681Z",
       "decision": "B",
       "note": "This looks vaguely lewd and also somewhat humanoid. More alien please.",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece",
+        "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
+        "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:12:38.560Z"
     },
     "RM_Palefloss": {
       "at": "2026-10-05T14:37:26.890Z",
@@ -111,10 +133,10 @@
       "variantsAt": "2026-10-05T14:37:26.890Z"
     },
     "RM_Qeshra": {
-      "at": "2026-10-04T23:43:38.375Z",
+      "at": "2026-10-06T03:14:54.825Z",
       "decidedAt": "2026-10-04T23:43:38.375Z",
       "decision": "A",
-      "note": "Make it orange-yellowish, just tint ",
+      "note": "Make some variants",
       "prefill": "A"
     },
     "RM_Utikka": {
@@ -131,10 +153,17 @@
       "purgeTouched": true
     },
     "RM_Vashpuk": {
-      "at": "2026-10-05T14:37:40.806Z",
+      "at": "2026-10-06T03:14:47.467Z",
       "decision": "A",
       "note": "add variants",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:14:47.467Z"
     },
     "RM_Vekkit": {
       "decision": "A",
@@ -142,10 +171,10 @@
       "prefill": "A"
     },
     "RM_Vhaulk": {
-      "at": "2026-10-05T14:36:29.358Z",
-      "decidedAt": "2026-10-05T14:36:01.841Z",
-      "decision": "D",
-      "note": "Use S & N in option A, and E from option D. Put them together. Purge everything else. ",
+      "at": "2026-10-06T03:14:12.448Z",
+      "decidedAt": "2026-10-06T03:13:59.370Z",
+      "decision": "E",
+      "note": "",
       "prefill": "A",
       "purge": [
         "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
@@ -153,10 +182,17 @@
       "purgeTouched": true
     },
     "RM_Virr": {
-      "at": "2026-10-05T14:37:46.400Z",
+      "at": "2026-10-06T03:15:00.961Z",
       "decision": "A",
       "note": "add variants",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:15:00.961Z"
     },
     "RM_Vrisk": {
       "at": "2026-10-05T14:36:52.957Z",
@@ -177,30 +213,31 @@
       "prefill": "A"
     },
     "Vapaad": {
-      "at": "2026-10-05T14:34:14.966Z",
-      "decidedAt": "2026-10-05T05:56:39.198Z",
-      "decision": "B",
-      "note": "Ok, so Option B is a FANTASTIC creature to move to the Propane Lakes biome, but it's simply not a vapaad (canon creature). Please look at the canon images and follow them carefully and regenerate, but keep Option B in the Propane Lakes. ",
+      "at": "2026-10-06T03:13:37.129Z",
+      "decidedAt": "2026-10-06T03:13:18.395Z",
+      "decision": "G",
+      "note": "Nice job! ",
       "prefill": "A",
       "purge": [
         "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803",
         "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
-        "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1"
+        "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
+        "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
       ],
       "purgeTouched": true
     }
   },
   "posture": "pick-one",
   "reviewStatus": {
-    "state": "ruled",
-    "by": "owner (Lukas)",
     "at": "2026-10-05T07:37:47-0700",
-    "evidence": "sidecar writeCount 93 (next sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Done with blue desert.'"
+    "by": "owner (Lukas)",
+    "evidence": "sidecar writeCount 93 (next sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Done with blue desert.'",
+    "state": "ruled"
   },
-  "savedAt": "2026-10-05T07:37:47-0700",
+  "savedAt": "2026-10-05T20:15:01-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "blue_desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "03503bba1df3f583",
-  "writeCount": 93
+  "writeCount": 117
 }
