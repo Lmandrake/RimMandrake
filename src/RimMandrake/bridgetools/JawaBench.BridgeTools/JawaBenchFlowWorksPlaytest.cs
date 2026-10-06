@@ -61,9 +61,12 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/playtest_start",
             Description =
-                "FlowWorks in-game scenario runner (Approach A pilot). Starts a run on the CURRENT map and " +
+                "FlowWorks in-game scenario runner (Approach A). Starts a run on the CURRENT map and " +
                 "returns its run id AT ONCE; the run then advances across ordinary game frames (never inside " +
-                "this call). recipe = comma list of fluids,dig,pit (pilot = all three); add inject to append a " +
+                "this call). recipe = comma list of scenes: fluids, dig, pit, depth_fill, fire, pump, river, sluice, " +
+                "pit_ladder_release, pit_fall_forced, " +
+                "save_reload (arms: SAVES the game, record PENDING), save_reload_b (needs resume=<runId>, after loading " +
+                "that save); pilot = fluids,dig,pit; full = every scene, save_reload last. inject appends a " +
                 "scenario that throws, proving the INCOMPLETE path. tickMode batch (default) PAUSES the game " +
                 "and steps ticks itself within frameBudgetMs per frame; speed unpauses at Ultrafast. The run " +
                 "MODIFIES THE MAP (water/tar strips, a dug cell, a SUPERDEEP pit, a ladder, two spawned and " +
@@ -73,7 +76,7 @@ namespace JawaBench.BridgeTools
         public static async Task<object> PlaytestStart(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Comma list of fluids,dig,pit,inject; pilot = fluids,dig,pit.", DefaultValue = "pilot")]
+            [ToolParameter(Description = "Comma list of scenes (see description); pilot = fluids,dig,pit; full = all.", DefaultValue = "pilot")]
             string recipe = "pilot",
             [ToolParameter(Description = "Seed for pawn generation and fixture-search jitter.", DefaultValue = 1)]
             int seed = 1,
@@ -82,7 +85,9 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "batch mode: wall milliseconds of ticking per Unity frame (5-500).", DefaultValue = 50)]
             int frameBudgetMs = 50,
             [ToolParameter(Description = "Abort an active run and start anyway.", DefaultValue = false)]
-            bool force = false)
+            bool force = false,
+            [ToolParameter(Description = "save_reload_b only: the runId of the save_reload run whose checkpoint (and save) this run continues.")]
+            string resume = null)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -98,7 +103,8 @@ namespace JawaBench.BridgeTools
                 string mode = (tickMode ?? "batch").Trim().ToLowerInvariant();
                 if (mode != "batch" && mode != "speed") return Fail("tickMode must be batch or speed.");
                 List<string> names = PlaytestParseRecipe(recipe, out string bad);
-                if (bad != null) return Fail("Unknown scenario '" + bad + "'. Known: fluids, dig, pit, inject, pilot.");
+                if (bad != null) return Fail("Unknown scenario '" + bad + "'. Known: " + string.Join(", ", PlaytestKnown) + "; recipes pilot, full.");
+                if (names.Contains("save_reload_b") && string.IsNullOrEmpty(resume)) return Fail("save_reload_b needs resume=<runId of the save_reload run>.");
                 if (names.Count == 0) return Fail("Empty recipe.");
 
                 string driver = PlaytestEnsureDriver(out string driverErr);
@@ -106,6 +112,7 @@ namespace JawaBench.BridgeTools
 
                 var run = new PlayRun(map, names, seed, mode, Mathf.Clamp(frameBudgetMs, 5, 500), recipe);
                 run.driver = driver;
+                run.resume = resume;
                 pRun = run;
                 pRuns[run.id] = run;
                 run.Begin();
@@ -145,8 +152,8 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/playtest_collect",
             Description = "Report for a playtest run: the JSONL journal path and a verdict RE-DERIVED FROM THE FILE " +
-                          "(INCOMPLETE unless its last line is run_end with completed=true; then FAIL if any scenario " +
-                          "FAILed, INVALID if any fixture was invalid, else PASS). Works on a still-running run (reads " +
+                          "(INCOMPLETE unless its last line is run_end with completed=true and no scenario is PENDING; then FAIL if any scenario " +
+                          "FAILed not marked expectedFailUntil, INVALID if any fixture was invalid, XFAIL if only expected FAILs, else PASS). Works on a still-running run (reads " +
                           "INCOMPLETE).",
             ResultDescription = "success, runId, reportPath, verdict, scenarioLines, hasRunEnd, state, summary, ticksGame.")]
         public static async Task<object> PlaytestCollect(
@@ -162,12 +169,7 @@ namespace JawaBench.BridgeTools
                 int scen = lines.Count(l => l.Contains("\"type\":\"scenario\""));
                 string last = lines.LastOrDefault(l => l.Trim().Length > 0) ?? "";
                 bool hasEnd = last.Contains("\"type\":\"run_end\"");
-                bool completed = hasEnd && last.Contains("\"completed\":true");
-                string verdict;
-                if (!completed) verdict = "INCOMPLETE";
-                else if (lines.Any(l => l.Contains("\"type\":\"scenario\"") && l.Contains("\"status\":\"FAIL\""))) verdict = "FAIL";
-                else if (lines.Any(l => l.Contains("\"type\":\"scenario\"") && l.Contains("\"status\":\"INVALID\""))) verdict = "INVALID";
-                else verdict = "PASS";
+                string verdict = PlaytestVerdict(lines);
                 return (object)new
                 {
                     success = true,
@@ -198,20 +200,47 @@ namespace JawaBench.BridgeTools
             return pRuns.TryGetValue(runId, out PlayRun r) ? r : null;
         }
 
+        /// <summary>The fixed catalogue. "full" runs every scene except the resume half and inject; save_reload goes
+        /// last because it saves the game and the launcher then loads that save for save_reload_b.</summary>
+        private static readonly string[] PlaytestKnown =
+            { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
+              "save_reload", "save_reload_b", "inject" };
+        private static readonly string[] PlaytestFull =
+            { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
+              "save_reload" };
+
         private static List<string> PlaytestParseRecipe(string recipe, out string bad)
         {
             bad = null;
-            var known = new[] { "fluids", "dig", "pit", "inject" };
             var outList = new List<string>();
             foreach (string raw in (recipe ?? "pilot").Split(','))
             {
                 string s = raw.Trim().ToLowerInvariant();
                 if (s.Length == 0) continue;
                 if (s == "pilot") { outList.AddRange(new[] { "fluids", "dig", "pit" }); continue; }
-                if (!known.Contains(s)) { bad = s; return outList; }
+                if (s == "full") { outList.AddRange(PlaytestFull); continue; }
+                if (!PlaytestKnown.Contains(s)) { bad = s; return outList; }
                 outList.Add(s);
             }
             return outList;
+        }
+
+        /// <summary>Verdict re-derived from the journal lines (playtest_runner.py's verdict() is the same rule):
+        /// INCOMPLETE without run_end completed=true or with any status other than PASS/FAIL/INVALID (PENDING = a
+        /// save_reload awaiting its resume half); FAIL if any FAIL not marked expectedFailUntil; INVALID if any
+        /// INVALID; XFAIL if the only FAILs are expected ones; else PASS.</summary>
+        internal static string PlaytestVerdict(string[] lines)
+        {
+            string last = lines.LastOrDefault(l => l.Trim().Length > 0) ?? "";
+            if (!(last.Contains("\"type\":\"run_end\"") && last.Contains("\"completed\":true"))) return "INCOMPLETE";
+            var scen = lines.Where(l => l.Contains("\"type\":\"scenario\"")).ToList();
+            bool St(string l, string s) => l.Contains("\"status\":\"" + s + "\"");
+            if (scen.Any(l => !St(l, "PASS") && !St(l, "FAIL") && !St(l, "INVALID"))) return "INCOMPLETE";
+            bool expected(string l) => !l.Contains("\"expectedFailUntil\":null");
+            if (scen.Any(l => St(l, "FAIL") && !expected(l))) return "FAIL";
+            if (scen.Any(l => St(l, "INVALID"))) return "INVALID";
+            if (scen.Any(l => St(l, "FAIL"))) return "XFAIL";
+            return "PASS";
         }
 
         /// <summary>A hidden GameObject with JawaBenchPlaytestDriver; Harmony postfix on Root_Play.Update if Unity refuses.</summary>
@@ -334,7 +363,8 @@ namespace JawaBench.BridgeTools
             public Type excType;
             public object exc;
             public PhaseClock clock = new PhaseClock("setup");
-            public string status;          // PASS / FAIL / INVALID / ERROR
+            public string status;          // PASS / FAIL / INVALID / ERROR / PENDING (save_reload awaiting its resume)
+            public string expectedFailUntil; // item id whose build is expected to turn a FAIL green; null = none
             public string reason;
             public readonly Dictionary<string, object> ev = new Dictionary<string, object>();
             public double waitWall; public int waitTicks; public int waitFrames;
@@ -371,6 +401,7 @@ namespace JawaBench.BridgeTools
             public readonly string recipe;
             public readonly string journalPath;
             public string driver;
+            public string resume;
             public string state = "running";
             public string error;
             public int index = -1;
@@ -404,7 +435,7 @@ namespace JawaBench.BridgeTools
                 lastSpeedTick = TicksGameSafe();
                 Type excT = GenTypes.GetTypeInAnyAssembly(ExcavationTypeName);
                 Write(PD("type", "run_start", "runId", id, "recipe", recipe, "scenarios", names, "seed", seed,
-                    "tickMode", tickMode, "frameBudgetMs", frameBudgetMs, "driver", driver,
+                    "tickMode", tickMode, "frameBudgetMs", frameBudgetMs, "driver", driver, "resume", resume,
                     "mapId", map.uniqueID, "mapSize", map.Size.x + "x" + map.Size.z, "ticksGame", startTick,
                     "utc", DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture),
                     "flowWorks", excT != null ? (object)AssemblyIdentity(excT.Assembly) : null,
@@ -495,7 +526,7 @@ namespace JawaBench.BridgeTools
                 int ticks = cur.clock.acc.Values.Sum(a => a.ticks);
                 int frames = cur.clock.acc.Values.Sum(a => a.frames);
                 var rec = PD("type", "scenario", "runId", id, "index", index, "name", cur.name, "status", cur.status,
-                    "reason", cur.reason, "evidence", cur.ev,
+                    "reason", cur.reason, "expectedFailUntil", cur.expectedFailUntil, "evidence", cur.ev,
                     "timing", PD("wallSec", Math.Round(wall, 3), "ticks", ticks, "frames", frames,
                         "phases", cur.clock.Phases(),
                         "waitWallSec", Math.Round(cur.waitWall, 3), "waitTicks", cur.waitTicks, "waitFrames", cur.waitFrames,
@@ -587,6 +618,7 @@ namespace JawaBench.BridgeTools
                 "ticks", TicksGameSafe() - startTick, "frames", Time.frameCount - startFrame,
                 "tickMode", tickMode, "driver", driver,
                 "records", records.Select(r => (object)PD("name", r["name"], "status", r["status"], "reason", r["reason"],
+                    "expectedFailUntil", r["expectedFailUntil"],
                     "wallSec", ((Dictionary<string, object>)r["timing"])["wallSec"],
                     "ticks", ((Dictionary<string, object>)r["timing"])["ticks"])).ToList(),
                 "ticksGame", TicksGameSafe());
@@ -600,6 +632,15 @@ namespace JawaBench.BridgeTools
                 case "dig": return ScnDigFill(c);
                 case "pit": return ScnPit(c);
                 case "inject": return ScnInject(c);
+                case "depth_fill": return ScnDepthFill(c);
+                case "fire": return ScnFire(c);
+                case "pump": return ScnPump(c);
+                case "river": return ScnRiver(c);
+                case "sluice": return ScnSluice(c);
+                case "pit_ladder_release": return ScnPitLadderRelease(c);
+                case "pit_fall_forced": return ScnPitFallForced(c);
+                case "save_reload": return ScnSaveReloadA(c);
+                case "save_reload_b": return ScnSaveReloadB(c);
                 default: throw new ArgumentException("unknown scenario " + name);
             }
         }
