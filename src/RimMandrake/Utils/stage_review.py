@@ -271,8 +271,8 @@ def daylight(rb, target_hour=12):
         # RimWorld has no cheap "hour" read here; step a bounded amount and stop.
         try:
             rb.call("rimworld/step_game_ticks", {"ticks": 2000})
-        except Exception:
-            pass
+        except Exception as exc:
+            print("  WARNING: step_game_ticks failed during daylight: %s" % exc, file=sys.stderr)
         # crude: 6 steps ~ 12000 ticks ~ half a day; good enough for lighting.
         break_after = 6
         if _ >= break_after:
@@ -286,8 +286,8 @@ def settle_weather(rb, weather, ticks):
     while stepped < ticks:
         try:
             rb.call("rimworld/step_game_ticks", {"ticks": min(2000, ticks - stepped)})
-        except Exception:
-            pass
+        except Exception as exc:
+            print("  WARNING: step_game_ticks failed while settling weather: %s" % exc, file=sys.stderr)
         stepped += 2000
 
 
@@ -405,9 +405,14 @@ def main():
         print("weather shot:", shoot(rb, args.frame, (args.shot or "review") + "_" + wname))
     elif args.frame or args.shot:
         print("shot:", shoot(rb, args.frame, args.shot))
+    rc = 0
     if args.save:
-        print("save:", save_game(rb, args.save))
+        sv = save_game(rb, args.save)
+        print("save:", sv)
+        if not sv.get("verified"):
+            rc = 1
+    return rc
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

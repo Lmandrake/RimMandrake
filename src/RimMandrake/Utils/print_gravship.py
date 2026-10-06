@@ -126,6 +126,9 @@ def main():
             if c is not None and not c.empty():
                 xs.append(x)
                 zs.append(z)
+    if not xs:
+        print("ERROR: layout %s has no non-empty cells; nothing to print." % args.layout)
+        return 1
     minx, maxx, minz, maxz = min(xs), max(xs), min(zs), max(zs)
 
     if args.offset:
@@ -143,7 +146,8 @@ def main():
     sizes = {}
     try:
         import json
-        sizes = json.load(open(os.path.normpath(args.sizes)))
+        with open(os.path.normpath(args.sizes)) as fh:
+            sizes = json.load(fh)
     except Exception as exc:
         print("WARN: no def_sizes.json (%s); ordering falls back to 1x1" % exc)
 
@@ -183,7 +187,7 @@ def main():
           % (len(things), len(things), things[0][1] if things else "-"))
     if skipped:
         print("skipped  map litter caught in the export: %s" % dict(skipped))
-    if not args.no_engine:
+    if not args.no_engine and lay.gravEngineX is not None:
         print("engine   %s at %d,%d (the export never contains one)"
               % (args.engine_def, lay.gravEngineX + ox, lay.gravEngineZ + oz))
     for ops, what in ((fnd_ops, "foundation"),):
@@ -194,6 +198,7 @@ def main():
         print("\n(dry run - pass --apply to write)")
         return 0
 
+    bad = False
     host, port, token = resolve_endpoint()
     with RimBridge(host, port, token, timeout=900.0) as rb:
 
@@ -216,6 +221,7 @@ def main():
             failed += r.get("cellsFailedVerify") or 0
         print("foundation changed %d failedVerify %d (want %d)"
               % (changed, failed, len(foundation)))
+        bad = bad or failed > 0
 
         # 2. terrain
         changed = failed = 0
@@ -226,6 +232,7 @@ def main():
             failed += r.get("cellsFailedVerify") or 0
         print("terrain    changed %d failedVerify %d (want %d)"
               % (changed, failed, len(terrain)))
+        bad = bad or failed > 0
 
         # 3. things, largest first. `stuff` is a per-CALL parameter, so batches
         # are only merged across CONSECUTIVE things sharing the same stuff -
@@ -257,7 +264,8 @@ def main():
 
         m = rb.call("jawa/map_commit", {})
         print("commit     %s failedSteps %s" % (m.get("success"), m.get("failedSteps")))
-    return 0
+        bad = bad or not m.get("success")
+    return 1 if bad else 0
 
 
 if __name__ == "__main__":
