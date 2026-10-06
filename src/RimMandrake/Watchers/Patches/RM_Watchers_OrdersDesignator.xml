@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WATCHER_CREATURES_MOD_1. Puts the Flush order in Core's Orders menu (DesignationCategoryDef
+     Orders/specialDesignatorClasses, RimSage 1.6). Core always loads, so the xpath always matches. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+    <value>
+      <li>RimMandrake.Watchers.RM_Designator_Flush</li>
+    </value>
+  </Operation>
+</Patch>

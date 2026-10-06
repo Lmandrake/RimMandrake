@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_Watchers_SettingsCategory>Watchers</RM_Watchers_SettingsCategory>
+  <RM_Watchers_Setting_Enabled>Watchers enabled</RM_Watchers_Setting_Enabled>
+  <RM_Watchers_Setting_Enabled_Tip>Shy creatures (the piinnok and later members) peek out, watch you, and hide when you come near. Off: they are ordinary small animals that never hide and never turn to watch.</RM_Watchers_Setting_Enabled_Tip>
+  <RM_Watchers_Setting_Hide>Hide and flinch</RM_Watchers_Setting_Hide>
+  <RM_Watchers_Setting_Hide_Tip>A watcher ducks out of sight when anything that is not its own kind comes close, leaving a sign on the ground where it hid. Off: they watch but never hide.</RM_Watchers_Setting_Hide_Tip>
+  <RM_Watchers_Setting_Face>Turn to face</RM_Watchers_Setting_Face>
+  <RM_Watchers_Setting_Face_Tip>A peeking watcher turns to face the nearest creature or person. Off: they hide but do not track you.</RM_Watchers_Setting_Face_Tip>
+  <RM_Watchers_Setting_Medium>Stay on their ground</RM_Watchers_Setting_Medium>
+  <RM_Watchers_Setting_Medium_Tip>Each watcher lives on one kind of ground (the piinnok: deep sand), wanders only there, and walks back when it ends up elsewhere, tame or wild. Off: they may wander off it. Either way they only ever hide on their own ground.</RM_Watchers_Setting_Medium_Tip>
+  <RM_Watchers_Setting_Geophone>Lenses sink for buried giants</RM_Watchers_Setting_Geophone>
+  <RM_Watchers_Setting_Geophone_Tip>A piinnok hides when something large swims under the sand nearby, so a whole field going dark warns you. Needs the sand swimmers of RimMandrake: Baroque Biomes. Off: they ignore what moves underground.</RM_Watchers_Setting_Geophone_Tip>
+  <RM_Watchers_Setting_FlushHunt>Flushing marks for hunting</RM_Watchers_Setting_FlushHunt>
+  <RM_Watchers_Setting_FlushHunt_Tip>When your hunter flushes a hiding watcher, it is marked for hunting while it bolts. Off: it just runs, and you mark it yourself if you are quick.</RM_Watchers_Setting_FlushHunt_Tip>
+  <RM_Watchers_Setting_FlinchRadius>Flinch distance: {0} of each creature's own</RM_Watchers_Setting_FlinchRadius>
+  <RM_Watchers_Setting_EmergeDelay>Time spent hiding: {0} of each creature's own</RM_Watchers_Setting_EmergeDelay>
+  <RM_Watchers_Setting_MaxActive>Most watchers watching at once per map: {0}</RM_Watchers_Setting_MaxActive>
+  <RM_Watchers_ReportHidden>hiding.</RM_Watchers_ReportHidden>
+  <RM_Watchers_SignInspect>A {0} is hiding just under here.</RM_Watchers_SignInspect>
+  <RM_Watchers_InspectBolting>Flushed, running.</RM_Watchers_InspectBolting>
+  <RM_Watchers_HuntSank>The {0} sank out of sight. You cannot hunt one where it hides: give its dimple the Flush order, and hunt it while it runs.</RM_Watchers_HuntSank>
+  <RM_Watchers_Bolts>The {0} bolts from its hiding place!</RM_Watchers_Bolts>
+  <RM_Watchers_DesignatorFlush>Flush</RM_Watchers_DesignatorFlush>
+  <RM_Watchers_DesignatorFlushDesc>Mark a hiding creature's sign (a dimple in the sand) to be flushed. A hunter walks over, it bolts, and while it runs it can be hunted.</RM_Watchers_DesignatorFlushDesc>
+  <RM_Watchers_MustDesignateSign>Must designate the sign of a hiding creature.</RM_Watchers_MustDesignateSign>
+</LanguageData>

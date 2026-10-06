@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WATCHER_CREATURES_MOD_1. Flushing is hunters' work: copied from Core's HunterHunt, one rank
+     above it so a flushed watcher is already running when the hunt is picked up. No weapon is
+     needed to flush. -->
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_WatcherFlush</defName>
+    <label>flush hiding animals</label>
+    <giverClass>RimMandrake.Watchers.RM_WorkGiver_Flush</giverClass>
+    <workType>Hunting</workType>
+    <priorityInType>110</priorityInType>
+    <verb>flush</verb>
+    <gerund>flushing</gerund>
+    <tagToGive>Fieldwork</tagToGive>
+    <requiredCapacities>
+      <li>Moving</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

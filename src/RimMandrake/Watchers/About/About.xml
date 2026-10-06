@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.watchers</packageId>
+  <name>RimMandrake: Watchers</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>mandrake.rm.flowworks</li>
+  </loadAfter>
+  <description>WATCHER_CREATURES_MOD_1: shy creatures that sit, peek out, watch you, and jerk back under
+cover when anything that is not their own kind comes near. A standalone kit (owner ruling
+2026-09-30); a biome's roster draws on it. Design: design/RimMandrake/watcher_creatures_kit_design_2026-10-02.md.
+
+Ships:
+  1. The kit. RM_WatcherExtension on a race opts it in; the comp is injected at startup, so a
+     member writes XML only. Hidden -> peeks out -> watches (turns to face the nearest pawn) ->
+     flinches and hides when a non-own-kind pawn comes within its flinch radius, it is marked for
+     hunting, or (optional geophone) something large swims under the sand nearby -> re-emerges
+     after a delay. A hidden watcher always leaves a sign on its cell: no animal vanishes
+     without a readable sign.
+  2. Medium lock: a watcher wanders only on its medium terrain and walks back to it when found
+     off it; it only ever hides on its medium.
+  3. Flush (hunting is flush-only, owner ruling 2026-10-03): you cannot target a hiding watcher.
+     Mark its sign with the Flush order; a hunter walks to it, it bolts, and while it bolts it
+     can be hunted.
+  4. First member: the piinnok of the Stillsand, the watching glass, locked to deep sand.
+  5. Mod Settings: master, hide and flinch, turn to face, stay on medium, geophone, flush marks
+     for hunting, flinch radius, re-emerge delay, max active watchers per map.
+
+Works alone. With RimMandrake: FlowWorks the piinnok's medium (deep sand) exists; with
+RimMandrake: Baroque Biomes it filter-feeds the sand, butchers to biosilica, and its lenses sink
+for submerged sand swimmers.</description>
+</ModMetaData>

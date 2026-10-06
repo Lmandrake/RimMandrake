@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WATCHER_CREATURES_MOD_1. Spliced into Core's Animal tree at Animal_PreWander (the supported hook
+  RM_BurrowOnFire, RM_ThinkTree_ShadeSeekingWander and the vermin trees already use). No species gate
+  here: each job giver's own null-extension check IS the gate, so every other animal is untouched.
+  Order: watch first, then wander on its medium (which also walks it home when it is off it).
+  insertPriority 50: below the Pyrelands burrow (56) and the fire-hawk/furnace-beast trees (54/55);
+  they never share a species.
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_Watchers</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>50</insertPriority>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.Watchers.RM_JobGiver_Watch" />
+        <li Class="RimMandrake.Watchers.RM_JobGiver_WanderInMedium" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

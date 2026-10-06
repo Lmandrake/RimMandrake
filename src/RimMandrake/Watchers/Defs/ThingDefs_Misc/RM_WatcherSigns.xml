@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WatcherSigns.xml        Watchers - WATCHER_CREATURES_MOD_1
+
+  The readable sign a hidden watcher leaves on its cell (owner ruling 2026-09-30). Ethereal: never
+  blocks, never wipes a plant (GenSpawn.SpawningWipes), never hauled or cleaned. Selectable, so the
+  player can read it and give it the Flush order.
+
+  RM_WatcherSign_SandDimple   the piinnok's. ART PLACEHOLDER: vanilla Things/Filth/Grainy (the sand
+                              filth's own textures) tinted sand. Its own small sprite is owed
+                              (design §7 art row); none exists in artpipe (searched 2026-10-06).
+-->
+<Defs>
+
+  <ThingDef Name="RM_WatcherSignBase" Abstract="True">
+    <thingClass>RimMandrake.Watchers.RM_WatcherSign</thingClass>
+    <category>Ethereal</category>
+    <altitudeLayer>Filth</altitudeLayer>
+    <drawerType>MapMeshOnly</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <tickerType>Never</tickerType>
+    <drawGUIOverlay>false</drawGUIOverlay>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WatcherSignBase">
+    <defName>RM_WatcherSign_SandDimple</defName>
+    <label>sand dimple</label>
+    <description>A small round dimple in the sand, too neat to be wind. Something is just under it, and it was looking at you a moment ago. Give the Flush order and a hunter will walk over and make it bolt.</description>
+    <graphicData>
+      <texPath>Things/Filth/Grainy</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <color>(186,160,120,170)</color>
+      <drawSize>0.6</drawSize>
+    </graphicData>
+  </ThingDef>
+
+</Defs>
