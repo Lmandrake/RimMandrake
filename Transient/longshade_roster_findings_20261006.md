@@ -1,0 +1,1 @@
+Cause: all 5 rows moved out of RM_LongShade roster deliberately on the 2026-10-04 sheet (dfc35ba68, 0e98ccfdf, d2a4879b5, b5df5f05d, 1b0aba6b1); defs stay in LongShade; About.xml already says so. validation.py was stale; added MOVED_ROWS check requiring each in its new biome roster. PASS.
