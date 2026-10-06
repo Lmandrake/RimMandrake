@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-05T20:51:53-0700",
+ "built": "2026-10-06T01:36:26-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -11,20 +11,13 @@
      "east": "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
      "north": "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9",
      "south": "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db"
-    },
-    "B": {
-     "east": "22e6f2b7e5524b65d3fac3054efa446cc507aaf8f49e7a65ac7a0c990eeade83",
-     "north": "aa52c42dea8e0b811fbfa712ee0224b800f1377f95a34e1ca5256e8e2d57ca78",
-     "south": "aa52c42dea8e0b811fbfa712ee0224b800f1377f95a34e1ca5256e8e2d57ca78"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
-    "B": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil"
+    "A": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
    "reserved": [
@@ -61,7 +54,7 @@
     "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_bladderboilcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_bladderboilcatch_b",
     "C": "render scald2_bladderboilcatch_c",
     "D": "render scald_bladderboilcatch_v1",
@@ -81,43 +74,13 @@
    "columns": {
     "A": {
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
-    },
-    "B": {
-     "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
-    },
-    "C": {
-     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
-    },
-    "D": {
-     "single": "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8"
-    },
-    "E": {
-     "single": "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4"
-    },
-    "F": {
-     "single": "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80"
-    },
-    "G": {
-     "single": "1484602934bc731c7065583197b1c25a3df4dcdee02c903301ddc7f85bbe08e7"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Ambrosia",
-    "B": "Things/Plant/Ambrosia",
-    "C": "Things/Plant/Ambrosia",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname"
+    "A": "Things/Plant/Ambrosia"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "render ambrosia_v2",
-    "C": "donor original \u2014 Vanilla Textures Expanded",
-    "D": "render deepfire_crowncarpet_c",
-    "E": "render deepfire_crowncarpet_d",
-    "F": "render deepfire_crowncarpet_a",
-    "G": "render deepfire_crowncarpet_b"
+    "A": "our deployed art \u2014 RimUtinni Patches (Jawa campaign)"
    },
    "res": "Things/Plant/Ambrosia",
    "reserved": [
@@ -137,20 +100,13 @@
      "east": "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c",
      "north": "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
      "south": "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c"
-    },
-    "B": {
-     "east": "4956f595461cb83db285905e6ee1fb32775e46b7dadbd9df55e984e718977a43",
-     "north": "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3",
-     "south": "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Doss/RM_Doss",
-    "B": "Things/Pawn/Animal/RM_Doss/RM_Doss"
+    "A": "Things/Pawn/Animal/RM_Doss/RM_Doss"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Doss/RM_Doss",
    "reserved": [
@@ -183,7 +139,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_dosscatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_dosscatch_b",
     "C": "render scald2_dosscatch_c",
     "D": "render scaldfloor_doss"
@@ -203,20 +159,13 @@
      "east": "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
      "north": "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268",
      "south": "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226"
-    },
-    "B": {
-     "east": "42c923f04d5fcf318feecb9ffc29821a161610b77fd74db7e6f15b9a0d61a1b3",
-     "north": "45f0b4dfc0352ab80504397c8ade98015dbe5a72cee8d2a19b5e2e85e4c02394",
-     "south": "45f0b4dfc0352ab80504397c8ade98015dbe5a72cee8d2a19b5e2e85e4c02394"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
-    "B": "Things/Pawn/Animal/RM_Eesh/RM_Eesh"
+    "A": "Things/Pawn/Animal/RM_Eesh/RM_Eesh"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
    "reserved": [
@@ -249,7 +198,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_eeshcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_eeshcatch_b",
     "C": "render scald2_eeshcatch_c",
     "D": "render scaldfloor_eesh"
@@ -269,20 +218,13 @@
      "east": "7fd74f9d8d51d25969192dca23c43601ddd457120a035c83ecc656182419670f",
      "north": "e1d90db9dd5ff787edcd7cb910a5800a445fde8932beb837612eae9a22737ae8",
      "south": "eae1d446a1c4ee1c753c8a6e0effab016250ecd788d41cd4ce6b7578decefe0e"
-    },
-    "B": {
-     "east": "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589",
-     "north": "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589",
-     "south": "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel",
-    "B": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel"
+    "A": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel",
    "reserved": [
@@ -315,7 +257,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_ekkelcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_ekkelcatch_b",
     "C": "render scald2_ekkelcatch_c",
     "D": "render scaldfloor_ekkel"
@@ -356,20 +298,13 @@
      "east": "75fc4c784a8351233193e985ace64f84408ecbcda4264e1f55ca2f2489262a3e",
      "north": "e079a671fe1a70f8cd59abadd8d9c22a5236e6bef3a1a19bc44692fe6f714bd7",
      "south": "bd58b5e6d19f0f92b7e1bddc5d07e2ab6fa656fc078b1f0a17618f6b34089909"
-    },
-    "B": {
-     "east": "387d7dcab2470b66d89430c7b49537ad09a58c68eb9109c6b966252e713129e9",
-     "north": "f18bcc779d4ec1e2280c9a69b1303162d99a0ae140842bf0da6902578182dfc4",
-     "south": "f18bcc779d4ec1e2280c9a69b1303162d99a0ae140842bf0da6902578182dfc4"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Karrash/RM_Karrash",
-    "B": "Things/Pawn/Animal/RM_Karrash/RM_Karrash"
+    "A": "Things/Pawn/Animal/RM_Karrash/RM_Karrash"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Karrash/RM_Karrash",
    "reserved": [
@@ -402,7 +337,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_karrashcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_karrashcatch_b",
     "C": "render scald2_karrashcatch_c",
     "D": "render scaldfloor_karrash"
@@ -422,20 +357,13 @@
      "east": "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
      "north": "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e",
      "south": "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630"
-    },
-    "B": {
-     "east": "b855975720300f0a68f49e9dc4f67267095b5728effedeea560ce5054fb1b2ba",
-     "north": "b0c4fc2fe2c6fe4b80addb7804acf662287a46ab737147aab6f635482b9fb0bf",
-     "south": "b0c4fc2fe2c6fe4b80addb7804acf662287a46ab737147aab6f635482b9fb0bf"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Muddal/RM_Muddal",
-    "B": "Things/Pawn/Animal/RM_Muddal/RM_Muddal"
+    "A": "Things/Pawn/Animal/RM_Muddal/RM_Muddal"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Muddal/RM_Muddal",
    "reserved": [
@@ -468,7 +396,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_muddalcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_muddalcatch_b",
     "C": "render scald2_muddalcatch_c",
     "D": "render scaldfloor_muddal"
@@ -497,22 +425,17 @@
      "north": "5b57a72c8a56fc095014e9f04e4cf7178be82c30bbe66628f29b31835ee396b9",
      "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
      "south": "9ea47869517701154046c4e55ddd36b699558de3348f569537da1281c70660d1"
-    },
-    "D": {
-     "single": "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
     "B": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
-    "C": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
-    "D": "_byname"
+    "C": "Things/Pawn/Animal/RM_Noohm/RM_Noohm"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "history TerminalBiomes 2026-09-24",
-    "C": "history TerminalBiomes 2026-09-25",
-    "D": "render gapall_RM_Saal_v1"
+    "C": "history TerminalBiomes 2026-09-25"
    },
    "res": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
    "reserved": [
@@ -527,18 +450,13 @@
    "columns": {
     "A": {
      "single": "b58d6343345cf8ca52f07f023df09a643b9885f69e70e9c0c747bd41c32c47ba"
-    },
-    "B": {
-     "single": "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/RM_Saal",
-    "B": "Things/Item/Resource/RM_Saal"
+    "A": "Things/Item/Resource/RM_Saal"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_Saal_v1"
+    "A": "our deployed art (render scald2_saalcatch_a) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Item/Resource/RM_Saal",
    "reserved": [
@@ -630,7 +548,7 @@
     "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald3_shullacatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_shullacatch_b",
     "C": "render scald2_shullacatch_c",
     "D": "render scald_shullacatch_v1",
@@ -652,20 +570,13 @@
      "east": "2c5fef11ee6d90ca097366ec2901c1a1130eb6f2cb6eea798f656d5d2bf35d18",
      "north": "ade8fdbe9cec1e787b8b27ec5103d357a9e5fa888fb57989e110fd1a0984f9cc",
      "south": "3da97e9f9d68b64940de8cf3a3e9cb5e44d9df6e23be0a0c6514d5c9f8c422b4"
-    },
-    "B": {
-     "east": "acaf7b136ce563d06b1e71f3cc2a8df45afdf872ff9b46b7e46a222a631a15cc",
-     "north": "24b0cc141fd659c0231309ee4bcc61af8c84b58b12ea4c567894affb6578c3fc",
-     "south": "24b0cc141fd659c0231309ee4bcc61af8c84b58b12ea4c567894affb6578c3fc"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
-    "B": "Things/Pawn/Animal/RM_Thuum/RM_Thuum"
+    "A": "Things/Pawn/Animal/RM_Thuum/RM_Thuum"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-26"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
    "reserved": [
@@ -698,7 +609,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render scald2_thuumcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_thuumcatch_b",
     "C": "render scald2_thuumcatch_c",
     "D": "render scaldfloor_thuum"
@@ -756,5 +667,5 @@
   }
  },
  "sheetId": "thescald_sheet_2026-10-05",
- "snapshotId": "3e970bb2e9f3ce82"
+ "snapshotId": "75354d6513bb7e54"
 }

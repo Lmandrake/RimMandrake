@@ -1,6 +1,6 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-05T23:51:43-0700",
+ "built": "2026-10-06T02:00:33-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -51,7 +51,7 @@
     "B": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render bluedesert_chimeglobe) \u2014 RimMandrake: Baroque Biomes",
     "B": "render bluedesert_chimeglobe_b"
    },
    "res": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
@@ -149,7 +149,7 @@
     "D": "Things/Plant/RM_Kethevar/RM_Kethevar"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render RM_Kethevar) \u2014 RimMandrake: Baroque Biomes",
     "B": "render RM_Kethevar_var1",
     "C": "render RM_Kethevar_var2",
     "D": "render RM_Kethevar_var3"
@@ -205,7 +205,7 @@
     "D": "Things/Plant/RM_Lisqueth/RM_Lisqueth"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render RM_Lisqueth) \u2014 RimMandrake: Baroque Biomes",
     "B": "render RM_Lisqueth_var2",
     "C": "render RM_Lisqueth_var3",
     "D": "render RM_Lisqueth_var1"
@@ -312,7 +312,7 @@
     "C": "Things/Plant/RM_Palefloss/RM_Palefloss"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render bluedesert_palefloss) \u2014 RimMandrake: Baroque Biomes",
     "B": "render bluedesert_palefloss_b",
     "C": "render bluedesert_palefloss_c"
    },
