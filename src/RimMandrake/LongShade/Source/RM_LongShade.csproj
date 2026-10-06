@@ -60,6 +60,8 @@
     <Compile Include="RM_LongShadeMapgen.cs" />
     <!-- LONGSHADE_GPT_ENRICHMENT_1 §1: Shipfall Commons (gravship as refuge). -->
     <Compile Include="RM_ShipfallCommons.cs" />
+    <!-- LONGSHADE_MIDDENS_DESIGN_1: midden heaps, vrekka building/tending, colonist search. -->
+    <Compile Include="RM_LongShadeMiddens.cs" />
   </ItemGroup>
 
   <ItemGroup>

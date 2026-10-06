@@ -95,7 +95,7 @@ def static_checks():
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
         bad.append("walk missing")
     for fn in (crawler_road_problems, sun_graves_problems, shipfall_problems, mirrak_problems, vorrel_problems,
-               dewfringe_problems, roster_problems):
+               dewfringe_problems, roster_problems, midden_problems):
         bad.extend(fn())
     return bad
 
@@ -180,6 +180,55 @@ def shipfall_problems():
         bad.append("shipfall rungs are not strictly ascending by afterHours: %r" % hours)
     if not float(ext[0].findtext("dispersalDistance") or 0) > 0:
         bad.append("dispersalDistance is not > 0 (animals would never scatter)")
+    return bad
+
+
+def midden_problems():
+    """LONGSHADE_MIDDENS_DESIGN_1: heap def, vrekka builder wiring, toggle gates, vanilla-only yields."""
+    bad, src = [], _cs("RM_LongShadeMiddens.cs")
+    root = _xml("ThingDefs_Buildings", "RM_LongShade_Middens.xml")
+    heap = _def(root, "ThingDef", "RM_LongShadeMidden")
+    if heap is None:
+        return ["RM_LongShadeMidden ThingDef missing"]
+    comp = [e for e in heap.iter("li") if e.get("Class") == "RimMandrake.LongShade.CompProperties_RM_MiddenHeap"]
+    if len(comp) != 1:
+        return ["RM_LongShadeMidden carries %d CompProperties_RM_MiddenHeap (want 1)" % len(comp)]
+    c = comp[0]
+    builders = [e.text for e in c.findall("builderRaces/li")]
+    if "RM_Vrekka" not in builders:
+        bad.append("midden builderRaces does not name RM_Vrekka (ruled: the vrekka builds the heaps)")
+    if "RM_Vrekka" not in _shipped_names("ThingDef"):
+        bad.append("RM_Vrekka is not a shipped ThingDef")
+    ylds = [y.findtext("thing") for y in c.findall("yields/li")]
+    if len(ylds) < 3:
+        bad.append("midden yields table has %d rows" % len(ylds))
+    own = set(n for _t, n in SHIPPED)
+    for y in ylds:
+        if y in own or y.startswith(("RM_", "RSW_", "RUT_")):
+            bad.append("midden yields %s, not a vanilla item (ruled: vanilla items only)" % y)
+    if not float(c.findtext("tendGain") or 0) > 0 or not int(c.findtext("maxLayers") or 0) > 0:
+        bad.append("midden tendGain/maxLayers not > 0 (heaps never regrow)")
+    for d in ("RM_VrekkaTendMidden", "RM_SearchMidden"):
+        if _def(root, "JobDef", d) is None:
+            bad.append("JobDef %s missing" % d)
+    if _def(root, "WorkGiverDef", "RM_SearchMidden") is None:
+        bad.append("WorkGiverDef RM_SearchMidden missing (colonists can never search)")
+    tt = _def(root, "ThinkTreeDef", "RM_VrekkaMiddenInsert")
+    if tt is None or tt.findtext("insertTag") != "Animal_PreMain" or \
+            "RimMandrake.LongShade.JobGiver_RM_VrekkaMidden" not in ET.tostring(tt, encoding="unicode"):
+        bad.append("vrekka midden think-tree insert missing or not at Animal_PreMain")
+    giver = src.split("class JobGiver_RM_VrekkaMidden", 1)[1].split("class JobDriver_RM_VrekkaTendMidden", 1)[0]
+    if "if (RM_LongShadeSettings.middenVrekkaBuildEnabled) TryBuildHeap(" not in giver:
+        bad.append("heap building no longer gated on middenVrekkaBuildEnabled")
+    if "!RM_LongShadeSettings.middenRegrowthEnabled) return null;" not in giver:
+        bad.append("tending (the regrowth) no longer gated on middenRegrowthEnabled")
+    if "RM_LongShadeSettings.modEnabled" not in giver or "IsBuilder(pawn.def)" not in giver:
+        bad.append("vrekka giver lost its modEnabled / builder-race gate")
+    heapcls = src.split("class RM_CompMiddenHeap", 1)[1].split("class RM_LongShadeMiddenDefOf", 1)[0]
+    if "layers++" not in heapcls.split("void Tend()", 1)[1].split("void Search", 1)[0]:
+        bad.append("Tend() no longer adds layers (regrowth broken)")
+    if "TicksGame" in heapcls.split("CompTick", 1)[-1] and "CompTick" in heapcls:
+        bad.append("heap has a CompTick: regrowth must come only from vrekka tending (ruled)")
     return bad
 
 

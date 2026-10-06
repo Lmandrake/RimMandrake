@@ -55,6 +55,12 @@ namespace RimMandrake.LongShade
         /// the wildlife in, rung by rung, and they scatter when a pilot takes the console.</summary>
         public static bool shipfallCommonsEnabled = true;
 
+        /// <summary>LONGSHADE_MIDDENS_DESIGN_1: vrekka build new midden heaps in the lee.</summary>
+        public static bool middenVrekkaBuildEnabled = true;
+
+        /// <summary>LONGSHADE_MIDDENS_DESIGN_1: vrekka tending a heap adds layers back (the regrowth).</summary>
+        public static bool middenRegrowthEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -63,12 +69,20 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
             Scribe_Values.Look(ref sunGravesEnabled, "sunGravesEnabled", true);
             Scribe_Values.Look(ref shipfallCommonsEnabled, "shipfallCommonsEnabled", true);
+            Scribe_Values.Look(ref middenVrekkaBuildEnabled, "middenVrekkaBuildEnabled", true);
+            Scribe_Values.Look(ref middenRegrowthEnabled, "middenRegrowthEnabled", true);
         }
+
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 1200f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
 
             list.CheckboxLabeled("Long Shade content enabled", ref modEnabled,
                 "Master switch, kept for parity with every other RimMandrake biome mod. "
@@ -108,6 +122,16 @@ namespace RimMandrake.LongShade
               + "held up. Off: wildlife ignores the ship.");
             list.GapLine();
 
+            list.Label("Lee-side middens");
+            list.CheckboxLabeled("Vrekka build midden heaps", ref middenVrekkaBuildEnabled,
+                "A vrekka with no heap nearby starts one on a shaded, unroofed cell outside your home "
+              + "area. Heaps already on the map stay either way. Off: no new heaps appear.");
+            list.CheckboxLabeled("Middens regrow while vrekka tend them", ref middenRegrowthEnabled,
+                "Vrekka visit their heap and add to it, a layer every few days, up to four. Searched "
+              + "heaps build back up only this way, so killing or driving off the vrekka stops it. "
+              + "Off: a searched heap stays empty.");
+            list.GapLine();
+
             list.Label("Shade-seeking wander and contact venom");
             list.Label("Both mechanics this biome's own flora touches (the vorrel's shade "
               + "dispersal; the venomvine's contact venom) are owned and toggled by the mods "
@@ -130,7 +154,9 @@ namespace RimMandrake.LongShade
               + "Switch them there: \"Pinned sun (golden hour)\" with its sky-strength dial, and "
               + "\"False-shade ambush (the mirrak)\".");
 
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
