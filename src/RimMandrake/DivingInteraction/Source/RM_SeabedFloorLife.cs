@@ -33,6 +33,7 @@ namespace RimMandrake.DivingInteraction
     public static class RM_SeabedFloorLife
     {
         public static readonly Dictionary<BiomeDef, BiomeDef> SeaOfFloor = new Dictionary<BiomeDef, BiomeDef>();
+        private static readonly Dictionary<BiomeDef, float> FactorOfFloor = new Dictionary<BiomeDef, float>();
 
         static RM_SeabedFloorLife()
         {
@@ -58,7 +59,39 @@ namespace RimMandrake.DivingInteraction
                 }
 
                 SeaOfFloor[floor] = sea;
+                FactorOfFloor[floor] = ext.animalDensityFactor;
                 CopyLife(sea, floor, ext.animalDensityFactor);
+            }
+        }
+
+        // MEASURED 2026-10-06 (live, full list): Map Designer (zylle.mapdesigner) snapshots every biome's densities in
+        // its own static constructor (ctor 835 of 1610, before this one at 1607) and writes them back when a game
+        // starts ("[Map Designer] Applying settings"), so the floor's XML 0 returned: the copied plant/animal LISTS
+        // survived, both densities read 0.0, and a Grey floor map grew 0 of its 16 plants. Densities are therefore
+        // re-asserted right before a floor map generates and whenever a game finishes initialising.
+        public static void Reassert(BiomeDef floor)
+        {
+            if (floor == null || !SeaOfFloor.TryGetValue(floor, out BiomeDef sea))
+            {
+                return;
+            }
+
+            float animals = sea.animalDensity * FactorOfFloor[floor];
+            if (floor.plantDensity != sea.plantDensity || floor.animalDensity != animals)
+            {
+                Log.Message("[RimMandrake.DivingInteraction] " + floor.defName + " densities were reset by another mod (plant "
+                    + floor.plantDensity + ", animal " + floor.animalDensity + "); restored from " + sea.defName
+                    + " (plant " + sea.plantDensity + ", animal " + animals + ")");
+                floor.plantDensity = sea.plantDensity;
+                floor.animalDensity = animals;
+            }
+        }
+
+        public static void ReassertAll()
+        {
+            foreach (BiomeDef floor in SeaOfFloor.Keys)
+            {
+                Reassert(floor);
             }
         }
 
@@ -92,6 +125,15 @@ namespace RimMandrake.DivingInteraction
             {
                 Traverse.Create(floor).Field(f).SetValue(null);
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(Game), nameof(Game.FinalizeInit))]
+    public static class Patch_SeabedFloorLifeReassert
+    {
+        public static void Postfix()
+        {
+            RM_SeabedFloorLife.ReassertAll();
         }
     }
 }

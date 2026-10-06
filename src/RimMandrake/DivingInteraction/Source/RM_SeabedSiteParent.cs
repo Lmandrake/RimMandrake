@@ -48,7 +48,9 @@ namespace RimMandrake.DivingInteraction
                 return null;
             }
 
-            return tile.Tile?.PrimaryBiome?.GetModExtension<RM_SeabedFloorExtension>()?.generator;
+            BiomeDef floor = tile.Tile?.PrimaryBiome;
+            RM_SeabedFloorLife.Reassert(floor);      // another mod may have reset the copied densities since startup
+            return floor?.GetModExtension<RM_SeabedFloorExtension>()?.generator;
         }
     }
 
