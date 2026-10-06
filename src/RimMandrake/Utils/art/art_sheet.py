@@ -145,7 +145,11 @@ def _no_source() -> tuple[set, dict]:
         d = json.loads(NO_SOURCE.read_text())
     except (OSError, ValueError):
         return set(), {}
-    return {n.lower() for n in d.get("no_source", [])}, {k.lower(): v for k, v in (d.get("not_canon_linked") or {}).items()}
+    unlinked = {k.lower(): v for k, v in (d.get("not_canon_linked") or {}).items()}
+    for k, v in (d.get("owner_ours") or {}).items():
+        if not k.startswith("_"):
+            unlinked.setdefault(re.sub(r"^(RM_|RSW_|RUT_)", "", k).lower(), v)
+    return {n.lower() for n in d.get("no_source", [])}, unlinked
 
 
 def canon_state(key: str) -> str:

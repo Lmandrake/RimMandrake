@@ -65,7 +65,17 @@
   "Vurra"
  ],
  "not_canon_linked": {
-  "Screecher": "Wookieepedia's 'screecher' is a Kirtania rain-forest animal stub with no appearance; RSW_Screecher is a mod pollution corvid — not linked to it",
+  "Screecher": "Wookieepedia's 'screecher' is a Kirtania rain-forest animal stub with no appearance; RSW_Screecher is a mod pollution corvid — not linked to it (owner, by question card 2026-10-05: treat as ours)",
   "GreatDevourer": "Owner 2026-10-04 (desert sheet): \"This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated.\" Wookieepedia's Great Devourer is a Gorax (Tales from Vader's Castle); RSW_GreatDevourer is Alpha Animals' armoured sand worm, made ours as the sarlacc's questing swimmer stage — not linked to it"
+ },
+ "owner_ours": {
+  "_what": "Names that collide with a canon stub or unrelated wiki article but the owner ruled are our own inventions: no canon entry, no canon check on their art. Read by art_sheet.py canon_state (RSW_ rows); RM_/plain rows already get no canon tag. No defName is renamed.",
+  "RM_Peeper": "owner, by question card 2026-10-05: treat as ours",
+  "RM_Saava": "owner, by question card 2026-10-05: treat as ours",
+  "RM_FireHawk": "owner, by question card 2026-10-05: treat as ours",
+  "RM_FireWasp": "owner, by question card 2026-10-05: treat as ours",
+  "RM_Kirruk": "owner, by question card 2026-10-05: treat as ours",
+  "RSW_Screecher": "owner, by question card 2026-10-05: treat as ours",
+  "Plant_Grass": "owner, by question card 2026-10-05: treat as ours (vanilla grass row)"
  }
 }

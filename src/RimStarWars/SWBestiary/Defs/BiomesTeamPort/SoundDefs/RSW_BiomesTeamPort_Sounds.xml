@@ -58,24 +58,6 @@ copied verbatim from the donor mods' own Textures trees.
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RSW_Biomes_Pillbug_Wounded</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Pillbug/Wounded</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311765~1.091765</pitchRange>
-        <distRange>0~70</distRange>
-        <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Pawn_Mantis_Call</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -126,23 +108,6 @@ copied verbatim from the donor mods' own Textures trees.
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RSW_Biomes_Pillbug_Death</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Pillbug/Death</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9311764~1.068824</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
     <defName>RSW_Biomes_RoyalRhino_Wounded</defName>
     <context>MapOnly</context>
     <subSounds>
@@ -168,23 +133,6 @@ copied verbatim from the donor mods' own Textures trees.
         <grains>
           <li Class="AudioGrain_Folder">
             <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/RoyalRhino/Angry</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>25~35</volumeRange>
-        <pitchRange>0.9541176~1.137647</pitchRange>
-        <distRange>0~70</distRange>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_Pillbug_Angry</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Pillbug/Angry</clipFolderPath>
           </li>
         </grains>
         <volumeRange>25~35</volumeRange>
@@ -603,23 +551,6 @@ copied verbatim from the donor mods' own Textures trees.
         <pitchRange>0.9311765~1.091765</pitchRange>
         <distRange>0~70</distRange>
         <repeatMode>NeverTwice</repeatMode>
-        <sustainLoop>False</sustainLoop>
-      </li>
-    </subSounds>
-  </SoundDef>
-  <SoundDef>
-    <defName>RSW_Biomes_Pillbug_Call</defName>
-    <context>MapOnly</context>
-    <subSounds>
-      <li>
-        <grains>
-          <li Class="AudioGrain_Folder">
-            <clipFolderPath>BiomesTeam/BMT_Caverns/Animals/Pillbug/Call</clipFolderPath>
-          </li>
-        </grains>
-        <volumeRange>20~28</volumeRange>
-        <pitchRange>0.9770588~1.137647</pitchRange>
-        <distRange>0~50.40025</distRange>
         <sustainLoop>False</sustainLoop>
       </li>
     </subSounds>

@@ -157,7 +157,7 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
       <!-- DEEPS_FAUNA_MECHANICS_1 — feeds RM_CompFluidSacs (CreatureBehaviors)
            on whichever attacker's bite this DamageDef rides; a no-op for any
-           attacker without that comp (only RSW_BloodropMoth/Drinker has it
+           attacker without that comp (only RM_BloodropMoth/Drinker has it
            this pass). -->
       <li>
         <hediff>RM_Drained</hediff>
@@ -607,28 +607,6 @@ copied verbatim from the donor mods' own Textures trees.
     <impactSoundType>Toxic</impactSoundType>
     <damageEffecter>Impact_Toxic</damageEffecter>
   </DamageDef>
-  <HediffDef>
-    <defName>RSW_GembugDefense</defName>
-    <label>rolled up</label>
-    <description>Rolled up for defense.</description>
-    <stages>
-      <li>
-        <capMods>
-          <li>
-            <capacity>Moving</capacity>
-            <postFactor>0</postFactor>
-          </li>
-          <li>
-            <capacity>Manipulation</capacity>
-            <postFactor>0</postFactor>
-          </li>
-        </capMods>
-        <statFactors>
-          <IncomingDamageFactor>0.25</IncomingDamageFactor>
-        </statFactors>
-      </li>
-    </stages>
-  </HediffDef>
   <LifeStageDef>
     <defName>RSW_EusocialInsectAdult</defName>
     <label>adult</label>
