@@ -115,6 +115,7 @@ def _rect(x0, z0, w=PW, h=PH):
 
 def _prep_plot(t, key, terrain="Soil"):
     """Clear the plot + its buffer, repaint Soil, pin Clear weather, clear the UI. Fixture writes only."""
+    _sweep_earlier_chains(t)
     x0, z0 = _plot(t, key)
     b = 8
     r = _rect(x0 - b, z0 - b, PW + 2 * b, PH + 2 * b)
@@ -295,9 +296,42 @@ def _diptych(t, before, after, name):
     return path
 
 
+_SPAWNED = []      # (chain token, pawn id): what each chain spawned, vanished when the NEXT chain starts
+_TOKENS = [0]
+
+
+def _chain_token(t):
+    """A per-TestContext token (not id(t): a collected context's id is reused by the next one)."""
+    tok = getattr(t, "_ext_chain_token", None)
+    if tok is None:
+        _TOKENS[0] += 1
+        tok = _TOKENS[0]
+        try:
+            t._ext_chain_token = tok
+        except AttributeError:
+            pass
+    return tok
+
+
+def _sweep_earlier_chains(t):
+    """Vanish every pawn an EARLIER chain spawned (no death, no corpse). MEASURED 2026-10-06 (B batch, 29 chains): a
+    chain's leftover colonists wandered into later chains' pits and read as colonist_damaged "Blunt by nobody" (the
+    mod's own fall damage), frostbite at night and fist fights with leftover prisoners -- 35 components UNMEASURED,
+    0 FAIL. The bland map's restore heals injuries; it does not remove the pawns that keep collecting them."""
+    keep = []
+    for owner, pid in _SPAWNED:
+        if owner == _chain_token(t):
+            keep.append((owner, pid))
+        elif pid:
+            t.bridge_call("jawa/pawn_force_incapacitate", pawn=pid, action="vanish")
+    _SPAWNED[:] = keep
+
+
 def _spawn_pawn_at(t, kind, x, z, faction="player"):
+    _sweep_earlier_chains(t)
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
     row = ((r or {}).get("pawns") or [{}])[0]
+    _SPAWNED.append((_chain_token(t), row.get("id")))
     return row.get("id")
 
 
