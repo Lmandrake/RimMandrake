@@ -716,6 +716,14 @@ def _wind_down(t):
     except Exception as ex:
         print("[forge] wind-down failed: %s" % ex, file=sys.stderr, flush=True)
     _end_cycle_safely(t)
+    try:
+        # The gas wash lights unroofed plants anywhere on the map; left burning they abort the NEXT chain as
+        # `fire_on_map` (LIVE 2026-10-04: voices 23 fires, dormancy 3).
+        info = t.session.call("jawa/map_info") or {}
+        n = int(info.get("sizeX", 250))
+        t.session.call("jawa/map_fire", action="extinguish", rect="0,0,%d,%d" % (n, int(info.get("sizeZ", n))))
+    except Exception as ex:
+        print("[forge] wind-down extinguish failed: %s" % ex, file=sys.stderr, flush=True)
 
 
 def _weather(t):
@@ -1102,7 +1110,7 @@ def _declare_cycle_events(t):
     """The grand cycle's OWN telegraph letters (Glowing cracks = ThreatBig, The melt = ThreatSmall) and the gas
     wash's fires are the feature under test, not surprises. LIVE 2026-10-03 the watch read the letters as a raid
     (`raid_arrived`) and the wash's 17 fires as `fire_on_map`, which aborted every later component."""
-    for lab in ("Glowing cracks", "The melt", "The freeze"):
+    for lab in ("Glowing cracks", "The melt", "The freeze", LETTERS["hiss"]):
         t.expect("letter", {"label_contains": lab})
     t.expect("fire", lambda e: True)
 
@@ -1455,6 +1463,7 @@ def still_heat_hiss(t):
     """The hiss letter lands 1.5 h before the gas wash, and only while the gas wash is on (RM_GameCondition_ForgeCycle
     DoPhaseWork, StillHeat)."""
     _enter(t)
+    _declare_cycle_events(t)
     try:
         with _comp(t, "site_ready_hiss"):
             _reset_pad(t)
@@ -1492,6 +1501,7 @@ def dormancy(t):
     rain, the dhuvvox countdown and slowing, the dhokkur sealed again in the dry growth while the julmox and dhuvvox
     stay awake in the flash window. Wild pawns on a plain soil yard; the cycle is stepped with the debug action."""
     _enter(t)
+    _declare_cycle_events(t)
     box = {"A": {}, "B": {}}
     try:
         with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
@@ -1625,6 +1635,7 @@ def voices(t):
     themselves are audio and never judged here. Cues play only for the player's current map and only while the voices
     toggle is on."""
     _enter(t)
+    _declare_cycle_events(t)
     try:
         with _comp(t, "site_ready_voices"):
             _reset_pad(t)
@@ -1816,6 +1827,7 @@ def plume_fronts(t):
     AmbientTemperature rise and the resulting heatstroke rate, and the adapted exemption in play. Those components
     check only that the SOURCE carries the wiring (a source claim, labelled as such); behaviour is UNMEASURED live."""
     _enter(t)
+    _declare_cycle_events(t)
     box = {}
 
     def plumes(t):
