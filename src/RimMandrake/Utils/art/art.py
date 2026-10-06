@@ -196,6 +196,12 @@ def cmd_ingest(a):
     return 0 if r.get("ok") else 2
 
 
+def cmd_backfill_rejections(a):
+    import ingest
+    print(json.dumps(ingest.backfill_rejections(dry_run=a.dry_run), indent=1))
+    return 0
+
+
 def cmd_index(a):
     idx = L.Index()
     out = L.ledger_dir() / "index.json"
@@ -229,6 +235,8 @@ def main(argv=None):
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
     p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")
     sp.add_parser("index")
+    p = sp.add_parser("backfill-rejections", help="record the bytes behind past owner redo/reject rulings")
+    p.add_argument("--dry-run", action="store_true")
     if argv is None:
         argv = sys.argv[1:]
     if argv[:1] == ["guard"]:
@@ -238,7 +246,8 @@ def main(argv=None):
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
     return {"snapshot": cmd_snapshot, "backfill": cmd_backfill, "status": cmd_status,
-            "install": cmd_install, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index}[a.cmd](a)
+            "install": cmd_install, "purge": cmd_purge, "ingest": cmd_ingest, "index": cmd_index,
+            "backfill-rejections": cmd_backfill_rejections}[a.cmd](a)
 
 
 if __name__ == "__main__":
