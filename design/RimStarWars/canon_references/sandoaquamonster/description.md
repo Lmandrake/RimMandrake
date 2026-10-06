@@ -37,7 +37,7 @@ Four images (canon render and film frame, two Legends sketches). The three that 
 - [ ] Broad flat head with a very wide grinning mouth, tiny eyes and cheek frills or short spikes
 - [ ] Four powerful limbs ending in broad webbed hands and feet with large dark claws; forelimbs able to grasp
 - [ ] Smooth leathery skin, mottled grey-brown to dark blue-grey with a paler belly, with no scales or fur
-- [ ] Reads as a half-whale, half-reptile with feline muscular build, not a fish and not a plain whale
+- [ ] Reads as a half-whale, half-reptile from the canon images, not a fish, not a plain whale, and NOT a giant feline (see ruling)
 
 ## Engine limits
 not yet assessed
@@ -53,4 +53,4 @@ not yet assessed
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Sando aqua monster/Legends`; wiki caption: Sleeping sando.. File: `Sando2-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/2/25/Sando2-woswfg.jpg/revision/latest?cb=20070117202140
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+Owner, 2026-10-05 (Scald sheet, typed): *"look carefully at the canon art. It is NOT a giant feline thing."* The canon images rule over the prose's "almost feline": draw what the pictures show, never a big cat.
