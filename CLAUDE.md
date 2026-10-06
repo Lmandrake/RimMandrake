@@ -344,7 +344,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
   well as what you can FISH out of the oceans on the shore. There should be defs made for each
   fish as something swimming around the floor area as well as something you can pull out as a
   fish."* ⇒ each sea species owes **two** defs: a floor resident in `<wildAnimals>` and a
-  catchable entry in `<fishTypes>`.
+  catchable entry in `<fishTypes>`. ⚠️ **Only fish-sized creatures owe a catch** (decision taken by question card
+  2026-10-06): giants and predators (RM_GrippingTerror, RSW_SandoAquaMonster, RM_Ulkhoss) stay floor-only.
   🔴 **THE SHIP IS THE ONLY WAY DOWN AND THE ONLY WAY BACK — owner, 2026-09-26, verbatim:
   *"You can't 'dive' as an individual pawn nor return as one. It's ship or nothing."*** The
   gravship carries the player onto the sea floor and carries them off it. ⛔ The old
