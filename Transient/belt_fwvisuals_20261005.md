@@ -40,3 +40,7 @@ For aa694 (owns northstar/*.py) — I did not edit them:
   V5 scorch_after_burnout: ignite a tar cut, burn dry -> ProofScorchAt strength 1.00; refill -> 0.00.
   V6 each toggle off -> flat look (layer verts drop / overlay not drawn).
 ## Commits
+- 70948470f mockups + review sheet (served http://localhost:8763/?t=_k1lrLeLMjfN8Nim2qAP3Q)
+- 157482540 code: faces/material/occluder/liquid surfaces/scorch, generator SURFACE_LOOKS, stations file, item FLOWWORKS_VISUAL_PRINCIPLES_1
+- DLL built + C# selftest 89/89. run_selftests: 184/186 — RED selftest_flowworks_northstar (settings-table parity, needs the 7 lines above in site_spec.py, aa694's file) and selftest_ledger_lint (pre-existing: this clone's HEAD is behind origin's BENCH shard).
+- NOT deployed to the game Mods folder (bridge/game held by the FlowWorks live-proof agent). Deploy before the review map is built: deploy_custom_mods.py --mod FlowWorks --apply while the game is down.
