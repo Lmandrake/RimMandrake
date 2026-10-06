@@ -169,13 +169,31 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             V2 end = EndPoint(r, out CompHoseReel relay, out V2? inward);
             // the relay's look and art (stored / laid) move the drawn inlet, so they are part of the key; S2: so does the
             // walked trail (empty = the planned route, the key as before)
-            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + HoseSettings.ShapeFingerprint();
+            string key = r.parent.Position + ">" + r.EndCell + (relay != null ? "R" + relay.parent.thingIDNumber + HoseMaterials.LookOf(relay) + (relay.laid ? "L" : "S") : "") + r.TrailKey() + "|" + HoseSettings.ShapeFingerprint() + (FeedersOf(r).Count > 0 ? "|fed" : "");
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             HoseShapeParams sp = HoseSettings.Shape();
             sp.MaxLength = r.MaxLength;
-            HoseLay lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward);
+            // 2026-10-05: a nozzled reel's hose leaves through its west outlet, so for this lay its own footprint is solid: a
+            // target behind the reel is reached round it, never by running back under the reel from the outlet
+            var held = new List<KeyValuePair<Cell, BlockKind>>();
+            // a relay reel's west nozzle is where the FEEDING hose couples (HoseRelay.DrawnEnd), so its own hose keeps the
+            // pre-2026-10-05 start; flagged to the owner, not redesigned here
+            V2? outward = FeedersOf(r).Count == 0 ? r.Rect.Outward : null;
+            if (outward.HasValue)
+                for (int x = r.Rect.X0; x < r.Rect.X0 + r.Rect.W; x++)
+                    for (int z = r.Rect.Z0; z < r.Rect.Z0 + r.Rect.H; z++)
+                    {
+                        var c = new Cell(x, z);
+                        held.Add(new KeyValuePair<Cell, BlockKind>(c, w.BlockAt(c)));
+                        w.SetBlocked(c, BlockKind.Device);
+                    }
+            HoseLay lay;
+            try { lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward, outward); }
+            finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
+            // no clear way out of the outlet (a wall hard against it): lay it as before rather than not at all
+            if (!lay.Ok && outward.HasValue) lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward);
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
@@ -331,9 +349,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         private void DrawAll()
         {
-            float y0 = AltitudeLayer.Conduits.AltitudeFor() + Core.DrawOrder.HoseBaseLift;
+            float y0 = (float)Core.DrawOrder.Alt(Core.DrawOrder.LayerHose) + Core.DrawOrder.HoseBaseLift;
             lastWrapDraws = lastFeedDraws = lastReelEndHidden = lastRelayCouplings = 0;
             lastCarryDraws = lastClipDraws = lastGhostDraws = lastPortCouplings = 0;
+            lastDepthDraws = 0;
             lastFar = Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
             for (int i = 0; i < reels.Count; i++)
             {
@@ -372,11 +391,14 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 if (c != null && key != null && c.key == key) { fm = c.flat; pm = c.plump; sm = c.shadow; }
                 else
                 {
-                    fm = e < 0.999f ? Ribbon(pts, (float)HoseMath.MeshWidthFlat(vis), y, 0.37) : null;
-                    pm = e > 0.001f ? Ribbon(pts, (float)HoseMath.MeshWidthPlump(vis), y + 0.0004f, 0.37) : null;
+                    // 2026-10-05: on a nozzled reel the strand starts inside the outlet coupling's wrap, not under the pump, so
+                    // no bare hose shows alongside the coupling between the wrap and the nozzle
+                    List<V2> rp = HoseMath.TrimStart(pts, OutletTrim(r, vis));
+                    fm = e < 0.999f ? Ribbon(rp, (float)HoseMath.MeshWidthFlat(vis), y, 0.37) : null;
+                    pm = e > 0.001f ? Ribbon(rp, (float)HoseMath.MeshWidthPlump(vis), y + 0.0004f, 0.37) : null;
                     var off = new V2(0.03 + 0.05 * e, -(0.03 + 0.06 * e));
-                    var sp = new List<V2>(pts.Count);
-                    foreach (V2 p in pts) sp.Add(p + off);
+                    var sp = new List<V2>(rp.Count);
+                    foreach (V2 p in rp) sp.Add(p + off);
                     sm = Ribbon(sp, vis * (1.15f + 0.35f * e), y - 0.0004f, 0.11);
                     if (key != null)
                     {
@@ -388,6 +410,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 Color tint = Tint(r);
                 HoseLookMats hm = HoseMaterials.For(r);      // stage 3: the hose draws in its REEL's look
                 if (sm != null) Graphics.DrawMesh(sm, Matrix4x4.identity, HoseMaterials.Shadow(0.55f + 0.3f * e), 0);
+                // depth pre-pass of the dominant pose only (a fading pose must stay see-through), so wall sun shadows skip the hose
+                if (pm != null && (fm == null || e >= 0.5f)) DepthPass(pm, Matrix4x4.identity, hm.Plump(1f, tint));
+                else if (fm != null) DepthPass(fm, Matrix4x4.identity, hm.Flat(1f));
                 if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, hm.Flat(1f - e), 0);
                 if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, hm.Plump(e, tint), 0);
                 DrawEnds(r, hm, joints, pts, vis, y + 0.001f, true);
@@ -467,7 +492,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             // there -- a coupling's body would reach back out past the drum into the gap above the base rail
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
             // the 2x2 reel: the coupling's face meets the brass outlet nozzle, pointing east into it (the nozzle faces west)
-            if (r.Rect.HasNozzle) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip, new V2(1, 0), vis, y, wrapTint);
+            // 2026-10-05: only when the hose really leaves through the outlet; a hose that could not (a reel boxed in, a relay
+            // reel whose nozzle takes the feeding hose, a carried hose) gets no coupling floating on an empty nozzle
+            if (r.Rect.HasNozzle) { if (lying && r.lay != null && r.lay.Outlet) Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, r.Rect.NozzleTip + new V2(HoseReelRect.NozzleSeat, 0), new V2(1, 0), vis, y, wrapTint); }
             else Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
@@ -479,8 +506,13 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerMesh, -0.03, pts[j], d, vis, y, wrapTint);
-                Fitting(hm, hm.CouplingBare, CouplingMax, -JoinerMesh, -0.03, pts[j], -d, vis, y, wrapTint);
+                // 2026-10-05: each half's wrap runs up to the interlocked claws (HoseMath.JoinerWrapIn), no gap
+                float js = (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax);
+                foreach (V2 h in new[] { d, -d })
+                {
+                    Piece(hm.CouplingBare, pts[j] - h * (JoinerMesh * js), h, js, y);
+                    Wrap(hm, pts[j] - h * (HoseMath.JoinerWrapIn * js + HoseMath.WrapLength / 2), h, vis, y + 0.0002f, wrapTint);
+                }
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
@@ -612,8 +644,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             }
             if (flat != null)
             {
-                if (cc.flat != null) Graphics.DrawMesh(cc.flat, Matrix4x4.identity, flat, 0);
-                if (tf != null) Graphics.DrawMesh(tf, Matrix4x4.identity, flat, 0);
+                if (cc.flat != null) Solid(cc.flat, Matrix4x4.identity, flat);
+                if (tf != null) Solid(tf, Matrix4x4.identity, flat);
             }
             var all = new List<V2>(cc.prefix.Count + tail.Count);
             all.AddRange(cc.prefix);
@@ -626,6 +658,15 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         private static readonly List<int> NoJoints = new List<int>();
+
+        /// <summary>Arc length of a nozzled reel's hose hidden from the strand mesh: Mouth to the seated nozzle tip, then the end
+        /// coupling (JoinerFace + 0.03 sizes) and 0.30 cell into its wrap (DrawEnds' reel-end Fitting). 0 for a 1x1 reel.</summary>
+        public static double OutletTrim(CompHoseReel r, float vis)
+        {
+            if (!r.Rect.HasNozzle || r.lay == null || !r.lay.Outlet) return 0;
+            double size = HoseMath.FittingSize(vis, PieceBand, CouplingMax);
+            return V2.Dist(r.Rect.Mouth, r.Rect.NozzleTip) - HoseReelRect.NozzleSeat + (JoinerFace + 0.03) * size + 0.30;
+        }
 
         private static List<V2> Shifted(List<V2> pts)
         {
@@ -685,7 +726,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             V2 d = (to - from).Norm();
             Mesh feed = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, (float)HoseMath.MeshWidthFlat(vis), y - 0.0008f, 0.37);
             frameMeshes.Add(feed);
-            Graphics.DrawMesh(feed, Matrix4x4.identity, m, 0);
+            Solid(feed, Matrix4x4.identity, m);
             if (hm.CouplingBare != null)
                 Piece(hm.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);
             lastFeedDraws++;
@@ -723,17 +764,38 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             if (m == null) return;
             float ang = Mathf.Atan2((float)dir.Z, (float)dir.X);
             if (tint != Color.white) m = HoseMaterials.Tinted(m, tint);
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)c.X, y, (float)c.Z), Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f),
-                new Vector3(sx, 1f, sz)), m, 0);
+            Solid(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)c.X, y, (float)c.Z), Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f),
+                new Vector3(sx, 1f, sz)), m);
         }
 
         private static void Piece(Material m, V2 c, V2 dir, float size, float y)
         {
             if (m == null) return;
             float ang = Mathf.Atan2((float)dir.Z, (float)dir.X);
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)c.X, y, (float)c.Z), Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f),
-                new Vector3(size, 1f, size)), m, 0);
+            Solid(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)c.X, y, (float)c.Z), Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f),
+                new Vector3(size, 1f, size)), m);
         }
+
+        /// <summary>2026-10-05 (owner screenshot: hard rectangles across the hose): an opaque hose piece is drawn twice -- a
+        /// Cutout pass that writes depth (vanilla's Custom/Cutout, ZWrite On), then its soft-edged Transparent self. Vanilla's
+        /// sun and edge shadows (queues 3170 / 2950, ZTest LEqual, at the Shadows layer just below the hose) then fail the
+        /// depth test on the hose, exactly as they do on items and pawns.</summary>
+        private static void Solid(Mesh mesh, Matrix4x4 matrix, Material m)
+        {
+            if (m == null) return;
+            DepthPass(mesh, matrix, m);
+            Graphics.DrawMesh(mesh, matrix, m, 0);
+        }
+
+        private static void DepthPass(Mesh mesh, Matrix4x4 matrix, Material m)
+        {
+            Material d = HoseMaterials.Depth(m);
+            if (d != null) Graphics.DrawMesh(mesh, matrix, d, 0);
+            lastDepthDraws++;
+        }
+
+        /// <summary>State read for the probe: depth pre-pass draws last frame (reset per DrawAll).</summary>
+        public static int lastDepthDraws;
 
         /// <summary>A strip along pts: u runs along it (tile = width x 4, the strips are 256x64), v across.</summary>
         public static Mesh Ribbon(List<V2> pts, float width, float y, double s0)
@@ -888,6 +950,20 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         // altitude band, HoseMath.CrossLift) and all its fittings draw over the hose beneath, never interleaved. Within a
         // hose the shadow / flat / plump / fittings order is kept by their small altitude steps.
         public static Material Shadow(float alpha) => Get(shadowPool, shadowTex, 3, alpha, Color.white);
+
+        private static readonly Dictionary<Material, Material> depth = new Dictionary<Material, Material>();
+
+        /// <summary>The Cutout twin of an opaque hose material (same texture and tint, full alpha): it writes depth so vanilla's
+        /// sun / edge shadows skip the hose (see RM_MapComponent_Hoses.Solid). Pooled per source material.</summary>
+        public static Material Depth(Material m)
+        {
+            if (m == null) return null;
+            if (depth.TryGetValue(m, out Material d)) return d;
+            Color c = m.color;
+            d = m.mainTexture is Texture2D t ? MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Cutout, new Color(c.r, c.g, c.b, 1f))) : null;
+            depth[m] = d;
+            return d;
+        }
     }
 
     /// <summary>Keeps RM_MapComponent_Hoses out of the save (as the cord graph and aerial components): every

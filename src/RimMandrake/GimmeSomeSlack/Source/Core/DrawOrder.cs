@@ -18,20 +18,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
     public static class DrawOrder
     {
         public const double LayerSpacing = 0.36585367, AltInc = 0.03658537;
-        public const int LayerConduits = 5, LayerPawnState = 25;
+        public const int LayerConduits = 5, LayerShadows = 13, LayerPawnState = 25;
+        /// <summary>The hose's altitude layer. 2026-10-05 (owner screenshot 20261005223734_1, hard rectangles across the hose):
+        /// vanilla's sun shadows (Custom/Sun shadow, queue 3170, ZTest LEqual, ZWrite Off) are quads at the Shadows layer drawn
+        /// after every 2900-queue thing, so a hose at Conduits wore every wall's shadow as a hard-edged rectangle. The hose now
+        /// sits just above the Shadows layer and writes depth (a Cutout pre-pass), so the shadow fails the depth test on it,
+        /// as on items and pawns; lighting and fog (higher altitudes) still cover it.</summary>
+        public const int LayerHose = LayerShadows;
 
         /// <summary>Vanilla AltitudeLayer.AltitudeFor(incOffset) for a layer index.</summary>
         public static double Alt(int layer, double inc = 0) => layer * LayerSpacing + inc * AltInc;
 
         // ---- altitudes (increments on PawnState) used by RM_MapComponent_Aerial
         public const float SpanInc = 5f, TopInc = 4f;
-        /// <summary>The hose's base lift above the Conduits layer; its crossing bands (HoseMath.CrossLift) and fitting steps
+        /// <summary>The hose's base lift above its layer (LayerHose); its crossing bands (HoseMath.CrossLift) and fitting steps
         /// (up to +0.001) sit on top of it.</summary>
         public const float HoseBaseLift = 0.004f, HoseFittingLift = 0.001f;
 
         /// <summary>The highest altitude any hose piece is drawn at (the top crossing band's fittings).</summary>
         public static double HoseTopAltitude(double crossBand, int crossRanks) =>
-            Alt(LayerConduits) + HoseBaseLift + crossBand * crossRanks + HoseFittingLift + 0.0005;
+            Alt(LayerHose) + HoseBaseLift + crossBand * crossRanks + HoseFittingLift + 0.0005;
 
         public static double SpanAltitude => Alt(LayerPawnState, SpanInc);
         public static double TopAltitude => Alt(LayerPawnState, TopInc);

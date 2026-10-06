@@ -121,6 +121,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public string Reason;
         /// <summary>The fell-back flag: the slack could not be laid clear of obstacles; Flat is the planned centreline.</summary>
         public bool FellBack;
+        /// <summary>2026-10-05: the hose leaves its reel straight through the outlet coupling (Lay's startOutward held).</summary>
+        public bool Outlet;
         /// <summary>Equal-arc samples of the collapsed pose, the charged pose, and the planned centreline (same count).</summary>
         public List<V2> Flat = new List<V2>(), Plump = new List<V2>(), Centre = new List<V2>();
         /// <summary>Coupling positions: the reel end, every joiner, the free end (in that order).</summary>
@@ -204,13 +206,39 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <param name="endInward">Round 7 (relay, owner station 42): when set, the hose's last
         /// HoseRelay.EndStraight cells run dead straight along this unit direction into <paramref name="b"/>, so the end
         /// coupling sits on the receiving reel's inlet axis instead of the last bend's tangent.</param>
-        public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null)
+        /// <param name="startOutward">2026-10-05 (owner screenshot: the hose tucked under the pump instead of entering the
+        /// outlet coupling): when set, the hose's first HoseReelRect.OutletStraight cells run dead straight from
+        /// <paramref name="a"/> along this unit direction, so it leaves the reel THROUGH the outlet coupling; dropped when that
+        /// run is not clear.</param>
+        public static HoseLay Lay(CordWorld w, V2 a, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
         {
             V2 bPlan = endInward.HasValue ? b - endInward.Value * HoseRelay.EndStraight : b;
-            CordPlan plan = CordPlanner.Plan(w, a, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
+            V2 aPlan = a;
+            if (startOutward.HasValue)
+            {
+                // plan from one bend radius past the straight run, so the first turn is a full-radius curve after the coupling
+                // rather than a kink where the straightened run meets it
+                double lead = OutletLead(p);
+                if (OutletClear(w, a, startOutward.Value, lead)) aPlan = a + startOutward.Value * lead;
+                else if (OutletClear(w, a, startOutward.Value)) aPlan = a + startOutward.Value * HoseReelRect.OutletStraight;
+                else startOutward = null;
+            }
+            CordPlan plan = CordPlanner.Plan(w, aPlan, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
             if (!plan.Ok) return new HoseLay { Reason = "no route" };
+            if (startOutward.HasValue) plan.Points.Insert(0, a);
             if (endInward.HasValue) plan.Points.Add(b);
-            return LayOn(w, a, b, plan.Points, p, seed, endInward);
+            return LayOn(w, a, b, plan.Points, p, seed, endInward, startOutward);
+        }
+
+        /// <summary>How far out of the outlet the route is planned from: the straight run plus two bend radii, so even a turn
+        /// back past 90 degrees rounds after the coupling's wrap instead of kinking at it.</summary>
+        public static double OutletLead(HoseShapeParams p) => HoseReelRect.OutletStraight + 2 * Math.Max(0.45, p.MinBendRadius);
+
+        /// <summary>The outlet run from <paramref name="a"/> (plus its 0.5-cell blend) lies on open ground.</summary>
+        public static bool OutletClear(CordWorld w, V2 a, V2 outward, double run = HoseReelRect.OutletStraight)
+        {
+            V2 e = a + outward * (run + 0.5);
+            return w.InBounds(e.Floor) && w.IsWalkable(e.Floor) && SegmentClear(w, a + outward * 0.5, e);
         }
 
         /// <summary>Colonist-carried hose (hose_carry_design_2026-10-04 section 6, stage S2): lay the hose along the cells
@@ -218,20 +246,32 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// (HoseTrail.Pulled: any-angle, never through a wall or a pinched diagonal) and then run through exactly Lay's
         /// round -> settle -> stiffen pipeline. An EMPTY route is the legacy / DEV "planned" hose: it is HoseMath.Lay
         /// itself, so a save written before the carry stage lays byte-identically.</summary>
-        public static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null)
+        public static HoseLay LayAlong(CordWorld w, V2 a, IList<Cell> route, V2 b, HoseShapeParams p, ulong seed, V2? endInward = null, V2? startOutward = null)
         {
-            if (route == null || route.Count == 0) return Lay(w, a, b, p, seed, endInward);
+            if (route == null || route.Count == 0) return Lay(w, a, b, p, seed, endInward, startOutward);
             var t = new HoseTrail(a, double.PositiveInfinity);
             t.Cells.AddRange(route);
             List<V2> pts = t.Pulled(w);
             // the walked end is the end cell's centre; a relay end (or any end point off that centre) is reached from it
             if (V2.Dist(pts[pts.Count - 1], b) > 1e-6) pts.Add(b);
             if (pts.Count < 2) return new HoseLay { Reason = "no route" };
-            return LayOn(w, a, b, pts, p, seed, endInward);
+            if (startOutward.HasValue)
+            {
+                double lead = OutletLead(p);
+                if (!OutletClear(w, a, startOutward.Value, lead)) lead = HoseReelRect.OutletStraight;
+                V2 o = a + startOutward.Value * lead;
+                CordPlan hop = null;
+                if (!OutletClear(w, a, startOutward.Value, lead)) startOutward = null;
+                else if (SegmentClear(w, o, pts[1])) pts.Insert(1, o);
+                else if ((hop = CordPlanner.Plan(w, o, pts[1], new List<KeyValuePair<V2, WaypointKind>>())).Ok && hop.Points.Count >= 2)
+                    pts.InsertRange(1, hop.Points.Take(hop.Points.Count - 1));     // round the reel to where the walk went
+                else startOutward = null;
+            }
+            return LayOn(w, a, b, pts, p, seed, endInward, startOutward);
         }
 
         /// <summary>Lay's shared tail: round the route's corners, settle the slack, stiffen, place the joiners.</summary>
-        private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward)
+        private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
         {
             var lay = new HoseLay();
             List<V2> C = CordPlanner.RoundCorners(planPoints, Math.Max(0.45, p.MinBendRadius));
@@ -284,6 +324,19 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 lay.Flat = StraightenEnd(lay.Flat, b, endInward.Value, HoseRelay.EndStraight);
                 lay.Centre = StraightenEnd(lay.Centre, b, endInward.Value, HoseRelay.EndStraight);
                 lay.Plump = StraightenEnd(lay.Plump, b, endInward.Value, HoseRelay.EndStraight);
+            }
+            if (startOutward.HasValue)
+            {
+                lay.Outlet = true;
+                // the settled rope pulls taut past the planned lead, so the turn back from the outlet is eased over two bend
+                // radii (a 0.5-cell blend left a hairpin kink at the wrap); the short blend is the fallback near walls
+                double bl = 2 * Math.Max(0.45, p.MinBendRadius);
+                List<V2> f = StraightenStart(lay.Flat, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
+                List<V2> q = StraightenStart(lay.Plump, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
+                if (!Clear(w, f) || !Clear(w, q)) bl = 0.5;
+                lay.Flat = StraightenStart(lay.Flat, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
+                lay.Centre = StraightenStart(lay.Centre, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
+                lay.Plump = StraightenStart(lay.Plump, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
             }
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
@@ -552,7 +605,13 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Half the length of a joiner (two couplings face to face plus their cloth wraps), cells, on a hose of
         /// <paramref name="visible"/> width: brass face to wrap end = 0.49 x fitting size + 0.55 (DrawEnds' Fitting).</summary>
-        public static double JoinerHalf(double visible) => (JoinerMesh + 0.03) * FittingSize(visible, PieceBand, CouplingMax) + WrapLength - 0.05;
+        public static double JoinerHalf(double visible) => JoinerWrapIn * FittingSize(visible, PieceBand, CouplingMax) + WrapLength;
+
+        /// <summary>2026-10-05 (owner screenshot: a joiner read as "two flanged collars with a gap and a smaller ring floating
+        /// between"): each half's wrap runs right up to the interlocked claws -- its inner edge <see cref="JoinerWrapIn"/> x the
+        /// fitting size from the joint (the claws of the two mirrored couplings span +-0.08 there; Coupling_Bare.png lugs at
+        /// u 96-112 of 128) -- so wrap, claws and wrap read as one fitting with no narrow coupling body or bare hose between.</summary>
+        public const double JoinerWrapIn = 0.09;
 
         /// <summary>Art geometry of the coupling (measured 2026-10-02/04; RM_MapComponent_Hoses draws with these): the
         /// hose band where the hose enters it, its widest band (canvas fractions) and its brass face (canvas units).</summary>
@@ -625,13 +684,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// the hose over 0.5 cell either side, so the joiner's rigid brass and the hose under it share one axis.</summary>
         /// <summary>Round 7: the last <paramref name="straight"/> cells of P laid on the line into <paramref name="end"/> along
         /// <paramref name="inward"/> (blended back over 0.5 cell), the end exactly at <paramref name="end"/>.</summary>
-        public static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight)
+        public static List<V2> StraightenEnd(IList<V2> P, V2 end, V2 inward, double straight, double blend = 0.5)
         {
             var o = new List<V2>(P);
             if (P.Count < 2) return o;
             double[] s = Geo.CumLen(P);
             double L = s[s.Length - 1];
-            const double blend = 0.5;
             for (int i = 1; i < P.Count; i++)
             {
                 double back = L - s[i];
@@ -642,6 +700,17 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 o[i] = P[i] + (line - P[i]) * w;
             }
             o[P.Count - 1] = end;
+            return o;
+        }
+
+        /// <summary>2026-10-05: StraightenEnd mirrored -- the first <paramref name="straight"/> cells of P on the line out of
+        /// <paramref name="start"/> along <paramref name="outward"/>, blended back over 0.5 cell.</summary>
+        public static List<V2> StraightenStart(IList<V2> P, V2 start, V2 outward, double straight, double blend = 0.5)
+        {
+            var r = new List<V2>(P);
+            r.Reverse();
+            List<V2> o = StraightenEnd(r, start, outward * -1, straight, blend);
+            o.Reverse();
             return o;
         }
 
@@ -669,6 +738,18 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 V2 line = a + (b - a) * ((s[i] - s0) / (s1 - s0));
                 o[i] = P[i] + (line - P[i]) * w;
             }
+            return o;
+        }
+
+        /// <summary>P without its first <paramref name="cut"/> cells of arc (the new first point interpolated); P itself when
+        /// the cut is not positive or would leave less than 0.5 cell.</summary>
+        public static List<V2> TrimStart(IList<V2> P, double cut)
+        {
+            if (cut <= 0 || P.Count < 2) return new List<V2>(P);
+            double[] s = Geo.CumLen(P);
+            if (s[s.Length - 1] - cut < 0.5) return new List<V2>(P);
+            var o = new List<V2> { At(P, s, cut) };
+            for (int i = 0; i < P.Count; i++) if (s[i] > cut + 1e-6) o.Add(P[i]);
             return o;
         }
 
@@ -701,7 +782,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>Hose ends (owner review 2026-10-04 B22): every end and every joiner piece sits behind a dense cloth
         /// BINDING WRAP, wider than the hose, that hides the hose-to-fitting transition for any hose type. The wrap is
         /// <see cref="WrapK"/> x the hose's visible width across and <see cref="WrapLength"/> cell along it.</summary>
-        public const double WrapK = 1.4, WrapLength = 0.6;
+        public const double WrapK = 1.3, WrapLength = 0.6;
         public static double WrapWidth(double visible) => WrapK * visible;
 
         /// <summary>Draw size of a fitting (canvas cells) on a hose of <paramref name="visible"/> width: matched to the hose
@@ -952,6 +1033,15 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public const double DrumBelowAxis = (165.0 - 124.0) / 256 * ReelDrawSize;
         /// <summary>True when the reel's art carries a brass outlet nozzle the hose couples to (the 2x2 reel).</summary>
         public bool HasNozzle => W == 2 && H == 2;
+        /// <summary>2026-10-05: the hose leaves a nozzled reel dead straight out of the outlet for this many cells from
+        /// <see cref="Mouth"/> (0.32 to the tip + the end coupling and its wrap, ~1.1, + a margin), so it visibly runs through
+        /// the coupling instead of turning away under the pump body.</summary>
+        public const double OutletStraight = 1.6;
+        /// <summary>How far the end coupling's threaded stub slides into the outlet nozzle (drawn under the reel sprite), so the
+        /// two meet with no gap.</summary>
+        public const double NozzleSeat = 0.07;
+        /// <summary>The direction the hose leaves a nozzled reel (the outlet faces west on every look's art), or null.</summary>
+        public V2? Outward => HasNozzle ? new V2(-1, 0) : (V2?)null;
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
         public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
 
