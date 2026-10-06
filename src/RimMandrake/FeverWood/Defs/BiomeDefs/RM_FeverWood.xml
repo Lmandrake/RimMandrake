@@ -228,6 +228,12 @@
       <RM_Murrelith>0.35</RM_Murrelith>  <!-- murrelith - plumage worth money -->
       <RM_Thavrik>0.3</RM_Thavrik>  <!-- thavrik - nests worth raiding -->
       <RM_Skellick>0.25</RM_Skellick>  <!-- skellick - steals your things -->
+
+      <!-- FEVERWOOD_RM_CAST_COMPLETION_1: ratified cast, commonalities as
+           ruled in that item's §1 table (defs: RM_FeverWoodCast.xml). -->
+      <RM_Lommerel>0.4</RM_Lommerel>  <!-- lommerel - the crown's grazer, slung under the boughs -->
+      <RM_Nemmel>0.4</RM_Nemmel>  <!-- nemmel - the floor's one honest meal -->
+      <RM_Grolth>0.05</RM_Grolth>  <!-- grolth - carrion-dissolver, waits, never chases -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- FEVERWOOD_FLORA_ROSTER_1: the 3 AB_* donor placeholder rows

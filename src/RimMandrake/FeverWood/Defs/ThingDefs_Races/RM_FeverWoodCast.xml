@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FEVERWOOD_RM_CAST_COMPLETION_1, pass 1 of the seven ratified creatures:
+  lommerel, nemmel, grolth. Spec: the item's §1 table; descriptions from the
+  roster's art briefs (design/Jawa/worldbuilding/biomes/fever_wood_fauna_roster_2026-09-23.md
+  rows 6, and fever_wood_rm_cast_proposal_2026-09-24.md for nemmel/grolth).
+  All three are franchise-free invented names (RM_ tier, Q11a) and live ONLY
+  in RM_FeverWood (one home; rows inline on RM_FeverWood/wildAnimals).
+
+  Every stat below that is not a ruled value (bodySize, diet, commonality are
+  ruled by the item) is INVENTED / PROVISIONAL — tuned against vanilla
+  analogues (muffalo-ish grazer, hare-ish small grazer, tortoise-ish slow
+  body), never owner-set.
+
+  Behaviour is vanilla throughout, deliberately:
+   - lommerel/nemmel: ordinary herd grazers (VegetarianRoughAnimal).
+   - grolth: CarnivoreAnimal with predator=false — vanilla never hunts with
+     it, so it only ever eats corpses/meat it finds ("waits, never chases",
+     the sheet's ban on native chase predators). Slow on purpose.
+  ⚠️ The lommerel's "slung UNDER the bough, reads upside-down" is a SPRITE
+  property (art), not a body/AI property — do not "correct" the art upright.
+
+  Art: finished artpipe renders exist for all three (feverwood_<name>_{east,
+  north,south}, _artsrc/), installed via art.py install (mechanical reason
+  artpipe-collect) into Textures/Things/Pawn/Animal/RM_<Name>/.
+-->
+<Defs>
+
+  <!-- ============================================================ -->
+  <!-- RM_Lommerel — the crown's grazer, slung under the boughs        -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Lommerel</defName>
+    <label>lommerel</label>
+    <description>A soft-bodied grazer that hangs beneath a bough rather than standing on it, gripping with short hooked limbs, its back permanently silted and mossy from the crown's own debris. It eats the verrow's gourds and the bough-soil's cover, and is the reason the crown's small patient hunters have anything to wait for.\n\nIt is the only thing in the crown that lives upside-down.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>  <!-- PROVISIONAL -->
+      <MarketValue>200</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <Wildness>0.6</Wildness>  <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>hooked forelimb</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.0</baseBodySize>  <!-- ruled ~1.0 -->
+      <baseHealthScale>0.9</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>0.7</baseHungerRate>  <!-- PROVISIONAL -->
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>  <!-- PROVISIONAL -->
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>  <!-- PROVISIONAL -->
+      <trainability>None</trainability>
+      <gestationPeriodDays>20</gestationPeriodDays>  <!-- PROVISIONAL -->
+      <lifeExpectancy>12</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Lommerel</defName>
+    <label>lommerel</label>
+    <race>RM_Lommerel</race>
+    <combatPower>45</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~5</wildGroupSize>  <!-- PROVISIONAL -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lommerel/RM_Lommerel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lommerel/RM_Lommerel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Lommerel/RM_Lommerel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- RM_Nemmel — the floor's one honest meal                         -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Nemmel</defName>
+    <label>nemmel</label>
+    <description>A plump, short-legged, mud-brown grazer of the causeway edges, walking on oversized splayed feet that work like mud-shoes and leave a broad flat print. Nothing about it is a trick. On a floor where every pool lies and every ally is a bargain, the nemmel is simply meat that eats grass — the Fever Wood's one honest meal.</description>
+    <statBases>
+      <MoveSpeed>3.8</MoveSpeed>  <!-- PROVISIONAL -->
+      <MarketValue>70</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <Wildness>0.5</Wildness>  <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.3</baseBodySize>  <!-- ruled ~0.3 -->
+      <baseHealthScale>0.5</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>0.4</baseHungerRate>  <!-- PROVISIONAL -->
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <gestationPeriodDays>10</gestationPeriodDays>  <!-- PROVISIONAL -->
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>7</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Nemmel</defName>
+    <label>nemmel</label>
+    <race>RM_Nemmel</race>
+    <combatPower>20</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>3~7</wildGroupSize>  <!-- PROVISIONAL -->
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Nemmel/RM_Nemmel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Nemmel/RM_Nemmel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Nemmel/RM_Nemmel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.95</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- RM_Grolth — the causeway margins' carrion-dissolver             -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Grolth</defName>
+    <label>grolth</label>
+    <description>A wet, dark hummock of a body with no head anyone has found, working the causeway margins so slowly it reads as part of the mud. A pale, dissolving slick spreads from under its front edge, and whatever dead thing that slick reaches is gone by morning. It does not chase. It does not need to: in the Fever Wood, something is always dying near the water.</description>
+    <statBases>
+      <MoveSpeed>1.4</MoveSpeed>  <!-- PROVISIONAL: slow on purpose, never a chaser -->
+      <MarketValue>90</MarketValue>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>  <!-- PROVISIONAL -->
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>  <!-- PROVISIONAL -->
+      <Wildness>0.9</Wildness>  <!-- PROVISIONAL -->
+    </statBases>
+    <tools>
+      <li>
+        <label>dissolving slick</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>  <!-- PROVISIONAL -->
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>  <!-- ban 3: vanilla never hunts with it; corpses only -->
+      <baseBodySize>0.8</baseBodySize>  <!-- ruled ~0.8 -->
+      <baseHealthScale>1.0</baseHealthScale>  <!-- PROVISIONAL -->
+      <baseHungerRate>0.35</baseHungerRate>  <!-- PROVISIONAL -->
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>15</lifeExpectancy>  <!-- PROVISIONAL -->
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Grolth</defName>
+    <label>grolth</label>
+    <race>RM_Grolth</race>
+    <combatPower>35</combatPower>  <!-- PROVISIONAL -->
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grolth/RM_Grolth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grolth/RM_Grolth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Grolth/RM_Grolth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
