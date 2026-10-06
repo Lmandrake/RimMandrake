@@ -1,6 +1,6 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-06T05:16:17-0700",
+ "built": "2026-10-06T06:05:11-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 610 active",
@@ -9,17 +9,35 @@
    "columns": {
     "A": {
      "single": "d3061e1c738b40d711e8deeeb003c20197510259abd478ea2290aedee404d3ef"
+    },
+    "B": {
+     "single": "354077b2de2eba9c8d76519307b6d543eefada3a2186fb9cdba0687469c4cdff"
+    },
+    "C": {
+     "single": "7b5def850985348c85a962fafd8252993f336b9759016aa1b97977b2fd23e5b5"
+    },
+    "D": {
+     "single": "6dc96604ce6140fdbc003dd9d7543abf09c5ca6ff4262aa09d6553685caf81a3"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf"
+    "A": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
+    "B": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
+    "C": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
+    "D": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Bleedleaf_var1",
+    "C": "render contagion_Bleedleaf_var2",
+    "D": "render contagion_Bleedleaf_var3"
    },
    "res": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "bleedleaf"
   },
@@ -67,17 +85,35 @@
    "columns": {
     "A": {
      "single": "5e708945e2eb80111076c8cb51eedde1fd91ecf12e840bea2059f3b4fb2352f7"
+    },
+    "B": {
+     "single": "a8c7509bd53120b0c746f4050a01099939b645b43b5a218184b2dd4b35566253"
+    },
+    "C": {
+     "single": "f03cd00b158844368b100681711592130dbb10e19351fbb16be1a62619161d4e"
+    },
+    "D": {
+     "single": "d0fd5757d1e2d73f9a9808211ed5f7b661ded375d1df4e64c660ac67eba084f1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_BloodyFist/RM_BloodyFist"
+    "A": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
+    "B": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
+    "C": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
+    "D": "Things/Plant/RM_BloodyFist/RM_BloodyFist"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_BloodyFist_var1",
+    "C": "render contagion_BloodyFist_var2",
+    "D": "render contagion_BloodyFist_var3"
    },
    "res": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "bloodyfist"
   },
@@ -205,20 +241,38 @@
     },
     "B": {
      "single": "f243da8bacaf203b515ae6315534d1b38350af6363bc4db5f0d1bd2901abcaeb"
+    },
+    "C": {
+     "single": "86d8a340d98e4036921092fb473b4d660098874eca22034a39d37cbdc5764846"
+    },
+    "D": {
+     "single": "99084967ab2a23072aa55ad64f4c314e0ba8930ebae3e908d8cd5511b82503d5"
+    },
+    "E": {
+     "single": "c0e2527e6df6e17c0c12fcf19cb1a7019d13a680da032e0e25d575c6f3a38d12"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Eyebark/RM_Eyebark",
-    "B": "Things/Plant/RM_Eyebark/RM_Eyebark"
+    "B": "Things/Plant/RM_Eyebark/RM_Eyebark",
+    "C": "Things/Plant/RM_Eyebark/RM_Eyebark",
+    "D": "Things/Plant/RM_Eyebark/RM_Eyebark",
+    "E": "Things/Plant/RM_Eyebark/RM_Eyebark"
    },
    "labels": {
     "A": "IN GAME \u2014 Contagion",
-    "B": "render RM_Eyebark"
+    "B": "render RM_Eyebark",
+    "C": "render contagion_Eyebark_var1",
+    "D": "render contagion_Eyebark_var2",
+    "E": "render contagion_Eyebark_var3"
    },
    "res": "Things/Plant/RM_Eyebark/RM_Eyebark",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "eyebark"
   },
@@ -327,17 +381,35 @@
    "columns": {
     "A": {
      "single": "523207eca1fecbb0d7f59686ba687ada463df01add21d4a757207c147070bcf5"
+    },
+    "B": {
+     "single": "22143867e5d9d156fa9f83b3976a97d91f8a7df3212f990e75e4cd8a9962ed94"
+    },
+    "C": {
+     "single": "48973acc278c85bb37312c3e56791b7c1360aa1615d4180be01cca0d9a3f7633"
+    },
+    "D": {
+     "single": "1d3a4b694c49801c589b82b2b61b80d9adf3aa21e095a418759b7a3a94c4a980"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Gorestalk/RM_Gorestalk"
+    "A": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+    "B": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+    "C": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
+    "D": "Things/Plant/RM_Gorestalk/RM_Gorestalk"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_Gorestalk_var1 \u2014 failed canon check",
+    "C": "render contagion_Gorestalk_var2",
+    "D": "render contagion_Gorestalk_var3"
    },
    "res": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "gorestalk"
   },
@@ -345,17 +417,29 @@
    "columns": {
     "A": {
      "single": "06662f225e067db5c6780f8c3dac2f96dc0e28f309cbdc9c2b5d6bd249787573"
+    },
+    "B": {
+     "single": "d1d7d193311aebde1d2381c37b92b302252122e1e7d6dfb77a5d81da069e8efe"
+    },
+    "C": {
+     "single": "6695abbc217bc1fb4709bace0f038c5c3d85c817c9422bd76bef2780ea639431"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
+    "A": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
+    "B": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
+    "C": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_HalfmadeTree_var1",
+    "C": "render contagion_HalfmadeTree_var2"
    },
    "res": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "halfmadetree"
   },
@@ -363,17 +447,35 @@
    "columns": {
     "A": {
      "single": "8d6b8df7dfe8a2658cde1acc03040cf10066ac53314d0bf9c50131beb9dd4a0b"
+    },
+    "B": {
+     "single": "fbd6ff1a9ab48b519b8d0a44a6116f931c2c746bec497152556a882558fdbcd2"
+    },
+    "C": {
+     "single": "55bdbf3a13b50719c255f50c88b4fc255d1c909857d357fae2660b7dfbcbff05"
+    },
+    "D": {
+     "single": "0752ad8fb17f2a97359bc079bd39d364ccfaa8f6e5a0bdb9d8f4990e1eb375fb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted"
+    "A": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
+    "B": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
+    "C": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
+    "D": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render contagion_HalfmadeTreeBlighted_var1",
+    "C": "render contagion_HalfmadeTreeBlighted_var2",
+    "D": "render contagion_HalfmadeTreeBlighted_var3"
    },
    "res": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "halfmadetreeblighted"
   },
