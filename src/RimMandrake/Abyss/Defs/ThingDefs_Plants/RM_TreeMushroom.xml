@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The tree mushroom: owned port of Alpha Biomes' giant stikehr (sarg.alphabiomes
+  AB_GiantStikehr, 1.6/Defs/ThingDefs_Plants/Plants_ForsakenCrags.xml, parent AB_CavePlantBase from
+  Plants_MycoticJungle.xml, whose three plant fields are inlined here: neverBlightable, wildOrder 1,
+  wildEqualLocalDistribution false). Plain name and description are the owner's (sheet 2026-10-05). Every
+  plant/stat/comp field is the donor's own EXCEPT:
+    - SIZE x4 (owner's sheet): visualSizeRange 2~3.8 -> 8~15.2
+    - descriptionHyperlinks kept (WoodLog, vanilla).
+  ART (owner's sitting-2 pick, Graphic_Random of two): abyss_morkhul_v1 (_a) and abyss_treemushroom_c_v2 (_b, his C
+  re-rendered at 1024 for the x4 size), both finished in the artpipe, awaiting install as
+  RM_Abyss/Things/Plant/RM_TreeMushroom/RM_TreeMushroom_{a,b}.png.
+-->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TreeMushroom</defName>
+    <label>tree mushroom</label>
+    <description>A towering fungus whose stalk has hardened into true wood, crowned with a broad cap that glows faintly through the drifting dark. Felled, it yields timber; standing, it is the nearest thing the Abyss has to a forest.</description>
+    <descriptionHyperlinks>
+      <ThingDef>WoodLog</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Beauty>4</Beauty>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_TreeMushroom</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.3, 0.13)</volume>
+        <offset>(-0.03,0,-0.44)</offset>
+      </shadowData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>25</pathCost>
+    <ingestible/>
+    <plant>
+      <neverBlightable>true</neverBlightable>
+      <wildOrder>1</wildOrder>
+      <wildEqualLocalDistribution>false</wildEqualLocalDistribution>
+      <growMinGlow>0</growMinGlow>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.15</fertilitySensitivity>
+      <growDays>15</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestYield>25</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <visualSizeRange>8~15.2</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <purpose>Food</purpose>
+      <blockAdjacentSow>true</blockAdjacentSow>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>10</glowRadius>
+        <glowColor>(242,221,37,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

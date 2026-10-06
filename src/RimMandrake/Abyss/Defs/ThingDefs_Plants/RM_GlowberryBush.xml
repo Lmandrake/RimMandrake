@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The glowberry bush: owned port of Alpha Biomes' wild ragadast (sarg.alphabiomes
+  AB_WildRadagast, 1.6/Defs/ThingDefs_Plants/Plants_ForsakenCrags.xml); plain name and description are the
+  owner's (sheet 2026-10-05). Every plant/stat/comp field is the donor's own EXCEPT:
+    - harvestedThingDef AB_RawRagadast (an Alpha Biomes item) -> vanilla RawBerries (PROVISIONAL: "The berries are
+      good to eat"; an owned glowberry item is owed if wanted)
+    - Graphic_Single -> Graphic_Random over the owner's three picks.
+  ART (owner's "wire as picked"): abyss_vettrig_v1 (_a), abyss_glowberrybush_b_v2 (_b), abyss_glowberrybush_c_v2 (_c),
+  all finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_GlowberryBush/RM_GlowberryBush_{a,b,c}.png.
+-->
+<Defs>
+  <ThingDef ParentName="BushBase">
+    <defName>RM_GlowberryBush</defName>
+    <label>glowberry bush</label>
+    <description>A low, twisting shrub of black wiry stems hung with clusters of small berries that glow like embers held in the hand. The berries are good to eat, and give a little light to pick them by.</description>
+    <pathCost>10</pathCost>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_GlowberryBush</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.55, 0.17, 0.15)</volume>
+        <offset>(0,0,-0.2)</offset>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>7.5</wildClusterWeight>
+      <visualSizeRange>1.5~2</visualSizeRange>
+      <sowResearchPrerequisites>
+        <li>TreeSowing</li>
+      </sowResearchPrerequisites>
+      <mustBeWildToSow>true</mustBeWildToSow>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <harvestYield>10</harvestYield>
+      <harvestWork>250</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.30</harvestAfterGrowth>
+      <harvestedThingDef>RawBerries</harvestedThingDef>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(242,221,37,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

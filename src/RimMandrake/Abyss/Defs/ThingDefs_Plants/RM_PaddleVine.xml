@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The paddle vine: owned port of Alpha Genes' septimum (sarg.alphagenes AG_Septimum,
+  1.6/Defs/ThingDefs_Plants/ThingDef_Plants.xml); plain name and description are the owner's (sitting 2,
+  2026-10-05). Every plant/stat field is the donor's own EXCEPT:
+    - harvestedThingDef AG_Ultima (an Alpha Genes item) -> vanilla Cloth (PROVISIONAL: "a tough, glossy fibre that
+      weaves into hard-wearing cloth"; an owned fibre item is owed if wanted)
+    - Graphic_Random over the donor's set -> Graphic_Single (one ruled render); uiIconPath dropped.
+  ART: abyss_paddlevine_v1, finished in the artpipe, awaiting install as RM_Abyss/Things/Plant/RM_PaddleVine.png.
+-->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_PaddleVine</defName>
+    <label>paddle vine</label>
+    <description>A climbing plant of scarlet vines twined around one another, bearing broad, flat paddles in place of leaves and crowned with one huge flower-like leaf. Every surface glistens with fine faceted photoreceptors, like the eye of a fly, and the whole plant turns slowly toward any light. Its vines yield a tough, glossy fibre that weaves into hard-wearing cloth.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/RM_PaddleVine</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible/>
+    <plant>
+      <growDays>10</growDays>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Cloth</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <sowMinSkill>7</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.1</topWindExposure>
+      <visualSizeRange>0.3~1.05</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+</Defs>

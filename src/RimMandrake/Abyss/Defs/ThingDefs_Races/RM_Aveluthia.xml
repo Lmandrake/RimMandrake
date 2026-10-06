@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The aveluthia: one of the Abyss's black, many-eyed kin, the crags' pack beast. Owned
+  port of the Alpha Animals nightmule (sarg.alphaanimals AA_NightMule, 1.6/Defs/ThingDefs_Races/Races_NighMule.xml);
+  name and description are the owner's sheet ruling 2026-10-05. Free RM_ tier, ONE HOME: the Abyss. Stats, tools,
+  race fields and pawnkind numbers are the donor's own, EXCEPT these donor-only references:
+    - body AA_NightMuleBody -> vanilla QuadrupedAnimalWithHoovesAndHorn (same tool groups)
+    - leatherDef Leather_Night -> Leather_Plain (PROVISIONAL substitute)
+    - the VEF stat extension dropped; the horns tool is relabelled "snout" to match the description
+      (it has no horns); meatLabel "dark marbled steak" kept.
+  ART: abyss_aveluthia_v3 (east/south/north, finished in the artpipe), awaiting install at the texPath below.
+  The owner's calf and female picks were the donor's own AA_NightMule_baby / _female art, so no femaleGraphicData
+  and every life stage uses the adult set until owned calf/female art exists.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Aveluthia</defName>
+    <label>aveluthia</label>
+    <description>A tall, ponderous pack beast hung in thick wrinkled folds of black flesh, on four pillar legs with broad splayed toes for loose obsidian scree. Its long head ends in a heavy drooping snout, and above it four yellow eyes glow softly. Nothing in the crags carries more, and it walks the Dark without a lamp. Old tales say the dark-robed masters who once ruled here bred it to bear their burdens, and it still bows its head to a hard voice.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-55</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <MarketValue>350</MarketValue>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.65</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>snout</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>15</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>4</milkIntervalDays>
+        <milkAmount>12</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>2.8</baseBodySize>
+      <baseHealthScale>1.75</baseHealthScale>
+      <baseHungerRate>0.225</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <meatLabel>dark marbled steak</meatLabel>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <packAnimal>true</packAnimal>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>15</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.7</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Aveluthia</defName>
+    <label>aveluthia</label>
+    <race>RM_Aveluthia</race>
+    <combatPower>125</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>9</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>aveluthia calf</label>
+        <labelPlural>aveluthia calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

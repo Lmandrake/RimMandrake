@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_SHEET_DONOR_PORT_1. The ossumatha: one of the Abyss's black, many-eyed kin, a rooting group brute. Owned
+  port of the Alpha Animals dark vandal (sarg.alphaanimals AA_DarkVandal, 1.6/Defs/ThingDefs_Races/Races_DarkVandal.xml);
+  name and description are the owner's sheet ruling 2026-10-05. Free RM_ tier, ONE HOME: the Abyss. Stats, tools,
+  race fields and pawnkind numbers are the donor's own, EXCEPT these donor-only references:
+    - body FO_Nightcallerbody -> vanilla QuadrupedAnimalWithHoovesAndTusks (the boar's; carries TuskAttackTool)
+    - leatherDef Leather_Night -> Leather_Pig (PROVISIONAL; it already takes its meat from Pig)
+    - the tusk tool is relabelled "shovel jaw" to match the description
+    - VEF CompProperties_DigWhenHungry (digs AA_BlackTruffles), the VEF trainable and stat extension dropped.
+  ART: abyss_ossumatha_v3 has only ONE facing finished; north and south FAILED in the artpipe and are owed a
+  requeue. Awaiting install at the texPath below.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ossumatha</defName>
+    <label>ossumatha</label>
+    <description>A squat slab of pitch-black, plated muscle that roots through the grit in groups with a shovel-shaped lower jaw, four yellow eyes glowing above it. Harm one and the whole group turns at once; an ossumatha rampage has ended more than one careless camp. Its rage is so complete and so quickly shared that the old stories call it a weapon someone once made and then lost.</description>
+    <statBases>
+      <MoveSpeed>4.6</MoveSpeed>
+      <MarketValue>200</MarketValue>
+      <ComfyTemperatureMin>-23</ComfyTemperatureMin>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>shovel jaw</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>9.7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>TuskAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHoovesAndTusks</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <trainability>Advanced</trainability>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <leatherDef>Leather_Pig</leatherDef>
+      <useMeatFrom>Pig</useMeatFrom>
+      <manhunterOnDamageChance>0.95</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.04</manhunterOnTameFailChance>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2.0, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>13</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3333</minAge>
+          <soundWounded>Pawn_Wildboar_Wounded</soundWounded>
+          <soundDeath>Pawn_Wildboar_Death</soundDeath>
+          <soundCall>Pawn_Wildboar_Call</soundCall>
+          <soundAngry>Pawn_Wildboar_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ossumatha</defName>
+    <label>ossumatha</label>
+    <race>RM_Ossumatha</race>
+    <combatPower>65</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>
+      <min>3</min>
+      <max>7</max>
+    </wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

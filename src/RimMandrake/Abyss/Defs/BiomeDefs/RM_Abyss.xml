@@ -15,18 +15,17 @@
         The new worker's placement ranges are [INVENTED], same footing as the
         sibling Gelatinous Slime/Flooded Canyon mods' own worker ranges.
 
-    Everything else — texture, terrain, weather, diseases, wildAnimals (the Alpha Animals rows;
-    dusk rat, frostling and night ave cut and the vosska removed by the owner's
-    Abyss sheet 2026-10-05), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
-    is the twin's content unchanged. Zero RSW_/SW_/RUT_ rows exist in the
+    Everything else — texture, terrain, weather, diseases — is the twin's content unchanged.
+    wildAnimals/wildPlants: ABYSS_SHEET_DONOR_PORT_1 (owner's Abyss sheet 2026-10-05) replaced the 8 Alpha
+    Animals and 7 Alpha Biomes/Alpha Genes rows with owned RM_ ports at the same commonality; the one
+    donor row left is AB_GlowingGrass (its port is owed on the same item). Zero RSW_/SW_/RUT_ rows exist in the
     twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
     Cindermare and Skarnix are invented, not canon, so they ship inline here as RM_Cindermare/RM_Skarnix
     (ABYSS_INVENTED_CREATURES_TO_RM_1); no Star Wars patch wires them any more.
 
-    ⚠️ NOT donor-free: terrain/texture and all 8 wildPlants entries carry no
-    MayRequire (inherited from the twin, not this build's scope to fix) — see
-    About.xml for the disclosure. The Alpha Animals wildAnimals rows keep their original
-    MayRequire="sarg.alphaanimals" gate and degrade gracefully without it.
+    ⚠️ NOT donor-free: terrain/texture still name Alpha Biomes defs with no guard
+    (inherited from the twin) — see About.xml for the disclosure. The AB_GlowingGrass
+    row keeps its MayRequire="sarg.alphabiomes" gate.
   -->
 
   <BiomeDef>
@@ -104,25 +103,25 @@
       <RM_Summ>0.01</RM_Summ>  <!-- ABYSS_DONOR_BEASTS_FREED_1: storm giant, a rare passing terror (also comes down in Witchfire storms); this biome only -->
       <RM_Cindermare>0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: grip-drain solitary predator; rarer than the skarnix; this biome only -->
       <RM_Skarnix>0.09</RM_Skarnix>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: firelight-averse ambush stalker; this biome only -->
-      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
-      <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
-      <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
-      <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
-      <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
-      <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
-      <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
-      <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
+      <RM_Lirrith>1.0</RM_Lirrith>  <!-- ABYSS_SHEET_DONOR_PORT_1: lirrith, port of AA_Murkling (small; boosted from 0.5 for the ecosystem pyramid law); this biome only -->
+      <RM_Aveluthia>0.5</RM_Aveluthia>  <!-- ABYSS_SHEET_DONOR_PORT_1: aveluthia, port of AA_NightMule (large); this biome only -->
+      <RM_Moravatha>0.35</RM_Moravatha>  <!-- ABYSS_SHEET_DONOR_PORT_1: moravatha, port of AA_CrepuscularBeetle (large); this biome only -->
+      <RM_Ysvaltha>0.2</RM_Ysvaltha>  <!-- ABYSS_SHEET_DONOR_PORT_1: ysvaltha, port of AA_DuskProwler (medium predator); this biome only -->
+      <RM_Sesserith>0.2</RM_Sesserith>  <!-- ABYSS_SHEET_DONOR_PORT_1: sesserith, port of AA_Nightling (medium apex); this biome only -->
+      <RM_Ossumatha>0.15</RM_Ossumatha>  <!-- ABYSS_SHEET_DONOR_PORT_1: ossumatha, port of AA_DarkVandal (medium); this biome only -->
+      <RM_Olumetha>0.09</RM_Olumetha>  <!-- ABYSS_SHEET_DONOR_PORT_1: olumetha, port of AA_NightRam (large); this biome only -->
+      <RM_Nevarithia>0.005</RM_Nevarithia>  <!-- ABYSS_SHEET_DONOR_PORT_1: nevarithia, port of AA_Darkbeast (medium); this biome only -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
       <AB_GlowingGrass MayRequire="sarg.alphabiomes">1.0</AB_GlowingGrass>  <!-- grass -->
-      <AB_ToxicGamma MayRequire="sarg.alphabiomes">0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
-      <AB_GiantGamma MayRequire="sarg.alphabiomes">0.5</AB_GiantGamma>  <!-- giant gamma -->
-      <AB_WildRadagast MayRequire="sarg.alphabiomes">0.5</AB_WildRadagast>  <!-- wild ragadast -->
-      <AG_Gamma MayRequire="sarg.alphagenes">0.5</AG_Gamma>  <!-- gamma -->
-      <AB_GiantStikehr MayRequire="sarg.alphabiomes">0.3</AB_GiantStikehr>  <!-- giant stikehr -->
-      <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
-      <AB_GiantSeptimum MayRequire="sarg.alphabiomes">0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+      <RM_SicklyGlowMushroom>0.6</RM_SicklyGlowMushroom>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_ToxicGamma (polluted ground only, as the donor) -->
+      <RM_GiantGlowGlobe>0.5</RM_GiantGlowGlobe>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_GiantGamma -->
+      <RM_GlowberryBush>0.5</RM_GlowberryBush>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_WildRadagast -->
+      <RM_GlowGlobe>0.5</RM_GlowGlobe>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AG_Gamma (x2 size) -->
+      <RM_TreeMushroom>0.3</RM_TreeMushroom>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_GiantStikehr (x4 size) -->
+      <RM_PaddleVine>0.25</RM_PaddleVine>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AG_Septimum -->
+      <RM_GiantFibreStalk>0.2</RM_GiantFibreStalk>  <!-- ABYSS_SHEET_DONOR_PORT_1: port of AB_GiantSeptimum (x2 size) -->
       <RM_Etchcap>0.15</RM_Etchcap>  <!-- ABYSS_ETCHCAP_BUILD_1: grows only on RM_EtchHollow -->
       <RM_Wickwood>0.2</RM_Wickwood>  <!-- ABYSS_LAMP_CROPS_BUILD_1: the lamp-crop tree; struck at startup when lampCropsEnabled is off -->
     </wildPlants>
