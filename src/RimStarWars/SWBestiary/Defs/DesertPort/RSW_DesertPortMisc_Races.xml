@@ -151,7 +151,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Cactipine -> RM_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
 		<defName>RM_Chikka</defName>
 		<label>chikka</label>
-		<description>A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates.</description>
+		<description>A rat-sized, wedge-bodied thing that is wide behind and tapers to a blunt point, the point carrying a small, furious pair of eyes. Pale green quills stand over every inch of it like a porcupine's, and a few tiny feet shove it nose-first through the loose sand. Its quills are medicinal, and its meat reads as neither plant nor animal to most palates.</description>
 		<statBases>
 			<MoveSpeed>4.5</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -676,7 +676,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Wildpod -> RM_Mullgoth. AA_ToxicBite->Bite. Dropped: CompProperties_AsexualReproduction, CompProperties_HighlyFlammable, CompProperties_AnimalProduct - all VEF.AnimalBehaviours donor framework, same as sibling RM_Durrok. -->
 		<defName>RM_Mullgoth</defName>
 		<label>mullgoth</label>
-		<description>A lumbering mass of what looks like decomposing plant matter, in fact a sentient mycoid creature. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
+		<description>A low, domed mound on four thick, hairy legs, draped to the ground in long pale hair and patched with grey-green moss and lilac lichen, a black glistening slime dripping from its underside. It looks like a decomposing hillock that decided to walk. Its bulk is nearly impervious to gunfire, bullets punching through with little effect, but it burns extremely readily.</description>
 		<statBases>
 			<MoveSpeed>3</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>

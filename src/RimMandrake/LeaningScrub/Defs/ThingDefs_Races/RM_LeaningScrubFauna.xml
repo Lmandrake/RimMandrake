@@ -822,21 +822,21 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.15</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.22</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
-        </bodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.45</drawSize>
-        </bodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.6</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
