@@ -44,9 +44,8 @@ public static class Patch_JobGiver_AIFightEnemy
 
     public static Job GetJunpPackMelee(Pawn pawn)
     {
-        // MOD_OPTIONS_RETROFIT_1: gated at the injected call, not at the
-        // transpiler — the IL stays exactly as shipped and simply always
-        // takes the "no jump job" branch when the mechanic is off.
+        // MOD_OPTIONS_RETROFIT_1: mechanic off => null => the Postfix keeps
+        // vanilla's job.
         if (!RSW_ArmourySettings.jumppackEnabled)
         {
             return null;
