@@ -1206,3 +1206,6 @@
 {"seat":"BENCH","event":"close","id":"TINT_ON_COLOUR_ART_1","sha":"e2bcad71dbd7","reason":"Owner ruled by question card 2026-10-06 02:06: strip all 56 (incl. the 3 reskins over shared art). 61 <color> removals in 27 files.","ts":"2026-10-06T12:26:03Z","tsn":1791289563585171684}
 {"seat":"BENCH","event":"drop","id":"TWILIGHT_GIANT_CATCHES_1","reason":"Owner ruled by question card 2026-10-06 02:06: only fish-sized creatures get a catch; RM_GrippingTerror and RSW_SandoAquaMonster stay floor-only.","ts":"2026-10-06T12:26:04Z","tsn":1791289564155621352}
 {"seat":"BENCH","event":"note","id":"PROPANE_LAKE_HYDROCARBON_TENTACLER_1","text":"No fishTypes catch for RM_Ulkhoss: owner ruled by question card 2026-10-06 02:06 that only fish-sized creatures get one.","ts":"2026-10-06T12:26:04Z","tsn":1791289564811399035}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"deploy DivingInteraction density fix, restart, rerun Grey floor chain red->green","ts":"2026-10-06T13:01:32Z","tsn":1791291692061124585}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-06T13:02:09Z","tsn":1791291729024230966}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T13:02:51Z","tsn":1791291771219928907}
