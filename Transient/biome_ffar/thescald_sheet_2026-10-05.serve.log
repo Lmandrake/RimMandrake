@@ -1,0 +1,57 @@
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\thescald_sheet_2026-10-05.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\thescald_sheet_2026-10-05.decisions.json
+             23 rows · 23 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:33403/?t=NPiscrtBgUHt4ONDo4EDbQ
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /img/27336113a0293ccf2a53.webp HTTP/1.1" 200 -
+  "GET /img/8e86a4eef544283b3fa3.webp HTTP/1.1" 200 -
+  "GET /img/8e0be4af1d3c5d2acec6.webp HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /img/aa52c42dea8e0b811fbf.webp HTTP/1.1" 200 -
+  "GET /img/adab4d5e55d5d3bd20c5.webp HTTP/1.1" 200 -
+  "GET /img/bca68a05caf4217b0be6.webp HTTP/1.1" 200 -
+  "GET /img/22e6f2b7e5524b65d3fa.webp HTTP/1.1" 200 -
+  "GET /img/5f8fd77142dd43644528.webp HTTP/1.1" 200 -
+  "GET /img/5030b01144311f7a805c.webp HTTP/1.1" 200 -
+  "GET /img/e593d5cc4e21796ec066.webp HTTP/1.1" 200 -
+  "GET /img/e13906b0c20350cba187.webp HTTP/1.1" 200 -
+  "GET /img/3593cab1412c8c5fb384.webp HTTP/1.1" 200 -
+  "GET /img/4956f595461cb83db285.webp HTTP/1.1" 200 -
+  "GET /img/c77d7f2c913c470369e4.webp HTTP/1.1" 200 -
+  "GET /img/1323da1a2c5077e80f56.webp HTTP/1.1" 200 -
+  "GET /img/7fc04c6951d58c9d3d7f.webp HTTP/1.1" 200 -
+  "GET /img/45f0b4dfc0352ab80504.webp HTTP/1.1" 200 -
+  "GET /img/42c923f04d5fcf318fee.webp HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -
+  "GET /?t=NPiscrtBgUHt4ONDo4EDbQ HTTP/1.1" 200 -

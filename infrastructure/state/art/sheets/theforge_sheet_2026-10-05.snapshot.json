@@ -1,6 +1,6 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-05T17:04:57-0700",
+ "built": "2026-10-05T18:49:35-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -145,17 +145,23 @@
    "columns": {
     "A": {
      "single": "3ef3fa4d61dba580a643f003ccaa850055f18b38f847789b6757d9e3d2d747f4"
+    },
+    "B": {
+     "single": "b10191cd4241c3c2ed00fddd76563186c94569c9a82c441cac49a8fa4388f0b1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plants/AB_TinkleGrass"
+    "A": "Things/Plants/AB_TinkleGrass",
+    "B": "Things/Plants/AB_TinkleGrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes"
+    "A": "IN GAME \u2014 Alpha Biomes",
+    "B": "render gapbs_AB_TinkleGrass_v1"
    },
    "res": "Things/Plants/AB_TinkleGrass",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "tinklegrass"
   },
@@ -269,17 +275,23 @@
    "columns": {
     "A": {
      "single": "dc95ad68f496c64f422faab5e8ced2bf98bf3c0f1e1d4fc25bb10131b50feba5"
+    },
+    "B": {
+     "single": "7166ac4d240d941b092339345ab0ede019f8bf7f4c2219f51c2ad7e04b0ccde7"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Fireweed"
+    "A": "Things/Plant/Fireweed",
+    "B": "Things/Plant/Fireweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)"
+    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "B": "render gapfin_Plant_Fireweed_v1"
    },
    "res": "Things/Plant/Fireweed",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "fireweed"
   },
@@ -287,17 +299,23 @@
    "columns": {
     "A": {
      "single": "be1d50708c2f06d14de16a42e95db6bab4f63a7a984ef40160f6a00efa8d596b"
+    },
+    "B": {
+     "single": "180763f053b2d9845f48b2e126db52b0041ffdce3bdd0458143ce1bb2e8ebea6"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/MagmaCactus"
+    "A": "Things/Plant/MagmaCactus",
+    "B": "Things/Plant/MagmaCactus"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
+    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "B": "render gapbs_Plant_MagmaCactus_v1"
    },
    "res": "Things/Plant/MagmaCactus",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "magmacactus"
   },
@@ -305,17 +323,23 @@
    "columns": {
     "A": {
      "single": "b1e43db9f8e0c93b83eb84590c94b23d0853ee25996ded3f5ead043d42a30079"
+    },
+    "B": {
+     "single": "327370abe17faa1d86b3281849d21a2f843d78b783fb41cb9b66232d08ab3ca6"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_CinderCrust"
+    "A": "Things/Plant/RM_CinderCrust",
+    "B": "Things/Plant/RM_CinderCrust"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_CinderCrust_v1"
    },
    "res": "Things/Plant/RM_CinderCrust",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "cindercrust"
   },

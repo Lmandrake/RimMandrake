@@ -1,6 +1,6 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-05T16:33:53-0700",
+ "built": "2026-10-05T18:53:05-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -67,17 +67,23 @@
    "columns": {
     "A": {
      "single": "22fa0d1fd6ebfa87bec0adcf2e3b06eff8bb26dbe05ed848f62caa842eeb5a85"
+    },
+    "B": {
+     "single": "9d8075c175f2da49ec3539464e9657ceb16f6a65602f61889a48b8bf838d5091"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Reeds"
+    "A": "Things/Plant/Reeds",
+    "B": "Things/Plant/Reeds"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.odyssey"
+    "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
+    "B": "render gapbs_Plant_Reeds_v1"
    },
    "res": "Things/Plant/Reeds",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "reeds"
   },
@@ -85,17 +91,23 @@
    "columns": {
     "A": {
      "single": "0310e49a7777d437f3c3f403d49bb0c9ecaf963937c8e810efb990ec6384e35c"
+    },
+    "B": {
+     "single": "243330b27e8448d2dca2f2fc7056fb39424818845b54f6b116dbe859a5bf5a82"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Bladderquill"
+    "A": "Things/Plant/RM_Bladderquill",
+    "B": "Things/Plant/RM_Bladderquill"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Bladderquill_v1"
    },
    "res": "Things/Plant/RM_Bladderquill",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "bladderquill"
   },
@@ -131,17 +143,23 @@
    "columns": {
     "A": {
      "single": "81047ee94853b754dd40922f0d640d7b92ac559eda80ddf6fba2378d50aae2c3"
+    },
+    "B": {
+     "single": "d7c1851fdaa6eec313e335048ff7be53c9bdc0d5a19fda695d1a2d2381b02c30"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Dewblade"
+    "A": "Things/Plant/RM_Dewblade",
+    "B": "Things/Plant/RM_Dewblade"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Dewblade_v1"
    },
    "res": "Things/Plant/RM_Dewblade",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "dewblade"
   },
@@ -149,17 +167,23 @@
    "columns": {
     "A": {
      "single": "6acb8dbc6fe4a6d4b415564f174ba630676e8b92d2c16d55e31ec134355ea830"
+    },
+    "B": {
+     "single": "89c535835e05a5076d89ce4fe9986fff722a75767da4d11eb97bdc995526ca5a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Dewgourd"
+    "A": "Things/Plant/RM_Dewgourd",
+    "B": "Things/Plant/RM_Dewgourd"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Dewgourd_v1"
    },
    "res": "Things/Plant/RM_Dewgourd",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "dewgourd"
   },
@@ -191,17 +215,23 @@
    "columns": {
     "A": {
      "single": "1bbfc5859cbb72aa37104c290d88e44f9e370572e61c12958ed43e02a3943e95"
+    },
+    "B": {
+     "single": "9df441648b94b2fb04fe1c6827ea098b6afaac1d5fdec3bd062df129a76a659d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Dripfringe"
+    "A": "Things/Plant/RM_Dripfringe",
+    "B": "Things/Plant/RM_Dripfringe"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Dripfringe_v1"
    },
    "res": "Things/Plant/RM_Dripfringe",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "dripfringe"
   },
@@ -773,17 +803,23 @@
    "columns": {
     "A": {
      "single": "eadabc9426bc76d4ccab74acd86087b36b4942324f346fc2ac144371bb54df30"
+    },
+    "B": {
+     "single": "9450c823fc1f6aa006270eb5a9e23f90ac4c0e11a8b730fb6f396fb7de8d2e8b"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Rockfinger"
+    "A": "Things/Plant/RM_Rockfinger",
+    "B": "Things/Plant/RM_Rockfinger"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Rockfinger_v1"
    },
    "res": "Things/Plant/RM_Rockfinger",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "rockfinger"
   },
@@ -791,17 +827,23 @@
    "columns": {
     "A": {
      "single": "6dd3c97313037261ae0493b168086585e266bb197f79162fb616bba39dac78ed"
+    },
+    "B": {
+     "single": "a1110b4122e63da1fd7ac9bcfb3fec7778719b410c2dfd6a11a8451fd19d917f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Salvecomb"
+    "A": "Things/Plant/RM_Salvecomb",
+    "B": "Things/Plant/RM_Salvecomb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Salvecomb_v1"
    },
    "res": "Things/Plant/RM_Salvecomb",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "salvecomb"
   },
@@ -809,17 +851,23 @@
    "columns": {
     "A": {
      "single": "eeb6a1d8b1b7cbc54e7beceda649d485f47ece8af08fbccd0571310664db6284"
+    },
+    "B": {
+     "single": "0ecb9766ce2654949dbc2df19f74277fb98a3a8b9f77370f05526433f5a936ea"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Shadefern"
+    "A": "Things/Plant/RM_Shadefern",
+    "B": "Things/Plant/RM_Shadefern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Shadefern_v1"
    },
    "res": "Things/Plant/RM_Shadefern",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "shadefern"
   },
@@ -1268,62 +1316,48 @@
      "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
     },
     "C": {
-     "east": "02443102a6ce72bd206b04f7483861249fabc269c37aa61eac3dac568104e8f3",
-     "north": "384288d3bedda0a0b0924f825f7d7be2695bbd5aef7c8f28b9bbf22f986085e9",
-     "south": "2d7d9221c9f80b42cb795c21835e8ad588e441ce22dbf1fedabf2472186e4b84"
-    },
-    "D": {
      "east": "6ec05e049ec6c0e01e4acfff0214b3e6e71d79f83d3fa076c1768f5cee6faa61",
      "north": "cd19965295c9404aad0435a1517a5cbc927449f3996e10c33063f0ecad4fbb0c",
      "south": "e39eb240a2d3fe1372ff2c5dab6d035b52b876b728862a5cdc470f59ea0d9f5c"
     },
-    "E": {
+    "D": {
      "east": "4350080aa8a79f46d23e29677b4d0e2d1b6f44b6947883960d5184aec4422ae9",
      "north": "6af441e81822dbee1f0708cc151a41204f760bf10573e2833d03b923a29cd16c",
      "south": "95075596f9498905c714cf75c4752cdaf087486ca6653487afef43e98c244535"
     },
-    "F": {
+    "E": {
      "east": "6077aeca1b132c3e840ad80090a059dcc30077e23d2450307319a73e6077c099",
      "north": "ec8e236e1cb82eef53ee73525631c84e4f258669ac6a05604e1dba5e4a65e663",
      "south": "89c7de46f54d40f7562ca57549d66ac4a6022fb0a63a891b633f3e570fc24849"
     },
-    "G": {
+    "F": {
      "east": "a8a17698510e12145500936345c837c640c5765f4c583328fced65b6bb371e76",
      "north": "f5ba9dbde7881347453a192a7fe822410e1ae0c27b02f94dc72d9e9268a2272d",
      "south": "ccb4302f09e86541c2ddd2e64d3aaf4de685cfc8fe820e0c3d42706141c3997a"
     },
-    "H": {
+    "G": {
      "east": "eb68da09a6e6e4408e9d44f1b6354527f7ac015a4f052e475da83c17238465da",
      "north": "2b86e472d073a580434e2976cc6448faa0657604ade31116d9d843fda75bed1f",
      "south": "9701636912ce4d4a3cd449a7ca29e4c35567a0d3ad1f0e0ea844b111eedc59b1"
-    },
-    "I": {
-     "east": "4211aef404d352faa2c371c6148991f3ede159ae53ebaa52a70d90ba8689acce",
-     "north": "180410ff27f77194026df59b76551860bb8ea7c98d637b8ae32bbe9e096e4169",
-     "south": "66fafe41129a51519c705af64630f8cd2b4e769a405806495843448706d5e9b6"
     }
    },
    "graphic_of": {
     "A": "swanimals/Bantha/BanthaW",
     "B": "swanimals/Bantha/BanthaW",
-    "C": "swanimals/Bantha/BanthaW",
-    "D": "swanimals/Bantha/BanthaW_j",
+    "C": "swanimals/Bantha/BanthaW_j",
+    "D": "_byname",
     "E": "_byname",
     "F": "_byname",
-    "G": "_byname",
-    "H": "_byname",
-    "I": "_byname"
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "shipped, shadowed \u2014 StarWarsPatches",
-    "C": "render doubles_redo_bantha_w_v1",
-    "D": "IN GAME \u2014 SWBestiary",
-    "E": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
-    "F": "render longshade_rsw_bantha_v2",
-    "G": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
-    "H": "render longshade_rsw_bantha_v4 \u2014 failed canon check",
-    "I": "render desert_swaca_bantha"
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render longshade_rsw_bantha_v1 \u2014 failed canon check",
+    "E": "render longshade_rsw_bantha_v2",
+    "F": "render longshade_rsw_bantha_v3 \u2014 failed canon check",
+    "G": "render longshade_rsw_bantha_v4 \u2014 failed canon check"
    },
    "res": "swanimals/Bantha/BanthaW",
    "reserved": [
@@ -1333,9 +1367,7 @@
     "D",
     "E",
     "F",
-    "G",
-    "H",
-    "I"
+    "G"
    ],
    "subject_key": "bantha"
   },
@@ -1500,41 +1532,21 @@
   "RSW_Eopie": {
    "columns": {
     "A": {
-     "east": "175b5632c893c4df8e6ee71932e4113efa20826dbae97003f6a70b80a1c9b5d1",
-     "north": "42f39bfebf676e8dbb530025d7adca91170aecf7797363446ec75dd95e90a1a6",
-     "south": "65248648d1d1ed3398fbdba10379c8882d52653044bdaa7d07cb0a3fcd4d4bf8"
-    },
-    "B": {
-     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
-     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
-     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
-    },
-    "C": {
-     "east": "cfa2f35b0ab7f925a65ca88046af813a733647e0d4d43205e694dbd942622ffd",
-     "north": "74771cd249e4ceb62b77515d1c9f8cc8e731c7ccc660411cc29e8258627c0e8b",
-     "south": "17aed1954d36fd31ea7c1c37523b8520515a1b431d2e78930dd57b93dc82b00c"
-    },
-    "D": {
-     "east": "7e13d71016d0628bf81529f2f74723e93f3248dbd23549be7c37a69e3af3d181",
-     "north": "e92587194d7df7e897ab5d81dd063e1ddea115d5fb5bc1180bd1b92ab25500f8",
-     "south": "94905a98a66416e6d3f21124f3a29ec548f2819c2c7961c941d758e23f5011f6"
-    },
-    "E": {
      "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
      "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
      "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
     },
-    "F": {
-     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
-     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
-     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    "B": {
+     "east": "175b5632c893c4df8e6ee71932e4113efa20826dbae97003f6a70b80a1c9b5d1",
+     "north": "42f39bfebf676e8dbb530025d7adca91170aecf7797363446ec75dd95e90a1a6",
+     "south": "65248648d1d1ed3398fbdba10379c8882d52653044bdaa7d07cb0a3fcd4d4bf8"
     },
-    "G": {
-     "east": "aa9d0ab1d5054ef3f7c3cdec779663811fa052358d04c732f25bb40eb6ef04b0",
-     "north": "e88f9a66d31f0841669164a56ebee1e6b8bfbb18f9744760373aa7a5ef571cfa",
-     "south": "d5718381cc41b9dcce1d871324a39c4c4bd01b37da4f7ef4b739719e33fc7441"
+    "C": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
     },
-    "H": {
+    "D": {
      "east": "dfc421ff4d871aeaa1def4a4ed5131c067a9c4ec87eeb2db6ce3c4a0ea027392",
      "north": "550bf96d6a9d4bc119024a4327471895a512fe2980e8b1b47b6dc35ba7e8d99b",
      "south": "f45c7cbc5051f9c07d9a618eee0001e90ef28790fda21a454bcf565f166d59f2"
@@ -1544,32 +1556,20 @@
     "A": "swanimals/Eopie/Eopie",
     "B": "swanimals/Eopie/Eopie",
     "C": "swanimals/Eopie/Eopie",
-    "D": "swanimals/Eopie/Eopie",
-    "E": "swanimals/Eopie/Eopie",
-    "F": "swanimals/Eopie/Eopie",
-    "G": "swanimals/Eopie/Eopie",
-    "H": "swanimals/Eopie/Eopie_j"
+    "D": "swanimals/Eopie/Eopie_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 StarWarsPatches",
-    "C": "render doubles_redo_eopie_j_v1",
-    "D": "render doubles_redo_eopie_v1",
-    "E": "render longshade_rsw_eopie_v1 \u2014 failed canon check",
-    "F": "render desert_swaca_eopie",
-    "G": "render canon_eopie_v1",
-    "H": "IN GAME \u2014 SWBestiary"
+    "B": "history SWBestiary 2026-09-12",
+    "C": "history Jawa_Patches 2026-08-24",
+    "D": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Eopie/Eopie",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "D"
    ],
    "subject_key": "eopie"
   },
@@ -1711,5 +1711,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "23e16b752a330f98"
+ "snapshotId": "cbed561b57c88162"
 }

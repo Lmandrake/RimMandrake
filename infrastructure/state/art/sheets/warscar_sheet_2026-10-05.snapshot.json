@@ -1,6 +1,6 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-05T17:05:05-0700",
+ "built": "2026-10-05T18:51:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -217,17 +217,23 @@
    "columns": {
     "A": {
      "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
+    },
+    "B": {
+     "single": "ea059cd9c8d11745919b7925ffa3604a5f605c1fd1e09feeae0521f237913fbf"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_ScorchedStars"
+    "A": "Things/Plant/RM_ScorchedStars",
+    "B": "Things/Plant/RM_ScorchedStars"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_ScorchedStars_v1"
    },
    "res": "Things/Plant/RM_ScorchedStars",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "scorchedstars"
   },
@@ -474,7 +480,8 @@
     },
     "B": {
      "east": "77a4292c9965e65a85899b04b807ed6d4ea4c4920a9b4dd13cd23434fde32491",
-     "north": "51cd45a03ba38bd6eca7c3ad49967c6b92002b3cc361a2d724a2f833cddaee27"
+     "north": "51cd45a03ba38bd6eca7c3ad49967c6b92002b3cc361a2d724a2f833cddaee27",
+     "south": "c1ad1dae766325ea5321a28563c2786dc4092c5fef42cc0d3e0e849ed5a0c843"
     }
    },
    "graphic_of": {
@@ -498,21 +505,29 @@
      "east": "f85a5d3f850c63533470263f430f3cecc475b43b6a23ff8321afc00c10a2d0ae",
      "north": "bab76fdad45e00f8cc46460c8665f9ec34020af1f449e82d4e49e4e26c4d7a5a",
      "south": "acbeceaaa826fc312ef92bc8540e4cf0b1035e7c7703195cf39e5c888d42314c"
+    },
+    "B": {
+     "east": "49671bc0ae9d708f6cda8e96a731781a8ed832e39a7f41cd2a65e95e6eb0ff1c",
+     "north": "c0989539a2c01b49dc386c137b4d2980a5ef2228e507408e411eacd553f4b53a",
+     "south": "253ed102b700a03b3c4e5c9d7c1f42b9bc1f79a129f864ef2a5f9720bdf19430"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SW_PraetorianExecutioner/SW_PraetorianExecutionerA"
+    "A": "Things/Pawn/Animal/SW_PraetorianExecutioner/SW_PraetorianExecutionerA",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Insectoids 2 - Isopoda geneline"
+    "A": "IN GAME \u2014 Insectoids 2 - Isopoda geneline",
+    "B": "render gapall_SW_Juggernautbeetles_v1"
    },
    "res": "Things/Pawn/Animal/SW_PraetorianExecutioner/SW_PraetorianExecutionerA",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "juggernautbeetles"
   }
  },
  "sheetId": "warscar_sheet_2026-10-05",
- "snapshotId": "17125c8a4c9a9c23"
+ "snapshotId": "3c284ce91426eaea"
 }

@@ -2,7 +2,7 @@
  "sheetId": "cauldron_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
- "snapshotId": "5a9e040111089ab8",
+ "snapshotId": "a5098b1beffa60ce",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Cauldron",
  "reviewStatus": {
@@ -127,9 +127,9 @@
    "prefill": "A"
   },
   "RSW_Mullgoth": {
-   "decision": "A",
+   "decision": "C",
    "note": "",
-   "prefill": "A"
+   "prefill": "C"
   },
   "RSW_Mynock": {
    "decision": "A",
@@ -147,9 +147,9 @@
    "prefill": "A"
   },
   "RSW_Skalder": {
-   "decision": "A",
+   "decision": "C",
    "note": "",
-   "prefill": "A",
+   "prefill": "C",
    "picks": {
     "swanimals/Skalder/Skalder_Swimming": "D"
    }

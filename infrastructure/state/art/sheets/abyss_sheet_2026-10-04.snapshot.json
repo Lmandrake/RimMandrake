@@ -1,9 +1,9 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-05T14:27:56-0700",
+ "built": "2026-10-05T18:41:57-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_CrepuscularBeetle": {
    "columns": {
@@ -589,20 +589,26 @@
     },
     "B": {
      "single": "7bfda23a924d43a7fa24e3c04b4beed610941d937e0dc22961bd1a4852803055"
+    },
+    "C": {
+     "single": "2427a5d26ecfd4f6bad3ba7e469ca77fb927632fbaedb65c2d1626943de8f1c2"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_GiantStikehr",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "Things/Plants/AB_GiantStikehr"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Biomes",
-    "B": "render abyss_morkhul_v1"
+    "B": "render abyss_morkhul_v1",
+    "C": "render gapfin_AB_GiantStikehr_v1"
    },
    "res": "Things/Plants/AB_GiantStikehr",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "giantstikehr"
   },

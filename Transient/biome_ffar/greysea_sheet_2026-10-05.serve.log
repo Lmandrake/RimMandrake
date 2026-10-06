@@ -1,0 +1,47 @@
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\greysea_sheet_2026-10-05.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\greysea_sheet_2026-10-05.decisions.json
+             46 rows · 46 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:45797/?t=B76wjsu6oAlGaIw7B9XuBA
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /img/92592a786b3ed9ea23a0.webp HTTP/1.1" 200 -
+  "GET /img/26701bb3ba801aa4001f.webp HTTP/1.1" 200 -
+  "GET /img/972f1cc7c0ecb8483ff4.webp HTTP/1.1" 200 -
+  "GET /img/b4e7d5b6dd5244d3e16a.webp HTTP/1.1" 200 -
+  "GET /img/3cc8bd1007700f02ee3a.webp HTTP/1.1" 200 -
+  "GET /img/5a57a36031d4427dd08c.webp HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /img/563ee25297be6e3a5316.webp HTTP/1.1" 200 -
+  "GET /img/29ff5254c378e593d245.webp HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -
+  "GET /?t=B76wjsu6oAlGaIw7B9XuBA HTTP/1.1" 200 -

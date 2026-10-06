@@ -2,7 +2,7 @@
  "sheetId": "therot_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/therot_sheet_2026-10-05.snapshot.json",
- "snapshotId": "d80fbdfaa506c480",
+ "snapshotId": "25ff90f314e71303",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_TheRot",
  "reviewStatus": {
@@ -103,9 +103,9 @@
    "prefill": "A"
   },
   "RSW_Mullgoth": {
-   "decision": "A",
+   "decision": "C",
    "note": "",
-   "prefill": "A"
+   "prefill": "C"
   },
   "RSW_ShiroTrap": {
    "decision": "A",

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-05T15:31:18-0700",
+ "built": "2026-10-05T18:48:23-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "live ModsConfig.xml: 639 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -509,91 +509,39 @@
      "south": "5d13d2b683d57087a156ecff1ccfbc3ed69098b8c8472c30209ff6e2c012cd61"
     },
     "B": {
-     "east": "34b7cd6191271598b79ed3af82758ec36351a161d14eb171d41b273c518e37d6",
-     "north": "9f1ccc48d17277a7706a39e4bcd1774556b300b1e3e31155cc41df9cff62c67f",
-     "south": "80351bfa0c6451223ac940af3d32694949b5fce19060f9bb74b4ca5f340a4bef"
-    },
-    "C": {
-     "east": "86b4871117d7cefbd0330066be35ced33fad8ed402745dcb5b8d65b25315514c",
-     "north": "f1742eb2e0e8f96c136ada507158f56031b1e03ee8b37cc58cafaff41321f4c9",
-     "south": "7bc3744798d411631c41b23d24d327676f5cdbb176198bd6c3f44168d1210c17"
-    },
-    "D": {
      "east": "361c4a194cb7c9376c47d7883f5fe2086fccb18eeac6c0acf0f2e38f75388a0a",
      "north": "f3ba2a949cd8cee0f7511a9937da3987e924a3e1a87ea84f99686b442d7381fa",
      "south": "acf5c4deef3e5fb939a13b500336174541623256711c0c607707b6efb342f0b9"
     },
-    "E": {
-     "east": "7b296b4b97161685965b03bc8dee6c18b0c1f7a5379b99d871f694481d26128c",
-     "north": "7fdb3aadd3bf875f728495d09ad796e2b631dfab098486b4edfaa0dab19528be",
-     "south": "facb36d166d34d983d04ce28ca0697fc09f521b7b5d1f1cdd8a321f0f682b2b9"
-    },
-    "F": {
+    "C": {
      "east": "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
      "north": "44db05fb521cd8b507450ba517a3b6c7c097434d9370b494451bddb08765892e",
      "south": "0964a84c920eedd515ae9327bf42115ec42c4190ceedb9388953a97cf36863d9"
     },
-    "G": {
+    "D": {
      "east": "9176e14b0bd117f519fc445dcb968fc49f77f8fe3e31c2390865a64c25598bda",
      "north": "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0",
      "south": "d1ac9b1fee217b3183ef3d0e7ed7dc9f5b8e8866800bd56b9b3d7daf0aa92da5"
-    },
-    "H": {
-     "east": "5cf4fa4cf4132c12467a4d70ba28fd2641873c0941aae5158cfb7c77948eed61",
-     "north": "42cad16183b663a89a5519b691df4e9eb76d1a369a296880049e596ce91fb993",
-     "south": "7cf09ccb14888d506cfa8d19eb6cacc959220fc1a3895ef010d9a47973737d27"
-    },
-    "I": {
-     "east": "5de8fc34379f0bc50e971f8d7a57b5c4c4bd8c73fe502528948ab431d2c630be",
-     "north": "86bba60d5852ae1ab9cfc43c179238120415bb0f1711f26c0709096af04a259f",
-     "south": "2177f9aff64a7adae84c31c39455a6f929b58f2249db69b3bff6b9c9323ad9dd"
-    },
-    "J": {
-     "east": "99e201355a2575e0dd4204babddb936bdfe9880f36fdb48b4e7615a7770533a3"
-    },
-    "K": {
-     "east": "e063093632f7f21e96ff6564145a914f67c74dc0855fac364506b00ad09d02cf"
     }
    },
    "graphic_of": {
     "A": "swanimals/Anooba/Anooba_f",
     "B": "swanimals/Anooba/Anooba_f",
-    "C": "swanimals/Anooba/Anooba_f",
-    "D": "swanimals/Anooba/Anooba_f",
-    "E": "swanimals/Anooba/Anooba_f",
-    "F": "swanimals/Anooba/Anooba_m",
-    "G": "swanimals/Anooba/Anooba_m",
-    "H": "swanimals/Anooba/Anooba_m",
-    "I": "_byname",
-    "J": "_byname",
-    "K": "_byname"
+    "C": "swanimals/Anooba/Anooba_m",
+    "D": "swanimals/Anooba/Anooba_m"
    },
    "labels": {
     "A": "IN GAME \u2014 AnoobaArtOverride",
-    "B": "history AnoobaArtOverride 2026-09-11",
-    "C": "history AnoobaArtOverride 2026-09-13",
-    "D": "history AnoobaArtOverride 2026-09-17",
-    "E": "history SWBestiary 2026-09-12",
-    "F": "IN GAME \u2014 AnoobaArtOverride",
-    "G": "history AnoobaArtOverride 2026-09-17",
-    "H": "history SWBestiary 2026-09-12",
-    "I": "render desert_swaca_anooba",
-    "J": "render anooba_toyfig_a",
-    "K": "render anooba_toyfig_b2"
+    "B": "history AnoobaArtOverride 2026-09-17",
+    "C": "IN GAME \u2014 AnoobaArtOverride",
+    "D": "history AnoobaArtOverride 2026-09-17"
    },
    "res": "swanimals/Anooba/Anooba_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K"
+    "D"
    ],
    "subject_key": "anooba"
   },
@@ -673,118 +621,58 @@
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
     "B": {
-     "east": "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
-     "north": "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
-     "south": "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105"
+     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
     },
     "C": {
-     "east": "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "D": {
-     "east": "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "E": {
-     "east": "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
-     "north": "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
-     "south": "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778"
-    },
-    "F": {
      "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
      "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
      "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
-    "G": {
-     "east": "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
-     "north": "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
-     "south": "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c"
-    },
-    "H": {
-     "east": "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
-     "north": "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
-     "south": "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gizka/Gizka",
     "B": "swanimals/Gizka/Gizka",
-    "C": "swanimals/Gizka/Gizka",
-    "D": "swanimals/Gizka/Gizka",
-    "E": "swanimals/Gizka/Gizka",
-    "F": "swanimals/Gizka/Gizka",
-    "G": "swanimals/Gizka/Gizka",
-    "H": "swanimals/Gizka/Gizka"
+    "C": "swanimals/Gizka/Gizka"
    },
    "labels": {
     "A": "IN GAME \u2014 GizkaArtOverride",
-    "B": "render desert_swaca_gizka",
-    "C": "render pyrelands_gizka_v1",
-    "D": "history GizkaArtOverride 2026-09-14",
-    "E": "history GizkaArtOverride 2026-09-14",
-    "F": "history GizkaArtOverride 2026-09-17",
-    "G": "history GizkaArtOverride 2026-09-17",
-    "H": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render pyrelands_gizka_v1",
+    "C": "history GizkaArtOverride 2026-09-17"
    },
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "C"
    ],
    "subject_key": "gizka"
   },
   "RSW_Iriaz": {
    "columns": {
     "A": {
-     "east": "1c9975dd7e0a36005569f9b01cb76475f19d2b10aad8804576133cc9ee5538c0",
-     "north": "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67",
-     "south": "21a39e0981d79fa8f04c97d063b04018936b710b6f6184c1f4660fbb3450fca9"
-    },
-    "B": {
-     "east": "51a1e8a59765bae754d5a286305875fcb75a18485e1a365aa85b74bfe0f211f9",
-     "north": "2b33ce06b59e38194e148128657a69bfa40eee4fbb293c1bffc822b9e6f0466e",
-     "south": "0c71a8259e7497dfe8798e1ca10309cb7f6137b0eefcc5a78b85d005c4f34139"
-    },
-    "C": {
      "east": "194f1deddfdebe55eee756e4ca6cb6cce6dcb255fe1384f42e29525cf584e4d4",
      "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
      "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
     },
-    "D": {
-     "east": "1c5e230d80f6120818341b52a7a274b63a02fd7aed6f484394949ba00804ead9"
-    },
-    "E": {
-     "east": "7c9f26fc6ee999bf673977843d6989fd6f3cf0437143f84a308ff942e99f5889",
-     "north": "bee207641dd4880eac99b682e44a1187ff016697eff485c6b308b3dc334b1376",
-     "south": "716520e54f7f0860184504c85e8a0068cd30f3f2302ada30edee41a8e3de57e6"
-    },
-    "F": {
-     "east": "b62c6edacee6405152a7f039ff9f2eec0d527646da2f7352ce311d24dcec33d3",
-     "north": "847ed6c765b78ceefc6511a5a4ea268ae5a1f0de20fec7a9d37eba2ca97e1294",
-     "south": "0de8eff19362b2c97c17f8dc2f7511343ded2d81842c805b60c635b9064b3363"
-    },
-    "G": {
-     "east": "4f79c85dda5a8edfdb6c06f54482bac3edfceff6c6c0c18eb05315d2e353a053",
-     "north": "e40bc3c2adf55f194fd6feaac6d2c2938c2b3c0984bfa4644f777d1417ab9a47",
-     "south": "2a7cb65763c0ff45061f212f70c062bba0b67d7ef3b1bf13195790e4b8734959"
-    },
-    "H": {
+    "B": {
      "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
      "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
      "south": "2a992e80b52bdfb60bacf805ea2a912f8f24492bfc64741333d5e76e0f61ea14"
     },
-    "I": {
+    "C": {
      "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
      "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
      "south": "dbf9e182ffe4b57075ce9f21a9505c6f389901e6ab11db6e475a761c32295be6"
+    },
+    "D": {
+     "east": "51a1e8a59765bae754d5a286305875fcb75a18485e1a365aa85b74bfe0f211f9",
+     "north": "2b33ce06b59e38194e148128657a69bfa40eee4fbb293c1bffc822b9e6f0466e",
+     "south": "0c71a8259e7497dfe8798e1ca10309cb7f6137b0eefcc5a78b85d005c4f34139"
+    },
+    "E": {
+     "east": "1c9975dd7e0a36005569f9b01cb76475f19d2b10aad8804576133cc9ee5538c0",
+     "north": "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67",
+     "south": "21a39e0981d79fa8f04c97d063b04018936b710b6f6184c1f4660fbb3450fca9"
     }
    },
    "graphic_of": {
@@ -792,22 +680,14 @@
     "B": "swanimals/Iriaz/Iriaz",
     "C": "swanimals/Iriaz/Iriaz",
     "D": "swanimals/Iriaz/Iriaz",
-    "E": "swanimals/Iriaz/Iriaz",
-    "F": "swanimals/Iriaz/Iriaz",
-    "G": "swanimals/Iriaz/Iriaz",
-    "H": "swanimals/Iriaz/Iriaz",
-    "I": "swanimals/Iriaz/Iriaz"
+    "E": "swanimals/Iriaz/Iriaz"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "shipped, shadowed \u2014 IriazArtOverride",
-    "C": "render longshade_rsw_iriaz_v1",
-    "D": "render doubles_redo_iriaz_edit_v1",
-    "E": "render desert_swaca_iriaz",
-    "F": "render pyrelands_iriaz_v1",
-    "G": "history IriazArtOverride 2026-09-14",
-    "H": "history IriazArtOverride 2026-09-17",
-    "I": "history IriazArtOverride 2026-09-18"
+    "B": "history IriazArtOverride 2026-09-17",
+    "C": "history IriazArtOverride 2026-09-18",
+    "D": "history IriazArtOverride 2026-09-20",
+    "E": "history SWBestiary 2026-09-12"
    },
    "res": "swanimals/Iriaz/Iriaz",
    "reserved": [
@@ -815,11 +695,7 @@
     "B",
     "C",
     "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I"
+    "E"
    ],
    "subject_key": "iriaz"
   },
@@ -831,69 +707,39 @@
      "south": "cd9244f5a57e7a021b068852551e540e656ec50fc817222f218bf7e96934661b"
     },
     "B": {
-     "east": "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
-     "north": "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
-     "south": "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201"
-    },
-    "C": {
-     "east": "be8c539adf93e9502fb56372c9666142c352b0c59dacd710ae0d8283849ce83d"
-    },
-    "D": {
      "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
      "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
      "south": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847"
     },
-    "E": {
-     "east": "65c74d2b395db00a4fde2484de1eca85695d63cfcd6962282f9a76d18fca08c8",
-     "north": "98f37666c7df36beebabb3e58bf908d5631747abcedd0522ee3b1b73fbe416fb",
-     "south": "b12317061a53c913cd657f739d5477c9f9e82cd95fc66b0e8a7602f2aa8dfa65"
-    },
-    "F": {
+    "C": {
      "east": "faa1dc986f17054cb20da7c577288428e364f18581ad97f80cabeecf5caa63d7",
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "G": {
+    "D": {
      "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
      "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
      "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
-    "H": {
-     "east": "bb31936d090a504a8a3c3fdb3096792b6284d7e6ba9f63077d763b63a0831bc0",
-     "north": "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167",
-     "south": "9006f37f9c6b7b3fca57cdba873c5106ce5955695342a46a6ad14484e0e9a5e0"
     }
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
     "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_f",
-    "D": "swanimals/Nuna/Nuna_f",
-    "E": "swanimals/Nuna/Nuna_f",
-    "F": "swanimals/Nuna/Nuna_m",
-    "G": "swanimals/Nuna/Nuna_m",
-    "H": "swanimals/Nuna/Nuna_m"
+    "C": "swanimals/Nuna/Nuna_m",
+    "D": "swanimals/Nuna/Nuna_m"
    },
    "labels": {
     "A": "IN GAME \u2014 NunaArtOverride",
-    "B": "history NunaArtOverride 2026-09-13",
-    "C": "history NunaArtOverride 2026-09-14",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "history SWBestiary 2026-09-09",
-    "F": "IN GAME \u2014 NunaArtOverride",
-    "G": "history NunaArtOverride 2026-09-17",
-    "H": "history SWBestiary 2026-09-09"
+    "B": "history NunaArtOverride 2026-09-17",
+    "C": "IN GAME \u2014 NunaArtOverride",
+    "D": "history NunaArtOverride 2026-09-17"
    },
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "D"
    ],
    "subject_key": "nuna"
   },
@@ -1053,5 +899,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "fa751fabbec44d5c"
+ "snapshotId": "734ed8b1de0c1dd5"
 }

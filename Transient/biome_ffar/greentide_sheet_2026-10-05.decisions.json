@@ -2,7 +2,7 @@
  "sheetId": "greentide_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/greentide_sheet_2026-10-05.snapshot.json",
- "snapshotId": "27a6f6414a440308",
+ "snapshotId": "02c66bf0ba36634d",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Greentide",
  "reviewStatus": {
@@ -70,7 +70,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Convor/Convor_f": "C"
+    "swanimals/Convor/Convor_f": "B"
    }
   },
   "RSW_Dalgo": {
@@ -121,7 +121,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Hawkbat/Hawkbat_j": "E"
+    "swanimals/Hawkbat/Hawkbat_j": "F"
    }
   },
   "RSW_Hssiss": {
@@ -164,7 +164,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Nuna/Nuna_m": "F"
+    "swanimals/Nuna/Nuna_m": "C"
    }
   },
   "RSW_PekoPeko": {
@@ -200,12 +200,12 @@
    "prefill": "A"
   },
   "RSW_Worrt": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A",
+   "prefill": "B",
    "picks": {
-    "swanimals/Worrt/Worrt_Swimming": "D",
-    "swanimals/Worrt/Worrt_j": "E"
+    "swanimals/Worrt/Worrt_Swimming": "C",
+    "swanimals/Worrt/Worrt_j": "D"
    }
   },
   "VFEI2_Swarmling": {

@@ -1,6 +1,6 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-05T16:33:28-0700",
+ "built": "2026-10-05T18:46:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -123,17 +123,23 @@
    "columns": {
     "A": {
      "single": "7aa923810a69e2d928946e169d46f78ae7045d0252ccef7e45474142c6b260d7"
+    },
+    "B": {
+     "single": "feffea5c984785117069a338ef294ae243f7793193fd8576dea8fc61af1ea113"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Brunnock/RM_Brunnock_a"
+    "A": "Things/Plant/RM_Brunnock/RM_Brunnock_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Brunnock_v1"
    },
    "res": "Things/Plant/RM_Brunnock/RM_Brunnock_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "brunnock"
   },
@@ -161,17 +167,23 @@
    "columns": {
     "A": {
      "single": "13f9e5861ee71efd33ca86bd0dc4df12a31b305571a9d7bbaf1f5d804a5a244f"
+    },
+    "B": {
+     "single": "0ada983635227a01c8a44583df62f210f414f9b8895af85d2ead38919b3129e9"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Cundral/RM_Cundral_a"
+    "A": "Things/Plant/RM_Cundral/RM_Cundral_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Cundral_v1"
    },
    "res": "Things/Plant/RM_Cundral/RM_Cundral_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "cundral"
   },
@@ -235,17 +247,23 @@
    "columns": {
     "A": {
      "single": "cf0123afcf15c0b85d00ff0c61a2ffd305f6326356f9f47c71ea0980274db3a4"
+    },
+    "B": {
+     "single": "2db7bf15b49501be33e65d87976d0d227c9a85581110dfbc4cabf3823c336316"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a"
+    "A": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Gorbeleth_v1"
    },
    "res": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gorbeleth"
   },
@@ -405,17 +423,23 @@
    "columns": {
     "A": {
      "single": "89b69acbf3c05c2142745d8b7501c35d37237cd1f4403c886acfa090c2550f05"
+    },
+    "B": {
+     "single": "7010e705017aa3bcb50c2f1318282be8fc60a486fb581c7b8e92ff7e53f5033b"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Mourvel/RM_Mourvel_a"
+    "A": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Mourvel_v1"
    },
    "res": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "mourvel"
   },
@@ -441,17 +465,23 @@
    "columns": {
     "A": {
      "single": "c3f63f0fc88ec83d3274a36e8f203beedcf8c91f06429ccaaf982474a1758845"
+    },
+    "B": {
+     "single": "fb6f400e76d92b1752aa52f4f3bd8167fc0b4146a28fe660c0a4d7917e629f5d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Phorrik/RM_Phorrik_a"
+    "A": "Things/Plant/RM_Phorrik/RM_Phorrik_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Phorrik_v1"
    },
    "res": "Things/Plant/RM_Phorrik/RM_Phorrik_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "phorrik"
   },
@@ -495,17 +525,23 @@
    "columns": {
     "A": {
      "single": "a9c5a50c1652458bef2b3338b3bad747dce112330f8dbe22549335dc79c67918"
+    },
+    "B": {
+     "single": "46ca7cfaa2934ab9020a9f786b143d223c22c4859702aed4275d9e0ab1ea7378"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a"
+    "A": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Sarnstilt_v1"
    },
    "res": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sarnstilt"
   },
@@ -513,17 +549,23 @@
    "columns": {
     "A": {
      "single": "8d8ee608c77c9c38ee6dcc06a539ec53168b52226152f94c244a1baf5e4e8beb"
+    },
+    "B": {
+     "single": "5a3e55b92ba208e14f10796e413bab7cd258b3de4eec12bfc0e6e9bbaaa05add"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Sarquin/RM_Sarquin_a"
+    "A": "Things/Plant/RM_Sarquin/RM_Sarquin_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Sarquin_v1"
    },
    "res": "Things/Plant/RM_Sarquin/RM_Sarquin_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sarquin"
   },
@@ -889,11 +931,6 @@
      "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "B": {
-     "east": "586ae4a057862efe2606653a554a52399658aef0373b6a4b521edd0d496ec611",
-     "north": "bf5ec7d615598a43b741ecf4a22ea06a6179f5e8ce4db206aeafe6dbef9e7cc0",
-     "south": "56000d2ee80f577c13e6df605e08bf340ff2e3608a21aa9a91aeba6557b6dad6"
-    },
-    "C": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
      "north": "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
      "south": "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
@@ -901,19 +938,16 @@
    },
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
-    "B": "swanimals/Convor/Convor",
-    "C": "swanimals/Convor/Convor_f"
+    "B": "swanimals/Convor/Convor_f"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_convor",
-    "C": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "subject_key": "convor"
   },
@@ -1171,71 +1205,29 @@
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
     "B": {
-     "east": "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
-     "north": "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
-     "south": "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105"
+     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
     },
     "C": {
-     "east": "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "D": {
-     "east": "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "E": {
-     "east": "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
-     "north": "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
-     "south": "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778"
-    },
-    "F": {
      "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
      "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
      "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
-    "G": {
-     "east": "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
-     "north": "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
-     "south": "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c"
-    },
-    "H": {
-     "east": "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
-     "north": "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
-     "south": "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gizka/Gizka",
     "B": "swanimals/Gizka/Gizka",
-    "C": "swanimals/Gizka/Gizka",
-    "D": "swanimals/Gizka/Gizka",
-    "E": "swanimals/Gizka/Gizka",
-    "F": "swanimals/Gizka/Gizka",
-    "G": "swanimals/Gizka/Gizka",
-    "H": "swanimals/Gizka/Gizka"
+    "C": "swanimals/Gizka/Gizka"
    },
    "labels": {
     "A": "IN GAME \u2014 GizkaArtOverride",
-    "B": "render desert_swaca_gizka",
-    "C": "render pyrelands_gizka_v1",
-    "D": "history GizkaArtOverride 2026-09-14",
-    "E": "history GizkaArtOverride 2026-09-14",
-    "F": "history GizkaArtOverride 2026-09-17",
-    "G": "history GizkaArtOverride 2026-09-17",
-    "H": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render pyrelands_gizka_v1",
+    "C": "history GizkaArtOverride 2026-09-17"
    },
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "C"
    ],
    "subject_key": "gizka"
   },
@@ -1247,21 +1239,26 @@
      "south": "d9f99592a4ac558dd830abd769eecbbb96419afbe4963a5b4a268f6c637aa82c"
     },
     "B": {
+     "east": "2baefff4cc344b92a99562b20218d5036fe0fcdbdad9f2a7ee83b31eeb610e29",
+     "north": "4cf09882b15596da1674bc5ffe481a646a82952def4fc9d35442e1bb2671c9e8",
+     "south": "7afd895597a11a30544db11328d2a8a892e1ac294afdda86f661639e51a6c250"
+    },
+    "C": {
      "east": "eefdc184e0cf4835d7a64288d3ae8a08044502cb383be9ba457793793a1b786c",
      "north": "0e30c9f82de94bf2cc3c5f758eda6673bb579a31f25e79f905c0428010042fd5",
      "south": "480039bb2a2745e2bc26a020f1f25d1eeda0a85cd6882a05749147f7fb9f0473"
     },
-    "C": {
+    "D": {
      "east": "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
      "north": "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e",
      "south": "32577df702bb3bdf7e279f22d42bd251656f801f4385d401962ff1b90353d7a9"
     },
-    "D": {
+    "E": {
      "east": "9e907167b6681779dd9af34764827a3ab9365e901ef8e3c8792766a45038526c",
      "north": "c726ee6b94b160bafa486d3c167ac3ae08c62de7bd31a2c38633e2984d1ee39c",
      "south": "1c4c4469265ef5f688089c3f965eb2ad37aa7a6a286ee6fb27b2a5a21f062bbf"
     },
-    "E": {
+    "F": {
      "east": "66bc6b13db614549528fc043b84cb2222562fe74470d8b35f377cac780e457f2",
      "north": "0a1878e64116550c660809ebc0fa8ef685e91a91b362f39d1517122053e3ec43",
      "south": "f3d943c350c13ff14c199af6738213b8b961b140a0fea123728a86a5242dbd72"
@@ -1272,14 +1269,16 @@
     "B": "swanimals/Hawkbat/Hawkbat",
     "C": "swanimals/Hawkbat/Hawkbat",
     "D": "swanimals/Hawkbat/Hawkbat",
-    "E": "swanimals/Hawkbat/Hawkbat_j"
+    "E": "swanimals/Hawkbat/Hawkbat",
+    "F": "swanimals/Hawkbat/Hawkbat_j"
    },
    "labels": {
     "A": "IN GAME \u2014 HawkbatArtOverride",
-    "B": "render canon_hawkbat_v1",
-    "C": "history HawkbatArtOverride 2026-09-13",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render gapbs_RSW_Hawkbat_juv_v1",
+    "C": "render canon_hawkbat_v1",
+    "D": "history HawkbatArtOverride 2026-09-13",
+    "E": "donor original \u2014 mlie.starwarsanimalcollection",
+    "F": "donor original \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swanimals/Hawkbat/Hawkbat",
    "reserved": [
@@ -1287,7 +1286,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "hawkbat"
   },
@@ -1455,69 +1455,39 @@
      "south": "cd9244f5a57e7a021b068852551e540e656ec50fc817222f218bf7e96934661b"
     },
     "B": {
-     "east": "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
-     "north": "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
-     "south": "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201"
-    },
-    "C": {
-     "east": "be8c539adf93e9502fb56372c9666142c352b0c59dacd710ae0d8283849ce83d"
-    },
-    "D": {
      "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
      "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
      "south": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847"
     },
-    "E": {
-     "east": "65c74d2b395db00a4fde2484de1eca85695d63cfcd6962282f9a76d18fca08c8",
-     "north": "98f37666c7df36beebabb3e58bf908d5631747abcedd0522ee3b1b73fbe416fb",
-     "south": "b12317061a53c913cd657f739d5477c9f9e82cd95fc66b0e8a7602f2aa8dfa65"
-    },
-    "F": {
+    "C": {
      "east": "faa1dc986f17054cb20da7c577288428e364f18581ad97f80cabeecf5caa63d7",
      "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
      "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
     },
-    "G": {
+    "D": {
      "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
      "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
      "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
-    },
-    "H": {
-     "east": "bb31936d090a504a8a3c3fdb3096792b6284d7e6ba9f63077d763b63a0831bc0",
-     "north": "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167",
-     "south": "9006f37f9c6b7b3fca57cdba873c5106ce5955695342a46a6ad14484e0e9a5e0"
     }
    },
    "graphic_of": {
     "A": "swanimals/Nuna/Nuna_f",
     "B": "swanimals/Nuna/Nuna_f",
-    "C": "swanimals/Nuna/Nuna_f",
-    "D": "swanimals/Nuna/Nuna_f",
-    "E": "swanimals/Nuna/Nuna_f",
-    "F": "swanimals/Nuna/Nuna_m",
-    "G": "swanimals/Nuna/Nuna_m",
-    "H": "swanimals/Nuna/Nuna_m"
+    "C": "swanimals/Nuna/Nuna_m",
+    "D": "swanimals/Nuna/Nuna_m"
    },
    "labels": {
     "A": "IN GAME \u2014 NunaArtOverride",
-    "B": "history NunaArtOverride 2026-09-13",
-    "C": "history NunaArtOverride 2026-09-14",
-    "D": "history NunaArtOverride 2026-09-17",
-    "E": "history SWBestiary 2026-09-09",
-    "F": "IN GAME \u2014 NunaArtOverride",
-    "G": "history NunaArtOverride 2026-09-17",
-    "H": "history SWBestiary 2026-09-09"
+    "B": "history NunaArtOverride 2026-09-17",
+    "C": "IN GAME \u2014 NunaArtOverride",
+    "D": "history NunaArtOverride 2026-09-17"
    },
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H"
+    "D"
    ],
    "subject_key": "nuna"
   },
@@ -1544,6 +1514,11 @@
      "south": "b64f05d78665c7b8de078112810c61e7e69659ead2116e644f5580430952d6e3"
     },
     "E": {
+     "east": "0c7ca701265dcd06ae0af521bdc97eb1f758e502e7321a9d2802958668f4cfd7",
+     "north": "5bbd836d361411536ebd3037a04b49e30e8af5696bd59370752cdda7ae89791e",
+     "south": "7fdd43738c8a59d743c8762083dfb005b095770049e12c0d89a98c7cea91a46c"
+    },
+    "F": {
      "east": "cbf21a0e099872f5e9185dab6b342040ade308e31892fe3d3a411d652a8ffbe5"
     }
    },
@@ -1552,14 +1527,16 @@
     "B": "swanimals/PekoPeko/PekoPeko_f",
     "C": "swanimals/PekoPeko/PekoPeko_f",
     "D": "swanimals/PekoPeko/PekoPeko_m",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 PekoPekoArtOverride",
     "B": "history PekoPekoArtOverride 2026-09-13",
     "C": "donor original \u2014 mlie.starwarsanimalcollection",
     "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "render pekopeko_toyfig_b"
+    "E": "render gapbs_RSW_PekoPeko_male_v1 \u2014 failed canon check",
+    "F": "render pekopeko_toyfig_b"
    },
    "res": "swanimals/PekoPeko/PekoPeko_f",
    "reserved": [
@@ -1567,7 +1544,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "pekopeko"
   },
@@ -1698,68 +1676,47 @@
      "south": "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8"
     },
     "C": {
-     "east": "0d25d843fffa5876615e905f0ccc249c63882e21874343320f599fa5c68d9980",
-     "north": "e06d8c5f61a6f72acc2911ec27c16efefa22270b68a1b3f863127107cfec76be",
-     "south": "05d180675dea6c60656c6a44da57d97c2b8e915aaf6c938e9fa30f3f76977f16"
-    },
-    "D": {
      "east": "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
      "north": "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
      "south": "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4"
-    },
-    "E": {
-     "east": "48b2bd134fbf6255e5dd5dd7f93e03c9d819dbd20b27659a7027fb2406c53fa1",
-     "north": "2bd6aed2c2d677168663716d5323dca6c002b9e8878da367acd111c740238be2",
-     "south": "e9021f2cd5c90f25fc1a524af6a857b2fc5a0da0a14706599ea7a23269c7b290"
     }
    },
    "graphic_of": {
     "A": "swanimals/Whisperbird/Whisperbird",
     "B": "swanimals/Whisperbird/Whisperbird",
-    "C": "swanimals/Whisperbird/Whisperbird",
-    "D": "swanimals/Whisperbird/Whisperbird",
-    "E": "swanimals/Whisperbird/Whisperbird"
+    "C": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
     "A": "IN GAME \u2014 WhisperbirdArtOverride",
     "B": "render canon_whisperbird_v1",
-    "C": "render desertportb_whisperbird",
-    "D": "history WhisperbirdArtOverride 2026-09-13",
-    "E": "donor original \u2014 mlie.starwarsanimalcollection"
+    "C": "history WhisperbirdArtOverride 2026-09-13"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E"
+    "C"
    ],
    "subject_key": "whisperbird"
   },
   "RSW_Worrt": {
    "columns": {
     "A": {
-     "east": "a20ba19fd943ca9f36bceec6a83fb4897ce1b8a0f7db824c56f56c029de4acf1",
-     "north": "f393a11d4a583f599237f626a68e16158f3f8253e8c8733e451d598163217b3d",
-     "south": "72d5bf14a18d6b35ad9ca89e8e17b535c03ee8bad15ebc7b406288c249d88302"
-    },
-    "B": {
      "east": "496a899613e108c6898e48ee59575d3a4d77c94462ca26c6fc29be21a98224b3",
      "north": "55b8ff5fcf8421b1febf1a129323c2b5700b1ac2028824ce53ce0e39bb9e014e",
      "south": "1e4fd8c4ff8ee59b53da989e19d0d0c4503849f85c05447aaeca499e2b042ac0"
     },
-    "C": {
-     "east": "9712e4e24e8ab98b32091de0dde517cfe4fb2758cf8e19fa32a46add7eb91d91",
-     "north": "153ae21be8519183a063a2be6ea724fe28e9744b3edfd0e49305df8910b5854d",
-     "south": "85cdba37080657ec73a2aaffb545fa9047856d94fba3ca17ab103aaee10fc7af"
+    "B": {
+     "east": "a20ba19fd943ca9f36bceec6a83fb4897ce1b8a0f7db824c56f56c029de4acf1",
+     "north": "f393a11d4a583f599237f626a68e16158f3f8253e8c8733e451d598163217b3d",
+     "south": "72d5bf14a18d6b35ad9ca89e8e17b535c03ee8bad15ebc7b406288c249d88302"
     },
-    "D": {
+    "C": {
      "east": "ab4f988c25f4ca9f57b55525c2e53f79a94f6804b456f992f5869d22840235a7",
      "north": "6f3a1a99461059f6ebefd2dfd5f8da247f130d01db570725a29fc4a98e50d9e8",
      "south": "6c8a84dcdb408c65edf8c02cbe3dd8da476e76f964d3db087cf5bd9f46bdb2db"
     },
-    "E": {
+    "D": {
      "east": "c51f5b90307d594f760946c26dbcd8871f44f001fae622966a5ef73c5fc21f68",
      "north": "e576bc44d61dba9cdb3ee1bef59cab4fe235d039b55f6c43342f1b36d74f6f56",
      "south": "c583fb160f03bdfe54f6b015ee86247e0edd1bae5feffd75be40e0c305536842"
@@ -1768,24 +1725,21 @@
    "graphic_of": {
     "A": "swanimals/Worrt/Worrt",
     "B": "swanimals/Worrt/Worrt",
-    "C": "swanimals/Worrt/Worrt",
-    "D": "swanimals/Worrt/Worrt_Swimming",
-    "E": "swanimals/Worrt/Worrt_j"
+    "C": "swanimals/Worrt/Worrt_Swimming",
+    "D": "swanimals/Worrt/Worrt_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render longshade_rsw_worrt_v1",
-    "C": "render desert_swaca_worrt",
-    "D": "IN GAME \u2014 SWBestiary",
-    "E": "IN GAME \u2014 SWBestiary"
+    "B": "history SWBestiary 2026-09-18",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Worrt/Worrt",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E"
+    "D"
    ],
    "subject_key": "worrt"
   },
@@ -1819,5 +1773,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "27a6f6414a440308"
+ "snapshotId": "02c66bf0ba36634d"
 }

@@ -1,0 +1,222 @@
+{
+ "RM_Abyss": {
+  "rgb": [
+   24,
+   24,
+   34
+  ],
+  "source": "hand-measured override"
+ },
+ "RM_BlueDesert": {
+  "rgb": [
+   155,
+   164,
+   172
+  ],
+  "source": "hand-measured override"
+ },
+ "RM_Cauldron": {
+  "rgb": [
+   93,
+   76,
+   61
+  ],
+  "source": "hand-measured override"
+ },
+ "RM_Contagion": {
+  "rgb": [
+   145,
+   113,
+   115
+  ],
+  "source": "hand-measured override"
+ },
+ "RM_FeverWood": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "RM_FloodedCanyon": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ },
+ "RM_GelatinousSlime": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "RM_Slime_Hardened -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "RM_Greentide": {
+  "rgb": [
+   93,
+   76,
+   62
+  ],
+  "source": "Soil -> Terrain/Surfaces/Soil (Soil.png, mean of 1048576 opaque px)"
+ },
+ "RM_GreySea": {
+  "rgb": [
+   69,
+   78,
+   88
+  ],
+  "source": "RM_WaterBrineDeep -> Terrain/Surfaces/WaterDeepRamp (WaterDeepRamp.png, mean of 4096 opaque px)"
+ },
+ "RM_LanternDeeps": {
+  "rgb": [
+   91,
+   74,
+   57
+  ],
+  "source": "Gravel -> Terrain/Surfaces/Gravel (Gravel.png, mean of 1048576 opaque px)"
+ },
+ "RM_LeaningScrub": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ },
+ "RM_LongShade": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ },
+ "RM_Miasma": {
+  "rgb": [
+   74,
+   57,
+   45
+  ],
+  "source": "Mud -> Terrain/Surfaces/Mud (Mud.png, mean of 1048576 opaque px)"
+ },
+ "RM_NightsideIce": {
+  "rgb": [
+   155,
+   164,
+   172
+  ],
+  "source": "Ice -> Terrain/Surfaces/Ice (Ice.png, mean of 1048576 opaque px)"
+ },
+ "RM_Pyrelands": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "RM_FE_Ground_Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ },
+ "RM_RustCathedral": {
+  "rgb": [
+   38,
+   38,
+   38
+  ],
+  "source": "RM_RustCathedral_PolymerFloor -> Terrain/Surfaces/AB_Polymer (AB_Polymer.png, mean of 1048576 opaque px)"
+ },
+ "RM_Stillsand": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "hand-measured override"
+ },
+ "RM_Test": {
+  "rgb": null,
+  "source": "BiomeDef has no terrainsByFertility in the def dump"
+ },
+ "RM_TheChill": {
+  "rgb": [
+   69,
+   78,
+   88
+  ],
+  "source": "RM_TheChillDeep -> Terrain/Surfaces/WaterDeepRamp (WaterDeepRamp.png, mean of 4096 opaque px)"
+ },
+ "RM_TheForge": {
+  "rgb": [
+   68,
+   65,
+   63
+  ],
+  "source": "AB_BlackPebbles -> Terrain/Surfaces/AB_BlackPebbles (AB_BlackPebbles.png, mean of 1048576 opaque px)"
+ },
+ "RM_TheRot": {
+  "rgb": [
+   127,
+   127,
+   127
+  ],
+  "source": "RM_TheRotGrass -> RotSporeKit/Terrains/MycelialMatting (MycelialMatting.png, mean of 1048576 opaque px)"
+ },
+ "RM_TheScald": {
+  "rgb": [
+   69,
+   78,
+   88
+  ],
+  "source": "RUT_ScaldWaterOceanDeep -> Terrain/Surfaces/WaterDeepRamp (WaterDeepRamp.png, mean of 4096 opaque px)"
+ },
+ "RM_TheSump": {
+  "rgb": [
+   161,
+   155,
+   145
+  ],
+  "source": "AB_GrassySand -> Terrain/Surfaces/AB_GrassySand (AB_GrassySand.png, mean of 262144 opaque px)"
+ },
+ "RM_TwilightSea": {
+  "rgb": [
+   69,
+   78,
+   88
+  ],
+  "source": "WaterOceanDeep -> Terrain/Surfaces/WaterDeepRamp (WaterDeepRamp.png, mean of 4096 opaque px)"
+ },
+ "RM_Warscar": {
+  "rgb": [
+   96,
+   92,
+   88
+  ],
+  "source": "AncientMegastructure -> Terrain/Surfaces/AncientMegastructure (AncientMegastructure.png, mean of 1048576 opaque px)"
+ },
+ "RM_Wasteland": {
+  "rgb": [
+   107,
+   95,
+   77
+  ],
+  "source": "VolcanoSoil -> Terrain/VolcanoSoil (VolcanoSoil.png, mean of 1048576 opaque px)"
+ },
+ "RM_Webwork": {
+  "rgb": [
+   74,
+   57,
+   45
+  ],
+  "source": "Mud -> Terrain/Surfaces/Mud (Mud.png, mean of 1048576 opaque px)"
+ },
+ "RM_WeepingStones": {
+  "rgb": [
+   126,
+   110,
+   91
+  ],
+  "source": "Sand -> Terrain/Surfaces/Sand (Sand.png, mean of 1048576 opaque px)"
+ }
+}

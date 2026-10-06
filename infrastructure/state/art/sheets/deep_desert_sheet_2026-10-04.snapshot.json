@@ -1,6 +1,6 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-05T13:56:44-0700",
+ "built": "2026-10-05T18:43:21-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -718,61 +718,24 @@
      "north": "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
      "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     },
-    "B": {
-     "east": "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
-     "north": "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
-     "south": "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105"
-    },
-    "C": {
-     "east": "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "D": {
-     "east": "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
-     "north": "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
-    },
-    "E": {
-     "east": "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
-     "north": "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
-     "south": "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778"
-    },
     "F": {
      "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
      "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
      "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
     },
-    "G": {
-     "east": "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
-     "north": "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
-     "south": "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c"
-    },
-    "H": {
-     "east": "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
-     "north": "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
-     "south": "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede"
+    "I": {
+     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gizka/Gizka",
-    "B": "swanimals/Gizka/Gizka",
-    "C": "swanimals/Gizka/Gizka",
-    "D": "swanimals/Gizka/Gizka",
-    "E": "swanimals/Gizka/Gizka",
     "F": "swanimals/Gizka/Gizka",
-    "G": "swanimals/Gizka/Gizka",
-    "H": "swanimals/Gizka/Gizka"
+    "I": "swanimals/Gizka/Gizka"
    },
    "labels": {
     "A": "IN GAME \u2014 GizkaArtOverride",
-    "B": "render desert_swaca_gizka",
-    "C": "render pyrelands_gizka_v1",
-    "D": "history GizkaArtOverride 2026-09-14",
-    "E": "history GizkaArtOverride 2026-09-14",
     "F": "history GizkaArtOverride 2026-09-17",
-    "G": "history GizkaArtOverride 2026-09-17",
-    "H": "donor original \u2014 mlie.starwarsanimalcollection"
+    "I": "render pyrelands_gizka_v1"
    },
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
@@ -783,7 +746,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "subject_key": "gizka"
   },
@@ -967,59 +931,26 @@
      "north": "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e",
      "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
     },
-    "B": {
-     "east": "32f31778fac291590b1b04f8e1dd2b1e88c6b8f0275221fa2f505e7f38b58865",
-     "north": "84a47f2f6f0db216489e45e403f678093b583197e2c0f5212cbdec2ce66bf214",
-     "south": "17cfa52e4d5af17e915ad111daad4a7284ba2e535218114039caa9ba8ad9908e"
-    },
-    "C": {
-     "south": "cb138e25582720a3b862c84ff7cc7819a7f4d6c7a80fa4420b9dceade4641774"
-    },
     "D": {
      "east": "e9657aa9c5a87f3a63204189dd787b792237ba0cb535b8fcc59839bae374bb4e",
      "north": "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e",
      "south": "54b3b5929300b30db237b46a1dc9f168f6341e1b3496c250ffbbf749d6f8e4f8"
     },
-    "E": {
-     "east": "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
-     "north": "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57",
-     "south": "ea3297c44fad8e13acc106067e1896e9d3e0e6f6c29d4e8488dddb82835b4f43"
-    },
     "F": {
      "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
      "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
      "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
-    },
-    "G": {
-     "east": "dc85f8e03d8cdc19debf206a703559c0bcf08badce9b0704ef696f39d3e41eb8",
-     "north": "062137f7c37a33b27a3214694fa8d888f3017edca050f582267fc11b7d4a6518",
-     "south": "1072144b2279549094eeddeca784fd0709294e2acedf75927de357be3275e9a6"
-    },
-    "H": {
-     "east": "24f8a4abba85a390e5675c7a5a6c0faad088d5d36b4e974a326d1f3dca4e7a80",
-     "north": "23adc329784f9f3a887e839a8a585230793477a14adcc935053c17c5282dce84",
-     "south": "1a5b3c7c7c8ca65328117b3256594fbe07a3bec7ddeb3ad7a90179701eb4da87"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kreetle/Kreetle",
-    "B": "swanimals/Kreetle/Kreetle",
-    "C": "swanimals/Kreetle/Kreetle",
     "D": "swanimals/Kreetle/Kreetle",
-    "E": "swanimals/Kreetle/Kreetle",
-    "F": "swanimals/Kreetle/Kreetle_j",
-    "G": "swanimals/Kreetle/Kreetle",
-    "H": "swanimals/Kreetle/Kreetle"
+    "F": "swanimals/Kreetle/Kreetle_j"
    },
    "labels": {
     "A": "IN GAME \u2014 KreetleArtOverride",
-    "B": "render desert_swaca_kreetle",
-    "C": "render facingrepair_kreetle_v1",
     "D": "history KreetleArtOverride 2026-09-11",
-    "E": "donor original \u2014 mlie.starwarsanimalcollection",
-    "F": "IN GAME \u2014 SWBestiary",
-    "G": "render stillsand_regen_RSW_Kreetle_v2",
-    "H": "render canon_kreetle_v1"
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -1118,11 +1049,6 @@
      "north": "c46bacb303eb525dd52a91d108072a7283c41c04b37f42faead8dffa4b2e2424",
      "south": "16618daa21c940e2051449148bab890e3694711bd6f35db30bd53f8d48cd0769"
     },
-    "C": {
-     "east": "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
-     "north": "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
-     "south": "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6"
-    },
     "E": {
      "east": "3bf8294dea4b3d8308dab97b1d05b86d46a8cfebb930ba0014d8ec862ebf6e1e",
      "north": "27065f6cabf93b95c4686728998dab9f1d1a540d7c4179f6337dc98c9cd6bf4b",
@@ -1132,13 +1058,11 @@
    "graphic_of": {
     "A": "swanimals/Scurrier/Scurrier_f",
     "B": "swanimals/Scurrier/Scurrier_m",
-    "C": "_byname",
     "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "render desert_swaca_scurrier",
     "E": "render stillsand_regen_RSW_Scurrier_v2"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
@@ -1218,5 +1142,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "aeea9c9af6fd87be"
+ "snapshotId": "54d3779c77a39b75"
 }

@@ -1,0 +1,1251 @@
+[
+ {
+  "id": "leaningscrub_brambles_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "Plant_Brambles",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the brambles. Tangled, thorny, woody shoots covered with leaves. Brambles grow in clusters, and slow down anyone moving over them. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_brambles_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "Plant_Brambles",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the brambles. Tangled, thorny, woody shoots covered with leaves. Brambles grow in clusters, and slow down anyone moving over them. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_aridgrass_a_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_AridGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More realistic and many variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grass. Wild grass. Grows in arid regions where there is little light and minimally fertile ground. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "More realistic and many variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_aridgrass_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_AridGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More realistic and many variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grass. Wild grass. Grows in arid regions where there is little light and minimally fertile ground. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "More realistic and many variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_aridgrass_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_AridGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More realistic and many variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grass. Wild grass. Grows in arid regions where there is little light and minimally fertile ground. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "More realistic and many variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_creepstern_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_CreepStern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the creep stern. Wild Ivy with star shaped leaves that grows in patches in cold and wet biomes. Takes a long time to grow, but is very frost-resistant. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_creepstern_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_CreepStern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the creep stern. Wild Ivy with star shaped leaves that grows in patches in cold and wet biomes. Takes a long time to grow, but is very frost-resistant. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_crimsoncushion_a_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_CrimsonCushion",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"with variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the crimson cushion. Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "with variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_crimsoncushion_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_CrimsonCushion",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"with variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the crimson cushion. Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "with variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_crimsoncushion_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_CrimsonCushion",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"with variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the crimson cushion. Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "with variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_dervish_a_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_Dervish",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"and variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the dervish. A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "and variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_dervish_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_Dervish",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"and variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the dervish. A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "and variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_dervish_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RG_Plant_Dervish",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"and variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the dervish. A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "and variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_crownvenomvine_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_CrownVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the crown venomvine. Rarest of all: a stand that crowns. It climbs past man-height-and-more into a single black column and flowers at the top - the only flower this plain owns - and when the wind drops, the dustflutters mob it in a grey cloud you can see from a day's walk. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_crownvenomvine_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_CrownVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the crown venomvine. Rarest of all: a stand that crowns. It climbs past man-height-and-more into a single black column and flowers at the top - the only flower this plain owns - and when the wind drops, the dustflutters mob it in a grey cloud you can see from a day's walk. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_cruststar_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Cruststar",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the cruststar. A hand-span star of pale lichen flat against the root-bound crust, rimmed gold where it fruits. The crustweevils graze it like a herd on a pasture the size of a plate. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_cruststar_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Cruststar",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the cruststar. A hand-span star of pale lichen flat against the root-bound crust, rimmed gold where it fruits. The crustweevils graze it like a herd on a pasture the size of a plate. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_drippingvenomvine_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_DrippingVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the dripping venomvine. Some stands make more venom than their thorns can hold. A dripping stand hangs it in amber beads along every cane, and the harvest is real money for whoever works bare-headed under a plant that sweats poison. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_drippingvenomvine_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_DrippingVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the dripping venomvine. Some stands make more venom than their thorns can hold. A dripping stand hangs it in amber beads along every cane, and the harvest is real money for whoever works bare-headed under a plant that sweats poison. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_fuzz_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Fuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the the fuzz. A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_fuzz_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Fuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the the fuzz. A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_fuzzrunner_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Fuzzrunner",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it more alien.\" RimWorld creature sprite, painterly: the fuzzrunner. Nothing on the plain is more common and nothing is harder to see. A fuzzrunner is born, fed, bred and dead without once standing in open light - its whole nation lives in the worn runs under the canopy, navigated by smell and whisker, walls of stems polished by ten thousand shoulders before it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Make it more alien.",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_fuzzviper_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Fuzzviper",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More alien\" RimWorld creature sprite, painterly: the fuzzviper. The runs are safety, and the fuzzviper is the price of believing that. It lies along a tunnel wall being a root until the run's own traffic comes to it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "More alien",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_grellbush_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Grellbush",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grellbush. A short, tough scrub shrub adapted to thin desert soil. Not much use for anything but it holds ground other plants can't. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_grellbush_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Grellbush",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grellbush. A short, tough scrub shrub adapted to thin desert soil. Not much use for anything but it holds ground other plants can't. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_grellspine_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Grellspine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grellspine. A short toxin-adapted shrub, a dense tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted ground. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_grellspine_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Grellspine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the grellspine. A short toxin-adapted shrub, a dense tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted ground. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_hollowvenomvine_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_HollowVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the hollow venomvine. Old stands die from the inside and stand anyway: tubes of grey cane, galleries wide enough that the runway nations thread them like streets - and a person the Jawas' size can crawl where the streets go. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_hollowvenomvine_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_HollowVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the hollow venomvine. Old stands die from the inside and stand anyway: tubes of grey cane, galleries wide enough that the runway nations thread them like streets - and a person the Jawas' size can crawl where the streets go. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_pillowmoss_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Pillowmoss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the pillowmoss. A fat, low cushion that drinks the wind - fog beads on it all day, and the ground under a pillowmoss is the only reliably wet ground on the plain. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_pillowmoss_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Pillowmoss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the pillowmoss. A fat, low cushion that drinks the wind - fog beads on it all day, and the ground under a pillowmoss is the only reliably wet ground on the plain. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_tanglefuzz_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Tanglefuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the tanglefuzz. Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_tanglefuzz_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Tanglefuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the tanglefuzz. Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_twitchervenomvine_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_TwitcherVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the twitcher venomvine. A twitcher stand strikes once at whatever comes close - one whip-crack of a cane, fast as a snake - and then spends an hour drooping, visibly spent, earning the next one. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_twitchervenomvine_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_TwitcherVenomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the twitcher venomvine. A twitcher stand strikes once at whatever comes close - one whip-crack of a cane, fast as a snake - and then spends an hour drooping, visibly spent, earning the next one. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_venomvinethicket_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_VenomvineThicket",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the venomvine thicket. The shrubland lineage of the venomvine, and the only thing on this plain that grows in a mass. Where the desert form scatters, this one closes: runner over runner over runner until the tangle is chest-high, matted into itself, and lightless inside. Its thorns carry the same sap. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_venomvinethicket_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_VenomvineThicket",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the venomvine thicket. The shrubland lineage of the venomvine, and the only thing on this plain that grows in a mass. Where the desert form scatters, this one closes: runner over runner over runner until the tangle is chest-high, matted into itself, and lightless inside. Its thorns carry the same sap. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_whipfuzz_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Whipfuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the whipfuzz. The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_whipfuzz_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Whipfuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the whipfuzz. The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving. Make a distinctly different individual of the same species from the accepted look (different growth form, size and density), clearly the same plant.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_wildhealroot_a_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_WildHealroot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more realistic and special, variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild healroot. A slow-growing plant which yields herbal medicine when harvested. This wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more realistic and special, variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_wildhealroot_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_WildHealroot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more realistic and special, variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild healroot. A slow-growing plant which yields herbal medicine when harvested. This wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more realistic and special, variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_wildhealroot_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_WildHealroot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more realistic and special, variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild healroot. A slow-growing plant which yields herbal medicine when harvested. This wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. This render is one of several different individuals of the species (own growth form, size and density), not a copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "more realistic and special, variations",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_zellik_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RM_Zellik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make this more alien\" RimWorld creature sprite, painterly: the zellik. On an ordinary day the zellik sits hunched on a sweetline bough or a turbine head and looks like a folded umbrella nobody wants. The wind that feeds everything else starves it: a shivering canopy tells it nothing.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Make this more alien",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_anooba_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Anooba",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Look at the canon art closely. Yes, the stripes and huge ears are there, but there's also a bizarre upward single tusk in the lower jaw, a bat-like face, and three clawed toes. Rather alien.\" RimWorld creature sprite, painterly: the anooba. Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such as scurriers). LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Look at the canon art closely. Yes, the stripes and huge ears are there, but there's also a bizarre upward single tusk in the lower jaw, a bat-like face, and three clawed toes. Rather alien.",
+  "canon": "anooba",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_bantha_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Bantha",
+  "prompt": "RimWorld creature sprite, painterly: the bantha. Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often domesticated, and used prominently, by Tusken Raiders as mounts and companionship. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canon": "bantha",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_cannok_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Cannok",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon CLOSELY. Bizarre bug-eyes on stalks with cylindrical eye covers. Down-turned mouth with plentiful teeth. Mottled, wrinkled hide with single line of quills down back.\" RimWorld creature sprite, painterly: the cannok. Cannoks were small, aggressive predators native to the moon of Dxun. They had a habit of eating anything that could fit in their mouths and were known as pests, due to a high reproduction rate and notable curiosity. Cannoks were however hardy and able to survive the rigors of many worlds. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Follow canon CLOSELY. Bizarre bug-eyes on stalks with cylindrical eye covers. Down-turned mouth with plentiful teeth. Mottled, wrinkled hide with single line of quills down back.",
+  "canon": "cannok",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_chikka_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Chikka",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it a reverse teardrop-shape with a small angry-looking pair of eyes at the tip, covered in odd quills like a pale green porcupine. Tiny feet protrude to force it forward though the sand. Alien. Change description.\" RimWorld creature sprite, painterly: the chikka. A colonial effort to make the open sand liveable produced this rat-sized creature, its genome spliced with cactus DNA. The result is a hardened green hide studded with medicinal quills and a strange meat that reads as neither plant nor animal to most palates.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Make it a reverse teardrop-shape with a small angry-looking pair of eyes at the tip, covered in odd quills like a pale green porcupine. Tiny feet protrude to force it forward though the sand. Alien. Change description.",
+  "biome_register": "windswept arid scrubland plain under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade"
+ },
+ {
+  "id": "leaningscrub_convor_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Convor",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Small owl-like image with a long monkey-like tail ending in a tassel and stripes. Tuffts on the side of its face. Do not make it cartoonish.\" RimWorld creature sprite, painterly: the convor. Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant they often established colonies on other worlds. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Small owl-like image with a long monkey-like tail ending in a tassel and stripes. Tuffts on the side of its face. Do not make it cartoonish.",
+  "canon": "convor",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_corinathoth_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Corinathoth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Look closley at canon image and donor art, then regenerate more reliastically. Plentiful body spines. Strange blotchy coloration.\" RimWorld creature sprite, painterly: the corinathoth. Corinathoths were large, slow-moving herbivores native to the planet Maridun. Although large and intimidating, they were fairly harmless unless provoked. It is likely they were spread as a large game animal to several worlds due to their fearsome appearance. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Look closley at canon image and donor art, then regenerate more reliastically. Plentiful body spines. Strange blotchy coloration.",
+  "canon": "corinathoth",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_feralnerf_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_FeralNerf",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow the canon explicitly and thoroughly\" RimWorld creature sprite, painterly: the feral nerf. Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to harsh environments, several defined sub-species existed and were often referred to as 'feral' or 'wild' variants of the same animal. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Follow the canon explicitly and thoroughly",
+  "canon": "nerf",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_grank_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Grank",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon PRECISELY, look at the parent image\" RimWorld creature sprite, painterly: the Grank. The Grank (or 'saw-toothed grank') were a medium-sized carnivore believed to have originated on the planet Naboo. They were a species of predatory scavengers with sharp teeth and powerful jaws. Despite their fearsome gnarled appearance they were very affectionate when domesticated. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Follow canon PRECISELY, look at the parent image",
+  "canon": "grank",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_igitz_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Igitz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Examine parent image CAREFULLY in canon\" RimWorld creature sprite, painterly: the igitz. Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Examine parent image CAREFULLY in canon",
+  "canon": "igitz",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_kowakianmonkeylizard_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_KowakianMonkeyLizard",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"You got ONE good side profile. Now make it good south and north too. Long ears, long thin tail, beaked wide face. Try again\" RimWorld creature sprite, painterly: the kowakian monkey-lizard. Kowakian monkey-lizards were a bipedal reptillian primate species native to a jungle-like Outer Rim planet called Kowak. Their intelligence and cunning made them popular exports as exotic pets, with some specimens escaping and establishing wild colonies. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "You got ONE good side profile. Now make it good south and north too. Long ears, long thin tail, beaked wide face. Try again",
+  "canon": "kowakianmonkeylizard",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_kreetle_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Kreetle",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Try again. Note the HUGE mandibles that scissor together with teeth toothy projections within. Five legs to a side. crimson armored body.\" RimWorld creature sprite, painterly: the kreetle. Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of maggot-like larvae. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Try again. Note the HUGE mandibles that scissor together with teeth toothy projections within. Five legs to a side. crimson armored body.",
+  "canon": "kreetle",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_kybuck_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Kybuck",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Almost there, but you missed the canon bone plate on top of its head mounted to its horns.\" RimWorld creature sprite, painterly: the kybuck. Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Almost there, but you missed the canon bone plate on top of its head mounted to its horns.",
+  "canon": "kybuck",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_lothcat_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Lothcat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to Canon please\" RimWorld creature sprite, painterly: the loth-cat. Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as pets. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to Canon please",
+  "canon": "lothcat",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_massiff_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Massiff",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite, painterly: the massiff. Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery",
+  "canon": "massiff",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_pikobis_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Pikobis",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite, painterly: the pikobis. Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto slippery prey which it usually swallowed in one gulp. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery",
+  "canon": "pikobis",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_nysyllin_wild_a_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon art\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild nysyllin plant. The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy. This render is one of several different individuals of the species (own growth form, size and density), not a copy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "follow canon art",
+  "canon": "nysillin",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_nysyllin_wild_b_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon art\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild nysyllin plant. The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy. This render is one of several different individuals of the species (own growth form, size and density), not a copy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "follow canon art",
+  "canon": "nysillin",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_nysyllin_wild_c_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon art\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild nysyllin plant. The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy. This render is one of several different individuals of the species (own growth form, size and density), not a copy. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "single"
+  ],
+  "owner_note": "follow canon art",
+  "canon": "nysillin",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_porg_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Porg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery. Close, but make it more realistic.\" RimWorld creature sprite, painterly: the porg. The Porg. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery. Close, but make it more realistic.",
+  "canon": "porg",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_pufferpig_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Pufferpig",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite, painterly: the Pufferpig. Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal being exported to numerous planets. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery",
+  "canon": "pufferpig",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_qormot_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Qormot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite, painterly: the qormot. Qormots were omnivorous forest creatures from the planet Yeshocq. During the mating season their ferocity increased, usually making anyone bold (or foolish) enough to stray into Qormot territory a likely target. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery",
+  "canon": "qormot",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_sketto_v2",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Yes, now do North and South\" RimWorld creature sprite, painterly: the sketto. Skettos were carnivorous flying reptiles that dwelled in the caverns of the planet Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions as they ate airborne insects. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "north",
+   "south"
+  ],
+  "owner_note": "Yes, now do North and South",
+  "canon": "sketto",
+  "biome_neutral": true,
+  "derive_from": "longshade_rsw_sketto_v1_east"
+ },
+ {
+  "id": "leaningscrub_strill_v2",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Strill",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regen north and south\" RimWorld creature sprite, painterly: the strill. Strills were a species of highly intelligent, six-legged carnivorous mammals native to the planet Mandalore. They had folds of leathery skin between their legs which allowed them to glide short distances with sufficient updraft and they purportedly had a very distinct (often unpleasant) smell. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "north",
+   "south"
+  ],
+  "owner_note": "Regen north and south",
+  "canon": "strill",
+  "biome_neutral": true,
+  "derive_from": "desertportb_strill_east"
+ },
+ {
+  "id": "leaningscrub_urusai_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Urusai",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite, painterly: the urusai. Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of an easy meal. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery",
+  "canon": "urusai",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_voorpak_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Voorpak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery. Avoid carnoonish apperance.\" RimWorld creature sprite, painterly: the voorpak. Voorpaks were a non-sentient but still quite smart species of puffy-looking mammalians that were native to the planet of Naboo. Diminutive carnivores, voorpaks were much beloved by many due to their cuteness and as pets which in turn led to their export to many other worlds. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Redo to canon imagery. Avoid carnoonish apperance.",
+  "canon": "voorpak",
+  "biome_neutral": true
+ },
+ {
+  "id": "leaningscrub_whisperbird_v1",
+  "rimflow_item_id": "LEANINGSCRUB_SHEET_ART_REDO_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nice, but less vulture and more bizarre alien reptile bird.\" RimWorld creature sprite, painterly: the whisperbird. Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their sweet, low-pitched song or call. LOOK CLOSELY at the attached canon reference image and follow its anatomy, proportions and colouring; the canon Visual brief and Must show are binding.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "owner_note": "Nice, but less vulture and more bizarre alien reptile bird.",
+  "canon": "whisperbird",
+  "biome_neutral": true
+ }
+]

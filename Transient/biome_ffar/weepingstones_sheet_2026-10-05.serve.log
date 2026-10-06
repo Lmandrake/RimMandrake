@@ -1,0 +1,77 @@
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\weepingstones_sheet_2026-10-05.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\weepingstones_sheet_2026-10-05.decisions.json
+             51 rows · 51 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:46521/?t=c-LkkWTcJVqk0cIzoKgABQ
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /img/01c401b413258699f664.webp HTTP/1.1" 200 -
+  "GET /img/7b1fbfb715d9e53e0632.webp HTTP/1.1" 200 -
+  "GET /img/eb2d9a95561181eb59db.webp HTTP/1.1" 200 -
+  "GET /img/9d5476d23d82bd405e19.webp HTTP/1.1" 200 -
+  "GET /img/2d7d9221c9f80b42cb79.webp HTTP/1.1" 200 -
+  "GET /img/02443102a6ce72bd206b.webp HTTP/1.1" 200 -
+  "GET /img/bbbf4a6404e8cc0e4569.webp HTTP/1.1" 200 -
+  "GET /img/384288d3bedda0a0b092.webp HTTP/1.1" 200 -
+  "GET /img/e39eb240a2d3fe1372ff.webp HTTP/1.1" 200 -
+  "GET /img/5c6c925af9fe6837cb44.webp HTTP/1.1" 200 -
+  "GET /img/6ec05e049ec6c0e01e4a.webp HTTP/1.1" 200 -
+  "GET /img/cd19965295c9404aad04.webp HTTP/1.1" 200 -
+  "GET /img/95075596f9498905c714.webp HTTP/1.1" 200 -
+  "GET /img/6af441e81822dbee1f07.webp HTTP/1.1" 200 -
+  "GET /img/89c7de46f54d40f7562c.webp HTTP/1.1" 200 -
+  "GET /img/4350080aa8a79f46d23e.webp HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /img/6077aeca1b132c3e840a.webp HTTP/1.1" 200 -
+  "GET /img/ec8e236e1cb82eef53ee.webp HTTP/1.1" 200 -
+  "GET /img/ccb4302f09e86541c2dd.webp HTTP/1.1" 200 -
+  "GET /img/a8a17698510e12145500.webp HTTP/1.1" 200 -
+  "GET /img/f5ba9dbde7881347453a.webp HTTP/1.1" 200 -
+  "GET /img/eb68da09a6e6e4408e9d.webp HTTP/1.1" 200 -
+  "GET /img/9701636912ce4d4a3cd4.webp HTTP/1.1" 200 -
+  "GET /img/2b86e472d073a580434e.webp HTTP/1.1" 200 -
+  "GET /img/66fafe41129a51519c70.webp HTTP/1.1" 200 -
+  "GET /img/4211aef404d352faa2c3.webp HTTP/1.1" 200 -
+  "GET /img/180410ff27f77194026d.webp HTTP/1.1" 200 -
+  "GET /img/30732e15cc290ec428aa.webp HTTP/1.1" 200 -
+  "GET /img/f0cd9d82f278c3505128.webp HTTP/1.1" 200 -
+  "GET /img/550521e9c92a1d892bdc.webp HTTP/1.1" 200 -
+  "GET /img/40bf1934ab07b29dcac4.webp HTTP/1.1" 200 -
+  "GET /img/02419165fd9c86af8bdc.webp HTTP/1.1" 200 -
+  "GET /img/fefe44be028ce7008ae5.webp HTTP/1.1" 200 -
+  "GET /img/aeb91af36ca25f21fff2.webp HTTP/1.1" 200 -
+  "GET /img/0a100234fb6f1ce045a7.webp HTTP/1.1" 200 -
+  "GET /img/14778b45ee06cb04409d.webp HTTP/1.1" 200 -
+  "GET /img/fc8c00141f805b35f9fb.webp HTTP/1.1" 200 -
+  "GET /img/d6a5485dad7fccac74b7.webp HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -
+  "GET /?t=c-LkkWTcJVqk0cIzoKgABQ HTTP/1.1" 200 -

@@ -2,7 +2,7 @@
  "sheetId": "feverwood_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/feverwood_sheet_2026-10-05.snapshot.json",
- "snapshotId": "05ef1681de224008",
+ "snapshotId": "5ab46a1204d5e1f1",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_FeverWood",
  "reviewStatus": {
@@ -57,7 +57,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Convor/Convor_f": "C"
+    "swanimals/Convor/Convor_f": "B"
    }
   },
   "RSW_Fambaa": {
@@ -76,9 +76,9 @@
    "prefill": "A"
   },
   "RSW_LongtailGorg": {
-   "decision": "A",
+   "decision": "I",
    "note": "",
-   "prefill": "A",
+   "prefill": "I",
    "picks": {
     "swanimals/LongtailGorg/LongtailGorg_Swimming": "J",
     "swanimals/LongtailGorg/LongtailGorg_j": "K",
@@ -90,7 +90,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Nuna/Nuna_m": "F"
+    "swanimals/Nuna/Nuna_m": "C"
    }
   },
   "RSW_Urusai": {

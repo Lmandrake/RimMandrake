@@ -199,7 +199,7 @@ body.grid .row.sel-tint{border-color:currentColor}
 {
  "sheetId": "blue_desert_sheet_2026-10-04",
  "title": "the Blue Desert \u2014 flora & fauna art",
- "subtitle": "20 rows \u00b7 1 canon \u00b7 0 linked \u00b7 0 prefilled from desert sitting 1 \u00b7 0 NO ART YET \u00b7 IN GAME judged on ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list)",
+ "subtitle": "20 rows \u00b7 1 canon \u00b7 0 linked \u00b7 0 prefilled from desert sitting 1 \u00b7 0 NO ART YET \u00b7 IN GAME judged on ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list)",
  "briefHtml": "<p><b>the Blue Desert<\/b> \u2014 every flora and fauna row of this biome (20 rows), one row per species. Each row shows\n<b>every picture we hold<\/b> for it: <b>IN GAME<\/b> (blue frame) is what the game draws now; <b>shipped, shadowed<\/b> is a copy losing\nthe load-order race; <b>render<\/b> columns are artpipe outputs (newest first); <b>history<\/b> columns are earlier states of our files\nfrom git; <b>donor original<\/b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);\nhover a set's header for where it came from.<\/p>\n<p><b>Pick, per row, the column the game should show<\/b> (letter buttons, or click a column's header). A row with a second graphic\n(swimming, flying) shows it as its own strip \u2014 click a column header there to pick for it. <b>\u2715<\/b> on a non-live picture rejects and\npurges it for good. The note box is the most useful control on the row: say what is wrong, and a redo is written from it.<\/p>\n<p><b>Canon rows<\/b> show the canon-library reference images and the entry's <b>Must show<\/b> list beside the pictures. A canon creature and\nour own (franchise-free) stand-in for it are <b>separate rows<\/b>, each judged on its own, but grouped together under one coloured band\nwith a <b>related<\/b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome\nnever casts it. Rows you already ruled on in <b>desert sitting 1<\/b> are prefilled with that pick and say so\n(green line naming the set). The counter separates rows <b>you<\/b> decided from rows still holding the agent's\nprefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.<\/p>",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "invented": [
@@ -422,11 +422,14 @@ window.itemBody = it => {
     : dtext.length > 260 ? `<details class="bs-desc" title="${esc(ds.source)}"><summary><b>${esc(ds.label)}</b> — <span class="bs-dclamp">${esc(dtext)}</span></summary></details>`
     : `<div class="bs-desc" title="${esc(ds.source)}"><b>${esc(ds.label)}</b> — ${esc(dtext || '(the def has no description)')}</div>`;
   const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
-  return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
+  const re = it.ruledElsewhere;
+  const reHead = re ? `<summary class="bs-ruledsum" title="You already ruled on this subject on another sheet, so it needs no pick here. Expand to see the pictures and change your mind.">Already ruled on <b>${esc(re.sheet)}</b>: ${esc(re.pick)}${re.label ? ' — ' + esc(re.label) : ''}${re.note ? ' · “' + esc(re.note) + '”' : ''} <span class="sub">${esc(re.at)} · expand to change your mind</span></summary>` : '';
+  const inner = `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
+  return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
@@ -616,6 +619,10 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-scsrc.bs-fallback{color:#e06c6c}
 .bs-set{position:relative}
 .bs-ppc{font-style:normal;white-space:nowrap;color:#9fe0a8;background:#0b0d10d9;border-radius:3px;padding:0 4px;font-size:10px;pointer-events:auto}
+/* a subject already ruled on another sheet: dimmed pick column until expanded */
+.row:has(.bs-ruled:not([open])) .ctrl{opacity:.35}
+.bs-ruledsum{cursor:pointer;color:#9fb6c9;padding:2px 0;font-size:12px}
+.bs-ruled[open]>.bs-ruledsum{margin-bottom:6px}
 /* right-hand pick column: only this row's letters, readable redo/hold */
 .row .ctrl{width:200px}
 .row .opts{flex-wrap:wrap}

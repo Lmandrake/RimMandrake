@@ -1,6 +1,6 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-05T17:04:40-0700",
+ "built": "2026-10-05T18:42:36-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -980,50 +980,36 @@
   "RSW_Mullgoth": {
    "columns": {
     "A": {
-     "east": "810032c86cf70324085ff51cc2a40d3b7577ad27dde681d1842f74406f056d49",
-     "north": "f38d8ae5dc9995e0f6a6c8bf49131b60372288fa9bd57e1c54d721365d49df8f",
-     "south": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8"
-    },
-    "B": {
      "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
      "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
      "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
     },
-    "C": {
+    "B": {
      "east": "77efac86d35edcbf90eb71f4eb929b426367b7e98e6b912f0a0a89268d6ddbb4",
      "north": "0a9255469f40284fdee664b64d3bca3d9e38e10f24b0c7ea2961c1800fd627ad",
      "south": "858e5aefcd48e559a80bccb155a53fe1be03c7d8f86b4fbc44340254f358dd9c"
     },
-    "D": {
-     "east": "745882d99a2216e009a242cbc387523a70e11dabdb488d10b2115b8f6199f6c7",
-     "north": "62e56dd1b876af8723a076f264c902318359c6577c908918b0345a711d66302c",
-     "south": "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534"
-    },
-    "E": {
-     "south": "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534"
+    "C": {
+     "east": "810032c86cf70324085ff51cc2a40d3b7577ad27dde681d1842f74406f056d49",
+     "north": "f38d8ae5dc9995e0f6a6c8bf49131b60372288fa9bd57e1c54d721365d49df8f",
+     "south": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
     "B": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "C": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "D": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "E": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
+    "C": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
    },
    "labels": {
     "A": "IN GAME \u2014 WildpodArtOverride",
-    "B": "render rot_wildpod_v2",
-    "C": "history WildpodArtOverride 2026-09-13",
-    "D": "donor original \u2014 Alpha Animals",
-    "E": "donor original \u2014 1541721856"
+    "B": "history WildpodArtOverride 2026-09-13",
+    "C": "history WildpodArtOverride 2026-09-20"
    },
    "res": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D",
-    "E"
+    "C"
    ],
    "subject_key": "mullgoth"
   },
@@ -1104,19 +1090,19 @@
   "RSW_Skalder": {
    "columns": {
     "A": {
-     "east": "5879e940a5c716b3ddb140b000d5158e38be97de0b5ac7d7b49c468d47804575",
-     "north": "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34",
-     "south": "9380c8568a951dfd511406ff6e3b5704614906dcc1f7e6a4b2e9e3b2e1bdf7b3"
-    },
-    "B": {
      "east": "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
      "north": "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
      "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
     },
-    "C": {
+    "B": {
      "east": "252ca13d89137e2c3f0ee2779c082fa504daef427fafa862e3f47b11fd43df20",
      "north": "877c2f627c5b2b01be5806b0d2130540743c90614e402c54c4c025a471eda627",
      "south": "2666d021500f1b73f1d61c6ab0901e5a118d7bd620747a975722de432a95f0f0"
+    },
+    "C": {
+     "east": "5879e940a5c716b3ddb140b000d5158e38be97de0b5ac7d7b49c468d47804575",
+     "north": "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34",
+     "south": "9380c8568a951dfd511406ff6e3b5704614906dcc1f7e6a4b2e9e3b2e1bdf7b3"
     },
     "D": {
      "east": "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
@@ -1132,8 +1118,8 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render longshade_rsw_skalder_v1",
-    "C": "render desert_swaca_skalder",
+    "B": "render desert_swaca_skalder",
+    "C": "history SWBestiary 2026-09-18",
     "D": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Skalder/Skalder",
@@ -1198,7 +1184,8 @@
     },
     "B": {
      "east": "3614c4d699690864f47a0f962ce2a0445db5d3d41776c42f34588709590485ed",
-     "north": "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8"
+     "north": "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8",
+     "south": "ac97423b5a3b6aa554e2f7617cf09d900f7ec52d4a29c92470e92df448b3fe3f"
     },
     "C": {
      "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
@@ -1232,7 +1219,9 @@
      "south": "5ed9d2ac34a60f0acf5a65137c922848d7d9f5ea1c0ea5e54c0ab0854b49bf5e"
     },
     "B": {
-     "east": "087d730e92380879a935209343f2a09c418cf3732a37b3e63f226a037ce63b73"
+     "east": "087d730e92380879a935209343f2a09c418cf3732a37b3e63f226a037ce63b73",
+     "north": "b5bee4c7ca5cb0fa3006ddc3a10bdf15f35413aa12b3763401b389ea164a0501",
+     "south": "247c45e65286d1c1e177ab368bf4b3ef9b6346878659df117b828a9a4e514066"
     },
     "C": {
      "east": "e3af7da6b94634b659bfb888425fea05e8607ef8f6f8d83487f5cfe9dd43478d",
@@ -1268,5 +1257,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "5a9e040111089ab8"
+ "snapshotId": "a5098b1beffa60ce"
 }

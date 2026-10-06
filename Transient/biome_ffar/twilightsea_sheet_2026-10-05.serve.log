@@ -1,0 +1,66 @@
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\twilightsea_sheet_2026-10-05.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\twilightsea_sheet_2026-10-05.decisions.json
+             34 rows · 34 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:37635/?t=-jaNSRF75NlwXahnJWwwyA
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /decisions HTTP/1.1" 200 -
+  "GET /img/4fcd2aee3f27f696e7f1.webp HTTP/1.1" 200 -
+  "GET /img/9dc34259f7b1180e99a0.webp HTTP/1.1" 200 -
+  "GET /img/3c5f4bf93143b60ec289.webp HTTP/1.1" 200 -
+  "GET /img/f045586140575cc9339b.webp HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /img/38ce595b807676cab549.webp HTTP/1.1" 200 -
+  "GET /img/6d5726f85c98bb09c171.webp HTTP/1.1" 200 -
+  "GET /img/d3340a581abb35ed8eb2.webp HTTP/1.1" 200 -
+  "GET /img/2de592e0b9791d2b07fa.webp HTTP/1.1" 200 -
+  "GET /img/bcd9d78558e398a9b3fb.webp HTTP/1.1" 200 -
+  "GET /img/395c267aab501f243c03.webp HTTP/1.1" 200 -
+  "GET /img/5f2802b2959d32bbb452.webp HTTP/1.1" 200 -
+  "GET /img/8bee7d9d34749900b7d6.webp HTTP/1.1" 200 -
+  "GET /img/f4d721d5a0ab356c6eba.webp HTTP/1.1" 200 -
+  "GET /img/341334f0c670ccc87256.webp HTTP/1.1" 200 -
+  "GET /img/2aa6758ed0bfc966810a.webp HTTP/1.1" 200 -
+  "GET /img/16bf54ac8baa12239db0.webp HTTP/1.1" 200 -
+  "GET /img/7e140da59624b22295e7.webp HTTP/1.1" 200 -
+  "GET /img/2e95542d06e87dfa133d.webp HTTP/1.1" 200 -
+  "GET /img/aa3ee7b59ba2a46649d5.webp HTTP/1.1" 200 -
+  "GET /img/e8c1948642c6b9df7738.webp HTTP/1.1" 200 -
+  "GET /img/6c9626f9fbc6dc4d4bb5.webp HTTP/1.1" 200 -
+  "GET /img/c3d1f93fe1e94e8d6709.webp HTTP/1.1" 200 -
+  "GET /img/3862228f63d9a2d551ec.webp HTTP/1.1" 200 -
+  "GET /img/38823bb69505fa9ddfd8.webp HTTP/1.1" 200 -
+  "GET /img/f6ddd730d240fa4eb5eb.webp HTTP/1.1" 200 -
+  "GET /img/013de853f0e07f694674.webp HTTP/1.1" 200 -
+  "GET /img/5bdbedfd4adcfae2040d.webp HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -
+  "GET /?t=-jaNSRF75NlwXahnJWwwyA HTTP/1.1" 200 -

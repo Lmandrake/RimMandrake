@@ -2,7 +2,7 @@
  "sheetId": "floodedcanyon_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/floodedcanyon_sheet_2026-10-05.snapshot.json",
- "snapshotId": "589131f78b2c5381",
+ "snapshotId": "767410bf7addbf93",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_FloodedCanyon",
  "reviewStatus": {
@@ -50,7 +50,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Convor/Convor_f": "C"
+    "swanimals/Convor/Convor_f": "B"
    }
   },
   "RSW_Creature_Mantrap": {

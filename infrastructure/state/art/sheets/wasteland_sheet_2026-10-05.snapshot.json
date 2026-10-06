@@ -1,6 +1,6 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-05T16:33:48-0700",
+ "built": "2026-10-05T18:52:13-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
@@ -9,17 +9,23 @@
    "columns": {
     "A": {
      "single": "f1100d8f36f9c7bb9c4fbdeba42c9ff291d5932f7164065532561a810d2138f4"
+    },
+    "B": {
+     "single": "657ca426bc08e0116b837427488c63c7ed23e997e32401bf542da08616a6cc97"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Graygrass"
+    "A": "Things/Plant/Graygrass",
+    "B": "Things/Plant/Graygrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 ludeon.rimworld.biotech"
+    "A": "IN GAME \u2014 ludeon.rimworld.biotech",
+    "B": "render gapbs_Plant_GrayGrass_v1"
    },
    "res": "Things/Plant/Graygrass",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "graygrass"
   },
@@ -27,17 +33,23 @@
    "columns": {
     "A": {
      "single": "7f908f2aeff1f4f5dd70916e139166f2fbc4718884f39b84a851784d91fc39a3"
+    },
+    "B": {
+     "single": "bd08094f7889a71e7dc09cda1418a52311020e93f463cf494e6f8145db44f81e"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RG_Toxipotato"
+    "A": "Things/Plant/RG_Toxipotato",
+    "B": "Things/Plant/RG_Toxipotato"
    },
    "labels": {
-    "A": "IN GAME \u2014 regrowth.botr.core"
+    "A": "IN GAME \u2014 regrowth.botr.core",
+    "B": "render gapbs_Plant_Toxipotato_v1"
    },
    "res": "Things/Plant/RG_Toxipotato",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "toxipotato"
   },
@@ -215,21 +227,27 @@
      "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
     },
     "B": {
+     "single": "ea059cd9c8d11745919b7925ffa3604a5f605c1fd1e09feeae0521f237913fbf"
+    },
+    "C": {
      "single": "fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/ScorchedStars",
-    "B": "_byname"
+    "B": "Things/Plant/ScorchedStars",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_WastelandScorchedStars_v1"
+    "B": "render gapfin_RM_ScorchedStars_v1",
+    "C": "render gapall_RM_WastelandScorchedStars_v1"
    },
    "res": "Things/Plant/ScorchedStars",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "wastelandscorchedstars"
   },
@@ -303,25 +321,17 @@
      "east": "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb",
      "north": "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629",
      "south": "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880"
-    },
-    "B": {
-     "east": "2dae2ceca927e04a59cc0226ee6d424cb4bac28b22630fe135e67a4cc84f357e",
-     "north": "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9",
-     "south": "a94174bdc57b18382386baf919cd6baf2b2f53c2381166f766161d78466266e6"
     }
    },
    "graphic_of": {
-    "A": "swanimals/FeralNerf/FeralNerf",
-    "B": "swanimals/FeralNerf/FeralNerf"
+    "A": "swanimals/FeralNerf/FeralNerf"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render desertportb_feralnerf"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/FeralNerf/FeralNerf",
    "reserved": [
-    "A",
-    "B"
+    "A"
    ],
    "subject_key": "excretor"
   },
@@ -501,5 +511,5 @@
   }
  },
  "sheetId": "wasteland_sheet_2026-10-05",
- "snapshotId": "cf61f18b2673f956"
+ "snapshotId": "976375bacd60ee73"
 }
