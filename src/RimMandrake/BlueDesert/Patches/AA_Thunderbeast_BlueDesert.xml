@@ -5,8 +5,8 @@
     picked render v2, "Looks good, but needs its other facings. Also needs improved
     description. Half the size."). Donor: Alpha Animals (sarg.alphaanimals).
     * Art: our own sprites at Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/ (a path the
-      donor does not use, so nothing depends on load order). East + south only until the
-      queued v3 north lands; Graphic_Multi draws a missing north from south.
+      donor does not use, so nothing depends on load order). East, south and north (render v2 set,
+      picked as column E at the third sitting).
     * Half the size: baseBodySize 1.5 -> 0.75, every lifeStage drawSize halved.
     * Guarded with PatchOperationFindMod — MayRequire on an <Operation> is ignored by 1.6.
   -->
@@ -18,7 +18,7 @@
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Thunderbeast"]/description</xpath>
-          <value><description>A thunderbeast of the Blue Desert, and nothing like the swine-shaped beasts of warmer worlds. Its hide is a pale, chalky white veined with ice-blue, and it bleeds a thin yellow hydrocarbon fluid that smells of solvent and never quite freezes. There is no water in it: it runs on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life, and the charge it carries is built up across stacked plates of hydrocarbon-soaked tissue rather than any nerve a terrestrial creature would recognise.\n\nIt is slow and placid until provoked, then it discharges its stored current in long, crackling arcs at anything that threatens it, and a slaughtered thunderbeast still unsettles the weather around it. Predators give it a wide berth.</description></value>
+          <value><description>A thunderbeast of the Blue Desert, and nothing like the swine-shaped beasts of warmer worlds. It is a barrel of pale, glassy plates, frosted white and veined with ice-blue, standing on thick columnar legs that flare into broad, splayed feet. A ridge of tall, brittle crests runs the length of its back and ends in a blunt, armoured wedge where a head would be: no snout, no eyes to speak of, only a low sensory prow. Thin yellow hydrocarbon fluid, which smells of solvent and never quite freezes, glows along every seam between the plates, and pale arcs of static crackle over the crests.\n\nThere is no water in it. It runs on the same cold hydrocarbon chemistry as the rest of the Blue Desert's life, and the charge it carries is built up across stacked plates of hydrocarbon-soaked tissue rather than any nerve a terrestrial creature would recognise. It is slow and placid until provoked, then it discharges its stored current in long, crackling arcs at anything that threatens it. Predators give it a wide berth.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="AA_Thunderbeast"]/race/baseBodySize</xpath>

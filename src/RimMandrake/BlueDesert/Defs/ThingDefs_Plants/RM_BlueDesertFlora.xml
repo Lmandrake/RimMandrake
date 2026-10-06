@@ -256,12 +256,10 @@
       <Flammability>0.05</Flammability>
       <BeautyOutdoors>4</BeautyOutdoors>
     </statBases>
-    <!-- Only one variant landed (artpipe done/RM_Virr.json: "single", not
-         faced) — Graphic_Single, exact-match texPath, not Graphic_Random
-         (which would need _a/_b/_c siblings that don't exist). -->
+    <!-- Four variants (_a.._d), all kept by the owner: Graphic_Random. -->
     <graphicData>
       <texPath>Things/Plant/RM_Virr/RM_Virr</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <ingestible>
@@ -517,7 +515,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Vashpuk/RM_Vashpuk</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <ingestible>
