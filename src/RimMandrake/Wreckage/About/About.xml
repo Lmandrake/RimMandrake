@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.wreckage</packageId>
+  <name>RimMandrake: Wreckage</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.environmentalhazards</li>
+  </loadAfter>
+  <description>SALVAGE_WRECKAGE_EVERYWHERE_1: the shared wreck engine every biome's wreckage rides on.
+Composed into RimMandrake: Baroque Biomes (mandrake.rm.biomes) as an engine entry; it ships no wrecks
+of its own.
+
+Ships (slice 1, the loot half of design step 1):
+  1. RM_CompProperties_SalvageLoot / RM_CompSalvageLoot. A wreck carrying it drops an extra loot roll
+     ONLY when it is deconstructed (DestroyMode.Deconstruct). Smashing it leaves its killedLeavings, as
+     before. The roll comes from the ThingSetMakerDef RM_SalvageLoot_&lt;tier&gt;, and a rarer second
+     roll from RM_SalvageLoot_&lt;tier&gt;_Rare whose chance scales with the deconstructing pawn's skill.
+  2. Five loot tiers (Scrap, Hull, Tank, Carapace, Sealed) as plain vanilla ThingSetMakerDefs, so the
+     Star Wars layer can patch parts into them without touching this mod.
+  3. One Harmony prefix on JobDriver_Deconstruct.FinishedRemoving that notes who did the work, because
+     ThingComp.PostDestroy is not told.
+  4. Mod Settings: salvage loot on/off, loot generosity, skill scaling on/off.
+
+Not yet built (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md section 7): family
+parents, weathering defs, the weighted wreck-field GenStep, wreck falls.</description>
+</ModMetaData>

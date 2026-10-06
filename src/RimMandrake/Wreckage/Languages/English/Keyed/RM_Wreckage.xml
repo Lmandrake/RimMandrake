@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_Wreckage_SettingsCategory>Wreckage</RM_Wreckage_SettingsCategory>
+  <RM_Wreckage_Setting_SalvageLoot>Salvage loot on deconstruct</RM_Wreckage_Setting_SalvageLoot>
+  <RM_Wreckage_Setting_SalvageLoot_Tip>When a colonist carefully deconstructs a wreck, it gives up extra parts on top of its normal materials. Off: wrecks give only their normal deconstruction materials, like a vanilla ship chunk. Smashing a wreck never gives loot either way.</RM_Wreckage_Setting_SalvageLoot_Tip>
+  <RM_Wreckage_Setting_Generosity>Loot generosity: {0}</RM_Wreckage_Setting_Generosity>
+  <RM_Wreckage_Setting_SkillScales>Skill improves rare finds</RM_Wreckage_Setting_SkillScales>
+  <RM_Wreckage_Setting_SkillScales_Tip>A skilled salvager is far more likely to recover a rare part intact (Construction skill for now). Off: every salvager has the same chance.</RM_Wreckage_Setting_SkillScales_Tip>
+  <RM_Wreckage_InspectLootTier>Salvage: {0}</RM_Wreckage_InspectLootTier>
+  <RM_Wreckage_Tier_Scrap>scrap</RM_Wreckage_Tier_Scrap>
+  <RM_Wreckage_Tier_Hull>hull parts</RM_Wreckage_Tier_Hull>
+  <RM_Wreckage_Tier_Tank>tankage</RM_Wreckage_Tier_Tank>
+  <RM_Wreckage_Tier_Carapace>droid parts</RM_Wreckage_Tier_Carapace>
+  <RM_Wreckage_Tier_Sealed>sealed, intact parts</RM_Wreckage_Tier_Sealed>
+</LanguageData>

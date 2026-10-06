@@ -26,6 +26,7 @@
   "entries": [
     {"key": "CreatureBehaviors", "source": "CreatureBehaviors", "group": "engine", "wave": 2, "label": "Creature Behaviors", "blurb": "Shared creature-AI engine (hunting, lairs, swarms) that many biomes' fauna ride on."},
     {"key": "EnvironmentalHazards", "source": "EnvironmentalHazards", "group": "engine", "wave": 2, "label": "Environmental Hazards", "blurb": "Shared hazard engine: configurable terrain, gas and weather mechanics used across biomes."},
+    {"key": "Wreckage", "source": "Wreckage", "group": "engine", "wave": 2, "label": "Wreckage", "blurb": "Shared wreck engine: careful salvage of a wreck gives a tiered loot roll that skill improves."},
 
     {"key": "Abyss", "source": "Abyss", "group": "biome", "wave": 0, "label": "The Abyss", "blurb": "Obsidian-black highlands drowned in darkness."},
     {"key": "BlueDesert", "source": "BlueDesert", "group": "biome", "wave": 2, "label": "Blue Desert", "blurb": "A plateau of hydrocarbon ice where warmth is detonation."},
