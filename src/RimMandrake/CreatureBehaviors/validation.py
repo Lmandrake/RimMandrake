@@ -314,6 +314,81 @@ def mechanic_toggles(t):
             if str(back).lower() != str(old).lower():
                 raise ExpectationFailed("%s did not restore to %r (read %r)" % (field, old, back))
 
+# ---------------------------------------------------------------- every Mod Settings field (2026-10-06)
+# The settings class is the list: every `public static bool|int|float x = v;` in RM_CreatureBehaviorsMod.cs.
+# A default written as a constant (`RM_TrackPool.DefaultCapacity`) is resolved from that class's `const` line.
+import glob as _glob  # noqa: E402
+import os as _os  # noqa: E402
+
+_SRC_DIR = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Source")
+SETTING_FIELDS = {}                      # name -> (type, python default)
+SETTINGS_PARSE_ERRORS = []
+
+
+def _const(ref):
+    cls, _, name = ref.rpartition(".")
+    for path in _glob.glob(_os.path.join(_SRC_DIR, "**", cls + ".cs"), recursive=True):
+        m = re.search(r"const\s+\w+\s+%s\s*=\s*([^;]+);" % re.escape(name), open(path, encoding="utf-8").read())
+        if m:
+            return m.group(1).strip()
+    raise ValueError("cannot resolve %s" % ref)
+
+
+try:
+    _txt = open(_os.path.join(_SRC_DIR, "RM_CreatureBehaviorsMod.cs"), encoding="utf-8").read()
+    for _m in re.finditer(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);", _txt):
+        _typ, _nm, _raw = _m.group(1), _m.group(2), _m.group(3).strip()
+        if not re.match(r"^-?[\d.]+[fF]?$|^(true|false)$", _raw):
+            _raw = _const(_raw)
+        SETTING_FIELDS[_nm] = (_typ, (_raw == "true") if _typ == "bool" else
+                               (int(_raw) if _typ == "int" else float(_raw.rstrip("fF"))))
+except Exception as _ex:
+    SETTINGS_PARSE_ERRORS.append(str(_ex))
+BOOL_TOGGLES = sorted(n for n, (ty, _) in SETTING_FIELDS.items() if ty == "bool")
+suite.toggles = sorted(set(suite.toggles) | set(BOOL_TOGGLES))
+
+
+def _same_setting(name, live):
+    typ, default = SETTING_FIELDS[name]
+    if typ == "bool":
+        return str(live).lower() == str(default).lower()
+    try:
+        return abs(float(live) - float(default)) < 1e-4
+    except (TypeError, ValueError):
+        return False
+
+
+@suite.chain("settings")
+def settings(t):
+    """Every RM_CreatureBehaviorsSettings field answers by name at its shipped default (parsed from the C#), and
+    every bool round-trips off/on and restores. The mechanic each switch gates is mechanic_toggles' and the
+    per-mechanic chains' business; this chain only proves the screen and the fields are honest."""
+    with _comp(t, "all_fields_at_shipped_defaults", beyond_toggle=True):
+        if SETTINGS_PARSE_ERRORS or len(SETTING_FIELDS) < 80 or len(BOOL_TOGGLES) < 30:
+            raise ExpectationFailed("settings source parse: %d fields / %d bools; errors %r"
+                                    % (len(SETTING_FIELDS), len(BOOL_TOGGLES), SETTINGS_PARSE_ERRORS))
+        wrong = {}
+        for name in sorted(SETTING_FIELDS):
+            r = _setting(t, "get", name)
+            if _live(t) and not _same_setting(name, r.get("value")):
+                wrong[name] = r.get("value")
+        if _live(t) and wrong:
+            raise ExpectationFailed("not at the shipped default (or unreachable by name): %r" % wrong)
+
+    for name in BOOL_TOGGLES:
+        with _comp(t, "toggle_roundtrip_%s" % name, toggle=name):
+            flipped = not SETTING_FIELDS[name][1]
+            try:
+                _setting(t, "set", name, flipped)
+                got = _setting(t, "get", name).get("value")
+                if _live(t) and str(got).lower() != str(flipped).lower():
+                    raise ExpectationFailed("%s did not take %r (reads %r)" % (name, flipped, got))
+            finally:
+                if t.session is not None:
+                    t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=name,
+                                   value=str(SETTING_FIELDS[name][1]))
+
+
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # the shared engine's own defs). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402

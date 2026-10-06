@@ -19,6 +19,7 @@ status-hint: shared behaviour engine of ~50 mechanics; the suite covers the foot
 - Parental enrage: `parentalEnrageEnabled` gates `RM_CompParentalEnrage`; `RM_ParentalEnrage` mental state resolves. → mechanic_toggles.parentalEnrage_wired_and_gated
 - Drum lure: `drumLureEnabled` gates `RM_CompDrumLure`; both lure hediffs resolve. → mechanic_toggles.drumLure_wired_and_gated
 - Every def this mod ships is loaded. → shipped_defs chain
+- Every Mod Settings field (96, parsed from `RM_CreatureBehaviorsMod.cs`) answers by name at its shipped default, and every bool (64) flips and restores. → settings.all_fields_at_shipped_defaults, settings.toggle_roundtrip_<field>
 - A breeder actually breeds up to its cap and raises the alert; a gnawer destroys a target; a scalded pawn takes severity in sun; a web node senses a crossing; a lure pulls a pawn in. → UNCOVERED: needs a spawned carrier race (Greentide/Miasma/Webwork/LanternDeeps) on a map; the toggles' in-motion effect has no read-back instrument in this mod's own list
 - Eviction order, cap and save/load identity of the track grid. → UNCOVERED: proven offline by `Utils/selftest_track_grid.py`
 
