@@ -276,9 +276,12 @@ namespace RimMandrake.TerminalBiomes
             }
 
             // Scrolls: the list outgrew the window once the Grey's section landed.
+            // maxOneColumn is load-bearing: the content (~2100px) is taller than the
+            // initial 1600px guess, and without it the overflow wraps into an off-screen
+            // second column, CurHeight resets, and the view shrinks instead of growing.
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastListHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref settingsScroll, viewRect);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
 
             list.CheckboxLabeled("Mod enabled", ref masterEnabled,
