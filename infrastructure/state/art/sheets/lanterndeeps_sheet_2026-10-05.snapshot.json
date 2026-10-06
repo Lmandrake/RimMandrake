@@ -1,6 +1,6 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-06T07:52:27-0700",
+ "built": "2026-10-06T10:38:34-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -85,18 +85,30 @@
    "columns": {
     "A": {
      "single": "ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335"
+    },
+    "C": {
+     "single": "420a28b2f005c4e01a3a61f90f2d7bd28b3ec11cc6181c4b0b3b6ab3b69d63f7"
+    },
+    "D": {
+     "single": "3e97ac3aab4f10bae76433ac62ac31631dc794993097dd1ebf5e85a4c66d3a41"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb"
+    "A": "RM_LanternDeeps/Things/Plant/BrellikBulb",
+    "C": "RM_LanternDeeps/Things/Plant/BrellikBulb",
+    "D": "RM_LanternDeeps/Things/Plant/BrellikBulb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "C": "render deeps_brellikbulb_varb_v1",
+    "D": "render deeps_brellikbulb_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "brellikbulb"
   },
@@ -170,17 +182,27 @@
     },
     "E": {
      "single": "e47f72c83faa47ecd5aa5fea88331a7465870e7804dc2ddd72cd9a9b413d99f2"
+    },
+    "F": {
+     "single": "4a32d344a4ee7b4be9da047c064f1c9c84a961e0ff10e8ecb463576234feaf3c"
+    },
+    "G": {
+     "single": "28b7d518c709bb8a402a427c29d349c20b96a89c23a4816bc78ddb4fdbf224d8"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/Mycelium",
     "B": "RM_LanternDeeps/Things/Plant/Mycelium",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render mycelium_a_v1",
-    "E": "render gapall_RM_DeepMycelium_v1"
+    "E": "render gapall_RM_DeepMycelium_v1",
+    "F": "render deeps_deepmycelium_varb_v1",
+    "G": "render deeps_deepmycelium_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
    "reserved": [
@@ -188,7 +210,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "deepmycelium"
   },
@@ -316,20 +340,32 @@
     },
     "B": {
      "single": "a78960c4c638ceb3196998cfeeaefb3b1bf9d5fb787b55e230fea514c18c7b9a"
+    },
+    "C": {
+     "single": "57bc5ed4069d4cd3abd7c237b3befb12bf91ce5844fd258051090f1b405e974f"
+    },
+    "D": {
+     "single": "314c8b96e28e5486474910c2e93eed78b67ca10083114136cf2b592142e9dc9d"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/KuvraSpout",
-    "B": "RM_LanternDeeps/Things/Plant/KuvraSpout"
+    "B": "RM_LanternDeeps/Things/Plant/KuvraSpout",
+    "C": "RM_LanternDeeps/Things/Plant/KuvraSpout",
+    "D": "RM_LanternDeeps/Things/Plant/KuvraSpout"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_KuvraSpout_v1"
+    "B": "render gapall_RM_KuvraSpout_v1",
+    "C": "render deeps_kuvraspout_varb_v1",
+    "D": "render deeps_kuvraspout_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/KuvraSpout",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "kuvraspout"
   },
@@ -427,20 +463,32 @@
     },
     "B": {
      "single": "9f5e05f27e1d5133863aa328d5251ae33847acf1a41fae68b86fb4696749f00a"
+    },
+    "C": {
+     "single": "2e40dbd269da70b3510885184a16b7e8e010625f1aa93546567e4d5a8b20a562"
+    },
+    "D": {
+     "single": "de8984ae353beb225ee24a0c51f30b8e915d4c9651cdc7ef03a4827630ccda29"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/NurrikGill",
-    "B": "RM_LanternDeeps/Things/Plant/NurrikGill"
+    "B": "RM_LanternDeeps/Things/Plant/NurrikGill",
+    "C": "RM_LanternDeeps/Things/Plant/NurrikGill",
+    "D": "RM_LanternDeeps/Things/Plant/NurrikGill"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_NurrikGill_v1"
+    "B": "render gapall_RM_NurrikGill_v1",
+    "C": "render deeps_nurrikgill_varb_v1",
+    "D": "render deeps_nurrikgill_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "nurrikgill"
   },
@@ -492,18 +540,30 @@
    "columns": {
     "A": {
      "single": "8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d"
+    },
+    "C": {
+     "single": "0c11a4300aec196cb021a4cb68bac369add8f2775a38996a842fa57354002e6f"
+    },
+    "D": {
+     "single": "6b7073d662980ec92ef63eee2eab6441096ec722a069b19ffc045538486edca1"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown"
+    "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "C": "render deeps_prennalace_varb_v1",
+    "D": "render deeps_prennalace_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "prennalace"
   },
@@ -511,18 +571,30 @@
    "columns": {
     "A": {
      "single": "f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730"
+    },
+    "C": {
+     "single": "69e54addb3b8d4d435dff4b6c90c62a95bbd972ff6c7ce6268df7ede79bd9af1"
+    },
+    "D": {
+     "single": "557b223049ddd84a17dd74fac63d9eeb0e09e33038b905e4812cb1ca38f6b78c"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/QuorrFern"
+    "A": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "C": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "D": "RM_LanternDeeps/Things/Plant/QuorrFern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "C": "render deeps_quorrfern_varb_v1 \u2014 failed canon check",
+    "D": "render deeps_quorrfern_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "quorrfern"
   },
@@ -666,6 +738,12 @@
     },
     "F": {
      "single": "bc6b4ac3e55b17d8c03cbec14c2136f36441ebcf9c31908a831eb37c33d88ed8"
+    },
+    "G": {
+     "single": "eb59035bc8268f1b1848ea74cdf894020482c6fdfd0eb519ce6a6964a12b16bc"
+    },
+    "H": {
+     "single": "0d121b55ea65ff47a97f70fb70db1596b49da2ad5c8b4f0b288f26fcf094e5c2"
     }
    },
    "graphic_of": {
@@ -673,14 +751,18 @@
     "B": "_byname",
     "D": "_byname",
     "E": "_byname",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "_byname",
+    "H": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render twitchingpuffer_grown_v1",
     "D": "render twitchingpuffer_harvested_v2",
     "E": "render twitchingpuffer_immature_v1",
-    "F": "render twitchingpuffer_tendrils_v1"
+    "F": "render twitchingpuffer_tendrils_v1",
+    "G": "render deeps_twitchingpuffer_varb_v1",
+    "H": "render deeps_twitchingpuffer_varc_v1 \u2014 failed canon check"
    },
    "res": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
    "reserved": [
@@ -689,7 +771,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "subject_key": "twitchingpuffer"
   },
@@ -697,18 +781,30 @@
    "columns": {
     "A": {
      "single": "3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578"
+    },
+    "C": {
+     "single": "d4e67b85e6e96f2c18ceba2403b1539c13107be5b3a025c372b3f6be7d0fc580"
+    },
+    "D": {
+     "single": "f71c7be272a6428cc6e4f8ccbff6b5079a91d82046fe7992bae57bd1d3c65248"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/VellokReed"
+    "A": "RM_LanternDeeps/Things/Plant/VellokReed",
+    "C": "RM_LanternDeeps/Things/Plant/VellokReed",
+    "D": "RM_LanternDeeps/Things/Plant/VellokReed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "C": "render deeps_vellokreed_varb_v1",
+    "D": "render deeps_vellokreed_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "vellokreed"
   },
@@ -716,18 +812,30 @@
    "columns": {
     "A": {
      "single": "573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd"
+    },
+    "C": {
+     "single": "4385c49289dedb70c608cf0b3405d74fb8e0229d7d70817fd2d4158d458e17bb"
+    },
+    "D": {
+     "single": "4bfd1a64c8422154b763906f6adfbb6ea3091c8417150440ad4f20b37ac121d6"
     }
    },
    "graphic_of": {
-    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+    "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
+    "C": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
+    "D": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "C": "render deeps_zivvittaper_varb_v1",
+    "D": "render deeps_zivvittaper_varc_v1"
    },
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "zivvittaper"
   },
