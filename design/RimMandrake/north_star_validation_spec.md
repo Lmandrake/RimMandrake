@@ -334,9 +334,9 @@ A mod is GREEN only when all of:
 1. every component's state assertions pass (unchanged from 2026-09-12);
 2. every validated must-show line is claimed by at least one component (§3),
    and every validated must-read line likewise (§10.5);
-3. every claimed line is judged YES on its evidence (§4) — except that an
-   **open-generator read line is never judged YES by a model at all** and needs
-   the owner's own recorded verdict every time it binds (§10.4);
+3. every claimed line is judged YES on its evidence (§4); on an open-generator
+   read line a model's YES counts too, as the weakest verdict the system produces
+   (owner ruling 2026-09-16, §10.4);
 4. the mod's checklist is VALIDATED, not DRAFT — per axis: a mod with a
    VALIDATED `must show` and a DRAFT `must read` is bound by the first and not
    the second (§10.1);
@@ -346,12 +346,10 @@ A mod is GREEN only when all of:
 A DRAFT checklist cannot green a mod. That is the gate he identified as missing,
 and it belongs in a hook rather than in this paragraph.
 
-⚠️ Consequence of 3 that should be stated rather than discovered: **a mod whose
-validated checklist carries an open-generator read line cannot go GREEN
-unattended.** That is deliberate — it is a mod whose experience is prose a model
-writes fresh each run, and there is no artifact for a regression guard to guard.
-If that cost is unacceptable for some mod, the fix is to phrase its lines against
-the generator's FIXED parts (§10.2), not to let a model pass them.
+⚠️ Consequence of 3 that should be stated rather than discovered: an open-generator
+read line can go GREEN unattended, but its pass guards no stable artifact (the prose
+is new each run). Where a line can be phrased against the generator's FIXED parts
+(§10.2), phrase it that way: that pass is a real regression guard.
 
 ## 6. Validation state and staleness
 
@@ -619,7 +617,7 @@ and the class fixes its evidence, its bar and who may pass it.
 |---|---|---|---|---|
 | **fixed** | one authored string in a def or in source | that string, captured from the player-facing channel | the string satisfies the line | the judge may pass it (§10.4) |
 | **enumerated** | a finite authored set drawn from at runtime | **every member of the set**, listed | all members satisfy the line | the judge may pass it |
-| **open** | a model, at runtime, unbounded | a batch of N samples captured in ONE run before anyone looks | k of N, both numbers the owner's | 🔴 **only the owner** |
+| **open** | a model, at runtime, unbounded | a batch of N samples captured in ONE run before anyone looks | k of N, both numbers the owner's | the judge may pass it — the weakest verdict (§10.4, owner 2026-09-16) |
 | **absolute** (`cannot read` only) | any of the above | the same artifact as the axis it guards | **zero occurrences.** One counterexample fails the mod | the judge may FAIL it; a clean batch is not a pass, it is the absence of a failure |
 
 Consequences worth stating outright, because each one removes work:
@@ -746,10 +744,10 @@ So, as of this ruling:
 - ⚠️ **UNMEASURED, and it matters: whether the judge and the generator are the
   same model.** Both go through `claude -p`; nothing in either path pins a model
   version, and the game machine's CLI and this checkout's differ by version
-  already (2.1.228 vs 2.1.266, recorded in `OracleClient.cs`). The mitigation is
-  NOT "use a different model", which cannot be guaranteed — it is the rule above,
-  that the model cannot grant a pass on the one class where the overlap would
-  matter.
+  already (2.1.228 vs 2.1.266, recorded in `OracleClient.cs`). "Use a different
+  model" cannot be guaranteed, so the mitigation is the weighting above: a pass on
+  an `open` line is the weakest verdict, and a letter that reads wrong in play
+  re-opens the line.
 
 ### 10.5 The join: `reads=`, and the read floor
 
@@ -871,10 +869,8 @@ EXPECT  REFUSED on the read floor first (validated read lines with no
         small hands." and the only letter label is "Ohm speaks (Oracle
         spike)". A bracketed engineering marker and a project codename,
         both in text the player reads
-LIES    a model returning YES on an `open` line and that YES being allowed
-        to green the mod; any run in which the same `claude -p` both wrote
-        the letters and passed them; an `open` line recorded as passing
-        against one captured letter; a `must read` line a regex settles
+LIES    an `open` line recorded as passing against one captured letter
+        (its N is the owner's); a `must read` line a regex settles
 ```
 
 ⚠️ Two first-run signatures to distrust, both stronger here than on the visual
