@@ -23,10 +23,10 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 
 | # | Capability | Item | Status | Offline? | Blocker / note |
 |---|---|---|---|---|---|
-| 1 | Enclosed D=4 area is its own room (LAW 2 exception [D]); bed → prison; capture down / convert down from the lip; width rule gates it | SUPERDEEP_PRISON_ROOM_1 | BUILD | yes | Seam measured: walkable D=4 is the same region type as its lip → needs a region/district patch |
-| 2 | Exposed Prisoner nulled by ideoligion like beggar refusal (Charity precepts' structure) | PIT_TEMPERATURE_SOFTENING_1 | BUILD | yes | Structure ruled ("borrow their structure"); numbers stay PROVISIONAL for his word |
-| 3 | Per-body fluid: stock capacity/refill per body.fluid, debug fills per fluid, null-palette log | LIQUID_BODY_FLUID_IDENTITY_1 step 3 | BUILD | yes | — |
-| 4 | Bottle revert timer (boiling/icy → fresh) and rot (blood → hemopack) from row data | LIQUID_BOTTLE_LOOP_1 | BUILD | yes | Fill-job live failure (2026-09-25) needs a fresh-log live read; source review this pass |
+| 1 | ✅ 73408b80e — Enclosed D=4 area is its own room (LAW 2 exception [D]); bed → prison; capture down / convert down from the lip; width rule gates it | SUPERDEEP_PRISON_ROOM_1 | BUILD | yes | Seam measured: walkable D=4 is the same region type as its lip → needs a region/district patch |
+| 2 | ✅ 73408b80e — Exposed Prisoner nulled by ideoligion like beggar refusal (Charity precepts' structure) | PIT_TEMPERATURE_SOFTENING_1 | BUILD | yes | Structure ruled ("borrow their structure"); numbers stay PROVISIONAL for his word |
+| 3 | Per-body fluid: stock capacity/refill per body.fluid, debug fills per fluid, null-palette log | LIQUID_BODY_FLUID_IDENTITY_1 step 3 | BUILT (earlier today; ledger lagged) | — | closed this pass at 5d5e6cc12 |
+| 4 | ✅ revert 73408b80e (rot: no blood row, deferred) — Bottle revert timer (boiling/icy → fresh) and rot (blood → hemopack) from row data | LIQUID_BOTTLE_LOOP_1 | BUILD | yes | Fill-job live failure (2026-09-25) needs a fresh-log live read; source review this pass |
 | 5 | Fire: ignition from an explosion with no Fire; extinguishing (rain, foam) | FLOWWORKS_BUILD_PROGRAM_1 Phase 6 owed | BUILD | yes | — |
 | 6 | Canal-dig finds (Quarry concept): lump on the bank, letter on first find per material per map, deep cuts reach deep-drill minerals, mineral-less biome → local rock chunks | FLOWWORKS_QUARRY_DIGGING_1 (FlowWorks half) | BUILD (core) | yes | Per-biome numbers come from MINERALS_WHERE_THEY_BELONG_1's registry (owner numbers review unapproved) — core reads the MAP's own geology until the registry lands |
 | 7 | Phase 8 hardware: universal pump (body ↔ tank through §8 TryDebit/TryCredit), barrels | FLOWWORKS_BUILD_PROGRAM_1 Phase 8 | BUILD (slice) | yes | Hoses, per-net adapters (VE PipeSystem) are a later slice |
@@ -45,3 +45,8 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 
 ## Progress log (appended as rows land)
 
+- 73408b80e: SUPERDEEP_PRISON_ROOM_1 built + closed; Charity-precept gate on RM_ExposedPrisoner; bottle revert timer.
+  Closed on criteria met offline: SUPERDEEP_PRISON_ROOM_1, LIQUID_BODY_FLUID_IDENTITY_1, PIT_FILL_EFFECTS_1, PIT_DEPTH_DRAW_OFFSET_1.
+  ⚠️ selftest_flowworks_northstar.py's settings-parity check fails until northstar/site_spec.py SETTINGS lists the
+  four new settings (superdeepRoomsEnabled, captureDownEnabled, wardenFromLipEnabled, bottleRevertEnabled) — that
+  file belongs to the northstar/densify owner this pass.
