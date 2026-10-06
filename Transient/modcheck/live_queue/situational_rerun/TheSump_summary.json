@@ -32,15 +32,15 @@
           "defName": "TheSumpNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_1845e097dc8b4c58a5c41f7307958937",
+         "OperationId": "op_3f9789a58dec40d99ed1bbb3fd3210f2",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:22:08.3930341+00:00",
-         "CompletedAtUtc": "2026-10-04T11:22:08.4422287+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:05:02.7200061+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:02.7689355+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -61,19 +61,17 @@
      "name": "every_deployed_def_resolves",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: 79 of 81 defs resolved; notFound=['ThingDef/RM_CapstanTurret_PitRigged', 'ThingDef/RUT_PreservedDrawJoint']",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "39 of 40 def(s) resolved; 1 not found",
+        "message": "40 of 40 def(s) resolved",
         "requested": 40,
-        "foundCount": 39,
-        "notFound": [
-         "ThingDef/RM_CapstanTurret_PitRigged"
-        ],
+        "foundCount": 40,
+        "notFound": [],
         "malformed": [],
         "fieldsAsked": [
          "defName"
@@ -501,9 +499,15 @@
          },
          {
           "requested": "ThingDef/RM_CapstanTurret_PitRigged",
-          "found": false,
+          "found": true,
+          "defName": "RM_CapstanTurret_PitRigged",
           "defType": "ThingDef",
-          "defName": "RM_CapstanTurret_PitRigged"
+          "label": "pit-rigged capstan turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CapstanTurret_PitRigged"
+          }
          },
          {
           "requested": "ThingDef/RM_Dorvel",
@@ -554,15 +558,15 @@
           }
          }
         ],
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_3a9ee779364e402b96b895f6a15f3522",
+         "OperationId": "op_ac055687b2e94f1e995efb2e50079b39",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:22:08.4937937+00:00",
-         "CompletedAtUtc": "2026-10-04T11:22:08.544334+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:05:02.8197871+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:02.8691199+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -576,12 +580,10 @@
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "39 of 40 def(s) resolved; 1 not found",
+        "message": "40 of 40 def(s) resolved",
         "requested": 40,
-        "foundCount": 39,
-        "notFound": [
-         "ThingDef/RUT_PreservedDrawJoint"
-        ],
+        "foundCount": 40,
+        "notFound": [],
         "malformed": [],
         "fieldsAsked": [
          "defName"
@@ -820,7 +822,7 @@
           "found": true,
           "defName": "RM_TarGas",
           "defType": "ThingDef",
-          "label": "Sumpgas",
+          "label": "tar gas",
           "modName": "RimMandrake: Baroque Biomes",
           "packageId": "mandrake.rm.biomes",
           "fields": {
@@ -1009,9 +1011,15 @@
          },
          {
           "requested": "ThingDef/RUT_PreservedDrawJoint",
-          "found": false,
+          "found": true,
+          "defName": "RUT_PreservedDrawJoint",
           "defType": "ThingDef",
-          "defName": "RUT_PreservedDrawJoint"
+          "label": "preserved draw-joint",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RUT_PreservedDrawJoint"
+          }
          },
          {
           "requested": "ThingDef/RUT_WickStem",
@@ -1062,15 +1070,15 @@
           }
          }
         ],
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_10ad5a32ccd14813931e49aa6a8eceed",
+         "OperationId": "op_c5e6ce62d2334d18b740115750aca54e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:22:08.5928749+00:00",
-         "CompletedAtUtc": "2026-10-04T11:22:08.6430415+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:05:02.9198369+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:02.9684646+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1106,15 +1114,15 @@
           }
          }
         ],
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_1ddfc7731f884701a9837779142a3713",
+         "OperationId": "op_9684de3c17f94bbaa2a14c01a8c76a5b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:22:08.6922881+00:00",
-         "CompletedAtUtc": "2026-10-04T11:22:08.7429093+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-06T12:05:03.0197432+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:03.0693553+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1135,8 +1143,8 @@
      "name": "held_defs_are_unmeasured_by_hold",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1154,7 +1162,7 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -1507,15 +1515,15 @@
         "success": true,
         "method": "System.String ProofVault(Verse.Map)",
         "result": "sealed=True rotFrozen=True forbidden=True ruinedOut=True cleanOut=True solventLeft=1",
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_25b090ee7a574078bf8a789a8ff5e5c1",
+         "OperationId": "op_6acd9fa11d63462d81b7ef9b7e25d381",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:23:29.0539903+00:00",
-         "CompletedAtUtc": "2026-10-04T11:23:29.1156158+00:00",
-         "DurationMs": 61,
+         "StartedAtUtc": "2026-10-06T12:05:24.1035032+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:24.1526277+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1601,15 +1609,15 @@
         "success": true,
         "method": "System.String ProofKethrel(Verse.Map)",
         "result": "s0=0 kg1=15 s1=2 hediff1=3.01 s2=3 dropped=1 sAfter=0 hediffGone=True steelOnMap=60",
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_d185be5d2ecb4327b6e097b0245fa8dc",
+         "OperationId": "op_4c40d020f70e48cfa52116c01d1fe3d3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:23:34.8696927+00:00",
-         "CompletedAtUtc": "2026-10-04T11:23:34.9192801+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-06T12:05:30.0606915+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:30.1086247+00:00",
+         "DurationMs": 47,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1841,16 +1849,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofPull(System.String)",
-        "result": "PULL kind=Villager roped=True start=9.0 end=5.0 steps=5 snaps=1 turretHp=190/220",
-        "ticksGame": 426242,
+        "result": "PULL kind=Villager roped=True start=9.0 end=2.0 steps=8 snaps=0 turretHp=220/220",
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_218bfda621a145d0ab09f4a6866d1196",
+         "OperationId": "op_95ff0b028d9548c2affe7d1c232ff11d",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:23:45.3080524+00:00",
-         "CompletedAtUtc": "2026-10-04T11:23:45.3980071+00:00",
-         "DurationMs": 89,
+         "StartedAtUtc": "2026-10-06T12:05:40.2932511+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:40.3420747+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1880,15 +1888,15 @@
         "success": true,
         "method": "System.String ProofPull(System.String)",
         "result": "PULL kind=heavy roped=False start=9.0 end=9.0 steps=0 snaps=1 turretHp=190/220",
-        "ticksGame": 426242,
+        "ticksGame": 362858,
         "operation": {
-         "OperationId": "op_4649db24edc640d4a8671ca2f0f4db9d",
+         "OperationId": "op_7220520a582b4c1ca62eeaa7fdf63b8a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T11:23:45.4331307+00:00",
-         "CompletedAtUtc": "2026-10-04T11:23:45.467624+00:00",
-         "DurationMs": 34,
+         "StartedAtUtc": "2026-10-06T12:05:40.3933116+00:00",
+         "CompletedAtUtc": "2026-10-06T12:05:40.442904+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1921,7 +1929,7 @@
     "surprises": [],
     "hits_seen": [
      {
-      "tick": 426242,
+      "tick": 362858,
       "detector": "log_errors",
       "severity": "WARN",
       "summary": "1 new error message(s) in the log"
@@ -1941,9 +1949,7 @@
   }
  ],
  "all_green": false,
- "findings": [
-  "<suite.Component object at 0x000001E7302828E0>"
- ],
+ "findings": [],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\TheSump.md",
  "modal_check_final": {
@@ -1977,7 +1983,7 @@
      "residue": []
     },
     "incident_queue_cleared": 0,
-    "corpses_destroyed": 0,
+    "corpses_destroyed": 1,
     "corpses_left": 0,
     "extinguish": {
      "acted": 0,
@@ -1992,6 +1998,12 @@
      "acted": 9,
      "verified": true
     }
+   },
+   "retile": {
+    "tile": 440,
+    "biome": "Desert",
+    "temperature": 18.7159767,
+    "applied": "RM_TheSump"
    }
   },
   "after_problems": []
@@ -2000,34 +2012,28 @@
  "visual_all_green": true,
  "state_all_green": false,
  "run_identity": {
-  "run_id": "20261004T041742-situational_rerun-36080",
+  "run_id": "20261006T045846-situational_rerun-97948",
   "git": {
    "source": "git",
-   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+   "sha": "24e19306bdebbedb2bedd366b3b9ab90ad81768b"
   },
   "deploy_start": {
    "mod": "TheSump",
-   "at": "2026-10-04T04:21:35",
-   "state": "drift",
+   "at": "2026-10-06T05:04:29",
+   "state": "in-sync",
    "reason": null,
    "composed": "RimMandrake.Biomes",
    "src_dir": "src/RimMandrake/TheSump",
-   "src_hash": "1e453848abd07e79",
-   "deployed_hash": "f097e5eb3f16cd10",
+   "src_hash": "fd3a2927152be7cc",
+   "deployed_hash": "fd3a2927152be7cc",
    "n_src": 119,
-   "n_deployed": 117,
+   "n_deployed": 119,
    "n_held": 0,
    "drift": {
-    "new": 2,
-    "changed": 3,
+    "new": 0,
+    "changed": 0,
     "gone": 0,
-    "sample": [
-     "Biomes\\TheSump\\Defs\\ThingDefs_Items\\RUT_PreservedDrawJoint.xml",
-     "Biomes\\TheSump\\Textures\\Things\\Item\\RUT_PreservedDrawJoint\\RUT_PreservedDrawJoint.png",
-     "Biomes\\TheSump\\Defs\\LotteryTableDefs\\RUT_DigStratumTable.xml",
-     "Biomes\\TheSump\\Defs\\ResearchProjectDefs\\RM_CapstanTurret.xml",
-     "Biomes\\TheSump\\Defs\\ThingDefs_Buildings\\RM_CapstanTurret.xml"
-    ]
+    "sample": []
    },
    "dlls": [
     {
@@ -2040,27 +2046,21 @@
   },
   "deploy_end": {
    "mod": "TheSump",
-   "at": "2026-10-04T04:23:47",
-   "state": "drift",
+   "at": "2026-10-06T05:05:42",
+   "state": "in-sync",
    "reason": null,
    "composed": "RimMandrake.Biomes",
    "src_dir": "src/RimMandrake/TheSump",
-   "src_hash": "1e453848abd07e79",
-   "deployed_hash": "f097e5eb3f16cd10",
+   "src_hash": "fd3a2927152be7cc",
+   "deployed_hash": "fd3a2927152be7cc",
    "n_src": 119,
-   "n_deployed": 117,
+   "n_deployed": 119,
    "n_held": 0,
    "drift": {
-    "new": 2,
-    "changed": 3,
+    "new": 0,
+    "changed": 0,
     "gone": 0,
-    "sample": [
-     "Biomes\\TheSump\\Defs\\ThingDefs_Items\\RUT_PreservedDrawJoint.xml",
-     "Biomes\\TheSump\\Textures\\Things\\Item\\RUT_PreservedDrawJoint\\RUT_PreservedDrawJoint.png",
-     "Biomes\\TheSump\\Defs\\LotteryTableDefs\\RUT_DigStratumTable.xml",
-     "Biomes\\TheSump\\Defs\\ResearchProjectDefs\\RM_CapstanTurret.xml",
-     "Biomes\\TheSump\\Defs\\ThingDefs_Buildings\\RM_CapstanTurret.xml"
-    ]
+    "sample": []
    },
    "dlls": [
     {
