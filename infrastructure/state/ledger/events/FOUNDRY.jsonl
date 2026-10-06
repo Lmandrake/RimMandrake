@@ -3025,3 +3025,6 @@
 {"seat":"FOUNDRY","event":"note","id":"LIQUID_BOTTLE_LOOP_1","text":"Blood rot row BLOCKED (not built 3e473f37c): no fill source for bottled blood is designed (item-only, no terrain, no extraction route) — owner must say where bottled blood comes from; then it is one generator row + CompRottable + a household hemopack recipe.","ts":"2026-10-06T02:09:50Z","tsn":1791252590305888658}
 {"seat":"FOUNDRY","event":"file","id":"FLOWWORKS_VISUAL_PRINCIPLES_1","title":"FlowWorks look: owner's five visual rules (deep cuts as walls, dirt/stone faces, moving water, tar as liquid, scorched pit)","kind":"task","target":"v1","needs":"deploy","for":"FOUNDRY","ts":"2026-10-06T03:29:02Z","tsn":1791257342922731832}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T03:43:05Z","tsn":1791258185380860415}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-06T05:06:10Z","tsn":1791263170325599799}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GimmeSomeSlack review map for owner walk","ts":"2026-10-06T05:15:17Z","tsn":1791263717644965356}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T05:15:21Z","tsn":1791263721557122486}
