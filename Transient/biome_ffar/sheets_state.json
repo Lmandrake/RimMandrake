@@ -5,7 +5,7 @@
   "gate": "v1"
  },
  "blue_desert_sheet_2026-10-04": {
-  "built": "2026-10-06T04:37:38",
+  "built": "2026-10-06T05:10:48",
   "fp": "262a2c5142d274d37a7c",
   "gate": "v1"
  },
@@ -14,13 +14,13 @@
   "fp": "52e73a5d5d80f524fdab"
  },
  "contagion_sheet_2026-10-04": {
-  "built": "2026-10-06T04:39:04",
+  "built": "2026-10-06T05:16:24",
   "fp": "5e8880da87c347bef8d7",
   "gate": "v1"
  },
  "deep_desert_sheet_2026-10-04": {
-  "built": "2026-10-06T04:39:47",
-  "fp": "30acbb8fa280643e2058",
+  "built": "2026-10-06T05:17:00",
+  "fp": "dff0b19c7184bb0546b9",
   "gate": "v1"
  },
  "desert_sheet_2026-10-04": {
@@ -37,7 +37,7 @@
   "fp": "d775e6407f1a3bbee117"
  },
  "gelatinousslime_sheet_2026-10-05": {
-  "built": "2026-10-06T04:50:45",
+  "built": "2026-10-06T05:28:17",
   "fp": "2b5a94a63e1f8aaa984e",
   "gate": "v1"
  },
@@ -47,12 +47,12 @@
   "gate": "v1"
  },
  "greysea_sheet_2026-10-05": {
-  "built": "2026-10-06T05:00:22",
+  "built": "2026-10-06T05:38:07",
   "fp": "08e98e2708d6a4b6faf5",
   "gate": "v1"
  },
  "lanterndeeps_sheet_2026-10-05": {
-  "built": "2026-10-06T05:00:53",
+  "built": "2026-10-06T05:38:40",
   "fp": "68d6440a87543124ece2",
   "gate": "v1"
  },
@@ -61,27 +61,27 @@
   "fp": "9effc656e4c06108b6e8"
  },
  "miasma_sheet_2026-10-05": {
-  "built": "2026-10-06T05:14:52",
+  "built": "2026-10-06T05:43:49",
   "fp": "c591eb881556be60e9cb",
   "gate": "v1"
  },
  "nightsideice_sheet_2026-10-05": {
-  "built": "2026-10-06T05:15:12",
+  "built": "2026-10-06T05:44:11",
   "fp": "aa43c5ca5ce5e80f10f1",
   "gate": "v1"
  },
  "pyrelands_sheet_2026-10-05": {
-  "built": "2026-10-06T05:19:51",
+  "built": "2026-10-06T05:44:58",
   "fp": "7711fa1d304e358c5c34",
   "gate": "v1"
  },
  "rustcathedral_sheet_2026-10-05": {
-  "built": "2026-10-06T05:20:26",
+  "built": "2026-10-06T05:45:32",
   "fp": "dcb5a67c1c7becf6dbfc",
   "gate": "v1"
  },
  "thechill_sheet_2026-10-05": {
-  "built": "2026-10-06T05:20:59",
+  "built": "2026-10-06T05:46:01",
   "fp": "5a8c817b01dab4510d22",
   "gate": "v1"
  },
@@ -94,23 +94,23 @@
   "fp": "a8e08f2ec0f696eb317c"
  },
  "thescald_sheet_2026-10-05": {
-  "built": "2026-10-06T05:27:22",
+  "built": "2026-10-06T05:56:52",
   "fp": "f6ae61957adf33c2311e",
   "gate": "v1"
  },
  "thesump_sheet_2026-10-05": {
-  "built": "2026-10-06T05:27:53",
-  "fp": "65285afd97c2e5b99f7d",
+  "built": "2026-10-06T05:57:21",
+  "fp": "ce184f794891dd0112b4",
   "gate": "v1"
  },
  "twilightsea_sheet_2026-10-05": {
-  "built": "2026-10-06T05:28:25",
+  "built": "2026-10-06T05:57:58",
   "fp": "6110edad9bd0b5ceab79",
   "gate": "v1"
  },
  "warscar_sheet_2026-10-05": {
-  "built": "2026-10-06T05:28:48",
-  "fp": "c13c220a44ab1a3aa569",
+  "built": "2026-10-06T05:58:33",
+  "fp": "ef1443201c5bb65866b9",
   "gate": "v1"
  },
  "wasteland_sheet_2026-10-05": {
@@ -118,7 +118,7 @@
   "fp": "15648496335e940285e9"
  },
  "webwork_sheet_2026-10-05": {
-  "built": "2026-10-06T05:30:00",
+  "built": "2026-10-06T06:04:22",
   "fp": "76dc748d083452299b6e",
   "gate": "v1"
  },
