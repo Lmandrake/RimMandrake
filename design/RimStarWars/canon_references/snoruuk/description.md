@@ -1,0 +1,43 @@
+# Snoruuk
+
+**defName**: `Snoruuk` (donor: Star Wars Animal Collection (Continued), `mlie.starwarsanimalcollection`; the donor's own def, a mobile fungus carried as an animal). Cast in The Rot via `src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml`. Donor art: `swanimals/Snoruuk/Snoruuk` and `Snoruuk_j`.
+
+## Sourced text (Wookieepedia, Legends)
+Snoruuks were **mobile mushrooms** found on the planet Gamorr. They grouped in **rings of five to
+thirty plants**. They could be **herded by tapping one mushroom**, which made the whole ring
+move in the opposite direction. They searched for food and moisture, stopping to **take root in
+winter** to ride out bad weather. Source: Adventure Journal 10. The article is a short stub:
+colour, size, height and lifespan are unsourced and absent.
+Page: https://starwars.fandom.com/wiki/Snoruuk/Legends, fully read (1,675 chars).
+
+## Visual brief
+- `wookieepedia_snoruuk.jpg` (717x465, black-and-white ink drawing): a **cluster of seven
+  mushrooms** of different sizes: **domed caps with scalloped gill-fringed rims, thick stalks
+  with a flared foot, and round blister-like spots on both cap and stalk**. No faces, legs or
+  limbs are drawn; they are plain mushrooms in a group. Colour is not shown.
+- `donor_current_sprite.png` (128x128): ONE mushroom with a **red cap** with darker spots, a
+  grey underside and a **tan stalk with brown spots**. Agrees on the spotted dome-and-stalk
+  shape. Red is the donor's choice; canon gives no colour.
+- The prose says they walk; the drawing shows nothing about how. Do not give them eyes or
+  legs the canon does not show.
+
+## Must show
+- [ ] A mushroom: domed cap with a scalloped, gilled underside rim on a thick stalk
+- [ ] Round blister-like spots over both cap and stalk
+- [ ] Shown as one of a group of several (a ring of 5 to 30), not a lone plant, where the format allows
+- [ ] No face, no limbs, no eyes
+- [ ] Colour is free (canon gives none); the donor's red cap with tan stalk is acceptable
+
+## Engine limits
+none known. (Ring formation and tap-herding are behaviour. Rooting in winter is a state, not a sprite.)
+
+## Source URLs
+- https://starwars.fandom.com/wiki/Snoruuk/Legends (text via `api.php?action=parse&page=Snoruuk/Legends&prop=wikitext`)
+- https://static.wikia.nocookie.net/starwars/images/4/46/Snoruuk.jpg (saved as `wookieepedia_snoruuk.jpg`)
+
+## Candidate images
+- `wookieepedia_snoruuk.jpg` : ink drawing of a seven-mushroom ring, uncoloured.
+- `donor_current_sprite.png` : MLIE donor, 128x128, red-capped single mushroom.
+
+## ruling
+(empty — owner has not reviewed this entry)
