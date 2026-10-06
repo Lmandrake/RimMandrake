@@ -1,0 +1,87 @@
+{
+ "mission": "canal",
+ "title": "Defensive canal from a limited pond",
+ "goal": "Dig a water-filled defensive canal across the band marked GOAL, fed from the small pond west of it. The pond is all the water there is.",
+ "dry_run": false,
+ "anchor": [
+  125,
+  125
+ ],
+ "rects": {
+  "site": [
+   109,
+   117,
+   32,
+   16
+  ],
+  "pond": [
+   111,
+   123,
+   4,
+   4
+  ],
+  "goal_band": [
+   129,
+   117,
+   3,
+   16
+  ]
+ },
+ "events": [],
+ "goal_check": {
+  "kind": "canal",
+  "band": "goal_band",
+  "min_cells": 10,
+  "min_fill": 1
+ },
+ "deadline": {
+  "wall_s": 1800,
+  "ticks": 60000,
+  "actions": 150
+ },
+ "fixture": [
+  {
+   "tool": "jawa/weather_set",
+   "args": {
+    "weather": "Clear",
+    "lockWeather": true
+   },
+   "ok": true,
+   "ms": 51.92,
+   "excerpt": "{\"success\": true, \"before\": \"Clear\", \"after\": \"Clear\", \"lockInForce\": true, \"lockCaveat\": null, \"gamePaused\": true, \"notes\": [\"registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control\"], \"ticksGame\": 23082, \"operation\": {\"OperationId\": \"op_22f77104693c4cf8a57865fa"
+  },
+  {
+   "tool": "jawa/incident_queue_clear",
+   "args": {},
+   "ok": true,
+   "ms": 47.52,
+   "excerpt": "{\"success\": true, \"clearedCount\": 0, \"cleared\": [], \"ticksGame\": 23082, \"operation\": {\"OperationId\": \"op_44db36bf70b241b4af5375fe963f7212\", \"CapabilityId\": \"extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/incident-queue-clear\", \"Status\": 2, \"Success\": true, \"StartedAtUtc\": "
+  },
+  {
+   "tool": "jawa/destroy_batch",
+   "args": {
+    "rects": "109,117,32,16",
+    "categories": "All"
+   },
+   "ok": true,
+   "ms": 240.4,
+   "excerpt": "{\"success\": true, \"message\": \"Destroyed 285 thing(s) across 512 cell(s).\", \"cellsExamined\": 512, \"outOfBounds\": 0, \"destroyed\": 285, \"pawnsSkipped\": 0, \"perCategory\": {\"Plant\": 91, \"Building\": 128, \"Filth\": 37, \"Item\": 29}, \"samples\": [{\"x\": 109, \"z\": 118, \"def\": \"Plant_Grass\", \"category\": \"Plant\"},"
+  },
+  {
+   "tool": "jawa/set_terrain_batch",
+   "args": {
+    "ops": "Soil:109,117,32,16;WaterShallow:111,123,4,4"
+   },
+   "ok": true,
+   "ms": 45.88,
+   "excerpt": "{\"success\": true, \"message\": \"Applied 2/2 op(s): 373 cell(s) changed, 155 already correct.\", \"layer\": \"top\", \"opsRequested\": 2, \"opsApplied\": 2, \"cellsRequested\": 528, \"cellsChanged\": 373, \"cellsAlreadyCorrect\": 155, \"cellsOutOfBounds\": 0, \"cellsFailedVerify\": 0, \"refreshed\": true, \"cellsRefreshed\":"
+  }
+ ],
+ "fixture_s": 0.84,
+ "checkpoint_save": "PM_canal_start_20261006T105024",
+ "checkpoint_reply_path": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Saves\\PM_canal_start_20261006T105024.rws",
+ "tick0": 23082,
+ "mission_start_wall": 1791309025.2994373,
+ "events_fired": [],
+ "connect_ms": 34.25180003978312
+}
