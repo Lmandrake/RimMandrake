@@ -419,7 +419,8 @@ def check_purge_wired(ctx, items) -> Check:
 
 
 def check_no_purged(ctx, items) -> Check:
-    """Req 14 (owner 2026-10-05: "delete the graphics I already indicated we should purge, so I don't keep seeing and
+    """Req 14 (exception: a purged picture that is still the live IN GAME column is allowed when flagged purgedLive and
+    non-pickable) (owner 2026-10-05: "delete the graphics I already indicated we should purge, so I don't keep seeing and
     reviewing them"): no picture the art ledger has purged is rendered as a column, on any sheet."""
     fn = ctx.get("is_purged")
     if fn is None:
@@ -433,6 +434,11 @@ def check_no_purged(ctx, items) -> Check:
         for g in it.get("graphics", []):
             for c in g.get("cols", []):
                 bad = [sh[:10] for sh in (c.get("faces") or {}).values() if fn(sh)]
+                if bad and c.get("purgedLive") and c.get("winner"):
+                    # purged but still the game's IN GAME picture: shown for reference, must be non-pickable
+                    if c.get("purgeable") or c.get("letter") in (it.get("letters") or []):
+                        p.append(f"{it['id']} {c.get('letter')}: purged-but-live picture is pickable")
+                    continue
                 if bad:
                     p.append(f"{it['id']} {c.get('letter')}: purged {', '.join(bad)} still shown")
     return Check("14", "no ledger-purged picture is shown as a column", p)
