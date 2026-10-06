@@ -3100,3 +3100,15 @@
 {"seat":"FOUNDRY","event":"claim","id":"WEBWORK_TRACTION_LANCE_BUILD_1","ts":"2026-10-06T18:19:30Z","tsn":1791310770366530323}
 {"seat":"FOUNDRY","event":"block","id":"CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1","reason":"needs a ruling on lock mechanism (hidden research vs WorldComponent) and the survey item CRACKEDLANDS_MECHANICS_BUILD_1 s2 to fire the unlock; a lock with no unlock bricks the Swale. Notes: Transient/swale_lock_20261006.md","ts":"2026-10-06T18:20:01Z","tsn":1791310801613471716}
 {"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_STELLOCK_LACE_BUILD_1","ts":"2026-10-06T18:20:02Z","tsn":1791310802255288453}
+{"seat":"FOUNDRY","event":"claim","id":"PIT_TEMPERATURE_SOFTENING_1","ts":"2026-10-06T18:20:37Z","tsn":1791310837953299806}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_THURROCK_HERD_BUILD_1","ts":"2026-10-06T18:21:53Z","tsn":1791310913028047612}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_REFUSED_TOLL_RITE_1","ts":"2026-10-06T18:28:20Z","tsn":1791311300920949500}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_ANSWERING_RITE_BUILD_1","ts":"2026-10-06T18:29:59Z","tsn":1791311399125563455}
+{"seat":"FOUNDRY","event":"block","id":"WEEPINGSTONES_REFUSED_TOLL_RITE_1","reason":"owner 2026-10-03: table the rites until the biome mod is fully complete and checked out (SALVATION_RITES_UNIFICATION_1); I claimed it in error","ts":"2026-10-06T18:30:19Z","tsn":1791311419221113515}
+{"seat":"FOUNDRY","event":"block","id":"SUMP_SINKING_RITE_BUILD_1","reason":"owner 2026-10-03: table the rites until the biome mod is fully complete and checked out (SALVATION_RITES_UNIFICATION_1); I claimed it in error","ts":"2026-10-06T18:30:19Z","tsn":1791311419877509415}
+{"seat":"FOUNDRY","event":"block","id":"LANTERNDEEPS_ANSWERING_RITE_BUILD_1","reason":"owner 2026-10-03: table the rites until the biome mod is fully complete and checked out (SALVATION_RITES_UNIFICATION_1); I claimed it in error","ts":"2026-10-06T18:30:20Z","tsn":1791311420476363659}
+{"seat":"FOUNDRY","event":"claim","id":"RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1","ts":"2026-10-06T18:30:34Z","tsn":1791311434573675672}
+{"seat":"FOUNDRY","event":"claim","id":"WEBWORK_DEAD_GIANT_BUILD_1","ts":"2026-10-06T18:30:35Z","tsn":1791311435207922128}
+{"seat":"FOUNDRY","event":"claim","id":"MESSYCONDUIT_STYLED_POLES_1","ts":"2026-10-06T18:30:35Z","tsn":1791311435896493957}
+{"seat":"FOUNDRY","event":"start","id":"MESSYCONDUIT_STYLED_POLES_1","ts":"2026-10-06T18:33:08Z","tsn":1791311588214606223}
+{"seat":"FOUNDRY","event":"close","id":"MESSYCONDUIT_STYLED_POLES_1","sha":"7edf12aa8","ts":"2026-10-06T18:33:08Z","tsn":1791311588814670632}
