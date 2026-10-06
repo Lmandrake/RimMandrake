@@ -432,7 +432,9 @@ def plot_A_dug_channel(t):
         # ruled pathCost 30 for a dry D=1 cell (build program Phase 5, ruling 17)
         r = t.bridge_call("jawa/get_defs", defs="TerrainDef/RM_Channel_Empty")
         if t._guard():
-            _expect("\"pathCost\":30" in str(r).replace(" ", ""),
+            # json.dumps, not str(): str() of the reply dict prints 'pathCost': 30 in single quotes, so the double-quoted
+            # probe never matched and the row FAILed on a def that carries exactly 30 (MEASURED 2026-10-06)
+            _expect("\"pathCost\":30" in json.dumps(r).replace(" ", ""),
                     "RM_Channel_Empty pathCost is not the ruled 30: %s" % str(r)[:300])
         _frame(t, cells[0][0], z, 8, 1)
     with t.component("filled_excavation_obstacle_look", shows=["filled_excavation_reads_as_obstacle"]):
