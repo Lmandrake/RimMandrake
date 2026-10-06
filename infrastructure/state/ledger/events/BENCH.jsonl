@@ -1212,3 +1212,6 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-06T13:06:23Z","tsn":1791291983628714935}
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-06T13:06:26Z","tsn":1791291986073961735}
 {"seat":"BENCH","event":"note","id":"CHILL_SURFACE_SITTING_1","text":"NEXT: when chill_{eldspar,fuselight,ghostpane}_var{2,3}_v1 land (6 jobs filed 2026-10-06, derived from the kept A, owner: keep A + variants): move each plant's A + variants into one texPath folder, switch graphicClass to Graphic_Random, install through art.py install.","ts":"2026-10-06T13:37:05Z","tsn":1791293825454002382}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: restart on minimal list with new JawaBench DLL; time playtest runner pilot (A) + player mission canal (C)","ts":"2026-10-06T17:39:53Z","tsn":1791308393383853256}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T17:52:56Z","tsn":1791309176489150519}
+{"seat":"BENCH","event":"file","id":"FLOWWORKS_PLAYTEST_CAMPAIGN_1","title":"FlowWorks bugs via new test methods + rich-screenshot art pre-review; method-per-bug-class data","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-10-06T18:26:12Z","tsn":1791311172381110374}
