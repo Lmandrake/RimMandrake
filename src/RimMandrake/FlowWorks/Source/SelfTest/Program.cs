@@ -867,6 +867,68 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitTrapMath.FallDamage(60f, 0f), 1f, "multiplier 0 still floors at 1");
             });
 
+            // ── FLOWWORKS_PIT_FALL_ONLY_FORCED_1 + the pit_escape ladder bug (live FAIL 2026-10-06) ──
+            Case("PitFall_only_forced_or_concealed", () =>
+            {
+                // (walkedStep, ontoUsableLadder, playerFaction, captured)
+                Assert(RM_PitTrapMath.DescentFalls(false, false, true, false), "colonist blown/forced in: falls");
+                Assert(RM_PitTrapMath.DescentFalls(false, true, true, false), "forced onto a ladder cell still falls");
+                Assert(RM_PitTrapMath.DescentFalls(false, false, false, true), "enemy forced in: falls");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, true, false), "colonist never falls by walking");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, true, true), "...even with the own-faction capture setting on");
+                Assert(!RM_PitTrapMath.DescentFalls(true, true, false, true), "climbing down a usable ladder is not a fall");
+                Assert(RM_PitTrapMath.DescentFalls(true, false, false, true), "a captured non-colonist walking into an open pit still falls (stale route)");
+                Assert(!RM_PitTrapMath.DescentFalls(true, false, false, false), "not captured, walked: no fall");
+            });
+
+            Case("PitRoute_ladder_way_out_and_never_in_by_accident", () =>
+            {
+                // 5x5 pit at (10..14, 10..14); ladder in the TOP ROW at (12, 14) — the runner's fixture.
+                var pit = PitRect(10, 10, 5, 5);
+                var ladder = (12, 14);
+                bool IsPit(int x, int z) => pit.Contains((x, z));
+                bool Lip(int x, int z) => !pit.Contains((x, z));
+                bool LadderLowered(int x, int z) => (x, z) == ladder;
+                bool HeldLowered(int x, int z) => pit.Contains((x, z)) && (x, z) != ladder;
+                bool HeldRaised(int x, int z) => pit.Contains((x, z));
+                bool NoLadder(int x, int z) => false;
+                bool Free(int x, int z) => false;
+
+                // A held friendly in the far corner, sent outside, below-left of the pit: the old
+                // vanilla route left over the nearest lip and was vetoed. Now: walk IN the pit to the ladder.
+                var r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.WalkToInPit && (r.x, r.z) == ladder, "held: to the ladder inside the pit, got " + r.leg + " " + r.x + "," + r.z);
+                // On the ladder: one step up onto the lip, toward the destination.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 12, 14, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StepTo && !pit.Contains((r.x, r.z))
+                    && Math.Abs(r.x - 12) <= 1 && Math.Abs(r.z - 14) <= 1, "on the ladder: step to an adjacent lip cell");
+                // Raised ladder (or a hostile, for whom a lowered ladder is no way out): nothing.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldRaised, NoLadder, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "trapped: vanilla (reachability vetoes)");
+                // A pawn this pit does not hold (colonist, own-faction carve-out): untouched.
+                r = RM_PitTrapMath.PlanRoute(IsPit, Free, LadderLowered, Lip, 10, 10, 5, 5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "not held anywhere: vanilla");
+                // Moving within the pit stays in the pit (never out over the lip and back in).
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 10, 10, 14, 10, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StayInPit, "in-pit destination: StayInPit");
+                // Ladder in the interior with no lip beside it is not a way out by itself.
+                var pit7 = PitRect(0, 0, 7, 7);
+                r = RM_PitTrapMath.PlanRoute((x, z) => pit7.Contains((x, z)), (x, z) => pit7.Contains((x, z)) && (x, z) != (3, 3),
+                    (x, z) => (x, z) == (3, 3), (x, z) => !pit7.Contains((x, z)), 0, 0, -5, -5, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.Vanilla, "interior ladder touching no lip: no exit leg");
+
+                // From outside: open pits are never crossed; a pit-floor destination only via a ladder.
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 5, 12, 20, 12, false, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "outside -> outside: AvoidPits");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, NoLadder, Lip, 5, 12, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "no ladder: the floor is refused (AvoidPits)");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 5, 20, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.WalkToAvoidPits && !pit.Contains((r.x, r.z))
+                    && Math.Abs(r.x - 12) <= 1 && Math.Abs(r.z - 14) <= 1, "down a ladder: first the lip beside it");
+                r = RM_PitTrapMath.PlanRoute(IsPit, HeldLowered, LadderLowered, Lip, 12, 15, 11, 11, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.StepTo && (r.x, r.z) == ladder, "beside the ladder: step onto it");
+            });
+
             Case("PitTrap_spike_damage_scales_with_body_size", () =>
             {
                 Assert(RM_PitTrapMath.SpikeHits == 3, "three spike hits per descent");

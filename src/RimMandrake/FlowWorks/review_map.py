@@ -193,7 +193,7 @@ SETUPS = {
                       try_=["unpause: the muffalo walks out, the hare stays"]),
     "pit_fall": dict(short="Falling in hurts", notice="a pit and one of your colonists beside it",
                      dig=[_pit(6, 5)], pawns=[("Colonist", 4, 6, "player", "drafted")],
-                     try_=["order him into the pit: he is hurt by the fall, and (shipped default) climbs back out"]),
+                     try_=["order him into the pit: he will not walk in (colonists never path into an open pit); 'Jump into pit', or a blast or skip that puts him in, hurts him and holds him until a lowered ladder lets him climb out"]),
     "pit_shooting": dict(short="Shots only from the pit's edge", notice="a boar in a pit; your colonist stands 6 cells off",
                          dig=[_pit(9, 5)], pawns=[("WildBoar", 10, 6, "none", None), ("Colonist", 3, 6, "player", "drafted")],
                          keep=True, try_=["order an attack on the boar: he walks to the lip before he can shoot"]),
