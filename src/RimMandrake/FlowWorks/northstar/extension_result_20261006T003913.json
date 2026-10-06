@@ -1,0 +1,896 @@
+{
+ "chains": [
+  {
+   "name": "current",
+   "components": [
+    {
+     "name": "defs_core",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "TerrainDef/RM_FordStones",
+          "found": true,
+          "defName": "RM_FordStones",
+          "defType": "TerrainDef",
+          "label": "ford stones",
+          "modName": "RimMandrake: FlowWorks",
+          "packageId": "mandrake.rm.flowworks",
+          "fields": {
+           "texturePath": "Terrain/Surfaces/Flagstone",
+           "edgeType": "FadeRough",
+           "customShader": null,
+           "customShaderParameters": null,
+           "waterDepthShader": null,
+           "waterDepthShaderParameters": null,
+           "renderPrecedence": 390,
+           "affordances": [
+            "Light"
+           ],
+           "layerable": true,
+           "scatterType": null,
+           "takeFootprints": false,
+           "natural": false,
+           "takeSplashes": false,
+           "avoidWander": false,
+           "changeable": true,
+           "smoothedTerrain": null,
+           "gravshipReplacementTerrain": null,
+           "holdSnowOrSand": true,
+           "isPaintable": false,
+           "extinguishesFire": false,
+           "colorDef": null,
+           "driesTo": null,
+           "tags": [
+            "Floor"
+           ],
+           "burnedDef": null,
+           "tools": null,
+           "extraDeteriorationFactor": 0.0,
+           "destroyOnBombDamageThreshold": -1.0,
+           "destroyBuildingsOnDestroyed": false,
+           "traversedThought": null,
+           "extraDraftedPerceivedPathCost": 0,
+           "extraNonDraftedPerceivedPathCost": 0,
+           "destroyEffect": null,
+           "destroyEffectWater": null,
+           "autoRebuildable": false,
+           "categoryType": "Misc",
+           "meltSnowRadius": 0.0,
+           "heatPerTick": 0.0,
+           "igniteRadius": 0.0,
+           "ignitePawnsIntervalTicks": 0.0,
+           "burnDamage": 0,
+           "burnIntervalTicks": 0.0,
+           "supportsRock": true,
+           "toxicBuildupFactor": 0.0,
+           "dontRender": false,
+           "exposesToVacuum": false,
+           "canFreeze": false,
+           "dangerous": false,
+           "preventCraters": false,
+           "canEverTerraform": true,
+           "waterBodyType": "None",
+           "cropIcon": true,
+           "glowRadius": 0.0,
+           "throwFleckChance": 0.0,
+           "fleckData": null,
+           "isFoundation": false,
+           "bridge": false,
+           "bridgePropsPath": null,
+           "spaceBridgePropsPath": null,
+           "temporary": false,
+           "tempTerrain": null,
+           "floodTerrain": null,
+           "canBePolluted": true,
+           "pollutedTexturePath": null,
+           "pollutionOverlayTexturePath": null,
+           "pollutionShaderType": null,
+           "generatedFilth": null,
+           "filthAcceptanceMask": "Any",
+           "spaceEdgeGraphicData": null,
+           "waterDepthMaterial": null,
+           "statBases": [
+            "StatModifier",
+            "StatModifier"
+           ],
+           "passability": "Standable",
+           "pathCost": 10,
+           "pathCostIgnoreRepeat": true,
+           "fertility": 0.0,
+           "costList": [
+            "ThingDefCountClass"
+           ],
+           "costStuffCount": 0,
+           "stuffCategories": null,
+           "stuffCategorySummary": null,
+           "costListForDifficulty": null,
+           "drawStyleCategory": "Floors",
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "blocksAltitudes": null,
+           "dominantStyleCategory": null,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": "RM_Fordable",
+           "buildingPrerequisites": null,
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": null,
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 0,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Item",
+           "repairEffect": null,
+           "constructEffect": "ConstructDirt",
+           "colorPerStuff": null,
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "placeWorkers": null,
+           "designationCategory": "Structure",
+           "designatorDropdown": null,
+           "designationHotKey": null,
+           "uiOrder": 2999.0,
+           "uiIconPath": null,
+           "uiIconPathsStuff": null,
+           "uiIconForStackCount": -1,
+           "blueprintDef": "Blueprint_RM_FordStones",
+           "installBlueprintDef": null,
+           "frameDef": "Frame_RM_FordStones",
+           "uiIconMaterial": null,
+           "stuffUiIcons": null,
+           "uiIconAngle": 0.0,
+           "defName": "RM_FordStones",
+           "label": "ford stones",
+           "description": "Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.",
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 20376,
+           "index": 114,
+           "fileName": "RM_FordStones.xml",
+           "defNameHash": 1883469379,
+           "generated": false,
+           "debugRandomId": 59435
+          }
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_184c4302a995453385db57833c457696",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:38:57.9656076+00:00",
+         "CompletedAtUtc": "2026-10-06T07:38:58.0154043+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grid_from_river",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGrid(System.String)",
+        "result": "GRID current=7492 fast=3582 edge=3910 size=2.50 flood=False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_773cbe227fc44f61b26c3fe336964779",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:38:58.0660465+00:00",
+         "CompletedAtUtc": "2026-10-06T07:38:58.1154698+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shoves",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 3 from 0,116 to 3,116 lane=2",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_90e6267466d14f55a73f63a727c0798a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:38:58.1661952+00:00",
+         "CompletedAtUtc": "2026-10-06T07:38:58.2145694+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ford_exempt",
+     "toggle": "fordsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShove(System.String)",
+        "result": "MOVED 0 from 0,111 to 0,111 lane=1",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c701f56354a342f192649c0769702a8e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:38:58.2656117+00:00",
+         "CompletedAtUtc": "2026-10-06T07:38:58.314732+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "exemptions",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofExemptions(System.String)",
+        "result": "EXEMPT building=True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_59c093f26fd74921a3e76a09a9a7d535",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:38:58.3656569+00:00",
+         "CompletedAtUtc": "2026-10-06T07:38:58.4145251+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "swept",
+   "components": [
+    {
+     "name": "returns_home",
+     "toggle": "washOffMapEdge",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSwept(System.String)",
+        "result": "SWEPT pending=0",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_382d55404d2c46b3bc19cb06d3fbfbcc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:04.1179376+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:04.1664355+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "works",
+   "components": [
+    {
+     "name": "place_weir_bank_edge",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPlace(System.String)",
+        "result": "PLACE edge=True dry=False wet=False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_268ae7bf14da4f08a2b944b6fad47a48",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:09.856022+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:09.91298+00:00",
+         "DurationMs": 56,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_arrest_and_pool",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPool(System.String)",
+        "result": "POOL cells=17 dropped=17 arrestedWet=True at=(12, 0, 111)",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_ec03e57cf1214d9381c9eb490a608389",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:09.9555954+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.0131403+00:00",
+         "DurationMs": 57,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_fish_draws_stock",
+     "toggle": "weirCatchesFish",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirCatch(System.String)",
+        "result": "CATCH fishRolls=5 driftRolls=2 held=3 before=444.9 after=429.9 biome=TemperateForest",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0a981f1ec4314c6fb5931d6bc322aa0c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.0561998+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.1092851+00:00",
+         "DurationMs": 53,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_wash",
+     "toggle": "breachWashesCatch",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofBreach(System.String)",
+        "result": "BREACH heldBefore=4 heldAfter=0 breaching=True arrestOff=True at=(12, 0, 111)",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0727f8d1632a425b9fc51b8f266272e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.1563652+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.2137522+00:00",
+         "DurationMs": 57,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "silt_richen_and_revert",
+     "toggle": "siltRichening",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSilt(System.String)",
+        "result": "SILT richened=SoilRich reverted=Soil changed=True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_d2acd84d37aa4eabbb1d4343de311311",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.2564878+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.3054305+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope",
+     "toggle": "ferryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFerry(System.String)",
+        "result": "FERRY paired=True rope=33 ropeExempt=True a=(12, 0, 143) b=(12, 0, 111)",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_52d758cc518f43d79ef79661132e6cef",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.3553813+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.4108423+00:00",
+         "DurationMs": 55,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_engine_fact",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLeveeFact(System.String)",
+        "result": "LEVEE stakeIsEdifice=True leveeSetting=True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c0ca7c10e56545cfbb90b4ecacee9be2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.4559032+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.5052078+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_holds_and_gap_leaks",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLevee(System.String)",
+        "result": "LEVEE stakeHolds=True gapLeaks=True offLetsThrough=True stake=(13, 0, 111) gap=(12, 0, 110)",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_3559f4abd4c64271ae376b9fd7092e2e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.5395728+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.6205749+00:00",
+         "DurationMs": 81,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_cascade_order",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCascadeOrder(System.String)",
+        "result": "CASCADE stakes=12 scheduled=11 spared=1 anyUp=True anyDown=True monotone=True upstreamSpared=True allDownScheduled=True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_5028b66793e3431a80258507b900150f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.6642294+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.7351803+00:00",
+         "DurationMs": 70,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope_undrafted",
+     "toggle": "ferryRopeGuidesColonists",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFerryPath(System.String)",
+        "result": "ROPEPATH onRope=0 offRope=300 guided=True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_798728c6e23b440f870cc506c9dc4854",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:39:10.765269+00:00",
+         "CompletedAtUtc": "2026-10-06T07:39:10.8136618+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T003853\\FlowWorksExtensions__works__raid_arrived__t1__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T003853\\FlowWorksExtensions__works__raid_arrived__t1__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 1,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Seasonal flooding; open, awaiting arrivals"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 21.6,
+ "chains_run": [
+  "current",
+  "swept",
+  "works"
+ ]
+}

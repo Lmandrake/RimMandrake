@@ -57,24 +57,35 @@ def main():
             # no mutator/road filter: on 1.6 a river tile commonly carries a river mutator (0 of 7901 passed with it)
             river += [g for g in got if int(g.get("riverCount") or 0) > 0]
         print("river tiles among them", len(river))
+        g, tries = None, 0
         for row in river:
+            if tries >= 10:
+                break
             t = int(row["tile"])
             cf = s.call("jawa/colony_found", tile=t, faction="Player", name="NorthstarRiver")
             if not cf.get("success"):
                 continue
-            tile, info = t, row
-            break
+            tries += 1
+            BW.close_naming_dialogs(s)
+            g = s.call("jawa/world_tile_map_generate", tile=t, suggestedMapParent="Settlement")
+            if not g.get("success") or g.get("mapIndex") is None:
+                print("tile", t, "map generate refused: %s" % g.get("message"))
+                continue
+            BW.close_naming_dialogs(s)
+            s.call("jawa/set_current_map", mapId=g["mapIndex"])
+            # a tile's riverCount is not a promise of a CURRENT on its map (MEASURED 2026-10-06: tile 24, riverCount 2,
+            # ProofGrid current=0): ask the mod's own grid and move on when it is empty
+            grid = str((s.call("jawa/static_call", type="RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof", method="ProofGrid",
+                               args="-") or {}).get("result", ""))
+            kv = dict(p.split("=", 1) for p in grid.split() if "=" in p)
+            print("tile", t, row.get("biome"), "riverCount", row.get("riverCount"), "grid:", grid[:120])
+            # a FAST lane too: ProofShove needs a 4-cell fast run (a creek with edge lanes only reads UNMEASURED)
+            if int(kv.get("current", 0) or 0) > 0 and int(kv.get("fast", 0) or 0) > 0:
+                tile, info = t, row
+                break
         if tile is None:
-            print("no foundable river tile among %d candidates" % len(cands))
+            print("no river tile with a current among %d tried" % tries)
             return 2
-        print("tile", tile, json.dumps({k: info.get(k) for k in ("biome", "riverCount", "rivers", "roadCount")})[:400])
-        BW.close_naming_dialogs(s)
-        g = s.call("jawa/world_tile_map_generate", tile=tile, suggestedMapParent="Settlement")
-        if not g.get("success") or g.get("mapIndex") is None:
-            print("map generate refused: %s" % g)
-            return 2
-        BW.close_naming_dialogs(s)
-        s.call("jawa/set_current_map", mapId=g["mapIndex"])
         d = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
         mi = s.call("jawa/map_info")
         cx, cz = int(mi.get("sizeX", 250)) // 2, int(mi.get("sizeZ", 250)) // 2
