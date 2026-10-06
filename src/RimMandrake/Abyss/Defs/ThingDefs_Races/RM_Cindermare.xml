@@ -110,7 +110,7 @@
     </comps>
     <graphicData>
       <texPath>RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>2.6</drawSize>
     </graphicData>
     <useHitPoints>false</useHitPoints>
@@ -129,14 +129,14 @@
         <labelPlural>cindermare foals</labelPlural>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.3</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.4, 0.4, 0.3)</volume>
@@ -147,7 +147,7 @@
       <li>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Cindermare/RM_Cindermare</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.6</drawSize>
           <shadowData>
             <volume>(0.5, 0.5, 0.35)</volume>

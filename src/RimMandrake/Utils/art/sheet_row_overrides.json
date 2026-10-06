@@ -4,6 +4,7 @@
    "new_label": "sesserith",
    "new_defName": "RM_Sesserith",
    "jobs": [
+    "abyss_sesserith_v3",
     "abyss_grothik_v1",
     "crags_vrakk"
    ]
@@ -12,6 +13,7 @@
    "new_label": "olumetha",
    "new_defName": "RM_Olumetha",
    "jobs": [
+    "abyss_olumetha_v3",
     "abyss_dugrath_v1",
     "crags_dhukk"
    ]
@@ -20,6 +22,7 @@
    "new_label": "aveluthia",
    "new_defName": "RM_Aveluthia",
    "jobs": [
+    "abyss_aveluthia_v3",
     "abyss_gaddrum_v1",
     "crags_hulggarok"
    ]
@@ -28,6 +31,7 @@
    "new_label": "lirrith",
    "new_defName": "RM_Lirrith",
    "jobs": [
+    "abyss_lirrith_v3",
     "abyss_kittrik_v1",
     "crags_kessik"
    ]
@@ -36,6 +40,7 @@
    "new_label": "moravatha",
    "new_defName": "RM_Moravatha",
    "jobs": [
+    "abyss_moravatha_v3",
     "abyss_tarrgun_v1",
     "crags_brekkugar"
    ]
@@ -58,6 +63,7 @@
    "new_label": "ossumatha",
    "new_defName": "RM_Ossumatha",
    "jobs": [
+    "abyss_ossumatha_v3",
     "abyss_gukkath_v1",
     "crags_gruzz"
    ]
@@ -66,6 +72,7 @@
    "new_label": "ysvaltha",
    "new_defName": "RM_Ysvaltha",
    "jobs": [
+    "abyss_ysvaltha_v3",
     "abyss_rakketh_v1",
     "crags_shekkur"
    ]
@@ -82,6 +89,8 @@
    "new_label": "glow globe",
    "new_defName": "RM_GlowGlobe",
    "jobs": [
+    "abyss_glowglobe_b_v2",
+    "abyss_glowglobe_c_v2",
     "abyss_bulgra_v1"
    ]
   },
@@ -89,6 +98,8 @@
    "new_label": "giant glow globe",
    "new_defName": "RM_GiantGlowGlobe",
    "jobs": [
+    "abyss_giantglowglobe_b_v2",
+    "abyss_giantglowglobe_c_v2",
     "abyss_greatbulgra_v1"
    ]
   },
@@ -100,10 +111,10 @@
    ]
   },
   "AG_Septimum": {
-   "new_label": "fibre stalk",
-   "new_defName": "RM_FibreStalk",
+   "new_label": "paddle vine",
+   "new_defName": "RM_PaddleVine",
    "jobs": [
-    "abyss_skeddra_v1"
+    "abyss_paddlevine_v1"
    ]
   },
   "AB_GiantSeptimum": {
@@ -117,6 +128,7 @@
    "new_label": "tree mushroom",
    "new_defName": "RM_TreeMushroom",
    "jobs": [
+    "abyss_treemushroom_c_v2",
     "abyss_morkhul_v1"
    ]
   },
@@ -124,6 +136,8 @@
    "new_label": "glowberry bush",
    "new_defName": "RM_GlowberryBush",
    "jobs": [
+    "abyss_glowberrybush_b_v2",
+    "abyss_glowberrybush_c_v2",
     "abyss_vettrig_v1"
    ]
   },

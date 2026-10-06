@@ -1,0 +1,681 @@
+[
+ {
+  "id": "abyss_moravatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Moravatha",
+  "target_original": [
+   "AA_CrepuscularBeetle"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add four yellow glowing eyes\" Edit the attached accepted render of the moravatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: add exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the carapace plates, legs and colouring as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_tarrgun_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Add four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_moravatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Moravatha",
+  "target_original": [
+   "AA_CrepuscularBeetle"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add four yellow glowing eyes\" Edit the attached accepted render of the moravatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: add exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the carapace plates, legs and colouring as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_tarrgun_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Add four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_moravatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Moravatha",
+  "target_original": [
+   "AA_CrepuscularBeetle"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add four yellow glowing eyes\" Edit the attached accepted render of the moravatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: add exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the carapace plates, legs and colouring as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 3.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_tarrgun_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Add four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_ossumatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ossumatha",
+  "target_original": [
+   "AA_DarkVandal"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make hide pitch black with four glowing yellow eyes\" Edit the attached accepted render of the ossumatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole hide and armour plates PITCH BLACK (deep matte black read only by a cool rim light), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the shovel jaw and plate shapes as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_gukkath_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Make hide pitch black with four glowing yellow eyes"
+ },
+ {
+  "id": "abyss_ossumatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ossumatha",
+  "target_original": [
+   "AA_DarkVandal"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make hide pitch black with four glowing yellow eyes\" Edit the attached accepted render of the ossumatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole hide and armour plates PITCH BLACK (deep matte black read only by a cool rim light), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the shovel jaw and plate shapes as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_gukkath_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Make hide pitch black with four glowing yellow eyes"
+ },
+ {
+  "id": "abyss_ossumatha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ossumatha",
+  "target_original": [
+   "AA_DarkVandal"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make hide pitch black with four glowing yellow eyes\" Edit the attached accepted render of the ossumatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole hide and armour plates PITCH BLACK (deep matte black read only by a cool rim light), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the shovel jaw and plate shapes as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_gukkath_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Make hide pitch black with four glowing yellow eyes"
+ },
+ {
+  "id": "abyss_ysvaltha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ysvaltha",
+  "target_original": [
+   "AA_DuskProwler"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Change description to match image. Make four glowing yellow eyes though.\" Edit the attached accepted render of the ysvaltha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the dark hide, the crimson-edged blades and barbed tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_rakketh_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Change description to match image. Make four glowing yellow eyes though."
+ },
+ {
+  "id": "abyss_ysvaltha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ysvaltha",
+  "target_original": [
+   "AA_DuskProwler"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Change description to match image. Make four glowing yellow eyes though.\" Edit the attached accepted render of the ysvaltha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the dark hide, the crimson-edged blades and barbed tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_rakketh_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Change description to match image. Make four glowing yellow eyes though."
+ },
+ {
+  "id": "abyss_ysvaltha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ysvaltha",
+  "target_original": [
+   "AA_DuskProwler"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Change description to match image. Make four glowing yellow eyes though.\" Edit the attached accepted render of the ysvaltha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the dark hide, the crimson-edged blades and barbed tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_rakketh_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Change description to match image. Make four glowing yellow eyes though."
+ },
+ {
+  "id": "abyss_lirrith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Lirrith",
+  "target_original": [
+   "AA_Murkling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes\" Edit the attached accepted render of the lirrith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the skin DARK, near pitch black (matte, read by a cool rim light), and replace the two large eyes: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the pale green fluted snout crest and the hooked tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_kittrik_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_lirrith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Lirrith",
+  "target_original": [
+   "AA_Murkling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes\" Edit the attached accepted render of the lirrith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the skin DARK, near pitch black (matte, read by a cool rim light), and replace the two large eyes: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the pale green fluted snout crest and the hooked tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_kittrik_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_lirrith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Lirrith",
+  "target_original": [
+   "AA_Murkling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes\" Edit the attached accepted render of the lirrith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the skin DARK, near pitch black (matte, read by a cool rim light), and replace the two large eyes: give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the pale green fluted snout crest and the hooked tail as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_kittrik_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_aveluthia_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Aveluthia",
+  "target_original": [
+   "AA_NightMule"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.\" Edit the attached accepted render of the aveluthia, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole body BLACK FLESH (deep matte black wrinkled skin read by a cool rim light, no tan or red), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the folds, trunk-like snout and splayed feet as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_gaddrum_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
+  "oversize_reason": "kept at the canvas of the accepted render it is derived from"
+ },
+ {
+  "id": "abyss_aveluthia_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Aveluthia",
+  "target_original": [
+   "AA_NightMule"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.\" Edit the attached accepted render of the aveluthia, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole body BLACK FLESH (deep matte black wrinkled skin read by a cool rim light, no tan or red), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the folds, trunk-like snout and splayed feet as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_gaddrum_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
+  "oversize_reason": "kept at the canvas of the accepted render it is derived from"
+ },
+ {
+  "id": "abyss_aveluthia_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Aveluthia",
+  "target_original": [
+   "AA_NightMule"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.\" Edit the attached accepted render of the aveluthia, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole body BLACK FLESH (deep matte black wrinkled skin read by a cool rim light, no tan or red), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the folds, trunk-like snout and splayed feet as they are.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_gaddrum_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
+  "oversize_reason": "kept at the canvas of the accepted render it is derived from"
+ },
+ {
+  "id": "abyss_olumetha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Olumetha",
+  "target_original": [
+   "AA_NightRam"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"But you need to make its skin inky black and four yellow glowing eyes\" Edit the attached accepted render of the olumetha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make all the skin and brow plates INKY BLACK (deep matte black read by a cool rim light, no olive or slate), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the plated brow wedge and body shape as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_dugrath_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "But you need to make its skin inky black and four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_olumetha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Olumetha",
+  "target_original": [
+   "AA_NightRam"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"But you need to make its skin inky black and four yellow glowing eyes\" Edit the attached accepted render of the olumetha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make all the skin and brow plates INKY BLACK (deep matte black read by a cool rim light, no olive or slate), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the plated brow wedge and body shape as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_dugrath_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "But you need to make its skin inky black and four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_olumetha_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Olumetha",
+  "target_original": [
+   "AA_NightRam"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"But you need to make its skin inky black and four yellow glowing eyes\" Edit the attached accepted render of the olumetha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make all the skin and brow plates INKY BLACK (deep matte black read by a cool rim light, no olive or slate), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the plated brow wedge and body shape as they are.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_dugrath_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "But you need to make its skin inky black and four yellow glowing eyes"
+ },
+ {
+  "id": "abyss_sesserith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Sesserith",
+  "target_original": [
+   "AA_Nightling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.\" Edit the attached accepted render of the sesserith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the body surface PITCH BLACK (deep matte black read by a cool rim light) and make its eyes glow yellow, keeping their number and placement. Keep the bone-white spine ridge as it is.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "east"
+  ],
+  "derive_from": "abyss_grothik_v1_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow."
+ },
+ {
+  "id": "abyss_sesserith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Sesserith",
+  "target_original": [
+   "AA_Nightling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.\" Edit the attached accepted render of the sesserith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the body surface PITCH BLACK (deep matte black read by a cool rim light) and make its eyes glow yellow, keeping their number and placement. Keep the bone-white spine ridge as it is.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "abyss_grothik_v1_south",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow."
+ },
+ {
+  "id": "abyss_sesserith_v3",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Sesserith",
+  "target_original": [
+   "AA_Nightling"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.\" Edit the attached accepted render of the sesserith, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the body surface PITCH BLACK (deep matte black read by a cool rim light) and make its eyes glow yellow, keeping their number and placement. Keep the bone-white spine ridge as it is.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "north"
+  ],
+  "derive_from": "abyss_grothik_v1_north",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "owner_note": "I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow."
+ },
+ {
+  "id": "abyss_giantglowglobe_b_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GiantGlowGlobe",
+  "target_original": [
+   "AB_GiantGamma"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a thick twisted dark trunk lifting one huge brilliant blue-white glowing globe), a DIFFERENT individual: vary the twist and height of the trunk, the number and spread of its roots and the size of the globe; it must stay BRIGHT; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [],
+  "derive_from": "abyss_greatbulgra_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants",
+  "oversize_reason": "kept at the canvas of the accepted render it is derived from"
+ },
+ {
+  "id": "abyss_giantglowglobe_c_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GiantGlowGlobe",
+  "target_original": [
+   "AB_GiantGamma"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a thick twisted dark trunk lifting one huge brilliant blue-white glowing globe), a DIFFERENT individual: vary the twist and height of the trunk, the number and spread of its roots and the size of the globe; it must stay BRIGHT; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [],
+  "derive_from": "abyss_greatbulgra_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants",
+  "oversize_reason": "kept at the canvas of the accepted render it is derived from"
+ },
+ {
+  "id": "abyss_glowberrybush_b_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GlowberryBush",
+  "target_original": [
+   "AB_WildRadagast"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a low twisting shrub of black wiry stems hung with clusters of small ember-red glowing berries), a DIFFERENT individual: vary the branching, height and spread of the stems and the number and placement of the berry clusters; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [],
+  "derive_from": "abyss_vettrig_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants"
+ },
+ {
+  "id": "abyss_glowberrybush_c_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GlowberryBush",
+  "target_original": [
+   "AB_WildRadagast"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a low twisting shrub of black wiry stems hung with clusters of small ember-red glowing berries), a DIFFERENT individual: vary the branching, height and spread of the stems and the number and placement of the berry clusters; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [],
+  "derive_from": "abyss_vettrig_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants"
+ },
+ {
+  "id": "abyss_glowglobe_b_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GlowGlobe",
+  "target_original": [
+   "AG_Gamma"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a low plant of dark broad leaves lifting one round, softly glowing pale globe on a short curved stem), a DIFFERENT individual: vary the curve of the stem, the leaf count and spread and the size and inner pattern of the globe; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [],
+  "derive_from": "abyss_bulgra_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants"
+ },
+ {
+  "id": "abyss_glowglobe_c_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_GlowGlobe",
+  "target_original": [
+   "AG_Gamma"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make variants\" Same species as the attached accepted render (a low plant of dark broad leaves lifting one round, softly glowing pale globe on a short curved stem), a DIFFERENT individual: vary the curve of the stem, the leaf count and spread and the size and inner pattern of the globe; keep the same material, palette family, painterly quality and clean silhouette.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [],
+  "derive_from": "abyss_bulgra_v1",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Make variants"
+ },
+ {
+  "id": "abyss_glowinggrass_a_tint_v1",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "AB_GlowingGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Tint all of these to be dull yellow-green glowing.\" Recolour the attached grass tuft: same plant, same blades, same pose and silhouette exactly; change ONLY its colour so every blade is a DULL YELLOW-GREEN that glows faintly from within (a soft, low luminous yellow-green, not neon, no blue or teal left).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.6,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Tint all of these to be dull yellow-green glowing.",
+  "derive_from": "abyss_glowinggrass_a_v1"
+ },
+ {
+  "id": "abyss_glowinggrass_b_tint_v1",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "AB_GlowingGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Tint all of these to be dull yellow-green glowing.\" Recolour the attached grass tuft: same plant, same blades, same pose and silhouette exactly; change ONLY its colour so every blade is a DULL YELLOW-GREEN that glows faintly from within (a soft, low luminous yellow-green, not neon, no blue or teal left).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.6,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Tint all of these to be dull yellow-green glowing.",
+  "reference": "/mnt/d/Luke/dev/_artpipe/_artsrc/abyss_glowinggrass_b_v1/abyss_glowinggrass_b_v1.png"
+ },
+ {
+  "id": "abyss_glowinggrass_c_tint_v1",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "AB_GlowingGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Tint all of these to be dull yellow-green glowing.\" Recolour the attached grass tuft: same plant, same blades, same pose and silhouette exactly; change ONLY its colour so every blade is a DULL YELLOW-GREEN that glows faintly from within (a soft, low luminous yellow-green, not neon, no blue or teal left).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.6,
+  "facings": [],
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Tint all of these to be dull yellow-green glowing.",
+  "derive_from": "abyss_glowinggrass_c_v1"
+ },
+ {
+  "id": "abyss_treemushroom_c_v2",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_TreeMushroom",
+  "target_original": [
+   "AB_GiantStikehr"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs regen at proper resolution.\" Re-render the attached accepted tree mushroom at full detail for this larger canvas: the same individual, same form, layered purple-grey caps with glowing green gills, pale ridged woody stalk, same palette and painted style; finer painted detail, not an upscale.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "drawsize": 8.0,
+  "facings": [],
+  "derive_from": "gapfin_AB_GiantStikehr_v1",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "Needs regen at proper resolution.",
+  "oversize_reason": "RM_TreeMushroom is ruled four times the donor size (2~3.8 -> 8~15.2 cells); drawSize x128 -> pow2 clamps to 1024"
+ },
+ {
+  "id": "abyss_paddlevine_v1",
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_PaddleVine",
+  "target_original": [
+   "AG_Septimum"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly.\" RimWorld plant sprite, painterly, natural-history quality, NOT smooth computer-graphics: the paddle vine, an invented Abyss plant. Scarlet twining vines spiral up around one another; instead of leaves they bear broad, flat, rounded paddles; at the top a single huge flower-like leaf opens like a great petal. Every surface - vines, paddles and the crowning leaf - glistens with fine faceted photoreceptive texture like the compound eye of a fly, catching the cool rim light in tiny wet highlights.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.0,
+  "facings": [],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Palette: scarlet vines, deep oxblood-and-black paddles, iridescent faceted sheen.",
+  "owner_note": "Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly.",
+  "oversize_reason": "tall plant with fine faceted surface detail the owner asked to read (\"glistening ... like the eye of a fly\")"
+ }
+]

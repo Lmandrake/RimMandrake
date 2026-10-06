@@ -23,7 +23,7 @@
     <description>A slim, black-barked tree of the Abyss whose sap carries a cold-burning light. The crown glows a steady blue-white bright enough to grow crops beneath it, and the Dark, which swallows every lamp men build, does not touch it.\n\nWickwoods can be extracted and replanted anywhere. A ring of them is a farm's sun.</description>
     <graphicData>
       <texPath>RM_Abyss/Things/Plant/RM_Wickwood</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.4, 0.7, 0.24)</volume>
         <offset>(0,0,-0.76)</offset>

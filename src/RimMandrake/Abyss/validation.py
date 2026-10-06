@@ -48,7 +48,14 @@ def static_check():
     # textures resolve
     for d, ext in ((plant, "Things/Plant/Etchcap"), (cap, "Things/Item/EtchcapCap")):
         tp = d.findtext("graphicData/texPath")
-        if tp != "RM_Abyss/" + ext or not os.path.isfile(os.path.join(HERE, "Textures", tp + ".png")):
+        # Graphic_Random reads a FOLDER of PNGs; anything else reads one file (etchcap was a
+        # Graphic_Random pointed at a single PNG and rendered nothing: ABYSS_SHEET_DONOR_PORT_1 #3)
+        if d.findtext("graphicData/graphicClass") == "Graphic_Random":
+            folder = os.path.join(HERE, "Textures", tp or "")
+            found = os.path.isdir(folder) and any(f.endswith(".png") for f in os.listdir(folder))
+        else:
+            found = os.path.isfile(os.path.join(HERE, "Textures", (tp or "") + ".png"))
+        if tp != "RM_Abyss/" + ext or not found:
             bad.append("texture missing for %s: %s" % (d.findtext("defName"), tp))
     if not os.path.isfile(os.path.join(HERE, "Textures", ter.findtext("texturePath") + ".png")):
         bad.append("terrain texture missing")
