@@ -17,7 +17,7 @@ CANAL_BOTTOM_SPIKES_1 (05b688a81) · LADDER_PRISON_DOOR_1 (cf789dc80) · PIT_COV
 (9d6cefabd) · DEPTH_FILL_COST_MATRIX_1 · FLOWWORKS_CHANNEL_OSCILLATION_1 (ddb473416) ·
 FLOWWORKS_DOOR_FAMILY_1 (6359e69b5) · Phase 6 fire (RM_LiquidFire) · PIT_FILL_EFFECTS_1 (eabc44700) ·
 PIT_DEPTH_DRAW_OFFSET_1 (0d599e5cd) · PIT_TEMPERATURE_SOFTENING_1 core (5025f7d9a) ·
-LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks slice 1 (eab81a095).
+LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · Rivers slice 1 (eab81a095).
 
 ## Remaining capabilities
 
@@ -34,8 +34,8 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
 | 9 | Sluice-opening route for drowning; occupant effects live | PIT_FILL_EFFECTS_1 | BUILT | — | live verify; scripting belongs to the validation owner |
 | 10 | ✅ carrier + queued art (see log) — Wall-face art at 4 depths, spikes art | EXCAVATION_WALL_ART_1 | BUILT (procedural) / art QUEUED | yes | Form chosen: SectionLayer over the depth grid; textures queued in artpipe |
 | 11 | Ladder art (A vs B concepts) | EXCAVATION_WALL_ART_1 | OWNER | — | src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/RUT_Ladder_A/B.png unpicked; placeholder stays |
-| 12 | ✅ 456d00ca2 — Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry) | SURFACE_RIVER_WEIRS_1 | BUILD | yes | Separate mod (RiverWorks); built by a parallel builder this pass |
-| 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (River Works half) | BUILD (River merge) | yes | Owner ruled River Works part of FlowWorks (2026-10-05); the RiverWorks→FlowWorks merge agent builds it after the move |
+| 12 | ✅ 456d00ca2 — Surface-river works slice 2 (weir, stake-line, silt trap, fish catch, drift, breach, ferry); merged into FlowWorks as Rivers (owner 2026-10-05); levee flood check, breach cascade order and ferry rope for undrafted colonists built with the merge | SURFACE_RIVER_WEIRS_1 | BUILT | yes | Live verify: northstar/extensions_rivers.py (not yet registered in validation.py) |
+| 13 | Sluice box + panning | FLOWWORKS_QUARRY_DIGGING_1 (Rivers half) | DEP | — | Gated on MINERALS_WHERE_THEY_BELONG_1: the rivers-carry column has 0 of 37 biome rows owner-approved (Transient/mineral_numbers_review_2026-10-03 decisions all pending) and no registry loader exists |
 | 14 | ✅ DBH drinkable patch (see log) — Water cleaning chain wired to DBH thirst; crude + household stills | LIQUID_THIRST_CHAIN_1 | BUILT (DBH patch) / BUILD (stills) | yes | DBH is not in the live mod list, so the patch is inert today; stills = machinery pass (row 20) |
 | 15 | Found industrial liquid works (desal, detox, tar refinery, pumping station) | LIQUID_INDUSTRY_SETPIECES_1 | BUILD | yes | Found ruins via the shared scatterer (RM_GenStep_PlacedSetPieces, EnvironmentalHazards), restored in place; art owed |
 | 16 | worldTag authoring + shore repaint on the frozen map | WORLDMAP_LIQUID_TAGS_1 | DEP | — | Code built and loads; authoring waits on the one-time world paint (CLAUDE.md: paint once at the end) |
@@ -52,11 +52,11 @@ LIQUID_BODY_FLUID_IDENTITY_1 steps 1, 2b (0a7f01680, 5025f7d9a) · RiverWorks sl
   four new settings (superdeepRoomsEnabled, captureDownEnabled, wardenFromLipEnabled, bottleRevertEnabled) — that
   file belongs to the northstar/densify owner this pass.
 - Bottle fill-job live failure: root cause in source (despawn fail-condition on the carried container), fixed in all four container drivers.
-- 456d00ca2 River Works slice 2 (parallel builder) + bd25c2f21 art-ledger records.
+- 456d00ca2 Rivers slice 2 (parallel builder) + bd25c2f21 art-ledger records.
+- River Works merged into FlowWorks (owner 2026-10-05): Source/Defs/Patches/Textures under Rivers/, settings a Rivers section of FlowWorks' one settings file, TerminalBiomes depends on FlowWorks only. Log: Transient/belt_fwmerge_20261005.md.
 
 ## Outcome of this pass
 Built: rows 1, 2, 4, 5, 6 (core), 7 (pump slice), 8 (audit), 10 (carrier + art queued), 12, 14 (FlowWorks part) and the
 bottle fill-job bug. Already built before (closed this pass): 3, 9. Owner: 11 (ladder art pick) plus every PROVISIONAL
-number. Gated on other items: 16. Not a mechanic: 19. Rows 13–15, 17, 18, 20: liquid-machinery pass (owner 2026-10-05) and the River
-merge. Still owed: live verification of everything above
+number. Gated on other items: 13, 16. Not a mechanic: 19. Rows 14, 15, 17, 18, 20: liquid-machinery pass (owner 2026-10-05). Still owed: live verification of everything above
 (rows listed in Transient/belt_fwbuild_20261005.md); northstar/site_spec.py SETTINGS parity (14 new settings).
