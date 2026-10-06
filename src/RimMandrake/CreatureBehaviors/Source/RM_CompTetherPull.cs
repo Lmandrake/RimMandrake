@@ -357,7 +357,8 @@ namespace RimMandrake.CreatureBehaviors
         public override void PostDrawExtraSelectionOverlays()
         {
             base.PostDrawExtraSelectionOverlays();
-            GenDraw.DrawRadiusRing(parent.Position, Tuning.range);
+            // Lance range can reach 30 x 1.3 x 3 = 117 cells; DrawRadiusRing logs a red error above the radial table.
+            GenDraw.DrawRadiusRing(parent.Position, Mathf.Min(Tuning.range, GenRadial.MaxRadialPatternRadius));
         }
     }
 }
