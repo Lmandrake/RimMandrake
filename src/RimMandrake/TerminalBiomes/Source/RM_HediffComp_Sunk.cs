@@ -66,7 +66,16 @@ namespace RimMandrake.TerminalBiomes
         private bool IsIndoors()
         {
             Pawn p = parent.pawn;
-            return p.Spawned && p.Map != null && p.Position.Roofed(p.Map);
+            // PROVISIONAL rescue predicate (TERMINALBIOMES_REVIEW_FIXES_1 #12): a
+            // pawn that is not spawned (carried by a rescuer, in a caravan, pod or
+            // ship) is out of the sink, so it counts as rescued and recovers
+            // rather than ramping toward death off-map. Spawned pawns still need
+            // a roof overhead.
+            if (!p.Spawned || p.Map == null)
+            {
+                return true;
+            }
+            return p.Position.Roofed(p.Map);
         }
 
         private void ApplyScar()
