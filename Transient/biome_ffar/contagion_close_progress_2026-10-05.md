@@ -135,5 +135,9 @@ Convention in this file: for creatures of size 1 or less, the adult drawSize is 
 - Graphic_Random wiring is OWED when the renders land and he picks them (same as Kethevar/Lisqueth).
 
 ## Validation
-- **validate_patch** over Contagion/Defs and TheRot/Defs: 1 error. It is pre-existing and in a file not touched here: RM_ChokingSpores' ParentName RM_BaseGasDamaging is unresolved. The 70 warnings are vanilla texPaths it cannot see.
+- **validate_patch, full list:** run over Contagion/Defs, TheRot/Defs and origin's `Contagion_Rename.xml` (after 0d6e51a3a), with `--mods-config infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (610 mods). Result: **0 errors**, 72 warnings, all of them vanilla texPaths it cannot see.
+- **Contagion_Rename op 24 error (`AA_OcularNightling` lifeStages/li[1]/labelPlural, 0 matches) is NOT a real defect.**
+  - It appears only because the live `ModsConfig.xml` is currently a **10-mod** minimal list, which does not load Alpha Animals.
+  - The donor's 1.6 def does carry that `labelPlural` (lxml match = 1). The same false error shows on `Abyss_Rename.xml` for AA_Nightling, AA_NightRam and AA_NightMule.
+  - The RM_ChokingSpores ParentName error is the same artifact. Nothing to fix.
 - **run_selftests:** 191/192. The one failure is `bridgetools/selftest_tool_metadata.py` (DLL tool surface vs source), which is unrelated.
