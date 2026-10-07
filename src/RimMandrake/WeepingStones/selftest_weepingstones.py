@@ -204,12 +204,17 @@ class WSGame(MockGame):
     # ------------------------------------------------------------- pawns, things, jobs
     def t_jawa_spawn_pawn(self, p):
         pid = "Pawn%d" % self._id()
+        if p["kindDef"] == "Colonist":
+            self._handlers = getattr(self, "_handlers", set()) | {pid}
         self.pawns.append({"id": pid, "kindDef": p["kindDef"], "x": p["x"], "z": p["z"],
                            "faction": None if p.get("faction") == "none" else "Player", "painting": False})
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_jawa_list_pawns(self, p):
-        rows = list(self.pawns)
+        # live row shape (JawaBenchTerrainTools.ListPawns): spawned/dead/downed are always present
+        rows = [dict({"spawned": True, "dead": False, "downed": False}, **q) for q in self.pawns]
+        if "handler_vanishes" in self.brk:     # LIVE 2026-10-07: every chain-spawned pawn left AllPawnsSpawned
+            rows = [q for q in rows if not (q.get("kindDef") == "Colonist" and q["id"] in getattr(self, "_handlers", ()))]
         if p.get("rect"):
             x, z, w, h = [int(v) for v in str(p["rect"]).split(",")]
             rows = [q for q in rows if x <= q["x"] < x + w and z <= q["z"] < z + h]
@@ -342,6 +347,11 @@ def main():
     ]
     um = run(("toggle_ignored",)).get("settings_and_designator.designator_hidden_when_off")
     check("break toggle_ignored goes UNMEASURED, not PASS", um is not None and um[0] == "UNMEASURED", "got %s" % (um,))
+    gone = run(("handler_vanishes",))
+    jobs = [k for k in gone if k.startswith(("job_", "flora_")) and not k.split(".")[1].startswith("site_ready")]
+    bad = [(k, gone[k][0]) for k in jobs if gone[k][0] != "UNMEASURED"]
+    check("break handler_vanishes: every job/flora proof goes UNMEASURED, none PASS or FAIL (%d)" % len(jobs),
+          len(jobs) >= 9 and not bad, "got %s" % bad)
     for brk, want in cases:
         got = reds(run((brk,)))
         check("break %-24s reddens exactly %s" % (brk, sorted(want)), set(got) == want, "got %s" % got)
