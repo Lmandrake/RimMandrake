@@ -602,7 +602,7 @@ TIERS["acc_harness"] = {
            "WreckedMachines def read-back and config errors, Droidworks protocol droid, FallLineArrivals gate, "
            "UnfinishedLine volunteer) plus GimmeSomeSlack for JawaBench get_defs.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.luminouspigment", "mandrake.rm.wreckedmachines",
-             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline"],
+             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline", "mandrake.rut.patches"],
     "dlc": True,
 }
 
