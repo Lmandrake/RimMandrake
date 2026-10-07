@@ -14,9 +14,19 @@ WHAT IT CHECKS (per reference found in src/**/*.xml):
   NOT_IN_DLL        declared and compiled, but the type's name is absent from the mod's committed DLL (source ahead of
                     the build, or a DLL never rebuilt). UNMEASURED when the DLL cannot be found or fails its sanity probe.
   NOT_INSTANTIABLE  Class= names an abstract/static class, interface or enum.
-  NO_DEPENDENCY     the type lives in another mod's assembly and the referring mod's About.xml never mentions that mod's
-                    packageId (modDependencies / loadAfter / loadBefore / forceLoad*), so load order is not guaranteed.
-                    (A warning: MayRequire-guarded optional content legitimately does this.)
+  NO_DEPENDENCY     REAL missing hard dependency: the type lives in another mod's assembly, nothing guards the reference, and the
+                    referring mod's modDependencies chain (transitive, through About.xml files in src/) never reaches the
+                    owner. A def naming a type from an absent assembly is discarded whole. WARN, never fails the run.
+  DIRECTION         the tier rule is broken: RM (mandrake.rm.*) must not need RSW or RUT, RSW must not need RUT. Reported
+                    both for type references and for declared hard dependencies. WARN, never auto-fixed.
+Cross-mod references that are NOT defects are classified (INFO, shown by -v) instead of warned:
+  INTRA_COMPOSITION both mods are folded into the composed mod (Biomes.compose.json, entries with wave <= compose_wave): one mod.
+  GUARDED_DEP       the referrer's hard-dependency closure already reaches the owner (a dependency on a folded packageId
+                    counts as one on the composed mod).
+  GUARDED_XML       behind a PatchOperationFindMod <match> (mods are matched by NAME or packageId), MayRequire on any element
+                    EXCEPT <Operation> (the engine ignores it there), or a LoadFolders.xml IfModActive folder.
+  GUARDED_COND      inside a PatchOperationConditional <match> whose xpath tests a def the owner mod declares.
+  QUERY_ONLY        the name only appears inside a patch <xpath> (a query, matches nothing when the owner is absent).
 
 USAGE
     python3 src/RimMandrake/Utils/lint_def_type_refs.py [--mod EnvironmentalHazards] [--root DIR] [--no-dll] [-q]
@@ -35,6 +45,7 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 SRC = os.path.join(REPO, "src")
+CLASSES = ("INTRA_COMPOSITION", "GUARDED_DEP", "GUARDED_XML", "GUARDED_COND", "QUERY_ONLY")
 BARE_PREFIXES = ("RM_", "RSW_", "RUT_")
 SKIP_DIRS = {"obj", "bin", "__pycache__", ".git", "SelfTest"}
 TYPE_TEXT = re.compile(r"^[A-Za-z_]\w*(\.\w+)+(\+\w+)*$")
@@ -210,6 +221,148 @@ def about_info(mod_root):
     return (m.group(1).strip().lower() if m else None), text.lower()
 
 
+# ---- the dependency graph --------------------------------------------------------------------------------------------
+BIOMES_PKG = "mandrake.rm.biomes"
+
+
+def _tier(pkg):
+    if pkg and pkg.startswith("mandrake.rm."):
+        return 0
+    if pkg and pkg.startswith("mandrake.rsw."):
+        return 1
+    if pkg and pkg.startswith("mandrake.rut."):
+        return 2
+    return None
+
+
+class DepGraph:
+    """packageId graph from every About.xml under src/. Mods the compose manifest folds in (wave <= compose_wave) are ONE
+    node, the composed mod: a reference between two of them is intra-composition, and a dependency on any folded
+    packageId is a dependency on the composed mod. A hard dependency closure (modDependencies only: loadAfter alone does
+    not keep a def alive when the other mod is absent) decides whether the referrer already pulls the owner in."""
+    def __init__(self, src=SRC):
+        self.composed_roots = {}     # mod folder basename -> compose key
+        self.composed_pkg = BIOMES_PKG
+        mf = os.path.join(src, "RimMandrake", "Biomes.compose.json")
+        try:
+            import json
+            m = json.load(open(mf, encoding="utf-8"))
+            self.composed_pkg = m.get("about", {}).get("packageId", BIOMES_PKG).lower()
+            cw = m.get("compose_wave", 0)
+            for e in m.get("entries", []):
+                if e.get("wave", 99) <= cw:
+                    self.composed_roots[e["source"]] = e["key"]
+        except (OSError, ValueError):
+            pass
+        self.pkg_root = {}           # packageId -> mod root dir
+        self.name_pkg = {}           # lower-cased <name> -> packageId (PatchOperationFindMod matches mod NAMES)
+        self.raw_deps = {}           # packageId -> [hard dependency packageIds]
+        for dp, fns in walk(src):
+            if "About.xml" in fns and os.path.basename(dp) == "About":
+                root = os.path.dirname(dp)
+                try:
+                    text = open(os.path.join(dp, "About.xml"), encoding="utf-8-sig", errors="replace").read()
+                    et = ET.fromstring(text)
+                except (OSError, ET.ParseError):
+                    continue
+                pkg = (et.findtext("packageId") or "").strip().lower()
+                if not pkg:
+                    continue
+                self.pkg_root[pkg] = root
+                nm = (et.findtext("name") or "").strip().lower()
+                if nm:
+                    self.name_pkg[nm] = pkg
+                deps = []
+                for li in et.findall("modDependencies/li"):
+                    d = (li.findtext("packageId") or "").strip().lower()
+                    if d:
+                        deps.append(d)
+                self.raw_deps[pkg] = deps
+        self.node_deps = defaultdict(set)
+        for pkg, deps in self.raw_deps.items():
+            n = self.node(pkg)
+            for d in deps:
+                dn = self.node(d)
+                if dn != n:
+                    self.node_deps[n].add(dn)
+        self._clo = {}
+        self._lf = {}
+        self._dn = {}
+
+    def loadfolder_guards(self, root):
+        """-> [(abs folder, frozenset(pkgs))] for LoadFolders.xml entries gated by IfModActive*: the folder only loads with them."""
+        if root not in self._lf:
+            out = []
+            try:
+                et = ET.parse(os.path.join(root, "LoadFolders.xml")).getroot()
+                for li in et.iter("li"):
+                    pk = set()
+                    for attr in ("IfModActive", "IfModActiveAll"):
+                        pk.update(x.strip().lower() for x in (li.get(attr) or "").split(",") if x.strip())
+                    anyof = [x.strip().lower() for x in (li.get("IfModActiveAny") or "").split(",") if x.strip()]
+                    if len(anyof) == 1:
+                        pk.update(anyof)
+                    path = (li.text or "").strip().strip("/")
+                    if pk and path:
+                        out.append((os.path.normpath(os.path.join(root, path)), frozenset(pk)))
+            except (OSError, ET.ParseError):
+                pass
+            self._lf[root] = out
+        return self._lf[root]
+
+    def defnames_in(self, root):
+        if root not in self._dn:
+            names = set()
+            for dp, fns in walk(root):
+                for fn in fns:
+                    if fn.endswith(".xml"):
+                        try:
+                            names.update(re.findall(r"<defName>\s*([^<\s]+)\s*</defName>", open(os.path.join(dp, fn), encoding="utf-8-sig", errors="replace").read()))
+                        except OSError:
+                            pass
+            self._dn[root] = names
+        return self._dn[root]
+
+    def is_composed_root(self, root):
+        return bool(root) and os.path.basename(root) in self.composed_roots and os.path.basename(os.path.dirname(root)) == "RimMandrake"
+
+    def node(self, pkg):
+        if not pkg:
+            return pkg
+        pkg = pkg.lower()
+        root = self.pkg_root.get(pkg)
+        return self.composed_pkg if root and self.is_composed_root(root) else pkg
+
+    def closure(self, node):
+        if node not in self._clo:
+            seen, todo = {node}, [node]
+            while todo:
+                for d in self.node_deps.get(todo.pop(), ()):
+                    if d not in seen:
+                        seen.add(d)
+                        todo.append(d)
+            self._clo[node] = seen
+        return self._clo[node]
+
+
+def classify_dependency(graph, ref_pkg, ref_root, owner_pkg, owner_root, guards, weak, ctx=""):
+    """-> (class, detail). class in INTRA_COMPOSITION | GUARDED_DEP | GUARDED_XML | GUARDED_COND | QUERY_ONLY | REAL."""
+    rn, on = graph.node(ref_pkg), graph.node(owner_pkg)
+    if rn == on:
+        return "INTRA_COMPOSITION", "both folded into %s" % rn
+    if ctx.startswith("@Class in <xpath>"):
+        return "QUERY_ONLY", "a type name inside a patch <xpath> is only a query: it matches nothing when %s is absent and never instantiates it" % owner_pkg
+    if on in graph.closure(rn):
+        return "GUARDED_DEP", "%s hard-depends on %s (transitively)" % (rn, on)
+    if {graph.name_pkg.get(g, g) for g in guards} & {owner_pkg.lower(), on}:
+        return "GUARDED_XML", "reference is behind a FindMod/MayRequire naming %s" % owner_pkg
+    if weak and owner_root:
+        owned = graph.defnames_in(owner_root)
+        if any(d in owned for xp in weak for d in re.findall(r"defName\s*=\s*[\"']([^\"']+)[\"']", xp)):
+            return "GUARDED_COND", "reference is inside a PatchOperationConditional match whose xpath tests a def that %s declares" % owner_pkg
+    return "REAL", "type is in %s but %s's About.xml has no hard dependency chain to it" % (owner_pkg, ref_pkg)
+
+
 # ---- the index ------------------------------------------------------------------------------------------------------
 class Index:
     def __init__(self, src=SRC):
@@ -264,8 +417,30 @@ class Index:
 
 
 # ---- XML refs -------------------------------------------------------------------------------------------------------
-def xml_refs(path):
-    """-> [(type string, line-ish context)] referenced from one XML file."""
+def _guards_of(chain):
+    """Packages that make a reference harmless when absent, from the element chain root..el.
+    MayRequire counts on every element EXCEPT <Operation> (decompiled 1.6 ignores it there); a PatchOperationFindMod
+    counts only for refs inside its <match>; a PatchOperationConditional's xpath is recorded for refs inside its <match> (it guards only if the xpath names a def the OWNER mod declares)."""
+    pk, weak = set(), []
+    for i, a in enumerate(chain):
+        if a.tag != "Operation":
+            for attr in ("MayRequire", "MayRequireAnyOf"):
+                v = a.get(attr)
+                if v:
+                    pk.update(x.strip().lower() for x in v.split(",") if x.strip())
+        cls = a.get("Class")
+        if cls in ("PatchOperationFindMod", "PatchOperationConditional") and i + 1 < len(chain) and chain[i + 1].tag == "match":
+            if cls == "PatchOperationFindMod":
+                mods = a.find("mods")
+                if mods is not None:
+                    pk.update((li.text or "").strip().lower() for li in mods)
+            else:
+                weak.append((a.findtext("xpath") or ""))
+    return frozenset(x for x in pk if x), tuple(weak)
+
+
+def xml_refs_g(path):
+    """-> [(type string, context, guards frozenset, conditional xpaths tuple)] referenced from one XML file."""
     refs = []
     try:
         raw = open(path, encoding="utf-8-sig", errors="replace").read()
@@ -275,27 +450,38 @@ def xml_refs(path):
         root = ET.fromstring(raw)
     except ET.ParseError:
         for m in re.finditer(r'Class\s*=\s*"([^"]+)"', raw):
-            refs.append((m.group(1), "Class="))
+            refs.append((m.group(1), "Class=", frozenset(), ()))
         return refs
-    for el in root.iter():
-        if not isinstance(el.tag, str):
-            continue
-        c = el.get("Class")
-        if c:
-            refs.append((c.strip(), "Class= on <%s>" % el.tag))
-        t = (el.text or "").strip()
-        if t:
-            if TYPE_TEXT.match(t) and not t.endswith((".xml", ".png", ".ogg", ".wav")):
-                refs.append((t, "<%s>" % el.tag))
-            elif el.tag.endswith("Class") and re.match(r"^[A-Za-z_][\w+]*$", t):
-                refs.append((t, "<%s>" % el.tag))
-            for m in XPATH_CLASS.finditer(t):
-                refs.append(((m.group(1) or m.group(2)).strip(), "@Class in <%s>" % el.tag))
-        for k, v in el.attrib.items():
-            if k != "Class":
-                for m in XPATH_CLASS.finditer(v):
-                    refs.append(((m.group(1) or m.group(2)).strip(), "@Class in %s=" % k))
+    def walk_el(el, chain):
+        chain = chain + [el]
+        if isinstance(el.tag, str):
+            g, weak = _guards_of(chain)
+            def add(n, c):
+                refs.append((n, c, g, weak))
+            c = el.get("Class")
+            if c:
+                add(c.strip(), "Class= on <%s>" % el.tag)
+            t = (el.text or "").strip()
+            if t:
+                if TYPE_TEXT.match(t) and not t.endswith((".xml", ".png", ".ogg", ".wav")):
+                    add(t, "<%s>" % el.tag)
+                elif el.tag.endswith("Class") and re.match(r"^[A-Za-z_][\w+]*$", t):
+                    add(t, "<%s>" % el.tag)
+                for m in XPATH_CLASS.finditer(t):
+                    add((m.group(1) or m.group(2)).strip(), "@Class in <%s>" % el.tag)
+            for k, v in el.attrib.items():
+                if k != "Class":
+                    for m in XPATH_CLASS.finditer(v):
+                        add((m.group(1) or m.group(2)).strip(), "@Class in %s=" % k)
+        for ch in el:
+            walk_el(ch, chain)
+    walk_el(root, [])
     return refs
+
+
+def xml_refs(path):
+    """-> [(type string, line-ish context)] referenced from one XML file."""
+    return [(n, c) for n, c, _g, _w in xml_refs_g(path)]
 
 
 _dll_found = {}
@@ -349,6 +535,7 @@ def all_defnames(src):
 
 def lint(idx, mod=None, check_dll=True, src=SRC):
     defnames = all_defnames(src)
+    graph = DepGraph(src)
     findings = []     # (severity, kind, xml_path, ref, context, detail)
     stats = {"xml": 0, "refs": 0, "judged": 0, "resolved": 0}
     probes = {}
@@ -362,7 +549,10 @@ def lint(idx, mod=None, check_dll=True, src=SRC):
             stats["xml"] += 1
             xml_mod = find_mod_root(full)
             xml_pkg, xml_about = about_info(xml_mod) if xml_mod else (None, "")
-            for name, ctx in xml_refs(full):
+            lf = graph.loadfolder_guards(xml_mod) if xml_mod else []
+            lfg = frozenset().union(*[pk for d, pk in lf if os.path.normpath(full).startswith(d + os.sep)]) if lf else frozenset()
+            for name, ctx, guards, weak in xml_refs_g(full):
+                guards = guards | lfg
                 stats["refs"] += 1
                 if not judged(name, idx):
                     continue
@@ -414,8 +604,15 @@ def lint(idx, mod=None, check_dll=True, src=SRC):
                             findings.append(("FAIL", "NOT_IN_DLL", rel, name, ctx, "%s has no type named %s (source ahead of the build?)" % (os.path.relpath(dll, REPO), short.decode())))
                 if type_mod and xml_mod and os.path.realpath(type_mod) != os.path.realpath(xml_mod):
                     type_pkg, _ = about_info(type_mod)
-                    if type_pkg and type_pkg not in xml_about:
-                        findings.append(("WARN", "NO_DEPENDENCY", rel, name, ctx, "type is in %s but this mod's About.xml never names it" % type_pkg))
+                    if type_pkg and xml_pkg:
+                        cls, why = classify_dependency(graph, xml_pkg, xml_mod, type_pkg, type_mod, guards, weak, ctx)
+                        if cls == "REAL":
+                            findings.append(("WARN", "NO_DEPENDENCY", rel, name, ctx, "type is in %s but this mod's About.xml has no hard dependency chain to it" % type_pkg))
+                        else:
+                            findings.append(("INFO", cls, rel, name, ctx, "type is in %s; %s" % (type_pkg, why)))
+                        rt, ot = _tier(xml_pkg), _tier(type_pkg)
+                        if rt is not None and ot is not None and rt < ot:
+                            findings.append(("WARN", "DIRECTION", rel, name, ctx, "type is in %s (tier %s) but referrer %s is tier %s: a lower tier may not need a higher one" % (type_pkg, "RM RSW RUT".split()[ot], xml_pkg, "RM RSW RUT".split()[rt])))
     return findings, stats
 
 
@@ -424,6 +621,7 @@ def main(argv):
     ap.add_argument("--mod")
     ap.add_argument("--no-dll", action="store_true")
     ap.add_argument("-q", action="store_true", help="only the summary and FAIL lines")
+    ap.add_argument("-v", action="store_true", help="also list every classified (non-REAL) cross-mod reference: GUARDED_*/INTRA_COMPOSITION pairs")
     a = ap.parse_args(argv)
     idx = Index()
     findings, stats = lint(idx, a.mod, not a.no_dll)
@@ -437,10 +635,17 @@ def main(argv):
     for sev, kind, *_ in uniq:
         by[(sev, kind)] += 1
     deps = defaultdict(list)
+    cls_pairs = defaultdict(int)
     for f in uniq:
         sev, kind, rel, name, ctx, detail = f
         if kind == "NO_DEPENDENCY":
             deps[(find_mod_name(rel), detail.split()[3])].append(f)
+            continue
+        if kind == "DIRECTION":
+            print("WARN DIRECTION %s: %s (%s) - %s" % (rel, name, ctx, detail))
+            continue
+        if kind in CLASSES:
+            cls_pairs[(kind, find_mod_name(rel), detail.split()[3].rstrip(";"))] += 1
             continue
         if a.q and sev != "FAIL":
             continue
@@ -450,6 +655,20 @@ def main(argv):
             break
         sev, kind, rel, name, ctx, detail = fl[0]
         print("WARN NO_DEPENDENCY %s uses %s without naming it in About.xml: %d refs, e.g. %s in %s" % (xm, tm, len(fl), name, rel))
+    graph = DepGraph()
+    declared = [(p_, d_) for p_, ds in sorted(graph.raw_deps.items()) for d_ in ds
+                if _tier(p_) is not None and _tier(d_) is not None and _tier(p_) < _tier(d_)]
+    for p_, d_ in declared:
+        print("WARN DIRECTION declared: %s (tier %s) hard-depends on %s (tier %s)" % (p_, "RM RSW RUT".split()[_tier(p_)], d_, "RM RSW RUT".split()[_tier(d_)]))
+    if a.v:
+        for (k, xm, tm), n in sorted(cls_pairs.items()):
+            print("INFO %s %s -> %s: %d refs" % (k, xm, tm, n))
+    cls_tot = defaultdict(int)
+    cls_prs = defaultdict(set)
+    for (k, xm, tm), n in cls_pairs.items():
+        cls_tot[k] += n
+        cls_prs[k].add((xm, tm))
+    print("classes (distinct refs / mod pairs): " + ", ".join("%s %d/%d" % (k, cls_tot[k], len(cls_prs[k])) for k in CLASSES) + ", REAL(NO_DEPENDENCY) %d/%d" % (sum(len(v) for v in deps.values()), len(deps)))
     print("summary: " + (", ".join("%s %s x%d" % (s_, k, n) for (s_, k), n in sorted(by.items())) or "no findings") + " (distinct refs; NO_DEPENDENCY pairs: %d)" % len(deps))
     if stats["judged"] == 0:
         print("UNMEASURED: nothing judged - a lint that checked nothing is not a pass")
