@@ -55,6 +55,28 @@ Verdicts:
 reproduced or measured offline. 4 are plausible. None was refuted.** The 4 plausible render items are left for the
 looks board (`gss_states`) to show.
 
+## Status after the fix pass (2026-10-06)
+
+**Fixed** (offline checks: `SelfTest/GptReadFixChecks.cs`, the fuzz in `SelfTest/GssFuzz.cs`, and `validation.py` row
+`O7_gpt_read_fixes` for the Verse-bound halves): B1, B2, B3, B4, B5 (owner decision by question card: straight lead-out, see
+`gss_offline_fuzz_B.md`), B6 (the unchecked 0.5 blend is gone; the lead-out is wall-checked), B7/A13, B8, B10, B11, B12, B13,
+B14, A1, A2, A4, A5, A6, A8, A10, A15, A17, A18, A19, A20. None of these has been run live yet.
+
+**Not changed, and why:**
+- B9: a device wired to a battery or switch gets a drawn cable. The B24 hookup patch prints it as the look's straight cable,
+  not as a messy cord. Whether it should be a messy cord is a design call.
+- A12/B15 (`sprawlCap` does not cap cord length): an open design question in `gss_offline_fuzz_B.md`.
+- A7 (unroutable cords still drawn): hiding them would show a powered conduit run with a gap in it. What to draw instead is a
+  design call.
+- A3 (unseeded `Rand` in the style preview and in the sparks): the preview picks a random colour by design. The sparks are
+  cosmetic flecks, which vanilla also throws with `Rand`. This only matters for multiplayer sync, which this pass did not cover.
+- A16 (grouped gizmos): checked against the decompiled 1.6 `GizmoGridDrawer`. Each grouped `Command_Action` does run once per
+  selected object. Auto-link already guards against that with a per-frame latch. For the targeter and float-menu gizmos, each
+  later run replaces the earlier one, so the player sees one menu. Not a defect.
+- A14 (the per-frame latch could swallow a second change in the same frame): a player cannot click two gizmos in one frame.
+  Not reachable.
+- A9 and A11 (render paths, and `floorRipple` is off by default): still unverified. They are left for the looks board.
+
 ## What the read did not cover
 
 - Multiplayer sync registration was not in the files sent.
