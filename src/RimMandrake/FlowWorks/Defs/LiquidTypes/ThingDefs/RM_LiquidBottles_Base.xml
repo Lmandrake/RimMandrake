@@ -76,10 +76,7 @@
     <tickerType>Never</tickerType>
     <graphicData>
       <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): the material's colour
-           multiplies over this texture, so it must be neutral greyscale. The
-           shipped patchwork-metal art is coloured and will read muddy until
-           the greyscale regen (artpipe job fwart_RM_Bottle_Stuffable_v1)
-           replaces it. -->
+           multiplies over this neutral-greyscale texture (artpipe job fwart_RM_Bottle_Stuffable_v1). -->
       <texPath>Things/Item/Resource/FlowWorks/RM_Bottle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.75</drawSize>

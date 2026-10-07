@@ -63,10 +63,15 @@
     </building>
     <comps>
       <!-- LADDER_PRISON_DOOR_1 + FLOWWORKS_LADDER_RAISE_LOWER_1: raised/lowered by the player's gizmo,
-           prison-door climbing rule. raisedGraphicData is the raised state's own art: unset until the
-           raised variant (artpipe fwart_RM_LadderRaised) is installed, so both states draw the lowered
-           ladder art (fwart_RM_Ladder) for now. -->
-      <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder" />
+           prison-door climbing rule. raisedGraphicData is the raised state's own art (artpipe fwart_RM_LadderRaised);
+           the lowered state draws the graphicData above (fwart_RM_Ladder). -->
+      <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder">
+        <raisedGraphicData>
+          <texPath>Things/Building/FlowWorks/Canals/RM_LadderRaised</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>(1,1)</drawSize>
+        </raisedGraphicData>
+      </li>
     </comps>
     <placeWorkers>
       <li>RimMandrake.FlowWorks.PlaceWorker_LadderOnExcavation</li>

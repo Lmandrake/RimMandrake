@@ -63,7 +63,7 @@
          is absent). Real timber art is owed, same shape as
          RM_Crowncarpet's own placeholder note. -->
     <graphicData>
-      <texPath>Things/Plant/RM_Slackwax/RM_Slackwax</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_SlackwaxTimber</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <equippedAngleOffset>-20</equippedAngleOffset>
@@ -140,7 +140,7 @@
     <description>A whole tarspool, cut and unresolved: black base, amber middle, violet crown, still banded in the order the sky laid it down. Wicking floss holds the fractions apart until something takes it apart on purpose.</description>
     <tickerType>Rare</tickerType>
     <graphicData>
-      <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_TarspoolStalk</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.7</drawSize>
     </graphicData>
@@ -178,7 +178,7 @@
          (thematically the item's own crown scrape) — own-mod texPath, see
          RM_SlackwaxTimber's comment above for why. -->
     <graphicData>
-      <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_RimeNoduleEuphoric</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -228,7 +228,7 @@
     <tickerType>Rare</tickerType>
     <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
-      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_PitchpearlBeads</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.6</drawSize>
     </graphicData>
@@ -266,7 +266,7 @@
     <tickerType>Rare</tickerType>
     <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
-      <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_StonewaterIce</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.55</drawSize>
     </graphicData>
@@ -303,7 +303,7 @@
     <description>Real liquid water, melted out of a stonewater brake by a powered extractor. The lake floor's only genuine water source — every litre of it cost watts, so even a cup of this is drawn straight from the thermal economy.</description>
     <socialPropernessMatters>true</socialPropernessMatters>
     <graphicData>
-      <texPath>Things/Plant/RM_Stonewater/RM_Stonewater</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_MeltedWater</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.5</drawSize>
     </graphicData>

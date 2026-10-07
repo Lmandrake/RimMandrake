@@ -53,7 +53,7 @@
          so a genuinely vanilla path cannot be told apart from a typo here
          and would risk a pink placeholder if wrong. Real art is owed. -->
     <graphicData>
-      <texPath>Things/Building/Production/RUT_SteamCatch</texPath>
+      <texPath>Things/Building/RM_TheChill/RM_ChillStonewaterExtractor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
