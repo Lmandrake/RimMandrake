@@ -19,3 +19,4 @@ is labelled "glass"; (4) contained liquid's colour tints the container, empty sh
 - 00:45 rulings 3+4 built: RM_CompContainerMaterial (stone reads 'glass'; filled shows LiquidDef.color via ForceColor, empty/dirty show stuff colour; inspect line for refusals); 15 liquid colours in generator; FlowWorks selftest 119/119; run_selftests 214/214
 - 00:55 card 00:04: wooden buckets/barrels refuse acid, hold hot (XML holdsAcid=false); selftest 120/120
 - 01:05 owner typed 'even metal can't do acid': metal refuses acid (all sizes), plasteel refuses acid PROVISIONAL (one flag), only leather refuses hot; selftest 121/121
+- 01:12 card 00:53: plasteel holds acid (final: glass+plasteel hold acid; leather/wood/metal refuse; only leather refuses hot)

@@ -1397,7 +1397,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " wood holds fresh water");
                 }
             });
-            Case("ContainerMat_only_glass_holds_acid_metal_holds_hot", () =>
+            Case("ContainerMat_glass_plasteel_hold_acid_metal_refuses", () =>
             {
                 var liq = ContainerMatFixture.Liquids();
                 var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"];
@@ -1410,10 +1410,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_ContainerMaterialMath.CanHold(metal, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " metal refuses acid");
                     Assert(RM_ContainerMaterialMath.CanHold(metal, boil.hot, boil.acid) == RM_HoldRefusal.None, fam + " metal holds boiling water");
                 }
-                // PROVISIONAL (owner deciding): plasteel refuses acid, holds hot. Flip the XML flag and this line together.
+                // Question card 2026-10-07 00:53: plasteel holds acid (and hot).
                 var plasteel = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules("RM_BarrelItemBase"), RM_ContainerMaterial.Plasteel);
-                Assert(plasteel != null && RM_ContainerMaterialMath.CanHold(plasteel, false, true) == RM_HoldRefusal.Acid
-                    && RM_ContainerMaterialMath.CanHold(plasteel, true, false) == RM_HoldRefusal.None, "plasteel barrel: refuses acid, holds hot");
+                Assert(plasteel != null && RM_ContainerMaterialMath.CanHold(plasteel, true, true) == RM_HoldRefusal.None, "plasteel barrel holds hot acid");
                 Assert(RM_ContainerMaterialMath.CanHold(null, true, true) == RM_HoldRefusal.None, "an unlisted material (no rule) holds anything");
             });
             Case("ContainerMat_only_leather_refuses_hot", () =>

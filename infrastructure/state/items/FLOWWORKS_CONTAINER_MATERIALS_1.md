@@ -50,7 +50,7 @@ Data: `RM_ContainerMaterialsExtension` on RM_BottleItemBase / RM_BucketItemBase 
 |---|---|---|---|---|
 | bottle (1) | leather / glass / metal | 1 / 1 / 1 (a 1-unit bottle only moves at factor >= 1.5) | refuse / ok / ok | refuse / ok / refuse |
 | bucket (5) | wood / metal / leather | 5 / 6 / 4 | ok / ok / refuse | refuse / refuse / refuse |
-| barrel (25) | wood / metal / plasteel | 25 / 30 / 40 | ok | refuse / refuse / refuse (provisional) |
+| barrel (25) | wood / metal / plasteel | 25 / 30 / 40 | ok | refuse / refuse / ok |
 
 Hot = `LiquidDef.hot` (boiling water; generator row flag). Acid = corrodes apparel, AcidBurn damage, or pH <= 4
 (acid water; reaction liquor and red slime have no bottled form). Enforced in the terrain fill search (skips refused
@@ -58,9 +58,9 @@ liquids, `JobFailReason` names why), the tank drain search (same), and both fill
 Capacity scales every tank pour/draw (`RM_ContainerMaterials.UnitsIn`). Drinking is unchanged: nutrition is per def.
 Wooden buckets and barrels refuse acid but hold hot liquids (decision taken by question card 2026-10-07 00:04);
 same refusal path and reason text as leather ("A wooden container can't hold acid water: the acid eats through it.").
-Metal refuses acid too; only glass holds it. Owner typed in chat 2026-10-07 (relayed by the coordinator):
-"Actually even metal can't do acid." Hot liquids: only leather refuses. Plasteel refusing acid is PROVISIONAL,
-the safe default while he decides: one flag, `holdsAcid` on the Plasteel row of RM_BarrelItemBase.
+Metal refuses acid too; glass and plasteel hold it. Owner typed in chat 2026-10-07 (relayed by the coordinator):
+"Actually even metal can't do acid." Hot liquids: only leather refuses. Plasteel HOLDS acid (decision taken by question card
+2026-10-07 00:53). Final acid table: glass and plasteel hold it; leather, wood and metal refuse.
 
 ## naming and tint (rulings 3 and 4, built)
 
