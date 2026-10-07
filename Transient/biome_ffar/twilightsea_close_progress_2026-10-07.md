@@ -1,0 +1,16 @@
+# Twilight Sea sheet close + sea shadows — 2026-10-07
+
+One line per milestone.
+
+## 1. Decisions read
+34 rows. Picks: Aerofleet B, Aluun B, AluunCatch C, Hoolimbre B, Kellu B, Liiru B, Murrol B, Niim B, NoolimCatch C, Nuudal B, NuudalCatch C (v1 while creature is v2 — his explicit pick), Oobo B, Pallu B, SaltBladeTwilight B (+move to Grey Sea), Tikkarr B. Redo: Lunoowa, Noothelm, RSW_Faa, RSW_Mee; Hollu (picked B but note says B becomes new creature Dancing Skresh, Hollu redone as waveglass). Loohn/Noolim/Weloon: purge-only touch, A stays. No kill/cut notes. reviewStatus stamped ruled with his words.
+Undecided catches (prefill A, no decision click) blanked so ingest cannot record vanilla A as his ruling; agentInference recorded per row: Kellu/Liiru/Murrol/Niim/Oobo/Pallu/Tikkarr Catch -> D (creature's v2), WeloonCatch -> C (weloon_v1 = live A), HolluCatch -> redo with Hollu.
+## 2. Redo jobs + ingest + installs
+14 artpipe jobs filed (Hollu v3 waveglass, HolluCatch [inferred], Lunoowa, Noothelm, Faa canon, Mee canon), owner_note verbatim: Transient/biome_ffar/twilightsea_close_jobs_2026-10-07.json. Ingest: 66 rulings, 8 purged, 13 refused (live), 12 rejected-bytes. Installs: 46 PNGs via art install (9 creatures x3, 11 catches, Hoolimbre, SaltBlade [Grey Sea folder], Aerofleet x3 at own path, Dancing Skresh x3 from Hollu B).
+## 3. Wiring
+Aluun PawnKind Graphic_Single -> Multi (flat fan single retired via ledger). 11 catch items texPath -> Things/Item/RM_TwilightSea/<def> (were vanilla aloe/snake-plant/cactus/toxic-meat art). Hoolimbre -> Things/Plant/RM_TwilightSea/RM_HoolimbrePlant. Murrol old A purged after its replacement went in.
+SaltBladeTwilight moved: out of RM_TwilightSea wildPlants, into RM_GreySea wildPlants (0.03), description rewritten less solitary, art at Things/Plant/RM_GreySea/RM_SaltBladeTwilight.
+RM_DancingSkresh: new creature (ThingDef+PawnKind in RM_TwilightSeaFloorLife.xml) from the hollu B render, cast RM_TwilightSea 0.3. Hollu keeps its old A art until the waveglass redo lands (purge refused as live, same as Hessal).
+AA_Aerofleet: Patches/AA_Aerofleet_TwilightSea.xml points all life stages at our render and removes the donor's always-on alternates (applies everywhere the aerofleet is cast).
+## 4. Placeholders
+placeholder_detect over all 104 live PNGs behind Twilight defs: 104 real, 0 flat (probe: RM_Sorruth.png reads FLAT). BORROWED texPaths: suulk (vanilla cobra), vaulisk (megaspider), vaulisk lure (echeveria), veil pane (ship chunk) had finished artpipe renders -> collected + wired, false PLACEHOLDER comments deleted. RUT_LampBlack (donor crystal horn) -> 1 job, Transient/biome_ffar/twilightsea_placeholder_jobs_2026-10-07.json. HolluCatch (jade plant) and Noothelm (echeveria) wait on their redo jobs.

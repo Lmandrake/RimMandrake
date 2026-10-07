@@ -8,14 +8,8 @@
   Both invented names (`RM_` tier per Q11a), collision-checked against
   src/ and design/ at the sitting (2026-09-27, spec §1).
 
-  PLACEHOLDER ART: no suulk/vaulisk art exists anywhere in
-  infrastructure/artpipe/done or _artsrc (checked this pass, both by name and
-  by grep across manifests — zero hits). Both PawnKindDefs below point at
-  EXISTING vanilla RimWorld body textures, tinted to this biome's palette,
-  rather than a new PNG this pass did not generate — BENCH should file the
-  real art jobs (fill_queue.py) once a review sheet exists to judge them
-  against. See this file's own graphicData comments for which vanilla
-  texture each borrows and why.
+  Art: artpipe RM_Suulk_v2 / RM_Vaulisk_v2 renders, collected 2026-10-07
+  (not yet on an owner review sheet).
   ============================================================================
 -->
 <Defs>
@@ -99,34 +93,27 @@
     <combatPower>25</combatPower>
     <wildGroupSize>1~2</wildGroupSize>
     <ecoSystemWeight>0.1</ecoSystemWeight>
-    <!-- PLACEHOLDER: vanilla Cobra's directional set, tinted near-black —
-         "night-coloured... almost invisible until a beam catches it." Cobra
-         gives a genuine north/east/south/west set (Graphic_Multi) rather
-         than a single flat silhouette, which reads better for something
-         meant to drift and turn. Real art owed (see file header). -->
+    <!-- Art: artpipe RM_Suulk_v2 (east/south/north), collected 2026-10-07. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
-          <color>(28,30,38)</color>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.15</drawSize>
-          <color>(28,30,38)</color>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
-          <color>(28,30,38)</color>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -218,17 +205,13 @@
     <!-- Never spawned directly by the wild-animal spawner (ecoSystemWeight
          0, and carries no wildAnimals row in RM_TwilightSea.xml on purpose)
          — the only spawn route is RM_Comp_VaeuliskLure's reveal. -->
-    <!-- PLACEHOLDER: vanilla Megaspider's directional set, tinted toward
-         this biome's gold/black — a genuine ambush-predator silhouette
-         rather than the soft suulk's, so the two never read as the same
-         creature mid-reveal. Real art owed (see file header). -->
+    <!-- Art: artpipe RM_Vaulisk_v2 (east/south/north), collected 2026-10-07. -->
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megaspider/Megaspider</texPath>
+          <texPath>Things/Pawn/Animal/RM_Vaulisk/RM_Vaulisk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
-          <color>(58,46,18)</color>
           <colorTwo>(212,178,74)</colorTwo>
         </bodyGraphicData>
       </li>

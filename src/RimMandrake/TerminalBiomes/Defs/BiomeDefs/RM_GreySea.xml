@@ -175,6 +175,9 @@
            "planar salt-rimed blade flora … hundreds of metres apart" — the
            sparsest thing on this floor by design, see RM_GreySeaSaltBlade.xml. -->
       <RM_SaltBladeGrey>0.03</RM_SaltBladeGrey>
+      <!-- Moved here from the Twilight Sea (owner, Twilight Sea sheet 2026-10-07: "This sounds like
+           something from the Grey sea, not twilight. Move it there"). -->
+      <RM_SaltBladeTwilight>0.03</RM_SaltBladeTwilight>
       <!-- GREYSEA_RULED_CONTENT_1, Q4-Q8 (question card 2026-09-27): the
            density-driven half of the ten-species understorey
            (RM_GreySeaUnderstorey.xml — the_grey_deep_flora_pass_2026-09-27.md

@@ -67,6 +67,8 @@
       <RM_Kellu>0.3</RM_Kellu>
       <RM_Murrol>0.4</RM_Murrol>
       <RM_Hollu>0.4</RM_Hollu>
+      <!-- New creature from the hollu v2 render (owner, Twilight Sea sheet 2026-10-07). -->
+      <RM_DancingSkresh>0.3</RM_DancingSkresh>
       <RM_Oobo>0.15</RM_Oobo>
       <RM_Liiru>0.3</RM_Liiru>
     </wildAnimals>
@@ -82,7 +84,7 @@
          (RM_VeilFallIncoming/RM_VeilPane), never a floor plant. -->
     <plantDensity>0.2</plantDensity>
     <wildPlants>
-      <RM_SaltBladeTwilight>0.03</RM_SaltBladeTwilight>
+      <!-- RM_SaltBladeTwilight moved to the Grey Sea (owner, Twilight Sea sheet 2026-10-07). -->
       <!-- TWILIGHT_LIGHT_ECONOMY_1 §3.1: the two cultivated-light inputs,
            findable wild before a player ever builds a cage grower for them
            (RM_TwilightLightPlants.xml). -->
@@ -110,9 +112,9 @@
          rather than borrowing another sea's"): this stays on vanilla
          WaterOceanDeep/WaterOceanShallow — the shared baseline every sea
          falls back to with nothing of its own, not a borrow of the Grey's
-         brine or the Chill's propane. None of the Twilight's three
-         wildPlants rows (RM_SaltBladeTwilight, RM_HoolimbrePlant,
-         RM_NoothelmPlant — RM_TwilightSeaFlora.xml) carries a
+         brine or the Chill's propane. None of the Twilight's
+         wildPlants rows (RM_HoolimbrePlant, RM_NoothelmPlant —
+         RM_TwilightLightPlants.xml) carries a
          wildTerrainTags at all, so this split unblocks no currently-blocked
          roster row here either; it only corrects the structural defect. -->
     <terrainsByFertility>

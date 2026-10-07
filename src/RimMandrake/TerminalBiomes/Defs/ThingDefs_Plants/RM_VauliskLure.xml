@@ -15,13 +15,7 @@
   RM_TwilightScatterVauliskLure.xml) — never via <wildPlants>, which has no
   way to cap a roster row at "at most one."
 
-  PLACEHOLDER ART: reuses RM_MoldMatRoof's own texPath
-  (Things/Plant/Echeveria/EcheveriaA, confirmed physically present — see
-  RM_TwilightSeaFlora.xml's own header), distinguished by colour alone. This
-  mod already establishes that convention for two Twilight plants sharing
-  one texPath (RM_SaltBladeTwilight/its Grey cousin); no suulk/vaulisk-family
-  art exists in artpipe done/_artsrc (checked this pass) so BENCH should file
-  a real regen once a review sheet exists.
+  Art: artpipe RM_VauliskLure_south, collected 2026-10-07.
 
   no thessmoss ring (design §D4b): no thessmoss ThingDef exists anywhere in
   this repo (checked this pass) for a reveal to kill a ring of — OWED, not
@@ -41,7 +35,7 @@
       <Beauty>3</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_VauliskLure</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <colorTwo>(158,124,42)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>
