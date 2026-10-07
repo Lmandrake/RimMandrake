@@ -139,7 +139,7 @@
         <fallbackEdgeMargin>10</fallbackEdgeMargin>
         <additionalPasses>
           <li>
-            <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+            <causewayTerrain>RM_RootCauseway</causewayTerrain>
             <basinTerrains>
               <li>Soil</li>
               <li>SoilRich</li>
