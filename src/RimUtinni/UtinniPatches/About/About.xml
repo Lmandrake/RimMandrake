@@ -31,6 +31,11 @@
       <packageId>mandrake.rm.weathersuite</packageId>
       <displayName>RimMandrake: SW — Weather Suite</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
+      <steamWorkshopUrl />
+    </li>
   </modDependencies>
 <loadAfter>
     <li>mandrake.rm.kineticarms</li>                            <!-- KineticArms_OutlawLooters.xml: the looter marker type -->
