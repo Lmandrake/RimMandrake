@@ -136,28 +136,85 @@ namespace RimMandrake.KineticArms
             return m > RaiderPriceCeiling ? RaiderPriceCeiling : m;
         }
 
-        /// <summary>Ruins loot (owner, card 22:37: found in Ancient Danger ruins). Index of the kinetic weapon one ancient
-        /// temple holds, or -1. roll1 &lt; chance gates it; roll2 picks uniformly among the enabled weapons.</summary>
-        public static int PickRuins(IList<bool> enabled, float chance, float roll1, float roll2)
+        /// <summary>Ruins rarity tiers, index-aligned with RimMandrakeKineticArmsMod.Weapons (thudder, palm thumper, slam
+        /// launcher, repulsor rifle, kicker mine, thump shell, pulse cannon, grav-ram). Common hand kit, rarer heavy kit,
+        /// grav-ram rarest. PROVISIONAL: 30/20/15/10/12/15/5/3 of 110, so a find is a grav-ram ~2.7% of the time.</summary>
+        public static readonly float[] RuinsWeights = { 30f, 20f, 15f, 10f, 12f, 15f, 5f, 3f };
+
+        /// <summary>Ruins loot (owner, card 22:37: found in Ancient Danger ruins). Index of the kinetic weapon one ruin
+        /// holds, or -1. roll1 &lt; chance gates it; roll2 picks among the enabled weapons by weight (null weights or a
+        /// zero total = uniform). Rolls are in [0,1).</summary>
+        public static int PickRuins(IList<bool> enabled, IList<float> weights, float chance, float roll1, float roll2)
         {
             if (enabled == null || chance <= 0f || roll1 >= chance)
             {
                 return -1;
             }
             var fit = new List<int>();
+            float total = 0f;
             for (int i = 0; i < enabled.Count; i++)
             {
                 if (enabled[i])
                 {
                     fit.Add(i);
+                    total += Weight(weights, i);
                 }
             }
             if (fit.Count == 0)
             {
                 return -1;
             }
-            int k = (int)(roll2 * fit.Count);
-            return fit[k < 0 ? 0 : (k >= fit.Count ? fit.Count - 1 : k)];
+            if (total <= 0f)
+            {
+                int k = (int)(roll2 * fit.Count);
+                return fit[k < 0 ? 0 : (k >= fit.Count ? fit.Count - 1 : k)];
+            }
+            float target = roll2 * total, acc = 0f;
+            foreach (int i in fit)
+            {
+                acc += Weight(weights, i);
+                if (target < acc)
+                {
+                    return i;
+                }
+            }
+            return fit[fit.Count - 1];
+        }
+
+        /// <summary>The roll2 that lands in the middle of weapon <paramref name="index"/>'s band (or -1 if it cannot be
+        /// picked) - lets a proof scene ask for each weapon by name with fixed rolls.</summary>
+        public static float RuinsRollFor(IList<bool> enabled, IList<float> weights, int index)
+        {
+            float total = 0f, before = 0f;
+            bool found = false;
+            for (int i = 0; i < enabled.Count; i++)
+            {
+                if (!enabled[i])
+                {
+                    continue;
+                }
+                if (i == index)
+                {
+                    found = true;
+                    before = total;
+                }
+                total += Weight(weights, i);
+            }
+            if (!found || total <= 0f)
+            {
+                return -1f;
+            }
+            return (before + Weight(weights, index) * 0.5f) / total;
+        }
+
+        private static float Weight(IList<float> weights, int i)
+        {
+            if (weights == null)
+            {
+                return 1f;
+            }
+            float w = i < weights.Count ? weights[i] : 0f;
+            return w > 0f ? w : 0f;
         }
 
         /// <summary>How many of the picked thing a temple holds: thump shells come as a stack of 5-12 (PROVISIONAL),

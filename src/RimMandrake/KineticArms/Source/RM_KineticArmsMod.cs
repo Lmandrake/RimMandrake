@@ -31,6 +31,7 @@ namespace RimMandrake.KineticArms
         public static float lootedChancePercent = 2f;
         public static bool foundInRuins = true;
         public static float ruinsChancePercent = 35f;   // PROVISIONAL: per ancient-danger temple
+        public static bool foundInComplexes = true;      // Ideology ancient complexes: room loot + security crates
         public static bool kickerHidden = true;
         public static float pulsePowerDraw = 350f;
         public static bool kineticCutsCords = false;    // owner Q3: kinetic blasts sway cords, never cut them
@@ -57,6 +58,7 @@ namespace RimMandrake.KineticArms
             Scribe_Values.Look(ref lootedChancePercent, "lootedChancePercent", 2f);
             Scribe_Values.Look(ref foundInRuins, "foundInRuins", true);
             Scribe_Values.Look(ref ruinsChancePercent, "ruinsChancePercent", 35f);
+            Scribe_Values.Look(ref foundInComplexes, "foundInComplexes", true);
             Scribe_Values.Look(ref kickerHidden, "kickerHidden", true);
             Scribe_Values.Look(ref pulsePowerDraw, "pulsePowerDraw", 350f);
             Scribe_Values.Look(ref kineticCutsCords, "kineticCutsCords", false);
@@ -237,6 +239,8 @@ namespace RimMandrake.KineticArms
                 "Ancient Danger temples can hold one kinetic weapon (or a stack of thump shells) among their loot. Off: nothing places them in ruins.");
             l.Label("Chance an ancient temple holds one: " + RimMandrakeKineticArmsSettings.ruinsChancePercent.ToString("0", CultureInfo.InvariantCulture) + "%");
             RimMandrakeKineticArmsSettings.ruinsChancePercent = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.ruinsChancePercent, 0f, 100f));
+            l.CheckboxLabeled("Kinetic weapons are found in ancient complexes", ref RimMandrakeKineticArmsSettings.foundInComplexes,
+                "Ancient complex room loot and security crates can hold one kinetic weapon (a rare draw, about as rare as spacer components). Off: complexes never hold them. Grav-rams are the rarest find everywhere.");
             l.GapLine();
             l.CheckboxLabeled("Kicker mines hidden from enemies", ref RimMandrakeKineticArmsSettings.kickerHidden,
                 "On: like any trap, raiders do not see it. Off: raiders know where every kicker mine is and walk around it.");
@@ -281,6 +285,7 @@ namespace RimMandrake.KineticArms
             RimMandrakeKineticArmsSettings.lootedChancePercent = 2f;
             RimMandrakeKineticArmsSettings.foundInRuins = true;
             RimMandrakeKineticArmsSettings.ruinsChancePercent = 35f;
+            RimMandrakeKineticArmsSettings.foundInComplexes = true;
             RimMandrakeKineticArmsSettings.kickerHidden = true;
             RimMandrakeKineticArmsSettings.pulsePowerDraw = 350f;
             RimMandrakeKineticArmsSettings.kineticCutsCords = false;

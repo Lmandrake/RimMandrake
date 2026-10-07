@@ -434,6 +434,13 @@ is no research and no gizmo (owner: found, not crafted).
   `MapGen_AncientTempleContents` (`Patches/RM_KineticArms_RuinsLoot.xml`). Ancient Dangers are vanilla and the RM mod
   must stand alone (Q11a); the campaign's ancients are Rakata by `AncientsAreRakata.xml`, so no Utinni patch is needed.
   One weapon, or 5–12 thump shells, at 35% per temple (**PROVISIONAL**, Mod Setting), only weapons whose toggle is on.
+- **Rarity tiers (2026-10-07):** every ruin pick is weighted by `RM_KineticMath.RuinsWeights` — thudder 30, palm
+  thumper 20, slam launcher 15, repulsor rifle 10, kicker mine 12, thump shell 15, pulse cannon 5, grav-ram 3 (of 110;
+  **PROVISIONAL**). Grav-ram rarest: ~1% of temples at the default 35%.
+- **Ancient complexes (2026-10-07):** `RM_ThingSetMaker_KineticComplex` is a weighted option of vanilla
+  `MapGen_AncientComplexRoomLoot_Default`/`_Better` (0.15, as rare as spacer components) and
+  `MapGen_AncientComplex_SecurityCrate` (0.4); always one weapon when drawn, same tiers. Setting "found in ancient
+  complexes" (default on). Rakatan vaults (`StructureInjectionsRUT`) are loot-free by design and get nothing.
 - **Explosive Knockback** (`ff6330011`): lookup projectile → weapon → DamageDef → unpatched, whole config;
   `impactFactor`; `immuneBodySizeOverride`; stun-lock guard (landing stun + 120-tick window, **PROVISIONAL**, saved);
   shield belt absorbs the throw and pays force × 10 damage-equivalents (**PROVISIONAL**). Kinetic Arms uses them on its

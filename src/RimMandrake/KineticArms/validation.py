@@ -149,6 +149,13 @@ def l0_wiring(fields):
     if 'ThingSetMakerDef[defName="MapGen_AncientTempleContents"]/root/options' not in patches \
             or "RimMandrake.KineticArms.RM_ThingSetMaker_KineticRuins" not in patches or "class RM_ThingSetMaker_KineticRuins" not in src:
         bad.append("ruins loot is not wired onto MapGen_AncientTempleContents")
+    for tbl in ("MapGen_AncientComplexRoomLoot_Default", "MapGen_AncientComplexRoomLoot_Better", "MapGen_AncientComplex_SecurityCrate"):
+        if 'ThingSetMakerDef[defName="%s"]/root/options' % tbl not in patches:
+            bad.append("ancient-complex loot is not wired onto %s" % tbl)
+    if "RimMandrake.KineticArms.RM_ThingSetMaker_KineticComplex" not in patches or "class RM_ThingSetMaker_KineticComplex" not in src:
+        bad.append("RM_ThingSetMaker_KineticComplex missing from the patch or the source")
+    if "RuinsWeights" not in open(os.path.join(HERE, "Source", "RM_KineticRuinsAndCompat.cs"), encoding="utf-8").read():
+        bad.append("ruins pick ignores the rarity tiers (RM_KineticMath.RuinsWeights)")
     if "class RM_KineticBlastExtension" not in src:
         bad.append("cord marker class missing")
     gss = os.path.join(HERE, "..", "GimmeSomeSlack", "Source", "Aerial", "RM_MapComponent_Aerial.cs")
