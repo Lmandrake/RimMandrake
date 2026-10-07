@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design 3.1: Bomb throws (force 1.0; BombSuper inherits it from its Name="Bomb" parent); fire, EMP, smoke,
+     firefoam and tox gas carry an explicit 0. success=Always: ToxGas is Biotech's. -->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="Bomb"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>1.0</force></li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="Flame"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>0</force></li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="EMP"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>0</force></li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="Smoke"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>0</force></li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="Extinguish"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>0</force></li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <success>Always</success>
+    <xpath>Defs/DamageDef[defName="ToxGas"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>0</force></li>
+    </value>
+  </Operation>
+</Patch>

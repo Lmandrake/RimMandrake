@@ -163,6 +163,15 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "explosiveknockback": {
+        "why": "Explosive Knockback first script (ExplosiveKnockback/validation.py, knockback_runner.py): the mod "
+               "with FlowWorks (pit scenes, blasts break covers) and Gimme Some Slack (hose drop) on a dev "
+               "quicktest map. Harmony and all five DLCs resolve automatically. Same FlowWorks guards as its tier.",
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],
+        "forbid_substr": ["manywaters"],
+        "dlc": True,
+    },
     "gimmesomeslack": {
         "why": "MESSY_CONDUIT_MOD_1 phase 1a functional script (GimmeSomeSlack/validation.py): "
                "the cord overlay alone with the bridge on a dev quicktest map. Harmony and all "
