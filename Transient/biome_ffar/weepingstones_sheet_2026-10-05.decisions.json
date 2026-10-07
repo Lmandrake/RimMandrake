@@ -2,7 +2,7 @@
  "sheetId": "weepingstones_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/weepingstones_sheet_2026-10-05.snapshot.json",
- "snapshotId": "c182e376732dc888",
+ "snapshotId": "2a61d73e179d5161",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_WeepingStones",
  "reviewStatus": {
@@ -113,7 +113,10 @@
   "RSW_Dactillion": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/Dactillion/Dactillion_Flying_": "E"
+   }
   },
   "RSW_Dewback": {
    "decision": "A",
