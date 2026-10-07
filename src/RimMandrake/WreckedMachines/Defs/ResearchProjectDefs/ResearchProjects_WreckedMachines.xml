@@ -6,7 +6,7 @@
   "restoration rows live in THE SHIP tree (Rekko-neutral register)" — a
   registration this mod owns, separate from VFE-Factory's own vanilla
   VFE_BasicFactories gate (which stays completely untouched, per
-  design/Jawa/wrecked_machines_resurrection.md item 5: "the shipped state
+  the wrecked_machines_resurrection design doc, item 5: "the shipped state
   keeps VFE-Factory's building untouched; the ship-or-retexture question
   re-opens only after the pilot loop survives a live round").
 
@@ -25,11 +25,11 @@
   exists, add <tab> here; do not guess its defName now.
 
   Tier: T2 Forge by research_tree_taxonomy.md §2/§7 (late-Industrial cost
-  band 1600-3000, techLevel Industrial) — this is Jawa applied bodge-science
+  band 1600-3000, techLevel Industrial) — this is applied bodge-science
   on ship-original systems, not the ship's own Spacer engineering.
 
   🔴 TECHPRINT GATE — genuine design fork, not resolved here. The resurrection
-  spec (design/Jawa/wrecked_machines_resurrection.md item 2) says "the
+  spec (wrecked_machines_resurrection design doc, item 2) says "the
   techprint gate is the ruled faction-held access class." Investigated by
   TECHPRINT_FACTION_GATING_1 (infrastructure/state/items/
   TECHPRINT_FACTION_GATING_1.md): the faction-held mechanism itself is real
@@ -49,7 +49,7 @@
   <ResearchProjectDef>
     <defName>RM_WM_AutomatedSmelterRestoration</defName>
     <label>automated smelter restoration</label>
-    <description>Study the wrecked automated smelter on the ship's own deck closely enough to understand how to rebuild it. This is not the smelter's original engineering — the Kolyska's makers already solved that — it is the colony's own accumulated, bodged, hard-won knowledge of how to bring a dead one back.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route. Working it out from theory alone at a bench is possible but slow, and stays slow on purpose.</description>
+    <description>Study the wrecked automated smelter closely enough to understand how to rebuild it. This is not the smelter's original engineering — its makers already solved that — it is the colony's own accumulated, bodged, hard-won knowledge of how to bring a dead one back.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route. Working it out from theory alone at a bench is possible but slow, and stays slow on purpose.</description>
     <baseCost>2000</baseCost>
     <techLevel>Industrial</techLevel>
     <tags>
@@ -66,6 +66,31 @@
         <li>subject_gerund->restoring wrecked ship machinery</li>
       </rulesStrings>
     </generalRules>
+  </ResearchProjectDef>
+
+  <!-- Mobile-structure restoration (the grade-ladder extension, 2026-09-15).
+       Each gates its line's REFURBISHED grade; Kludged needs no research.
+       Spacer tech: these are archotech-sourced machines. Same no-techprint
+       stance as the smelter project above. Studying the wreck (RR Analyse,
+       SpecialResearchOpportunities_WreckedMachines.xml) is the primary route. -->
+  <ResearchProjectDef>
+    <defName>RM_WM_PowerCellRestoration</defName>
+    <label>power cell restoration</label>
+    <description>Study a wrecked vanometric power cell closely enough to restore most of its lattice. Nobody understands how the cell makes power; this is only how to stop it losing so much of it.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route.</description>
+    <baseCost>2500</baseCost>
+    <techLevel>Spacer</techLevel>
+    <researchViewX>26</researchViewX>
+    <researchViewY>13</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_WM_EmanatorRestoration</defName>
+    <label>emanator restoration</label>
+    <description>Study a wrecked psychic emanator closely enough to steady its field. The principle is beyond anyone; the repair is only careful copying of what survived.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route.</description>
+    <baseCost>2500</baseCost>
+    <techLevel>Spacer</techLevel>
+    <researchViewX>26</researchViewX>
+    <researchViewY>14</researchViewY>
   </ResearchProjectDef>
 
 </Defs>
