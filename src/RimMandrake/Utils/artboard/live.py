@@ -158,6 +158,14 @@ def main(argv=None):
         plate = "plate.png"
     st = call("jawa/artboard_stage", phase="subjects", opsPath=to_win(ops_path))
     log["stage_subjects"] = st
+    if pl.get("gss_ops"):
+        # Gimme Some Slack state ops (charge, lay, flow, end, look, link, cut, ticks) after the things exist
+        gpath = os.path.join(out, "gss_ops.txt")
+        with open(gpath, "w") as fh:
+            fh.write("\n".join(pl["gss_ops"]) + "\n")
+        gs = call("jawa/gss_stage", opsPath=to_win(gpath))
+        log["stage_gss"] = gs
+        st = dict(st or {}, ops=list((st or {}).get("ops", [])) + list((gs or {}).get("ops", [])))
     refused = subject_status(st, pl["by_id"])
     log["stage_refused"] = refused
     bc = call("jawa/artboard_capture", path=win_out + "\\board.png", **cap_args)

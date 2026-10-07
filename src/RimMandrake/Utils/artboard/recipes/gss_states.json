@@ -1,0 +1,901 @@
+{
+ "name": "gss_states",
+ "note": "Gimme Some Slack looks board: cords, hose reels/hoses and overhead spans in the states a player meets. Pre-review policy (owner 2026-10-06): staging faults fixed silently, art faults with a known fix regenerated, only judgement calls reach him (artboard/autofix.py triage).",
+ "ground": "Soil",
+ "ppc": 48,
+ "pad": 1.0,
+ "margin": 1,
+ "overhang": 0.3,
+ "subjects": [
+  {
+   "id": "cord_powered",
+   "label": "cord to lamp, powered",
+   "cell": [
+    0,
+    0
+   ],
+   "size": [
+    7,
+    5
+   ],
+   "overhang": 0.3,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "cord_unpowered"
+   ],
+   "question": "A conduit run with a battery feeding a standing lamp: do loose cords run from the conduit to the lamp and battery, lying on the ground, with lit (powered) ends?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 2,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 3,
+     "def": "Battery",
+     "rot": "north"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 0,
+     "def": "StandingLamp"
+    },
+    {
+     "kind": "gss_charge",
+     "dx": 0,
+     "dz": 3
+    },
+    {
+     "kind": "gss_ticks",
+     "n": 30
+    }
+   ]
+  },
+  {
+   "id": "cord_unpowered",
+   "label": "cord to lamp, no power",
+   "cell": [
+    9,
+    0
+   ],
+   "size": [
+    7,
+    5
+   ],
+   "overhang": 0.3,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "cord_powered"
+   ],
+   "question": "The same run with no power source: are the cords drawn the same shape but with dead (unlit) ends and dark strips?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 2,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 0,
+     "def": "StandingLamp"
+    }
+   ]
+  },
+  {
+   "id": "cord_wall_end",
+   "label": "run into a wall",
+   "cell": [
+    18,
+    0
+   ],
+   "size": [
+    7,
+    5
+   ],
+   "overhang": 0.3,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "cord_powered"
+   ],
+   "question": "A powered run that ends against a wall: does the cord disappear INTO the wall face with a stub, never drawn on top of the wall?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 2,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 2,
+     "def": "Wall"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 3,
+     "def": "Wall"
+    },
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 3,
+     "def": "Battery",
+     "rot": "north"
+    },
+    {
+     "kind": "gss_charge",
+     "dx": 0,
+     "dz": 3
+    }
+   ]
+  },
+  {
+   "id": "cord_tee",
+   "label": "T junction, two devices",
+   "cell": [
+    0,
+    7
+   ],
+   "size": [
+    7,
+    5
+   ],
+   "overhang": 0.3,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "cord_powered"
+   ],
+   "question": "A T-shaped powered run feeding two lamps: is there a junction where the branches meet and one cord to each lamp?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 2,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 3,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 4,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 3,
+     "def": "Battery",
+     "rot": "north"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 0,
+     "def": "StandingLamp"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 0,
+     "def": "StandingLamp"
+    },
+    {
+     "kind": "gss_charge",
+     "dx": 0,
+     "dz": 3
+    }
+   ]
+  },
+  {
+   "id": "cord_cut_live",
+   "label": "cut run, live end",
+   "cell": [
+    9,
+    7
+   ],
+   "size": [
+    7,
+    5
+   ],
+   "overhang": 0.3,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "cord_powered"
+   ],
+   "question": "A powered run with one conduit missing in the middle: does the live side end in a frayed/sparking tip and the far side read dead?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 3,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 4,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 2,
+     "def": "PowerConduit"
+    },
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 3,
+     "def": "Battery",
+     "rot": "north"
+    },
+    {
+     "kind": "thing",
+     "dx": 5,
+     "dz": 0,
+     "def": "StandingLamp"
+    },
+    {
+     "kind": "gss_charge",
+     "dx": 0,
+     "dz": 3
+    }
+   ]
+  },
+  {
+   "id": "reel_stored_Scrapper",
+   "label": "reel stored, Scrapper",
+   "cell": [
+    0,
+    14
+   ],
+   "size": [
+    3,
+    3
+   ],
+   "overhang": 0.5,
+   "expect": {
+    "organic": false
+   },
+   "differs_from": [
+    "reel_stored_Industrial",
+    "reel_stored_Modern",
+    "reel_stored_Futuristic"
+   ],
+   "question": "A hose reel in the Scrapper look with its hose wound on the drum: does it read as that look, hose stored, nothing spilling?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 0,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 0,
+     "dz": 0,
+     "look": "Scrapper"
+    }
+   ]
+  },
+  {
+   "id": "reel_stored_Industrial",
+   "label": "reel stored, Industrial",
+   "cell": [
+    5,
+    14
+   ],
+   "size": [
+    3,
+    3
+   ],
+   "overhang": 0.5,
+   "expect": {
+    "organic": false
+   },
+   "differs_from": [
+    "reel_stored_Scrapper",
+    "reel_stored_Modern",
+    "reel_stored_Futuristic"
+   ],
+   "question": "A hose reel in the Industrial look with its hose wound on the drum: does it read as that look, hose stored, nothing spilling?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 0,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 0,
+     "dz": 0,
+     "look": "Industrial"
+    }
+   ]
+  },
+  {
+   "id": "reel_stored_Modern",
+   "label": "reel stored, Modern",
+   "cell": [
+    10,
+    14
+   ],
+   "size": [
+    3,
+    3
+   ],
+   "overhang": 0.5,
+   "expect": {
+    "organic": false
+   },
+   "differs_from": [
+    "reel_stored_Scrapper",
+    "reel_stored_Industrial",
+    "reel_stored_Futuristic"
+   ],
+   "question": "A hose reel in the Modern look with its hose wound on the drum: does it read as that look, hose stored, nothing spilling?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 0,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 0,
+     "dz": 0,
+     "look": "Modern"
+    }
+   ]
+  },
+  {
+   "id": "reel_stored_Futuristic",
+   "label": "reel stored, Futuristic",
+   "cell": [
+    15,
+    14
+   ],
+   "size": [
+    3,
+    3
+   ],
+   "overhang": 0.5,
+   "expect": {
+    "organic": false
+   },
+   "differs_from": [
+    "reel_stored_Scrapper",
+    "reel_stored_Industrial",
+    "reel_stored_Modern"
+   ],
+   "question": "A hose reel in the Futuristic look with its hose wound on the drum: does it read as that look, hose stored, nothing spilling?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 0,
+     "dz": 0,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 0,
+     "dz": 0,
+     "look": "Futuristic"
+    }
+   ]
+  },
+  {
+   "id": "hose_ahead_flat",
+   "label": "hose laid ahead, flat",
+   "cell": [
+    0,
+    19
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_ahead_flowing"
+   ],
+   "question": "A hose laid out of the reel's outlet to the left: does it leave THROUGH the outlet coupling, lie flat and limp, and bend smoothly?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 9,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 9,
+     "dz": 2,
+     "tdx": 1,
+     "tdz": 3,
+     "flow": 0
+    }
+   ]
+  },
+  {
+   "id": "hose_ahead_flowing",
+   "label": "hose laid ahead, flowing",
+   "cell": [
+    14,
+    19
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_ahead_flat"
+   ],
+   "question": "The same hose with liquid moving: is it plumper and rounder than the flat one, same route?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 9,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 9,
+     "dz": 2,
+     "tdx": 1,
+     "tdz": 3,
+     "flow": 1
+    },
+    {
+     "kind": "gss_ticks",
+     "n": 120
+    }
+   ]
+  },
+  {
+   "id": "hose_behind_uturn",
+   "label": "hose laid BEHIND the outlet",
+   "cell": [
+    28,
+    19
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_ahead_flat"
+   ],
+   "question": "A hose whose target is behind the reel (to the right): does it leave the outlet, then turn back in a smooth wide curve - no kink or hairpin right after the coupling? (fuzz gap G2, live MX_H FAILs)",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 2,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 2,
+     "dz": 2,
+     "tdx": 11,
+     "tdz": 3,
+     "flow": 0
+    }
+   ]
+  },
+  {
+   "id": "hose_end_open",
+   "label": "free end: open end",
+   "cell": [
+    0,
+    27
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_end_nozzle",
+    "hose_end_cap"
+   ],
+   "question": "Does the hose's free end (left) show a open end?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 9,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 9,
+     "dz": 2,
+     "tdx": 2,
+     "tdz": 2,
+     "end": "open"
+    }
+   ]
+  },
+  {
+   "id": "hose_end_nozzle",
+   "label": "free end: nozzle",
+   "cell": [
+    14,
+    27
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_end_open",
+    "hose_end_cap"
+   ],
+   "question": "Does the hose's free end (left) show a nozzle?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 9,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 9,
+     "dz": 2,
+     "tdx": 2,
+     "tdz": 2,
+     "end": "nozzle"
+    }
+   ]
+  },
+  {
+   "id": "hose_end_cap",
+   "label": "free end: end cap",
+   "cell": [
+    28,
+    27
+   ],
+   "size": [
+    12,
+    6
+   ],
+   "overhang": 0.6,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "hose_end_open",
+    "hose_end_nozzle"
+   ],
+   "question": "Does the hose's free end (left) show a end cap?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 9,
+     "dz": 2,
+     "def": "RM_HoseReel"
+    },
+    {
+     "kind": "gss_hose",
+     "dx": 9,
+     "dz": 2,
+     "tdx": 2,
+     "tdz": 2,
+     "end": "cap"
+    }
+   ]
+  },
+  {
+   "id": "span_up",
+   "label": "span up",
+   "cell": [
+    0,
+    35
+   ],
+   "size": [
+    12,
+    4
+   ],
+   "overhang": 1.0,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "span_cut"
+   ],
+   "question": "Two masts joined by an overhead wire: does the wire hang in a gentle sag from insulator to insulator, with a ground shadow?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 1,
+     "def": "RM_AerialMast"
+    },
+    {
+     "kind": "thing",
+     "dx": 10,
+     "dz": 1,
+     "def": "RM_AerialMast"
+    },
+    {
+     "kind": "gss_link",
+     "dx": 1,
+     "dz": 1,
+     "dx2": 10,
+     "dz2": 1
+    }
+   ]
+  },
+  {
+   "id": "span_cut",
+   "label": "span cut",
+   "cell": [
+    14,
+    35
+   ],
+   "size": [
+    12,
+    4
+   ],
+   "overhang": 1.0,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "span_up"
+   ],
+   "question": "The same wire cut in the middle: do both halves hang down from their masts to the ground, no wire across the gap?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 1,
+     "def": "RM_AerialMast"
+    },
+    {
+     "kind": "thing",
+     "dx": 10,
+     "dz": 1,
+     "def": "RM_AerialMast"
+    },
+    {
+     "kind": "gss_link",
+     "dx": 1,
+     "dz": 1,
+     "dx2": 10,
+     "dz2": 1,
+     "cut": 1
+    }
+   ]
+  },
+  {
+   "id": "span_bracket",
+   "label": "mast to wall bracket",
+   "cell": [
+    28,
+    35
+   ],
+   "size": [
+    12,
+    4
+   ],
+   "overhang": 1.0,
+   "expect": {
+    "organic": false,
+    "may_overflow": true
+   },
+   "differs_from": [
+    "span_up"
+   ],
+   "question": "A wire from a mast to a bracket on a wall: does the wire land on the bracket's drawn insulator, not the cell centre?",
+   "stage": [
+    {
+     "kind": "thing",
+     "dx": 1,
+     "dz": 1,
+     "def": "RM_AerialMast"
+    },
+    {
+     "kind": "thing",
+     "dx": 10,
+     "dz": 2,
+     "def": "Wall"
+    },
+    {
+     "kind": "thing",
+     "dx": 10,
+     "dz": 1,
+     "def": "RM_AerialWallBracket",
+     "rot": "north"
+    },
+    {
+     "kind": "gss_link",
+     "dx": 1,
+     "dz": 1,
+     "dx2": 10,
+     "dz2": 1
+    }
+   ]
+  }
+ ]
+}

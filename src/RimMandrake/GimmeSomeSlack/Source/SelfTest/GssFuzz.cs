@@ -559,6 +559,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 double skip = outlet ? HoseMath.OutletLead(p) + 0.5 : HoseMath.EndSkip;
                 double bf = HoseMath.MinBendRadius(lay.Flat, skip), bp = HoseMath.MinBendRadius(lay.Plump, skip);
                 if (outlet && lay.MinBendFlat < c.MinR * 0.95) gaps?.Add("G2 bend inside the outlet blend tighter than the hose may bend: " + lay.MinBendFlat.ToString("0.00") + " < " + c.MinR.ToString("0.0"));
+                if (gaps != null && BendCollect) OutletBendProbe(seed, outlet, lay, p, c.MinR, a, b, outward);
                 if (Math.Min(bf, bp) < c.MinR * 0.95) gaps?.Add("G3 bend beyond the blend under 95% of minR: " + Math.Min(bf, bp).ToString("0.00") + " < " + c.MinR.ToString("0.0"));
                 if (Math.Min(bf, bp) < c.MinR * 0.1) return "hose" + mode + ": bend radius " + Math.Min(bf, bp).ToString("0.00") + " beyond the outlet blend is under a tenth of " + c.MinR.ToString("0.0");
                 if (HoseMath.SelfIntersects(lay.Flat)) gaps?.Add("G5 flat hose crosses itself (design: no loops)");
@@ -567,6 +568,118 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int prev = 0;
             foreach (int j in lay.Joints) { if (j <= prev || j >= lay.Flat.Count - 1) return "hose" + mode + ": joint index " + j + " out of order or at an end"; prev = j; }
             return null;
+        }
+
+        // ================================================================== G2 LOCATOR (2026-10-06, live hose FAILs vs fuzz G2)
+        /// <summary>One laid, non-fallback hose's bend profile: where the tightest bend sits and how far the hose has to turn
+        /// across the outlet blend. Collected per seed for both modes; the hose driver prints the comparison.</summary>
+        internal sealed class BendRec { public long Seed; public double MinR, MinBend, SAt, Straight, BlendEnd, TurnDeg, BackDeg; public string Zone; }
+        internal static bool BendCollect;
+        internal static readonly List<BendRec> BendOutlet = new List<BendRec>();
+        internal static readonly Dictionary<long, double> BendFree = new Dictionary<long, double>();
+
+        /// <summary>MinBendRadius with the arc position of the minimum (same discrete radius, same skip).</summary>
+        internal static double MinBendAt(IList<V2> X, double skip, out double sAt)
+        {
+            double[] s = Geo.CumLen(X);
+            double L = s[s.Length - 1], best = 99; sAt = -1;
+            for (int i = 1; i < X.Count - 1; i++)
+            {
+                if (s[i] < skip || s[i] > L - skip) continue;
+                double th = CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
+                double seg = 0.5 * (V2.Dist(X[i - 1], X[i]) + V2.Dist(X[i], X[i + 1]));
+                if (th > 1e-9 && seg / th < best) { best = seg / th; sAt = s[i]; }
+            }
+            return best;
+        }
+
+        /// <summary>Unit heading of polyline X at arc length t (the segment containing t).</summary>
+        internal static V2 HeadingAt(IList<V2> X, double t)
+        {
+            double[] s = Geo.CumLen(X);
+            for (int i = 1; i < X.Count; i++)
+                if (s[i] >= t || i == X.Count - 1) { V2 d = X[i] - X[i - 1]; double l = Math.Sqrt(d.X * d.X + d.Z * d.Z); return l > 1e-9 ? d * (1 / l) : new V2(1, 0); }
+            return new V2(1, 0);
+        }
+
+        private static double AngleDeg(V2 u, V2 v)
+        {
+            double d = Math.Max(-1, Math.Min(1, u.X * v.X + u.Z * v.Z));
+            return Math.Acos(d) * 180 / Math.PI;
+        }
+
+        private static void OutletBendProbe(long seed, bool outlet, HoseLay lay, HoseShapeParams p, double minR, V2 a, V2 b, V2? outward)
+        {
+            if (!outlet) { BendFree[seed] = Math.Min(HoseMath.MinBendRadius(lay.Flat, HoseMath.EndSkip), HoseMath.MinBendRadius(lay.Plump, HoseMath.EndSkip)); return; }
+            if (!outward.HasValue) return;
+            double bl = 2 * Math.Max(0.45, p.MinBendRadius), st = HoseReelRect.OutletStraight;
+            double mb = MinBendAt(lay.Flat, HoseMath.EndSkip, out double sAt);
+            V2 h = HeadingAt(lay.Flat, st + bl + 0.25);
+            V2 ab = b - a; double lab = Math.Sqrt(ab.X * ab.X + ab.Z * ab.Z);
+            BendOutlet.Add(new BendRec
+            {
+                Seed = seed, MinR = minR, MinBend = mb, SAt = sAt, Straight = st, BlendEnd = st + bl,
+                TurnDeg = AngleDeg(outward.Value, h),
+                BackDeg = lab > 1e-9 ? AngleDeg(outward.Value, ab * (1 / lab)) : 0,
+                Zone = sAt < 0 ? "none" : sAt <= st ? "straight" : sAt <= st + bl + 0.25 ? "blend" : "beyond",
+            });
+        }
+
+        /// <summary>GPT source read 2026-10-06 finding B2 (gss_gpt_source_read_2026-10-06.md): RouteCells minimises step + ExtraCost
+        /// while CheckInstall judges the route it returns by LENGTH, so a fitting route through costly cells (the hose world
+        /// charges water 3/cell) can lose to a cheaper, longer dry detour that does not fit. A fixed scene: a 3-wide watery
+        /// corridor straight to the target (fits) and a dry tunnel the long way round (too long). Tallied, never failed.</summary>
+        internal static List<string> CostVsLengthProbe()
+        {
+            var o = new List<string>();
+            // rock from x 6 to 30 except the corridor (z 9-11) and a dry tunnel at z 19: the dry way is ~44 cells, inside
+            // the search bound (1.5 x 32 / 1.05 + 4 = 49.7) but longer than the hose
+            // a dog-legged corridor (so string-pulling the dry route cannot cut back through it) of costly cells, and a dry
+            // tunnel at z 25 the long way round: inside the search bound (1.5 x 40 / 1.05 + 4 = 61) but longer than the hose
+            bool Corridor(int x, int z) => (x >= 6 && x <= 18 && z >= 9 && z <= 11) || (x >= 16 && x <= 18 && z >= 9 && z <= 17) || (x >= 16 && x <= 30 && z >= 15 && z <= 17);
+            CordWorld Rocky() { var cw = new CordWorld(50, 30); for (int x = 6; x <= 30; x++) for (int z = 0; z < 30; z++) if (!Corridor(x, z) && z != 25) cw.SetBlocked(new Cell(x, z), BlockKind.Rock); return cw; }
+            CordWorld w = Rocky();
+            for (int x = 6; x <= 30; x++) for (int z = 0; z < 30; z++) if (Corridor(x, z)) w.SetExtraCost(new Cell(x, z), 3f);
+            var reel = new HoseReelRect(3, 10, 1, 1);
+            var target = new Cell(32, 10);
+            const double hose = 40;
+            string why = HoseMath.CheckInstall(w, reel, target, hose);
+            CordWorld dry = Rocky();
+            double waterLen = HoseMath.RouteLength(dry, reel, target);          // same walls, no cost: the corridor's own length
+            double chosen = HoseMath.RouteLength(w, reel, target);
+            List<Cell> cp = HoseMath.RouteCells(w, reel.StartCellToward(target), target, -1);
+            string pathNote = cp == null ? "no path" : cp.Count + " cells, " + cp.Count(q => q.Z >= 20) + " in the dry tunnel stretch, extra cost " + cp.Sum(q => w.ExtraCost(q)).ToString("0");
+            bool gap = why == "route too long" && waterLen > 0 && waterLen * HoseMath.RouteMargin <= hose;
+            o.Add("known gap G6 (cost vs length, GPT B2): " + (gap ? "REPRODUCED" : "not reproduced") + ": hose " + hose.ToString("0") + ", the corridor route needs " +
+                  (waterLen * HoseMath.RouteMargin).ToString("0.0") + " (fits) but the search returns a " + (chosen * HoseMath.RouteMargin).ToString("0.0") +
+                  "-cell route (" + pathNote + ") and CheckInstall says '" + (why ?? "ok") + "'");
+            return o;
+        }
+
+        /// <summary>The G2 hypothesis test (live: 9 matrix hose FAILs, bend ~0.19 vs 1.14; fuzz: 965/1445 outlet cases): is the
+        /// tight bend IN the outlet blend, does the same case laid without the outlet bend fine, and does the turn the blend
+        /// must make predict it (a blend of length bl turning theta cannot hold a radius above bl / theta).</summary>
+        internal static List<string> OutletBendReport()
+        {
+            var o = new List<string>();
+            var bad = BendOutlet.Where(r => r.MinBend < r.MinR * 0.95).ToList();
+            var good = BendOutlet.Where(r => r.MinBend >= r.MinR * 0.95).ToList();
+            if (BendOutlet.Count == 0) return o;
+            int inBlend = bad.Count(r => r.Zone == "blend"), inStraight = bad.Count(r => r.Zone == "straight"), beyond = bad.Count(r => r.Zone == "beyond");
+            var paired = bad.Where(r => BendFree.ContainsKey(r.Seed)).ToList();
+            int freeOk = paired.Count(r => BendFree[r.Seed] >= r.MinR * 0.95);
+            double Med(IEnumerable<double> xs) { var l = xs.OrderBy(x => x).ToList(); return l.Count == 0 ? double.NaN : l[l.Count / 2]; }
+            int boundHolds = bad.Count(r => r.TurnDeg > 1 && r.MinBend <= (r.BlendEnd - r.Straight) / (r.TurnDeg * Math.PI / 180) + 1e-6);
+            o.Add("G2 locator: " + bad.Count + "/" + BendOutlet.Count + " outlet lays bend under 95% of minR; tightest bend in the straight run " + inStraight +
+                  ", in the blend " + inBlend + ", beyond it " + beyond);
+            o.Add("G2 locator: same seed laid WITHOUT the outlet bends within 95% of minR in " + freeOk + "/" + paired.Count + " of those (2x2 reels)");
+            o.Add("G2 locator: turn across the blend (outward vs heading after it) median " + Med(bad.Select(r => r.TurnDeg)).ToString("0") + " deg failing vs " +
+                  Med(good.Select(r => r.TurnDeg)).ToString("0") + " deg passing; target bearing from outward median " + Med(bad.Select(r => r.BackDeg)).ToString("0") +
+                  " deg failing vs " + Med(good.Select(r => r.BackDeg)).ToString("0") + " passing; radius <= blend/turn in " + boundHolds + "/" + bad.Count);
+            var worst = bad.OrderBy(r => r.MinBend / r.MinR).FirstOrDefault();
+            if (worst != null) o.Add("G2 locator worst: seed " + worst.Seed + " bend " + worst.MinBend.ToString("0.00") + " at s=" + worst.SAt.ToString("0.00") +
+                                     " (straight to " + worst.Straight.ToString("0.0") + ", blend to " + worst.BlendEnd.ToString("0.0") + "), turn " + worst.TurnDeg.ToString("0") + " deg, minR " + worst.MinR.ToString("0.0"));
+            return o;
         }
 
         // ================================================================== TRAIL (carry machine)
@@ -863,6 +976,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 var sw = Stopwatch.StartNew();
                 int n = one != null ? 1 : Cases(120);
                 ulong digest = 1469598103934665603UL;
+                BendOutlet.Clear(); BendFree.Clear();
                 var gapCount = new Dictionary<string, int>(); var gapFirst = new Dictionary<string, (long, List<Act>, string)>();
                 for (int k = 0; k < n; k++)
                 {
@@ -912,7 +1026,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     {
                         if (!outlet && MakeHose(seed).Reel.W != 2) continue;     // a 1x1 reel has no outlet: the second mode would repeat the first
                         var gl = new List<string>();
+                        BendCollect = true;
                         string msg = RunHose(seed, null, ref steps, out int ok, out int f, outlet, gl);
+                        BendCollect = false;
                         laid += ok; fb += f;
                         t.Cases++; t.Steps += steps; steps = 0;
                         if (ok == 1) laidModes[outlet ? 0 : 1]++;
@@ -949,6 +1065,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     gapLines.Add("known gap " + kv.Key.Substring(0, 2) + (go ? " [outlet] " : " [free] ") + kv.Value + "/" + laidModes[go ? 0 : 1] + " laid: " + gmsg + "  (seed " + gseed + ", " + MakeHose(gseed, min) + (min.Count > 0 ? ", walls " + string.Join(" ", min.Take(12)) : "") + ")");
                 }
                 foreach (string gl in gapLines) fails.Add("KNOWNGAP " + gl);
+                foreach (string gl in OutletBendReport()) fails.Add("KNOWNGAP " + gl);
+                foreach (string gl in CostVsLengthProbe()) fails.Add("KNOWNGAP " + gl);
                 sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below)"; t.Failures -= 0;
                 Report(t, fails); tallies.Add(t);
             }
