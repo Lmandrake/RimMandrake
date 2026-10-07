@@ -61,7 +61,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     return;
                 }
 
-                Thing residue = ThingMaker.MakeThing(residueDef);
+                Thing residue = RM_LiquidBottleUtility.MakeContainer(residueDef, ingested);
                 residue.stackCount = Math.Max(1, ingestedCount);
 
                 if (pawn.Spawned && pawn.inventory != null

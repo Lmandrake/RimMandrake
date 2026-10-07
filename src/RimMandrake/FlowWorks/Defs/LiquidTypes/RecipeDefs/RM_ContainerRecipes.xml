@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ContainerRecipes.xml         HAND-AUTHORED.
+  FLOWWORKS_CONTAINER_MATERIALS_1. Owner, typed 2026-10-06: "Player can set what
+  kinds of bottles they use (leather, glass(any stone), metal) depending on what
+  they have in abundance and what crafting stations they have. Barrels are like
+  this too: wooden, metal, plasteel".
+  One recipe per material, each at the stations that material belongs to, so what
+  a colony can make follows its benches. productHasIngredientStuff makes the
+  product out of the ingredient (granite blocks -> a granite-coloured glass
+  bottle); RM_LiquidBottleUtility.MakeContainer keeps that material through the
+  whole fill/use/wash chain. Buckets are not in the ruling and stay unstuffed.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_Make_Bottle_Leather</defName>
+    <label>make leather bottles</label>
+    <description>Stitch five liquid bottles out of leather. Any leather will do; the bottles take its colour.</description>
+    <jobString>Stitching leather bottles.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workAmount>900</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Leathery</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Leathery</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BottleEmpty>5</RM_BottleEmpty>
+    </products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>HandTailoringBench</li>
+      <li>ElectricTailoringBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Bottle_Glass</defName>
+    <label>make glass bottles</label>
+    <description>Melt stone blocks down into five glass bottles. Any stone will do; the glass takes its colour.</description>
+    <jobString>Melting stone into glass bottles.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+    <workAmount>1200</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Stony</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Stony</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BottleEmpty>5</RM_BottleEmpty>
+    </products>
+    <recipeUsers>
+      <li>TableStonecutter</li>
+      <li>ElectricSmelter</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Bottle_Metal</defName>
+    <label>make metal bottles</label>
+    <description>Hammer five liquid bottles out of metal. Any metal will do; the bottles take its colour.</description>
+    <jobString>Hammering metal bottles.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Smith</soundWorking>
+    <workAmount>1000</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Metallic</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Metallic</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BottleEmpty>5</RM_BottleEmpty>
+    </products>
+    <recipeUsers>
+      <li>FueledSmithy</li>
+      <li>ElectricSmithy</li>
+      <li>TableMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Barrel_Wood</defName>
+    <label>make wooden barrel</label>
+    <description>Build a barrel out of wood: bulk liquid storage, and a trade good in its own right.</description>
+    <jobString>Building a wooden barrel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workAmount>1500</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Woody</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Woody</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BarrelEmpty>1</RM_BarrelEmpty>
+    </products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Barrel_Metal</defName>
+    <label>make metal barrel</label>
+    <description>Hammer a barrel out of metal (plasteel barrels are made at the machining table or fabrication bench).</description>
+    <jobString>Hammering a metal barrel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Smith</soundWorking>
+    <workAmount>1800</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Metallic</li>
+          </stuffCategoriesToAllow>
+          <disallowedThingDefs>
+            <li>Plasteel</li>
+          </disallowedThingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Metallic</li>
+      </stuffCategoriesToAllow>
+      <disallowedThingDefs>
+        <li>Plasteel</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BarrelEmpty>1</RM_BarrelEmpty>
+    </products>
+    <recipeUsers>
+      <li>FueledSmithy</li>
+      <li>ElectricSmithy</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Barrel_Plasteel</defName>
+    <label>make plasteel barrel</label>
+    <description>Machine a barrel out of plasteel: the toughest container a colony can make.</description>
+    <jobString>Machining a plasteel barrel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>2500</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Plasteel</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Plasteel</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BarrelEmpty>1</RM_BarrelEmpty>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

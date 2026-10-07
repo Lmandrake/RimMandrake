@@ -60,8 +60,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     // leave the carried container alone.
                     return;
                 }
+                Thing filled = RM_LiquidBottleUtility.MakeContainer(filledDef, carried);
                 carried.Destroy();
-                Thing filled = ThingMaker.MakeThing(filledDef);
                 filled.stackCount = 1;
                 GenPlace.TryPlaceThing(filled, pawn.Position, Map, ThingPlaceMode.Near);
             };

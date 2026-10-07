@@ -135,6 +135,29 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
         }
 
+        /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1. Makes the container a
+        /// chain step turns <paramref name="from"/> into (fill, use, wash,
+        /// pour, revert), keeping the material the player built it from:
+        /// bottles and barrels are stuffable (leather/stone/metal bottles,
+        /// wood/metal/plasteel barrels), so a steel bottle filled stays a
+        /// steel bottle. A def that is not made from stuff (buckets, an
+        /// adopted vanilla item such as Chemfuel) gets none; a stuffed def
+        /// reached from an unstuffed source falls back to the def's default
+        /// stuff rather than ThingMaker's error path.</summary>
+        public static Thing MakeContainer(ThingDef def, Thing from)
+        {
+            ThingDef stuff = null;
+            if (def.MadeFromStuff)
+            {
+                ThingDef had = from?.Stuff;
+                stuff = had != null && had.stuffProps != null && def.stuffCategories != null
+                        && had.stuffProps.CanMake(def)
+                    ? had
+                    : GenStuff.DefaultStuffFor(def);
+            }
+            return ThingMaker.MakeThing(def, stuff);
+        }
+
         /// <summary>Nearest reachable FRESH water edge -- the spec's "wash
         /// job (consumes water)" always means fresh water, never whatever
         /// the bottle was last dirty with.</summary>
