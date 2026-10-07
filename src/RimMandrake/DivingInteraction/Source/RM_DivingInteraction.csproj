@@ -68,6 +68,8 @@
     <Compile Include="RM_Building_BrineElder.cs" />
     <Compile Include="RM_GameComponent_BrineElders.cs" />
     <Compile Include="RM_ElderTradeUtility.cs" />
+    <Compile Include="RM_ElderEconomyKernel.cs" />
+    <Compile Include="RM_GardenDefenseKernel.cs" />
     <Compile Include="Dialog_OfferToElder.cs" />
     <Compile Include="RM_CompPoolSentinelSquirt.cs" />
     <Compile Include="RM_ChillFireGate.cs" />
