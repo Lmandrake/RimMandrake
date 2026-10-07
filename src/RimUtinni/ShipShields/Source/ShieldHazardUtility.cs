@@ -51,7 +51,7 @@ namespace RimMandrake.Utinni.ShipShields
         // also catches a modded dust/sand weather without guessing its name.
         public static bool HasParticulateHazard(Map map)
         {
-            return map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout)
+            return RimMandrake.Scarlands.RM_PollutionSense.IsPollutedHere(map)
                 || map.weatherManager.curWeather.sandRate > 0f;
         }
 
