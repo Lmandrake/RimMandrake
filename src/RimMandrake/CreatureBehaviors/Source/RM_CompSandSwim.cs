@@ -105,59 +105,62 @@ namespace RimMandrake.CreatureBehaviors
 
         private void Evaluate(Pawn pawn)
         {
-            bool onSwim = RM_SandSwimUtility.IsSwimTerrain(pawn.Position, pawn.Map, Ext);
-            bool submerged = Submerged;
+            SwimEnv env = new SwimEnv { comp = this, pawn = pawn };
+            RM_SandSwimKernel.Evaluate(ref env);
+        }
 
-            if (!onSwim)
+        /// <summary>The live facts and effects behind RM_SandSwimKernel.Evaluate.</summary>
+        private struct SwimEnv : IRM_SwimEnv
+        {
+            public RM_CompSandSwim comp;
+            public Pawn pawn;
+
+            public int Now => Find.TickManager.TicksGame;
+            public int SurfacedUntil => comp.surfacedUntilTick;
+            public bool Submerged => comp.Submerged;
+            public bool DroidImmunity => RM_CreatureBehaviorsSettings.sandSwimDroidImmunity;
+            public float StrikeRange => comp.Ext.strikeRangeCells;
+
+            public bool OnSwimTerrain()
             {
-                Surface(pawn, breach: submerged); // reached hard ground: breaches out onto it
-                return;
+                return RM_SandSwimUtility.IsSwimTerrain(pawn.Position, pawn.Map, comp.Ext);
             }
 
-            Thing target = CurrentAttackTarget(pawn, Ext.breachForAnyTarget);
-            if (submerged && target is Pawn targetPawn && RM_CreatureBehaviorsSettings.sandSwimDroidImmunity
-                && !RM_SandSwimUtility.HasWaterInIt(targetPawn))
+            public bool TryGetTarget(out bool isPawn, out bool hasWater, out int distSq)
             {
-                // §4: nothing under the sand senses a pawn with no water in it. Drop the attack
-                // rather than surface for it; a surfaced (hit) swimmer can still fight back.
-                pawn.jobs?.EndCurrentJob(JobCondition.Incompletable);
-                target = null;
+                Thing target = CurrentAttackTarget(pawn, comp.Ext.breachForAnyTarget);
+                isPawn = target is Pawn;
+                hasWater = target is Pawn tp && RM_SandSwimUtility.HasWaterInIt(tp);
+                distSq = target == null ? 0 : (target.Position - pawn.Position).LengthHorizontalSquared;
+                return target != null;
             }
 
-            // STILLSAND_DUNE_GALE_1 §6: a storm is all vibration, so the swimmer cannot pick its
-            // target out of it. It stays down and lets the strike go, like the droid case above.
-            if (submerged && target != null)
+            // STILLSAND_DUNE_GALE_1 §6: a storm is all vibration, so the swimmer cannot pick its target out of it.
+            public bool StormBlindsStrike()
             {
                 RM_WeatherSenseExtension sense = RM_WeatherSenseExtension.On(pawn.Map);
-                if (sense != null && sense.swimmerSenseChance < 1f && !Rand.Chance(sense.swimmerSenseChance))
-                {
-                    pawn.jobs?.EndCurrentJob(JobCondition.Incompletable);
-                    target = null;
-                }
+                return sense != null && sense.swimmerSenseChance < 1f && !Rand.Chance(sense.swimmerSenseChance);
             }
 
-            if (target != null)
+            public bool MeleeThreat()
             {
-                float range = Ext.strikeRangeCells;
-                if ((target.Position - pawn.Position).LengthHorizontalSquared <= range * range)
-                {
-                    Surface(pawn, breach: submerged); // the strike
-                    return;
-                }
+                return pawn.mindState?.meleeThreat != null;
             }
 
-            if (pawn.mindState?.meleeThreat != null)
+            public void EndJob()
             {
-                Surface(pawn, breach: submerged); // in melee: never fights from under the sand
-                return;
+                pawn.jobs?.EndCurrentJob(JobCondition.Incompletable);
             }
 
-            if (Find.TickManager.TicksGame < surfacedUntilTick)
+            public void Surface(bool breach)
             {
-                return; // just breached — stays up
+                comp.Surface(pawn, breach);
             }
 
-            Submerge(pawn);
+            public void Submerge()
+            {
+                comp.Submerge(pawn);
+            }
         }
 
         /// <summary>NIGHTSIDEICE_SHIVVEN_BUILD_1: a confined swimmer about to step from swim terrain onto
@@ -253,7 +256,7 @@ namespace RimMandrake.CreatureBehaviors
 
         private void Breach(Pawn pawn)
         {
-            surfacedUntilTick = Find.TickManager.TicksGame + Ext.surfacedTicks;
+            surfacedUntilTick = RM_SandSwimKernel.BreachUntil(Find.TickManager.TicksGame, Ext.surfacedTicks);
             if (!pawn.Spawned)
             {
                 return;
