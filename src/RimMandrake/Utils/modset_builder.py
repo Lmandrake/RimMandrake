@@ -597,6 +597,13 @@ TIERS["acc_l1x"] = {
 }
 
 
+TIERS["acc_biomes"] = {
+    "why": "FOUNDRY acceptance 2026-10-07: the composed biomes mod (Greentide, Stillsand, LeaningScrub, CreatureBehaviors "
+           "and the rest fold into it) plus GimmeSomeSlack, which JawaBench get_defs needs.",
+    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.gimmesomeslack"],
+    "dlc": True,
+}
+
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
     writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
