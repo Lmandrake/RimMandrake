@@ -249,6 +249,8 @@ if Suite is not None:
         return str(v)
 
     def _same(got, want):
+        if got is None and str(want).strip() == "":
+            return True        # an empty-string setting reads back null (2026-10-07)
         if str(got).strip().lower() == str(want).strip().lower():
             return True
         try:
