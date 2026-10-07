@@ -74,10 +74,12 @@
          ⛔ This cut is scoped to the GREY SEA ONLY. RM_TwilightSea and
          RM_TheForge still cast AA_Aerofleet deliberately — a cut in one sheet is
          never a planet-wide sweep, so do not "fix" those to match. -->
+    <!-- RM_Sorruth and RM_SorruthCatch CUT from the Grey Sea 2026-10-06 (owner,
+         Grey Sea art sheet: "cut don't need"). Scoped to this biome; the defs
+         stay in RM_GreySeaFauna.xml / RM_GreySeaCatch.xml, cast nowhere. -->
     <wildAnimals>
       <RM_Reefback>0.005</RM_Reefback>
       <RM_Fessk>0.01</RM_Fessk>
-      <RM_Sorruth>0.4</RM_Sorruth>
       <RM_Essarn>0.6</RM_Essarn>
       <RM_Otheska>0.2</RM_Otheska>
       <!-- GREYSEA_SESSILE_LAYER_1, 2026-09-26. The owner's "abundant
@@ -252,7 +254,7 @@
     </terrainsByFertility>
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Grey Sea's catch table.
-         terminal_seas_cast_proposal_2026-09-25.md verdict 2: essarn/sorruth
+         terminal_seas_cast_proposal_2026-09-25.md verdict 2: essarn
          ADDED here, not replacing the pre-existing table (see
          RM_GreySeaCatch.xml's own header).
 
@@ -281,7 +283,6 @@
         <RM_MaaluCatch>1</RM_MaaluCatch>
         <RM_ImmuCatch>0.7</RM_ImmuCatch>
         <RM_HaarnCatch>0.4</RM_HaarnCatch>
-        <RM_SorruthCatch>0.5</RM_SorruthCatch>
         <!-- Q2's rebalance: moved down from Common, unchanged weights. -->
         <RM_KarrudCatch>1</RM_KarrudCatch>
         <RM_OomalCatch>0.6</RM_OomalCatch>

@@ -112,21 +112,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Corrik/RM_Corrik</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
       </li>

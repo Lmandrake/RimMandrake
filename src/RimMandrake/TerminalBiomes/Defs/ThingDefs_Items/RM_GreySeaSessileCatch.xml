@@ -41,9 +41,8 @@
     <label>nissik</label>
     <description>A double handful of glass-bodied pickers strained out of the bottom water, still faintly twitching. Individually they are nothing; by the netful they are the most reliable food this sea gives up, and the shore camps eat them boiled whole, shells and all.</description>
     <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_NissikCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(216,218,206)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -68,9 +67,8 @@
     <label>thollim</label>
     <description>Thick grey valves dredged out of the floor sediment, still shut and still heavy. A thollim keeps a fortnight in its own brine without any help, which on a coast with no cold and no rain is most of the reason anybody settles there.</description>
     <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_ThollimCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(150,152,148)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.16</Nutrition>
@@ -91,9 +89,8 @@
     <label>grusk</label>
     <description>Blue-black wedges knocked off a pillar face with the mineral foot still attached, so every one comes up wearing a chip of the column it grew on. The meat inside is dark and tastes of the whole sea at once. People are divided.</description>
     <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SeaCatchItem</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_GruskCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(62,66,84)</color>
     </graphicData>
     <statBases>
       <Nutrition>0.14</Nutrition>

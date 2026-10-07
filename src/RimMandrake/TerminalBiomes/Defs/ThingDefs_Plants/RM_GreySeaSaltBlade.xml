@@ -59,7 +59,7 @@
       <Beauty>8</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_SaltBladeGrey</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <colorTwo>(40,48,44)</colorTwo>
       <drawSize>(1.4,1.4)</drawSize>

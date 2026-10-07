@@ -1,0 +1,22 @@
+[
+ {
+  "id": "greysea_hessal_redo_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Hessal",
+  "owner_note": "Read the description more closelyA patch of frost lying on the floor, sealed for years, then opening slightly when conditions are right. Made of salt crystal. No legs.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Read the description more closelyA patch of frost lying on the floor, sealed for years, then opening slightly when conditions are right. Made of salt crystal. No legs.\" RimWorld creature sprite, painterly: the hessal, a sessile bivalve-like thing of the Grey Sea floor. Two flat shells grown out of the sea's own salt crystal rather than out of anything living, so the whole animal reads as a low patch of white-grey frost lying flat on the sea floor: crystalline, faceted, rimed, translucent at the edges. It is shown barely open, a thin dark seam between the two crystal shells with a hint of grey meat inside. NO legs, no eyes, no limbs, no tentacles, nothing that walks; it lies flat and does not move. Our own original design, drawn fresh; no recognisable Earth animal. One animal, whole body, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.2,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "grey sea floor register: hypersaline grey-green murk, a few metres of dim diffuse light, salt pillars, white brine haze, crusted mineral surfaces; muted grey, bone and verdigris with one accent colour; must read against pale grey sediment through value and rim"
+ }
+]
