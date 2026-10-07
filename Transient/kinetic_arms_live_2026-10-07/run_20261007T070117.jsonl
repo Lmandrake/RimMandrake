@@ -1,0 +1,26 @@
+{"proof": "KineticArms", "scene": "thump_cannon", "status": "FAIL", "detail": "FAIL thump_cannon p not spawned along=0 across=0 launches=0 newInjuries=0 force=2.5", "origin": "12,12"}
+{"proof": "KineticArms", "scene": "thump_off", "status": "FAIL", "detail": "FAIL thump_off p 28,12->22,11 forceWhileOff=0", "origin": "27,12"}
+{"proof": "KineticArms", "scene": "thudder_crowd", "status": "PASS", "detail": "PASS thudder_crowd thrown>=3cells=4 dead=0 | a 43,12->52,9; b 41,12->41,9; c 42,13->51,14; d 42,11->51,9", "origin": "42,12"}
+{"proof": "KineticArms", "scene": "palm_shove", "status": "FAIL", "detail": "FAIL palm_shove p 57,12->71,14 along=14 across=2 launches=1 newInjuries=0 | side 56,13->63,16 sideUnmoved=False", "origin": "57,12"}
+{"proof": "KineticArms", "scene": "slam_charge", "status": "FAIL", "detail": "FAIL slam_charge p 73,12->78,9 along=5 across=3 launches=1 newInjuries=1", "origin": "72,12"}
+{"proof": "KineticArms", "scene": "repulsor_along_shot", "status": "FAIL", "detail": "FAIL repulsor_along_shot p 87,12->91,9 along=4 across=3 launches=1 newInjuries=0", "origin": "87,12"}
+{"proof": "KineticArms", "scene": "repulsor_westward", "status": "FAIL", "detail": "FAIL repulsor_westward p 102,12->96,10 along=6 across=2 launches=1 newInjuries=1", "origin": "102,12"}
+{"proof": "KineticArms", "scene": "grav_ram", "status": "FAIL", "detail": "FAIL grav_ram p 117,12->126,10 along=9 across=2 launches=1 newInjuries=0", "origin": "117,12"}
+{"proof": "KineticArms", "scene": "thump_shell", "status": "FAIL", "detail": "FAIL thump_shell p 133,12->139,9 along=6 across=3 launches=1 newInjuries=1", "origin": "132,12"}
+{"proof": "KineticArms", "scene": "kicker_north", "status": "FAIL", "detail": "FAIL kicker_north p 147,12->147,14 along=2 across=0 launches=1 newInjuries=0 fuelSpent=10", "origin": "147,12"}
+{"proof": "KineticArms", "scene": "kicker_east", "status": "FAIL", "detail": "FAIL kicker_east p 162,12->166,9 along=4 across=3 launches=1 newInjuries=0 fuelSpent=10", "origin": "162,12"}
+{"proof": "KineticArms", "scene": "kicker_south", "status": "PASS", "detail": "PASS kicker_south p 177,12->177,4 along=8 across=0 launches=1 newInjuries=0 fuelSpent=10", "origin": "177,12"}
+{"proof": "KineticArms", "scene": "kicker_west", "status": "FAIL", "detail": "FAIL kicker_west p 192,12->189,8 along=3 across=4 launches=1 newInjuries=0 fuelSpent=10", "origin": "192,12"}
+{"proof": "KineticArms", "scene": "kicker_dud_rearm", "status": "FAIL", "detail": "FAIL kicker_dud_rearm p 207,12->205,6 along=-2 across=6 launches=1 newInjuries=0 dudLaunches=0 mineStillThere=True", "origin": "207,12"}
+{"proof": "KineticArms", "scene": "pulse_push", "status": "FAIL", "detail": "FAIL pulse_push p 222,12->229,10 along=7 across=2 launches=1 newInjuries=0", "origin": "222,12"}
+{"proof": "KineticArms", "scene": "pulse_charge_gate", "status": "PASS", "detail": "PASS pulse_charge_gate targetWhenEmpty=False targetWhenCharged=True", "origin": "237,12"}
+{"proof": "KineticArms", "scene": "strength_zero", "status": "FAIL", "detail": "FAIL strength_zero p 12,27->11,35 (strength 0: no throw)", "origin": "12,27"}
+{"proof": "KineticArms", "scene": "looted_pirates", "status": "FAIL", "detail": "FAIL looted_pirates pirateFactions=False campaignLooters=True otherFactionsClean=True pirate=RM_Gun_PalmThumper grenadier=RM_Weapon_ThudderGrenade boss=RM_Gun_RepulsorRifle rollMiss=none", "origin": "27,27"}
+{"proof": "KineticArms", "scene": "palm_arrest_wall", "status": "FAIL", "detail": "FAIL palm_arrest_wall p 42,27->38,26 wallStopNoImpact=False newInjuries=0", "origin": "42,27"}
+{"proof": "KineticArms", "scene": "gravram_big_body", "status": "FAIL", "detail": "FAIL gravram_big_body big 57,27->66,20; control 57,31->52,31 body=2.5 repulsorTooBig=True", "origin": "57,27"}
+{"proof": "KineticArms", "scene": "ruins_loot", "status": "PASS", "detail": "PASS ruins_loot wired=True complexes=True hit=RM_Weapon_ThudderGrenade miss=True offGivesNone=True picks=RM_Weapon_ThudderGrenadex1,RM_Gun_PalmThumperx1,RM_Gun_SlamLauncherx1,RM_Gun_RepulsorRiflex1,RM_KickerMinex1,RM_Shell_Thumpx12,RM_Turret_PulseCannonx1,RM_Gun_GravRamx1", "origin": "72,27"}
+{"proof": "KineticArms", "scene": "kicker_hidden", "status": "PASS", "detail": "PASS kicker_hidden hiddenRaiderKnows=False shownRaiderKnows=True", "origin": "87,27"}
+{"proof": "KineticArms", "scene": "cords_marker", "status": "PASS", "detail": "PASS cords_marker marked=True cutSettingRemoves=True restored=True thumpCannonStillCuts=True", "origin": "102,27"}
+{"proof": "KineticArms", "scene": "ring_fleck", "status": "PASS", "detail": "PASS ring_fleck fleck=True textureResolves=True", "origin": "117,27"}
+{"proof": "ExplosiveKnockback", "scene": "pit_colonist", "status": "PASS", "detail": "PASS pit_colonist p 13,12->15,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1", "origin": "12,12"}
+{"proof": "ExplosiveKnockback", "scene": "pit_enemy", "status": "PASS", "detail": "PASS pit_enemy p 28,12->30,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1", "origin": "27,12"}

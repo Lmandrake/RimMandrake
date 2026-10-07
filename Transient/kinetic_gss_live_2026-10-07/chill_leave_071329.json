@@ -1,0 +1,176 @@
+{
+ "spawn": {
+  "RM_Vaunoom": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Vaunoom in faction (none)."
+  },
+  "RM_Hoolen": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Hoolen in faction (none)."
+  },
+  "RM_Heemin": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Heemin in faction (none)."
+  }
+ },
+ "keys": [
+  "id",
+  "name",
+  "kind",
+  "kindDef",
+  "def",
+  "hasGenes",
+  "xenotype",
+  "xenotypeLabel",
+  "uniqueXenotype",
+  "faction",
+  "factionName",
+  "isPlayer",
+  "hostile",
+  "x",
+  "z",
+  "spawned",
+  "dead",
+  "downed",
+  "stunned",
+  "stunTicksLeft",
+  "fleshType",
+  "isMechanoid",
+  "isFlesh",
+  "intelligence",
+  "bodySize"
+ ],
+ "t0": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t10": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t20": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t30": {
+  "RM_Vaunoom": 0,
+  "RM_Hoolen": 0,
+  "RM_Heemin": 0
+ },
+ "messages": [
+  "Critical alert: Medical emergency",
+  "Kalie, Inspector is no longer incapable of walking.",
+  "Critical alert: Major break risk",
+  "Jackalope, Professor is no longer incapable of walking.",
+  "A vaunoom is leaving the area: It is too warm here for it (comfortable at -238F [-150C] .. -22F [-30C]).",
+  "A hoolen is leaving the area: It is too warm here for it (comfortable at -238F [-150C] .. -22F [-30C])."
+ ],
+ "dead": [
+  {
+   "id": "RM_Heemin67002",
+   "name": "Heemin",
+   "kind": "RM_Heemin",
+   "kindDef": "RM_Heemin",
+   "def": "RM_Heemin",
+   "hasGenes": false,
+   "uniqueXenotype": false,
+   "isPlayer": false,
+   "hostile": false,
+   "x": 28,
+   "z": 47,
+   "spawned": false,
+   "dead": true,
+   "downed": false,
+   "stunned": false,
+   "stunTicksLeft": 0,
+   "fleshType": "Normal",
+   "isMechanoid": false,
+   "isFlesh": true,
+   "intelligence": "Animal",
+   "bodySize": 0.05
+  },
+  {
+   "id": "RM_Hoolen67000",
+   "name": "Hoolen",
+   "kind": "RM_Hoolen",
+   "kindDef": "RM_Hoolen",
+   "def": "RM_Hoolen",
+   "hasGenes": false,
+   "uniqueXenotype": false,
+   "isPlayer": false,
+   "hostile": false,
+   "x": 159,
+   "z": 6,
+   "spawned": false,
+   "dead": true,
+   "downed": false,
+   "stunned": false,
+   "stunTicksLeft": 0,
+   "fleshType": "Normal",
+   "isMechanoid": false,
+   "isFlesh": true,
+   "intelligence": "Animal",
+   "bodySize": 0.15
+  },
+  {
+   "id": "RM_Heemin90286",
+   "name": "Heemin",
+   "kind": "RM_Heemin",
+   "kindDef": "RM_Heemin",
+   "def": "RM_Heemin",
+   "hasGenes": false,
+   "uniqueXenotype": false,
+   "isPlayer": false,
+   "hostile": false,
+   "x": 181,
+   "z": 40,
+   "spawned": false,
+   "dead": true,
+   "downed": false,
+   "stunned": false,
+   "stunTicksLeft": 0,
+   "fleshType": "Normal",
+   "isMechanoid": false,
+   "isFlesh": true,
+   "intelligence": "Animal",
+   "bodySize": 0.05
+  },
+  {
+   "id": "RM_Heemin90285",
+   "name": "Heemin",
+   "kind": "RM_Heemin",
+   "kindDef": "RM_Heemin",
+   "def": "RM_Heemin",
+   "hasGenes": false,
+   "uniqueXenotype": false,
+   "isPlayer": false,
+   "hostile": false,
+   "x": 32,
+   "z": 38,
+   "spawned": false,
+   "dead": true,
+   "downed": false,
+   "stunned": false,
+   "stunTicksLeft": 0,
+   "fleshType": "Normal",
+   "isMechanoid": false,
+   "isFlesh": true,
+   "intelligence": "Animal",
+   "bodySize": 0.05
+  }
+ ],
+ "letters": [
+  "Death: Val",
+  "Funeral of Elders opportunity",
+  "Death: Patricia",
+  "Funeral of Elders opportunity",
+  "Moose revenge",
+  "Moose revenge",
+  "Moose revenge",
+  "Fallen monolith",
+  "Ozzik the Shamed"
+ ]
+}

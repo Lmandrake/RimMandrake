@@ -1,0 +1,83 @@
+{
+ "spawn": {
+  "RM_Vaunoom": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Vaunoom in faction (none)."
+  },
+  "RM_Hoolen": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Hoolen in faction (none)."
+  },
+  "RM_Heemin": {
+   "success": true,
+   "message": "Spawned 2/2 RM_Heemin in faction (none)."
+  }
+ },
+ "keys": [
+  "id",
+  "name",
+  "kind",
+  "kindDef",
+  "def",
+  "hasGenes",
+  "xenotype",
+  "xenotypeLabel",
+  "uniqueXenotype",
+  "faction",
+  "factionName",
+  "isPlayer",
+  "hostile",
+  "x",
+  "z",
+  "spawned",
+  "dead",
+  "downed",
+  "stunned",
+  "stunTicksLeft",
+  "fleshType",
+  "isMechanoid",
+  "isFlesh",
+  "intelligence",
+  "bodySize"
+ ],
+ "t0": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t1": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t2": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 2
+ },
+ "t3": {
+  "RM_Vaunoom": 2,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 1
+ },
+ "t4": {
+  "RM_Vaunoom": 0,
+  "RM_Hoolen": 2,
+  "RM_Heemin": 0
+ },
+ "t5": {
+  "RM_Vaunoom": 0,
+  "RM_Hoolen": 0,
+  "RM_Heemin": 0
+ },
+ "messages": [],
+ "letters": [
+  "Death: Patricia",
+  "Funeral of Elders opportunity",
+  "Moose revenge",
+  "Moose revenge",
+  "Moose revenge",
+  "Fallen monolith",
+  "Ozzik the Shamed"
+ ]
+}

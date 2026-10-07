@@ -1,0 +1,8 @@
+{"proof": "KineticArms", "scene": "thump_cannon", "status": "FAIL", "detail": "FAIL thump_cannon p 13,12->15,12 along=2 across=0 launches=1 newInjuries=1 force=2.5", "origin": "12,12"}
+{"proof": "KineticArms", "scene": "repulsor_along_shot", "status": "FAIL", "detail": "FAIL repulsor_along_shot p 27,12->30,12 along=3 across=0 launches=1 newInjuries=1", "origin": "27,12"}
+{"proof": "KineticArms", "scene": "repulsor_westward", "status": "PASS", "detail": "PASS repulsor_westward p 42,12->37,12 along=5 across=0 launches=1 newInjuries=0", "origin": "42,12"}
+{"proof": "KineticArms", "scene": "kicker_south", "status": "PASS", "detail": "PASS kicker_south p 57,12->57,8 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10", "origin": "57,12"}
+{"proof": "KineticArms", "scene": "kicker_west", "status": "FAIL", "detail": "FAIL kicker_west p 72,12->72,11 along=0 across=1 launches=0 newInjuries=0 fuelSpent=10", "origin": "72,12"}
+{"proof": "KineticArms", "scene": "kicker_dud_rearm", "status": "PASS", "detail": "PASS kicker_dud_rearm p 87,12->91,12 along=4 across=0 launches=1 newInjuries=0 dudLaunches=0 mineStillThere=True", "origin": "87,12"}
+{"proof": "KineticArms", "scene": "palm_arrest_wall", "status": "PASS", "detail": "PASS palm_arrest_wall p 102,12->103,12 wallStopNoImpact=True newInjuries=0", "origin": "102,12"}
+{"proof": "KineticArms", "scene": "gravram_big_body", "status": "FAIL", "detail": "FAIL gravram_big_body big 117,12->124,12; control 117,16->114,16 body=2.5 repulsorTooBig=True", "origin": "117,12"}

@@ -1,0 +1,447 @@
+{
+ "recipes": {
+  "success": true,
+  "message": "9 of 9 def(s) resolved",
+  "requested": 9,
+  "foundCount": 9,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "recipeUsers",
+   "products",
+   "fixedIngredientFilter",
+   "defaultIngredientFilter"
+  ],
+  "defs": [
+   {
+    "requested": "RecipeDef/RM_Make_Bottle_Leather",
+    "found": true,
+    "defName": "RM_Make_Bottle_Leather",
+    "defType": "RecipeDef",
+    "label": "make leather bottles",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "CraftingSpot",
+      "HandTailoringBench",
+      "ElectricTailoringBench"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Bottle_Glass",
+    "found": true,
+    "defName": "RM_Make_Bottle_Glass",
+    "defType": "RecipeDef",
+    "label": "make glass bottles",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "TableStonecutter",
+      "ElectricSmelter"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Bottle_Metal",
+    "found": true,
+    "defName": "RM_Make_Bottle_Metal",
+    "defType": "RecipeDef",
+    "label": "make metal bottles",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "FueledSmithy",
+      "ElectricSmithy",
+      "TableMachining"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Barrel_Wood",
+    "found": true,
+    "defName": "RM_Make_Barrel_Wood",
+    "defType": "RecipeDef",
+    "label": "make wooden barrel",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "CraftingSpot"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Barrel_Metal",
+    "found": true,
+    "defName": "RM_Make_Barrel_Metal",
+    "defType": "RecipeDef",
+    "label": "make metal barrel",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "FueledSmithy",
+      "ElectricSmithy"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Barrel_Plasteel",
+    "found": true,
+    "defName": "RM_Make_Barrel_Plasteel",
+    "defType": "RecipeDef",
+    "label": "make plasteel barrel",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "TableMachining",
+      "FabricationBench"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Bucket_Wood",
+    "found": true,
+    "defName": "RM_Make_Bucket_Wood",
+    "defType": "RecipeDef",
+    "label": "make wooden bucket",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "CraftingSpot"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Bucket_Metal",
+    "found": true,
+    "defName": "RM_Make_Bucket_Metal",
+    "defType": "RecipeDef",
+    "label": "make metal bucket",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "FueledSmithy",
+      "ElectricSmithy"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   },
+   {
+    "requested": "RecipeDef/RM_Make_Bucket_Leather",
+    "found": true,
+    "defName": "RM_Make_Bucket_Leather",
+    "defType": "RecipeDef",
+    "label": "make leather bucket",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "products": [
+      "ThingDefCountClass"
+     ],
+     "recipeUsers": [
+      "CraftingSpot",
+      "HandTailoringBench",
+      "ElectricTailoringBench"
+     ],
+     "fixedIngredientFilter": "(no such field)",
+     "defaultIngredientFilter": "(no such field)"
+    }
+   }
+  ],
+  "ticksGame": 27500,
+  "operation": {
+   "OperationId": "op_06d3e66bb27e4de590465a1abeb2f23d",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 26
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 27500
+  }
+ },
+ "benches": {
+  "success": true,
+  "message": "8 of 8 def(s) resolved",
+  "requested": 8,
+  "foundCount": 8,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "AllRecipes"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/CraftingSpot",
+    "found": true,
+    "defName": "CraftingSpot",
+    "defType": "ThingDef",
+    "label": "crafting spot",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/HandTailoringBench",
+    "found": true,
+    "defName": "HandTailoringBench",
+    "defType": "ThingDef",
+    "label": "hand tailor bench",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/TableStonecutter",
+    "found": true,
+    "defName": "TableStonecutter",
+    "defType": "ThingDef",
+    "label": "stonecutter's table",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/ElectricSmelter",
+    "found": true,
+    "defName": "ElectricSmelter",
+    "defType": "ThingDef",
+    "label": "electric smelter",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/FueledSmithy",
+    "found": true,
+    "defName": "FueledSmithy",
+    "defType": "ThingDef",
+    "label": "fueled smithy",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/ElectricSmithy",
+    "found": true,
+    "defName": "ElectricSmithy",
+    "defType": "ThingDef",
+    "label": "electric smithy",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/TableMachining",
+    "found": true,
+    "defName": "TableMachining",
+    "defType": "ThingDef",
+    "label": "machining table",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   },
+   {
+    "requested": "ThingDef/FabricationBench",
+    "found": true,
+    "defName": "FabricationBench",
+    "defType": "ThingDef",
+    "label": "fabrication bench",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "AllRecipes": "(no such field)"
+    }
+   }
+  ],
+  "ticksGame": 27500,
+  "operation": {
+   "OperationId": "op_85461d34fc284f9aaa820d791d1b85b4",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 21
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 27500
+  }
+ },
+ "spawned": [
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "Leather_Plain",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plainleather empty bottle",
+    "labelCap": null,
+    "stuff": "Leather_Plain",
+    "id": "RM_BottleEmpty107935",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "BlocksGranite",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Glass empty bottle",
+    "labelCap": null,
+    "stuff": "BlocksGranite",
+    "id": "RM_BottleEmpty107936",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty bottle",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BottleEmpty107937",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "WoodLog",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Wooden empty barrel",
+    "labelCap": null,
+    "stuff": "WoodLog",
+    "id": "RM_BarrelEmpty107938",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty barrel",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BarrelEmpty107939",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "Plasteel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plasteel empty barrel",
+    "labelCap": null,
+    "stuff": "Plasteel",
+    "id": "RM_BarrelEmpty107940",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "WoodLog",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Wooden empty bucket",
+    "labelCap": null,
+    "stuff": "WoodLog",
+    "id": "RM_BucketEmpty107941",
+    "def": "RM_BucketEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty bucket",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BucketEmpty107942",
+    "def": "RM_BucketEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "Leather_Plain",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plainleather empty bucket",
+    "labelCap": null,
+    "stuff": "Leather_Plain",
+    "id": "RM_BucketEmpty107943",
+    "def": "RM_BucketEmpty"
+   }
+  }
+ ],
+ "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\containers_per_material.png"
+}
