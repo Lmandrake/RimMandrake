@@ -1,0 +1,1 @@
+Never git clone the repo into a scratchpad: /tmp is tmpfs and its pages are charged to the seat's 10G memory cgroup. 2026-10-06 22:42 BENCH cloned 3 copies (6.0G+3.4G+1.7G) for parallel agents and the kernel OOM-killed the window. A clean copy for an agent costs RAM, not disk — and worktrees are off, so agents share the seat clone sequentially.
