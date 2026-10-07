@@ -28,6 +28,7 @@ STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 import os
 import re
 import sys
+import time
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -330,6 +331,44 @@ def _build_suite():
                     raise ExpectationFailed("no animal rows live and none gated: the roster is empty")
                 # rows from patches (Utinni layer) may be extra; they are not this mod's to fail
 
+    def _regen(t):
+        """Regenerate the CURRENT tile's map (vanilla debug action honours the tile's biome) and poll until the bridge
+        says a map is ready (the call can drop its connection while the map rebuilds). Same recipe as Stillsand's site."""
+        try:
+            t.bridge_call("rimworld/execute_debug_action", path="Actions\\Regenerate Current Map")
+        except Exception as ex:                                              # noqa: BLE001
+            t._record("regen call ended", str(ex)[:200])
+        for _ in range(60):
+            time.sleep(5)
+            try:
+                st = (t.bridge_call("rimbridge/get_bridge_status") or {}).get("state") or {}
+            except Exception:                                                # noqa: BLE001
+                continue
+            if st.get("currentMapReady"):
+                return
+        _unmeasured(t, "the map was not ready 300 s after Regenerate Current Map")
+
+    @suite.chain("site")
+    def site(t):
+        """The bridge CAN generate the biome's map: world_tile_set + world_commit + Regenerate Current Map (the recipe
+        Stillsand proved live 2026-10-01). The earlier 'the bridge cannot generate a map' UNMEASURED was wrong."""
+        with t.component("site_nightside_ice_map", beyond_toggle=True):
+            if not _live(t):
+                return
+            tile = (t.bridge_call("jawa/map_info") or {}).get("tile")
+            if tile is None:
+                _unmeasured(t, "map_info reports no tile: no quicktest world is up")
+                return
+            t.bridge_call("jawa/world_tile_set", tiles=str(tile), biome=BIOME, temperature=-40.0, hilliness="Flat")
+            t.bridge_call("jawa/world_commit")
+            _regen(t)
+            info = t.bridge_call("jawa/map_info") or {}
+            if info.get("mapBiome") != BIOME:
+                raise ExpectationFailed("regenerated map biome is %r, not %s" % (info.get("mapBiome"), BIOME))
+            cx, cz = int(info["sizeX"]) // 2, int(info["sizeZ"]) // 2
+            t.session.call("jawa/spawn_pawn", kindDef="Colonist", x=cx, z=cz, faction="player", count=3)
+            t.session.call("rimworld/execute_debug_action", path="Actions\\Destroy hostile pawns")
+
     def _dial(t, method):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.NightsideIce.RM_HeatDial", method=method, args="current")
         return str((r or {}).get("result", "")) or "no result: %r" % (r,)
@@ -409,10 +448,37 @@ def _build_suite():
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
+        """Read off the map the `site` chain generated as RM_NightsideIce (MEASURED 2026-10-07: terrain is Ice and
+        nothing else but this suite's own Soil fixture floor)."""
         with t.component("generated_map_is_all_ice_without_water", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, "an all-Ice terrain map with no ponds and Clear-only weather exists only on a map GENERATED "
-                               "as RM_NightsideIce; the bridge cannot generate a map")
+                info = t.bridge_call("jawa/map_info") or {}
+                if info.get("mapBiome") != BIOME:
+                    _unmeasured(t, "the current map is %r, not a generated %s (the site chain did not run or failed)"
+                                % (info.get("mapBiome"), BIOME))
+                    return
+                n = int(info.get("sizeX", 250))
+                r = t.bridge_call("jawa/get_terrain_batch", rects="0,0,%d,%d" % (n, int(info.get("sizeZ", n)))) or {}
+                counts = {}
+                for op in str(r.get("ops") or "").split(";"):
+                    m = re.match(r"([^:]+):(\d+),(\d+),(\d+),(\d+)", op.strip())
+                    if m:
+                        counts[m.group(1)] = counts.get(m.group(1), 0) + int(m.group(4)) * int(m.group(5))
+                if sum(counts.values()) < n * n:
+                    _unmeasured(t, "get_terrain_batch ops cover %d of %d cells" % (sum(counts.values()), n * n))
+                    return
+                # MEASURED 2026-10-07 on a generated map: Ice 27653, rock/gravel ~34000 (the elevation's mountains), and
+                # 15 WaterShallow cells beside InsectSludge, i.e. from vanilla ruin/hive prefabs, not from the biome (it
+                # has no terrainPatchMakers). So: Ice is the biome's terrain, no pond-class water of any size beyond
+                # prefab puddles, nothing but this suite's own Soil fixture floor among the soft ground.
+                water = sum(v for k, v in counts.items() if k.startswith("Water") or k.startswith("Marsh") or k in ("Mud", "MarshyTerrain"))
+                if max(counts, key=counts.get) != "Ice":
+                    raise ExpectationFailed("the commonest terrain is not Ice: %s" % sorted(counts.items(), key=lambda kv: -kv[1])[:5])
+                if water > n * n // 1000 or any(k in counts for k in ("WaterDeep", "WaterMovingShallow", "WaterMovingChestDeep", "WaterOceanShallow", "WaterOceanDeep")):
+                    raise ExpectationFailed("pond-class water on the map: %d cells (%r)" % (water, {k: v for k, v in counts.items() if k.startswith("Water")}))
+                w = ((t.bridge_call("jawa/weather_get") or {}).get("weather") or {}).get("current")
+                if w != "Clear":
+                    raise ExpectationFailed("weather now is %r, the table is Clear-only" % w)
 
     return suite
 
