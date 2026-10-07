@@ -12,13 +12,24 @@ namespace RimMandrake.KineticArms
         public float coneDegrees = 90f;
     }
 
+    /// <summary>Every Kinetic Arms projectile. Our projectile art was commissioned pointing EAST (kinetic_blast_art_list),
+    /// but Projectile draws with LookRotation(flight), which aligns the sprite's NORTH with the flight. Rotating the
+    /// draw by -90 degrees about up maps the art's east onto the flight direction. Drawing only: Projectile_Explosive
+    /// reads no damage angle from ExactRotation (Bullet does; none of ours is a Bullet).</summary>
+    public class RM_Projectile_KineticExplosive : Projectile_Explosive
+    {
+        private static readonly Quaternion EastArt = Quaternion.Euler(0f, -90f, 0f);
+
+        public override Quaternion ExactRotation => base.ExactRotation * EastArt;
+    }
+
     /// <summary>
     /// A bolt whose blast pushes ALONG THE SHOT (design §10). The flight vector is captured at impact from the
     /// projectile's own origin/destination (never from where the shooter is now). The blast is centred one cell back
     /// along it, and only the cone ahead of that centre (plus the impact cell) is affected; the launcher is ignored.
     /// If the back cell is out of bounds or impassable the blast falls back to an ordinary radial one at the impact.
     /// </summary>
-    public class RM_Projectile_KineticBolt : Projectile_Explosive
+    public class RM_Projectile_KineticBolt : RM_Projectile_KineticExplosive
     {
         protected override void Explode()
         {

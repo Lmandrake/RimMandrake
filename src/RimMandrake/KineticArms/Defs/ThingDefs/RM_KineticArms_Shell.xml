@@ -33,7 +33,7 @@
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPostLight</shaderType>
     </graphicData>
-    <thingClass>Projectile_Explosive</thingClass>
+    <thingClass>RimMandrake.KineticArms.RM_Projectile_KineticExplosive</thingClass>
     <projectile>
       <damageDef>RM_Concussive_ThumpShell</damageDef>
       <damageAmountBase>10</damageAmountBase>
