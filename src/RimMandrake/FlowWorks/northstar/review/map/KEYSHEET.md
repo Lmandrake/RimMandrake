@@ -1,6 +1,6 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261006f). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261006g). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
@@ -13,7 +13,7 @@ Columns: depth 1 to 4, left to right. Rows from the bottom: dry in soil, dry in 
 - **dry:** The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.
 - **water:** The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.
 - **tar:** Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.
-- **scorched:** Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.
+- **scorched:** Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.
 - **oil:** Oil: slow dark gloss with a faint rainbow film.
 - **slime:** Green slime: thick, opaque, slowly creeping, a few bubbles rising.
 

@@ -87,7 +87,8 @@ namespace RimMandrake.FlowWorks
 				if (sc > 0f && f == 0)
 				{
 					// principle 5: the SAME empty pit, burned — grey ash over the floor, char at the walls and in patches
-					ScorchFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f);
+					bool dirt = !RM_FaceMaterial.IsStone(eng.OriginalTerrainAt(c));
+					ScorchFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f, dirt);
 				}
 				if (f > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
 				{
@@ -287,7 +288,7 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The burned floor: the ash texture over (nearly) all of it, the soot texture at the walls and in soft
 		/// patches, and a faint rust heat tint in a band just off the walls. 6x6 vertex grid per cell.</summary>
-		private void ScorchFloor(IntVec3 c, int d, int north, int south, int west, int east, float hTop, float s, float y)
+		private void ScorchFloor(IntVec3 c, int d, int north, int south, int west, int east, float hTop, float s, float y, bool dirt)
 		{
 			const int N = 6;
 			bool wn = north < d, ws = south < d, ww = west < d, we = east < d;
@@ -306,19 +307,55 @@ namespace RimMandrake.FlowWorks
 					if (ww) dist = Mathf.Min(dist, lx);
 					if (we) dist = Mathf.Min(dist, 1f - lx);
 					float n = Blotch(x, z);
-					ash[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.AshCover(s, n)));
-					soot[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.CharCover(s, Blotch(x + 13.7f, z + 4.1f), dist)));
+					ash[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.AshCover(s, n, dirt)));
+					soot[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.CharCover(s, Blotch(x + 13.7f, z + 4.1f), dist, dirt)));
 					Color32 t = Tint;
-					t.a = (byte)(255f * RM_WallFaceMath.HeatTint(s, Blotch(x + 7.3f, z + 21.9f), dist));
+					t.a = (byte)(255f * RM_WallFaceMath.HeatTint(s, Blotch(x + 7.3f, z + 21.9f), dist, dirt));
 					tint[i, j] = t;
 				}
 			}
-			Grid(RM_FaceMaterial.AshMat, c.x, c.z, 1f, hTop, N, ash, y, -1, ScorchUv);
+			Grid(dirt ? RM_FaceMaterial.DirtAshMat : RM_FaceMaterial.AshMat, c.x, c.z, 1f, hTop, N, ash, y, -1, ScorchUv);
 			Grid(RM_FaceMaterial.SootMat, c.x, c.z, 1f, hTop, N, soot, y + 0.0001f, -1, ScorchUv);
 			Grid(RM_FaceMaterial.TintMat, c.x, c.z, 1f, hTop, N, tint, y + 0.0002f);
 			// the ash is lighter than the bare floor it covers, so the depth must be put back: a flat shade by depth
 			Color32 deep = new Color32(10, 8, 7, (byte)(255f * RM_WallFaceMath.AshDepthShade(d) * Mathf.Min(1f, s * 2f)));
 			QuadVMat(RM_FaceMaterial.TintMat, c.x, c.z, 1f, hTop, y + 0.0003f, deep, deep);
+			// debris (round 4): char lumps and ash flakes, seeded per cell — stable across save/load, no grid
+			int pieces = RM_WallFaceMath.DebrisCount(s, c.x, c.z);
+			for (int k = 0; k < pieces; k++)
+			{
+				RM_WallFaceMath.DebrisPiece(c.x, c.z, k, hTop, RM_FaceMaterial.DebrisVariants, out float lx, out float lz,
+					out float size, out float rot, out bool isChar, out int v);
+				Material m = RM_FaceMaterial.DebrisMat(isChar, v);
+				if (m != null)
+				{
+					Sprite(m, c.x + lx, c.z + lz, size, rot, y + 0.0004f);
+				}
+			}
+		}
+
+		/// <summary>A square sprite centred on (cx,cz), <paramref name="size"/> cells across, rotated by
+		/// <paramref name="rotDeg"/>.</summary>
+		private void Sprite(Material mat, float cx, float cz, float size, float rotDeg, float y)
+		{
+			LayerSubMesh sm = GetSubMesh(mat);
+			int n = sm.verts.Count;
+			float a = rotDeg * Mathf.Deg2Rad, h = size * 0.5f;
+			float ca = Mathf.Cos(a) * h, sa = Mathf.Sin(a) * h;
+			// corners: bottom-left, top-left, top-right, bottom-right (same winding as Quad)
+			sm.verts.Add(new Vector3(cx - ca + sa, y, cz - sa - ca));
+			sm.verts.Add(new Vector3(cx - ca - sa, y, cz - sa + ca));
+			sm.verts.Add(new Vector3(cx + ca - sa, y, cz + sa + ca));
+			sm.verts.Add(new Vector3(cx + ca + sa, y, cz + sa - ca));
+			sm.uvs.Add(new Vector3(0f, 0f, 0f));
+			sm.uvs.Add(new Vector3(0f, 1f, 0f));
+			sm.uvs.Add(new Vector3(1f, 1f, 0f));
+			sm.uvs.Add(new Vector3(1f, 0f, 0f));
+			for (int i = 0; i < 4; i++)
+			{
+				sm.colors.Add(White);
+			}
+			Tris(sm, n);
 		}
 
 		/// <summary>Soot on a north face: the soot texture, heaviest at the foot, a band under the rim, and vertical
@@ -339,6 +376,24 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			Grid(RM_FaceMaterial.SootMat, xl, bot, xr - xl, h, NX, g, y, R, ScorchUv);
+			// drip streaks (round 4, as concept_dirt_v3): narrow dark runs hanging from the rim, tapering as they go down
+			int drips = RM_WallFaceMath.DripCount(c.x, c.z);
+			for (int k = 0; k < drips; k++)
+			{
+				RM_WallFaceMath.Drip(c.x, c.z, k, out float u, out float w, out float len);
+				float x = xl + (xr - xl) * u;
+				float zb = top - h * len;
+				float ds = RM_WallFaceMath.DripStrength(c.x, c.z, k);
+				Color32 head = new Color32(14, 10, 8, (byte)(255f * ds * s));
+				Color32 tail = new Color32(14, 10, 8, 0);
+				// a soft, wider stain behind each run so it reads as soot washed down, not a painted tooth
+				Vector3[] halo = { new Vector3(x - w * 0.6f, y + 0.00025f, zb), new Vector3(x - w * 1.4f, y + 0.00025f, top),
+					new Vector3(x + w * 1.4f, y + 0.00025f, top), new Vector3(x + w * 0.6f, y + 0.00025f, zb) };
+				Poly(RM_FaceMaterial.TintMat, halo, tail, new Color32(14, 10, 8, (byte)(90f * ds * s)), false, h);
+				Vector3[] q = { new Vector3(x - w * 0.15f, y + 0.0003f, zb), new Vector3(x - w * 0.5f, y + 0.0003f, top),
+					new Vector3(x + w * 0.5f, y + 0.0003f, top), new Vector3(x + w * 0.15f, y + 0.0003f, zb) };
+				Poly(RM_FaceMaterial.TintMat, q, tail, head, false, h);
+			}
 		}
 
 		/// <summary>The smoke halo on undug ground round a burned cut: per vertex, the distance to the nearest burned

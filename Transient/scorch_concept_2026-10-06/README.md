@@ -42,3 +42,13 @@ Owner: "those look ridiculous" (black starburst grid + dark rim). Goal: GPT conc
 - Selftests 106/106 (`Scorch_ash_floor_char_walls_lobed_halo` replaces the two starburst cases).
 - Still short of the concepts: wall plumes are softer than concept dirt v3's drips, the heat tint is barely visible, and
   there is no debris (char lumps / flakes). Those are the next knobs (`FaceSoot`, `HeatTint`), and debris would need its own sprites.
+
+## Round 4 (owner chose by card: "All of that plus debris")
+- started: dirt-specific look, drip streaks, debris sprites
+- round 4 code in (dirt ash texture, drips, 24 debris sprites via art ledger); cycling
+- r4b accepted at play zoom (r4b_overview.png); building full keeper save
+- Round 4 result: dirt pits use `RM_Scorch_DirtAsh` (warm baked soil, thinner ash so soil shows through, reddish bake tint, more char);
+  3-6 seeded soot drips per far-wall cell with a soft stain behind each, varied darkness; 0-4 debris pieces per cell from
+  24 sliced sprites (`Textures/Terrain/FlowWorks/Debris/RM_ScorchDebris_{Char,Ash}0-11.png`, real alpha), position/size/rotation
+  a pure function of the cell (stable across save/load). Selftests 107/107. In game: `r4b_*`; `side_by_side.png` has a round-4 column.
+  Keeper save: `RM_fw_review_20261006g`. Side walls get the soot gradient only (drips there would run across a strip seen edge-on).

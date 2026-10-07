@@ -1179,6 +1179,40 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.AshDepthShade(1) < RM_WallFaceMath.AshDepthShade(3) && RM_WallFaceMath.AshDepthShade(3) < RM_WallFaceMath.AshDepthShade(4), "a deeper burned pit still reads deeper");
             });
 
+            // owner card 2026-10-06, round 4: "All of that plus debris" — dirt has its own look, drips, debris
+            Case("Scorch_round4_dirt_drips_debris", () =>
+            {
+                Assert(RM_WallFaceMath.AshCover(1f, 0.2f, true) < RM_WallFaceMath.AshCover(1f, 0.2f, false) - 0.2f, "dirt: soil shows through the ash");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.8f, 0.5f, true) > RM_WallFaceMath.HeatTint(1f, 0.8f, 0.5f, false), "dirt carries the reddish bake mid-floor");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.8f, 0.3f, true) <= 0.3f, "the bake stays a tint");
+                int lo = 99, hi = 0, total = 0, chars = 0, pieces = 0;
+                bool inRange = true, stable = true;
+                for (int x = 0; x < 60; x++)
+                    for (int z = 0; z < 60; z++)
+                    {
+                        int n = RM_WallFaceMath.DripCount(x, z);
+                        lo = System.Math.Min(lo, n); hi = System.Math.Max(hi, n);
+                        RM_WallFaceMath.Drip(x, z, 0, out float u, out float w, out float len);
+                        if (u < 0.06f || u > 0.94f || w < 0.03f || w > 0.09f || len < 0.35f || len > 1f) inRange = false;
+                        int dn = RM_WallFaceMath.DebrisCount(1f, x, z);
+                        total += dn;
+                        if (RM_WallFaceMath.DebrisCount(1f, x, z) != dn) stable = false;
+                        for (int k = 0; k < dn; k++)
+                        {
+                            RM_WallFaceMath.DebrisPiece(x, z, k, 0.6f, 12, out float lx, out float lz, out float sz, out float rot, out bool ch, out int v);
+                            pieces++;
+                            if (ch) chars++;
+                            if (lx < 0.12f || lx > 0.88f || lz < 0.1f || lz > 0.5f || v < 0 || v > 11 || sz < 0.18f || sz > 0.38f) inRange = false;
+                        }
+                    }
+                Assert(lo == 3 && hi == 6, "3..6 drips per far-wall cell: " + lo + ".." + hi);
+                Assert(inRange, "drip and debris parameters stay in their ranges and on the floor");
+                Assert(stable, "debris is a pure function of the cell (same after save/load)");
+                Assert(total > 6000 && total < 8400, "about two pieces per burned cell: " + total);
+                Assert(chars > pieces * 0.4 && chars < pieces * 0.7, "a mix of char lumps and ash flakes: " + chars + "/" + pieces);
+                Assert(RM_WallFaceMath.DebrisCount(0f, 3, 3) == 0, "no scorch, no debris");
+            });
+
             // owner 2026-10-06: acid/slime/boiling bubble; bubbles scale with view and stay bounded
             Case("Liquid_bubbles_rate", () =>
             {

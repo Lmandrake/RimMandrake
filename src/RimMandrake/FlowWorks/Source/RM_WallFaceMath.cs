@@ -151,32 +151,39 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Coverage 0..1 of the ash texture over a burned floor at noise n (0..1): near-total at full scorch,
 		/// the noise only thins it a little so the floor reads as ONE burned surface, not spots.</summary>
-		public static float AshCover(float s, float n)
+		public static float AshCover(float s, float n, bool dirt = false)
 		{
 			if (s <= 0f) return 0f;
 			if (s > 1f) s = 1f;
-			float a = 0.80f + 0.20f * n;
+			// round 4 (owner card 2026-10-06): scorched DIRT is its own look — the baked soil shows through its ash
+			float a = dirt ? 0.42f + 0.40f * n : 0.80f + 0.20f * n;
 			return s * (a > 1f ? 1f : a);
 		}
 
 		/// <summary>Coverage 0..1 of the soot/char texture over the ash: heavy within ~0.45 cell of a wall (smooth, so
 		/// no inner frame) and in soft patches where the noise runs high. Never a full black floor: the middle of a
 		/// low-noise floor is ash.</summary>
-		public static float CharCover(float s, float n, float edgeDist)
+		public static float CharCover(float s, float n, float edgeDist, bool dirt = false)
 		{
 			if (s <= 0f) return 0f;
 			if (s > 1f) s = 1f;
 			float wall = 1f - Smooth(edgeDist / 0.45f);
-			float patch = Smooth((n - 0.44f) / 0.20f);
+			float patch = Smooth((n - (dirt ? 0.38f : 0.44f)) / 0.20f);
 			float a = 0.88f * wall;
-			float b = 0.80f * patch;
+			float b = (dirt ? 0.9f : 0.80f) * patch;
 			return s * (a > b ? a : b);
 		}
 
 		/// <summary>Warm rust heat tint (vertex colour) in a band just off the walls, where noise allows: a faint accent.</summary>
-		public static float HeatTint(float s, float n, float edgeDist)
+		public static float HeatTint(float s, float n, float edgeDist, bool dirt = false)
 		{
 			if (s <= 0f) return 0f;
+			if (dirt)
+			{
+				// dirt: a reddish-brown bake over much of the floor, strongest a little off the walls, patchy
+				float b = edgeDist < 0.08f ? edgeDist / 0.08f : 1f - 0.6f * Smooth((edgeDist - 0.08f) / 0.6f);
+				return (s > 1f ? 1f : s) * 0.20f * b * Smooth((n - 0.30f) / 0.3f);
+			}
 			float band = edgeDist < 0.1f ? edgeDist / 0.1f : 1f - Smooth((edgeDist - 0.1f) / 0.35f);
 			return (s > 1f ? 1f : s) * 0.20f * band * Smooth((n - 0.55f) / 0.2f);   // patchy: never a continuous frame
 		}
@@ -212,6 +219,52 @@ namespace RimMandrake.FlowWorks
 			float rim = v > 0.7f ? (v - 0.7f) / 0.3f : 0f;
 			float a = 0.45f + 0.35f * foot + 0.35f * rim + 0.60f * Smooth((p - 0.45f) / 0.25f);
 			return (s > 1f ? 1f : s) * (a > 0.95f ? 0.95f : a);
+		}
+
+		// ── round 4: drip streaks and debris (owner card 2026-10-06: "All of that plus debris") ──
+
+		/// <summary>How many soot drip-streaks hang from the rim of the far wall over cell (x,z): 3..6, seeded.</summary>
+		/// <summary>Drip k's darkness at the rim, 0.45..0.9 — so the row never reads as a comb of equal teeth.</summary>
+		public static float DripStrength(int x, int z, int k)
+		{
+			return 0.45f + 0.45f * Hash01(x * 7 + k, z * 5, 97);
+		}
+
+		public static int DripCount(int x, int z)
+		{
+			return 3 + (int)(Hash01(x, z, 41) * 4f);
+		}
+
+		/// <summary>Drip k on cell (x,z): u = position across the cell (0.06..0.94), width in cells (0.03..0.09),
+		/// len = fraction of the face height it runs down from the rim (0.35..1).</summary>
+		public static void Drip(int x, int z, int k, out float u, out float width, out float len)
+		{
+			u = 0.06f + 0.88f * Hash01(x, z * 7 + k, 43);
+			width = 0.03f + 0.06f * Hash01(x * 3 + k, z, 47);
+			len = 0.35f + 0.65f * Hash01(x + k * 11, z, 53);
+		}
+
+		/// <summary>Debris pieces on a burned floor cell: 0..4, seeded per cell, fewer as the scorch fades. Seeded from
+		/// the cell, so the same pit draws the same debris after every save/load and redraw.</summary>
+		public static int DebrisCount(float s, int x, int z)
+		{
+			if (s <= 0f) return 0;
+			int n = (int)(Hash01(x, z, 61) * 5f);   // 0..4
+			return (int)System.Math.Round(n * (s > 1f ? 1f : s));
+		}
+
+		/// <summary>Piece k on cell (x,z) of a floor <paramref name="hTop"/> deep (z extent): local position, size
+		/// in cells, rotation in degrees, char (else ash) and which of <paramref name="variants"/> sprites.</summary>
+		public static void DebrisPiece(int x, int z, int k, float hTop, int variants, out float lx, out float lz,
+			out float size, out float rot, out bool isChar, out int variant)
+		{
+			lx = 0.12f + 0.76f * Hash01(x, z * 13 + k, 67);
+			lz = 0.10f + (hTop - 0.20f > 0f ? hTop - 0.20f : 0f) * Hash01(x * 5 + k, z, 71);
+			isChar = Hash01(x, z + k * 17, 73) < 0.55f;
+			size = (isChar ? 0.18f : 0.22f) + 0.16f * Hash01(x + k, z * 3, 79);
+			rot = 360f * Hash01(x * 9, z + k, 83);
+			variant = (int)(Hash01(x + k * 5, z * 11, 89) * variants);
+			if (variant >= variants) variant = variants - 1;
 		}
 
 		/// <summary>Deterministic 0..1 from integers (no UnityEngine.Random: the selftest pins it).</summary>
