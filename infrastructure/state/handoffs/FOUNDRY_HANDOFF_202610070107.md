@@ -15,7 +15,7 @@ Nothing new needs a decision. Cauldron (CAULDRON_ENRICHMENT_VISUALS_1) and Leani
 ## What is half-done, and where it stops
 
 <!-- Anything left mid-flight, one bullet each: `- ITEM_OR_TOPIC — state; NEXT: <one imperative action>`. A pointer without a NEXT: measured ~0% pickup; with one, near-100%. -->
-- `UNFINISHED_LINE_WORLD_FOUNDRY_1` — source and defs written, NOT committed (DLL stamp guard would refuse), does not compile: UnfinishedLineWorld.cs lines 445/451 use DebugAction without `using LudeonTK;`; copy of the work in /home/mandrake/rm/ul_wip_backup/; NEXT: add the missing using, rebuild with winbuild.py, then commit source, defs and DLL together
+- `UNFINISHED_LINE_WORLD_FOUNDRY_1` — fixed the missing `using LudeonTK;`, builds, committed and pushed at 420d184ee; never run in game; NEXT: run the world-foundry debug actions live and close the item with the sha
 - `CAULDRON_ENRICHMENT_VISUALS_1` and `LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1` — built offline, pushed, claimed in the ledger, not closed; NEXT: run each live (dewfall/prints, six venomvine forms) and close with the sha
 - `BIOME_KITS_PUSH_TO_TEST_1`, `FLOWWORKS_LIQUID_KITS`, `NORTHSTAR_VALIDATION_V2_RECORD_1` — unchanged since FOUNDRY_HANDOFF_202610061623; NEXT: read that handoff's pointers and take the first; NEXT: A DLL commit that omits a new untracked source file still builds locally but fails the stamp guard on push; `git add` untracked files by name before the pathspec commit, since a pathspec on an untracked file errors (filed: this handoff).
 
