@@ -26,10 +26,17 @@ namespace RimMandrake.Scarlands
         }
 
         // Ruins and wreck: any building whose defName starts "Ancient" (Odyssey's wall,
-        // broken turrets, crane parts, trucks, junk) - never player or other-mod buildings.
+        // broken turrets, crane parts, trucks, junk), or any building tagged RM_WreckSurface
+        // (every Wreckage family wreck, SALVAGE_WRECKAGE_EVERYWHERE_1 step 4) - never player
+        // or other-mod buildings.
+        private const string WreckSurfaceTag = "RM_WreckSurface";
+
         private static bool IsWreckAnchor(Thing t)
         {
-            return t.def.category == ThingCategory.Building && t.def.defName.StartsWith("Ancient");
+            if (t.def.category != ThingCategory.Building) return false;
+            if (t.def.defName.StartsWith("Ancient")) return true;
+            List<string> tags = t.def.building?.buildingTags;
+            return tags != null && tags.Contains(WreckSurfaceTag);
         }
 
         public override void MapComponentTick()

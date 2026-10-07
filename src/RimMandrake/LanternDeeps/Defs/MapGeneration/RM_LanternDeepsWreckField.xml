@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 3: the Lantern Deeps wreck field, Riddled class (design §3d-i).
+  The sheet declined the Inherited Wreck RITE (lanterndeeps_bedazzle_review_2026-10-01.md:261); a rite
+  is not a scatter, so the placement law still sets this field. Uses the Nightside Ice's Frozen
+  children (NightsideIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml); both entries are composed
+  into mandrake.rm.biomes. Registered in RM_LanternDeeps' own extraGenSteps.
+  Gate: settingsKey "LanternDeeps". Weights PROVISIONAL. order 965: after terrain.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_LanternDeeps</defName>
+    <label>Lantern Deeps</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>LanternDeeps</settingsKey>
+      <densityClass>RM_WreckDensity_Riddled</densityClass>
+      <wrecks>
+        <RM_NightsideWreckHull>2</RM_NightsideWreckHull>
+        <RM_NightsideWreckTank>1</RM_NightsideWreckTank>
+        <RM_NightsideExpeditionRig>1</RM_NightsideExpeditionRig>
+      </wrecks>
+      <minSpacing>5</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

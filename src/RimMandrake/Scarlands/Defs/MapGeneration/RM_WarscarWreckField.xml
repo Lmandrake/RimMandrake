@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 4: the Warscar wreck field, Moderate class (design §3d-i: a live
+  war zone few cross). Registered in RM_Warscar's own extraGenSteps. Unblocks the Warscar lichen web:
+  RM_WreckLichen seeds beside these (RM_WreckSurface tag).
+  Gate: settingsKey "Warscar". Weights PROVISIONAL. order 965: after terrain.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_Warscar</defName>
+    <label>Warscar</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>Warscar</settingsKey>
+      <densityClass>RM_WreckDensity_Moderate</densityClass>
+      <wrecks>
+        <RM_WarscarWreckHull>1</RM_WarscarWreckHull>
+        <RM_WarscarWreckFrame>1</RM_WarscarWreckFrame>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

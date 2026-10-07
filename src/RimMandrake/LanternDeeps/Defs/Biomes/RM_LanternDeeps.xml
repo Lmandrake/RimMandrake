@@ -165,6 +165,10 @@
       2026-10-05: the owner cut grabber, glowbulb, shatterjaw beetle ("cut dont need") and
       the chiller ("Too magical, cut"); five residents remain.
     -->
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_LanternDeeps</li>
+    </extraGenSteps>
     <wildAnimals>
       <RM_Gembug>0.1</RM_Gembug>
       <RM_Megapleura>0.1</RM_Megapleura>

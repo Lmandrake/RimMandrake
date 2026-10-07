@@ -2,9 +2,12 @@
 <!--
   SALVAGE_WRECKAGE_EVERYWHERE_1, design §3b: weathering rows, one shared by every biome
   with that weathering. Slice 2 shipped the Scald's row as the template; slice 3 adds the
-  Riddled/High rows (design §7 step 3 comes first): Frozen, Picked, Crystal-jacketed. No biome
-  child names the slice-3 rows yet: each waits for its biome's families and art. The rest
-  (Sand-scoured, Sealed, Stripped, Irradiated, Ice-locked, Eroded ...) arrive with steps 4-6.
+  Riddled/High rows (design §7 step 3 comes first): Frozen, Picked, Crystal-jacketed. The
+  land rows of design §4 follow: Stripped (Warscar), Irradiated (Wasteland), Sand-scoured (Deep
+  Desert), Sealed (Dune Sea / Stillsand), Ice-locked (Blue Desert), Eroded (Contagion). Brined,
+  Overgrown, Digested, Storm-torn and Forge-warm arrive with their biomes' step-6 sittings.
+  Biome by-products (sand, salt, mud) are not set as extraLeavings: no row names a def for them
+  yet, and the family's slag already covers smashing.
   The density law's "+1 tier" for Riddled/High places lives HERE (a tier is per-def), not on
   RM_WreckDensityClassDef.
   ALL NUMBERS PROVISIONAL.
@@ -36,9 +39,8 @@
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
   <!-- Twilight Deep floor (High, but its own sheet's law: RM_PickedWreck, "nothing inside";
-       design §4 "Picked: x0.2, no loot roll"). KNOWN GAP: the weathering def has no "no roll"
-       field yet, so -2 lands every family on Scrap (rareChance zeroed) and the Scrap table can
-       still give 0-1 component. A noLoot field is owed with the Twilight Deep sitting. -->
+       design §4 "Picked: x0.2, no loot roll"). noLoot removes the roll entirely, so careful
+       salvage gives the costList x 0.2 and nothing else. -->
   <RimMandrake.Wreckage.RM_WreckWeatheringDef>
     <defName>RM_WreckWeathering_Picked</defName>
     <label>picked</label>
@@ -46,6 +48,7 @@
     <yieldFactor>0.2</yieldFactor>
     <lootTierShift>-2</lootTierShift>
     <labelPrefix>picked-clean</labelPrefix>
+    <noLoot>true</noLoot>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
   <!-- Grey Deep floor (High; design §4 "Crystal-jacketed: mine the jacket first", Hull + crystal
@@ -59,6 +62,74 @@
     <yieldFactor>1.0</yieldFactor>
     <lootTierShift>1</lootTierShift>
     <labelPrefix>crystal-jacketed</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Warscar (Moderate; design §4 "Stripped: x0.35, -1 tier, plundered to skeletons").
+       Hull/Tank/Carapace drop to Scrap (no rare roll); the live shield generator is the
+       biome's one prize and is not a weathered family. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Stripped</defName>
+    <label>stripped</label>
+    <description>Plundered to the skeleton by every army that crossed it. The plating is gone, the wiring is gone; what is left is what nobody could carry.</description>
+    <yieldFactor>0.35</yieldFactor>
+    <lootTierShift>-1</lootTierShift>
+    <labelPrefix>stripped</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Wasteland (Moderate; design §4 "Irradiated: x0.9"). The rad hazard on deconstruct is
+       the Wasteland's own hediffs and is NOT wired here (design: "radiation on deconstruct"
+       is owed with the Wasteland's step). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Irradiated</defName>
+    <label>irradiated</label>
+    <description>Hot. Nobody has come for it because nobody wants to stand next to it; most of the metal is still there.</description>
+    <yieldFactor>0.9</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>irradiated</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Deep Desert (Low; design §4 "Sand-scoured: x0.6"). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_SandScoured</defName>
+    <label>sand-scoured</label>
+    <description>Blasted by sand for years until the edges are rounded and the thin metal is gone through.</description>
+    <yieldFactor>0.6</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>sand-scoured</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Dune Sea / Stillsand (Low; design §4 "Sealed: x1.0, +1 tier", the sheet's own
+       "sealed and uncorroded" law). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Sealed</defName>
+    <label>sand-sealed</label>
+    <description>Buried dry and airless under the dunes until a storm uncovered it. Uncorroded: what was inside is intact.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>1</lootTierShift>
+    <labelPrefix>sand-sealed</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Blue Desert (Moderate; design §4 "Ice-locked: x0.9, must mine free first"). KNOWN GAP:
+       the mineable ice jacket (a RockBase shell) is not expressible by a weathering row and
+       arrives with the Blue Desert's step-6 sitting, like the Grey Deep's crystal jacket. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_IceLocked</defName>
+    <label>ice-locked</label>
+    <description>Frozen into the ice where it fell. Cold kept the metal; meltwater took a little.</description>
+    <yieldFactor>0.9</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>ice-locked</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- The Contagion (Eroded; design §4 "Eroded: x0.2, Scrap only, no rare roll"). -2 lands every
+       family on Scrap, and the resolve pass zeroes rareChance on Scrap. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Eroded</defName>
+    <label>eroded</label>
+    <description>Eaten down to a fragment by the land itself. Little remains, and less of it is worth anything.</description>
+    <yieldFactor>0.2</yieldFactor>
+    <lootTierShift>-2</lootTierShift>
+    <labelPrefix>eroded</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
 </Defs>

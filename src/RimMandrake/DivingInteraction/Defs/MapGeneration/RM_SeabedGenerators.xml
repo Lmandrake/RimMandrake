@@ -38,6 +38,7 @@
       <li>RM_SeaFloorTerrain</li>
       <li>RM_ScaldVentField</li>
       <li>RM_ScaldReturnGallery</li>
+      <li>RM_WreckField_ScaldFloor</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
       <li>Plants</li>
@@ -63,6 +64,7 @@
       <li>RM_GreySeaScatterCrystalAmber</li>
       <li>RM_GreySeaScatterCrystalViolet</li>
       <li>RM_GreySeaFloorDressing</li>
+      <li>RM_WreckField_GreyFloor</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
       <li>Plants</li>
@@ -79,6 +81,7 @@
     <genSteps>
       <li>ElevationFertility</li>
       <li>RM_SeaFloorTerrain</li>
+      <li>RM_WreckField_TwilightFloor</li>
       <li>RM_SeaFloorFauna</li>
       <li>Animals</li>
       <li>Plants</li>

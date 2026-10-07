@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 3: the Nightside Ice wreck field, Riddled class (design §3d-i:
+  6-10 per 10k cells, cluster chance 0.5). Registered in RM_NightsideIce's own extraGenSteps.
+  Gate: settingsKey "NightsideIce" is the "Wreck field: NightsideIce" checkbox in the Wreckage
+  settings. Weights PROVISIONAL: hulls and tanks most common, the expedition rigs rarer.
+  order 965: after terrain, beside the Scald's field.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_NightsideIce</defName>
+    <label>Nightside Ice</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>NightsideIce</settingsKey>
+      <densityClass>RM_WreckDensity_Riddled</densityClass>
+      <wrecks>
+        <RM_NightsideWreckHull>2</RM_NightsideWreckHull>
+        <RM_NightsideWreckTank>2</RM_NightsideWreckTank>
+        <RM_NightsideExpeditionRig>1</RM_NightsideExpeditionRig>
+      </wrecks>
+      <minSpacing>5</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

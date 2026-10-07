@@ -21,8 +21,10 @@
   no child, no art and no measured shadow yet; their footprints are guesses to be fixed by the
   first biome sitting that casts them. Speeder and Tread roll the Hull table: no Speeder or
   Tread loot tier exists (design §3c lists five tiers).
-  Not here yet: the RM_WreckSurface category the Warscar lichen will key on (design §3b), which
-  arrives with that biome's step.
+  - the building tag RM_WreckSurface (design §3b's "wreck surface" marker): anything that grows or
+    nests ON wrecks keys on it, never on defNames. First reader: the Warscar's
+    MapComponent_WreckLichen (Scarlands). A building tag, not a ThingCategoryDef, so wrecks never
+    show up in storage filters.
 -->
 <Defs>
 
@@ -33,6 +35,11 @@
     </graphicData>
     <terrainAffordanceNeeded>Walkable</terrainAffordanceNeeded>
     <resourcesFractionWhenDeconstructed>1.0</resourcesFractionWhenDeconstructed>
+    <building>
+      <buildingTags>
+        <li>RM_WreckSurface</li>
+      </buildingTags>
+    </building>
   </ThingDef>
 
   <ThingDef Name="RM_WreckFamily_Hull" ParentName="RM_WreckFamilyBase" Abstract="True">

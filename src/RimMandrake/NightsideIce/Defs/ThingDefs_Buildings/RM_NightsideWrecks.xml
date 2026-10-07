@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 3 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4 "Nightside Ice, Lantern Deeps (Riddled): Expedition rig, Tank, Hull; Frozen"). The deep
+  nightside is riddled with wrecks: nobody goes, and the cold stops corrosion. Failed Junker crystal
+  expeditions are the sheet's own content (nightside_ice.md:135).
+
+  Shared by the Lantern Deeps' field (LanternDeeps/Defs/MapGeneration/RM_LanternDeepsWreckField.xml):
+  both biomes are Riddled with the same Frozen weathering, so one set of defs serves both.
+
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Light affordance, not the family's Walkable: Light is on every land terrain these biomes paint
+  (Ice, Soil, Gravel, RM_LanternstoneFloor) while RM_LanternstoneFloor carries no Walkable.
+
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk
+  (Graphic_Random). Own renders are queued in the artpipe (rimflow_item_id SALVAGE_WRECKAGE_EVERYWHERE_1,
+  ids wreck_nightside_*); the art install swaps texPath and re-measures the shadow box.
+  Labels come from the child; ALL NUMBERS live on the family and the Frozen row (PROVISIONAL).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_NightsideWreckHull</defName>
+    <label>frost-locked hull section</label>
+    <description>A length of hull plate rimed white, exactly as it came down. Nothing on the nightside rusts and nobody comes out here to strip it, so whatever was bolted inside is still bolted inside. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Frozen</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_NightsideWreckTank</defName>
+    <label>frost-locked tank</label>
+    <description>A fuel or pressure tank frozen where it landed, its seams still whole. The cold kept what was inside it. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Frozen</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_NightsideExpeditionRig</defName>
+    <label>abandoned expedition rig</label>
+    <description>The frame of a crystal-cutting rig from an expedition that never came back: struts, a drill mount, a sled bed frozen to the ground. Their tools went with them or under the ice. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Frozen</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 3: the sea-floor wreck fields, High class (design §3d-i: every
+  sea floor, "almost no one can or would bother to go there"). Children: RM_SeaFloorWrecks.xml.
+
+  Registration is in each floor MAP GENERATOR's <genSteps> (RM_SeabedGenerators.xml AND its
+  RM_SeaDiveGenerators.xml twin, per that file's own "a content change belongs in BOTH files"),
+  never a terrain tag: RM_SeaFloorGround is shared by all four seas, so a tag would leak (design §3d,
+  the Grey precedent).
+
+  No terrainValidation: every floor cell is sediment or a sea's band terrain; the children's Light
+  affordance rejects cells that cannot hold them. allowInWaterBiome true: a floor biome may read as
+  water.
+
+  Twilight Sea: its own sheet's law is 1-2 picked wrecks per floor, so `count` 2 overrides the High
+  class's per-10k range (the density slider still scales it). That is a sheet ruling about yield and
+  rarity on that floor, not a density class.
+  ALL NUMBERS PROVISIONAL. order 965: after RM_SeaFloorTerrain (210) and the Grey scatters (860s).
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_GreyFloor</defName>
+    <label>Grey Sea floor</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>GreyFloor</settingsKey>
+      <densityClass>RM_WreckDensity_High</densityClass>
+      <wrecks>
+        <RM_GreyFloorWreckHull>2</RM_GreyFloorWreckHull>
+        <RM_GreyFloorWreckSpine>1</RM_GreyFloorWreckSpine>
+      </wrecks>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_WreckField_TwilightFloor</defName>
+    <label>Twilight Sea floor</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>TwilightFloor</settingsKey>
+      <densityClass>RM_WreckDensity_High</densityClass>
+      <wrecks>
+        <RM_PickedWreck>1</RM_PickedWreck>
+      </wrecks>
+      <count>2</count>
+      <clusterChance>0</clusterChance>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>12</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_WreckField_ScaldFloor</defName>
+    <label>Scald floor</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>ScaldFloor</settingsKey>
+      <densityClass>RM_WreckDensity_High</densityClass>
+      <wrecks>
+        <RM_ScaldFloorWreckHull>1</RM_ScaldFloorWreckHull>
+      </wrecks>
+      <allowInWaterBiome>true</allowInWaterBiome>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
