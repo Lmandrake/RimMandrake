@@ -45,6 +45,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- the offline fuzz project lives under Source/SelfTest; it must never compile into the mod -->
+    <Compile Remove="SelfTest\**" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 

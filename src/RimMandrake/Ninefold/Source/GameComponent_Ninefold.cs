@@ -178,7 +178,7 @@ namespace RimMandrake.Ninefold
         // NINEFOLD_LOUDNESS_FRONT_1: pure derived read, no new tracked state
         // -- loudness IS engagement magnitude and satiation already IS the
         // engagement track (canon.yml `in_front.core_src`).
-        public float GetLoudness(God god) => Mathf.Abs(satiation[(int)god]);
+        public float GetLoudness(God god) => RM_NinefoldKernel.Loudness(satiation[(int)god]);
 
         // Every god, loudest first, deterministic tie-break by enum ordinal
         // (never RNG) so a repeated call with unchanged satiation is always
@@ -187,12 +187,8 @@ namespace RimMandrake.Ninefold
         // ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3/4) slice this list.
         public List<God> GetLoudnessRank()
         {
-            var ranked = new List<God>(GodExtensions.All);
-            ranked.Sort((a, b) =>
-            {
-                int cmp = GetLoudness(b).CompareTo(GetLoudness(a)); // descending
-                return cmp != 0 ? cmp : ((int)a).CompareTo((int)b);
-            });
+            var ranked = new List<God>(GodExtensions.Count);
+            foreach (int i in RM_NinefoldKernel.LoudnessRank(satiation)) ranked.Add((God)i);
             return ranked;
         }
 
@@ -237,13 +233,11 @@ namespace RimMandrake.Ninefold
         // the event's own authored weight, not a tuning slider.
         private void MaybeFlipFrontOnViolentSwing(God god, float rawAmount)
         {
-            if (!frontReckoned) return; // no landing yet -- FinalizeInit/the first landing sets it
-            if (Mathf.Abs(rawAmount) < EventMagnitude.Large) return;
-
             God loudest = LoudestGod();
-            if (loudest == frontGod) return;
+            God flipped = (God)RM_NinefoldKernel.FrontAfterSwing(frontReckoned, (int)frontGod, rawAmount, EventMagnitude.Large, (int)loudest);
+            if (flipped == frontGod) return; // no landing yet, a small event, or already the loudest
 
-            frontGod = loudest;
+            frontGod = flipped;
             if (Prefs.DevMode)
                 Log.Message("[Ninefold] front FLIPPED mid-map on a violent swing (" + god +
                     " " + rawAmount.ToString("F1") + ") -> " + frontGod +
@@ -266,7 +260,7 @@ namespace RimMandrake.Ninefold
             int i = (int)god;
             float rawAmount = amount; // pre-multiplier, for MaybeFlipFrontOnViolentSwing
             amount *= RM_NinefoldSettings.eventMagnitudeMultiplier;
-            satiation[i] = Mathf.Clamp(satiation[i] + amount, -100f, 100f);
+            satiation[i] = RM_NinefoldKernel.AddSatiation(satiation[i], amount);
             if (reason != null && Prefs.DevMode)
                 Log.Message("[Ninefold] " + god + " satiation " +
                             (amount >= 0 ? "+" : "") + amount.ToString("F1") +
@@ -299,7 +293,7 @@ namespace RimMandrake.Ninefold
             // this step doesn't need to re-derive elapsed hours from it.
             int i = (int)God.TaBaa;
             float erosion = RootedErosionPerHour * RM_NinefoldSettings.eventMagnitudeMultiplier;
-            satiation[i] = Mathf.Clamp(satiation[i] - erosion, -100f, 100f);
+            satiation[i] = RM_NinefoldKernel.ErodeSatiation(satiation[i], erosion);
 
             if (!unveiled[i] &&
                 Find.TickManager.TicksGame - lastLaunchTick >= TaBaaFirstContactRootedTicks)
@@ -324,21 +318,13 @@ namespace RimMandrake.Ninefold
             if (!RM_NinefoldSettings.engineEnabled) return;
             if (!RM_NinefoldSettings.firstContactLettersEnabled) return;
 
-            int i = (int)god;
-            if (unveiled[i]) return;
-            if (pendingFirstContact.Contains(i)) return;
-
-            if (pendingFirstContact.Count == 0 &&
-                Find.TickManager.TicksGame >= nextFirstContactTick)
+            // "two gods never introduce themselves at once" (build note,
+            // first_contact_chains.md) -- the kernel queues behind whatever is
+            // already scheduled rather than firing the same day.
+            if (RM_NinefoldKernel.TryFirstContact(unveiled, pendingFirstContact,
+                    Find.TickManager.TicksGame, nextFirstContactTick, (int)god) == RM_NinefoldKernel.Contact.Fire)
             {
                 FireFirstContact(god);
-            }
-            else
-            {
-                // "two gods never introduce themselves at once" (build note,
-                // first_contact_chains.md) -- queue behind whatever is
-                // already scheduled rather than firing the same day.
-                pendingFirstContact.Add(i);
             }
         }
 
@@ -348,15 +334,13 @@ namespace RimMandrake.Ninefold
         {
             if (!RM_NinefoldSettings.engineEnabled) return;
             if (unveiled[(int)God.Shkaar]) return;
-            violentDeathCount++;
-            if (violentDeathCount >= ShkaarFirstContactViolentDeaths)
+            if (RM_NinefoldKernel.CountViolentDeath(ref violentDeathCount, ShkaarFirstContactViolentDeaths))
                 TryFirstContact(God.Shkaar);
         }
 
         private void FireFirstContact(God god)
         {
-            unveiled[(int)god] = true;
-            nextFirstContactTick = Find.TickManager.TicksGame + OneDayTicks;
+            nextFirstContactTick = RM_NinefoldKernel.MarkFired(unveiled, (int)god, Find.TickManager.TicksGame, OneDayTicks);
             if (!FirstContactCorpus.GetChain(god, out string title, out string text))
                 return; // defensive only -- every god now has a corpus entry
             Find.LetterStack.ReceiveLetter(title, text, LetterDefOf.NeutralEvent);
@@ -364,10 +348,8 @@ namespace RimMandrake.Ninefold
 
         private void StepPendingFirstContact()
         {
-            if (pendingFirstContact.Count == 0) return;
-            if (Find.TickManager.TicksGame < nextFirstContactTick) return;
-            int nextGod = pendingFirstContact[0];
-            pendingFirstContact.RemoveAt(0);
+            int nextGod = RM_NinefoldKernel.PopDue(pendingFirstContact, Find.TickManager.TicksGame, nextFirstContactTick);
+            if (nextGod < 0) return;
             FireFirstContact((God)nextGod);
         }
 
@@ -390,9 +372,7 @@ namespace RimMandrake.Ninefold
                 // bounded random walk: small step scaled by amplitude, softly
                 // pulled back toward 0 so a god does not wander to a rail and
                 // stick there forever with no event ever moving it back.
-                float step = (Rand.Value - 0.5f) * 10f * amp * RM_NinefoldSettings.moodWalkMultiplier;
-                float pullback = -mood[i] * 0.02f;
-                mood[i] = Mathf.Clamp(mood[i] + step + pullback, -100f, 100f);
+                mood[i] = RM_NinefoldKernel.MoodStep(mood[i], amp, Rand.Value, RM_NinefoldSettings.moodWalkMultiplier);
             }
         }
 
