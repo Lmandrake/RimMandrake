@@ -135,6 +135,31 @@ namespace RimMandrake.EnvironmentalHazards
             return t != null && t.IsWater;
         }
 
+        private bool IsWaterIndex(int idx)
+        {
+            return IsWaterCell(map.cellIndices.IndexToCell(idx));
+        }
+
+        private List<IntVec3> ToCellList(List<int> idx)
+        {
+            List<IntVec3> cells = new List<IntVec3>(idx.Count);
+            for (int i = 0; i < idx.Count; i++)
+            {
+                cells.Add(map.cellIndices.IndexToCell(idx[i]));
+            }
+            return cells;
+        }
+
+        private List<int> ToIndexList(List<IntVec3> cells)
+        {
+            List<int> idx = new List<int>(cells.Count);
+            for (int i = 0; i < cells.Count; i++)
+            {
+                idx.Add(map.cellIndices.CellToIndex(cells[i]));
+            }
+            return idx;
+        }
+
         private void DetectPools()
         {
             RM_StrandingPoolsExtension ext = map.Biome != null ? map.Biome.GetModExtension<RM_StrandingPoolsExtension>() : null;
@@ -143,92 +168,36 @@ namespace RimMandrake.EnvironmentalHazards
                 return; // no config on this biome — mechanism does nothing, same as M1/M2's own gate
             }
 
-            int n = map.cellIndices.NumGridCells;
-            bool[] visited = new bool[n];
-            List<List<IntVec3>> components = new List<List<IntVec3>>();
-
-            foreach (IntVec3 start in map.AllCells)
-            {
-                int startIdx = map.cellIndices.CellToIndex(start);
-                if (visited[startIdx] || !IsWaterCell(start))
-                {
-                    continue;
-                }
-
-                List<IntVec3> comp = new List<IntVec3>();
-                Queue<IntVec3> queue = new Queue<IntVec3>();
-                visited[startIdx] = true;
-                queue.Enqueue(start);
-
-                while (queue.Count > 0)
-                {
-                    IntVec3 cur = queue.Dequeue();
-                    comp.Add(cur);
-
-                    for (int d = 0; d < GenAdj.CardinalDirections.Length; d++)
-                    {
-                        IntVec3 nb = cur + GenAdj.CardinalDirections[d];
-                        if (!nb.InBounds(map))
-                        {
-                            continue;
-                        }
-                        int nbIdx = map.cellIndices.CellToIndex(nb);
-                        if (visited[nbIdx] || !IsWaterCell(nb))
-                        {
-                            continue;
-                        }
-                        visited[nbIdx] = true;
-                        queue.Enqueue(nb);
-                    }
-                }
-
-                components.Add(comp);
-            }
+            List<List<int>> components = RM_PoolKernel.Components(map.Size.x, map.Size.z, IsWaterIndex);
 
             if (components.Count < 2)
             {
                 return; // nothing but (at most) the main network — no disconnected water anywhere
             }
 
-            List<IntVec3> mainNetwork = components[0];
-            for (int i = 1; i < components.Count; i++)
-            {
-                if (components[i].Count > mainNetwork.Count)
-                {
-                    mainNetwork = components[i];
-                }
-            }
+            int mainIndex = RM_PoolKernel.MainIndex(components);
 
-            // Map every already-tracked pool's cells to that pool once, so
-            // matching a candidate component against existing pools is a
-            // single dictionary probe per cell rather than an O(pools *
-            // cells^2) scan.
-            Dictionary<int, RM_StrandingPool> cellToPool = new Dictionary<int, RM_StrandingPool>();
+            // Which tracked pool (if any) each component continues, resolved against the pools as they stood
+            // before this pass — see RM_PoolKernel.MatchPools. (Was a per-cell dictionary probe, same result.)
+            List<List<int>> poolCellIdx = new List<List<int>>();
             for (int p = 0; p < pools.Count; p++)
             {
-                for (int i = 0; i < pools[p].cells.Count; i++)
-                {
-                    cellToPool[map.cellIndices.CellToIndex(pools[p].cells[i])] = pools[p];
-                }
+                poolCellIdx.Add(ToIndexList(pools[p].cells));
             }
+            int[] matches = RM_PoolKernel.MatchPools(map.Size.x, map.Size.z, components, mainIndex, poolCellIdx);
 
             for (int i = 0; i < components.Count; i++)
             {
-                List<IntVec3> comp = components[i];
-                if (comp == mainNetwork)
+                if (i == mainIndex)
                 {
                     continue;
                 }
 
-                RM_StrandingPool existing = null;
-                for (int c = 0; c < comp.Count && existing == null; c++)
-                {
-                    cellToPool.TryGetValue(map.cellIndices.CellToIndex(comp[c]), out existing);
-                }
+                List<IntVec3> comp = ToCellList(components[i]);
 
-                if (existing != null)
+                if (matches[i] >= 0)
                 {
-                    existing.cells = comp; // shape may have shifted between recede events — keep it current
+                    pools[matches[i]].cells = comp; // shape may have shifted between recede events — keep it current
                     continue;
                 }
 
@@ -345,49 +314,17 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
 
-            int cap = Mathf.Max(200, pool.cells.Count * 8);
-            HashSet<IntVec3> visited = new HashSet<IntVec3> { pool.cells[0] };
-            Queue<IntVec3> queue = new Queue<IntVec3>();
-            queue.Enqueue(pool.cells[0]);
-
-            while (queue.Count > 0)
-            {
-                if (visited.Count > cap)
-                {
-                    return true;
-                }
-
-                IntVec3 cur = queue.Dequeue();
-                if (cur.x == 0 || cur.z == 0 || cur.x == map.Size.x - 1 || cur.z == map.Size.z - 1)
-                {
-                    return true;
-                }
-
-                for (int d = 0; d < GenAdj.CardinalDirections.Length; d++)
-                {
-                    IntVec3 nb = cur + GenAdj.CardinalDirections[d];
-                    if (visited.Contains(nb) || !IsWaterCell(nb))
-                    {
-                        continue;
-                    }
-                    visited.Add(nb);
-                    queue.Enqueue(nb);
-                }
-            }
-
-            return false;
+            return RM_PoolKernel.Reconnected(map.Size.x, map.Size.z, ToIndexList(pool.cells), IsWaterIndex);
         }
 
         private void DecayPool(RM_StrandingPool pool, RM_StrandingPoolsExtension ext)
         {
             int elapsed = Find.TickManager.TicksGame - pool.birthTick;
-            if (elapsed <= 0 || pool.decayTotalTicks <= 0 || pool.originalCellCount <= 0)
+            if (!RM_PoolKernel.TryDecayTarget(elapsed, pool.decayTotalTicks, pool.originalCellCount, out int targetCount))
             {
                 return;
             }
 
-            float remainingFraction = Mathf.Clamp01(1f - (float)elapsed / pool.decayTotalTicks);
-            int targetCount = Mathf.RoundToInt(pool.originalCellCount * remainingFraction);
             TerrainDef dry = ext?.dryTerrain;
 
             while (pool.cells.Count > targetCount && pool.cells.Count > 0)
@@ -408,24 +345,7 @@ namespace RimMandrake.EnvironmentalHazards
         // documented as such in the class header.
         private IntVec3 PickEdgeCellToRemove(RM_StrandingPool pool)
         {
-            for (int i = 0; i < pool.cells.Count; i++)
-            {
-                IntVec3 c = pool.cells[i];
-                bool isEdge = false;
-                for (int d = 0; d < GenAdj.CardinalDirections.Length; d++)
-                {
-                    if (!IsWaterCell(c + GenAdj.CardinalDirections[d]))
-                    {
-                        isEdge = true;
-                        break;
-                    }
-                }
-                if (isEdge)
-                {
-                    return c;
-                }
-            }
-            return pool.cells[pool.cells.Count - 1];
+            return pool.cells[RM_PoolKernel.PickEdgeIndex(map.Size.x, map.Size.z, ToIndexList(pool.cells), IsWaterIndex)];
         }
 
         private void PruneOccupants(RM_StrandingPool pool)

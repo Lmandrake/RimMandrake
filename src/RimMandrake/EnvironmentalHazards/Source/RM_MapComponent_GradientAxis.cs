@@ -111,7 +111,7 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return;
             }
-            salinity[map.cellIndices.CellToIndex(c)] = Mathf.Clamp01(value);
+            salinity[map.cellIndices.CellToIndex(c)] = RM_AxisKernel.Clamp01(value);
         }
 
         // M2's entry point (RM_GameCondition_GradientSurge calls this on
@@ -130,7 +130,7 @@ namespace RimMandrake.EnvironmentalHazards
         {
             shiftInProgress = true;
             shiftDeltaRemaining = delta;
-            shiftTicksRemaining = durationTicks < 1 ? 1 : durationTicks;
+            shiftTicksRemaining = RM_AxisKernel.ClampDuration(durationTicks);
             shiftIsRecede = isRecede;
         }
 
@@ -169,17 +169,15 @@ namespace RimMandrake.EnvironmentalHazards
         // snapshot of the whole grid.
         private void TickShift()
         {
-            int step = Mathf.Min(UpdateIntervalTicks, shiftTicksRemaining);
-            float deltaThisStep = shiftTicksRemaining > 0
-                ? shiftDeltaRemaining * step / shiftTicksRemaining
-                : shiftDeltaRemaining;
+            int step = RM_AxisKernel.StepTicks(UpdateIntervalTicks, shiftTicksRemaining);
+            float deltaThisStep = RM_AxisKernel.StepDelta(shiftDeltaRemaining, step, shiftTicksRemaining);
 
             ApplyDeltaToAllCells(deltaThisStep);
 
             shiftDeltaRemaining -= deltaThisStep;
             shiftTicksRemaining -= step;
 
-            if (shiftTicksRemaining <= 0)
+            if (RM_AxisKernel.ShiftFinished(shiftTicksRemaining))
             {
                 shiftInProgress = false;
                 shiftDeltaRemaining = 0f;
@@ -208,7 +206,7 @@ namespace RimMandrake.EnvironmentalHazards
             foreach (IntVec3 c in map.AllCells)
             {
                 int idx = map.cellIndices.CellToIndex(c);
-                float newSalinity = Mathf.Clamp01(salinity[idx] + delta);
+                float newSalinity = RM_AxisKernel.Apply(salinity[idx], delta);
                 salinity[idx] = newSalinity;
 
                 if (ext != null)
@@ -216,7 +214,7 @@ namespace RimMandrake.EnvironmentalHazards
                     RM_GradientAxisRepaint.RepaintCell(map, c, newSalinity, ext);
                 }
 
-                if (Mathf.Abs(newSalinity - 0.5f) < SaltLineFleckBand && Rand.Chance(SaltLineFleckChance))
+                if (RM_AxisKernel.InFleckBand(newSalinity, SaltLineFleckBand) && Rand.Chance(SaltLineFleckChance))
                 {
                     FleckMaker.ThrowDustPuffThick(c.ToVector3Shifted(), map, SaltLineFleckScale, SaltLineFleckColor);
                 }
@@ -273,7 +271,7 @@ namespace RimMandrake.EnvironmentalHazards
             foreach (IntVec3 c in map.AllCells)
             {
                 float s = salinity[map.cellIndices.CellToIndex(c)];
-                if (s > 0.5f - band && s < 0.5f + band)
+                if (RM_AxisKernel.InSaltLine(s, band))
                 {
                     yield return c;
                 }
@@ -308,8 +306,8 @@ namespace RimMandrake.EnvironmentalHazards
             // ushort is the primitive MapExposeUtility actually offers.
             MapExposeUtility.ExposeUshort(
                 map,
-                c => (ushort)Mathf.RoundToInt(SalinityAt(c) * 65535f),
-                (c, val) => SetSalinityAt(c, val / 65535f),
+                c => RM_AxisKernel.Quantize(SalinityAt(c)),
+                (c, val) => SetSalinityAt(c, RM_AxisKernel.Dequantize(val)),
                 "salinity");
         }
     }

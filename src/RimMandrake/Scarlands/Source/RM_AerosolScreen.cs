@@ -74,7 +74,7 @@ namespace RimMandrake.Scarlands
         }
     }
 
-    public class RM_CompAerosolScreen : ThingComp
+    public class RM_CompAerosolScreen : ThingComp, IAerosolScreenView
     {
         private static readonly List<RM_CompAerosolScreen> ActiveScreens = new List<RM_CompAerosolScreen>();
 
@@ -88,10 +88,10 @@ namespace RimMandrake.Scarlands
         {
             get
             {
-                if (!parent.Spawned) return false;
-                if (Flickable != null && !Flickable.SwitchIsOn) return false;
-                if (Props.needsPower && PowerTrader != null && !PowerTrader.PowerOn) return false;
-                return true;
+                CompFlickable flick = Flickable;
+                CompPowerTrader power = PowerTrader;
+                return RM_AerosolKernel.IsLive(parent.Spawned, flick != null, flick != null && flick.SwitchIsOn,
+                    Props.needsPower, power != null, power != null && power.PowerOn);
             }
         }
 
@@ -99,10 +99,8 @@ namespace RimMandrake.Scarlands
         {
             get
             {
-                float r = Props.radius * RM_WarscarSettings.aerosolScreenRadiusFactor;
                 CompRefuelable fuel = Refuelable;
-                if (fuel != null && !fuel.HasFuel) r *= 0.5f;
-                return r;
+                return RM_AerosolKernel.Radius(Props.radius, RM_WarscarSettings.aerosolScreenRadiusFactor, fuel != null, fuel != null && fuel.HasFuel);
             }
         }
 
@@ -110,6 +108,12 @@ namespace RimMandrake.Scarlands
         // registry by a previous game (load a save, nothing despawns) would alias onto the new game's map at the
         // same index; comparing the registered Map reference never does, and stale entries are pruned on spawn.
         private Map registeredMap;
+
+        // IAerosolScreenView, read by RM_AerosolKernel.Screened.
+        public bool CountsFor(object map) { return parent != null && ReferenceEquals(registeredMap, map) && IsScreenLive; }
+        public int ScreenX { get { return parent.Position.x; } }
+        public int ScreenZ { get { return parent.Position.z; } }
+        public float ScreenRadius { get { return Radius; } }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -180,15 +184,7 @@ namespace RimMandrake.Scarlands
         // screens at most; this is never a whole-map scan.
         public static bool IsPositionScreened(IntVec3 c, Map map)
         {
-            if (!RM_WarscarSettings.aerosolScreenEnabled || map == null) return false;
-            for (int i = 0; i < ActiveScreens.Count; i++)
-            {
-                RM_CompAerosolScreen s = ActiveScreens[i];
-                if (s?.parent == null || s.registeredMap != map || !s.IsScreenLive) continue;
-                float r = s.Radius;
-                if (c.DistanceToSquared(s.parent.Position) <= r * r) return true;
-            }
-            return false;
+            return RM_AerosolKernel.Screened(RM_WarscarSettings.aerosolScreenEnabled, map, c.x, c.z, ActiveScreens);
         }
 
         // Visual only (spec 5): the dome is drawn with the force-field bubble material, never the
