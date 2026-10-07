@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ShokkweaveRareTraderStock.xml    ShokkweaveEconomy · SHOKKWEAVE_SOLE_SOURCE_1
+  Owner ruling 2026-10-06 23:34: very small shokkweave stock for the Wildsteam, rarer for the Hutts.
+  Wildsteam: new kind RUT_Caravan_Wildsteam_Weavers (Defs/TraderKindDefs), appended to the faction here.
+  Hutt: the cartel's own two kinds get one extra generator, 1-2 units in ~1 visit of 8. No other
+  trader is touched; the strip stays on every Outlander/Czerka/Galleon kind.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
+      <value>
+      <caravanTraderKinds>
+        <li>RUT_Caravan_Wildsteam_Weavers</li>
+      </caravanTraderKinds>
+    </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_EggMarket"]/stockGenerators</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_EggMarket"]/stockGenerators</xpath>
+      <value>
+      <li Class="RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave">
+        <chance>0.125</chance>
+        <countRange>1~2</countRange>
+      </li>
+    </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_Captives"]/stockGenerators</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/TraderKindDef[defName="RUT_Caravan_HuttCartel_Captives"]/stockGenerators</xpath>
+      <value>
+      <li Class="RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave">
+        <chance>0.125</chance>
+        <countRange>1~2</countRange>
+      </li>
+    </value>
+    </match>
+  </Operation>
+
+</Patch>

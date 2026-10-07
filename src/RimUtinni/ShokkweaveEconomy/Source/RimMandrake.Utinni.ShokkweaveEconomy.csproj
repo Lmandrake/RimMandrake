@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="GenStep_ScatterWebworkSilk.cs" />
     <Compile Include="ShokkweaveEconomySettings.cs" />
+    <Compile Include="StockGenerator_RareShokkweave.cs" />
   </ItemGroup>
 
   <ItemGroup>
