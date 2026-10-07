@@ -7,3 +7,5 @@
 - 04:05 launched via steam.exe -applaunch 294100
 - 04:08 my 613-mod load was killed mid-load and ModsConfig swapped to a 34-mod tier at 04:09:09 by a FOUNDRY modcheck run (LeaningScrub/WeepingStones) that did not take the bridge; FOUNDRY game PID 108028 now up. Waiting for it to finish rather than fight
 - 04:26 FOUNDRY's tier game exited; 613 list rewritten; relaunched via Steam (PID 148624)
+- 04:39 second load killed mid-load (LoadTracer ctor 1118/1632, no crash dump, no WER event): AGENT FOUNDRY session (PID 16130, /home/mandrake/rm/foundry) ran `Stop-Process -Name RimWorldWin64 -Force` then `modset_builder.py --tier acc_biomes --apply`. FOUNDRY took the bridge at 10:47:16Z ("FOUNDRY GREEN-MIN + standalone tiers while owner AFK"), one minute before BENCH's take, and keeps cycling tier loads. Its restores write FULL.LATEST (610), which drops EK/KA/GSS. Stopped here, not racing it; live checks NOT run
+- deploy state is good (all committed mods deployed, DLLs md5-match); 613-mod snapshot committed; scripts for the checks staged in Transient/kinetic_gss_live_2026-10-07/
