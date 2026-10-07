@@ -29,10 +29,7 @@ namespace RimMandrake.DivingInteraction
     // ════════════════════════════════════════════════════════════════════
     public static class RM_ElderTradeUtility
     {
-        private const float NovelValueMultiplier = 8f;
-        private const int NovelValueFloor = 50;
-        private const float StaleValueMultiplier = 0.05f;
-        private const int StaleValueFloor = 1;
+        // Silver multipliers and floors live in RM_ElderEconomyKernel (offline-fuzzed).
         private const float UniqueTreasureChance = 0.35f; // on a novel trade only
         private const float DissolveSearchRadius = 12f;
         private const int WideDeliverySearchRadius = 40; // fallback scan if nothing dry stands within DissolveSearchRadius
@@ -118,27 +115,14 @@ namespace RimMandrake.DivingInteraction
             int tile = TileForMap(map);
             RM_GameComponent_BrineElders comp = Current.Game.GetComponent<RM_GameComponent_BrineElders>();
             string key = NoveltyKey(offered);
-            bool novel = tile >= 0 && comp != null && !comp.HasSeen(tile, key);
-
-            float marketValue = offered.MarketValue * offered.stackCount;
-            int silver;
-            ThingDef uniqueTreasure = null;
-
-            if (novel)
-            {
-                comp.MarkSeen(tile, key);
-                if (Rand.Chance(UniqueTreasureChance))
-                {
-                    uniqueTreasure = TryClaimAnyUniqueTreasure(comp);
-                }
-                silver = uniqueTreasure != null
-                    ? 0
-                    : System.Math.Max(NovelValueFloor, UnityEngine.Mathf.RoundToInt(marketValue * NovelValueMultiplier));
-            }
-            else
-            {
-                silver = System.Math.Max(StaleValueFloor, UnityEngine.Mathf.RoundToInt(marketValue * StaleValueMultiplier));
-            }
+            RM_ElderEconomyKernel.Decision decision = comp != null
+                ? comp.Decide(tile, key, tile >= 0, offered.MarketValue, offered.stackCount, RmUniqueTreasureDefNames,
+                    dn => DefDatabase<ThingDef>.GetNamedSilentFail(dn) != null,
+                    () => Rand.Chance(UniqueTreasureChance), n => Rand.Range(0, n))
+                : new RM_ElderEconomyKernel.Decision { Silver = RM_ElderEconomyKernel.SilverFor(false, offered.MarketValue, offered.stackCount) };
+            bool novel = decision.Novel;
+            int silver = decision.Silver;
+            ThingDef uniqueTreasure = decision.Treasure == null ? null : DefDatabase<ThingDef>.GetNamedSilentFail(decision.Treasure);
 
             IntVec3 deliveryCell = FindDeliveryCell(elder, out Thing jacketToDissolve);
             offered.Destroy(DestroyMode.Vanish);
@@ -167,23 +151,6 @@ namespace RimMandrake.DivingInteraction
             }
 
             return new OfferResult(true, novel, uniqueTreasure != null ? 0 : silver, uniqueTreasure);
-        }
-
-        private static ThingDef TryClaimAnyUniqueTreasure(RM_GameComponent_BrineElders comp)
-        {
-            List<string> candidates = RmUniqueTreasureDefNames
-                .Where(dn => !comp.IsUniqueTreasureGranted(dn))
-                .ToList();
-            if (candidates.Count == 0)
-            {
-                return null;
-            }
-            string chosen = candidates.RandomElement();
-            if (!comp.TryClaimUniqueTreasure(chosen))
-            {
-                return null; // lost a race against itself; single-threaded in practice, guard kept anyway
-            }
-            return DefDatabase<ThingDef>.GetNamedSilentFail(chosen);
         }
 
         /// <summary>Picks the jacket cell the payout should erupt from, or

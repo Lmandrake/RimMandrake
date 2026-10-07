@@ -56,40 +56,18 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
-        private RM_ElderTileRecord RecordFor(int tile, bool createIfMissing)
-        {
-            for (int i = 0; i < tileRecords.Count; i++)
-            {
-                if (tileRecords[i].tile == tile)
-                {
-                    return tileRecords[i];
-                }
-            }
-            if (!createIfMissing)
-            {
-                return null;
-            }
-            RM_ElderTileRecord rec = new RM_ElderTileRecord { tile = tile, seenKeys = new List<string>() };
-            tileRecords.Add(rec);
-            return rec;
-        }
-
         /// <summary>Has THIS tile's Elder already been shown this novelty
         /// key? False = novel, "worth a great deal"; true = already seen,
         /// "nearly worthless".</summary>
         public bool HasSeen(int tile, string noveltyKey)
         {
-            RM_ElderTileRecord rec = RecordFor(tile, createIfMissing: false);
-            return rec != null && rec.seenKeys.Contains(noveltyKey);
+            return RM_ElderEconomyKernel.HasSeen(tileRecords, tile, noveltyKey);
         }
 
         public void MarkSeen(int tile, string noveltyKey)
         {
-            RM_ElderTileRecord rec = RecordFor(tile, createIfMissing: true);
-            if (!rec.seenKeys.Contains(noveltyKey))
-            {
-                rec.seenKeys.Add(noveltyKey);
-            }
+            RM_ElderEconomyKernel.MarkSeen(tileRecords, tile, noveltyKey,
+                t => new RM_ElderTileRecord { tile = t, seenKeys = new List<string>() });
         }
 
         public bool IsUniqueTreasureGranted(string defName)
@@ -103,19 +81,32 @@ namespace RimMandrake.DivingInteraction
         /// literal.</summary>
         public bool TryClaimUniqueTreasure(string defName)
         {
-            if (grantedUniqueTreasureDefNames.Contains(defName))
-            {
-                return false;
-            }
-            grantedUniqueTreasureDefNames.Add(defName);
-            return true;
+            return RM_ElderEconomyKernel.TryClaim(grantedUniqueTreasureDefNames, defName);
+        }
+
+        /// <summary>One whole offer decision against this save's ledger (see RM_ElderEconomyKernel.Decide).</summary>
+        public RM_ElderEconomyKernel.Decision Decide(int tile, string key, bool tracked, float marketValue, int stackCount,
+            IList<string> pool, System.Func<string, bool> resolvable, System.Func<bool> rollTreasure, System.Func<int, int> pick)
+        {
+            return RM_ElderEconomyKernel.Decide(tileRecords, grantedUniqueTreasureDefNames,
+                t => new RM_ElderTileRecord { tile = t, seenKeys = new List<string>() },
+                tile, key, tracked, marketValue, stackCount, pool, resolvable, rollTreasure, pick);
+        }
+
+        /// <summary>Claims one ungranted, resolvable treasure from the pool (see RM_ElderEconomyKernel.ChooseTreasure); null if none.</summary>
+        public string TryClaimAnyUniqueTreasure(IList<string> pool, System.Func<string, bool> resolvable, System.Func<int, int> pick)
+        {
+            return RM_ElderEconomyKernel.ChooseTreasure(pool, grantedUniqueTreasureDefNames, resolvable, pick);
         }
     }
 
-    public class RM_ElderTileRecord : IExposable
+    public class RM_ElderTileRecord : IExposable, IElderTileRecord
     {
         public int tile;
         public List<string> seenKeys = new List<string>();
+
+        int IElderTileRecord.Tile => tile;
+        List<string> IElderTileRecord.SeenKeys => seenKeys;
 
         public void ExposeData()
         {

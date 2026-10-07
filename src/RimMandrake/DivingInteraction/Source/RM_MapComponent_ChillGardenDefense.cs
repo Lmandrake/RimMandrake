@@ -13,14 +13,6 @@ namespace RimMandrake.DivingInteraction
     /// RegisterDrillAgitation internally — see that method's doc comment for
     /// why it can never escalate to the Tarnn wake.
     /// </summary>
-    public enum RM_GardenOffenseKind
-    {
-        Harvest,
-        Kill,
-        HeatDamage,
-        DrillAgitation,
-    }
-
     // ════════════════════════════════════════════════════════════════════
     // CHILL_GARDEN_DEFENSE_1 — the garden's tiered immune system.
     //
@@ -109,14 +101,9 @@ namespace RimMandrake.DivingInteraction
         // register. Harvesting is explicitly "past a threshold" in the
         // ruling's own wording, so its weight is deliberately small (about
         // 8 harvests to reach Tier1 by harvesting alone). ----
-        private const float HarvestWeight = 0.5f;
-        private const float KillWeight = 4f;
-        private const float HeatWeight = 4f;
-        private const float DrillAgitationWeight = 1f;
 
-        private const float Tier1Threshold = 4f;
-        private const float Tier2Threshold = 16f; // "sustained" — roughly 4 kills/heat-hits, or a large mixed pattern
-        private const float AgitationTier1Threshold = 4f; // own pool, same feel as a real first offense
+        // Weights, thresholds and cooldowns live in RM_GardenDefenseKernel (offline-fuzzed). Tier2 = 16 is "sustained":
+        // roughly 4 kills/heat-hits, or a large mixed pattern.
 
         // CHILL_THERMAL_FOOTPRINTS_1, 2026-09-28. "A second visit finds the
         // first visit waiting" — a cell heavily marked by
@@ -128,11 +115,7 @@ namespace RimMandrake.DivingInteraction
         // footprint mechanism toggled off / map not Chill seabed) leaves
         // every threshold exactly as it was — purely additive, no existing
         // tuning changes for untouched ground.
-        private const float TrailThresholdDiscount = 0.35f;
 
-        private const int Tier1CooldownTicks = 2500; // ~42s real time at 1x — a recurring sting, not a one-shot
-        private const int Tier2CooldownTicks = 60000; // 1 in-game day — a real incident, never spammable
-        private const int AgitationCooldownTicks = 2500; // drilling "harasses" repeatedly, same cadence as the Iliss sting
 
         private const float Tier1ArcDamageMin = 6f;
         private const float Tier1ArcDamageMax = 14f;
@@ -184,22 +167,18 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
 
-            offenseScore += WeightFor(kind);
             int now = Find.TickManager.TicksGame;
+            RM_GardenDefenseKernel.State st = KernelState();
+            RM_GardenDefenseKernel.Outcome outcome = RM_GardenDefenseKernel.Offense(ref st, kind, now, TrailDensity(cell));
+            StoreKernelState(st);
 
-            if (offenseScore >= AdjustedThreshold(Tier2Threshold, cell) && now >= tier2CooldownUntilTick)
+            if (outcome == RM_GardenDefenseKernel.Outcome.Tier2Wake)
             {
                 FireTier2Wake(cell);
-                tier2CooldownUntilTick = now + Tier2CooldownTicks;
-                tier1CooldownUntilTick = now + Tier1CooldownTicks; // the wake already IS the warning; don't also arc on the same breach
-                offenseScore = 0f;
-                return;
             }
-            if (offenseScore >= AdjustedThreshold(Tier1Threshold, cell) && now >= tier1CooldownUntilTick)
+            else if (outcome == RM_GardenDefenseKernel.Outcome.Tier1Arc)
             {
                 FireTier1Arc(cell, offender);
-                tier1CooldownUntilTick = now + Tier1CooldownTicks;
-                offenseScore = 0f;
             }
         }
 
@@ -223,13 +202,13 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            agitationScore += DrillAgitationWeight;
             int now = Find.TickManager.TicksGame;
-            if (agitationScore >= AdjustedThreshold(AgitationTier1Threshold, cell) && now >= agitationCooldownUntilTick)
+            RM_GardenDefenseKernel.State st = KernelState();
+            bool fire = RM_GardenDefenseKernel.Agitation(ref st, now, TrailDensity(cell));
+            StoreKernelState(st);
+            if (fire)
             {
                 FireTier1Arc(cell, operatorPawn);
-                agitationCooldownUntilTick = now + AgitationCooldownTicks;
-                agitationScore = 0f;
             }
         }
 
@@ -238,25 +217,30 @@ namespace RimMandrake.DivingInteraction
         // to say (off map, toggled off, no filth here yet), so this is
         // safe to call unconditionally and never needs its own Active
         // gate beyond the null-conditional lookup itself.
-        private float AdjustedThreshold(float baseThreshold, IntVec3 cell)
+        private float TrailDensity(IntVec3 cell)
         {
-            float density = map.GetComponent<RM_MapComponent_ChillFootprints>()?.TrailDensityAt(cell) ?? 0f;
-            return baseThreshold * (1f - TrailThresholdDiscount * density);
+            return map.GetComponent<RM_MapComponent_ChillFootprints>()?.TrailDensityAt(cell) ?? 0f;
         }
 
-        private static float WeightFor(RM_GardenOffenseKind kind)
+        private RM_GardenDefenseKernel.State KernelState()
         {
-            switch (kind)
+            return new RM_GardenDefenseKernel.State
             {
-                case RM_GardenOffenseKind.Harvest:
-                    return HarvestWeight;
-                case RM_GardenOffenseKind.Kill:
-                    return KillWeight;
-                case RM_GardenOffenseKind.HeatDamage:
-                    return HeatWeight;
-                default:
-                    return 0f;
-            }
+                offenseScore = offenseScore,
+                agitationScore = agitationScore,
+                tier1CooldownUntilTick = tier1CooldownUntilTick,
+                tier2CooldownUntilTick = tier2CooldownUntilTick,
+                agitationCooldownUntilTick = agitationCooldownUntilTick,
+            };
+        }
+
+        private void StoreKernelState(RM_GardenDefenseKernel.State st)
+        {
+            offenseScore = st.offenseScore;
+            agitationScore = st.agitationScore;
+            tier1CooldownUntilTick = st.tier1CooldownUntilTick;
+            tier2CooldownUntilTick = st.tier2CooldownUntilTick;
+            agitationCooldownUntilTick = st.agitationCooldownUntilTick;
         }
 
         // ---- Tier 1: the Iliss arc. Stinging, eerie, survivable. ----
