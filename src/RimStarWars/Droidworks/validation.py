@@ -584,15 +584,29 @@ def protocol_trade_advantage(t):
     negotiator = t.spawn_pawn("Colonist", hostile=False)
 
     with t.component("protocol_droid_shifts_prices", toggle="protocolTrade"):
-        r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival")
-        if not (r or {}).get("fired", (r or {}).get("success")):
-            # The worker's own pick can be a faction whose Trader group cannot spawn on this list (MEASURED live
-            # 2026-10-07: RUT_Jawa_DeepwaterCompact, whose trader is RSW_MonCalamari from a mod not in the
-            # quicktest list -> SpawnPawns empty -> TryExecuteWorker false though canFireNow=True). Retry with a
-            # vanilla trading faction; the price mechanic keys on the negotiator party, not on whose caravan it is.
-            r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", faction="OutlanderCivil",
-                              dryRun=False)
-        if not (r or {}).get("fired", (r or {}).get("success")):
+        def _fired(x):
+            return (x or {}).get("fired", (x or {}).get("success"))
+        # fire_incident's dryRun DEFAULTS TO TRUE: without dryRun=False it only resolves (canFireNow=True,
+        # fired=False -- the 2026-10-07 live symptom).
+        r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", dryRun=False)
+        tried = ["(worker's own pick)"]
+        # Also MEASURED 2026-10-07: the worker's own pick can be a campaign faction whose Trader group cannot spawn
+        # on this list (Player.log "has no usable PawnGroupMakers ... groupKind=Trader" for Thiraora and the Iracan
+        # League), and the FactionDef OutlanderCivil resolved to Thiraora there. Walk vanilla FactionDefs that
+        # field caravan traders; the price mechanic keys on the negotiator party, not on whose caravan it is.
+        for fac in ("OutlanderRough", "TribeCivil", "TribeRough", "OutlanderCivil"):
+            if _fired(r):
+                break
+            tried.append(fac)
+            r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", faction=fac, dryRun=False)
+        if not _fired(r):
+            if t.session is not None and (r or {}).get("canFireNow") is True:
+                # CAN fire but no faction on this list can field a trader: a property of the mod list, not evidence
+                # about the protocol droid. Never a PASS and never a FAIL.
+                t.upstream_reason = ("UNMEASURED: no faction on this list could field a caravan trader (tried %s; "
+                                     "canFireNow=True, fired=False): %s" % (", ".join(tried), str(r)[:200]))
+                t.upstream_failed = True
+                return
             raise ExpectationFailed(
                 "jawa/fire_incident(TraderCaravanArrival) did not fire: %s "
                 "(needs JAWA_GM_TOOLS -- see module docstring gap #5)" % r)

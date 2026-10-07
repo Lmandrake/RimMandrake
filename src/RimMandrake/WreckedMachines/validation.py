@@ -327,7 +327,7 @@ def _setting(t, action, field, value=None):
     return r if isinstance(r, dict) else {}
 
 
-def _def_field(t, defpath, field):
+def _def_field(t, defpath, field, null_ok=False):
     # deep=True is required for list fields: the default returns each non-scalar list item as its bare type name
     # (MEASURED live 2026-10-07: costList / stages / comps all read ['ThingDefCountClass', ...] before AND after a
     # rewrite, so every list-valued drive failed on a read that could not see values).
@@ -335,7 +335,14 @@ def _def_field(t, defpath, field):
     rows = (r or {}).get("defs") or [] if isinstance(r, dict) else []
     if not isinstance(r, dict) or r.get("success") is False or not rows:
         return None, r
-    return (rows[0].get("fields") or {}).get(field), r
+    fields = rows[0].get("fields") or {}
+    if null_ok and field not in fields:
+        # MEASURED live 2026-10-07: jawa/get_defs OMITS a null field from `fields` (a requested field whose value is
+        # null comes back as an empty dict). For a field that is legitimately null (a nulled designationCategory)
+        # that means "null", not "unreadable" -- the same reading LuminousPigment `_designation` takes. A def that
+        # did not resolve at all (no rows) is still unreadable, handled above.
+        return "(null)", r
+    return fields.get(field), r
 
 
 def _apply(t):
@@ -355,6 +362,37 @@ def _num(x):
         return None
 
 
+POWERCELL_WRECKED = "RM_WM_PowerCell_Wrecked"
+
+
+def _wrecked_power(t):
+    """The REAL output of a spawned Wrecked power cell. wreckedRatio scales the private
+    CompProperties_Power.basePowerConsumption (never serialised, so get_defs' idlePowerDraw is a vanilla -1.0
+    default constant and cannot move). The spawned Thing's CompPowerTrader.EnergyOutputPerTick is what the mod's
+    rewrite actually changes. Returns (energyOutputPerTick or None, raw)."""
+    if getattr(t, "_wm_wrecked_cell", None) is None:
+        cells = t.spawn(POWERCELL_WRECKED, count=1, at="point")
+        rows = (t.bridge_call("jawa/list_things", defName=POWERCELL_WRECKED,
+                              rect="%d,%d,20,20" % (cells[0][0] - 10, cells[0][1] - 10)) or {}).get("things") or []
+        if not rows:
+            return None, "no %s found after spawning it" % POWERCELL_WRECKED
+        t._wm_wrecked_cell = rows[0]["id"]
+    t.wait_ticks(250)
+    r = t.bridge_call("jawa/power_net", thing=t._wm_wrecked_cell)
+    if not isinstance(r, dict) or not r.get("success") or not r.get("isPowerTrader"):
+        return None, r
+    return r.get("energyOutputPerTick"), r
+
+
+def _wrecked_power_check(b, a):
+    # Default wreckedRatio 0.001 -> drive sets 0.01: a ten-fold change in output. Ratio of two reads, so the
+    # original cell's wattage does not need to be hard-coded. Output is negative (a producer).
+    bb, aa = _num(b), _num(a)
+    if not bb or aa is None:
+        return "Wrecked cell output unreadable (before %r, after %r)" % (b, a)
+    return None if abs(aa / bb - 10.0) < 0.5 else "Wrecked cell output ratio %.3f, expected 10 (0.001 -> 0.01)" % (aa / bb)
+
+
 # One chain per setting (a failure in one must not taint the others). Each: set the
 # setting live, re-run WreckedMachinesPatcher.Apply (what closing the settings window
 # runs), read the def it rewrites, restore; the restore read is the off arm.
@@ -368,20 +406,24 @@ DRIVES = (
      else "Repaired still names the restoration research"),
     ("allowDonorSmelter", True, "ThingDef/VFEFactory_AutomatedSmelter", "designationCategory",
      lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
-     else "donor smelter did not reappear in the Factories category"),
+     else "donor smelter did not reappear in the Factories category", "null_ok"),
     ("allowFullRestoration", True, "ThingDef/RM_WM_AutomatedSmelter_Repaired", "designationCategory",
      lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
-     else "the Original (Repaired) grade did not reappear in the Factories category"),
+     else "the Original (Repaired) grade did not reappear in the Factories category", "null_ok"),
     ("refurbishedRatio", 0.5, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
      lambda b, a: None if str(a) != str(b) else "Refurbished emanator mood did not change"),
     ("kludgedRatio", 0.1, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
      lambda b, a: None if str(a) != str(b) else "Kludged emanator mood did not change"),
-    ("wreckedRatio", 0.01, "ThingDef/RM_WM_PowerCell_Wrecked", "comps",
-     lambda b, a: None if str(a) != str(b) else "Wrecked power cell output did not change (-1 W -> -10 W)"),
+    ("wreckedRatio", 0.01, "ThingDef/RM_WM_PowerCell_Wrecked", "powerOutput", _wrecked_power_check, "power"),
 )
 
 
-def _make_drive(field, new, defpath, defield, check):
+def _make_drive(field, new, defpath, defield, check, mode=None):
+    def read(t):
+        if mode == "power":
+            return _wrecked_power(t)
+        return _def_field(t, defpath, defield, null_ok=(mode == "null_ok"))
+
     def chain(t):
         if t.session is None:
             with t.component("%s_rewrites_its_def" % field, toggle=field):
@@ -394,14 +436,14 @@ def _make_drive(field, new, defpath, defield, check):
             if old is None:
                 _unmeasured(t, "mod_settings_field could not read %s" % field)
                 return
-            before, raw = _def_field(t, defpath, defield)
+            before, raw = read(t)
             if before is None:
-                _unmeasured(t, "get_defs could not read %s %s: %s" % (defpath, defield, str(raw)[:160]))
+                _unmeasured(t, "could not read %s %s: %s" % (defpath, defield, str(raw)[:160]))
                 return
             try:
                 if not _setting(t, "set", field, new).get("success") or not _apply(t):
                     raise ExpectationFailed("could not set %s=%s and re-run Apply" % (field, new))
-                after, _ = _def_field(t, defpath, defield)
+                after, _ = read(t)
                 why = check(before, after)
                 if why:
                     raise ExpectationFailed("%s=%s: %s (before %r, after %r)" % (field, new, why, before, after))
@@ -409,7 +451,7 @@ def _make_drive(field, new, defpath, defield, check):
                 _setting(t, "set", field, old)
                 _apply(t)
         with t.component("%s_restores_the_shipped_def" % field, toggle=field):
-            back, _ = _def_field(t, defpath, defield)
+            back, _ = read(t)
             if str(back) != str(before):
                 raise ExpectationFailed("%s restored but %s %s reads %r, was %r" % (field, defpath, defield, back, before))
     chain.__name__ = "setting_%s" % field
