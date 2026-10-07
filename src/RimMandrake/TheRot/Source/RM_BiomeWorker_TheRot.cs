@@ -39,39 +39,25 @@ namespace RimMandrake.TheRot
 
 		public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
 		{
-			if (tile == null || tile.WaterCovered)
+			if (tile == null)
 			{
-				return -100f;
+				return RM_TheRotKernel.BiomeScore(true, false, false, 0f, 0f, 0f, default(RM_TheRotKernel.BiomeRanges));
 			}
 
 			RM_TheRotBiomeRanges r = biome.GetModExtension<RM_TheRotBiomeRanges>() ?? FallbackRanges;
-
-			if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
+			var ranges = new RM_TheRotKernel.BiomeRanges
 			{
-				return 0f;
-			}
-			if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-			{
-				return 0f;
-			}
-			if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-			{
-				return 0f;
-			}
-			if (tile.hilliness == Hilliness.Impassable)
-			{
-				return 0f;
-			}
-
-			float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-			return r.baseScore
-				 + (r.temperature.max - tile.temperature) * r.degreeWeight
-				 + (r.rainfall.max - tile.rainfall) / divisor;
+				tempMin = r.temperature.min, tempMax = r.temperature.max,
+				rainMin = r.rainfall.min, rainMax = r.rainfall.max,
+				elevMin = r.elevation.min, elevMax = r.elevation.max,
+				baseScore = r.baseScore, degreeWeight = r.degreeWeight, rainfallDivisor = r.rainfallDivisor
+			};
+			// the scoring (water, ranges, impassable, base + cold + dry bonus) is RM_TheRotKernel.BiomeScore, offline-fuzzed
+			return RM_TheRotKernel.BiomeScore(false, tile.WaterCovered, tile.hilliness == Hilliness.Impassable,
+				tile.temperature, tile.rainfall, tile.elevation, ranges);
 		}
 	}
 
-	/// <summary>static_call read of the live BiomeDef's worker type (jawa/get_defs cannot serialise System.Type
-	/// fields). "WORKER RimMandrake.TheRot.RM_BiomeWorker_TheRot | instance RM_BiomeWorker_TheRot" or "WORKER missing".</summary>
 	public static class RM_TheRotBiomeProof
 	{
 		public static string ProofWorker()

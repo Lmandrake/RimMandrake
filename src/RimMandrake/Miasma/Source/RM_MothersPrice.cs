@@ -55,7 +55,7 @@ namespace RimMandrake.Miasma
         {
             ThingComp c = AnchorOf(mother);
             object r = c?.props?.GetType().GetField("anchorRadius")?.GetValue(c.props);
-            return r is float f && f > 0f ? f : 16f;
+            return RM_MiasmaKernel.ReachOrDefault(r is float f ? (float?)f : null);
         }
 
         private static object Call(ThingComp comp, string method)
@@ -109,7 +109,7 @@ namespace RimMandrake.Miasma
         /// <summary>Pawn.PreTraded, PlayerSells. Returns what it did (for the proof).</summary>
         public static string Notify_Sold(Pawn young, string buyer)
         {
-            if (!RM_MiasmaSettings.mothersPriceEnabled || !IsStrandedYoung(young))
+            if (!RM_MiasmaKernel.SaleCounts(RM_MiasmaSettings.mothersPriceEnabled, IsStrandedYoung(young)))
             {
                 return "ignored";
             }
@@ -133,7 +133,7 @@ namespace RimMandrake.Miasma
         public static bool TryReturn(Pawn young, Pawn carrier, Pawn mother)
         {
             Map map = mother.Map;
-            if (MotherBetrayed(mother))
+            if (RM_MiasmaKernel.ReturnRefused(MotherBetrayed(mother)))
             {
                 Messages.Message("The warden mother will not take it. She remembers the one you sold.", mother,
                     MessageTypeDefOf.NegativeEvent, false);
@@ -237,8 +237,6 @@ namespace RimMandrake.Miasma
     {
         private const int ReturnPoll = 250;
         private const int BuyerPoll = 2500;
-        private const int BuyerDelayMin = 60000;
-        private const int BuyerDelayMax = 120000;
 
         private List<int> offered = new List<int>();
         private Dictionary<int, int> buyerAt = new Dictionary<int, int>();
@@ -294,7 +292,7 @@ namespace RimMandrake.Miasma
                 {
                     continue;
                 }
-                Pawn mother = mothers.FirstOrDefault(m => m.Position.DistanceTo(at) <= RM_MothersPrice.ReachOf(m));
+                Pawn mother = mothers.FirstOrDefault(m => RM_MiasmaKernel.ReturnInReach(true, m.Position.DistanceTo(at), RM_MothersPrice.ReachOf(m)));
                 if (mother != null && RM_MothersPrice.TryReturn(young, carrier, mother))
                 {
                     taken++;
@@ -305,30 +303,15 @@ namespace RimMandrake.Miasma
 
         public void CheckBuyers(int now)
         {
+            // the schedule (first sight books a buyer 60k..120k ticks out, a failed send retries in 60k, one offer per young) is
+            // RM_MiasmaKernel.BuyerPoll, offline-fuzzed
+            var held = new List<Pawn>();
             foreach (Pawn p in map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer).ToList())
             {
-                if (!RM_MothersPrice.IsStrandedYoung(p) || offered.Contains(p.thingIDNumber))
-                {
-                    continue;
-                }
-                if (!buyerAt.TryGetValue(p.thingIDNumber, out int at))
-                {
-                    buyerAt[p.thingIDNumber] = now + Rand.Range(BuyerDelayMin, BuyerDelayMax);
-                    continue;
-                }
-                if (now >= at)
-                {
-                    if (RM_MothersPrice.SendBuyer(p, map))
-                    {
-                        offered.Add(p.thingIDNumber);
-                        buyerAt.Remove(p.thingIDNumber);
-                    }
-                    else
-                    {
-                        buyerAt[p.thingIDNumber] = now + 60000;
-                    }
-                }
+                if (RM_MothersPrice.IsStrandedYoung(p)) held.Add(p);
             }
+            RM_MiasmaKernel.BuyerPoll(offered, buyerAt, held.Select(p => p.thingIDNumber), now, Rand.Range,
+                id => RM_MothersPrice.SendBuyer(held.First(p => p.thingIDNumber == id), map));
         }
 
         public override void ExposeData()

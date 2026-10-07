@@ -22,9 +22,6 @@ namespace RimMandrake.Miasma
             new object[] { "Cloth", 3f, 10, 25 },
             new object[] { "ComponentIndustrial", 1f, 1, 2 },
         };
-        private const int SeedStacks = 24;
-        private const int RestockStacks = 14;
-        private const int CapStacks = 70;
 
         private bool seeded;
         private int lastRecedeSeen = -1;
@@ -38,19 +35,9 @@ namespace RimMandrake.Miasma
         public override void MapComponentTick()
         {
             if (Find.TickManager.TicksGame % 250 != 0 || !IsMiasma || !RM_MiasmaSettings.flotsamEnabled) return;
-            if (!seeded)
-            {
-                seeded = true;
-                lastRecedeSeen = ReadRecedeTick();
-                Place(SeedStacks);
-                return;
-            }
-            int now = ReadRecedeTick();
-            if (now > lastRecedeSeen)
-            {
-                lastRecedeSeen = now;
-                Place(RestockStacks);
-            }
+            // seed once, then restock after each recede: RM_MiasmaKernel.FlotsamStep (offline-fuzzed)
+            int stacks = RM_MiasmaKernel.FlotsamStep(ref seeded, ref lastRecedeSeen, ReadRecedeTick());
+            if (stacks > 0) Place(stacks);
         }
 
         private int ReadRecedeTick()
@@ -73,9 +60,7 @@ namespace RimMandrake.Miasma
         public int Place(int baseStacks)
         {
             Prune();
-            int want = UnityEngine.Mathf.RoundToInt(baseStacks * RM_MiasmaSettings.flotsamAmount);
-            int room = UnityEngine.Mathf.RoundToInt(CapStacks * RM_MiasmaSettings.flotsamAmount) - placed.Count;
-            want = UnityEngine.Mathf.Min(want, room);
+            int want = RM_MiasmaKernel.FlotsamWant(baseStacks, RM_MiasmaSettings.flotsamAmount, placed.Count);
             if (want <= 0) return 0;
             List<IntVec3> cells = RootLineCells();
             if (cells.Count == 0) return 0;
@@ -100,15 +85,9 @@ namespace RimMandrake.Miasma
 
         private static object[] Pick()
         {
-            float total = 0f;
-            foreach (object[] r in Table) total += (float)r[1];
-            float roll = Rand.Value * total;
-            foreach (object[] r in Table)
-            {
-                roll -= (float)r[1];
-                if (roll <= 0f) return r;
-            }
-            return Table[0];
+            var weights = new List<float>();
+            foreach (object[] r in Table) weights.Add((float)r[1]);
+            return Table[RM_MiasmaKernel.FlotsamPick(weights, Rand.Value)];
         }
 
         public List<IntVec3> RootLineCells()

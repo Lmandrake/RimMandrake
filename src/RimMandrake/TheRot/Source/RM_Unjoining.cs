@@ -58,12 +58,13 @@ namespace RimMandrake.TheRot
             foreach (Hediff h in pawn.health.hediffSet.hediffs.ToList())
             {
                 RM_UnjoinableExtension ext = h.def.GetModExtension<RM_UnjoinableExtension>();
-                bool symbiont = (t != null && t.symbionts.Contains(h.def)) || (ext != null && ext.isSymbiont);
-                bool parasite = (t != null && t.parasites.Contains(h.def)) || ext != null;
-                if (!symbiont && !parasite) continue;
+                // what the draught takes and what leaves a husk: RM_TheRotKernel.Sort (offline-fuzzed)
+                RM_TheRotKernel.Sorting s = RM_TheRotKernel.Sort(t != null && t.parasites.Contains(h.def), t != null && t.symbionts.Contains(h.def),
+                    ext != null, ext != null && ext.isSymbiont);
+                if (!s.removed) continue;
                 pawn.health.RemoveHediff(h);
                 result.removed.Add(h.def);
-                if (symbiont) result.husks++;
+                if (s.husk) result.husks++;
             }
             if (result.husks > 0 && pawn.MapHeld != null)
             {
@@ -82,7 +83,7 @@ namespace RimMandrake.TheRot
             {
                 Hediff purge = pawn.health.hediffSet.GetFirstHediffOfDef(purgeDef) ?? pawn.health.AddHediff(purgeDef);
                 HediffComp_Disappears d = purge.TryGetComp<HediffComp_Disappears>();
-                if (d != null) d.ticksToDisappear = Mathf.Max(2500, Mathf.RoundToInt(RM_TheRotSettings.unjoiningPurgeHours * GenDate.TicksPerHour));
+                if (d != null) d.ticksToDisappear = RM_TheRotKernel.PurgeTicks(RM_TheRotSettings.unjoiningPurgeHours);
             }
             if (RM_TheRotSettings.unjoiningOrganDamage && t?.organInjury != null && !pawn.Dead)
             {
@@ -91,7 +92,7 @@ namespace RimMandrake.TheRot
                 if (organ != null)
                 {
                     Hediff_Injury scar = (Hediff_Injury)HediffMaker.MakeHediff(t.organInjury, pawn, organ);
-                    scar.Severity = Mathf.Min(t.organInjurySeverity, pawn.health.hediffSet.GetPartHealth(organ) - 1f);
+                    scar.Severity = RM_TheRotKernel.ScarSeverity(t.organInjurySeverity, pawn.health.hediffSet.GetPartHealth(organ));
                     if (scar.Severity > 0f)
                     {
                         HediffComp_GetsPermanent perm = scar.TryGetComp<HediffComp_GetsPermanent>();

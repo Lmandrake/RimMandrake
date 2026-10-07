@@ -27,7 +27,7 @@ namespace RimMandrake.Miasma
 
         public RM_RottingBedExtension Ext => def.GetModExtension<RM_RottingBedExtension>() ?? new RM_RottingBedExtension();
 
-        public static int RotDownTicks => Mathf.Max(2500, Mathf.RoundToInt(RM_MiasmaSettings.rottingBedRotDays * GenDate.TicksPerDay));
+        public static int RotDownTicks => RM_MiasmaKernel.RotDownTicks(RM_MiasmaSettings.rottingBedRotDays, GenDate.TicksPerDay);
 
         public Corpse Rotting => rotting;
         public int RotTicks => rotTicks;
@@ -44,21 +44,17 @@ namespace RimMandrake.Miasma
             {
                 return;
             }
-            if (rotting == null || rotting.Destroyed || !rotting.Spawned || !this.OccupiedRect().Contains(rotting.Position))
-            {
-                rotting = slotGroup.HeldThings.FirstOrDefault(CanRot) as Corpse;
-                rotTicks = 0;
-                if (rotting == null)
-                {
-                    return;
-                }
-            }
-            rotTicks += GenTicks.TickRareInterval;
-            if (rotTicks >= RotDownTicks)
+            // the clock (restart on a new corpse, +250 per rare tick, done at the setting's length) is RM_MiasmaKernel.RotStep, offline-fuzzed
+            bool valid = rotting != null && !rotting.Destroyed && rotting.Spawned && this.OccupiedRect().Contains(rotting.Position);
+            Corpse candidate = valid ? null : slotGroup.HeldThings.FirstOrDefault(CanRot) as Corpse;
+            int target = rotting != null ? 0 : -1;       // the kernel only needs to know whether a corpse is being rotted
+            int candidateId = candidate != null ? 0 : -1;
+            RM_MiasmaKernel.RotStep(ref target, ref rotTicks, valid, candidateId, RotDownTicks, out bool done);
+            if (!valid) rotting = candidate;
+            if (done)
             {
                 RotDown(rotting);
                 rotting = null;
-                rotTicks = 0;
             }
         }
 
@@ -81,12 +77,10 @@ namespace RimMandrake.Miasma
             ThingDef bones = Ext.bonesDef ?? DefDatabase<ThingDef>.GetNamedSilentFail("RM_Bones");
             if (bones != null)
             {
-                int n = RottingBedMath.BonesFor(inner.BodySize, Ext.bonesPerBodySize);
-                while (n > 0)
+                foreach (int stack in RM_MiasmaKernel.StackSplit(RottingBedMath.BonesFor(inner.BodySize, Ext.bonesPerBodySize), bones.stackLimit))
                 {
                     Thing b = ThingMaker.MakeThing(bones);
-                    b.stackCount = Mathf.Min(n, bones.stackLimit);
-                    n -= b.stackCount;
+                    b.stackCount = stack;
                     made.Add(b);
                 }
             }
@@ -133,7 +127,7 @@ namespace RimMandrake.Miasma
         /// <summary>Bones left by a body this size: body size x per-size, at least 1.</summary>
         public static int BonesFor(float bodySize, float perBodySize)
         {
-            return Mathf.Max(1, Mathf.RoundToInt(bodySize * perBodySize));
+            return RM_MiasmaKernel.BonesFor(bodySize, perBodySize);
         }
     }
 

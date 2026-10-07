@@ -39,7 +39,7 @@ namespace RimMandrake.Miasma
                 }
                 float full = -Props.PowerConsumption * RM_MiasmaSettings.decayCellPowerMultiplier;
                 float frac = refuelableComp.Props.fuelCapacity > 0f ? refuelableComp.Fuel / refuelableComp.Props.fuelCapacity : 0f;
-                return full * DecayCellMath.OutputFraction(frac, Ext.minOutputFraction);
+                return full * RM_MiasmaKernel.OutputFraction(frac, Ext.minOutputFraction);
             }
         }
 
@@ -61,13 +61,8 @@ namespace RimMandrake.Miasma
             {
                 return;
             }
-            float fuel = refuelableComp.Fuel;
-            if (lastFuel >= 0f && fuel < lastFuel)
-            {
-                digested += lastFuel - fuel;   // a refill raises fuel and is not digestion
-            }
-            lastFuel = fuel;
-            if (digested >= Ext.lifetimeFeed && Ext.spentDef != null && parent.Spawned)
+            // a refill raises fuel and is not digestion: RM_MiasmaKernel.DecayObserve (offline-fuzzed)
+            if (RM_MiasmaKernel.DecayObserve(ref lastFuel, ref digested, refuelableComp.Fuel, Ext.lifetimeFeed, Ext.spentDef != null, parent.Spawned))
             {
                 BecomeRottingBed();
             }
@@ -109,11 +104,7 @@ namespace RimMandrake.Miasma
         /// rising linearly to 1 when full.</summary>
         public static float OutputFraction(float fullness, float minFraction)
         {
-            if (fullness <= 0f)
-            {
-                return 0f;
-            }
-            return Mathf.Lerp(minFraction, 1f, Mathf.Clamp01(fullness));
+            return RM_MiasmaKernel.OutputFraction(fullness, minFraction);
         }
     }
 

@@ -135,9 +135,7 @@ namespace RimMandrake.StarWars.Droidworks
         {
             get
             {
-                if (lastResetTick < 0) return 0;
-                int elapsed = Find.TickManager.TicksGame - lastResetTick;
-                return elapsed < 0 ? 0 : elapsed;
+                return DroidworksKernel.TicksSince(Find.TickManager.TicksGame, lastResetTick);
             }
         }
 
@@ -189,23 +187,21 @@ namespace RimMandrake.StarWars.Droidworks
             // Blank and Mindless droids have no programming to drift. Programmable
             // and Sapient do (B1's ladder, DroidFormatTier.cs).
             DroidFormatTier tier = DroidFormatTierUtility.EffectiveTierOf(pawn);
-            if (tier < DroidFormatTier.Programmable) return null;
-
             int accreted = DroidServiceRecordUtility.AccretedCount(pawn);
-            if (accreted >= Props.maxAccreted) return null;
 
             // 2 y for the first, then one every driftIntervalTicks. Counted off
             // the number the droid ALREADY carries rather than off a stored
             // "next due" tick, so the ladder is recomputed from the pawn's real
             // state every time and cannot desync from it.
-            long due = (long)((Props.firstDriftTicks + (double)accreted * Props.driftIntervalTicks)
-                * RSW_DroidworksSettings.driftTime);
-            if (TicksSinceReset < due) return null;
+            long due = DroidworksKernel.DriftDue(Props.firstDriftTicks, Props.driftIntervalTicks, accreted,
+                RSW_DroidworksSettings.driftTime);
+            if (DroidworksKernel.DriftCheck(true, tier, accreted, Props.maxAccreted, TicksSinceReset, due)
+                != DriftVerdict.Due) return null;
 
             Trait gained = DroidServiceRecordUtility.TryAccreteIdiosyncrasy(pawn);
             if (gained == null) return null;
 
-            if (accreted == 0 && Props.promoteToSapient && tier == DroidFormatTier.Programmable)
+            if (DroidworksKernel.PromotesToSapient(accreted, Props.promoteToSapient, tier))
             {
                 // SetTier, not a raw severity write: its explicit
                 // AddOrRemoveNeedsAsAppropriate() is load-bearing (see its own

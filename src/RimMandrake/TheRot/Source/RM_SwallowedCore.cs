@@ -84,7 +84,7 @@ namespace RimMandrake.TheRot
 
         private Pawn Self => parent as Pawn;
 
-        public static int PingIntervalTicks => Mathf.Max(2500, Mathf.RoundToInt(RM_TheRotSettings.navigatorPingHours * 2500f));
+        public static int PingIntervalTicks => RM_TheRotKernel.PingIntervalTicks(RM_TheRotSettings.navigatorPingHours);
 
         public override void CompTick()
         {
@@ -98,30 +98,34 @@ namespace RimMandrake.TheRot
                 TryClaim(p);
             }
             if (!carrier) return;
-            int now = Find.TickManager.TicksGame;
-            bool engineNow = EngineOn(p.Map) != null;
-            if (engineNow && !engineSeen) nextPingTick = now;
-            engineSeen = engineNow;
-            if (nextPingTick < 0) nextPingTick = now;
-            if (now >= nextPingTick)
+            // the ping clock (an engine appearing pings at once, else every interval) is RM_TheRotKernel.PingDue, offline-fuzzed
+            if (RM_TheRotKernel.PingDue(ref nextPingTick, ref engineSeen, Find.TickManager.TicksGame, EngineOn(p.Map) != null, PingIntervalTicks))
             {
-                nextPingTick = now + PingIntervalTicks;
                 Ping(p);
             }
         }
 
         public bool TryClaim(Pawn p)
         {
+            // who carries the world's one core is RM_TheRotKernel.Claim (offline-fuzzed); the cap and tile reads stay here
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
-            if (w == null || w.spent || p.Faction != null) return false;
-            if (!w.carrierId.NullOrEmpty()) return carrier = w.carrierId == p.ThingID;
-            if (RM_CompGutDigest.OverCap(p)) return false;
-            int tile = p.def.GetModExtension<RM_SwallowedCoreExtension>()?.campaignTile ?? -1;
-            if (tile >= 0 && p.Map.Tile.tileId != tile) return false;
-            w.carrierId = p.ThingID;
-            carrier = true;
-            integrity = 100f;
-            return true;
+            bool worldOk = w != null && !w.spent && p.Faction == null;
+            bool firstClaim = worldOk && w.carrierId.NullOrEmpty();
+            RM_TheRotKernel.ClaimResult r = RM_TheRotKernel.Claim(w != null, w != null && w.spent, p.Faction != null, w?.carrierId, p.ThingID,
+                firstClaim && RM_CompGutDigest.OverCap(p),
+                firstClaim ? (p.def.GetModExtension<RM_SwallowedCoreExtension>()?.campaignTile ?? -1) : -1,
+                firstClaim ? p.Map.Tile.tileId : -1);
+            switch (r)
+            {
+                case RM_TheRotKernel.ClaimResult.Mine: return carrier = true;
+                case RM_TheRotKernel.ClaimResult.NotMine: return carrier = false;
+                case RM_TheRotKernel.ClaimResult.New:
+                    w.carrierId = p.ThingID;
+                    carrier = true;
+                    integrity = 100f;
+                    return true;
+                default: return false;
+            }
         }
 
         public static Building_GravEngine EngineOn(Map map)
@@ -172,7 +176,7 @@ namespace RimMandrake.TheRot
             base.PostPostApplyDamage(dinfo, totalDamageDealt);
             if (!carrier || !RM_TheRotSettings.navigatorCore) return;
             if (!FromShipWeapon(dinfo, parent.MapHeld)) return;
-            integrity = Mathf.Max(0f, integrity - totalDamageDealt * RM_TheRotSettings.navigatorShipDamageFactor);
+            integrity = RM_TheRotKernel.IntegrityAfterHit(integrity, totalDamageDealt, RM_TheRotSettings.navigatorShipDamageFactor);
         }
 
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
@@ -187,7 +191,7 @@ namespace RimMandrake.TheRot
             if (drop != null)
             {
                 GenPlace.TryPlaceThing(drop, parent.PositionHeld, prevMap, ThingPlaceMode.Near);
-                Messages.Message(integrity >= RM_TheRotSettings.navigatorRuinThreshold
+                Messages.Message(!RM_TheRotKernel.DropsRuined(integrity, RM_TheRotSettings.navigatorRuinThreshold)
                         ? "Something heavy slid out of the hwelgrue: an old drive core, slick with gut."
                         : "The drive core inside the hwelgrue came out in pieces. The ship's guns did that.",
                     new LookTargets(drop), MessageTypeDefOf.NeutralEvent, false);
@@ -196,7 +200,7 @@ namespace RimMandrake.TheRot
 
         public static Thing MakeDrop(float integrity)
         {
-            if (integrity < RM_TheRotSettings.navigatorRuinThreshold)
+            if (RM_TheRotKernel.DropsRuined(integrity, RM_TheRotSettings.navigatorRuinThreshold))
             {
                 return ThingMaker.MakeThing(RM_HwelgrueDefOf.RM_RuinedDriveCore);
             }
@@ -236,7 +240,7 @@ namespace RimMandrake.TheRot
     {
         public float integrity = 100f;
 
-        public float RangeFactor => RM_TheRotSettings.navigatorCore ? 1f + RM_TheRotSettings.navigatorRangeBonus * integrity / 100f : 1f;
+        public float RangeFactor => RM_TheRotKernel.RangeFactor(RM_TheRotSettings.navigatorCore, RM_TheRotSettings.navigatorRangeBonus, integrity);
 
         public override string CompInspectStringExtra()
         {

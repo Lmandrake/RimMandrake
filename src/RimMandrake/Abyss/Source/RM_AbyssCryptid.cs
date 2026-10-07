@@ -126,10 +126,7 @@ namespace RimMandrake.Abyss
             {
                 Phantom p = comp.phantoms[i];
                 float d = (p.cell - c).LengthHorizontal;
-                if (d < p.radius)
-                {
-                    best = Mathf.Max(best, 1f - Mathf.SmoothStep(0f, 1f, d / p.radius));
-                }
+                best = Mathf.Max(best, RM_DarkKernel.PhantomClearance(d, p.radius));
             }
             return best;
         }
@@ -153,20 +150,15 @@ namespace RimMandrake.Abyss
         /// <summary>Cells inside a ring: 3+ durrgak cairns within 2.9.</summary>
         public HashSet<IntVec3> CircleCells()
         {
-            var counts = new Dictionary<IntVec3, int>();
             var result = new HashSet<IntVec3>();
             ThingDef cairn = DefDatabase<ThingDef>.GetNamedSilentFail("RM_DurrgakCairn");
             if (cairn == null) return result;
-            foreach (Thing t in map.listerThings.ThingsOfDef(cairn))
-            {
-                foreach (IntVec3 c in GenRadial.RadialCellsAround(t.Position, 2.9f, true))
-                {
-                    if (!c.InBounds(map)) continue;
-                    counts.TryGetValue(c, out int n);
-                    counts[c] = n + 1;
-                    if (n + 1 >= 3) result.Add(c);
-                }
-            }
+            // a ring is a cell with CircleNeed+ cairns within CircleRadius: RM_DarkKernel.CircleCells (offline-fuzzed)
+            var cairns = new List<int[]>();
+            foreach (Thing t in map.listerThings.ThingsOfDef(cairn)) cairns.Add(new[] { t.Position.x, t.Position.z });
+            int width = map.Size.x;
+            foreach (int key in RM_DarkKernel.CircleCells(cairns, width, map.Size.z))
+                result.Add(new IntVec3(key % width, 0, key / width));
             return result;
         }
 
@@ -200,19 +192,22 @@ namespace RimMandrake.Abyss
 
         private void Exchange(Thing taken, IntVec3 c)
         {
-            float value = Mathf.Max(5f, taken.MarketValue * taken.stackCount) * Rand.Range(0.8f, 1.3f);
+            float value = RM_DarkKernel.ExchangeValue(taken.MarketValue, taken.stackCount, Rand.Value);
             string takenLabel = taken.LabelCap;
             taken.Destroy(DestroyMode.Vanish);
             var left = new List<string>();
             ThingDef tholin = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Tholin");
-            foreach (ThingDef def in new[] { ThingDefOf.ComponentIndustrial, tholin, ThingDefOf.Steel })
+            var defs = new List<ThingDef>();
+            foreach (ThingDef def in new[] { ThingDefOf.ComponentIndustrial, tholin, ThingDefOf.Steel }) if (def != null) defs.Add(def);
+            var bmv = new List<float>(); var stack = new List<int>(); var full = new List<bool>();
+            foreach (ThingDef def in defs) { bmv.Add(def.BaseMarketValue); stack.Add(def.stackLimit); full.Add(def == ThingDefOf.Steel); }
+            var counts = new int[defs.Count];
+            RM_DarkKernel.ExchangeGoods(value, bmv, stack, full, counts);   // what is left in return: RM_DarkKernel (offline-fuzzed)
+            for (int i = 0; i < defs.Count; i++)
             {
-                if (def == null || value < def.BaseMarketValue) continue;
-                int n = Mathf.Min(def.stackLimit, Mathf.FloorToInt(value * (def == ThingDefOf.Steel ? 1f : 0.4f) / def.BaseMarketValue));
-                if (n <= 0) continue;
-                Thing g = ThingMaker.MakeThing(def);
-                g.stackCount = n;
-                value -= n * def.BaseMarketValue;
+                if (counts[i] <= 0) continue;
+                Thing g = ThingMaker.MakeThing(defs[i]);
+                g.stackCount = counts[i];
                 if (GenPlace.TryPlaceThing(g, c, map, ThingPlaceMode.Near)) left.Add(g.LabelCap);
             }
             exchanges++;

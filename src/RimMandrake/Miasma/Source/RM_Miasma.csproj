@@ -58,6 +58,7 @@
     <Compile Include="RM_DecayCells.cs" />
     <Compile Include="RM_RottingBed.cs" />
     <Compile Include="RM_MiasmaProof.cs" />
+    <Compile Include="RM_MiasmaKernel.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

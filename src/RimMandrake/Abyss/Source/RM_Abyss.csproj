@@ -57,6 +57,8 @@
     <Compile Include="RM_AbyssSoundHook.cs" />
     <Compile Include="RM_AbyssCryptid.cs" />
     <Compile Include="RM_BroodWakeLogic.cs" />
+    <Compile Include="RM_AbyssKernel.cs" />
+    <Compile Include="RM_AbyssStateKernel.cs" />
     <Compile Include="RM_BroodLair.cs" />
     <Compile Include="RM_BroodEgg.cs" />
     <Compile Include="RM_ShipWreck.cs" />

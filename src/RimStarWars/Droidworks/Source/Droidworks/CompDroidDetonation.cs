@@ -45,6 +45,7 @@ namespace RimMandrake.StarWars.Droidworks
             // declaration is always the LAST DroidworksExtension in the list.
             DroidworksExtension ext = pawn.def.modExtensions?.OfType<DroidworksExtension>().LastOrDefault();
             float density = ext?.energyDensity ?? 0f;
+            density = DroidworksKernel.EffectiveDensity(density, ext != null, ext != null && ext.deliberateDenyModule);
             // Deliberate deny-your-parts modules (design/Jawa/droid_system_build_spec.md
             // line ~99: "Deliberate deny-your-parts modules and Gonk/KX-12 nature raise
             // density") raise the EFFECTIVE density to at least 1 — a battle-family race
@@ -52,14 +53,11 @@ namespace RimMandrake.StarWars.Droidworks
             // module; a race whose family density already exceeds 1 is unaffected. This is
             // additive headroom only, never a bypass of the charge guard below: a module
             // cannot make a drained wreck explode ("a wreck has no power" is unconditional).
-            if (ext != null && ext.deliberateDenyModule)
-                density = Mathf.Max(density, 1f);
-            if (density <= 0f) return;
             float charge = pawn.needs?.TryGetNeed<Need_Power>()?.CurLevel ?? 0f;
-            if (charge <= 0.05f) return;          // a wreck has no power
-            float scale = charge * density * RSW_DroidworksSettings.detonationSize;
-            float radius = Props.baseRadius * Mathf.Sqrt(scale);
-            int damage = Mathf.RoundToInt(50f * scale);
+            float scale = DroidworksKernel.DetonationScale(charge, density, RSW_DroidworksSettings.detonationSize);
+            if (scale <= 0f) return;              // no density, or a wreck has no power
+            float radius = DroidworksKernel.DetonationRadius(Props.baseRadius, scale);
+            int damage = DroidworksKernel.DetonationDamage(scale);
             GenExplosion.DoExplosion(
                 pawn.PositionHeld, prevMap, radius,
                 Props.damageDef ?? DamageDefOf.Bomb,

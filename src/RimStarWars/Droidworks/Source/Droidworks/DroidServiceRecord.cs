@@ -5,34 +5,9 @@ using Verse;
 
 namespace RimMandrake.StarWars.Droidworks
 {
-    /// <summary>
-    /// The eight chassis families, by name, for XML that has to talk about a
-    /// family. The integer values ARE DroidworksExtension.chassisClass's own
-    /// documented mapping ("0 labour 1 protocol 2 astromech 3 battle 4 heavy
-    /// 5 probe 6 power 7 primitive", DroidworksModExtension.cs) - the same
-    /// house pattern DroidFormatTier already uses, where the enum's integer
-    /// values ARE the hediff severity ladder minus one.
-    ///
-    /// Why an enum at all when CompDWHeadDropper/CompDWPartDropper switch on
-    /// the raw int: the per-family weights below are a table a DESIGNER edits
-    /// in XML, and "&lt;chassis&gt;Protocol&lt;/chassis&gt;" is reviewable where
-    /// "&lt;chassisClass&gt;1&lt;/chassisClass&gt;" is not. DroidworksExtension's
-    /// field is deliberately NOT retyped to this enum: it is read by three
-    /// other files and written by gen_droidworks_defs.py, and a retype there
-    /// is a refactor, not this packet. ChassisOf() below is the ONE place the
-    /// int becomes the enum.
-    /// </summary>
-    public enum DroidChassis
-    {
-        Labour = 0,
-        Protocol = 1,
-        Astromech = 2,
-        Battle = 3,
-        Heavy = 4,
-        Probe = 5,
-        Power = 6,
-        Primitive = 7
-    }
+    // DroidChassis (the eight chassis families, named for XML) is declared in DroidworksKernel.cs so the offline fuzz
+    // compiles it. Its integer values ARE DroidworksExtension.chassisClass's mapping; ChassisOf() below is the ONE place
+    // the int becomes the enum, and DroidworksExtension.chassisClass is deliberately NOT retyped to it.
 
     /// <summary>One family's draw weight for one idiosyncrasy trait.</summary>
     public class ChassisTraitWeight
@@ -74,14 +49,15 @@ namespace RimMandrake.StarWars.Droidworks
 
         public float WeightFor(DroidChassis chassis)
         {
-            if (chassisWeights != null)
+            if (chassisWeights == null) return defaultWeight;
+            var chassisList = new List<DroidChassis>(chassisWeights.Count);
+            var weights = new List<float>(chassisWeights.Count);
+            for (int i = 0; i < chassisWeights.Count; i++)
             {
-                for (int i = 0; i < chassisWeights.Count; i++)
-                {
-                    if (chassisWeights[i].chassis == chassis) return chassisWeights[i].weight;
-                }
+                chassisList.Add(chassisWeights[i].chassis);
+                weights.Add(chassisWeights[i].weight);
             }
-            return defaultWeight;
+            return DroidworksKernel.ChassisWeight(defaultWeight, chassisList, weights, chassis);
         }
     }
 
@@ -150,9 +126,11 @@ namespace RimMandrake.StarWars.Droidworks
                 .ToList();
             if (candidates.Count == 0) return null;
 
-            TraitDef chosen = candidates.RandomElementByWeightWithFallback(
-                d => WeightOf(d, chassis), null);
-            if (chosen == null) return null;
+            var weights = new List<float>(candidates.Count);
+            for (int i = 0; i < candidates.Count; i++) weights.Add(WeightOf(candidates[i], chassis));
+            int pick = DroidworksKernel.WeightedPick(weights, Rand.Value);
+            if (pick < 0) return null;
+            TraitDef chosen = candidates[pick];
 
             // degree 0 (every idiosyncrasy is single-degree), forced: true - the
             // same shape DroidworksHardwareQuirks.TryGainRandomQuirk and
@@ -167,12 +145,8 @@ namespace RimMandrake.StarWars.Droidworks
         {
             DroidIdiosyncrasyExtension ext = def.GetModExtension<DroidIdiosyncrasyExtension>();
             if (ext == null) return 0f;
-            float w = ext.WeightFor(chassis);
-            // Clamped without Mathf on purpose: this file has no other reason to
-            // reference UnityEngine, and a negative weight would make
-            // RandomElementByWeight's running total nonsense rather than just
-            // making the trait rare.
-            return w < 0f ? 0f : w;
+            // Clamped: a negative weight would make the running total nonsense rather than just making the trait rare.
+            return DroidworksKernel.ClampWeight(ext.WeightFor(chassis));
         }
 
         /// <summary>

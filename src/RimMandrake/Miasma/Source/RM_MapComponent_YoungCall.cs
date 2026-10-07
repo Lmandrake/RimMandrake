@@ -48,18 +48,21 @@ namespace RimMandrake.Miasma
 
         private void SummonMother(Pawn young)
         {
-            Pawn mother = null;
-            float best = MaxMotherDist * MaxMotherDist;
+            // the nearest wild warden mother strictly inside 60 cells: RM_MiasmaKernel.NearestFirstStrict (offline-fuzzed)
+            var mothers = new List<Pawn>();
+            var distSq = new List<float>();
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
                 if (p.kindDef == null || p.kindDef.defName != "RM_WardenMother" || p.Dead || p.Downed) continue;
                 if (p.Faction == Faction.OfPlayer) continue;
-                float d = (p.Position - young.Position).LengthHorizontalSquared;
-                if (d < best) { best = d; mother = p; }
+                mothers.Add(p);
+                distSq.Add((p.Position - young.Position).LengthHorizontalSquared);
             }
-            if (mother == null) return;
+            int pick = RM_MiasmaKernel.NearestFirstStrict(distSq, MaxMotherDist * MaxMotherDist);
+            if (pick < 0) return;
+            Pawn mother = mothers[pick];
 
             IntVec3 target = NearestWaterCell(young.Position, mother);
             if (!target.IsValid || mother.Position == target) return;

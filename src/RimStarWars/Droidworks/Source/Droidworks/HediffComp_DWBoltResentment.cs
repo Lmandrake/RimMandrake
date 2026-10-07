@@ -61,9 +61,8 @@ namespace RimMandrake.StarWars.Droidworks
             if (p.RaceProps == null || p.RaceProps.intelligence != Intelligence.Humanlike) return;
             if (!p.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt)) return;
 
-            float gainPerInterval = Props.severityPerDayWhileBolted * RSW_DroidworksSettings.boltResentmentRate
-                / GenDate.TicksPerDay * ScanIntervalTicks;
-            parent.Severity = Mathf.Min(parent.def.maxSeverity, parent.Severity + gainPerInterval);
+            parent.Severity = DroidworksKernel.ResentmentAfter(parent.Severity, Props.severityPerDayWhileBolted,
+                RSW_DroidworksSettings.boltResentmentRate, ScanIntervalTicks, GenDate.TicksPerDay, parent.def.maxSeverity);
         }
     }
 }

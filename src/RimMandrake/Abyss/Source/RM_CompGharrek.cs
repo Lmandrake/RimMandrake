@@ -32,31 +32,19 @@ namespace RimMandrake.Abyss
         {
             Pawn pawn = parent as Pawn;
             if (pawn == null || !pawn.Spawned || pawn.Dead || !pawn.IsHashIntervalTick(CheckInterval)) return;
-            if (!RM_AbyssSettings.gustFeedersEnabled)
-            {
-                SetDormant(pawn, false);
-                open = true;
-                return;
-            }
+            // the rule (open and awake in a gust, fed once per gust, dormant out of one, always open with the option off) is
+            // RM_GustKernel.GharrekStep; this reads the engine in and applies the result
             var gusts = pawn.Map.GetComponent<RM_MapComponent_GustController>();
-            if (gusts == null) return;
+            if (RM_AbyssSettings.gustFeedersEnabled && gusts == null) return;
 
-            bool gust = gusts.IsGust;
-            if (gust)
+            float fed = RM_GustKernel.GharrekStep(RM_AbyssSettings.gustFeedersEnabled, gusts != null && gusts.IsGust,
+                gusts != null ? gusts.GustCount : 0, Props.nutritionPerGust, ref lastFedGust, out bool dormant, out open);
+            SetDormant(pawn, dormant);
+            if (fed > 0f)
             {
-                SetDormant(pawn, false);
-                if (gusts.GustCount != lastFedGust)
-                {
-                    lastFedGust = gusts.GustCount;
-                    Need_Food food = pawn.needs?.food;
-                    if (food != null) food.CurLevel += Props.nutritionPerGust;
-                }
+                Need_Food food = pawn.needs?.food;
+                if (food != null) food.CurLevel += fed;
             }
-            else
-            {
-                SetDormant(pawn, true);
-            }
-            open = gust;
         }
 
         private void SetDormant(Pawn pawn, bool dormant)

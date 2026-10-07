@@ -61,12 +61,12 @@ namespace RimMandrake.Abyss
     public class RM_MapComponent_FoldLanes : MapComponent
     {
         public const string LampDef = "RM_FoldLamp";
-        public const int LaneLength = 14;
-        private const int FadeFrom = 10;
+        public const int LaneLength = RM_DarkKernel.LaneLength;
         private const int RebuildTicks = 250;
 
-        private float[] clear;
-        private readonly List<int> touched = new List<int>();
+        // The lane shape (3 / 5 / 3 wide, fading over its last cells, stopped by walls) and the touched-cell grid are in
+        // RM_DarkKernel (RM_AbyssKernel.cs), offline-fuzzed.
+        private RM_DarkKernel.ClearGrid grid;
         private int lastBuild = -999999;
         private ThingDef lampDef;
 
@@ -84,23 +84,15 @@ namespace RimMandrake.Abyss
         {
             int now = Find.TickManager.TicksGame;
             if (now - lastBuild >= RebuildTicks || now < lastBuild) Rebuild(now);
-            if (touched.Count == 0 || !c.InBounds(map)) return 0f;
-            return clear[map.cellIndices.CellToIndex(c)];
-        }
-
-        private static int HalfWidth(int d)
-        {
-            if (d <= 2) return 1;
-            if (d <= 9) return 2;
-            return 1;
+            if (grid == null || grid.touched.Count == 0 || !c.InBounds(map)) return 0f;
+            return grid.clear[map.cellIndices.CellToIndex(c)];
         }
 
         public void Rebuild(int now)
         {
             lastBuild = now;
-            if (clear == null) clear = new float[map.cellIndices.NumGridCells];
-            for (int i = 0; i < touched.Count; i++) clear[touched[i]] = 0f;
-            touched.Clear();
+            if (grid == null) grid = new RM_DarkKernel.ClearGrid(map.cellIndices.NumGridCells);
+            grid.Reset();
             LitLampCount = 0;
             if (!RM_AbyssSettings.foldLaneEnabled) return;
             if (lampDef == null) lampDef = DefDatabase<ThingDef>.GetNamedSilentFail(LampDef);
@@ -119,26 +111,15 @@ namespace RimMandrake.Abyss
         {
             IntVec3 fwd = rot.FacingCell;
             IntVec3 side = rot.Rotated(RotationDirection.Clockwise).FacingCell;
-            Mark(origin, 1f);
-            for (int lateral = -2; lateral <= 2; lateral++)
-            {
-                for (int d = 1; d <= LaneLength; d++)
-                {
-                    if (Mathf.Abs(lateral) > HalfWidth(d)) continue;
-                    IntVec3 c = origin + fwd * d + side * lateral;
-                    if (!c.InBounds(map) || c.Filled(map)) break;
-                    float v = d <= FadeFrom ? 1f : 1f - (d - FadeFrom) / (float)(LaneLength - FadeFrom + 1);
-                    Mark(c, v);
-                }
-            }
+            RM_DarkKernel.LayLane(origin.x, origin.z, fwd.x, fwd.z, side.x, side.z,
+                (x, z) => { var c = new IntVec3(x, 0, z); return !c.InBounds(map) || c.Filled(map); },
+                (x, z, v) => Mark(new IntVec3(x, 0, z), v));
         }
 
         private void Mark(IntVec3 c, float v)
         {
             if (!c.InBounds(map)) return;
-            int idx = map.cellIndices.CellToIndex(c);
-            if (clear[idx] <= 0f) touched.Add(idx);
-            if (v > clear[idx]) clear[idx] = v;
+            grid.Mark(map.cellIndices.CellToIndex(c), v);
         }
     }
 

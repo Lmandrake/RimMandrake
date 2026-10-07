@@ -52,10 +52,9 @@ namespace RimMandrake.Miasma
 			}
 
 			Map map = parent.Map;
-			float radiusSq = Props.huntRadius * Props.huntRadius;
-			Pawn nearest = null;
-			float nearestDistSq = radiusSq;
-
+			// the pick (nearest wild scuttler in range; of equal distances the LAST wins) is RM_MiasmaKernel.NearestLastInclusive, offline-fuzzed
+			var candidates = new List<Pawn>();
+			var distSq = new List<float>();
 			for (int d = 0; d < Props.preyDefNames.Count; d++)
 			{
 				ThingDef preyDef = DefDatabase<ThingDef>.GetNamedSilentFail(Props.preyDefNames[d]);
@@ -76,14 +75,13 @@ namespace RimMandrake.Miasma
 						continue; // never a tamed/factioned animal, wild scuttlers only
 					}
 
-					float distSq = (candidate.Position - parent.Position).LengthHorizontalSquared;
-					if (distSq <= nearestDistSq)
-					{
-						nearest = candidate;
-						nearestDistSq = distSq;
-					}
+					candidates.Add(candidate);
+					distSq.Add((candidate.Position - parent.Position).LengthHorizontalSquared);
 				}
 			}
+
+			int pick = RM_MiasmaKernel.NearestLastInclusive(distSq, Props.huntRadius * Props.huntRadius);
+			Pawn nearest = pick >= 0 ? candidates[pick] : null;
 
 			if (nearest == null)
 			{

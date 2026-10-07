@@ -146,16 +146,14 @@ namespace RimMandrake.StarWars.Droidworks
             if (adv == 0f) return;
             // Re-apply vanilla's own floor and rounding tail, which our factor
             // would otherwise step through.
-            __result = Mathf.Max(__result * (1f - adv), TradeUtility.MinimumBuyPrice);
-            if (__result > 99.5f) __result = Mathf.Round(__result);
+            __result = DroidworksKernel.BuyPrice(__result, adv, TradeUtility.MinimumBuyPrice);
         }
 
         public static void PostfixSell(ref float __result)
         {
             float adv = CurrentAdvantage();
             if (adv == 0f) return;
-            __result = Mathf.Max(__result * (1f + adv), TradeUtility.MinimumSellPrice);
-            if (__result > 99.5f) __result = Mathf.Round(__result);
+            __result = DroidworksKernel.SellPrice(__result, adv, TradeUtility.MinimumSellPrice);
         }
 
         public static void PostfixTooltip(ref string __result)
@@ -207,10 +205,8 @@ namespace RimMandrake.StarWars.Droidworks
             cachedTraderKnown = traderParty != null;
             cachedTraderHas = cachedTraderKnown && PartyHasProtocolDroid(traderParty);
 
-            int net = cachedPlayerHas ? 1 : -1;
-            if (cachedTraderKnown) net += cachedTraderHas ? -1 : 1;
-
-            cachedAdvantage = net * RSW_DroidworksSettings.protocolTradePerSide;
+            cachedAdvantage = DroidworksKernel.TradeAdvantage(cachedPlayerHas, cachedTraderKnown, cachedTraderHas,
+                RSW_DroidworksSettings.protocolTradePerSide);
             cachedTrader = TradeSession.trader;
             cachedNegotiator = TradeSession.playerNegotiator;
             cachedTick = now;

@@ -11,7 +11,6 @@ namespace RimMandrake.Abyss
     public class RM_MapComponent_Etchfall : MapComponent
     {
         private const int PassInterval = 250;
-        private const int CellsPerPass = 24;       // tries per pass at strength 1
         private const float DamagePerHit = 6f;     // at strength 1
 
         public RM_MapComponent_Etchfall(Map map) : base(map) { }
@@ -36,7 +35,7 @@ namespace RimMandrake.Abyss
             float strength = RM_AbyssSettings.etchfallStrength;
             if (strength <= 0.001f || !IsGrainfall(map)) return;
 
-            int tries = Mathf.CeilToInt(CellsPerPass * strength * RM_MapComponent_Dark.GrainMultiplier(map));
+            int tries = RM_DarkKernel.EtchTries(strength, RM_MapComponent_Dark.GrainMultiplier(map));
             for (int i = 0; i < tries; i++)
             {
                 IntVec3 c = CellRect.WholeMap(map).RandomCell;

@@ -50,6 +50,7 @@
     <Compile Include="RM_GutMother.cs" />
     <Compile Include="RM_NavigatorLog.cs" />
     <Compile Include="RM_Unjoining.cs" />
+    <Compile Include="RM_TheRotKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

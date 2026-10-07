@@ -57,69 +57,25 @@ namespace RimMandrake.Miasma
 
         public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
         {
-            if (tile == null || tile.WaterCovered)
-            {
-                return -100f;
-            }
-
-            float rarity = RM_MiasmaSettings.biomeRarityFactor;
-            if (rarity <= 0.001f)
-            {
-                return -100f;
-            }
+            if (tile == null) return RM_MiasmaKernel.BiomeScore(true, false, false, false, 0f, 0f, 0f, 0f, default(RM_MiasmaKernel.BiomeRanges), null);
 
             RM_MiasmaBiomeRanges r = biome.GetModExtension<RM_MiasmaBiomeRanges>() ?? FallbackRanges;
-
-            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
+            var ranges = new RM_MiasmaKernel.BiomeRanges
             {
-                return 0f;
-            }
-            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-            {
-                return 0f;
-            }
-            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-            {
-                return 0f;
-            }
-            if (tile.hilliness == Hilliness.Impassable || tile.hilliness == Hilliness.Mountainous)
-            {
-                return 0f;
-            }
-
-            // A mangal delta is riverine by nature — a dry tile with no
-            // river never scores, matching the twin's own "between a dying
-            // sea and the rivers that feed it". Rivers/riverDist live on
-            // SurfaceTile, not the base Tile GetScore is handed (confirmed
-            // against src/RimMandrake/bridgetools/JawaBench.BridgeTools/
-            // JawaBenchWorldTools.cs's own W4 river-reading code) — a
-            // non-SurfaceTile (should not occur for a player-reachable
-            // world tile, but the cast is defensive) scores as if riverless
-            // rather than throwing.
-            // 🔴 Read the raw potentialRivers field, NEVER the Rivers getter:
-            // SurfaceTile.Rivers dereferences PrimaryBiome.allowRivers, and
-            // GetScore runs from WorldGenStep_Terrain.BiomeFrom BEFORE the
-            // tile's biome is assigned, so the getter NREs on the first tile.
-            // That aborted terrain generation, left the layer's tile list
-            // empty, and cascaded into the WorldPathGrid out-of-range crash
-            // that broke every quicktest world (DEBUG_GAME_READY_WORLDUI_CRASH_1).
+                tempMin = r.temperature.min, tempMax = r.temperature.max,
+                rainMin = r.rainfall.min, rainMax = r.rainfall.max,
+                elevMin = r.elevation.min, elevMax = r.elevation.max,
+                baseScore = r.baseScore, degreeWeight = r.degreeWeight, rainfallDivisor = r.rainfallDivisor,
+                riverOrCoastBonus = r.riverOrCoastBonus, spawnChance = r.spawnChance
+            };
             SurfaceTile surfaceTile = tile as SurfaceTile;
-            if (surfaceTile == null || surfaceTile.potentialRivers == null || surfaceTile.potentialRivers.Count == 0)
-            {
-                return 0f;
-            }
-
-            float gate = r.spawnChance * rarity;
-            if (gate < 1f && !Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt))
-            {
-                return 0f;
-            }
-
-            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-            return r.baseScore
-                 + (tile.temperature - r.temperature.min) * r.degreeWeight
-                 + (tile.rainfall - r.rainfall.min) / divisor
-                 + r.riverOrCoastBonus;
+            bool hasRiver = surfaceTile != null && surfaceTile.potentialRivers != null && surfaceTile.potentialRivers.Count > 0;
+            // the scoring (water, rarity slider, ranges, hills, a river to flood, seeded gate, base + warm + wet + river bonus) is
+            // RM_MiasmaKernel.BiomeScore (offline-fuzzed)
+            return RM_MiasmaKernel.BiomeScore(false, tile.WaterCovered,
+                tile.hilliness == Hilliness.Impassable || tile.hilliness == Hilliness.Mountainous, hasRiver,
+                RM_MiasmaSettings.biomeRarityFactor, tile.temperature, tile.rainfall, tile.elevation, ranges,
+                gate => Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt));
         }
     }
 }

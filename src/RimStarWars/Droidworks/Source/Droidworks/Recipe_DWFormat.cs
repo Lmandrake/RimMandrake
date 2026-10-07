@@ -55,6 +55,12 @@ namespace RimMandrake.StarWars.Droidworks
             DroidFormatTier before = DroidFormatTierUtility.EffectiveTierOf(pawn);
             DroidFormatTierUtility.SetTier(pawn, TargetTier);
 
+            // A deformat to Blank wipes the programming: the idiosyncrasies it grew and its drift clock go with it
+            // (DroidServiceRecordUtility.NotifyWiped's contract). Without this a deformatted droid kept its earned
+            // personality and resumed drifting the moment it was reformatted.
+            if (DroidworksKernel.FormatClearsServiceRecord(TargetTier))
+                DroidServiceRecordUtility.NotifyWiped(pawn);
+
             // "Deformat sapient = murder thought per faction ethics" (packet B1;
             // build spec unit 9). Fired for ANY operation that takes a droid that
             // WAS sapient below the programmable rung - deformatting to blank and
@@ -64,7 +70,7 @@ namespace RimMandrake.StarWars.Droidworks
             // distinguish between them. JUDGEMENT CALL: the design text names only
             // deformatting; extending it to the restrictive format is ours, and is
             // recorded in infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md.
-            if (before == DroidFormatTier.Sapient && TargetTier < DroidFormatTier.Programmable)
+            if (DroidworksKernel.MindDestroyed(before, TargetTier))
             {
                 NotifySapientMindDestroyed(pawn, billDoer);
             }
@@ -140,7 +146,7 @@ namespace RimMandrake.StarWars.Droidworks
         // restrictive format is for, and silently hiding that behind a
         // benign-sounding "format" would launder the violation.
         protected override bool ApplicableFrom(DroidFormatTier current) =>
-            current < DroidFormatTier.Programmable;
+            DroidworksKernel.StandardFormatApplicable(current);
     }
 
     /// <summary>
@@ -153,7 +159,7 @@ namespace RimMandrake.StarWars.Droidworks
         protected override DroidFormatTier TargetTier => DroidFormatTier.Mindless;
 
         protected override bool ApplicableFrom(DroidFormatTier current) =>
-            current > DroidFormatTier.Mindless;
+            DroidworksKernel.RestrictiveFormatApplicable(current);
     }
 
     /// <summary>
@@ -165,6 +171,6 @@ namespace RimMandrake.StarWars.Droidworks
         protected override DroidFormatTier TargetTier => DroidFormatTier.Blank;
 
         protected override bool ApplicableFrom(DroidFormatTier current) =>
-            current > DroidFormatTier.Blank;
+            DroidworksKernel.DeformatApplicable(current);
     }
 }

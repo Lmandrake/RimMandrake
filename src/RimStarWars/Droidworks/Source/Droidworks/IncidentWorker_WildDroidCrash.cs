@@ -70,9 +70,12 @@ namespace RimMandrake.StarWars.Droidworks
             WildDroidCrashExtension ext = def.GetModExtension<WildDroidCrashExtension>();
             if (ext == null || ext.options.NullOrEmpty()) return null;
 
-            IEnumerable<WildDroidOption> legal = ext.options.Where(o => o?.kind != null && o.weight > 0f);
-            if (!legal.Any()) return null;
-            return legal.RandomElementByWeight(o => o.weight).kind;
+            List<WildDroidOption> legal = ext.options.Where(o => o?.kind != null && o.weight > 0f).ToList();
+            if (legal.Count == 0) return null;
+            var weights = new List<float>(legal.Count);
+            for (int i = 0; i < legal.Count; i++) weights.Add(legal[i].weight);
+            int pick = DroidworksKernel.WeightedPick(weights, Rand.Value);
+            return pick < 0 ? null : legal[pick].kind;
         }
 
         protected override bool CanFireNowSub(IncidentParms parms)

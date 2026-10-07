@@ -100,10 +100,10 @@ namespace RimMandrake.TheRot
         private CompRefuelable Refuel => parent.TryGetComp<CompRefuelable>();
         public Corpse Held => belly.Count > 0 ? belly[0] as Corpse : null;
         public int ProgressTicks => progressTicks;
-        public static int DigestTicks => Mathf.Max(1, Mathf.RoundToInt(RM_TheRotSettings.gutMotherDigestHours * GenDate.TicksPerHour));
+        public static int DigestTicks => RM_TheRotKernel.GutMotherDigestTicks(RM_TheRotSettings.gutMotherDigestHours);
         public bool Dormant => Refuel != null && !Refuel.HasFuel;
-        public bool Resting => Find.TickManager != null && Find.TickManager.TicksGame < restUntilTick;
-        public bool Busy => Held != null || Resting;
+        public bool Resting => Find.TickManager != null && RM_TheRotKernel.Resting(Find.TickManager.TicksGame, restUntilTick);
+        public bool Busy => RM_TheRotKernel.VatBusy(Held != null, Resting);
 
         public ThingOwner GetDirectlyHeldThings() => belly;
 
@@ -114,7 +114,7 @@ namespace RimMandrake.TheRot
 
         public bool TryAccept(Corpse corpse)
         {
-            if (!RM_GutMother.Enabled || corpse == null || corpse.Destroyed || Held != null) return false;
+            if (!RM_TheRotKernel.VatAccepts(RM_GutMother.Enabled, corpse != null && !corpse.Destroyed, Held != null)) return false;
             if (corpse.Spawned) corpse.DeSpawn();
             if (!belly.TryAdd(corpse, canMergeWithExistingStacks: false))
             {
@@ -127,7 +127,7 @@ namespace RimMandrake.TheRot
         public void Notify_Split()
         {
             Refuel?.ConsumeFuel(Props.splitNutrition);
-            restUntilTick = Find.TickManager.TicksGame + Mathf.RoundToInt(Props.splitRestHours * GenDate.TicksPerHour);
+            restUntilTick = RM_TheRotKernel.RestUntil(Find.TickManager.TicksGame, Props.splitRestHours);
         }
 
         public override void CompTickRare()
@@ -137,11 +137,10 @@ namespace RimMandrake.TheRot
             CompRefuelable refuel = Refuel;
             if (refuel != null && refuel.HasFuel)
             {
-                refuel.ConsumeFuel(refuel.Props.fuelConsumptionRate * GenTicks.TickRareInterval / GenDate.TicksPerDay);
+                refuel.ConsumeFuel(RM_TheRotKernel.GutMotherFuelBurn(refuel.Props.fuelConsumptionRate));
             }
-            if (Held == null || Dormant) return;
-            progressTicks += GenTicks.TickRareInterval;
-            if (progressTicks >= DigestTicks)
+            // the clock (halts when dormant, done at the digest length) is RM_TheRotKernel.GutMotherTick, offline-fuzzed
+            if (RM_TheRotKernel.GutMotherTick(ref progressTicks, Held != null, Dormant, DigestTicks))
             {
                 Finish();
             }

@@ -1,4 +1,3 @@
-using UnityEngine;
 using Verse;
 
 namespace RimMandrake.StarWars.Droidworks
@@ -20,19 +19,11 @@ namespace RimMandrake.StarWars.Droidworks
     ///   SAPIENT      the whole roster - morale, breaks, savants, idiosyncrasies,
     ///                bonding, rebellion if mistreated.
     ///
-    /// The enum's integer values ARE the severity ladder minus one: severity
+    /// The enum (DroidworksKernel.cs, so the offline fuzz compiles it) has integer values that ARE the severity ladder minus one: severity
     /// 1/2/3/4 maps to blank/mindless/programmable/sapient, and the four
     /// RSW_DW_FormatTier HediffDef stages (HediffDefs_Droidworks.xml) cut at
     /// 0 / 1.5 / 2.5 / 3.5 so a half-point of float wobble can never change tier.
     /// </summary>
-    public enum DroidFormatTier
-    {
-        Blank = 0,
-        Mindless = 1,
-        Programmable = 2,
-        Sapient = 3
-    }
-
     public static class DroidFormatTierUtility
     {
         /// <summary>
@@ -42,9 +33,9 @@ namespace RimMandrake.StarWars.Droidworks
         /// DRIFTS into (DROIDWORKS_SERVICE_RECORD_DRIFT_1, packet E2) rather than
         /// what it ships as - so the middle rung is where every droid starts.
         /// </summary>
-        public const DroidFormatTier DefaultTier = DroidFormatTier.Programmable;
+        public const DroidFormatTier DefaultTier = DroidworksKernel.DefaultTier;
 
-        public static float SeverityFor(DroidFormatTier tier) => (int)tier + 1f;
+        public static float SeverityFor(DroidFormatTier tier) => DroidworksKernel.SeverityFor(tier);
 
         public static bool IsDroid(Pawn pawn) =>
             pawn?.RaceProps?.FleshType == DroidworksDefOf.RSW_DW_FleshType_Droid;
@@ -65,7 +56,7 @@ namespace RimMandrake.StarWars.Droidworks
         public static DroidFormatTier EffectiveTierOf(Pawn pawn) => TierOf(pawn) ?? DefaultTier;
 
         public static DroidFormatTier TierForSeverity(float severity) =>
-            (DroidFormatTier)Mathf.Clamp(Mathf.RoundToInt(severity) - 1, 0, 3);
+            DroidworksKernel.TierForSeverity(severity);
 
         /// <summary>
         /// Add the tier hediff at <paramref name="tier"/> if the pawn has none.

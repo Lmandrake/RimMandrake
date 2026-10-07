@@ -83,17 +83,11 @@ namespace RimMandrake.StarWars.Droidworks
         public static HediffDef BucketedHediff(QualityCategory quality, DroidPartEffectExtension ext)
         {
             if (ext == null) return null;
-            switch (quality)
+            switch (DroidworksKernel.QualityBucket((int)quality))
             {
-                case QualityCategory.Awful:
-                case QualityCategory.Poor:
-                    return ext.inferior;
-                case QualityCategory.Excellent:
-                case QualityCategory.Masterwork:
-                case QualityCategory.Legendary:
-                    return ext.superior;
-                default:
-                    return ext.standard;
+                case 0: return ext.inferior;
+                case 2: return ext.superior;
+                default: return ext.standard;
             }
         }
 
