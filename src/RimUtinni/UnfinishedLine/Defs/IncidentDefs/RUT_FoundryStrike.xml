@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_WORLD_FOUNDRY_1 (design §4.4 brake 2, "Empire heat"). An enemy raid, shaped on Core's RaidEnemy
+     (Data/Core/Defs/Storyteller/Incidents_Map_Threats.xml), by the strike faction First Light uses (the Empire when it is
+     hostile to you). The worker makes it possible only while the line runs and its heat has reached the Mod Settings
+     threshold, scales its weight with the heat (up to 3x), and resets the heat when it lands. Off with the "Imperial
+     Foundry strikes" setting. baseChance and minRefireDays are PROVISIONAL. -->
+<Defs>
+  <IncidentDef>
+    <defName>RUT_FoundryStrike</defName>
+    <label>Foundry strike</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.UnfinishedLine.IncidentWorker_RUT_FoundryStrike</workerClass>
+    <baseChance>2.0</baseChance>
+    <minRefireDays>15</minRefireDays>
+    <category>ThreatBig</category>
+    <pointsScaleable>true</pointsScaleable>
+    <tale>Raid</tale>
+  </IncidentDef>
+</Defs>
