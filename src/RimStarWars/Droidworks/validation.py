@@ -287,8 +287,13 @@ def passive_charging(t):
 
         droid = t.spawn_pawn(GNK, hostile=False, beyond=[(x, z)])
         _set_need(t, droid, "RSW_DW_Power", 0.10)
+        # a free player-faction droid wanders/seeks a charger; keep it inside the nimbus radius (6.9)
+        t.bridge_call("jawa/set_draft", pawnId=droid, drafted=True, fireAtWill=False)
         t.wait_ticks(720)   # 12 CompTick scans (60-tick interval)
         pd = _pd(t, droid)
+        if not pd:
+            raise ExpectationFailed("the test droid %s is no longer a spawned pawn after the wait (died or left the "
+                                    "map): fixture lost, power level unreadable" % droid)
         level = _needs(pd).get("RSW_DW_Power") or 0.0
         if level <= 0.10:
             raise ExpectationFailed(
@@ -309,7 +314,9 @@ def detonation_chain(t):
         _set_need(t, gnk, "RSW_DW_Power", 1.0)
         before = t.bridge_call("jawa/list_things", group="Corpse")
         n_before = len(((before or {}).get("things")) or [])
-        t.bridge_call("jawa/damage", thingId=gnk, damageDef="Bomb", amount=5000.0)
+        # Pawn.Kill(null) is deterministic; jawa/damage Bomb 5000 is ONE hit on ONE body part and dealt only 85 on a
+        # GNK in a live run (not dead -> "still on the map"). Notify_Killed (CompDroidDetonation) ignores dinfo.
+        t.bridge_call("jawa/pawn_force_incapacitate", pawn=gnk, action="kill")
         t.wait_ticks(60)
         t.expect_pawn_despawned(gnk)
         after = t.bridge_call("jawa/list_things", group="Corpse")
@@ -330,12 +337,16 @@ def salvage_on_death(t):
 
     pd_before = _pd(t, battle)
     pawn_name = pd_before.get("nameShort") or pd_before.get("name") or ""
-    t.bridge_call("jawa/damage", thingId=battle, damageDef="Bomb", amount=5000.0)
+    # Pawn.Kill(null): deterministic, and no Bomb roof collapse (a live run's generic ring list came back at its
+    # limit=60 with 56 CollapsedRocks, so the head -- present or not -- was beyond the cap). Query by defName instead.
+    t.bridge_call("jawa/pawn_force_incapacitate", pawn=battle, action="kill")
     t.wait_ticks(60)
     t.expect_pawn_despawned(battle)
-    ring = t.bridge_call("jawa/list_things",
-                         rect="%d,%d,12,12" % (x - 6, z - 6), limit=60)
-    things = (ring or {}).get("things") or []
+    rect = "%d,%d,16,16" % (x - 8, z - 8)
+    things = []
+    for dn in ["RSW_DW_Head_Battle"] + PART_DEFS:
+        got = (t.bridge_call("jawa/list_things", defName=dn, rect=rect, limit=20) or {}).get("things") or []
+        things.extend(got)
 
     with t.component("head_drops_with_identity", toggle="headDrop"):
         head = next((th for th in things if th.get("def") == "RSW_DW_Head_Battle"), None)
@@ -372,6 +383,11 @@ def bolt_core(t):
     walker = t.spawn_pawn("Colonist", hostile=False)
     bystander = t.spawn_pawn("Colonist", hostile=False)
 
+    # TRIAGE 2026-10-07: free colonists wander. After resentment_accrues' 1200-tick wait the walker had moved 23 cells
+    # (125,125 -> 138,148), outside the thought's 12-cell radius, so the bystander correctly had no thought. Draft both
+    # so they stand still; mood_penalty_nearby re-checks the distance before asserting.
+    for pid in (walker, bystander):
+        t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True, fireAtWill=False)
     _set_hediff(t, walker, "add", "RSW_DW_RestrainingBolt")
     # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): seeded at severity 0.0 the hediff is REMOVED by
     # the engine on its first tick (Hediff.ShouldRemove is Severity <= 0), so there was nothing left to
@@ -409,6 +425,15 @@ def bolt_core(t):
     _set_hediff(t, walker, "add", "RSW_DW_RestrainingBolt")
 
     with t.component("mood_penalty_nearby", toggle="boltMoodPenalty"):
+        def _xz(pid):
+            pos = _pd(t, pid).get("position") or {}
+            return pos.get("x"), pos.get("z")
+        (wx, wz), (bx, bz) = _xz(walker), _xz(bystander)
+        if None not in (wx, wz, bx, bz) and ((wx - bx) ** 2 + (wz - bz) ** 2) ** 0.5 > 10.0:
+            # fixture, not the mod: bring the bystander next to the bolted pawn before asserting
+            t.bridge_call("jawa/order_pawn", pawnId=bystander, x=wx, z=wz, waitTicks=300)
+            (bx, bz) = _xz(bystander)
+        t._record("mood fixture distance walker(%s,%s) bystander(%s,%s)" % (wx, wz, bx, bz), True)
         thoughts = t.bridge_call("jawa/pawn_thoughts", pawn=bystander)
         defs = [th.get("def") for th in ((thoughts or {}).get("thoughts") or [])]
         if "RSW_DW_NearBoltedDroid" not in defs:
@@ -578,51 +603,52 @@ def protocol_trade_advantage(t):
     """Patch_ProtocolTradeAdvantage postfixes TradeUtility.GetPricePlayerBuy/
     Sell. Differential live test: probe the SAME trader's buy price for
     Silver-tradeable goods once with no protocol droid in the player party,
-    once with one -- `jawa/trade_price_probe` (module docstring gap #5: needs
-    JAWA_GM_TOOLS for `jawa/fire_incident` to get a trader onto the map)."""
+    once with one -- `jawa/trade_price_probe`. The trader is a spawned non-player pawn made a trader by
+    DroidworksProofs.MakeTrader (jawa/static_call, GM tools; no caravan incident needed)."""
     t.clear_area(size=15)
     negotiator = t.spawn_pawn("Colonist", hostile=False)
 
     with t.component("protocol_droid_shifts_prices", toggle="protocolTrade"):
-        def _fired(x):
-            return (x or {}).get("fired", (x or {}).get("success"))
-        # fire_incident's dryRun DEFAULTS TO TRUE: without dryRun=False it only resolves (canFireNow=True,
-        # fired=False -- the 2026-10-07 live symptom).
-        r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", dryRun=False)
-        tried = ["(worker's own pick)"]
-        # Also MEASURED 2026-10-07: the worker's own pick can be a campaign faction whose Trader group cannot spawn
-        # on this list (Player.log "has no usable PawnGroupMakers ... groupKind=Trader" for Thiraora and the Iracan
-        # League), and the FactionDef OutlanderCivil resolved to Thiraora there. Walk vanilla FactionDefs that
-        # field caravan traders; the price mechanic keys on the negotiator party, not on whose caravan it is.
-        for fac in ("OutlanderRough", "TribeCivil", "TribeRough", "OutlanderCivil"):
-            if _fired(r):
-                break
+        # TRIAGE 2026-10-07: TraderCaravanArrival cannot be relied on -- on the quicktest tile every faction answered
+        # canFireNow=True fired=False (Player.log "has no usable PawnGroupMakers ... groupKind=Trader"). The price hook
+        # (Patch_ProtocolTradeAdvantage.CurrentAdvantage) needs only a live TradeSession, not a caravan, so build the
+        # trader directly: spawn a non-player humanlike and let the mod's own DroidworksProofs.MakeTrader set
+        # Pawn_TraderTracker.traderKind and stock its inventory. jawa/trade_price_probe then opens the session on it.
+        trader = None
+        tried = []
+        for fac in ("OutlanderCivil", "TribeCivil", "OutlanderRough", "hostile"):
             tried.append(fac)
-            r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", faction=fac, dryRun=False)
-        if not _fired(r):
-            if t.session is not None and (r or {}).get("canFireNow") is True:
-                # CAN fire but no faction on this list can field a trader: a property of the mod list, not evidence
-                # about the protocol droid. Never a PASS and never a FAIL.
-                t.upstream_reason = ("UNMEASURED: no faction on this list could field a caravan trader (tried %s; "
-                                     "canFireNow=True, fired=False): %s" % (", ".join(tried), str(r)[:200]))
-                t.upstream_failed = True
-                return
-            raise ExpectationFailed(
-                "jawa/fire_incident(TraderCaravanArrival) did not fire: %s "
-                "(needs JAWA_GM_TOOLS -- see module docstring gap #5)" % r)
-        t.wait_ticks(120)
+            sp = t.bridge_call("jawa/spawn_pawn", kindDef="Villager", x=t.anchor[0] + 6, z=t.anchor[1],
+                               faction=fac, count=1)
+            row = ((sp or {}).get("pawns") or [{}])[0]
+            if row.get("id"):
+                trader = row["id"]
+                t.session.track("pawn", trader, x=row.get("x"), z=row.get("z"))
+                if t.watch is not None:
+                    t.watch.expect_fixture(trader, row.get("name"))
+                break
+        if t.session is not None and trader is None:
+            t.upstream_reason = "UNMEASURED: could not spawn a non-player humanlike to act as the trader (tried %s)" % ", ".join(tried)
+            t.upstream_failed = True
+            return
+        if trader is not None:
+            mk = t.bridge_call("jawa/static_call", type="RimMandrake.StarWars.Droidworks.DroidworksProofs",
+                               method="MakeTrader", args=trader)
+            mk_res = str((mk or {}).get("result"))
+            if not (mk or {}).get("success") or not mk_res.startswith("OK"):
+                raise ExpectationFailed("DroidworksProofs.MakeTrader did not build a trader: %s" % (mk,))
 
         # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the probe was asked for Silver only, and
         # silver is the currency -- priced a fixed 1.0 buy / 1.0 sell whoever negotiates (MEASURED live:
         # before == after == {'buy': 1.0, 'sell': 1.0}), so no protocol droid could ever move it. Ask for the
         # trader's whole tradeable list (the tool's default) and compare every NON-currency row.
-        probe1 = t.bridge_call("jawa/trade_price_probe", negotiatorPawnId=negotiator)
+        probe1 = t.bridge_call("jawa/trade_price_probe", traderPawnId=trader, negotiatorPawnId=negotiator)
         if not (probe1 or {}).get("success"):
             raise ExpectationFailed("baseline jawa/trade_price_probe failed: %s" % probe1)
         rows1 = _price_rows(probe1)
 
         droid = t.spawn_pawn(PROTOCOL, hostile=False)
-        probe2 = t.bridge_call("jawa/trade_price_probe", negotiatorPawnId=negotiator)
+        probe2 = t.bridge_call("jawa/trade_price_probe", traderPawnId=trader, negotiatorPawnId=negotiator)
         if not (probe2 or {}).get("success"):
             raise ExpectationFailed("second jawa/trade_price_probe failed: %s" % probe2)
         rows2 = _price_rows(probe2)
@@ -650,6 +676,20 @@ def ion_overload_shutdown(t):
     droid = t.spawn_pawn(GNK, hostile=False)
 
     with t.component("ion_overload_shuts_down_droid", toggle="ionShutdown"):
+        if t.session is not None:
+            # Jawa Ion Weapons (mandrake.rsw.ionweapons) is a separate, optional mod: when the HediffDef is not loaded
+            # this is a property of the mod LIST, not a verdict on Droidworks -> UNMEASURED, never FAIL. Read the tool's
+            # own success/notFound (a failed call is "could not ask", also UNMEASURED, never "absent").
+            q = t.bridge_call("jawa/get_defs", defs="HediffDef/RSW_JawaIon_Stun")
+            if not (q or {}).get("success"):
+                t.upstream_reason = "UNMEASURED: could not ask whether RSW_JawaIon_Stun is loaded: %s" % str(q)[:200]
+                t.upstream_failed = True
+                return
+            if "RSW_JawaIon_Stun" in str((q or {}).get("notFound") or []) or not (q or {}).get("foundCount"):
+                t.upstream_reason = ("UNMEASURED(list): HediffDef RSW_JawaIon_Stun is not loaded -- Jawa Ion Weapons "
+                                     "(mandrake.rsw.ionweapons) is absent from this mod list; add it to measure ionShutdown")
+                t.upstream_failed = True
+                return
         r = _set_hediff(t, droid, "add", "RSW_JawaIon_Stun", severity=0.6)
         if not (r or {}).get("success"):
             raise ExpectationFailed(

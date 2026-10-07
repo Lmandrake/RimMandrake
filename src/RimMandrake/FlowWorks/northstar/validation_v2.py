@@ -2204,8 +2204,12 @@ def phase_P(L, args):
               and (pw.get("lipReachable") or 0) > 0 and rp.get("pitWidth") == 1, "MOD",
               "fill-in (161,101) -> D %s; large at (160,100): width %s held %s lip %s/%s" % (
                   f.get("depth"), rp.get("pitWidth"), pw.get("held"), pw.get("lipReachable"), pw.get("lipCells")))
-        # P3/P4: a colonist WALKS in (own-faction capture switched ON), takes the fall, stays spawned and
-        # cannot walk out; a ladder in its cell frees it. P5n: the shipped carve-out (OFF) is the control.
+        # FLOWWORKS_PIT_FALL_ONLY_FORCED_1 (owner, 2026-10-06): "You can't fall in by careless colonist pathing.
+        # Only if they get blown/forced in do they fall." RM_PitPathing refuses a walk into a LADDERLESS open D=4
+        # cell, so: P3 = the refusal itself (own-faction capture ON, the pawn still stays out); P4 = the colonist
+        # climbs DOWN a lowered ladder (no fall), is not held, and walks out. No bridge call forces a pawn into a
+        # pit (no teleport/knockback tool), so the forced-fall half of the old P3 (descent event, fall damage) is
+        # covered by no row here; a forced-entry row needs a driver (flyer landing / explosive knockback).
         col = {}
 
         def spawn_col(k):           # each colonist spawned just before its own row, so none idles undrafted
@@ -2224,31 +2228,35 @@ def phase_P(L, args):
         L.sset(S_FW, "superdeepCapturesOwnFaction", True)
         try:
             d0 = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1]).get("descentCount") or 0
+            # P3: NO ladder in the pit. Ordering the drafted colonist in is refused; it never enters.
             o_in = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
             r_in = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
-            pw = _pit_pawn(r_in, a) or {}
-            # descentCount is map-wide: the start colonists, own-faction capture ON here, walk into the P1 pits
-            # after the held hares (live 2026-10-05: 0->3). Count THIS pawn's descents only.
+            pw = _pit_pawn(r_in, a)
             rec = [d for d in r_in.get("recentDescents") or [] if d.startswith(a + "@")]
-            fall = float(rec[-1].split("fall=")[1]) if rec else 0.0
-            o_out = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
-            end = o_out.get("end") or {}
-            L.row("P3_walk_in_held", o_in.get("arrived") is True and pw.get("held") is True and pw.get("spawned") is True
-                  and len(rec) == 1 and (r_in.get("descentCount") or 0) >= d0 + 1 and fall > 0 and pw.get("lipReachable") == 0
-                  and o_out.get("canReach") is False and (end.get("x"), end.get("z")) == wc, "MOD",
-                  "walked in %s; held %s spawned %s; descents %s->%s (own %d) fall %.1f; lip %s/%s; ordered out: "
-                  "canReach %s, ended %s" % (o_in.get("arrived"), pw.get("held"), pw.get("spawned"), d0,
-                                             r_in.get("descentCount"), len(rec), fall, pw.get("lipReachable"), pw.get("lipCells"), o_out.get("canReach"),
-                                (end.get("x"), end.get("z"))))
+            end = o_in.get("end") or {}
+            L.row("P3_walk_in_held", o_in.get("arrived") is False and pw is None and not rec
+                  and (end.get("x"), end.get("z")) != wc and (r_in.get("descentCount") or 0) == d0
+                  and r_in.get("hasLadder") is False, "MOD",
+                  "ladderless D=4 (FLOWWORKS_PIT_FALL_ONLY_FORCED_1: pathing never drops a colonist in), capture ON: "
+                  "ordered in -> arrived %s, in the pit cell %s, own descents %d (map-wide %s->%s), ended %s, hasLadder %s" % (
+                      o_in.get("arrived"), pw is not None, len(rec), d0, r_in.get("descentCount"),
+                      (end.get("x"), end.get("z")), r_in.get("hasLadder")))
+            # P4: a lowered ladder in the pit cell -> the same colonist climbs down (no fall), is not held, walks out.
             sb = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % wc)
+            ok_rd, lrd, _ = _proof(B, "ProofLadder", "%d,%d,lower" % wc)    # lowered: the state the row is about
+            o_l_in = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1], waitTicks=PIT_WAIT_IN, draft=True), a)
             r_l = B.call("jawa/flowworks_pit_report", x=wc[0], z=wc[1])
             pl = _pit_pawn(r_l, a) or {}
+            rec_l = [d for d in r_l.get("recentDescents") or [] if d.startswith(a + "@")]
             o_l = _order_row(B.call("jawa/order_pawn", pawnId=a, x=wc[0], z=wc[1] + 3, waitTicks=PIT_WAIT_OUT, draft=True), a)
-            L.row("P4_ladder_frees", r_l.get("hasLadder") is True and pl.get("held") is False
+            L.row("P4_ladder_frees", ok_rd and lrd.get("raised") == "False" and r_l.get("hasLadder") is True
+                  and o_l_in.get("arrived") is True and pl.get("spawned") is True and not rec_l and pl.get("held") is False
                   and (pl.get("lipReachable") or 0) > 0 and o_l.get("arrived") is True, "MOD",
-                  "ladder spawned %s hasLadder %s; held %s lip %s/%s; ordered out: arrived %s; %s" % (
-                      sb.get("success"), r_l.get("hasLadder"), pl.get("held"), pl.get("lipReachable"),
-                      pl.get("lipCells"), o_l.get("arrived"), alive(r_l, a)))
+                  "ladder spawned %s lowered %s hasLadder %s; climbed down: arrived %s, falls %d, held %s lip %s/%s; "
+                  "ordered out: arrived %s; %s" % (
+                      sb.get("success"), lrd.get("raised") == "False", r_l.get("hasLadder"), o_l_in.get("arrived"),
+                      len(rec_l), pl.get("held"), pl.get("lipReachable"), pl.get("lipCells"), o_l.get("arrived"),
+                      alive(r_l, a)))
             # P4b (ladder_state_legible, promoted 2026-10-05): the colonist climbs back down, the ladder is RAISED
             # from outside (RM_CompLadder.raised, the gizmo's own field) -> held, cannot reach the lip, and the
             # inspect line says so; LOWERED again -> free. Owner Q1: raised, nobody climbs, own people included.
@@ -2264,9 +2272,9 @@ def phase_P(L, args):
                 L.row("P4b_ladder_raised_strands", False, "HARNESS", "ladder proof %s/%s (%s / %s); back in %s; %s" % (
                     ok_r, ok_l, lr, ll, o_back.get("arrived"), alive(r_up, a)), status="UNMEASURED")
             else:
-                L.row("P4b_ladder_raised_strands", lr.get("raised") == "True" and "raised" in lr.get("inspect", "")
+                L.row("P4b_ladder_raised_strands", lr.get("raised") == "True" and lr.get("inspect", "").lower().startswith("ladder_up")
                       and pu.get("held") is True and pu.get("lipReachable") == 0 and o_up.get("canReach") is False
-                      and ll.get("raised") == "False" and "lowered" in ll.get("inspect", "") and pd.get("held") is False
+                      and ll.get("raised") == "False" and ll.get("inspect", "").lower().startswith("ladder_down") and pd.get("held") is False
                       and (pd.get("lipReachable") or 0) > 0, "MOD",
                       "raised %s (%s): held %s lip %s/%s, ordered out canReach %s | lowered %s (%s): held %s lip %s/%s; %s" % (
                           lr.get("raised"), lr.get("inspect"), pu.get("held"), pu.get("lipReachable"), pu.get("lipCells"),
@@ -2275,6 +2283,10 @@ def phase_P(L, args):
         finally:
             L.sset(S_FW, "superdeepCapturesOwnFaction", False)
         b, cc = spawn_col("P_walk_ctrl"), SCENES["P_walk_ctrl"]["cells"][0]
+        # P5n: pathing needs a lowered ladder to enter a pit at all (FLOWWORKS_PIT_FALL_ONLY_FORCED_1), so the
+        # control climbs down one; the carve-out is read from the pawn's own captured/held flags.
+        sbc = B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % cc)
+        _proof(B, "ProofLadder", "%d,%d,lower" % cc)
         d1 = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1]).get("descentCount") or 0
         o_in = _order_row(B.call("jawa/order_pawn", pawnId=b, x=cc[0], z=cc[1], waitTicks=PIT_WAIT_IN, draft=True), b)
         r_c = B.call("jawa/flowworks_pit_report", x=cc[0], z=cc[1])
@@ -2283,8 +2295,8 @@ def phase_P(L, args):
         L.row("P5n_own_faction_carveout", o_in.get("arrived") is True and pc.get("captured") is False
               and pc.get("held") is False and not [d for d in r_c.get("recentDescents") or [] if d.startswith(b + "@")]
               and o_out.get("arrived") is True,
-              "MOD", "carve-out ON (shipped): colonist in %s captured %s held %s descents %s->%s; out %s; %s" % (
-                  o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
+              "MOD", "carve-out ON (shipped), ladder %s: colonist in %s captured %s held %s descents %s->%s; out %s; %s" % (
+                  sbc.get("success"), o_in.get("arrived"), pc.get("captured"), pc.get("held"), d1, r_c.get("descentCount"),
                   o_out.get("arrived"), alive(r_c, b)))
         for pid in col.values():
             B.call("jawa/set_pawn_faction", pawn=pid, faction="none")
@@ -2397,6 +2409,10 @@ def phase_X(L, args):
         if not r.get("success"):
             raise Abort("spawn colonist for X: %r" % r)
         col = r["pawns"][0]["id"]
+        # The strip's D=4 end carries a lowered ladder: pathing refuses a ladderless open pit (FLOWWORKS_PIT_FALL_ONLY_FORCED_1),
+        # so the colonist climbs down it. The sink/wall numbers are read exactly as before.
+        B.call("jawa/spawn_batch", ops="RM_Ladder:%d,%d" % tuple(strip[-1]))
+        _proof(B, "ProofLadder", "%d,%d,lower" % tuple(strip[-1]))
         _, k0, _ = _proof(B, "ProofPawnSink", col)
         o_in = _order_row(B.call("jawa/order_pawn", pawnId=col, x=strip[-1][0], z=strip[-1][1], waitTicks=PIT_WAIT_IN, draft=True), col)
         ok4, k4, t4 = _proof(B, "ProofPawnSink", col)
@@ -2637,7 +2653,7 @@ class MockBridge(object):
         "pit_holder_spawned": ["S1p_pit_is_grid_only"],                # the retired holder Thing is back
         "pit_holds_any": ["P1_width_matrix", "P2_fillin_releases_large"],   # width rule ignored
         "pit_no_veto": ["P1_width_matrix", "P3_walk_in_held"],         # held pawn can still reach / walk out
-        "pit_no_fall": ["P3_walk_in_held"],                            # descent event never fires
+        "pit_no_fall": [],      # forced-fall event: no bridge call forces a pawn in, so no live row reads it (see phase_P)
         "pit_carveout_ignored": ["P5n_own_faction_carveout"],          # own colonists captured anyway
         # phase X (promoted 2026-10-05): each breaks one landed feature the way a MOD defect would
         "ladder_raise_ignored": ["P4b_ladder_raised_strands"],         # RM_CompLadder.raised not read by the trap
@@ -2764,8 +2780,13 @@ class MockBridge(object):
         dest, start = (x, z), p["pos"]
         tr = self.trapped(p)
         can = not (tr and dest not in self.comp4(start))
+        # RM_PitPathing (FLOWWORKS_PIT_FALL_ONLY_FORCED_1): no way down into an open D=4 cell but a usable ladder in its pit
+        lad = self.d4(dest) and any(c in self.ladders and (c not in self.raised or "ladder_raise_ignored" in self.faults)
+                                    for c in self.comp4(dest))
+        if self.d4(dest) and not self.d4(start) and not lad and "pit_no_veto" not in self.faults:
+            can = False
         if can:
-            if self.d4(dest) and not self.d4(start) and self.captured(p) and "pit_no_fall" not in self.faults \
+            if self.d4(dest) and not self.d4(start) and not lad and self.captured(p) and "pit_no_fall" not in self.faults \
                     and self.S("superdeepCaptureEnabled"):
                 self.descents.append("%s@%d,%d t=%d fall=4.8" % (pawnId, x, z, self.tick))
             p["pos"] = dest
@@ -3198,7 +3219,7 @@ class MockBridge(object):
                 (self.raised.add if op == "raise" else self.raised.discard if op == "lower" else (lambda _: None))(c)
                 up = c in self.raised
                 res = "LADDER cell=%d,%d present=True raised=%s inspect=%s" % (
-                    c[0], c[1], up, "Ladder_raised:_nobody_can_climb_out." if up else "Ladder_lowered:_your_people_climb")
+                    c[0], c[1], up, "Ladder_up:_nobody_can_climb_down_or_out." if up else "Ladder_down:_anyone_can_climb.")
         elif method == "ProofCover":
             x, z = map(int, args.split(","))
             c = (x, z)

@@ -59,6 +59,7 @@
     <Compile Include="CompDWHeadDropper.cs" />
     <Compile Include="CompDWPartDropper.cs" />
     <Compile Include="CompHeadIdentity.cs" />
+    <Compile Include="DroidworksProofs.cs" />
     <!-- DROIDWORKS_MODULE_PERSONALITY_1 (packet E3): apparel comp granting a
          trait-equivalent hediff while a module is worn. -->
     <Compile Include="CompModulePersonality.cs" />

@@ -237,6 +237,18 @@ class FakeGame(MockGame):
             defs.append({"defName": nm, "found": True, "fields": f})
         return {"success": True, "foundCount": len(defs), "notFound": nf, "defs": defs}
 
+    def t_rimworld_list_architect_categories(self, p):
+        return {"success": True, "categories": [{"id": "architect-category:orders", "categoryDefName": "Orders"}]}
+
+    def t_rimworld_list_architect_designators(self, p):
+        labels = ["Hunt", "Tame"]
+        if "orders_patch" not in self.bugs:
+            labels += ["Apply deepfire", "Remove deepfire"]
+        return {"success": True, "designators": [{"label": l} for l in labels]}
+
+    def t_jawa_set_terrain(self, p):
+        return {"success": True}
+
     def t_jawa_get_def(self, p):
         nm = p["defName"]
         out = {"success": True, "defName": nm, "comps": [], "extra": {}, "statBases": []}
@@ -334,7 +346,7 @@ class FakeGame(MockGame):
         before = i["powered"]
         if "forcePowerOn" in p:
             i["powered"] = bool(p["forcePowerOn"])
-        return {"success": True, "isPowerTrader": True, "energyOutputPerTick": -2.5, "powerOnBefore": before,
+        return {"success": True, "isPowerTrader": True, "energyOutputPerTick": -0.0025, "powerOnBefore": before,
                 "powerOnAfter": i["powered"]}
 
     def t_jawa_bill_add(self, p):
@@ -441,6 +453,7 @@ def main():
         "glowtank_ignored": "settings_apply/glowtank_toggle",
         "press_gate_ignored": "settings_apply/press_unbuildable",
         "tag_patch": "defs_load/patches_applied",
+        "orders_patch": "defs_load/patches_applied",
         "no_deepfire_glow": "item_glow/stack_glows",
         "press_ignores_power": "press_refine/unpowered_press_refuses",
         "blackout_ignored": "glowtank/blackout_kills_seed",

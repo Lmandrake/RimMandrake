@@ -109,6 +109,9 @@ GLOW_HEDIFFS = [n for ty, n in SHIPPED if ty == "HediffDef" and n.startswith("RM
 
 # ------------------------------------------------------------------------------------------ plumbing
 
+PRESS_WATTS = 150      # LuminousPigmentSettings.pressPower default (LuminousPigmentMod.cs:47)
+
+
 def _live(t):
     """True only for a real run against a real Session and an unfailed chain; False for the offline
     declaration probe, so manual assertions never trip on its no-op (None) results."""
@@ -497,14 +500,22 @@ def defs_load(t):
                 _chk(t, isinstance(rec, list) and not miss and len(MEAL_RECIPES) == 15,
                      "%s is missing %d of %d deepfire meal recipes (or the recipe set is not 15): %s"
                      % (s, len(miss), len(MEAL_RECIPES), miss[:5]))
-            orders = _get_defs(t, "DesignationCategoryDef/Orders", "specialDesignatorClasses").get("Orders") or {}
-            sd = orders.get("specialDesignatorClasses", "(absent)")
-            if not isinstance(sd, list):
-                _note(t, "specialDesignatorClasses not serialisable by get_defs", sd)
-            else:
-                blob = " ".join(str(x) for x in sd)
-                _chk(t, "Designator_Deepfire" in blob and "Designator_RemoveDeepfire" in blob,
-                     "DeepfireOrdersPatch did not register both designators in Orders: %r" % (sd[-6:],))
+            # get_defs serialises a List<Type> as 'RuntimeType' strings (MEASURED live 2026-10-07), so the type
+            # names cannot be read from specialDesignatorClasses. Read the RESOLVED Orders toolbar instead: the
+            # designators' own labels (Designator_Deepfire / Designator_RemoveDeepfire defaultLabel).
+            cats = _call(t, "rimworld/list_architect_categories")
+            rows = cats.get("categories") or []
+            orders = next((c for c in rows if c.get("categoryDefName") == "Orders"), None)
+            if not orders or not orders.get("id"):
+                _unmeasured(t, "no architect category with categoryDefName 'Orders' in %s" % json.dumps(cats, default=str)[:200])
+            lst = _call(t, "rimworld/list_architect_designators", categoryId=orders["id"])
+            _ok(t, lst, "list_architect_designators(Orders)")
+            ds = lst.get("designators")
+            text = json.dumps(ds, default=str).lower()
+            if not isinstance(ds, list) or "hunt" not in text:      # sanity probe: vanilla Hunt must be listed
+                _unmeasured(t, "the Orders listing is not trustworthy (no vanilla Hunt): %s" % text[:300])
+            lacking = [n for n in ("apply deepfire", "remove deepfire") if n not in text]
+            _chk(t, not lacking, "DeepfireOrdersPatch did not register designator(s) %s in the resolved Orders toolbar" % lacking)
 
     with _comp(t, "mechanics_wired_to_defs"):
         if _live(t):
@@ -526,6 +537,17 @@ def defs_load(t):
 
 # ===================================================================================== chain 2: mat clock
 
+def _gone_or_moved(t, defs):
+    """The staged stack is in neither state inside the fixture rect. Search the whole map: found elsewhere = a pawn
+    moved it (a FIXTURE fault, UNMEASURED); found nowhere = the stack was destroyed without leaving a dead stack."""
+    rows = _things(t, defs)
+    if rows:
+        _unmeasured(t, "the staged stack left the fixture rect (hauled?): %s"
+                    % json.dumps([(r.get("defName") or r.get("def"), _xz(r), r.get("stackCount")) for r in rows[:5]], default=str))
+    _fail("the staged stack is gone from the whole map -- neither fresh nor dead exists anywhere (comp destroyed it "
+          "without leaving RM_CrowncarpetDead, or the spawn never persisted)")
+
+
 @suite.chain("mat_vitality")
 def mat_vitality(t):
     """Fresh crowncarpet lives one day and dies at once if chilled (spec 2.2). Control first (chill disabled,
@@ -539,10 +561,14 @@ def mat_vitality(t):
         if _live(t):
             _call(t, "jawa/destroy_batch", rects=rect, categories="All")
         with _settings(t, matChillKillTemp=MAT_CHILL_OFF, matLifeDays="1"):
+            if _live(t):
+                _room(t, x, z)         # a doorless sealed room: no colonist can reach and haul the stack away
             _spawn(t, "RM_CrowncarpetFresh:%s,4" % fresh_cell)
             _wait(t, 600)
             fresh = _things(t, "RM_CrowncarpetFresh", rect)
             dead = _things(t, "RM_CrowncarpetDead", rect)
+            if _live(t) and not fresh and not dead:
+                _gone_or_moved(t, "RM_CrowncarpetFresh,RM_CrowncarpetDead")
             _GEN["fresh"] = _stack(fresh)
             _chk(t, _stack(fresh) == 4 and not dead,
                  "control: with chill disabled and a 1-day life the stack should still be 4 alive after 600 ticks "
@@ -566,6 +592,8 @@ def mat_vitality(t):
         if _live(t):
             _call(t, "jawa/destroy_batch", rects=rect, categories="All")
         with _settings(t, matChillKillTemp="100", matLifeDays="1"):
+            if _live(t):
+                _room(t, x, z)
             _spawn(t, "RM_CrowncarpetFresh:%s,4" % fresh_cell)
             _wait(t, 600)
             fresh = _things(t, "RM_CrowncarpetFresh", rect)
@@ -626,8 +654,12 @@ def research_gate(t):
         if _live(t):
             _call(t, "jawa/set_fog", action="unfog", rect=_rect(x - 8, z - 8, 17, 17))
             pid = _spawn_colonist(t, x + 2, z)
+            # The pad sits in the quicktest's rock, whose terrain has no Light affordance, so set_plants rejects the
+            # cell ("terrain or conditions cannot support", MEASURED live 2026-10-07). The plant ignores fertility,
+            # so plain Soil under it is all it needs; the wild-bed tag is irrelevant to a hand-placed plant.
+            st = _call(t, "jawa/set_terrain", terrainDef="Soil", x=x, z=z, width=1, height=1)
+            _ok(t, st, "set_terrain Soil under the crowncarpet")
             pl = _call(t, "jawa/set_plants", ops="RM_Crowncarpet:%d,%d,1,1" % (x, z), growth=1.0, clearFirst=False)
-            _ok(t, pl, "set_plants RM_Crowncarpet")
             if not int(pl.get("planted") or 0):
                 _unmeasured(t, "set_plants refused the crowncarpet cell: %s" % json.dumps(pl, default=str)[:300])
             _wait(t, 2100)       # CompTickLong: plants tick Long (2000), the comp checks colonists within 20 cells
@@ -837,8 +869,12 @@ def press_refine(t):
         pn = _power(t, ids["press"])
         if _live(t):
             _chk(t, pn.get("isPowerTrader") is True, "RM_DeepfirePress has no CompPowerTrader: %s" % json.dumps(pn, default=str)[:300])
-            _chk(t, _near(pn.get("energyOutputPerTick"), -2.5, 0.2),
-                 "press draw is %s per tick; shipped pressPower=150 W is -2.5 per tick" % pn.get("energyOutputPerTick"))
+            # CompPower.WattsToWattDaysPerTick = 1/60000: the engine reports energy per tick in watt-DAYS, so the
+            # shipped 150 W reads -0.0025 (MEASURED live 2026-10-07: -0.0025). Tolerance 0.0002 still tells 150 W
+            # from the 100 W / 200 W neighbours (+-0.0008).
+            _chk(t, _near(pn.get("energyOutputPerTick"), -PRESS_WATTS / 60000.0, 0.0002),
+                 "press draw is %s per tick; shipped pressPower=%d W is %.5f per tick"
+                 % (pn.get("energyOutputPerTick"), PRESS_WATTS, -PRESS_WATTS / 60000.0))
             _chk(t, pn.get("powerOnBefore") is False, "an unconnected press reads powered-on (powerOn=%r)" % pn.get("powerOnBefore"))
 
     with _comp(t, "powered_press_refines"):
@@ -1187,7 +1223,10 @@ def first_coat(t):
         _chk(t, not r0.get("isArt") and r0.get("coats") == 0, "spawned wall: %s" % json.dumps(r0))
         base = r0.get("beauty")
         if _live(t):
-            ts = _call(t, "jawa/thing_stats", thing=r0.get("thingId"), stats="Beauty")
+            # thing_stats resolves the engine's string id ("Wall92242"), not the bare thingIDNumber the debug
+            # action logs (MEASURED live 2026-10-07: NoSuchThingId for 92242 and 58072), so look the wall up.
+            wall = _one(t, "Wall", _rect(x, z, 1, 1))
+            ts = _call(t, "jawa/thing_stats", thing=wall.get("id"), stats="Beauty")
             _ok(t, ts, "thing_stats Beauty")
             parts = json.dumps([s.get("statParts") for th in (ts.get("things") or []) for s in (th.get("stats") or [])])
             _chk(t, "Deepfire" in parts, "the Beauty StatPart patch did not land: statParts=%s" % parts[:300])
@@ -1255,6 +1294,10 @@ def worn_glow(t):
     x, z = _pad(t, "worn")
     st = {}
     with _comp(t, "coated_walker_carries_a_light"):
+        if _live(t):
+            # The 30-cell walk strip lies in the quicktest's rock: the walker's Goto ended at once (job "Wait", cell
+            # unchanged over 80 samples, MEASURED live 2026-10-07), so clear the buildings off the strip first.
+            _call(t, "jawa/destroy_batch", rects=_rect(x - 3, z - 4, 40, 9), categories="Building")
         r0 = _act(t, "WornGlow: roof dark strip", x, z)
         _chk(t, r0.get("baselineGlow", 1) < LIT, "the roofed strip is not dark: %s" % json.dumps(r0))
         _act(t, "WornGlow: spawn coated walker", x, z)
@@ -1320,8 +1363,14 @@ def styling_lacquer(t):
     and leaves the parka at coats 1; stylingStationLacquer=False queues nothing."""
     x, z = _pad(t, "styling")
     with _comp(t, "styling_station_lacquers_a_parka"):
+        if _live(t):
+            # station, deepfire (c + 0,-4) and styler (c + 3,-3) must stand on open ground the styler can walk
+            _call(t, "jawa/destroy_batch", rects=_rect(x - 2, z - 7, 9, 10), categories="Building")
         y0 = _act(t, "WornGlow: styling lacquer setup", x, z)
-        _chk(t, y0.get("queued") and y0.get("coats") == 0 and y0.get("deepfireOnMap") == STYLE_COST,
+        # deepfireOnMap is MAP-WIDE (StylingStationLacquer.AvailableDeepfire), and earlier chains leave stacks around
+        # (25 on the map in the 2026-10-07 run), so the fixture promises "at least the cost", not "exactly the cost";
+        # the consumption is checked as a DELTA below.
+        _chk(t, y0.get("queued") and y0.get("coats") == 0 and (y0.get("deepfireOnMap") or 0) >= STYLE_COST,
              "lacquer setup: %s" % json.dumps(y0)[:300])
         y = y0
         for _ in range(40 if _live(t) else 0):
@@ -1329,8 +1378,10 @@ def styling_lacquer(t):
             y = _act(t, "WornGlow: report styler", x, z)
             if y.get("coats") == 1:
                 break
-        _chk(t, y.get("coats") == 1 and y.get("deepfireOnMap") == 0,
-             "after the job the parka reads coats=%s with %s deepfire left (expected 1 and 0)" % (y.get("coats"), y.get("deepfireOnMap")))
+        left0 = y0.get("deepfireOnMap") or 0
+        _chk(t, y.get("coats") == 1 and y.get("deepfireOnMap") == left0 - STYLE_COST,
+             "after the job the parka reads coats=%s with %s deepfire on the map (expected 1 and %d = %d - %d)"
+             % (y.get("coats"), y.get("deepfireOnMap"), left0 - STYLE_COST, left0, STYLE_COST))
         _act(t, "WornGlow: cleanup test pawns", x, z)
 
     with _comp(t, "styling_lacquer_toggle", toggle="stylingStationLacquer"):
@@ -1356,6 +1407,10 @@ def status(t):
     with _comp(t, "titled_pawn_in_two_coats"):
         for rx in (x, px):
             _room(t, rx, z)
+        # RM_SawCommonerInDeepfire is MAP-WIDE (any coated non-titled humanlike on the map offends the titled pawn), so
+        # a coated walker left alive by a failed worn_glow chain would trip the clean baseline below (MEASURED live
+        # 2026-10-07). The worn_glow test pawns are a static the chain owns: cleanse them first.
+        _act(t, "WornGlow: cleanup test pawns", x, z)
         _act(t, "Status: spawn titled + commoner", x, z - 6)
         r1 = _act(t, "Status: report pair", x, z)
         names = ("RM_WearingDeepfireTitled", "RM_WearingDeepfireCommon", "RM_SawCommonerInDeepfire", "RM_DeepfireBedroom")
@@ -1481,6 +1536,10 @@ def gods(t):
 
     with _comp(t, "a_gods_own_idol_moves_it_by_fifteen"):
         ir = _act(t, "GodDeltas: coat idol of Rekko", x + 2, z + 1)
+        # StatueGodOf answers null for every god unless Ninefold is loaded (NinefoldDeltaBridge.IsGod), so without
+        # it statueGod reads '' -- not a defect in the idol tagging. Say UNMEASURED, as the sibling arms do.
+        if _live(t) and not ir.get("ninefold"):
+            _unmeasured(t, "Rekko idol: Ninefold is not loaded (the tier must carry mandrake.rm.ninefold)")
         _chk(t, ir.get("statueGod") == "Rekko", "idol read as %r, not Rekko" % ir.get("statueGod"))
         tbl = dict((g, STATUE if g == "Rekko" else -ISHKO if g == "Ishko" else LIKE) for g in GODS)
         _god_check(t, "Rekko idol: Rekko +15, Ishko -3, others +3", ir, tbl)
