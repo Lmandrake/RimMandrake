@@ -44,6 +44,9 @@ namespace RimMandrake.GimmeSomeSlack
         public static bool tangles = true;
         /// <summary>Short needless spurs drawn as pointless loops in the cord (§8.7.5).</summary>
         public static bool needlessLoops = true;
+        /// <summary>Dive-through (owner 2026-10-06): a cord with no open-floor route dives under the wall, rock, water or
+        /// building in its way and comes back up on the far side. Off = such a cord is drawn straight across, flagged unroutable.</summary>
+        public static bool diveThrough = true;
         /// <summary>Break readout (§8.5): live ends spark, dead ends lie limp.</summary>
         public static bool breakReadout = true;
         /// <summary>Spark rate multiplier for live ends (0 = never).</summary>
@@ -97,6 +100,7 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref cordsPerConnection, "cordsPerConnection", 3);
             Scribe_Values.Look(ref tangles, "tangles", true);
             Scribe_Values.Look(ref needlessLoops, "needlessLoops", true);
+            Scribe_Values.Look(ref diveThrough, "diveThrough", true);
             Scribe_Values.Look(ref breakReadout, "breakReadout", true);
             Scribe_Values.Look(ref sparkIntensity, "sparkIntensity", 1f);
             Scribe_Values.Look(ref hideHookupWires, "hideHookupWires", true);
@@ -125,6 +129,7 @@ namespace RimMandrake.GimmeSomeSlack
             cordsPerConnection = 3;
             tangles = true;
             needlessLoops = true;
+            diveThrough = true;
             breakReadout = true;
             sparkIntensity = 1f;
             hideHookupWires = true;
@@ -149,6 +154,7 @@ namespace RimMandrake.GimmeSomeSlack
             var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20),
                                      // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
                                      Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
+            o.DiveThrough = diveThrough;
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
             o.Lay.MaxExtra = Mathf.Clamp(loopBudget, 2f, 40f);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
@@ -281,6 +287,7 @@ namespace RimMandrake.GimmeSomeSlack
             GimmeSomeSlackSettings.cordsPerConnection = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.cordsPerConnection, 1f, 3f));
             l.CheckboxLabeled("Dense conduit fields become one tangle", ref GimmeSomeSlackSettings.tangles);
             l.CheckboxLabeled("Needless conduit stubs become pointless loops", ref GimmeSomeSlackSettings.needlessLoops);
+            l.CheckboxLabeled("Cords dive under walls and water where they must (a plate marks each wall crossing)", ref GimmeSomeSlackSettings.diveThrough);
             l.Label("Messiness: a dense conduit field of " + GimmeSomeSlackSettings.tangleMin + "+ cells becomes one tangle",
                     tooltip: "Lower = more of a crowded base turns into heaps of cord plugged into junction boxes (power strips in the Modern look).");
             GimmeSomeSlackSettings.tangleMin = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.tangleMin, 6f, 20f));

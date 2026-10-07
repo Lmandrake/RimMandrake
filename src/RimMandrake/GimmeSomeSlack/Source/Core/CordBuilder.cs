@@ -58,6 +58,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public double[] SwayW;
         /// <summary>Rope-settle diagnostics (phase 1b B1); null when the strand was not settled.</summary>
         public SettleStats Settle;
+        /// <summary>Dive-through: this strand's start (DiveA) / end (DiveB) is where the cord dives under a barrier or comes
+        /// back up, not one of its edge's ends. End art (plugs, frays, whip tails) never goes there.</summary>
+        public bool DiveA, DiveB;
     }
 
     /// <summary>A conduit end that reads live or dead: where sparks go (design §8.5).</summary>
@@ -80,6 +83,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// device-strip LEDs): the component's live poll re-prints the piece when one flips.</summary>
         public List<Cell> LiveKeys = new List<Cell>();
         public bool Unroutable;
+        /// <summary>Barrier crossings the cord dives through (dive-through, owner 2026-10-06); 0 = an all-surface cord.</summary>
+        public int Dives;
         public double PathLen, LaidRatio;
         /// <summary>Corridor rect and the walkability hash it was planned on (§8.2.7).</summary>
         public int CX0, CZ0, CX1, CZ1;
@@ -118,6 +123,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public Func<Cell, PileArt?> PileAt;
 
         public PileArt PileFor(Cell c) => PileAt?.Invoke(c) ?? Pile;
+        /// <summary>Dive-through (owner 2026-10-06: cords dive through walls and water; setting, default on): a lead with no
+        /// walkable route dives at the barrier it meets and resurfaces beyond it, instead of being drawn unroutable.</summary>
+        public bool DiveThrough = true;
     }
 
     /// <summary>
@@ -176,7 +184,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         full.Append("T").Append(g.Nodes[v].Cells.Count);   // round 5: the entry port follows the pile's connectors
                         foreach (Cell c in g.Nodes[v].Cells) full.Append(';').Append(c.X).Append(',').Append(c.Z);
                     }
-                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell));
+                full.Append('#').Append(opt.Lay.Fingerprint()).Append('#').Append(opt.PileFor(g.Nodes[e.A].Cell)).Append(opt.PileFor(g.Nodes[e.B].Cell)).Append(opt.DiveThrough ? "V" : "");
                 string fk = full.ToString();
                 string sig = LaySignature(e, parallel);
                 if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && CorridorHash(w, old) == old.CorridorHash)
@@ -286,8 +294,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 VId mid = e.Via[e.Via.Count / 2];
                 if (mid.T == 'c') mids.Add(new KeyValuePair<V2, WaypointKind>(mid.A.Centre, WaypointKind.Via));
             }
-            CordPlan pl = CordPlanner.Plan(w, e.PA, e.PB, mids);
+            MachineInfo ma = na.IsMachine ? na.Machine : null, mb = nb.IsMachine ? nb.Machine : null;
+            Func<Cell, bool> exempt = c => (ma != null && ma.Contains(c)) || (mb != null && mb.Contains(c));
+            CordPlan pl = CordPlanner.Plan(w, e.PA, e.PB, mids, opt.DiveThrough, exempt);
             piece.Unroutable = !pl.Ok;
+            if (pl.Ok && pl.Dives.Count > 0) return LayDiving(w, g, e, key, opt, isLive, piece, pl, na, nb);
             List<V2> C = CordPlanner.RoundCorners(pl.Points);
             CordLayer.ProjectOut(w, C);
             double L = Geo.Length(C);
@@ -368,6 +379,114 @@ namespace RimMandrake.GimmeSomeSlack.Core
             piece.CX1 = Math.Min(w.Width - 1, (int)Math.Floor(x1) + 3);
             piece.CZ1 = Math.Min(w.Height - 1, (int)Math.Floor(z1) + 3);
             return piece;
+        }
+
+        /// <summary>How far a diving cord runs on past the face into a wall, rock or building (hidden by it), cells. Water: 0,
+        /// the cord meets the water's edge like a conduit stub into water.</summary>
+        public static double DiveOverrun(BlockKind k) => k == BlockKind.Water ? 0 : PastFaceDepth;
+
+        /// <summary>The plate drawn where a cord dives into / comes out of a barrier: a wall plate on a wall, a hole in rock,
+        /// nothing for water or a building (the building's own art hides the cord; water has no plate art).</summary>
+        public static DecalKind? DivePlate(BlockKind k) => k == BlockKind.Wall ? DecalKind.StubWall : k == BlockKind.Rock ? DecalKind.StubRock : (DecalKind?)null;
+
+        /// <summary>Dive-through lay (owner 2026-10-06): the plan's surface sections are laid as separate strands, each ending
+        /// square on its dive face (straight in along the face normal, on just past the face) with a plate on each wall/rock
+        /// face; the edge's own end art goes only on the first section's start and the last section's end.</summary>
+        private static LaidPiece LayDiving(CordWorld w, CordGraph g, CordEdge e, string key, BuildOptions opt, Func<Cell, bool> isLive,
+                                           LaidPiece piece, CordPlan pl, CordNode na, CordNode nb)
+        {
+            LayParams prm = opt.Lay;
+            CordRng rr = CordRng.Of(opt.Seed, "cord", key, "dive");
+            int nsec = pl.Dives.Count + 1;
+            var secC = new List<List<V2>>();
+            for (int si = 0; si < nsec; si++)
+            {
+                int a = si == 0 ? 0 : pl.Dives[si - 1].Index + 1, b = si == nsec - 1 ? pl.Points.Count - 1 : pl.Dives[si].Index;
+                List<V2> C = CordPlanner.RoundCorners(pl.Points.GetRange(a, b - a + 1));
+                CordLayer.ProjectOut(w, C);
+                secC.Add(C);
+            }
+            int n = rr.Int(prm.CordsMin, Math.Max(prm.CordsMin, prm.CordsMax));
+            if (DeviceLead(na, nb)) n = 1;
+            double slack = rr.Range(prm.SlackLo, prm.SlackHi) * prm.SlackScale;
+            int limpSideA = CordRng.Of(opt.Seed, "limp", na.Cell.X, na.Cell.Z).Sign();
+            int limpSideB = CordRng.Of(opt.Seed, "limp", nb.Cell.X, nb.Cell.Z).Sign();
+            double laid = 0, Ltot = 0;
+            foreach (List<V2> C in secC) Ltot += Geo.Length(C);
+            for (int i = 0; i < n; i++)
+            {
+                double lat = n == 1 ? 0 : (i - (n - 1) / 2.0) * 0.1;
+                for (int si = 0; si < nsec; si++)
+                {
+                    List<V2> C = secC[si];
+                    double L = Geo.Length(C);
+                    double[] cl = Geo.CumLen(C);
+                    var P = new List<V2>(C.Count);
+                    for (int k = 0; k < C.Count; k++)
+                    {
+                        Geo.TanNorm(C, k, out V2 t, out V2 nn);
+                        double ramp = Math.Min(1, Math.Min(cl[k], L - cl[k]) / 0.3) * 0.6 + 0.4;
+                        P.Add(C[k] + nn * (lat * ramp));
+                    }
+                    double maxExtra = prm.SlackScale <= 0 ? 0 : Math.Min(Math.Max(slack * L, prm.MinExtra * Math.Min(1, prm.SlackScale)), prm.MaxExtra);
+                    SettleStats settle = null;
+                    if (L > 1.2 && prm.SlackScale > 0)
+                        P = CordLayer.Sprawl(w, P, prm, slack, maxExtra, CordRng.Of(opt.Seed, "bundle", key, si), CordRng.Of(opt.Seed, "strand", key, i, si), n, out settle);
+                    bool diveA = si > 0, diveB = si < nsec - 1;
+                    if (!diveA) P = AttachEnd(w, g, e, true, P, i, n, opt);
+                    if (!diveB) P = AttachEnd(w, g, e, false, P, i, n, opt);
+                    // each dive end arrives square on its face, straight in along the face normal
+                    if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = CordLayer.Approach(w, P, false, d.OutFace, d.OutInto, 0.15); }
+                    if (diveB) { DiveSpan d = pl.Dives[si]; P = CordLayer.Approach(w, P, true, d.InFace, d.InInto, 0.15); }
+                    if (!diveA && na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
+                    if (!diveB && nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
+                    bool fell = false;
+                    if (P.Skip(1).Take(Math.Max(0, P.Count - 2)).Any(q => !w.IsWalkable(q.Floor)))
+                    {
+                        P = new List<V2>(C);
+                        fell = true;
+                    }
+                    if (!diveA && na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine);
+                    if (!diveB && nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine);
+                    if (!diveA) P = PastFace(P, true, na);
+                    if (!diveB) P = PastFace(P, false, nb);
+                    if (diveA) { DiveSpan d = pl.Dives[si - 1]; P = Overrun(P, true, d.OutFace, d.OutInto, DiveOverrun(d.OutKind)); }
+                    if (diveB) { DiveSpan d = pl.Dives[si]; P = Overrun(P, false, d.InFace, d.InInto, DiveOverrun(d.InKind)); }
+                    piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle, DiveA = diveA, DiveB = diveB });
+                    laid += Geo.Length(P);
+                }
+            }
+            foreach (DiveSpan d in pl.Dives)
+            {
+                DecalKind? kin = DivePlate(d.InKind), kout = DivePlate(d.OutKind);
+                if (kin.HasValue) piece.Decals.Add(WallMount.EntryDecal(kin.Value, d.InFace, d.InInto));
+                if (kout.HasValue) piece.Decals.Add(WallMount.EntryDecal(kout.Value, d.OutFace, d.OutInto));
+            }
+            piece.Dives = pl.Dives.Count;
+            piece.PathLen = Ltot;
+            piece.LaidRatio = n > 0 ? laid / n / Math.Max(Ltot, 1e-6) : 0;
+            EndDecor(w, g, e.A, na, piece, true, opt, isLive);
+            EndDecor(w, g, e.B, nb, piece, false, opt, isLive);
+            // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
+            // is the whole map, so any walkability change re-plans it
+            piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
+            return piece;
+        }
+
+        /// <summary>Run one end of P on from the face along into, to just past the face (the barrier hides the overrun).</summary>
+        private static List<V2> Overrun(List<V2> P, bool atStart, V2 face, V2 into, double depth)
+        {
+            if (P.Count < 2) return P;
+            V2 tip = atStart ? P[0] : P[P.Count - 1];
+            V2 to = face + into * depth;
+            double along = (to.X - tip.X) * into.X + (to.Z - tip.Z) * into.Z;
+            if (along <= 0.005) return P;
+            var o = new List<V2>(P);
+            int k = Math.Max(1, (int)Math.Ceiling(along / 0.04));
+            var ext = new List<V2>();
+            for (int i = 1; i <= k; i++) ext.Add(tip + into * (along * i / k));
+            if (atStart) { ext.Reverse(); o.InsertRange(0, ext); } else o.AddRange(ext);
+            return o;
         }
 
         // ---------------------------------------------------------------- art fit (polish pass 2026-10-02)
@@ -604,7 +723,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                      Func<Cell, bool> isLive)
         {
             if (piece.Strands.Count == 0) return;
-            List<V2> first = piece.Strands[0].Pts;
+            List<V2> first = (piece.Strands.FirstOrDefault(s => !(atStart ? s.DiveA : s.DiveB)) ?? piece.Strands[0]).Pts;
             V2 tip = atStart ? first[0] : first[first.Count - 1];
             if (nd.IsMachine)
             {
@@ -619,6 +738,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // round 5: a cord entering a strip pile plugs into its socket like the pile's own cables
                 foreach (CordStrand s in piece.Strands)
                 {
+                    if (atStart ? s.DiveA : s.DiveB) continue;
                     V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                     V2 a = atStart ? s.Pts[Math.Min(s.Pts.Count - 1, 1)] : s.Pts[Math.Max(0, s.Pts.Count - 2)];
                     V2 into = (t - a).Norm();
@@ -630,6 +750,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bool liveEnd = isLive(nd.Cell);
                 foreach (CordStrand s in piece.Strands)
                 {
+                    if (atStart ? s.DiveA : s.DiveB) continue;
                     V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                     var fd = new CordDecal(liveEnd ? DecalKind.FrayLive : DecalKind.FrayDead, t, EndAngle(s.Pts, atStart), 0.5);
                     if (liveEnd && !s.OverFace)

@@ -46,8 +46,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 for (int i = 0; i + 1 < stops.Count; i++)
                 {
                     V2 p0 = stops[i], p1 = stops[i + 1];
-                    if (CordPlanner.AStar(w, p0.Floor, p1.Floor) != null) continue;
                     CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+                    MachineInfo ma = na.IsMachine ? na.Machine : null, mb = nb.IsMachine ? nb.Machine : null;
+                    // the planner's own route rule: walkable A*, else (dive-through on) the dive A*
+                    if (CordPlanner.FindPath(w, p0.Floor, p1.Floor, opt.DiveThrough,
+                                             c => (ma != null && ma.Contains(c)) || (mb != null && mb.Contains(c))) != null) continue;
                     var c = new Case { Source = source, W = w, P0 = p0, P1 = p1, EndA = na.OracleName, EndB = nb.OracleName };
                     Classify(w, c, new[] { na.Machine, nb.Machine });
                     string ea = na.OracleName + ":" + na.Cell.X + "," + na.Cell.Z, eb = nb.OracleName + ":" + nb.Cell.X + "," + nb.Cell.Z;
@@ -195,7 +198,67 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return L;
         }
 
-        private static BuildOptions Opt() => new BuildOptions();
+        private static BuildOptions Opt(bool dive = true) => new BuildOptions { DiveThrough = dive };
+
+        /// <summary>Dive-through scene: a lamp in a sealed room hooks to conduit outside; conduit DOES pass under the room's
+        /// wall, on another row (the 121-lead class c-wall-conduit-elsewhere).</summary>
+        internal static CordWorld WallConduitElsewhere()
+        {
+            CordWorld w = Room(16, 10, 6, 1, 13, 8);
+            Run(w, 1, 9, 6);                                   // under the wall at (6,6) into the room
+            for (int z = 3; z <= 6; z++) w.SetConduit(new Cell(4, z));
+            MachineInfo src = Dev(w, "gen", 0, 6, MachineKind.Source); src.Hookups.Add(new Cell(1, 6));
+            MachineInfo lamp = Dev(w, "lamp", 8, 3, MachineKind.Lamp); lamp.Hookups.Add(new Cell(4, 3));
+            return w;
+        }
+
+        /// <summary>One scene laid with dive-through on: the pieces that dive, and every check a dived cord must pass.</summary>
+        private static void DiveScene(string name, CordWorld w, BlockKind barrier, int minDives)
+        {
+            var b = new CordBuilder();
+            List<LaidPiece> ps = b.Build(w, Opt(true), c => true);
+            Check(ps.All(p => !p.Unroutable), "dive " + name + ": no piece unroutable (" + ps.Count(p => p.Unroutable) + ")");
+            List<LaidPiece> dived = ps.Where(p => p.Dives > 0).ToList();
+            int dives = dived.Sum(p => p.Dives);
+            Check(dives >= minDives, "dive " + name + ": " + dives + " dives (want >= " + minDives + ")");
+            bool InEnd(Cell c) => w.Machines.Any(m => m.Contains(c));
+            // within the overrun (PastFaceDepth) of an open or end-art cell: a dive end just past its face
+            bool NearOpen(V2 pt)
+            {
+                Cell c0 = pt.Floor;
+                for (int dz = -1; dz <= 1; dz++) for (int dx = -1; dx <= 1; dx++)
+                {
+                    var q = new Cell(c0.X + dx, c0.Z + dz);
+                    if (!(w.IsWalkable(q) || InEnd(q))) continue;
+                    double ex = Math.Max(Math.Max(q.X - pt.X, 0), pt.X - (q.X + 1)), ez = Math.Max(Math.Max(q.Z - pt.Z, 0), pt.Z - (q.Z + 1));
+                    if (Math.Sqrt(ex * ex + ez * ez) <= CordBuilder.PastFaceDepth + 0.01) return true;
+                }
+                return false;
+            }
+            foreach (LaidPiece p in dived)
+            {
+                // every drawn point of a section lies on open floor, inside an end's art, under a building (cords print below every
+                // building, so its art hides them), or at most the overrun past a dive face
+                int bad = 0; string where = "";
+                foreach (CordStrand st in p.Strands)
+                    for (int k = 1; k < st.Pts.Count - 1; k++)
+                    {
+                        Cell q = st.Pts[k].Floor;
+                        if (!w.IsWalkable(q) && w.BlockAt(q) != BlockKind.Device && !InEnd(q) && !NearOpen(st.Pts[k])) { bad++; where = st.Pts[k] + " k" + k + "/" + st.Pts.Count + " dA" + st.DiveA + " dB" + st.DiveB + " fell" + st.FellBack; }
+                    }
+                Check(bad == 0, "dive " + name + ": " + bad + " drawn points inside a barrier " + where);
+                Check(p.Strands.Count(x => x.DiveB) == p.Strands.Count(x => x.DiveA) && p.Strands.Any(x => x.DiveB),
+                      "dive " + name + ": strands split at the dive (" + p.Strands.Count + " strands)");
+                Check(p.Strands.Where(x => x.DiveA).All(x => x.WhipA == 0) && p.Strands.Where(x => x.DiveB).All(x => x.WhipB == 0),
+                      "dive " + name + ": no end art at a dive face");
+                int plates = p.Decals.Count(d => d.Kind == DecalKind.StubWall || d.Kind == DecalKind.StubRock);
+                int want = barrier == BlockKind.Wall || barrier == BlockKind.Rock ? 2 * p.Dives : 0;
+                Check(plates == want, "dive " + name + ": " + plates + " entry/exit plates (want " + want + ")");
+            }
+            // the same scene with the setting off: unroutable again, nothing dives
+            List<LaidPiece> off = new CordBuilder().Build(w, Opt(false), c => true);
+            Check(off.Any(p => p.Unroutable) && off.All(p => p.Dives == 0), "dive " + name + ": setting off restores the unroutable lead");
+        }
 
         /// <summary>Random bases with vanilla's hookup rule (the fuzz never makes one: its hookups sit beside the machine):
         /// rooms (walls, some with a door, some with conduit run through them), ponds (some bridged by conduit), stray buildings,
@@ -261,13 +324,41 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // sanity probe: on random vanilla-hookup bases the instrument does find unroutable leads (so a 0 over the fuzz worlds
             // means the fuzz's adjacent hookups always route, not that the census is blind)
             int found = 0;
-            for (long vs = 1; vs <= 60; vs++) found += Scan("probe", VanillaBase(vs), Opt(), c => true, out _).Count;
-            Check(found > 0, "sanity: 60 vanilla-hookup bases hold " + found + " unroutable leads");
+            int foundOn = 0, builderOn = 0;
+            for (long vs = 1; vs <= 60; vs++)
+            {
+                found += Scan("probe", VanillaBase(vs), Opt(false), c => true, out _).Count;
+                foundOn += Scan("probe", VanillaBase(vs), Opt(true), c => true, out int bu).Count;
+                builderOn += bu;
+            }
+            Check(found > 0, "sanity: 60 vanilla-hookup bases hold " + found + " unroutable leads (dive-through off)");
+            Check(foundOn == 0 && builderOn == 0, "dive-through on: 60 vanilla-hookup bases hold " + foundOn + " unroutable leads, builder flagged " + builderOn);
             foreach (var (name, w, expect) in Constructed())
             {
-                List<Case> cs = Scan(name, w, Opt(), c => true, out int bu);
+                List<Case> cs = Scan(name, w, Opt(false), c => true, out int bu);
                 string got = cs.Count == 0 ? null : string.Join("+", cs.Select(x => x.Class).Distinct());
                 Check(got == expect, name + ": " + (got ?? "routable") + " (expected " + (expect ?? "routable") + ", builder unroutable " + bu + ")");
+                List<Case> on = Scan(name, w, Opt(true), c => true, out int buOn);
+                Check(on.Count == 0 && buOn == 0, name + " with dive-through: " + on.Count + " unroutable legs, builder flagged " + buOn);
+                if (expect == null)
+                {
+                    // a scene that already routes never dives, and lays bit-identically with the setting on or off
+                    List<LaidPiece> a = new CordBuilder().Build(w, Opt(true), c => true), b = new CordBuilder().Build(w, Opt(false), c => true);
+                    Check(a.All(p => p.Dives == 0) && a.Count == b.Count && a.Zip(b, (x, y) => x.GeometryHash() == y.GeometryHash()).All(t => t),
+                          name + ": routable scene unchanged by dive-through");
+                }
+            }
+            // one scene per class, laid with dive-through on
+            var cons = Constructed();
+            DiveScene("c-wall (sealed room, no conduit in the wall)", cons[1].w, BlockKind.Wall, 1);
+            DiveScene("c-wall-conduit-elsewhere", WallConduitElsewhere(), BlockKind.Wall, 1);
+            DiveScene("b water (island)", cons[2].w, BlockKind.Water, 1);
+            DiveScene("c-wall two walls", cons[5].w, BlockKind.Wall, 2);
+            DiveScene("c-wall battery link (B9)", cons[4].w, BlockKind.Wall, 1);
+            DiveScene("c-building ring", cons[6].w, BlockKind.Device, 1);
+            {
+                List<Case> cs = Scan("wce", WallConduitElsewhere(), Opt(false), c => true, out _);
+                Check(cs.Count > 0 && cs.All(c => c.Class == "c-wall-conduit-elsewhere"), "wall-conduit-elsewhere scene classifies as such: " + string.Join("+", cs.Select(c => c.Class)));
             }
         }
 
@@ -293,25 +384,30 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 }
             }
             var vanilla = new List<Case>();
-            int vWorlds = 0, vLeads = 0, vBuilder = 0;
+            var vanillaOn = new List<Case>();
+            int vWorlds = 0, vLeads = 0, vBuilder = 0, vBuilderOn = 0, vDives = 0;
             for (long vs = 1; vs <= seeds * 10; vs++)
             {
                 CordWorld w = VanillaBase(vs);
                 vWorlds++;
                 vLeads += w.Machines.Count;
-                List<Case> cs = Scan("vanilla base " + vs, w, Opt(), c => true, out int bu);
+                List<Case> cs = Scan("vanilla base " + vs, w, Opt(false), c => true, out int bu);
                 vBuilder += bu;
                 vanilla.AddRange(cs);
+                vanillaOn.AddRange(Scan("vanilla base " + vs, w, Opt(true), c => true, out int buOn));
+                vBuilderOn += buOn;
+                vDives += new CordBuilder().Build(w, Opt(true), c => true).Sum(p => p.Dives);
             }
             var vByClass = vanilla.GroupBy(c => c.Class).ToDictionary(g => g.Key, g => g.Count());
+            var vByClassOn = vanillaOn.GroupBy(c => c.Class).ToDictionary(g => g.Key, g => g.Count());
             var constructed = new List<Case>();
             foreach (var (name, w, expect) in Constructed())
             {
-                List<Case> cs = Scan(name, w, Opt(), c => true, out int bu);
+                List<Case> cs = Scan(name, w, Opt(false), c => true, out int bu);
                 if (cs.Count == 0)
                 {
                     var b = new CordBuilder();
-                    var ps = b.Build(w, Opt(), c => true);
+                    var ps = b.Build(w, Opt(false), c => true);
                     var ok = new Case { Source = name, W = w, Class = "routable", Detail = "" };
                     foreach (LaidPiece p in ps) foreach (CordStrand st in p.Strands) ok.Strands.Add(st.Pts);
                     constructed.Add(ok);
@@ -323,6 +419,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (var kv in byClass.OrderBy(k => k.Key)) Console.WriteLine("  fuzz class " + kv.Key + ": " + kv.Value);
             Console.WriteLine("vanilla-hookup bases: " + vWorlds + " maps, " + vLeads + " device leads, " + vanilla.Count + " unroutable legs, builder flagged " + vBuilder);
             foreach (var kv in vByClass.OrderBy(k => k.Key)) Console.WriteLine("  vanilla class " + kv.Key + ": " + kv.Value);
+            Console.WriteLine("with dive-through on: " + vanillaOn.Count + " unroutable legs, builder flagged " + vBuilderOn + ", " + vDives + " dives laid");
+            foreach (var kv in vByClassOn.OrderBy(k => k.Key)) Console.WriteLine("  vanilla class (dive on) " + kv.Key + ": " + kv.Value);
             foreach (Case c in constructed) Console.WriteLine("  constructed " + c.Source + ": " + c.Class + " " + c.Detail);
             using (var fs = File.Create(outPath))
             using (var j = new Utf8JsonWriter(fs, new JsonWriterOptions { Indented = false }))
@@ -332,6 +430,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 j.WriteStartObject("fuzzByClass"); foreach (var kv in byClass) j.WriteNumber(kv.Key, kv.Value); j.WriteEndObject();
                 j.WriteNumber("vanillaMaps", vWorlds); j.WriteNumber("vanillaLeads", vLeads); j.WriteNumber("vanillaBuilderFlagged", vBuilder);
                 j.WriteStartObject("vanillaByClass"); foreach (var kv in vByClass) j.WriteNumber(kv.Key, kv.Value); j.WriteEndObject();
+                j.WriteNumber("vanillaLegsDiveOn", vanillaOn.Count); j.WriteNumber("vanillaBuilderFlaggedDiveOn", vBuilderOn); j.WriteNumber("vanillaDivesLaid", vDives);
+                j.WriteStartObject("vanillaByClassDiveOn"); foreach (var kv in vByClassOn) j.WriteNumber(kv.Key, kv.Value); j.WriteEndObject();
                 j.WriteStartArray("cases");
                 // every constructed case, every fuzz case, and the first 6 vanilla-base cases of each class (the renderer's pool)
                 foreach (Case c in constructed.Concat(all).Concat(vanilla.GroupBy(c => c.Class).SelectMany(g => g.Take(6)))) WriteCase(j, c);
