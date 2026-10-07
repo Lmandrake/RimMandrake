@@ -228,4 +228,113 @@
     </recipeUsers>
   </RecipeDef>
 
+  <RecipeDef>
+    <defName>RM_Make_Bucket_Wood</defName>
+    <label>make wooden bucket</label>
+    <description>Build a bucket out of wood: five bottles' worth of liquid in one haul.</description>
+    <jobString>Building a wooden bucket.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workAmount>700</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Woody</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>12</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Woody</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BucketEmpty>1</RM_BucketEmpty>
+    </products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Bucket_Metal</defName>
+    <label>make metal bucket</label>
+    <description>Hammer a bucket out of metal: five bottles' worth of liquid in one haul.</description>
+    <jobString>Hammering a metal bucket.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Smith</soundWorking>
+    <workAmount>900</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Metallic</li>
+          </stuffCategoriesToAllow>
+          <disallowedThingDefs>
+            <li>Plasteel</li>
+          </disallowedThingDefs>
+        </filter>
+        <count>8</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Metallic</li>
+      </stuffCategoriesToAllow>
+      <disallowedThingDefs>
+        <li>Plasteel</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BucketEmpty>1</RM_BucketEmpty>
+    </products>
+    <recipeUsers>
+      <li>FueledSmithy</li>
+      <li>ElectricSmithy</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Bucket_Leather</defName>
+    <label>make leather bucket</label>
+    <description>Stitch a bucket out of leather. It holds a little less than a rigid one and cannot take hot liquids or acid.</description>
+    <jobString>Stitching a leather bucket.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workAmount>700</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Leathery</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Leathery</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BucketEmpty>1</RM_BucketEmpty>
+    </products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>HandTailoringBench</li>
+      <li>ElectricTailoringBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
 </Defs>

@@ -146,8 +146,9 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, same brief and matching-set
-           convention as RM_BottleItemBase above. -->
+      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): needs neutral greyscale
+           art for the material tint; regen is artpipe job
+           fwart_RM_Bucket_Stuffable_v1. -->
       <texPath>Things/Item/Resource/FlowWorks/RM_Bucket</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.0</drawSize>
@@ -165,12 +166,20 @@
     <thingCategories>
       <li>RM_LiquidBottleItems</li>
     </thingCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1, buckets (decision taken by question
+         card 2026-10-06 23:45): wood, metal or leather, each its own recipe
+         at its own stations. -->
+    <stuffCategories>
+      <li>Woody</li>
+      <li>Metallic</li>
+      <li>Leathery</li>
+    </stuffCategories>
   </ThingDef>
 
   <ThingDef ParentName="RM_BucketItemBase">
     <defName>RM_BucketEmpty</defName>
     <label>empty bucket</label>
-    <description>A scavenged bucket, empty and ready to fill. Five bottles' worth in one haul.</description>
+    <description>A bucket of wood, metal or stitched leather, empty and ready to fill. Five bottles' worth in one haul.</description>
     <stackLimit>25</stackLimit>
     <statBases>
       <MarketValue>2</MarketValue>
