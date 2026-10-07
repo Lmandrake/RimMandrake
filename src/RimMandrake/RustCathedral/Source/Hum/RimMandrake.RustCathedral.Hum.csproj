@@ -61,6 +61,7 @@
     <Compile Include="RM_RustCathedralHumProof.cs" />
     <Compile Include="RM_LineCycle.cs" />
     <Compile Include="RM_HumReading.cs" />
+    <Compile Include="RM_HullBolts.cs" />
   </ItemGroup>
 
   <ItemGroup>

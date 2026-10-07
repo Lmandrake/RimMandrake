@@ -147,6 +147,7 @@ def static_checks():
         bad.append("walk missing")
     bad.extend(borehulk_problems()[0])
     bad.extend(basefinish_problems()[0])
+    bad.extend(hullbolts_problems())
     return bad
 
 
@@ -462,6 +463,125 @@ try:
     from modcheck import Suite, ExpectationFailed
 except ImportError:
     Suite = None
+
+
+# ---- hull bolts (RUSTCATHEDRAL_HULL_BOLTS_BUILD_1), L0 half of its criteria ---------------------------------------
+HULLBOLT_DEFS = (("ThingDef", "RM_HullBolt"), ("PawnKindDef", "RM_HullBolt"), ("ThinkTreeDef", "RM_ThinkTree_HullBolt"),
+                 ("JobDef", "RM_HullBoltTell"), ("JobDef", "RM_PryHullBolt"), ("ThoughtDef", "RM_HullBoltsSeen"),
+                 ("LetterDef", "RM_HullBoltsDilemma"))
+WITNESS_TAG = "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef"
+HULLBOLT_TOGGLES = ("hullBoltsEnabled", "hullBoltBoardMin", "hullBoltBoardMax", "hullBoltNoneChance", "hullBoltEdgePull",
+                    "hullBoltWitnessEnabled", "hullBoltWeightScale", "hullBoltIrritationCap", "hullBoltRealiseDays",
+                    "hullBoltRevealDays", "hullBoltPetMemoryEnabled")
+# the sheet's ban 1: free-tier player text never names the Cathedral as a listener or explains the mind
+_BANNED_WORDS = ("cathedral", "spy", "spies", "listen", "ears", "hears", "watching you")
+
+
+def hullbolts_problems(mod_root=None):
+    """Static reads of the hull bolts: defs present, the resistances the item names, no fight branch, the dance on the
+    hull, every witnessed Sell act names its things, the hooks that board/hear/tell exist, every setting is saved and
+    read, and no player-facing string names the listener."""
+    mod_root = mod_root or HERE
+    bad = []
+    defs = {}
+    witness = []
+    for f in _xml_files(os.path.join(mod_root, "Defs")):
+        for el in ET.parse(f).getroot():
+            if not isinstance(el.tag, str) or not el.findtext("defName"):
+                continue
+            defs[(el.tag, el.findtext("defName").strip())] = el
+            if el.tag == WITNESS_TAG:
+                witness.append(el)
+    for key in HULLBOLT_DEFS:
+        if key not in defs:
+            bad.append("hullbolts: %s/%s not defined under Defs/" % key)
+    hb = defs.get(("ThingDef", "RM_HullBolt"))
+    if hb is not None:
+        mult = {li.findtext("damageDef"): float(li.findtext("multiplier") or 1) for li in hb.findall("damageMultipliers/li")}
+        for dd in ("Flame", "Burn", "Frostbite", "EMP", "ToxGas"):
+            if mult.get(dd, 1.0) > 0.1:
+                bad.append("hullbolts: RM_HullBolt damage factor for %s is not <= 0.1" % dd)
+        if (hb.findtext("statBases/VacuumResistance") or "").strip() not in ("1", "1.0"):
+            bad.append("hullbolts: RM_HullBolt VacuumResistance is not 1 (it would not survive space)")
+        if hb.findtext("race/thinkTreeMain") != "RM_ThinkTree_HullBolt":
+            bad.append("hullbolts: RM_HullBolt does not run RM_ThinkTree_HullBolt")
+        if not any((li.get("Class") or "").endswith("CompProperties_HullBound") for li in hb.findall("comps/li")):
+            bad.append("hullbolts: RM_HullBolt lost CompProperties_HullBound (nothing keeps it on the hull)")
+        if any((li.get("Class") or "") == "CompProperties_Spawner" for li in hb.findall("comps/li")):
+            bad.append("hullbolts: RM_HullBolt sheds curiosities (it would litter the ship)")
+    tree = defs.get(("ThinkTreeDef", "RM_ThinkTree_HullBolt"))
+    if tree is not None:
+        classes = [n.get("Class", "") for n in tree.iter() if n.get("Class")]
+        if not any(c.endswith("RM_JobGiver_HullDance") for c in classes):
+            bad.append("hullbolts: the hull bolt's think tree lost RM_JobGiver_HullDance")
+        if any("Wander" in c for c in classes):
+            bad.append("hullbolts: the hull bolt's think tree wanders (it would leave the hull)")
+        fights = [c for c in classes if any(w in c for w in _FIGHT_WORDS)]
+        if fights:
+            bad.append("hullbolts: the hull bolt's think tree carries a fight branch %s" % fights)
+    if not witness:
+        bad.append("hullbolts: no RM_CathedralWitnessDef (nothing is ever heard)")
+    kinds = set()
+    for w in witness:
+        kind = (w.findtext("kind") or "").strip()
+        kinds.add(kind)
+        if kind == "Sell" and not w.findall("things/li"):
+            bad.append("hullbolts: witness %s is a Sell with no <things> (it would hear every sale)" % w.findtext("defName"))
+    for k in ("Sell", "Butcher", "DestroyHullBolt", "PryHullBolt"):
+        if k not in kinds:
+            bad.append("hullbolts: no witness def of kind %s" % k)
+    th = defs.get(("ThoughtDef", "RM_HullBoltsSeen"))
+    if th is not None and float(th.findtext("stages/li/baseMoodEffect") or 0) <= 0:
+        bad.append("hullbolts: RM_HullBoltsSeen is not a positive memory")
+    srcs = _cs_all(mod_root)
+    allsrc = "\n".join(srcs.values())
+    for needle, why in (("nameof(GravshipUtility.GenerateGravship)", "boarding at liftoff"),
+                        ("nameof(Tradeable.ResolveTrade)", "hearing a sale"),
+                        ("RM_WitnessKind.Butcher", "hearing a bolt broken down"),
+                        ("RM_WitnessKind.DestroyHullBolt", "hearing a hull bolt destroyed"),
+                        ("RM_HullBolts.ShipEdgeAnchor", "the plateau bolts drifting to the ship's edge"),
+                        ("AddIrritation(m, applied)", "the ledger applied on landing"),
+                        ("ArrivedUneasy", "the hum reader's arrival line")):
+        if needle not in allsrc:
+            bad.append("hullbolts: %s is gone (%s)" % (needle, why))
+    if not re.search(r"void Witness\([^)]*\)\s*\{[^}]*hullBoltWitnessEnabled", allsrc):
+        bad.append("hullbolts: RM_HullBolts.Witness ignores hullBoltWitnessEnabled")
+    for cls, toggle in (("RM_HullBolts", "HullBoltsActive"),
+                        ("RM_GameComponent_HullBoltWitness", "hullBoltPetMemoryEnabled"),
+                        ("RM_GameComponent_HullBoltWitness", "hullBoltIrritationCap"),
+                        ("RM_GameComponent_HullBoltWitness", "hullBoltRevealDays"),
+                        ("RM_CompHullBound", "hullBoltRealiseDays")):
+        body = _class_body(srcs, cls)
+        if not body:
+            bad.append("hullbolts: class %s not found in Source/" % cls)
+        elif toggle not in body:
+            bad.append("hullbolts: %s ignores %s" % (cls, toggle))
+    modsrc = srcs.get("RustCathedral/RM_RustCathedralMod.cs", "")
+    setsrc = srcs.get("Hum/RustCathedralHumSettings.cs", "")
+    for t in HULLBOLT_TOGGLES:
+        if '"hum_%s"' % t not in modsrc:
+            bad.append("hullbolts: setting %s is not saved by the mod's settings" % t)
+        if "ref %s" % t not in setsrc.split("DoWindowContents")[-1] and "%s = " % t not in setsrc.split("DoWindowContents")[-1]:
+            bad.append("hullbolts: setting %s has no control on the settings screen" % t)
+    proj = os.path.join(mod_root, "Source", "Hum", "RimMandrake.RustCathedral.Hum.csproj")
+    if os.path.isfile(proj) and 'Include="RM_HullBolts.cs"' not in open(proj, encoding="utf-8").read():
+        bad.append("hullbolts: RM_HullBolts.cs is not in the Hum csproj (it compiles into nothing)")
+    texts = []
+    for key in (("ThingDef", "RM_HullBolt"), ("ThoughtDef", "RM_HullBoltsSeen")):
+        el = defs.get(key)
+        if el is not None:
+            texts += [(t.text or "") for t in el.iter() if t.tag in ("description", "label")]
+    raw = ""
+    hp = os.path.join(mod_root, "Source", "Hum", "RM_HullBolts.cs")
+    if os.path.isfile(hp):
+        raw = _nocomment(open(hp, encoding="utf-8").read())
+    texts += [m for m in re.findall(r'"((?:[^"\\]|\\.)*)"', raw) if " " in m]
+    for t in texts:
+        low = t.lower()
+        for w in _BANNED_WORDS:
+            if re.search(r"\b%s\b" % re.escape(w), low):
+                bad.append("hullbolts: player text names the listener (%r in %r)" % (w, t[:60]))
+    return bad
 
 
 def _build_suite():

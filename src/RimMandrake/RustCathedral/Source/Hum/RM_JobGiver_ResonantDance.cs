@@ -134,7 +134,10 @@ namespace RimMandrake.RustCathedral.Hum
 			List<IntVec3> cells = new List<IntVec3>();
 			int steps = Mathf.Max(2, Mathf.RoundToInt(Mathf.Lerp(minSteps, maxSteps, energy)));
 			float radius = Mathf.Lerp(minRadius, maxRadius, energy);
-			IntVec3 anchor = pawn.Position;
+			// RUSTCATHEDRAL_HULL_BOLTS_BUILD_1 part 1: with a player ship landed, some figures centre on the nearest
+			// outer hull cell instead (a weight, not a new job) -- which is how bolts end up close enough to cling.
+			IntVec3 edge = RM_HullBolts.ShipEdgeAnchor(pawn);
+			IntVec3 anchor = edge.IsValid ? edge : pawn.Position;
 			float phase = Rand.Range(0f, Mathf.PI * 2f);
 
 			// Three figure shapes, chosen fresh each time: a plain loop, a
@@ -168,7 +171,7 @@ namespace RimMandrake.RustCathedral.Hum
 					0,
 					Mathf.RoundToInt(Mathf.Sin(ang) * r));
 
-				if (candidate == anchor)
+				if (candidate == pawn.Position)
 				{
 					continue;
 				}

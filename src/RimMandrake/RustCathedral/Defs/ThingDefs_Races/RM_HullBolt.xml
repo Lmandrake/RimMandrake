@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_HULL_BOLTS_BUILD_1: the hull bolt. A living bolt that clung to a gravship leaving the plateau
+  (Source/Hum/RM_HullBolts.cs, boarding at GravshipUtility.GenerateGravship) and keeps going aboard for good.
+  Same body (RM_BoltFrame), wild and factionless, never tameable (a mechanoid), never hostile.
+
+  Resistance: BaseMechanoid already carries ToxicResistance 1, ToxicEnvironmentResistance 1, Flammability 0, a
+  -100..250 comfort range and no organic hediff givers (no hypothermia/heatstroke). Added here: VacuumResistance 1
+  (Odyssey stat) and damageMultipliers near zero for Flame, Burn, Frostbite, ToxGas, EMP, ElectricalBurn and
+  AcidBurn (Thing.TakeDamage applies them). Ordinary physical damage still kills one.
+
+  ART: placeholder, the living bolt's own texPath. Artpipe renders exist (_artsrc/RM_HullBolt_*) with no owner
+  ruling yet, so nothing is installed. Numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseMechanoidWalker">
+    <defName>RM_HullBolt</defName>
+    <label>hull bolt</label>
+    <description>A living bolt that came away with the ship and never let go. It keeps to the outer plating, dancing the same slow figures it danced on the plateau, through vacuum, fire and frost alike. The crew have taken to it, the way crews take to anything that rides along and asks for nothing.</description>
+    <statBases>
+      <ArmorRating_Blunt>0.05</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <StaggerDurationFactor>0</StaggerDurationFactor>
+      <MoveSpeed>2.0</MoveSpeed>
+      <BandwidthCost>1</BandwidthCost>
+      <MarketValue>60</MarketValue>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <ComfyTemperatureMin>-273</ComfyTemperatureMin>
+      <ComfyTemperatureMax>500</ComfyTemperatureMax>
+    </statBases>
+    <damageMultipliers>
+      <li><damageDef>Flame</damageDef><multiplier>0.05</multiplier></li>
+      <li><damageDef>Burn</damageDef><multiplier>0.05</multiplier></li>
+      <li><damageDef>Frostbite</damageDef><multiplier>0.05</multiplier></li>
+      <li><damageDef>EMP</damageDef><multiplier>0.05</multiplier></li>
+      <li><damageDef>AcidBurn</damageDef><multiplier>0.05</multiplier></li>
+      <li MayRequire="Ludeon.RimWorld.Biotech"><damageDef>ToxGas</damageDef><multiplier>0.05</multiplier></li>
+      <li MayRequire="Ludeon.RimWorld.Anomaly"><damageDef>ElectricalBurn</damageDef><multiplier>0.05</multiplier></li>
+    </damageMultipliers>
+    <uiIconScale>0.45</uiIconScale>
+    <tools>
+      <li>
+        <label>grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>RM_BoltFrame</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.30</baseHealthScale>
+      <thinkTreeMain>RM_ThinkTree_HullBolt</thinkTreeMain>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>MechanoidFullyFormed</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+          <soundCall>Pawn_Mech_Scyther_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <mechWeightClass>Light</mechWeightClass>
+    </race>
+    <butcherProducts>
+      <Steel>2</Steel>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.RustCathedral.Hum.CompProperties_HullBound" />
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BaseMechanoidKind">
+    <defName>RM_HullBolt</defName>
+    <label>hull bolt</label>
+    <labelPlural>hull bolts</labelPlural>
+    <race>RM_HullBolt</race>
+    <combatPower>10</combatPower>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt</texPath>
+          <shaderType>CutoutWithOverlay</shaderType>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_HullBolt</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_QueuedJob" />
+        <li Class="RimMandrake.RustCathedral.Hum.RM_JobGiver_HullDance" />
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.RustCathedral.Hum.RM_JobGiver_HullIdle" />
+          </subNodes>
+        </li>
+        <li Class="JobGiver_IdleError" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <JobDef>
+    <defName>RM_HullBoltTell</defName>
+    <driverClass>RimMandrake.RustCathedral.Hum.JobDriver_HullBoltTell</driverClass>
+    <reportString>standing still.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_PryHullBolt</defName>
+    <driverClass>RimMandrake.RustCathedral.Hum.JobDriver_PryHullBolt</driverClass>
+    <reportString>prying off TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <ThoughtDef>
+    <defName>RM_HullBoltsSeen</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>watched the hull bolts</label>
+        <description>The little bolts on the hull were at their dance again. It is good to have them along.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RM_HullBoltsDilemma</defName>
+    <color>(150, 180, 220)</color>
+    <flashInterval>-1</flashInterval>
+    <letterClass>RimMandrake.RustCathedral.Hum.RM_ChoiceLetter_HullBolts</letterClass>
+  </LetterDef>
+
+  <!-- Witnessed acts. Weights are irritation added at the next landing on the plateau (band thresholds 10/30/55/80;
+       the landing applies at most the settings cap, 60). PROVISIONAL. A Sell def with no <things> would match every
+       sale, so every Sell def names its things. -->
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_SellCuriosity</defName>
+    <label>sold a shed curiosity</label>
+    <kind>Sell</kind>
+    <things><li>RM_BoltShedCuriosity</li></things>
+    <weight>4</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_SellEelCatch</defName>
+    <label>sold a coolant eel</label>
+    <kind>Sell</kind>
+    <things><li>RM_CoolantEelCatch</li></things>
+    <weight>2</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_SellDeadSmartsteel</defName>
+    <label>sold dead smartsteel</label>
+    <kind>Sell</kind>
+    <things><li>RM_DeadSmartsteel</li></things>
+    <weight>4</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_SellLivePatternMetal</defName>
+    <label>sold live pattern-metal</label>
+    <kind>Sell</kind>
+    <things><li>RM_LivePatternMetal</li></things>
+    <weight>6</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_ButcherBolt</defName>
+    <label>broke down a bolt</label>
+    <kind>Butcher</kind>
+    <things><li>RM_LivingBolt</li><li>RM_HullBolt</li></things>
+    <weight>15</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_DestroyHullBolt</defName>
+    <label>destroyed a hull bolt</label>
+    <kind>DestroyHullBolt</kind>
+    <weight>15</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+  <RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+    <defName>RM_Witness_PryHullBolt</defName>
+    <label>pried a hull bolt off</label>
+    <kind>PryHullBolt</kind>
+    <weight>25</weight>
+  </RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef>
+
+</Defs>
