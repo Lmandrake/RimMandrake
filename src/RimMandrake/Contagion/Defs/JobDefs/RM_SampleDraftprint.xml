@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- CONTAGION_GPT_ENRICHMENT_1 part 1: Draftprints. -->
+  <JobDef>
+    <defName>RM_SampleDraftprint</defName>
+    <driverClass>RimMandrake.Contagion.JobDriver_RM_SampleDraftprint</driverClass>
+    <reportString>taking a draftprint of TargetA.</reportString>
+  </JobDef>
+
+</Defs>

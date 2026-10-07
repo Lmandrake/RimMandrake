@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GPT_ENRICHMENT_1 part 1: Draftprints. Owner, on the card: "I like
+    the helix offering to purchase strange scans of the beasts here. You
+    assume the risks."
+
+    Made only by JobDriver_RM_SampleDraftprint (right-click a living
+    Unfinished). CompDraftprint holds what the scan recorded: rolled limbs,
+    whether it rolled a monster, its most extreme stat against its own kind,
+    and what failed on it. A Helix draftprint contract
+    (RM_HelixDraftprintContract) buys a print carrying the combination it
+    names, through the print's own "Transmit to the Helix" gizmo.
+
+    Icon: PLACEHOLDER reuse of Biotech's MechanitorComplexMap texture (a
+    readable scan-on-a-slate shape). Bespoke art is owed, not blocking.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Draftprint</defName>
+    <label>draftprint</label>
+    <description>A tissue-and-field scan of one of the Contagion's Unfinished, taken at touch range while it still held together: which limbs it finished, which it abandoned, and what it did to itself in the attempt. The Helix watchers at the valley mouths buy these, and post contracts for the strangest combinations. Getting close enough to take one was your risk.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Special/MechanitorComplexMap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.2</Mass>
+      <Flammability>0.4</Flammability>
+      <MarketValue>40</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+    <comps>
+      <li Class="RimMandrake.Contagion.CompProperties_Draftprint">
+        <extremeStats>
+          <li>MoveSpeed</li>
+          <li>MeleeDamageFactor</li>
+          <li>ArmorRating_Sharp</li>
+          <li>ArmorRating_Blunt</li>
+        </extremeStats>
+        <valuePerLimb>25</valuePerLimb>
+        <monstrousValueFactor>3</monstrousValueFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

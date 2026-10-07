@@ -58,6 +58,15 @@ namespace RimMandrake.Contagion
         // organ batch). Limbs already installed keep working.
         public static bool grownLimbsEnabled = true;
 
+        // CONTAGION_GPT_ENRICHMENT_1 part 1 — Draftprints. Off: no sampling
+        // option, no Helix contract is offered, and existing prints cannot be
+        // transmitted (they keep their trade value).
+        public static bool draftprintsEnabled = true;
+        // Chance a conscious Unfinished turns manhunter on its sampler.
+        public static float draftprintProvokeChance = 0.35f;
+        // Multiplier on the silver a Helix contract pays.
+        public static float helixContractRewardFactor = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -72,6 +81,9 @@ namespace RimMandrake.Contagion
             Scribe_Values.Look(ref sunbeamNativeFactor, "sunbeamNativeFactor", 6f, true);
             Scribe_Values.Look(ref coalescenceEnabled, "coalescenceEnabled", true, true);
             Scribe_Values.Look(ref grownLimbsEnabled, "grownLimbsEnabled", true, true);
+            Scribe_Values.Look(ref draftprintsEnabled, "draftprintsEnabled", true, true);
+            Scribe_Values.Look(ref draftprintProvokeChance, "draftprintProvokeChance", 0.35f, true);
+            Scribe_Values.Look(ref helixContractRewardFactor, "helixContractRewardFactor", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -138,6 +150,20 @@ namespace RimMandrake.Contagion
                 + "limb, rolled at random: a Pillar Arm, a Lash, an Eyeburst, a Caudal Spring or a Bellows. Each is a real trade, never "
                 + "an upgrade. Off: a Monstrous sample grows the normal organ batch. Limbs "
                 + "already installed keep working.");
+
+            list.GapLine();
+            list.CheckboxLabeled(
+                "Draftprints enabled",
+                ref draftprintsEnabled,
+                "A colonist can walk up to a living Unfinished and scan it into a draftprint "
+                + "recording its limbs, its most extreme stat and what failed on it. The Helix "
+                + "post contracts for particular combinations and buy matching prints. Off: no "
+                + "sampling, no contracts; prints already made keep their trade value.");
+            list.Label("Sampling provokes a conscious Unfinished: " + draftprintProvokeChance.ToStringPercent()
+                       + " (downed ones never fight back)");
+            draftprintProvokeChance = list.Slider(draftprintProvokeChance, 0f, 1f);
+            list.Label("Helix contract pay: " + helixContractRewardFactor.ToString("0.00") + "x");
+            helixContractRewardFactor = list.Slider(helixContractRewardFactor, 0.25f, 4f);
 
             list.GapLine();
             list.CheckboxLabeled(

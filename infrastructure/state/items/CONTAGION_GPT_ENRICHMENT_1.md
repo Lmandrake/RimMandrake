@@ -33,3 +33,15 @@ Each ships a Mod Settings toggle and tuning.
 
 Each of the three is quicktest-proven on a Contagion map, and no native disappears without a
 visible remainder.
+
+## progress
+
+- **Part 1, Draftprints: built offline 2026-10-06, uncommitted, not live-tested.** Right-click a
+  living Unfinished → `RM_SampleDraftprint` job → `RM_Draftprint` item (`CompDraftprint`: limbs by
+  HediffDef, monstrous, extreme stat, failure; inspect string, label, market-value factor). One print
+  per Unfinished (`CompRandomizeUnfinished.draftprintTaken`). A conscious target may go manhunter
+  (Mod Setting, default 35%). Helix contracts: `RM_HelixDraftprintContract` QuestScriptDef +
+  `QuestNode_RM_HelixDraftprintContract` / `QuestPart_RM_DraftprintContract`; offered only while a
+  player home map is a Contagion map; filled by the print's "Transmit to the Helix" gizmo (silver by
+  drop pod). Settings: on/off, provoke chance, pay factor. Wombpod steering NOT built (optional).
+- Parts 2 (The Dive) and 3 (Bodyprints): not started.
