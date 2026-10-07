@@ -70,7 +70,11 @@ namespace RimMandrake.Greentide
 			for (int i = 0; i < haulables.Count; i++)
 			{
 				Thing thing = haulables[i];
-				if (thing == null || !thing.Spawned || thing.ParentHolder != null)
+				// Not ParentHolder != null: a spawned thing's holder is the map's
+				// own spawnedThings ThingOwner (Thing.ParentHolder =>
+				// holdingOwner?.Owner, Map.spawnedThings owned by the map), so
+				// that guard skipped every item and nothing was ever swallowed.
+				if (thing == null || !thing.Spawned)
 				{
 					continue;
 				}
