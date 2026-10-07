@@ -246,7 +246,7 @@ def _build_suite():
     def tier_ladder(t):
         with t.component("thresholds_match_xml_and_ascend", beyond_toggle=True):
             exp = tier_xml()
-            r = t.bridge_call("jawa/get_defs", defs="RM_TitanicTierDef/RM_TitanicTiers_Default",
+            r = t.bridge_call("jawa/get_defs", defs="RimMandrake.TitanicCreatures.RM_TitanicTierDef/RM_TitanicTiers_Default",
                               fields="t1MinBodySize,t2MinBodySize,t3MinBodySize", limit=2)
             if not _live(t):
                 return
@@ -269,7 +269,7 @@ def _build_suite():
     def crush_rules(t):
         exp = crush_xml()
         with t.component("rules_read_back_as_the_xml_says", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs=";".join("RM_CrushRuleDef/%s" % n for n in sorted(exp)),
+            r = t.bridge_call("jawa/get_defs", defs=";".join("RimMandrake.TitanicCreatures.RM_CrushRuleDef/%s" % n for n in sorted(exp)),
                               fields="crushable,minTier", limit=10)
             if not _live(t):
                 return
