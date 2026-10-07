@@ -44,6 +44,7 @@
   </ThingDef>
 
   <ThingDef Name="RM_LiquidWorksBase" ParentName="BuildingBase" Abstract="True">
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <thingClass>Building</thingClass>
     <tickerType>Rare</tickerType>
     <size>(3,2)</size>

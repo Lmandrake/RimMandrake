@@ -34,6 +34,7 @@
   </ThingDef>
 
   <ThingDef Name="RM_PumpingStationBase" ParentName="BuildingBase" Abstract="True">
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump</thingClass>
     <tickerType>Normal</tickerType>
     <size>(3,2)</size>

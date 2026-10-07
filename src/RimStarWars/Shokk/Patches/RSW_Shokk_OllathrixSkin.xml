@@ -53,24 +53,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/labelPlural</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/labelPlural</xpath>
-      <value>
-        <labelPlural>wyyyschokk</labelPlural>
-      </value>
-    </match>
-    <!-- RM_Ollathrix's ThingDef carries NO labelPlural node (only its PawnKindDef does), so the match
-         branch alone is a silent no-op and the race keeps the auto plural. Add it when absent. -->
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]</xpath>
-      <value>
-        <labelPlural>wyyyschokk</labelPlural>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_Ollathrix"]/description</xpath>

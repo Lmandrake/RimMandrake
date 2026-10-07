@@ -36,15 +36,12 @@
     <passability>Standable</passability>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <drawerType>MapMeshOnly</drawerType>
-    <linkFlags>
-      <li>Custom3</li>
-    </linkFlags>
     <useHitPoints>true</useHitPoints>
     <rotatable>false</rotatable>
     <selectable>true</selectable>
     <neverMultiSelect>false</neverMultiSelect>
     <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
-    <placingDraggableDimensions>1</placingDraggableDimensions>
+    <drawStyleCategory>Conduits</drawStyleCategory>
     <clearBuildingArea>false</clearBuildingArea>
     <designationCategory>Production</designationCategory>
     <statBases>
