@@ -31,7 +31,7 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
             "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
             "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
-            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
+            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "chotrixDragEnabled": True, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
             "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
             "enableWreckLichenSeeder": True, "enableRimclaw": True, "enableBileworm": True, "enableElectricTick": True,
             "enableElectricGryllotalpa": True, "enableJuggernautBeetle": True,
@@ -267,6 +267,21 @@ def static_checks():
         bad.append("chotrix does not butcher into cloak lacquer")
     if cth.findtext("comps/li/cloakHediff") != "RM_ChotrixCloak":
         bad.append("chotrix comp does not name the cloak hediff")
+    # WARSCAR_CHOTRIX_SIGNS_1: print class on the film, drag job, drag giver ahead of the hunt.
+    if 'Compile Include="RM_ChotrixSigns.cs"' not in csproj:
+        bad.append("RM_ChotrixSigns.cs missing from RM_Warscar.csproj")
+    film = ET.parse(os.path.join(D, "ThingDefs_Filth", "RM_SettledFilm.xml")).getroot()
+    if not any(o.findtext("race") == "RM_Chotrix" and o.findtext("texPath")
+               for o in film.iter("li") if o.find("race") is not None):
+        bad.append("settled film gives the chotrix no print class (raceOverride)")
+    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Tracks", "RM_ChotrixPrint.png")):
+        bad.append("RM_ChotrixPrint.png missing")
+    jd = ET.parse(os.path.join(D, "JobDefs", "RM_ChotrixJobs.xml")).getroot()
+    if jd.findtext("JobDef/driverClass") != NS + "JobDriver_ChotrixDragKill":
+        bad.append("RM_ChotrixDragKill job does not use its driver")
+    tt = [li.get("Class") for li in ET.parse(os.path.join(D, "ThinkTreeDefs", "RM_ThinkTree_Chotrix.xml")).getroot().iter("li")]
+    if NS + "JobGiver_ChotrixDragKill" not in tt or tt.index(NS + "JobGiver_ChotrixDragKill") > tt.index(NS + "JobGiver_ChotrixHunt"):
+        bad.append("chotrix think tree does not drag a fresh kill before hunting again")
     chd = ET.parse(os.path.join(D, "HediffDefs", "RM_ChotrixHediffs.xml")).getroot()
     for h in chd:
         if h.find("comps/li[@Class='HediffCompProperties_Invisibility']") is None:

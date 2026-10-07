@@ -71,6 +71,7 @@ namespace RimMandrake.Scarlands
         public static bool chotrixEnabled = true;            // chotrix spawns on new maps and hunts
         public static float chotrixPerMap = 2f;              // up to this many per map (0-2), new maps
         public static float chotrixRevealSeconds = 4f;       // seconds visible after it strikes
+        public static bool chotrixDragEnabled = true;        // WARSCAR_CHOTRIX_SIGNS_1: drags its kill to cover, furrowing the film
         public static bool lacquerCloakEnabled = true;       // lacquered cloaks grant still-and-unseen invisibility
         public static float lacquerSeenRadius = 15f;         // a hostile with sight within this many cells "sees" the wearer
 
@@ -164,6 +165,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref chotrixEnabled, "chotrixEnabled", true);
             Scribe_Values.Look(ref chotrixPerMap, "chotrixPerMap", 2f);
             Scribe_Values.Look(ref chotrixRevealSeconds, "chotrixRevealSeconds", 4f);
+            Scribe_Values.Look(ref chotrixDragEnabled, "chotrixDragEnabled", true);
             Scribe_Values.Look(ref lacquerCloakEnabled, "lacquerCloakEnabled", true);
             Scribe_Values.Look(ref lacquerSeenRadius, "lacquerSeenRadius", 15f);
             Scribe_Values.Look(ref enableChatrak, "enableChatrak", true);
@@ -294,6 +296,8 @@ namespace RimMandrake.Scarlands
             chotrixPerMap = Mathf.Round(list.Slider(chotrixPerMap, 0f, 2f));
             list.Label("Chotrix visible after a strike: " + chotrixRevealSeconds.ToString("0.0") + " seconds");
             chotrixRevealSeconds = list.Slider(chotrixRevealSeconds, 1f, 15f);
+            list.CheckboxLabeled("Chotrix drags its kill to cover", ref chotrixDragEnabled,
+                "After a kill it drags the body 8-16 cells off before eating. On settled film the drag leaves a furrow in place of its prints.");
             list.CheckboxLabeled("Lacquered cloaks hide the wearer", ref lacquerCloakEnabled,
                 "A cloak made with cloak lacquer makes the wearer invisible while standing still and unseen. Permanent; never expires.");
             list.Label("Lacquer: seen within " + lacquerSeenRadius.ToString("0") + " cells by a hostile with line of sight");

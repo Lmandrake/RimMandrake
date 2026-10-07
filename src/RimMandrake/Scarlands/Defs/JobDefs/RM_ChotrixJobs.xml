@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_CHOTRIX_SIGNS_1: the chotrix drags a fresh kill to cover (Source/RM_ChotrixSigns.cs). -->
+  <JobDef>
+    <defName>RM_ChotrixDragKill</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_ChotrixDragKill</driverClass>
+    <reportString>dragging TargetA away.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>

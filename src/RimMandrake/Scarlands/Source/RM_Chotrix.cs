@@ -9,8 +9,8 @@ namespace RimMandrake.Scarlands
 {
     // WARSCAR_CHOTRIX_BUILD_1. The chotrix is invisible while standing or stalking (stock invisibility hediff),
     // shows for a few seconds when it strikes, hunts only lone small prey, and flees after one bite if hurt.
-    // Track prints and the tetchik silence ring are NOT here: they wait for FOOTPRINT_TRACK_GRID_1 and
-    // WARSCAR_GEIGER_CHOIR_1. The static registry and SilenceRadius below are the hook the choir will read.
+    // Its readable signs (prints, dragged-kill marks, the tetchik silence ring) are RM_ChotrixSigns.cs and the
+    // Geiger choir; the static registry and SilenceRadius below are what the choir reads.
     public class CompProperties_Chotrix : CompProperties
     {
         public HediffDef cloakHediff;
@@ -37,6 +37,10 @@ namespace RimMandrake.Scarlands
         private int fleeUntil = -1;
         private int lastStrike = -99999;
         public int nextHuntCheck;
+        // The last pawn it bit, for the drag (WARSCAR_CHOTRIX_SIGNS_1). Not saved: a reload forgets one fresh kill.
+        public Pawn lastVictim;
+        public bool victimDragged;
+        public int lastStrikeTick { get { return lastStrike; } }
 
         public CompProperties_Chotrix Props { get { return (CompProperties_Chotrix)props; } }
         public Pawn Pawn { get { return parent as Pawn; } }
@@ -55,10 +59,11 @@ namespace RimMandrake.Scarlands
         public override void PostSpawnSetup(bool respawningAfterLoad) { base.PostSpawnSetup(respawningAfterLoad); if (!All.Contains(this)) All.Add(this); }
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish) { base.PostDeSpawn(map, mode); All.Remove(this); }
 
-        public void Struck()
+        public void Struck(Pawn victim)
         {
             int now = Find.TickManager.TicksGame;
             lastStrike = now;
+            if (victim != null && victim != lastVictim) { lastVictim = victim; victimDragged = false; }
             revealUntil = now + Mathf.RoundToInt(RM_WarscarSettings.chotrixRevealSeconds * 60f);
             Reveal();
         }
@@ -113,7 +118,7 @@ namespace RimMandrake.Scarlands
             Pawn p = __instance.CasterPawn;
             if (p == null) return;
             CompChotrix c = p.TryGetComp<CompChotrix>();
-            if (c != null) c.Struck();
+            if (c != null) c.Struck(__instance.CurrentTarget.Thing as Pawn);
         }
     }
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Flee when hurt, hunt lone prey, then the stock Animal tree (eat corpses, wander).
+  <!-- Flee when hurt, drag a fresh kill to cover (WARSCAR_CHOTRIX_SIGNS_1), hunt lone prey, then the stock Animal tree (eat corpses, wander).
        The race is predator=false so vanilla hunting (which has no lone-prey gate) never runs. -->
   <ThinkTreeDef>
     <defName>RM_Chotrix</defName>
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
         <li Class="RimMandrake.Scarlands.JobGiver_ChotrixFlee" />
+        <li Class="RimMandrake.Scarlands.JobGiver_ChotrixDragKill" />
         <li Class="RimMandrake.Scarlands.JobGiver_ChotrixHunt" />
         <li Class="ThinkNode_Subtree"><treeDef>Animal</treeDef></li>
       </subNodes>

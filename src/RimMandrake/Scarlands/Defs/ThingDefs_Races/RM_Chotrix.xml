@@ -2,8 +2,9 @@
 <!--
   RM_Chotrix (WARSCAR_CHOTRIX_BUILD_1): the Warscar's invisible hunter. Behaviour is Source/RM_Chotrix.cs.
   predator=false ON PURPOSE: vanilla predator hunting has no lone-prey gate, so the hunt is its own
-  JobGiver in the RM_Chotrix think tree. Track prints (FOOTPRINT_TRACK_GRID_1) and the tetchik silence ring
-  (WARSCAR_GEIGER_CHOIR_1) are not wired yet; the grid records invisible pawns itself per its spec.
+  JobGiver in the RM_Chotrix think tree. Its signs (WARSCAR_CHOTRIX_SIGNS_1): its own print class on the settled
+  film (raceOverride in ThingDefs_Filth/RM_SettledFilm.xml), drag furrows where it drags a kill (Source/RM_ChotrixSigns.cs),
+  and the tetchik silence ring (RM_GeigerChoir.Silenced).
   Not in any wildAnimals roster: it exists only through the RM_ChotrixOnMap genstep.
 -->
 <Defs>
