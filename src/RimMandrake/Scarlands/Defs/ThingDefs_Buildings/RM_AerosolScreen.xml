@@ -75,5 +75,6 @@
       <ai_combatDangerous>false</ai_combatDangerous>
     </building>
     <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <researchPrerequisites><li>RM_AerosolScreenResearch</li></researchPrerequisites>
   </ThingDef>
 </Defs>
