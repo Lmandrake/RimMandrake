@@ -64,7 +64,7 @@
          RM_Crowncarpet's own placeholder note. -->
     <graphicData>
       <texPath>Things/Plant/RM_Slackwax/RM_Slackwax</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <equippedAngleOffset>-20</equippedAngleOffset>
     <soundInteract>Wood_Drop</soundInteract>
@@ -179,7 +179,7 @@
          RM_SlackwaxTimber's comment above for why. -->
     <graphicData>
       <texPath>Things/Plant/RM_Tarspool/RM_Tarspool</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
@@ -337,7 +337,7 @@
          RM_SlackwaxTimber's comment above for why. -->
     <graphicData>
       <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>
     <statBases>
