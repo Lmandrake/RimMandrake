@@ -1076,6 +1076,8 @@ CANONICAL = {
     "drop":      dict(seat="BUILD", id="A_B_1", reason="x"),
     "supersede": dict(seat="BUILD", id="A_B_1", by="B_C_1"),
     "note":      dict(seat="BUILD", id="A_B_1", text="x"),
+    "reconcile": dict(seat="BUILD", id="A_B_1", verdict="partial", sha="598dec613",
+                      remaining="x"),
     "seat":      dict(seat="BUILD", state="idle"),
     "bridge":    dict(seat="BENCH", state="taken"),
     "game":      dict(seat="OWNER", state="UP"),

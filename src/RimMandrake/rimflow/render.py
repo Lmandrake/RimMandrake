@@ -74,7 +74,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if os.path.dirname(HERE) not in sys.path:
     sys.path.insert(0, os.path.dirname(HERE))
 
-from rimflow import model, priority                                  # noqa: E402
+from rimflow import model, priority, reconcile                       # noqa: E402
 
 STATE = model.STATE
 QUEUE = os.path.join(STATE, "queue")
@@ -303,7 +303,19 @@ def view_ids(world, seat, target="v1", ctx=None):
     return _ids_from_sections(*view_sections(world, seat, target, ctx))
 
 
-def _render_view_text(seat, events, world, ranked, sections):
+def _reconcile_extra(a):
+    """The lines a guarded NEXT entry carries (rimflow redesign step 1)."""
+    if a.kind == "reconcile":
+        out = ["action:   %s" % reconcile.headline(a)]
+        out += ["evidence: %s" % l for l in reconcile.evidence_lines(a, limit=4)]
+        out.append("then:     %s" % reconcile.command(a))
+        return out
+    if a.kind == "partial":
+        return ["partial:  %s" % reconcile.standing_line(a)]
+    return []
+
+
+def _render_view_text(seat, events, world, ranked, sections, gindex=None):
     """-> markdown text for one seat, from an already-computed `view_sections()`
     result. Split from `queue_view` (2026-09-04) so `render()` can compute
     `view_sections()` ONCE per seat and derive both the text and the drift
@@ -324,16 +336,28 @@ def _render_view_text(seat, events, world, ranked, sections):
          "",
          "# NEXT — `priority.rank()` order, top item first",
          ""]
-    if ranked:
+    # 🔑 GUARDED, exactly as `rimflow next` is: the ranked list is checked against the
+    # published git history (`reconcile.guard`, the same function `next` calls). An
+    # item git already names carries an `action: RECONCILE` line; one reconciled
+    # COMPLETE leaves NEXT for its own section below. `gindex` None (git unknown, or a
+    # redirected test ledger) leaves verdicts in force and triggers nothing.
+    offers, done_ish = reconcile.guard(ranked, gindex)
+    if offers:
         L.append("The first heading below is what `rimflow next --seat %s` returns. "
                  "This file and that command call the same function, so they cannot "
                  "disagree." % seat)
         L.append("")
-        for it in ranked:
-            L += _item_line(it)
+        for a in offers:
+            L += _item_line(a.item, _reconcile_extra(a))
     else:
         L += ["Nothing is offered. That is a legitimate answer — check WAITING and "
               "BLOCKED below before concluding there is no work.", ""]
+    if done_ish:
+        L.extend(["# RECONCILED COMPLETE — still open, not offered as build work", "",
+                  "A `rimflow reconcile --verdict complete` judged these built. They are "
+                  "NOT closed: acceptance or a close is still owed.", ""])
+        for a in done_ish:
+            L += _item_line(a.item, ["verdict:  %s" % reconcile.standing_line(a)])
 
     for title, items, note, extra in sections:
         # 🔑 `# `, not `## `. Any parser of this file reads the first token after
@@ -350,10 +374,11 @@ def _render_view_text(seat, events, world, ranked, sections):
     return "\n".join(L).rstrip() + "\n"
 
 
-def queue_view(world, seat, events, target="v1", ctx=None):
-    """-> markdown text for one seat. Pure; no clock, no filesystem beyond items/."""
+def queue_view(world, seat, events, target="v1", ctx=None, gindex=None):
+    """-> markdown text for one seat. Pure; no clock, no filesystem beyond items/.
+    `gindex` (a `gitindex.Index`) is passed in, never fetched here."""
     ranked, sections = view_sections(world, seat, target, ctx)
-    return _render_view_text(seat, events, world, ranked, sections)
+    return _render_view_text(seat, events, world, ranked, sections, gindex)
 
 
 # ---------------------------------------------------------------------------
@@ -496,6 +521,10 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
 
     target_dir = queue_root if overwrite_queues else out_dir
     t = time.perf_counter()
+    # One git index per render, and only for the REAL ledger read implicitly: an
+    # explicit `events_path` (bench(), the selftests) or a redirected RIMFLOW_LEDGER
+    # must never match synthetic ids against this repo's history. Never raises.
+    gindex = reconcile.load_index() if events_path is None else None
     written, diffs = [], []
     for seat in VIEW_SEATS:
         # 🔴 ONE view_sections() PER SEAT, not two. Until 2026-09-04 the text below
@@ -504,7 +533,7 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
         # the "views" stage cost double what census+ledger cost combined. Pure
         # function, same inputs: compute once, derive both from it.
         ranked, sections = view_sections(world, seat, target, ctx)
-        text = _render_view_text(seat, events, world, ranked, sections)
+        text = _render_view_text(seat, events, world, ranked, sections, gindex)
         path = _queue_path(seat, target_dir)
         _write(path, text)
         written.append(path)
