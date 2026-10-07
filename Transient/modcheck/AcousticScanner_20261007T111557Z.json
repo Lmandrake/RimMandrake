@@ -1,0 +1,2869 @@
+{
+ "mod": "AcousticScanner",
+ "stamp": "20261007T111557Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "defs_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_AcousticSounder",
+           "found": true,
+           "defName": "RM_AcousticSounder",
+           "defType": "ThingDef",
+           "label": "acoustic sounder",
+           "modName": "RimMandrake: Acoustic Scanner",
+           "packageId": "mandrake.rm.acousticscanner",
+           "fields": {
+            "category": "Building",
+            "tickerType": "Never",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": false,
+            "smallVolume": false,
+            "useHitPoints": true,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties_Forbiddable",
+             "CompProperties_Power",
+             "CompProperties_Flickable",
+             "CompProperties_Breakdownable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": true,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "filthLeaving": "Filth_RubbleBuilding",
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": false,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "MapMeshOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": false,
+            "containedItemsSelectable": false,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": false,
+            "seeThroughFog": false,
+            "drawGUIOverlay": false,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Metal",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.4,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "PassThroughOnly",
+            "pathCost": 50,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costList": [
+             "ThingDefCountClass",
+             "ThingDefCountClass"
+            ],
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "terrainAffordanceNeeded": "Heavy",
+            "researchPrerequisites": [
+             "RM_AcousticSounding"
+            ],
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 6,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Building",
+            "repairEffect": "Repair",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "placeWorkers": [
+             "RuntimeType"
+            ],
+            "designationCategory": "Misc",
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "blueprintDef": "Blueprint_RM_AcousticSounder",
+            "frameDef": "Frame_RM_AcousticSounder",
+            "uiIconAngle": 0.0,
+            "defName": "RM_AcousticSounder",
+            "label": "acoustic sounder",
+            "description": "A heavy transducer bolted through the hull into the ship's belly. When the gravship is landed and the sounder is powered, it can fire a sounding pulse: dust jumps from the walls, a bass note rolls through the deck plating, and for a few hours afterward the ground's reply hangs over the map as broad bands of likelihood. It never says exactly where; it says where to look. What it hears depends on the land beneath the ship.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 32391,
+            "index": 2968,
+            "fileName": "RM_AcousticSounder.xml",
+            "defNameHash": -1561940695,
+            "generated": false,
+            "debugRandomId": 25552
+           }
+          },
+          {
+           "requested": "ResearchProjectDef/RM_AcousticSounding",
+           "found": true,
+           "defName": "RM_AcousticSounding",
+           "defType": "ResearchProjectDef",
+           "label": "acoustic sounding",
+           "modName": "RimMandrake: Acoustic Scanner",
+           "packageId": "mandrake.rm.acousticscanner",
+           "fields": {
+            "baseCost": 600.0,
+            "prerequisites": [
+             "BasicGravtech"
+            ],
+            "techLevel": "Industrial",
+            "tab": "Main",
+            "researchViewX": 10.0,
+            "researchViewY": 5.6,
+            "techprintCount": 0,
+            "techprintCommonality": 1.0,
+            "techprintMarketValue": 1000.0,
+            "requiresMechanitor": false,
+            "recalculatePower": false,
+            "knowledgeCost": 0.0,
+            "requireGravEngineInspected": false,
+            "defName": "RM_AcousticSounding",
+            "label": "acoustic sounding",
+            "description": "Turn a landed gravship into a drum. A hull-mounted sounder drives a low pulse into the ground and listens to what comes back: water, voids, buried things, things that move. The reading is never exact, only broad bands of likelihood, and what the ground gives back depends on where you land.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 24889,
+            "index": 169,
+            "fileName": "RM_AcousticSounding.xml",
+            "defNameHash": 316516150,
+            "generated": false,
+            "debugRandomId": 43608
+           }
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_66bbf3809fd64bd7a36594e33ee164ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_AcousticSounder_NoSuchDef_Control"
+         ],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_AcousticSounder_NoSuchDef_Control",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_AcousticSounder_NoSuchDef_Control"
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_579c5e3e1f6641df91e8a35582a8fa27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "classes_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/type_probe",
+        "result": {
+         "success": true,
+         "typeName": "RimMandrake.AcousticScanner.RM_AcousticScannerSettings",
+         "resolved": true,
+         "assembly": "RimMandrake.AcousticScanner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+         "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AcousticScanner\\Assemblies\\RimMandrake.AcousticScanner.dll",
+         "assemblyLocationSource": "Assembly.Location",
+         "assemblyMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+         "assemblyFileSha256": "712164585e5f42e1327cf296dd97a5c4cb2ec185eee72fa14c1b2a601b85fc83",
+         "assemblyFileMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+         "mvidMatchesFile": true,
+         "inAllTypesByIdentity": true,
+         "allTypesNameMatches": 1,
+         "allTypesCount": 28073,
+         "assemblyTypesInAllTypes": 16,
+         "carryingMods": [
+          "mandrake.rm.acousticscanner"
+         ],
+         "debugActions": [],
+         "state": {
+          "programState": "Playing",
+          "tick": 751
+         },
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_85a4736cd9df4aab8c0760aca30daf4e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 112
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/type_probe",
+        "result": {
+         "success": true,
+         "typeName": "RimMandrake.AcousticScanner.RM_AcousticPayloadExtension",
+         "resolved": true,
+         "assembly": "RimMandrake.AcousticScanner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+         "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AcousticScanner\\Assemblies\\RimMandrake.AcousticScanner.dll",
+         "assemblyLocationSource": "Assembly.Location",
+         "assemblyMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+         "assemblyFileSha256": "712164585e5f42e1327cf296dd97a5c4cb2ec185eee72fa14c1b2a601b85fc83",
+         "assemblyFileMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+         "mvidMatchesFile": true,
+         "inAllTypesByIdentity": true,
+         "allTypesNameMatches": 1,
+         "allTypesCount": 28073,
+         "assemblyTypesInAllTypes": 16,
+         "carryingMods": [
+          "mandrake.rm.acousticscanner"
+         ],
+         "debugActions": [],
+         "state": {
+          "programState": "Playing",
+          "tick": 751
+         },
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_a09331f4d04a4d3c8391b0f999a13a78",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 83
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "research_gate",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "researchPrerequisites",
+          "prerequisites"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_AcousticSounder",
+           "found": true,
+           "defName": "RM_AcousticSounder",
+           "defType": "ThingDef",
+           "label": "acoustic sounder",
+           "modName": "RimMandrake: Acoustic Scanner",
+           "packageId": "mandrake.rm.acousticscanner",
+           "fields": {
+            "researchPrerequisites": [
+             "RM_AcousticSounding"
+            ],
+            "prerequisites": "(no such field)"
+           }
+          },
+          {
+           "requested": "ResearchProjectDef/RM_AcousticSounding",
+           "found": true,
+           "defName": "RM_AcousticSounding",
+           "defType": "ResearchProjectDef",
+           "label": "acoustic sounding",
+           "modName": "RimMandrake: Acoustic Scanner",
+           "packageId": "mandrake.rm.acousticscanner",
+           "fields": {
+            "prerequisites": [
+             "BasicGravtech"
+            ],
+            "researchPrerequisites": "(no such field)"
+           }
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_dbcfbe6cd7654a409da47190c9da0d18",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "bandSize_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "bandSize",
+         "fieldKind": "instance",
+         "value": "11",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_115c0689885c4d6cabfcdacb8c549e3b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 128
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "bandSize",
+         "fieldKind": "instance",
+         "valueBefore": "11",
+         "valueAfter": "9",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_24995408bf9641f5831c140a07409168",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 27
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "bandSize",
+         "fieldKind": "instance",
+         "value": "9",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_714d7bed78bd4921855cc2bcf8b68f9a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "bandSize",
+         "fieldKind": "instance",
+         "value": "11",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_de5ecc76313d45a9b1328f8acfbae658",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cooldownHours_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "cooldownHours",
+         "fieldKind": "instance",
+         "value": "24",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_5715723443284b26ae4b67eef40b5d1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "cooldownHours",
+         "fieldKind": "instance",
+         "valueBefore": "24",
+         "valueAfter": "3",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_238ab5623583401da8f3aeeadf7d8c4e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "cooldownHours",
+         "fieldKind": "instance",
+         "value": "3",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_29adc44f2b4c49a5bf96f7ed24e9e6c2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "cooldownHours",
+         "fieldKind": "instance",
+         "value": "24",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_08f48d093c1e4f18996a33a8e27c87f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "enabled_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "enabled",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_e53dce53db5241129c3eeff87fff2222",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "enabled",
+         "fieldKind": "instance",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_73bb335d6b1c4cea8edcd3981b96325f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "enabled",
+         "fieldKind": "instance",
+         "value": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_a14c761e91e04ebaaa14653b070c0fa5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "enabled",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_79317c71d6a44ba2a5511e5b1cbaca2c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "overlayHours_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "overlayHours",
+         "fieldKind": "instance",
+         "value": "6",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_187a16005176446cbebfebf36cf52bb3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "overlayHours",
+         "fieldKind": "instance",
+         "valueBefore": "6",
+         "valueAfter": "2",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_274f1255523f4ad1b2dc10ff5b94438b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "overlayHours",
+         "fieldKind": "instance",
+         "value": "2",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_ad7d18500a09405782f6e541f6834965",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "overlayHours",
+         "fieldKind": "instance",
+         "value": "6",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_d344271091ff46a9b47dbf76b7597e43",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pulseEffects_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "pulseEffects",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_aabedb5d8b8a434cb6b5cd72ee6a306f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "pulseEffects",
+         "fieldKind": "instance",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_830cf332a0d74fc6847048f7a7f621a7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "pulseEffects",
+         "fieldKind": "instance",
+         "value": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_8a93ae3803d749559e4ae61b6dcca444",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "pulseEffects",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_454d866ab94d4a4fb5d9e96eb3d10bcc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "rangeCells_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rangeCells",
+         "fieldKind": "instance",
+         "value": "60",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_51da4c477ac249ccb6635d103095dad7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "rangeCells",
+         "fieldKind": "instance",
+         "valueBefore": "60",
+         "valueAfter": "80",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_5d05c48423e14f1f864b96c3e06ebdd3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rangeCells",
+         "fieldKind": "instance",
+         "value": "80",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_73c0001c04194e3b9eb2d2dbc33b0272",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rangeCells",
+         "fieldKind": "instance",
+         "value": "60",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_130d00ee05e7413fa8ca77d9ebfcd00b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "requireLandedShip_roundtrip",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "requireLandedShip",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_0e969498ba1645f7bd1413300efd4da0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "requireLandedShip",
+         "fieldKind": "instance",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_4d19026618f947a69d34542aa35303a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "requireLandedShip",
+         "fieldKind": "instance",
+         "value": "False",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_4d3988912ada4ae7abf5dc53a1cf2866",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "requireLandedShip",
+         "fieldKind": "instance",
+         "value": "True",
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_c371c77ae48f4d648a70380c595be1e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "nonexistent_field_fails_loudly",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": false,
+         "message": "No public field 'noSuchField_control' (static or instance) on RimMandrake.AcousticScanner.RM_AcousticScannerSettings.",
+         "details": {
+          "staticFields": [
+           "MaxBandSize",
+           "MinBandSize"
+          ],
+          "instanceFields": [
+           "bandSize",
+           "cooldownHours",
+           "enabled",
+           "overlayHours",
+           "pulseEffects",
+           "rangeCells",
+           "requireLandedShip"
+          ]
+         },
+         "operation": {
+          "OperationId": "op_45ef5f1518834623bd0aee13435e36b8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "sounder_gating",
+    "components": [
+     {
+      "name": "unpowered_refuses",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(30)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 287 thing(s) across 900 cell(s); 6 pawn(s) left alone.",
+         "cellsExamined": 900,
+         "outOfBounds": 0,
+         "destroyed": 287,
+         "pawnsSkipped": 6,
+         "perCategory": {
+          "Plant": 156,
+          "Building": 77,
+          "Item": 17,
+          "Filth": 37
+         },
+         "samples": [
+          {
+           "x": 110,
+           "z": 110,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 110,
+           "z": 111,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 110,
+           "z": 114,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 110,
+           "z": 115,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 110,
+           "z": 119,
+           "def": "MineableSteel",
+           "category": "Building"
+          },
+          {
+           "x": 110,
+           "z": 120,
+           "def": "MineableSteel",
+           "category": "Building"
+          },
+          {
+           "x": 110,
+           "z": 121,
+           "def": "MineableSteel",
+           "category": "Building"
+          },
+          {
+           "x": 110,
+           "z": 122,
+           "def": "MineableSteel",
+           "category": "Building"
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_12fe2af8bfe648fb9715a554a4372380",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 289
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_substructure_batch",
+        "result": {
+         "success": true,
+         "action": "set",
+         "changed": 49,
+         "cellsInRect": 49,
+         "cellsWithNoFoundation": 0,
+         "refusedCount": 0,
+         "refusedListTruncated": false,
+         "refused": [],
+         "note": "substructureGrid.MarkDirty() called. Run jawa/map_commit for regions, pathing and the mesh.",
+         "cells": [],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_f8bc723b4e14422f9e113f452146c625",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "spawn RM_AcousticSounder x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_AcousticSounder": 1
+         },
+         "errors": [],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_6412d3bbbfa64ede90ce2dc54c9a1c77",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "def": "RM_AcousticSounder",
+           "label": "Acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 200,
+           "maxHitPoints": 200
+          }
+         ],
+         "scanned": 48562,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 42,
+         "perDef": {
+          "RM_AcousticSounder": 1
+         },
+         "ticksGame": 751,
+         "message": "1 of 1 matching thing(s) returned, 48562 examined.",
+         "operation": {
+          "OperationId": "op_7e6ce4d01f1f4f71bfe0731c8adccb86",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": false,
+         "message": "No FactionDef 'Player'.",
+         "details": [
+          "PlayerColony",
+          "PlayerTribe",
+          "VFEI2_PlayerOutpost"
+         ],
+         "operation": {
+          "OperationId": "op_67ed7813128f448d901ec04cc9c56ee7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48562 examined.",
+         "matched": 1,
+         "examined": 48562,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "No power."
+           ]
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_e281a73a538049ee9b5c5029894810c0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 57
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "off_the_ship_refuses",
+      "toggle": "requireLandedShip",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/power_net",
+        "result": {
+         "success": true,
+         "message": "RM_AcousticSounder52926 has CompPower but is not connected to any PowerNet.",
+         "thing": {
+          "id": "RM_AcousticSounder52926",
+          "defName": "RM_AcousticSounder"
+         },
+         "connected": false,
+         "isPowerTrader": true,
+         "powerOnBefore": false,
+         "powerOnAfter": true,
+         "energyOutputPerTick": -0.005,
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_1681a5ef003845049995cd06eb48bb36",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(10) -> 10 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_dc64d08bfa4f4ce79aea186ff005d078",
+         "status": "completed",
+         "requestedTicks": 10,
+         "completedTicks": 10,
+         "remainingTicks": 0,
+         "startTicksGame": 751,
+         "endTicksGame": 761,
+         "advancedTicks": 10,
+         "initialFrame": 6626,
+         "lastFrame": 6635,
+         "advancedFrames": 10,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:54.304928+00:00",
+         "completedAtUtc": "2026-10-07T11:15:54.4560568+00:00",
+         "message": "Advanced 10 game tick(s) across 10 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 761
+         },
+         "operation": {
+          "OperationId": "op_cbabd101e4114eb78773a91f5a243014",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 183
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48568 examined.",
+         "matched": 1,
+         "examined": 48568,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "The sounder must stand on the substructure of a landed gravship."
+           ]
+          }
+         ],
+         "ticksGame": 761,
+         "operation": {
+          "OperationId": "op_6fbdabeba22b41599b6dff8098ad82b9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 55
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 761
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "ready_on_landed_ship",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "GravEngine": 1
+         },
+         "errors": [],
+         "ticksGame": 761,
+         "operation": {
+          "OperationId": "op_3379e0e0ac6848248bd2b5c228ff14db",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 761
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(10) -> 10 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_ed1f40e048a54ef3b904db566d0451b5",
+         "status": "completed",
+         "requestedTicks": 10,
+         "completedTicks": 10,
+         "remainingTicks": 0,
+         "startTicksGame": 761,
+         "endTicksGame": 771,
+         "advancedTicks": 10,
+         "initialFrame": 6645,
+         "lastFrame": 6654,
+         "advancedFrames": 10,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:54.6221933+00:00",
+         "completedAtUtc": "2026-10-07T11:15:54.7728868+00:00",
+         "message": "Advanced 10 game tick(s) across 10 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 771
+         },
+         "operation": {
+          "OperationId": "op_a5577360634f4e94ab9530122c9b897d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 182
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48569 examined.",
+         "matched": 1,
+         "examined": 48569,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "Ready to sound."
+           ]
+          }
+         ],
+         "ticksGame": 771,
+         "operation": {
+          "OperationId": "op_36b8781619dd491f91bb8c56b46c5632",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 52
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 771
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "master_off_refuses",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "enabled",
+         "fieldKind": "instance",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 771,
+         "operation": {
+          "OperationId": "op_08e387e3a4ed4f6b81b63d36362aa904",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 771
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(5) -> 5 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_caba9b69620c41c9acf121028fa4814b",
+         "status": "completed",
+         "requestedTicks": 5,
+         "completedTicks": 5,
+         "remainingTicks": 0,
+         "startTicksGame": 771,
+         "endTicksGame": 776,
+         "advancedTicks": 5,
+         "initialFrame": 6664,
+         "lastFrame": 6668,
+         "advancedFrames": 5,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:54.9384496+00:00",
+         "completedAtUtc": "2026-10-07T11:15:55.0062918+00:00",
+         "message": "Advanced 5 game tick(s) across 5 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 776
+         },
+         "operation": {
+          "OperationId": "op_8dd2b3210ff04709b9dc0628952efeee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 98
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48569 examined.",
+         "matched": 1,
+         "examined": 48569,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "Acoustic sounding is switched off in Mod Settings."
+           ]
+          }
+         ],
+         "ticksGame": 776,
+         "operation": {
+          "OperationId": "op_0dbd7a95164c41c382d681dc2b15ec5d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 53
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 776
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(5) -> 5 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_0d67248a76a14eedac5050551623f4a5",
+         "status": "completed",
+         "requestedTicks": 5,
+         "completedTicks": 5,
+         "remainingTicks": 0,
+         "startTicksGame": 776,
+         "endTicksGame": 781,
+         "advancedTicks": 5,
+         "initialFrame": 6678,
+         "lastFrame": 6682,
+         "advancedFrames": 5,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:55.1719491+00:00",
+         "completedAtUtc": "2026-10-07T11:15:55.2397986+00:00",
+         "message": "Advanced 5 game tick(s) across 5 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 781
+         },
+         "operation": {
+          "OperationId": "op_1c2013f2906a4b0e924caf28e12e7f4c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 98
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48569 examined.",
+         "matched": 1,
+         "examined": 48569,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "Ready to sound."
+           ]
+          }
+         ],
+         "ticksGame": 781,
+         "operation": {
+          "OperationId": "op_5a6fe1d733d64f8888af52f8405ea97f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 53
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 781
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "require_ship_off_relaxes",
+      "toggle": "requireLandedShip",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 1 thing(s) across 25 cell(s).",
+         "cellsExamined": 25,
+         "outOfBounds": 0,
+         "destroyed": 1,
+         "pawnsSkipped": 0,
+         "perCategory": {
+          "Building": 1
+         },
+         "samples": [
+          {
+           "x": 133,
+           "z": 124,
+           "def": "GravEngine",
+           "category": "Building"
+          }
+         ],
+         "ticksGame": 781,
+         "operation": {
+          "OperationId": "op_2f521eaef4314107acc044e1f618473b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 781
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(10) -> 10 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_80adad6a6a6e44a0a1ff167b2beae15f",
+         "status": "completed",
+         "requestedTicks": 10,
+         "completedTicks": 10,
+         "remainingTicks": 0,
+         "startTicksGame": 781,
+         "endTicksGame": 791,
+         "advancedTicks": 10,
+         "initialFrame": 6692,
+         "lastFrame": 6701,
+         "advancedFrames": 10,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:55.4048155+00:00",
+         "completedAtUtc": "2026-10-07T11:15:55.5562334+00:00",
+         "message": "Advanced 10 game tick(s) across 10 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 791
+         },
+         "operation": {
+          "OperationId": "op_e21446268d014b09b08276d786f4297f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 183
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48568 examined.",
+         "matched": 1,
+         "examined": 48568,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "The sounder must stand on the substructure of a landed gravship."
+           ]
+          }
+         ],
+         "ticksGame": 791,
+         "operation": {
+          "OperationId": "op_cf05fb1203b94119b2ebd3ccdca5848e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 791
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "requireLandedShip",
+         "fieldKind": "instance",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 791,
+         "operation": {
+          "OperationId": "op_6b538055eaaa4c52aea950397c842a49",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 791
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(5) -> 5 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_b3a5b3a274d3454a90dd8def1c0829cd",
+         "status": "completed",
+         "requestedTicks": 5,
+         "completedTicks": 5,
+         "remainingTicks": 0,
+         "startTicksGame": 791,
+         "endTicksGame": 796,
+         "advancedTicks": 5,
+         "initialFrame": 6711,
+         "lastFrame": 6715,
+         "advancedFrames": 5,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:55.7208946+00:00",
+         "completedAtUtc": "2026-10-07T11:15:55.7891806+00:00",
+         "message": "Advanced 5 game tick(s) across 5 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 796
+         },
+         "operation": {
+          "OperationId": "op_406d0d09a38e493e91699cd8dba2b3e1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 98
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48568 examined.",
+         "matched": 1,
+         "examined": 48568,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52926",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "Ready to sound."
+           ]
+          }
+         ],
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_403bf6771b7644519b67a4acba876a59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 65
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "pulse",
+    "components": [
+     {
+      "name": "pulse_starts_cooldown_and_sends_letter",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no 'Sound the ground' gizmo among the selected thing's gizmos: ['Hunt']",
+      "evidence": [
+       {
+        "call": "clear_area(30)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 6 thing(s) across 900 cell(s); 6 pawn(s) left alone.",
+         "cellsExamined": 900,
+         "outOfBounds": 0,
+         "destroyed": 6,
+         "pawnsSkipped": 6,
+         "perCategory": {
+          "Filth": 6
+         },
+         "samples": [
+          {
+           "x": 116,
+           "z": 130,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 116,
+           "z": 131,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 116,
+           "z": 132,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 116,
+           "z": 133,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 117,
+           "z": 132,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 117,
+           "z": 133,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          }
+         ],
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_824485712e064faab038230681d4ac33",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_substructure_batch",
+        "result": {
+         "success": true,
+         "action": "set",
+         "changed": 49,
+         "cellsInRect": 49,
+         "cellsWithNoFoundation": 0,
+         "refusedCount": 0,
+         "refusedListTruncated": false,
+         "refused": [],
+         "note": "substructureGrid.MarkDirty() called. Run jawa/map_commit for regions, pathing and the mesh.",
+         "cells": [],
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_44cc64beaf504e96bf1bb94ff425834e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "spawn RM_AcousticSounder x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_AcousticSounder": 1
+         },
+         "errors": [],
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_77589411aacb486fa47967ba076bf8cc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52934",
+           "def": "RM_AcousticSounder",
+           "label": "Acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 200,
+           "maxHitPoints": 200
+          }
+         ],
+         "scanned": 48562,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 42,
+         "perDef": {
+          "RM_AcousticSounder": 1
+         },
+         "ticksGame": 796,
+         "message": "1 of 1 matching thing(s) returned, 48562 examined.",
+         "operation": {
+          "OperationId": "op_bcb3ec2884814d7cbaaed34266922385",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": false,
+         "message": "No FactionDef 'Player'.",
+         "details": [
+          "PlayerColony",
+          "PlayerTribe",
+          "VFEI2_PlayerOutpost"
+         ],
+         "operation": {
+          "OperationId": "op_acc884e4ceec4870b6d68d3f4d763437",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/power_net",
+        "result": {
+         "success": true,
+         "message": "RM_AcousticSounder52934 has CompPower but is not connected to any PowerNet.",
+         "thing": {
+          "id": "RM_AcousticSounder52934",
+          "defName": "RM_AcousticSounder"
+         },
+         "connected": false,
+         "isPowerTrader": true,
+         "powerOnBefore": false,
+         "powerOnAfter": true,
+         "energyOutputPerTick": -0.005,
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_95803a26a2c040b29e39d474d228dc0c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 51
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "GravEngine": 1
+         },
+         "errors": [],
+         "ticksGame": 796,
+         "operation": {
+          "OperationId": "op_b33765e5848f479a9793653d3f8245fa",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 796
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(10) -> 10 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_68f5d8f7ea354cbcb1a5b1a42ffef158",
+         "status": "completed",
+         "requestedTicks": 10,
+         "completedTicks": 10,
+         "remainingTicks": 0,
+         "startTicksGame": 796,
+         "endTicksGame": 806,
+         "advancedTicks": 10,
+         "initialFrame": 6751,
+         "lastFrame": 6760,
+         "advancedFrames": 10,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:56.3879659+00:00",
+         "completedAtUtc": "2026-10-07T11:15:56.5393031+00:00",
+         "message": "Advanced 10 game tick(s) across 10 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 806
+         },
+         "operation": {
+          "OperationId": "op_81a3d9471d7d43109c0c9c37c67b4f9e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 182
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 48563 examined.",
+         "matched": 1,
+         "examined": 48563,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_AcousticSounder52934",
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "x": 125,
+           "z": 125,
+           "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "inspect": [
+            "Power needed: 300 W",
+            "Not connected to power.",
+            "Ready to sound."
+           ]
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_5f0a3eb58b8f4e0399192a7e0aa928da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 53
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/letter_list",
+        "result": {
+         "success": true,
+         "count": 1,
+         "letters": [
+          {
+           "label": {
+            "RawText": "Area revealed",
+            "Length": 13,
+            "StrippedLength": 13
+           },
+           "defName": "NeutralEvent",
+           "arrivalTick": 751,
+           "lookTargets": "Verse.LookTargets"
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_77613230a158477a8948448aaf5b486a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/set_god_mode",
+        "result": {
+         "success": true,
+         "changed": true,
+         "previousGodMode": false,
+         "godMode": true,
+         "devModeEnabled": true,
+         "selectionStillValid": false,
+         "designatorState": {
+          "hasSelection": false
+         },
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 806
+         },
+         "operation": {
+          "OperationId": "op_f88d5897411a410db22069e69dc809f4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 30
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/click_cell",
+        "result": {
+         "success": true,
+         "command": "click_cell",
+         "actionKind": "click_dispatched",
+         "gestureKind": "click",
+         "clickCell": {
+          "x": 125,
+          "z": 125
+         },
+         "target": "cell 125,125",
+         "button": "left",
+         "holdDurationMs": 0,
+         "modifiers": "none",
+         "selectionBefore": {
+          "hasSelection": false,
+          "selectionFingerprint": "sel-e3b0c44298fc1c14",
+          "selectedCount": 0,
+          "selectedObjects": [],
+          "selectionDetailsTruncated": false
+         },
+         "selectionAfter": {
+          "hasSelection": true,
+          "selectionFingerprint": "sel-2dfa6ccbd269b4a4",
+          "selectedCount": 1,
+          "selectedObjects": [
+           {
+            "kind": "pawn",
+            "type": "Verse.Pawn",
+            "id": "Thing_RM_Nizzek52920",
+            "label": "nizzek",
+            "inspectLabel": "Nizzek",
+            "reference": {
+             "kind": "pawn",
+             "id": "Thing_RM_Nizzek52920",
+             "label": "nizzek",
+             "mapId": "Map_0",
+             "mapIndex": 0,
+             "position": {
+              "x": 117,
+              "z": 117
+             }
+            },
+            "details": {
+             "pawnId": "Thing_RM_Nizzek52920",
+             "thingIdNumber": 52920,
+             "className": "Verse.Pawn",
+             "defName": "RM_Nizzek",
+             "kindDef": "RM_Nizzek",
+             "race": "Verse.RaceProperties",
+             "name": "nizzek",
+             "fullName": "Nizzek",
+             "label": "Nizzek",
+             "selected": true,
+             "drafted": false,
+             "downed": false,
+             "dead": false,
+             "spawned": true,
+             "map": "0",
+             "mapId": "Map_0",
+             "mapIndex": 0,
+             "position": {
+              "x": 117,
+              "z": 117
+             },
+             "job": "Ingest",
+             "factionIsPlayer": false,
+             "factionHostileToPlayer": false,
+             "humanlike": false,
+             "animal": true,
+             "mechanoid": false,
+             "insect": false
+            }
+           }
+          ],
+          "selectionDetailsTruncated": false
+         },
+         "message": "Dispatched a live left-click through RimWorld's play UI. No context menu remained open after the click.",
+         "operation": {
+          "OperationId": "op_103cb1df4ad148bb91893a320cff9732",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 73
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/list_selected_gizmos",
+        "result": {
+         "success": true,
+         "hasSelection": true,
+         "selectionFingerprint": "sel-2dfa6ccbd269b4a4",
+         "selectedCount": 1,
+         "gizmoCount": 1,
+         "gizmos": [
+          {
+           "id": "selection-gizmo:sel-2dfa6ccbd269b4a4:1:a1605a5a90229b72",
+           "selectionFingerprint": "sel-2dfa6ccbd269b4a4",
+           "ordinal": 1,
+           "gizmoType": "Verse.Command_Action",
+           "label": "Hunt",
+           "description": "Mark animals to be hunted by your hunters.\n\nOnly hunters with suitable ranged weapons will hunt.",
+           "disabled": false,
+           "visible": true,
+           "order": -20.0,
+           "groupSize": 1,
+           "ownerCount": 1,
+           "owners": [
+            {
+             "kind": "pawn",
+             "id": "Thing_RM_Nizzek52920",
+             "label": "nizzek",
+             "mapId": "Map_0",
+             "mapIndex": 0,
+             "position": {
+              "x": 117,
+              "z": 117
+             }
+            }
+           ],
+           "hotKeyDef": "Misc11",
+           "hotKey": "O",
+           "supportsRightClick": false,
+           "reverseDesignator": true
+          }
+         ],
+         "operation": {
+          "OperationId": "op_42bab88531804a189e413e81f06b4d65",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 28
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\AcousticScanner.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

@@ -1,0 +1,534 @@
+{
+ "name": "FeverWood__tank__wildlife_near_colonist__t3121__001",
+ "when_utc": "2026-10-04T12:11:29Z",
+ "hits": [
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "RSW_Dianoga170503",
+      "kindDef": "RSW_Dianoga",
+      "x": 143,
+      "z": 136,
+      "dist": 4,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    143,
+    136
+   ],
+   "fingerprint": "wildlife_near_colonist:RSW_Dianoga170503"
+  },
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Dianoga entered mental state Manhunter (aggro)",
+   "evidence": {
+    "id": "RSW_Dianoga170503",
+    "mentalState": "Manhunter",
+    "isAggro": true,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    143,
+    136
+   ],
+   "fingerprint": "mental_break:RSW_Dianoga170503:Manhunter"
+  }
+ ],
+ "snapshot": {
+  "tick": 3121,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [
+   {
+    "id": "RSW_Dianoga170503",
+    "name": "Dianoga",
+    "kindDef": "RSW_Dianoga",
+    "def": "RSW_Dianoga",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 143,
+    "z": 136,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "Manhunter",
+     "isAggro": true,
+     "ageTicks": 60,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "RM_CaptivityMemory",
+      "label": "captivity memory",
+      "part": null,
+      "severity": 1.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -26.666666,
+   "totalThreatPointsFactor": 0.444444448,
+   "ticksGame": 3121
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Carlson"
+  ],
+  [
+   "Message",
+   "Carlson failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Woods already recently tried to seduce Jackalope"
+  ],
+  [
+   "Message",
+   "Woods and Merandil are not mutually attracted"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Woods"
+  ],
+  [
+   "Message",
+   "Woods failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Norton and Walters cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Norton and Alarm cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Norton"
+  ],
+  [
+   "Message",
+   "Norton failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Tyche cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Tyche failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Norton and Walters cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Norton and Alarm cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Norton"
+  ],
+  [
+   "Message",
+   "Norton failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Starting scan. Candidates=3, CurrentMood=0.62"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Jackalope: opinion=10, mood=0.59, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Woods: opinion=10, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Scan finished. NewlyAddedMemories=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955949,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955886,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 120,
+  "overhead_spent": 0,
+  "total_spent": 120,
+  "epoch": 0,
+  "last_seen_tick": 3121,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3001,
+    "tick_to": 3061,
+    "ticks": 60,
+    "requested": 60
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3061,
+    "tick_to": 3121,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tank",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T050655\\FeverWood__tank__wildlife_near_colonist__t3121__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3701986,
+  "width": 1810,
+  "height": 1183,
+  "md5": "fc4244229c4351d5fda401fc6c22a5da",
+  "why": ""
+ },
+ "notes": []
+}

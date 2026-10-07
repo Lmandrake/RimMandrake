@@ -1,0 +1,1862 @@
+{
+ "chains": [
+  {
+   "name": "bioferrite_stockpile_reveal",
+   "components": [
+    {
+     "name": "reveals_on_stockpile",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected a 'She remembers the chains' letter after stockpiling 50 Bioferrite and waiting past the 600-tick check interval; letter_list had none matching",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 75,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rhae",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Rhae",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Berserk: Rhae",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sharpe",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Sharpe",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sharpe",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sappy",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Sappy",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sappy",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Cross",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Cross",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Patricia",
+           "Length": 43,
+           "StrippedLength": 43
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Patricia",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Vicky",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Vicky",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Vicky",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Combat supplier from Northwest Heentinor",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kees",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 9062,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kees",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 9062,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kees",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 9062,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 121033,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Max",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Max",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Max",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 122536,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kanata",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kanata",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kanata",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 124042,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Sad wander: Carter",
+           "Length": 18,
+           "StrippedLength": 18
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Carter",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Carter",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Carter",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 162295,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Emily",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Emily",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 167295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Emily",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167295,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Bishop(/Name) in labor!",
+           "Length": 30,
+           "StrippedLength": 16
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for BD",
+           "Length": 37,
+           "StrippedLength": 37
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 168235,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: BD",
+           "Length": 9,
+           "StrippedLength": 9
+          },
+          "defName": "Death",
+          "arrivalTick": 168235,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Bishop",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 168495,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Bishop",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 168495,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for James",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170121,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: James",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 170121,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for James",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170121,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Luxemburg",
+           "Length": 44,
+           "StrippedLength": 44
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Luxemburg",
+           "Length": 16,
+           "StrippedLength": 16
+          },
+          "defName": "Death",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Luxemburg",
+           "Length": 44,
+           "StrippedLength": 44
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Oli",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Oli",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Oli",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Zack",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Zack",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kennedy",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kennedy",
+           "Length": 14,
+           "StrippedLength": 14
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Unay",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Unay",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Unay",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "War merchant from The Bico Kinship",
+           "Length": 34,
+           "StrippedLength": 34
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Debby",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171610,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Debby",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 171610,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Debby",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171610,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Dex",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 195639,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dex",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 195639,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Bishop",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Sad wander: Rangel",
+           "Length": 18,
+           "StrippedLength": 18
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rangel",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Rangel",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rangel",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Lane",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Lane",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 325091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Lane",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Tsuki(/Name) in labor!",
+           "Length": 29,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325093,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Confusion: Rhae",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 340702,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Tsuki",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 340721,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Tsuki",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 340721,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_09f392850d34459ca9dbb5c9843e61e2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:31.7518706+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:31.7605295+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/map_zones",
+       "result": {
+        "success": true,
+        "action": "deleteZone",
+        "deleted": "Stockpile zone 1",
+        "zones": [],
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_c517458ac86f4923ad138cdcf5a2473d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-zones",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:31.7680716+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:31.7767043+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 1000,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "assailant_signal_after_reveal",
+   "components": [
+    {
+     "name": "no_duplicate_reveal_once_discovered",
+     "toggle": "shipMemoryEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/signal_send",
+       "result": {
+        "success": true,
+        "tag": "RUT_ShipMemory_ContainmentTestSignal.RUT_ShipMemory_Containment",
+        "global": false,
+        "receiverCountAtSend": 4,
+        "subject": null,
+        "text": null,
+        "note": "Sent to 4 registered receiver(s). Whether any of them matched this exact tag is not observable from here - check the quest's own state (jawa/fire_quest / the save) for the effect.",
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_6e9c8a133d2c4f088116fef5c401ed9c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/signal-send",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:33.7304439+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:33.7394952+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 75,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rhae",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Rhae",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Berserk: Rhae",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "ThreatSmall",
+          "arrivalTick": 6842,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sharpe",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Sharpe",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sharpe",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sappy",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Sappy",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 7622,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Sappy",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 7622,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Cross",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Cross",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Patricia",
+           "Length": 43,
+           "StrippedLength": 43
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Patricia",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Vicky",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Vicky",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Vicky",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 8942,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Combat supplier from Northwest Heentinor",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 8942,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kees",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 9062,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kees",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 9062,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kees",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 9062,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 121033,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Max",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Max",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Max",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 122536,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 122536,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kanata",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kanata",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kanata",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 124042,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Roof collapse",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 124042,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Sad wander: Carter",
+           "Length": 18,
+           "StrippedLength": 18
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Carter",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Carter",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 162295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Carter",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 162295,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Emily",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Emily",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 167295,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Emily",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167295,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Bishop(/Name) in labor!",
+           "Length": 30,
+           "StrippedLength": 16
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 167298,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for BD",
+           "Length": 37,
+           "StrippedLength": 37
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 168235,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: BD",
+           "Length": 9,
+           "StrippedLength": 9
+          },
+          "defName": "Death",
+          "arrivalTick": 168235,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Bishop",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 168495,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Bishop",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 168495,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for James",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170121,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: James",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 170121,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for James",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170121,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Luxemburg",
+           "Length": 44,
+           "StrippedLength": 44
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Luxemburg",
+           "Length": 16,
+           "StrippedLength": 16
+          },
+          "defName": "Death",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Luxemburg",
+           "Length": 44,
+           "StrippedLength": 44
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Oli",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Oli",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 170170,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Oli",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 170170,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Zack",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Zack",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Kennedy",
+           "Length": 42,
+           "StrippedLength": 42
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Kennedy",
+           "Length": 14,
+           "StrippedLength": 14
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Unay",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Unay",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Unay",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171490,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "War merchant from The Bico Kinship",
+           "Length": 34,
+           "StrippedLength": 34
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 171490,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Debby",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171610,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Debby",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 171610,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Debby",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 171610,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Dex",
+           "Length": 38,
+           "StrippedLength": 38
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 195639,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Dex",
+           "Length": 10,
+           "StrippedLength": 10
+          },
+          "defName": "Death",
+          "arrivalTick": 195639,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Bishop",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Sad wander: Rangel",
+           "Length": 18,
+           "StrippedLength": 18
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rangel",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Rangel",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "Death",
+          "arrivalTick": 320091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Rangel",
+           "Length": 41,
+           "StrippedLength": 41
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 320091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Lane",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Lane",
+           "Length": 11,
+           "StrippedLength": 11
+          },
+          "defName": "Death",
+          "arrivalTick": 325091,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Lane",
+           "Length": 39,
+           "StrippedLength": 39
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325091,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "(*Name)Tsuki(/Name) in labor!",
+           "Length": 29,
+           "StrippedLength": 15
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 325093,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Confusion: Rhae",
+           "Length": 15,
+           "StrippedLength": 15
+          },
+          "defName": "NegativeEvent",
+          "arrivalTick": 340702,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Eulogy of As-Salam opportunity for Tsuki",
+           "Length": 40,
+           "StrippedLength": 40
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 340721,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Death: Tsuki",
+           "Length": 12,
+           "StrippedLength": 12
+          },
+          "defName": "Death",
+          "arrivalTick": 340721,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_0b1efb21d1a548709a42aabcd2f4ba1f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:33.7480313+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:33.7566704+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\no_duplicate_reveal_once_discovered_1791006453.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "containment_gate_patch_wiring",
+   "components": [
+    {
+     "name": "seven_defs_gated_on_containment",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: containment-gate patch did not apply as authored: HoldingPlatform still has researchPrerequisites=['EntityContainment']; HoldingPlatform.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; ElectricInhibitor still has researchPrerequisites=['EntityContainment']; ElectricInhibitor.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; ShardInhibitor still has researchPrerequisites=['EntityContainment']; ShardInhibitor.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; BioferriteHarvester still has researchPrerequisites=['BioferriteHarvesting']; BioferriteHarvester.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; Electroharvester still has researchPrerequisites=['Electroharvester']; Electroharvester.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; BioferriteGenerator still has researchPrerequisites=['BioferriteGenerator']; BioferriteGenerator.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None; BioferritePlate still has researchPrerequisites=['BioferriteShaping']; BioferritePlate.discoveryPrerequisites does not include RUT_ShipMemory_Containment: got None",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "7 of 7 def(s) resolved",
+        "requested": 7,
+        "foundCount": 7,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "researchPrerequisites",
+         "discoveryPrerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/HoldingPlatform",
+          "found": true,
+          "defName": "HoldingPlatform",
+          "defType": "ThingDef",
+          "label": "holding platform",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "EntityContainment"
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/ElectricInhibitor",
+          "found": true,
+          "defName": "ElectricInhibitor",
+          "defType": "ThingDef",
+          "label": "electric inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "EntityContainment"
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/ShardInhibitor",
+          "found": true,
+          "defName": "ShardInhibitor",
+          "defType": "ThingDef",
+          "label": "shard inhibitor",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "EntityContainment"
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteHarvester",
+          "found": true,
+          "defName": "BioferriteHarvester",
+          "defType": "ThingDef",
+          "label": "bioferrite harvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "BioferriteHarvesting"
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/Electroharvester",
+          "found": true,
+          "defName": "Electroharvester",
+          "defType": "ThingDef",
+          "label": "electroharvester",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "Electroharvester"
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/BioferriteGenerator",
+          "found": true,
+          "defName": "BioferriteGenerator",
+          "defType": "ThingDef",
+          "label": "bioferrite generator",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "BioferriteGenerator"
+           ]
+          }
+         },
+         {
+          "requested": "TerrainDef/BioferritePlate",
+          "found": true,
+          "defName": "BioferritePlate",
+          "defType": "TerrainDef",
+          "label": "bioferrite plate",
+          "modName": "Anomaly",
+          "packageId": "ludeon.rimworld.anomaly",
+          "fields": {
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "BioferriteShaping"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_4f6ff5a49741449fab5a750e5a6f0dce",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:35.4520108+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:35.4600401+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB6A40>",
+  "<suite.Component object at 0x000001BF5FCB68E0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\ShipMemory.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

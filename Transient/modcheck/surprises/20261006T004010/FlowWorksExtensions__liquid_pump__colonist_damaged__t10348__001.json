@@ -1,0 +1,378 @@
+{
+ "name": "FlowWorksExtensions__liquid_pump__colonist_damaged__t10348__001",
+ "when_utc": "2026-10-06T07:44:52Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Norman took 1 damage event(s): Blunt by nobody",
+   "evidence": {
+    "id": "Human242761",
+    "events": [
+     {
+      "seq": 119,
+      "tick": 10097,
+      "damageDef": "Blunt",
+      "amount": 2.11064219,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch1 < RM_MapComponent_RiverCurrent.ApplyHazards < RM_MapComponent_RiverCurrent.StepOne < RM_MapComponent_RiverCurrent.Process < RM_MapComponent_RiverCurrent.MapComponentTick < MapComponentUtility.MapComponentTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Bruise"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    118,
+    142
+   ],
+   "fingerprint": "colonist_damaged:Human242761:119"
+  }
+ ],
+ "snapshot": {
+  "tick": 10348,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [
+   {
+    "id": "Human242761",
+    "name": "Norman",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 118,
+    "z": 142,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Carcinoma",
+      "label": "carcinoma (major, remission)",
+      "part": "Liver",
+      "severity": 0.5137379
+     },
+     {
+      "def": "Frail",
+      "label": "frail",
+      "part": "Torso",
+      "severity": 0.001
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Leg",
+      "severity": 2.03064227
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.375383019,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 16,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 10348
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=34 elapsedMs=8657"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 5cb5b386f2a944bc96ea9ac859281366"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=24,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=24,0 got map.Tile=24,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=164,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=164,0 got map.Tile=164,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=247,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=247,0 got map.Tile=247,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=304,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=304,0 got map.Tile=304,0 map.uniqueID=4 map.Index=4"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=630,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=630,0 got map.Tile=630,0 map.uniqueID=5 map.Index=5"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Black"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2587,
+  "overhead_spent": 0,
+  "total_spent": 2587,
+  "epoch": 0,
+  "last_seen_tick": 10348,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1350,
+    "spent": 587
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 7761,
+    "tick_to": 8361,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 8361,
+    "tick_to": 8961,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 8961,
+    "tick_to": 9161,
+    "ticks": 200,
+    "requested": 200
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 9161,
+    "tick_to": 9761,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 9761,
+    "tick_to": 10348,
+    "ticks": 587,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "liquid_pump",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T004010\\FlowWorksExtensions__liquid_pump__colonist_damaged__t10348__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4445198,
+  "width": 2516,
+  "height": 1252,
+  "md5": "84d6650094732be82b79383460946cb9",
+  "why": ""
+ },
+ "notes": []
+}

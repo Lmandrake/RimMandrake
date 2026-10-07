@@ -1,0 +1,1040 @@
+{
+ "name": "FeverWood__kurreth_column__colonist_damaged__t346646__001",
+ "when_utc": "2026-10-06T13:24:34Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Jake took 6 damage event(s): Bite by RM_Kurreth",
+   "evidence": {
+    "id": "Human58036",
+    "events": [
+     {
+      "seq": 184,
+      "tick": 346104,
+      "damageDef": "Bite",
+      "amount": 12.2462721,
+      "instigatorId": "RM_Kurreth61014",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 186,
+      "tick": 346160,
+      "damageDef": "Bite",
+      "amount": 12.1255484,
+      "instigatorId": "RM_Kurreth61013",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 188,
+      "tick": 346224,
+      "damageDef": "Bite",
+      "amount": 12.1077652,
+      "instigatorId": "RM_Kurreth61014",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 190,
+      "tick": 346344,
+      "damageDef": "Bite",
+      "amount": 9.44269848,
+      "instigatorId": "RM_Kurreth61014",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 192,
+      "tick": 346400,
+      "damageDef": "Bite",
+      "amount": 11.68329,
+      "instigatorId": "RM_Kurreth61013",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 194,
+      "tick": 346614,
+      "damageDef": "Bite",
+      "amount": 10.7304554,
+      "instigatorId": "RM_Kurreth61014",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    183,
+    221
+   ],
+   "fingerprint": "colonist_damaged:Human58036:184,186,188,190,192,194"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Jake is downed",
+   "evidence": {
+    "id": "Human58036",
+    "name": "Jake",
+    "downed": true,
+    "bleedRate": 4.09536171,
+    "painTotal": 0.853200436
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    183,
+    221
+   ],
+   "fingerprint": "colonist_downed:Human58036:True"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Jake gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human58036",
+    "name": "Jake",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0231169146
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    183,
+    221
+   ],
+   "fingerprint": "colonist_injured:Human58036:BloodLoss@None"
+  },
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "6 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "RM_Kurreth61140",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 20,
+      "z": 197
+     },
+     {
+      "id": "RM_Kurreth61141",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 22,
+      "z": 196
+     },
+     {
+      "id": "RM_Kurreth61142",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 1,
+      "z": 211
+     },
+     {
+      "id": "RM_Kurreth61143",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 0,
+      "z": 205
+     },
+     {
+      "id": "RM_Kurreth61144",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 1,
+      "z": 211
+     },
+     {
+      "id": "RM_Kurreth61145",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 6,
+      "z": 210
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    20,
+    197
+   ],
+   "fingerprint": "hostile_pawns:RM_Kurreth61140,RM_Kurreth61141,RM_Kurreth61142,RM_Kurreth61143,RM_Kurreth61144,RM_Kurreth61145"
+  }
+ ],
+ "snapshot": {
+  "tick": 346646,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human58036",
+    "name": "Jake",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 183,
+    "z": 221,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Torso",
+      "severity": 12.2462721
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0231169146
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Torso",
+      "severity": 12.0455484
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 12.1077652
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 9.44269848
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 11.68329
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 10.7304554
+     }
+    ],
+    "bleedRate": 4.09536171,
+    "painTotal": 0.853200436,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61140",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 20,
+    "z": 197,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (itchy)",
+      "part": "Eye",
+      "severity": 6.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.04411765,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61141",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 22,
+    "z": 196,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61142",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 1,
+    "z": 211,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61143",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 0,
+    "z": 205,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61144",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 1,
+    "z": 211,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth61145",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 6,
+    "z": 210,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     449
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2049
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     137799
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 310555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     310555
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 311635,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     311635
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 311635,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     311635
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Astro-Theric Burial opportunity for Seraph",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Astro-Theric Burial opportunity for Seraph",
+     311695
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Seraph",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Seraph",
+     311695
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     311695
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 16,
+   "adaptDays": -32.6666679,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 346646
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=32857 inBurst=True frozen=5 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=5 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1473 plumeCells=49"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1507 plumeCells=127"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1639 plumeCells=324"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1639 plumeCells=519"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=3 plumeSpawned=8 plumePuddles=1639 plumeCells=519"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=0 plumeSpawned=8 plumePuddles=1639 plumeCells=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=32077 inBurst=True frozen=18 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=18 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=147435 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=147435 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=16638 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=16638 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=4123 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=4123 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=147942 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=147942 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Warning",
+   "Seraph on unwalkable cell (50, 0, 200). Teleporting to (49, 0, 200)"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_12559) A = Thing_Human60795 B = Thing_RM_LureStake60791 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_15166) A = Thing_Human60873 B = Thing_RM_LureStake60872 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_21922) A = Thing_Human61002 B = Thing_RM_LureStake61001 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952879,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952746,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 346646,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 8100,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 346046,
+    "tick_to": 346646,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "kurreth_column",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T061439\\FeverWood__kurreth_column__colonist_damaged__t346646__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4289536,
+  "width": 2516,
+  "height": 1252,
+  "md5": "3480af4f0b698934cb9218993e276f1c",
+  "why": ""
+ },
+ "notes": []
+}

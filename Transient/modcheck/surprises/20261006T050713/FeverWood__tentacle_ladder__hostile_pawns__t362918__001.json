@@ -1,0 +1,803 @@
+{
+ "name": "FeverWood__tentacle_ladder__hostile_pawns__t362918__001",
+ "when_utc": "2026-10-06T12:08:45Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "8 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Megascarab94045",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 31,
+      "z": 173
+     },
+     {
+      "id": "Spelopede94046",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 30,
+      "z": 173
+     },
+     {
+      "id": "Locust94047",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 31,
+      "z": 174
+     },
+     {
+      "id": "Spelopede94048",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 30,
+      "z": 171
+     },
+     {
+      "id": "Spelopede94052",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 28,
+      "z": 166
+     },
+     {
+      "id": "Locust94053",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 29,
+      "z": 167
+     },
+     {
+      "id": "Megascarab94054",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 28,
+      "z": 168
+     },
+     {
+      "id": "Spelopede94055",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 29,
+      "z": 167
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    31,
+    173
+   ],
+   "fingerprint": "hostile_pawns:Locust94047,Locust94053,Megascarab94045,Megascarab94054,Spelopede94046,Spelopede94048,Spelopede94052,Spelopede94055"
+  }
+ ],
+ "snapshot": {
+  "tick": 362918,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [
+   {
+    "id": "Megascarab94045",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 31,
+    "z": 173,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede94046",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 30,
+    "z": 173,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust94047",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 31,
+    "z": 174,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede94048",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 30,
+    "z": 171,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede94052",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 28,
+    "z": 166,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust94053",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 29,
+    "z": 167,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab94054",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 28,
+    "z": 168,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede94055",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 29,
+    "z": 167,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A hiss in the vents",
+    "arrivalTick": 158269,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A hiss in the vents",
+     158269
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     158732
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 335684,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     335684
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     359084
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     359084
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 361718,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     361718
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     362798
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     362798
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Muffalo calf 2",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Muffalo calf 2",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Kallax",
+     362858
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kallax",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 2,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 13,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 362918
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=26089 inBurst=True frozen=18 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=18 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser57780"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=440,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 440,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=440,0 got map.Tile=440,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Warning",
+   "Tried to discard Younha whose state is -1."
+  ],
+  [
+   "Warning",
+   "Kallax on unwalkable cell (50, 0, 50). Teleporting to (49, 0, 50)"
+  ],
+  [
+   "Error",
+   "Tried to play sustainer SoundDef Interact_Tend as a one-shot sound."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=1294,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 1294,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=1294,0 got map.Tile=1294,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87647"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952746,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952937,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 60,
+  "overhead_spent": 0,
+  "total_spent": 60,
+  "epoch": 0,
+  "last_seen_tick": 362918,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 362858,
+    "tick_to": 362918,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tentacle_ladder",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050713\\FeverWood__tentacle_ladder__hostile_pawns__t362918__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3847398,
+  "width": 2516,
+  "height": 1252,
+  "md5": "c94b4acfcfa67300c185f77f410d14ef",
+  "why": ""
+ },
+ "notes": []
+}

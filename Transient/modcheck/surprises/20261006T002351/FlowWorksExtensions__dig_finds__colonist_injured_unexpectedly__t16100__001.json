@@ -1,0 +1,310 @@
+{
+ "name": "FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t16100__001",
+ "when_utc": "2026-10-06T07:31:03Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Kidd gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human391",
+    "name": "Kidd",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    93,
+    138
+   ],
+   "fingerprint": "colonist_injured:Human391:Heatstroke@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 16100,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human391",
+    "name": "Kidd",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 93,
+    "z": 138,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 16100
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=8913"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=8914"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=8915"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=8918"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=8918"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=8919"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=8922"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=34 elapsedMs=8957"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=425 elapsedMs=8957"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=35 elapsedMs=8958"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 057cfd920e0b41cdb9c3eb2f1df1e336"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Pecan"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith53184"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956659,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 500,
+  "overhead_spent": 0,
+  "total_spent": 500,
+  "epoch": 0,
+  "last_seen_tick": 16100,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1225,
+    "spent": 500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 15600,
+    "tick_to": 16100,
+    "ticks": 500,
+    "requested": 500
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "dig_finds",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T002351\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t16100__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4573364,
+  "width": 2516,
+  "height": 1252,
+  "md5": "19cda23539aa8ba8591b53b7984638ca",
+  "why": ""
+ },
+ "notes": []
+}

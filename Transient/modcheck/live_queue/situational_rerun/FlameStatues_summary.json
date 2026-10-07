@@ -1,0 +1,659 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "23 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 11948,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 3
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225059",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225060",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225061",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225059",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225060",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225061",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225059",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225060",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225061",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225059",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225060",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225061",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225059",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225060",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser225061",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 4
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_2f7f7adc59054acb8b95bf8c10637eb8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:36:17.1781899+00:00",
+         "CompletedAtUtc": "2026-10-04T12:36:17.2281053+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "6 of 6 def(s) resolved",
+        "requested": 6,
+        "foundCount": 6,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_FlameStatue_Ember",
+          "found": true,
+          "defName": "RM_FlameStatue_Ember",
+          "defType": "ThingDef",
+          "label": "ember idol",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Ember"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Dancer",
+          "found": true,
+          "defName": "RM_FlameStatue_Dancer",
+          "defType": "ThingDef",
+          "label": "flame dancer",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Dancer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Colossus",
+          "found": true,
+          "defName": "RM_FlameStatue_Colossus",
+          "defType": "ThingDef",
+          "label": "pyre colossus",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Colossus"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RM_FlameStatue_Ember",
+          "found": true,
+          "defName": "Make_RM_FlameStatue_Ember",
+          "defType": "RecipeDef",
+          "label": "make ember idol",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "Make_RM_FlameStatue_Ember"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RM_FlameStatue_Dancer",
+          "found": true,
+          "defName": "Make_RM_FlameStatue_Dancer",
+          "defType": "RecipeDef",
+          "label": "make flame dancer",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "Make_RM_FlameStatue_Dancer"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_RM_FlameStatue_Colossus",
+          "found": true,
+          "defName": "Make_RM_FlameStatue_Colossus",
+          "defType": "RecipeDef",
+          "label": "make pyre colossus",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "Make_RM_FlameStatue_Colossus"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_2d24aa291e9a48658fb87655aad295c9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:36:22.9620671+00:00",
+         "CompletedAtUtc": "2026-10-04T12:36:23.010607+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "every_shipped_def_reads_back",
+   "components": [
+    {
+     "name": "every_shipped_def_is_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "3 of 3 def(s) resolved",
+        "requested": 3,
+        "foundCount": 3,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_FlameStatue_Ember",
+          "found": true,
+          "defName": "RM_FlameStatue_Ember",
+          "defType": "ThingDef",
+          "label": "ember idol",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Ember"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Dancer",
+          "found": true,
+          "defName": "RM_FlameStatue_Dancer",
+          "defType": "ThingDef",
+          "label": "flame dancer",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Dancer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Colossus",
+          "found": true,
+          "defName": "RM_FlameStatue_Colossus",
+          "defType": "ThingDef",
+          "label": "pyre colossus",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "defName": "RM_FlameStatue_Colossus"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_d2fd7847c6e74fc9a9443c755232deae",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:36:28.8553367+00:00",
+         "CompletedAtUtc": "2026-10-04T12:36:28.8934648+00:00",
+         "DurationMs": 38,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shipped_scalar_fields_match_xml",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "3 of 3 def(s) resolved",
+        "requested": 3,
+        "foundCount": 3,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "fillPercent",
+         "costStuffCount",
+         "tickerType"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_FlameStatue_Ember",
+          "found": true,
+          "defName": "RM_FlameStatue_Ember",
+          "defType": "ThingDef",
+          "label": "ember idol",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "tickerType": "Normal",
+           "fillPercent": 0.35,
+           "costStuffCount": 50,
+           "label": "ember idol"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Dancer",
+          "found": true,
+          "defName": "RM_FlameStatue_Dancer",
+          "defType": "ThingDef",
+          "label": "flame dancer",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "tickerType": "Normal",
+           "fillPercent": 0.5,
+           "costStuffCount": 100,
+           "label": "flame dancer"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlameStatue_Colossus",
+          "found": true,
+          "defName": "RM_FlameStatue_Colossus",
+          "defType": "ThingDef",
+          "label": "pyre colossus",
+          "modName": "Mandrake Flame Statues",
+          "packageId": "mandrake.rm.flamestatues",
+          "fields": {
+           "tickerType": "Normal",
+           "fillPercent": 0.5,
+           "costStuffCount": 400,
+           "label": "pyre colossus"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_789fc4fd2312496c9abe5984ad11e428",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:36:28.9451001+00:00",
+         "CompletedAtUtc": "2026-10-04T12:36:28.9945776+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": true,
+ "run_identity": {
+  "run_id": "20261004T053505-situational_rerun-39252",
+  "git": {
+   "source": "git",
+   "sha": "baa0d104b1c171e4526107e41066985485b9e0e6"
+  },
+  "deploy_start": {
+   "mod": "FlameStatues",
+   "at": "2026-10-04T05:36:09",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/FlameStatues",
+   "src_hash": "0c0aeccc6ff7308a",
+   "deployed_hash": "0c0aeccc6ff7308a",
+   "n_src": 5,
+   "n_deployed": 5,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrake.FlameStatues.dll",
+     "sha": "4307e604f24d8c50",
+     "srchash": "# project: RimMandrake/FlameStatues/Source/RimMandrake.FlameStat"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "FlameStatues",
+   "at": "2026-10-04T05:36:30",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/FlameStatues",
+   "src_hash": "0c0aeccc6ff7308a",
+   "deployed_hash": "0c0aeccc6ff7308a",
+   "n_src": 5,
+   "n_deployed": 5,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrake.FlameStatues.dll",
+     "sha": "4307e604f24d8c50",
+     "srchash": "# project: RimMandrake/FlameStatues/Source/RimMandrake.FlameStat"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

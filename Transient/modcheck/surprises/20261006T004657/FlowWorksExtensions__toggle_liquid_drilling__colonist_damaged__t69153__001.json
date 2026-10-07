@@ -1,0 +1,757 @@
+{
+ "name": "FlowWorksExtensions__toggle_liquid_drilling__colonist_damaged__t69153__001",
+ "when_utc": "2026-10-06T08:08:08Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human198579 took 1 damage event(s): Frostbite by nobody",
+   "evidence": {
+    "id": "Human198579",
+    "events": [
+     {
+      "seq": 333,
+      "tick": 68711,
+      "damageDef": "Frostbite",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch1 < HediffGiver_Hypothermia.OnIntervalPassed < Pawn_HealthTracker.HealthTickInterval < Pawn.TickInterval < Thing.DoTick < TickList.Tick < TickManager.DoSingleTick",
+      "hediffsAdded": [
+       "Frostbite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human198579:333"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Norman took 2 damage event(s): Blunt by nobody",
+   "evidence": {
+    "id": "Human242761",
+    "events": [
+     {
+      "seq": 332,
+      "tick": 68597,
+      "damageDef": "Blunt",
+      "amount": 2.21904373,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch1 < RM_MapComponent_RiverCurrent.ApplyHazards < RM_MapComponent_RiverCurrent.StepOne < RM_MapComponent_RiverCurrent.Process < RM_MapComponent_RiverCurrent.MapComponentTick < MapComponentUtility.MapComponentTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Bruise",
+       "Crack"
+      ]
+     },
+     {
+      "seq": 335,
+      "tick": 68897,
+      "damageDef": "Blunt",
+      "amount": 4.697648,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch1 < RM_MapComponent_RiverCurrent.ApplyHazards < RM_MapComponent_RiverCurrent.StepOne < RM_MapComponent_RiverCurrent.Process < RM_MapComponent_RiverCurrent.MapComponentTick < MapComponentUtility.MapComponentTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Bruise",
+       "Crack"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    199,
+    140
+   ],
+   "fingerprint": "colonist_damaged:Human242761:332,335"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Lizi gained 3 new hediff(s) (Bruise,Crack); cause_hint=unknown",
+   "evidence": {
+    "id": "Human244921",
+    "name": "Lizi",
+    "new_hediffs": [
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Hand",
+      "severity": 2.58751655
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Nose",
+      "severity": 1.6627599
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Shoulder",
+      "severity": 3.26428032
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "Bruise",
+     "Crack"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    117,
+    143
+   ],
+   "fingerprint": "colonist_injured:Human244921:Bruise@Hand,Bruise@Shoulder,Crack@Nose"
+  }
+ ],
+ "snapshot": {
+  "tick": 69153,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [
+   {
+    "id": "Human242761",
+    "name": "Norman",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 199,
+    "z": 140,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Carcinoma",
+      "label": "carcinoma (major, remission)",
+      "part": "Liver",
+      "severity": 0.5113993
+     },
+     {
+      "def": "Frail",
+      "label": "frail",
+      "part": "Torso",
+      "severity": 0.001
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Leg",
+      "severity": 1.91488588
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Femur",
+      "severity": 0.954247057
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Leg",
+      "severity": 4.028709
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Femur",
+      "severity": 2.00957465
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.45393312,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human244921",
+    "name": "Lizi",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 117,
+    "z": 143,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut out",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (bolt-action rifle barrel)",
+      "part": "Torso",
+      "severity": 15.3889885
+     },
+     {
+      "def": "RM_PitExposure",
+      "label": "pit exposure (exposed)",
+      "part": null,
+      "severity": 0.158000112
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (bolt-action rifle stock)",
+      "part": "Leg",
+      "severity": 13.0690384
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (pump shotgun barrel)",
+      "part": "Torso",
+      "severity": 9.151144
+     },
+     {
+      "def": "Crack",
+      "label": "crack (pump shotgun barrel)",
+      "part": "Pelvis",
+      "severity": 5.06797266
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (bolt-action rifle barrel)",
+      "part": "Arm",
+      "severity": 10.8087206
+     },
+     {
+      "def": "Crack",
+      "label": "crack (bolt-action rifle barrel)",
+      "part": "Radius",
+      "severity": 5.52668333
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Hand",
+      "severity": 2.58751655
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Nose",
+      "severity": 1.6627599
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Shoulder",
+      "severity": 3.26428032
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.850945354,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Found while digging: Steel",
+    "arrivalTick": 14202,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Found while digging: Steel",
+     14202
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 23,
+   "adaptDays": -10.666667,
+   "totalThreatPointsFactor": 0.6577778,
+   "ticksGame": 69153
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=24,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=24,0 got map.Tile=24,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=164,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=164,0 got map.Tile=164,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=247,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=247,0 got map.Tile=247,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=304,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=304,0 got map.Tile=304,0 map.uniqueID=4 map.Index=4"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=630,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=630,0 got map.Tile=630,0 map.uniqueID=5 map.Index=5"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Black"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953988,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 69153,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 13100,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 68553,
+    "tick_to": 69153,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "toggle_liquid_drilling",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T004657\\FlowWorksExtensions__toggle_liquid_drilling__colonist_damaged__t69153__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4837609,
+  "width": 2516,
+  "height": 1252,
+  "md5": "09861406548da1bd7ab444fef334f705",
+  "why": ""
+ },
+ "notes": []
+}

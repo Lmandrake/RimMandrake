@@ -1,0 +1,316 @@
+{
+ "chains": [
+  {
+   "name": "harmony_patches_registered",
+   "components": [
+    {
+     "name": "patches_applied",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/harmony_patches does not show 'mandrake.rm.aftermath' as the owner of: IncidentWorker_Raid.TryGenerateRaidInfo (owners seen: []); LordMaker.MakeNewLord (owners seen: []); LordManager.RemoveLord (owners seen: []); Pawn.Kill (owners seen: ['mandrake.jawabench.eventrecorder']); MentalStateHandler.TryStartMentalState (owners seen: [])",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "IncidentWorker_Raid",
+        "methodName": "TryGenerateRaidInfo",
+        "methodCount": 0,
+        "methods": [],
+        "ticksGame": 170170,
+        "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+        "operation": {
+         "OperationId": "op_c2dadf17a0554eb9a4c861b54582969d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:00.384642+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:00.3856383+00:00",
+         "DurationMs": 0,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordMaker",
+        "methodName": "MakeNewLord",
+        "methodCount": 0,
+        "methods": [],
+        "ticksGame": 170170,
+        "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+        "operation": {
+         "OperationId": "op_2007dec325764633ac09435f91688cec",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:00.3916376+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:00.393638+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordManager",
+        "methodName": "RemoveLord",
+        "methodCount": 0,
+        "methods": [],
+        "ticksGame": 170170,
+        "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+        "operation": {
+         "OperationId": "op_f05523f91f6d4a46a88e40d9504c197a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:00.3998493+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:00.4018493+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Pawn",
+        "methodName": "Kill",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Kill",
+          "declaringType": "Verse.Pawn",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.jawabench.eventrecorder",
+            "priority": 400,
+            "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
+            "patchAssembly": "JawaBench.BridgeTools"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 170170,
+        "note": null,
+        "operation": {
+         "OperationId": "op_3ee08e64b21d4169aa2e0187ebd9ec36",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:00.4083586+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:00.4103575+00:00",
+         "DurationMs": 1,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "MentalStateHandler",
+        "methodName": "TryStartMentalState",
+        "methodCount": 0,
+        "methods": [],
+        "ticksGame": 170170,
+        "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+        "operation": {
+         "OperationId": "op_2302bac542f645d3a25f7002ee3e5114",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:00.4168651+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:00.4188648+00:00",
+         "DurationMs": 1,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 5,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "battle_lifecycle_repelled",
+   "components": [
+    {
+     "name": "devmode_and_raid_fire",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/faction_create(defName='Pirate') could not ensure a live faction instance exists: {'success': False, 'message': \"'Pirate' already exists in this world as 'The Awesome Partners'. Pass allowDuplicate to add another.\", 'details': {'existingCount': 1, 'existingName': 'The Awesome Partners'}, 'operation': {'OperationId': 'op_452d358ea6fd49ed8af3356ce4c60e91', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-create', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:30:01.7498584+00:00', 'CompletedAtUtc': '2026-10-03T05:30:01.7564602+00:00', 'DurationMs': 6, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": true,
+        "ticksGame": 170170,
+        "operation": {
+         "OperationId": "op_4f3431c87a624a7d9847acfce48ed0c4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:01.7358108+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:01.742811+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "ensure_faction(Pirate)",
+       "result": {
+        "success": false,
+        "message": "'Pirate' already exists in this world as 'The Awesome Partners'. Pass allowDuplicate to add another.",
+        "details": {
+         "existingCount": 1,
+         "existingName": "The Awesome Partners"
+        },
+        "operation": {
+         "OperationId": "op_452d358ea6fd49ed8af3356ce4c60e91",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-create",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:01.7498584+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:01.7564602+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kill_all_raiders_closes_repelled",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FC2BCB0>",
+  "<suite.Component object at 0x000001BF5FC22710>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Aftermath.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

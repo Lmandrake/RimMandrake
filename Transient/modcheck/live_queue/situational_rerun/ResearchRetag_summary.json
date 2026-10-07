@@ -1,0 +1,1399 @@
+{
+ "chains": [
+  {
+   "name": "own_tab_defs",
+   "components": [
+    {
+     "name": "research_tabs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "15 of 15 def(s) resolved",
+        "requested": 15,
+        "foundCount": 15,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "generalTitle"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Scavenging",
+          "found": true,
+          "defName": "RUT_Tree_Scavenging",
+          "defType": "ResearchTabDef",
+          "label": "jawa scavenging",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Jawa Scavenging",
+           "label": "jawa scavenging"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Refinery",
+          "found": true,
+          "defName": "RUT_Tree_Refinery",
+          "defType": "ResearchTabDef",
+          "label": "the refinery",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Refinery",
+           "label": "the refinery"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Workshop",
+          "found": true,
+          "defName": "RUT_Tree_Workshop",
+          "defType": "ResearchTabDef",
+          "label": "the workshop",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Workshop",
+           "label": "the workshop"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Hearth",
+          "found": true,
+          "defName": "RUT_Tree_Hearth",
+          "defType": "ResearchTabDef",
+          "label": "the hearth",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Hearth",
+           "label": "the hearth"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_PowderAndSlug",
+          "found": true,
+          "defName": "RUT_Tree_PowderAndSlug",
+          "defType": "ResearchTabDef",
+          "label": "powder & slug",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Powder & Slug",
+           "label": "powder & slug"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Utinni",
+          "found": true,
+          "defName": "RUT_Tree_Utinni",
+          "defType": "ResearchTabDef",
+          "label": "the utinni",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Utinni",
+           "label": "the utinni"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Shell",
+          "found": true,
+          "defName": "RUT_Tree_Shell",
+          "defType": "ResearchTabDef",
+          "label": "the shell",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Shell",
+           "label": "the shell"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Unbolting",
+          "found": true,
+          "defName": "RUT_Tree_Unbolting",
+          "defType": "ResearchTabDef",
+          "label": "the unbolting",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Unbolting",
+           "label": "the unbolting"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Blasterworks",
+          "found": true,
+          "defName": "RUT_Tree_Blasterworks",
+          "defType": "ResearchTabDef",
+          "label": "blasterworks",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "Blasterworks",
+           "label": "blasterworks"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_WakingMind",
+          "found": true,
+          "defName": "RUT_Tree_WakingMind",
+          "defType": "ResearchTabDef",
+          "label": "the waking mind",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Waking Mind",
+           "label": "the waking mind"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Reach",
+          "found": true,
+          "defName": "RUT_Tree_Reach",
+          "defType": "ResearchTabDef",
+          "label": "the reach",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Reach",
+           "label": "the reach"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_AscendantLadder",
+          "found": true,
+          "defName": "RUT_Tree_AscendantLadder",
+          "defType": "ResearchTabDef",
+          "label": "the ascendant ladder",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Ascendant Ladder",
+           "label": "the ascendant ladder"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_StrangeSchools",
+          "found": true,
+          "defName": "RUT_Tree_StrangeSchools",
+          "defType": "ResearchTabDef",
+          "label": "the strange schools",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Strange Schools",
+           "label": "the strange schools"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_JunkerYards",
+          "found": true,
+          "defName": "RUT_Tree_JunkerYards",
+          "defType": "ResearchTabDef",
+          "label": "the junker yards",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Junker Yards",
+           "label": "the junker yards"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_FoundryHive",
+          "found": true,
+          "defName": "RUT_Tree_FoundryHive",
+          "defType": "ResearchTabDef",
+          "label": "the foundry hive",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "generalTitle": "The Foundry Hive",
+           "label": "the foundry hive"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_020ab8b5974249e09f90755f849c83fb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:35:29.0489499+00:00",
+         "CompletedAtUtc": "2026-10-04T12:35:29.0980002+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\research_tabs_resolve_1791117329.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "core_rows_retagged",
+   "components": [
+    {
+     "name": "core_rows_match_manifest",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "5 of 5 def(s) resolved",
+        "requested": 5,
+        "foundCount": 5,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "baseCost",
+         "techLevel",
+         "tab",
+         "prerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/AirConditioning",
+          "found": true,
+          "defName": "AirConditioning",
+          "defType": "ResearchProjectDef",
+          "label": "air conditioning",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Scavenging"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Autodoors",
+          "found": true,
+          "defName": "Autodoors",
+          "defType": "ResearchProjectDef",
+          "label": "autodoor",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 1700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Scavenging"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/CarpetMaking",
+          "found": true,
+          "defName": "CarpetMaking",
+          "defType": "ResearchProjectDef",
+          "label": "carpet-making",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 800.0,
+           "prerequisites": null,
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Hearth"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/ColoredLights",
+          "found": true,
+          "defName": "ColoredLights",
+          "defType": "ResearchProjectDef",
+          "label": "advanced lights",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 700.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Hearth"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Cryptosleep",
+          "found": true,
+          "defName": "Cryptosleep",
+          "defType": "ResearchProjectDef",
+          "label": "cryptosleep casket",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 2000.0,
+           "prerequisites": [
+            "VitalsMonitor"
+           ],
+           "techLevel": "Industrial",
+           "tab": "RUT_Tree_Reach"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_19aaa5fa974041b88537a9ef6b68f088",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:35:35.1891214+00:00",
+         "CompletedAtUtc": "2026-10-04T12:35:35.2390429+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\core_rows_match_manifest_1791117335.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "own_prereq_graph_static",
+   "components": [
+    {
+     "name": "own_prereqs_acyclic_and_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "hearth_layout_static",
+   "components": [
+    {
+     "name": "hearth_no_overlapping_nodes",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "retag_rows_vs_dump",
+   "components": [
+    {
+     "name": "patch_files_and_dump_are_readable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "dump_was_captured_with_this_patch_applied",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_retag_value_and_prereq_removal_holds_in_the_dump",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 26 retag values did not hold live: VFET_Agriculture.tab patch says RUT_Tree_Scavenging, dump has 'VFET_Basics'; VFET_Agriculture.techLevel patch says Neolithic, dump has 'Animal'; VFET_AnimalHandling.tab patch says RUT_Tree_Scavenging, dump has 'VFET_Basics'; VFET_AnimalHandling.techLevel patch says Neolithic, dump has 'Animal'; VFET_Bow.tab patch says RUT_Tree_Scavenging, dump has 'VFET_Basics'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "known_unheld_rows_are_still_unheld",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "force_load_after_names_every_donor_owner",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "every_shipped_def_reads_back",
+   "components": [
+    {
+     "name": "every_shipped_def_is_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 1 of 46 shipped defs are not loaded by the game: ['RecipeDef/Make_GravcoreGF']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "39 of 40 def(s) resolved; 1 not found",
+        "requested": 40,
+        "foundCount": 39,
+        "notFound": [
+         "RecipeDef/Make_GravcoreGF"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/RR_LateralThinking",
+          "found": true,
+          "defName": "RR_LateralThinking",
+          "defType": "ResearchProjectDef",
+          "label": "lateral thinking",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_LateralThinking"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_Organization",
+          "found": true,
+          "defName": "RR_Organization",
+          "defType": "ResearchProjectDef",
+          "label": "organization",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_Organization"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_BasicApparel",
+          "found": true,
+          "defName": "RR_BasicApparel",
+          "defType": "ResearchProjectDef",
+          "label": "simple apparel",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_BasicApparel"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_BasicCraftingFacilities",
+          "found": true,
+          "defName": "RR_BasicCraftingFacilities",
+          "defType": "ResearchProjectDef",
+          "label": "crafting facilities",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_BasicCraftingFacilities"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_BasicFoodPrep",
+          "found": true,
+          "defName": "RR_BasicFoodPrep",
+          "defType": "ResearchProjectDef",
+          "label": "food preparation",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_BasicFoodPrep"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_IncendiaryWeapons",
+          "found": true,
+          "defName": "RR_IncendiaryWeapons",
+          "defType": "ResearchProjectDef",
+          "label": "incendiary weapons",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_IncendiaryWeapons"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_ElectricityBasics",
+          "found": true,
+          "defName": "RR_ElectricityBasics",
+          "defType": "ResearchProjectDef",
+          "label": "electricity",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_ElectricityBasics"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_HeatingElements",
+          "found": true,
+          "defName": "RR_HeatingElements",
+          "defType": "ResearchProjectDef",
+          "label": "heating elements",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_HeatingElements"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_PowerGenerators",
+          "found": true,
+          "defName": "RR_PowerGenerators",
+          "defType": "ResearchProjectDef",
+          "label": "dynamos",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_PowerGenerators"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RR_EMP",
+          "found": true,
+          "defName": "RR_EMP",
+          "defType": "ResearchProjectDef",
+          "label": "EMP weapons",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RR_EMP"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GravEngineBuild",
+          "found": true,
+          "defName": "GravEngineBuild",
+          "defType": "ResearchProjectDef",
+          "label": "grav engine technologies",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravEngineBuild"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GravForge",
+          "found": true,
+          "defName": "GravForge",
+          "defType": "ResearchProjectDef",
+          "label": "grav forge",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravForge"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GravTuning",
+          "found": true,
+          "defName": "GravTuning",
+          "defType": "ResearchProjectDef",
+          "label": "precise grav tuning",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravTuning"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/AdvShipParts",
+          "found": true,
+          "defName": "AdvShipParts",
+          "defType": "ResearchProjectDef",
+          "label": "advanced ship parts",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "AdvShipParts"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GravBionics",
+          "found": true,
+          "defName": "GravBionics",
+          "defType": "ResearchProjectDef",
+          "label": "grav bionics",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravBionics"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/BlackHole_GT",
+          "found": true,
+          "defName": "BlackHole_GT",
+          "defType": "ResearchProjectDef",
+          "label": "taming a Black Hole",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "BlackHole_GT"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GravWeapon",
+          "found": true,
+          "defName": "GravWeapon",
+          "defType": "ResearchProjectDef",
+          "label": "grav weapon",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravWeapon"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/GTbc_BigCannons",
+          "found": true,
+          "defName": "GTbc_BigCannons",
+          "defType": "ResearchProjectDef",
+          "label": "big cannons",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GTbc_BigCannons"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Scavenging",
+          "found": true,
+          "defName": "RUT_Tree_Scavenging",
+          "defType": "ResearchTabDef",
+          "label": "jawa scavenging",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Scavenging"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Refinery",
+          "found": true,
+          "defName": "RUT_Tree_Refinery",
+          "defType": "ResearchTabDef",
+          "label": "the refinery",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Refinery"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Workshop",
+          "found": true,
+          "defName": "RUT_Tree_Workshop",
+          "defType": "ResearchTabDef",
+          "label": "the workshop",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Workshop"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Hearth",
+          "found": true,
+          "defName": "RUT_Tree_Hearth",
+          "defType": "ResearchTabDef",
+          "label": "the hearth",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Hearth"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_PowderAndSlug",
+          "found": true,
+          "defName": "RUT_Tree_PowderAndSlug",
+          "defType": "ResearchTabDef",
+          "label": "powder & slug",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_PowderAndSlug"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Utinni",
+          "found": true,
+          "defName": "RUT_Tree_Utinni",
+          "defType": "ResearchTabDef",
+          "label": "the utinni",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Utinni"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Shell",
+          "found": true,
+          "defName": "RUT_Tree_Shell",
+          "defType": "ResearchTabDef",
+          "label": "the shell",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Shell"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Unbolting",
+          "found": true,
+          "defName": "RUT_Tree_Unbolting",
+          "defType": "ResearchTabDef",
+          "label": "the unbolting",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Unbolting"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Blasterworks",
+          "found": true,
+          "defName": "RUT_Tree_Blasterworks",
+          "defType": "ResearchTabDef",
+          "label": "blasterworks",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Blasterworks"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_WakingMind",
+          "found": true,
+          "defName": "RUT_Tree_WakingMind",
+          "defType": "ResearchTabDef",
+          "label": "the waking mind",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_WakingMind"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Reach",
+          "found": true,
+          "defName": "RUT_Tree_Reach",
+          "defType": "ResearchTabDef",
+          "label": "the reach",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_Reach"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_AscendantLadder",
+          "found": true,
+          "defName": "RUT_Tree_AscendantLadder",
+          "defType": "ResearchTabDef",
+          "label": "the ascendant ladder",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_AscendantLadder"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_StrangeSchools",
+          "found": true,
+          "defName": "RUT_Tree_StrangeSchools",
+          "defType": "ResearchTabDef",
+          "label": "the strange schools",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_StrangeSchools"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_JunkerYards",
+          "found": true,
+          "defName": "RUT_Tree_JunkerYards",
+          "defType": "ResearchTabDef",
+          "label": "the junker yards",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_JunkerYards"
+          }
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_FoundryHive",
+          "found": true,
+          "defName": "RUT_Tree_FoundryHive",
+          "defType": "ResearchTabDef",
+          "label": "the foundry hive",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "RUT_Tree_FoundryHive"
+          }
+         },
+         {
+          "requested": "ThingDef/GravForge",
+          "found": true,
+          "defName": "GravForge",
+          "defType": "ThingDef",
+          "label": "grav forge",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravForge"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_PlasteelGF",
+          "found": true,
+          "defName": "Make_PlasteelGF",
+          "defType": "RecipeDef",
+          "label": "make plasteel",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Make_PlasteelGF"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_ComponentIndustrialGF",
+          "found": true,
+          "defName": "Make_ComponentIndustrialGF",
+          "defType": "RecipeDef",
+          "label": "make component x5",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Make_ComponentIndustrialGF"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_ComponentSpacerGF",
+          "found": true,
+          "defName": "Make_ComponentSpacerGF",
+          "defType": "RecipeDef",
+          "label": "make advanced component x5",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Make_ComponentSpacerGF"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_GravlitePanelGF",
+          "found": true,
+          "defName": "Make_GravlitePanelGF",
+          "defType": "RecipeDef",
+          "label": "make gravlite panel x10",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Make_GravlitePanelGF"
+          }
+         },
+         {
+          "requested": "RecipeDef/Make_GravcoreGF",
+          "found": false,
+          "defType": "RecipeDef",
+          "defName": "Make_GravcoreGF"
+         },
+         {
+          "requested": "RecipeDef/Copy_AIPersonaCoreGF",
+          "found": true,
+          "defName": "Copy_AIPersonaCoreGF",
+          "defType": "RecipeDef",
+          "label": "copy AI persona core",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Copy_AIPersonaCoreGF"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_e34feff62af74592835ff380d21ce1b6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:35:58.2273436+00:00",
+         "CompletedAtUtc": "2026-10-04T12:35:58.2633811+00:00",
+         "DurationMs": 36,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "6 of 6 def(s) resolved",
+        "requested": 6,
+        "foundCount": 6,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "EffecterDef/GravForgePulse",
+          "found": true,
+          "defName": "GravForgePulse",
+          "defType": "EffecterDef",
+          "label": null,
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravForgePulse"
+          }
+         },
+         {
+          "requested": "FleckDef/GravwellForge",
+          "found": true,
+          "defName": "GravwellForge",
+          "defType": "FleckDef",
+          "label": null,
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravwellForge"
+          }
+         },
+         {
+          "requested": "FleckDef/GravForgeBluePulse",
+          "found": true,
+          "defName": "GravForgeBluePulse",
+          "defType": "FleckDef",
+          "label": null,
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "GravForgeBluePulse"
+          }
+         },
+         {
+          "requested": "ThingDef/Gravitonium",
+          "found": true,
+          "defName": "Gravitonium",
+          "defType": "ThingDef",
+          "label": "gravitonium",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "Gravitonium"
+          }
+         },
+         {
+          "requested": "ThingDef/ChunkSlagPlasteel_GT",
+          "found": true,
+          "defName": "ChunkSlagPlasteel_GT",
+          "defType": "ThingDef",
+          "label": "plasteel slag chunk",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "ChunkSlagPlasteel_GT"
+          }
+         },
+         {
+          "requested": "ThingDef/UnfinishedGravcore",
+          "found": true,
+          "defName": "UnfinishedGravcore",
+          "defType": "ThingDef",
+          "label": "unfinished gravcore",
+          "modName": "Research Retag",
+          "packageId": "mandrake.rut.researchretag",
+          "fields": {
+           "defName": "UnfinishedGravcore"
+          }
+         }
+        ],
+        "ticksGame": 36121,
+        "operation": {
+         "OperationId": "op_885f720e69814bff8fbe6e74c5e99de4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T12:35:58.3139361+00:00",
+         "CompletedAtUtc": "2026-10-04T12:35:58.3639898+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shipped_scalar_fields_match_xml",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000002822B885F20>",
+  "<suite.Component object at 0x000002822439CD50>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\ResearchRetag.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T053505-situational_rerun-39252",
+  "git": {
+   "source": "git",
+   "sha": "baa0d104b1c171e4526107e41066985485b9e0e6"
+  },
+  "deploy_start": {
+   "mod": "ResearchRetag",
+   "at": "2026-10-04T05:35:20",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimUtinni/ResearchRetag",
+   "src_hash": "970cefeeccc44b87",
+   "deployed_hash": "970cefeeccc44b87",
+   "n_src": 14,
+   "n_deployed": 14,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "ResearchRetag",
+   "at": "2026-10-04T05:35:59",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimUtinni/ResearchRetag",
+   "src_hash": "970cefeeccc44b87",
+   "deployed_hash": "970cefeeccc44b87",
+   "n_src": 14,
+   "n_deployed": 14,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [],
+   "src_dirty": false
+  }
+ }
+}

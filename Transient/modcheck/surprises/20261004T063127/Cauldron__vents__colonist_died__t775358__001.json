@@ -1,0 +1,1843 @@
+{
+ "name": "Cauldron__vents__colonist_died__t775358__001",
+ "when_utc": "2026-10-04T13:46:53Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human120047 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human120047",
+    "ticks": [
+     774848
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human120047"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human120047"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Merandil died (death_letter)",
+   "evidence": {
+    "name": "Merandil",
+    "ticks": [
+     774848
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Merandil"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human120039 took 5 damage event(s): ScuttlebugBite by Scuttlebug",
+   "evidence": {
+    "id": "Human120039",
+    "events": [
+     {
+      "seq": 799,
+      "tick": 774974,
+      "damageDef": "ScuttlebugBite",
+      "amount": 4.083377,
+      "instigatorId": "Scuttlebug339918",
+      "instigatorDef": "Scuttlebug",
+      "weapon": "Scuttlebug",
+      "origin": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 800,
+      "tick": 774979,
+      "damageDef": "ScuttlebugBite",
+      "amount": 4.99496365,
+      "instigatorId": "Scuttlebug339919",
+      "instigatorDef": "Scuttlebug",
+      "weapon": "Scuttlebug",
+      "origin": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 802,
+      "tick": 775094,
+      "damageDef": "ScuttlebugBite",
+      "amount": 4.73823071,
+      "instigatorId": "Scuttlebug339918",
+      "instigatorDef": "Scuttlebug",
+      "weapon": "Scuttlebug",
+      "origin": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 803,
+      "tick": 775099,
+      "damageDef": "ScuttlebugBite",
+      "amount": 4.145524,
+      "instigatorId": "Scuttlebug339919",
+      "instigatorDef": "Scuttlebug",
+      "weapon": "Scuttlebug",
+      "origin": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 804,
+      "tick": 775259,
+      "damageDef": "ScuttlebugBite",
+      "amount": 4.59250641,
+      "instigatorId": "Scuttlebug339918",
+      "instigatorDef": "Scuttlebug",
+      "weapon": "Scuttlebug",
+      "origin": null,
+      "hediffsAdded": null
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human120039:799,800,802,803,804"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human120047 took 1 damage event(s): Bite by nobody",
+   "evidence": {
+    "id": "Human120047",
+    "events": [
+     {
+      "seq": 798,
+      "tick": 774848,
+      "damageDef": "Bite",
+      "amount": 50.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < ScuttlebugsHediff.SpawnScuttlebug < ScuttlebugsHediff.Tick < Pawn_HealthTracker.HealthTick < DynamicMethodDefinition.Verse.Pawn.Tick_Patch2 < Thing.DoTick < TickList.Tick",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human120047:798"
+  }
+ ],
+ "snapshot": {
+  "tick": 775358,
+  "epoch": 0,
+  "map_id": 6,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 557056,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     557056
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 557056,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     557056
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 557056,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     557056
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 729106,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     729106
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 729106,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     729106
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 729106,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     729106
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 731736,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     731736
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 732816,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     732816
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 732816,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     732816
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Irina (suush)",
+    "arrivalTick": 733216,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Irina (suush)",
+     733216
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tico (suush)",
+    "arrivalTick": 733616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tico (suush)",
+     733616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 733616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     733616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 734162,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     734162
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erich",
+    "arrivalTick": 734162,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erich",
+     734162
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 745451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     745451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pyrrha",
+    "arrivalTick": 745451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pyrrha",
+     745451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 745451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     745451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Willa",
+    "arrivalTick": 745451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Willa",
+     745451
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Vexxiss poisoning water",
+    "arrivalTick": 745478,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Vexxiss poisoning water",
+     745478
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 746651,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     746651
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ryu",
+    "arrivalTick": 746651,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ryu",
+     746651
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "The desert leviathan",
+    "arrivalTick": 750600,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "The desert leviathan",
+     750600
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ida (thornbug)",
+    "arrivalTick": 773967,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ida (thornbug)",
+     773967
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 774848,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     774848
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Merandil",
+    "arrivalTick": 774848,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Merandil",
+     774848
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 13,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 45,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 775358
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Tyche cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Ulyana and Bowman are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Ulyana and Duces are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Hotaru cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Kev cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Ulyana and Jeremy cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Ulyana and Kren are not mutually attracted"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Ulyana"
+  ],
+  [
+   "Message",
+   "Kev cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Tyche cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Hotaru cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Yarr cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Ulyana failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Starting scan. Candidates=2, CurrentMood=0.10"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Eval Jackalope: opinion=47, mood=0.00, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "Ian cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 9"
+  ],
+  [
+   "Message",
+   "Ian is already in conversation."
+  ],
+  [
+   "Message",
+   "Middleton is already in conversation."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594944268,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594944324,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 21112,
+  "overhead_spent": 0,
+  "total_spent": 21112,
+  "epoch": 2,
+  "last_seen_tick": 775358,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4350,
+    "spent": 1342
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 747701,
+    "tick_to": 747761,
+    "ticks": 60,
+    "requested": 60
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 747761,
+    "tick_to": 747881,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 747881,
+    "tick_to": 748373,
+    "ticks": 492,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 748373,
+    "tick_to": 748943,
+    "ticks": 570,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 748943,
+    "tick_to": 749438,
+    "ticks": 495,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 749438,
+    "tick_to": 749974,
+    "ticks": 536,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 749974,
+    "tick_to": 750482,
+    "ticks": 508,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 750482,
+    "tick_to": 750958,
+    "ticks": 476,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 750958,
+    "tick_to": 751495,
+    "ticks": 537,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 751495,
+    "tick_to": 751981,
+    "ticks": 486,
+    "requested": 486
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 751981,
+    "tick_to": 752509,
+    "ticks": 528,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 752509,
+    "tick_to": 752994,
+    "ticks": 485,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 752994,
+    "tick_to": 753301,
+    "ticks": 307,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 753301,
+    "tick_to": 753794,
+    "ticks": 493,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 753794,
+    "tick_to": 754303,
+    "ticks": 509,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 754303,
+    "tick_to": 754793,
+    "ticks": 490,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 754793,
+    "tick_to": 755336,
+    "ticks": 543,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 755336,
+    "tick_to": 755819,
+    "ticks": 483,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 755819,
+    "tick_to": 756081,
+    "ticks": 262,
+    "requested": 262
+   },
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 1,
+    "tick_from": 756081,
+    "tick_to": 759215,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 1,
+    "tick_from": 759215,
+    "tick_to": 759255,
+    "ticks": 40,
+    "requested": 40
+   },
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 2,
+    "tick_from": 759255,
+    "tick_to": 762666,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 762666,
+    "tick_to": 762706,
+    "ticks": 40,
+    "requested": 40
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 762706,
+    "tick_to": 762766,
+    "ticks": 60,
+    "requested": 60
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 762766,
+    "tick_to": 762916,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 762916,
+    "tick_to": 763216,
+    "ticks": 300,
+    "requested": 300
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763216,
+    "tick_to": 763366,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763366,
+    "tick_to": 763516,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763516,
+    "tick_to": 763666,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763666,
+    "tick_to": 763816,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763816,
+    "tick_to": 763966,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 763966,
+    "tick_to": 764116,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764116,
+    "tick_to": 764266,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764266,
+    "tick_to": 764416,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764416,
+    "tick_to": 764566,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764566,
+    "tick_to": 764716,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764716,
+    "tick_to": 764866,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 764866,
+    "tick_to": 765016,
+    "ticks": 150,
+    "requested": 150
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 765016,
+    "tick_to": 765598,
+    "ticks": 582,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 765598,
+    "tick_to": 766016,
+    "ticks": 418,
+    "requested": 418
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 766016,
+    "tick_to": 766592,
+    "ticks": 576,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 766592,
+    "tick_to": 767016,
+    "ticks": 424,
+    "requested": 424
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 767016,
+    "tick_to": 767589,
+    "ticks": 573,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 767589,
+    "tick_to": 768016,
+    "ticks": 427,
+    "requested": 427
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 768016,
+    "tick_to": 768586,
+    "ticks": 570,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 768586,
+    "tick_to": 769016,
+    "ticks": 430,
+    "requested": 430
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 769016,
+    "tick_to": 769548,
+    "ticks": 532,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 769548,
+    "tick_to": 770016,
+    "ticks": 468,
+    "requested": 468
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 770016,
+    "tick_to": 770548,
+    "ticks": 532,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 770548,
+    "tick_to": 771016,
+    "ticks": 468,
+    "requested": 468
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 771016,
+    "tick_to": 771553,
+    "ticks": 537,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 771553,
+    "tick_to": 772016,
+    "ticks": 463,
+    "requested": 463
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 772016,
+    "tick_to": 772540,
+    "ticks": 524,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 772540,
+    "tick_to": 773016,
+    "ticks": 476,
+    "requested": 476
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 773016,
+    "tick_to": 773558,
+    "ticks": 542,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 773558,
+    "tick_to": 774016,
+    "ticks": 458,
+    "requested": 458
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 774016,
+    "tick_to": 774546,
+    "ticks": 530,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 774546,
+    "tick_to": 774846,
+    "ticks": 300,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 2,
+    "tick_from": 774846,
+    "tick_to": 775358,
+    "ticks": 512,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "vents",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T063127\\Cauldron__vents__colonist_died__t775358__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2171688,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b8b7b0428d8301386373e2faebedc461",
+  "why": ""
+ },
+ "notes": []
+}

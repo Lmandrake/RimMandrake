@@ -1,0 +1,733 @@
+{
+ "name": "TheForge__voices__colonist_damaged__t158732__001",
+ "when_utc": "2026-10-06T11:52:47Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Bob took 2 damage event(s): RUT_Scald by nobody",
+   "evidence": {
+    "id": "Human63727",
+    "events": [
+     {
+      "seq": 35,
+      "tick": 158662,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     },
+     {
+      "seq": 109,
+      "tick": 158722,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    113,
+    139
+   ],
+   "fingerprint": "colonist_damaged:Human63727:35,109"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Bear took 2 damage event(s): RUT_Scald by nobody",
+   "evidence": {
+    "id": "Human63730",
+    "events": [
+     {
+      "seq": 37,
+      "tick": 158662,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     },
+     {
+      "seq": 111,
+      "tick": 158722,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    114,
+    139
+   ],
+   "fingerprint": "colonist_damaged:Human63730:37,111"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Fitz took 2 damage event(s): RUT_Scald by nobody",
+   "evidence": {
+    "id": "Human63733",
+    "events": [
+     {
+      "seq": 39,
+      "tick": 158662,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     },
+     {
+      "seq": 112,
+      "tick": 158722,
+      "damageDef": "RUT_Scald",
+      "amount": 4.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch3 < RM_GameCondition_WeatherPulse.DoScaldDamageOnMap < RM_GameCondition_WeatherPulse.DoScaldDamageTick < RM_GameCondition_WeatherPulse.GameConditionTick < RM_GameCondition_ForgeCycle.GameConditionTick < GameConditionManager.GameConditionManagerTick < Map.MapPostTick",
+      "hediffsAdded": [
+       "Burn"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    117,
+    140
+   ],
+   "fingerprint": "colonist_damaged:Human63733:39,112"
+  }
+ ],
+ "snapshot": {
+  "tick": 158732,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human63727",
+    "name": "Bob",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 113,
+    "z": 139,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Stomach",
+      "severity": 4.0
+     },
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Ribcage",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.15,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human63730",
+    "name": "Bear",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 114,
+    "z": 139,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Radius",
+      "severity": 4.0
+     },
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Lung",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.15,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human63733",
+    "name": "Fitz",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 117,
+    "z": 140,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Kidney",
+      "severity": 3.92
+     },
+     {
+      "def": "Burn",
+      "label": "burn",
+      "part": "Hand",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.14850001,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 277,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     277
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 277,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     277
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 277,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     277
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 709,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     709
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 709,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     709
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 709,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     709
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2309
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2309
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2309
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2309
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A hiss in the vents",
+    "arrivalTick": 158269,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A hiss in the vents",
+     158269
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 158732
+  },
+  "fires": 3,
+  "conditions": [
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=17591 inBurst=True frozen=144 gardensLive=0 cycles=5 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=720 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=17591 inBurst=True frozen=144 gardensLive=0 cycles=5 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=720 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=4380 inBurst=True frozen=144 gardensLive=0 cycles=5 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=720 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=4380 inBurst=True frozen=144 gardensLive=0 cycles=5 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=720 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=130917 inBurst=True frozen=0 gardensLive=0 cycles=6 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=864 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=130917 inBurst=True frozen=0 gardensLive=0 cycles=6 gasIgnitions=0 floods=0 cellsFrozen=864 cellsMelted=864 gardensSpawned=31 gardensDrifted=31 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=3 swarmLive=0 swarmErupted=420 swarmResealed=420"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=-2960 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=173876 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=-3600 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=161505 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=-4240 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=146580 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser57780"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=156389 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=2740 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser57780"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=124340 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=GasWash endsIn=6404 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Rain endsIn=16687 inBurst=True frozen=0 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=60 swarmErupted=60 swarmResealed=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 1,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954771,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954708,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954652,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 392,
+  "overhead_spent": 0,
+  "total_spent": 392,
+  "epoch": 0,
+  "last_seen_tick": 158732,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 762,
+    "spent": 130
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 158340,
+    "tick_to": 158342,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 158342,
+    "tick_to": 158472,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 158472,
+    "tick_to": 158602,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 158602,
+    "tick_to": 158732,
+    "ticks": 130,
+    "requested": 130
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "voices",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T044850\\TheForge__voices__colonist_damaged__t158732__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2435887,
+  "width": 2516,
+  "height": 1252,
+  "md5": "a3333cb0b8b8cb2e75100164381ca7e8",
+  "why": ""
+ },
+ "notes": []
+}

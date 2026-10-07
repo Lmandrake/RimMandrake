@@ -1,0 +1,823 @@
+{
+ "chains": [
+  {
+   "name": "research_completed",
+   "components": [
+    {
+     "name": "research_completed_ledger",
+     "toggle": "engineEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Ozzik satiation +15.0' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": true,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": false,
+        "researcher": null,
+        "result": {
+         "defName": "Smithing",
+         "label": "Smithing",
+         "cost": 700.0,
+         "baseCost": 700.0,
+         "progress": 700.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_90fdcd9f6e8441a5ae9fe6d0f98a446b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:08.954905+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:08.9624147+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ozzik satiation +15.0, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mental_break_started",
+   "components": [
+    {
+     "name": "mental_break_ledger",
+     "toggle": "eventMagnitudeMultiplier",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Zizzik satiation +15.0' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_force_mental_break",
+       "result": {
+        "success": true,
+        "started": true,
+        "breakDef": "Wander_Sad",
+        "reason": "Forced via bridge",
+        "mentalStateBefore": null,
+        "mentalStateAfter": "Wander_Sad",
+        "ticksGame": 320091,
+        "operation": {
+         "OperationId": "op_f8da0ccebda2407a80bd358882813458",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-force-mental-break",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:10.1993096+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:10.2078176+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Zizzik satiation +15.0, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "building_repaired_and_deconstructed",
+   "components": [
+    {
+     "name": "building_repaired",
+     "toggle": "firstContactLettersEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Rekko satiation +15.0 (repaired' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Blunt 40.",
+        "damageDef": "Blunt",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Wall54133",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 135,
+          "destroyed": false,
+          "totalDamageDealt": 60.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Wall54133",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 135,
+          "destroyed": false,
+          "totalDamageDealt": 60.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 320091,
+        "operation": {
+         "OperationId": "op_11e376c779554dd0a7ce10bfdebdcaa5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:11.5192608+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:11.5252619+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "Repair",
+        "afterJobDef": "Wait_MaintainPosture",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait_MaintainPosture', not 'Repair' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_a34df008a4c646ee8cca4ace09d33d8c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:11.53394+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:11.544976+00:00",
+         "DurationMs": 11,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5000) [watched] -> 5000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 5000,
+        "requested": 5000
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Rekko satiation +15.0 (repaired, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "building_deconstructed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 9,
+    "fed": 0,
+    "ticks_spent": 5000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 320691,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 321291,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 321891,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 322491,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 323091,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 323691,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 324291,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 324891,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 325091,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "birth_outcome",
+   "components": [
+    {
+     "name": "birth_outcome_ledger",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: mental_break: Rhae entered mental state WanderConfused [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "start",
+        "notes": [
+         "pregnancy started with PregnantHuman, no father"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 0.001,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 325091,
+        "operation": {
+         "OperationId": "op_236f2fe8df2e40bd8e2a791b6587e409",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:31.3575444+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:31.3635453+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "progress",
+        "notes": [
+         "gestation (= hediff Severity) set to 1 - LABOUR WILL BEGIN ON THE NEXT TICK"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 1.0,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 325091,
+        "operation": {
+         "OperationId": "op_f3db4289d4e74d9f952c888c01672bee",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:45:31.3708082+00:00",
+         "CompletedAtUtc": "2026-10-03T05:45:31.3773146+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "mental_break: Rhae entered mental state WanderConfused",
+      "hits": [
+       {
+        "detector": "mental_break",
+        "severity": "SURPRISE",
+        "summary": "Rhae entered mental state WanderConfused"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.png"
+      ]
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 27,
+    "fed": 7,
+    "ticks_spent": 15630,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 330491,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 330491,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 331091,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 331091,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 331691,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 331691,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 332291,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 332291,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 332891,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 332891,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 333491,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 333491,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 333521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 333521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 334121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 334121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 334721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 334721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 335321,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 335321,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 335921,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 335921,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 336521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 336521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 337121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 337121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 337721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 337721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 338321,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 338321,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 338921,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 338921,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 339521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 339521,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 340121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 340121,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     },
+     {
+      "tick": 340721,
+      "detector": "mental_break",
+      "severity": "SURPRISE",
+      "summary": "Rhae entered mental state WanderConfused"
+     },
+     {
+      "tick": 340721,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NegativeEvent] Confusion: Rhae"
+     },
+     {
+      "tick": 340721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Eulogy of As-Salam opportunity for Lane"
+     },
+     {
+      "tick": 340721,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Tsuki(/Name) in labor!"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mood_walk_tick",
+   "components": [
+    {
+     "name": "mood_walk_advances",
+     "toggle": "moodWalkMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2600) [watched] -> 2600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2600,
+        "requested": 2600
+       }
+      },
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": false,
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_d9bdbd5af572485587d83bff2a2416ba",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:46:43.6576893+00:00",
+         "CompletedAtUtc": "2026-10-03T05:46:43.664347+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mood_walk_advances_1791006403.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 13 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 6,
+    "fed": 1,
+    "ticks_spent": 2600,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB5BD0>",
+  "<suite.Component object at 0x000001BF5FCB73E0>",
+  "<suite.Component object at 0x000001BF5FCB75F0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Ninefold.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

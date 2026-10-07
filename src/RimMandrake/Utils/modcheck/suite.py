@@ -325,6 +325,8 @@ class TestContext(object):
             # a float field reads back as '3' where the script wrote 3.0 (2026-10-03): compare numbers as numbers
             if got == str(want):
                 return True
+            if isinstance(got, str) and got.lower() in ("true", "false") and got.lower() == str(want).lower():
+                return True        # a bool reads back 'True' where a script wrote 'true' (ShipShields 2026-10-07)
             try:
                 return abs(float(got) - float(want)) < 1e-6
             except (TypeError, ValueError):

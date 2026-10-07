@@ -1,0 +1,1267 @@
+{
+ "name": "FeverWood__oil_boil__raid_arrived__t36121__001",
+ "when_utc": "2026-10-04T12:30:39Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): The oil haze flashed; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      36121,
+      "The oil haze flashed"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@36121"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "197 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 101,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 123
+     },
+     {
+      "x": 102,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 121
+     },
+     {
+      "x": 100,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 124
+     },
+     {
+      "x": 102,
+      "z": 123
+     },
+     {
+      "x": 100,
+      "z": 123
+     },
+     {
+      "x": 103,
+      "z": 122
+     },
+     {
+      "x": 102,
+      "z": 121
+     },
+     {
+      "x": 101,
+      "z": 120
+     },
+     {
+      "x": 100,
+      "z": 121
+     },
+     {
+      "x": 99,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 125
+     },
+     {
+      "x": 102,
+      "z": 124
+     },
+     {
+      "x": 100,
+      "z": 124
+     },
+     {
+      "x": 103,
+      "z": 123
+     },
+     {
+      "x": 99,
+      "z": 123
+     },
+     {
+      "x": 104,
+      "z": 122
+     },
+     {
+      "x": 103,
+      "z": 121
+     },
+     {
+      "x": 102,
+      "z": 120
+     },
+     {
+      "x": 101,
+      "z": 119
+     },
+     {
+      "x": 100,
+      "z": 120
+     },
+     {
+      "x": 99,
+      "z": 121
+     },
+     {
+      "x": 98,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 126
+     },
+     {
+      "x": 102,
+      "z": 125
+     },
+     {
+      "x": 100,
+      "z": 125
+     },
+     {
+      "x": 103,
+      "z": 124
+     },
+     {
+      "x": 99,
+      "z": 124
+     },
+     {
+      "x": 104,
+      "z": 123
+     },
+     {
+      "x": 98,
+      "z": 123
+     },
+     {
+      "x": 105,
+      "z": 122
+     },
+     {
+      "x": 104,
+      "z": 121
+     },
+     {
+      "x": 103,
+      "z": 120
+     },
+     {
+      "x": 102,
+      "z": 119
+     },
+     {
+      "x": 101,
+      "z": 118
+     },
+     {
+      "x": 100,
+      "z": 119
+     },
+     {
+      "x": 99,
+      "z": 120
+     },
+     {
+      "x": 98,
+      "z": 121
+     },
+     {
+      "x": 97,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 127
+     },
+     {
+      "x": 102,
+      "z": 126
+     },
+     {
+      "x": 100,
+      "z": 126
+     },
+     {
+      "x": 103,
+      "z": 125
+     },
+     {
+      "x": 99,
+      "z": 125
+     },
+     {
+      "x": 104,
+      "z": 124
+     },
+     {
+      "x": 98,
+      "z": 124
+     },
+     {
+      "x": 105,
+      "z": 123
+     },
+     {
+      "x": 97,
+      "z": 123
+     },
+     {
+      "x": 106,
+      "z": 122
+     },
+     {
+      "x": 105,
+      "z": 121
+     },
+     {
+      "x": 104,
+      "z": 120
+     },
+     {
+      "x": 103,
+      "z": 119
+     },
+     {
+      "x": 102,
+      "z": 118
+     },
+     {
+      "x": 101,
+      "z": 117
+     },
+     {
+      "x": 100,
+      "z": 118
+     },
+     {
+      "x": 99,
+      "z": 119
+     },
+     {
+      "x": 98,
+      "z": 120
+     },
+     {
+      "x": 97,
+      "z": 121
+     },
+     {
+      "x": 96,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 128
+     },
+     {
+      "x": 102,
+      "z": 127
+     },
+     {
+      "x": 100,
+      "z": 127
+     },
+     {
+      "x": 103,
+      "z": 126
+     },
+     {
+      "x": 99,
+      "z": 126
+     },
+     {
+      "x": 104,
+      "z": 125
+     },
+     {
+      "x": 98,
+      "z": 125
+     },
+     {
+      "x": 105,
+      "z": 124
+     },
+     {
+      "x": 97,
+      "z": 124
+     },
+     {
+      "x": 106,
+      "z": 123
+     },
+     {
+      "x": 96,
+      "z": 123
+     },
+     {
+      "x": 107,
+      "z": 122
+     },
+     {
+      "x": 106,
+      "z": 121
+     },
+     {
+      "x": 105,
+      "z": 120
+     },
+     {
+      "x": 104,
+      "z": 119
+     },
+     {
+      "x": 103,
+      "z": 118
+     },
+     {
+      "x": 102,
+      "z": 117
+     },
+     {
+      "x": 101,
+      "z": 116
+     },
+     {
+      "x": 100,
+      "z": 117
+     },
+     {
+      "x": 99,
+      "z": 118
+     },
+     {
+      "x": 98,
+      "z": 119
+     },
+     {
+      "x": 97,
+      "z": 120
+     },
+     {
+      "x": 96,
+      "z": 121
+     },
+     {
+      "x": 95,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 129
+     },
+     {
+      "x": 102,
+      "z": 128
+     },
+     {
+      "x": 100,
+      "z": 128
+     },
+     {
+      "x": 103,
+      "z": 127
+     },
+     {
+      "x": 99,
+      "z": 127
+     },
+     {
+      "x": 104,
+      "z": 126
+     },
+     {
+      "x": 98,
+      "z": 126
+     },
+     {
+      "x": 105,
+      "z": 125
+     },
+     {
+      "x": 97,
+      "z": 125
+     },
+     {
+      "x": 106,
+      "z": 124
+     },
+     {
+      "x": 96,
+      "z": 124
+     },
+     {
+      "x": 107,
+      "z": 123
+     },
+     {
+      "x": 95,
+      "z": 123
+     },
+     {
+      "x": 108,
+      "z": 122
+     },
+     {
+      "x": 107,
+      "z": 121
+     },
+     {
+      "x": 106,
+      "z": 120
+     },
+     {
+      "x": 105,
+      "z": 119
+     },
+     {
+      "x": 104,
+      "z": 118
+     },
+     {
+      "x": 103,
+      "z": 117
+     },
+     {
+      "x": 102,
+      "z": 116
+     },
+     {
+      "x": 101,
+      "z": 115
+     },
+     {
+      "x": 100,
+      "z": 116
+     },
+     {
+      "x": 99,
+      "z": 117
+     },
+     {
+      "x": 98,
+      "z": 118
+     },
+     {
+      "x": 97,
+      "z": 119
+     },
+     {
+      "x": 96,
+      "z": 120
+     },
+     {
+      "x": 95,
+      "z": 121
+     },
+     {
+      "x": 94,
+      "z": 122
+     },
+     {
+      "x": 101,
+      "z": 130
+     },
+     {
+      "x": 102,
+      "z": 129
+     },
+     {
+      "x": 100,
+      "z": 129
+     },
+     {
+      "x": 103,
+      "z": 128
+     },
+     {
+      "x": 99,
+      "z": 128
+     },
+     {
+      "x": 104,
+      "z": 127
+     },
+     {
+      "x": 98,
+      "z": 127
+     },
+     {
+      "x": 105,
+      "z": 126
+     },
+     {
+      "x": 97,
+      "z": 126
+     },
+     {
+      "x": 106,
+      "z": 125
+     },
+     {
+      "x": 96,
+      "z": 125
+     },
+     {
+      "x": 107,
+      "z": 124
+     },
+     {
+      "x": 95,
+      "z": 124
+     },
+     {
+      "x": 108,
+      "z": 123
+     },
+     {
+      "x": 94,
+      "z": 123
+     },
+     {
+      "x": 109,
+      "z": 122
+     },
+     {
+      "x": 108,
+      "z": 121
+     },
+     {
+      "x": 107,
+      "z": 120
+     },
+     {
+      "x": 106,
+      "z": 119
+     },
+     {
+      "x": 105,
+      "z": 118
+     },
+     {
+      "x": 104,
+      "z": 117
+     },
+     {
+      "x": 103,
+      "z": 116
+     },
+     {
+      "x": 102,
+      "z": 115
+     },
+     {
+      "x": 101,
+      "z": 114
+     },
+     {
+      "x": 100,
+      "z": 115
+     },
+     {
+      "x": 99,
+      "z": 116
+     },
+     {
+      "x": 98,
+      "z": 117
+     },
+     {
+      "x": 97,
+      "z": 118
+     },
+     {
+      "x": 96,
+      "z": 119
+     },
+     {
+      "x": 95,
+      "z": 120
+     },
+     {
+      "x": 94,
+      "z": 121
+     },
+     {
+      "x": 93,
+      "z": 122
+     },
+     {
+      "x": 103,
+      "z": 129
+     },
+     {
+      "x": 99,
+      "z": 129
+     },
+     {
+      "x": 104,
+      "z": 128
+     },
+     {
+      "x": 98,
+      "z": 128
+     },
+     {
+      "x": 105,
+      "z": 127
+     },
+     {
+      "x": 97,
+      "z": 127
+     },
+     {
+      "x": 106,
+      "z": 126
+     },
+     {
+      "x": 96,
+      "z": 126
+     },
+     {
+      "x": 107,
+      "z": 125
+     },
+     {
+      "x": 95,
+      "z": 125
+     },
+     {
+      "x": 108,
+      "z": 124
+     },
+     {
+      "x": 94,
+      "z": 124
+     },
+     {
+      "x": 108,
+      "z": 120
+     },
+     {
+      "x": 107,
+      "z": 119
+     },
+     {
+      "x": 106,
+      "z": 118
+     },
+     {
+      "x": 105,
+      "z": 117
+     },
+     {
+      "x": 104,
+      "z": 116
+     },
+     {
+      "x": 103,
+      "z": 115
+     },
+     {
+      "x": 99,
+      "z": 115
+     },
+     {
+      "x": 98,
+      "z": 116
+     },
+     {
+      "x": 97,
+      "z": 117
+     },
+     {
+      "x": 96,
+      "z": 118
+     },
+     {
+      "x": 95,
+      "z": 119
+     },
+     {
+      "x": 94,
+      "z": 120
+     },
+     {
+      "x": 104,
+      "z": 129
+     },
+     {
+      "x": 98,
+      "z": 129
+     },
+     {
+      "x": 105,
+      "z": 128
+     },
+     {
+      "x": 97,
+      "z": 128
+     },
+     {
+      "x": 106,
+      "z": 127
+     },
+     {
+      "x": 96,
+      "z": 127
+     },
+     {
+      "x": 107,
+      "z": 126
+     },
+     {
+      "x": 95,
+      "z": 126
+     },
+     {
+      "x": 108,
+      "z": 125
+     },
+     {
+      "x": 94,
+      "z": 125
+     },
+     {
+      "x": 108,
+      "z": 119
+     },
+     {
+      "x": 107,
+      "z": 118
+     },
+     {
+      "x": 106,
+      "z": 117
+     },
+     {
+      "x": 105,
+      "z": 116
+     },
+     {
+      "x": 104,
+      "z": 115
+     },
+     {
+      "x": 98,
+      "z": 115
+     },
+     {
+      "x": 97,
+      "z": 116
+     },
+     {
+      "x": 96,
+      "z": 117
+     },
+     {
+      "x": 95,
+      "z": 118
+     },
+     {
+      "x": 94,
+      "z": 119
+     },
+     {
+      "x": 106,
+      "z": 128
+     },
+     {
+      "x": 96,
+      "z": 128
+     },
+     {
+      "x": 107,
+      "z": 127
+     },
+     {
+      "x": 95,
+      "z": 127
+     },
+     {
+      "x": 107,
+      "z": 117
+     },
+     {
+      "x": 106,
+      "z": 116
+     },
+     {
+      "x": 96,
+      "z": 116
+     },
+     {
+      "x": 95,
+      "z": 117
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    101,
+    122
+   ],
+   "fingerprint": "fire_on_map:197"
+  }
+ ],
+ "snapshot": {
+  "tick": 36121,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Ancient mech",
+    "arrivalTick": 23552,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Ancient mech",
+     23552
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     36121
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 22,
+   "adaptDays": -25.166666,
+   "totalThreatPointsFactor": 0.464444458,
+   "ticksGame": 36121
+  },
+  "fires": 197,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Ian cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Middleton"
+  ],
+  [
+   "Message",
+   "Middleton failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Tyche cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Tyche failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Yarr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Woods cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Woods failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Klem cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Jude cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Rakoto cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Klem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Starting scan. Candidates=3, CurrentMood=0.32"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Jackalope: opinion=26, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Woods: opinion=29, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Kurreth) -> 79.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Kurreth) -> 87.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 3.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 90.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954771,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954708,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 36121,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "oil_boil",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T050655\\FeverWood__oil_boil__raid_arrived__t36121__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3461045,
+  "width": 1810,
+  "height": 1183,
+  "md5": "6c7ae1d340b63d431b3d2e59827854ae",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,540 @@
+{
+ "name": "FlowWorksExtensions__canal_spikes__colonist_injured_unexpectedly__t62803__001",
+ "when_utc": "2026-10-06T08:04:55Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Briggs gained 4 new hediff(s) (Crack,Stab); cause_hint=raid",
+   "evidence": {
+    "id": "Human244743",
+    "name": "Briggs",
+    "new_hediffs": [
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Clavicle",
+      "severity": 5.33333349
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Shoulder",
+      "severity": 10.0
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Arm",
+      "severity": 10.0
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Leg",
+      "severity": 10.0
+     }
+    ],
+    "cause_hint": "raid",
+    "causes": [
+     "raid",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "Crack"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    84,
+    160
+   ],
+   "fingerprint": "colonist_injured:Human244743:Crack@Clavicle,Stab@Arm,Stab@Leg,Stab@Shoulder"
+  }
+ ],
+ "snapshot": {
+  "tick": 62803,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [
+   {
+    "id": "Human244743",
+    "name": "Briggs",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 84,
+    "z": 160,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Gunshot",
+      "label": "old gunshot",
+      "part": "Toe",
+      "severity": 2.0
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Torso",
+      "severity": 4.69999838
+     },
+     {
+      "def": "RM_PitExposure",
+      "label": "pit exposure (heatstruck)",
+      "part": null,
+      "severity": 0.5600001
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Arm",
+      "severity": 4.859998
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (pump shotgun barrel)",
+      "part": "Arm",
+      "severity": 14.1824617
+     },
+     {
+      "def": "Crack",
+      "label": "crack (pump shotgun barrel)",
+      "part": "Femur",
+      "severity": 5.88125849
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (pump shotgun barrel)",
+      "part": "Leg",
+      "severity": 11.2523594
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (pump shotgun stock)",
+      "part": "Leg",
+      "severity": 11.5679522
+     },
+     {
+      "def": "Crack",
+      "label": "crack (pump shotgun stock)",
+      "part": "Tibia",
+      "severity": 6.79385853
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Clavicle",
+      "severity": 5.33333349
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Shoulder",
+      "severity": 10.0
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Arm",
+      "severity": 10.0
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Femur",
+      "severity": 5.33333349
+     },
+     {
+      "def": "Stab",
+      "label": "stab",
+      "part": "Leg",
+      "severity": 10.0
+     }
+    ],
+    "bleedRate": 1.8,
+    "painTotal": 1.0,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Found while digging: Steel",
+    "arrivalTick": 14202,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Found while digging: Steel",
+     14202
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 19,
+   "adaptDays": -3.66666675,
+   "totalThreatPointsFactor": 0.7511111,
+   "ticksGame": 62803
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=24,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=24,0 got map.Tile=24,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=164,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=164,0 got map.Tile=164,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=247,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=247,0 got map.Tile=247,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=304,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=304,0 got map.Tile=304,0 map.uniqueID=4 map.Index=4"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=630,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=630,0 got map.Tile=630,0 map.uniqueID=5 map.Index=5"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Black"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 62803,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "canal_spikes",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T004657\\FlowWorksExtensions__canal_spikes__colonist_injured_unexpectedly__t62803__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4176295,
+  "width": 2516,
+  "height": 1252,
+  "md5": "f891db77751b7c3334d6c4e3eaedea1a",
+  "why": ""
+ },
+ "notes": []
+}

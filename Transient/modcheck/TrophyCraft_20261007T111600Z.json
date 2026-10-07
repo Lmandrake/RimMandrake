@@ -1,0 +1,665 @@
+{
+ "mod": "TrophyCraft",
+ "stamp": "20261007T111600Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RSW_TrophyCraftNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_TrophyCraftNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RSW_TrophyCraftNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_f027f1244a9246239b1110a975e0c68c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "5 of 5 def(s) resolved",
+         "requested": 5,
+         "foundCount": 5,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ApparelLayerDef/RSW_Neck",
+           "found": true,
+           "defName": "RSW_Neck",
+           "defType": "ApparelLayerDef",
+           "label": "neck trophy",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "defName": "RSW_Neck"
+           }
+          },
+          {
+           "requested": "RecipeDef/RSW_Make_FangPendant",
+           "found": true,
+           "defName": "RSW_Make_FangPendant",
+           "defType": "RecipeDef",
+           "label": "craft fang pendant",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "defName": "RSW_Make_FangPendant"
+           }
+          },
+          {
+           "requested": "ThingDef/RSW_Apparel_FangPendant",
+           "found": true,
+           "defName": "RSW_Apparel_FangPendant",
+           "defType": "ThingDef",
+           "label": "wyyyschokk fang pendant",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "defName": "RSW_Apparel_FangPendant"
+           }
+          },
+          {
+           "requested": "ThingDef/RSW_WyyyschokkFang",
+           "found": true,
+           "defName": "RSW_WyyyschokkFang",
+           "defType": "ThingDef",
+           "label": "wyyyschokk fang",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "defName": "RSW_WyyyschokkFang"
+           }
+          },
+          {
+           "requested": "ThoughtDef/RSW_TrophyCraft_ObserverBraveFang",
+           "found": true,
+           "defName": "RSW_TrophyCraft_ObserverBraveFang",
+           "defType": "ThoughtDef",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "defName": "RSW_TrophyCraft_ObserverBraveFang"
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_3593f76aa3974cf6ab867847d43fb8c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "donor_wyyyschokk_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/Wyyyschokk",
+           "found": true,
+           "defName": "Wyyyschokk",
+           "defType": "ThingDef",
+           "label": "wyyyschokk",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Wyyyschokk"
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_ce3ef4db0ae04c77aeaf14309ff9001f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "opinionMultiplier_round_trips",
+      "toggle": "opinionMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "socialConsequenceEnabled_round_trips",
+      "toggle": "socialConsequenceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "crafting",
+    "components": [
+     {
+      "name": "recipe_work_amount_400",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "workAmount"
+         ],
+         "defs": [
+          {
+           "requested": "RecipeDef/RSW_Make_FangPendant",
+           "found": true,
+           "defName": "RSW_Make_FangPendant",
+           "defType": "RecipeDef",
+           "label": "craft fang pendant",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "workAmount": 400.0
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_59fcd452e9c24978ba15ad3e04faaf2c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "probe_reads_a_different_work_amount_control",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "workAmount"
+         ],
+         "defs": [
+          {
+           "requested": "RecipeDef/Make_Patchleather",
+           "found": true,
+           "defName": "Make_Patchleather",
+           "defType": "RecipeDef",
+           "label": "make patchleather",
+           "modName": "Core",
+           "packageId": "ludeon.rimworld",
+           "fields": {
+            "workAmount": 900.0
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_5a969b6263334663a62f7817bba6d50c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "recipe_takes_fangs_and_makes_a_pendant",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: recipe products/ingredients do not name RSW_Apparel_FangPendant and RSW_WyyyschokkFang: RSW_Apparel_FangPendant Normal",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "products",
+          "ingredients"
+         ],
+         "defs": [
+          {
+           "requested": "RecipeDef/RSW_Make_FangPendant",
+           "found": true,
+           "defName": "RSW_Make_FangPendant",
+           "defType": "RecipeDef",
+           "label": "craft fang pendant",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "ingredients": [
+             {
+              "filter": {
+               "hiddenSpecialFilters": [],
+               "allowedHitPointsConfigurable": true,
+               "allowedQualitiesConfigurable": true
+              }
+             },
+             {
+              "filter": {
+               "hiddenSpecialFilters": [],
+               "allowedHitPointsConfigurable": true,
+               "allowedQualitiesConfigurable": true
+              }
+             }
+            ],
+            "products": [
+             {
+              "thingDef": "RSW_Apparel_FangPendant",
+              "count": 1,
+              "quality": "Normal"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_f6497fd8d4934795866fb170dc8d8002",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "neck_layer_draws_between_middle_and_shell",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pendant_wears_on_the_neck_layer",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "fang_drop",
+    "components": [
+     {
+      "name": "donor_butcher_products_carry_the_fang",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "butcherProducts"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/Wyyyschokk",
+           "found": true,
+           "defName": "Wyyyschokk",
+           "defType": "ThingDef",
+           "label": "wyyyschokk",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "butcherProducts": [
+             {
+              "thingDef": "RSW_WyyyschokkFang",
+              "count": 3,
+              "quality": "Normal"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_9c338180184540ee9a06beddf6a08507",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "social_thought",
+    "components": [
+     {
+      "name": "thought_classes_and_base_offset",
+      "toggle": "socialConsequenceEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: thoughtClass is '(no such field)', expected the RSW_Thought_ObserverBraveFang class",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "thoughtClass",
+          "workerClass"
+         ],
+         "defs": [
+          {
+           "requested": "ThoughtDef/RSW_TrophyCraft_ObserverBraveFang",
+           "found": true,
+           "defName": "RSW_TrophyCraft_ObserverBraveFang",
+           "defType": "ThoughtDef",
+           "modName": "RimMandrake: SW \u2014 Trophy Craft",
+           "packageId": "mandrake.rsw.trophycraft",
+           "fields": {
+            "thoughtClass": "(no such field)",
+            "workerClass": "(no such field)"
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_51ed8d52c2fc40c2b46db9b34005fe52",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "observer_forms_opinion_of_a_pendant_wearer",
+      "toggle": "socialConsequenceEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "opinion_multiplier_scales_the_offset",
+      "toggle": "opinionMultiplier",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x0000018A02DCC520>",
+   "<suite.Component object at 0x0000018A02DCC680>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\TrophyCraft.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

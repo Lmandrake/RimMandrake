@@ -1,0 +1,1975 @@
+{
+ "mod": "EggReckoning",
+ "stamp": "20261007T111656Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "shipped_defs_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "5 of 5 def(s) resolved",
+         "requested": 5,
+         "foundCount": 5,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "HistoryEventDef/RUT_HistoryEvent_EggAssassination",
+           "found": true,
+           "defName": "RUT_HistoryEvent_EggAssassination",
+           "defType": "HistoryEventDef",
+           "label": "attempted an egg assassination",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "defName": "RUT_HistoryEvent_EggAssassination"
+           }
+          },
+          {
+           "requested": "HistoryEventDef/RUT_HistoryEvent_ReckoningAbduction",
+           "found": true,
+           "defName": "RUT_HistoryEvent_ReckoningAbduction",
+           "defType": "HistoryEventDef",
+           "label": "abducted a debtor",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "defName": "RUT_HistoryEvent_ReckoningAbduction"
+           }
+          },
+          {
+           "requested": "HistoryEventDef/RUT_HistoryEvent_ReckoningAttempt",
+           "found": true,
+           "defName": "RUT_HistoryEvent_ReckoningAttempt",
+           "defType": "HistoryEventDef",
+           "label": "a discovered assassination attempt",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "defName": "RUT_HistoryEvent_ReckoningAttempt"
+           }
+          },
+          {
+           "requested": "QuestScriptDef/RUT_Reckoning_CartelOffer",
+           "found": true,
+           "defName": "RUT_Reckoning_CartelOffer",
+           "defType": "QuestScriptDef",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "defName": "RUT_Reckoning_CartelOffer"
+           }
+          },
+          {
+           "requested": "QuestScriptDef/RUT_Reckoning_Rumor",
+           "found": true,
+           "defName": "RUT_Reckoning_Rumor",
+           "defType": "QuestScriptDef",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "defName": "RUT_Reckoning_Rumor"
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_5be787caee6d4e0ca05c65e322747d6c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "defs_the_code_looks_up_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "FactionDef/RUT_Jawa_HuttCartel",
+           "found": true,
+           "defName": "RUT_Jawa_HuttCartel",
+           "defType": "FactionDef",
+           "label": "Hutt Cartel",
+           "modName": "RimUtinni Patches (Jawa campaign)",
+           "packageId": "mandrake.rut.patches",
+           "fields": {
+            "defName": "RUT_Jawa_HuttCartel"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_OllathrixEgg",
+           "found": true,
+           "defName": "RM_OllathrixEgg",
+           "defType": "ThingDef",
+           "label": "ollathrix egg",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_OllathrixEgg"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_Ollathrix",
+           "found": true,
+           "defName": "RM_Ollathrix",
+           "defType": "PawnKindDef",
+           "label": "ollathrix",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Ollathrix"
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_5916c723dc734b82bf7b752a633fd0e8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "control_absent_def_reads_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "QuestScriptDef/RUT_Reckoning_NoSuchControl"
+         ],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "QuestScriptDef/RUT_Reckoning_NoSuchControl",
+           "found": false,
+           "defType": "QuestScriptDef",
+           "defName": "RUT_Reckoning_NoSuchControl"
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_aef9acb57b374c75bddcbf8a2e56ba3b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "flip_reckoningEnabled",
+    "components": [
+     {
+      "name": "reckoningEnabled_round_trips",
+      "toggle": "reckoningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "route_wiring",
+    "components": [
+     {
+      "name": "toggle_on_leaves_the_rumor_route_in_the_pool",
+      "toggle": "reckoningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "rootSelectionWeight",
+          "rootMinPoints"
+         ],
+         "defs": [
+          {
+           "requested": "QuestScriptDef/RUT_Reckoning_Rumor",
+           "found": true,
+           "defName": "RUT_Reckoning_Rumor",
+           "defType": "QuestScriptDef",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "rootSelectionWeight": 0.15,
+            "rootMinPoints": 300.0
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_556fc6e0c07b491ea38650226a02762d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "toggle_on_leaves_the_cartel_offer_trader_given_and_not_random",
+      "toggle": "reckoningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "givenBy",
+          "randomlySelectable",
+          "rootSelectionWeight"
+         ],
+         "defs": [
+          {
+           "requested": "QuestScriptDef/RUT_Reckoning_CartelOffer",
+           "found": true,
+           "defName": "RUT_Reckoning_CartelOffer",
+           "defType": "QuestScriptDef",
+           "modName": "RimUtinni: The Reckoning",
+           "packageId": "mandrake.rut.eggreckoning",
+           "fields": {
+            "rootSelectionWeight": 0.15,
+            "randomlySelectable": false,
+            "givenBy": [
+             "Traders"
+            ]
+           }
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_a55ddb40f8024edcbcf29ff96a76f0f4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "toggle_off_removes_both_routes",
+      "toggle": "reckoningEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: EggReckoningPatcher.Apply runs only from the mod's WriteSettings and at startup; jawa/mod_settings_field writes the static field without calling either, and rimworld/update_mod_settings cannot reach a static field, so flipping the toggle live cannot move the def fields (a companion [Tool] that calls Apply is owed)",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "EggReckoningPatcher.Apply runs only from the mod's WriteSettings and at startup; jawa/mod_settings_field writes the static field without calling either, and rimworld/update_mod_settings cannot reach a static field, so flipping the toggle live cannot move the def fields (a companion [Tool] that calls Apply is owed)"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "quest_offer",
+    "components": [
+     {
+      "name": "cartel_offer_generates_when_the_world_allows",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/quest_lifecycle",
+        "result": {
+         "success": true,
+         "action": "list",
+         "count": 0,
+         "quests": [],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_918205f39ee141a89f0d312e89893990",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/fire_quest",
+        "result": {
+         "success": true,
+         "message": "RUT_Reckoning_CartelOffer available as quest 0 \"A Cartel Reckoning\" at 56 points, State=NotYetAccepted.",
+         "quest": "RUT_Reckoning_CartelOffer",
+         "questId": 0,
+         "questName": "A Cartel Reckoning",
+         "state": "NotYetAccepted",
+         "accepted": false,
+         "hidden": false,
+         "challengeRating": 2,
+         "ticksUntilExpiry": 353568,
+         "points": 56.0433731,
+         "questCountAfter": 1,
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_fe64e07bcd254a03b3be1ba95631e7b4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 199
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/quest_lifecycle",
+        "result": {
+         "success": true,
+         "action": "list",
+         "count": 1,
+         "quests": [
+          {
+           "id": 0,
+           "name": "A Cartel Reckoning",
+           "state": "NotYetAccepted",
+           "points": 0.0,
+           "requiresAccepter": false,
+           "historical": false
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_899dc49ab7ff42999403249b37b0f37e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 27
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "egg_guard",
+    "components": [
+     {
+      "name": "site_ready_egg_and_colonist",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(12)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 144 cell(s); 2 pawn(s) left alone.",
+         "cellsExamined": 144,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 2,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_ea445f5ef9cd4d488e88fd9237dfd834",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_OllathrixEgg": 1
+         },
+         "errors": [],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_51bc98f877bf4c2993811f20a3b0dad9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "spawn_pawn Colonist hostile=False",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human52959",
+           "name": "Tail",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 806,
+         "operation": {
+          "OperationId": "op_017441e9e05a4dc686a005dc95e97d5c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_OllathrixEgg52958",
+           "def": "RM_OllathrixEgg",
+           "label": "Ollathrix egg",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 40,
+           "maxHitPoints": 40
+          }
+         ],
+         "scanned": 48564,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 43,
+         "perDef": {
+          "RM_OllathrixEgg": 1
+         },
+         "ticksGame": 806,
+         "message": "1 of 1 matching thing(s) returned, 48564 examined.",
+         "operation": {
+          "OperationId": "op_b09625086e0a46a2aff13e10509d9dbd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "egg_stays_an_egg_and_no_spider_appears",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "wait_ticks(3000) -> 3000 real tick(s) over 5 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_fa404cc2b49f494f9d07bf850cefae17",
+         "status": "completed",
+         "requestedTicks": 600,
+         "completedTicks": 600,
+         "remainingTicks": 0,
+         "startTicksGame": 3206,
+         "endTicksGame": 3806,
+         "advancedTicks": 600,
+         "initialFrame": 9688,
+         "lastFrame": 10287,
+         "advancedFrames": 600,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:16:45.702694+00:00",
+         "completedAtUtc": "2026-10-07T11:16:55.6873683+00:00",
+         "message": "Advanced 600 game tick(s) across 600 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 3806
+         },
+         "operation": {
+          "OperationId": "op_e9dcb887d32a425ebac7a2a76d3c1e99",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10015
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_OllathrixEgg52958",
+           "def": "RM_OllathrixEgg",
+           "label": "Ollathrix egg",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 40,
+           "maxHitPoints": 40
+          }
+         ],
+         "scanned": 48583,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 43,
+         "perDef": {
+          "RM_OllathrixEgg": 1
+         },
+         "ticksGame": 3806,
+         "message": "1 of 1 matching thing(s) returned, 48583 examined.",
+         "operation": {
+          "OperationId": "op_c214a9093fd947779c1aff32b0124afd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3806
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "43 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human753",
+           "name": "Hilary",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 145,
+           "z": 115,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human756",
+           "name": "Dalila",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 133,
+           "z": 118,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Bordok3950",
+           "name": "Noni",
+           "kind": "Bordok",
+           "kindDef": "Bordok",
+           "def": "Bordok",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 123,
+           "z": 106,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.4
+          },
+          {
+           "id": "Human759",
+           "name": "Briggs",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 122,
+           "z": 123,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Neebray52771",
+           "name": "Neebray",
+           "kind": "Neebray",
+           "kindDef": "Neebray",
+           "def": "Neebray",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 54,
+           "z": 138,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Kreetle52772",
+           "name": "Kreetle",
+           "kind": "Kreetle",
+           "kindDef": "Kreetle",
+           "def": "Kreetle",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 154,
+           "z": 149,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Veermok52773",
+           "name": "Veermok",
+           "kind": "Veermok",
+           "kindDef": "Veermok",
+           "def": "Veermok",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 170,
+           "z": 180,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "Squirrel52774",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 199,
+           "z": 93,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Ibex52775",
+           "name": "Ibex doe",
+           "kind": "Ibex",
+           "kindDef": "Ibex",
+           "def": "Ibex",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 99,
+           "z": 231,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Zeer52776",
+           "name": "Zeer",
+           "kind": "Zeer",
+           "kindDef": "Zeer",
+           "def": "Zeer",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 185,
+           "z": 158,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 3.0
+          },
+          {
+           "id": "Zeer52777",
+           "name": "Zeer",
+           "kind": "Zeer",
+           "kindDef": "Zeer",
+           "def": "Zeer",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 183,
+           "z": 159,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 3.0
+          },
+          {
+           "id": "Squirrel52778",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 201,
+           "z": 120,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Kreetle52779",
+           "name": "Kreetle",
+           "kind": "Kreetle",
+           "kindDef": "Kreetle",
+           "def": "Kreetle",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 118,
+           "z": 205,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Turkey52780",
+           "name": "Turkey",
+           "kind": "Turkey",
+           "kindDef": "Turkey",
+           "def": "Turkey",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 53,
+           "z": 153,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.6
+          },
+          {
+           "id": "Kreetle52781",
+           "name": "Kreetle",
+           "kind": "Kreetle",
+           "kindDef": "Kreetle",
+           "def": "Kreetle",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 175,
+           "z": 12,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Squirrel52782",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 86,
+           "z": 156,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Raccoon52783",
+           "name": "Raccoon",
+           "kind": "Raccoon",
+           "kindDef": "Raccoon",
+           "def": "Raccoon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 46,
+           "z": 189,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.4
+          },
+          {
+           "id": "Fox_Red52784",
+           "name": "Red fox",
+           "kind": "Fox_Red",
+           "kindDef": "Fox_Red",
+           "def": "Fox_Red",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 62,
+           "z": 244,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.55
+          },
+          {
+           "id": "Raccoon52785",
+           "name": "Raccoon",
+           "kind": "Raccoon",
+           "kindDef": "Raccoon",
+           "def": "Raccoon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 169,
+           "z": 57,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.4
+          },
+          {
+           "id": "Squirrel52786",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 179,
+           "z": 50,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Hare52787",
+           "name": "Hare",
+           "kind": "Hare",
+           "kindDef": "Hare",
+           "def": "Hare",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 79,
+           "z": 81,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Neebray52788",
+           "name": "Neebray",
+           "kind": "Neebray",
+           "kindDef": "Neebray",
+           "def": "Neebray",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 51,
+           "z": 29,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Insectomorph52789",
+           "name": "Insectomorph",
+           "kind": "Insectomorph",
+           "kindDef": "Insectomorph",
+           "def": "Insectomorph",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 140,
+           "z": 117,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "Insectomorph52790",
+           "name": "Insectomorph",
+           "kind": "Insectomorph",
+           "kindDef": "Insectomorph",
+           "def": "Insectomorph",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 153,
+           "z": 116,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "Insectomorph52791",
+           "name": "Insectomorph",
+           "kind": "Insectomorph",
+           "kindDef": "Insectomorph",
+           "def": "Insectomorph",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 153,
+           "z": 109,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "Squirrel52792",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 225,
+           "z": 129,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Raccoon52793",
+           "name": "Raccoon",
+           "kind": "Raccoon",
+           "kindDef": "Raccoon",
+           "def": "Raccoon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 103,
+           "z": 232,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.4
+          },
+          {
+           "id": "Squirrel52794",
+           "name": "Squirrel",
+           "kind": "Squirrel",
+           "kindDef": "Squirrel",
+           "def": "Squirrel",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 56,
+           "z": 213,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Mastodon52795",
+           "name": "Mastodon",
+           "kind": "Mastodon",
+           "kindDef": "Mastodon",
+           "def": "Mastodon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 109,
+           "z": 24,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 4.5
+          },
+          {
+           "id": "Mastodon52796",
+           "name": "Mastodon",
+           "kind": "Mastodon",
+           "kindDef": "Mastodon",
+           "def": "Mastodon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 107,
+           "z": 27,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 4.5
+          },
+          {
+           "id": "Mastodon52797",
+           "name": "Mastodon",
+           "kind": "Mastodon",
+           "kindDef": "Mastodon",
+           "def": "Mastodon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 109,
+           "z": 23,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 4.5
+          },
+          {
+           "id": "PrairieDog52798",
+           "name": "Prairie dog",
+           "kind": "PrairieDog",
+           "kindDef": "PrairieDog",
+           "def": "PrairieDog",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 197,
+           "z": 201,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Raccoon52799",
+           "name": "Raccoon",
+           "kind": "Raccoon",
+           "kindDef": "Raccoon",
+           "def": "Raccoon",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 249,
+           "z": 58,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.4
+          },
+          {
+           "id": "Lothcat52800",
+           "name": "Loth-cat",
+           "kind": "Lothcat",
+           "kindDef": "Lothcat",
+           "def": "Lothcat",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 19,
+           "z": 225,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.35
+          },
+          {
+           "id": "CanCell52801",
+           "name": "Can-cell",
+           "kind": "CanCell",
+           "kindDef": "CanCell",
+           "def": "CanCell",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 135,
+           "z": 76,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.45
+          },
+          {
+           "id": "CanCell52802",
+           "name": "Can-cell",
+           "kind": "CanCell",
+           "kindDef": "CanCell",
+           "def": "CanCell",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 136,
+           "z": 82,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.45
+          },
+          {
+           "id": "Human52876",
+           "name": "Scrooge",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 217,
+           "z": 152,
+           "spawned": true,
+           "dead": false,
+           "downed": true,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Nizzek52880",
+           "name": "Nizzek",
+           "kind": "RM_Nizzek",
+           "kindDef": "RM_Nizzek",
+           "def": "RM_Nizzek",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 205,
+           "z": 147,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Human52889",
+           "name": "Sass",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 139,
+           "z": 124,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human52897",
+           "name": "Dan",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 153,
+           "z": 129,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human52907",
+           "name": "Rivers",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 130,
+           "z": 110,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Nizzek52920",
+           "name": "Nizzek",
+           "kind": "RM_Nizzek",
+           "kindDef": "RM_Nizzek",
+           "def": "RM_Nizzek",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 116,
+           "z": 107,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          },
+          {
+           "id": "Human52959",
+           "name": "Tail",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 154,
+           "z": 124,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          }
+         ],
+         "returned": 43,
+         "truncated": 0,
+         "totalOnMap": 43,
+         "ticksGame": 3806,
+         "operation": {
+          "OperationId": "op_74e5631a84294f30a7d89d02019909ed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3806
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "path_pay_the_cartel",
+    "components": [
+     {
+      "name": "trade_request_silver_closes_the_debt",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs an accepted quest, a trade request raised against the Cartel and silver delivered to it; no bridge tool answers a trade request",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "needs an accepted quest, a trade request raised against the Cartel and silver delivered to it; no bridge tool answers a trade request"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "path_defeat_the_outpost",
+    "components": [
+     {
+      "name": "all_enemies_defeated_completes_and_costs_goodwill",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs the site map generated and its garrison killed (an Outpost at threat 300+); a combat map the harness cannot build on a held map",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "needs the site map generated and its garrison killed (an Outpost at threat 300+); a combat map the harness cannot build on a held map"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "path_plant_the_egg",
+    "components": [
+     {
+      "name": "undetected_egg_hatches_in_the_night_window",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs the outpost map (roofed unfogged cell), RM_QuestPart_EggPlantWatcher's signals and a 23:00-02:00 night; owed to a joint live round",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "needs the outpost map (roofed unfogged cell), RM_QuestPart_EggPlantWatcher's signals and a 23:00-02:00 night; owed to a joint live round"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "hatch_juvenile_hostile",
+    "components": [
+     {
+      "name": "hatched_spider_is_a_four_year_old_manhunter",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs the hatch part to fire; the age (4.0 y) and manhunter state are read from the spawned pawn, not provable without the quest",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "needs the hatch part to fire; the age (4.0 y) and manhunter state are read from the spawned pawn, not provable without the quest"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "discovery_cost",
+    "components": [
+     {
+      "name": "found_egg_costs_goodwill_and_undiscovered_kill_costs_none",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs the 3 percent-per-hour discovery roll on the live site and a goodwill read for the target's faction",
+      "evidence": [
+       {
+        "call": "UNMEASURED",
+        "result": "needs the 3 percent-per-hour discovery roll on the live site and a goodwill read for the target's faction"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_restored",
+    "components": [
+     {
+      "name": "all_settings_at_shipped_defaults",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\EggReckoning.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

@@ -1,0 +1,1692 @@
+{
+ "mod": "ProximityHatch",
+ "stamp": "20261007T111549Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_ProximityHatchNoSuchEgg_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_ProximityHatchNoSuchEgg_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_ProximityHatchNoSuchEgg_ZZ"
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_1eaa6f18a125400c8469be9e6ad9ffb3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 35
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mod_ships_no_defs_and_a_carrier_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 4 def(s) resolved; 1 not found",
+         "requested": 4,
+         "foundCount": 3,
+         "notFound": [
+          "ThingDef/RSW_BrainWormEggCluster"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_DrazzikEggFertilized",
+           "found": true,
+           "defName": "RM_DrazzikEggFertilized",
+           "defType": "ThingDef",
+           "label": "drazzik egg",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_DrazzikEggFertilized"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_GuzzkaEggFertilized",
+           "found": true,
+           "defName": "RM_GuzzkaEggFertilized",
+           "defType": "ThingDef",
+           "label": "guzzka egg",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_GuzzkaEggFertilized"
+           }
+          },
+          {
+           "requested": "ThingDef/RSW_BrainWormEggCluster",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RSW_BrainWormEggCluster"
+          },
+          {
+           "requested": "ThingDef/RSW_ProtovermesEggFertilized",
+           "found": true,
+           "defName": "RSW_ProtovermesEggFertilized",
+           "defType": "ThingDef",
+           "label": "Protovermes egg (fert.)",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "defName": "RSW_ProtovermesEggFertilized"
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_f6f44602c6a9438e9200c30b56c594a5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "aggroEnabled_round_trips",
+      "toggle": "aggroEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "enabled_round_trips",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "radiusMultiplier_round_trips",
+      "toggle": "radiusMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scanIntervalMultiplier_round_trips",
+      "toggle": "scanIntervalMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "carrier_wiring",
+    "components": [
+     {
+      "name": "carrier_egg_reads_the_proximity_comp",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "comps"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_DrazzikEggFertilized",
+           "found": true,
+           "defName": "RM_DrazzikEggFertilized",
+           "defType": "ThingDef",
+           "label": "drazzik egg",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "comps": [
+             {
+              "allowNonPlayer": false,
+              "forbidOnMake": false,
+              "compClass": "CompForbiddable"
+             },
+             {
+              "daysToRotStart": 15.0,
+              "rotDestroys": true,
+              "rotDamagePerDay": 40.0,
+              "daysToDessicated": 999.0,
+              "dessicatedDamagePerDay": 0.0,
+              "disableIfHatcher": true,
+              "compClass": "CompRottable"
+             },
+             {
+              "minSafeTemperature": 0.0,
+              "maxSafeTemperature": 50.0,
+              "progressPerDegreePerTick": 3e-05,
+              "compClass": "CompTemperatureRuinable"
+             },
+             {
+              "hatcherDaystoHatch": 6.0,
+              "hatcherPawn": "RM_Nizzek",
+              "compClass": "CompHatcher"
+             },
+             {
+              "triggerRadius": 1.5,
+              "scanIntervalTicks": 60,
+              "compClass": "CompProximityHatch"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_cf01215897f64afbb85dac59a65d832d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "hatch_behaviour",
+    "components": [
+     {
+      "name": "control_egg_alone_does_not_hatch",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 435 thing(s) across 576 cell(s); 3 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 435,
+         "pawnsSkipped": 3,
+         "perCategory": {
+          "Item": 16,
+          "Plant": 344,
+          "Building": 49,
+          "Filth": 26
+         },
+         "samples": [
+          {
+           "x": 113,
+           "z": 113,
+           "def": "MealSurvivalPack",
+           "category": "Item"
+          },
+          {
+           "x": 113,
+           "z": 113,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 113,
+           "z": 114,
+           "def": "MealSurvivalPack",
+           "category": "Item"
+          },
+          {
+           "x": 113,
+           "z": 114,
+           "def": "Plant_YellowGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 113,
+           "z": 115,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 113,
+           "z": 116,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 113,
+           "z": 117,
+           "def": "Plant_YellowTallGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 113,
+           "z": 119,
+           "def": "Plant_YellowGrass",
+           "category": "Plant"
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_bf294fcb0a544c508362d19c0465cdf2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 438
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "spawn RM_DrazzikEggFertilized x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "errors": [],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_f7579f73c00e435699911544a141c2f0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(150) -> 150 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_8b595ebe2d78441294daabb4740650bf",
+         "status": "completed",
+         "requestedTicks": 150,
+         "completedTicks": 150,
+         "remainingTicks": 0,
+         "startTicksGame": 1,
+         "endTicksGame": 151,
+         "advancedTicks": 150,
+         "initialFrame": 5498,
+         "lastFrame": 5647,
+         "advancedFrames": 150,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:35.0960966+00:00",
+         "completedAtUtc": "2026-10-07T11:15:37.6228848+00:00",
+         "message": "Advanced 150 game tick(s) across 150 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 151
+         },
+         "operation": {
+          "OperationId": "op_b99da9bb519c4a31934751af4347d57a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2551
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_DrazzikEggFertilized52870",
+           "def": "RM_DrazzikEggFertilized",
+           "label": "Drazzik egg",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 20,
+           "maxHitPoints": 20
+          }
+         ],
+         "scanned": 48843,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 36,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "ticksGame": 151,
+         "message": "1 of 1 matching thing(s) returned, 48843 examined.",
+         "operation": {
+          "OperationId": "op_9d5c085a0c4949cab0b384cd3e986b8a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 151
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pawn_in_range_hatches_early_and_ambushes",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 2 thing(s) across 576 cell(s); 2 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 2,
+         "pawnsSkipped": 2,
+         "perCategory": {
+          "Plant": 1,
+          "Item": 1
+         },
+         "samples": [
+          {
+           "x": 122,
+           "z": 113,
+           "def": "Plant_YellowGrass",
+           "category": "Plant"
+          },
+          {
+           "x": 125,
+           "z": 125,
+           "def": "RM_DrazzikEggFertilized",
+           "category": "Item"
+          }
+         ],
+         "ticksGame": 151,
+         "operation": {
+          "OperationId": "op_c24dd46b9a9d4ce9b5452a53f82a12fb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 151
+         }
+        }
+       },
+       {
+        "call": "spawn RM_DrazzikEggFertilized x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "errors": [],
+         "ticksGame": 151,
+         "operation": {
+          "OperationId": "op_40493cc5a31f4572857cd13ace9656cf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 151
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human52876",
+           "name": "Scrooge",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 126,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 151,
+         "operation": {
+          "OperationId": "op_b8f563b8cc504983a77d4b7ed610e5e4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 151
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(150) -> 150 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_b9c527288b6c42589e557c659f7eaf60",
+         "status": "completed",
+         "requestedTicks": 150,
+         "completedTicks": 150,
+         "remainingTicks": 0,
+         "startTicksGame": 151,
+         "endTicksGame": 301,
+         "advancedTicks": 150,
+         "initialFrame": 5664,
+         "lastFrame": 5813,
+         "advancedFrames": 150,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:37.9049414+00:00",
+         "completedAtUtc": "2026-10-07T11:15:40.3890975+00:00",
+         "message": "Advanced 150 game tick(s) across 150 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 301
+         },
+         "operation": {
+          "OperationId": "op_b80226c89f6945d8b5bff785603c15e4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2516
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 48844,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 38,
+         "perDef": {},
+         "ticksGame": 301,
+         "message": "NOTHING MATCHED. 48844 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_95a69e901e3a4b909d3e2a4ac938143a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "2 pawn(s), 36 outside the rect.",
+         "pawns": [
+          {
+           "id": "Human52876",
+           "name": "Scrooge",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 129,
+           "z": 125,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Nizzek52880",
+           "name": "Nizzek",
+           "kind": "RM_Nizzek",
+           "kindDef": "RM_Nizzek",
+           "def": "RM_Nizzek",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 127,
+           "z": 125,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          }
+         ],
+         "returned": 2,
+         "truncated": 0,
+         "totalOnMap": 38,
+         "ticksGame": 301,
+         "operation": {
+          "OperationId": "op_122d26caec664c35a7c258a9de2bf1e4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_mental",
+        "result": {
+         "success": true,
+         "action": "list",
+         "notes": [],
+         "currentState": "ManhunterPermanent",
+         "totalDefs": 55,
+         "states": [
+          {
+           "def": "Berserk",
+           "label": "berserk",
+           "neverRecoversAlone": false,
+           "blockNormalThoughts": true
+          }
+         ],
+         "ticksGame": 301,
+         "operation": {
+          "OperationId": "op_23dbf63ead5f401c82889b7ff80622c4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "enabled_off_egg_stays",
+      "toggle": "enabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 2 thing(s) across 576 cell(s); 4 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 2,
+         "pawnsSkipped": 4,
+         "perCategory": {
+          "Filth": 1,
+          "Mote": 1
+         },
+         "samples": [
+          {
+           "x": 125,
+           "z": 125,
+           "def": "Filth_AmnioticFluid",
+           "category": "Filth"
+          },
+          {
+           "x": 127,
+           "z": 126,
+           "def": "Mote_ColonistFleeing",
+           "category": "Mote"
+          }
+         ],
+         "ticksGame": 301,
+         "operation": {
+          "OperationId": "op_ec954b2ec06b4ef88e2f5a3dd7da4606",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       },
+       {
+        "call": "spawn RM_DrazzikEggFertilized x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "errors": [],
+         "ticksGame": 301,
+         "operation": {
+          "OperationId": "op_c3c3a7896234473eaf4247a658d38dbd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human52889",
+           "name": "Sass",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 126,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 301,
+         "operation": {
+          "OperationId": "op_f26bf2a284424bf69ebec78320d5df69",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 301
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(150) -> 150 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_1807621cc8c44d1c8a0f49b84678d9b3",
+         "status": "completed",
+         "requestedTicks": 150,
+         "completedTicks": 150,
+         "remainingTicks": 0,
+         "startTicksGame": 301,
+         "endTicksGame": 451,
+         "advancedTicks": 150,
+         "initialFrame": 5839,
+         "lastFrame": 5988,
+         "advancedFrames": 150,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:40.8217345+00:00",
+         "completedAtUtc": "2026-10-07T11:15:43.3060605+00:00",
+         "message": "Advanced 150 game tick(s) across 150 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 451
+         },
+         "operation": {
+          "OperationId": "op_d602bb18d7554fa5923543dc3c6b64c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2516
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_DrazzikEggFertilized52888",
+           "def": "RM_DrazzikEggFertilized",
+           "label": "Drazzik egg",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 20,
+           "maxHitPoints": 20
+          }
+         ],
+         "scanned": 48846,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 39,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "ticksGame": 451,
+         "message": "1 of 1 matching thing(s) returned, 48846 examined.",
+         "operation": {
+          "OperationId": "op_d0b159ccc71d4b4e9bc6be254b0fb2db",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 451
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "radius_multiplier_shrinks_trigger",
+      "toggle": "radiusMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 3 thing(s) across 576 cell(s); 4 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 3,
+         "pawnsSkipped": 4,
+         "perCategory": {
+          "Item": 1,
+          "Mote": 1,
+          "Filth": 1
+         },
+         "samples": [
+          {
+           "x": 125,
+           "z": 125,
+           "def": "RM_DrazzikEggFertilized",
+           "category": "Item"
+          },
+          {
+           "x": 127,
+           "z": 126,
+           "def": "Mote_ColonistFleeing",
+           "category": "Mote"
+          },
+          {
+           "x": 130,
+           "z": 125,
+           "def": "Filth_Blood",
+           "category": "Filth"
+          }
+         ],
+         "ticksGame": 451,
+         "operation": {
+          "OperationId": "op_052f8a5088c84990a420e4e0e2f67470",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 451
+         }
+        }
+       },
+       {
+        "call": "spawn RM_DrazzikEggFertilized x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "errors": [],
+         "ticksGame": 451,
+         "operation": {
+          "OperationId": "op_849d32aeaeba412681419acb8767613c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 451
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human52897",
+           "name": "Dan",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 126,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 451,
+         "operation": {
+          "OperationId": "op_3b24bc547e2d46678de400581ad823e2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 51
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 451
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(150) -> 150 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_7c849aac2f864442b3f66ded754b5254",
+         "status": "completed",
+         "requestedTicks": 150,
+         "completedTicks": 150,
+         "remainingTicks": 0,
+         "startTicksGame": 451,
+         "endTicksGame": 601,
+         "advancedTicks": 150,
+         "initialFrame": 6011,
+         "lastFrame": 6160,
+         "advancedFrames": 150,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:43.6886398+00:00",
+         "completedAtUtc": "2026-10-07T11:15:46.1769703+00:00",
+         "message": "Advanced 150 game tick(s) across 150 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 601
+         },
+         "operation": {
+          "OperationId": "op_33dbd319b00c47d79dd197b170fe94f8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2518
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_DrazzikEggFertilized52896",
+           "def": "RM_DrazzikEggFertilized",
+           "label": "Drazzik egg",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 20,
+           "maxHitPoints": 20
+          }
+         ],
+         "scanned": 48847,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 40,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "ticksGame": 601,
+         "message": "1 of 1 matching thing(s) returned, 48847 examined.",
+         "operation": {
+          "OperationId": "op_06948cdf48f749a78f1699fd6ffcfad7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 601
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "aggro_off_hatchling_not_manhunter",
+      "toggle": "aggroEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 1 thing(s) across 576 cell(s); 3 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 1,
+         "pawnsSkipped": 3,
+         "perCategory": {
+          "Item": 1
+         },
+         "samples": [
+          {
+           "x": 125,
+           "z": 125,
+           "def": "RM_DrazzikEggFertilized",
+           "category": "Item"
+          }
+         ],
+         "ticksGame": 601,
+         "operation": {
+          "OperationId": "op_db3b9972872246d19a2c75e72cacb7b0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 601
+         }
+        }
+       },
+       {
+        "call": "spawn RM_DrazzikEggFertilized x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_DrazzikEggFertilized": 1
+         },
+         "errors": [],
+         "ticksGame": 601,
+         "operation": {
+          "OperationId": "op_1c489d3ddce14155aa0ca4cc1026ca76",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 51
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 601
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human52907",
+           "name": "Rivers",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 126,
+           "z": 125,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 601,
+         "operation": {
+          "OperationId": "op_09da226961354d2a9605dd3965c482de",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 54
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 601
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(150) -> 150 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_2c52f6a6de3542e6baed8b179216d714",
+         "status": "completed",
+         "requestedTicks": 150,
+         "completedTicks": 150,
+         "remainingTicks": 0,
+         "startTicksGame": 601,
+         "endTicksGame": 751,
+         "advancedTicks": 150,
+         "initialFrame": 6183,
+         "lastFrame": 6332,
+         "advancedFrames": 150,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T11:15:46.5565544+00:00",
+         "completedAtUtc": "2026-10-07T11:15:49.0395226+00:00",
+         "message": "Advanced 150 game tick(s) across 150 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 751
+         },
+         "operation": {
+          "OperationId": "op_038543d1f3f147bb8485285e8a49800a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2513
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 48849,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 42,
+         "perDef": {},
+         "ticksGame": 751,
+         "message": "NOTHING MATCHED. 48849 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_21048abab1464cad8e598f9a1a4415b7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "4 pawn(s), 38 outside the rect.",
+         "pawns": [
+          {
+           "id": "Human759",
+           "name": "Briggs",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 121,
+           "z": 119,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human52897",
+           "name": "Dan",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 121,
+           "z": 120,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Human52907",
+           "name": "Rivers",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 126,
+           "z": 123,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Nizzek52920",
+           "name": "Nizzek",
+           "kind": "RM_Nizzek",
+           "kindDef": "RM_Nizzek",
+           "def": "RM_Nizzek",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 119,
+           "z": 119,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          }
+         ],
+         "returned": 4,
+         "truncated": 0,
+         "totalOnMap": 42,
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_f1c9de715f88419cbed42b20a53916bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_mental",
+        "result": {
+         "success": true,
+         "action": "list",
+         "notes": [],
+         "totalDefs": 55,
+         "states": [
+          {
+           "def": "Berserk",
+           "label": "berserk",
+           "neverRecoversAlone": false,
+           "blockNormalThoughts": true
+          }
+         ],
+         "ticksGame": 751,
+         "operation": {
+          "OperationId": "op_53b14b566f0d49c08e9697d9200ee04f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 751
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "not_driven",
+    "components": [
+     {
+      "name": "scan_interval_multiplier_slows_the_scan",
+      "toggle": "scanIntervalMultiplier",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the cadence is a per-egg tick countdown with no state reader; proving 'higher = checks less often' needs a tick-by-tick read of the egg's position in its countdown (a debug [Tool] reading ticksUntilScan is owed)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hatch_fired_persists_through_save_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the cadence is a per-egg tick countdown with no state reader; proving 'higher = checks less often' needs a tick-by-tick read of the egg's position in its countdown (a debug [Tool] reading ticksUntilScan is owed)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cold_egg_spoils_not_hatches",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the cadence is a per-egg tick countdown with no state reader; proving 'higher = checks less often' needs a tick-by-tick read of the egg's position in its countdown (a debug [Tool] reading ticksUntilScan is owed)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\ProximityHatch.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}
