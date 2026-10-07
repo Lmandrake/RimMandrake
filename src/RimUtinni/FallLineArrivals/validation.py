@@ -32,7 +32,7 @@ FERAL_POOL = ("RSW_DW_OuterRim_MSEDroid", "RSW_DW_OuterRim_SalvageAssistDroid", 
 
 def _gate(t):
     r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.FallLineArrivals.FallLineGateProof",
-                      method="ProofGate", args="")
+                      method="ProofGate", args="x")
     return str((r or {}).get("result", "")) or "no result: %r" % (r,)
 
 
