@@ -47,25 +47,12 @@ namespace RimMandrake.Scarlands
         static RM_ChoirDefOf() { DefOfHelper.EnsureInitializedInCtor(typeof(RM_ChoirDefOf)); }
     }
 
-    // Stand-in for RM_PollutionSense (WARSCAR_AEROSOL_SCREEN_1, unbuilt): tile pollution >= Light or toxic air.
+    // Thin forwarders to RM_PollutionSense (RM_AerosolScreen.cs), kept for the choir's call sites.
     public static class RM_ChoirPollution
     {
-        public static bool ToxicAir(Map map)
-        {
-            if (map == null) return false;
-            GameConditionManager g = map.gameConditionManager;
-            if (g.ConditionIsActive(GameConditionDefOf.ToxicFallout)) return true;
-            return RM_SettlingDefOf.RM_Settling != null && g.ConditionIsActive(RM_SettlingDefOf.RM_Settling);
-        }
-
-        public static bool PollutedHere(Map map)
-        {
-            if (map == null) return false;
-            if (ToxicAir(map)) return true;
-            return Find.WorldGrid[map.Tile].PollutionLevel() >= PollutionLevel.Light;
-        }
-
-        public static bool TilePolluted(PlanetTile tile) { return Find.WorldGrid[tile].PollutionLevel() >= PollutionLevel.Light; }
+        public static bool ToxicAir(Map map) { return RM_PollutionSense.ToxicAirNow(map); }
+        public static bool PollutedHere(Map map) { return RM_PollutionSense.IsPollutedHere(map); }
+        public static bool TilePolluted(PlanetTile tile) { return RM_PollutionSense.TilePolluted(tile); }
     }
 
     public class RM_MapComponent_GeigerChoir : MapComponent

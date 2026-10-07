@@ -132,6 +132,7 @@ namespace RimMandrake.Scarlands
         {
             if (!RM_WarscarSettings.settlingEnabled || c.Roofed(map) || !c.Walkable(map)) return;
             if (c.GetTerrain(map).IsWater) return;
+            if (RM_CompAerosolScreen.IsPositionScreened(c, map)) return; // the film's hard edge at a screen's dome
             MapComponent_Settling comp = MapComponent_Settling.For(map);
             if (comp == null || comp.IsOrdnanceCell(c)) return;
 

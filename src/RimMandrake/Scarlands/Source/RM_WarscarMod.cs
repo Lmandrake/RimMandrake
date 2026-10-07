@@ -123,6 +123,10 @@ namespace RimMandrake.Scarlands
         public static bool loosenedPanelsEnabled = true;     // panels generate on new maps and can be worked loose
         public static float loosenedPanelsPerMap = 3f;       // up to this many per new map (0-8)
 
+        // WARSCAR_AEROSOL_SCREEN_1 -- the aerosol screen core
+        public static bool aerosolScreenEnabled = true;      // screens block airborne toxins, fallout and the film
+        public static float aerosolScreenRadiusFactor = 1f;  // scales every screen's radius
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -198,6 +202,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref snapStageSpeed, "snapStageSpeed", 1f);
             Scribe_Values.Look(ref loosenedPanelsEnabled, "loosenedPanelsEnabled", true);
             Scribe_Values.Look(ref loosenedPanelsPerMap, "loosenedPanelsPerMap", 3f);
+            Scribe_Values.Look(ref aerosolScreenEnabled, "aerosolScreenEnabled", true);
+            Scribe_Values.Look(ref aerosolScreenRadiusFactor, "aerosolScreenRadiusFactor", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -369,6 +375,17 @@ namespace RimMandrake.Scarlands
             {
                 list.Label("Up to " + loosenedPanelsPerMap.ToString("0") + " per new map");
                 loosenedPanelsPerMap = list.Slider(loosenedPanelsPerMap, 0f, 8f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Aerosol screens", ref aerosolScreenEnabled,
+                "Inside a working aerosol screen's dome there is no airborne toxic buildup (toxic fallout, toxic rain, the Settling "
+              + "and its lift front), no fallout damage to plants and items, and no settled film. Never stops bullets, heat or cold. "
+              + "Off: screens do nothing.");
+            if (aerosolScreenEnabled)
+            {
+                list.Label("Screen radius: x" + aerosolScreenRadiusFactor.ToString("0.00"));
+                aerosolScreenRadiusFactor = list.Slider(aerosolScreenRadiusFactor, 0.5f, 2f);
             }
             list.GapLine();
 
