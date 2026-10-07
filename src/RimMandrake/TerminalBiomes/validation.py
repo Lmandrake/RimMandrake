@@ -305,7 +305,7 @@ def shipped_defs():
                 for e in ET.parse(os.path.join(dp, f)).getroot():
                     n = e.findtext("defName")
                     if n and e.get("Abstract") != "True" and not e.get("MayRequire"):
-                        out.append((e.tag.split(".")[-1], n))
+                        out.append((e.tag, n))      # full tag: get_defs resolves a custom def type only by full name
     return out
 
 
@@ -424,6 +424,8 @@ if Suite is not None:
         return str(v)
 
     def _same(got, want):
+        if got is None and str(want) == "":
+            return True        # an empty-string setting reads back null (2026-10-07)
         if str(got).strip().lower() == str(want).strip().lower():
             return True
         try:

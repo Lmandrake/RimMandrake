@@ -286,6 +286,8 @@ def _build_suite():
         if ty == "bool":
             return str(a).lower() == str(b).lower()
         if ty == "string":
+            if a is None and str(b) == "":
+                return True
             return str(a) == str(b)
         try:
             return abs(float(a) - float(b)) <= 1e-4 * max(1.0, abs(float(b)))
@@ -327,6 +329,8 @@ def _build_suite():
                 if not _live(t):
                     continue
                 old = _raw(t, "get", field).get("value")
+                if old is None and ty == "string":
+                    old = ""               # an empty-string setting reads back null (2026-10-07); restore writes ""
                 if old is None:
                     raise ExpectationFailed("%s: get returned no value" % field)
                 if ty == "bool":

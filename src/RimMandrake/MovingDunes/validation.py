@@ -52,7 +52,8 @@ _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);"
 
 def shipped_defs():
     """[(DefType, defName)] for every non-abstract top-level def under Defs/, from the XML. A def whose tag is a
-    namespaced class (RimMandrake.MovingDunes.RM_DuneMaterialDef) is asked by its short class name."""
+    namespaced class keeps the FULL name (RimMandrake.MovingDunes.RM_DuneMaterialDef): get_defs resolves a
+    custom def type only by its full name (measured live 2026-10-07)."""
     out = []
     for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
         for fn in sorted(files):
@@ -60,7 +61,7 @@ def shipped_defs():
                 for el in ET.parse(os.path.join(dp, fn)).getroot():
                     nm = el.find("defName") if isinstance(el.tag, str) else None
                     if nm is not None and nm.text and el.get("Abstract", "").lower() != "true":
-                        out.append((el.tag.split(".")[-1], nm.text.strip()))
+                        out.append((el.tag, nm.text.strip()))
     return sorted(set(out))
 
 
@@ -183,7 +184,7 @@ def static_checks():
     bad.extend(gate_findings(load_sources()))
     if "MovingDunesProof.cs" not in proj or 'Compile Include="MovingDunesProof.cs"' not in proj:
         bad.append("MovingDunesProof.cs is not compiled: the proof chains read a method that does not exist")
-    kinds = set(ty for ty, _n in SHIPPED)
+    kinds = set(ty.split(".")[-1] for ty, _n in SHIPPED)
     for need in ("ThingDef", "RM_DuneMaterialDef", "RM_DuneGlobalsDef"):
         if need not in kinds:
             bad.append("no %s parsed from Defs/" % need)
@@ -400,7 +401,7 @@ def _build_suite():
     PROOF = "RimMandrake.MovingDunes.MovingDunesProof"
     mat = material_params()
 
-    def _proof(t, method, args=""):
+    def _proof(t, method, args="x"):   # ProofMath/ProofBury take (string args); "" is rejected (LIVE 2026-10-07)
         r = t.bridge_call("jawa/static_call", type=PROOF, method=method, args=args)
         if not _live(t):
             return None, ""
