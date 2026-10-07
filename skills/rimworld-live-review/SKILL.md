@@ -394,16 +394,24 @@ The 2026-10-06 xenotype grid failed review on all five counts. Each one is now b
    *"you should have labeled each of them by the Race I'm supposed to recognize, not by
    random names."* Rename every subject (`jawa/set_pawn_identity single=<race>`) and pin a
    `jawa/review_label` above it.
-2. **Face the camera.** *"they are looking away from the camera."* DRAFT the subjects. A
-   drafted pawn is turned to South every tick and stands still. `set_pawn_rotation`'s lock
-   froze whatever facing a pawn had mid-walk, and the whole grid faced north.
-3. **Clear strays first.** *"there are at least two or three individuals not part of this
-   set that should have been removed."* Record the pawn ids before spawning, then remove
-   every non-subject in the frame and assert the count is 0.
+2. **Face the camera.** *"they are looking away from the camera."* DRAFT the subjects, let a
+   few ticks pass (*"If you allow some time to advance, they will look at the camera.
+   Because they are drafted"*), THEN `set_pawn_rotation dir=south` and check the read-back.
+   One run left a whole grid facing north after the tick step alone, so do both.
+3. **Remove everyone first.** *"there are at least two or three individuals not part of this
+   set that should have been removed"* and *"Just remove everyone first... get rid of
+   them."* Use `jawa/clear_area dryRun=false` over the whole frame BEFORE spawning: it is the
+   dev menu's own Clear area and removes pawns. ⛔ `jawa/damage Bomb 9999` does NOT remove
+   drafted colonists (MEASURED 2026-10-06, three runs), and `destroy_batch` never touches
+   pawns. A second run on the same site without a clear stacks pawns on the first.
 4. **Hold them in place.** *"all of them should have been drafted so they stayed in one
    place."* Drafting does it (same call as 2).
 5. **Stand a standard human beside them for comparison.** *"they should be next to a
    standard human for comparison."* A Baseliner goes first in the grid.
+
+⚠️ `rimworld/start_debug_game_ready` can time out at 30 s and leave the OLD game running
+— prove a fresh map (`ticksGame` near 0 AND no subjects from the last run) or restart the
+game, which takes under a minute on a small test list. Save the finished line-up as a keeper.
 
 And **open the image for him when you refer to it** (`powershell.exe Start-Process
 '<windows path>'`); never hand him a bare link. Read it yourself first.

@@ -222,12 +222,15 @@ class Stage(object):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--at", default="125,125", help="grid centre cell x,z")
-    ap.add_argument("--spread", type=int, default=9, help="cells between subjects")
+    ap.add_argument("--at", default="70,70",
+                    help="grid centre cell x,z -- NOT the map centre, where a quicktest drops its colonists")
+    ap.add_argument("--spread", type=int, default=8, help="cells between subjects")
     ap.add_argument("--cols", type=int, default=5)
     ap.add_argument("--shot", default="xeno_grid", help="screenshot name (no .png)")
     ap.add_argument("--kind", default="Colonist", help="PawnKindDef to carry the xenotype")
     ap.add_argument("--xenotypes", default="", help="comma list; default is the 13")
+    ap.add_argument("--ground", default="SterileTile",
+                    help="floor painted under the grid ('' keeps the map's own ground)")
     ap.add_argument("--per", type=int, default=3,
                     help="pawns per race, side by side (skill §8c: one pawn is one skin roll)")
     ap.add_argument("--no-strip", action="store_true",
@@ -253,6 +256,24 @@ def main():
         st.pause()
         st.kill_hostiles()
 
+        # Clear the ground first: trees and rocks cost whole races a cell (2026-10-06:
+        # 4 of 14 found no open cell). Pawns are never destroyed by this tool.
+        if not args.dry_run:
+            rows0 = (len(xenos) + args.cols - 1) // args.cols
+            hw = (args.cols + 1) * args.spread // 2 + 4
+            hh = (rows0 + 1) * args.spread // 2 + 4
+            # Owner, 2026-10-06: "Just remove everyone first... get rid of them."
+            # GenDebug.ClearArea (the dev menu's own 'Clear area') removes pawns too;
+            # jawa/damage Bomb 9999 did NOT remove drafted colonists, and destroy_batch
+            # never touches pawns.
+            cl = st.call("jawa/clear_area", {"rect": "%d,%d,%d,%d" % (cx - hw, cz - hh, 2 * hw, 2 * hh),
+                                             "dryRun": False})
+            st.say("cleared the frame: %s things removed" % cl.get("destroyedCount"))
+            # One pale, even floor under everyone: dark soil hid the dark races
+            # (Chadra-Fan, Ewok, Umbaran) in the 2026-10-06 shot.
+            if args.ground:
+                st.call("jawa/set_terrain_batch", {"ops": "%s:%d,%d,%d,%d" % (
+                    args.ground, cx - hw, cz - hh, 2 * hw, 2 * hh)})
         cells = st.grid_cells(cx, cz, len(xenos), args.spread, args.cols)
         holes = [x for x, c in zip(xenos, cells) if c is None]
         if holes:
@@ -269,11 +290,23 @@ def main():
             return 0
 
         # Every pawn already on the map is NOT a subject. Record them now so the grid
-        # can be cleared of strays after spawning (owner, 2026-10-06: "there are at
+        # never share the frame with a stray (owner, 2026-10-06: "there are at
         # least two or three individuals not part of this set that should have been
         # removed first").
-        before = {p.get("id") for p in
-                  (st.call("jawa/list_pawns", {}).get("pawns") or [])}
+        pawns = st.call("jawa/list_pawns", {}).get("pawns") or []
+        before = {p.get("id") for p in pawns}
+        rows = (len(xenos) + args.cols - 1) // args.cols
+        rw = (args.cols + 1) * args.spread
+        rh = (rows + 1) * args.spread
+        rx, rz = cx - rw // 2, cz - rh // 2
+
+        # After the clear, anyone still standing in the frame is a failure to report.
+        strays = [p for p in pawns if not p.get("dead") and p.get("x") is not None
+                  and rx - 3 <= p["x"] < rx + rw + 3 and rz - 3 <= p["z"] < rz + rh + 3]
+        if strays:
+            st.say("REFUSING: %d pawn(s) survived the clear (%s)"
+                   % (len(strays), ", ".join(sorted({str(p.get("name")) for p in strays}))[:200]))
+            return 3
 
         spawned = []
         for xeno, cell in zip(xenos, cells):
@@ -300,21 +333,7 @@ def main():
         mine = [p for p in pawns if p.get("id") not in before]
         st.say("verified on map: %d new pawns" % len(mine))
 
-        rows = (len(xenos) + args.cols - 1) // args.cols
-        rw = (args.cols + 1) * args.spread
-        rh = (rows + 1) * args.spread
-        rx, rz = cx - rw // 2, cz - rh // 2
-
-        # Strays inside the shot: bomb them, then clear their corpses and our
-        # subjects' stripped apparel with one Item sweep below.
         mine_ids = {p.get("id") for p in mine}
-        strays = [p for p in pawns if p.get("id") not in mine_ids and not p.get("dead")
-                  and p.get("x") is not None
-                  and rx - 3 <= p["x"] < rx + rw + 3 and rz - 3 <= p["z"] < rz + rh + 3]
-        for p in strays:
-            st.call("jawa/damage", {"thingId": p.get("id"), "damageDef": "Bomb",
-                                    "amount": 9999})
-        st.say("strays removed from the frame: %d" % len(strays))
 
         label_ops, labelled = [], set()
         for p in mine:
@@ -343,6 +362,16 @@ def main():
         st.call("jawa/review_label", {"action": "add", "tag": "xeno_grid",
                                       "ops": "\n".join(label_ops)})
 
+        # A drafted pawn only turns to face the camera once time moves (owner,
+        # 2026-10-06: "If you allow some time to advance, they will look at the
+        # camera. Because they are drafted"). Step a few ticks; the game stays paused.
+        st.call("rimworld/step_game_ticks", {"ticks": 90})
+        # ...but MEASURED 2026-10-06 (v5) the step alone left a whole grid facing
+        # north, so lock South afterwards and check the read-back.
+        rot = st.call("jawa/set_pawn_rotation", {"pawnId": ",".join(sorted(mine_ids)),
+                                                 "dir": "south"})
+        st.say("facing south, read back: %s" % ("ALL" if ok(rot) else rot.get("message")))
+
         # Prove it: every subject drafted, nobody else in frame.
         time.sleep(0.5)
         after = st.call("jawa/list_pawns", {}).get("pawns") or []
@@ -356,7 +385,7 @@ def main():
                                  "width": rw, "height": rh})
         st.call("rimworld/jump_camera_to_cell", {"x": cx, "z": cz})
         st.call("rimworld/frame_cell_rect", {"x": rx, "z": rz, "width": rw,
-                                             "height": rh, "paddingCells": 3})
+                                             "height": rh, "paddingCells": 0})
         st.call("jawa/clear_ui", {})
         time.sleep(0.8)
 
@@ -364,7 +393,7 @@ def main():
         # and the bridge would otherwise have DISCARDED it and shot to a default name.
         # take_screenshot appends .png itself; a name ending in .png yields x.png.png
         shot = st.call("jawa/take_screenshot", {"fileName": args.shot})
-        st.say("screenshot: %s" % json.dumps(shot.get("path") or shot.get("message")))
+        st.say("screenshot: %s" % json.dumps(shot.get("filePath") or shot.get("message")))
 
         cam = st.call("rimworld/get_camera_state", {})
         st.say("camera map=%s zoom=%s" % (cam.get("mapId"), cam.get("zoom")))
