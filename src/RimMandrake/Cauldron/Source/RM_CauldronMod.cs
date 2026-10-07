@@ -58,6 +58,13 @@ namespace RimMandrake.Cauldron
         // architect menu (restart to apply).
         public static bool vexxithAcidImmunityEnabled = true;
         public static bool vexxithDoorEnabled = true;
+        // CAULDRON_ENRICHMENT_VISUALS_1: dewfall beads (+ density), dewfall garden saturation, assay flecks on
+        // old metal trees, vexxiss prints on the footprint grid.
+        public static bool dewfallBeadsEnabled = true;
+        public static float dewfallBeadDensity = 1f;
+        public static bool dewfallSaturationEnabled = true;
+        public static bool assayFlecksEnabled = true;
+        public static bool vexxissPrintsEnabled = true;
 
         public override void ExposeData()
         {
@@ -84,6 +91,11 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref fexxilVenomEnabled, "fexxilVenomEnabled", true, true);
             Scribe_Values.Look(ref vexxithAcidImmunityEnabled, "vexxithAcidImmunityEnabled", true, true);
             Scribe_Values.Look(ref vexxithDoorEnabled, "vexxithDoorEnabled", true, true);
+            Scribe_Values.Look(ref dewfallBeadsEnabled, "dewfallBeadsEnabled", true, true);
+            Scribe_Values.Look(ref dewfallBeadDensity, "dewfallBeadDensity", 1f, true);
+            Scribe_Values.Look(ref dewfallSaturationEnabled, "dewfallSaturationEnabled", true, true);
+            Scribe_Values.Look(ref assayFlecksEnabled, "assayFlecksEnabled", true, true);
+            Scribe_Values.Look(ref vexxissPrintsEnabled, "vexxissPrintsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -94,6 +106,8 @@ namespace RimMandrake.Cauldron
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastContentHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            bool prevSaturation = dewfallSaturationEnabled, prevFlecks = assayFlecksEnabled, prevGrade = assayGradeEnabled,
+                 prevYield = metalYieldEnabled;
             list.Begin(viewRect);
 
             list.Label("Biome rarity: " + RarityLabel());
@@ -116,6 +130,13 @@ namespace RimMandrake.Cauldron
                     ref assayGradeEnabled,
                     "The inspect pane of a thornwood or martyr tree reads its grade (unripe, trace, fair, "
                     + "rich, lode) and roughly how much metal it would give if cut now.");
+                if (assayGradeEnabled)
+                {
+                    list.CheckboxLabeled("    ...and show it as metal flecks on the trunk",
+                        ref assayFlecksEnabled,
+                        "Fair trees show a light scatter of metal glints on the trunk, rich and lode trees a heavy one. "
+                        + "Needs the fleck overlay art; until it is installed this does nothing.");
+                }
             }
 
             list.GapLine();
@@ -152,6 +173,11 @@ namespace RimMandrake.Cauldron
                     "A letter when a vexxiss starts turning water toxic on a map where you have colonists. "
                     + "At most one per animal per day.");
             }
+            list.CheckboxLabeled("Vexxiss leave a trail of prints",
+                ref vexxissPrintsEnabled,
+                "A walking vexxiss leaves huge mineral-ringed prints on bare ground that last about a day and survive "
+                + "saving, so you can follow one across the map. Hover a print to see which vexxiss left it. "
+                + "Needs the Creature Behaviors mod (the shared footprint grid) and its tracks switch on.");
 
             list.GapLine();
             list.CheckboxLabeled("Nettles colonize poisoned shorelines",
@@ -186,6 +212,19 @@ namespace RimMandrake.Cauldron
                 ref ventGardensEnabled,
                 "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
                 + "favour vents that blew out recently. Needs nettle gardens above to be on.");
+            list.CheckboxLabeled("Dewfall beads the ground",
+                ref dewfallBeadsEnabled,
+                "During dewfall, beads of brightly coloured chemical condensate form on open ground under the sky, "
+                + "outside your home area, and evaporate within a day. Off: dewfall leaves no beads.");
+            if (dewfallBeadsEnabled)
+            {
+                list.Label("Bead density: " + dewfallBeadDensity.ToString("0.00") + "x (default 1.00x)");
+                dewfallBeadDensity = list.Slider(dewfallBeadDensity, 0.25f, 2f);
+            }
+            list.CheckboxLabeled("Dewfall saturates the garden",
+                ref dewfallSaturationEnabled,
+                "During dewfall the flowering plants bloom in full, wrong colours, green included, and settle back "
+                + "when it lifts. Only plants whose dew art is installed change; until then this does nothing.");
             list.CheckboxLabeled("Flora expansion (restart to apply)",
                 ref floraExpansionEnabled,
                 "Tsevrix, ixalith, fexxil, sessarix, kissaveth and selvix in the wild roster. Off: only the original "
@@ -204,9 +243,23 @@ namespace RimMandrake.Cauldron
                 "A door that can only be built from vexxith plate. Off: it leaves the architect menu on the next "
                 + "launch; doors already built stay.");
 
+            if (dewfallSaturationEnabled != prevSaturation || assayFlecksEnabled != prevFlecks || assayGradeEnabled != prevGrade
+                || metalYieldEnabled != prevYield)
+            {
+                RemeshAllMaps();
+            }
             lastContentHeight = list.CurHeight + 12f;
             list.End();
             Widgets.EndScrollView();
+        }
+
+        // The flecks and the dew swap are baked into the Things section mesh: a toggle shows at once only
+        // after a remesh. Only when something actually changed and a game is running.
+        private static void RemeshAllMaps()
+        {
+            if (Current.ProgramState != ProgramState.Playing || Find.Maps == null) return;
+            if (!RM_AssayFlecks.Active && !RM_DewfallSaturation.Active) return;
+            foreach (Map m in Find.Maps) m.mapDrawer?.WholeMapChanged(RimWorld.MapMeshFlagDefOf.Things);
         }
 
         private Vector2 scrollPosition;

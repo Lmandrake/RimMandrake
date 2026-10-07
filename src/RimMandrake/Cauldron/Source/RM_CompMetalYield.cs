@@ -76,6 +76,14 @@ namespace RimMandrake.Cauldron
                    * RM_CauldronSettings.metalYieldFactor;
         }
 
+        // Expected metal now as a fraction of the full-growth lode (0 while unripe). The settings factor
+        // scales both sides, so it cancels. Read by the inspect grade and by the assay flecks (V3).
+        public float GradeFraction()
+        {
+            float full = Props.countAtFullGrowth * RM_CauldronSettings.metalYieldFactor;
+            return full > 0f ? ExpectedMetalNow() / full : 0f;
+        }
+
         public override string CompInspectStringExtra()
         {
             if (!RM_CauldronSettings.metalYieldEnabled || !RM_CauldronSettings.assayGradeEnabled) return null;
@@ -84,8 +92,7 @@ namespace RimMandrake.Cauldron
                 return "Assay grade: unripe (no " + Props.metalDef.label + " yet)";
 
             float expected = ExpectedMetalNow();
-            float full = Props.countAtFullGrowth * RM_CauldronSettings.metalYieldFactor;
-            float frac = full > 0f ? expected / full : 0f;
+            float frac = GradeFraction();
             string grade = frac >= 0.95f ? "lode" : frac >= 2f / 3f ? "rich" : frac >= 1f / 3f ? "fair" : "trace";
             return "Assay grade: " + grade + " (~" + expected.ToString("0.#") + " " + Props.metalDef.label + " if cut now)";
         }

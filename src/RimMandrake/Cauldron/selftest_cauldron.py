@@ -685,14 +685,14 @@ def source_checks():
         short = typ.rsplit(".", 1)[1]
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
-    if len(V.DEFAULTS) != 22 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 18:
-        bad.append("parsed %d defaults / %d bools, expected 22 / 18" %
+    if len(V.DEFAULTS) != 27 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 22:
+        bad.append("parsed %d defaults / %d bools, expected 27 / 22" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
-    if len(V.SHIPPED) != 43 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 43 / 17 / 4); update "
+    if len(V.SHIPPED) != 44 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 44 / 17 / 4); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

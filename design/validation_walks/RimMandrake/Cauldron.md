@@ -78,6 +78,12 @@ Nettles on toxic shores
 - `condensateGardensEnabled` exists, defaults on and is writable. → settings.condensateGardensEnabled_roundtrip
 - `biomeRarityFactor` exists, defaults to 1 and is writable. → settings.biomeRarityFactor_roundtrip
 
+Enrichment visuals (CAULDRON_ENRICHMENT_VISUALS_1)
+- During dewfall, chemical-dew beads (`RM_Filth_DewBeads`) form on unroofed outdoor land outside the home area and evaporate within a day. → UNCOVERED: needs hours of locked `RM_Dewfall` over unroofed non-home ground and a filth count; no chain written yet (the def itself resolves under load). `dewfallBeadsEnabled` exists, defaults on and is writable. → settings.dewfallBeadsEnabled_roundtrip
+- During dewfall, accent plants with an installed dew variant swap to it and swap back when it lifts. → UNCOVERED: dormant until dew-variant art exists (none installed), and appearance. `dewfallSaturationEnabled` exists, defaults on and is writable. → settings.dewfallSaturationEnabled_roundtrip
+- Fair, rich and lode thornwood and martyr trees carry light or heavy metal flecks. → UNCOVERED: dormant until the two fleck overlays exist (none installed), and appearance. `assayFlecksEnabled` exists, defaults on and is writable. → settings.assayFlecksEnabled_roundtrip
+- A walking vexxiss lays prints on the CreatureBehaviors footprint grid that clear after about a day and name their maker on hover. → UNCOVERED: no bridge tool reads the grid's records or the Cauldron print ledger. `vexxissPrintsEnabled` exists, defaults on and is writable. → settings.vexxissPrintsEnabled_roundtrip
+
 ## the walk
 1. [B] Tier: `python3 src/RimMandrake/Utils/modset_builder.py --tier baroque_wave0 --apply` (Windows-side seat only), deploy the composed mod (`deploy_custom_mods.py --compose biomes --apply`), launch via Steam, wait for `Bridge token:` in Player.log, start a quicktest map (150 cells or larger). One command does all of it: `python3 src/RimMandrake/Utils/northstar_driver/live_session.py --mod Cauldron --tier baroque_wave0 --plan src/RimMandrake/Cauldron/northstar_plan.py --compose`.
 2. [B] `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod Cauldron --plan src/RimMandrake/Cauldron/northstar_plan.py` → results JSON in `Transient/northstar/`.
