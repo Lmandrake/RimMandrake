@@ -86,13 +86,8 @@ namespace RimMandrake.FlowWorks
 				float h = RM_WallFaceMath.NorthFaceHeight(nd);
 				if (sc > 0f && f == 0)
 				{
-					// principle 5: the SAME empty pit, charred — vertex-colour char over the normal floor
-					CharFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f);
-					// 2026-10-06 review: "it needs blast marks and blackened bits"
-					if (RM_WallFaceMath.HasFloorBlast(c.x, c.z))
-					{
-						BlastMark(c.x + 0.5f, c.z + (1f - h) * 0.5f, 0.42f, Gen.HashCombineInt(c.x * 31, c.z), sc, y - 0.0002f);
-					}
+					// principle 5: the SAME empty pit, burned — grey ash over the floor, char at the walls and in patches
+					ScorchFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f);
 				}
 				if (f > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
 				{
@@ -184,8 +179,9 @@ namespace RimMandrake.FlowWorks
 			Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0002f), new Color32(255, 248, 232, a), new Color32(255, 248, 232, a), false, 1f);
 			if (scorch > 0f)
 			{
-				byte s = (byte)(255f * RM_WallFaceMath.FaceSootAlpha(scorch, 0.3f));
-				Poly(RM_FaceMaterial.ShadeMat, Lift(q, 0.0007f), new Color32(22, 15, 10, s), new Color32(22, 15, 10, (byte)(s * 0.75f)), false, 1f);
+				byte sf = (byte)(255f * RM_WallFaceMath.FaceSoot(scorch, 0f, 0.5f));
+				byte st = (byte)(255f * RM_WallFaceMath.FaceSoot(scorch, 0.6f, 0.5f));
+				Poly(RM_FaceMaterial.SootMat, Lift(q, 0.0007f), new Color32(255, 255, 255, sf), new Color32(255, 255, 255, st), false, 1f);
 			}
 		}
 
@@ -266,10 +262,12 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		// ── scorch (principle 5, redone): vertex-colour char over the normal pit, no texture tiles ──
+		// ── scorch (principle 5), round 3: textured ash and soot from GPT concept art (Transient/scorch_concept_2026-10-06)
+		//    — owner, 2026-10-06, of the starburst round: "those look ridiculous". Coverage per vertex, grain from the
+		//    textures, edges broken by the terrain-fade shader's rough alpha: no stamps, no repeating shapes. ──
 
-		private static readonly Color32 Char = new Color32(30, 21, 14, 0);
-		private static readonly Color32 Ash = new Color32(132, 124, 114, 0);
+		private const float ScorchUv = 1f / 3f;   // one texture repeat per three cells
+		private static readonly Color32 Tint = new Color32(150, 72, 30, 0);
 
 		private static float Blotch(float x, float z)
 		{
@@ -278,14 +276,24 @@ namespace RimMandrake.FlowWorks
 				+ 0.35f * Mathf.PerlinNoise(x * 1.7f + 5.1f, z * 1.7f + 77.9f));
 		}
 
-		/// <summary>The burned floor: a 6x6 vertex grid per cell, char alpha from world noise and wall distance, warm
-		/// ash drifts where the noise is high, and a few pale ash flecks seeded per cell.</summary>
-		private void CharFloor(IntVec3 c, int d, int north, int south, int west, int east, float hTop, float s, float y)
+		/// <summary>Low-frequency, domain-warped noise for the halo's reach: big lumpy lobes, different on each side.</summary>
+		private static float Lobes(float x, float z)
+		{
+			float wx = x + 1.6f * (Mathf.PerlinNoise(x * 0.31f + 3.3f, z * 0.31f + 9.1f) - 0.5f);
+			float wz = z + 1.6f * (Mathf.PerlinNoise(x * 0.31f + 41.2f, z * 0.31f + 2.7f) - 0.5f);
+			return Mathf.Clamp01(0.7f * Mathf.PerlinNoise(wx * 0.62f + 17.1f, wz * 0.62f + 5.9f)
+				+ 0.3f * Mathf.PerlinNoise(wx * 2.1f + 8.8f, wz * 2.1f + 61.3f));
+		}
+
+		/// <summary>The burned floor: the ash texture over (nearly) all of it, the soot texture at the walls and in soft
+		/// patches, and a faint rust heat tint in a band just off the walls. 6x6 vertex grid per cell.</summary>
+		private void ScorchFloor(IntVec3 c, int d, int north, int south, int west, int east, float hTop, float s, float y)
 		{
 			const int N = 6;
 			bool wn = north < d, ws = south < d, ww = west < d, we = east < d;
-			Color32[,] charC = new Color32[N + 1, N + 1];
-			Color32[,] ashC = new Color32[N + 1, N + 1];
+			Color32[,] ash = new Color32[N + 1, N + 1];
+			Color32[,] soot = new Color32[N + 1, N + 1];
+			Color32[,] tint = new Color32[N + 1, N + 1];
 			for (int i = 0; i <= N; i++)
 			{
 				for (int j = 0; j <= N; j++)
@@ -297,147 +305,90 @@ namespace RimMandrake.FlowWorks
 					if (ws) dist = Mathf.Min(dist, lz);
 					if (ww) dist = Mathf.Min(dist, lx);
 					if (we) dist = Mathf.Min(dist, 1f - lx);
-					float b = Blotch(x, z);
-					Color32 k = Char;
-					k.a = (byte)(255f * RM_WallFaceMath.FloorCharAlpha(s, b, dist));
-					charC[i, j] = k;
-					Color32 a = Ash;
-					a.a = (byte)(255f * RM_WallFaceMath.AshDriftAlpha(s, b, dist));
-					ashC[i, j] = a;
+					float n = Blotch(x, z);
+					ash[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.AshCover(s, n)));
+					soot[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.CharCover(s, Blotch(x + 13.7f, z + 4.1f), dist)));
+					Color32 t = Tint;
+					t.a = (byte)(255f * RM_WallFaceMath.HeatTint(s, Blotch(x + 7.3f, z + 21.9f), dist));
+					tint[i, j] = t;
 				}
 			}
-			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, charC, y);
-			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, ashC, y + 0.0001f);
-			// blackened patches (2026-10-06): near-black where the noise runs high — bits, never the whole floor
-			Color32[,] blackC = new Color32[N + 1, N + 1];
-			for (int i = 0; i <= N; i++)
-			{
-				for (int j = 0; j <= N; j++)
-				{
-					float b = Blotch(c.x + i / (float)N + 13.7f, c.z + j / (float)N * hTop + 4.1f);
-					blackC[i, j] = new Color32(8, 7, 6, (byte)(255f * RM_WallFaceMath.BlackPatchAlpha(s, b)));
-				}
-			}
-			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, blackC, y + 0.00005f);
-			// a few pale ash flecks, seeded per cell (not a pattern)
-			System.Random r = new System.Random(Gen.HashCombineInt(c.x * 7349, c.z * 2971));
-			int flecks = r.Next(2);   // sparse and soft: dense pale dots read as rain/specks (owner, 2026-10-05)
-			for (int k = 0; k < flecks; k++)
-			{
-				float fx = c.x + 0.12f + 0.76f * (float)r.NextDouble();
-				float fz = c.z + 0.12f + (hTop - 0.24f) * (float)r.NextDouble();
-				float sz = 0.025f + 0.03f * (float)r.NextDouble();
-				Color32 fc = new Color32(150, 142, 132, (byte)(90f * s));
-				QuadVMat(RM_FaceMaterial.ShadeMat, fx, fz, sz * 1.6f, sz, y + 0.0002f, fc, fc);
-			}
+			Grid(RM_FaceMaterial.AshMat, c.x, c.z, 1f, hTop, N, ash, y, -1, ScorchUv);
+			Grid(RM_FaceMaterial.SootMat, c.x, c.z, 1f, hTop, N, soot, y + 0.0001f, -1, ScorchUv);
+			Grid(RM_FaceMaterial.TintMat, c.x, c.z, 1f, hTop, N, tint, y + 0.0002f);
+			// the ash is lighter than the bare floor it covers, so the depth must be put back: a flat shade by depth
+			Color32 deep = new Color32(10, 8, 7, (byte)(255f * RM_WallFaceMath.AshDepthShade(d) * Mathf.Min(1f, s * 2f)));
+			QuadVMat(RM_FaceMaterial.TintMat, c.x, c.z, 1f, hTop, y + 0.0003f, deep, deep);
 		}
 
-		/// <summary>Soot on a north face: darkest at the foot, a band at the rim, plus a few short irregular streaks
-		/// climbing from the foot, seeded per cell.</summary>
+		/// <summary>Soot on a north face: the soot texture, heaviest at the foot, a band under the rim, and vertical
+		/// plumes (noise stretched up the face) so it reads as smoke-stained, not painted.</summary>
 		private void SootFace(IntVec3 c, float xl, float xr, float bot, float top, float s, float y)
 		{
-			const int R = 4;
+			const int NX = 8, R = 5;
 			float h = top - bot;
-			Color32[,] g = new Color32[2, R + 1];
-			for (int j = 0; j <= R; j++)
+			Color32[,] g = new Color32[NX + 1, R + 1];
+			for (int i = 0; i <= NX; i++)
 			{
-				Color32 k = new Color32(22, 15, 10, (byte)(255f * RM_WallFaceMath.FaceSootAlpha(s, j / (float)R)));
-				g[0, j] = k;
-				g[1, j] = k;
+				float x = xl + (xr - xl) * i / NX;
+				for (int j = 0; j <= R; j++)
+				{
+					float v = j / (float)R;
+					float p = Mathf.PerlinNoise(x * 4.3f + 12.9f, v * 0.8f + c.z * 0.37f);
+					g[i, j] = new Color32(255, 255, 255, (byte)(255f * RM_WallFaceMath.FaceSoot(s, v, p)));
+				}
 			}
-			Grid(RM_FaceMaterial.ShadeMat, xl, bot, xr - xl, h, 1, g, y, R);
-			System.Random r = new System.Random(Gen.HashCombineInt(c.x * 4271, c.z * 9157));
-			int streaks = 1 + r.Next(3);
-			for (int k = 0; k < streaks; k++)
-			{
-				float w = 0.02f + 0.04f * (float)r.NextDouble();
-				float x = xl + (xr - xl - w) * (float)r.NextDouble();
-				float len = h * (0.35f + 0.5f * (float)r.NextDouble());
-				QuadVMat(RM_FaceMaterial.ShadeMat, x, bot, w, len, y + 0.0001f,
-					new Color32(14, 10, 7, (byte)(170f * s)), new Color32(14, 10, 7, 0));
-			}
+			Grid(RM_FaceMaterial.SootMat, xl, bot, xr - xl, h, NX, g, y, R, ScorchUv);
 		}
 
-		/// <summary>The scorch ring on undug ground round a burned cut: soot fading out within 0.4 cell of the edge,
-		/// broken up by the same world noise so it is irregular, never a hard rectangle.</summary>
+		/// <summary>The smoke halo on undug ground round a burned cut: per vertex, the distance to the nearest burned
+		/// cell within two cells, turned into soot coverage whose reach the lobe noise sets — lumpy, uneven, darkest
+		/// at the lip.</summary>
 		private void ScorchHalo(Map map, RM_PitScorch scorch, IntVec3 c, float y)
 		{
-			float sN = scorch.StrengthAt(c + IntVec3.North), sS = scorch.StrengthAt(c + IntVec3.South);
-			float sW = scorch.StrengthAt(c + IntVec3.West), sE = scorch.StrengthAt(c + IntVec3.East);
-			if (sN <= 0f && sS <= 0f && sW <= 0f && sE <= 0f)
+			// burned cells within reach, with their strength
+			float best = 0f;
+			int nb = 0;
+			IntVec3[] cells = new IntVec3[25];
+			float[] str = new float[25];
+			for (int dx = -2; dx <= 2; dx++)
+			{
+				for (int dz = -2; dz <= 2; dz++)
+				{
+					IntVec3 n = new IntVec3(c.x + dx, 0, c.z + dz);
+					float sn = scorch.StrengthAt(n);
+					if (sn > 0f)
+					{
+						cells[nb] = n;
+						str[nb] = sn;
+						nb++;
+						if (sn > best) best = sn;
+					}
+				}
+			}
+			if (nb == 0)
 			{
 				return;
 			}
 			const int N = 6;
-			const float W = 0.75f;   // 2026-10-06: was 0.4 — the ring read as nothing at play zoom
 			Color32[,] g = new Color32[N + 1, N + 1];
 			for (int i = 0; i <= N; i++)
 			{
 				for (int j = 0; j <= N; j++)
 				{
-					float lx = i / (float)N, lz = j / (float)N;
+					float x = c.x + i / (float)N, z = c.z + j / (float)N;
 					float a = 0f;
-					if (sN > 0f) a = Mathf.Max(a, sN * Mathf.Clamp01(1f - (1f - lz) / W));
-					if (sS > 0f) a = Mathf.Max(a, sS * Mathf.Clamp01(1f - lz / W));
-					if (sW > 0f) a = Mathf.Max(a, sW * Mathf.Clamp01(1f - lx / W));
-					if (sE > 0f) a = Mathf.Max(a, sE * Mathf.Clamp01(1f - (1f - lx) / W));
-					float b = Blotch(c.x + lx, c.z + lz);
-					a *= 0.40f + 0.55f * b;
-					Color32 k = Char;
-					k.a = (byte)(255f * Mathf.Clamp01(a));
-					g[i, j] = k;
+					float lobe = Lobes(x, z);
+					for (int k = 0; k < nb; k++)
+					{
+						float ddx = Mathf.Max(0f, Mathf.Max(cells[k].x - x, x - (cells[k].x + 1f)));
+						float ddz = Mathf.Max(0f, Mathf.Max(cells[k].z - z, z - (cells[k].z + 1f)));
+						a = Mathf.Max(a, RM_WallFaceMath.HaloCover(str[k], Mathf.Sqrt(ddx * ddx + ddz * ddz), lobe));
+					}
+					g[i, j] = new Color32(255, 255, 255, (byte)(255f * a));
 				}
 			}
-			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, 1f, N, g, y);
-			// a scorch splash thrown out of the burned cut onto the ground beside it, centred toward the cut
-			if (RM_WallFaceMath.HasRimBlast(c.x, c.z))
-			{
-				float s = Mathf.Max(Mathf.Max(sN, sS), Mathf.Max(sW, sE));
-				float cx = c.x + 0.5f + (sE > 0f ? 0.3f : sW > 0f ? -0.3f : 0f);
-				float cz = c.z + 0.5f + (sN > 0f ? 0.3f : sS > 0f ? -0.3f : 0f);
-				BlastMark(cx, cz, 0.5f, Gen.HashCombineInt(c.x * 17, c.z * 5), s, y + 0.0001f);
-			}
-		}
-
-		/// <summary>A blast mark: a near-black core fading out along long and short spikes (a starburst), seeded so no
-		/// two look alike. Owner, 2026-10-06: <i>"it needs blast marks and blackened bits."</i></summary>
-		private void BlastMark(float cx, float cz, float radius, int seed, float s, float y)
-		{
-			float core = RM_WallFaceMath.BlastCoreAlpha(s);
-			if (core <= 0f)
-			{
-				return;
-			}
-			int rays = 10 + (int)(RM_WallFaceMath.Hash01(seed, 1, 2) * 5f);
-			float spin = RM_WallFaceMath.Hash01(seed, 3, 4) * Mathf.PI * 2f;
-			LayerSubMesh sm = GetSubMesh(RM_FaceMaterial.ShadeMat);
-			int b = sm.verts.Count;
-			Color32 k = new Color32(10, 8, 7, (byte)(255f * core));
-			sm.verts.Add(new Vector3(cx, y, cz));
-			sm.uvs.Add(Vector3.zero);
-			sm.colors.Add(k);
-			// ring 1: the dark core (0.35 r), ring 2: the spike tips (alpha 0)
-			int n = rays * 2;
-			for (int i = 0; i < n; i++)
-			{
-				float ang = spin + i * Mathf.PI * 2f / n;   // x = sin, z = cos: rising angle runs clockwise, the winding Quad uses
-				float len = RM_WallFaceMath.BlastRayLength(i, n, seed) * radius;
-				float rc = Mathf.Min(len, radius * 0.35f);
-				sm.verts.Add(new Vector3(cx + Mathf.Sin(ang) * rc, y, cz + Mathf.Cos(ang) * rc));
-				sm.uvs.Add(Vector3.zero);
-				sm.colors.Add(new Color32(10, 8, 7, (byte)(255f * core * 0.85f)));
-				sm.verts.Add(new Vector3(cx + Mathf.Sin(ang) * len, y, cz + Mathf.Cos(ang) * len));
-				sm.uvs.Add(Vector3.zero);
-				sm.colors.Add(new Color32(10, 8, 7, 0));
-			}
-			for (int i = 0; i < n; i++)
-			{
-				int inner = b + 1 + i * 2, outer = inner + 1;
-				int inner2 = b + 1 + ((i + 1) % n) * 2, outer2 = inner2 + 1;
-				sm.tris.Add(b); sm.tris.Add(inner); sm.tris.Add(inner2);
-				sm.tris.Add(inner); sm.tris.Add(outer); sm.tris.Add(outer2);
-				sm.tris.Add(inner); sm.tris.Add(outer2); sm.tris.Add(inner2);
-			}
+			Grid(RM_FaceMaterial.SootMat, c.x, c.z, 1f, 1f, N, g, y, -1, ScorchUv);
 		}
 
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 10 (owner, 2026-10-06: <i>"Is it possible to still show the pit
@@ -512,7 +463,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>
-		private void Grid(Material mat, float x0, float z0, float w, float h, int nx, Color32[,] col, float y, int nz = -1)
+		private void Grid(Material mat, float x0, float z0, float w, float h, int nx, Color32[,] col, float y, int nz = -1, float uvScale = 0f)
 		{
 			if (nz < 0) nz = nx;
 			if (w <= 0f || h <= 0f)
@@ -525,8 +476,9 @@ namespace RimMandrake.FlowWorks
 			{
 				for (int j = 0; j <= nz; j++)
 				{
-					sm.verts.Add(new Vector3(x0 + w * i / nx, y, z0 + h * j / nz));
-					sm.uvs.Add(Vector3.zero);
+					float vx = x0 + w * i / nx, vz = z0 + h * j / nz;
+					sm.verts.Add(new Vector3(vx, y, vz));
+					sm.uvs.Add(uvScale > 0f ? new Vector3(vx * uvScale, vz * uvScale, 0f) : Vector3.zero);
 					sm.colors.Add(col[i, j]);
 				}
 			}

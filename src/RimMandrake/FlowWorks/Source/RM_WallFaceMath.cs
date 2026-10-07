@@ -136,61 +136,82 @@ namespace RimMandrake.FlowWorks
 			return (float)System.Math.Ceiling(s * 4f) / 4f;
 		}
 
-		/// <summary>Owner, 2026-10-05: <i>"Scorched looks absolutely terrible, try again."</i> — the burned pit is now the
-		/// SAME empty pit (same floor texture, faces, bevels, outline) with a dark-brown char laid over it as vertex colour,
-		/// never a texture tile. Floor char alpha at a point: <paramref name="blotch"/> is low-frequency WORLD-space noise
-		/// 0..1 (non-repeating patches), <paramref name="edgeDist"/> the distance in cells to the nearest wall (darker
-		/// near the walls, lighter toward the middle). Capped at 0.72 so the floor detail and the depth still read and it
-		/// is never pure black.</summary>
-		public static float FloorCharAlpha(float s, float blotch, float edgeDist)
+		// ── scorch look, round 3 (owner, 2026-10-06: "those look ridiculous" about black starbursts in a grid; redone
+		//    from GPT concept art, Transient/scorch_concept_2026-10-06/). What sells post-fire at this scale: the floor
+		//    turns GREY ash with soft char patches heaviest at the walls, the walls carry vertical soot plumes, and the
+		//    ground round the rim is smoked in lumpy lobes that feather out ~1-1.5 cells, uneven from side to side.
+		//    The grain comes from two textures (RM_Scorch_Ash / RM_Scorch_Soot); these numbers are their coverage. ──
+
+		private static float Smooth(float t)
+		{
+			if (t <= 0f) return 0f;
+			if (t >= 1f) return 1f;
+			return t * t * (3f - 2f * t);
+		}
+
+		/// <summary>Coverage 0..1 of the ash texture over a burned floor at noise n (0..1): near-total at full scorch,
+		/// the noise only thins it a little so the floor reads as ONE burned surface, not spots.</summary>
+		public static float AshCover(float s, float n)
 		{
 			if (s <= 0f) return 0f;
 			if (s > 1f) s = 1f;
-			float wall = edgeDist <= 0f ? 1f : (edgeDist >= 0.6f ? 0f : 1f - edgeDist / 0.6f);
-			wall = wall * wall * (3f - 2f * wall);   // smooth, so it never reads as an inner frame
-			// 2026-10-06: base raised 0.36 -> 0.46 ("doesn't look like anything at all"); the black now lives in the
-			// patches and blast marks above, so the whole floor is still never one black surface.
-			float a = 0.46f + 0.26f * blotch + 0.08f * wall;
-			if (a > 0.72f) a = 0.72f;
-			return a * s;
+			float a = 0.80f + 0.20f * n;
+			return s * (a > 1f ? 1f : a);
 		}
 
-		/// <summary>Warm grey ash drift alpha: only where the blotch noise is high (sparse drifts), never near walls.</summary>
-		public static float AshDriftAlpha(float s, float blotch, float edgeDist)
+		/// <summary>Coverage 0..1 of the soot/char texture over the ash: heavy within ~0.45 cell of a wall (smooth, so
+		/// no inner frame) and in soft patches where the noise runs high. Never a full black floor: the middle of a
+		/// low-noise floor is ash.</summary>
+		public static float CharCover(float s, float n, float edgeDist)
 		{
-			if (s <= 0f || blotch < 0.62f) return 0f;
-			float away = (edgeDist - 0.15f) / 0.35f;     // fades in smoothly away from the walls: no hard inner line
-			if (away <= 0f) return 0f;
-			if (away > 1f) away = 1f;
-			float a = (blotch - 0.62f) / 0.38f * 0.35f * away;
-			return (s > 1f ? 1f : s) * a;
+			if (s <= 0f) return 0f;
+			if (s > 1f) s = 1f;
+			float wall = 1f - Smooth(edgeDist / 0.45f);
+			float patch = Smooth((n - 0.44f) / 0.20f);
+			float a = 0.88f * wall;
+			float b = 0.80f * patch;
+			return s * (a > b ? a : b);
 		}
 
-		/// <summary>Soot on a face at height fraction v (0 foot .. 1 rim): heaviest at the foot, a second band at the
-		/// rim, lighter between — "soot fading upward from the floor and from the rim".</summary>
-		public static float FaceSootAlpha(float s, float v)
+		/// <summary>Warm rust heat tint (vertex colour) in a band just off the walls, where noise allows: a faint accent.</summary>
+		public static float HeatTint(float s, float n, float edgeDist)
+		{
+			if (s <= 0f) return 0f;
+			float band = edgeDist < 0.1f ? edgeDist / 0.1f : 1f - Smooth((edgeDist - 0.1f) / 0.35f);
+			return (s > 1f ? 1f : s) * 0.20f * band * Smooth((n - 0.55f) / 0.2f);   // patchy: never a continuous frame
+		}
+
+		/// <summary>Black shade over a burned floor by depth (the ash would otherwise make every pit read shallow).</summary>
+		public static float AshDepthShade(int depth)
+		{
+			if (depth <= 0) return 0f;
+			return depth >= 4 ? 0.34f : 0.04f + 0.09f * depth;
+		}
+
+		/// <summary>Soot coverage on undug ground at <paramref name="dist"/> cells from the burned cut: darkest at the
+		/// lip, feathering out over a reach of 0.45..1.4 cells that the low-frequency noise n sets, so the halo is
+		/// lobed and uneven, never a ring of even width.</summary>
+		public static float HaloCover(float s, float dist, float n)
+		{
+			if (s <= 0f) return 0f;
+			if (s > 1f) s = 1f;
+			float reach = 0.45f + 0.95f * n;
+			float t = 1f - dist / reach;
+			if (t <= 0f) return 0f;
+			return s * (0.62f + 0.30f * n) * Smooth(t) * (0.55f + 0.45f * t);   // the lip itself varies too: no even band
+		}
+
+		/// <summary>Soot coverage on a wall face at height fraction v (0 foot .. 1 rim) with plume noise p (0..1, stretched
+		/// vertically by the caller): a base stain heaviest at the foot, a band under the rim, and vertical plumes.</summary>
+		public static float FaceSoot(float s, float v, float p)
 		{
 			if (s <= 0f) return 0f;
 			if (v < 0f) v = 0f;
 			if (v > 1f) v = 1f;
-			float foot = 1f - v;
-			float rim = v > 0.75f ? (v - 0.75f) / 0.25f : 0f;
-			float a = 0.22f + 0.40f * foot * foot + 0.20f * rim;
-			return (s > 1f ? 1f : s) * (a > 0.7f ? 0.7f : a);
-		}
-
-		// ── blast marks and blackened patches (owner, 2026-10-06: "Scorched dirt and stone doesn't look like anything
-		//    at all, it needs blast marks and blackened bits.") ────────────────────────────────────────────────────
-
-		/// <summary>Near-black patch alpha where the world noise is high: patches, not a black floor. 0 below the
-		/// threshold, up to 0.9 at full scorch.</summary>
-		public static float BlackPatchAlpha(float s, float blotch)
-		{
-			if (s <= 0f || blotch < 0.48f) return 0f;
-			float t = (blotch - 0.48f) / 0.2f;
-			if (t > 1f) t = 1f;
-			t = t * t * (3f - 2f * t);
-			return (s > 1f ? 1f : s) * 0.9f * t;
+			float foot = (1f - v) * (1f - v);
+			float rim = v > 0.7f ? (v - 0.7f) / 0.3f : 0f;
+			float a = 0.45f + 0.35f * foot + 0.35f * rim + 0.60f * Smooth((p - 0.45f) / 0.25f);
+			return (s > 1f ? 1f : s) * (a > 0.95f ? 0.95f : a);
 		}
 
 		/// <summary>Deterministic 0..1 from integers (no UnityEngine.Random: the selftest pins it).</summary>
@@ -204,33 +225,6 @@ namespace RimMandrake.FlowWorks
 				h ^= h >> 15;
 				return (h & 0xFFFFFF) / 16777216f;
 			}
-		}
-
-		/// <summary>A blast mark is a starburst: <paramref name="rays"/> spikes round a dark core. Ray i's length as a
-		/// fraction of the mark's radius: long and short spikes alternate (0.75..1 and 0.3..0.55), seeded per mark.</summary>
-		public static float BlastRayLength(int ray, int rays, int seed)
-		{
-			float r = Hash01(seed, ray, rays);
-			return ray % 2 == 0 ? 0.75f + 0.25f * r : 0.30f + 0.25f * r;
-		}
-
-		/// <summary>Does dug cell (x,z) carry a blast mark on its floor? About two cells in three, seeded.</summary>
-		public static bool HasFloorBlast(int x, int z)
-		{
-			return Hash01(x, z, 7) < 0.66f;
-		}
-
-		/// <summary>Does undug ground cell (x,z) beside a burned cut carry a scorch splash? About one in two.</summary>
-		public static bool HasRimBlast(int x, int z)
-		{
-			return Hash01(x, z, 11) < 0.5f;
-		}
-
-		/// <summary>Core alpha of a blast mark at scorch strength s: near-black, 0.92 at full.</summary>
-		public static float BlastCoreAlpha(float s)
-		{
-			if (s <= 0f) return 0f;
-			return (s > 1f ? 1f : s) * 0.92f;
 		}
 
 		/// <summary>Char multiplier for a face/floor at scorch strength s: 1 untouched, down to 0.30 at full scorch.</summary>

@@ -30,6 +30,10 @@ namespace RimMandrake.FlowWorks
 		public const int FaceQueue = 2440;
 		public const int ShadeQueue = 2441;
 		public const int DetailQueue = 2442;
+		/// <summary>Scorch layers go over everything the pit draws (faces, light, joints): ash, then soot, then tint.</summary>
+		public const int AshQueue = 2444;
+		public const int SootQueue = 2445;
+		public const int TintQueue = 2446;
 
 		/// <summary>The occluder must draw AFTER pawns so it can cover the part of one hanging below the lip.</summary>
 		public const int OccluderQueue = 3050;
@@ -137,6 +141,29 @@ namespace RimMandrake.FlowWorks
 				}
 				return shadeMat;
 			}
+		}
+
+		private static Material ashMat, sootMat, tintMat;
+
+		/// <summary>Vertex-colour material drawn over the scorch textures (the heat tint).</summary>
+		public static Material TintMat => tintMat ?? (tintMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = TintQueue });
+
+		/// <summary>Scorch textures (art_source/scorch_2026-10-06, made from GPT concept art): drawn with the game's own
+		/// rough terrain-fade shader, so the vertex alpha is the COVERAGE and RoughAlphaAdd breaks every edge up the
+		/// way soil fades into grass — no hard-edged quads, no stamps. World-space UVs, so it never repeats per cell.</summary>
+		public static Material AshMat => ashMat ?? (ashMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_Ash", AshQueue));
+		public static Material SootMat => sootMat ?? (sootMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_Soot", SootQueue));
+
+		private static Material ScorchMat(string path, int queue)
+		{
+			Texture2D tex = ContentFinder<Texture2D>.Get(path, false) ?? BaseContent.GreyTex;
+			Material m = new Material(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.TerrainFadeRough)))
+			{
+				renderQueue = queue
+			};
+			m.mainTexture = tex;
+			m.SetTexture(ShaderPropertyIDs.AlphaAddTex, TexGame.AlphaAddTex);
+			return m;
 		}
 
 		public static Material StrataMat => strataMat ?? (strataMat = DetailMat(strataTex = MakeStrata()));
