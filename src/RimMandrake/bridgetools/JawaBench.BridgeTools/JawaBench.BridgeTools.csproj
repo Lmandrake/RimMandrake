@@ -122,6 +122,11 @@
          parameters instead of a CurrentTile()/Dialog_DebugOptionListLister pair neither
          of which the bridge can drive. -->
     <InhabitedModDir Condition="'$(InhabitedModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Inhabited\Assemblies</InhabitedModDir>
+    <!-- mandrake.rm.gimmesomeslack (mod folder "GimmeSomeSlack"), same reasoning as the four above: an ordinary mod the
+         loader has already loaded. JawaBenchGssPlaytest.cs (GSS in-game runner, 2026-10-06) drives its comps, gizmos and
+         map components directly; no member signature there names a GSS type, and gss_playtest_start refuses when the mod
+         is absent. -->
+    <GssModDir Condition="'$(GssModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\GimmeSomeSlack\Assemblies</GssModDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -143,6 +148,10 @@
     </Reference>
     <Reference Include="Inhabited">
       <HintPath>$(InhabitedModDir)\Inhabited.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeGimmeSomeSlack">
+      <HintPath>$(GssModDir)\RimMandrakeGimmeSomeSlack.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
