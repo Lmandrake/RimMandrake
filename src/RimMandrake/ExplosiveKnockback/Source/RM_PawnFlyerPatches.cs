@@ -73,6 +73,7 @@ namespace RimMandrake.ExplosiveKnockback
         {
             if (__state != null)
             {
+                RM_MapComponent_Knockback.NotifyLanded(__state); // stun-lock guard: stamps landing + stun end
                 RM_KnockbackJournal.Add("land", 0, __state, "at", __state.Spawned ? __state.Position : IntVec3.Invalid,
                     "spawned", __state.Spawned, "dead", __state.Dead, "downed", __state.Downed,
                     "inPit", __state.Spawned && RM_KnockbackCompat.IsSuperdeep(__state.Map, __state.Position));

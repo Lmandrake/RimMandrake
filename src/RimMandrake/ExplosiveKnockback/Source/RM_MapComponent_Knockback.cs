@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -176,6 +177,69 @@ namespace RimMandrake.ExplosiveKnockback
         private readonly KbTickBudget itemBudget = new KbTickBudget();
         private readonly Dictionary<int, int> launchedPerExplosion = new Dictionary<int, int>();
         private int dedupeTick = -1;
+        // stun-lock guard (design §4): pawn thingIDNumber -> landing tick / landing-stun end tick. Saved.
+        private Dictionary<int, int> landedAt = new Dictionary<int, int>();
+        private Dictionary<int, int> stunEnd = new Dictionary<int, int>();
+
+        /// <summary>Called when one of our flyers sets a pawn down (RM_Patch_PawnFlyer_KnockbackLanding).</summary>
+        public static void NotifyLanded(Pawn p)
+        {
+            if (p == null || !p.Spawned)
+            {
+                return;
+            }
+            RM_MapComponent_Knockback comp = p.Map.GetComponent<RM_MapComponent_Knockback>();
+            if (comp == null)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            comp.landedAt[p.thingIDNumber] = now;
+            comp.stunEnd[p.thingIDNumber] = now + (p.stances?.stunner?.StunTicksLeft ?? 0);
+        }
+
+        /// <summary>Proof/read: can this pawn be launched now under the recovery window?</summary>
+        public bool CanLaunch(Pawn p, out int recoversAt)
+        {
+            int window = RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks;
+            landedAt.TryGetValue(p.thingIDNumber, out int la);
+            stunEnd.TryGetValue(p.thingIDNumber, out int se);
+            bool known = landedAt.ContainsKey(p.thingIDNumber);
+            recoversAt = known ? Math.Max(la, se) + window : 0;
+            return !known || KbImmunity.CanLaunch(Find.TickManager.TicksGame, la, se, window);
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                int now = Find.TickManager.TicksGame;
+                var dead = new List<int>();
+                foreach (var kv in landedAt)
+                {
+                    if (now - kv.Value > 60000)
+                    {
+                        dead.Add(kv.Key);
+                    }
+                }
+                foreach (int k in dead)
+                {
+                    landedAt.Remove(k);
+                    stunEnd.Remove(k);
+                }
+            }
+            Scribe_Collections.Look(ref landedAt, "rmKbLandedAt", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref stunEnd, "rmKbStunEnd", LookMode.Value, LookMode.Value);
+            if (landedAt == null)
+            {
+                landedAt = new Dictionary<int, int>();
+            }
+            if (stunEnd == null)
+            {
+                stunEnd = new Dictionary<int, int>();
+            }
+        }
 
         public RM_MapComponent_Knockback(Map map) : base(map)
         {
@@ -197,11 +261,36 @@ namespace RimMandrake.ExplosiveKnockback
             }
             queue.Add(r);
             RM_KnockbackJournal.Add("request", r.explosionId, r.thing, "from", r.takeoff, "centre", r.centre,
-                "radius", r.radius, "force", r.force, "damType", r.damType?.defName);
+                "radius", r.radius, "force", r.force, "damType", r.damType?.defName, "source", r.config?.source ?? "damageDef",
+                "shieldAbsorbed", r.shield != null);
         }
+
+        /// <summary>Proof scenes only (RM_KnockbackProof): actions to run at a given game tick on this map, so a scene can
+        /// fire a second blast mid-run. Empty in play; one Count check per tick.</summary>
+        internal static readonly List<KeyValuePair<int, Action>> ProofSchedule = new List<KeyValuePair<int, Action>>();
 
         public override void MapComponentTick()
         {
+            if (ProofSchedule.Count > 0)
+            {
+                int now = Find.TickManager.TicksGame;
+                for (int i = ProofSchedule.Count - 1; i >= 0; i--)
+                {
+                    if (ProofSchedule[i].Key <= now)
+                    {
+                        Action act = ProofSchedule[i].Value;
+                        ProofSchedule.RemoveAt(i);
+                        try
+                        {
+                            act();
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warning("[RM Explosive Knockback] proof schedule: " + ex.Message);
+                        }
+                    }
+                }
+            }
             if (queue.Count == 0)
             {
                 return;
@@ -333,7 +422,17 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_pit");
                 return false;
             }
-            KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
+            KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
+            if (pawn != null && r.shield != null && RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow)
+            {
+                AbsorbByShield(r, pawn);
+                return false;
+            }
+            if (pawn != null && !CanLaunch(pawn, out int recoversAt))
+            {
+                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "immune", "recoversAt", recoversAt);
+                return false;
+            }
             if (!RM_KnockbackMath.Eligible(kind, mass, bodySize, s))
             {
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", bodySize >= s.immuneBodySize ? "too_big" : "too_heavy",
@@ -391,6 +490,35 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed?.Position ?? dest,
                 "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count);
             return true;
+        }
+
+        private static readonly AccessTools.FieldRef<CompShield, float> ShieldEnergy = AccessTools.FieldRefAccess<CompShield, float>("energy");
+        private static readonly System.Reflection.MethodInfo ShieldBreak = AccessTools.Method(typeof(CompShield), "Break");
+
+        /// <summary>Owner Q4: the shield that absorbed the blast absorbs the throw too, paying force x debit
+        /// damage-equivalents; a strong throw can pop it (and a popped belt throws next time).</summary>
+        private static void AbsorbByShield(KnockbackRequest r, Pawn p)
+        {
+            CompShield sh = r.shield;
+            float before = ShieldEnergy(sh);
+            float after = KbShield.EnergyAfter(before, r.force, RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce,
+                sh.Props?.energyLossPerDamage ?? 0.033f);
+            bool broke = false;
+            if (sh.ShieldState == ShieldState.Active)
+            {
+                if (after < 0f)
+                {
+                    ShieldEnergy(sh) = 0f;
+                    ShieldBreak?.Invoke(sh, null);
+                    broke = true;
+                }
+                else
+                {
+                    ShieldEnergy(sh) = after;
+                }
+            }
+            RM_KnockbackJournal.Add("skip", r.explosionId, p, "reason", "shield", "energyBefore", before, "energyAfter", Mathf.Max(0f, after),
+                "broke", broke);
         }
 
         private static string PawnSkipReason(Pawn p)

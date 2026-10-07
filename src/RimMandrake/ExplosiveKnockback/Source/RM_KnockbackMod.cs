@@ -7,11 +7,23 @@ namespace RimMandrake.ExplosiveKnockback
 {
     /// <summary>A DamageDef's throw strength (design §3.1). Bomb ships 1.0; Flame, EMP, Smoke, Extinguish and
     /// ToxGas ship an explicit 0. Other mods' explosive DamageDefs get one by patch, never by guess.
-    /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".</summary>
+    /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".
+    /// impactFactor: scales wall / pawn / door impact damage for this blast (0 = no impact: an arrest tool).
+    /// immuneBodySizeOverride: replaces the global "too big to throw" body size for this blast (0 = unset); eligibility is
+    /// "body size below it", so 3.6 throws a 3.5 body.
+    /// Lookup (design §2.1): the explosion's PROJECTILE ThingDef, then its WEAPON ThingDef, then its DamageDef; the first
+    /// that carries this extension supplies the whole configuration.</summary>
     public class RM_KnockbackExtension : DefModExtension
     {
         public float force = 1f;
         public int maxThrowCells = 0;
+        public float impactFactor = 1f;
+        public float immuneBodySizeOverride = 0f;
+
+        public KbConfig ToConfig()
+        {
+            return new KbConfig { force = force, ownCap = maxThrowCells, impactFactor = impactFactor, immuneOverride = immuneBodySizeOverride };
+        }
     }
 
     [DefOf]
@@ -51,6 +63,15 @@ namespace RimMandrake.ExplosiveKnockback
         public static int maxThrowsPerExplosion = 40;
         public static int maxItemThrowsPerMapTick = 60;
         public static bool debugDrawVectors = false;
+        public static int recoveryWindowTicks = 120;
+        public static bool shieldsAbsorbThrow = true;
+        public static float shieldDebitPerForce = 10f;
+
+        /// <summary>Per-request kernel settings for one blast's configuration (never mutates the shared settings).</summary>
+        public static KbSettings Kernel(KbConfig c)
+        {
+            return KbLookup.Apply(Kernel(), c, maxThrowCells, ownCapScale);
+        }
 
         public static KbSettings Kernel(int ownCap = 0)
         {
@@ -92,6 +113,9 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref maxThrowsPerExplosion, "maxThrowsPerExplosion", 40);
             Scribe_Values.Look(ref maxItemThrowsPerMapTick, "maxItemThrowsPerMapTick", 60);
             Scribe_Values.Look(ref debugDrawVectors, "debugDrawVectors", false);
+            Scribe_Values.Look(ref recoveryWindowTicks, "recoveryWindowTicks", 120);
+            Scribe_Values.Look(ref shieldsAbsorbThrow, "shieldsAbsorbThrow", true);
+            Scribe_Values.Look(ref shieldDebitPerForce, "shieldDebitPerForce", 10f);
         }
     }
 
@@ -111,7 +135,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 900f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, 1060f);
             Widgets.BeginScrollView(inRect, ref scroll, view);
             var l = new Listing_Standard();
             l.Begin(view);
@@ -147,6 +171,14 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.landingStunMin = (int)l.Slider(RimMandrakeExplosiveKnockbackSettings.landingStunMin, 0f, 300f);
             RimMandrakeExplosiveKnockbackSettings.landingStunMax = Mathf.Max(RimMandrakeExplosiveKnockbackSettings.landingStunMin,
                 (int)l.Slider(RimMandrakeExplosiveKnockbackSettings.landingStunMax, 0f, 300f));
+            l.Label("Recovery after a throw: " + RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks
+                + " ticks after the landing stun ends before the same pawn can be thrown again  (0 = chain throws allowed)");
+            RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = (int)l.Slider(RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks, 0f, 600f);
+            l.CheckboxLabeled("Shield belts absorb the throw", ref RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow,
+                "On: a pawn whose shield absorbed the blast is not thrown, and the shield pays extra charge for it (a strong throw can pop it). Off: shields stop the wound, never the shove.");
+            l.Label("Extra shield drain per point of throw force: " + RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce.ToString("0")
+                + " damage-equivalents");
+            RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce = Mathf.Round(l.Slider(RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce, 0f, 50f));
             l.CheckboxLabeled("Doors take impact damage", ref RimMandrakeExplosiveKnockbackSettings.doorsTakeDamage);
             l.CheckboxLabeled("Throw into FlowWorks pits", ref RimMandrakeExplosiveKnockbackSettings.throwIntoPits,
                 "Off: an open pit stops a throw like a wall.");
@@ -190,6 +222,9 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.maxThrowsPerExplosion = 40;
             RimMandrakeExplosiveKnockbackSettings.maxItemThrowsPerMapTick = 60;
             RimMandrakeExplosiveKnockbackSettings.debugDrawVectors = false;
+            RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 120;
+            RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow = true;
+            RimMandrakeExplosiveKnockbackSettings.shieldDebitPerForce = 10f;
         }
     }
 }

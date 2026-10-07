@@ -27,7 +27,9 @@ With FlowWorks: anything thrown into an open pit lands on the pit floor, and a p
 
 With Gimme Some Slack: a colonist carrying a hose end drops it where they stood.
 
-Explosions only: Bomb (grenades, mortars, IEDs) throws; fire, EMP, smoke, firefoam and tox gas do not. Explosions from other mods throw only if patched with RimMandrake.ExplosiveKnockback.RM_KnockbackExtension (force, and optionally its own maxThrowCells; without one a blast uses the global maximum), or by the "unpatched explosions" setting (default 0%).
+A thrown pawn cannot be thrown again until its landing stun ends plus a recovery window (120 ticks by default), so no blast can juggle someone. A shield belt that absorbs a blast absorbs the throw too, and pays extra charge for it: a strong throw can pop the belt.
+
+Explosions only: Bomb (grenades, mortars, IEDs) throws; fire, EMP, smoke, firefoam and tox gas do not. Explosions from other mods throw only if patched with RimMandrake.ExplosiveKnockback.RM_KnockbackExtension (force; optionally maxThrowCells - its own maximum throw, impactFactor - scales impact damage, immuneBodySizeOverride - throws bigger bodies). The extension is read from the explosion's projectile ThingDef first, then its weapon ThingDef, then its DamageDef; the first one found supplies the whole configuration, or by the "unpatched explosions" setting (default 0%).
 
 Every part has a Mod Settings toggle; all off is vanilla. Design: design/RimMandrake/explosive_knockback_design_2026-10-06.md.</description>
 </ModMetaData>
