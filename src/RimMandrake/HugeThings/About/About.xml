@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Huge Things</name>
+  <packageId>mandrake.rm.hugethings</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Huge plants and huge animals that behave like their size.
+
+The engine gives every plant and every pawn one cell, however big it is drawn. A
+mushroom twenty cells across can only be clicked on the cell it grows from,
+pawns walk straight through its stem, and walls get built inside it. A beast
+drawn the size of a house can only be selected by clicking near its middle.
+
+Huge Things fixes that for anything that opts in:
+
+- A huge PLANT gets a solid trunk. Its stem blocks a small patch of cells
+  (sized per species, and grown into as the plant grows), so pawns walk around
+  it and nothing can be built inside it. You still walk under its cap, the way
+  you walk under a tree. Clicking anywhere on the trunk selects the plant.
+  Cutting, harvesting, burning and save/load all work as usual; when the plant
+  dies or is cut down, the trunk goes with it.
+- A huge ANIMAL (or any pawn) gets a selection hitbox the size of its drawn
+  body, so clicking anywhere on it selects it.
+
+This is the engine only. Nothing is huge until a mod opts it in, by giving a
+plant the RM_HugePlantExtension or a pawn's race the RM_HugePawnExtension
+modExtension. Every mechanic has a Mod Settings toggle.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+    <!-- Its CustomRectForSelector postfix runs at Priority.Last so ours wins over Large Pawns' square when both apply. -->
+    <li>neku.largepawns</li>
+  </loadAfter>
+  <loadBefore>
+    <li>mandrake.rm.titaniccreatures</li>
+    <li>mandrake.rm.biomes</li>
+  </loadBefore>
+</ModMetaData>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- HUGE_THINGS_FOOTPRINT_1 — owner ruling 2026-10-07 (option 1, "solid trunk, open canopy"): every Rot
+       plant drawn 6+ cells wide gets a solid trunk and a trunk-wide click area from mandrake.rm.hugethings.
+       Design + the per-species table: design/RimMandrake/giant_footprint_design_2026-10-07.md. The table is
+       pinned by src/RimMandrake/HugeThings/selftest_hugethings_footprint.py; change both together.
+
+       trunkWidth x trunkDepth = cells blocked at full size, from the plant's own cell northward (the
+       plant's cell itself stays open so it can be cut and harvested from the south). stemHeight = how far
+       north the drawn stem reaches, which is the click area.
+
+       Gated per def by PatchOperationConditional on its own xpath (absent donor = no-op), and the extension
+       <li> carries MayRequire="mandrake.rm.hugethings", which the def loader honours on a list element: with
+       Huge Things inactive the element is skipped and the plant stays vanilla. (MayRequire on an Operation
+       would be inert; it is not used there.) -->
+
+  <!-- AB_AgariluxPrime — grath elder (20 wide): 4x4 trunk, stem 8 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>4</trunkWidth>
+          <trunkDepth>4</trunkDepth>
+          <stemHeight>8</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- AB_DribblingCap — ruvvak weeper (12 wide): 3x3 trunk, stem 5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>3</trunkWidth>
+          <trunkDepth>3</trunkDepth>
+          <stemHeight>5</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RM_Nogtyl — brommok timber (12 wide): 3x3 trunk, stem 5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Nogtyl"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_Nogtyl"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>3</trunkWidth>
+          <trunkDepth>3</trunkDepth>
+          <stemHeight>5</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RM_Arpeau — churrun mast (10 wide): 2x2 trunk, stem 5 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_Arpeau"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_Arpeau"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>2</trunkWidth>
+          <trunkDepth>2</trunkDepth>
+          <stemHeight>5</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- AB_ArbuscularMycorrhiza — bollusk trunk (9 wide): 3x3 trunk, stem 4 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>3</trunkWidth>
+          <trunkDepth>3</trunkDepth>
+          <stemHeight>4</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- AB_AgaricusDomeCap — skarrow dome (7 wide): 3x2 trunk, stem 3 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>3</trunkWidth>
+          <trunkDepth>2</trunkDepth>
+          <stemHeight>3</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- AB_GiantAgarilux — vokkun pillar (6 wide): 2x2 trunk, stem 3 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>2</trunkWidth>
+          <trunkDepth>2</trunkDepth>
+          <stemHeight>3</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- RM_PaleTree — quellan tree (6 wide): 2x2 trunk, stem 3 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_PaleTree"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="RM_PaleTree"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>2</trunkWidth>
+          <trunkDepth>2</trunkDepth>
+          <stemHeight>3</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- AB_WitchesOyster — turrok shelf (6 wide): 2x1 trunk, stem 2 -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
+      <value>
+        <li Class="RimMandrake.HugeThings.RM_HugePlantExtension" MayRequire="mandrake.rm.hugethings">
+          <trunkWidth>2</trunkWidth>
+          <trunkDepth>1</trunkDepth>
+          <stemHeight>2</stemHeight>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
