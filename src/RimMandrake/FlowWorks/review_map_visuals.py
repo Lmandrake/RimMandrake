@@ -61,9 +61,10 @@ NOTICE = {
              "through it, fainter the deeper the water.",
     "tar": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps "
            "and shines.",
-    "scorched": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest "
-                "against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes "
-                "fading out about a cell. Deeper pits still read deeper.",
+    "scorched": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to "
+                "baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal "
+                "lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened "
+                "ground round the rim in uneven lobes. Deeper pits still read deeper.",
     "oil": "Oil: slow dark gloss with a faint rainbow film.",
     "slime": "Green slime: thick, opaque, slowly creeping, a few bubbles rising.",
     "slimewhite": "White slime: thick, opaque, slowly creeping, a few bubbles rising.",

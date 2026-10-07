@@ -833,7 +833,7 @@
   {
    "id": "vis_scorched_dirt_D1",
    "title": "A depth-1 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 0,
     "row": 6
@@ -867,7 +867,7 @@
   {
    "id": "vis_scorched_dirt_D2",
    "title": "A depth-2 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 1,
     "row": 6
@@ -901,7 +901,7 @@
   {
    "id": "vis_scorched_dirt_D3",
    "title": "A depth-3 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 2,
     "row": 6
@@ -935,7 +935,7 @@
   {
    "id": "vis_scorched_dirt_D4",
    "title": "A depth-4 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 3,
     "row": 6
@@ -969,7 +969,7 @@
   {
    "id": "vis_scorched_stone_D1",
    "title": "A depth-1 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 0,
     "row": 7
@@ -1003,7 +1003,7 @@
   {
    "id": "vis_scorched_stone_D2",
    "title": "A depth-2 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 1,
     "row": 7
@@ -1037,7 +1037,7 @@
   {
    "id": "vis_scorched_stone_D3",
    "title": "A depth-3 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 2,
     "row": 7
@@ -1071,7 +1071,7 @@
   {
    "id": "vis_scorched_stone_D4",
    "title": "A depth-4 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: granite pits turn to grey ash, dirt pits to baked reddish-brown soil with ash over it; char darkest against the walls and in patches; charcoal lumps and ash flakes scattered on the floor; soot drips running down the far wall; smoke-blackened ground round the rim in uneven lobes. Deeper pits still read deeper.",
    "grid": {
     "col": 3,
     "row": 7

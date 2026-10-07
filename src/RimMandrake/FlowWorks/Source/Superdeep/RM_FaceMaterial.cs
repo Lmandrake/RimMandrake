@@ -143,7 +143,32 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private static Material ashMat, sootMat, tintMat;
+		private static Material ashMat, dirtAshMat, sootMat, tintMat;
+		private static Material[] debrisChar, debrisAsh;
+
+		/// <summary>Debris sprites (round 4): 12 char lumps and 12 ash flakes, real alpha, drawn after the scorch tint.</summary>
+		public const int DebrisVariants = 12;
+		public const int DebrisQueue = 2447;
+
+		public static Material DebrisMat(bool isChar, int v)
+		{
+			ref Material[] set = ref isChar ? ref debrisChar : ref debrisAsh;
+			if (set == null)
+			{
+				set = new Material[DebrisVariants];
+				for (int i = 0; i < DebrisVariants; i++)
+				{
+					Texture2D tex = ContentFinder<Texture2D>.Get("Terrain/FlowWorks/Debris/RM_ScorchDebris_" + (isChar ? "Char" : "Ash") + i, false);
+					if (tex != null)
+					{
+						set[i] = new Material(MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent))) { renderQueue = DebrisQueue };
+						set[i].mainTexture = tex;
+					}
+				}
+			}
+			return set[v];
+		}
+
 
 		/// <summary>Vertex-colour material drawn over the scorch textures (the heat tint).</summary>
 		public static Material TintMat => tintMat ?? (tintMat = new Material(MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.VertexColor))) { renderQueue = TintQueue });
@@ -152,6 +177,7 @@ namespace RimMandrake.FlowWorks
 		/// rough terrain-fade shader, so the vertex alpha is the COVERAGE and RoughAlphaAdd breaks every edge up the
 		/// way soil fades into grass — no hard-edged quads, no stamps. World-space UVs, so it never repeats per cell.</summary>
 		public static Material AshMat => ashMat ?? (ashMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_Ash", AshQueue));
+		public static Material DirtAshMat => dirtAshMat ?? (dirtAshMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_DirtAsh", AshQueue));
 		public static Material SootMat => sootMat ?? (sootMat = ScorchMat("Terrain/FlowWorks/RM_Scorch_Soot", SootQueue));
 
 		private static Material ScorchMat(string path, int queue)
