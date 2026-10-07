@@ -24,6 +24,9 @@ namespace RimMandrake.KineticArms
             public string name;
             public IntVec3 o;
             public int stagedTick;
+            /// <summary>Ticks the runner steps before the verdict (Stage reports it as ticks=N). A throw lands in ~20
+            /// ticks; a thrown hostile walks off soon after, so most scenes sample early. Grenades carry a fuse.</summary>
+            public int ticks = 90;
             public readonly Dictionary<string, Thing> things = new Dictionary<string, Thing>();
             public readonly Dictionary<string, IntVec3> starts = new Dictionary<string, IntVec3>();
             public readonly Dictionary<string, float> numbers = new Dictionary<string, float>();
@@ -100,7 +103,7 @@ namespace RimMandrake.KineticArms
                 return "ERROR " + s.name + " " + ex.GetType().Name + ": " + ex.Message;
             }
             scenes[s.name] = s;
-            return "STAGED " + s.name + " at " + x + "," + z + " tick=" + s.stagedTick;
+            return "STAGED " + s.name + " at " + x + "," + z + " tick=" + s.stagedTick + " ticks=" + s.ticks;
         }
 
         public static string Verdict(string name)
@@ -305,10 +308,13 @@ namespace RimMandrake.KineticArms
                 case "thudder_crowd":
                     {
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
-                        Hostile(s, "a", O(s, 1, 0));
-                        Hostile(s, "b", O(s, -1, 0));
-                        Hostile(s, "c", O(s, 0, 1));
-                        Hostile(s, "d", O(s, 0, -1));
+                        // held: the grenade's 100-tick fuse (explosionDelay) plus flight is ~150 ticks, long enough for
+                        // unheld raiders to walk 3 cells and fake a throw (live 2026-10-07). Stun does not gate a throw.
+                        Hold(Hostile(s, "a", O(s, 1, 0)));
+                        Hold(Hostile(s, "b", O(s, -1, 0)));
+                        Hold(Hostile(s, "c", O(s, 0, 1)));
+                        Hold(Hostile(s, "d", O(s, 0, -1)));
+                        s.ticks = 250;
                         Fire(sh, "RM_Proj_ThudderGrenade", O(s, 0, 0), "RM_Weapon_ThudderGrenade");
                         s.verdict = sc =>
                         {
@@ -316,8 +322,9 @@ namespace RimMandrake.KineticArms
                             var parts = new List<string>();
                             foreach (string k in new[] { "a", "b", "c", "d" })
                             {
-                                parts.Add(Moved(sc, k, out int dx, out int dz));
-                                if (Math.Max(Math.Abs(dx), Math.Abs(dz)) >= 3) thrown++;
+                                int launches = ForThing(sc, "launch", sc.things[k]).Count;
+                                parts.Add(Moved(sc, k, out int dx, out int dz) + " launches=" + launches);
+                                if (launches >= 1 && Math.Max(Math.Abs(dx), Math.Abs(dz)) >= 3) thrown++;
                                 if (Dead(sc, k)) dead++;
                             }
                             return Result(sc, thrown >= 3 && dead == 0, "thrown>=3cells=" + thrown + " dead=" + dead + " | " + string.Join("; ", parts));
