@@ -89,7 +89,7 @@ namespace RimMandrake.EnvironmentalHazards
             if (ext == null)
             {
                 Log.WarningOnce(
-                    "[RM EnvironmentalHazards] RUT_SteamDevil (or another RM_WanderingVortex-classed "
+                    "[RM EnvironmentalHazards] RM_SteamDevil (or another RM_WanderingVortex-classed "
                     + "ThingDef) carries no RM_WanderingVortexExtension; it will sit inert.",
                     thingIDNumber ^ 0x5344); // "SD"
                 return;
@@ -99,7 +99,7 @@ namespace RimMandrake.EnvironmentalHazards
 
             if (!Position.InBounds(Map))
             {
-                Messages.Message("RUT_SteamDevilLeftMap".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent);
+                Messages.Message("RM_SteamDevilLeftMap".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent);
                 Destroy();
                 return;
             }
@@ -125,7 +125,7 @@ namespace RimMandrake.EnvironmentalHazards
                 ticksLeftToLive--;
                 if (ticksLeftToLive == 0)
                 {
-                    Messages.Message("RUT_SteamDevilDissipated".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent);
+                    Messages.Message("RM_SteamDevilDissipated".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent);
                     Destroy();
                 }
             }

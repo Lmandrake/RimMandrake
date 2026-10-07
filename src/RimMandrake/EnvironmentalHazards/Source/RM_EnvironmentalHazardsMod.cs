@@ -119,7 +119,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      seeking a trunk to chew — an already-falling/mid-chew tree at the
     //      moment this is toggled off simply never completes; nothing is
     //      forced upright again.
-    //  23. breaklightEnabled — RUT_IncidentWorker_Breaklight
+    //  23. breaklightEnabled — RM_IncidentWorker_Breaklight
     //      (GREENTIDE_MECHANICS_2 M5). Off: the Breaklight clearing event
     //      never fires (CanFireNowSub refuses outright); an occurrence
     //      already in progress runs to its own scheduled end rather than

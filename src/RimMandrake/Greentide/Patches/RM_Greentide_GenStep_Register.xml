@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  RUT_Greentide_RootCausewaysGenStep_Register.xml   UtinniPatches - GREENTIDE_MECHANICS_2 M9 build pass
-
-  Registers RUT_GenStep_RootCauseways onto Base_Player, same target/shape as
-  RUT_Miasma_GradientAxis_Register.xml (read directly before writing this).
--->
+<!-- GREENTIDE_BASE_PORT_BUILD_1: registers the living-bole and root-causeway GenSteps on Base_Player
+     (Defs/MapGeneration/RM_Greentide_GenSteps.xml). -->
 <Patch>
 
   <Operation Class="PatchOperationConditional">
@@ -12,7 +8,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
       <value>
-        <li MayRequire="mandrake.rm.biomes">RUT_GenStep_RootCauseways</li>
+        <li>RM_GenStep_LivingBoles</li>
+        <li>RM_GenStep_RootCauseways</li>
       </value>
     </match>
   </Operation>

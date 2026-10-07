@@ -6,14 +6,14 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     //   <ThingDef ParentName="BuildingBase">
-    //     <defName>RUT_DryAirBlower</defName>
+    //     <defName>RM_DryAirBlower</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DryFieldEmitter">
     //         <dryRoomHoldTicks>15000</dryRoomHoldTicks>
     //         <animalRepelRadius>3</animalRepelRadius>
     //         <animalRepelArcDegrees>90</animalRepelArcDegrees>
-    //         <aversionHediff>RUT_DryAirAversion</aversionHediff>
+    //         <aversionHediff>RM_DryAirAversion</aversionHediff>
     //       </li>
     //     </comps>
     //   </ThingDef>
@@ -175,7 +175,7 @@ namespace RimMandrake.EnvironmentalHazards
         }
 
         // Piece 3: "repels animals ... a periodic scan (interval 250 ticks)
-        // applying a short RUT_DryAirAversion hediff (flee-inducing mental
+        // applying a short RM_DryAirAversion hediff (flee-inducing mental
         // state) to non-immune wild animals in the arc." RESOLVED by the
         // GREENTIDE_MECHANICS_2 spike pass: Verse.AI/AvoidGrid.cs is
         // colonist-pathing/combat-danger only, so this scan-and-flee route

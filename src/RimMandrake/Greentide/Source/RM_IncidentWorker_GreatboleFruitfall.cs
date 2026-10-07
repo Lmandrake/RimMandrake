@@ -3,7 +3,7 @@ using RimMandrake.EnvironmentalHazards;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.UtinniPatches
+namespace RimMandrake.Greentide
 {
 	// GREATBOLE_HARVEST_LADDER_1 §2d, "Fruitfall — the non-destructive
 	// route, and the design's missing half": a random event dropping one or
@@ -16,7 +16,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 	// Never fires on a map with no registered greatbole (RM_MapComponent_
 	// LivingRegrowth.AllBoleIds()) — same "no target, no incident" posture
 	// every other bespoke IncidentWorker in this kit takes.
-	public class RUT_IncidentWorker_GreatboleFruitfall : IncidentWorker
+	public class RM_IncidentWorker_GreatboleFruitfall : IncidentWorker
 	{
 		// INVENTED: "one or two fruits… and a few grubs" (spec's own words,
 		// deliberately smaller than either the Great Shaking's or the
@@ -26,7 +26,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 
 		protected override bool CanFireNowSub(IncidentParms parms)
 		{
-			if (!base.CanFireNowSub(parms))
+			if (!RM_GreentideSettings.fruitfallEnabled || !base.CanFireNowSub(parms))
 			{
 				return false;
 			}
@@ -79,8 +79,8 @@ namespace RimMandrake.Utinni.UtinniPatches
 				GenSpawn.Spawn(grub, cell, map);
 			}
 
-			Find.LetterStack.ReceiveLetter("RUT_GreatboleFruitfallLabel".Translate(),
-				"RUT_GreatboleFruitfallText".Translate(), LetterDefOf.PositiveEvent,
+			Find.LetterStack.ReceiveLetter("RM_GreatboleFruitfallLabel".Translate(),
+				"RM_GreatboleFruitfallText".Translate(), LetterDefOf.PositiveEvent,
 				new TargetInfo(center, map));
 
 			return true;

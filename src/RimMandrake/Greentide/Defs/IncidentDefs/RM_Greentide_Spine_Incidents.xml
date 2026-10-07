@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_.
+
+  RM_Breaklight (spec M5): ordinary Misc incident, same shape as vanilla HeatWave. The worker adds only
+  the Environmental Hazards Kit's "Breaklight clearing event" toggle. durationDays 0.125~0.3333 is the
+  spec's 3-8 hours. baseChance/minRefireDays INVENTED.
+
+  RM_GreatboleFruitfall (GREATBOLE_HARVEST_LADDER_1 §2d): drops one or two RM_GreatboleFruit and a few
+  RM_GreatboleGrub near a live greatbole; refuses to fire on a map with no registered bole, and is off
+  when Mod Settings "Greatbole fruitfall" is off. baseChance/minRefireDays INVENTED.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_Breaklight</defName>
+    <label>Breaklight</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_IncidentWorker_Breaklight</workerClass>
+    <gameCondition>RM_BreaklightCondition</gameCondition>
+    <durationDays>0.125~0.3333</durationDays>
+    <baseChance>1</baseChance>
+    <minRefireDays>6</minRefireDays>
+    <allowedBiomes>
+      <li>RM_Greentide</li>
+    </allowedBiomes>
+    <letterLabel>Breaklight</letterLabel>
+    <letterDef>NegativeEvent</letterDef>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RM_GreatboleFruitfall</defName>
+    <label>greatbole fruitfall</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.Greentide.RM_IncidentWorker_GreatboleFruitfall</workerClass>
+    <baseChance>1</baseChance>
+    <minRefireDays>2</minRefireDays>
+    <allowedBiomes>
+      <li>RM_Greentide</li>
+    </allowedBiomes>
+  </IncidentDef>
+
+</Defs>

@@ -133,7 +133,7 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     Def target = null;
                     Type type = null;
-                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef) })
+                    foreach (Type t in new[] { typeof(ThingDef), typeof(HediffDef), typeof(ThoughtDef), typeof(TerrainDef), typeof(ResearchProjectDef), typeof(RecipeDef), typeof(WeatherDef), typeof(GameConditionDef), typeof(IncidentDef) })
                     {
                         target = GenDefDatabase.GetDefSilentFail(t, a.to, false);
                         if (target != null)

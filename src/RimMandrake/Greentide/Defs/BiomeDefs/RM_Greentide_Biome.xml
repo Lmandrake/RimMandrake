@@ -32,7 +32,39 @@
         <heatKind>ambient</heatKind>
         <heatOffsetC>8</heatOffsetC>
       </li>
+      <!-- GREENTIDE_BASE_PORT_BUILD_1: the living greatbole (spec M12) and the root causeways (M9), values
+           copied from the campaign twin. Bole counts/radius/spacing and the causeway ranges are kit-spec
+           INVENTED numbers; roofDef unset, so the GenStep's default RoofRockThick applies. Toggles: the
+           Environmental Hazards Kit's living-bole and causeway switches (worldgen-affecting). -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
+        <heartwoodThing>RM_GreatboleHeartwood</heartwoodThing>
+        <coreMarkerThing>RM_GreatboleCore</coreMarkerThing>
+        <boleCountRange>1~2</boleCountRange>
+        <boleRadius>4~6</boleRadius>
+        <minSpacing>30</minSpacing>
+        <edgeMargin>12</edgeMargin>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
+        <causewayTerrain>RM_RootCauseway</causewayTerrain>
+        <basinTerrains>
+          <li>RM_GreentideChurnmud</li>
+        </basinTerrains>
+        <pathsPerAnchorRange>3~6</pathsPerAnchorRange>
+        <laneWidthRange>1~2</laneWidthRange>
+        <pathLengthRange>20~40</pathLengthRange>
+        <fallbackAnchorCountRange>1~3</fallbackAnchorCountRange>
+        <fallbackMinAnchorSpacing>25</fallbackMinAnchorSpacing>
+        <fallbackEdgeMargin>10</fallbackEdgeMargin>
+      </li>
     </modExtensions>
+    <!-- GREENTIDE_BASE_PORT_BUILD_1: the two permanent locks, applied to every newly generated map.
+         RM_RoilLock forces RM_RoilWeather (so the table below is inert while it holds); Mod Settings
+         "The Roil" takes both the lock and the table row off for new maps. RM_GreentideWetBulbLock is
+         switched live by the Environmental Hazards Kit's wet-bulb toggle. -->
+    <biomeMapConditions>
+      <li>RM_RoilLock</li>
+      <li>RM_GreentideWetBulbLock</li>
+    </biomeMapConditions>
 
     <animalDensity>3.2</animalDensity>
     <!-- GREENTIDE_BIOME_DENSITY_1: plantDensity and movementDifficulty tuned
@@ -118,6 +150,7 @@
       <FoggyRain>1</FoggyRain>
       <SnowGentle>0</SnowGentle>
       <SnowHard>0</SnowHard>
+      <RM_RoilWeather>10</RM_RoilWeather> <!-- INVENTED weight. Inert while RM_RoilLock holds; the Roil toggle removes it with the lock -->
     </baseWeatherCommonalities>
 
     <soundsAmbient>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_. Registered on Base_Player by
+  Patches/RM_Greentide_GenStep_Register.xml. Both classes are no-ops on a biome without their extension
+  (RM_LivingBoleBiomeExtension / RM_RootCausewayBiomeExtension), so global registration is safe.
+
+  Order: after vanilla Terrain (210) and MutatorPostTerrain (220). Boles (222) run before causeways (228)
+  so each bole is already registered with RM_MapComponent_LivingRegrowth when the causeways read
+  BoleCenters. The Fever Wood's own GenSteps are ordered against these two numbers.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_GenStep_LivingBoles</defName>
+    <order>222</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_LivingBoles" />
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_RootCauseways</defName>
+    <order>228</order>
+    <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_RootCauseways" />
+  </GenStepDef>
+
+</Defs>

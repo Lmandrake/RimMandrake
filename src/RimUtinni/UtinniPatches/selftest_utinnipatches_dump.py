@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""selftest_utinnipatches_dump.py -- UTINNIPATCHES_COVERAGE_GAPS_1 offline half (round 41): defs_vs_dump_static and
-greatbole_ladder_static are green on the shipped mod and go red on every planted break (in-memory copies of the parsed
+"""selftest_utinnipatches_dump.py -- UTINNIPATCHES_COVERAGE_GAPS_1 offline half (round 41): defs_vs_dump_static is
+green on the shipped mod and go red on every planted break (in-memory copies of the parsed
 inputs; the shipped files and the dump are never written)."""
 import copy
 import importlib.util
@@ -24,38 +24,6 @@ def main():
     spec = importlib.util.spec_from_file_location("up_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(v)
-
-    # ---- the greatbole ladder
-    p = v.ladder_parse()
-    check("shipped ladder: clean", v.ladder_findings(p) == [], v.ladder_findings(p))
-    check("sanity probe: defaults parsed (0.40/0.60/0.70, hysteresis 0.03, catastrophe on)",
-          (p["greatboleShakingThreshold"], p["greatboleHealingThreshold"], p["greatboleCatastropheThreshold"], p["hysteresis"], p["catastropheEnabled"]) == (0.4, 0.6, 0.7, 0.03, True))
-
-    def cs_break(tag, old, new, must):
-        q = dict(p)
-        assert old in q["_cs"] or old in q["_st"], "planted break target missing: %r" % old
-        q["_cs"] = q["_cs"].replace(old, new, 1)
-        q["_st"] = q["_st"].replace(old, new, 1)
-        got = v.ladder_findings(q)
-        check("break ladder: %-44s -> %s" % (tag, must[:34]), any(must in g for g in got), got)
-
-    cs_break("shaking no longer one-shot (armed check gone)", "if (!shakingArmed && fraction", "if (fraction", "ladder source lost")
-    cs_break("shaking re-arms with no hysteresis", "fraction < UtinniPatchesSettings.greatboleShakingThreshold - h", "fraction < UtinniPatchesSettings.greatboleShakingThreshold", "ladder source lost")
-    cs_break("healing re-announces (flag never set)", "healingAnnounced = true; AnnounceViolentHealing();", "AnnounceViolentHealing();", "ladder source lost")
-    cs_break("catastrophe ignores its toggle", "UtinniPatchesSettings.greatboleCatastropheEnabled && fraction", "fraction", "ladder source lost")
-    cs_break("catastrophe not marked done first", "catastropheDone = true; IntVec3", "IntVec3", "catastropheDone first")
-    cs_break("poll stops honouring catastropheDone", "if (catastropheDone || !parent.Spawned)", "if (!parent.Spawned)", "ladder source lost")
-    q = dict(p, greatboleShakingThreshold=0.5)
-    check("break ladder: shaking default 0.5 is not the ruled 0.40", any("ruled 0.40" in g for g in v.ladder_findings(q)), v.ladder_findings(q))
-    q = dict(p, greatboleHealingThreshold=0.8)
-    check("break ladder: healing above catastrophe is not ordered", any("not ordered" in g for g in v.ladder_findings(q)), v.ladder_findings(q))
-    cs_break("shaking slider excludes its default", "list.Slider(greatboleShakingThreshold, 0.1f, 0.9f)", "list.Slider(greatboleShakingThreshold, 0.5f, 0.9f)", "outside its slider")
-    q = dict(p, hysteresis=0.0)
-    check("break ladder: hysteresis 0 lets a one-step dip re-fire shaking", any("hysteresis" in g for g in v.ladder_findings(q)), v.ladder_findings(q))
-    q = dict(p, greatboleCatastropheThreshold=0.3)
-    check("break ladder: catastrophe threshold below shaking/healing is caught", v.ladder_findings(q) != [])
-    check("sim: rising 0..0.9 -> shaking, healing, catastrophe once each, in order",
-          [e[0] for e in v.ladder_sim(p, [i / 100.0 for i in range(91)])] == ["shaking", "healing", "catastrophe"])
 
     # ---- shipped defs against the dump
     try:
@@ -115,10 +83,6 @@ def main():
         check("chain defs_vs_dump_static PASSes on the shipped mod", list(got.values()) == ["PASS"], got)
         got = run("defs_vs_dump_static", {"_dump_types": lambda b, w: d2})
         check("chain: a def missing from the dump reddens it", list(got.values()) == ["FAIL"], got)
-        got = run("greatbole_ladder_static")
-        check("chain greatbole_ladder_static PASSes on the shipped mod", list(got.values()) == ["PASS"], got)
-        got = run("greatbole_ladder_static", {"ladder_parse": lambda: dict(p, hysteresis=0.0)})
-        check("chain: a hysteresis break reddens the ladder", list(got.values()) == ["FAIL"], got)
 
     if FAILS:
         print("\n%d UtinniPatches dump selftest(s) FAILED" % len(FAILS))

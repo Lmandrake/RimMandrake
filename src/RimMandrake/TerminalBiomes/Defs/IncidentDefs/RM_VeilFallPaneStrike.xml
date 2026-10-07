@@ -7,7 +7,7 @@
   "it can kill outright; the ~15 s shadow warning is the fairness."
 
   Same shape as this mod's other biome-scoped atmosphere-and-danger
-  incidents (RUT_WalkerSurfacing.xml, RUT_SteamDevilAppears.xml — read
+  incidents (RUT_WalkerSurfacing.xml, RM_SteamDevilAppears.xml — read
   before writing this file): category Misc (keeps it out of the vanilla
   Storyteller's ThreatSmall/ThreatBig queues — this is the sea's own
   standing hazard, not a raid-shaped threat) + targetTags Map_PlayerHome

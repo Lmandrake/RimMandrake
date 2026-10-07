@@ -9,7 +9,7 @@ namespace RimMandrake.EnvironmentalHazards
     // bespoke TerrainDef, not a terrainsByFertility edit — is the chosen
     // fix.
     //
-    // Ordered AFTER RUT_GenStep_RootCauseways (228, which as of
+    // Ordered AFTER RM_GenStep_RootCauseways (228, which as of
     // FEVERWOOD_BOUGH_SOIL_TERRAIN_1 also runs the third bough-soil pass
     // within that same GenStepDef/order) and after RUT_GenStep_ScatterPools
     // (226) — see this class's own GenStepDef order value in the

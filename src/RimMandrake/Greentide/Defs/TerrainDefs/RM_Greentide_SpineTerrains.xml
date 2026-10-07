@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_.
+
+  RM_RootCauseway (spec M9): raised lanes of packed root, 1-2 wide, painted over the churnmud basins by
+  RM_GenStep_RootCauseways from RM_Greentide's RM_RootCausewayBiomeExtension (the Fever Wood's extension
+  names it too). Natural terrain: never designated. PLACEHOLDER ART: vanilla PackedDirt texture; bespoke
+  raised-root art is owed.
+
+  RM_ToxinSealedFloor (spec M12): the floor that stops a greatbole regrowing a mined cell.
+  RM_MapComponent_LivingRegrowth skips any cell whose terrain equals the bole marker's sealantTerrain
+  (RM_GreatboleCore and the Fever Wood's trunk core both name this def). Built like any floor from
+  RM_ToxinSealant, the same item RM_ChurnmudSealed costs. Was the campaign's RUT_ToxinSealant; moved
+  because the free-tier greatbole cannot reference a campaign def. PLACEHOLDER ART: vanilla PavedTile.
+-->
+<Defs>
+
+  <TerrainDef>
+    <defName>RM_RootCauseway</defName>
+    <label>root causeway</label>
+    <description>A raised lane of packed, interwoven roots, firm enough to walk in a straight line over ground that would otherwise swallow you to the knee.</description>
+    <renderPrecedence>325</renderPrecedence>
+    <texturePath>Terrain/Surfaces/PackedDirt</texturePath>
+    <pathCost>2</pathCost>
+    <fertility>0.2</fertility>
+    <edgeType>FadeRough</edgeType>
+    <color>(107,84,52)</color>
+    <affordances>
+      <li>Light</li>
+    </affordances>
+    <statBases>
+      <Beauty>0</Beauty>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef>
+    <defName>RM_ToxinSealedFloor</defName>
+    <label>toxin-sealed floor</label>
+    <description>Chamber floor painted over with toxin sealant and packed down. The living wood beneath cannot push through it, or close the cut you made.</description>
+    <renderPrecedence>320</renderPrecedence>
+    <texturePath>Terrain/Surfaces/PavedTile</texturePath>
+    <pathCost>14</pathCost>
+    <fertility>0</fertility>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <layerable>true</layerable>
+    <designationCategory>Floors</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <constructionSkillPrerequisite>3</constructionSkillPrerequisite>
+    <costList>
+      <RM_ToxinSealant>5</RM_ToxinSealant>
+    </costList>
+    <statBases>
+      <WorkToBuild>400</WorkToBuild>
+      <Beauty>-1</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

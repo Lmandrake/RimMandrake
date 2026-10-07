@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SteamDevilAppears (greentide_kit_spec.md M3): spawns RM_SteamDevil on a water cell of an RM_Greentide
+  map. The Roil also throws one up rarely (RM_MapComponent_RoilVortexSpawner). Renamed from the campaign
+  RUT_ prefix by GREENTIDE_BASE_PORT_BUILD_1 (aliased in Defs/Misc/RM_SteamDevilRename_Aliases.xml).
+  baseChance/minRefireDays INVENTED (about one per five days). Off with the Environmental Hazards Kit's
+  "Steam devils" toggle.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_SteamDevilAppears</defName>
+    <label>steam devil appears</label>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <category>Misc</category>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_IncidentWorker_SteamDevil</workerClass>
+    <baseChance>2</baseChance>
+    <minRefireDays>5</minRefireDays>
+  </IncidentDef>
+
+</Defs>

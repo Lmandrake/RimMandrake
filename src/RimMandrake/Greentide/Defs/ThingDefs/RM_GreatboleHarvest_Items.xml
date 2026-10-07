@@ -4,12 +4,9 @@
 
      RM_ tier (not RUT_), per design/RimMandrake/exposure_gear_matrix_spec.md
      row 94, which already ruled the exact names: "Royal Rind (RM_RoyalRind
-     stuff from RM_GreatboleFruit, ruled, unbuilt)". The bole that currently
-     drops this fruit (RUT_GreatboleCore/Heartwood) is campaign-tier only —
-     GREENTIDE_JUNGLE_TREE_ROSTER_1 already flagged that mismatch as "not
-     mine to decide" and it is not resolved here; this file only supplies
-     the fruit/products the gear matrix already named, at the tier the
-     matrix already ruled.
+     stuff from RM_GreatboleFruit, ruled, unbuilt)". The bole that drops this
+     fruit (RM_GreatboleCore, RM_Greatbole_Landmark.xml) moved to this mod
+     with GREENTIDE_BASE_PORT_BUILD_1, so fruit and source share a tier.
 
      RM_Apparel_RindCoat is NOT a Stuff-selectable garment here — making
      RM_RoyalRind a full StuffDef so any vanilla leather garment could be

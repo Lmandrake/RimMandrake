@@ -44,13 +44,11 @@
     posture RUT_MiasmaWeatherLock.xml's own header already documents for its
     sibling biome); kept at 0 rather than removed so the slots stay visible.
 
-    GREENTIDE_MECHANICS_2 M4 build pass: RUT_RoilWeather (the standing
-    ground-fog) now exists and is permanently forced via biomeMapConditions
-    (Patches/RUT_RoilLock_BiomeWiring.xml) — the "no dedicated Roil WeatherDef
-    yet" gap this header used to flag here is closed. Breaklight (M5, the rare
-    clearing event) is a GameCondition-based incident, not a
-    baseWeatherCommonalities entry, so it never appears in the table above
-    either; see RUT_Breaklight.xml (Defs/IncidentDefs/).
+    GREENTIDE_BASE_PORT_BUILD_1: the Roil, the wet-bulb lock, Breaklight, the blower, the causeways
+    and the greatbole landmark now live in the free mod as RM_ defs (mandrake.rm.greentide), carried
+    by BiomeDef RM_Greentide. This frozen twin no longer gets the two locks (their wiring patches were
+    deleted) and Breaklight/fruitfall are allowed on RM_Greentide only; its extensions below point at
+    the RM_ defs so it still loads until the painting pass retires it (BIOME_PAINT_ONCE_AT_THE_END_1).
 
     diseases kept at the donor's own set (diseaseMtbDays 50, "a heavy disease load —
     also accidentally honest" per SS0). animalDensity/plantDensity kept at the
@@ -152,8 +150,8 @@
            INVENTED numbers; roofDef left unset so the GenStep's own default
            (RoofDefOf.RoofRockThick) applies. -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
-        <heartwoodThing>RUT_GreatboleHeartwood</heartwoodThing>
-        <coreMarkerThing>RUT_GreatboleCore</coreMarkerThing>
+        <heartwoodThing>RM_GreatboleHeartwood</heartwoodThing>
+        <coreMarkerThing>RM_GreatboleCore</coreMarkerThing>
         <boleCountRange>1~2</boleCountRange>
         <boleRadius>4~6</boleRadius>
         <minSpacing>30</minSpacing>
@@ -165,14 +163,14 @@
            collision with mandrake.rm.flowworks's own unrelated TerrainDef of
            the same name — src/RimMandrake/Greentide/Defs/TerrainDefs/
            RM_Churnmud_Terrains.xml) — the real basin terrain, not guessed.
-           RUT_GreatboleCore's own
+           RM_GreatboleCore's own
            RM_CompLivingBoleMarker registers each bole's center with
            RM_MapComponent_LivingRegrowth before this GenStep runs (see each
            GenStepDef's order value in Defs/MapGeneration/), so this map's
            causeways connect to the real Greatbole(s) rather than a
            fallback scatter. -->
       <li MayRequire="mandrake.rm.biomes" Class="RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension">
-        <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+        <causewayTerrain>RM_RootCauseway</causewayTerrain>
         <basinTerrains>
           <li MayRequire="mandrake.rm.biomes">RM_GreentideChurnmud</li>
         </basinTerrains>

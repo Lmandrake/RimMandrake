@@ -159,10 +159,10 @@
     <Compile Include="RM_JobGiver_GnawTreeBase.cs" />
     <Compile Include="RM_JobDriver_GnawTreeBase.cs" />
     <Compile Include="RM_GlowMultiplierOverrideExtension.cs" />
-    <Compile Include="RUT_IncidentWorker_Breaklight.cs" />
+    <Compile Include="RM_IncidentWorker_Breaklight.cs" />
     <Compile Include="RM_WanderingVortexExtension.cs" />
     <Compile Include="RM_WanderingVortex.cs" />
-    <Compile Include="RUT_IncidentWorker_SteamDevil.cs" />
+    <Compile Include="RM_IncidentWorker_SteamDevil.cs" />
     <Compile Include="RM_MapComponent_RoilVortexSpawner.cs" />
     <Compile Include="RUT_IncidentWorker_SporeCloud.cs" />
     <Compile Include="RUT_HediffComp_SheenExposure.cs" />

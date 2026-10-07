@@ -118,7 +118,7 @@
     <rewardCount>20</rewardCount>
   </RimMandrake.Utinni.Atlas.AtlasEntryDef>
 
-  <!-- RUT_ToxinSealant: TerrainDef, mandrake.rut.patches, "Chamber floor painted
+  <!-- RM_ToxinSealedFloor: TerrainDef, mandrake.rm.greentide (was RUT_ToxinSealant, GREENTIDE_BASE_PORT_BUILD_1), "Chamber floor painted
        over with toxin sealant ... The living wood beneath cannot push through it,
        or close the cut you made." Design §4 worked example 2. -->
   <RimMandrake.Utinni.Atlas.AtlasEntryDef>
@@ -134,7 +134,7 @@
     <order>30</order>
     <triggers>
       <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_TerrainPresent">
-        <terrains><li>RUT_ToxinSealant</li></terrains>
+        <terrains><li>RM_ToxinSealedFloor</li></terrains>
       </li>
     </triggers>
     <rewardThing>WoodLog</rewardThing>

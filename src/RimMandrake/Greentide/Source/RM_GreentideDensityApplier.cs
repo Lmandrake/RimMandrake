@@ -46,6 +46,47 @@ namespace RimMandrake.Greentide
             }
             biome.plantDensity = RM_GreentideSettings.plantDensity;
             biome.movementDifficulty = RM_GreentideSettings.movementDifficulty;
+            ApplyRoil(biome);
         }
+
+        // GREENTIDE_BASE_PORT_BUILD_1: the Roil toggle. Adds or removes RM_RoilLock in the biome's
+        // biomeMapConditions and RM_RoilWeather's weather-table row, idempotently, so a settings change
+        // reaches the next generated map.
+        private static void ApplyRoil(BiomeDef biome)
+        {
+            GameConditionDef roilLock = DefDatabase<GameConditionDef>.GetNamedSilentFail("RM_RoilLock");
+            WeatherDef roilWeather = DefDatabase<WeatherDef>.GetNamedSilentFail("RM_RoilWeather");
+            if (roilLock == null || roilWeather == null)
+            {
+                return;
+            }
+            if (biome.biomeMapConditions == null)
+            {
+                biome.biomeMapConditions = new System.Collections.Generic.List<GameConditionDef>();
+            }
+            if (RM_GreentideSettings.roilEnabled)
+            {
+                if (!biome.biomeMapConditions.Contains(roilLock))
+                {
+                    biome.biomeMapConditions.Add(roilLock);
+                }
+                if (roilWeatherRecord != null && !biome.baseWeatherCommonalities.Contains(roilWeatherRecord))
+                {
+                    biome.baseWeatherCommonalities.Add(roilWeatherRecord);
+                }
+            }
+            else
+            {
+                biome.biomeMapConditions.Remove(roilLock);
+                WeatherCommonalityRecord rec = biome.baseWeatherCommonalities.Find(r => r.weather == roilWeather);
+                if (rec != null)
+                {
+                    roilWeatherRecord = rec;
+                    biome.baseWeatherCommonalities.Remove(rec);
+                }
+            }
+        }
+
+        private static WeatherCommonalityRecord roilWeatherRecord;
     }
 }

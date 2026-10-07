@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1: the Greentide's spine moved from the campaign tier (mandrake.rut.patches,
+  RUT_ names) into this free mod under RM_ names, and the RUT_ defs were deleted. A save that holds an
+  old name (a placed blower or greatbole, a causeway or sealed-floor cell, a pawn's wet-bulb hediff, the
+  live weather or a running condition) loads it as the new def through RM_DefAliasDef
+  (EnvironmentalHazards, RM_DefAliases.cs, which says why it is a Harmony postfix). The strings name
+  campaign defs only as save history; nothing here needs the campaign loaded.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_GreentideTierMoveAliases</defName>
+    <aliases>
+      <li><from>RUT_RoilWeather</from><to>RM_RoilWeather</to></li>
+      <li><from>RUT_BreaklightClear</from><to>RM_BreaklightClear</to></li>
+      <li><from>RUT_RoilLock</from><to>RM_RoilLock</to></li>
+      <li><from>RUT_GreentideWetBulbLock</from><to>RM_GreentideWetBulbLock</to></li>
+      <li><from>RUT_BreaklightCondition</from><to>RM_BreaklightCondition</to></li>
+      <li><from>RUT_Breaklight</from><to>RM_Breaklight</to></li>
+      <li><from>RUT_GreatboleFruitfall</from><to>RM_GreatboleFruitfall</to></li>
+      <li><from>RUT_WetBulbOverwhelm</from><to>RM_WetBulbOverwhelm</to></li>
+      <li><from>RUT_DryAirAversion</from><to>RM_DryAirAversion</to></li>
+      <li><from>RUT_DryAirBlower</from><to>RM_DryAirBlower</to></li>
+      <li><from>RUT_RootCauseway</from><to>RM_RootCauseway</to></li>
+      <li><from>RUT_ToxinSealant</from><to>RM_ToxinSealedFloor</to></li>
+      <li><from>RUT_GreatboleHeartwood</from><to>RM_GreatboleHeartwood</to></li>
+      <li><from>RUT_GreatboleCore</from><to>RM_GreatboleCore</to></li>
+      <li><from>RUT_GreatboleTrunkSegment</from><to>RM_GreatboleTrunkSegment</to></li>
+      <li><from>RUT_GreatboleDeadHusk</from><to>RM_GreatboleDeadHusk</to></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

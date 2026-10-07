@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_MECHANICS_2 M3 steam devil letter/message strings, read by RM_IncidentWorker_SteamDevil, RM_WanderingVortex and RM_MapComponent_RoilVortexSpawner. Moved here from the campaign tier by GREENTIDE_BASE_PORT_BUILD_1. -->
+<LanguageData>
+
+  <RM_SteamDevilAppears>Steam devil appears</RM_SteamDevilAppears>
+  <RM_SteamDevilAppearsDesc>A column of boiling vapor has spun up off the river and is wandering the map. It scalds anything it crosses and can knock down weaker trees — heat-rated armor gives no protection against it.</RM_SteamDevilAppearsDesc>
+  <RM_SteamDevilDissipated>The steam devil has dissipated.</RM_SteamDevilDissipated>
+  <RM_SteamDevilLeftMap>The steam devil has wandered off the map.</RM_SteamDevilLeftMap>
+
+  <!-- GREENTIDE_MECHANICS_2 M3 remainder, second half: the Roil-condition spawn route (RM_MapComponent_RoilVortexSpawner) -->
+  <RM_SteamDevilAppearsFromRoil>A shape boils up from the fog</RM_SteamDevilAppearsFromRoil>
+  <RM_SteamDevilAppearsFromRoilDesc>The standing ground-fog over the river itself has thrown up a steam devil, unprompted by any lull in the weather. It scalds anything it crosses and can knock down weaker trees — heat-rated armor gives no protection against it.</RM_SteamDevilAppearsFromRoilDesc>
+
+</LanguageData>

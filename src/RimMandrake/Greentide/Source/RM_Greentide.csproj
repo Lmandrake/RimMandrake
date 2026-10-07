@@ -59,6 +59,8 @@
     <Compile Include="RM_CompBankAmbusher.cs" />
     <Compile Include="RM_StellockLace.cs" />
     <Compile Include="RM_ThurrockAuraApplier.cs" />
+    <Compile Include="RM_CompGreatboleHarvestLadder.cs" />
+    <Compile Include="RM_IncidentWorker_GreatboleFruitfall.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -142,7 +142,7 @@
     <rewardCount>3</rewardCount>
   </RimMandrake.Utinni.Atlas.AtlasEntryDef>
 
-  <!-- RUT_GreatboleHeartwood: ThingDef, mandrake.rut.patches, "Living wood grown
+  <!-- RM_GreatboleHeartwood: ThingDef, mandrake.rm.greentide (was RUT_, GREENTIDE_BASE_PORT_BUILD_1), "Living wood grown
        as dense and as still as stone ... Cut chamber into it and it heals,
        slowly, unless you paint the wound shut." -->
   <RimMandrake.Utinni.Atlas.AtlasEntryDef>
@@ -158,7 +158,7 @@
     <order>10</order>
     <triggers>
       <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
-        <things><li>RUT_GreatboleHeartwood</li></things>
+        <things><li>RM_GreatboleHeartwood</li></things>
       </li>
     </triggers>
     <rewardThing>WoodLog</rewardThing>

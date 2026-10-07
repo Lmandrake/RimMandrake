@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- GREATBOLE_HARVEST_LADDER_1. Message/letter text for RM_CompGreatboleHarvestLadder and
+     RM_IncidentWorker_GreatboleFruitfall (moved from the campaign tier by GREENTIDE_BASE_PORT_BUILD_1). -->
+<LanguageData>
+  <RM_GreatboleShaking>The Great Shaking! The greatbole answers its wounds — fruit and grubs come down from the canopy, and the chambers within shudder.</RM_GreatboleShaking>
+  <RM_GreatboleViolentHealing>The greatbole is closing on you. Past this point it heals faster than anyone can mine — get clear, or seal what you mean to keep.</RM_GreatboleViolentHealing>
+  <RM_GreatboleCatastrophe>The greatbole falls. Huge trunk segments crash down for fifty cells around it, crushing everything in their path. It will never heal, never fruit, and never sing again.</RM_GreatboleCatastrophe>
+  <RM_GreatboleFruitfallLabel>Greatbole fruitfall</RM_GreatboleFruitfallLabel>
+  <RM_GreatboleFruitfallText>A greatbole has dropped ripe fruit of its own accord — and, with it, a few grubs come to feed. No wound, no wound at all: the tree gave this freely.</RM_GreatboleFruitfallText>
+</LanguageData>

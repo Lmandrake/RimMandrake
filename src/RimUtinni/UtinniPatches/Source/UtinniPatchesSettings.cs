@@ -42,21 +42,6 @@ namespace RimMandrake.Utinni.UtinniPatches
         // def is already built by the time a settings change is read).
         public static bool holyFlameActEnabled = true;
 
-        // GREATBOLE_HARVEST_LADDER_1 — "a number is the experience" case for
-        // all three of the greatbole's own thresholds (RUT_
-        // CompGreatboleHarvestLadder reads these instead of hardcoding
-        // 0.40/0.60/0.70), plus the one on/off the spec's own §12 asks for:
-        // "toggles for the catastrophe and the breeding." The breeding
-        // toggle is NOT duplicated here — RM_CreatureBehaviorsSettings.
-        // verminBreedingEnabled (that kit's own existing master switch)
-        // already gates the grubs' breeder comp; a second toggle in a
-        // different mod's settings for the same comp would just be two
-        // switches wired to one wire.
-        public static float greatboleShakingThreshold = 0.40f;
-        public static float greatboleHealingThreshold = 0.60f;
-        public static float greatboleCatastropheThreshold = 0.70f;
-        public static bool greatboleCatastropheEnabled = true;
-
         // LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 — worldgen-affecting (new Deeps only).
         public static bool mindstoneGalleryEnabled = true;
 
@@ -68,10 +53,6 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref geothermalMountainFalloffDeg, "geothermalMountainFalloffDeg", 20f);
             Scribe_Values.Look(ref utinniWorldIconEnabled, "utinniWorldIconEnabled", true);
             Scribe_Values.Look(ref holyFlameActEnabled, "holyFlameActEnabled", true);
-            Scribe_Values.Look(ref greatboleShakingThreshold, "greatboleShakingThreshold", 0.40f);
-            Scribe_Values.Look(ref greatboleHealingThreshold, "greatboleHealingThreshold", 0.60f);
-            Scribe_Values.Look(ref greatboleCatastropheThreshold, "greatboleCatastropheThreshold", 0.70f);
-            Scribe_Values.Look(ref greatboleCatastropheEnabled, "greatboleCatastropheEnabled", true);
             Scribe_Values.Look(ref mindstoneGalleryEnabled, "mindstoneGalleryEnabled", true);
         }
 
@@ -117,18 +98,6 @@ namespace RimMandrake.Utinni.UtinniPatches
             // Blue Desert hydrocarbon life settings (dorrak/krissek/vekkit, the fractal
             // flora, cold wax) moved to the Blue Desert mod's own settings screen —
             // BLUEDESERT_RM_MOD_BUILD_1.
-
-            list.GapLine();
-            list.Label("Greatbole harvest ladder — fraction of the bole's own footprint removed.");
-            list.Label("The Great Shaking: " + (greatboleShakingThreshold * 100f).ToString("0") + "% removed");
-            greatboleShakingThreshold = list.Slider(greatboleShakingThreshold, 0.1f, 0.9f);
-            list.Label("The violent healing: " + (greatboleHealingThreshold * 100f).ToString("0") + "% removed");
-            greatboleHealingThreshold = list.Slider(greatboleHealingThreshold, 0.1f, 0.95f);
-            list.CheckboxLabeled("The catastrophe can happen", ref greatboleCatastropheEnabled,
-                "Off: a greatbole never dies from being mined out, no matter how much of its "
-              + "footprint is removed. The Great Shaking and the violent healing still fire.");
-            list.Label("The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
-            greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
 
             list.GapLine();
             list.CheckboxLabeled("Mindstone galleries in the Lantern Deeps", ref mindstoneGalleryEnabled,

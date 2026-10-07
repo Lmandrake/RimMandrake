@@ -3,7 +3,7 @@
      also drop RUT_Hardwood at the heart cells — §7's price-gap story").
      ParentName="ResourceBase" — same parent RUT_FungalSoil/Steel use
      (mcp__rimsage__get_def_details confirmed live on that def already in
-     this repo). Mined out of RUT_GreatboleHeartwood
+     this repo). Mined out of RM_GreatboleHeartwood (bound by Patches/RUT_Greatbole_CampaignBindings.xml)
      (building.mineableThing), same "ordinary vanilla mining, real resource"
      shape RUT_MineableFungalGround already established for this repo.
 
