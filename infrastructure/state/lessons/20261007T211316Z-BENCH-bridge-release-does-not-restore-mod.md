@@ -1,0 +1,1 @@
+A bridge release does not restore the mod list: the 2026-10-06 KineticArms tier session released the bridge with ModsConfig still on its 11-mod tier, so the next 'full-list restart' (2026-10-07) loaded 11 mods and looked healthy. Before any launch meant for the full list, parse ModsConfig's activeMods count; run modset_builder.py --restore when it is not FULL.LATEST.
