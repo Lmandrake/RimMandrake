@@ -53,6 +53,8 @@
     <Compile Include="RM_CauldronVents.cs" />
     <Compile Include="RM_CauldronFloraExpansion.cs" />
     <Compile Include="RM_VexxithAcidImmunity.cs" />
+    <Compile Include="RM_VexxissPrints.cs" />
+    <Compile Include="RM_CauldronDewfallVisuals.cs" />
   </ItemGroup>
 
   <ItemGroup>

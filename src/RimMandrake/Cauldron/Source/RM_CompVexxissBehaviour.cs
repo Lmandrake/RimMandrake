@@ -37,6 +37,16 @@ namespace RimMandrake.Cauldron
         public float ventDrinkChance = 0.6f;     // per scan outside a groan
         public int ventDrinkCooldownTicks = 2500;
 
+        // CAULDRON_ENRICHMENT_VISUALS_1 V4 prints on the footprint grid. PROVISIONAL tuning: a print every
+        // 1.5 cells moved (bodySize 6), kept about a day (owner ruling 2026-10-03), printSize 1.0 so the grid's
+        // Huge class draws it at ~2.2 cells. printTexPath null = the grid's own large-print sprite until the
+        // mineral-ringed vexxiss print art exists.
+        public int printCheckIntervalTicks = 30;
+        public float printStepCells = 1.5f;
+        public int printLifetimeTicks = 60000;
+        public float printSize = 1.0f;
+        public string printTexPath;
+
         public RM_CompProperties_VexxissBehaviour()
         {
             compClass = typeof(RM_CompVexxissBehaviour);
@@ -91,7 +101,13 @@ namespace RimMandrake.Cauldron
 
             if (RM_CauldronSettings.vexxissDrinksVentsEnabled && pawn.IsHashIntervalTick(Props.ventScanIntervalTicks))
                 TryDrinkVent(pawn);
+
+            if (RM_CauldronSettings.vexxissPrintsEnabled && pawn.IsHashIntervalTick(Props.printCheckIntervalTicks))
+                RM_VexxissPrints.TryStep(pawn, this);
         }
+
+        // V4: the cell of the last print laid (not saved: after a load the next step simply prints).
+        public IntVec3 lastPrintCell = IntVec3.Invalid;
 
         // ── drinks a vent ───────────────────────────────────────────────
         // Wild vexxiss only. Walks to the nearest breathing vent and inhales (RM_VexxissDrinkVent) until the

@@ -45,6 +45,14 @@
         <countAtFullGrowth>12</countAtFullGrowth>
       </li>
     </comps>
+    <!-- CAULDRON_ENRICHMENT_VISUALS_1 V3: metal flecks by assay band (RM_AssayFlecks). Overlay art owed
+         (256x256, registered to the tree art); until it is on disk the flecks stay off. -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AssayFlecksExtension">
+        <lightTexPath>Things/Plant/RM_AssayFlecks/Flecks_Light</lightTexPath>
+        <heavyTexPath>Things/Plant/RM_AssayFlecks/Flecks_Heavy</heavyTexPath>
+      </li>
+    </modExtensions>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>210</MaxHitPoints>
@@ -95,6 +103,14 @@
         <countAtFullGrowth>6</countAtFullGrowth>
       </li>
     </comps>
+    <!-- CAULDRON_ENRICHMENT_VISUALS_1 V3: metal flecks by assay band (RM_AssayFlecks). Overlay art owed
+         (256x256, registered to the tree art); until it is on disk the flecks stay off. -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AssayFlecksExtension">
+        <lightTexPath>Things/Plant/RM_AssayFlecks/Flecks_Light</lightTexPath>
+        <heavyTexPath>Things/Plant/RM_AssayFlecks/Flecks_Heavy</heavyTexPath>
+      </li>
+    </modExtensions>
     <minifiedDef IsNull="True" />
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>

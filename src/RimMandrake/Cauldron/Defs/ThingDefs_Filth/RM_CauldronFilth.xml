@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    CAULDRON_ENRICHMENT_VISUALS_1 V1: dewfall chemical beads. Spawned only by
+    RM_MapComponent_CauldronDewfall while the weather is RM_Dewfall, on unroofed outdoor land
+    OUTSIDE the home area (so no cleaning chore), and gone within a day on its own.
+    Template: vanilla Filth_Water (Core). Placeholder graphic = vanilla Things/Filth/Spatter tinted
+    a toxic green-amber (owner 2026-10-03: the no-green law lifts during dewfall). Owed art:
+    Things/Filth/RM_DewBeads (128x128 Graphic_Random a..c), not generated.
+    Cleaning sound: vanilla Interact_CleanFilth_Fluid (owner 2026-10-03: vanilla sounds ship).
+    Numbers PROVISIONAL.
+  -->
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_DewBeads</defName>
+    <label>chemical dew</label>
+    <description>Round beads of condensate that formed out of the dewfall: every wet surface here is a dosed surface. Bright, wrong colours, a hard glint on each bead. It evaporates within a day.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth_Fluid</cleaningSound>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>0.5~1</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>25</cleaningWorkToReduceThickness>
+      <maxThickness>3</maxThickness>
+      <canFilthAttach>false</canFilthAttach>
+      <allowsFire>true</allowsFire>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/Spatter</texPath>
+      <color>(176, 224, 52, 200)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+</Defs>

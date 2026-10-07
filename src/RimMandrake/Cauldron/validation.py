@@ -38,6 +38,10 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
     a map whose biome roster names the plants, and takes days of ticks. Only the wiring is read
     (load.vent_habitat_wired). `ventsEnabled` (worldgen), `ventFalterMessage` (a Messages.Message the bridge
     cannot list) and `ventGardensEnabled` are write/read-back roundtrips only.
+  * CAULDRON_ENRICHMENT_VISUALS_1 (dewfall beads, dewfall saturation, assay flecks, vexxiss prints): toggles are
+    roundtrips only. Beads need a locked dewfall over unroofed non-home ground for hours (a chain is owed);
+    saturation and flecks stay dormant until their art is on disk; prints sit on CreatureBehaviors' track grid,
+    which no bridge tool reads (its own validation.py track_grid chain reads only the grid's counters).
   * Vents are spawned by the driver here (jawa/spawn_batch). That mapgen places 4-5 on a new Cauldron map, with
     both temperaments and a recent blowout, is NOT read: it needs a freshly generated Cauldron map.
   * Appearance (dusk light, the vent-bloom overlay, art): visual, left to the judge pass.
@@ -92,7 +96,10 @@ TYPES = tuple(NS + n for n in (
     "RM_CauldronSettings", "RM_BiomeWorker_Cauldron", "RM_MapComponent_VentBloomExposure",
     "RM_MapComponent_CondensateGardens", "RM_CompVexxissBehaviour", "RM_CompMetalYield",
     "RM_Building_CauldronVent", "RM_MapComponent_CauldronVents", "RM_JobDriver_VexxissDrinkVent",
-    "RM_VentExtension", "RM_AcidDamageExtension", "RM_AcidImmuneExtension"))
+    "RM_VentExtension", "RM_AcidDamageExtension", "RM_AcidImmuneExtension",
+    # CAULDRON_ENRICHMENT_VISUALS_1
+    "RM_MapComponent_CauldronDewfall", "RM_MapComponent_VexxissPrints", "RM_DewfallGraphicExtension",
+    "RM_AssayFlecksExtension"))
 
 BIOME = "RM_Cauldron"
 WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
@@ -875,7 +882,11 @@ def settings_chain(t):
     # biome roster names the flowers (a Cauldron-biome map) and takes days of ticks.
     # vexxithDoorEnabled acts at startup (restart to apply), which a live session cannot cross.
     for field in ("vexxissAttacksIgniter", "condensateGardensEnabled", "ventsEnabled", "ventFalterMessage",
-                  "ventGardensEnabled", "vexxithDoorEnabled"):
+                  "ventGardensEnabled", "vexxithDoorEnabled",
+                  # CAULDRON_ENRICHMENT_VISUALS_1: beads need hours of locked dewfall on unroofed non-home ground;
+                  # saturation and flecks are dormant until their art is installed (and are appearance anyway);
+                  # prints live on CreatureBehaviors' grid, which no bridge tool reads.
+                  "dewfallBeadsEnabled", "dewfallSaturationEnabled", "assayFlecksEnabled", "vexxissPrintsEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
