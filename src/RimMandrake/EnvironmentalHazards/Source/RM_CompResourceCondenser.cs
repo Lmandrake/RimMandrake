@@ -49,7 +49,17 @@ namespace RimMandrake.EnvironmentalHazards
         /// produce at all — mirrors CompPowerPlantSteam's ThingDefOf.SteamGeyser
         /// lookup. Defaults to vanilla SteamGeyser; S4 repoints to
         /// RUT_ScaldVent once that def ships.</summary>
-        public ThingDef requiredThingAtPosition = ThingDefOf.SteamGeyser;
+        public ThingDef requiredThingAtPosition;
+
+        // A DefOf must not be a field initialiser (uninitialised at XML load -> load error); the vanilla default is applied here.
+        public override void ResolveReferences(ThingDef parentDef)
+        {
+            base.ResolveReferences(parentDef);
+            if (requiredThingAtPosition == null)
+            {
+                requiredThingAtPosition = ThingDefOf.SteamGeyser;
+            }
+        }
 
         public CompProperties_ResourceCondenser()
         {

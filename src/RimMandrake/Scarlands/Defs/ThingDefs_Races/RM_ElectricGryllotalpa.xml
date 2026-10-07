@@ -157,7 +157,7 @@
     <projectile>
       <damageDef>EMP</damageDef>
       <screenShakeFactor>0</screenShakeFactor>
-      <damageAmountBase>7.5</damageAmountBase>
+      <damageAmountBase>7</damageAmountBase>
       <armorPenetrationBase>1</armorPenetrationBase>
       <explosionRadius>1.9</explosionRadius>
       <speed>60</speed>

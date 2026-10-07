@@ -21,6 +21,7 @@
       <drawSize>(1,1)</drawSize>
     </graphicData>
     <tickerType>Normal</tickerType>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Impassable</passability>
     <fillPercent>0.4</fillPercent>
