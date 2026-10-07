@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_AEROSOL_SCREEN_1 part 9: glower shielding. Comp/stat part/patch: Scarlands/Source/RM_GlowerShield.cs.
+     NUMBERS INVENTED. Panel: 80 crust + 20 steel (48 kg of crust sits in one wall). Plate: 20 crust, Mass 8 to heavy on
+     purpose: a colonist's carry capacity is 35 kg, so it competes with armour and packs. A shield belt shares its
+     Waist/Belt slot, which is the other half of the balance. Crust supply is the real limit.
+     ART OWED: both defs borrow existing art (RM_LoosenedPanel, vanilla ShieldBelt). Never run in game. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GlowerShieldPanel</defName>
+    <label>glower shield panel</label>
+    <description>A slab of cured glower crust bolted to a wall. Everyone in the room breathes easier: toxic environment resistance for all, and any toxic damage in the room is halved. Needs no power; the crust does the work.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_LoosenedPanel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <color>(70,70,70)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsMisc</li></thingCategories>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <WorkToBuild>6000</WorkToBuild>
+      <Mass>30</Mass>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_GlowerShield">
+        <resistanceOffset>0.35</resistanceOffset>
+        <gasDamageFactor>0.5</gasDamageFactor>
+      </li>
+    </comps>
+    <placeWorkers><li>RimMandrake.Scarlands.RM_PlaceWorker_WallAdjacent</li></placeWorkers>
+    <costList>
+      <RM_GlowerCrust>80</RM_GlowerCrust>
+      <Steel>20</Steel>
+    </costList>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Misc</designationCategory>
+    <building><ai_combatDangerous>false</ai_combatDangerous></building>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <ThingDef ParentName="ApparelBase">
+    <defName>RM_GlowerPlate</defName>
+    <label>glower plate</label>
+    <description>A belt-slung plate of cured glower crust. Heavy and ugly, it soaks up the worst of airborne toxins. Worn in the waist slot, so it replaces a shield belt or similar.</description>
+    <thingClass>Apparel</thingClass>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/ShieldBelt/ShieldBelt</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(60,60,60)</color>
+    </graphicData>
+    <techLevel>Industrial</techLevel>
+    <statBases>
+      <Mass>8</Mass>
+      <WorkToMake>6000</WorkToMake>
+      <Flammability>0.3</Flammability>
+      <EquipDelay>2</EquipDelay>
+    </statBases>
+    <equippedStatOffsets>
+      <ToxicEnvironmentResistance>0.5</ToxicEnvironmentResistance>
+      <ToxicResistance>0.2</ToxicResistance>
+    </equippedStatOffsets>
+    <costList>
+      <RM_GlowerCrust>20</RM_GlowerCrust>
+      <Steel>10</Steel>
+    </costList>
+    <recipeMaker>
+      <unfinishedThingDef>UnfinishedBelt</unfinishedThingDef>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <useIngredientsForColor>false</useIngredientsForColor>
+      <recipeUsers><li>TableMachining</li></recipeUsers>
+      <skillRequirements><Crafting>4</Crafting></skillRequirements>
+    </recipeMaker>
+    <thingCategories><li>ApparelUtility</li></thingCategories>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <careIfWornByCorpse>false</careIfWornByCorpse>
+      <careIfDamaged>false</careIfDamaged>
+      <wearPerDay>0</wearPerDay>
+      <bodyPartGroups><li>Waist</li></bodyPartGroups>
+      <layers><li>Belt</li></layers>
+      <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+    </apparel>
+  </ThingDef>
+</Defs>

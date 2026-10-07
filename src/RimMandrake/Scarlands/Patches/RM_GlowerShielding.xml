@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_AEROSOL_SCREEN_1 part 9: ToxicEnvironmentResistance has no <parts>; add the glower-panel room offset. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/StatDef[defName="ToxicEnvironmentResistance"]/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ToxicEnvironmentResistance"]/parts</xpath>
+      <value><li Class="RimMandrake.Scarlands.RM_StatPart_GlowerShield" /></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/StatDef[defName="ToxicEnvironmentResistance"]</xpath>
+      <value><parts><li Class="RimMandrake.Scarlands.RM_StatPart_GlowerShield" /></parts></value>
+    </nomatch>
+  </Operation>
+</Patch>
