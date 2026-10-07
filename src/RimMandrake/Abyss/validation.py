@@ -580,6 +580,41 @@ def cryptid_check():
     return bad
 
 
+def names_check():
+    """Offline (ABYSS_SHEET_DONOR_PORT_1): a creature whose label was renamed away from its defName stem
+    (RM_Durrgak -> sorter, RM_Drokattak -> ombrathia, RM_Skarnix -> ishvarith) never shows the old stem
+    anywhere a player reads: a race's label/labelPlural, or a C# string literal that is not a def lookup."""
+    bad, stems = [], {}
+    races = os.path.join(HERE, "Defs", "ThingDefs_Races")
+    for fn in sorted(os.listdir(races)):
+        if not fn.endswith(".xml"):
+            continue
+        for d in ET.parse(os.path.join(races, fn)).getroot():
+            dn, label = d.findtext("defName") or "", (d.findtext("label") or "").lower()
+            stem = dn[3:].lower() if dn.startswith("RM_") else ""
+            if stem and label and stem not in label:
+                stems[stem] = label
+            for e in d.iter():
+                if e.tag in ("label", "labelPlural") and stem and stem not in label and stem in (e.text or "").lower():
+                    bad.append("%s %s <%s> still says %r (label is %r)" % (fn, dn, e.tag, e.text, label))
+    if not {"durrgak", "drokattak", "skarnix"} <= set(stems):
+        return ["sanity probe: renamed stems found %s, expected durrgak/drokattak/skarnix" % sorted(stems)]
+    src = os.path.join(HERE, "Source")
+    lookup = re.compile(r"GetNamed|defName|Scribe_|static_call|REFUSED|\"RM_")
+    for fn in sorted(os.listdir(src)):
+        if not fn.endswith(".cs"):
+            continue
+        for n, line in enumerate(open(os.path.join(src, fn), encoding="utf-8"), 1):
+            code = line.split("//", 1)[0]
+            if lookup.search(code):
+                continue
+            for lit in re.findall(r'"((?:[^"\\]|\\.)*)"', code):
+                for stem, label in stems.items():
+                    if re.search(r"\b%s" % stem, lit, re.I):
+                        bad.append("%s:%d player string names %r (now %r): %r" % (fn, n, stem, label, lit[:60]))
+    return bad
+
+
 def _const(src, name):
     m = re.search(r"const float %s\s*=\s*([0-9.]+)f" % name, src)
     return float(m.group(1)) if m else None
@@ -895,4 +930,6 @@ if __name__ == "__main__":
     print("CRYPTID static: %s" % ("PASS" if not cy else "FAIL " + "; ".join(cy)))
     bl = brood_check()
     print("BROOD LAIR static: %s" % ("PASS" if not bl else "FAIL " + "; ".join(bl)))
-    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss or cy or bl) else 0)
+    nm = names_check()
+    print("RENAMED LABELS static: %s" % ("PASS" if not nm else "FAIL " + "; ".join(nm)))
+    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss or cy or bl or nm) else 0)

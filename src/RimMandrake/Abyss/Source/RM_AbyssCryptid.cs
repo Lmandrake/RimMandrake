@@ -220,7 +220,7 @@ namespace RimMandrake.Abyss
             Find.LetterStack.ReceiveLetter("Something was taken",
                 takenLabel + " was left on a ring of shards in the Dark, and nobody was watching it. It is gone. In its place, "
                 + "set down neatly: " + (left.Count == 0 ? "nothing at all" : string.Join(", ", left)) + ".\n\n"
-                + "A durrgak, perhaps; they tidy. The colonists say " + name + ", and not loudly.",
+                + "A sorter, perhaps; they tidy. The colonists say " + name + ", and not loudly.",
                 LetterDefOf.NeutralEvent, new LookTargets(new TargetInfo(c, map)));
         }
 
