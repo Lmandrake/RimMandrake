@@ -46,6 +46,9 @@ QUICKTEST_STARTER = os.path.join(os.path.dirname(_UTILS), "bridgetools", "prove_
 def _wsl_path(p):
     """`D:\\Luke\\dev\\x` -> `/mnt/d/Luke/dev/x` (a POSIX path passes through unchanged)."""
     import re
+    u = re.match(r"^[\\/]{2}wsl(?:\.localhost|\$)[\\/][^\\/]+[\\/](.*)$", p)  # \\wsl.localhost\Ubuntu\home\... (ext4 seat clone)
+    if u:
+        return "/" + u.group(1).replace("\\", "/")
     m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
     if not m:
         return p
@@ -607,6 +610,8 @@ def emit_verify(item_id, mod, config, result_summary, sheet_path, dry_run=False)
     cmd = py_cmd(RIMFLOW_CLI, "verify", item_id,
                  "--result", result, "--config", config, "--evidence", _wsl_path(sheet_path)
                  if os.name == "nt" else sheet_path)
+    if os.environ.get("RIMFLOW_SEAT"):  # wsl.exe drops the env var; the verb needs the seat spelled out
+        cmd += ["--seat", os.environ["RIMFLOW_SEAT"]]
     if dry_run:
         return {"cmd": cmd, "n_pass": n_pass, "n_total": n_total}
     r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
