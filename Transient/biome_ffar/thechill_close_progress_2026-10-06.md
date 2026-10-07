@@ -13,3 +13,6 @@ Keelgrass ("cut no longer needed"): def + roster already removed at 865c70ad6; l
 Heemin, Iliss, Hoolen PawnKinds Graphic_Single -> Graphic_Multi; HeeminCatch/IlissCatch texPath -> item PNGs. 3 flora products (SlackwaxTimber, RimeNoduleEuphoric, HydrocarbonFlesh) were Graphic_StackCount on a single file = BadGraphic (magenta) per decompiled Graphic_Collection.Init; now Graphic_Single.
 ## 5. Placeholders
 placeholder_detect over every Chill PNG: FLAT = Hoolen, Vaunoom (held for the surface sitting, cast nowhere). Installed their finished propanelake_*_v1 3-facing renders (artpipe-collect), retired the flat singles. Retired: Heemin/Iliss singles (superseded). BORROWED (plant/other art, no render exists): 8 flora-product items + stonewater extractor -> 9 artpipe jobs, Transient/biome_ffar/thechill_placeholder_jobs_2026-10-06.json. Terrains use vanilla water/ice textures — left.
+## 6. Pushed 31d379824 (installs, wiring, retires, jobs).
+## 7. Deployed: compose biomes --apply --prune, 105 files, VERIFIED in sync (incl. other committed wreck/AcousticPayload work); no DLL in plan.
+## 8. Selftests 214/214 passed. Restart RimWorld to load textures/defs.
