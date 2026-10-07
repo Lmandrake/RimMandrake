@@ -77,7 +77,7 @@ def browser_render(html_path, decisions_path=None, timeout: int = 600):
         if not url:
             return None, [], "UNMEASURED: throwaway sidecar printed no URL: " + buf[-160:].replace("\n", " ")
         time.sleep(3)                                         # the URL is printed before the socket reliably answers
-        r = subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--virtual-time-budget=15000", "--enable-logging=stderr",
+        r = subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--virtual-time-budget=15000", "--disable-extensions", "--enable-logging=stderr",
                             "--log-level=0", "--user-data-dir=" + profile, "--no-first-run", "--dump-dom", url],
                            capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
