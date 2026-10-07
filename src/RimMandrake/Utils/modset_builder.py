@@ -614,6 +614,19 @@ TIERS["acc_biomes"] = {
     "dlc": True,
 }
 
+TIERS["acc_green_min"] = {
+    "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, TitanicCreatures, "
+           "Warcasket, GizkaStowaway, OasisMaker, RiverColors, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
+           "GelatinousSlime, GravshipLanding, Stillsand, Pyrinth (composed biomes mod carries several).",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
+             "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors",
+             "mandrake.rm.shipvermin", "mandrake.rm.titaniccreatures", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
+             "mandrake.rm.oasismaker", "mandrake.rut.rivercolors", "mandrake.rut.scarlandsladder",
+             "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
+    "dlc": True,
+}
+
+
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
     writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
