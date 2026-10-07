@@ -1255,3 +1255,4 @@
 {"seat":"BENCH","event":"lease","id":"GREYSEA_FLOOR_PASS_1","action":"release","token":"BENCH.pid20141.a0d3c606","ts":"2026-10-07T07:54:43Z","tsn":1791359683953591885}
 {"seat":"BENCH","event":"lease","id":"CANON_DRAIN_1","action":"take","token":"BENCH.pid20144.d3cea8ac","expires":"2026-10-07T08:39:44Z","ts":"2026-10-07T07:54:44Z","tsn":1791359684678887268}
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-07T08:18:18Z","tsn":1791361098588793768}
+{"seat":"BENCH","event":"note","id":"KINETIC_BLAST_WEAPONS_1","text":"fd920d3b5: ruins pick now weighted (grav-ram rarest, 3/110); new source: vanilla ancient complex room loot (0.15) + security crates (0.4), toggle foundInComplexes; kernel KA-17; tier kineticarms in modset_builder (acacec173). Deployed. Live bars KA.temple/KA.complex unrun.","ts":"2026-10-07T10:37:43Z","tsn":1791369463796755091}

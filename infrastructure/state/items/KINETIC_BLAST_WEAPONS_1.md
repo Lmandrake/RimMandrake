@@ -14,7 +14,12 @@ Owner, 2026-10-06 21:40, typed into a question card (verbatim), on whether thump
 Design §10 (v1, BENCH) + §11 (finish pass): `ff6330011` Explosive Knockback per-projectile lookup, impactFactor,
 body-size override, stun-lock guard, shield absorbs throw; `53186050e` Kinetic Arms ruins loot, palm arrest, grav-ram
 override, cord marker + Gimme Some Slack skip, ring fleck, full settings, both validation walks with levels.
-**PROVISIONAL numbers:** ruins chance 35% per ancient temple, thump-shell stack 5–12, recovery window 120 ticks, shield
+`fd920d3b5` (BENCH, 2026-10-07) where they drop: every vanilla Ancient Danger temple (35%, Mod Setting), and ancient
+complex room loot (weight 0.15, as rare as spacer components) and security crates (0.4), setting "found in ancient
+complexes". Picks by rarity tier: thudder 30, palm thumper 20, slam launcher 15, thump shell 15, kicker mine 12, repulsor
+rifle 10, pulse cannon 5, grav-ram 3 (of 110). Rakatan vaults are loot-free by design. Test tier: `modset_builder.py
+--tier kineticarms` (13 mods).
+**PROVISIONAL numbers:** ruins chance 35% per ancient temple, rarity weights, complex weights 0.15/0.4, thump-shell stack 5–12, recovery window 120 ticks, shield
 drain 10 damage-equivalents per point of force. New proof scenes are written, not yet run live.
 
 ## criteria
@@ -35,5 +40,6 @@ drain 10 damage-equivalents per point of force. New proof scenes are written, no
 - KA.new6 L2: palm_arrest_wall, gravram_big_body, ruins_loot, kicker_hidden, cords_marker, ring_fleck PASS
 - KA.cords L2: with Gimme Some Slack: repulsor blast under a span leaves it whole; a frag grenade cuts it
 - KA.temple L2: a debug-generated ancient temple (chance 100) holds one kinetic weapon or minified mine/cannon
+- KA.complex L2: ruins_loot scene reports complexes=True (all three ancient-complex tables carry RM_ThingSetMaker_KineticComplex)
 - KA.shield L2: a repulsor hit on a shield-belted raider: not thrown, belt drained (EK shield_counter via KA)
 - KA.feel L4: owner: a repulsor line reads as a moving wall; a kicker mine at a pit lip as an ejection gate
