@@ -54,6 +54,90 @@ namespace RimMandrake.ExplosiveKnockback
         public float impactPerCell = 4f;
         public bool sandbagsStop = false;
         public bool intoPits = true;
+        // per-blast (design §2.1): scales wall / pawn / door impact for this blast (palm thumper 0 = an arrest tool)
+        public float impactFactor = 1f;
+    }
+
+    /// <summary>One blast's knockback configuration (design §2.1). Supplied WHOLE by the first source that has one, in
+    /// order projectile ThingDef -> weapon ThingDef -> DamageDef -> the "unpatched explosions" setting; no field-by-field
+    /// merge, so an explicit force 0 on the projectile wins over a DamageDef that throws.</summary>
+    public sealed class KbConfig
+    {
+        public float force = 1f;
+        public int ownCap = 0;               // 0 = the global maximum
+        public float impactFactor = 1f;
+        public float immuneOverride = 0f;    // 0 = unset: the global immune body size holds
+        public string source = "none";       // projectile | weapon | damageDef | unpatched | none (journal)
+    }
+
+    public static class KbLookup
+    {
+        /// <summary>First non-null wins whole. With none: a harmful blast throws at the unpatched fraction (default 0),
+        /// a harmless one not at all.</summary>
+        public static KbConfig Resolve(KbConfig projectile, KbConfig weapon, KbConfig damageDef, bool harmsHealth, float unpatchedFraction)
+        {
+            if (projectile != null)
+            {
+                projectile.source = "projectile";
+                return projectile;
+            }
+            if (weapon != null)
+            {
+                weapon.source = "weapon";
+                return weapon;
+            }
+            if (damageDef != null)
+            {
+                damageDef.source = "damageDef";
+                return damageDef;
+            }
+            return new KbConfig { force = harmsHealth ? unpatchedFraction : 0f, source = harmsHealth ? "unpatched" : "none" };
+        }
+
+        /// <summary>A per-request copy of the global settings with this blast's cap, impact factor and body-size override
+        /// applied. Never mutates the shared settings.</summary>
+        public static KbSettings Apply(KbSettings global, KbConfig c, int globalCap, float ownCapScale)
+        {
+            return new KbSettings
+            {
+                globalMultiplier = global.globalMultiplier,
+                baseCells = global.baseCells,
+                maxCells = RM_KnockbackMath.CapFor(c?.ownCap ?? 0, globalCap, ownCapScale),
+                refMass = global.refMass,
+                immuneBodySize = c != null && c.immuneOverride > 0f ? c.immuneOverride : global.immuneBodySize,
+                lightMassLimit = global.lightMassLimit,
+                impactEnabled = global.impactEnabled,
+                impactPerCell = global.impactPerCell,
+                sandbagsStop = global.sandbagsStop,
+                intoPits = global.intoPits,
+                impactFactor = c != null ? Math.Max(0f, c.impactFactor) : 1f,
+            };
+        }
+    }
+
+    /// <summary>Stun-lock guard (design §4, GPT #4): no new launch until the landing stun has ended AND a recovery window
+    /// has passed. window 0 = chain throws allowed.</summary>
+    public static class KbImmunity
+    {
+        public static bool CanLaunch(int now, int landedAt, int stunEnd, int window)
+        {
+            if (window <= 0)
+            {
+                return true;
+            }
+            return now >= Math.Max(landedAt, stunEnd) + window;
+        }
+    }
+
+    /// <summary>Shield counter (owner Q4): a shield that absorbed the blast absorbs the throw and pays
+    /// force x perForce damage-equivalents (x the shield's energy loss per damage) on top. Returns the energy left; below
+    /// zero the shield breaks.</summary>
+    public static class KbShield
+    {
+        public static float EnergyAfter(float energy, float force, float perForce, float energyLossPerDamage)
+        {
+            return energy - Math.Max(0f, force) * Math.Max(0f, perForce) * Math.Max(0f, energyLossPerDamage);
+        }
     }
 
     public struct KbResult
@@ -192,7 +276,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return 0f;
             }
-            return s.impactPerCell * notTravelled / (float)Math.Sqrt(MassScale(mass, s));
+            return s.impactPerCell * s.impactFactor * notTravelled / (float)Math.Sqrt(MassScale(mass, s));
         }
 
         /// <summary>Walk the throw (design §3.4). The start cell is never read.</summary>

@@ -36,6 +36,8 @@ namespace RimMandrake.ExplosiveKnockback
             "calibration", "wall_stop", "door_stop", "over_sandbags", "pit_colonist", "pit_enemy", "no_cross",
             "cover_breaks", "items", "corpse_into_pit", "killed_by_blast", "shelf", "in_pit_skip", "heavy_skip",
             "caps", "tick_cap", "settings_off", "emp_no_throw",
+            // 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1): per-blast config, stun-lock guard, shields. NOT YET RUN LIVE.
+            "lookup_projectile", "lookup_zero_wins", "impact_factor", "body_override", "immunity_window", "shield_counter",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -234,6 +236,29 @@ namespace RimMandrake.ExplosiveKnockback
         private static void Blast(IntVec3 c, float radius, DamageDef dt = null, int dmg = 1)
         {
             GenExplosion.DoExplosion(c, Map, radius, dt ?? DamageDefOf.Bomb, null, dmg);
+        }
+
+        private static Pawn Adult(PawnKindDef k)
+        {
+            Pawn p = PawnGenerator.GeneratePawn(k, null);
+            p.ageTracker.AgeBiologicalTicks = (long)(p.RaceProps.lifeStageAges[p.RaceProps.lifeStageAges.Count - 1].minAge * 3600000f) + 1;
+            return p;
+        }
+
+        /// <summary>Adds a knockback extension to a def for one scene; the scene's restore removes it again.</summary>
+        private static void AddExt(Scene s, Def d, RM_KnockbackExtension ext)
+        {
+            if (d.modExtensions == null)
+            {
+                d.modExtensions = new List<DefModExtension>();
+            }
+            d.modExtensions.Add(ext);
+            Action prev = s.restore;
+            s.restore = () =>
+            {
+                d.modExtensions.Remove(ext);
+                prev?.Invoke();
+            };
         }
 
         private static IntVec3 O(Scene s, int dx, int dz) => s.o + new IntVec3(dx, 0, dz);
@@ -640,6 +665,137 @@ namespace RimMandrake.ExplosiveKnockback
                         return Result(sc, c1 == 0 && c2 == 0 && wave, m1 + "; " + m2 + " waveHitThem=" + wave);
                     };
                     return null;
+
+                case "lookup_projectile":
+                case "lookup_zero_wins":
+                {
+                    // a projectile ThingDef's own extension beats the DamageDef's (design §2.1). The extension is added to a
+                    // vanilla bullet def for the scene only and removed again in restore.
+                    bool zero = s.name == "lookup_zero_wins";
+                    ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
+                    var ext = new RM_KnockbackExtension { force = zero ? 0f : 2.5f, maxThrowCells = 8 };
+                    AddExt(s, proj, ext);
+                    Colonist(s, "p", O(s, 1, 0));
+                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        var req = ForThing(sc, "request", t);
+                        if (zero)
+                        {
+                            // explicit force 0 on the projectile wins over Bomb's 1.0: nothing is even requested
+                            return Result(sc, cells == 0 && req.Count == 0, m + " requests=" + req.Count);
+                        }
+                        bool src = req.Count == 1 && (string)req[0]["source"] == "projectile";
+                        // kernel: force 2.5, d 1, r 2.9, 70 kg -> round(4 x 2.5 x 0.655 x ~1) = 7 capped by 8; read the kernel, not a literal
+                        int want = RM_KnockbackMath.ThrowCells(1f, 2.9f, 2.5f, ((Pawn)t).GetStatValue(StatDefOf.Mass), RimMandrakeExplosiveKnockbackSettings.Kernel(ext.ToConfig()));
+                        return Result(sc, src && cells >= want - 1 && cells <= want, m + " want~" + want + (req.Count > 0 ? " [" + Rec(req[0]) + "]" : " no request"));
+                    };
+                    return null;
+                }
+
+                case "impact_factor":
+                {
+                    ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
+                    AddExt(s, proj, new RM_KnockbackExtension { force = 1f, impactFactor = 0f });
+                    Colonist(s, "p", O(s, 1, 0));
+                    Build("Wall", O(s, 3, 0), "BlocksGranite");
+                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        var b = ForThing(sc, "launch", t).Concat(ForThing(sc, "blocked", t)).ToList();
+                        bool ok = b.Count == 1 && (string)b[0]["stop"] == "Wall" && Convert.ToSingle(b[0]["impact"]) == 0f;
+                        return Result(sc, ok && t.Position == O(sc, 2, 0), m + (b.Count > 0 ? " [" + Rec(b[0]) + "]" : " no record"));
+                    };
+                    return null;
+                }
+
+                case "body_override":
+                {
+                    // an animal with 2.5 <= body size < 3.6: immune under the global 2.5, thrown under a 3.6 override
+                    PawnKindDef big = DefDatabase<PawnKindDef>.AllDefs.Where(k => k.RaceProps != null && k.RaceProps.Animal
+                        && k.RaceProps.baseBodySize >= 2.5f && k.RaceProps.baseBodySize < 3.5f && k.RaceProps.IsFlesh
+                        && k.RaceProps.lifeStageAges.Count > 0).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
+                    if (big == null)
+                    {
+                        return "no animal kind with body size 2.5-3.5 on this list";
+                    }
+                    ThingDef proj = DefDatabase<ThingDef>.GetNamed("Bullet_Revolver");
+                    AddExt(s, proj, new RM_KnockbackExtension { force = 4f, maxThrowCells = 10, immuneBodySizeOverride = 3.6f });
+                    Pawn a = Adult(big);
+                    GenSpawn.Spawn(a, O(s, 1, 0), Map);
+                    Track(s, "big", a);
+                    Pawn b = Adult(big);
+                    GenSpawn.Spawn(b, O(s, -1, 3), Map);
+                    Track(s, "control", b);
+                    s.numbers["bodySize"] = a.BodySize;
+                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 1, -1f, null, null, proj);
+                    GenExplosion.DoExplosion(O(s, -1, 4), Map, 1.5f, DamageDefOf.Bomb, null, 1); // control: Bomb, global 2.5 holds
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "big", out Thing t, out int cells);
+                        string mc = Moved(sc, "control", out Thing tc, out int cc);
+                        bool ctrlSkip = ForThing(sc, "skip", tc).Any(r => (string)r["reason"] == "too_big");
+                        return Result(sc, cells > 0 && cc == 0 && ctrlSkip, m + "; " + mc + " bodySize=" + sc.numbers["bodySize"].ToString("0.0")
+                            + " controlTooBig=" + ctrlSkip);
+                    };
+                    return null;
+                }
+
+                case "immunity_window":
+                {
+                    int was = RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks;
+                    RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = 600;
+                    s.restore = () => RimMandrakeExplosiveKnockbackSettings.recoveryWindowTicks = was;
+                    Pawn p = Colonist(s, "p", O(s, -3, 0));
+                    Blast(O(s, -4, 0), 2.9f); // throws p east ~3 cells, toward the origin
+                    Map m0 = Map;
+                    // a second blast 250 ticks later beside wherever p landed: still inside stun + 600, so "immune"
+                    RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 250, () =>
+                    {
+                        if (p.Spawned)
+                        {
+                            GenExplosion.DoExplosion(p.Position + IntVec3.West, m0, 2.9f, DamageDefOf.Bomb, null, 1);
+                        }
+                    }));
+                    s.verdict = sc =>
+                    {
+                        Thing t = sc.things["p"];
+                        int launches = ForThing(sc, "launch", t).Count;
+                        bool immune = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == "immune");
+                        bool guard = t is Pawn pp && pp.Spawned && !pp.Map.GetComponent<RM_MapComponent_Knockback>().CanLaunch(pp, out _);
+                        return Result(sc, launches == 1 && immune && guard, "launches=" + launches + " immuneSkip=" + immune + " guardHolds=" + guard);
+                    };
+                    return null;
+                }
+
+                case "shield_counter":
+                {
+                    Pawn p = Colonist(s, "p", O(s, 1, 0));
+                    ThingDef beltDef = DefDatabase<ThingDef>.GetNamedSilentFail("Apparel_ShieldBelt");
+                    if (beltDef == null)
+                    {
+                        return "no Apparel_ShieldBelt def";
+                    }
+                    var belt = (Apparel)ThingMaker.MakeThing(beltDef, GenStuff.DefaultStuffFor(beltDef));
+                    p.apparel.Wear(belt);
+                    CompShield sh = belt.GetComp<CompShield>();
+                    s.numbers["energy0"] = sh?.Energy ?? -1f;
+                    s.things["belt"] = belt;
+                    Blast(s.o, 2.9f);
+                    s.verdict = sc =>
+                    {
+                        string m = Moved(sc, "p", out Thing t, out int cells);
+                        var sk = ForThing(sc, "skip", t).Where(r => (string)r["reason"] == "shield").ToList();
+                        CompShield shc = ((Apparel)sc.things["belt"]).GetComp<CompShield>();
+                        float e1 = shc?.Energy ?? -1f;
+                        bool drained = e1 < sc.numbers["energy0"];
+                        return Result(sc, cells == 0 && sk.Count == 1 && drained, m + " energy " + sc.numbers["energy0"].ToString("0.###")
+                            + "->" + e1.ToString("0.###") + (sk.Count > 0 ? " [" + Rec(sk[0]) + "]" : " no shield skip"));
+                    };
+                    return null;
+                }
 
                 case "emp_no_throw":
                     Colonist(s, "p", O(s, 1, 0));

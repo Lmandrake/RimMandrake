@@ -282,6 +282,66 @@ internal static class Program
             Check("K-12 other explosion", d.TryAdd(6, 9));
         }
 
+        // K-13 lookup order (design §2.1): projectile -> weapon -> DamageDef -> unpatched; whole config, explicit 0 wins
+        {
+            var proj = new KbConfig { force = 0f };
+            var weap = new KbConfig { force = 3f };
+            var dmg = new KbConfig { force = 1f, ownCap = 9 };
+            KbConfig c = KbLookup.Resolve(proj, weap, dmg, true, 0f);
+            Check("K-13 projectile wins, explicit 0", c.force == 0f && c.source == "projectile");
+            c = KbLookup.Resolve(null, new KbConfig { force = 3f }, dmg, true, 0f);
+            Check("K-13 weapon next", c.force == 3f && c.source == "weapon" && c.ownCap == 0, "no field merge from DamageDef");
+            c = KbLookup.Resolve(null, null, new KbConfig { force = 1f, ownCap = 9 }, true, 0f);
+            Check("K-13 DamageDef next", c.force == 1f && c.ownCap == 9 && c.source == "damageDef");
+            c = KbLookup.Resolve(null, null, null, true, 0.25f);
+            Check("K-13 unpatched harmful", c.force == 0.25f && c.source == "unpatched");
+            c = KbLookup.Resolve(null, null, null, false, 0.25f);
+            Check("K-13 unpatched harmless", c.force == 0f && c.source == "none");
+        }
+
+        // K-14 per-request settings: own cap, impact factor, body-size override; the shared settings never change
+        {
+            var g = new KbSettings();
+            KbSettings a = KbLookup.Apply(g, new KbConfig { force = 4f, ownCap = 10, impactFactor = 0f, immuneOverride = 3.6f }, 6, 1f);
+            Check("K-14 own cap", a.maxCells == 10);
+            Check("K-14 global cap when unset", KbLookup.Apply(g, new KbConfig(), 6, 1f).maxCells == 6);
+            Check("K-14 override", a.immuneBodySize == 3.6f && g.immuneBodySize == 2.5f);
+            Check("K-14 3.5 body thrown under 3.6", RM_KnockbackMath.Eligible(KbKind.Pawn, 2000f, 3.5f, a));
+            Check("K-14 3.5 body immune under global", !RM_KnockbackMath.Eligible(KbKind.Pawn, 2000f, 3.5f, g));
+            Check("K-14 centipede 3.0 thrown by grav-ram", RM_KnockbackMath.Eligible(KbKind.Pawn, 1000f, 3.0f, a));
+            Check("K-14 megasloth 4.0 still immune", !RM_KnockbackMath.Eligible(KbKind.Pawn, 2000f, 4.0f, a));
+            Check("K-14 impact factor 0", RM_KnockbackMath.ImpactFor(5, 70f, a) == 0f && RM_KnockbackMath.ImpactFor(5, 70f, g) > 0f);
+            var grid = new Grid(12, 3).Set(5, 1, KbCell.Wall);
+            KbResult r0 = RM_KnockbackMath.Resolve(grid, 2, 1, 1f, 0f, 6, KbKind.Pawn, 70f, a);
+            KbResult r1 = RM_KnockbackMath.Resolve(grid, 2, 1, 1f, 0f, 6, KbKind.Pawn, 70f, g);
+            Check("K-14 wall stop, no impact with factor 0", r0.stop == KbStop.Wall && r0.impact == 0f && r1.impact > 0f,
+                "impact " + r0.impact + " vs " + r1.impact);
+            Check("K-14 factor scales linearly", Math.Abs(RM_KnockbackMath.ImpactFor(3, 70f, KbLookup.Apply(g, new KbConfig { impactFactor = 0.5f }, 6, 1f))
+                - 0.5f * RM_KnockbackMath.ImpactFor(3, 70f, g)) < 1e-4f);
+            // the thump cannon (force 2.5, cap 8) against the mortar (force 1) at d 0 / 1 for a 70 kg human (design §2.2)
+            KbSettings th = KbLookup.Apply(g, new KbConfig { force = 2.5f, ownCap = 8 }, 6, 1f);
+            Check("K-14 thump d0 = 8", RM_KnockbackMath.ThrowCells(0f, 1.9f, 2.5f, 70f, th) == 8);
+            Check("K-14 thump d1 = 5 > mortar 3", RM_KnockbackMath.ThrowCells(1f, 1.9f, 2.5f, 70f, th) == 5
+                && RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 70f, g) == 3);
+        }
+
+        // K-15 stun-lock guard (design §4, GPT #4)
+        {
+            Check("K-15 inside stun", !KbImmunity.CanLaunch(150, 100, 200, 120));
+            Check("K-15 stun over, window running", !KbImmunity.CanLaunch(300, 100, 200, 120));
+            Check("K-15 window over", KbImmunity.CanLaunch(320, 100, 200, 120));
+            Check("K-15 window 0 = chain allowed", KbImmunity.CanLaunch(101, 100, 200, 0));
+            Check("K-15 stun shorter than landing stamp", KbImmunity.CanLaunch(220, 100, 0, 120) && !KbImmunity.CanLaunch(219, 100, 0, 120));
+        }
+
+        // K-16 shield counter (owner Q4): debit force x per-force x loss-per-damage; a strong throw pops the belt
+        {
+            float e = KbShield.EnergyAfter(1.1f, 2.8f, 10f, 0.033f);
+            Check("K-16 repulsor debit", Math.Abs(e - (1.1f - 0.924f)) < 1e-4f, "e=" + e);
+            Check("K-16 grav-ram pops a 1.1 belt", KbShield.EnergyAfter(1.1f, 4f, 10f, 0.033f) < 0f);
+            Check("K-16 zero debit setting", KbShield.EnergyAfter(1.1f, 4f, 0f, 0.033f) == 1.1f);
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }
