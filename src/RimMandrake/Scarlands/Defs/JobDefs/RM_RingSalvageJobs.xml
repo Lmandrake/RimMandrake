@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- WARSCAR_AEROSOL_SCREEN_1 part 7: evaluate / salvage / repair of the projector rings. Code: Source/RM_WarscarSalvage.cs. -->
-  <DesignationDef><defName>RM_EvaluateRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
-  <DesignationDef><defName>RM_SalvageRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
-  <DesignationDef><defName>RM_RepairRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+  <DesignationDef><defName>RM_EvaluateRing</defName><texturePath>UI/Designators/Deconstruct</texturePath><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+  <DesignationDef><defName>RM_SalvageRing</defName><texturePath>UI/Designators/Deconstruct</texturePath><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+  <DesignationDef><defName>RM_RepairRing</defName><texturePath>UI/Designators/Deconstruct</texturePath><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
 
   <JobDef><defName>RM_EvaluateRing</defName><driverClass>RimMandrake.Scarlands.RM_JobDriver_EvaluateRing</driverClass><reportString>evaluating TargetA.</reportString></JobDef>
   <JobDef><defName>RM_SalvageRing</defName><driverClass>RimMandrake.Scarlands.RM_JobDriver_SalvageRing</driverClass><reportString>taking TargetA apart.</reportString></JobDef>
