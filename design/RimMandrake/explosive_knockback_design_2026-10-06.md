@@ -460,3 +460,7 @@ All taken by question card unless quoted.
 - Q6 carried hose: **drops where the carrier stood.**
 - Q7 strength: **3 cells** for a mortar shell beside a human (a Mod Setting scales it).
 - Q8 packaging: **its own mod**, `mandrake.rm.explosiveknockback`.
+- Q9 (card 19:11) blasts that break a pit cover: **damaging blasts (bombs, grenades, mortars) AND fire/incendiary**;
+  EMP, smoke and stun blasts do not. Owner typed *"1+3"* (the damaging-only and bombs-and-fire options combined).
+- Q10 (card 19:11) items/corpses thrown toward a pit: **fall in and stay retrievable** — colonists fetch them the way
+  they reach the pit floor now (hauling into pits must be verified).
