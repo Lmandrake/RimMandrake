@@ -96,6 +96,21 @@ namespace RimMandrake.LeaningScrub
         // LEANINGSCRUB_MECHANICS_BUILD_1 part 5 (RM_FireStamp.cs).
         public static bool fireStampEnabled = true;
 
+        // LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs): the six further forms.
+        // Numbers PROVISIONAL. Each off: that form is a plain venomvine stand.
+        public static bool rearingEnabled = true;
+        public static float rearingHours = 2f;
+        public static bool walkingEnabled = true;
+        public static int walkingMaxCellsPerMap = 120;
+        public static bool hoardEnabled = true;
+        public static float hoardGrowInHours = 4f;
+        public static bool hoardKeepsDeadGear = true;
+        public static bool quenchEnabled = true;
+        public static float quenchRecoveryDays = 3f;
+        public static bool swornSparesMarkedEnabled = true;
+        public static bool sheddingEnabled = true;
+        public static int sheddingLength = 8;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -142,6 +157,18 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineFeltApparelEnabled, "sweetlineFeltApparelEnabled", true, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
             Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
+            Scribe_Values.Look(ref rearingEnabled, "rearingEnabled", true, true);
+            Scribe_Values.Look(ref rearingHours, "rearingHours", 2f, true);
+            Scribe_Values.Look(ref walkingEnabled, "walkingEnabled", true, true);
+            Scribe_Values.Look(ref walkingMaxCellsPerMap, "walkingMaxCellsPerMap", 120, true);
+            Scribe_Values.Look(ref hoardEnabled, "hoardEnabled", true, true);
+            Scribe_Values.Look(ref hoardGrowInHours, "hoardGrowInHours", 4f, true);
+            Scribe_Values.Look(ref hoardKeepsDeadGear, "hoardKeepsDeadGear", true, true);
+            Scribe_Values.Look(ref quenchEnabled, "quenchEnabled", true, true);
+            Scribe_Values.Look(ref quenchRecoveryDays, "quenchRecoveryDays", 3f, true);
+            Scribe_Values.Look(ref swornSparesMarkedEnabled, "swornSparesMarkedEnabled", true, true);
+            Scribe_Values.Look(ref sheddingEnabled, "sheddingEnabled", true, true);
+            Scribe_Values.Look(ref sheddingLength, "sheddingLength", 8, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -303,6 +330,61 @@ namespace RimMandrake.LeaningScrub
                 "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
                 + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
                 + "it out, crushing whatever was burning. Off: the herds ignore fire.");
+
+            list.GapLine();
+            list.Label("The six further venomvine forms. Each off: that form is a plain venomvine stand.");
+            list.CheckboxLabeled("Rearing venomvine rears and tells", ref rearingEnabled,
+                "Anything big enough to push into a rearing stand makes it stand upright for a while. "
+                + "You get a message when someone not of your colony does it (never during the Gale, "
+                + "which hides it), and nobody inside a reared stand can stay invisible. The Stall "
+                + "doubles how long it stays up.");
+            if (rearingEnabled)
+            {
+                list.Label("Hours a stand stays reared: " + rearingHours.ToString("0.0"));
+                rearingHours = Mathf.Round(list.Slider(rearingHours, 0.5f, 8f) * 2f) / 2f;
+            }
+            list.CheckboxLabeled("Walking venomvine moves with the wind", ref walkingEnabled,
+                "Each time the Gale starts, a walking stand lays soft young runners one or two cells "
+                + "downwind and its oldest tail can die back to dead venomvine, so it crawls across the "
+                + "map. Runners have no thorns until half grown. A smothered stand stops walking. Only on "
+                + "maps that lean (needs the Lean on).");
+            if (walkingEnabled)
+            {
+                list.Label("Most walking-stand cells per map: " + walkingMaxCellsPerMap);
+                walkingMaxCellsPerMap = Mathf.RoundToInt(list.Slider(walkingMaxCellsPerMap, 10f, 400f));
+            }
+            list.CheckboxLabeled("Hoard venomvine keeps what it catches", ref hoardEnabled,
+                "Loose things lying in or right beside a hoard stand are grown into it after a while and "
+                + "listed when you select it. Cutting, smothering or killing the stand drops everything "
+                + "on the spot. Off: it takes nothing new; what it holds stays until it falls.");
+            if (hoardEnabled)
+            {
+                list.Label("Hours before a thing is grown in: " + hoardGrowInHours.ToString("0.0"));
+                hoardGrowInHours = Mathf.Round(list.Slider(hoardGrowInHours, 0.5f, 24f) * 2f) / 2f;
+                list.CheckboxLabeled("It also keeps the gear of whatever dies inside it", ref hoardKeepsDeadGear,
+                    "The clothes and weapons of a body lying in the stand are taken into it too; the body stays.");
+            }
+            list.CheckboxLabeled("Quench venomvine puts fire out", ref quenchEnabled,
+                "When fire comes within reach of a quench stand it bursts and covers the area around it "
+                + "in fire-smothering foam, then stays spent for a few days.");
+            if (quenchEnabled)
+            {
+                list.Label("Days a burst stand stays spent: " + quenchRecoveryDays.ToString("0.0"));
+                quenchRecoveryDays = Mathf.Round(list.Slider(quenchRecoveryDays, 0.5f, 15f) * 2f) / 2f;
+            }
+            list.CheckboxLabeled("Sworn venomvine spares the sap-marked", ref swornSparesMarkedEnabled,
+                "A sworn stand's thorns let through anyone carrying its sap-mark, whoever they are, and "
+                + "scratch everyone else. Off: it scratches everyone like any venomvine. Sowing it needs "
+                + "the sworn hedgecraft research either way.");
+            list.CheckboxLabeled("Shedding venomvine throws thorns downwind", ref sheddingEnabled,
+                "Each time the Gale starts, a shedding stand throws a V of thorn litter downwind. Walking "
+                + "on it scratches a little. Colonists sweep it like any dirt and it fades in a few days. "
+                + "Only on maps that lean (needs the Lean on).");
+            if (sheddingEnabled)
+            {
+                list.Label("Length of the thorn V: " + sheddingLength + " cells");
+                sheddingLength = Mathf.RoundToInt(list.Slider(sheddingLength, 2f, 16f));
+            }
 
             viewHeight = list.CurHeight + 20f;
             list.End();

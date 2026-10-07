@@ -260,7 +260,8 @@ class Fake(object):
                 table = [r for r in table if r["weather"] != "RM_Gale"]
             plants = [{"plant": n, "commonality": 0.1} for n in
                       ("RM_Fuzz", "RM_VenomvineThicket", "RM_DrippingVenomvine", "RM_TwitcherVenomvine",
-                       "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar")]
+                       "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar")
+                      + V.FORM_PLANTS]
             ext = [] if "no_lean_ext" in self.broken else ["RM_LeanExtension"]
             return {"success": True, "foundCount": 1, "notFound": [], "defs": [{
                 "defName": "RM_LeaningScrub", "fields": {
@@ -355,6 +356,14 @@ class Fake(object):
                 n = 1
                 self.new(V.TREE, 5, 5, growth=1.0, stackCount=1)
             return {"success": True, "result": "PLANTED %d" % n}
+        if method == "ProofForm":
+            form, mode = args.split("|")
+            on = self.on(V.FORM_TOGGLES[form])
+            if mode == "on":
+                acts = on and ("%s_never" % form) not in self.broken
+                return {"success": True, "result": "PASS %s" % form if acts else "FAIL: %s did nothing" % form}
+            acts = ("%s_ignores_toggle" % form) in self.broken      # the hook flips the setting off itself
+            return {"success": True, "result": "FAIL: %s off but it acted" % form if acts else "PASS off %s" % form}
         if method != "ProofOrderScratch":
             return {"success": False, "message": "No public static " + str(method)}
         on = self.on("sweetlineStationsEnabled") and self.on("sweetlineScratchingEnabled")
@@ -536,6 +545,9 @@ BREAKS = {
     "stamp_never": "stamp.stamp_answers_a_blaze",
     "stamp_ignores_toggle": "stamp.stamp_toggle_off_ignores_fire",
 }
+for _form, _plant in V.FORMS:
+    BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
+    BREAKS["%s_ignores_toggle" % _form] = "forms.%s_toggle_off" % _form
 
 
 def main():

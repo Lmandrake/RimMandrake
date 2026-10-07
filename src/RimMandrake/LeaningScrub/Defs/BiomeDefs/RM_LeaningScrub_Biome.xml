@@ -206,6 +206,14 @@
       <RM_TwitcherVenomvine>0.05</RM_TwitcherVenomvine>
       <RM_HollowVenomvine>0.04</RM_HollowVenomvine>
       <RM_CrownVenomvine>0.002</RM_CrownVenomvine>
+      <!-- LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1: the six further forms (owner, 2026-10-03), rare like
+           the four above. PROVISIONAL. Sworn is lowest: wild sworn hedges are dead settlements' leavings. -->
+      <RM_RearingVenomvine>0.03</RM_RearingVenomvine>
+      <RM_WalkingVenomvine>0.02</RM_WalkingVenomvine>
+      <RM_HoardVenomvine>0.02</RM_HoardVenomvine>
+      <RM_QuenchVenomvine>0.03</RM_QuenchVenomvine>
+      <RM_SwornVenomvine>0.005</RM_SwornVenomvine>
+      <RM_SheddingVenomvine>0.02</RM_SheddingVenomvine>
     </wildPlants>
     <!-- RM_SweetlineTree is a landmark, not scatter: it is NOT in wildPlants. It reaches maps
          only through the RM_SweetlineTrees map step below (owner ruling R13, 2026-10-03: a rare
