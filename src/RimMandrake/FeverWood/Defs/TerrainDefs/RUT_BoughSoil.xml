@@ -32,7 +32,7 @@
      into a spongy bed that visibly holds silt and rot" — Plennith is named
      in-fiction as the maker of this soil, §6b's own cross-reference). Not
      the Things/ namespace-ownership check validate_patch.py enforces for
-     ThingDefs (RUT_Boughway/RUT_RootCauseway's own headers already
+     ThingDefs (RUT_Boughway/RM_RootCauseway's own headers already
      establish this for terrain), so no placeholder PNG or DEPLOY_HOLD
      entry is needed; real bespoke art is still owed to the standing
      pipeline, same disclosure as the sibling terrains. -->

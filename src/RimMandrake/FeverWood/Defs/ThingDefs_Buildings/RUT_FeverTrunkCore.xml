@@ -17,19 +17,12 @@
      about the regrow clock, not the crush pulse once a colonist ignores
      the warning.
 
-     sealantTerrain=RUT_ToxinSealant reuses the ALREADY-SHIPPED Greentide
-     terrain verbatim (src/RimUtinni/UtinniPatches/Defs/TerrainDefs/
-     RUT_ToxinSealant.xml) rather than inventing a second sealant economy —
-     same "a shared mechanism gets ONE def, reused cross-kit" precedent
-     RUT_Scald/RM_ScaldArmor already set (FORGE_MECHANICS_1 reused
-     Greentide's own damage-type trio rather than duplicating it). Originally
-     gated on TWO packages, not one: RUT_ToxinSealant.xml's own defining def
-     already carries (its costList consumes RM_ToxinSealant, a Greentide-mod
-     item), so a reference to it needed the same guard or it would dangle
-     when mandrake.rm.greentide alone was absent. BAROQUE_BIOMES_WAVE2_FOLD_1:
-     both mandrake.rm.environmentalhazards and mandrake.rm.greentide fold
-     into mandrake.rm.biomes in the same wave, always co-present now, so the
-     guard is dropped rather than retargeted.
+     sealantTerrain=RM_ToxinSealedFloor reuses the Greentide sealed-floor
+     terrain (src/RimMandrake/Greentide/Defs/TerrainDefs/
+     RM_Greentide_SpineTerrains.xml; its costList consumes the RM_ToxinSealant
+     item) rather than inventing a second sealant economy — "a shared
+     mechanism gets ONE def, reused cross-kit". Greentide and this mod both
+     fold into mandrake.rm.biomes, so the reference needs no guard.
      Real finding against the sibling precedent this pass read before
      writing: RUT_GreatboleCore.xml's OWN comp <li> (in GREENTIDE_
      MECHANICS_2, not this item's file) is gated on only, despite the exact
@@ -83,7 +76,7 @@
     <comps>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
         <regrowthThing>RUT_FeverTrunkHeartwood</regrowthThing>
-        <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
+        <sealantTerrain>RM_ToxinSealedFloor</sealantTerrain>
         <regrowDaysRange>10~18</regrowDaysRange>
       </li>
     </comps>

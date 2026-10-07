@@ -6,7 +6,7 @@
      in F7's bore-caves)". Painted entirely by RM_GenStep_RootCauseways
      (RUT_FeverWood.xml's own RM_RootCausewayBiomeExtension, primary
      profile) — not buildable, not in any construction designation
-     category, same posture RUT_RootCauseway's own header already
+     category, same posture RM_RootCauseway's own header already
      established for the sibling kit's ground lane.
 
      RESOLVED ❓ (the spec's own "verify the donor's water terrains accept
@@ -34,7 +34,7 @@
      "nothing goes in the water here" — genuinely simpler than inventing a
      drawn-fiction bridge visual with no engine mechanism behind it.
 
-     pathCost 1 (lower than RUT_RootCauseway's 2 — "fast... lanes" per the
+     pathCost 1 (lower than RM_RootCauseway's 2 — "fast... lanes" per the
      spec's own player-experience text). affordances Light+Medium only, no
      Heavy — "platforms yes, bunkers no" (INVENTED tier, per the spec's own
      citation).
@@ -45,7 +45,7 @@
      RUT_StiltPlatform already reuses via its own Bridge ancestry, tinted
      here to read as living wood rather than milled planking. Terrain
      texture reuse is not the "Things/" namespace-ownership check
-     validate_patch.py enforces for ThingDefs in this mod (RUT_RootCauseway/
+     validate_patch.py enforces for ThingDefs in this mod (RM_RootCauseway/
      RUT_StiltPlatform's own headers already establish this for terrain),
      so no placeholder PNG or DEPLOY_HOLD entry is needed. Real bespoke
      raised-lane art is still owed to the standing art pipeline, same
