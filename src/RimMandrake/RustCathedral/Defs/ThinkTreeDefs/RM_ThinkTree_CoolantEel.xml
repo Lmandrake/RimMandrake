@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 3: the coolant eel circles in water and does nothing else. No flee, no
+     hunt, no fight, no tame. The constant tree is empty on purpose ("flees nothing"). -->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_CoolantEel</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+        <li Class="ThinkNode_QueuedJob" />
+        <li Class="RimMandrake.RustCathedral.RM_JobGiver_WaterWander" />
+        <li Class="JobGiver_IdleError" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_CoolantEelConstant</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes />
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

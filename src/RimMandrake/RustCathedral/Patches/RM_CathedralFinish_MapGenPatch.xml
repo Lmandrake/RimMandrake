@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_BASE_FINISH_BUILD_1 parts 3 and 5: the eel and stray steps run on every map and self-gate to
+     RM_RustCathedral in C#, the same route as RM_Borehulk_MapGenPatch.xml. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_CoolantEelSpawn</li>
+      <li>RM_CathedralStrays</li>
+    </value>
+  </Operation>
+</Patch>

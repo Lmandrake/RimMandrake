@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: the deep roll that travels across the map under the plate.
+  Sustained and positional (an in-world sub-sound, so the sustainer gets a world root the line-cycle component moves
+  along the roll front). PLACEHOLDER AUDIO, same convention as RM_HumLayers.xml: vanilla's mechanoid relay idle
+  (already proven to resolve in RM_HumLayerDrone), pitched far down. Owned audio rides
+  design/RimMandrake/sound_sourcing_options_2026-10-02.md.
+-->
+<Defs>
+  <SoundDef>
+    <defName>RM_LineCycleRoll</defName>
+    <context>MapOnly</context>
+    <sustain>true</sustain>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/MechanoidRelayIdle_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>55</volumeRange>
+        <pitchRange>0.3~0.38</pitchRange>
+        <distRange>20~140</distRange>
+        <sustainLoop>true</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

@@ -51,6 +51,7 @@ namespace RimMandrake.RustCathedral.Hum
 		private int checksSinceStart;
 		private int standing;
 		private bool standingInitialized;
+		private bool lineCycleDrop; // RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: the hum drops one band while a line-cycle rolls
 
 		private RM_BiomeAttitudeDef cachedDef;
 		private bool defLookupDone;
@@ -75,6 +76,7 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref goodwillDrainedToday, "goodwillDrainedToday", 0);
 			Scribe_Values.Look(ref standing, "standing", 0);
 			Scribe_Values.Look(ref standingInitialized, "standingInitialized", false);
+			Scribe_Values.Look(ref lineCycleDrop, "lineCycleDrop", false);
 			// activeSustainers is intentionally not saved -- Sustainer is a
 			// live-audio handle, not save data. currentBand survives the
 			// save/load and the next tick resyncs sustainers to it.
@@ -148,7 +150,43 @@ namespace RimMandrake.RustCathedral.Hum
 		public static int GetBand(Map map)
 		{
 			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
-			return comp?.displayBand ?? -1;
+			if (comp == null)
+			{
+				return -1;
+			}
+			return comp.lineCycleDrop ? DroppedBand(comp.displayBand, comp.GetDef()) : comp.displayBand;
+		}
+
+		/// <summary>RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: while a line-cycle rolls the hum drops one band (one hum
+		/// layer fewer, the band one lower); the worst band is already silent and stays where it is. Not a second
+		/// meter: irritation and standing are untouched, only what the hum shows moves.</summary>
+		public static int DroppedBand(int band, RM_BiomeAttitudeDef def)
+		{
+			if (band <= 0 || def == null || band >= def.WorstBand)
+			{
+				return band;
+			}
+			return band - 1;
+		}
+
+		public static void SetLineCycleDrop(Map map, bool on)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			if (comp == null || comp.lineCycleDrop == on)
+			{
+				return;
+			}
+			comp.lineCycleDrop = on;
+			RM_BiomeAttitudeDef def = comp.GetDef();
+			if (def != null && comp.displayBand >= 0 && RustCathedralHumSettings.humMechanicEnabled)
+			{
+				comp.SyncSustainers(def, comp.displayBand);
+			}
+		}
+
+		public static bool LineCycleDropActive(Map map)
+		{
+			return map?.GetComponent<RM_MapComponent_BiomeAttitude>()?.lineCycleDrop ?? false;
 		}
 
 		/// <summary>Bumps this map's irritation. Negative amounts are allowed (a mercy event), though nothing calls that yet.</summary>
@@ -410,6 +448,10 @@ namespace RimMandrake.RustCathedral.Hum
 			else
 			{
 				desiredLayers = Mathf.Clamp(band + 1, 0, def.humLayers.Count);
+				if (lineCycleDrop)
+				{
+					desiredLayers = Mathf.Max(0, desiredLayers - 1);
+				}
 			}
 
 			while (activeSustainers.Count > desiredLayers)

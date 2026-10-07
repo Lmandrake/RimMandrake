@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: the forced short wait every non-colonist, non-hostile-mechanoid pawn takes
+  while the line-cycle rolls toward and past it. Vanilla JobDriver_Wait; the expiry is set per pawn by
+  RM_MapComponent_LineCycle to the tick the roll front passes its position.
+-->
+<Defs>
+  <JobDef>
+    <defName>RM_Job_LineCycleStill</defName>
+    <driverClass>JobDriver_Wait</driverClass>
+    <reportString>standing still.</reportString>
+    <suspendable>false</suspendable>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>

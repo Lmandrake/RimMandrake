@@ -25,6 +25,12 @@
   RSW_Mynock (mandrake.rsw.swbestiary), joining the other RSW_ ports below.
   This file no longer casts any bare mlie.starwarsanimalcollection defName.
 
+  🔑 DELIBERATE MULTI-HOMING, do not "fix": RSW_Mynock ALSO lives on the Rust
+  Cathedral (WildAnimals_RustCathedral.xml, RUSTCATHEDRAL_BASE_FINISH_BUILD_1
+  part 6). A flier under the owner's flyer carve-out, and the Rust Cathedral
+  sheet's own "one home, two ranges" (the_rust_cathedral.md §4). Precedent:
+  the screecher, 29ccede91.
+
   The three Insectoids 2 Isopoda rows (SW_Electrictick 0.3, SW_Electricgryllotalpa
   0.15, SW_Juggernautbeetles 0.05) are no longer added here: WARSCAR_SHEET_DONOR_PORT_1
   (2026-10-06) ported them to RM_ElectricTick / RM_ElectricGryllotalpa /

@@ -64,6 +64,13 @@
     <workerClass>RimMandrake.RustCathedral.RM_BiomeWorker_RustCathedral</workerClass>
     <modExtensions>
       <li Class="RimMandrake.RustCathedral.RM_RustCathedralBiomeRanges" />
+      <!-- RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 4 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - the planet's
+           highest steady sun, +79 deg, median 62.5 C; the deck plate's never-moving wall shadows are the shade (sheet
+           §9). Default offsets, as the item rules; tuned in an owner-watched sitting. Whoever closes
+           SOLAR_HEAT_EXPOSURE_1 lists the Rust Cathedral as overhead. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension">
+        <heatKind>overhead</heatKind>
+      </li>
     </modExtensions>
     <hasVirtualPlants>false</hasVirtualPlants>
     <lakeBeachTerrain>RM_RustCathedral_CrackedMetalSoil</lakeBeachTerrain>

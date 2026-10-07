@@ -54,6 +54,7 @@
     <Compile Include="RM_CompBorehulkDrill.cs" />
     <Compile Include="RM_JobGiver_BorehulkBackAway.cs" />
     <Compile Include="RM_GenStep_BorehulkPlacement.cs" />
+    <Compile Include="RM_CathedralFinish.cs" />
   </ItemGroup>
 
   <ItemGroup>

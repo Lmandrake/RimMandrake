@@ -49,6 +49,8 @@ HARMONY = (
     ("CompSpawner", "TryDoSpawn", "mandrake.rut.rustcathedralhum", "bolt shed curiosity gated by its toggle"),
     ("WaterBodyTracker", "Notify_Fished", "mandrake.rut.rustcathedralhum", "coolant eel catch consequences"),
     ("IncidentWorker_DeepDrillInfestation", "CanFireNowSub", "mandrake.rut.rustcathedralhum", "vanilla infestation replaced by the cathedral response"),
+    ("Bill", "PawnAllowedToStartAnew", "mandrake.rut.rustcathedralhum", "only a hum reader writes a hum primer"),
+    ("Corpse", "ButcherProducts", "mandrake.rut.rustcathedralhum", "butchering a living coolant eel counts as a catch"),
 )
 
 
@@ -144,6 +146,7 @@ def static_checks():
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "RustCathedral.md")):
         bad.append("walk missing")
     bad.extend(borehulk_problems()[0])
+    bad.extend(basefinish_problems()[0])
     return bad
 
 
@@ -284,6 +287,171 @@ def borehulk_problems(mod_root=None, src_root=None, vanilla_data=None):
         unmeasured.append("borehulk roster ban: the probe RM_CathedralRoach roster row was not found under %s" % src_root)
     elif hits:
         bad.append("borehulk: rostered as a wild animal in %s (it must never respawn)" % sorted(set(hits)))
+    return bad, unmeasured
+
+
+# ---- the base finish (RUSTCATHEDRAL_BASE_FINISH_BUILD_1), L0 half of its criteria -------------------------------
+BASEFINISH_DEFS = (("IncidentDef", "RM_LineCycle"), ("SoundDef", "RM_LineCycleRoll"), ("JobDef", "RM_Job_LineCycleStill"),
+                   ("ThoughtDef", "RM_FeltTheGroundTurn"), ("TraitDef", "RM_HumReader"), ("ThingDef", "RM_HumPrimer"),
+                   ("ThingDef", "RM_CoolantEel"), ("PawnKindDef", "RM_CoolantEel"), ("GenStepDef", "RM_CathedralStrays"),
+                   ("GenStepDef", "RM_CoolantEelSpawn"), ("RecipeDef", "RM_WriteHumPrimer"),
+                   ("ThinkTreeDef", "RM_ThinkTree_CoolantEel"))
+UTINNI_PATCHES = os.path.join(SRC_ROOT, "RimUtinni", "UtinniPatches", "Patches")
+BESTIARY_NAME = "RimMandrake: SW \u2014 Bestiary"
+
+
+def _cs_all(mod_root):
+    out = {}
+    for sub in ("RustCathedral", "Hum", "Walls"):
+        d = os.path.join(mod_root, "Source", sub)
+        for fn in (sorted(os.listdir(d)) if os.path.isdir(d) else ()):
+            if fn.endswith(".cs"):
+                with open(os.path.join(d, fn), encoding="utf-8") as fh:
+                    out[sub + "/" + fn] = _nocomment(fh.read())
+    return out
+
+
+def _class_body(srcs, cls):
+    """Source text of `class cls` up to the next top-level class declaration, or ''."""
+    for s in srcs.values():
+        m = re.search(r"\bclass\s+%s\b" % re.escape(cls), s)
+        if m:
+            rest = s[m.end():]
+            nxt = re.search(r"\n\t?(public|internal)\s+(static\s+)?class\s", rest)
+            return rest[:nxt.start()] if nxt else rest
+    return ""
+
+
+def basefinish_problems(mod_root=None, utinni_patches=None):
+    """(problems, unmeasured). Static reads of the base-finish build: the twelve defs, the line-cycle's gates, the
+    trait with no stat, the primer and its trait-gated recipe, the canal-locked eel and its placement, the sun kind,
+    the strays' gate, the readout comp on the bolts, and the campaign mynock patch's guard. Arguments exist so the
+    selftest can plant breaks in a temp copy."""
+    mod_root = mod_root or HERE
+    utinni_patches = utinni_patches or UTINNI_PATCHES
+    bad, unmeasured = [], []
+    defs = {}
+    for f in _xml_files(os.path.join(mod_root, "Defs")):
+        for el in ET.parse(f).getroot():
+            if isinstance(el.tag, str) and el.findtext("defName"):
+                defs[(el.tag, el.findtext("defName").strip())] = el
+    for key in BASEFINISH_DEFS:
+        if key not in defs:
+            bad.append("basefinish: %s/%s not defined under Defs/" % key)
+    inc = defs.get(("IncidentDef", "RM_LineCycle"))
+    if inc is not None:
+        if inc.findtext("category") != "Misc":
+            bad.append("basefinish: RM_LineCycle category is not Misc (it must never be a threat)")
+        if float(inc.findtext("baseChance") or 1) != 0:
+            bad.append("basefinish: RM_LineCycle baseChance is not 0 (the storyteller would fire it besides the MTB roll)")
+        if not (inc.findtext("workerClass") or "").endswith("RM_IncidentWorker_LineCycle"):
+            bad.append("basefinish: RM_LineCycle does not use RM_IncidentWorker_LineCycle")
+    trait = defs.get(("TraitDef", "RM_HumReader"))
+    if trait is not None:
+        if (trait.findtext("commonality") or "").strip() not in ("0", "0.0"):
+            bad.append("basefinish: RM_HumReader commonality is not 0 (it would roll at pawn generation)")
+        if trait.find(".//statOffsets") is not None or trait.find(".//statFactors") is not None:
+            bad.append("basefinish: RM_HumReader carries a stat (the item: no stat buff anywhere)")
+    primer = defs.get(("ThingDef", "RM_HumPrimer"))
+    if primer is not None and not any((li.get("Class") or "").endswith("BookOutcomeProperties_HumPrimer")
+                                      for li in primer.iter("li")):
+        bad.append("basefinish: RM_HumPrimer has no BookOutcomeProperties_HumPrimer doer (reading it teaches nothing)")
+    rec = defs.get(("RecipeDef", "RM_WriteHumPrimer"))
+    if rec is not None:
+        ext = [li for li in rec.findall("modExtensions/li") if (li.get("Class") or "").endswith("RM_RecipeRequiresTraitExtension")]
+        if not ext or ext[0].findtext("trait") != "RM_HumReader":
+            bad.append("basefinish: RM_WriteHumPrimer is not gated on RM_HumReader")
+        if rec.find("products/RM_HumPrimer") is None:
+            bad.append("basefinish: RM_WriteHumPrimer does not make RM_HumPrimer")
+    eel = defs.get(("ThingDef", "RM_CoolantEel"))
+    if eel is not None:
+        race = eel.find("race")
+        get = (lambda k: race.findtext(k) if race is not None else None)
+        if get("trainability") != "None":
+            bad.append("basefinish: RM_CoolantEel trainability is not None (it must never be tamed)")
+        if (eel.findtext("statBases/Wildness") or "").strip() not in ("1", "1.0"):
+            bad.append("basefinish: RM_CoolantEel Wildness is not 1")
+        if get("specificMeatDef") != "RM_CoolantEelCatch":
+            bad.append("basefinish: butchering RM_CoolantEel does not yield RM_CoolantEelCatch")
+        if get("thinkTreeMain") != "RM_ThinkTree_CoolantEel":
+            bad.append("basefinish: RM_CoolantEel does not run RM_ThinkTree_CoolantEel")
+        if not any((li.get("Class") or "").endswith("CompProperties_WaterLocked") for li in eel.findall("comps/li")):
+            bad.append("basefinish: RM_CoolantEel lost the RM_CompWaterLocked backstop")
+        if eel.find("tools") is not None:
+            bad.append("basefinish: RM_CoolantEel has tools (it never hunts or fights)")
+    tree = defs.get(("ThinkTreeDef", "RM_ThinkTree_CoolantEel"))
+    if tree is not None:
+        classes = [n.get("Class", "") for n in tree.iter() if n.get("Class")]
+        if not any(c.endswith("RM_JobGiver_WaterWander") for c in classes):
+            bad.append("basefinish: the eel's think tree lost RM_JobGiver_WaterWander")
+        fights = [c for c in classes if any(w in c for w in _FIGHT_WORDS)]
+        if fights:
+            bad.append("basefinish: the eel's think tree carries a fight branch %s" % fights)
+    biome = defs.get(("BiomeDef", BIOME))
+    if biome is not None:
+        wild = biome.find("wildAnimals")
+        if wild is not None and wild.find("RM_CoolantEel") is not None:
+            bad.append("basefinish: RM_CoolantEel is in wildAnimals (the vanilla spawner would strand it on the plate)")
+        sun = [li for li in biome.findall("modExtensions/li") if (li.get("Class") or "").endswith("RM_SunHeatExtension")]
+        if not sun or sun[0].findtext("heatKind") != "overhead":
+            bad.append("basefinish: %s does not declare RM_SunHeatExtension heatKind overhead" % BIOME)
+    bolt = defs.get(("ThingDef", "RM_LivingBolt"))
+    if bolt is not None and not any((li.get("Class") or "").endswith("CompProperties_HumReadout") for li in bolt.findall("comps/li")):
+        bad.append("basefinish: the living bolt lost the hum readout comp (a hum reader sees nothing)")
+    patched = set()
+    for f in _xml_files(os.path.join(mod_root, "Patches")):
+        for op in ET.parse(f).getroot():
+            if "MapCommonBase" in (op.findtext("xpath") or ""):
+                patched.update((li.text or "").strip() for li in op.iter("li"))
+    for step in ("RM_CoolantEelSpawn", "RM_CathedralStrays"):
+        if step not in patched:
+            bad.append("basefinish: %s is not added to MapCommonBase by any patch (it never runs)" % step)
+    srcs = _cs_all(mod_root)
+    gates = {
+        "RM_GenStep_CoolantEels": ("coolantEelsEnabled", "CathedralBiomeDefName"),
+        "RM_GenStep_CathedralStrays": ("straysEnabled", "CathedralBiomeDefName"),
+        "RM_IncidentWorker_LineCycle": ("lineCycleEnabled", "TargetBiomeDefName"),
+        "RM_GameComponent_HumExposure": ("humReadingEnabled", "CathedralBiomeDefName"),
+    }
+    for cls, (toggle, gate) in gates.items():
+        body = _class_body(srcs, cls)
+        if not body:
+            bad.append("basefinish: class %s not found in Source/" % cls)
+            continue
+        if toggle not in body:
+            bad.append("basefinish: %s ignores its toggle %s" % (cls, toggle))
+        if not re.search(r"defName\s*!=\s*(RM_HumReading\.)?%s" % gate, body):
+            bad.append("basefinish: %s no longer self-gates to %s" % (cls, BIOME))
+    stops = _class_body(srcs, "RM_MapComponent_LineCycle")
+    if stops and ("IsColonist" not in stops or "IsMechanoid" not in stops):
+        bad.append("basefinish: the line-cycle no longer exempts colonists and hostile mechanoids")
+    allsrc = "\n".join(srcs.values())
+    for needle, why in (("nameof(Bill.PawnAllowedToStartAnew)", "the primer's trait gate"),
+                        ("nameof(Corpse.ButcherProducts)", "the butchered-eel catch"),
+                        ("SetLineCycleDrop", "the hum's one-band drop")):
+        if needle not in allsrc:
+            bad.append("basefinish: %s is gone (%s)" % (needle, why))
+    mp = os.path.join(utinni_patches, "WildAnimals_RustCathedral.xml")
+    if not os.path.isdir(utinni_patches):
+        unmeasured.append("basefinish mynocks: %s not found" % utinni_patches)
+    elif not os.path.isfile(mp):
+        bad.append("basefinish: WildAnimals_RustCathedral.xml is missing (no mynocks on the campaign tier)")
+    else:
+        ops = list(ET.parse(mp).getroot())
+        ok = False
+        for op in ops:
+            if op.get("MayRequire"):
+                bad.append("basefinish: the mynock patch guards an <Operation> with MayRequire, which the engine ignores")
+            if (op.get("Class") == "PatchOperationFindMod"
+                    and any((li.text or "").strip() == BESTIARY_NAME for li in op.findall("mods/li"))
+                    and any(n.tag == "RSW_Mynock" for n in op.iter())
+                    and any('defName="%s"' % BIOME in (x.text or "") for x in op.iter("xpath"))):
+                ok = True
+        if not ok:
+            bad.append("basefinish: the mynock patch no longer adds RSW_Mynock to %s under a FindMod on the bestiary" % BIOME)
+        warscar = os.path.join(utinni_patches, "WildAnimals_Warscar.xml")
+        if os.path.isfile(warscar) and "WildAnimals_RustCathedral.xml" not in open(warscar, encoding="utf-8").read():
+            bad.append("basefinish: WildAnimals_Warscar.xml lost its multi-homing note for the mynock")
     return bad, unmeasured
 
 
@@ -618,6 +786,8 @@ if __name__ == "__main__":
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)
+    for u in basefinish_problems()[1]:
+        print("  UNMEASURED " + u)
     for u in borehulk_problems()[1]:
         print("  UNMEASURED " + u)
     sys.exit(1 if problems else 0)

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 2: hum reading. No stat offsets, no mood, never rolled at pawn generation
+  (commonality 0). Granted by exposure (RM_GameComponent_HumExposure) or by reading an RM_HumPrimer through. The
+  payoff is only the plain-words readout on the living bolts' inspect pane. Ban 1: nothing here explains the hum.
+-->
+<Defs>
+  <TraitDef>
+    <defName>RM_HumReader</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>hum reader</label>
+        <description>{PAWN_nameDef} can tell one tone under the plate from another, and follows the figures the small machines walk.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+</Defs>
