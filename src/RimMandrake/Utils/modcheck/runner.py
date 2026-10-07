@@ -727,10 +727,17 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                     summary["jev_shadow"] = []
             results[mod_folder] = summary
             sheet_path = write_sheet(mod_folder, summary)
-            emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
-                       sheet_path)
-            if summary["findings"]:
-                file_findings(item_id, mod_folder, summary["findings"])
+            try:
+                emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
+                           sheet_path)
+                if summary["findings"]:
+                    file_findings(item_id, mod_folder, summary["findings"])
+            except RuntimeError as ex:
+                if "never been filed" not in str(ex):
+                    raise
+                # No ledger item for this mod's run (the default MODCHECK_<MOD>_RUN_1 is never filed): the sheet and
+                # JSON are the evidence; a missing item must not abort the rest of a batch (LIVE 2026-10-07).
+                print("[modcheck] %s: no ledger item %s; sheet %s only" % (mod_folder, item_id, sheet_path), file=sys.stderr)
             record_run(mod_folder, mod_dir,
                       "%s@%d" % (mod_folder, int(time.time())),
                       summary["all_green"], walk=walk)
