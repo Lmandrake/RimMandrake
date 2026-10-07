@@ -16,3 +16,4 @@ is labelled "glass"; (4) contained liquid's colour tints the container, empty sh
 - started rulings pass
 - 23:58 buckets stuffable (Woody/Metallic/Leathery), 3 recipes RM_Make_Bucket_{Wood,Metal,Leather}; XML 0 errors; queued fwart_RM_Bucket_Stuffable_v1
 - 00:20 ruling 2 built: RM_ContainerMaterialMath (Verse-free) + RM_ContainerMaterialsExtension rules on bottle/bucket/barrel bases; LiquidDef.hot (boiling) + IsAcid; fill/drain/pour sites material-aware with JobFailReason; DLL 0 err; FlowWorks selftest 117/117 (6 new)
+- 00:45 rulings 3+4 built: RM_CompContainerMaterial (stone reads 'glass'; filled shows LiquidDef.color via ForceColor, empty/dirty show stuff colour; inspect line for refusals); 15 liquid colours in generator; FlowWorks selftest 119/119; run_selftests 214/214

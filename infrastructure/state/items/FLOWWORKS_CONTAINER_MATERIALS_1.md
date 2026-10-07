@@ -58,6 +58,16 @@ liquids, `JobFailReason` names why), the tank drain search (same), and both fill
 Capacity scales every tank pour/draw (`RM_ContainerMaterials.UnitsIn`). Drinking is unchanged: nutrition is per def.
 Wooden containers holding hot/acid were not ruled on; they hold both (one XML flag to change).
 
+## naming and tint (rulings 3 and 4, built)
+
+`RM_CompContainerMaterial` on all three ItemBases. Naming: a stone container's label rebuilds vanilla's
+"ThingMadeOfStuffLabel" with the word "glass", so "granite empty bottle" reads "glass empty bottle" and
+"granite bottled fresh water" reads "glass bottled fresh water" (bill/recipe preview labels are vanilla's and still
+name the stone; the recipe is already called "make glass bottles"). Tint: one Graphic; `ForceColor` returns the
+contained liquid's `LiquidDef.color` (generator table `LIQUID_CONTAINER_COLORS`) on a filled container and nothing on
+an empty/dirty one, so vanilla's stuff colour (the material) shows there. Safe to cache because every chain step makes
+a new Thing. Both colours multiply the art, so the greyscale regens are what make either read cleanly.
+
 ## art
 
 Greyscale, stuff-tintable regen jobs for RM_Bottle and RM_Barrel (not the held glass
@@ -69,7 +79,7 @@ multiplied by the stuff colour and reads muddy.
 
 ## state
 
-Built offline, never loaded (no game this pass): stuffCategories on the bottle and barrel
+Rulings 1-4 built offline 2026-10-07, never loaded (no game this pass). Earlier: built offline: stuffCategories on the bottle and barrel
 ItemBases, `Defs/LiquidTypes/RecipeDefs/RM_ContainerRecipes.xml` (6 recipes),
 `RM_LiquidBottleUtility.MakeContainer` at all 6 def-swap sites, DLL rebuilt.
 

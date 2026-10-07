@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.FlowWorks.LiquidTypes
@@ -102,6 +104,68 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             RM_ContainerMaterialRule rule = RuleFor(container);
             return RM_ContainerMaterialMath.ScaledUnits(liquid.UnitsFor(size), rule?.capacityFactor ?? 1f);
+        }
+    }
+
+    /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1 rulings 3 and 4 (decisions taken by question card
+    /// 2026-10-06 23:45), on every bottle/bucket/barrel via the ItemBases' comps:
+    ///  3. a stone-made container is GLASS: "granite empty bottle" reads "glass empty bottle" -- the
+    ///     stone only tints it (vanilla's own "ThingMadeOfStuffLabel" pattern is rebuilt with the glass
+    ///     word, so it holds in any language that keeps that pattern; otherwise the label is untouched).
+    ///  4. a FILLED container shows its liquid's colour (LiquidDef.color); an empty or dirty one, or a
+    ///     liquid left white, falls through to vanilla's stuff colour -- the material. One Graphic: the
+    ///     colour is chosen once when the Thing's graphic is built, and every fill/wash/pour already makes
+    ///     a NEW Thing (RM_LiquidBottleUtility.MakeContainer), so no cached graphic ever goes stale.
+    /// Plus an inspect line for what this material holds and refuses.</summary>
+    public class RM_CompContainerMaterial : ThingComp
+    {
+        private const float WhiteEpsilon = 0.01f;
+
+        private LiquidDef Contained => parent.def.GetModExtension<RM_BottledLiquidExtension>()?.liquid;
+
+        public override Color? ForceColor()
+        {
+            LiquidDef liquid = Contained;
+            if (liquid == null)
+            {
+                return null;
+            }
+            Color c = liquid.color;
+            bool white = c.r > 1f - WhiteEpsilon && c.g > 1f - WhiteEpsilon && c.b > 1f - WhiteEpsilon;
+            return white ? (Color?)null : c;
+        }
+
+        public override string TransformLabel(string label)
+        {
+            ThingDef stuff = parent.Stuff;
+            if (stuff == null || label == null
+                || RM_ContainerMaterials.MaterialOf(stuff) != RM_ContainerMaterial.Glass)
+            {
+                return label;
+            }
+            string stone = "ThingMadeOfStuffLabel".Translate(stuff.LabelAsStuff, parent.def.label);
+            string glass = "ThingMadeOfStuffLabel".Translate("RM_ContainerMaterial_Glass".Translate(), parent.def.label);
+            return RM_ContainerMaterialMath.RelabelAsGlass(label, stone, glass);
+        }
+
+        public override string CompInspectStringExtra()
+        {
+            RM_ContainerMaterialRule rule = RM_ContainerMaterials.RuleFor(parent);
+            if (rule == null || (rule.holdsHot && rule.holdsAcid))
+            {
+                return null;
+            }
+            var sb = new StringBuilder();
+            if (!rule.holdsHot)
+            {
+                sb.Append("RM_ContainerRefusesHotShort".Translate());
+            }
+            if (!rule.holdsAcid)
+            {
+                if (sb.Length > 0) sb.Append(", ");
+                sb.Append("RM_ContainerRefusesAcidShort".Translate());
+            }
+            return "RM_ContainerCannotHold".Translate(sb.ToString());
         }
     }
 }

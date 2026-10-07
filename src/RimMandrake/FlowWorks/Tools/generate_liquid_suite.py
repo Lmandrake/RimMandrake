@@ -1236,6 +1236,29 @@ def build_fluid_looks_patch(out_dir: Path):
     return out_path
 
 
+# FLOWWORKS_CONTAINER_MATERIALS_1 ruling 4 (decision taken by question card 2026-10-06 23:45): a filled
+# bottle/bucket/barrel shows its LIQUID's colour (multiplied over the greyscale container art), emitted as
+# LiquidDef.color. A row left out stays white = no tint, and the container keeps its material colour.
+# Chosen to read as the liquid on a small item icon, not to match the terrain shader's multiplier tints.
+LIQUID_CONTAINER_COLORS = {
+    "freshwater": "(0.62,0.80,0.98)",
+    "saltwater": "(0.42,0.62,0.82)",
+    "boiling": "(0.86,0.92,0.98)",
+    "icy": "(0.78,0.93,1.0)",
+    "toxic": "(0.58,0.72,0.28)",
+    "acid": "(0.78,0.96,0.22)",
+    "reactionliquor": "(0.92,0.86,1.0)",
+    "tar": "(0.16,0.15,0.14)",
+    "brine": "(0.84,0.88,0.80)",
+    "propane": "(0.88,0.88,0.92)",
+    "chemfuel": "(0.72,0.52,0.20)",
+    "slime_red": "(0.62,0.16,0.14)",
+    "slime_green": "(0.30,0.55,0.18)",
+    "slime_white": "(0.80,0.78,0.70)",
+    "slime_yellow": "(0.78,0.68,0.22)",
+}
+
+
 def _xv(v):
     if v is True:
         return "true"
@@ -1304,6 +1327,8 @@ def build_liquiddef_xml(row):
         lines.append("    <distillable>true</distillable>")
     if row.get("hot"):
         lines.append("    <hot>true</hot>")
+    if LIQUID_CONTAINER_COLORS.get(row.get("_key")):
+        lines.append(f"    <color>{LIQUID_CONTAINER_COLORS[row['_key']]}</color>")
 
     suite = row.get("terrainSuite")
     if suite:

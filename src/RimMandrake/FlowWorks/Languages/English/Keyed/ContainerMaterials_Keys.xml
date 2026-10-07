@@ -9,4 +9,7 @@
   <RM_ContainerMaterial_Plasteel>plasteel</RM_ContainerMaterial_Plasteel>
   <RM_ContainerRefusesHot>A {0} container can't hold {1}: it's too hot.</RM_ContainerRefusesHot>
   <RM_ContainerRefusesAcid>A {0} container can't hold {1}: the acid eats through it.</RM_ContainerRefusesAcid>
+  <RM_ContainerCannotHold>Can't hold: {0}.</RM_ContainerCannotHold>
+  <RM_ContainerRefusesHotShort>hot liquids</RM_ContainerRefusesHotShort>
+  <RM_ContainerRefusesAcidShort>acid</RM_ContainerRefusesAcidShort>
 </LanguageData>
