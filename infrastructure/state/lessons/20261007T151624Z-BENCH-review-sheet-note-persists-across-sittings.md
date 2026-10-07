@@ -1,0 +1,1 @@
+A review-sheet note persists across sittings: a row clicked today can carry an old note (Doss 'Too cartoonish, try again' from 2026-10-05 rode along on the 2026-10-07 C pick). Before queuing a redo from a note, check the note's ruling date in the art events against the click's 'at'.
