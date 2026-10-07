@@ -71,6 +71,9 @@ PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "
                  "RM_WreckField_FloodedCanyon": "biome", "RM_WreckField_FeverWood": "biome",
                  "RM_WreckField_TheRot": "biome", "RM_WreckField_Abyss": "biome",
                  "RM_WreckField_Stillsand": "biome", "RM_WreckField_Contagion": "biome"}
+# Step 7, the placement law's Cleaned class (design §3d-i): travelled or inhabited land scatters nothing.
+CLEANED_BIOMES = {"RM_Greentide", "RM_LeaningScrub", "RM_LongShade", "RM_RustCathedral", "RM_TheForge", "RM_TheSump",
+                  "Desert", "AridShrubland"}
 # Every family must have at least one child by step 6 (design §3a's six families).
 FAMILIES_WITH_CHILDREN = FAMILY_NAMES
 SRC_ROOT = os.path.normpath(os.path.join(HERE, ".."))
@@ -403,13 +406,19 @@ def _planet_checks(bad, fams, weathers, tables):
             elif e.tag == "BiomeDef":
                 for li in e.findall("extraGenSteps/li"):
                     biome_regs.setdefault(li.text, []).append(dn)
+                    if dn in CLEANED_BIOMES and (li.text or "").startswith("RM_WreckField_"):
+                        bad.append("Cleaned biome %s registers %s: travelled land scatters no wrecks (design §3d-i)" % (dn, li.text))
             elif e.tag == "MapGeneratorDef":
                 for li in e.findall("genSteps/li"):
                     floor_regs.setdefault(li.text, []).append(dn)
-        if root.tag == "Patch":  # the Scald registers by patch
+        if root.tag == "Patch":  # the Scald and the Fever Wood register by patch
+            ptxt = open(path, encoding="utf-8", errors="replace").read()
             for li in root.iter("li"):
                 if li.text and li.text.startswith("RM_WreckField_"):
                     biome_regs.setdefault(li.text, []).append("(patch)")
+                    hit = [b for b in CLEANED_BIOMES if 'defName="%s"' % b in ptxt]
+                    if hit:
+                        bad.append("%s patches %s onto Cleaned biome(s) %s (design §3d-i)" % (os.path.basename(path), li.text, hit))
     # Sanity probe: the instrument must see the Scald's known field and its three children.
     if "RM_WreckField_Scald" not in fields or not set(SCALD_WRECKS) <= set(children):
         bad.append("planet sweep cannot see the Scald field/children: the sweep is blind, nothing below is evidence")
