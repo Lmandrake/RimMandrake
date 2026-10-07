@@ -53,3 +53,11 @@ in one sitting.
 
 See the question cards that accompanied this addendum (start point, level tags, acceptance
 ownership, how to treat the ~115 already-built items).
+
+## Owner decisions, 2026-10-06 (question card; the typed text is his, the clicks are ours)
+
+- **Build order:** *"In order, 1, 2, 3, 4"* — (1) git check before `next` offers work, (2) the `built` state, (3) expiring claims, (4) sort the existing board.
+- **More states than `built`?** He asked: *"Are we not adding any other states besides built, like something about validated to some level?"* — open; see the answer given in the session (a `validated` state with the level reached recorded on the item).
+- **Levels:** decision taken by question card — tag every criterion with its level.
+- **Who owns acceptance:** *"Foundry is supposed to own automated processes. Bench is about human interaction, design work, and emergency response."* — FOUNDRY owns acceptance sittings (L0-GREEN-FULL, L3 evaluation); BENCH is only the L4 human-facing and design seat.
+- **The ~115 look-built items:** decision taken by question card — import as `built` after checking source.
