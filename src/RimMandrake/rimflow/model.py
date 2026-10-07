@@ -337,6 +337,16 @@ VERBS = {
     "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
+    # 🔑 `reconcile` (rimflow redesign step 1, 2026-10-07): a seat's JUDGEMENT of commits
+    # that name an item — `complete` (the item's scope is built), `partial` (some of it;
+    # `remaining` says what is left) or `unrelated` (the commits only mention it).
+    # `sha` is the judged commits, space-separated. It CHANGES NO STATE: it never closes,
+    # starts or claims anything; `next` reads it so the same commits are not re-offered
+    # (cli.cmd_next, reconcile.py). Any seat, like `note` and `close`: the seat that read
+    # the commits is the one that can say what they are. ⚠️ A reader older than this
+    # entry refuses the unknown verb and collects it into `world.errors` — counted,
+    # never fatal, and no state or rank depends on it — so old clones stay correct.
+    "reconcile": {"who": "any",   "req": ("verdict", "sha"), "opt": ("remaining",)},
     # ⚠️ `note` is the HANDOFF and POLICY.md's 90% ritual instructs it by name:
     # `rimflow seat idle --reason context-exhausted --note "<where I stopped>"`.
     # It was missing from this table, so the documented command errored out — a rule
@@ -552,6 +562,20 @@ def _check_enums(ev):
         raise SchemaError("reassign --to must name a seat")
     if verb == "verify" and ev["result"] not in ("pass", "fail", "partial"):
         raise SchemaError("verify result must be pass|fail|partial")
+    if verb == "reconcile":
+        if ev["verdict"] not in RECONCILE_VERDICTS:
+            raise SchemaError("reconcile --verdict must be %s (got %r)"
+                              % ("|".join(RECONCILE_VERDICTS), ev["verdict"]))
+        shas = str(ev["sha"]).split()
+        bad = [x for x in shas if not SHA_RE.match(x)]
+        if not shas or bad:
+            raise SchemaError("reconcile --sha takes commit shas, 7-40 lowercase hex "
+                              "(got %r)" % (bad or ev["sha"],))
+        if ev["verdict"] == "partial" and not str(ev.get("remaining") or "").strip():
+            raise SchemaError(
+                "reconcile --verdict partial needs --remaining \"<what is left, one "
+                "line>\" — `next` prints that line instead of the whole spec, so the "
+                "next builder works the remainder rather than rebuilding the item.")
 
 
 def _check_caused_by(ev):
@@ -576,6 +600,12 @@ def _check_needs(ev):
 
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+RECONCILE_VERDICTS = ("complete", "partial", "unrelated")
+SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
+# A sha cited in a note's free text: 7-40 hex with at least one digit, so an all-letter
+# word ("defaced") is never read as a commit. Membership on the published ref is checked
+# by `gitindex.Index.resolve`, which is what actually filters false positives.
+CITED_SHA_RE = re.compile(r"(?<![0-9A-Za-z])(?=[0-9a-f]*\d)[0-9a-f]{7,40}(?![0-9A-Za-z])")
 
 
 def _check_capability(ev):
@@ -921,7 +951,7 @@ VERB_RANK = {
     "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3,
     "claim": 4, "start": 5,
-    "note": 7, "verify": 8,
+    "note": 7, "reconcile": 7, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
 }
 _BRIDGE_RANK = {"released": 0, "taken": 1}
@@ -1048,7 +1078,8 @@ class Item(object):
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
                  "blocked", "blocked_reason", "blocked_on", "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
-                 "runs", "findings", "history", "caused_by", "claim_ts")
+                 "runs", "findings", "history", "caused_by", "claim_ts",
+                 "reconciles", "cited_shas")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1063,6 +1094,11 @@ class Item(object):
         self.closed_sha = self.superseded_by = self.caused_by = None
         self.claim_ts = None            # ts of the claim that holds it (earliest wins)
         self.runs, self.findings, self.history = [], [], []
+        # `reconcile` verdicts, in ledger order: [{ts, seat, verdict, shas, remaining}]
+        self.reconciles = []
+        # shas cited in this item's `note` texts, in ledger order (a build commit that
+        # names no item is often linked ONLY by its note: WEBWORK_TRACTION_LANCE_BUILD_1)
+        self.cited_shas = []
 
     @property
     def open(self):
@@ -1599,7 +1635,13 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked = False
         item.blocked_reason = item.blocked_on = None
     elif verb == "note":
-        pass
+        for sha in CITED_SHA_RE.findall(str(ev.get("text") or "")):
+            if sha not in item.cited_shas:
+                item.cited_shas.append(sha)
+    elif verb == "reconcile":
+        item.reconciles.append({"ts": ev["ts"], "seat": seat, "verdict": ev["verdict"],
+                                "shas": str(ev["sha"]).split(),
+                                "remaining": ev.get("remaining")})
 
     item.history.append(index)
 

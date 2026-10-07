@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import model, priority, probe
+    from . import model, priority, probe, reconcile
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import model, priority, probe          # noqa: F401
+    from rimflow import model, priority, probe, reconcile   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -827,26 +827,52 @@ def cmd_bench(args, seat):
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
+    peek = bool(getattr(args, "peek", False))
     _, w = load()
     # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
     # that decision is the game state — so it reads it from the machine, not from what
     # somebody last typed. Owner, 2026-08-22: the measurement wins, silently. Cached for
     # 20 s in probe.py, so a seat in a loop does not shell out every call.
-    sync_game_state(w, seat)
+    # ⚠️ `--peek` is READ-ONLY: the measurement can append a `game` event, so a peek
+    # skips it and says the game state shown is the RECORDED one.
+    if not peek:
+        sync_game_state(w, seat)
     _warn_contested_claims(w, seat)
     ctx = _ctx(args)
-    it = priority.next_item(w, seat, args.target, ctx)
-    if it is None:
+    # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
+    # its output is checked against the published git history before anything is
+    # offered, because an item whose work already shipped kept being offered as fresh
+    # work (SALVAGE_WRECKAGE_EVERYWHERE_1: claimed twice with four build commits between).
+    idx = reconcile.load_index(write_cache=not peek)
+    offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
+    if not offers:
         claimable = _claimable(w, seat, args.target)
         if claimable:
-            return _offer_claimable(claimable, seat)
-        return _nothing(w, seat, args, ctx)
+            a = reconcile.assess(claimable[0], idx)
+            if a.kind == "reconcile":
+                _print_reconcile(a, w, peek)
+                _print_skipped(skipped)
+                return 0
+            _offer_claimable(claimable, seat)
+            _print_skipped(skipped)
+            return 0
+        _nothing(w, seat, args, ctx)
+        _print_skipped(skipped)
+        return 0
+    a = offers[0]
+    it = a.item
+    if a.kind == "reconcile":
+        _print_reconcile(a, w, peek)
+        _print_skipped(skipped)
+        return 0
 
     # 🔑 ALWAYS state the world. `POLICY.md` used to open a turn with `cli.py game`,
     # which takes a required positional and errors with no arguments — so the first of
     # the three start-of-turn commands had never worked. The question it was asking is
     # cheap to answer here, and answering it here means one fewer command in the turn.
-    print("(game %s, bridge %s)" % (w.game, w.bridge_holder or "free"))
+    print("(game %s, bridge %s)%s" % (w.game, w.bridge_holder or "free",
+                                      "  [peek: recorded game state, not measured]"
+                                      if peek else ""))
     # 🔑 A bridge item is now offered while the lock is FREE, so the offer has to say
     # how to take it. Without this the seat is handed live work and no way to start it,
     # which is the same stranding in a friendlier costume.
@@ -857,6 +883,13 @@ def cmd_next(args, seat):
     print(it.title or "(no title)")
     if it.caused_by:
         print("caused by %s" % it.caused_by)
+    if a.kind == "partial":
+        # A partial item is offered for its REMAINDER, not its original spec (review §2:
+        # "a partial item should say 'implement the remaining three forms'").
+        print("")
+        print("⚠️  PARTLY BUILT — %s" % reconcile.standing_line(a))
+        print("    Work the REMAINING line. The spec below describes the whole item, "
+              "most of which shipped.")
     print("")
     prose = read_prose(it.id)
     if not prose:
@@ -890,7 +923,55 @@ def cmd_next(args, seat):
                  ", ".join(i.id for i in also[:4]),
                  "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
         print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
+    _print_skipped(skipped)
     return 0
+
+
+def _print_reconcile(a, w, peek=False):
+    """The offer that replaces "build this" when git already names the item.
+
+    ⛔ It never says "close". A subject naming an item proves association, not that the
+    scope is built ("4 of 7 owed" is a real subject). The seat reads the commits against
+    the item and records ONE verdict; that verdict is what stops the re-offer.
+    """
+    it = a.item
+    print("(game %s, bridge %s)%s" % (w.game, w.bridge_holder or "free",
+                                      "  [peek: recorded game state, not measured]"
+                                      if peek else ""))
+    print(reconcile.headline(a))
+    print("%s   %s" % (it.id, _scalars(it)))
+    print(it.title or "(no title)")
+    print("")
+    print("These commits on %s (@%s) link to this item and no `reconcile` event has "
+          "judged them:" % (a.ref, (a.head or "?")[:9]))
+    for line in reconcile.evidence_lines(a):
+        print("  " + line)
+    prior = reconcile.standing_line(a)
+    if prior:
+        print("Earlier verdict: %s" % prior)
+    print("")
+    print("🔑 A commit naming an item is a TRIGGER, not proof. Read them against the "
+          "item (rimflow show %s,\n   git show --stat <sha>) and record ONE verdict. "
+          "Nothing closes; the verdict only stops\n   these commits being offered "
+          "again." % it.id)
+    print("     complete   the item's scope is built (acceptance/close stays separate)")
+    print("     partial    some of it — --remaining names what is left, and `next` "
+          "offers only that")
+    print("     unrelated  the commits only mention it; the item is offered as build "
+          "work again")
+    print("")
+    print("-> " + reconcile.command(a))
+
+
+def _print_skipped(skipped):
+    if not skipped:
+        return
+    ids = [a.item.id for a in skipped]
+    print("")
+    print("ℹ️  %d item%s NOT offered as build work — reconciled COMPLETE, still open "
+          "(acceptance/close owed): %s%s"
+          % (len(ids), "" if len(ids) == 1 else "s", ", ".join(ids[:5]),
+             "" if len(ids) <= 5 else ", +%d" % (len(ids) - 5)))
 
 
 CONTEST_NOTICE_S = 24 * 3600
@@ -1429,6 +1510,60 @@ def _dead_evidence(evidence):
         if not any(os.path.exists(c) for c in cands):
             out.append(m)
     return out
+
+
+def _resolve_shas(raw, item, idx):
+    """-> [sha] as typed, each proven to name a real commit, or `die`. A typo'd sha
+    would be recorded and then never match anything, so the re-offer it was meant to
+    stop would continue with nothing said."""
+    out, bad = [], []
+    for tok in raw:
+        for sha in tok.replace(",", " ").split():
+            sha = sha.strip().lower()
+            if not sha:
+                continue
+            known = (idx is not None and idx.resolve(sha) is not None) or \
+                bool(git("rev-parse", "--verify", "-q", sha + "^{commit}"))
+            if not known and idx is not None and item is not None:
+                known = any(m.sha.startswith(sha) for m in reconcile.evidence(item, idx))
+            (out if known else bad).append(sha)
+    if bad:
+        die("reconcile: %s %s not resolve to a commit here (or on %s). Check the sha "
+            "against `rimflow next --peek`'s list." % (", ".join(bad),
+                                                      "does" if len(bad) == 1 else "do",
+                                                      gitindex_ref()))
+    return out
+
+
+def gitindex_ref():
+    return getattr(reconcile.gitindex, "REF", "origin/main")
+
+
+def cmd_reconcile(args, seat):
+    """`rimflow reconcile <ID> --verdict complete|partial|unrelated --sha <sha…>`
+
+    Records a JUDGEMENT of commits that name an item. Changes no state — it never
+    closes, starts or claims. `next` stops offering the judged commits; `partial`
+    keeps the item offerable and prints `--remaining` in place of the whole spec;
+    `complete` stops `next` offering it as build work (it stays open)."""
+    _, w = load()
+    it = w.items.get(args.id)
+    if it is None:
+        die("reconcile: %s has never been filed." % args.id)
+    idx = reconcile.load_index()
+    shas = _resolve_shas(args.sha, it, idx)
+    ev = {"seat": seat, "event": "reconcile", "id": args.id, "verdict": args.verdict,
+          "sha": " ".join(shas)}
+    if args.remaining:
+        ev["remaining"] = args.remaining.strip()
+    _emit(ev, w, quiet=True)
+    print("%s reconciled %s: %s%s" % (args.id, args.verdict, " ".join(shas),
+                                      (" — remaining: " + ev["remaining"])
+                                      if ev.get("remaining") else ""))
+    left = reconcile.assess(_replay_now().items[args.id], idx)
+    if left.kind == "reconcile":
+        print("⚠️  still unjudged: %s" % reconcile.shas(left))
+    return 0
 
 
 def cmd_verify(args, seat):
@@ -2159,6 +2294,17 @@ def build_parser():
     s.add_argument("--bench", action="store_true",
                    help="REP/OWNER only: the whole board triaged — per-seat "
                         "counts, RIPE, IN TROUBLE, and what needs him")
+    s.add_argument("--peek", action="store_true",
+                   help="read-only: writes nothing (no measured game-state stamp, no "
+                        "git-index cache write); shows the recorded game state")
+
+    s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "
+            "Changes NO state; stops `next` re-offering those commits", cmd_reconcile)
+    s.add_argument("id")
+    s.add_argument("--verdict", required=True, choices=("complete", "partial", "unrelated"))
+    s.add_argument("--sha", nargs="+", required=True,
+                   help="the commits judged (as `next` lists them)")
+    s.add_argument("--remaining", help="one line: what is left. Required for partial")
 
     s = add("show", "everything the ledger says about one item", cmd_show)
     s.add_argument("id")
