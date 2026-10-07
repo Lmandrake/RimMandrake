@@ -383,3 +383,26 @@ RAKATAN_ARCHOTECH_MACHINES_1 for the existing Rakatan grade ladder. Q5–Q7 aske
   kinetic weapons are FOUND in Ancient Danger ruins populated with Rakatan ancients, then refurbished up the Rakatan
   grade ladder; no crafting.
 - Q5 first wave: **all eight** (card). Q6 pulse cannon: **rechargeable stored charge** refilled from power (card).
+
+## 10. Build v1 (2026-10-06, BENCH) — what ships without touching Explosive Knockback
+
+Mod `src/RimMandrake/KineticArms/` (`mandrake.rm.kineticarms`, hard dependency on `mandrake.rm.explosiveknockback`).
+Explosive Knockback is NOT edited in v1; every per-weapon behaviour is reached through what it already exposes:
+
+- **Per-weapon throw multiplier = one DamageDef per weapon**, each carrying `RM_KnockbackExtension.force` (the only
+  knob EK reads today). Concussive family (`RM_Concussive_*`, Bruise, Blunt, low building factor) for the thudder,
+  slam charge and thump shell; Repulse family (`RM_Repulse_*`, worker `RM_DamageWorker_KineticOnly`, which applies
+  nothing) for the palm thumper, repulsor rifle, pulse cannon, grav-ram and kicker mine.
+- **Push along the shot** without `pushAlongShot`: `RM_Projectile_KineticBolt` explodes one cell BEHIND its impact
+  (back along origin → destination, captured at impact) and passes its own **cone** as `overrideCells` (the target
+  cell always kept, ±half-angle around the shot, the shooter ignored). EK's radial throw from that centre is the
+  shot direction. The **kicker mine** does the same from the cell behind its facing.
+- **Thump cannon:** Kinetic Arms patches `Thump` with force 2.5. Without `maxCellsOffset` the global cap (6) holds:
+  6 / 5 / 3 at d 0 / 1 / 1.4 (design §2.2 asked 8 / 5 / 3). Beside the impact it still throws 5 against the mortar's 3.
+- **Pulse cannon charge (Q6):** `RM_Building_PulseCannon` stores pulse charges refilled from power; no charge, no target.
+- **No crafting, no research** (owner: found in Rakatan Ancient Danger ruins). Placement in those ruins is a Utinni
+  patch, not in this RM mod. Q7 (factions) still open, so no pawnkind patches ship.
+
+**Still owed to Explosive Knockback (FOUNDRY):** per-projectile lookup, `maxCellsOffset`, `impactFactor` (palm thumper
+arrest), `immuneBodySizeOverride` (grav-ram vs a centipede: today the global 2.5 holds), the stun-recovery window, and
+shield absorption (Q4). **Owed to Gimme Some Slack:** kinetic blasts sway cords instead of cutting (Q3).
