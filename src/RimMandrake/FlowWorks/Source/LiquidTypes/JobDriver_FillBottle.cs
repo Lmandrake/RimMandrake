@@ -55,6 +55,14 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
+                string refusal = RM_ContainerMaterials.RefusalReason(carried, liquid);
+                if (refusal != null)
+                {
+                    // FLOWWORKS_CONTAINER_MATERIALS_1: the material refuses this liquid (the body
+                    // changed under the target, or a forced job). Say so; keep the container.
+                    Messages.Message(refusal, pawn, MessageTypeDefOf.RejectInput, false);
+                    return;
+                }
                 RM_BottledLiquidExtension ext = carried.def.GetModExtension<RM_BottledLiquidExtension>();
                 RM_ContainerSize size = ext?.size ?? RM_ContainerSize.Bottle;
                 ThingDef filledDef = liquid.bottled?.FilledDefFor(size);

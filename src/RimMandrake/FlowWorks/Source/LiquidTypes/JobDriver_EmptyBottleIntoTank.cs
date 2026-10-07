@@ -54,7 +54,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
-                int units = ext.liquid.UnitsFor(ext.size);
+                int units = RM_ContainerMaterials.UnitsIn(carried, ext.liquid, ext.size);
                 if (!tank.TryAddLiquid(ext.liquid, units))
                 {
                     // The tank filled up, or picked up a different liquid,

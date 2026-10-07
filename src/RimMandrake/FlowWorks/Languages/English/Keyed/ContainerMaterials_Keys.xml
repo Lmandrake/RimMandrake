@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FLOWWORKS_CONTAINER_MATERIALS_1: container material names and refusal reasons. -->
+<LanguageData>
+  <RM_ContainerMaterial_Unknown>this</RM_ContainerMaterial_Unknown>
+  <RM_ContainerMaterial_Leather>leather</RM_ContainerMaterial_Leather>
+  <RM_ContainerMaterial_Glass>glass</RM_ContainerMaterial_Glass>
+  <RM_ContainerMaterial_Metal>metal</RM_ContainerMaterial_Metal>
+  <RM_ContainerMaterial_Wood>wooden</RM_ContainerMaterial_Wood>
+  <RM_ContainerMaterial_Plasteel>plasteel</RM_ContainerMaterial_Plasteel>
+  <RM_ContainerRefusesHot>A {0} container can't hold {1}: it's too hot.</RM_ContainerRefusesHot>
+  <RM_ContainerRefusesAcid>A {0} container can't hold {1}: the acid eats through it.</RM_ContainerRefusesAcid>
+</LanguageData>

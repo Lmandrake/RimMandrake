@@ -162,6 +162,8 @@
     <Compile Include="LiquidTypes\RM_BottledLiquidExtension.cs" />
     <!-- LIQUID_BOTTLE_LOOP_1: the fill/use/dirty/wash JobDriver/WorkGiver pair. -->
     <Compile Include="LiquidTypes\RM_LiquidBottleUtility.cs" />
+    <Compile Include="LiquidTypes\RM_ContainerMaterialMath.cs" />
+    <Compile Include="LiquidTypes\RM_ContainerMaterials.cs" />
     <Compile Include="LiquidTypes\WorkGiver_FillBottle.cs" />
     <Compile Include="LiquidTypes\JobDriver_FillBottle.cs" />
     <Compile Include="LiquidTypes\WorkGiver_WashBottle.cs" />

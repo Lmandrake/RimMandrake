@@ -15,3 +15,4 @@ is labelled "glass"; (4) contained liquid's colour tints the container, empty sh
 
 - started rulings pass
 - 23:58 buckets stuffable (Woody/Metallic/Leathery), 3 recipes RM_Make_Bucket_{Wood,Metal,Leather}; XML 0 errors; queued fwart_RM_Bucket_Stuffable_v1
+- 00:20 ruling 2 built: RM_ContainerMaterialMath (Verse-free) + RM_ContainerMaterialsExtension rules on bottle/bucket/barrel bases; LiquidDef.hot (boiling) + IsAcid; fill/drain/pour sites material-aware with JobFailReason; DLL 0 err; FlowWorks selftest 117/117 (6 new)

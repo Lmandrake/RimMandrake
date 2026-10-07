@@ -34,7 +34,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             Building_LiquidTank tank;
             LiquidDef liquid;
-            return RM_LiquidTankUtility.TryFindTankToDrain(pawn, ext.size, out tank, out liquid);
+            string refusal;
+            if (RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal))
+            {
+                return true;
+            }
+            if (refusal != null)
+            {
+                JobFailReason.Is(refusal);
+            }
+            return false;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -46,7 +55,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             Building_LiquidTank tank;
             LiquidDef liquid;
-            if (!RM_LiquidTankUtility.TryFindTankToDrain(pawn, ext.size, out tank, out liquid))
+            string refusal;
+            if (!RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal))
             {
                 return null;
             }

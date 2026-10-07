@@ -37,7 +37,17 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             IntVec3 cell;
             LiquidDef liquid;
-            return RM_LiquidBottleUtility.TryFindFillCell(pawn, out cell, out liquid, size: ext.size);
+            string refusal;
+            if (RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal))
+            {
+                return true;
+            }
+            if (refusal != null)
+            {
+                // FLOWWORKS_CONTAINER_MATERIALS_1: the float menu says why (leather vs boiling/acid).
+                JobFailReason.Is(refusal);
+            }
+            return false;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -49,7 +59,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
             IntVec3 cell;
             LiquidDef liquid;
-            if (!RM_LiquidBottleUtility.TryFindFillCell(pawn, out cell, out liquid, size: ext.size))
+            string refusal;
+            if (!RM_LiquidBottleUtility.TryFindFillCell(pawn, t, out cell, out liquid, out refusal))
             {
                 return null;
             }
