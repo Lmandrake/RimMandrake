@@ -75,11 +75,11 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, owner brief 386d51170
-           ("patched together out of patchwork metal hammered together...
-           matching sets... occasional dents and dings"). One silhouette
-           shared by every liquid until the per-liquid tint pipeline is
-           built (see module comment); not a placeholder. -->
+      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): the material's colour
+           multiplies over this texture, so it must be neutral greyscale. The
+           shipped patchwork-metal art is coloured and will read muddy until
+           the greyscale regen (artpipe job fwart_RM_Bottle_Stuffable_v1)
+           replaces it. -->
       <texPath>Things/Item/Resource/FlowWorks/RM_Bottle</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.75</drawSize>
@@ -204,8 +204,9 @@
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Never</tickerType>
     <graphicData>
-      <!-- Real art, LIQUID_BOTTLE_LOOP_1 art pass, same brief and matching-set
-           convention as RM_BottleItemBase above. -->
+      <!-- Stuffed (FLOWWORKS_CONTAINER_MATERIALS_1): needs neutral greyscale
+           art for the material tint; regen is artpipe job
+           fwart_RM_Barrel_Stuffable_v1. -->
       <texPath>Things/Item/Resource/FlowWorks/RM_Barrel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.4</drawSize>
