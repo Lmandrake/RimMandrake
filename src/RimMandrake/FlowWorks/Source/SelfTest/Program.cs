@@ -1397,17 +1397,30 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " wood holds fresh water");
                 }
             });
-            Case("ContainerMat_glass_and_metal_hold_hot_and_acid", () =>
+            Case("ContainerMat_only_glass_holds_acid_metal_holds_hot", () =>
             {
-                foreach (var (fam, mat) in new[] { ("RM_BottleItemBase", RM_ContainerMaterial.Glass), ("RM_BottleItemBase", RM_ContainerMaterial.Metal),
-                                                   ("RM_BucketItemBase", RM_ContainerMaterial.Metal), ("RM_BarrelItemBase", RM_ContainerMaterial.Metal),
-                                                   ("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel) })
+                var liq = ContainerMatFixture.Liquids();
+                var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"];
+                var glass = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules("RM_BottleItemBase"), RM_ContainerMaterial.Glass);
+                Assert(glass != null && RM_ContainerMaterialMath.CanHold(glass, true, true) == RM_HoldRefusal.None, "glass bottle holds hot acid");
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase", "RM_BarrelItemBase" })
                 {
-                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), mat);
-                    Assert(rule != null, fam + " ships a " + mat + " rule");
-                    Assert(RM_ContainerMaterialMath.CanHold(rule, true, true) == RM_HoldRefusal.None, fam + " " + mat + " holds hot acid");
+                    var metal = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Metal);
+                    Assert(metal != null, fam + " ships a metal rule");
+                    Assert(RM_ContainerMaterialMath.CanHold(metal, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " metal refuses acid");
+                    Assert(RM_ContainerMaterialMath.CanHold(metal, boil.hot, boil.acid) == RM_HoldRefusal.None, fam + " metal holds boiling water");
                 }
+                // PROVISIONAL (owner deciding): plasteel refuses acid, holds hot. Flip the XML flag and this line together.
+                var plasteel = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules("RM_BarrelItemBase"), RM_ContainerMaterial.Plasteel);
+                Assert(plasteel != null && RM_ContainerMaterialMath.CanHold(plasteel, false, true) == RM_HoldRefusal.Acid
+                    && RM_ContainerMaterialMath.CanHold(plasteel, true, false) == RM_HoldRefusal.None, "plasteel barrel: refuses acid, holds hot");
                 Assert(RM_ContainerMaterialMath.CanHold(null, true, true) == RM_HoldRefusal.None, "an unlisted material (no rule) holds anything");
+            });
+            Case("ContainerMat_only_leather_refuses_hot", () =>
+            {
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase", "RM_BarrelItemBase" })
+                    foreach (var r in ContainerMatFixture.Rules(fam))
+                        Assert(r.holdsHot == (r.material != RM_ContainerMaterial.Leather), fam + " " + r.material + " holdsHot should be " + (r.material != RM_ContainerMaterial.Leather));
             });
             Case("ContainerMat_capacity_shipped_numbers", () =>
             {
