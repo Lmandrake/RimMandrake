@@ -3131,3 +3131,15 @@
 {"seat":"FOUNDRY","event":"claim","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","ts":"2026-10-06T19:29:34Z","tsn":1791314974444364553}
 {"seat":"FOUNDRY","event":"start","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","ts":"2026-10-06T19:33:03Z","tsn":1791315183960790793}
 {"seat":"FOUNDRY","event":"close","id":"WYYYSCHOKK_IDENTITY_COLLISION_1","sha":"4583b5a75","ts":"2026-10-06T19:33:05Z","tsn":1791315185985262031}
+{"seat":"FOUNDRY","event":"claim","id":"WATCHER_CREATURES_MOD_1","ts":"2026-10-06T19:33:17Z","tsn":1791315197544288389}
+{"seat":"FOUNDRY","event":"claim","id":"CRACKEDLANDS_LEDGES_OF_MERCY_1","ts":"2026-10-06T19:38:49Z","tsn":1791315529130005775}
+{"seat":"FOUNDRY","event":"note","id":"WATCHER_CREATURES_MOD_1","text":"Built offline (Watchers mod). Owed: piinnok art job, live checks, STILLSAND roster row via STILLSAND_BEDAZZLE_CONTENT_1, walk file. Questions: biosilica grade, taming route, flinch setting form.","ts":"2026-10-06T19:48:06Z","tsn":1791316086467293198}
+{"seat":"FOUNDRY","event":"note","id":"CRACKEDLANDS_LEDGES_OF_MERCY_1","text":"Refuge mechanics built offline; ledge/anchor defs, carvings, memory await owner Q1 (physical form) and Q2 (inscription lines).","ts":"2026-10-06T19:49:16Z","tsn":1791316156589241297}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_SPUNSTONE_SOURCES_1","ts":"2026-10-06T19:49:34Z","tsn":1791316174854030406}
+{"seat":"FOUNDRY","event":"claim","id":"GLOOMCAST_WAKE_RIDERS_1","ts":"2026-10-06T19:49:35Z","tsn":1791316175451790823}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_MIDDENS_DESIGN_1","ts":"2026-10-06T19:55:42Z","tsn":1791316542370079583}
+{"seat":"FOUNDRY","event":"claim","id":"UNFINISHED_LINE_TITHE_BEAT_1","ts":"2026-10-06T19:58:21Z","tsn":1791316701946301688}
+{"seat":"FOUNDRY","event":"note","id":"FORGE_SPUNSTONE_SOURCES_1","text":"Door + hull built offline. Owed: salvage-cache source (UtinniPatches: study comp on RUT_FoundrySalvageCache + tickerType Rare), beam (owner Q), art, walk lines. Q: is the beam a separate part; should lightness do anything?","ts":"2026-10-06T19:59:23Z","tsn":1791316763614161171}
+{"seat":"FOUNDRY","event":"claim","id":"LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1","ts":"2026-10-06T19:59:49Z","tsn":1791316789745342368}
+{"seat":"FOUNDRY","event":"claim","id":"CAULDRON_ENRICHMENT_VISUALS_1","ts":"2026-10-06T20:00:50Z","tsn":1791316850246547774}
+{"seat":"FOUNDRY","event":"claim","id":"UNFINISHED_LINE_WORLD_FOUNDRY_1","ts":"2026-10-06T20:06:18Z","tsn":1791317178232264522}
