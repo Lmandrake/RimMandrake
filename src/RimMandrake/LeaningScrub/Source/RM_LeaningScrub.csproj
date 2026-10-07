@@ -72,6 +72,7 @@
     <Compile Include="RM_GenStep_SweetlineTrees.cs" />
     <Compile Include="RM_SweetlineFelt.cs" />
     <Compile Include="RM_FireStamp.cs" />
+    <Compile Include="RM_VenomvineForms.cs" />
   </ItemGroup>
 
   <ItemGroup>

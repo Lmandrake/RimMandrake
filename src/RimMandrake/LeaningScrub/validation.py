@@ -75,6 +75,11 @@ DEFAULTS = {
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
     "fireStampEnabled": True,
+    # LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1 (RM_VenomvineForms.cs)
+    "rearingEnabled": True, "rearingHours": 2.0, "walkingEnabled": True, "walkingMaxCellsPerMap": 120,
+    "hoardEnabled": True, "hoardGrowInHours": 4.0, "hoardKeepsDeadGear": True,
+    "quenchEnabled": True, "quenchRecoveryDays": 3.0, "swornSparesMarkedEnabled": True,
+    "sheddingEnabled": True, "sheddingLength": 8,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -109,7 +114,7 @@ def _read_defs():
     """{defType: [defName]} and {defName: ParentName} for every concrete def in this mod's Defs/,
     parsed per top-level element (never a fixed line number). Comments are stripped first."""
     wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "JobDef", "RecipeDef",
-              "RulePackDef", "BiomeDef")
+              "RulePackDef", "BiomeDef", "ResearchProjectDef")
     by_type, parent = {}, {}
     for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
         with open(path, encoding="utf-8") as fh:
@@ -132,6 +137,8 @@ SHIPPED = sorted("%s/%s" % (k, n) for k, ns in DEFS_BY_TYPE.items() for n in ns)
 PLANTS = [n for n in DEFS_BY_TYPE.get("ThingDef", [])
           if _PARENT.get(n) in ("PlantBase", "PlantBaseNonEdible")]            # not the tree
 KINDS = DEFS_BY_TYPE.get("PawnKindDef", [])
+FORM_PLANTS = ("RM_RearingVenomvine", "RM_WalkingVenomvine", "RM_HoardVenomvine", "RM_QuenchVenomvine",
+               "RM_SwornVenomvine", "RM_SheddingVenomvine")     # LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1
 TREE = "RM_SweetlineTree"
 
 
@@ -529,7 +536,8 @@ def defs_chain(t):
                 _unmeasured(t, "wildPlants unreadable: %r" % wp)
             keys = set(x.get("plant") for x in wp)
             need = set(["RM_Fuzz", "RM_VenomvineThicket", "RM_DrippingVenomvine", "RM_TwitcherVenomvine",
-                        "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar"])
+                        "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar"]
+                       + list(FORM_PLANTS))
             if need - keys:
                 _fail("biome wildPlants lacks %s" % sorted(need - keys))
 
@@ -708,8 +716,8 @@ def flora_chain(t):
     try:
         with _comp(t, "flora_spawns"):
             if _live(t):
-                if len(PLANTS) < 12:
-                    _fail("parsed %d plant defs, expected 12" % len(PLANTS))
+                if len(PLANTS) < 18:
+                    _fail("parsed %d plant defs, expected 18" % len(PLANTS))
                 cells = {}
                 for i, d in enumerate(PLANTS):
                     cx, cz = rect[0] + 2 + (i % 6) * 3, rect[1] + 2 + (i // 6) * 3
@@ -1202,6 +1210,37 @@ def stamp_chain(t):
                     _fail("fire stamp (%s): %s" % (mode, txt[:400]))
                 if not txt.startswith("PASS"):
                     _unmeasured(t, "fire stamp proof did not answer PASS/FAIL: %s" % txt[:200])
+
+
+# --------------------------------------------------------------------------- chain: the six further forms
+
+# LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1: form key (the proof hook's) -> its plant def.
+FORMS = (("rearing", "RM_RearingVenomvine"), ("walking", "RM_WalkingVenomvine"),
+         ("hoard", "RM_HoardVenomvine"), ("quench", "RM_QuenchVenomvine"),
+         ("sworn", "RM_SwornVenomvine"), ("shedding", "RM_SheddingVenomvine"))
+FORM_TOGGLES = {"rearing": "rearingEnabled", "walking": "walkingEnabled", "hoard": "hoardEnabled",
+                "quench": "quenchEnabled", "sworn": "swornSparesMarkedEnabled", "shedding": "sheddingEnabled"}
+
+
+@suite.chain("forms")
+def forms_chain(t):
+    """The six further venomvine forms (RM_VenomvineForms.cs). RM_VenomvineFormsProof.ProofForm builds each
+    fixture on the current map (a stand, a colonist, a fire, a pile of steel), drives the SHIPPED pass
+    (SweepRearing / SweepThorns / SweepHoard / SweepQuench / Walk / Shed) with the setting on and then off,
+    reads the state, and cleans up. Walk and Shed are driven with a fixed downwind heading: the Lean only
+    applies on a Scrub map (see LEANING_SCRUB_LEAN_SITE_1), so the Gale-onset trigger itself is UNCOVERED."""
+    for form, _plant in FORMS:
+        for mode, name in (("on", "%s_acts" % form), ("off", "%s_toggle_off" % form)):
+            with _comp(t, name, toggle=FORM_TOGGLES[form]):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_VenomvineFormsProof",
+                                  method="ProofForm", args="%s|%s" % (form, mode))
+                if _live(t):
+                    txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                    _note(t, "%s proof (%s)" % (form, mode), txt[:300])
+                    if txt.startswith("FAIL"):
+                        _fail("%s (%s): %s" % (form, mode, txt[:400]))
+                    if not txt.startswith("PASS"):
+                        _unmeasured(t, "%s proof did not answer PASS/FAIL: %s" % (form, txt[:200]))
 
 
 # --------------------------------------------------------------------------- chain: sweetline (last: jumps the clock)
