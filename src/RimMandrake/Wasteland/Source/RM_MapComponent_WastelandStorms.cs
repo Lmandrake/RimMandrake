@@ -25,7 +25,6 @@ namespace RimMandrake.Wasteland
     public class RM_MapComponent_WastelandStorms : MapComponent
     {
         private const int FallIntervalTicks = 250;
-        private const int MaxFreshFall = 4000;
         private const float ReferenceMapCells = 250f * 250f;
 
         private List<IntVec3> freshFall = new List<IntVec3>();
@@ -85,14 +84,10 @@ namespace RimMandrake.Wasteland
             }
 
             RM_WeatherDoseExtension ext = cur != null ? cur.GetModExtension<RM_WeatherDoseExtension>() : null;
-            if (ext == null)
-            {
-                return;
-            }
             // WASTELAND_GPT_ENRICHMENT_1 §1: a named storm's quiet warning holds the
             // dose and fall until RM_MapComponent_StormPhases hands off.
-            RM_MapComponent_StormPhases phases = map.GetComponent<RM_MapComponent_StormPhases>();
-            if (phases != null && phases.IsHolding(cur))
+            RM_MapComponent_StormPhases phases = ext != null ? map.GetComponent<RM_MapComponent_StormPhases>() : null;
+            if (!RM_StormKernel.LayerRuns(OptedIn, RM_WastelandSettings.wastelandEnabled, ext != null, phases != null && phases.IsHolding(cur)))
             {
                 return;
             }
@@ -110,11 +105,11 @@ namespace RimMandrake.Wasteland
 
         private void DoStormDose(RM_WeatherDoseExtension ext)
         {
-            if (!RM_WastelandSettings.stormDoseEnabled || ext.airborneToxicFactor <= 0f)
+            if (!RM_StormKernel.DoseActive(RM_WastelandSettings.stormDoseEnabled, ext.airborneToxicFactor))
             {
                 return;
             }
-            float factor = ext.airborneToxicFactor * RM_WastelandSettings.stormDoseMultiplier;
+            float factor = RM_StormKernel.DoseFactor(ext.airborneToxicFactor, RM_WastelandSettings.stormDoseMultiplier);
             if (factor <= 0f)
             {
                 return;
@@ -135,18 +130,14 @@ namespace RimMandrake.Wasteland
 
         private void DoFall(RM_WeatherDoseExtension ext)
         {
-            if (ext.fallCellsPerDay <= 0f)
+            bool pollute = RM_StormKernel.Pollutes(RM_WastelandSettings.ashFallPollutionEnabled, ModsConfig.BiotechActive);
+            bool remember = RM_StormKernel.Remembers(RM_WastelandSettings.cinderfeltGerminationEnabled, ext.aftermathPlant != null);
+            if (!RM_StormKernel.FallActive(ext.fallCellsPerDay, pollute, remember))
             {
                 return;
             }
-            bool pollute = RM_WastelandSettings.ashFallPollutionEnabled && ModsConfig.BiotechActive;
-            bool remember = RM_WastelandSettings.cinderfeltGerminationEnabled && ext.aftermathPlant != null;
-            if (!pollute && !remember)
-            {
-                return;
-            }
-            float perBatch = ext.fallCellsPerDay * FallIntervalTicks / (float)GenDate.TicksPerDay
-                             * (map.cellIndices.NumGridCells / ReferenceMapCells);
+            float perBatch = RM_StormKernel.FallPerBatch(ext.fallCellsPerDay, FallIntervalTicks, GenDate.TicksPerDay,
+                                                         map.cellIndices.NumGridCells, ReferenceMapCells);
             int count = GenMath.RoundRandom(perBatch);
             for (int i = 0; i < count; i++)
             {
@@ -163,14 +154,7 @@ namespace RimMandrake.Wasteland
                 }
                 if (remember)
                 {
-                    if (freshFall.Count < MaxFreshFall)
-                    {
-                        freshFall.Add(c);
-                    }
-                    else
-                    {
-                        freshFall[Rand.Range(0, freshFall.Count)] = c;
-                    }
+                    RM_StormKernel.RememberFall(freshFall, c, n => Rand.Range(0, n));
                 }
             }
         }
@@ -196,7 +180,7 @@ namespace RimMandrake.Wasteland
                 return 0;
             }
             ThingDef plantDef = ext.aftermathPlant;
-            int wanted = GenMath.RoundRandom(freshFall.Count * ext.aftermathSeedFraction);
+            int wanted = RM_StormKernel.GerminationDraws(freshFall.Count, ext.aftermathSeedFraction, GenMath.RoundRandom);
             int spawned = 0;
             for (int i = 0; i < wanted; i++)
             {

@@ -39,7 +39,7 @@ namespace RimMandrake.Contagion
             {
                 return;
             }
-            if (Severity >= def.maxSeverity - 0.001f)
+            if (RM_DraftprintKernel.GestationDone(Severity, def.maxSeverity))
             {
                 completed = true;
                 AmoebaHostUtility.CompleteGestation(pawn, sourcePawnID, sourcePawnName, monstrous);

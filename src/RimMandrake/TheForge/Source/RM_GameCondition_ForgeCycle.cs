@@ -9,16 +9,7 @@ using Verse.Sound;
 
 namespace RimMandrake.TheForge
 {
-    public enum ForgeCyclePhase
-    {
-        StillHeat = 0,
-        GasWash = 1,
-        Rain = 2,
-        Freeze = 3,
-        Growth = 4,
-        Cracks = 5,
-        Melt = 6,
-    }
+    // ForgeCyclePhase lives in Kernel/RM_CycleKernel.cs (the pure phase clock).
 
     // ════════════════════════════════════════════════════════════════════
     // FORGE_CYCLE_MECHANICS_1 — the Forge's fire-and-water grand cycle.
@@ -58,8 +49,8 @@ namespace RimMandrake.TheForge
     // ════════════════════════════════════════════════════════════════════
     public class RM_GameCondition_ForgeCycle : RM_GameCondition_WeatherPulse
     {
-        private const float TicksPerHour = 2500f;
-        private const int CycleInterval = 60;
+        private const float TicksPerHour = RM_CycleKernel.TicksPerHour;
+        private const int CycleInterval = RM_CycleKernel.CycleInterval;
 
         private ForgeCyclePhase phase = ForgeCyclePhase.StillHeat;
         private int phaseStartTick = -1;
@@ -99,9 +90,8 @@ namespace RimMandrake.TheForge
         public int StatMeltPawnsBurned;
         public int StatMeltRelocated;
 
-        // Transient work queue for the batched phases; rebuilt on demand.
-        private List<IntVec3> workQueue;
-        private ForgeCyclePhase workQueuePhase = (ForgeCyclePhase)(-1);
+        // Transient work queue for the batched phases; rebuilt on demand (the queue bookkeeping is Kernel/RM_CycleKernel.cs).
+        private readonly RM_CrustWork<IntVec3> crust = new RM_CrustWork<IntVec3>();
 
         // Per-melt summary, flushed as one message per batch with losses.
         private readonly Dictionary<string, int> meltLosses = new Dictionary<string, int>();
@@ -156,7 +146,7 @@ namespace RimMandrake.TheForge
         {
             // The ordinary short bursts belong to the still heat only; with
             // the cycle off, the pulse behaves exactly as it always did.
-            return !CycleActive || CycleExt == null || phase == ForgeCyclePhase.StillHeat;
+            return RM_CycleKernel.AllowRandomBurst(CycleActive, CycleExt != null, phase);
         }
 
         protected override WeatherDef NonBurstWeatherOverride()
@@ -168,7 +158,7 @@ namespace RimMandrake.TheForge
             }
             // The freeze is the steam: rain on lava. Every other phase keeps
             // the pulse's own base weather.
-            if (phase == ForgeCyclePhase.Freeze && ext.freezeWeather != null)
+            if (RM_CycleKernel.UsesFreezeWeather(true, true, phase, ext.freezeWeather != null))
             {
                 return ext.freezeWeather;
             }
@@ -234,7 +224,7 @@ namespace RimMandrake.TheForge
             {
                 voices.Tick(this, map, hissSent);
             }
-            if (map == null || ext == null || !map.IsHashIntervalTick(CycleInterval))
+            if (!RM_CycleKernel.CycleTickRuns(map != null && map.IsHashIntervalTick(CycleInterval), ext != null, map != null))
             {
                 return;
             }
@@ -242,11 +232,11 @@ namespace RimMandrake.TheForge
             // The cycle rides the pulse: if the pulse itself is gated off, or
             // the cycle toggle is off, no phase advances. Crust left standing
             // melts back gently (no damage) so nothing is stranded.
-            if (!CycleActive || !RM_MechanicGates.Enabled(def))
+            if (!RM_CycleKernel.Advances(CycleActive, RM_MechanicGates.Enabled(def)))
             {
                 if (frozenCells.Count > 0)
                 {
-                    MeltBatch(map, ext, gentle: true, batch: 200);
+                    MeltBatch(map, ext, gentle: true, batch: RM_CycleKernel.GentleBatch);
                 }
                 return;
             }
@@ -260,7 +250,7 @@ namespace RimMandrake.TheForge
 
             DoPhaseWork(map, ext, now);
 
-            if (now >= phaseEndTick)
+            if (RM_CycleKernel.PhaseIsOver(now, phaseEndTick))
             {
                 AdvancePhase(map, ext, now);
             }
@@ -271,8 +261,8 @@ namespace RimMandrake.TheForge
             switch (phase)
             {
                 case ForgeCyclePhase.StillHeat:
-                    if (!hissSent && phaseEndTick - now <= ext.hissLeadHours * TicksPerHour
-                        && RM_TheForgeSettings.Active(RM_TheForgeSettings.gasWashEnabled))
+                    if (RM_CycleKernel.HissDue(hissSent, phaseEndTick, now, ext.hissLeadHours,
+                        RM_TheForgeSettings.Active(RM_TheForgeSettings.gasWashEnabled)))
                     {
                         hissSent = true;
                         Telegraph(map, "A hiss in the vents",
@@ -282,25 +272,23 @@ namespace RimMandrake.TheForge
                     break;
 
                 case ForgeCyclePhase.GasWash:
-                    if (gasWavesLeft > 0 && now >= nextGasWaveTick)
+                    if (RM_CycleKernel.WaveDue(gasWavesLeft, now, nextGasWaveTick))
                     {
                         gasWavesLeft--;
                         GasWashWave(map, ext);
-                        int span = Mathf.Max(1, phaseEndTick - now);
-                        nextGasWaveTick = now + (gasWavesLeft > 0 ? span / (gasWavesLeft + 1) : span);
+                        nextGasWaveTick = RM_CycleKernel.NextWaveTick(now, phaseEndTick, gasWavesLeft);
                     }
                     break;
 
                 case ForgeCyclePhase.Rain:
-                    if (floodsLeft > 0 && now >= nextFloodTick)
+                    if (RM_CycleKernel.WaveDue(floodsLeft, now, nextFloodTick))
                     {
                         floodsLeft--;
                         if (RM_TheForgeSettings.Active(RM_TheForgeSettings.cycleFloodingEnabled))
                         {
                             TryFloodRelease(map, ext);
                         }
-                        int span = Mathf.Max(1, phaseEndTick - now);
-                        nextFloodTick = now + (floodsLeft > 0 ? span / (floodsLeft + 1) : span);
+                        nextFloodTick = RM_CycleKernel.NextWaveTick(now, phaseEndTick, floodsLeft);
                     }
                     break;
 
@@ -335,31 +323,16 @@ namespace RimMandrake.TheForge
 
         private void AdvancePhase(Map map, RM_ForgeCycleExtension ext, int now)
         {
-            ForgeCyclePhase next;
-            switch (phase)
+            // Melt: finish it before closing, so no crust outlives its cycle. Freeze with nothing crusted closes the cycle early
+            // (growth, cracks and melt would have nothing to stand on).
+            if (phase == ForgeCyclePhase.Melt && frozenCells.Count > 0)
             {
-                case ForgeCyclePhase.StillHeat: next = ForgeCyclePhase.GasWash; break;
-                case ForgeCyclePhase.GasWash: next = ForgeCyclePhase.Rain; break;
-                case ForgeCyclePhase.Rain: next = ForgeCyclePhase.Freeze; break;
-                case ForgeCyclePhase.Freeze:
-                    // Nothing crusted (no lava on this map, or the freeze is
-                    // switched off): growth, cracks and melt have nothing to
-                    // stand on, so the cycle closes early.
-                    next = frozenCells.Count > 0 ? ForgeCyclePhase.Growth : ForgeCyclePhase.StillHeat;
-                    break;
-                case ForgeCyclePhase.Growth: next = ForgeCyclePhase.Cracks; break;
-                case ForgeCyclePhase.Cracks: next = ForgeCyclePhase.Melt; break;
-                case ForgeCyclePhase.Melt:
-                    if (frozenCells.Count > 0)
-                    {
-                        // Finish the melt before closing: no crust outlives
-                        // its cycle.
-                        MeltBatch(map, ext, gentle: !RM_TheForgeSettings.Active(RM_TheForgeSettings.meltBackDestroys), batch: frozenCells.Count);
-                    }
-                    next = ForgeCyclePhase.StillHeat;
-                    StatCycles++;
-                    break;
-                default: next = ForgeCyclePhase.StillHeat; break;
+                MeltBatch(map, ext, gentle: !RM_TheForgeSettings.Active(RM_TheForgeSettings.meltBackDestroys), batch: frozenCells.Count);
+            }
+            ForgeCyclePhase next = RM_CycleKernel.Next(phase, frozenCells.Count);
+            if (RM_CycleKernel.CountsAsCycle(phase))
+            {
+                StatCycles++;
             }
             EnterPhase(map, ext, next, now);
         }
@@ -412,8 +385,8 @@ namespace RimMandrake.TheForge
         {
             phase = next;
             phaseStartTick = now;
-            phaseEndTick = now + Mathf.Max(CycleInterval, Mathf.RoundToInt(HoursFor(ext, next).RandomInRange * TicksPerHour));
-            workQueue = null;
+            phaseEndTick = RM_CycleKernel.PhaseEnd(now, HoursFor(ext, next).RandomInRange);
+            crust.Reset();
 
             switch (next)
             {
@@ -425,12 +398,12 @@ namespace RimMandrake.TheForge
                 case ForgeCyclePhase.GasWash:
                     if (RM_TheForgeSettings.Active(RM_TheForgeSettings.gasWashEnabled))
                     {
-                        gasWavesLeft = Mathf.Max(1, ext.gasWashWaves.RandomInRange);
+                        gasWavesLeft = RM_CycleKernel.WaveCount(ext.gasWashWaves.RandomInRange, true);
                         nextGasWaveTick = now;
                     }
                     else
                     {
-                        gasWavesLeft = 0;
+                        gasWavesLeft = RM_CycleKernel.WaveCount(0, false);
                     }
                     break;
 
@@ -443,8 +416,8 @@ namespace RimMandrake.TheForge
                     {
                         ForceBurst(phaseEndTick - now);
                     }
-                    floodsLeft = Mathf.Max(0, ext.floodReleases.RandomInRange);
-                    nextFloodTick = now + Mathf.RoundToInt(0.5f * TicksPerHour);
+                    floodsLeft = RM_CycleKernel.FloodCount(ext.floodReleases.RandomInRange);
+                    nextFloodTick = RM_CycleKernel.FirstFloodTick(now);
                     EruptSwarm(map);
                     break;
 
@@ -528,9 +501,7 @@ namespace RimMandrake.TheForge
         // Spread a whole phase's work over the first `share` of its length.
         private int BatchSize(int remaining, int now, int end, float share)
         {
-            int ticksLeft = Mathf.Max(CycleInterval, Mathf.RoundToInt((end - phaseStartTick) * share) - (now - phaseStartTick));
-            int batchesLeft = Mathf.Max(1, ticksLeft / CycleInterval);
-            return Mathf.Max(1, Mathf.CeilToInt(remaining / (float)batchesLeft));
+            return RM_CycleKernel.BatchSize(remaining, now, end, phaseStartTick, share);
         }
 
         // ── phase 2: gas wash ─────────────────────────────────────────
@@ -613,7 +584,7 @@ namespace RimMandrake.TheForge
             {
                 return;
             }
-            float volume = Mathf.Max(1, ext.floodTilesPerRelease) * Mathf.Max(0.0001f, water.volumePerTile);
+            float volume = RM_CycleKernel.FloodVolume(ext.floodTilesPerRelease, water.volumePerTile);
             Flood_FlowWorks flood = (Flood_FlowWorks)ThingMaker.MakeThing(floodDef);
             flood.Configure(water, volume);
             GenSpawn.Spawn(flood, epicenter, map);
@@ -658,48 +629,18 @@ namespace RimMandrake.TheForge
             {
                 return false;
             }
-            if (workQueue == null || workQueuePhase != ForgeCyclePhase.Freeze)
-            {
-                workQueue = new List<IntVec3>();
-                foreach (IntVec3 c in map.AllCells)
+            return crust.Freeze(frozenCells, map.AllCells, c => IsFreezable(c, map, ext), l => l.Shuffle(), ext.maxFrozenCells,
+                now, phaseStartTick, phaseEndTick, c =>
                 {
-                    if (IsFreezable(c, map, ext))
+                    TerrainDef crustTerrain = ext.pumiceTerrain != null && Rand.Chance(ext.pumiceChance) ? ext.pumiceTerrain : ext.basaltTerrain;
+                    map.terrainGrid.SetTempTerrain(c, crustTerrain);
+                    StatCellsFrozen++;
+                    RM_MapComponent_PlumeFronts.Of(map)?.NoteCrusted(c);   // FORGE_WHITE_PLUME_FRONTS_1
+                    if (Rand.Chance(0.08f))
                     {
-                        workQueue.Add(c);
+                        FleckMaker.ThrowSmoke(c.ToVector3Shifted(), map, Rand.Range(1.5f, 3.5f));
                     }
-                }
-                workQueue.Shuffle();
-                int room = Mathf.Max(0, ext.maxFrozenCells - frozenCells.Count);
-                if (workQueue.Count > room)
-                {
-                    workQueue.RemoveRange(room, workQueue.Count - room);
-                }
-                workQueuePhase = ForgeCyclePhase.Freeze;
-            }
-            if (workQueue.Count == 0)
-            {
-                return false;
-            }
-            int n = Mathf.Min(workQueue.Count, BatchSize(workQueue.Count, now, phaseEndTick, 0.6f));
-            for (int i = 0; i < n; i++)
-            {
-                IntVec3 c = workQueue[workQueue.Count - 1];
-                workQueue.RemoveAt(workQueue.Count - 1);
-                if (!IsFreezable(c, map, ext))
-                {
-                    continue;
-                }
-                TerrainDef crust = ext.pumiceTerrain != null && Rand.Chance(ext.pumiceChance) ? ext.pumiceTerrain : ext.basaltTerrain;
-                map.terrainGrid.SetTempTerrain(c, crust);
-                frozenCells.Add(c);
-                StatCellsFrozen++;
-                RM_MapComponent_PlumeFronts.Of(map)?.NoteCrusted(c);   // FORGE_WHITE_PLUME_FRONTS_1
-                if (Rand.Chance(0.08f))
-                {
-                    FleckMaker.ThrowSmoke(c.ToVector3Shifted(), map, Rand.Range(1.5f, 3.5f));
-                }
-            }
-            return workQueue.Count > 0;
+                });
         }
 
         // ── phase 5: the growth ───────────────────────────────────────
@@ -767,28 +708,14 @@ namespace RimMandrake.TheForge
             {
                 return false;
             }
-            if (workQueue == null || workQueuePhase != ForgeCyclePhase.Cracks)
-            {
-                workQueue = new List<IntVec3>(frozenCells);
-                workQueue.Shuffle();
-                workQueuePhase = ForgeCyclePhase.Cracks;
-            }
-            if (workQueue.Count == 0)
-            {
-                return false;
-            }
-            int n = Mathf.Min(workQueue.Count, BatchSize(workQueue.Count, now, phaseEndTick, 0.5f));
-            for (int i = 0; i < n; i++)
-            {
-                IntVec3 c = workQueue[workQueue.Count - 1];
-                workQueue.RemoveAt(workQueue.Count - 1);
-                if (!IsOurCrust(map.terrainGrid.TempTerrainAt(c), ext) || map.terrainGrid.TempTerrainAt(c) == ext.crackTerrain)
+            return crust.Crack(frozenCells,
+                c =>
                 {
-                    continue;
-                }
-                map.terrainGrid.SetTempTerrain(c, ext.crackTerrain);
-            }
-            return workQueue.Count > 0;
+                    TerrainDef temp = map.terrainGrid.TempTerrainAt(c);
+                    return IsOurCrust(temp, ext) && temp != ext.crackTerrain;
+                },
+                c => map.terrainGrid.SetTempTerrain(c, ext.crackTerrain),
+                l => l.Shuffle(), now, phaseStartTick, phaseEndTick);
         }
 
         private static bool IsOurCrust(TerrainDef t, RM_ForgeCycleExtension ext)
@@ -802,38 +729,10 @@ namespace RimMandrake.TheForge
             {
                 return;
             }
-            if (workQueue == null || workQueuePhase != ForgeCyclePhase.Melt)
-            {
-                workQueue = new List<IntVec3>(frozenCells);
-                workQueue.Shuffle();
-                workQueuePhase = ForgeCyclePhase.Melt;
-            }
             meltLosses.Clear();
-            IntVec3 lossAt = IntVec3.Invalid;
-            int n = Mathf.Min(workQueue.Count, batch);
-            for (int i = 0; i < n; i++)
-            {
-                IntVec3 c = workQueue[workQueue.Count - 1];
-                workQueue.RemoveAt(workQueue.Count - 1);
-                frozenCells.Remove(c);
-                if (!IsOurCrust(map.terrainGrid.TempTerrainAt(c), ext))
-                {
-                    // Someone else's temp terrain now sits here (a lava flow,
-                    // a bridge): not ours to remove.
-                    continue;
-                }
-                if (MeltCell(map, ext, c, gentle))
-                {
-                    lossAt = c;
-                }
-                StatCellsMelted++;
-            }
-            if (workQueue.Count == 0)
-            {
-                // Stale entries (already removed from frozenCells elsewhere)
-                // leave the queue empty early; resync from the set.
-                workQueue = null;
-            }
+            StatCellsMelted += crust.Melt(frozenCells, c => IsOurCrust(map.terrainGrid.TempTerrainAt(c), ext),
+                c => MeltCell(map, ext, c, gentle), l => l.Shuffle(), batch, out bool anyLoss, out IntVec3 lostAt);
+            IntVec3 lossAt = anyLoss ? lostAt : IntVec3.Invalid;
             if (meltLosses.Count > 0)
             {
                 StringBuilder sb = new StringBuilder("The melt has taken ");

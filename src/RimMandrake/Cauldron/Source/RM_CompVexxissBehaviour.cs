@@ -116,30 +116,31 @@ namespace RimMandrake.Cauldron
 
         private void TryDrinkVent(Pawn pawn)
         {
-            if (pawn.Faction != null || pawn.Downed || !pawn.Awake() || pawn.InMentalState || pawn.jobs == null) return;
             int now = Find.TickManager.TicksGame;
-            if (now < nextDrinkTick) return;
             JobDef cur = pawn.CurJobDef;
-            if (cur == JobDefOf.BeatFire || cur == JobDefOf.AttackMelee || cur == RM_CauldronDefOf.RM_VexxissDrinkVent) return;
+            bool busy = cur == JobDefOf.BeatFire || cur == JobDefOf.AttackMelee || cur == RM_CauldronDefOf.RM_VexxissDrinkVent;
+            if (!RM_VentKernel.DrinkAllowed(pawn.Faction == null, pawn.Downed, pawn.Awake(), pawn.InMentalState, pawn.jobs != null, now, nextDrinkTick, busy)) return;
 
             Map map = pawn.Map;
             bool groan = RM_Building_CauldronVent.IsFaltering(map) || RM_Building_CauldronVent.IsBlooming(map);
-            if (!groan && !Rand.Chance(Props.ventDrinkChance)) return;
-            float radius = groan ? Props.ventGroanRadius : Props.ventScanRadius;
+            if (RM_VentKernel.DrinkRollNeeded(groan) && !Rand.Chance(Props.ventDrinkChance)) return;
+            float radius = RM_VentKernel.DrinkRadius(groan, Props.ventScanRadius, Props.ventGroanRadius);
 
             List<Thing> vents = map.listerThings.ThingsOfDef(RM_CauldronDefOf.RM_CauldronVent);
-            RM_Building_CauldronVent best = null;
-            float bestSq = radius * radius;
+            var vs = new RM_Building_CauldronVent[vents.Count];
+            var distSq = new float[vents.Count];
+            var silenced = new bool[vents.Count];
+            var output = new float[vents.Count];
             for (int i = 0; i < vents.Count; i++)
             {
                 var v = vents[i] as RM_Building_CauldronVent;
-                if (v == null || v.IsSilenced || v.Output <= 0.05f) continue;
-                float d = (v.Position - pawn.Position).LengthHorizontalSquared;
-                if (d >= bestSq) continue;
-                if (!pawn.CanReach(v, PathEndMode.Touch, Danger.Deadly)) continue;
-                best = v;
-                bestSq = d;
+                vs[i] = v;
+                silenced[i] = v == null || v.IsSilenced;
+                output[i] = v == null ? 0f : v.Output;
+                distSq[i] = v == null ? float.MaxValue : (v.Position - pawn.Position).LengthHorizontalSquared;
             }
+            int bi = RM_VentKernel.NearestDrinkable(distSq, silenced, output, k => pawn.CanReach(vs[k], PathEndMode.Touch, Danger.Deadly), radius);
+            RM_Building_CauldronVent best = bi >= 0 ? vs[bi] : null;
             if (best == null) return;
             nextDrinkTick = now + Props.ventDrinkCooldownTicks;
             pawn.jobs.StartJob(JobMaker.MakeJob(RM_CauldronDefOf.RM_VexxissDrinkVent, best), JobCondition.InterruptForced);
@@ -169,11 +170,10 @@ namespace RimMandrake.Cauldron
 
         private void MaybeWarnPoisonedWater(Pawn pawn)
         {
-            if (!RM_CauldronSettings.vexxissWaterLetter) return;
             Map map = pawn.Map;
-            if (map == null || !map.mapPawns.AnyColonistSpawned) return;
             int now = Find.TickManager.TicksGame;
-            if (now - lastWaterLetterTick < Props.waterLetterCooldownTicks) return;
+            if (!RM_VexxissKernel.WarnWater(RM_CauldronSettings.vexxissWaterLetter, map != null, map != null && map.mapPawns.AnyColonistSpawned,
+                    now, lastWaterLetterTick, Props.waterLetterCooldownTicks)) return;
             lastWaterLetterTick = now;
             Find.LetterStack.ReceiveLetter(
                 "Vexxiss poisoning water",
@@ -202,62 +202,57 @@ namespace RimMandrake.Cauldron
         // ── fire warden ─────────────────────────────────────────────────
         private void TryWardFire(Pawn pawn)
         {
-            if (pawn.Downed || !pawn.Awake() || pawn.InMentalState) return;
-            if (pawn.jobs == null) return;
-            if (pawn.Faction != null && pawn.Faction.IsPlayer && pawn.Drafted) return;
-
             JobDef cur = pawn.CurJobDef;
-            if (cur == JobDefOf.BeatFire || cur == JobDefOf.AttackMelee) return;
+            if (!RM_VexxissKernel.WardCanAct(pawn.Downed, pawn.Awake(), pawn.InMentalState, pawn.jobs != null,
+                    pawn.Faction != null && pawn.Faction.IsPlayer && pawn.Drafted, cur == JobDefOf.BeatFire || cur == JobDefOf.AttackMelee)) return;
 
             Fire fire = NearestFire(pawn);
-            if (fire == null) return;
-
-            if (RM_CauldronSettings.vexxissAttacksIgniter)
+            Pawn igniter = fire != null && RM_CauldronSettings.vexxissAttacksIgniter ? fire.instigator as Pawn : null;
+            WardChoice choice = RM_VexxissKernel.Ward(fire != null, RM_CauldronSettings.vexxissAttacksIgniter,
+                fire != null && RM_CauldronSettings.vexxissAttacksIgniter && IsAttackableIgniter(pawn, igniter),
+                pawn.natives?.BeatFireVerb != null);   // the race may lack the verb
+            if (choice == WardChoice.AttackIgniter)
             {
-                Pawn igniter = fire.instigator as Pawn;
-                if (IsAttackableIgniter(pawn, igniter))
-                {
-                    Job attack = JobMaker.MakeJob(JobDefOf.AttackMelee, igniter);
-                    attack.killIncappedTarget = false;
-                    attack.expiryInterval = Props.attackJobExpiryTicks;
-                    attack.checkOverrideOnExpire = true;
-                    pawn.jobs.StartJob(attack, JobCondition.InterruptForced);
-                    return;
-                }
+                Job attack = JobMaker.MakeJob(JobDefOf.AttackMelee, igniter);
+                attack.killIncappedTarget = false;
+                attack.expiryInterval = Props.attackJobExpiryTicks;
+                attack.checkOverrideOnExpire = true;
+                pawn.jobs.StartJob(attack, JobCondition.InterruptForced);
             }
-
-            if (pawn.natives?.BeatFireVerb == null) return; // race lacks the verb
-            Job beat = JobMaker.MakeJob(JobDefOf.BeatFire, fire);
-            pawn.jobs.StartJob(beat, JobCondition.InterruptForced);
+            else if (choice == WardChoice.BeatFire)
+            {
+                Job beat = JobMaker.MakeJob(JobDefOf.BeatFire, fire);
+                pawn.jobs.StartJob(beat, JobCondition.InterruptForced);
+            }
         }
 
         private Fire NearestFire(Pawn pawn)
         {
             List<Thing> fires = pawn.Map.listerThings.ThingsOfDef(ThingDefOf.Fire);
             if (fires == null || fires.Count == 0) return null;
-            float maxSq = Props.fireScanRadius * Props.fireScanRadius;
-            Fire best = null;
-            float bestSq = float.MaxValue;
+            var fs = new Fire[fires.Count];
+            var distSq = new float[fires.Count];
+            var eligible = new bool[fires.Count];
             for (int i = 0; i < fires.Count; i++)
             {
-                if (!(fires[i] is Fire f) || f.parent != null || !f.Spawned) continue;
-                float d = (f.Position - pawn.Position).LengthHorizontalSquared;
-                if (d > maxSq || d >= bestSq) continue;
-                if (!pawn.CanReach(f, PathEndMode.Touch, Danger.Deadly)) continue;
-                best = f;
-                bestSq = d;
+                fs[i] = fires[i] as Fire;
+                eligible[i] = fs[i] != null && fs[i].parent == null && fs[i].Spawned;
+                if (!eligible[i]) continue;
+                distSq[i] = (fs[i].Position - pawn.Position).LengthHorizontalSquared;
             }
-            return best;
+            int best = RM_VexxissKernel.NearestFire(distSq, eligible, k => pawn.CanReach(fs[k], PathEndMode.Touch, Danger.Deadly), Props.fireScanRadius);
+            return best >= 0 ? fs[best] : null;
         }
 
         private bool IsAttackableIgniter(Pawn pawn, Pawn igniter)
         {
-            if (igniter == null || igniter == pawn) return false;
-            if (!igniter.Spawned || igniter.Dead || igniter.Downed || igniter.Map != pawn.Map) return false;
-            if (pawn.Faction != null && igniter.Faction == pawn.Faction) return false;
-            float max = Props.igniterChaseRadius;
-            if ((igniter.Position - pawn.Position).LengthHorizontalSquared > max * max) return false;
-            return pawn.CanReach(igniter, PathEndMode.Touch, Danger.Deadly);
+            if (igniter == null) return false;
+            bool near = igniter.Spawned && !igniter.Dead && !igniter.Downed && igniter.Map == pawn.Map
+                && (igniter.Position - pawn.Position).LengthHorizontalSquared <= Props.igniterChaseRadius * Props.igniterChaseRadius;
+            return RM_VexxissKernel.IgniterAttackable(true, igniter == pawn, igniter.Spawned, igniter.Dead, igniter.Downed, igniter.Map == pawn.Map,
+                pawn.Faction != null && igniter.Faction == pawn.Faction, near ? (igniter.Position - pawn.Position).LengthHorizontalSquared : float.MaxValue,
+                Props.igniterChaseRadius, near && igniter != pawn && !(pawn.Faction != null && igniter.Faction == pawn.Faction)
+                && pawn.CanReach(igniter, PathEndMode.Touch, Danger.Deadly));
         }
     }
 }

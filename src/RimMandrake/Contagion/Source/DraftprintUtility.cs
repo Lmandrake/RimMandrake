@@ -22,7 +22,7 @@ namespace RimMandrake.Contagion
         public static bool CanBeSampled(Pawn p)
         {
             CompRandomizeUnfinished comp = UnfinishedComp(p);
-            return comp != null && !comp.draftprintTaken && p.Spawned && !p.Dead;
+            return RM_DraftprintKernel.CanBeSampled(comp != null, comp != null && comp.draftprintTaken, p.Spawned, p.Dead);
         }
 
         // Fills a fresh print from the living Unfinished and marks the
@@ -59,29 +59,16 @@ namespace RimMandrake.Contagion
             {
                 return "";
             }
-            StatDef best = null;
-            float bestScore = 0f;
-            float bestValue = 0f;
-            float bestBase = 0f;
-            foreach (StatDef stat in stats)
-            {
-                float baseV = p.def.GetStatValueAbstract(stat);
-                float v = p.GetStatValue(stat);
-                float score = baseV > 0.001f
-                    ? Mathf.Abs(Mathf.Log(Mathf.Max(v, 0.001f) / baseV))
-                    : Mathf.Abs(v - baseV);
-                if (score > bestScore)
-                {
-                    best = stat;
-                    bestScore = score;
-                    bestValue = v;
-                    bestBase = baseV;
-                }
-            }
-            if (best == null)
+            List<float> baseValues = stats.Select(st => p.def.GetStatValueAbstract(st)).ToList();
+            List<float> values = stats.Select(st => p.GetStatValue(st)).ToList();
+            int pick = RM_DraftprintKernel.ExtremeStat(baseValues, values);
+            if (pick < 0)
             {
                 return "nothing; it is average for its kind";
             }
+            StatDef best = stats[pick];
+            float bestValue = values[pick];
+            float bestBase = baseValues[pick];
             string s = best.label + " " + best.ValueToString(bestValue);
             if (bestBase > 0.001f)
             {
@@ -94,20 +81,12 @@ namespace RimMandrake.Contagion
         // failing that, how far along its unravelling is.
         private static string Failure(Pawn p, CompProperties_RandomizeUnfinished up)
         {
-            Hediff_AddedPart worst = null;
-            foreach (Hediff h in p.health.hediffSet.hediffs)
-            {
-                if (h is Hediff_AddedPart ap && up.limbPool != null && up.limbPool.Contains(h.def))
-                {
-                    float eff = h.def.addedPartProps?.partEfficiency ?? 1f;
-                    float worstEff = worst?.def.addedPartProps?.partEfficiency ?? 1f;
-                    if (worst == null || eff < worstEff)
-                    {
-                        worst = ap;
-                    }
-                }
-            }
-            if (worst != null && (worst.def.addedPartProps?.partEfficiency ?? 1f) <= 0.3f)
+            List<Hediff> all = p.health.hediffSet.hediffs;
+            int w = RM_DraftprintKernel.WorstLimb(
+                all.Select(h => h is Hediff_AddedPart && up.limbPool != null && up.limbPool.Contains(h.def)).ToList(),
+                all.Select(h => h.def.addedPartProps?.partEfficiency ?? 1f).ToList());
+            Hediff_AddedPart worst = w >= 0 ? (Hediff_AddedPart)all[w] : null;
+            if (worst != null && RM_DraftprintKernel.IsAbandonedAttempt(worst.def.addedPartProps?.partEfficiency ?? 1f))
             {
                 return worst.def.label + (worst.Part != null ? " on its " + worst.Part.Label : "");
             }
@@ -123,11 +102,7 @@ namespace RimMandrake.Contagion
         // turn on the sampler. Downed ones cannot.
         public static void MaybeProvoke(Pawn source, Pawn sampler)
         {
-            if (source.Downed || source.InMentalState)
-            {
-                return;
-            }
-            if (!Rand.Chance(RM_ContagionSettings.draftprintProvokeChance))
+            if (!RM_DraftprintKernel.MaybeProvokes(source.Downed, source.InMentalState, RM_ContagionSettings.draftprintProvokeChance, () => Rand.Value))
             {
                 return;
             }

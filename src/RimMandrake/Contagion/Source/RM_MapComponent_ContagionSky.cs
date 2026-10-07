@@ -60,59 +60,24 @@ namespace RimMandrake.Contagion
             if (now % RM_ContagionSky.Interval != 0) return;
 
             RM_ContagionSkyExtension ext = RM_ContagionSky.ExtFor(map);
-            if (ext == null)
-            {
-                nextBurnTick = -1;
-                tellsBegun = false;
-                bloomSinceTick = -1;
-                return;
-            }
+            // A Burn already holding the sky (natural or Repulsor-forced) resets the clock: the next one is scheduled from
+            // its end, and so is the Bloom clock the Coalescence reads. All of the decisions are in Kernel/RM_SkyKernel.cs.
+            SkyState st = new SkyState { nextBurnTick = nextBurnTick, tellsBegun = tellsBegun, bloomSinceTick = bloomSinceTick };
+            SkyAct act = RM_SkyKernel.Tick(ref st, now, ext != null, ext != null && BurnActive, RM_ContagionSettings.burnEnabled,
+                RM_ContagionSettings.burnTellsEnabled, ext != null ? ext.tellLeadTicks : 0, () => RollGap(ext), out int ticksToBurn);
+            nextBurnTick = st.nextBurnTick; tellsBegun = st.tellsBegun; bloomSinceTick = st.bloomSinceTick;
 
-            if (BurnActive)
+            if ((act & SkyAct.TryCoalescence) != 0) TryFormCoalescence(ext, now);
+            if ((act & SkyAct.Tell) != 0)
             {
-                // A Burn already holds the sky (natural or Repulsor-forced);
-                // the next one is scheduled from its end, and so is the Bloom
-                // clock the Coalescence reads.
-                nextBurnTick = -1;
-                tellsBegun = false;
-                bloomSinceTick = -1;
-                return;
-            }
-
-            if (bloomSinceTick < 0) bloomSinceTick = now;
-            TryFormCoalescence(ext, now);
-
-            if (!RM_ContagionSettings.burnEnabled)
-            {
-                nextBurnTick = -1;
-                tellsBegun = false;
-                return;
-            }
-
-            if (nextBurnTick < 0)
-            {
-                nextBurnTick = now + RollGap(ext);
-                tellsBegun = false;
-                return;
-            }
-
-            int lead = Mathf.Max(0, ext.tellLeadTicks);
-            if (now >= nextBurnTick - lead && now < nextBurnTick)
-            {
+                // The kernel already withholds the Tell flag when tells are off; the gate stays here too, where
+                // selftest_contagion_rattle_sound.py looks for it.
                 if (RM_ContagionSettings.burnTellsEnabled)
                 {
-                    DoTells(ext, !tellsBegun, nextBurnTick - now);
+                    DoTells(ext, (act & SkyAct.TellFirst) != 0, ticksToBurn);
                 }
-                tellsBegun = true;
-                return;
             }
-
-            if (now >= nextBurnTick)
-            {
-                StartBurn(ext.burnDurationTicks.RandomInRange, null);
-                nextBurnTick = -1;
-                tellsBegun = false;
-            }
+            if ((act & SkyAct.StartBurn) != 0) StartBurn(ext.burnDurationTicks.RandomInRange, null);
         }
 
         // Part 2 — the Coalescence forms during a LONG Bloom (bloomSinceTick
@@ -121,9 +86,8 @@ namespace RimMandrake.Contagion
         // (Building_RM_Coalescence) that the next Burn kills.
         private void TryFormCoalescence(RM_ContagionSkyExtension ext, int now)
         {
-            if (!RM_ContagionSettings.coalescenceEnabled || ext.coalescenceDef == null) return;
-            if (now - bloomSinceTick < ext.coalescenceLongBloomTicks) return;
-            if (map.listerThings.ThingsOfDef(ext.coalescenceDef).Count > 0) return;
+            if (!RM_SkyKernel.CoalescenceGate(RM_ContagionSettings.coalescenceEnabled, RM_ContagionSettings.burnEnabled, ext.coalescenceDef != null, now, bloomSinceTick,
+                    ext.coalescenceLongBloomTicks, ext.coalescenceDef != null && map.listerThings.ThingsOfDef(ext.coalescenceDef).Count > 0)) return;
             if (!Rand.MTBEventOccurs(ext.coalescenceMtbDays, GenDate.TicksPerDay, RM_ContagionSky.Interval)) return;
 
             IntVec2 size = ext.coalescenceDef.size;
@@ -160,9 +124,8 @@ namespace RimMandrake.Contagion
 
         private static int RollGap(RM_ContagionSkyExtension ext)
         {
-            float freq = Mathf.Max(0.05f, RM_ContagionSettings.burnFrequency);
-            float days = ext.meanDaysBetweenBurns / freq * Rand.Range(0.5f, 1.5f);
-            return Mathf.Max(ext.tellLeadTicks + RM_ContagionSky.Interval, (int)(days * GenDate.TicksPerDay));
+            return RM_SkyKernel.RollGap(ext.meanDaysBetweenBurns, RM_ContagionSettings.burnFrequency, Rand.Range(0.5f, 1.5f),
+                ext.tellLeadTicks, RM_ContagionSky.Interval, GenDate.TicksPerDay);
         }
 
         // Registers a Burn on this map, or stretches the active one so at
@@ -174,7 +137,7 @@ namespace RimMandrake.Contagion
             GameCondition cond = BurnCondition();
             if (cond != null)
             {
-                if (cond.TicksLeft < minTicks) cond.TicksLeft = minTicks;
+                cond.TicksLeft = RM_SkyKernel.StretchBurn(cond.TicksLeft, minTicks);
                 if (causer != null) cond.conditionCauser = causer;
                 return cond;
             }

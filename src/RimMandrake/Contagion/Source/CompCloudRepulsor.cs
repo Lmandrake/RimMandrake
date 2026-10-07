@@ -71,14 +71,8 @@ namespace RimMandrake.Contagion
         {
             base.CompTick();
             if (!parent.IsHashIntervalTick(RM_ContagionSky.Interval)) return;
-            if (!RM_ContagionSettings.cloudRepulsorEnabled || !Powered)
+            if (RM_SkyKernel.RepulsorTick(ref warmTicks, RM_ContagionSettings.cloudRepulsorEnabled, Powered, RM_ContagionSky.Interval, Props.warmupTicks) != RepulsorStep.Holding)
             {
-                warmTicks = 0;
-                return;
-            }
-            if (!Warm)
-            {
-                warmTicks += RM_ContagionSky.Interval;
                 return;
             }
             Map map = parent.Map;

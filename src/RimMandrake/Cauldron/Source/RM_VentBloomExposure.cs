@@ -42,29 +42,25 @@ namespace RimMandrake.Cauldron
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_VentBloomExposure : MapComponent
     {
-        private const int IntervalTicks = 3451;          // vanilla toxic-weather cadence
-        private const float BaseSeverityPerInterval = 0.012f; // INVENTED: ~0.2/day fully exposed
+        private const int IntervalTicks = RM_YieldKernel.BloomIntervalTicks;          // vanilla toxic-weather cadence
+        private const float BaseSeverityPerInterval = RM_YieldKernel.BaseSeverityPerInterval; // INVENTED: ~0.2/day fully exposed
 
         public RM_MapComponent_VentBloomExposure(Map map) : base(map) { }
 
         public override void MapComponentTick()
         {
-            if (Find.TickManager.TicksGame % IntervalTicks != 0) return;
-            if (!RM_CauldronSettings.ventBloomExposureEnabled) return;
             WeatherManager wm = map.weatherManager;
-            if (wm == null || wm.curWeather != RM_CauldronDefOf.RM_VentBloom) return;
-            if (!Mathf.Approximately(wm.TransitionLerpFactor, 1f)) return;
+            if (!RM_YieldKernel.BloomTicks(Find.TickManager.TicksGame, RM_CauldronSettings.ventBloomExposureEnabled,
+                    wm != null && wm.curWeather == RM_CauldronDefOf.RM_VentBloom, wm != null && RM_VentKernel.ApproximatelyOne(wm.TransitionLerpFactor))) return;
 
             var pawns = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
                 if (!Eligible(p)) continue;
-                float amount = BaseSeverityPerInterval * RM_CauldronSettings.ventBloomExposureFactor;
-                amount *= Mathf.Max(1f - p.GetStatValue(StatDefOf.ToxicResistance), 0f);
-                amount *= Mathf.Max(1f - p.GetStatValue(StatDefOf.ToxicEnvironmentResistance), 0f);
                 // CAULDRON_VENT_ENRICHMENT_HOOKS_1: strongest beside a live vent; 1.0 on a map with no vents.
-                amount *= RM_MapComponent_CauldronVents.ExposureWeight(map, p.Position);
+                float amount = RM_YieldKernel.Dose(RM_CauldronSettings.ventBloomExposureFactor, p.GetStatValue(StatDefOf.ToxicResistance),
+                    p.GetStatValue(StatDefOf.ToxicEnvironmentResistance), RM_MapComponent_CauldronVents.ExposureWeight(map, p.Position));
                 if (amount <= 0f) continue;
                 HealthUtility.AdjustSeverity(p, RM_CauldronDefOf.RM_VentMetalLoad, amount);
             }
@@ -72,13 +68,11 @@ namespace RimMandrake.Cauldron
 
         private bool Eligible(Pawn p)
         {
-            if (p == null || p.Dead || !p.Spawned) return false;
-            if (p.kindDef != null && p.kindDef.immuneToGameConditionEffects) return false;
-            if (p.RaceProps == null || !p.RaceProps.IsFlesh) return false;
-            if (p.Position.Roofed(map)) return false;
-            if (p.RaceProps.Animal && map.Biome != null && map.Biome.CommonalityOfAnimal(p.kindDef) > 0f)
-                return false;
-            return true;
+            if (p == null) return false;
+            return RM_YieldKernel.Eligible(true, p.Dead, p.Spawned, p.kindDef != null && p.kindDef.immuneToGameConditionEffects,
+                p.RaceProps != null && p.RaceProps.IsFlesh, p.Spawned && p.Position.Roofed(map),
+                p.RaceProps != null && p.RaceProps.Animal,
+                p.RaceProps != null && p.RaceProps.Animal && map.Biome != null && map.Biome.CommonalityOfAnimal(p.kindDef) > 0f);
         }
     }
 }

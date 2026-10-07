@@ -22,9 +22,7 @@ namespace RimMandrake.WeepingStones
         public override void CompTickRare()
         {
             if (!RM_WeepingStonesSettings.condenserEnabled || !parent.Spawned) return;
-            acc += 250;
-            if (acc < ((CompProperties_AncientCondenser)props).intervalTicks) return;
-            acc = 0;
+            if (!RM_CondenserKernel.WaterDue(ref acc, 250, ((CompProperties_AncientCondenser)props).intervalTicks)) return;
             ThingDef water = DefDatabase<ThingDef>.GetNamedSilentFail("RM_CondenserWater");
             if (water == null) return;
             CompProperties_AncientCondenser p = (CompProperties_AncientCondenser)props;
@@ -32,7 +30,7 @@ namespace RimMandrake.WeepingStones
             int have = 0;
             foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(parent))
                 foreach (Thing t in c.GetThingList(map)) if (t.def == water) have += t.stackCount;
-            if (have >= p.cap) return;
+            if (!RM_CondenserKernel.WaterSpawns(have, p.cap)) return;
             Thing w = ThingMaker.MakeThing(water); w.stackCount = p.litres;
             GenPlace.TryPlaceThing(w, parent.Position, map, ThingPlaceMode.Near);
         }

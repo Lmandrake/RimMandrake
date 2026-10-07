@@ -112,8 +112,7 @@ namespace RimMandrake.Cauldron
 
         private static bool InVentRing(RM_Building_CauldronVent vent, IntVec3 c, RM_CondensateHabitatExtension ext)
         {
-            float d = (c - vent.Position).LengthHorizontal;
-            return d >= ext.ventMinRadius && d <= ext.ventRadius;
+            return RM_VentKernel.InRing((c - vent.Position).LengthHorizontal, ext.ventMinRadius, ext.ventRadius);
         }
 
         public override void MapComponentTick()
@@ -158,7 +157,7 @@ namespace RimMandrake.Cauldron
         {
             if (c.GetPlant(map) != null) return false;
             if (map.zoneManager.ZoneAt(c) != null) return false;
-            if (!plant.CanEverPlantAt(c, map)) return false;
+            if (!plant.CanEverPlantAt(c, map)) return false;   // PlantAllowed in Kernel/RM_YieldKernel.cs: no plant, no zone, plantable
             if (!Rand.Chance(chance)) return false;
             Plant p = (Plant)ThingMaker.MakeThing(plant);
             p.Growth = Rand.Range(ext.spawnGrowthMin, ext.spawnGrowthMax);
@@ -168,13 +167,17 @@ namespace RimMandrake.Cauldron
 
         private bool IsShoreOf(IntVec3 c, RM_CondensateHabitatExtension ext)
         {
-            if (ext.shoreOf.Contains(c.GetTerrain(map))) return false; // in the water, not on its shore
-            for (int i = 0; i < 8; i++)
+            bool onNamed = ext.shoreOf.Contains(c.GetTerrain(map)); // in the water, not on its shore
+            bool neighbour = false;
+            if (!onNamed)
             {
-                IntVec3 n = c + GenAdj.AdjacentCells[i];
-                if (n.InBounds(map) && ext.shoreOf.Contains(n.GetTerrain(map))) return true;
+                for (int i = 0; i < 8 && !neighbour; i++)
+                {
+                    IntVec3 n = c + GenAdj.AdjacentCells[i];
+                    neighbour = n.InBounds(map) && ext.shoreOf.Contains(n.GetTerrain(map));
+                }
             }
-            return false;
+            return RM_YieldKernel.IsShore(onNamed, neighbour);
         }
     }
 }

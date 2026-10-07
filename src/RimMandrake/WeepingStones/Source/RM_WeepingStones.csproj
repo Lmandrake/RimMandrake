@@ -68,6 +68,9 @@
     <Compile Include="RM_AncientCondenserPlant.cs" />
     <Compile Include="RM_DewsilkSwitch.cs" />
     <Compile Include="RM_TileMutatorWorker_Oasis.cs" />
+    <Compile Include="Kernel\RM_PoolKernel.cs" />
+    <Compile Include="Kernel\RM_CondenserKernel.cs" />
+    <Compile Include="Kernel\RM_ClaimKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

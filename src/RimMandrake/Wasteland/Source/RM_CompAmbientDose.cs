@@ -97,7 +97,7 @@ namespace RimMandrake.Wasteland
                 return 0;
             }
             float mult = RM_WastelandSettings.ambientDoseMultiplier;
-            if (mult <= 0f || Props.toxicFactor <= 0f)
+            if (!RM_DoseKernel.DoseActive(mult, Props.toxicFactor))
             {
                 return 0;
             }
@@ -108,7 +108,6 @@ namespace RimMandrake.Wasteland
             Room room = Props.doseRoomWhenIndoors ? pos.GetRoom(map) : null;
             bool indoors = room != null && !room.UsesOutdoorTemperature;
             float r = Props.radius;
-            float r2 = r * r;
 
             int dosed = 0;
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
@@ -119,26 +118,23 @@ namespace RimMandrake.Wasteland
                 {
                     continue;
                 }
-                float factor = Props.toxicFactor;
+                float factor;
                 if (indoors)
                 {
-                    if (p.GetRoom() != room)
-                    {
-                        continue;
-                    }
+                    factor = RM_DoseKernel.IndoorFactor(Props.toxicFactor, p.GetRoom() == room);
                 }
                 else
                 {
                     // Measured from the body's EDGE, so a multi-cell source (the 20-wide
                     // Middenshell) doses from its whole footprint; a 1-cell pawn is unchanged.
                     float d2 = (p.Position - body.ClosestCellTo(p.Position)).LengthHorizontalSquared;
-                    if (d2 > r2)
-                    {
-                        continue;
-                    }
-                    factor *= Mathf.Lerp(1f, Props.edgeFactor, Mathf.Sqrt(d2) / r);
+                    factor = RM_DoseKernel.OutdoorFactor(Props.toxicFactor, Props.edgeFactor, d2, r);
                 }
-                ToxicUtility.DoPawnToxicDamage(p, factor * mult);
+                if (factor < 0f)
+                {
+                    continue;
+                }
+                ToxicUtility.DoPawnToxicDamage(p, RM_DoseKernel.Applied(factor, mult));
                 dosed++;
             }
             return dosed;

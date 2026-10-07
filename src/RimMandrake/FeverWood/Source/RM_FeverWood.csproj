@@ -87,6 +87,9 @@
     <Compile Include="RM_CompSillochAmbush.cs" />
     <Compile Include="RM_BrathekBoring.cs" />
     <Compile Include="RM_BroodRansom.cs" />
+    <Compile Include="Kernel\RM_BroodKernel.cs" />
+    <Compile Include="Kernel\RM_TankKernel.cs" />
+    <Compile Include="Kernel\RM_PoolKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -60,19 +60,13 @@ namespace RimMandrake.Contagion
             {
                 RM_CoalescenceExtension ext = Ext;
                 if (ext == null) return 0;
-                int s = 0;
-                for (int i = 0; i < ext.stageMass.Count; i++)
-                {
-                    if (mass >= ext.stageMass[i]) s = i;
-                }
-                return s;
+                return RM_CoalescenceKernel.Stage(mass, ext.stageMass);
             }
         }
 
         private static int At(List<int> list, int i, int fallback)
         {
-            if (list.NullOrEmpty()) return fallback;
-            return list[Mathf.Clamp(i, 0, list.Count - 1)];
+            return RM_CoalescenceKernel.At(list, i, fallback);
         }
 
         public override Graphic Graphic
@@ -115,15 +109,15 @@ namespace RimMandrake.Contagion
             if (ext == null) return;
 
             RM_MapComponent_ContagionSky sky = Map.GetComponent<RM_MapComponent_ContagionSky>();
-            if (sky != null && sky.BurnActive)
+            if (RM_CoalescenceKernel.Collapses(sky != null && sky.BurnActive))
             {
                 Collapse(ext);
                 return;
             }
-            if (!RM_ContagionSettings.coalescenceEnabled) return;
+            if (!RM_CoalescenceKernel.Acts(false, RM_ContagionSettings.coalescenceEnabled)) return;
 
             int now = Find.TickManager.TicksGame;
-            if (ext.passiveGrowthTicks > 0 && now - lastGrowthTick >= ext.passiveGrowthTicks)
+            if (RM_CoalescenceKernel.PassiveGrowthDue(ext.passiveGrowthTicks, now, lastGrowthTick))
             {
                 lastGrowthTick = now;
                 Grow(1);
@@ -132,7 +126,7 @@ namespace RimMandrake.Contagion
             Absorb(ext);
 
             int stage = Stage;
-            if (now - lastEmitTick >= At(ext.emitIntervalTicks, stage, 3000))
+            if (RM_CoalescenceKernel.EmitDue(now, lastEmitTick, At(ext.emitIntervalTicks, stage, 3000)))
             {
                 lastEmitTick = now;
                 TryEmit(ext, stage);
@@ -209,7 +203,7 @@ namespace RimMandrake.Contagion
                 Pawn p = all[i];
                 if (p.kindDef == ext.unfinishedKind && p.MentalStateDef == MentalStateDefOf.Manhunter) live++;
             }
-            if (live >= At(ext.maxManhunters, stage, 3)) return;
+            if (!RM_CoalescenceKernel.MayEmit(live, At(ext.maxManhunters, stage, 3))) return;
 
             IntVec3 cell = IntVec3.Invalid;
             foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this).InRandomOrder())
@@ -232,8 +226,7 @@ namespace RimMandrake.Contagion
             Map map = Map;
             IntVec3 center = Position;
             int stage = Stage;
-            int samples = Mathf.Min(ext.samplesMax,
-                ext.samplesBase + ext.samplesPerStage * stage + (ext.massPerSample > 0 ? mass / ext.massPerSample : 0));
+            int samples = RM_CoalescenceKernel.Samples(ext.samplesBase, ext.samplesPerStage, stage, ext.massPerSample, mass, ext.samplesMax);
 
             Messages.Message("The Burn catches the Coalescence in the open light — it collapses, spilling novel tissue.",
                 new TargetInfo(center, map), MessageTypeDefOf.PositiveEvent);

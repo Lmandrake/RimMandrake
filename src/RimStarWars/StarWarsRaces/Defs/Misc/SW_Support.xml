@@ -561,7 +561,7 @@
     <harmsHealth>false</harmsHealth>
     <consideredHelpful>false</consideredHelpful>
     <modExtensions>
-      <li Class="guy762_Ionization.ModExtension_HediffGiver">
+      <li Class="guy762_Ionization.ModExtension_HediffGiver" MayRequire="mandrake.rsw.armoury">
         <hediffToAdd>RSW_hediff_ink</hediffToAdd>
         <severityFixed>1</severityFixed>
       </li>

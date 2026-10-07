@@ -19,7 +19,7 @@ namespace RimMandrake.WeepingStones
     // Taking one quest forecloses the other: RM_QuestPart_CondenserClaim (added by the crab node) claims the crab
     // on accept and withdraws any rival offer; a quest that ends in Success settles the matter for the world.
 
-    public enum RM_FactionSlotFallback : byte { Collector, Settlers, Hunters }
+    // RM_FactionSlotFallback, FactionInfo and the slot selection: Kernel/RM_ClaimKernel.cs.
 
     // A faction slot. The free mod lists vanilla defNames; the campaign layer (UtinniPatches) inserts its own
     // FactionDef names at the head of preferredFactions. Names, not cross-refs, so an absent def costs nothing.
@@ -28,37 +28,22 @@ namespace RimMandrake.WeepingStones
         public List<string> preferredFactions = new List<string>();
         public RM_FactionSlotFallback fallback = RM_FactionSlotFallback.Settlers;
 
-        private bool WantsHostile => fallback == RM_FactionSlotFallback.Hunters;
-
-        private bool Usable(Faction f, Faction exclude)
-        {
-            if (f == null || f.IsPlayer || f.defeated || f.temporary || f.Hidden || !f.def.humanlikeFaction) return false;
-            if (f == exclude) return false;
-            return f.HostileTo(Faction.OfPlayer) == WantsHostile;
-        }
-
         public Faction Resolve(Faction exclude)
         {
-            List<Faction> all = Find.FactionManager.AllFactionsListForReading.Where(f => Usable(f, exclude)).ToList();
-            if (all.Count == 0) return null;
-            for (int i = 0; i < preferredFactions.Count; i++)
+            List<Faction> all = Find.FactionManager.AllFactionsListForReading;
+            List<FactionInfo> infos = new List<FactionInfo>(all.Count);
+            for (int i = 0; i < all.Count; i++)
             {
-                Faction hit = all.Where(f => f.def.defName == preferredFactions[i])
-                    .OrderByDescending(f => f.PlayerGoodwill).FirstOrDefault();
-                if (hit != null) return hit;
+                Faction f = all[i];
+                infos.Add(new FactionInfo
+                {
+                    id = f.loadID, defName = f.def.defName, isPlayer = f.IsPlayer, defeated = f.defeated, temporary = f.temporary,
+                    hidden = f.Hidden, humanlike = f.def.humanlikeFaction, hostile = f.HostileTo(Faction.OfPlayer),
+                    permanentEnemy = f.def.permanentEnemy, techLevel = (int)f.def.techLevel, goodwill = f.PlayerGoodwill
+                });
             }
-            switch (fallback)
-            {
-                case RM_FactionSlotFallback.Collector:
-                    return all.Where(f => !f.def.permanentEnemy)
-                        .OrderByDescending(f => (int)f.def.techLevel).ThenByDescending(f => f.PlayerGoodwill).FirstOrDefault();
-                case RM_FactionSlotFallback.Hunters:
-                    return all.OrderByDescending(f => f.def.permanentEnemy).ThenByDescending(f => (int)f.def.techLevel).FirstOrDefault();
-                default:
-                    return all.Where(f => !f.def.permanentEnemy)
-                        .OrderBy(f => f.def.techLevel > TechLevel.Industrial)
-                        .ThenByDescending(f => f.PlayerGoodwill).FirstOrDefault();
-            }
+            FactionInfo? hit = RM_ClaimKernel.Resolve(infos, preferredFactions, fallback, exclude != null ? exclude.loadID : -1);
+            return hit.HasValue ? all.FirstOrDefault(f => f.loadID == hit.Value.id) : null;
         }
     }
 
@@ -82,20 +67,23 @@ namespace RimMandrake.WeepingStones
 
         public static bool ClaimStillHeld(RM_CondenserWorld w)
         {
-            if (w.claimQuestId < 0) return false;
+            bool exists = false, historical = false;
             List<Quest> qs = Find.QuestManager.QuestsListForReading;
             for (int i = 0; i < qs.Count; i++)
-                if (qs[i].id == w.claimQuestId && !qs[i].Historical) return true;
-            w.claimQuestId = -1; // the claiming quest is gone without cleanup: release
-            return false;
+            {
+                if (qs[i].id == w.claimQuestId) { exists = true; historical = qs[i].Historical; if (!historical) break; }
+            }
+            bool held = RM_ClaimKernel.ClaimStillHeld(w.claimQuestId, exists, historical, out int newClaim);
+            w.claimQuestId = newClaim; // the claiming quest is gone without cleanup: release
+            return held;
         }
 
         public static bool OffersOpen()
         {
-            if (!RM_WeepingStonesSettings.condenserEnabled || !RM_WeepingStonesSettings.condenserQuestsEnabled) return false;
             RM_CondenserWorld w = RM_CondenserWorld.Get();
-            if (w == null || w.ended || w.questsSettled) return false;
-            return !ClaimStillHeld(w);
+            bool held = w != null && ClaimStillHeld(w);
+            return RM_ClaimKernel.OffersOpen(RM_WeepingStonesSettings.condenserEnabled, RM_WeepingStonesSettings.condenserQuestsEnabled,
+                w != null, w != null && w.ended, w != null && w.questsSettled, held);
         }
     }
 
@@ -167,6 +155,14 @@ namespace RimMandrake.WeepingStones
         {
             RM_CondenserWorld w = RM_CondenserWorld.Get();
             if (w != null) w.claimQuestId = quest.id;
+            // Withdraw the rival offers now: waiting for their 250-tick poll left a window to accept both.
+            List<Quest> qs = Find.QuestManager.QuestsListForReading;
+            for (int i = qs.Count - 1; i >= 0; i--)
+            {
+                bool isClaim = qs[i].PartsListForReading.Any(p => p is RM_QuestPart_CondenserClaim);
+                if (RM_ClaimKernel.RivalWithdrawsOnAccept(isClaim, qs[i].State == QuestState.NotYetAccepted, qs[i].id, quest.id))
+                    qs[i].End(QuestEndOutcome.InvalidPreAcceptance, sendLetter: false);
+            }
         }
 
         public override void QuestPartTick()
@@ -174,8 +170,8 @@ namespace RimMandrake.WeepingStones
             if (Find.TickManager.TicksGame % 250 != 0 || quest.State != QuestState.NotYetAccepted) return;
             RM_CondenserWorld w = RM_CondenserWorld.Get();
             bool gone = crab == null || crab.Dead || crab.Destroyed;
-            bool taken = w == null || w.ended || w.questsSettled || (RM_CondenserQuestUtil.ClaimStillHeld(w) && w.claimQuestId != quest.id);
-            if (gone || taken) quest.End(QuestEndOutcome.InvalidPreAcceptance, sendLetter: false);
+            if (RM_ClaimKernel.Withdraws(gone, w != null, w != null && w.ended, w != null && w.questsSettled,
+                    w != null && RM_CondenserQuestUtil.ClaimStillHeld(w), w != null ? w.claimQuestId : -1, quest.id)) quest.End(QuestEndOutcome.InvalidPreAcceptance, sendLetter: false);
         }
 
         public override void Cleanup()
@@ -183,8 +179,7 @@ namespace RimMandrake.WeepingStones
             base.Cleanup();
             RM_CondenserWorld w = RM_CondenserWorld.Get();
             if (w == null) return;
-            if (w.claimQuestId == quest.id) w.claimQuestId = -1;
-            if (quest.State == QuestState.EndedSuccess) w.questsSettled = true;
+            RM_ClaimKernel.Cleanup(ref w.claimQuestId, ref w.questsSettled, quest.id, quest.State == QuestState.EndedSuccess);
         }
 
         public override void ExposeData()

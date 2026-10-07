@@ -75,6 +75,9 @@
     <Compile Include="FloatMenuOptionProvider_SampleDraftprint.cs" />
     <Compile Include="JobDriver_RM_SampleDraftprint.cs" />
     <Compile Include="QuestNode_RM_HelixDraftprintContract.cs" />
+    <Compile Include="Kernel\RM_SkyKernel.cs" />
+    <Compile Include="Kernel\RM_CoalescenceKernel.cs" />
+    <Compile Include="Kernel\RM_DraftprintKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

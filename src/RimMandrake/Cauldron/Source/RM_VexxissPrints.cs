@@ -134,12 +134,14 @@ namespace RimMandrake.Cauldron
         private const int MaxEntries = 1500;
         private const int ExpiryCheckTicks = 250;
 
-        private List<RM_VexxissPrintEntry> entries = new List<RM_VexxissPrintEntry>();
-        private readonly Dictionary<IntVec3, RM_VexxissPrintEntry> byCell = new Dictionary<IntVec3, RM_VexxissPrintEntry>();
+        // The ledger (order, cap, expiry, newest-per-cell index) is Kernel/RM_VexxissKernel.cs.
+        private readonly RM_PrintLedger<IntVec3, RM_VexxissPrintEntry> ledger =
+            new RM_PrintLedger<IntVec3, RM_VexxissPrintEntry>(e => e.cell, e => e.expiresTick);
+        private Dictionary<IntVec3, RM_VexxissPrintEntry> byCell { get { return ledger.ByCell; } }
 
         public RM_MapComponent_VexxissPrints(Map map) : base(map) { }
 
-        public int Count => entries.Count;
+        public int Count => ledger.Entries.Count;
 
         public void Add(IntVec3 c, int laidTick, int lifetimeTicks, Pawn maker)
         {
@@ -150,29 +152,19 @@ namespace RimMandrake.Cauldron
                 expiresTick = laidTick + lifetimeTicks,
                 maker = maker.LabelShortCap
             };
-            entries.Add(e);
-            byCell[c] = e;
-            while (entries.Count > MaxEntries) Expire(entries[0]);
+            ledger.Add(e, MaxEntries, ClearGrid);
         }
 
         public override void MapComponentTick()
         {
-            if (entries.Count == 0 || Find.TickManager.TicksGame % ExpiryCheckTicks != 0) return;
-            int now = Find.TickManager.TicksGame;
             // entries are appended in time order, so the due ones are at the front
-            while (entries.Count > 0 && entries[0].expiresTick <= now) Expire(entries[0]);
+            ledger.Tick(Find.TickManager.TicksGame, ClearGrid);
         }
 
-        private void Expire(RM_VexxissPrintEntry e)
+        // Only wipe the grid's record if it is still this print (another walker or an eraser may have replaced or cleared it since).
+        private void ClearGrid(RM_VexxissPrintEntry e)
         {
-            entries.RemoveAt(0);
-            if (byCell.TryGetValue(e.cell, out RM_VexxissPrintEntry cur) && cur == e)
-            {
-                byCell.Remove(e.cell);
-                // only wipe the grid's record if it is still this print (another walker or an eraser
-                // may have replaced or cleared it since)
-                if (RM_TrackGridBridge.PrintTickAt(map, e.cell) == e.laidTick) RM_TrackGridBridge.Clear(map, e.cell);
-            }
+            if (RM_TrackGridBridge.PrintTickAt(map, e.cell) == e.laidTick) RM_TrackGridBridge.Clear(map, e.cell);
         }
 
         public override void MapComponentOnGUI()
@@ -199,13 +191,10 @@ namespace RimMandrake.Cauldron
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.Look(ref entries, "rmVexxissPrints", LookMode.Deep);
+            Scribe_Collections.Look(ref ledger.Entries, "rmVexxissPrints", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (entries == null) entries = new List<RM_VexxissPrintEntry>();
-                entries.RemoveAll(e => e == null);
-                byCell.Clear();
-                foreach (RM_VexxissPrintEntry e in entries) byCell[e.cell] = e;
+                ledger.Rebuild();
             }
         }
     }
@@ -216,14 +205,13 @@ namespace RimMandrake.Cauldron
         public static void TryStep(Pawn pawn, RM_CompVexxissBehaviour comp)
         {
             RM_CompProperties_VexxissBehaviour props = comp.Props;
-            if (pawn.Flying || pawn.Downed) return;
+            if (!RM_VexxissKernel.PrintAllowed(pawn.Flying, pawn.Downed)) return;
             IntVec3 c = pawn.Position;
-            if (comp.lastPrintCell.IsValid
-                && (c - comp.lastPrintCell).LengthHorizontalSquared < props.printStepCells * props.printStepCells) return;
+            if (!RM_VexxissKernel.StepFarEnough(comp.lastPrintCell.IsValid, (c - comp.lastPrintCell).LengthHorizontalSquared, props.printStepCells)) return;
             comp.lastPrintCell = c;
             Map map = pawn.Map;
             TerrainDef t = c.GetTerrain(map);
-            if (t == null || t.IsWater || !t.natural) return;   // on water the poisoned swap marks its passage; no prints on floors
+            if (!RM_VexxissKernel.PrintableTerrain(t != null, t != null && t.IsWater, t != null && t.natural)) return;   // on water the poisoned swap marks its passage; no prints on floors
             int laid = RM_TrackGridBridge.Record(map, c, pawn, props);
             if (laid < 0) return;
             map.GetComponent<RM_MapComponent_VexxissPrints>()?.Add(c, laid, props.printLifetimeTicks, pawn);

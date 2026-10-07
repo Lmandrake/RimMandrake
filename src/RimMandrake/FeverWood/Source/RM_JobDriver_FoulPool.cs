@@ -47,8 +47,16 @@ namespace RimMandrake.FeverWood
                     return;
                 }
 
-                int amount = Mathf.Min(carried.stackCount, Mathf.Max(1, RM_FeverWoodSettings.tentacleUraniumSuppressantAmountPerUse));
-                bool takingAll = amount >= carried.stackCount;
+                // Switched off while the pawn was hauling: spend nothing, put the charges back (the work giver and
+                // designator already refuse; this closes the window of a job started before the toggle flipped).
+                if (!RM_PoolKernel.FoulingAllowed(RM_FeverWoodSettings.tentacleUraniumSuppressionEnabled))
+                {
+                    pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
+                    return;
+                }
+
+                int amount = RM_PoolKernel.ChargesTaken(carried.stackCount, RM_FeverWoodSettings.tentacleUraniumSuppressantAmountPerUse);
+                bool takingAll = RM_PoolKernel.TakesAll(carried.stackCount, amount);
 
                 pawn.Map.designationManager.TryRemoveDesignation(PoolCell, RM_SuppressionDefOf.RM_Designation_FoulPool);
 
@@ -60,12 +68,8 @@ namespace RimMandrake.FeverWood
                     pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
                 }
 
-                if (RM_FeverWoodSettings.tentacleUraniumSuppressionEnabled)
-                {
-                    RM_MapComponent_TentacleWatch watch = pawn.Map.GetComponent<RM_MapComponent_TentacleWatch>();
-                    int ticks = Mathf.RoundToInt(Mathf.Max(0.1f, RM_FeverWoodSettings.tentacleUraniumSuppressionDurationDays) * 60000f);
-                    watch?.SuppressPoolWithRadioactiveMaterial(ticks);
-                }
+                RM_MapComponent_TentacleWatch watch = pawn.Map.GetComponent<RM_MapComponent_TentacleWatch>();
+                watch?.SuppressPoolWithRadioactiveMaterial(RM_PoolKernel.SuppressionTicks(RM_FeverWoodSettings.tentacleUraniumSuppressionDurationDays));
             };
             yield return foul;
         }

@@ -35,12 +35,12 @@ namespace RimMandrake.TheForge
     public class RM_ForgeVoices
     {
         // PROVISIONAL: one vent cough every ~4 s of game time while the gas comes.
-        private const int CoughIntervalTicks = 240;
+        private const int CoughIntervalTicks = RM_DormancyKernel.CoughIntervalTicks;
         // PROVISIONAL: crust ticks every ~1.5 s, a glass note about one tick in five.
-        private const int BasaltTickIntervalTicks = 90;
+        private const int BasaltTickIntervalTicks = RM_DormancyKernel.BasaltTickIntervalTicks;
         private const float GlassSingChance = 0.2f;
         // PROVISIONAL: the cracking pulse every ~6 s, like a slow heartbeat.
-        private const int CrackPulseIntervalTicks = 360;
+        private const int CrackPulseIntervalTicks = RM_DormancyKernel.CrackPulseIntervalTicks;
 
         private Sustainer sustainer;
         private SoundDef sustainerDef;
@@ -63,24 +63,25 @@ namespace RimMandrake.TheForge
             if (!active)
             {
                 Stop();
-                // Track the phase silently, so returning to the map does not
-                // play a stinger for a change that happened while away.
-                lastPhase = cycle.Phase;
+            }
+            // Inactive frames track the phase silently, so returning to the map does not play a stinger for a change that
+            // happened while away; the decision of what sounds this frame is Kernel/RM_DormancyKernel.cs.
+            ForgeCyclePhase phase = cycle.Phase;
+            int last = (int)lastPhase;
+            int now = Find.TickManager.TicksGame;
+            RM_DormancyKernel.VoiceEvent ev = RM_DormancyKernel.Frame(ref last, active, phase, hissSent, now);
+            lastPhase = (ForgeCyclePhase)last;
+            if (!active)
+            {
                 return;
             }
 
-            ForgeCyclePhase phase = cycle.Phase;
-            if (phase != lastPhase)
+            if ((ev & RM_DormancyKernel.VoiceEvent.Stinger) != 0)
             {
-                bool first = (int)lastPhase < 0;
-                lastPhase = phase;
-                if (!first)
+                RM_TheForgeDefOf.RM_ForgeVoice_PhaseStinger?.PlayOneShotOnCamera(map);
+                if (VisualCuesNow)
                 {
-                    RM_TheForgeDefOf.RM_ForgeVoice_PhaseStinger?.PlayOneShotOnCamera(map);
-                    if (VisualCuesNow)
-                    {
-                        Messages.Message(CueText(phase), new TargetInfo(map.Center, map), MessageTypeDefOf.SilentInput, historical: false);
-                    }
+                    Messages.Message(CueText(phase), new TargetInfo(map.Center, map), MessageTypeDefOf.SilentInput, historical: false);
                 }
             }
 
@@ -90,35 +91,17 @@ namespace RimMandrake.TheForge
                 sustainer.Maintain();
             }
 
-            int now = Find.TickManager.TicksGame;
-            switch (phase)
+            if ((ev & RM_DormancyKernel.VoiceEvent.Cough) != 0)
             {
-                case ForgeCyclePhase.StillHeat:
-                    if (hissSent && now % CoughIntervalTicks == 0)
-                    {
-                        Cough(map);
-                    }
-                    break;
-                case ForgeCyclePhase.GasWash:
-                    if (now % CoughIntervalTicks == 0)
-                    {
-                        Cough(map);
-                    }
-                    break;
-                case ForgeCyclePhase.Freeze:
-                case ForgeCyclePhase.Growth:
-                    if (now % BasaltTickIntervalTicks == 0)
-                    {
-                        BasaltTick(cycle, map);
-                    }
-                    break;
-                case ForgeCyclePhase.Cracks:
-                case ForgeCyclePhase.Melt:
-                    if (now % CrackPulseIntervalTicks == 0)
-                    {
-                        RM_TheForgeDefOf.RM_ForgeVoice_CrackPulse?.PlayOneShotOnCamera(map);
-                    }
-                    break;
+                Cough(map);
+            }
+            if ((ev & RM_DormancyKernel.VoiceEvent.BasaltTick) != 0)
+            {
+                BasaltTick(cycle, map);
+            }
+            if ((ev & RM_DormancyKernel.VoiceEvent.CrackPulse) != 0)
+            {
+                RM_TheForgeDefOf.RM_ForgeVoice_CrackPulse?.PlayOneShotOnCamera(map);
             }
         }
 
@@ -134,16 +117,12 @@ namespace RimMandrake.TheForge
 
         private static SoundDef SustainerFor(ForgeCyclePhase phase)
         {
-            switch (phase)
+            // Freeze/growth: the crust's own small sounds carry it. Cracks and melt: the harmony has dropped out.
+            switch (RM_DormancyKernel.SustainerFor(phase))
             {
-                case ForgeCyclePhase.StillHeat:
-                case ForgeCyclePhase.GasWash:
-                    return RM_TheForgeDefOf.RM_ForgeVoice_StillThrob;
-                case ForgeCyclePhase.Rain:
-                    return RM_TheForgeDefOf.RM_ForgeVoice_RainHiss;
+                case SustainerKind.StillThrob: return RM_TheForgeDefOf.RM_ForgeVoice_StillThrob;
+                case SustainerKind.RainHiss: return RM_TheForgeDefOf.RM_ForgeVoice_RainHiss;
             }
-            // Freeze/growth: the crust's own small sounds carry it. Cracks
-            // and melt: the harmony has dropped out.
             return null;
         }
 

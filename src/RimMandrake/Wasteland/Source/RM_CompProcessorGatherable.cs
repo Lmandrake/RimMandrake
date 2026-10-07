@@ -108,17 +108,10 @@ namespace RimMandrake.Wasteland
             {
                 return;
             }
-            float num = 1f / (GatherResourcesIntervalDays * (float)GenDate.TicksPerDay);
             Pawn pawn = parent as Pawn;
-            if (pawn != null)
-            {
-                num *= PawnUtility.BodyResourceGrowthSpeed(pawn);
-            }
-            if (!onFeed)
-            {
-                num *= PProps.offFeedRateFactor;
-            }
-            fullness = Mathf.Min(1f, fullness + num);
+            float growth = pawn != null ? PawnUtility.BodyResourceGrowthSpeed(pawn) : 1f;
+            fullness = RM_DoseKernel.NextFullness(fullness,
+                RM_DoseKernel.FullnessRate(GatherResourcesIntervalDays, GenDate.TicksPerDay, growth, onFeed, PProps.offFeedRateFactor));
         }
 
         private bool ComputeOnFeedGround()
@@ -170,7 +163,7 @@ namespace RimMandrake.Wasteland
             {
                 return;
             }
-            if (Rand.Chance(perDay * FeedCheckIntervalTicks / GenDate.TicksPerDay))
+            if (Rand.Chance(RM_DoseKernel.UnpolluteChance(perDay, FeedCheckIntervalTicks, GenDate.TicksPerDay)))
             {
                 map.pollutionGrid.SetPolluted(c, false);
             }
