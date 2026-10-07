@@ -16,3 +16,4 @@ Card 23:28. (1) Factions, owner typed: "Mostly ruins only, but rare on raids tha
 - EK: RM_KnockbackExtension.maxThrowCells (0=global) + setting 'Weapons that set their own maximum' scale; kernel CapFor; kernel 63/63, STATIC+MOCK pass, DLL built
 - KA: per-weapon maxThrowCells on the 8 DamageDefs + Thump 8; grav_ram proof min 5->7; KA kernel 13/13, STATIC+MOCK pass, validate_patch 0 errors
 - factions: RM_KineticLooterExtension patched on FactionDef Pirate (inherited by CannibalPirate/PirateYttakin/PirateWaster); Harmony postfix on PawnWeaponGenerator.TryGenerateWeaponFor swaps an armed pirate's gun at 2% (setting); kernel KA-14 (21/21), proof scene looted_pirates, walk line
+- rulings recorded on item (rimflow note x2); design §1/§2/§3.2/§4/§5/§7/§9/§10 updated

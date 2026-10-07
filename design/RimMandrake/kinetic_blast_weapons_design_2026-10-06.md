@@ -26,11 +26,12 @@ starts from zero.
 
 **Per-weapon hooks in Explosive Knockback today: none.** The only knob is `RM_KnockbackExtension.force` on a
 **DamageDef** (`RM_KnockbackMod.cs`). The kernel `RM_KnockbackMath.ThrowCells` is
-`round(baseCells 4 × force × falloff × massScale × global)`, capped by the global `maxThrowCells` (6), with
+`round(baseCells 4 × force × falloff × massScale × global)`, capped by the blast's own `maxThrowCells` when its
+DamageDef sets one, else the global "Maximum throw distance" (6), with
 `refMass 70`. Force on a DamageDef is enough for Thump (only `Bullet_ThumpCannon` uses it in projectile
 position — the other hits in installed mods are building damage multipliers), but a weapon range needs
-per-projectile tuning and two behaviours the kernel lacks: a per-weapon cap, and a push **along the shot**
-instead of radially. §2 adds them.
+per-projectile tuning and a push **along the shot** instead of radially (§2). The per-weapon cap exists since
+2026-10-06 (owner card "Let each weapon set it").
 
 **Engine (RimSage, decompiled 1.6):** `Explosion` carries `public ThingDef weapon;`, `public ThingDef
 projectile;`, `public Thing instigator;` and `public FloatRange? affectedAngle;`. `Projectile_Explosive.Explode`
@@ -62,7 +63,7 @@ already built.
    | field | default | meaning |
    |---|---|---|
    | `force` | 1.0 | as today |
-   | `maxCellsOffset` | 0 | signed, added to the global "Maximum throw distance" for this blast, result clamped ≥ 1 (lowering the global lowers every weapon together; the palm thumper uses −1) |
+   | `maxThrowCells` | 0 | **built.** This blast's own maximum throw in cells; 0 = the global "Maximum throw distance" (6). Scaled by the Explosive Knockback setting "Weapons that set their own maximum throw" (default 1.0×), never below 1. Owner, by question card 2026-10-06: each weapon sets its own cap |
    | `pushAlongShot` | false | throw direction = the projectile's own flight vector `destination − origin`, **captured at impact** (a prefix on `Projectile_Explosive.Explode` stores it in a per-map table keyed by the explosion it spawns; GPT #2) — never the shooter's current position, which may have moved or died. Zero/absent vector → radial |
    | `impactFactor` | 1.0 | scales wall/pawn impact damage for this blast (0 for the palm thumper: an arrest tool) |
    | `immuneBodySizeOverride` | unset | replaces the global immunity size for this blast (grav-ram 3.6, so a 3.5 body is thrown — eligibility is `≥`); ignored when the global throw-animals/mechs toggles are off |
@@ -78,7 +79,7 @@ already built.
 
 ### 2.2 The value
 Patch `Thump` (DamageDef — so the Odyssey unique thump cannon variant inherits it with no second patch):
-**`force 2.5`, `maxCellsOffset +2`**. Kernel results (human 70 kg; 250 kg = a heavy, still under the 2.5
+**`force 2.5`, `maxThrowCells 8`**. Kernel results (human 70 kg; 250 kg = a heavy, still under the 2.5
 body-size immunity):
 
 | blast | radius | force | cap | human at d 0 / 1 / 1.4 / 2 | 10 kg item at d 1 |
@@ -113,8 +114,8 @@ kept, wrap-safe angle test, LOS as the explosion already applied). The damage wa
 ## 3. The weapon range
 
 Tier: **RimMandrake** (`RM_`), franchise-free — every name below is invented or plain English (CLAUDE.md Q11a).
-Faction assignment to campaign (Jawa/RUT) factions is a **Utinni-layer patch** (`RUT_` weaponTags), never in
-the RM mod. Proposed home: a new mod **`mandrake.rm.kineticarms`** ("RimMandrake: Kinetic Arms"), hard-
+Source: found in ruins (owner); the only faction that carries them is pirate raiders who looted those ruins, rarely
+(§3.2). Proposed home: a new mod **`mandrake.rm.kineticarms`** ("RimMandrake: Kinetic Arms"), hard-
 depending on Explosive Knockback (Q2). One shared new DamageDef family:
 
 - **`RM_Concussive`** — `DamageWorker_AddInjury`, hediff `Bruise`, `armorCategory Blunt`, `isExplosive`,
@@ -176,15 +177,20 @@ Distances are the kernel's for a 70 kg human; heavier is shorter (`massScale`), 
    gravship deck, punt a centipede into a pit (body size 3.0 < 3.5 — the **only** weapon that pits a centipede).
 
 ### 3.2 Who uses them
-- **Player:** all eight, by research.
-- **Vanilla factions (RM tier, weaponTags):** pirates — thudder grenade (tag `RM_KineticGrenade` added to the
-  grenadier kinds' allowed tags by patch) and slam launcher; outlanders — palm thumper, repulsor rifle (rare);
-  empire — repulsor rifle, grav-ram on janissaries (rare). Mechanoids: none.
-- **Campaign factions (Utinni patches, `RUT_` weaponTags — Q7):** Junkers — thudder grenades, slam launchers
-  (scavenger bombers); Wildsteam Clan — kicker mines in their bases, palm thumpers; Hutt Cartel — enforcers with
-  repulsor rifles; Geonosian Foundry Hive — pulse cannons as base defences; Free Droid Enclaves — grav-ram
-  (rare, raid boss). Base generation places kicker mines and pulse cannons only where `SymbolResolver`s already
-  place turrets/traps.
+Owner, 2026-10-06 23:28, typed into the factions card: *"Mostly ruins only, but rare on raids that stole it from said
+ruins (pirates/outlaws)"*.
+- **Player:** all eight, found in Rakatan Ancient Danger ruins (§9); no crafting, no research.
+- **Pirate raiders (built, RM tier):** `RM_KineticLooterExtension` is patched onto FactionDef `Pirate` (Name
+  `PirateBandBase`), so `CannibalPirate`, `PirateYttakin` and `PirateWaster` inherit it. A postfix on
+  `PawnWeaponGenerator.TryGenerateWeaponFor` gives an armed pirate (one who generated with a ranged weapon) a
+  **2%** chance (Mod Settings, 0–20%) to carry a looted kinetic weapon instead: a grenadier gets thudder grenades;
+  anyone else a weapon his kind could afford (price ≤ `weaponMoney.max`) — Pirate/Scavenger the palm thumper,
+  Mercenary_Heavy up to the slam launcher, PirateBoss up to the repulsor rifle; the grav-ram (2400) fits no pirate.
+  Keyed on the **faction**, never the pawnkind: `Mercenary_Gunner`, `Mercenary_Slasher`, `Mercenary_Elite` and
+  `Grenadier_Destructive` are shared with outlander factions. Melee drifters and thrashers keep their weapons.
+- **No other faction** carries them: no outlanders, empire, tribes, mechanoids. Kicker mines and pulse cannons
+  never appear in enemy bases. Which campaign factions count as "outlaws" is not yet named; such a faction would
+  get the same extension from a Utinni patch.
 - ⚠️ **Enemy AI and pits:** AI does not aim throws at pits. That is fine and intended: the player is the one
   who builds pits. An AI repulsor line still pushes colonists back off sandbags.
 
@@ -233,7 +239,8 @@ identity.
 | Kicker mines re-arm | on | off = single use |
 | Kicker mines hidden from enemies | on | as IEDs |
 | Pulse cannon power draw (W) | 350 | |
-| Enemies carry kinetic weapons | on | off removes the weaponTags from vanilla and campaign kinds |
+| Pirate raiders sometimes carry kinetic weapons looted from ruins | on | off = ruins only |
+| Chance a pirate gunner carries a looted one (%) | 2 | 0–20 |
 | Kinetic blasts cut aerial cords | off (Q3, recommended) | needs GSS to read a flag (§3.3) |
 Nothing here affects worldgen.
 
@@ -273,7 +280,7 @@ trial measures real-verb hit rates.
 | shield_counter | shield-belted target, repulsor (after Q4) | not thrown; shield energy down by force × 10 |
 | hose_drop | colonist carrying a GSS hose end, repulsor hit | hose end on the takeoff cell, state Dropped |
 | settings_each_off | each weapon toggle off | recipe gone; no pawnkind spawns it |
-| faction_tags | read the pawnkinds' resolved allowed weapon tags (deterministic), not random rolls | thudder tag present; absent when "enemies carry" off |
+| looted_pirates | read the factions' extension and the pick rule with fixed rolls (deterministic) | the four pirate gangs are looters, outlanders/tribes/empire are not; Pirate → palm thumper, grenadier → thudder, boss never grav-ram; a roll above the chance keeps his gun |
 Offline: kernel selftests for `maxCellsBonus`, `pushAlongShot` direction, `impactFactor`, body-size override
 and the immunity window, beside the existing K-01…K-n.
 
@@ -328,7 +335,7 @@ were checked in RimSage before acceptance (cone centre skip; `harmsHealth` not g
 | 5 | shields: capture absorption at damage time, apparel comp, energy units | **Accept** | §4 shields |
 | 6 | trap API: no cone, no flush, dedupe ids, vanilla rearm destroys | **Accept** | §2.3 API, §3.1 kicker mine |
 | 7 | `weapon`/`projectile` differ by route; resolve config once | **Accept**; "unique variants may override damage" is **to measure at build** (Odyssey's unique thump cannon) | §2.1 items 2–4 |
-| 8 | signed cap offsets; immunity override missing; `≥` at 3.5 | **Accept** | §2.1 `maxCellsOffset`, `immuneBodySizeOverride 3.6` |
+| 8 | signed cap offsets; immunity override missing; `≥` at 3.5 | **Accept**; cap superseded by the owner's per-weapon cap | §2.1 `maxThrowCells`, `immuneBodySizeOverride 3.6` |
 | 9 | thump 2.5/+2 is right; promise "farther beside impact" | **Accept** | §2.2 honest limit |
 | 10 | balance needs full firing stats, control/s, ammo-free turret farms captures | **Partly accept** — full verb stats are owed at build; pulse cannon pit-farming goes to the owner (Q6). **Reject** cutting throw distances now: numbers are calibrated to his "3 cells" ruling and get tested | §8 Q6 |
 | 11 | validation overreach: real routes, centre hits, dead shooters, fallbacks, save/load, item conservation | **Accept** | §5 |
@@ -383,27 +390,31 @@ RAKATAN_ARCHOTECH_MACHINES_1 for the existing Rakatan grade ladder. Q5–Q7 aske
   kinetic weapons are FOUND in Ancient Danger ruins populated with Rakatan ancients, then refurbished up the Rakatan
   grade ladder; no crafting.
 - Q5 first wave: **all eight** (card). Q6 pulse cannon: **rechargeable stored charge** refilled from power (card).
+- 23:28, Q7 factions, owner typed: *"Mostly ruins only, but rare on raids that stole it from said ruins
+  (pirates/outlaws)"* — §3.2. Throw cap: decision taken by question card, "Let each weapon set it" — §2.1 `maxThrowCells`.
 
-## 10. Build v1 (2026-10-06, BENCH) — what ships without touching Explosive Knockback
+## 10. Build v1 (2026-10-06, BENCH)
 
 Mod `src/RimMandrake/KineticArms/` (`mandrake.rm.kineticarms`, hard dependency on `mandrake.rm.explosiveknockback`).
-Explosive Knockback is NOT edited in v1; every per-weapon behaviour is reached through what it already exposes:
+Explosive Knockback's only edit for this mod is the per-blast cap `RM_KnockbackExtension.maxThrowCells` (owner card); every
+other per-weapon behaviour is reached through what it already exposes:
 
-- **Per-weapon throw multiplier = one DamageDef per weapon**, each carrying `RM_KnockbackExtension.force` (the only
-  knob EK reads today). Concussive family (`RM_Concussive_*`, Bruise, Blunt, low building factor) for the thudder,
+- **Per-weapon throw multiplier = one DamageDef per weapon**, each carrying `RM_KnockbackExtension.force` and `maxThrowCells` (the
+  knobs EK reads). Concussive family (`RM_Concussive_*`, Bruise, Blunt, low building factor) for the thudder,
   slam charge and thump shell; Repulse family (`RM_Repulse_*`, worker `RM_DamageWorker_KineticOnly`, which applies
   nothing) for the palm thumper, repulsor rifle, pulse cannon, grav-ram and kicker mine.
 - **Push along the shot** without `pushAlongShot`: `RM_Projectile_KineticBolt` explodes one cell BEHIND its impact
   (back along origin → destination, captured at impact) and passes its own **cone** as `overrideCells` (the target
   cell always kept, ±half-angle around the shot, the shooter ignored). EK's radial throw from that centre is the
   shot direction. The **kicker mine** does the same from the cell behind its facing.
-- **Thump cannon:** Kinetic Arms patches `Thump` with force 2.5. Without `maxCellsOffset` the global cap (6) holds:
-  6 / 5 / 3 at d 0 / 1 / 1.4 (design §2.2 asked 8 / 5 / 3). Beside the impact it still throws 5 against the mortar's 3.
+- **Thump cannon:** Kinetic Arms patches `Thump` with force 2.5 and its own cap 8: 8 / 5 / 3 at d 0 / 1 / 1.4, against
+  the mortar's 4 / 3 / 2. **Per-weapon caps** (`maxThrowCells` on each DamageDef): grav-ram 10, thump cannon 8, thump
+  shell 8, repulsor 8, pulse cannon 8, slam 7, kicker 7, thudder 6, palm thumper 5.
 - **Pulse cannon charge (Q6):** `RM_Building_PulseCannon` stores pulse charges refilled from power; no charge, no target.
 - **No crafting, no research** (owner: found in Rakatan Ancient Danger ruins). Placement in those ruins is a Utinni
-  patch, not in this RM mod. Q7 (factions) still open, so no pawnkind patches ship.
+  patch, not in this RM mod. Pirate raiders carry them rarely (§3.2): `RM_LootedKineticWeapons.cs`.
 
-**Still owed to Explosive Knockback (FOUNDRY):** per-projectile lookup, `maxCellsOffset`, `impactFactor` (palm thumper
+**Still owed to Explosive Knockback (FOUNDRY):** per-projectile lookup, `impactFactor` (palm thumper
 arrest), `immuneBodySizeOverride` (grav-ram vs a centipede: today the global 2.5 holds), the stun-recovery window, and
 shield absorption (Q4). **Owed to Gimme Some Slack:** kinetic blasts sway cords instead of cutting (Q3).
 
