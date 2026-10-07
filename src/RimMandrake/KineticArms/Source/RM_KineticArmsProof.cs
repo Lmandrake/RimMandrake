@@ -36,7 +36,7 @@ namespace RimMandrake.KineticArms
         {
             "thump_cannon", "thump_off", "thudder_crowd", "palm_shove", "slam_charge", "repulsor_along_shot",
             "repulsor_westward", "grav_ram", "thump_shell", "kicker_north", "kicker_east", "kicker_south", "kicker_west",
-            "kicker_dud_rearm", "pulse_push", "pulse_charge_gate", "strength_zero",
+            "kicker_dud_rearm", "pulse_push", "pulse_charge_gate", "strength_zero", "looted_pirates",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -419,6 +419,28 @@ namespace RimMandrake.KineticArms
                         turret.SetCharge(RM_Building_PulseCannon.Capacity);
                         bool fullFinds = turret.TryFindNewTarget().IsValid;
                         s.verdict = sc => Result(sc, !emptyFinds && fullFinds, "targetWhenEmpty=" + emptyFinds + " targetWhenCharged=" + fullFinds);
+                        return null;
+                    }
+
+                case "looted_pirates":
+                    {
+                        // owner 2026-10-06: ruins mostly; rare on pirate raids. Def-level and pick-rule checks, no spawn.
+                        s.verdict = sc =>
+                        {
+                            Func<string, bool> looter = n => RM_Patch_LootedKineticWeapons.IsLooter(
+                                Find.FactionManager.FirstFactionOfDef(DefDatabase<FactionDef>.GetNamedSilentFail(n)))
+                                || DefDatabase<FactionDef>.GetNamedSilentFail(n)?.GetModExtension<RM_KineticLooterExtension>() != null;
+                            Func<string, float, float, string> pick = (k, r1, r2) =>
+                                RM_Patch_LootedKineticWeapons.Pick(DefDatabase<PawnKindDef>.GetNamed(k), r1, r2)?.defName ?? "none";
+                            bool pirates = looter("Pirate") && looter("CannibalPirate") && looter("PirateYttakin") && looter("PirateWaster");
+                            bool others = !looter("OutlanderCivil") && !looter("OutlanderRough") && !looter("TribeCivil") && !looter("Empire");
+                            string pPirate = pick("Pirate", 0f, 0.99f), pGren = pick("Grenadier_Destructive", 0f, 0.5f),
+                                pBoss = pick("PirateBoss", 0f, 0.999f), pMiss = pick("Pirate", 0.5f, 0f);
+                            bool ok = pirates && others && pPirate == "RM_Gun_PalmThumper" && pGren == "RM_Weapon_ThudderGrenade"
+                                && pBoss != "RM_Gun_GravRam" && pBoss != "none" && pMiss == "none";
+                            return Result(sc, ok, "pirateFactions=" + pirates + " otherFactionsClean=" + others + " pirate=" + pPirate
+                                + " grenadier=" + pGren + " boss=" + pBoss + " rollMiss=" + pMiss);
+                        };
                         return null;
                     }
 

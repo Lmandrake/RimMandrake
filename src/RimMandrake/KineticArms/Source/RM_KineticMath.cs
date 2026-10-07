@@ -116,5 +116,40 @@ namespace RimMandrake.KineticArms
 
         /// <summary>Scaled DamageDef force for the "Kinetic throw strength" setting.</summary>
         public static float ScaledForce(float baseForce, float strength) => Math.Max(0f, baseForce * strength);
+
+        /// <summary>One looted kinetic weapon a raider might carry instead of the gun he generated with.</summary>
+        public struct LootOption
+        {
+            public bool grenade;
+            public float price;
+            public bool enabled;
+        }
+
+        /// <summary>Owner 2026-10-06 (typed): "Mostly ruins only, but rare on raids that stole it from said ruins
+        /// (pirates/outlaws)". Index of the looted weapon a looter-faction raider carries, or -1 (keeps his own).
+        /// roll1 &lt; chance gates it; a grenadier gets only grenades, anyone else only non-grenades he could afford
+        /// (price &lt;= his kind's weapon money); roll2 picks uniformly among those. Rolls are in [0,1).</summary>
+        public static int PickLooted(IList<LootOption> options, bool grenadier, float moneyMax, float chance, float roll1, float roll2)
+        {
+            if (chance <= 0f || roll1 >= chance || options == null)
+            {
+                return -1;
+            }
+            var fit = new List<int>();
+            for (int i = 0; i < options.Count; i++)
+            {
+                LootOption o = options[i];
+                if (o.enabled && o.grenade == grenadier && o.price <= moneyMax)
+                {
+                    fit.Add(i);
+                }
+            }
+            if (fit.Count == 0)
+            {
+                return -1;
+            }
+            int k = (int)(roll2 * fit.Count);
+            return fit[k < 0 ? 0 : (k >= fit.Count ? fit.Count - 1 : k)];
+        }
     }
 }

@@ -61,6 +61,32 @@ internal static class Program
         // KA-13 strength scaling never negative
         Check("KA-13", RM_KineticMath.ScaledForce(2.5f, 0f) == 0f && RM_KineticMath.ScaledForce(2f, 1.5f) == 3f && RM_KineticMath.ScaledForce(2f, -1f) == 0f);
 
+        // KA-14 looted weapons on pirate raiders (owner 2026-10-06): rare gate, grenadier gets grenades, money fits, toggles
+        {
+            var opts = new[]
+            {
+                new RM_KineticMath.LootOption { grenade = true, price = 110, enabled = true },   // thudder
+                new RM_KineticMath.LootOption { grenade = false, price = 260, enabled = true },  // palm thumper
+                new RM_KineticMath.LootOption { grenade = false, price = 420, enabled = true },  // slam launcher
+                new RM_KineticMath.LootOption { grenade = false, price = 900, enabled = true },  // repulsor rifle
+                new RM_KineticMath.LootOption { grenade = false, price = 2400, enabled = true }, // grav-ram
+            };
+            Check("KA-14 roll above chance keeps own gun", RM_KineticMath.PickLooted(opts, false, 345, 0.02f, 0.5f, 0f) == -1);
+            Check("KA-14 chance 0 never", RM_KineticMath.PickLooted(opts, false, 9999, 0f, 0f, 0f) == -1);
+            Check("KA-14 pirate (345) gets palm thumper", RM_KineticMath.PickLooted(opts, false, 345, 0.02f, 0.01f, 0.99f) == 1);
+            Check("KA-14 grenadier gets thudder", RM_KineticMath.PickLooted(opts, true, 1000, 0.02f, 0.01f, 0.5f) == 0);
+            Check("KA-14 boss (1400) never grav-ram", RM_KineticMath.PickLooted(opts, false, 1400, 0.02f, 0.01f, 0.999f) == 3);
+            Check("KA-14 too poor for any", RM_KineticMath.PickLooted(opts, false, 200, 1f, 0f, 0f) == -1);
+            opts[1].enabled = false;
+            Check("KA-14 toggle off excluded", RM_KineticMath.PickLooted(opts, false, 345, 1f, 0f, 0f) == -1);
+            int hits = 0;
+            for (int i = 0; i < 1000; i++)
+            {
+                if (RM_KineticMath.PickLooted(opts, false, 1400, 0.02f, i / 1000f, 0.5f) >= 0) hits++;
+            }
+            Check("KA-14 2% of pawns", hits == 20, hits.ToString());
+        }
+
         Console.WriteLine((fail == 0 ? "KERNEL: PASS " : "KERNEL: FAIL ") + pass + "/" + (pass + fail));
         return fail == 0 ? 0 : 1;
     }

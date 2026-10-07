@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner, 2026-10-06 (typed): "Mostly ruins only, but rare on raids that stole it from said ruins (pirates/outlaws)".
+     Marks the vanilla pirate gang as looters (RM_Patch_LootedKineticWeapons swaps a raider's gun for a kinetic weapon at
+     the Mod Settings chance, default 2% per armed pawn). Patched on the base def Pirate (Name PirateBandBase), so
+     CannibalPirate, PirateYttakin and PirateWaster inherit it; no vanilla FactionDef carries modExtensions of its own.
+     Campaign outlaw factions get the same extension from the Utinni layer, never here. -->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/FactionDef[defName="Pirate"]</xpath>
+    <value>
+      <li Class="RimMandrake.KineticArms.RM_KineticLooterExtension" />
+    </value>
+  </Operation>
+</Patch>

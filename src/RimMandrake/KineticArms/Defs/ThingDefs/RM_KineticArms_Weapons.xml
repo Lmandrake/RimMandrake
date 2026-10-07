@@ -4,7 +4,7 @@
      per-weapon DamageDef (RM_Concussive_* / RM_Repulse_*), whose RM_KnockbackExtension.force is that weapon's throw.
      RM_Projectile_KineticBolt explodes one cell BEHIND its impact and passes a cone of cells ahead, so Explosive
      Knockback's radial throw becomes a push along the shot (RM_KineticBoltExtension). weaponTags RM_Kinetic* are for
-     faction patches (Q7 open: none ship). -->
+     campaign (Utinni) faction patches; vanilla pirates carry them rarely via RM_LootedKineticWeapons.cs (owner 2026-10-06). -->
 <Defs>
 
   <!-- ==================== Thudder grenade ==================== -->
