@@ -61,5 +61,11 @@ Not built / owed: the world-map tile inspect line (§2 item 4); `mlie.factionrai
 (UNMEASURED whether it touches forced raids); a dedicated ion emplacement def and art (vanilla
 siege stands in); the 11-3K viper probe def; callers of RaiseFloor/LowerRung (Route 6, droid line,
 Ishko) live in other items. Vanilla's own raid letter also shows beside each raid rung's letter.
-Risk for L2: vanilla Empire has `canSiege false`; the cordon passes `Siege` explicitly, which skips
-the strategy's eligibility check, so whether the siege camp builds for the Empire is unproven.
+Siege eligibility is not a blocker: Royalty's `Empire` FactionDef declares `canSiege true`
+(`Data/Royalty/Defs/FactionDefs/Faction_Empire.xml`), our reskin `UtinniPatches/Patches/GalacticEmpire.xml`
+only adds fields, and no installed mod patches `canSiege` (checked 2026-10-06; the def dump does not
+capture the field, so the runtime value is read from source, not measured). No patch is owed.
+Risk for L2: the camp only gets built if the raid holds a pawn with Construction AND Firefighting
+enabled (`LordToil_Siege.CanBeBuilder`); titled Empire pawns may have these disabled, and the
+artillery is any `Artillery_BaseDestroyer` ThingDef in the mod set. Whether the camp actually
+builds for the Empire is unproven until a live cordon.
