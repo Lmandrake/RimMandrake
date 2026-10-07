@@ -30,6 +30,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static float swayStrength = 1f;
         /// <summary>An explosion whose radius reaches a span's ground line cuts it.</summary>
         public static bool explosionsCut = true;
+        /// <summary>A kinetic blast (Kinetic Arms' push wave) swings the spans it reaches; it never cuts them (owner Q3).</summary>
+        public static bool kineticSway = true;
         /// <summary>The one-way power tap clamp (owner 2026-10-02: build it now).</summary>
         public static bool tapsEnabled = true;
         /// <summary>Most a tap takes from the victim grid, watts.</summary>
@@ -48,6 +50,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref sway, "sway", WireSwayMode.Auto);
             Scribe_Values.Look(ref swayStrength, "swayStrength", 1f);
             Scribe_Values.Look(ref explosionsCut, "explosionsCut", true);
+            Scribe_Values.Look(ref kineticSway, "kineticSway", true);
             Scribe_Values.Look(ref tapsEnabled, "tapsEnabled", true);
             Scribe_Values.Look(ref tapRate, "tapRate", 500f);
             Scribe_Values.Look(ref tapEvents, "tapEvents", true);
@@ -63,6 +66,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             sway = WireSwayMode.Auto;
             swayStrength = 1f;
             explosionsCut = true;
+            kineticSway = true;
             tapsEnabled = true;
             tapRate = 500f;
             tapEvents = true;
@@ -132,6 +136,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             l.Label("Sway strength: " + AerialSettings.swayStrength.ToString("0.0") + "x");
             AerialSettings.swayStrength = l.Slider(AerialSettings.swayStrength, 0f, 2f);
             l.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref AerialSettings.explosionsCut);
+            l.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref AerialSettings.kineticSway,
+                "A push wave never cuts a wire. Off: the wires ignore it.");
             l.GapLine();
             l.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref AerialSettings.tapsEnabled,
                 "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
