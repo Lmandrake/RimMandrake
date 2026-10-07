@@ -129,6 +129,8 @@ namespace RimMandrake.Scarlands
         // WARSCAR_AEROSOL_SCREEN_1 -- the aerosol screen core
         public static bool aerosolScreenEnabled = true;      // screens block airborne toxins, fallout and the film
         public static float aerosolScreenRadiusFactor = 1f;  // scales every screen's radius
+        public static int hummingRingsPerMap = 2;            // projector rings per new map (0-3); the first is always live
+        public static bool shipWakesLine = true;             // a landed gravship's engine within 40 cells wakes dead rings
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -209,6 +211,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref loosenedPanelsPerMap, "loosenedPanelsPerMap", 3f);
             Scribe_Values.Look(ref aerosolScreenEnabled, "aerosolScreenEnabled", true);
             Scribe_Values.Look(ref aerosolScreenRadiusFactor, "aerosolScreenRadiusFactor", 1f);
+            Scribe_Values.Look(ref hummingRingsPerMap, "hummingRingsPerMap", 2);
+            Scribe_Values.Look(ref shipWakesLine, "shipWakesLine", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -394,6 +398,10 @@ namespace RimMandrake.Scarlands
                 list.Label("Screen radius: x" + aerosolScreenRadiusFactor.ToString("0.00"));
                 aerosolScreenRadiusFactor = list.Slider(aerosolScreenRadiusFactor, 0.5f, 2f);
             }
+            list.Label("Projector rings per map: up to " + hummingRingsPerMap + " (new maps; the first is always humming)");
+            hummingRingsPerMap = Mathf.RoundToInt(list.Slider(hummingRingsPerMap, 0f, 3f));
+            list.CheckboxLabeled("The ship wakes the line", ref shipWakesLine,
+                "A landed gravship whose engine is within 40 cells wakes dead projector rings until it lifts.");
             list.GapLine();
 
             list.Label("Species (restart required; affects maps generated afterwards)");

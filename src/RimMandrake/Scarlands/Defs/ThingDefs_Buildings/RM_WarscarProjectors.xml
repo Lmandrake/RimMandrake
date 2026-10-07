@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_AEROSOL_SCREEN_1 parts 6 and 8: the old-line projector rings. Comps in Scarlands/Source/RM_WarscarRings.cs.
+     Dead and live share analysisID 740100005 (one progress pool); a dead ring cannot be interacted with until woken.
+     destroyedOnAnalyzed=false: analysis never consumes the ring (CompAnalyzable.OnAnalyzed destroys the parent only when true).
+     ART OWED: both borrow RM_OldLineTurret_Base as a placeholder. -->
+<Defs>
+  <ThingDef Name="RM_WarscarProjectorBase" Abstract="True">
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <size>(2,2)</size>
+    <tickerType>Rare</tickerType>
+    <hasTooltip>true</hasTooltip>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <ai_combatDangerous>false</ai_combatDangerous>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WarscarProjectorBase">
+    <defName>RM_WarscarProjector_Dead</defName>
+    <label>old projector ring (dead)</label>
+    <description>A ring of old-line projector plates half sunk in the ground. Cold and silent. Something large and powered nearby might remember how to wake it.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/RM_OldLineTurret_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_WarscarRing">
+        <radius>7.9</radius>
+        <needsPower>false</needsPower>
+        <dead>true</dead>
+      </li>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_RingAnalyzable">
+        <analysisID>740100005</analysisID>
+        <analysisRequiredRange>1~1</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <analysisDurationHours>2</analysisDurationHours>
+        <completedLetterLabel>Projector ring studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has studied the humming ring and learned how it holds the air still. Your researchers can now study {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Analyze...</activateLabelString>
+        <activateDescString>Analyze the projector ring while it hums.</activateDescString>
+        <jobString>Analyze projector ring</jobString>
+        <guiLabelString>Choose who should analyze this</guiLabelString>
+        <inspectString>Can be analyzed while it hums.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WarscarProjectorBase">
+    <defName>RM_WarscarProjector_Live</defName>
+    <label>old projector ring (humming)</label>
+    <description>A ring of old-line projector plates, still humming on a power nobody feeds it. It holds a dome of still, clean air. Studying it does not harm it.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/RM_OldLineTurret_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_WarscarRing">
+        <radius>7.9</radius>
+        <needsPower>false</needsPower>
+        <dead>false</dead>
+      </li>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_RingAnalyzable">
+        <analysisID>740100005</analysisID>
+        <analysisRequiredRange>1~1</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <analysisDurationHours>2</analysisDurationHours>
+        <completedLetterLabel>Projector ring studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has studied the humming ring and learned how it holds the air still. Your researchers can now study {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Analyze...</activateLabelString>
+        <activateDescString>Analyze the humming projector ring.</activateDescString>
+        <jobString>Analyze projector ring</jobString>
+        <guiLabelString>Choose who should analyze this</guiLabelString>
+        <inspectString>Can be analyzed while it hums.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

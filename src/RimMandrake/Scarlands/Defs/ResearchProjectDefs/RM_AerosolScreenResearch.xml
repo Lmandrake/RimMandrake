@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_AEROSOL_SCREEN_1 part 6: gates RM_AerosolScreen (researchPrerequisites on the building). Needs an analysed live ring. -->
+  <ResearchProjectDef>
+    <defName>RM_AerosolScreenResearch</defName>
+    <label>aerosol screen</label>
+    <description>How the old projector rings hold a dome of clean air over the ground. Analyse a humming ring first.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Spacer</techLevel>
+    <researchViewX>1</researchViewX>
+    <researchViewY>0</researchViewY>
+    <requiredAnalyzed><li>RM_WarscarProjector_Live</li></requiredAnalyzed>
+  </ResearchProjectDef>
+</Defs>
