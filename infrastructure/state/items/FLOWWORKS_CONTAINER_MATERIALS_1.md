@@ -44,3 +44,24 @@ Buckets are NOT in the ruling and stay unstuffed until he says.
 
 Greyscale, stuff-tintable regen jobs for RM_Bottle and RM_Barrel (not the held glass
 render). See the progress log Transient/flowworks_container_materials_progress_2026-10-06.md.
+
+Queued 2026-10-06: `fwart_RM_Bottle_Stuffable_v1`, `fwart_RM_Barrel_Stuffable_v1` (greyscale,
+owner_note = his words). Until they install, the coloured patchwork-metal art is
+multiplied by the stuff colour and reads muddy.
+
+## state
+
+Built offline, never loaded (no game this pass): stuffCategories on the bottle and barrel
+ItemBases, `Defs/LiquidTypes/RecipeDefs/RM_ContainerRecipes.xml` (6 recipes),
+`RM_LiquidBottleUtility.MakeContainer` at all 6 def-swap sites, DLL rebuilt.
+
+## watch out
+
+- `src/RimMandrake/FlowWorks/review_map.py` spawns RM_BottleEmpty/RM_BarrelEmpty through
+  `rimworld/spawn_thing` with no stuff; if that tool does not pick a default stuff the
+  vanilla "made from stuff but no stuff" error fires there. Check on the next review-map run.
+- Existing saves holding unstuffed bottles/barrels load with null Stuff on a now-stuffed
+  def; vanilla assigns default stuff with a one-time error. Map state is disposable, so
+  accepted.
+- First live load: confirm the 6 recipes appear at their benches and a steel bottle stays
+  steel through fill -> drink -> wash.
