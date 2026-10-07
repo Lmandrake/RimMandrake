@@ -35,8 +35,8 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
     <label>ladder</label>
-    <description>A rough ladder braced against the wall of an excavation. Lowered, it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Raised, nobody climbs out.</description>
-    <thingClass>Building</thingClass>
+    <description>A rough ladder braced against the wall of an excavation. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Raised, nobody climbs it.</description>
+    <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
     <graphicData>
       <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -65,7 +65,10 @@
       <expandHomeArea>false</expandHomeArea>
     </building>
     <comps>
-      <!-- LADDER_PRISON_DOOR_1: raised/lowered, prison-door climbing rule. -->
+      <!-- LADDER_PRISON_DOOR_1 + FLOWWORKS_LADDER_RAISE_LOWER_1: raised/lowered by the player's gizmo,
+           prison-door climbing rule. raisedGraphicData is the raised state's own art: unset until the
+           raised variant (artpipe fwart_RM_LadderRaised) is ruled on and installed, so both states draw
+           the placeholder for now. -->
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder" />
     </comps>
     <placeWorkers>

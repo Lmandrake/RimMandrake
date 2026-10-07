@@ -1,0 +1,19 @@
+run fwpt_20261007T052523_s1  scenarios=pit_ladder_release,pit_ladder_toggle,pit_ladder_haul,pit_ladder_raised_hold  mode=batch  driver=monobehaviour
+  pit_ladder_release PASS       1.03s   1951 ticks  friendly routed inside to the ladder, out, and round to the far side; hostile held
+  pit_ladder_toggle PASS       0.05s      2 ticks  gizmo click raised the ladder (colonist may not climb, saved raised=True), second click lowered it (climbable, saved default); label flips; no gizmo on a non-player ladder
+  pit_ladder_haul PASS       0.86s   2315 ticks  raised: hauler cannot reach or haul the pit-floor steel and it stays put; lowered by the gizmo: the hauler goes down the ladder and brings it out
+  pit_ladder_raised_hold PASS       0.63s   1800 ticks  raised ladder: held hostile and held friendly both stay in the pit for 900 ticks; reachability refuses the way out
+
+scenario                status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+----------------------  ------  ------  -----  ------  -------  ------  ---------  -------
+pit_ladder_release      PASS    1.03    1951   17      0.05     0.98    0.01       1993   
+pit_ladder_toggle       PASS    0.05    2      0       0.02     0.03    0.00       1101   
+pit_ladder_haul         PASS    0.86    2315   15      0.04     0.82    0.01       2825   
+pit_ladder_raised_hold  PASS    0.63    1800   12      0.03     0.60    0.00       3002   
+RUN TOTAL               done    2.66    6068   49      0.13     2.43    0.01       2527   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.08 s, Ultrafast multiplier 150
+launcher: 4.43 s wall start->collect, 4 bridge calls
+
+RUN VERDICT PASS  (6 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261007T052523_s1.jsonl  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\flowworks_playtest\fwpt_20261007T052523_s1.jsonl
+
+VERDICT PASS

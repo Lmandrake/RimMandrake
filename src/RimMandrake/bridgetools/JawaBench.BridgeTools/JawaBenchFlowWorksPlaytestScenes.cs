@@ -762,9 +762,19 @@ namespace JawaBench.BridgeTools
         {
             Map m = c.map;
             why = null;
-            if (!PFindRect(c, near, side, side, 4, true, out pit,
-                    rr => rr.ExpandedBy(4).Cells.Where(x => !rr.Contains(x)).All(x => x.Standable(m))))
-            { why = "no clean " + side + "x" + side + " pit site with a standable 4-cell ring"; return false; }
+            Func<CellRect, bool> ring = rr => rr.ExpandedBy(4).Cells.Where(x => !rr.Contains(x)).All(x => x.Standable(m));
+            if (!PFindRect(c, near, side, side, 4, true, out pit, ring))
+            {
+                // A quicktest map is fogged outside the colony's clearing, and the earlier pit scenes use up the
+                // clean open ground in it (live 2026-10-07: the 5x5 haul pit found no site). Fixture only: lift the
+                // fog off open ground within 55 cells of the map centre (GenRadial's limit is ~56) and look again.
+                int lifted = 0;
+                foreach (IntVec3 x in GenRadial.RadialCellsAround(m.Center, 55f, true))
+                    if (x.InBounds(m) && x.Fogged(m) && x.Standable(m)) { m.fogGrid.Unfog(x); lifted++; }
+                c.ev["fogLiftedForPitSite"] = lifted;
+                if (lifted == 0 || !PFindRect(c, near, side, side, 4, true, out pit, ring))
+                { why = "no clean " + side + "x" + side + " pit site with a standable 4-cell ring (fog lifted off " + lifted + " cells)"; return false; }
+            }
             PClearPlants(m, pit.ExpandedBy(4).ClipInsideMap(m).Cells);
             foreach (IntVec3 x in pit.Cells) QDig(c, x, 4);
             if (!pit.Cells.All(c.IsSuperdeep)) { why = "Deepen() did not bring every pit cell to SUPERDEEP"; return false; }
@@ -844,6 +854,246 @@ namespace JawaBench.BridgeTools
             if ((bool)h["leftPit"]) fails.Add("hostile climbed the lowered ladder");
             if (descents > 0) fails.Add(descents + " descent(s) recorded - someone fell during a ladder scene");
             if (fails.Count == 0) c.Pass("friendly routed inside to the ladder, out, and round to the far side; hostile held");
+            else c.Defect(string.Join("; ", fails));
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        // FLOWWORKS_LADDER_RAISE_LOWER_1 (owner 2026-10-06): "ladder up, ladder down"
+        // ════════════════════════════════════════════════════════════════
+
+        private static ThingComp QLadderComp(Thing ladder) =>
+            (ladder as ThingWithComps)?.AllComps.FirstOrDefault(x => x.GetType().Name == "RM_CompLadder");
+
+        /// <summary>The ladder's own player gizmo, found the way the UI finds it (Thing.GetGizmos), identified by
+        /// its keyed description. Null when the ladder offers none.</summary>
+        private static Command_Toggle QLadderGizmo(Thing ladder)
+        {
+            string desc = "RMFlow_LadderToggleDesc".Translate();
+            return ((ThingWithComps)ladder).GetGizmos().OfType<Command_Toggle>().FirstOrDefault(g => g.defaultDesc == desc);
+        }
+
+        /// <summary>Click the gizmo: exactly what the UI's Command_Toggle.ProcessInput does to the state.</summary>
+        private static void QClickLadder(Thing ladder) => QLadderGizmo(ladder)?.toggleAction();
+
+        private static bool QRaised(Thing ladder) => (bool)QGet(QLadderComp(ladder), "raised");
+
+        private static IEnumerable<PWait> ScnPitLadderToggle(PCtx c)
+        {
+            c.ev["route"] = "the ladder's own Command_Toggle from Thing.GetGizmos (toggleAction = the click), read back through RM_CompLadder.raised, RM_LadderRules.LadderLetsOut, the inspect string and the Scribe save output";
+            Map m = c.map;
+            ThingDef ladderDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Ladder");
+            Type rules = QT(QNs + "RM_LadderRules"), settings = QT(QNs + "RimMandrakeFlowWorksSettings");
+            if (ladderDef == null || rules == null) { c.Invalid("RM_Ladder / RM_LadderRules not resolvable"); yield break; }
+            if (!(QStatic(settings, "ladderRaiseLowerEnabled") is bool on) || !on) { c.Invalid("ladderRaiseLowerEnabled is off in mod settings"); yield break; }
+            if (!QBuildPit(c, m.Center + new IntVec3(0, 0, 25), 3, out CellRect pit, out string why)) { c.Invalid(why); yield break; }
+            MethodInfo letsOut = rules.GetMethod("LadderLetsOut", QSBF);
+            IntVec3 cell = new IntVec3(pit.CenterCell.x, 0, pit.maxZ);
+            Thing ladder = null, ladderNpc = null; Pawn col = null;
+            var fails = new List<string>();
+            try
+            {
+                c.Phase("setup");
+                ladder = QMake(ladderDef); ladder.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(ladder, cell, m);
+                col = QGenPawn(c, Faction.OfPlayer, 21);
+                bool Lets() => (bool)letsOut.Invoke(null, new object[] { m, cell, col });
+                string Saved() => Scribe.saver.DebugOutputFor((IExposable)ladder) ?? "";
+                var steps = new List<Dictionary<string, object>>();
+                c.ev["steps"] = steps;
+                void Read(string label)
+                {
+                    Command_Toggle g = QLadderGizmo(ladder);
+                    string saved = Saved();
+                    steps.Add(PD("step", label, "gizmo", g != null, "gizmoLabel", g?.defaultLabel, "gizmoActive", g?.isActive?.Invoke(),
+                        "raised", QRaised(ladder), "colonistMayClimb", Lets(), "inspect", ((ThingWithComps)ladder).GetInspectString(),
+                        "savedRaisedTrue", saved.Contains("<rmLadderRaised>True</rmLadderRaised>")));
+                }
+                c.Phase("exec");
+                Read("spawned");
+                QClickLadder(ladder);
+                yield return PTicks(1);
+                Read("after_click_1");
+                QClickLadder(ladder);
+                yield return PTicks(1);
+                Read("after_click_2");
+                // A ladder that is not the player's offers no button (only the player moves a ladder).
+                ladderNpc = QMake(ladderDef);
+                Faction other = QFriendFaction();
+                if (other != null) ladderNpc.SetFaction(other);
+                GenSpawn.Spawn(ladderNpc, new IntVec3(pit.CenterCell.x, 0, pit.minZ), m);
+                c.ev["nonPlayerLadderGizmo"] = QLadderGizmo(ladderNpc) != null;
+                c.Phase("observe");
+                Dictionary<string, object> S(int i) => steps[i];
+                if (!(bool)S(0)["gizmo"]) fails.Add("the player's ladder offers no Ladder up / Ladder down gizmo");
+                else
+                {
+                    if ((bool)S(0)["raised"] || !(bool)S(0)["colonistMayClimb"]) fails.Add("a new ladder is not lowered and climbable");
+                    if (!(bool)S(1)["raised"] || (bool)S(1)["colonistMayClimb"]) fails.Add("first click did not raise it (raised=" + S(1)["raised"] + ", climbable=" + S(1)["colonistMayClimb"] + ")");
+                    if (!(bool)S(1)["savedRaisedTrue"]) fails.Add("raised state is not in the ladder's save output");
+                    if ((bool)S(2)["raised"] || !(bool)S(2)["colonistMayClimb"]) fails.Add("second click did not lower it again");
+                    if ((bool)S(2)["savedRaisedTrue"]) fails.Add("lowered ladder still saves raised=True");
+                    if (Equals(S(0)["gizmoLabel"], S(1)["gizmoLabel"])) fails.Add("gizmo label does not change between down and up");
+                }
+                if ((bool)c.ev["nonPlayerLadderGizmo"]) fails.Add("a non-player ladder offers the raise/lower gizmo");
+            }
+            finally { QVanish(ladder); QVanish(ladderNpc); }
+            if (fails.Count == 0) c.Pass("gizmo click raised the ladder (colonist may not climb, saved raised=True), second click lowered it (climbable, saved default); label flips; no gizmo on a non-player ladder");
+            else c.Defect(string.Join("; ", fails));
+        }
+
+        private static IEnumerable<PWait> ScnPitLadderHaul(PCtx c)
+        {
+            c.ev["route"] = "a player colonist with ONLY Hauling enabled left to its own AI (JobGiver_Work -> WorkGiver_HaulGeneral -> HaulAIUtility, CanReach ClosestTouch through the entry veto); the ladder moved only by its gizmo; a stockpile beside the pit";
+            Map m = c.map;
+            ThingDef ladderDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Ladder");
+            if (ladderDef == null) { c.Invalid("RM_Ladder not resolvable"); yield break; }
+            if (!QBuildPit(c, m.Center + new IntVec3(0, 0, -25), 5, out CellRect pit, out string why)) { c.Invalid(why); yield break; }
+            IntVec3 ladderCell = new IntVec3(pit.CenterCell.x, 0, pit.maxZ);
+            IntVec3 itemCell = pit.CenterCell;   // two cells from every lip: not touchable from outside
+            IntVec3 haulerAt = new IntVec3(pit.CenterCell.x, 0, pit.maxZ + 2);
+            Thing ladder = null, item = null; Pawn hauler = null; Zone_Stockpile zone = null;
+            var fails = new List<string>();
+            try
+            {
+                c.Phase("setup");
+                ladder = QMake(ladderDef); ladder.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(ladder, ladderCell, m);
+                QClickLadder(ladder);   // raised first
+                for (int salt = 31; salt < 40 && hauler == null; salt++)
+                {
+                    Pawn p = QGenPawn(c, Faction.OfPlayer, salt);
+                    if (p.WorkTypeIsDisabled(WorkTypeDefOf.Hauling)) continue;
+                    hauler = p;
+                }
+                if (hauler == null) { c.Invalid("no generated colonist capable of hauling"); yield break; }
+                GenSpawn.Spawn(hauler, haulerAt, m);
+                hauler.workSettings.EnableAndInitialize();
+                foreach (WorkTypeDef wt in DefDatabase<WorkTypeDef>.AllDefsListForReading)
+                    if (!hauler.WorkTypeIsDisabled(wt)) hauler.workSettings.SetPriority(wt, 0);
+                hauler.workSettings.SetPriority(WorkTypeDefOf.Hauling, 1);
+                zone = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, m.zoneManager);
+                m.zoneManager.RegisterZone(zone);
+                foreach (IntVec3 z in new CellRect(pit.maxX + 2, pit.minZ, 2, 2).Cells) if (z.InBounds(m) && z.Standable(m)) zone.AddCell(z);
+                item = ThingMaker.MakeThing(ThingDefOf.Steel); item.stackCount = 10;
+                GenSpawn.Spawn(item, itemCell, m); item.SetForbidden(false, false);
+                Thing it = item; Pawn hp = hauler;
+                bool CanReach() => hp.CanReach(it, PathEndMode.ClosestTouch, Danger.Deadly);
+                bool CanHaul() => HaulAIUtility.PawnCanAutomaticallyHaulFast(hp, it, false);
+                bool ItemOutOfPit() => it.Destroyed || (it.ParentHolder is Pawn_CarryTracker ct ? !pit.Contains(ct.pawn.Position) : it.Spawned && !pit.Contains(it.Position));
+                var path = new List<IntVec3> { haulerAt };
+                string carrier = null;
+                void Watch()
+                {
+                    if (hp.Spawned && hp.Position != path[path.Count - 1]) path.Add(hp.Position);
+                    if (carrier == null && it.ParentHolder is Pawn_CarryTracker ct2) carrier = ct2.pawn.LabelShort + (ct2.pawn == hp ? " (our hauler)" : " (another pawn)");
+                }
+
+                // 1. raised: the floor is closed to the hauler
+                c.Phase("exec");
+                bool raised1 = QRaised(ladder), reach1 = CanReach(), haul1 = CanHaul();
+                PWait w1 = PUntil(() => ItemOutOfPit() || carrier != null, 1500, Watch);
+                yield return w1;
+                c.ev["raised"] = PD("ladderRaised", raised1, "canReach", reach1, "canAutoHaul", haul1, "itemAt", it.Spawned ? PCell(it.Position) : null,
+                    "carrier", carrier, "haulerPitCells", path.Count(x => pit.Contains(x)), "haulerJob", hp.CurJobDef?.defName);
+                if (!raised1) fails.Add("the gizmo did not raise the ladder");
+                if (reach1 || haul1) fails.Add("with the ladder raised the hauler can still reach/haul the pit-floor item (reach=" + reach1 + ", haul=" + haul1 + ")");
+                if (carrier != null || ItemOutOfPit()) fails.Add("item left the pit floor while the ladder was raised (carrier " + carrier + ")");
+                if (path.Any(x => pit.Contains(x))) fails.Add("hauler entered the pit while the ladder was raised");
+
+                // 2. lowered by the gizmo: the hauler goes down the ladder, fetches it, brings it out
+                c.Phase("setup");
+                QClickLadder(ladder);
+                if (hp.CurJob != null && hp.CurJobDef != JobDefOf.HaulToCell) hp.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                path.Clear(); path.Add(hp.Position);
+                c.Phase("exec");
+                bool raised2 = QRaised(ladder), reach2 = CanReach(), haul2 = CanHaul();
+                int t0 = TicksGameSafe();
+                PWait w2 = PUntil(() => it.Spawned && !pit.Contains(it.Position) || it.Destroyed, 4000, Watch);
+                yield return w2;
+                c.Phase("observe");
+                int ladderIdx = path.IndexOf(ladderCell), firstIn = path.FindIndex(x => pit.Contains(x));
+                c.ev["lowered"] = PD("ladderRaised", raised2, "canReach", reach2, "canAutoHaul", haul2, "itemAt", it.Spawned ? PCell(it.Position) : null,
+                    "inStockpile", it.Spawned && zone.ContainsCell(it.Position), "carrier", carrier, "ticks", TicksGameSafe() - t0,
+                    "downByLadder", firstIn >= 0 && ladderIdx == firstIn, "path", path.Select(PCell).ToList(), "haulerJob", hp.CurJobDef?.defName);
+                if (raised2) fails.Add("second gizmo click did not lower the ladder");
+                if (!reach2 || !haul2) fails.Add("with the ladder lowered the hauler cannot reach/haul the pit-floor item (reach=" + reach2 + ", haul=" + haul2 + ")");
+                if (!(it.Spawned && !pit.Contains(it.Position))) fails.Add("the item was not brought out of the pit within 4000 ticks (carrier " + carrier + ", hauler job " + hp.CurJobDef?.defName + ")");
+                else if (carrier == null || !carrier.EndsWith("(our hauler)")) c.ev["note"] = "item hauled by " + (carrier ?? "unknown");
+                if (firstIn >= 0 && ladderIdx != firstIn) fails.Add("hauler entered the pit at " + path[firstIn] + ", not by the ladder " + ladderCell);
+            }
+            finally
+            {
+                if (item != null && !item.Destroyed) { if (item.ParentHolder is Pawn_CarryTracker ct) ct.DestroyCarriedThing(); else QVanish(item); }
+                QVanish(hauler); QVanish(ladder);
+                zone?.Delete(false);
+            }
+            if (fails.Count == 0) c.Pass("raised: hauler cannot reach or haul the pit-floor steel and it stays put; lowered by the gizmo: the hauler goes down the ladder and brings it out");
+            else c.Defect(string.Join("; ", fails));
+        }
+
+        private static IEnumerable<PWait> ScnPitLadderRaisedHold(PCtx c)
+        {
+            c.ev["route"] = "held pawns in a D4 pit with a RAISED ladder (raised by its gizmo) given a Goto out through the real pather; both a hostile and a non-hostile must stay";
+            Map m = c.map;
+            Type trap = QT(QNs + "RM_SuperdeepTrap");
+            ThingDef ladderDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Ladder");
+            Faction friend = QFriendFaction();
+            Faction enemy = Find.FactionManager.RandomEnemyFaction(allowHidden: false, allowDefeated: false, allowNonHumanlike: false);
+            if (trap == null || ladderDef == null || friend == null || enemy == null) { c.Invalid("RM_SuperdeepTrap / RM_Ladder / a friendly and an enemy humanlike faction needed"); yield break; }
+            if (!(QStatic(trap, "RuleOn") is bool on) || !on) { c.Invalid("capture/ladder rule is switched off in mod settings"); yield break; }
+            MethodInfo isHeld = trap.GetMethod("IsHeld", QSBF), reqW = trap.GetMethod("RequiredWidth", QSBF);
+            Pawn fr = QGenPawn(c, friend, 41), ho = QGenPawn(c, enemy, 42);
+            int w = Math.Max((int)reqW.Invoke(null, new object[] { fr }), (int)reqW.Invoke(null, new object[] { ho }));
+            int side = Math.Max(4, w + 2);
+            if (!QBuildPit(c, m.Center + new IntVec3(25, 0, 25), side, out CellRect pit, out string why)) { QVanish(fr); QVanish(ho); c.Invalid(why); yield break; }
+            IntVec3 ladderCell = new IntVec3(pit.CenterCell.x, 0, pit.maxZ);
+            IntVec3 start = new IntVec3(pit.minX, 0, pit.minZ);
+            IntVec3 dest = new IntVec3(pit.CenterCell.x, 0, pit.maxZ + 3);   // just beyond the ladder side
+            Thing ladder = QMake(ladderDef); ladder.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(ladder, ladderCell, m);
+            QClickLadder(ladder);
+            c.ev["ladderRaised"] = QRaised(ladder);
+            c.ev["pit"] = PD("x", pit.minX, "z", pit.minZ, "side", side); c.ev["ladderCell"] = PCell(ladderCell); c.ev["dest"] = PCell(dest);
+            var attempts = new List<Dictionary<string, object>>();
+            c.ev["attempts"] = attempts;
+            Pawn sub = null;
+            try
+            {
+                foreach (var a in new[] { new { p = ho, label = "hostile_raised" }, new { p = fr, label = "friendly_raised" } })
+                {
+                    c.Phase("setup");
+                    sub = a.p;
+                    GenSpawn.Spawn(sub, start, m);
+                    Pawn sp = sub;
+                    bool held = (bool)isHeld.Invoke(null, new object[] { sp });
+                    bool reach = sp.CanReach(dest, PathEndMode.OnCell, Danger.Deadly);
+                    var path = new List<IntVec3> { start };
+                    int lastOrder = TicksGameSafe();
+                    QGoto(sp, dest);
+                    void Watch()
+                    {
+                        if (!sp.Spawned) return;
+                        if (sp.Position != path[path.Count - 1]) path.Add(sp.Position);
+                        if (TicksGameSafe() - lastOrder >= 120 && sp.CurJobDef != JobDefOf.Goto && !sp.Downed) { lastOrder = TicksGameSafe(); QGoto(sp, dest); }
+                    }
+                    c.Phase("exec");
+                    yield return PTicks(900, Watch);
+                    c.Phase("observe");
+                    attempts.Add(PD("attempt", a.label, "heldAtStart", held, "canReachDest", reach, "leftPit", path.Any(x => !pit.Contains(x)),
+                        "onLadderCell", path.Contains(ladderCell), "heldOnLadderCell", sp.Spawned && sp.Position == ladderCell && (bool)isHeld.Invoke(null, new object[] { sp }),
+                        "path", path.Select(PCell).ToList(), "downed", sp.Downed, "dead", sp.Dead));
+                    QVanish(sub); sub = null;
+                }
+            }
+            finally { QVanish(sub); QVanish(fr); QVanish(ho); QVanish(ladder); }
+            var fails = new List<string>();
+            if (!(bool)c.ev["ladderRaised"]) fails.Add("the gizmo did not raise the ladder");
+            foreach (var at in attempts)
+            {
+                if ((bool)at["downed"] || (bool)at["dead"]) { c.Invalid(at["attempt"] + " downed/dead during the must-stay attempt"); yield break; }
+                if (!(bool)at["heldAtStart"]) fails.Add(at["attempt"] + ": not held in the pit");
+                if ((bool)at["canReachDest"]) fails.Add(at["attempt"] + ": reachability says it can get out past a raised ladder");
+                if ((bool)at["leftPit"]) fails.Add(at["attempt"] + ": climbed out (raised ladder)");
+            }
+            if (attempts.Count < 2) { c.Invalid("not both attempts ran"); yield break; }
+            if (fails.Count == 0) c.Pass("raised ladder: held hostile and held friendly both stay in the pit for 900 ticks; reachability refuses the way out");
             else c.Defect(string.Join("; ", fails));
         }
 

@@ -1,0 +1,54 @@
+run fwpt_20261007T051912_s1  scenarios=fluids,dig,pit,depth_fill,fire,pump,river,sluice,pit_ladder_release,pit_fall_forced,pit_ladder_toggle,pit_ladder_haul,pit_ladder_raised_hold,save_reload  mode=batch  driver=monobehaviour
+  fluids         PASS       0.02s      0 ticks  water and tar classified as separate bodies with their own fluids, both seed orders
+  dig            PASS      11.45s  21202 ticks  designated dig taken and completed by Veniamin (Human547), fill-in by Veniamin (Human547); original terrain restored
+  pit            PASS       1.17s   2151 ticks  held without a ladder (hostile and friendly); ladder released the friendly and not the hostile
+  depth_fill     FAIL      10.50s  19195 ticks  D2F0 crossing along the pit floor took 763 ticks against surface 401 (walking at one depth must be normal speed); D3F0 crossing along the pit floor took 804 ticks against surface 401 (walking at one depth must be normal speed)
+  fire           FAIL       0.84s   1702 ticks  RM_Fluid_Chemfuel not consumed after detonating (fills 1,1,1,1,1,1,1)
+  pump           PASS       1.30s   2214 ticks  unpowered idle; powered draw 1 level = 5 units; tank clamps at 300; tar refused into water; tar poured into an empty channel
+  river          INVALID    0.00s      0 ticks  no river current on this map (needs a map with a river)
+  sluice         FAIL       2.21s   6000 ticks  grate_closed held liquid (expected passes); sluice_open held liquid (expected passes)
+  pit_ladder_release PASS       1.12s   1953 ticks  friendly routed inside to the ladder, out, and round to the far side; hostile held
+  pit_fall_forced PASS       1.00s    457 ticks  walker went round the open pit without a descent; a forced arrival fell and is held
+  pit_ladder_toggle PASS       0.56s      2 ticks  gizmo click raised the ladder (colonist may not climb, saved raised=True), second click lowered it (climbable, saved default); label flips; no gizmo on a non-player ladder
+  pit_ladder_haul INVALID    0.98s      0 ticks  no clean 5x5 pit site with a standable 4-cell ring
+  pit_ladder_raised_hold INVALID    1.33s      0 ticks  no clean 4x4 pit site with a standable 4-cell ring
+  save_reload    PENDING    1.11s   2000 ticks  armed: saved JBPT_fwpt_20261007T051912_s1 at tick 55377; verdict owed by save_reload_b (resume=fwpt_20261007T051912_s1) after loading that save
+
+scenario                status   wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+----------------------  -------  ------  -----  ------  -------  ------  ---------  -------
+fluids                  PASS     0.02    0      0       0.01     0.00    0.00       0      
+dig                     PASS     11.45   21202  200     0.01     11.44   0.00       1854   
+pit                     PASS     1.17    2151   21      0.04     1.10    0.02       1952   
+depth_fill              FAIL     10.50   19195  185     0.30     10.18   0.02       1885   
+fire                    FAIL     0.84    1702   14      0.12     0.72    0.00       2377   
+pump                    PASS     1.30    2214   19      0.02     1.27    0.00       1739   
+river                   INVALID  0.00    0      0       0.00     0.00    0.00       0      
+sluice                  FAIL     2.21    6000   41      0.02     2.19    0.00       2744   
+pit_ladder_release      PASS     1.12    1953   13      0.44     0.67    0.00       2907   
+pit_fall_forced         PASS     1.00    457    3       0.83     0.17    0.00       2672   
+pit_ladder_toggle       PASS     0.56    2      1       0.52     0.04    0.00       156    
+pit_ladder_haul         INVALID  0.98    0      0       0.98     0.00    0.00       0      
+pit_ladder_raised_hold  INVALID  1.33    0      0       1.33     0.00    0.00       0      
+save_reload             PENDING  1.11    2000   12      0.01     0.64    0.46       3140   
+RUN TOTAL               done     33.68   56876  516     4.64     28.43   0.52       2003   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.10 s, Ultrafast multiplier 150
+launcher: 34.82 s wall start->collect, 17 bridge calls
+
+RUN VERDICT INCOMPLETE  (16 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261007T051912_s1.jsonl  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\flowworks_playtest\fwpt_20261007T051912_s1.jsonl
+
+RESUME: loading JBPT_fwpt_20261007T051912_s1 (tick 55377) for save_reload_b
+load_game_ready: success=True  0.2 s  RimWorld map data is available.
+map ready after 2.3 s at tick 55377
+run fwpt_20261007T051949_s1  scenarios=save_reload_b  mode=batch  driver=monobehaviour  resume=fwpt_20261007T051912_s1
+  save_reload_b  PASS       0.49s   1499 ticks  loaded state equals saved state; after 1499 ticks D/F/fluid per cell and the pond body's stock equal the uninterrupted branch
+
+scenario       status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-------------  ------  ------  -----  ------  -------  ------  ---------  -------
+save_reload_b  PASS    0.49    1499   8       0.00     0.49    0.00       3084   
+RUN TOTAL      done    1.91    1500   48      0.00     0.49    0.00       3084   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 1.42 s, Ultrafast multiplier 150
+launcher: 2.15 s wall start->collect, 24 bridge calls
+
+RUN VERDICT PASS  (3 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261007T051949_s1.jsonl  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\flowworks_playtest\fwpt_20261007T051949_s1.jsonl
+
+VERDICT FAIL

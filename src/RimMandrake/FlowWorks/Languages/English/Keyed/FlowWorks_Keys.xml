@@ -8,6 +8,13 @@
   <RMFlow_JumpIntoPitDesc>Jump down into the adjacent superdeep pit. The fall hurts, and there is no climbing out without a ladder.</RMFlow_JumpIntoPitDesc>
   <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until a ladder is placed. Jump?</RMFlow_JumpIntoPitConfirm>
   <RMFlow_LadderNeedsExcavation>Must be placed in a dug pit.</RMFlow_LadderNeedsExcavation>
+  <!-- FLOWWORKS_LADDER_RAISE_LOWER_1: owner, "ladder up, ladder down". -->
+  <RMFlow_LadderUp>Ladder up</RMFlow_LadderUp>
+  <RMFlow_LadderDown>Ladder down</RMFlow_LadderDown>
+  <RMFlow_LadderToggleDesc>Raise or lower this ladder. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the pit floor. Raised, nobody climbs it either way, and anyone down there stays down there. Colonists never move a ladder on their own.</RMFlow_LadderToggleDesc>
+  <RMFlow_LadderRaisedInspect>Ladder up: nobody can climb down or out.</RMFlow_LadderRaisedInspect>
+  <RMFlow_LadderLoweredPrisonInspect>Ladder down: your people climb; prisoners only in a prison break.</RMFlow_LadderLoweredPrisonInspect>
+  <RMFlow_LadderLoweredInspect>Ladder down: anyone can climb.</RMFlow_LadderLoweredInspect>
   <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedSuperdeep>Spikes go only on the floor of a superdeep pit (depth 4). This cell is depth {0}.</RMFlow_SpikesNeedSuperdeep>
