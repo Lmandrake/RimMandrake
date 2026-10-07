@@ -1416,6 +1416,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_ContainerMaterialMath.ScaledUnits(0, 2f) == 0, "no base, no units");
             });
 
+            Case("ContainerMat_stone_bottle_reads_glass", () =>
+            {
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("granite empty bottle", "granite empty bottle", "glass empty bottle") == "glass empty bottle", "granite -> glass");
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("marble bottled fresh water (45%)", "marble bottled fresh water", "glass bottled fresh water") == "glass bottled fresh water (45%)", "suffix kept");
+                Assert(RM_ContainerMaterialMath.RelabelAsGlass("steel empty bottle", "granite empty bottle", "glass empty bottle") == "steel empty bottle", "absent phrase leaves label alone");
+            });
+            Case("ContainerMat_every_bottled_liquid_has_a_container_colour", () =>
+            {
+                var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(ContainerMatFixture.Root(), "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                int n = 0;
+                foreach (var d in doc.Root.Elements("RimMandrake.FlowWorks.LiquidTypes.LiquidDef"))
+                {
+                    string bottle = (string)d.Element("bottled")?.Element("bottle");
+                    if (bottle == null || !bottle.StartsWith("RM_")) continue;
+                    n++;
+                    string col = (string)d.Element("color");
+                    Assert(col != null && col.Replace(" ", "") != "(1,1,1)", (string)d.Element("defName") + " ships no container colour (would show material colour when filled)");
+                }
+                Assert(n >= 9, "sanity: found " + n + " bottled rows, expected >= 9");
+            });
+
             // ═══════════ Approach B: generated action sequences (design/RimMandrake/flowworks_offline_kernel_B.md) ══
             // Timing is a first-class output: each family prints its case count, step count and seconds.
             var fuzzClock = System.Diagnostics.Stopwatch.StartNew();
@@ -1460,6 +1481,8 @@ namespace RimMandrake.FlowWorks.SelfTest
     internal static class ContainerMatFixture
     {
         private static string defsRoot;
+
+        public static string Root() => DefsRoot();
 
         private static string DefsRoot()
         {

@@ -30,6 +30,7 @@
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
     <distillable>true</distillable>
+    <color>(0.62,0.80,0.98)</color>
     <terrainSuite>
       <shallow>WaterShallow</shallow>
       <deep>WaterDeep</deep>
@@ -58,6 +59,7 @@
     <viscosityClass>Water</viscosityClass>
     <pH>8</pH>
     <distillable>true</distillable>
+    <color>(0.42,0.62,0.82)</color>
     <terrainSuite>
       <shallow>WaterOceanShallow</shallow>
       <deep>WaterOceanDeep</deep>
@@ -102,6 +104,7 @@
     <pH>7</pH>
     <distillable>true</distillable>
     <hot>true</hot>
+    <color>(0.86,0.92,0.98)</color>
     <terrainSuite>
       <shallow>RM_WaterBoilingShallow</shallow>
       <deep>RM_WaterBoilingDeep</deep>
@@ -156,6 +159,7 @@
     </damageOnImmersion>
     <corrodesApparel>false</corrodesApparel>
     <distillable>true</distillable>
+    <color>(0.78,0.93,1.0)</color>
     <terrainSuite>
       <shallow>RM_WaterFrigidShallow</shallow>
       <deep>RM_WaterFrigidDeep</deep>
@@ -196,6 +200,7 @@
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
     <distillable>true</distillable>
+    <color>(0.58,0.72,0.28)</color>
     <terrainSuite>
       <shallow>RM_WaterPoisonedShallow</shallow>
       <deep>RM_WaterPoisonedDeep</deep>
@@ -248,6 +253,7 @@
       <amount>3</amount>
     </damageOnImmersion>
     <corrodesApparel>true</corrodesApparel>
+    <color>(0.78,0.96,0.22)</color>
     <terrainSuite>
       <shallow>RM_AcidShallow</shallow>
       <deep>RM_AcidDeep</deep>
@@ -297,6 +303,7 @@
       <amount>5</amount>
     </damageOnImmersion>
     <corrodesApparel>true</corrodesApparel>
+    <color>(0.92,0.86,1.0)</color>
     <terrainSuite>
       <shallow>RM_ReactionLiquorShallow</shallow>
       <deep>RM_ReactionLiquorDeep</deep>
@@ -319,6 +326,7 @@
     <description>Black and patient. It does not drown you so much as keep you.</description>
     <viscosityClass>Heavy</viscosityClass>
     <pH>7</pH>
+    <color>(0.16,0.15,0.14)</color>
     <terrainSuite>
       <shallow>RM_TarShallow</shallow>
       <deep>RM_TarDeep</deep>
@@ -367,6 +375,7 @@
     <pH>8</pH>
     <corrodesApparel>false</corrodesApparel>
     <distillable>true</distillable>
+    <color>(0.84,0.88,0.80)</color>
     <terrainSuite>
       <shallow>RM_WaterBrineShallow</shallow>
       <deep>RM_WaterBrineDeep</deep>
@@ -414,6 +423,7 @@
     <pH>7</pH>
     <flammable>true</flammable>
     <igniteTemp>40</igniteTemp>
+    <color>(0.88,0.88,0.92)</color>
     <terrainSuite>
       <shallow>RM_PropaneShallow</shallow>
       <deep>RM_PropaneDeep</deep>
@@ -446,6 +456,7 @@
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
     <flammable>true</flammable>
+    <color>(0.72,0.52,0.20)</color>
     <bottled>
       <bottle>Chemfuel</bottle>
       <unitsPerBottle>1</unitsPerBottle>
@@ -477,6 +488,7 @@
       <amount>2</amount>
     </damageOnImmersion>
     <corrodesApparel>true</corrodesApparel>
+    <color>(0.62,0.16,0.14)</color>
     <terrainSuite>
       <shallow>RM_SlimeRedShallow</shallow>
       <deep>RM_SlimeRedDeep</deep>
@@ -509,6 +521,7 @@
       <amount>2</amount>
     </damageOnImmersion>
     <corrodesApparel>false</corrodesApparel>
+    <color>(0.30,0.55,0.18)</color>
     <terrainSuite>
       <shallow>RM_SlimeGreenShallow</shallow>
       <deep>RM_SlimeGreenDeep</deep>
@@ -538,6 +551,7 @@
     <pH>7</pH>
     <flammable>true</flammable>
     <igniteTemp>150</igniteTemp>
+    <color>(0.80,0.78,0.70)</color>
     <terrainSuite>
       <shallow>RM_SlimeWhiteShallow</shallow>
       <deep>RM_SlimeWhiteDeep</deep>
@@ -565,6 +579,7 @@
     <description>Human, apparently -- mucosal, the color of dried snot, and no more dangerous than that.</description>
     <viscosityClass>Heavy</viscosityClass>
     <pH>6</pH>
+    <color>(0.78,0.68,0.22)</color>
     <terrainSuite>
       <shallow>RM_SlimeYellowShallow</shallow>
       <deep>RM_SlimeYellowDeep</deep>

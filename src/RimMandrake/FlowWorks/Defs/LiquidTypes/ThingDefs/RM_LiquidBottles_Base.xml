@@ -126,6 +126,13 @@
         </materials>
       </li>
     </modExtensions>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 rulings 3+4: stone reads "glass"; a filled
+         container shows its liquid's colour, an empty one its material's. -->
+    <comps>
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
@@ -206,6 +213,13 @@
         </materials>
       </li>
     </modExtensions>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 rulings 3+4: stone reads "glass"; a filled
+         container shows its liquid's colour, an empty one its material's. -->
+    <comps>
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="RM_BucketItemBase">
@@ -288,6 +302,13 @@
         </materials>
       </li>
     </modExtensions>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 rulings 3+4: stone reads "glass"; a filled
+         container shows its liquid's colour, an empty one its material's. -->
+    <comps>
+      <li>
+        <compClass>RimMandrake.FlowWorks.LiquidTypes.RM_CompContainerMaterial</compClass>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">

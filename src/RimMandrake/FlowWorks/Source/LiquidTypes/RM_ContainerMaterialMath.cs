@@ -115,6 +115,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             return scaled < 1 ? 1 : scaled;
         }
 
+        /// <summary>Ruling 3: swap the first "stone-made" phrase in a label for the "glass-made" one
+        /// ("granite empty bottle" -> "glass empty bottle", keeping any prefix/suffix such as a
+        /// health percentage). Label unchanged when the phrase is absent.</summary>
+        public static string RelabelAsGlass(string label, string stoneForm, string glassForm)
+        {
+            if (string.IsNullOrEmpty(label) || string.IsNullOrEmpty(stoneForm) || glassForm == null)
+            {
+                return label;
+            }
+            int at = label.IndexOf(stoneForm, StringComparison.Ordinal);
+            return at < 0 ? label : label.Substring(0, at) + glassForm + label.Substring(at + stoneForm.Length);
+        }
+
         public static RM_ContainerMaterialRule RuleFor(List<RM_ContainerMaterialRule> rules, RM_ContainerMaterial material)
         {
             if (rules == null)
