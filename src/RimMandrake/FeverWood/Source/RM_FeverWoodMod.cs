@@ -246,6 +246,8 @@ namespace RimMandrake.FeverWood
         /// <summary>Chance an exotic trader carries one young-cask. INVENTED
         /// default 0.1 ("rarely").</summary>
         public static float broodCaskTraderStockChance = 0.1f;
+        // FEVERWOOD_BROOD_RANSOM_1 §5: goodwill a town loses when its display tank's young is freed. INVENTED.
+        public static int broodDisplayTankGoodwillLoss = 50;
 
         /// <summary>Per-gift weight multipliers over RM_DeepGiftLoot, keyed by
         /// the gift's defName (absent = 1, 0 = never).</summary>
@@ -298,6 +300,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref broodBoldnessPerYoung, "broodBoldnessPerYoung", 0.1f);
             Scribe_Values.Look(ref broodBoldnessCap, "broodBoldnessCap", 2f);
             Scribe_Values.Look(ref broodCaskTraderStockChance, "broodCaskTraderStockChance", 0.1f);
+            Scribe_Values.Look(ref broodDisplayTankGoodwillLoss, "broodDisplayTankGoodwillLoss", 50);
             Scribe_Collections.Look(ref broodGiftWeightMultipliers, "broodGiftWeightMultipliers", LookMode.Value, LookMode.Value);
             if (broodGiftWeightMultipliers == null)
             {
@@ -472,6 +475,8 @@ namespace RimMandrake.FeverWood
             broodBoldnessCap = list.Slider(broodBoldnessCap, 1f, 5f);
             list.Label("Chance an exotic trader carries a young-cask: " + broodCaskTraderStockChance.ToString("0.00"));
             broodCaskTraderStockChance = list.Slider(broodCaskTraderStockChance, 0f, 1f);
+            list.Label("Goodwill a town loses when you free the young from its display tank: " + broodDisplayTankGoodwillLoss);
+            broodDisplayTankGoodwillLoss = Mathf.RoundToInt(list.Slider(broodDisplayTankGoodwillLoss, 0f, 100f));
             RM_DeepGiftTableDef gifts = DefDatabase<RM_DeepGiftTableDef>.GetNamedSilentFail(RM_DeepGift.TableDefName);
             if (gifts != null)
             {

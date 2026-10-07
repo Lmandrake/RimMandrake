@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FEVERWOOD_BROOD_RANSOM_1, campaign half (§4, §5). The mechanism is the free Fever Wood mod
+  (mandrake.rm.feverwood, Source/RM_BroodRansom.cs); this file only names who and where.
+  Every operation is conditional on the Fever Wood's own defs, so this is a no-op without it
+  (and no FactionDef ever carries a modExtension whose type is not loaded).
+
+  - Sporefall (RUT_Jawa_WildsteamClan's treetop town) keeps the biggest young ever caught in
+    a display tank, placed on its own map when the player visits (decision taken by question
+    card 2026-10-02 12:19 PDT: "the player reaches Sporefall's display tank by visiting
+    Sporefall's own map"). Freeing it: a colonist beside the tank ("Free the young"), or
+    breaking the tank. The young walks for water; at a Fever Wood pool the deep sets down the
+    doubled "greatest gift" (giftRolls 2). The Wildsteam lose goodwill (Mod Settings, default
+    50, INVENTED). A freed tank is never regenerated on a later visit.
+  - The world's tally counts Sporefall's young (one) until it is freed.
+  - Wildsteam traders (settlement and bulk caravans) stock a young-cask at a fixed chance
+    (0.6, INVENTED) and sell it Expensive (x2).
+  - The deep's lines on buying, selling and returning a young (campaign wording).
+
+  NOT here: "the prison towns" (no faction or settlement is named as one anywhere; filed as a
+  question), the size of the biggest young (the display tank holds an ordinary juvenile), and
+  a raised buy-back price (PriceType only prices the PLAYER's purchases; selling to a trader
+  needs a sell-price hook).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RM_SekkulaathTank"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- Sporefall's display tank. Not buildable, not claimable; Fever Wood placeholder art. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs</xpath>
+          <value>
+            <ThingDef ParentName="RM_LivingCapturePodBase">
+              <defName>RUT_SporefallDisplayTank</defName>
+              <label>Sporefall display tank</label>
+              <description>The Wildsteam's pride: a great glass-and-brass tank in the boughs of Sporefall, steam-lamps above it, and in it the biggest young of the deep anyone has ever caught. Townsfolk bring their children to knock on the glass. Something knocks back.</description>
+              <designationCategory IsNull="True" />
+              <graphicData>
+                <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTank</texPath>
+                <graphicClass>Graphic_Single</graphicClass>
+                <drawSize>(2,2)</drawSize>
+              </graphicData>
+              <statBases>
+                <MaxHitPoints>400</MaxHitPoints>
+                <MarketValue>2500</MarketValue>
+              </statBases>
+              <building>
+                <claimable>false</claimable>
+                <deconstructible>false</deconstructible>
+              </building>
+              <comps>
+                <li Class="RimMandrake.FeverWood.RM_CompProperties_CapturedSpecimen">
+                  <!-- holds what RM_SekkulaathTank holds: the dianoga once the Star Wars bestiary swaps it -->
+                  <occupantLikeTank>RM_SekkulaathTank</occupantLikeTank>
+                  <teachesColonyWarning>false</teachesColonyWarning>
+                  <damageEscapeThresholdFraction>0.5</damageEscapeThresholdFraction>
+                  <damageEscapeChancePerHit>0.35</damageEscapeChancePerHit>
+                  <displayTank>true</displayTank>
+                  <giftRolls>2</giftRolls>
+                  <freedLetterLabel>Sporefall's young is loose</freedLetterLabel>
+                  <freedLetterText>The display tank of Sporefall stands open and its young, the biggest ever caught, is sliding for the water. The whole town saw it done.\n\nThe Wildsteam will not forget this. If the young reaches a pool of the Fever Wood, the deep will pay for it as it has never paid before.</freedLetterText>
+                </li>
+              </comps>
+            </ThingDef>
+            <GenStepDef>
+              <defName>RUT_SporefallDisplayTank</defName>
+              <order>410</order>
+              <genStep Class="RimMandrake.FeverWood.RM_GenStep_DisplayTank">
+                <tankDef>RUT_SporefallDisplayTank</tankDef>
+                <faction>RUT_Jawa_WildsteamClan</faction>
+                <settlementName>Sporefall</settlementName>
+              </genStep>
+            </GenStepDef>
+          </value>
+        </li>
+
+        <!-- Every faction settlement map runs it; the step itself checks the faction and the name. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/MapGeneratorDef[defName="Base_Faction"]/genSteps</xpath>
+          <value>
+            <li>RUT_SporefallDisplayTank</li>
+          </value>
+        </li>
+
+        <!-- The tally counts Sporefall's one young until it is freed. -->
+        <li Class="PatchOperationAddModExtension">
+          <xpath>/Defs/FactionDef[defName="RUT_Jawa_WildsteamClan"]</xpath>
+          <value>
+            <li Class="RimMandrake.FeverWood.RM_DeepYoungKeeperExtension">
+              <youngPerSettlement>1</youngPerSettlement>
+              <onlySettlementNames>
+                <li>Sporefall</li>
+              </onlySettlementNames>
+            </li>
+          </value>
+        </li>
+
+        <!-- Wildsteam traders sell young-casks, dear. Base_Outlander_Standard / Caravan_Outlander_BulkGoods
+             are what RUT_Jawa_WildsteamClan inherits from OutlanderFactionBase (Core Factions_Misc.xml);
+             onlyFactions keeps every other outlander from stocking one. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/TraderKindDef[defName="Base_Outlander_Standard" or defName="Caravan_Outlander_BulkGoods"]/stockGenerators</xpath>
+          <value>
+            <li Class="RimMandrake.FeverWood.RM_StockGenerator_DeepYoung">
+              <onlyFactions>
+                <li>RUT_Jawa_WildsteamClan</li>
+              </onlyFactions>
+              <stockChance>0.6</stockChance>
+              <price>Expensive</price>
+            </li>
+          </value>
+        </li>
+
+        <!-- What the deep thinks of traders in its children. -->
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_SekkulaathYoungCask"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.FeverWood.RM_CompProperties_DeepYoungLines">
+              <boughtLine>You have bought a child of the deep in a barrel. Somewhere under the Fever Wood, something counts one more.</boughtLine>
+              <soldLine>You have sold a child of the deep on to the next pair of hands. The pools do not forgive a trade; they only keep count.</soldLine>
+              <returnedLine>The deep has its child back. Whatever it thinks of the clan that carried it home, it pays its debts.</returnedLine>
+            </li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+</Patch>

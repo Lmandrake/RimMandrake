@@ -100,3 +100,29 @@ Not built: §4's campaign half and all of §5 (Sporefall's tank, Wildsteam/priso
 Narrator lines, goodwill break: `src/RimUtinni/`); the JawaBench `[Tool]` reads of the tally and the effective
 chance; a pool inspect string (pools are terrain with no inspect pane, so the line sits on the tank and the cask);
 no porter limb is spawned for the gift (the gift appears with a letter); an emptied tank cannot be restocked.
+
+## built (campaign half, offline, FOUNDRY helper 2026-10-07, not yet live-proven)
+
+Mechanism in the free tier (`src/RimMandrake/FeverWood/Source/`), data in
+`src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml` (all conditional on `RM_SekkulaathTank`):
+- `RUT_SporefallDisplayTank` (not buildable or claimable; holds what `RM_SekkulaathTank` holds, so the dianoga
+  under the Star Wars swap) placed by `RM_GenStep_DisplayTank` on `Base_Faction` maps of `RUT_Jawa_WildsteamClan`
+  named Sporefall. Owned by the town, it neither feeds, produces nor escapes on neglect. "Free the young" gizmo
+  (a colonist beside the tank), a breach, or killing the tank frees the young: released, `giftRolls` 2 (the doubled
+  greatest gift, carried through the save on the young and on the pending gift), goodwill -50 (Mod Settings
+  `broodDisplayTankGoodwillLoss`, INVENTED), the town's letter, and the world remembers it so a later visit does
+  not rebuild the tank.
+- Tally: the Wildsteam FactionDef carries `RM_DeepYoungKeeperExtension` with `onlySettlementNames` [Sporefall]
+  (one young until freed).
+- Trade: `RM_StockGenerator_DeepYoung` with `onlyFactions` [Wildsteam], `stockChance` 0.6, `price` Expensive, on
+  `Base_Outlander_Standard` + `Caravan_Outlander_BulkGoods` (what Wildsteam inherits).
+- Lines: `RM_CompProperties_DeepYoungLines` on the cask (bought, sold, returned; Messages, campaign wording).
+- L0: `validate_patch` clean against the 613-mod list (`ModsConfig.PRESWAP.20261007_015412.xml`);
+  `selftest_feverwood_broodcampaign.py` (18 behaviour reads + 8 planted breaks); `run_selftests` 221/222
+  (utinnipatches_dump only, env).
+
+Not built, and why: **"the prison towns"** (no faction or settlement is named as one anywhere; the keeper extension
+takes any FactionDef or town names once ruled); the **size** of the biggest young (the tank holds an ordinary
+juvenile); a raised **buy-back price** (vanilla `PriceType` prices only the player's purchases; selling to a
+trader needs a sell-price hook); the JawaBench `[Tool]` reads; restocking an emptied player tank.
+
