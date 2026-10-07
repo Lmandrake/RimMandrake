@@ -124,8 +124,9 @@ def static_checks():
     else:
         if not float(b.findtext("animalDensity") or 0) > 0:
             bad.append("animalDensity is 0: the roster is dead content")
-        if len(list(b.find("wildAnimals"))) < 3:
-            bad.append("wildAnimals roster has fewer than 3 rows")
+        # floor 2: roach + living bolt; GR_Mecharat was cut by the owner on the 2026-10-05 sheet
+        if len(list(b.find("wildAnimals"))) < 2:
+            bad.append("wildAnimals roster has fewer than 2 rows")
         if b.find("wildPlants") is not None and len(list(b.find("wildPlants"))):
             bad.append("wildPlants is no longer empty: ruled zero (frozen sheet ban 7), a deliberate edit must update this check")
     for need in ("BiomeDef", "ThingDef", "PawnKindDef", "GenStepDef", "ThinkTreeDef", "HediffDef", "IncidentDef", "TerrainDef", "SoundDef"):
@@ -142,7 +143,148 @@ def static_checks():
         bad.append("the deep-scan gate no longer patches CompDeepScanner.ChooseLumpThingDef")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "RustCathedral.md")):
         bad.append("walk missing")
+    bad.extend(borehulk_problems()[0])
     return bad
+
+
+# ---- the borehulk (RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1), L0 half of its criteria -------------------------------
+BOREHULK_DEFS = (("ThingDef", "RM_Borehulk"), ("PawnKindDef", "RM_Borehulk"), ("ThinkTreeDef", "RM_ThinkTree_Borehulk"),
+                 ("GenStepDef", "RM_BorehulkPlacement"), ("SoundDef", "RM_BorehulkGrind"))
+# a think-tree node class carrying any of these is a fight branch; the borehulk must have none
+_FIGHT_WORDS = ("Fight", "Attack", "Melee", "Manhunter", "Hunt", "Berserk", "Retaliat", "AIDefend", "AIGoto")
+VANILLA_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+SRC_ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))
+
+
+def _xml_files(root):
+    for dp, dirs, files in os.walk(root):
+        dirs[:] = [d for d in dirs if d not in ("__pycache__", "Textures", "Assemblies", "obj", "bin")]
+        for fn in files:
+            if fn.endswith(".xml"):
+                yield os.path.join(dp, fn)
+
+
+def _vanilla_mech_armour(data_root):
+    """{defName: (sharp, blunt)} for every non-abstract vanilla mechanoid race, ParentName chains resolved across
+    every Races_Mechanoid*.xml of every installed expansion. None when the install is unreachable (the Mac)."""
+    files = [os.path.join(data_root, d, "Defs", "ThingDefs_Races", f)
+             for d in (os.listdir(data_root) if os.path.isdir(data_root) else ())
+             if os.path.isdir(os.path.join(data_root, d, "Defs", "ThingDefs_Races"))
+             for f in os.listdir(os.path.join(data_root, d, "Defs", "ThingDefs_Races")) if f.startswith("Races_Mechanoid")]
+    if not files:
+        return None
+    by_name, races = {}, []
+    for f in files:
+        for el in ET.parse(f).getroot():
+            if el.tag != "ThingDef":
+                continue
+            if el.get("Name"):
+                by_name[el.get("Name")] = el
+            if el.findtext("defName") and el.get("Abstract", "").lower() != "true" and el.find("race") is not None:
+                races.append(el)
+
+    def stat(el, key):
+        seen = 0
+        while el is not None and seen < 20:
+            v = el.findtext("statBases/" + key)
+            if v is not None:
+                return float(v)
+            el, seen = by_name.get(el.get("ParentName")), seen + 1
+        return 0.0
+    return {el.findtext("defName"): (stat(el, "ArmorRating_Sharp"), stat(el, "ArmorRating_Blunt")) for el in races}
+
+
+def borehulk_problems(mod_root=None, src_root=None, vanilla_data=None):
+    """(problems, unmeasured). Static reads of the five defs, the ruled numbers, the roster ban, the fight-free think
+    tree, the gated GenStep and the armour floor against vanilla. Arguments exist so the selftest can plant breaks in a
+    temp copy; every default reads the shipped files."""
+    mod_root = mod_root or HERE
+    src_root = src_root or SRC_ROOT
+    vanilla_data = VANILLA_DATA if vanilla_data is None else vanilla_data
+    bad, unmeasured = [], []
+    defs = {}
+    for f in _xml_files(os.path.join(mod_root, "Defs")):
+        for el in ET.parse(f).getroot():
+            if isinstance(el.tag, str) and el.findtext("defName"):
+                defs[(el.tag, el.findtext("defName").strip())] = el
+    for key in BOREHULK_DEFS:
+        if key not in defs:
+            bad.append("borehulk: %s/%s not defined under Defs/" % key)
+    thing = defs.get(("ThingDef", "RM_Borehulk"))
+    if thing is not None:
+        race = thing.find("race")
+        size = float(race.findtext("baseBodySize") or 0) if race is not None else 0
+        if size < 5:
+            bad.append("borehulk: baseBodySize %s < 5 (item: about 6)" % size)
+        if race is None or race.findtext("manhunterOnDamageChance", "").strip() not in ("0", "0.0"):
+            bad.append("borehulk: manhunterOnDamageChance is not 0 (it must never retaliate)")
+        if race is None or race.findtext("thinkTreeMain") != "RM_ThinkTree_Borehulk":
+            bad.append("borehulk: thinkTreeMain is not RM_ThinkTree_Borehulk")
+        if race is None or race.findtext("intelligence") != "Animal":
+            bad.append("borehulk: intelligence is not Animal (item: dim)")
+        comps = [li.get("Class", "") for li in thing.findall("comps/li")]
+        if not any(c.endswith("RM_CompProperties_BorehulkDrill") for c in comps):
+            bad.append("borehulk: RM_CompProperties_BorehulkDrill is not on the ThingDef")
+        sharp = float(thing.findtext("statBases/ArmorRating_Sharp") or 0)
+        blunt = float(thing.findtext("statBases/ArmorRating_Blunt") or 0)
+        vanilla = _vanilla_mech_armour(vanilla_data)
+        if vanilla is None:
+            unmeasured.append("borehulk armour vs vanilla mechanoids: no Races_Mechanoid*.xml under %s" % vanilla_data)
+        elif len(vanilla) < 10:
+            unmeasured.append("borehulk armour: only %d vanilla mechanoid races parsed (sanity floor 10)" % len(vanilla))
+        else:
+            ms = max(vanilla.items(), key=lambda kv: kv[1][0])
+            mb = max(vanilla.items(), key=lambda kv: kv[1][1])
+            if sharp <= ms[1][0]:
+                bad.append("borehulk: ArmorRating_Sharp %.2f does not exceed vanilla %s %.2f" % (sharp, ms[0], ms[1][0]))
+            if blunt <= mb[1][1]:
+                bad.append("borehulk: ArmorRating_Blunt %.2f does not exceed vanilla %s %.2f" % (blunt, mb[0], mb[1][1]))
+    tree = defs.get(("ThinkTreeDef", "RM_ThinkTree_Borehulk"))
+    if tree is not None:
+        classes = [n.get("Class", "") for n in tree.iter() if n.get("Class")]
+        subtrees = [n.findtext("treeDef") or "" for n in tree.iter() if n.get("Class") == "ThinkNode_Subtree"]
+        fights = [c for c in classes + subtrees if any(w in c for w in _FIGHT_WORDS)]
+        if fights:
+            bad.append("borehulk: think tree carries a fight branch %s (it must never attack)" % fights)
+        for need in ("RM_JobGiver_BorehulkBackAway", "RM_ThinkNode_ConditionalAttitudeBand"):
+            if not any(c.endswith(need) for c in classes):
+                bad.append("borehulk: think tree lost %s" % need)
+    step = defs.get(("GenStepDef", "RM_BorehulkPlacement"))
+    if step is not None and step.findtext("genStep/pawnKind") != "RM_Borehulk":
+        bad.append("borehulk: RM_BorehulkPlacement does not place RM_Borehulk")
+    patched = False
+    for f in _xml_files(os.path.join(mod_root, "Patches")):
+        for op in ET.parse(f).getroot():
+            if "MapCommonBase" in (op.findtext("xpath") or "") and any(
+                    (li.text or "").strip() == "RM_BorehulkPlacement" for li in op.iter("li")):
+                patched = True
+    if not patched:
+        bad.append("borehulk: RM_BorehulkPlacement is not added to MapCommonBase by any patch (it never runs)")
+    gen = os.path.join(mod_root, "Source", "RustCathedral", "RM_GenStep_BorehulkPlacement.cs")
+    gsrc = _nocomment(open(gen, encoding="utf-8").read()) if os.path.isfile(gen) else ""
+    gate = re.search(r'map\.Biome\.defName\s*!=\s*(CathedralBiomeDefName|"RM_RustCathedral")', gsrc)
+    if not gate or (gate.group(1) == "CathedralBiomeDefName" and
+                    not re.search(r'CathedralBiomeDefName\s*=\s*"RM_RustCathedral"', gsrc)):
+        bad.append("borehulk: the GenStep no longer self-gates on RM_RustCathedral (it would place on every biome)")
+    if "borehulkEnabled" not in gsrc:
+        bad.append("borehulk: the GenStep ignores the borehulkEnabled toggle")
+    # roster ban: a wildAnimals row is an ELEMENT NAMED for the kind, never an <li>; probe with a kind that IS rostered
+    hits, probe = [], 0
+    for f in _xml_files(src_root):
+        try:
+            root = ET.parse(f).getroot()
+        except ET.ParseError:
+            continue
+        for el in root.iter():
+            if el.tag == "RM_CathedralRoach":
+                probe += 1
+            elif el.tag == "RM_Borehulk":
+                hits.append(os.path.relpath(f, src_root))
+    if probe == 0:
+        unmeasured.append("borehulk roster ban: the probe RM_CathedralRoach roster row was not found under %s" % src_root)
+    elif hits:
+        bad.append("borehulk: rostered as a wild animal in %s (it must never respawn)" % sorted(set(hits)))
+    return bad, unmeasured
 
 
 try:
@@ -476,4 +618,6 @@ if __name__ == "__main__":
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)
+    for u in borehulk_problems()[1]:
+        print("  UNMEASURED " + u)
     sys.exit(1 if problems else 0)
