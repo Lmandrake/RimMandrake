@@ -53,3 +53,17 @@
   L2 already written: JawaBench playtest ScnSluice (expected-fail until this build -> should XPASS once the DLL is deployed). DLL NOT deployed.
   extension chain flow_doors: doors_pass_liquid_closed -> grate_passes_sluice_seals. Runsheet regenerated (also dropped stale toggle_confinement rows).
   C# selftest 122/122, run_selftests 221/222 (utinnipatches_dump only).
+
+## Helper 7 (2026-10-07)
+- FLOWWORKS_POND_STOCK_RELOAD_1 stale-dropped: fixed at 8991803ee (index rebuilt after load), live save_reload_b PASS.
+- LIVINGBOLT_CORPSE_ART_1: the redo body (chrome nut) was already installed at 67623b0fb. Queued 3 artpipe jobs
+  rustcathedral_livingbolt_corpse_v1_{east,south,north} derived from it. Owed: ruling, art install, restore corpseGraphicData.
+- WATCHER_CREATURES_MOD_1: reconciled partial (design-only commits); remainder needs the owner's per-biome pitch.
+- ABYSS_SHEET_DONOR_PORT_1 `implemented` 627a6aea5: renamed labels in C# player strings + ishvarith/saevitha plurals
+  (names_check bar, would have caught both), DLL rebuilt, glowing grass b installed. Rename blocks were already right.
+  Owed art: ossumatha N/S + olumetha S v4 failed canon twice (charcoal, not pitch black), not requeued.
+- RUSTCATHEDRAL / NIGHTSIDEICE / LANTERNDEEPS _SHEET_ART_REDO_1 `implemented` (work was at 67623b0fb, never recorded);
+  installed the requeued moss grub east, quorr fern F, puffer c (f3cbef031). Gembug/Megapleura await owner keep; facet moth E/N failed twice.
+- WARSCAR_SHEET_DONOR_PORT_1 `implemented` 17a29e813 (built earlier, never recorded). Electric tick lifespan stays an owner question.
+- BILEWORM_CORPSE_ROT_1 filed+built: RM_CompBilewormGas makes the bileworm's description true; bileworm_gas_problems bar.
+- Stopped before SOLAR_MIRRORS_MOD_DESIGN_1 remainder (sealed-vault puzzle field with mapgen solver L, heliograph M, greenhouse M with a beam-vs-roof engine change): too big to build without a scope check. Everything else on the offered list is owner, bridge, blocked, or already skipped above.
