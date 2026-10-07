@@ -1384,6 +1384,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " leather holds fresh water");
                 }
             });
+            Case("ContainerMat_wood_refuses_acid_holds_hot", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"]; var fresh = liq["RM_Liquid_FreshWater"];
+                foreach (string fam in new[] { "RM_BucketItemBase", "RM_BarrelItemBase" })
+                {
+                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Wood);
+                    Assert(rule != null, fam + " ships a wood rule");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " wood refuses acid (Acid)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, boil.hot, boil.acid) == RM_HoldRefusal.None, fam + " wood holds boiling water");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " wood holds fresh water");
+                }
+            });
             Case("ContainerMat_glass_and_metal_hold_hot_and_acid", () =>
             {
                 foreach (var (fam, mat) in new[] { ("RM_BottleItemBase", RM_ContainerMaterial.Glass), ("RM_BottleItemBase", RM_ContainerMaterial.Metal),

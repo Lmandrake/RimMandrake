@@ -49,14 +49,15 @@ Data: `RM_ContainerMaterialsExtension` on RM_BottleItemBase / RM_BucketItemBase 
 | container | material | units (base x factor) | hot | acid |
 |---|---|---|---|---|
 | bottle (1) | leather / glass / metal | 1 / 1 / 1 (a 1-unit bottle only moves at factor >= 1.5) | refuse / ok / ok | refuse / ok / ok |
-| bucket (5) | wood / metal / leather | 5 / 6 / 4 | ok / ok / refuse | ok / ok / refuse |
-| barrel (25) | wood / metal / plasteel | 25 / 30 / 40 | ok | ok |
+| bucket (5) | wood / metal / leather | 5 / 6 / 4 | ok / ok / refuse | refuse / ok / refuse |
+| barrel (25) | wood / metal / plasteel | 25 / 30 / 40 | ok | refuse / ok / ok |
 
 Hot = `LiquidDef.hot` (boiling water; generator row flag). Acid = corrodes apparel, AcidBurn damage, or pH <= 4
 (acid water; reaction liquor and red slime have no bottled form). Enforced in the terrain fill search (skips refused
 liquids, `JobFailReason` names why), the tank drain search (same), and both fill JobDrivers (message, container kept).
 Capacity scales every tank pour/draw (`RM_ContainerMaterials.UnitsIn`). Drinking is unchanged: nutrition is per def.
-Wooden containers holding hot/acid were not ruled on; they hold both (one XML flag to change).
+Wooden buckets and barrels refuse acid but hold hot liquids (decision taken by question card 2026-10-07 00:04);
+same refusal path and reason text as leather ("A wooden container can't hold acid water: the acid eats through it.").
 
 ## naming and tint (rulings 3 and 4, built)
 
