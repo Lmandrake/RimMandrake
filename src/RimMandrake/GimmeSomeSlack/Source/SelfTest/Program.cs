@@ -39,6 +39,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         private static int Main(string[] args)
         {
+            int uc = Array.IndexOf(args, "--unroutable-census");
+            if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
             if (args.Contains("--fuzz-only")) { GssFuzz.Run(args); Console.WriteLine($"{checks - fails}/{checks} checks passed (fuzz only)"); return fails == 0 ? 0 : 1; }
             bool probe = args.Contains("--probe");
             int di = Array.IndexOf(args, "--dump");
@@ -80,6 +82,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
+            UnroutableCensus.Checks();     // A7 (owner 2026-10-06): what stands between an unroutable cord's ends: UnroutableCensus.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;

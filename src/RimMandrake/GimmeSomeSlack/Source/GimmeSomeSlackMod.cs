@@ -32,8 +32,12 @@ namespace RimMandrake.GimmeSomeSlack
         public static CordStyle style = CordStyle.StarWarsJawa;
         /// <summary>Multiplier on the seeded slack: 0 path-tight, 1 owner level (design §8.2.4), 1.8 feral.</summary>
         public static float slack = 1f;
-        /// <summary>Most extra cord any one cord may carry, cells (the sprawl cap, §8.2.4).</summary>
-        public static float sprawlCap = 16f;
+        /// <summary>Loop budget, cells: the most cord one cord may spend on loops, figure-eights and heaps (LayParams.MaxExtra:
+        /// CordLayer.Sprawl's slack target and settle clamp). It does NOT cap a cord's length: the side-to-side wander comes on
+        /// top (gss_offline_fuzz_B.md seed 141: budget 2, a 1-cell lead lays 10.9 cells). Renamed from the old key by GPT source
+        /// read 2026-10-06 A12/B15 (owner decision by question card: name it for what it controls); the old saved key is read
+        /// once on load (LegacyName.LoopBudgetOnLoad).</summary>
+        public static float loopBudget = 16f;
         /// <summary>Cords drawn per connection: 1..this, seeded per edge, never by load.</summary>
         public static int cordsPerConnection = 3;
         /// <summary>Dense conduit fields drawn as one heap (§8.7.4).</summary>
@@ -83,7 +87,13 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref style, "style", CordStyle.StarWarsJawa);
             Scribe_Values.Look(ref slack, "slack", 1f);
-            Scribe_Values.Look(ref sprawlCap, "sprawlCap", 16f);
+            Scribe_Values.Look(ref loopBudget, "loopBudget", LegacyName.Unset);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                float legacy = LegacyName.Unset;
+                Scribe_Values.Look(ref legacy, LegacyName.OldLoopBudgetKey, LegacyName.Unset);
+                loopBudget = LegacyName.LoopBudgetOnLoad(loopBudget, legacy, 16f);
+            }
             Scribe_Values.Look(ref cordsPerConnection, "cordsPerConnection", 3);
             Scribe_Values.Look(ref tangles, "tangles", true);
             Scribe_Values.Look(ref needlessLoops, "needlessLoops", true);
@@ -111,7 +121,7 @@ namespace RimMandrake.GimmeSomeSlack
             enabled = true;
             style = CordStyle.StarWarsJawa;
             slack = 1f;
-            sprawlCap = 16f;
+            loopBudget = 16f;
             cordsPerConnection = 3;
             tangles = true;
             needlessLoops = true;
@@ -140,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack
                                      // power strips are the modern extension-cord look only (owner review 2026-10-04 B1/B15)
                                      Pile = style == CordStyle.ExtensionCord ? PileArt.Strips : PileArt.Junctions };
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
-            o.Lay.MaxExtra = Mathf.Clamp(sprawlCap, 2f, 40f);
+            o.Lay.MaxExtra = Mathf.Clamp(loopBudget, 2f, 40f);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
             o.Lay.CordsMax = Mathf.Clamp(cordsPerConnection, 1, 3);
             return o;
@@ -264,8 +274,9 @@ namespace RimMandrake.GimmeSomeSlack
             l.Label("Slack: " + (GimmeSomeSlackSettings.slack <= 0.01f ? "off (path-tight)" : GimmeSomeSlackSettings.slack.ToString("0.00") + "x the owner level"),
                     tooltip: "How much spare cord each cord carries. 1.00 = loops, figure-eights and heaps like a too-long extension cord.");
             GimmeSomeSlackSettings.slack = l.Slider(GimmeSomeSlackSettings.slack, 0f, 1.8f);
-            l.Label("Sprawl cap: at most " + GimmeSomeSlackSettings.sprawlCap.ToString("0") + " cells of extra cord per cord");
-            GimmeSomeSlackSettings.sprawlCap = l.Slider(GimmeSomeSlackSettings.sprawlCap, 2f, 40f);
+            l.Label("Loop budget: up to " + GimmeSomeSlackSettings.loopBudget.ToString("0") + " cells of each cord in loops and heaps",
+                    tooltip: "How much cord one cord may spend on loops, figure-eights and heaps. This is not a length cap: a cord's side-to-side wander comes on top, so a short lead can still lie several times its distance.");
+            GimmeSomeSlackSettings.loopBudget = l.Slider(GimmeSomeSlackSettings.loopBudget, 2f, 40f);
             l.Label("Cords per connection: 1 to " + GimmeSomeSlackSettings.cordsPerConnection);
             GimmeSomeSlackSettings.cordsPerConnection = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.cordsPerConnection, 1f, 3f));
             l.CheckboxLabeled("Dense conduit fields become one tangle", ref GimmeSomeSlackSettings.tangles);

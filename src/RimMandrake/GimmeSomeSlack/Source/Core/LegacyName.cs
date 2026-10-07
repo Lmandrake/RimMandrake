@@ -9,7 +9,8 @@
 //   * the settings files: Verse names them Mod_<deployed folder>_<Mod class>.xml, so the old ones are
 //     Mod_MessyConduit_{MessyConduitMod,AerialLinesMod,FireHosesMod}.xml. MigrateSettingsFiles copies each one to its
 //     new name once, only when the new file does not exist yet, and never deletes the old file.
-// defNames and Scribe keys did not change, so nothing else needs mapping.
+// defNames and Scribe keys did not change in that rename. One settings key changed later (A12/B15, 2026-10-06):
+// the loop budget, read through LoopBudgetOnLoad.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +39,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ("AerialLinesMod", "AerialLinesMod"),
             ("FireHosesMod", "FireHosesMod"),
         };
+
+        /// <summary>Sentinel for "this key was not in the settings file" (no real slider value is negative).</summary>
+        public const float Unset = -1f;
+        /// <summary>The loop budget's settings key before GPT source read 2026-10-06 A12/B15 renamed it to loopBudget.</summary>
+        public const string OldLoopBudgetKey = "sprawlCap";
+
+        /// <summary>The loop budget after a settings load: the new key when the file has it, else the old key's value, else
+        /// the default. A file saved after the rename carries only the new key, so the old one is read at most once.</summary>
+        public static float LoopBudgetOnLoad(float loaded, float legacy, float dflt)
+        {
+            if (loaded >= 0f) return loaded;
+            if (legacy >= 0f) return legacy;
+            return dflt;
+        }
 
         /// <summary>The current full type name for a saved pre-rename one, or null when the name is not ours-and-old.</summary>
         public static string MapTypeName(string typeName)

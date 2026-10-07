@@ -47,6 +47,7 @@ namespace RimMandrake.GimmeSomeSlack
                 if (p.def.plant != null && p.def.plant.IsTree) world.SetExtraCost(C(p.Position), 1.5f);
 
             var transmitterBuildings = new List<CompPower>();
+            var transmitterMachines = new Dictionary<Thing, MachineInfo>();
             var connectors = new List<CompPower>();
             foreach (PowerNet net in map.powerNetManager.AllNetsListForReading)
             {
@@ -79,21 +80,34 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(th))
                     if (world.IsConduit(C(adj)) && !m.Hookups.Contains(C(adj))) m.Hookups.Add(C(adj));
                 SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
+                transmitterMachines[th] = m;
                 if (m.Hookups.Count > 0) world.Machines.Add(m);
             }
             // connectors (consumers, generators, lamps, batteries wired by a hookup)
             foreach (CompPower c in connectors)
             {
                 CompPower parent = c.connectParent;
-                if (parent?.parent == null || !ConduitVisuals.IsTarget(parent.parent.def)) continue;
+                // GPT source read 2026-10-06 B9 (owner decision by question card 2026-10-06: draw a cord like any other
+                // connection): a device wired to our conduit hooks that conduit cell; a device wired straight
+                // to a battery, switch or other transmitter building links to that building's node. Only an aerial anchor keeps
+                // its drop wire (RM_MapComponent_Aerial.DrawLocalDrops), the same rule Patch_PrintWirePieceConnecting applies.
+                Thing pt = parent?.parent;
+                if (pt == null || !pt.Spawned) continue;
+                HookupDraw how = ConduitVisuals.HookupTo(pt);
+                if (how == HookupDraw.PatchCable) continue;
                 Thing th = c.parent;
                 var m = new MachineInfo { Id = "c" + th.thingIDNumber, Kind = KindOf(c, false) };
                 CellRect r = th.OccupiedRect();
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
-                m.Hookups.Add(C(parent.parent.Position));
                 ArtInsets(th.def, m);
                 SetWallHome(th, m);
-                world.Machines.Add(m);
+                if (how == HookupDraw.ConduitCell)
+                {
+                    if (!world.IsConduit(C(pt.Position))) continue;     // a fogged conduit cell is not in the snapshot
+                    m.Hookups.Add(C(pt.Position));
+                    world.Machines.Add(m);
+                }
+                else if (transmitterMachines.TryGetValue(pt, out MachineInfo tm)) CordWorldLinks.LinkToMachine(world, m, tm);
             }
             AddTapNodes(map, world);
             return world;

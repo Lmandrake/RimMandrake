@@ -60,14 +60,16 @@ looks board (`gss_states`) to show.
 **Fixed** (offline checks: `SelfTest/GptReadFixChecks.cs`, the fuzz in `SelfTest/GssFuzz.cs`, and `validation.py` row
 `O7_gpt_read_fixes` for the Verse-bound halves): B1, B2, B3, B4, B5 (owner decision by question card: straight lead-out, see
 `gss_offline_fuzz_B.md`), B6 (the unchecked 0.5 blend is gone; the lead-out is wall-checked), B7/A13, B8, B10, B11, B12, B13,
-B14, A1, A2, A4, A5, A6, A8, A10, A15, A17, A18, A19, A20. None of these has been run live yet.
+B14, A1, A2, A4, A5, A6, A8, A10, A15, A17, A18, A19, A20. None of these has been run live yet. Followed on 2026-10-06 by B9 (owner decision by question card: a device
+wired to a battery or other transmitter building gets a cord like any other connection) and A12/B15 (owner decision by question
+card: the setting is renamed `loopBudget`, "Loop budget", and the old saved key is read once on load).
 
 **Not changed, and why:**
-- B9: a device wired to a battery or switch gets a drawn cable. The B24 hookup patch prints it as the look's straight cable,
-  not as a messy cord. Whether it should be a messy cord is a design call.
-- A12/B15 (`sprawlCap` does not cap cord length): an open design question in `gss_offline_fuzz_B.md`.
-- A7 (unroutable cords still drawn): hiding them would show a powered conduit run with a gap in it. What to draw instead is a
-  design call.
+- A7 (unroutable cords still drawn): classified 2026-10-06, not changed yet. 0 unroutable in 43,270 fuzz worlds and 0 in every
+  live record. On random bases using vanilla's hookup rule (nearest conduit within 6 cells, no wall test) there are 221 in
+  5,670 leads. None crosses a wall with conduit in it (that case already draws as a stub, a hidden run, then a stub). 11 cross
+  water. 121 cross a wall that has conduit elsewhere. 89 cross a wall with no conduit anywhere. Diagrams and the verdict on the
+  owner's dive-in/dive-out model are in `Transient/gss_unroutable_examples_2026-10-06/README.md`. Waiting on his ruling.
 - A3 (unseeded `Rand` in the style preview and in the sparks): the preview picks a random colour by design. The sparks are
   cosmetic flecks, which vanilla also throws with `Rand`. This only matters for multiplayer sync, which this pass did not cover.
 - A16 (grouped gizmos): checked against the decompiled 1.6 `GizmoGridDrawer`. Each grouped `Command_Action` does run once per

@@ -6,6 +6,9 @@ using Verse;
 
 namespace RimMandrake.GimmeSomeSlack
 {
+    /// <summary>Who draws a machine's hookup wire (ConduitVisuals.HookupTo).</summary>
+    public enum HookupDraw { ConduitCell, MachineLink, PatchCable }
+
     /// <summary>
     /// Makes the conduit itself invisible (design §1-§2, §8.1) and gives it back when the master
     /// switch is off.
@@ -52,6 +55,20 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         public static bool IsTarget(ThingDef d) => d != null && targets.Contains(d);
+
+        /// <summary>How a machine's hookup to this parent transmitter is drawn (GPT source read 2026-10-06 B9). The cord graph
+        /// (CordWorldAdapter) and the vanilla wire patch (Patch_PrintWirePieceConnecting) both ask this, so a hookup is drawn
+        /// once: a messy cord to our conduit cell or to a transmitter building's node, else Patch_PrintWirePieceConnecting's own
+        /// handling (an aerial anchor's drop wire, or the look's printed cable).</summary>
+        public static HookupDraw HookupTo(Thing parent)
+        {
+            if (parent == null) return HookupDraw.PatchCable;
+            if (IsTarget(parent.def)) return HookupDraw.ConduitCell;
+            // hidden / untagged conduit (never drawn) and aerial anchors (drop wires) keep what they had
+            if (IsOtherConduit(parent.def) || Aerial.CompAerialAnchor.Of(parent) != null) return HookupDraw.PatchCable;
+            CompPower pc = parent.TryGetComp<CompPower>();
+            return pc != null && pc.TransmitsPowerNow ? HookupDraw.MachineLink : HookupDraw.PatchCable;
+        }
 
         /// <summary>Hidden or untagged conduit: carries connectivity, never drawn.</summary>
         public static bool IsOtherConduit(ThingDef d) =>
@@ -145,7 +162,8 @@ namespace RimMandrake.GimmeSomeSlack
                 return true;
             }
             if (!GimmeSomeSlackSettings.enabled || !GimmeSomeSlackSettings.hideHookupWires) return true;
-            if (B != null && ConduitVisuals.IsTarget(B.def))
+            // the cord graph draws this hookup (to our conduit, or B9: to a battery / switch / other transmitter building)
+            if (B != null && (ConduitVisuals.IsTarget(B.def) || ConduitVisuals.HookupTo(B) == HookupDraw.MachineLink))
             {
                 ConduitVisuals.HookupWiresSuppressed++;
                 return false;

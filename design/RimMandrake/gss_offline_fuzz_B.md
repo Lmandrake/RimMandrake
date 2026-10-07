@@ -53,7 +53,8 @@ Measured at the default case counts, 2026-10-06. Reproduce with `--fuzz-only hos
 C1 is a trade-off, not an oversight: raising the margin to 7 clears every case but breaks the shipped check "unrelated edit re-plans only
 the touched edge" (planned 3, reused 11), so it was not changed. Whether stale-until-next-edit is acceptable is a design call.
 
-**Not a defect, but a design question.** `sprawlCap` (`LayParams.MaxExtra`, 2-40) does not cap a cord's length: a cord with `MaxExtra` 2 lays
+**Resolved 2026-10-06 by renaming the setting (owner decision by question card, A12/B15).** The setting now called `loopBudget`
+("Loop budget", `LayParams.MaxExtra`, 2-40) caps the cord spent on loops and heaps, not a cord's length: a cord with `MaxExtra` 2 lays
 2-5x its path because the excursions are outside the budget (seed 141: 1-cell lead to a lamp, `MaxExtra` 2, lays 10.9 cells). The
 assertion above follows the code, not the setting's name.
 
