@@ -99,8 +99,22 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public static bool TryFindFillCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
             float maxDist = 60f, RM_ContainerSize size = RM_ContainerSize.Bottle)
         {
+            string unused;
             return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true,
-                requireFreshWaterOnly: false, size: size);
+                requireFreshWaterOnly: false, size: size, container: null, refusal: out unused);
+        }
+
+        /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: the fill search for one real container, skipping
+        /// every liquid its material refuses (a leather bottle walks past boiling water to the fresh
+        /// pool behind it). When nothing it may hold is in reach but something it refuses is,
+        /// <paramref name="refusal"/> says why, for JobFailReason.</summary>
+        public static bool TryFindFillCell(Pawn pawn, Thing container, out IntVec3 cell, out LiquidDef liquid,
+            out string refusal, float maxDist = 60f)
+        {
+            RM_ContainerSize size = container?.def.GetModExtension<RM_BottledLiquidExtension>()?.size
+                ?? RM_ContainerSize.Bottle;
+            return TryFindLiquidCell(pawn, out cell, out liquid, maxDist, requireBottled: true,
+                requireFreshWaterOnly: false, size: size, container: container, refusal: out refusal);
         }
 
         /// <summary>The liquid-agnostic EMPTY ThingDef for a given container
@@ -164,14 +178,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public static bool TryFindWashCell(Pawn pawn, out IntVec3 cell, float maxDist = 60f)
         {
             LiquidDef unused;
-            return TryFindLiquidCell(pawn, out cell, out unused, maxDist, requireBottled: false, requireFreshWaterOnly: true);
+            string unusedRefusal;
+            return TryFindLiquidCell(pawn, out cell, out unused, maxDist, requireBottled: false,
+                requireFreshWaterOnly: true, size: RM_ContainerSize.Bottle, container: null, refusal: out unusedRefusal);
         }
 
         private static bool TryFindLiquidCell(Pawn pawn, out IntVec3 cell, out LiquidDef liquid,
-            float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size = RM_ContainerSize.Bottle)
+            float maxDist, bool requireBottled, bool requireFreshWaterOnly, RM_ContainerSize size,
+            Thing container, out string refusal)
         {
             cell = IntVec3.Invalid;
             liquid = null;
+            refusal = null;
             Map map = pawn?.Map;
             if (map == null)
             {
@@ -200,12 +218,24 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     continue;
                 }
+                bool refused = container != null && !RM_ContainerMaterials.CanHold(container, candidate);
+                if (refused && refusal != null)
+                {
+                    continue;
+                }
                 if (c.IsForbidden(pawn) || !pawn.CanReach(c, PathEndMode.Touch, Danger.Some))
                 {
                     continue;
                 }
+                if (refused)
+                {
+                    // Reachable, but this material cannot hold it: remember why, keep looking.
+                    refusal = RM_ContainerMaterials.RefusalReason(container, candidate);
+                    continue;
+                }
                 cell = c;
                 liquid = candidate;
+                refusal = null;
                 return true;
             }
             return false;

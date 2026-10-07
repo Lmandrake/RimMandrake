@@ -924,6 +924,8 @@ LIQUID_DEF_ROWS = {
         "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
         "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
         "distillable": True,
+        # FLOWWORKS_CONTAINER_MATERIALS_1 (card 2026-10-06 23:45): leather containers refuse hot liquids.
+        "hot": True,
         # revertsTo/revertTicks: bottled boiling water cools to fresh. Read by
         # RM_CompLiquidRevert (injected per container size at startup by
         # RM_LiquidRevertInjector). 2500 ticks = one in-game hour: PROVISIONAL.
@@ -1300,6 +1302,8 @@ def build_liquiddef_xml(row):
         lines.append(f"    <igniteTemp>{row['igniteTemp']}</igniteTemp>")
     if row.get("distillable"):
         lines.append("    <distillable>true</distillable>")
+    if row.get("hot"):
+        lines.append("    <hot>true</hot>")
 
     suite = row.get("terrainSuite")
     if suite:

@@ -33,7 +33,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return false;
             }
-            int units = ext.liquid.UnitsFor(ext.size);
+            int units = RM_ContainerMaterials.UnitsIn(t, ext.liquid, ext.size);
             Building_LiquidTank tank;
             return RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, out tank);
         }
@@ -45,7 +45,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return null;
             }
-            int units = ext.liquid.UnitsFor(ext.size);
+            int units = RM_ContainerMaterials.UnitsIn(t, ext.liquid, ext.size);
             Building_LiquidTank tank;
             if (!RM_LiquidTankUtility.TryFindTankToFill(pawn, ext.liquid, units, out tank))
             {

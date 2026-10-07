@@ -37,6 +37,7 @@
 using System;
 using System.Collections.Generic;
 using RimMandrake.FlowWorks;
+using RimMandrake.FlowWorks.LiquidTypes;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -1350,6 +1351,71 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_WallFaceMath.ScorchDarken(0f), 1f, "no scorch, no darkening");
             });
 
+            // ═══════════ FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (card 2026-10-06 23:45) ══
+            // The production rules file plus the SHIPPED XML numbers, read from the mod's own Defs.
+            Case("ContainerMat_classify_stuff", () =>
+            {
+                Assert(RM_ContainerMaterialMath.Classify("Plasteel", new[] { "Metallic" }) == RM_ContainerMaterial.Plasteel, "plasteel is its own material");
+                Assert(RM_ContainerMaterialMath.Classify("Steel", new[] { "Metallic" }) == RM_ContainerMaterial.Metal, "steel is metal");
+                Assert(RM_ContainerMaterialMath.Classify("BlocksGranite", new[] { "Stony" }) == RM_ContainerMaterial.Glass, "any stone is glass");
+                Assert(RM_ContainerMaterialMath.Classify("Leather_Plain", new[] { "Leathery" }) == RM_ContainerMaterial.Leather, "leather");
+                Assert(RM_ContainerMaterialMath.Classify("WoodLog", new[] { "Woody" }) == RM_ContainerMaterial.Wood, "wood");
+                Assert(RM_ContainerMaterialMath.Classify(null, null) == RM_ContainerMaterial.Unknown, "no stuff = unknown");
+            });
+            Case("ContainerMat_registry_hot_and_acid_flags", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                Assert(liq["RM_Liquid_BoilingWater"].hot, "boiling water is hot");
+                Assert(!liq["RM_Liquid_FreshWater"].hot && !liq["RM_Liquid_FreshWater"].acid, "fresh water is neither");
+                Assert(liq["RM_Liquid_AcidWater"].acid, "acid water is acid");
+                Assert(!liq["RM_Liquid_IcyWater"].hot && !liq["RM_Liquid_IcyWater"].acid, "icy water is neither");
+                Assert(!liq["RM_Liquid_Tar"].acid && !liq["RM_Liquid_Brine"].acid, "tar and brine are not acid");
+            });
+            Case("ContainerMat_leather_refuses_hot_and_acid_every_size", () =>
+            {
+                var liq = ContainerMatFixture.Liquids();
+                foreach (string fam in new[] { "RM_BottleItemBase", "RM_BucketItemBase" })
+                {
+                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), RM_ContainerMaterial.Leather);
+                    Assert(rule != null, fam + " ships a leather rule");
+                    var boil = liq["RM_Liquid_BoilingWater"]; var acid = liq["RM_Liquid_AcidWater"]; var fresh = liq["RM_Liquid_FreshWater"];
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, boil.hot, boil.acid) == RM_HoldRefusal.Hot, fam + " leather refuses boiling water (Hot)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, acid.hot, acid.acid) == RM_HoldRefusal.Acid, fam + " leather refuses acid (Acid)");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, fresh.hot, fresh.acid) == RM_HoldRefusal.None, fam + " leather holds fresh water");
+                }
+            });
+            Case("ContainerMat_glass_and_metal_hold_hot_and_acid", () =>
+            {
+                foreach (var (fam, mat) in new[] { ("RM_BottleItemBase", RM_ContainerMaterial.Glass), ("RM_BottleItemBase", RM_ContainerMaterial.Metal),
+                                                   ("RM_BucketItemBase", RM_ContainerMaterial.Metal), ("RM_BarrelItemBase", RM_ContainerMaterial.Metal),
+                                                   ("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel) })
+                {
+                    var rule = RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), mat);
+                    Assert(rule != null, fam + " ships a " + mat + " rule");
+                    Assert(RM_ContainerMaterialMath.CanHold(rule, true, true) == RM_HoldRefusal.None, fam + " " + mat + " holds hot acid");
+                }
+                Assert(RM_ContainerMaterialMath.CanHold(null, true, true) == RM_HoldRefusal.None, "an unlisted material (no rule) holds anything");
+            });
+            Case("ContainerMat_capacity_shipped_numbers", () =>
+            {
+                int U(string fam, RM_ContainerMaterial m, int baseUnits) =>
+                    RM_ContainerMaterialMath.ScaledUnits(baseUnits, RM_ContainerMaterialMath.RuleFor(ContainerMatFixture.Rules(fam), m).capacityFactor);
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Wood, 25) == 25, "wood barrel 25");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25) == 30, "metal barrel 30");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) == 40, "plasteel barrel 40");
+                Assert(U("RM_BarrelItemBase", RM_ContainerMaterial.Plasteel, 25) > U("RM_BarrelItemBase", RM_ContainerMaterial.Metal, 25), "plasteel barrels hold more");
+                Assert(U("RM_BucketItemBase", RM_ContainerMaterial.Wood, 5) == 5 && U("RM_BucketItemBase", RM_ContainerMaterial.Metal, 5) == 6
+                    && U("RM_BucketItemBase", RM_ContainerMaterial.Leather, 5) == 4, "buckets wood 5 / metal 6 / leather 4");
+                foreach (var m in new[] { RM_ContainerMaterial.Leather, RM_ContainerMaterial.Glass, RM_ContainerMaterial.Metal })
+                    Assert(U("RM_BottleItemBase", m, 1) == 1, "every bottle holds 1");
+            });
+            Case("ContainerMat_scaled_units_rounding", () =>
+            {
+                Assert(RM_ContainerMaterialMath.ScaledUnits(1, 0.5f) == 1, "never below 1");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(1, 1.49f) == 1 && RM_ContainerMaterialMath.ScaledUnits(1, 1.5f) == 2, "half rounds away from zero");
+                Assert(RM_ContainerMaterialMath.ScaledUnits(0, 2f) == 0, "no base, no units");
+            });
+
             // ═══════════ Approach B: generated action sequences (design/RimMandrake/flowworks_offline_kernel_B.md) ══
             // Timing is a first-class output: each family prints its case count, step count and seconds.
             var fuzzClock = System.Diagnostics.Stopwatch.StartNew();
@@ -1386,6 +1452,56 @@ namespace RimMandrake.FlowWorks.SelfTest
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
+        }
+    }
+
+    /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: reads the mod's SHIPPED XML (not a copy) so the
+    /// selftest asserts the numbers the game loads.</summary>
+    internal static class ContainerMatFixture
+    {
+        private static string defsRoot;
+
+        private static string DefsRoot()
+        {
+            if (defsRoot != null) return defsRoot;
+            var dir = new System.IO.DirectoryInfo(AppContext.BaseDirectory);
+            while (dir != null && !System.IO.Directory.Exists(System.IO.Path.Combine(dir.FullName, "Defs", "LiquidTypes")))
+                dir = dir.Parent;
+            if (dir == null) throw new Exception("could not find FlowWorks Defs/LiquidTypes above " + AppContext.BaseDirectory);
+            return defsRoot = System.IO.Path.Combine(dir.FullName, "Defs", "LiquidTypes");
+        }
+
+        public static Dictionary<string, (bool hot, bool acid)> Liquids()
+        {
+            var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(DefsRoot(), "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+            var result = new Dictionary<string, (bool hot, bool acid)>();
+            foreach (var d in doc.Root.Elements("RimMandrake.FlowWorks.LiquidTypes.LiquidDef"))
+            {
+                string V(string n) => (string)d.Element(n);
+                bool acidBurn = d.Descendants("damageDef").Any(e => e.Value == "AcidBurn");
+                float pH = V("pH") != null ? float.Parse(V("pH"), System.Globalization.CultureInfo.InvariantCulture) : 7f;
+                result[V("defName")] = (V("hot") == "true",
+                    RM_ContainerMaterialMath.IsAcid(pH, V("corrodesApparel") == "true", acidBurn));
+            }
+            return result;
+        }
+
+        public static List<RM_ContainerMaterialRule> Rules(string baseName)
+        {
+            var doc = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(DefsRoot(), "ThingDefs", "RM_LiquidBottles_Base.xml"));
+            var def = doc.Root.Elements("ThingDef").First(e => (string)e.Attribute("Name") == baseName);
+            var list = new List<RM_ContainerMaterialRule>();
+            foreach (var li in def.Descendants("materials").SelectMany(m => m.Elements("li")))
+            {
+                list.Add(new RM_ContainerMaterialRule
+                {
+                    material = (RM_ContainerMaterial)Enum.Parse(typeof(RM_ContainerMaterial), (string)li.Element("material")),
+                    capacityFactor = float.Parse((string)li.Element("capacityFactor"), System.Globalization.CultureInfo.InvariantCulture),
+                    holdsHot = (string)li.Element("holdsHot") != "false",
+                    holdsAcid = (string)li.Element("holdsAcid") != "false",
+                });
+            }
+            return list;
         }
     }
 }

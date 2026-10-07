@@ -101,6 +101,7 @@
     <viscosityClass>Water</viscosityClass>
     <pH>7</pH>
     <distillable>true</distillable>
+    <hot>true</hot>
     <terrainSuite>
       <shallow>RM_WaterBoilingShallow</shallow>
       <deep>RM_WaterBoilingDeep</deep>

@@ -28,6 +28,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public static bool TryFindTankToDrain(Pawn pawn, RM_ContainerSize size,
             out Building_LiquidTank tank, out LiquidDef liquid, float maxDist = 60f)
         {
+            string unused;
+            return TryFindTankToDrain(pawn, null, size, out tank, out liquid, out unused, maxDist);
+        }
+
+        /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: drain search for one real container -- skips a
+        /// tank whose liquid the container's material refuses (reporting why in
+        /// <paramref name="refusal"/> when that is the only reason nothing was found), and asks for
+        /// the container's material-scaled units rather than the size's base units.</summary>
+        public static bool TryFindTankToDrain(Pawn pawn, Thing container, RM_ContainerSize size,
+            out Building_LiquidTank tank, out LiquidDef liquid, out string refusal, float maxDist = 60f)
+        {
+            string why = null;
             // Bug fixed here: this used to capture `candidate.storedLiquid` into a
             // closure variable every time the predicate returned true, including
             // for candidates later rejected by TryFindTank's own distance/reach/
@@ -48,10 +60,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return false;
                 }
-                int units = candidate.storedLiquid.UnitsFor(size);
+                if (container != null && !RM_ContainerMaterials.CanHold(container, candidate.storedLiquid))
+                {
+                    if (why == null)
+                    {
+                        why = RM_ContainerMaterials.RefusalReason(container, candidate.storedLiquid);
+                    }
+                    return false;
+                }
+                int units = container != null
+                    ? RM_ContainerMaterials.UnitsIn(container, candidate.storedLiquid, size)
+                    : candidate.storedLiquid.UnitsFor(size);
                 return candidate.CanProvide(units);
             });
             liquid = found ? tank.storedLiquid : null;
+            refusal = found ? null : why;
             return found;
         }
 

@@ -110,6 +110,22 @@
       <li>Stony</li>
       <li>Metallic</li>
     </stuffCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (decision taken by question card
+         2026-10-06 23:45): the material changes what this container holds.
+         A bottle is 1 unit, so every factor here stays 1.0: the smallest step that changes a bottle is 1.5.
+         capacityFactor multiplies the liquid's units per container (rounded, min 1);
+         holdsHot=false refuses a LiquidDef with hot=true (boiling water);
+         holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
+        <materials>
+          <li><material>Leather</material><capacityFactor>1.0</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
+          <li><material>Glass</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+        </materials>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
@@ -174,6 +190,22 @@
       <li>Metallic</li>
       <li>Leathery</li>
     </stuffCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (decision taken by question card
+         2026-10-06 23:45): the material changes what this container holds.
+         Bucket base 5 units: wood 5, metal 6, leather 4.
+         capacityFactor multiplies the liquid's units per container (rounded, min 1);
+         holdsHot=false refuses a LiquidDef with hot=true (boiling water);
+         holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
+        <materials>
+          <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Leather</material><capacityFactor>0.8</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
+        </materials>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="RM_BucketItemBase">
@@ -240,6 +272,22 @@
       <li>Woody</li>
       <li>Metallic</li>
     </stuffCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 ruling 2 (decision taken by question card
+         2026-10-06 23:45): the material changes what this container holds.
+         Barrel base 25 units: wood 25, metal 30, plasteel 40.
+         capacityFactor multiplies the liquid's units per container (rounded, min 1);
+         holdsHot=false refuses a LiquidDef with hot=true (boiling water);
+         holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
+        <materials>
+          <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Plasteel</material><capacityFactor>1.6</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+        </materials>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">

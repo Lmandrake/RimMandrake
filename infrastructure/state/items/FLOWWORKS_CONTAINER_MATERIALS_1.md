@@ -40,6 +40,24 @@ art must be a neutral greyscale silhouette per container.
 4. The contained LIQUID's colour shows on a filled container; an empty one shows its material colour.
 
 
+## material rules (ruling 2, built)
+
+Data: `RM_ContainerMaterialsExtension` on RM_BottleItemBase / RM_BucketItemBase / RM_BarrelItemBase
+(`Defs/LiquidTypes/ThingDefs/RM_LiquidBottles_Base.xml`); logic: `Source/LiquidTypes/RM_ContainerMaterialMath.cs`
+(Verse-free, selftested against the shipped XML) and `RM_ContainerMaterials.cs`.
+
+| container | material | units (base x factor) | hot | acid |
+|---|---|---|---|---|
+| bottle (1) | leather / glass / metal | 1 / 1 / 1 (a 1-unit bottle only moves at factor >= 1.5) | refuse / ok / ok | refuse / ok / ok |
+| bucket (5) | wood / metal / leather | 5 / 6 / 4 | ok / ok / refuse | ok / ok / refuse |
+| barrel (25) | wood / metal / plasteel | 25 / 30 / 40 | ok | ok |
+
+Hot = `LiquidDef.hot` (boiling water; generator row flag). Acid = corrodes apparel, AcidBurn damage, or pH <= 4
+(acid water; reaction liquor and red slime have no bottled form). Enforced in the terrain fill search (skips refused
+liquids, `JobFailReason` names why), the tank drain search (same), and both fill JobDrivers (message, container kept).
+Capacity scales every tank pour/draw (`RM_ContainerMaterials.UnitsIn`). Drinking is unchanged: nutrition is per def.
+Wooden containers holding hot/acid were not ruled on; they hold both (one XML flag to change).
+
 ## art
 
 Greyscale, stuff-tintable regen jobs for RM_Bottle and RM_Barrel (not the held glass

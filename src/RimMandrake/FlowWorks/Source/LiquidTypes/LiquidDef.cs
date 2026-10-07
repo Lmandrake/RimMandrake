@@ -49,6 +49,20 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// unaffected until a generator table opts it in by data.</summary>
         public bool distillable;
 
+        /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: held hot (boiling water). A leather container
+        /// refuses it. A property flag like <see cref="flammable"/>, not a form slot.</summary>
+        public bool hot;
+
+        /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: acid for container purposes -- corrodes apparel,
+        /// burns with AcidBurn, or pH 4 and below (RM_ContainerMaterialMath.IsAcid).</summary>
+        public bool IsAcid => RM_ContainerMaterialMath.IsAcid(pH, corrodesApparel,
+            IsAcidBurn(damageOnContact) || IsAcidBurn(damageOnImmersion));
+
+        private static bool IsAcidBurn(LiquidDamageSpec spec)
+        {
+            return spec?.damageDef != null && spec.damageDef.defName == "AcidBurn";
+        }
+
         /// <summary>Tint for generated art, flecks and bottle fill.</summary>
         public Color color = Color.white;
 

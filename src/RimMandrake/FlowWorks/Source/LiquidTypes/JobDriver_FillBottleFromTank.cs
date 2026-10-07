@@ -51,8 +51,16 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 RM_BottledLiquidExtension ext = carried.def.GetModExtension<RM_BottledLiquidExtension>();
                 RM_ContainerSize size = ext?.size ?? RM_ContainerSize.Bottle;
                 LiquidDef liquid = tank.storedLiquid;
+                string refusal = RM_ContainerMaterials.RefusalReason(carried, liquid);
+                if (refusal != null)
+                {
+                    // FLOWWORKS_CONTAINER_MATERIALS_1: the tank switched to a liquid this
+                    // material refuses. Say so; keep the container.
+                    Messages.Message(refusal, pawn, MessageTypeDefOf.RejectInput, false);
+                    return;
+                }
                 ThingDef filledDef = liquid.bottled?.FilledDefFor(size);
-                int units = liquid.UnitsFor(size);
+                int units = RM_ContainerMaterials.UnitsIn(carried, liquid, size);
                 if (filledDef == null || !tank.TryRemoveLiquid(units))
                 {
                     // The tank ran dry, or holds a liquid with no form at
