@@ -86,11 +86,10 @@ OVERRIDES = {
              "PsychicSuppression and VEE_* donor rows), so none is in src/. They are UNMEASURED offline by construction; "
              "VEE_* only exist if that donor is loaded."),
     ("GRAVSHIP_ACOUSTIC_SCANNER_1", "A1"): dict(
-        defect="Item says a payload in EVERY biome; src/ has the RM_AcousticPayloadExtension patched onto only 3 BiomeDefs (RM_FloodedCanyon, RM_Stillsand, RUT_CrackedLands). A1 resolves; the every-biome claim is unbuilt.",
         defs=["ThingDef/RM_AcousticSounder", "ResearchProjectDef/RM_AcousticSounding",
               "BiomeDef/RM_FloodedCanyon", "BiomeDef/RM_Stillsand", "BiomeDef/RUT_CrackedLands"],
-        note="The payload extension is patched onto exactly three BiomeDefs (FloodedCanyon, Stillsand, CrackedLands). The item says "
-             "'a per-biome payload in EVERY biome'; only three biomes carry one. That gap is a build fact for A2/A3, see BUILD DEFECTS."),
+        note="Every BiomeDef defined in src/ (62) carries the payload extension by a FindMod-guarded patch; "
+             "AcousticScanner/validation.py static_checks fails on any owned BiomeDef without one. The three listed are the live-probe biomes."),
     ("THE_SUMP_FIRST_SCRIPT_1", "A2"): dict(
         defect="A2's premise ('35 DEPLOY_HOLD held defs') is stale: all TheSump holds were lifted 2026-10-03, so 0 defs are held now. Not a missing def; the criterion needs re-wording.",
         files=["src/RimMandrake/TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml",

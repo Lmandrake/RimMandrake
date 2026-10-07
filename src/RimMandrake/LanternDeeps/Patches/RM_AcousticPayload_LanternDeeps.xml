@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_LanternDeeps.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_LanternDeeps"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The crystal sings the pulse back clean. Every note is the one you sent.</quietText>
+          <targets>
+            <li>
+              <label>shard-mind</label>
+              <reading>One deep note the pulse did not make, perfectly in tune, from a single great crystal.</reading>
+              <color>(0.55, 0.65, 1)</color>
+              <weight>3</weight>
+              <thingDefs>
+                <li>RM_ShardMind</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>dead machine</label>
+              <reading>A hard, square echo with hollow chambers inside: a machine, long dead.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_WorkingDead</li>
+                <li>RM_LanternDeepMineshaft</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>geode</label>
+              <reading>A bright ringing crack: lanternstone pushing up through the floor.</reading>
+              <color>(0.4, 0.8, 1)</color>
+              <thingDefs>
+                <li>RM_LanternDeepEmergence</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>the Creep</label>
+              <reading>A fine, dry crackle spreading over a wall: tiny crystal facets, a lot of them.</reading>
+              <color>(0.6, 0.7, 0.85)</color>
+              <thingDefs>
+                <li>RM_CreepCrust</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>unopened void</label>
+              <reading>The pulse drops into another void past the wall, and it hums.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_WeepingStones.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_WeepingStones"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Dry stone and wet seep, the same pale rock all the way down.</quietText>
+          <targets>
+            <li>
+              <label>ancient condenser</label>
+              <reading>A square machine echo in the rock, with water moving through it.</reading>
+              <color>(0.45, 0.8, 1)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_AncientCondenserPlant</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>breathing vent</label>
+              <reading>A soft rush of warm air through a crack, in and out.</reading>
+              <color>(1, 0.8, 0.5)</color>
+              <thingDefs>
+                <li>RM_Steamfrond</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>seep curtain</label>
+              <reading>Wet, dripping echoes on a shaded face: water coming out of the stone.</reading>
+              <color>(0.45, 0.9, 0.85)</color>
+              <thingDefs>
+                <li>RM_Dripfringe</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>cistern</label>
+              <reading>The echo drops into a cool hollow in the stone, and it sounds wet.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_GreySea, RM_TheScald, RM_TwilightSea, RM_TheChill, RM_ChillCrater.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_GreySea"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Brine and salt, heavy and still. The pulse comes back muffled, and nothing in it moved.</quietText>
+          <targets>
+            <li>
+              <label>something caught in the salt</label>
+              <reading>A shape inside a block of salt that rings wrong, as if it was once alive.</reading>
+              <color>(1, 0.6, 0.45)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_BrineJacket</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>great salt crystals</label>
+              <reading>Clean, high crystal notes from the deep floor.</reading>
+              <color>(0.95, 0.8, 1)</color>
+              <thingDefs>
+                <li>RM_GreatSaltCrystal_White</li>
+                <li>RM_GreatSaltCrystal_Pink</li>
+                <li>RM_GreatSaltCrystal_Violet</li>
+                <li>RM_GreatSaltCrystal_Amber</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>salt chimney</label>
+              <reading>A slow plume of heavy brine sinking out of a tower of salt.</reading>
+              <color>(0.85, 0.9, 1)</color>
+              <thingDefs>
+                <li>RM_SaltChimney</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something vast and slow</label>
+              <reading>A huge, slow body with a whole reef growing on it.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_Reefback</li>
+              </pawnRaces>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The boil drowns everything. Under the roar there is nothing the pulse can pick out.</quietText>
+          <targets>
+            <li>
+              <label>scald vent</label>
+              <reading>A deep pulse of steam from a vent on the shore, coming and going on its own rhythm.</reading>
+              <color>(1, 0.75, 0.35)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RUT_ScaldVent</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something walking the floor</label>
+              <reading>A hundred short heavy legs moving across the boiling floor.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_ScaldWalker</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>scalded wreck</label>
+              <reading>Metal cooked clean in the shallows, ringing thin.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RUT_ScaldWreckHull</li>
+                <li>RUT_ScaldWreckTank</li>
+                <li>RUT_ScaldWreckFrame</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>bladderboils</label>
+              <reading>Leathery sacs riding the boil, swelling and emptying.</reading>
+              <color>(1, 0.85, 0.4)</color>
+              <pawnRaces>
+                <li>RM_Bladderboil</li>
+              </pawnRaces>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Under the waveglass the water is quiet, and every light in it is telling the truth.</quietText>
+          <targets>
+            <li>
+              <label>fallen pane</label>
+              <reading>A broad flat sheet of the lid lying on the floor, still ringing from its fall.</reading>
+              <color>(0.5, 0.9, 0.85)</color>
+              <thingDefs>
+                <li>RM_VeilPane</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>skylight</label>
+              <reading>A thin place in the lid overhead, where the pulse leaks out.</reading>
+              <color>(1, 0.9, 0.5)</color>
+              <thingDefs>
+                <li>RM_Skylight</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something very big in the dark</label>
+              <reading>A body as long as a hull, moving slowly at the edge of the light.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_GrippingTerror</li>
+                <li>RM_Lanternwhale</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>a light that lies</label>
+              <reading>One gold light answers the pulse a moment too late. Lamps do not do that.</reading>
+              <color>(1, 0.55, 0.3)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Vaulisk</li>
+              </pawnRaces>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_TheChill"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Cold fuel, black and still. The pulse sinks into it and nothing answers.</quietText>
+          <targets>
+            <li>
+              <label>stonewater</label>
+              <reading>A hard, bone-white ring on the floor: water, frozen hard as granite.</reading>
+              <color>(0.6, 0.85, 1)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_Stonewater</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something cutting a wake</label>
+              <reading>A long body moving fast and low just under the surface.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_Vaunoom</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>wax colony</label>
+              <reading>A slow file of heavy waxy bodies crossing the floor, eating.</reading>
+              <color>(0.95, 0.9, 0.6)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Hesuun</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>eldspar garden</label>
+              <reading>A fine, high crystal ringing from the deep floor.</reading>
+              <color>(0.8, 0.75, 1)</color>
+              <thingDefs>
+                <li>RM_Eldspar</li>
+              </thingDefs>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_ChillCrater"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>One cracked pane of black glass all the way down. Nothing under it survived.</quietText>
+          <targets>
+            <li>
+              <label>buried machinery</label>
+              <reading>A broken ring of pipe under the glass, and old fittings around it.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_ReturnGalleryHub</li>
+                <li>RM_ReturnGalleryLocker</li>
+                <li>RM_GalleryPipe</li>
+                <li>RM_GalleryBreak</li>
+                <li>RM_GalleryOutlet</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>conductor</label>
+              <reading>A long black conductor running through the ice and out of sight.</reading>
+              <color>(0.75, 0.85, 1)</color>
+              <thingDefs>
+                <li>RM_ReturnCombBusbar</li>
+                <li>RM_ReturnCombStud</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>void under the glass</label>
+              <reading>The echo falls into a pocket under the glass pane.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
