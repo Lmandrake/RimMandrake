@@ -1,0 +1,10 @@
+22:28:04 fresh quicktest map
+22:28:10 calm world (peaceful=True)
+22:28:26 cleared
+22:29:15 visuals: 39 stations placed
+22:30:04 gallery: 51 stations placed
+22:30:12 visuals verified: 39 of 39 stations as built
+22:30:20 gallery verified: 51 of 51 stations as built
+22:30:20 DONE in 136.5s; visuals 39, gallery 51; 1 notes (Transient/fw_review_map_verify.json)
+save RM_fw_review_20261006_2226: ok=True new=['RM_fw_review_20261006_2226.rws'] changed=[] gone=[]
+key sheet -> \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\src\RimMandrake\FlowWorks\northstar\review\map
