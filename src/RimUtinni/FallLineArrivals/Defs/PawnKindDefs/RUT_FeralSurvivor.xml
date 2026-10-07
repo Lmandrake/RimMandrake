@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 (fall_line.md §8b "normally sentient races gone feral"):
+     a crash survivor who has lived out on the Fall Line too long. Factionless for life (no goodwill
+     on death or capture), unarmed, in rags. Shape copied from Core's WildMan/Drifter. Arrives by the
+     Band B routes (RUT_FallSurvivor drift-in pool, wreck lurker), carries RUT_Hediff_Feral like the
+     droids so the same flee/lurk splice drives it, and on enslavement takes RUT_Hediff_FeralScar.
+     Stock Human: no new art. -->
+<Defs>
+
+  <PawnKindDef>
+    <defName>RUT_FeralSurvivor</defName>
+    <label>feral survivor</label>
+    <labelPlural>feral survivors</labelPlural>
+    <race>Human</race>
+    <combatPower>30</combatPower>
+    <itemQuality>Poor</itemQuality>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>Offworld</li>
+          <li>Pirate</li>
+        </categories>
+      </li>
+    </backstoryFilters>
+    <backstoryCryptosleepCommonality>0.1</backstoryCryptosleepCommonality>
+    <apparelTags>
+      <li>IndustrialBasic</li>
+    </apparelTags>
+    <apparelMoney>60~200</apparelMoney>
+    <apparelAllowHeadgearChance>0.2</apparelAllowHeadgearChance>
+    <apparelIgnoreSeasons>true</apparelIgnoreSeasons>
+    <gearHealthRange>0.15~0.45</gearHealthRange>
+    <chemicalAddictionChance>0.05</chemicalAddictionChance>
+    <techHediffsChance>0.05</techHediffsChance>
+    <techHediffsMoney>50~50</techHediffsMoney>
+    <techHediffsTags>
+      <li>Poor</li>
+    </techHediffsTags>
+    <initialResistanceRange>20~34</initialResistanceRange>
+    <initialWillRange>0~2</initialWillRange>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.FallLineArrivals.FeralKindExtension">
+        <scarHediff>RUT_Hediff_FeralScar</scarHediff>
+        <letterLabel>Feral survivor</letterLabel>
+        <letterLabelFromWreck>Feral survivor breaks cover</letterLabelFromWreck>
+        <driftText>Someone has drifted in off the flats: a crash survivor who has been out on the Fall Line a long time, alone, long enough to go feral. They belong to no one.</driftText>
+        <wreckText>Someone has broken from under the wreck and is running: a survivor of some older fall, ragged and half-wild, who has been living in the wreckage ever since.</wreckText>
+        <behaviourText>They will not come to you. They run from people and hide in wreckage, and fight only when cornered. Bring them down, take them prisoner, and they can be enslaved, but what the Fall Line did to their mind never fully leaves.</behaviourText>
+      </li>
+    </modExtensions>
+  </PawnKindDef>
+
+</Defs>

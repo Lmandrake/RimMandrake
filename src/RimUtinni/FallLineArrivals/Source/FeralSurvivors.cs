@@ -26,7 +26,8 @@ namespace RimMandrake.Utinni.FallLineArrivals
     //   RUT_CompFeralLurker    on the wrecks: a share of landed wrecks hide one; it bolts the
     //                          first time a colonist comes within 25 cells (never at impact).
     //   IncidentWorker_FallSurvivor  the drift-in route from the map edge.
-    // Every pawn here is species-agnostic: the feral-races item reuses the flee/lurk pieces.
+    // Every pawn here is species-agnostic: the feral races (RUT_FeralSurvivor, FeralRaces.cs) ride
+    // the same pool, flag and splice, and differ only in the permanent scar they keep.
     // ════════════════════════════════════════════════════════════════════
 
     public class FeralOption
@@ -35,6 +36,8 @@ namespace RimMandrake.Utinni.FallLineArrivals
         public float weight = 1f;
         /// <summary>The one dangerous pull; gated by its own Mod Setting.</summary>
         public bool dangerous;
+        /// <summary>A feral RACE (§8b crash survivor), not a droid; gated by its own Mod Setting.</summary>
+        public bool feralRace;
     }
 
     /// <summary>The Band B pool, as data on RUT_FallSurvivor (plain &lt;li&gt; class, never PawnGenOption).</summary>
@@ -88,7 +91,8 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 return null;
             }
             List<FeralOption> legal = ext.options
-                .Where(o => o?.kind != null && o.weight > 0f && (!o.dangerous || FallLineArrivalsSettings.allowDestroyer))
+                .Where(o => o?.kind != null && o.weight > 0f && (!o.dangerous || FallLineArrivalsSettings.allowDestroyer)
+                    && (!o.feralRace || FallLineArrivalsSettings.feralRacesEnabled))
                 .ToList();
             return legal.Count == 0 ? null : legal.RandomElementByWeight(o => o.weight).kind;
         }
@@ -145,6 +149,15 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 droid.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.ManhunterPermanent,
                     "out on the Fall Line too long", forced: true, forceWake: true, transitionSilently: true);
             }
+            FeralKindExtension ext = kind.GetModExtension<FeralKindExtension>();
+            if (ext != null)
+            {
+                string body = (fromWreck ? ext.wreckText : ext.driftText) + "\n\n"
+                    + (attack ? "They will attack anything they see." : ext.behaviourText);
+                Find.LetterStack.ReceiveLetter(fromWreck ? ext.letterLabelFromWreck : ext.letterLabel, body,
+                    letter ?? (attack ? LetterDefOf.ThreatSmall : LetterDefOf.NeutralEvent), droid);
+                return droid;
+            }
             string what = droid.KindLabel;
             string text = fromWreck
                 ? "Something mechanical has broken from under the wreck and is running: a " + what + ", scoured to bare "
@@ -193,7 +206,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
             }
             if (!RoomForOne(map))
             {
-                return "REFUSED: map already holds " + FeralCount(map) + " feral droids";
+                return "REFUSED: map already holds " + FeralCount(map) + " feral survivors";
             }
             PawnKindDef kind = PickKind();
             if (kind == null)
@@ -221,6 +234,9 @@ namespace RimMandrake.Utinni.FallLineArrivals
             base.CompPostTickInterval(ref severityAdjustment, delta);
             if (Pawn.Faction == Faction.OfPlayer && Pawn.IsHashIntervalTick(250, delta))
             {
+                // A feral RACE keeps a permanent scar whichever way it joined (enslaved: the Harmony
+                // postfix already added it; recruited: this is where it lands). Droids carry no scar.
+                FeralScar.Apply(Pawn);
                 Pawn.health.RemoveHediff(parent);
             }
         }

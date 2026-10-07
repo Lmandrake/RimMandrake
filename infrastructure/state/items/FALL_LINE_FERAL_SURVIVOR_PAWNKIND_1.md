@@ -129,3 +129,22 @@ picker-up doesn't re-derive them:
   the same prerequisite.
 
 Blocking on `FALL_LINE_ARRIVAL_MECHANISM_1` rather than closing or forcing a fork.
+
+## FOUNDRY build, 2026-10-06 — offline half built, live proof owed
+
+The 2026-09-24 block is void: `da199b9d2` landed the species-agnostic flee/lurk splice and
+`RUT_Hediff_Feral`. Built in `src/RimUtinni/FallLineArrivals/` (uncommitted at time of writing):
+
+- `Defs/PawnKindDefs/RUT_FeralSurvivor.xml` — stock Human, factionless, unarmed, ragged
+  (WildMan/Drifter shape), `FeralKindExtension` naming the scar and its own letter text.
+- `Defs/HediffDefs/RUT_Hediff_FeralScar.xml` — permanent: plain `Hediff`, no comps, not
+  tendable, `everCurableByItem` false.
+- `Source/FeralRaces.cs` — Harmony postfix on `GenGuest.TryEnslavePrisoner` applies the scar;
+  `HediffComp_FeralClears` also applies it before clearing the flag, so a RECRUITED survivor is
+  scarred too. Droid kinds carry no extension, so their wipe stays clean.
+- Spawn route: a `feralRace` row in the `RUT_FallSurvivor` pool (weight 8), so drift-in and the
+  wreck lurker both carry it; Mod Setting `feralRacesEnabled` (default on).
+- About.xml now depends on `brrainz.harmony`.
+
+UNPROVEN (needs live): defs load clean; a survivor spawns and flees; enslaving one leaves
+`RUT_Hediff_FeralScar` on the slave after `RUT_Hediff_Feral` clears.

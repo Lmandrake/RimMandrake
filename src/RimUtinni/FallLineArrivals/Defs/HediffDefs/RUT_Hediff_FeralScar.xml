@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 (fall_line.md §8b): the feral RACES' permanent mental scar.
+     The contrast with RUT_Hediff_Feral is the whole point: a droid's feral flag is wiped clean, a
+     person's is not. Applied at the moment of conversion (Harmony postfix on
+     GenGuest.TryEnslavePrisoner; recruiting applies it too, via the feral flag clearing), never at
+     spawn. No comps, no tending, everCurableByItem false: nothing in the mod removes it. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_Hediff_FeralScar</defName>
+    <label>Fall Line scar</label>
+    <labelNoun>a Fall Line scar</labelNoun>
+    <description>Lived feral out on the Fall Line long enough that part of the mind never came back. Wary of everyone, quick to lash out, slow to trust. Unlike a droid's feral wiring, there is nothing to wipe: this stays for life.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.7, 0.45, 0.35)</defaultLabelColor>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <opinionOfOthersFactor>0.8</opinionOfOthersFactor>
+        <socialFightChanceFactor>1.5</socialFightChanceFactor>
+        <statOffsets>
+          <MentalBreakThreshold>0.05</MentalBreakThreshold>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
