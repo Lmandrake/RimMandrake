@@ -68,7 +68,7 @@
           <size>(2,2)</size>
           <rotatable>false</rotatable>
           <altitudeLayer>Building</altitudeLayer>
-          <passability>Impassable</passability>
+          <passability>PassThroughOnly</passability>
           <fillPercent>0.75</fillPercent>
           <designationCategory>Production</designationCategory>
           <statBases>
@@ -124,7 +124,7 @@
           <size>(2,2)</size>
           <rotatable>false</rotatable>
           <altitudeLayer>Building</altitudeLayer>
-          <passability>Impassable</passability>
+          <passability>PassThroughOnly</passability>
           <fillPercent>0.75</fillPercent>
           <designationCategory>Production</designationCategory>
           <statBases>
