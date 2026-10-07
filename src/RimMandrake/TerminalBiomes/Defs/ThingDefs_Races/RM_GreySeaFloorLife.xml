@@ -253,9 +253,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.06</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.38</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hessal/RM_Hessal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.38</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
