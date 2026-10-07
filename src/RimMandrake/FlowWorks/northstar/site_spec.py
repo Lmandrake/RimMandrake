@@ -41,7 +41,7 @@ SEATS = ("BENCH", "FOUNDRY")
 SETTINGS = {
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": {
         "depthEngineEnabled": True, "pulseIntervalTicks": 250.0, "flowPerPulse": 1.0,
-        "channelConfinementEnabled": True, "digToDepthEnabled": True,
+        "digToDepthEnabled": True,
         "liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False,
         "fillInEnabled": True, "fillInDisplacementEnabled": True, "sourceBudgetEnabled": True,
         "stickyLimitlessEnabled": True, "recessionEnabled": True, "refillEnabled": True,

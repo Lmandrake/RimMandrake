@@ -8,7 +8,7 @@ validation.py wires its rows to the north-star bars and toggles. What lives HERE
   * VISUAL TRIAL (plot_A..plot_H chains): staged plots on the golden trial site (prep_site.py + preflight_flowworks.py
     live), each ending on the screenshot / before|after diptych the single-frame judge reads. The state half of these
     plots is proven by the core rows; the look is judged on the human review sheet (human_review.py).
-  * OPTIONAL FEATURES (toggle_* and feature chains): fire/ignition/corrosion, fill-in toggles, confinement OFF,
+  * OPTIONAL FEATURES (toggle_* and feature chains): fire/ignition/corrosion, fill-in toggles,
     recession/refill, capture/ladder OFF sides, prison door, cover fall, spikes, sluice/grate doors, shooting rule,
     exposure, depth draw, pit fill effects, bottles/tanks/drilling, typed shores, trap trigger, fall damage, river
     steam, fluid identity census, swale.
@@ -50,7 +50,7 @@ S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 # (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
 # escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
 FW_TOGGLES = [
-    "depthEngineEnabled", "channelConfinementEnabled", "digToDepthEnabled",
+    "depthEngineEnabled", "digToDepthEnabled",
     "liquidCorrosionEnabled", "liquidIgnitionEnabled",
     "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled",
     "stickyLimitlessEnabled", "recessionEnabled", "refillEnabled",
@@ -499,7 +499,6 @@ def plot_C_limitless_canal(t):
             _expect(all((f or 0) >= 1 for f in fs), "channel has a dry gap or dry cell after settle: %s" % fs)
         _frame(t, *shot_rect)
     with t.component("canal_holds_only_channel",
-                     toggle="channelConfinementEnabled",
                      shows=["canal_holds_only_the_channel", "never_liquid_on_open_ground"]):
         _expect_dry_ring(t, cells)
         _frame(t, *shot_rect)
@@ -779,34 +778,6 @@ def plot_G_pit(t):
 # predicate is a floor cheat; each one below reads state through the engine report, never the
 # setter's echo. Ticks are budgets. A few need tools only the shared driver will have: those carry
 # the predicate that IS expressible today and a comment naming the gap.
-
-def _mini_channel(t, key, n=6, levels=1):
-    x0, z0 = _prep_plot(t, key)
-    _limitless_source(t, key)
-    cells = _channel_from(x0 + 10, z0 + 6, n)
-    _dig_run(t, cells, levels)
-    return x0, z0, cells
-
-
-@suite.chain("toggle_confinement")
-def toggle_confinement(t):
-    # the mini channel's mouth (x0+10) abuts the painted WaterDeep source (x0..x0+9, z0+4..z0+9): those ring cells are
-    # the source itself, D=4 F=4 by design -- MEASURED 2026-10-06 (122,87..89) read as a leak ON and would have
-    # passed the OFF row with no leak at all
-    x0, z0, cells = _mini_channel(t, "B")
-    src = set((x, z) for x in range(x0, x0 + 10) for z in range(z0 + 4, z0 + 10))
-    with t.component("confinement_on", toggle="channelConfinementEnabled"):
-        _settle(t, cells, 20)
-        _expect_dry_ring(t, cells, skip=src)
-    x0, z0, cells = _mini_channel(t, "B")
-    with t.component("confinement_off_leaks", toggle="channelConfinementEnabled"):
-        with _setting(t, "channelConfinementEnabled", False):
-            _wait(t, 20 * PULSE)
-            if t._guard():
-                ring = _state(t, [c for c in _ring(cells) if c not in src])
-                _expect(any(d or f for d, f in ring),
-                        "no ring cell took liquid with confinement OFF: the toggle is not live")
-
 
 @suite.chain("toggle_fill_in")
 def toggle_fill_in(t):
@@ -1360,21 +1331,69 @@ def toggle_bottle_dirty(t):
             _wait(t, PULSE)
 
 
+def _tank_units(t, x, z):
+    """Units held by the RM_LiquidTank at (x,z), read from its inspect line ("Holding: <liquid> (N / C units)",
+    Languages/English/Keyed/LiquidTank_Keys.xml); 0 for "Empty"; None when no tank answers."""
+    import re
+    txt = _tank_text(t, x, z)
+    m = re.search(r"\((\d+) / \d+ units\)", txt)
+    if m:
+        return int(m.group(1))
+    return 0 if "Empty" in txt else None
+
+
+def _tank_loop_plot(t):
+    """A colonist-owned tank (TryFindTank walks listerBuildings.AllBuildingsColonist, so an unowned spawn_batch tank is
+    invisible to both WorkGivers), one FILLED fresh-water bottle beside it, two fed colonists (two: a spawned colonist
+    may be incapable of Hauling, the WorkGivers' work type). No water terrain on the plot, so WorkGiver_FillBottle
+    (terrain edge) has nothing to do."""
+    x0, z0 = _prep_plot(t, "F")
+    tank, bottle = (x0 + 6, z0 + 6), (x0 + 10, z0 + 6)
+    t.bridge_call("jawa/build_batch", ops="RM_LiquidTank:%d,%d" % tank, faction="player")
+    t.bridge_call("jawa/spawn_batch", ops="RM_Bottle_FreshWater:%d,%d" % bottle)
+    for i in range(2):
+        pid = _spawn_pawn_at(t, "Colonist", x0 + 12 + i, z0 + 8)
+        t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+    return x0, z0, tank
+
+
 @suite.chain("toggle_tank_loop")
 def toggle_tank_loop(t):
-    x0, z0 = _prep_plot(t, "F")
-    cell = (x0 + 6, z0 + 6)
-    _dig(t, cell[0], cell[1], 2)
-    _fill(t, cell[0], cell[1], 2)
-    t.bridge_call("jawa/spawn_batch", ops="RM_LiquidTank:%d,%d" % (cell[0] + 1, cell[1]))
+    """tankLoopEnabled gates exactly two WorkGivers (ShouldSkip): WorkGiver_EmptyBottleIntoTank (a filled container is
+    carried to a colonist tank and poured in) and WorkGiver_FillBottleFromTank (an empty container is carried to a tank
+    holding a bottled liquid and filled). It does NOT make a tank draw from an adjacent channel cell -- that is the
+    pump's job (liquid_pump chain); the old row asserted that and FAILed every live run (FLOWWORKS_TANK_LOOP_ROW_WRONG_1).
+    ON: the poured bottle leaves the emptied bottle beside a tank that now holds water, which is itself the draw-out
+    WorkGiver's trigger, so the tank's units must RISE (pour-in) and then FALL (draw-out). Sampled every 125 ticks: a
+    pour or a fill is a walk plus a toil, far longer than one sample. OFF: neither WorkGiver runs and the tank stays
+    Empty at every sample."""
+    _, _, tank = _tank_loop_plot(t)
     with t.component("tank_loop_on", toggle="tankLoopEnabled"):
-        _wait(t, 10 * PULSE)
-        _expect((_rep(t, *cell).get("fill") or 0) < 2 if t._guard() else None, "tank did not draw down the adjacent cell")
+        seq = []
+        for _ in range(48):                       # 6000 ticks
+            t.wait_ticks(125)
+            u = _tank_units(t, *tank)
+            if u is not None and (not seq or seq[-1] != u):
+                seq.append(u)
+            peak = max(seq) if seq else 0
+            if peak > 0 and seq[-1] < peak:
+                break
+        if t._guard():
+            _expect(bool(seq), "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+            peak = max(seq)
+            _expect(peak > 0, "pour-in never ran: tank units %s (WorkGiver_EmptyBottleIntoTank)" % seq)
+            _expect(seq[-1] < peak, "draw-out never ran: tank units %s rose and never fell "
+                                    "(WorkGiver_FillBottleFromTank)" % seq)
+    _, _, tank = _tank_loop_plot(t)
     with t.component("tank_loop_off", toggle="tankLoopEnabled"):
         with _setting(t, "tankLoopEnabled", False):
-            _fill(t, cell[0], cell[1], 2)
-            _wait(t, 10 * PULSE)
-            _expect((_rep(t, *cell).get("fill") or 0) == 2 if t._guard() else None, "tank drew with loop OFF")
+            seen = []
+            for _ in range(24):                   # 3000 ticks
+                t.wait_ticks(125)
+                seen.append(_tank_units(t, *tank))
+            if t._guard():
+                _expect(seen[-1] is not None, "no RM_LiquidTank answered inspect_string at %s" % (tank,))
+                _expect(not any(seen), "tank took liquid with tankLoopEnabled OFF: units %s" % seen)
 
 
 @suite.chain("toggle_liquid_drilling")

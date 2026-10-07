@@ -235,9 +235,7 @@ namespace RimMandrake.FlowWorks
 			// test, because a natural body reads through as SUPERDEEP. With the
 			// gate consulted here, a refused cell is never a candidate, so the
 			// release cannot wander across open ground at all.
-			RM_MapComponent_Excavation excavation = RimMandrakeFlowWorksSettings.channelConfinementEnabled
-				? map.GetComponent<RM_MapComponent_Excavation>()
-				: null;
+			RM_MapComponent_Excavation excavation = map.GetComponent<RM_MapComponent_Excavation>();
 
 			int attempts = frontier.Count;
 			while (attempts-- > 0 && frontier.Count > 0)
