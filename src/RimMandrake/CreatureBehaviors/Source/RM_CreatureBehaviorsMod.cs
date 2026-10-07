@@ -414,6 +414,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float mirageBreakChanceMultiplier = 1f;
         public static bool tracksEnabled = true;
         public static bool sandBuriedGraphicEnabled = true;
+        // CHILL_CREATURES_VANISH_1 — RM_WildLeaveNotice.cs. Off: wild animals leave a too-warm/too-cold
+        // map (or leave starving) silently, as vanilla does.
+        public static bool wildLeaveNoticeEnabled = true;
         public static int trackPoolCap = RM_TrackPool.DefaultCapacity;
         public static float trackPrintOpacity = 0.7f;
         // WEBWORK_TRACTION_LANCE_BUILD_1 — the traction lance (RM_Building_TractionLance + RM_CompTetherPull).
@@ -528,6 +531,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
             Scribe_Values.Look(ref tracksEnabled, "tracksEnabled", true);
             Scribe_Values.Look(ref sandBuriedGraphicEnabled, "sandBuriedGraphicEnabled", true);
+            Scribe_Values.Look(ref wildLeaveNoticeEnabled, "wildLeaveNoticeEnabled", true);
             Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
             Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
             Scribe_Values.Look(ref lanceEnabled, "lanceEnabled", true);
@@ -931,6 +935,11 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Half-buried-in-sand graphics", ref sandBuriedGraphicEnabled,
                 "Sand burrowers (thraia, drazzik) draw their half-buried art while resting on loose sand. "
               + "Off: they draw their ordinary body there. Purely visual.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Say why wild animals leave", ref wildLeaveNoticeEnabled,
+                "When a wild animal walks off a map you are on because it is too warm, too cold or starving "
+              + "there, a message says so (one per species per hour). Off: they leave silently, as in vanilla.");
             list.GapLine();
 
             list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,

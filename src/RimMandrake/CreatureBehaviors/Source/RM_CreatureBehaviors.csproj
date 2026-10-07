@@ -179,6 +179,8 @@
     <Compile Include="RM_HeatSoundscape.cs" />
     <Compile Include="RM_SunHeatExtension.cs" />
     <Compile Include="RM_SunHeatPatches.cs" />
+    <Compile Include="RM_WildLeaveMath.cs" />
+    <Compile Include="RM_WildLeaveNotice.cs" />
     <Compile Include="RM_Gizmo_SunLoad.cs" />
     <Compile Include="RM_ShadeGear.cs" />
     <Compile Include="RM_ShadePatchGraph.cs" />

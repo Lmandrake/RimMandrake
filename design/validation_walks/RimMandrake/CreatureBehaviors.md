@@ -22,9 +22,13 @@ status-hint: shared behaviour engine of ~50 mechanics; the suite covers the foot
 - Every Mod Settings field (96, parsed from `RM_CreatureBehaviorsMod.cs`) answers by name at its shipped default, and every bool (64) flips and restores. → settings.all_fields_at_shipped_defaults, settings.toggle_roundtrip_<field>
 - A breeder actually breeds up to its cap and raises the alert; a gnawer destroys a target; a scalded pawn takes severity in sun; a web node senses a crossing; a lure pulls a pawn in. → UNCOVERED: needs a spawned carrier race (Greentide/Miasma/Webwork/LanternDeeps) on a map; the toggles' in-motion effect has no read-back instrument in this mod's own list
 - Eviction order, cap and save/load identity of the track grid. → UNCOVERED: proven offline by `Utils/selftest_track_grid.py`
+- A wild animal that walks off a player map because it is too warm, too cold or starving there posts a message naming the reason (one per species per map per hour); none vanishes silently (CHILL_CREATURES_VANISH_1). → UNCOVERED: reason classification proven offline by `Utils/selftest_sun_heat.py` ("wild leave" case); the live message needs a wrong-season spawn on a colony map, and jawa/spawn_pawn fails on the FULL list (GimmeSomeSlack absent)
 
 ## the walk
 1. [L] Player.log after load has no "Config error in mandrake.rm.creaturebehaviors"
 2. [B] `jawa/type_probe` resolves each doing-class; an absent control reads `resolved=false`
 3. [B] `jawa/get_defs` carriers resolve (success and foundCount)
 4. [B] `jawa/mod_settings_field` off arm: set False, read False, restore
+
+## anti-guessing notes
+- RULED OUT: Chill creatures vanishing via a destroy/despawn in our code (CompRSWColdKill, ChannelCurrent, CargoFloat) — none applies to a wild animal on a debug map; the cause is vanilla LeaveIfWrongSeason (ThinkNode_ConditionalAnimalWrongSeason = !SeasonAcceptableFor; Chill comfy -150..-30 C) walking them to the edge, 2026-10-07.

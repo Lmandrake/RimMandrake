@@ -3,4 +3,7 @@
      RM_CompVerminBreeder's own famine-flip reason line. -->
 <LanguageData>
   <RM_VerminFamine>The food ran out.</RM_VerminFamine>
+  <RM_WildLeave_TooWarm>{0} is leaving the area: it is too warm here for it (comfortable at {1}).</RM_WildLeave_TooWarm>
+  <RM_WildLeave_TooCold>{0} is leaving the area: it is too cold here for it (comfortable at {1}).</RM_WildLeave_TooCold>
+  <RM_WildLeave_Starving>{0} is leaving the area: it cannot find food here.</RM_WildLeave_Starving>
 </LanguageData>
