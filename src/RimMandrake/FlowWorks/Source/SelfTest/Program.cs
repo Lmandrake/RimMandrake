@@ -1156,45 +1156,27 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.SouthLining(9) <= RM_WallFaceMath.SouthLining(4), "clamped past superdeep");
             });
 
-            // owner 2026-10-05: "Scorched looks absolutely terrible" — char over the normal pit, never black
-            Case("Scorch_char_is_not_black_and_follows_walls", () =>
+            // owner 2026-10-06, of the starburst round: "those look ridiculous" — round 3 follows GPT concept art
+            // (Transient/scorch_concept_2026-10-06): grey ash floor, char at walls and in patches, plumed walls, lobed halo
+            Case("Scorch_ash_floor_char_walls_lobed_halo", () =>
             {
-                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 1f, 0f) <= 0.72f, "floor char never fully opaque");
-                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0f) > RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0.8f), "darker near the walls");
-                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.9f, 0.8f) > RM_WallFaceMath.FloorCharAlpha(1f, 0.1f, 0.8f), "blotches vary it");
-                AssertClose(RM_WallFaceMath.FloorCharAlpha(0f, 1f, 0f), 0f, "no scorch, no char");
-                AssertClose(RM_WallFaceMath.AshDriftAlpha(1f, 0.3f, 0.5f), 0f, "ash only where the noise is high");
-                Assert(RM_WallFaceMath.AshDriftAlpha(1f, 0.95f, 0.5f) > 0f, "ash drifts exist");
-                float foot = RM_WallFaceMath.FaceSootAlpha(1f, 0f), mid = RM_WallFaceMath.FaceSootAlpha(1f, 0.5f), rim = RM_WallFaceMath.FaceSootAlpha(1f, 1f);
-                Assert(foot > mid && rim > mid, "soot fades up from the floor and down from the rim");
-                Assert(foot <= 0.7f, "face soot never black");
-            });
-
-            // owner 2026-10-06: "Scorched dirt and stone doesn't look like anything at all, it needs blast marks and blackened bits."
-            Case("Scorch_has_blast_marks_and_black_patches", () =>
-            {
-                Assert(RM_WallFaceMath.BlackPatchAlpha(1f, 0.9f) >= 0.85f, "a high-noise patch is near black");
-                AssertClose(RM_WallFaceMath.BlackPatchAlpha(1f, 0.3f), 0f, "low noise: no black (bits, not a black floor)");
-                AssertClose(RM_WallFaceMath.BlackPatchAlpha(0f, 0.9f), 0f, "no scorch, no black");
-                Assert(RM_WallFaceMath.BlastCoreAlpha(1f) >= 0.9f, "a blast mark's core is near black at full scorch");
-                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0.8f) >= 0.55f, "the char layer itself is visible, not faint");
-                int floors = 0, rims = 0;
-                for (int x = 0; x < 40; x++)
-                    for (int z = 0; z < 40; z++)
-                    {
-                        if (RM_WallFaceMath.HasFloorBlast(x, z)) floors++;
-                        if (RM_WallFaceMath.HasRimBlast(x, z)) rims++;
-                    }
-                Assert(floors > 900 && floors < 1250, "about two dug cells in three carry a floor blast: " + floors);
-                Assert(rims > 650 && rims < 950, "about one rim cell in two carries a splash: " + rims);
-                bool longer = true;
-                for (int seed = 0; seed < 50; seed++)
-                    for (int i = 0; i < 24; i += 2)
-                    {
-                        float l = RM_WallFaceMath.BlastRayLength(i, 24, seed), sh = RM_WallFaceMath.BlastRayLength(i + 1, 24, seed);
-                        if (!(l >= 0.75f && l <= 1f && sh >= 0.3f && sh <= 0.55f && l > sh)) longer = false;
-                    }
-                Assert(longer, "starburst: long and short spikes alternate inside their ranges");
+                Assert(RM_WallFaceMath.AshCover(1f, 0f) >= 0.8f, "full scorch: the floor is ash all over, not spots");
+                AssertClose(RM_WallFaceMath.AshCover(0f, 1f), 0f, "no scorch, no ash");
+                Assert(RM_WallFaceMath.AshCover(0.5f, 0.5f) < RM_WallFaceMath.AshCover(1f, 0.5f), "fading thins the ash");
+                Assert(RM_WallFaceMath.CharCover(1f, 0.3f, 0f) > 0.8f, "char heavy against a wall");
+                AssertClose(RM_WallFaceMath.CharCover(1f, 0.3f, 0.8f), 0f, "low-noise middle of the floor: ash, not char");
+                Assert(RM_WallFaceMath.CharCover(1f, 0.9f, 0.8f) > 0.6f, "char patches where the noise runs high");
+                Assert(RM_WallFaceMath.HeatTint(1f, 0.9f, 0.25f) > 0f && RM_WallFaceMath.HeatTint(1f, 0.9f, 0.25f) <= 0.3f, "heat tint is a faint accent near walls");
+                AssertClose(RM_WallFaceMath.HeatTint(1f, 0.9f, 0.9f), 0f, "no tint mid-floor");
+                Assert(RM_WallFaceMath.HaloCover(1f, 0f, 0.5f) > 0.7f && RM_WallFaceMath.HaloCover(1f, 0f, 1f) > RM_WallFaceMath.HaloCover(1f, 0f, 0f), "halo darkest at the lip, and uneven along it");
+                AssertClose(RM_WallFaceMath.HaloCover(1f, 0.6f, 0f), 0f, "short lobe: gone by 0.6 cell");
+                Assert(RM_WallFaceMath.HaloCover(1f, 0.6f, 1f) > 0.2f, "long lobe: still smoky at 0.6 cell");
+                AssertClose(RM_WallFaceMath.HaloCover(1f, 1.5f, 1f), 0f, "never reaches past 1.4 cells");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.9f) > RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.1f) + 0.35f, "plumes stand out on the face");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0f, 0.1f) > RM_WallFaceMath.FaceSoot(1f, 0.5f, 0.1f), "heaviest at the foot");
+                Assert(RM_WallFaceMath.FaceSoot(1f, 0f, 1f) <= 0.95f, "face soot capped");
+                AssertClose(RM_WallFaceMath.FaceSoot(0f, 0f, 1f), 0f, "no scorch, no soot");
+                Assert(RM_WallFaceMath.AshDepthShade(1) < RM_WallFaceMath.AshDepthShade(3) && RM_WallFaceMath.AshDepthShade(3) < RM_WallFaceMath.AshDepthShade(4), "a deeper burned pit still reads deeper");
             });
 
             // owner 2026-10-06: acid/slime/boiling bubble; bubbles scale with view and stay bounded

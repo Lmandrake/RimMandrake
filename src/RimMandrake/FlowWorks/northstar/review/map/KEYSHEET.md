@@ -1,6 +1,6 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261006). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261006f). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
@@ -11,11 +11,11 @@ Each station is labelled in the world with its number, a short name, its status 
 Columns: depth 1 to 4, left to right. Rows from the bottom: dry in soil, dry in granite, water in soil, water in granite, tar in soil, tar in granite, scorched in soil, scorched in granite; the top row is oil and green slime at depth 3. A colonist stands in the near row of every pit so you can see how far the near bank hides him.
 
 - **dry:** The far bank shows a lit face with a dark rim, the way the game draws its own walls; at depth 3 it is about a wall's height, at depth 4 taller. The side banks show as narrow faces. The person in the near row is hidden below the near bank, more the deeper the pit.
-- **water:** The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.
-- **tar:** Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.
-- **scorched:** Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.
+- **water:** The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.
+- **tar:** Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.
+- **scorched:** Still an empty pit with the same walls, but burned: a grey ash floor with soft char patches, darkest against the walls; soot plumes on the far wall; smoke-blackened ground round the rim in uneven lobes fading out about a cell. Deeper pits still read deeper.
 - **oil:** Oil: slow dark gloss with a faint rainbow film.
-- **slime:** Slime: thick, soft bright blobs that barely move.
+- **slime:** Green slime: thick, opaque, slowly creeping, a few bubbles rising.
 
 ## 1 · Digging canals and pits
 
@@ -410,7 +410,7 @@ Burning liquid looks alight, and a burnt-out canal looks scorched. Today it uses
 
 **Look at:** a tar canal to light, and a scorched-dry pit beside it
 
-**Not built yet in this feature:** burning liquid looking alight (its own art); a burnt-out canal looking scorched (its own art)
+**Not built yet in this feature:** burning liquid looking alight (its own art)
 
 ## 8 · Rivers, shores and the land
 
