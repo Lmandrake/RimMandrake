@@ -484,7 +484,9 @@ def t_the_real_ledger_was_never_touched():
     for f in os.listdir(real):
         with open(os.path.join(real, f), encoding="utf-8") as fh:
             for line in fh:
-                if '"event":"implemented"' in line or IID in line:
+                # IID only: real "implemented" events are legitimate in the real ledger now (the verb shipped), so the old
+                # blanket '"event":"implemented"' clause false-positived on genuine work
+                if IID in line:
                     raise AssertionError("a test event reached the REAL ledger: %s" % f)
 
 

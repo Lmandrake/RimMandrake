@@ -79,8 +79,10 @@ for k in ("slime_red",):
           "%s is a thick liquid: flow shader, no splash" % k)
 
 # tar is deliberately water-shader + wading splash since 2026-10-06 (owner), not a thick liquid
-check(G.SURFACE_LOOKS["tar"].get("shader", "Water") == "Water" and G.SURFACE_LOOKS["tar"].get("wake") == 0.0,
-      "tar uses the water shader with a near-black tint (owner 2026-10-06)")
+# round 1b (13e7f8c82) moved tar off the water shader onto the plain Solid terrain shader (the lava shader tinted it olive)
+check(G.SURFACE_LOOKS["tar"].get("shader") == "Solid" and G.SURFACE_LOOKS["tar"].get("wake") == 0.0
+      and G.SURFACE_LOOKS["tar"].get("tint") == "(0.24,0.24,0.24)",
+      "tar uses the plain Solid terrain shader with a near-black tint (owner 2026-10-06, round 1b)")
 
 # 5 generated output in sync
 with tempfile.TemporaryDirectory() as td:
