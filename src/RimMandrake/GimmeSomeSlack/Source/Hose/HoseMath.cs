@@ -1217,6 +1217,139 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// current (no older than 1.5 pulse intervals).</summary>
         public static bool PumpFlowing(double lastMovedUnits, int lastMovedTick, int now, int pulseTicks) =>
             lastMovedUnits > 0 && now - lastMovedTick <= pulseTicks + pulseTicks / 2;
+
+        // ---------------------------------------------------------------- fittings never on top of another hose
+        /// <summary>One laid hose for <see cref="Layer"/>: its reel's thing id (the B18 crossing order) and its lay.</summary>
+        public sealed class LayeredHose
+        {
+            public int Id;
+            public HoseLay Lay;
+        }
+
+        /// <summary>Draw order (rank 0 = lowest band) and the joiners each hose draws, by reel id.</summary>
+        public sealed class Layering
+        {
+            public Dictionary<int, int> Rank = new Dictionary<int, int>();
+            public Dictionary<int, List<int>> Joints = new Dictionary<int, List<int>>();
+        }
+
+        /// <summary>
+        /// MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 3 (owner 2026-10-04: "the brass fixtures at the ends don't just lay on top of
+        /// other hose lenghts. That looks ridiculous. They CAN look like sealed joiners from one cable length to another").
+        /// B18 ranks crossing hoses by reel age; on top of that, a hose whose END fitting rests on another hose's body is
+        /// ranked BENEATH that hose (the other hose passes over the fitting), and a joiner that would still sit over a hose
+        /// ranked below is not drawn (a joiner is optional; its straightened run stays). Ties and unconstrained hoses keep
+        /// reel-id order; a cycle (two hoses each ending on the other) is broken at the lowest id, so the order is always
+        /// total.
+        /// </summary>
+        public static Layering Layer(IList<LayeredHose> hoses, double visible)
+        {
+            var res = new Layering();
+            int n = hoses.Count;
+            // below[i] = the hoses i must be drawn beneath (i's end fitting lies on their body)
+            var mustPrecede = new List<int>[n];
+            var indeg = new int[n];
+            for (int i = 0; i < n; i++) mustPrecede[i] = new List<int>();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == j) continue;
+                    if (EndFittingOn(hoses[i].Lay, true, hoses[j].Lay, visible) || EndFittingOn(hoses[i].Lay, false, hoses[j].Lay, visible))
+                    { mustPrecede[i].Add(j); indeg[j]++; }
+                }
+            var placed = new bool[n];
+            for (int r = 0; r < n; r++)
+            {
+                int pick = -1;
+                for (int i = 0; i < n; i++)
+                    if (!placed[i] && indeg[i] == 0 && (pick < 0 || hoses[i].Id < hoses[pick].Id)) pick = i;
+                if (pick < 0)   // cycle: the lowest id goes next, its unmet constraints dropped
+                    for (int i = 0; i < n; i++)
+                        if (!placed[i] && (pick < 0 || hoses[i].Id < hoses[pick].Id)) pick = i;
+                placed[pick] = true;
+                res.Rank[hoses[pick].Id] = r;
+                foreach (int j in mustPrecede[pick]) indeg[j]--;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                HoseLay lay = hoses[i].Lay;
+                var keep = new List<int>();
+                foreach (int jt in lay.Joints)
+                {
+                    bool over = false;
+                    for (int j = 0; j < n && !over; j++)
+                        if (j != i && res.Rank[hoses[j].Id] < res.Rank[hoses[i].Id] && JointFittingOn(lay, jt, hoses[j].Lay, visible)) over = true;
+                    if (!over) keep.Add(jt);
+                }
+                res.Joints[hoses[i].Id] = keep;
+            }
+            return res;
+        }
+
+        /// <summary>Every fitting (both ends, every drawn joiner) that draws over another hose's body under the given ranks
+        /// and joiner lists (null = each lay's own Joints). Empty = rule 3 holds. The offline bar and the live probe share it.</summary>
+        public static List<string> FittingsOnTop(IList<LayeredHose> hoses, IDictionary<int, int> rank, IDictionary<int, List<int>> joints, double visible)
+        {
+            var o = new List<string>();
+            foreach (LayeredHose h in hoses)
+                foreach (LayeredHose g in hoses)
+                {
+                    if (h == g || rank[h.Id] <= rank[g.Id]) continue;
+                    if (EndFittingOn(h.Lay, true, g.Lay, visible)) o.Add($"hose {h.Id}: reel-end fitting on hose {g.Id}");
+                    if (EndFittingOn(h.Lay, false, g.Lay, visible)) o.Add($"hose {h.Id}: free-end fitting on hose {g.Id}");
+                    foreach (int jt in joints != null && joints.TryGetValue(h.Id, out List<int> js) ? js : h.Lay.Joints)
+                        if (JointFittingOn(h.Lay, jt, g.Lay, visible)) o.Add($"hose {h.Id}: joiner at sample {jt} on hose {g.Id}");
+                }
+            return o;
+        }
+
+        /// <summary>A fitting's footprint: the lay's own centreline within [lo, hi] of arc, as wide as the cloth wrap.</summary>
+        private static bool FootprintOn(HoseLay a, double lo, double hi, HoseLay b, double visible)
+        {
+            double reach = 0.5 * WrapWidth(visible) + 0.5 * visible, skip = JoinerHalf(visible);
+            foreach (bool plump in new[] { false, true })
+            {
+                List<V2> P = plump ? a.Plump : a.Flat, Q = plump ? b.Plump : b.Flat;
+                if (P == null || Q == null || P.Count < 2 || Q.Count < 2) continue;
+                double[] sp = Geo.CumLen(P), sq = Geo.CumLen(Q);
+                double Lq = sq[sq.Length - 1];
+                for (int k = 0; k < P.Count; k++)
+                {
+                    if (sp[k] < lo || sp[k] > hi) continue;
+                    // the other hose's own fitting runs are not its body: two fittings meeting read as a sealed joiner
+                    for (int m = 0; m + 1 < Q.Count; m++)
+                    {
+                        if (sq[m + 1] < skip || sq[m] > Lq - skip) continue;
+                        if (SegDist(P[k], Q[m], Q[m + 1]) < reach) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static bool EndFittingOn(HoseLay a, bool start, HoseLay b, double visible)
+        {
+            List<V2> P = a.Flat;
+            if (P == null || P.Count < 2) return false;
+            double L = Geo.Length(P), h = JoinerHalf(visible);
+            return start ? FootprintOn(a, 0, h, b, visible) : FootprintOn(a, L - h, L, b, visible);
+        }
+
+        private static bool JointFittingOn(HoseLay a, int jt, HoseLay b, double visible)
+        {
+            List<V2> P = a.Flat;
+            if (P == null || jt < 0 || jt >= P.Count) return false;
+            double s = Geo.CumLen(P)[jt], h = JoinerHalf(visible);
+            return FootprintOn(a, s - h, s + h, b, visible);
+        }
+
+        private static double SegDist(V2 p, V2 a, V2 b)
+        {
+            V2 ab = b - a;
+            double len2 = ab.X * ab.X + ab.Z * ab.Z;
+            double t = len2 < 1e-12 ? 0 : Math.Max(0, Math.Min(1, ((p.X - a.X) * ab.X + (p.Z - a.Z) * ab.Z) / len2));
+            return V2.Dist(a + ab * t, p);
+        }
     }
 
     /// <summary>Per-fluid tint (design 3.4): FlowWorks' LiquidDef.color is white for every row today, so this

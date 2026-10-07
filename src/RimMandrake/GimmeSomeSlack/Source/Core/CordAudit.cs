@@ -251,5 +251,88 @@ namespace RimMandrake.GimmeSomeSlack.Core
             R.LiveEnds = liv.Count; R.LiveFaults = lbad; R.LiveArrivalDeg = liv;
             return R;
         }
+
+        /// <summary>An end within this of another strand's centreline lies ON it (drawn strand 0.08 wide: half 0.04 + a margin).</summary>
+        public const double EndOnBodyReach = 0.06;
+        /// <summary>An end with a connector decal (plug, junction, strip, wall/rock plate) this close is at a node.</summary>
+        public const double EndNodeReach = 0.2;
+        /// <summary>The arc of a strand within this of its own end is that strand's END, not its body.</summary>
+        public const double BodyEndSkip = 0.2;
+
+        /// <summary>
+        /// MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 2 (owner 2026-10-04: "make sure the cables don't look like separate cable
+        /// lengths laying on each other, but one big flowing cable except where they go into nodes or power
+        /// strips/joiners"). A strand END lying on a strand's BODY with no connector there reads as a loose length dropped
+        /// on a cable. An end is exempt when a connector decal sits within <see cref="EndNodeReach"/>, when it dives under a
+        /// barrier, when it is a wall-hanging tail, or when another strand's end meets it (the run continues). A frayed end
+        /// is NOT a connector: a cut wire lying across another cable is exactly the look ruled out. Returns one line per
+        /// fault; empty = clean.
+        /// </summary>
+        public static List<string> EndsOnBodies(List<LaidPiece> ps)
+        {
+            var faults = new List<string>();
+            List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive).ToList();
+            // a connector's centre and every port on it (junction arm tips, strip sockets): a cable plugged into an arm ends
+            // a box-half away from the box's centre
+            var nodes = cons.Select(d => d.Pos).Concat(CordBuilder.PortsOf(cons).Select(q => q.Tip)).ToList();
+            var all = new List<(string key, CordStrand s, double[] cum)>();
+            foreach (LaidPiece p in ps)
+                foreach (CordStrand s in p.Strands)
+                    if (s.Pts != null && s.Pts.Count >= 2) all.Add((p.Key, s, Geo.CumLen(s.Pts)));
+            var ends = new List<V2>();
+            foreach (var t in all) { ends.Add(t.s.Pts[0]); ends.Add(t.s.Pts[t.s.Pts.Count - 1]); }
+            for (int i = 0; i < all.Count; i++)
+            {
+                var (key, s, _) = all[i];
+                if (s.OverFace) continue;
+                for (int side = 0; side < 2; side++)
+                {
+                    if (side == 0 ? s.DiveA : s.DiveB) continue;
+                    V2 e = side == 0 ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                    if (nodes.Any(n => V2.Dist(n, e) < EndNodeReach)) continue;
+                    // another strand's end meets this one: one cable continuing across a piece boundary
+                    bool met = false;
+                    for (int k = 0; k < ends.Count && !met; k++)
+                        if (k != 2 * i + side && V2.Dist(ends[k], e) < EndOnBodyReach) met = true;
+                    if (met) continue;
+                    for (int j = 0; j < all.Count; j++)
+                    {
+                        var (okey, o, cum) = all[j];
+                        double L = cum[cum.Length - 1];
+                        // its own body counts too, past its own end run
+                        double lo = BodyEndSkip, hi = L - BodyEndSkip;
+                        if (j == i) { if (side == 0) lo = Math.Max(lo, 0.6); else hi = Math.Min(hi, L - 0.6); }
+                        double d = BodyDist(o.Pts, cum, e, lo, hi);
+                        if (d < EndOnBodyReach)
+                        {
+                            var nearL = ps.SelectMany(pp => pp.Decals).OrderBy(dd => V2.Dist(dd.Pos, e)).Take(1).ToList();
+                            string nk = nearL.Count == 0 ? "none" : nearL[0].Kind + "@" + V2.Dist(nearL[0].Pos, e).ToString("0.00");
+                            faults.Add($"{key}: strand end ({e.X:0.00},{e.Z:0.00}) lies on {(j == i ? "its own" : okey + "'s")} body ({d:0.000} from its centreline; nearest decal {nk})");
+                            break;
+                        }
+                    }
+                }
+            }
+            return faults;
+        }
+
+        /// <summary>Distance from <paramref name="e"/> to the part of polyline P whose arc length is within [lo, hi].</summary>
+        private static double BodyDist(List<V2> P, double[] cum, V2 e, double lo, double hi)
+        {
+            double best = double.MaxValue;
+            if (hi <= lo) return best;
+            for (int k = 0; k + 1 < P.Count; k++)
+            {
+                if (cum[k + 1] < lo || cum[k] > hi) continue;
+                V2 a = P[k], b = P[k + 1], ab = b - a;
+                double len2 = ab.X * ab.X + ab.Z * ab.Z;
+                double t = len2 < 1e-12 ? 0 : ((e.X - a.X) * ab.X + (e.Z - a.Z) * ab.Z) / len2;
+                t = Math.Max(0, Math.Min(1, t));
+                double s = cum[k] + t * (cum[k + 1] - cum[k]);
+                if (s < lo || s > hi) continue;
+                best = Math.Min(best, V2.Dist(a + ab * t, e));
+            }
+            return best;
+        }
     }
 }
