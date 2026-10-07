@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_CONDENSER_QUESTS_1. Goodwill reasons the faction tab shows for the condenser quests. -->
+<Defs>
+  <HistoryEventDef>
+    <defName>RM_CondenserDeliveredAlive</defName>
+    <label>delivered the old gorrask alive</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RM_CondenserSoldToCollector</defName>
+    <label>sold the moving oasis to a collector</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RM_CondenserKilledNotTaken</defName>
+    <label>killed the gorrask we wanted alive</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RM_CondenserKeptFree</defName>
+    <label>kept the old gorrask free</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RM_CondenserLostOnWatch</defName>
+    <label>let the old gorrask die on watch</label>
+  </HistoryEventDef>
+</Defs>

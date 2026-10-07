@@ -18,4 +18,8 @@
   <RM_CondenserInspectSettled>Settled. Pool cells: {0}</RM_CondenserInspectSettled>
   <RM_CondenserInspectWaiting>Stirring: about to move on.</RM_CondenserInspectWaiting>
   <RM_CondenserInspectWalking>Moving to a new settling place.</RM_CondenserInspectWalking>
+  <!-- WEEPINGSTONES_CONDENSER_QUESTS_1 -->
+  <RM_CondenserQuestInspectCapture>Wanted alive: down it without killing it and the buyer's crew will take it.</RM_CondenserQuestInspectCapture>
+  <RM_CondenserHuntersLabel>Trophy hunters: {0}</RM_CondenserHuntersLabel>
+  <RM_CondenserHuntersText>{0} have come for the {1}. Not for meat and not for money: they want its shell over their gate and its killing in their songs, and they have told everyone who would listen.\n\nThey will go straight for the crab. Remember the water truce: the first to strike at its pool brings the wild herds down on them.</RM_CondenserHuntersText>
 </LanguageData>

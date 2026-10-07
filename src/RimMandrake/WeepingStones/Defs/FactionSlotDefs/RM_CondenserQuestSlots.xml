@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_CONDENSER_QUESTS_1. Faction slots for the two condenser quests (RM_QuestNode_GetFactionSlot).
+     preferredFactions is tried in order (FactionDef defNames; an absent one is skipped), then the fallback rule.
+     The campaign layer maps a slot by inserting its FactionDef at the HEAD of preferredFactions with a
+     PatchOperationInsert/Add from UtinniPatches; the free mod names only vanilla factions. -->
+<Defs>
+
+  <RimMandrake.WeepingStones.RM_FactionSlotDef>
+    <defName>RM_FactionSlot_CondenserBuyer</defName>
+    <label>condenser buyer</label>
+    <description>A wealthy collector who wants the old gorrask alive for its fighting pit. Non-hostile; fallback: the most advanced non-hostile faction.</description>
+    <fallback>Collector</fallback>
+    <preferredFactions>
+      <li>Empire</li>
+    </preferredFactions>
+  </RimMandrake.WeepingStones.RM_FactionSlotDef>
+
+  <RimMandrake.WeepingStones.RM_FactionSlotDef>
+    <defName>RM_FactionSlot_CondenserSettlers</defName>
+    <label>condenser settlers</label>
+    <description>Farmers who live by the old gorrask's water. Non-hostile; fallback: the friendliest non-hostile faction at or below industrial tech.</description>
+    <fallback>Settlers</fallback>
+    <preferredFactions>
+      <li>OutlanderCivil</li>
+    </preferredFactions>
+  </RimMandrake.WeepingStones.RM_FactionSlotDef>
+
+  <RimMandrake.WeepingStones.RM_FactionSlotDef>
+    <defName>RM_FactionSlot_CondenserHunters</defName>
+    <label>condenser hunters</label>
+    <description>Trophy hunters who want the old gorrask's shell for the boast. Hostile; fallback: a permanent-enemy faction first.</description>
+    <fallback>Hunters</fallback>
+    <preferredFactions>
+      <li>Pirate</li>
+    </preferredFactions>
+  </RimMandrake.WeepingStones.RM_FactionSlotDef>
+
+</Defs>
