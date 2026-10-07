@@ -62,3 +62,17 @@ scope, balanced by cost and gating; never narrowed.**
 - A working ring evaluates "working", uninstalls, and runs at home with no research.
 - A gravship landed beside dead rings lights them; lifting off darkens them.
 - Built on a gravship, the screen flies and works on the next polluted tile.
+
+## progress
+
+- 2026-10-06 (parts 1-2, offline, uncommitted by the worker): `src/RimMandrake/Scarlands/Source/RM_AerosolScreen.cs`
+  holds `RM_PollutedBiomeExtension`, `RM_PollutionSense` (tile >= Light, ToxicFallout / `doToxicBuildup`
+  weather / `RM_Settling`, or the extension), `RM_CompProperties_AerosolScreen` + `RM_CompAerosolScreen`
+  (virtual `IsScreenLive`/`Radius` for the RUT module to derive from; empty `CompRefuelable` halves radius)
+  and the prefix pair on `ToxicUtility.DoAirbornePawnToxicDamage` and
+  `GameCondition_ToxicFallout.DoCellSteadyEffects`. The Settling film skips screened cells; the choir's
+  pollution stand-in forwards to `RM_PollutionSense`; `RM_Warscar` carries the extension; settings gained
+  "Aerosol screens" on/off + radius factor. Builds clean.
+- Still owed: ShipShields deriving from `RM_CompAerosolScreen` and dropping its own two prefixes (criterion
+  "one patch class"); the extension on Wasteland/Cauldron/Contagion; parts 3-11 (no `RM_AerosolScreen`
+  building def yet, so nothing in game carries the comp).

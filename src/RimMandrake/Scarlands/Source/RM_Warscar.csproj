@@ -54,6 +54,7 @@
     <Compile Include="RM_GeigerChoir.cs" />
     <Compile Include="RM_WarDustUses.cs" />
     <Compile Include="RM_LoosenedPanel.cs" />
+    <Compile Include="RM_AerosolScreen.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
