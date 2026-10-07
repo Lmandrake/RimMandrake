@@ -5,7 +5,8 @@
   Source: the_fever_wood.md:168 (chitin and salvage, the two-front war's leavings). The first Carapace-family child. Registered by patch (RM_FeverWood_WreckField_Register.xml), not in RM_FeverWood.xml.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
+  still on vanilla ShipChunk placeholder until its render lands: RM_FeverWoodWreckCarapace.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -14,6 +15,13 @@
     <defName>RM_FeverWoodWreckHull</defName>
     <label>overgrown hull</label>
     <description>A hull section swallowed by the wood, vines grown through every gap, left from the two-front war. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_FeverWoodWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 92.6% x 89.6% -> 0.70*0.926*2, 0.63*0.896*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.3,0.5,1.13)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Overgrown</weathering>

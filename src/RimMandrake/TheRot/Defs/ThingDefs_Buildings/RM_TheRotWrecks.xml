@@ -5,7 +5,7 @@
   Source: rot_bedazzle_review_2026-10-02.md (the gut that eats wrecks). Light affordance: RM_TheRotGrass/RM_TheRotSoilRich carry no Walkable. The pinging ship is a set-piece, not this field.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -14,6 +14,13 @@
     <defName>RM_RotWreckHull</defName>
     <label>digested hull</label>
     <description>A hull section half dissolved by the Rot, edges run like wax, a greasy sheen over the metal. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_RotWreckHull</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 95.1% x 93.9% -> 0.70*0.951*2, 0.63*0.939*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.33,0.5,1.18)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
@@ -26,6 +33,13 @@
     <defName>RM_RotWreckFrame</defName>
     <label>digested frame</label>
     <description>Bare frame members the gut could not finish, pitted and glazed. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_RotWreckFrame</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 88.4% x 90.9% -> 0.70*0.884*2, 0.63*0.909*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.24,0.5,1.15)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">

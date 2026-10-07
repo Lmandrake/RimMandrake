@@ -12,8 +12,8 @@
   Not here: RM_FailedChassis is an ITEM (RM_HospiceItems.xml), not a wreck; the live shield generator
   (the biome's one prize) is its own set-piece, not a weathered family.
 
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
-  Own renders are queued in the artpipe (ids wreck_warscar_*). ALL NUMBERS PROVISIONAL.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
+  ALL NUMBERS PROVISIONAL.
 -->
 <Defs>
 
@@ -21,6 +21,13 @@
     <defName>RM_WarscarWreckHull</defName>
     <label>stripped hull</label>
     <description>The skeleton of a crashed warship's hull. Every army that crossed the Warscar took a piece: the plating, the wiring, anything that would come loose. What is left is what nobody could carry. Lichen grows on it.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_WarscarWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 95.2% x 88.4% -> 0.70*0.952*2, 0.63*0.884*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.33,0.5,1.11)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Stripped</weathering>
@@ -32,6 +39,13 @@
     <defName>RM_WarscarWreckFrame</defName>
     <label>stripped frame</label>
     <description>Bare ribs and struts of a fallen ship, picked clean by soldiers and scavengers years ago. Lichen grows on it.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_WarscarWreckFrame</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 91.2% x 85.4% -> 0.70*0.912*2, 0.63*0.854*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.28,0.5,1.08)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Stripped</weathering>

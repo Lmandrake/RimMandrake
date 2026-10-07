@@ -472,6 +472,23 @@ def _planet_checks(bad, fams, weathers, tables):
         tier = _shift(fams[c.get("ParentName")][0], weathers[w][1])
         if "RM_SalvageLoot_%s" % tier not in tables:
             bad.append("%s resolves to tier %s with no table" % (dn, tier))
+    # Step 8 art: a child naming its own texPath must have Graphic_Random PNGs there and its own
+    # measured shadow box (the family's guess box is for the vanilla ShipChunk placeholder).
+    # Sanity probe: the Scald's shipped art must resolve, or the lookup is blind.
+    tex_roots = [os.path.join(SRC_ROOT, m, "Textures") for m in os.listdir(SRC_ROOT)]
+    has_png = lambda tp: any(os.path.isdir(os.path.join(r, tp)) and
+                             any(f.endswith(".png") for f in os.listdir(os.path.join(r, tp))) for r in tex_roots)
+    if not has_png("Things/Building/Ruins/RUT_ScaldWreckHull"):
+        bad.append("texture lookup cannot see the Scald hull art: the art check is blind")
+    else:
+        for dn, c in children.items():
+            tp = c.findtext("graphicData/texPath")
+            if not tp:
+                continue
+            if not has_png(tp):
+                bad.append("%s texPath %s has no PNG in any mod's Textures" % (dn, tp))
+            if c.find("graphicData/shadowData/volume") is None:
+                bad.append("%s has its own art but no measured shadowData" % dn)
     used = {c.get("ParentName") for c in children.values()}
     for fam in FAMILIES_WITH_CHILDREN:
         if fam not in used:

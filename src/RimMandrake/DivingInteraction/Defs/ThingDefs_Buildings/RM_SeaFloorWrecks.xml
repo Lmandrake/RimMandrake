@@ -17,8 +17,7 @@
     shipped art and shadow box; Cooked weathering.
   The Chill (Propane Lake) and the Terminator Sea floor are pending their sittings: no rows here.
 
-  ART PLACEHOLDER (Picked, Grey): no texPath, so they inherit ShipChunkBase's vanilla
-  Things/Building/Exotic/ShipChunk. Own renders are queued in the artpipe (ids wreck_seafloor_*).
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -27,6 +26,13 @@
     <defName>RM_PickedWreck</defName>
     <label>picked hull-rib</label>
     <description>A curved rib of hull standing out of the sediment, a salvage-mark scratched deep into it. Someone came down here first, impatient, and took everything worth taking. What is left is the metal they could not carry.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_PickedWreck</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 60.4% x 94.7% -> 0.70*0.604*2, 0.63*0.947*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(0.85,0.5,1.19)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
@@ -39,6 +45,13 @@
     <defName>RM_GreyFloorWreckHull</defName>
     <label>crystal-jacketed hull</label>
     <description>A hull section the Grey Sea's crystal has grown over until it reads as stone. The jacket sealed it: whatever was inside when it closed is still there. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_GreyFloorWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 89.4% x 89.6% -> 0.70*0.894*2, 0.63*0.896*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.25,0.5,1.13)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
@@ -51,6 +64,13 @@
     <defName>RM_GreyFloorWreckSpine</defName>
     <label>crystal-jacketed spine</label>
     <description>The keel spine of a ship, crusted along its length with grey crystal like coral on a bone. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_GreyFloorWreckSpine</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 94.1% x 94.5% -> 0.70*0.941*2, 0.63*0.945*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.32,0.5,1.19)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">

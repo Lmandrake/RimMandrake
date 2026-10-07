@@ -5,7 +5,8 @@
   Source: Owner ruling 2026-10-03: the Contagion has wrecks, but it erodes them and little remains.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
+  still on vanilla ShipChunk placeholder until its render lands: RM_ContagionWreckFragment.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -25,6 +26,13 @@
     <defName>RM_ContagionShellFragment</defName>
     <label>eroded shell fragment</label>
     <description>A scrap of a droid's shell, eaten thin. Deconstruct it for what little remains.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_ContagionShellFragment</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 80.3% x 83.8% -> 0.70*0.803*1, 0.63*0.838*1 (Scald ratio) -->
+      <shadowData>
+        <volume>(0.56,0.4,0.53)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Eroded</weathering>
