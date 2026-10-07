@@ -185,12 +185,18 @@ def handoff_files(all_seats=False):
     must not require a resolvable seat."""
     if not os.path.isdir(HANDOFFS):
         return []
+    # Both spellings: the Lodestar `handoff` skill writes <SEAT>_HANDOFF_<stamp>,
+    # this tool <SEAT>_REBOOT_HANDOFF_<stamp>. Matching only one made --wake
+    # print a day-old handoff while a newer one sat beside it (2026-10-07).
+    names = [fn for fn in os.listdir(HANDOFFS)
+             if _HANDOFF_RE.match(fn) and fn.endswith(".md")]
     if all_seats:
-        return [fn for fn in os.listdir(HANDOFFS)
-                if "_REBOOT_HANDOFF_" in fn and fn.endswith(".md")]
+        return names
     s = seat()
-    return [fn for fn in os.listdir(HANDOFFS)
-            if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")]
+    return [fn for fn in names if _HANDOFF_RE.match(fn).group(1) == s]
+
+
+_HANDOFF_RE = re.compile(r"^(.+?)_(?:REBOOT_)?HANDOFF_\d")
 
 
 def _to_utc_z(iso_ts):
@@ -459,8 +465,8 @@ def _corpus_commit_times():
     # would otherwise become every file's "newest" time — the same collapse by another
     # route. Each handoff keeps the time of the commit that actually WROTE it.
     out = sh("git", "log", "--format=@@%cI", "--name-only", "--diff-filter=AM", "--",
-             "infrastructure/state/handoffs/*_REBOOT_HANDOFF_*.md",
-             "infrastructure/state/items/*_REBOOT_HANDOFF_*.md")
+             "infrastructure/state/handoffs/*_HANDOFF_*.md",
+             "infrastructure/state/items/*_HANDOFF_*.md")
     times, ts = {}, ""
     for line in out.splitlines():
         if line.startswith("@@"):
@@ -541,7 +547,7 @@ def cull(apply_):
     newest, info = {}, []
     for fn in handoff_files(all_seats=True):
         ts = times.get(fn, "")
-        st = fn.split("_REBOOT_HANDOFF_")[0]
+        st = _HANDOFF_RE.match(fn).group(1)
         info.append((fn, st, ts))
         if ts and (st not in newest or ts > newest[st][1]):
             newest[st] = (fn, ts)
