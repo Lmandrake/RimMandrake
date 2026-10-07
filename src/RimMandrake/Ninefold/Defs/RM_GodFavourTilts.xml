@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GodFavourTilts.xml        mandrake.rm.ninefold - NINEFOLD_FAVOUR_ODDS_BUILD_1
+
+  The §4 table of design/Jawa/nine_faults_permanent_rite_2026-10-01.md as data: one row
+  per (god, incident or weather, direction). A god's band multiplies the row's chance:
+  Exalted x1.35, Content x1.15, Neutral x1, Slighted x0.85, Wrathful x0.7; a Less row
+  takes the reciprocal. Rows on one def multiply. Strength slider in Mod Settings.
+  Tune here, never in C#. Every incident/weather defName MEASURED in the def dump
+  (2026-10-04 capture) on 2026-10-06; Sandstorm is Odyssey's, the rest Core.
+  "Sandstorm and fog weather" (Ishko) = Sandstorm, Fog, FoggyRain.
+-->
+<Defs>
+
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ishko_Eclipse</defName>
+    <god>Ishko</god>
+    <incident>Eclipse</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Tilt_Ishko_Sandstorm</defName>
+    <god>Ishko</god>
+    <weather>Sandstorm</weather>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ishko_Fog</defName>
+    <god>Ishko</god>
+    <weather>Fog</weather>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ishko_FoggyRain</defName>
+    <god>Ishko</god>
+    <weather>FoggyRain</weather>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ishko_SelfTame</defName>
+    <god>Ishko</god>
+    <incident>SelfTame</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ohm_ShipChunkDrop</defName>
+    <god>Ohm</god>
+    <incident>ShipChunkDrop</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ohm_ShortCircuit</defName>
+    <god>Ohm</god>
+    <incident>ShortCircuit</incident>
+    <direction>Less</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Oomo_FarmAnimalsWanderIn</defName>
+    <god>Oomo</god>
+    <incident>FarmAnimalsWanderIn</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Oomo_Disease_Flu</defName>
+    <god>Oomo</god>
+    <incident>Disease_Flu</incident>
+    <direction>Less</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_MobUnloo_TraderCaravanArrival</defName>
+    <god>MobUnloo</god>
+    <incident>TraderCaravanArrival</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_MobUnloo_OrbitalTraderArrival</defName>
+    <god>MobUnloo</god>
+    <incident>OrbitalTraderArrival</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Rekko_ResourcePodCrash</defName>
+    <god>Rekko</god>
+    <incident>ResourcePodCrash</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_TaBaa_TravelerGroup</defName>
+    <god>TaBaa</god>
+    <incident>TravelerGroup</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_TaBaa_HerdMigration</defName>
+    <god>TaBaa</god>
+    <incident>HerdMigration</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Zizzik_Flashstorm</defName>
+    <god>Zizzik</god>
+    <incident>Flashstorm</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Zizzik_SolarFlare</defName>
+    <god>Zizzik</god>
+    <incident>SolarFlare</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Zizzik_Infestation</defName>
+    <god>Zizzik</god>
+    <incident>Infestation</incident>
+    <direction>Less</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Shkaar_HeatWave</defName>
+    <god>Shkaar</god>
+    <incident>HeatWave</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Shkaar_Eclipse</defName>
+    <god>Shkaar</god>
+    <incident>Eclipse</incident>
+    <direction>Less</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+  <RimMandrake.Ninefold.RM_GodFavourTiltDef>
+    <defName>RM_Tilt_Ozzik_VisitorGroup</defName>
+    <god>Ozzik</god>
+    <incident>VisitorGroup</incident>
+    <direction>More</direction>
+  </RimMandrake.Ninefold.RM_GodFavourTiltDef>
+
+</Defs>
