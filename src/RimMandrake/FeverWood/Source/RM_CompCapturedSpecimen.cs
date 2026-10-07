@@ -34,8 +34,8 @@ namespace RimMandrake.FeverWood
     // reaching registered water and handles stage 2/3 from there.
     public class RM_CompCapturedSpecimen : ThingComp
     {
-        private const int CheckIntervalTicks = 2500; // 1 in-game hour
-        private const float TicksPerDay = 60000f;
+        private const int CheckIntervalTicks = RM_TankKernel.CheckIntervalTicks; // 1 in-game hour
+        private const float TicksPerDay = RM_TankKernel.TicksPerDay;
 
         private int unfedSinceTick = -1;
         private bool taught;
@@ -95,19 +95,11 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            if (!RM_FeverWoodSettings.sekkulaathTankEnabled)
-            {
-                return; // Mod Settings master off: inert box, per that toggle's own tooltip
-            }
-            if (!occupied)
-            {
-                return; // returned to the deep: an empty tank neither produces nor escapes
-            }
-            if (IsForeignDisplay)
-            {
-                return; // a town's display tank: the town feeds it; it neither produces for nor escapes on the player
-            }
-            if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
+            // Mod Settings master off = inert box, per that toggle's own tooltip; returned to the deep = an empty tank
+            // neither produces nor escapes; a town's display tank is fed by the town and neither produces for nor escapes
+            // on the player.
+            if (!RM_TankKernel.RunsThisTick(RM_FeverWoodSettings.sekkulaathTankEnabled, occupied, IsForeignDisplay,
+                    Find.TickManager.TicksGame))
             {
                 return;
             }
@@ -122,25 +114,12 @@ namespace RimMandrake.FeverWood
 
         private void TickNeglect(bool fed)
         {
-            if (fed)
-            {
-                unfedSinceTick = -1;
-                return;
-            }
-            if (unfedSinceTick < 0)
-            {
-                unfedSinceTick = Find.TickManager.TicksGame;
-                return;
-            }
-
-            float daysUnfed = (Find.TickManager.TicksGame - unfedSinceTick) / TicksPerDay;
-            if (daysUnfed < Props.neglectDaysBeforeEscapeRisk)
+            if (!RM_TankKernel.NeglectStep(ref unfedSinceTick, fed, Find.TickManager.TicksGame, Props.neglectDaysBeforeEscapeRisk))
             {
                 return;
             }
 
-            float riskMultiplier = Mathf.Max(0.01f, RM_FeverWoodSettings.sekkulaathEscapeRiskMultiplier);
-            float effectiveMtbDays = Props.neglectEscapeMtbDays * riskMultiplier; // lower multiplier = shorter MTB = more escape-prone
+            float effectiveMtbDays = RM_TankKernel.NeglectMtbDays(Props.neglectEscapeMtbDays, RM_FeverWoodSettings.sekkulaathEscapeRiskMultiplier); // lower multiplier = shorter MTB = more escape-prone
             if (Rand.MTBEventOccurs(effectiveMtbDays, TicksPerDay, CheckIntervalTicks))
             {
                 Escape("neglect");
@@ -157,8 +136,7 @@ namespace RimMandrake.FeverWood
                     continue;
                 }
                 int last = lastProducedTick.TryGetValue(p.thing, out int t) ? t : Find.TickManager.TicksGame;
-                int elapsed = Find.TickManager.TicksGame - last;
-                if (!Rand.MTBEventOccurs(p.mtbDays, TicksPerDay, elapsed >= CheckIntervalTicks ? CheckIntervalTicks : elapsed))
+                if (!Rand.MTBEventOccurs(p.mtbDays, TicksPerDay, RM_TankKernel.ProductionWindow(Find.TickManager.TicksGame, last)))
                 {
                     continue;
                 }
@@ -186,20 +164,13 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            if (!RM_FeverWoodSettings.sekkulaathTankEnabled || !occupied)
+            if (!RM_TankKernel.DamageArmed(RM_FeverWoodSettings.sekkulaathTankEnabled, occupied, parent.HitPoints, parent.MaxHitPoints,
+                    Props.damageEscapeThresholdFraction))
             {
                 return;
             }
 
-            float maxHp = parent.MaxHitPoints > 0 ? parent.MaxHitPoints : 1;
-            float lostFraction = 1f - (float)parent.HitPoints / maxHp;
-            if (lostFraction < Props.damageEscapeThresholdFraction)
-            {
-                return;
-            }
-
-            float riskMultiplier = Mathf.Max(0.01f, RM_FeverWoodSettings.sekkulaathEscapeRiskMultiplier);
-            float effectiveChance = Mathf.Clamp01(Props.damageEscapeChancePerHit / riskMultiplier); // lower multiplier = higher chance
+            float effectiveChance = RM_TankKernel.DamageEscapeChance(Props.damageEscapeChancePerHit, RM_FeverWoodSettings.sekkulaathEscapeRiskMultiplier); // lower multiplier = higher chance
             if (Rand.Chance(effectiveChance))
             {
                 Escape("damage");
@@ -213,7 +184,7 @@ namespace RimMandrake.FeverWood
         /// (item's ruling 3: "it remembers the tank").</summary>
         private void Escape(string cause)
         {
-            if (IsForeignDisplay && RM_FeverWoodSettings.broodRansomEnabled)
+            if (RM_TankKernel.EscapeFreesDisplayYoung(IsForeignDisplay, RM_FeverWoodSettings.broodRansomEnabled))
             {
                 FreeDisplayYoung(parent.Map, parent.Position, breached: true);
                 if (!parent.Destroyed)
@@ -326,7 +297,7 @@ namespace RimMandrake.FeverWood
         // ── FEVERWOOD_BROOD_RANSOM_1 §5: a town's display tank ──────────────
 
         /// <summary>A display tank another faction owns (campaign: Sporefall's).</summary>
-        public bool IsForeignDisplay => Props.displayTank && parent.Faction != null && parent.Faction != Faction.OfPlayer;
+        public bool IsForeignDisplay => RM_TankKernel.IsForeignDisplay(Props.displayTank, parent.Faction != null, parent.Faction == Faction.OfPlayer);
 
         /// <summary>A player colonist stands in or beside the tank's footprint.</summary>
         public Pawn AdjacentColonist()
@@ -380,11 +351,10 @@ namespace RimMandrake.FeverWood
         /// Idempotent: an empty tank does nothing.</summary>
         public Pawn FreeDisplayYoung(Map map, IntVec3 pos, bool breached)
         {
-            if (!occupied || map == null)
+            if (!RM_TankKernel.TryFreeDisplay(ref occupied, map != null))
             {
                 return null;
             }
-            occupied = false;
             Faction owner = parent.Faction;
             Pawn young = null;
             PawnKindDef kind = YoungKind(Props);
@@ -419,13 +389,12 @@ namespace RimMandrake.FeverWood
 
         public void ReleaseToTheDeep()
         {
-            if (!occupied || !parent.Spawned)
+            if (!RM_TankKernel.TryRelease(ref occupied, parent.Spawned))
             {
                 return;
             }
             Map map = parent.Map;
             PawnKindDef kind = YoungKind(Props);
-            occupied = false;
             if (Fuel != null)
             {
                 Fuel.allowAutoRefuel = false; // nothing left to feed
@@ -445,9 +414,9 @@ namespace RimMandrake.FeverWood
         {
             base.PostDestroy(mode, previousMap);
             // Broken outright (no escape roll got there first): a display tank's young still gets out.
-            if (mode == DestroyMode.KillFinalize && occupied && Props.displayTank && previousMap != null
-                && parent.Faction != null && parent.Faction != Faction.OfPlayer
-                && RM_FeverWoodSettings.broodRansomEnabled && RM_FeverWoodSettings.sekkulaathTankEnabled)
+            if (RM_TankKernel.DestroyFreesDisplayYoung(mode == DestroyMode.KillFinalize, occupied, Props.displayTank, previousMap != null,
+                    parent.Faction != null, parent.Faction == Faction.OfPlayer,
+                    RM_FeverWoodSettings.broodRansomEnabled, RM_FeverWoodSettings.sekkulaathTankEnabled))
             {
                 FreeDisplayYoung(previousMap, parent.Position, breached: true);
             }

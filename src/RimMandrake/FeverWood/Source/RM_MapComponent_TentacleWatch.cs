@@ -74,7 +74,7 @@ namespace RimMandrake.FeverWood
             }
         }
 
-        private const int AmbientCheckIntervalTicks = 2500; // 1 in-game hour
+        private const int AmbientCheckIntervalTicks = RM_BroodKernel.AmbientCheckIntervalTicks; // 1 in-game hour
         private const int PoolCacheRefreshTicks = 60000; // pools don't move; re-scan once a day
 
         // Bloom is deliberately absent — it is no longer an ordinary-roll
@@ -130,12 +130,8 @@ namespace RimMandrake.FeverWood
                 return;
             }
 
-            if (!RM_FeverWoodSettings.tentacleBestiaryEnabled || permanentlyKilled)
-            {
-                return;
-            }
-
-            if (Find.TickManager.TicksGame < blockedUntilTick)
+            if (!RM_PoolKernel.AmbientOpen(RM_FeverWoodSettings.tentacleBestiaryEnabled, permanentlyKilled,
+                    Find.TickManager.TicksGame, blockedUntilTick))
             {
                 return;
             }
@@ -153,7 +149,7 @@ namespace RimMandrake.FeverWood
 
             if (RM_FeverWoodSettings.tentacleGreatEmergenceEnabled
                 && GreatEmergenceEligible(pools)
-                && Rand.Chance(UnityEngine.Mathf.Clamp01(RM_FeverWoodSettings.tentacleGreatEmergenceChance)))
+                && Rand.Chance(RM_PoolKernel.GreatChance(RM_FeverWoodSettings.tentacleGreatEmergenceChance)))
             {
                 SpawnGreatEmergence(pools);
                 return;
@@ -166,14 +162,13 @@ namespace RimMandrake.FeverWood
         /// by the world's boldness multiplier (1 when the brood ransom is off,
         /// so this is exactly the shipped MTB then).</summary>
         public float EffectiveAmbientMtbHours =>
-            UnityEngine.Mathf.Max(0.1f, RM_FeverWoodSettings.tentacleAmbientMtbHours)
-            / UnityEngine.Mathf.Max(1f, RM_WorldComponent_DeepYoung.BoldnessMultiplier);
+            RM_BroodKernel.EffectiveAmbientMtbHours(RM_FeverWoodSettings.tentacleAmbientMtbHours, RM_WorldComponent_DeepYoung.BoldnessMultiplier);
 
         /// <summary>The computed per-check chance Rand.MTBEventOccurs uses for
         /// the ordinary emergence (checkDuration / (mtb * mtbUnit), capped at
         /// 1) — a state read, not a sampled count.</summary>
         public float EffectiveEmergenceChancePerCheck =>
-            UnityEngine.Mathf.Min(1f, AmbientCheckIntervalTicks / (EffectiveAmbientMtbHours * 2500f));
+            RM_BroodKernel.EmergenceChancePerCheck(EffectiveAmbientMtbHours);
 
         /// <summary>The young came home to a pool here: within the hour the
         /// deep sets down one great gift beside it.</summary>
@@ -186,24 +181,13 @@ namespace RimMandrake.FeverWood
 
         private void TickPendingGifts()
         {
-            int now = Find.TickManager.TicksGame;
-            for (int i = pendingGiftTicks.Count - 1; i >= 0; i--)
+            List<KeyValuePair<IntVec3, int>> due = RM_BroodKernel.CollectDue(pendingGiftTicks, pendingGiftCells, pendingGiftRolls,
+                Find.TickManager.TicksGame);
+            for (int i = 0; i < due.Count; i++)
             {
-                if (now < pendingGiftTicks[i])
-                {
-                    continue;
-                }
-                IntVec3 cell = pendingGiftCells[i];
-                int rolls = i < pendingGiftRolls.Count ? pendingGiftRolls[i] : 1;
-                pendingGiftTicks.RemoveAt(i);
-                pendingGiftCells.RemoveAt(i);
-                if (i < pendingGiftRolls.Count)
-                {
-                    pendingGiftRolls.RemoveAt(i);
-                }
                 if (RM_FeverWoodSettings.broodRansomEnabled)
                 {
-                    RM_DeepGift.Grant(map, cell, rolls);
+                    RM_DeepGift.Grant(map, due[i].Key, due[i].Value);
                 }
             }
         }
@@ -213,8 +197,8 @@ namespace RimMandrake.FeverWood
         /// model, is what this item builds.</summary>
         private bool GreatEmergenceEligible(List<IntVec3> pools)
         {
-            return pools.Count >= UnityEngine.Mathf.Max(1, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold)
-                && encounterPressure >= UnityEngine.Mathf.Max(0, RM_FeverWoodSettings.tentacleGreatEmergencePressureThreshold);
+            return RM_PoolKernel.GreatEligible(pools.Count, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold,
+                encounterPressure, RM_FeverWoodSettings.tentacleGreatEmergencePressureThreshold);
         }
 
         private void SpawnEncounter(List<IntVec3> pools)
@@ -238,7 +222,7 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(thing, cell, map);
             }
 
-            encounterPressure++; // §6d: "every ordinary encounter... is a deposit toward its big one"
+            encounterPressure = RM_PoolKernel.PressureAfter(encounterPressure, AmbientKind.Ordinary); // §6d: "every ordinary encounter... is a deposit toward its big one"
         }
 
         /// <summary>The distinct set-piece (§2b row 3, owner verbatim: "a
@@ -276,7 +260,7 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(bloom, seed, map);
             }
 
-            encounterPressure = 0;
+            encounterPressure = RM_PoolKernel.PressureAfter(encounterPressure, AmbientKind.Great);
 
             Find.LetterStack.ReceiveLetter(
                 "The Great Emergence",
@@ -306,34 +290,28 @@ namespace RimMandrake.FeverWood
 
         private ThingDef RollLimb()
         {
-            float total = 0f;
+            float[] weights = new float[AmbientTable.Length];
+            bool[] skipped = new bool[AmbientTable.Length];
             for (int i = 0; i < AmbientTable.Length; i++)
             {
-                if (porterAngeredForever && AmbientTable[i].defName == "RM_Sekkulaath_Porter")
+                skipped[i] = porterAngeredForever && AmbientTable[i].defName == "RM_Sekkulaath_Porter";
+                weights[i] = WeightOf(i);
+            }
+            float total = 0f;
+            for (int i = 0; i < weights.Length; i++)
+            {
+                if (!skipped[i])
                 {
-                    continue;
+                    total += weights[i];
                 }
-                total += WeightOf(i);
             }
             if (total <= 0f)
             {
                 return null;
             }
 
-            float roll = Rand.Range(0f, total);
-            for (int i = 0; i < AmbientTable.Length; i++)
-            {
-                if (porterAngeredForever && AmbientTable[i].defName == "RM_Sekkulaath_Porter")
-                {
-                    continue;
-                }
-                roll -= WeightOf(i);
-                if (roll <= 0f)
-                {
-                    return DefDatabase<ThingDef>.GetNamedSilentFail(AmbientTable[i].defName);
-                }
-            }
-            return null;
+            int pick = RM_BroodKernel.PickLimb(weights, skipped, Rand.Range(0f, total));
+            return pick < 0 ? null : DefDatabase<ThingDef>.GetNamedSilentFail(AmbientTable[pick].defName);
         }
 
         /// <summary>FEVERWOOD_BROOD_RANSOM_1: the snare and lash weigh more
@@ -341,11 +319,8 @@ namespace RimMandrake.FeverWood
         private static float WeightOf(int i)
         {
             string d = AmbientTable[i].defName;
-            if (d == "RM_Sekkulaath_Snare" || d == "RM_Sekkulaath_Lash")
-            {
-                return AmbientTable[i].weight * RM_WorldComponent_DeepYoung.BoldnessMultiplier;
-            }
-            return AmbientTable[i].weight;
+            bool grows = d == "RM_Sekkulaath_Snare" || d == "RM_Sekkulaath_Lash";
+            return RM_BroodKernel.AmbientWeight(grows, AmbientTable[i].weight, grows ? RM_WorldComponent_DeepYoung.BoldnessMultiplier : 1f);
         }
 
         private List<IntVec3> PoolCells()
@@ -378,20 +353,12 @@ namespace RimMandrake.FeverWood
 
         public void OnLimbRetreated(int cooldownTicks)
         {
-            int until = Find.TickManager.TicksGame + cooldownTicks;
-            if (until > blockedUntilTick)
-            {
-                blockedUntilTick = until;
-            }
+            blockedUntilTick = RM_PoolKernel.Extend(blockedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, cooldownTicks));
         }
 
         public void OnLimbSevered(int respiteTicks)
         {
-            int until = Find.TickManager.TicksGame + respiteTicks;
-            if (until > blockedUntilTick)
-            {
-                blockedUntilTick = until;
-            }
+            blockedUntilTick = RM_PoolKernel.Extend(blockedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, respiteTicks));
         }
 
         /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: a burning pool edge wakes the deep. An ORDINARY emergence at the
@@ -418,8 +385,9 @@ namespace RimMandrake.FeverWood
                 }
             }
             int before = CountLimbs();
+            int pressureBefore = encounterPressure;
             SpawnEncounterAt(seed, pools);
-            encounterPressure++;
+            encounterPressure = RM_PoolKernel.PressureAfterForced(pressureBefore);
             return CountLimbs() - before;
         }
 
@@ -457,11 +425,7 @@ namespace RimMandrake.FeverWood
         /// charge is used at a registered pool cell.</summary>
         public void SuppressPoolWithRadioactiveMaterial(int ticks)
         {
-            int until = Find.TickManager.TicksGame + ticks;
-            if (until > blockedUntilTick)
-            {
-                blockedUntilTick = until;
-            }
+            blockedUntilTick = RM_PoolKernel.Extend(blockedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, ticks));
             Messages.Message(
                 "The pool's water clouds and stills. Whatever lives beneath it is driven down by the fouling — no tentacles, and no trickle of scavenged goods, until the material diffuses away.",
                 new TargetInfo(map.Center, map), MessageTypeDefOf.PositiveEvent);
@@ -470,11 +434,7 @@ namespace RimMandrake.FeverWood
         public void DriveOffAllLimbs(int ticks)
         {
             DespawnAllLimbs();
-            int until = Find.TickManager.TicksGame + ticks;
-            if (until > blockedUntilTick)
-            {
-                blockedUntilTick = until;
-            }
+            blockedUntilTick = RM_PoolKernel.Extend(blockedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, ticks));
             Messages.Message("Every tentacle in the Fever Wood withdraws beneath the water.",
                 new TargetInfo(map.Center, map), MessageTypeDefOf.ThreatBig);
         }
@@ -522,8 +482,8 @@ namespace RimMandrake.FeverWood
 
         public void Notify_SentinelUp()
         {
-            sentinelCount++;
-            if (sentinelCount == 1)
+            sentinelCount = RM_PoolKernel.SentinelUp(sentinelCount, out bool hush);
+            if (hush)
             {
                 HushChorus();
             }
@@ -531,9 +491,8 @@ namespace RimMandrake.FeverWood
 
         public void Notify_SentinelDown()
         {
-            int previous = sentinelCount;
-            sentinelCount = UnityEngine.Mathf.Max(0, sentinelCount - 1);
-            if (previous > 0 && sentinelCount == 0)
+            sentinelCount = RM_PoolKernel.SentinelDown(sentinelCount, out bool restore);
+            if (restore)
             {
                 RestoreChorus();
             }
@@ -605,20 +564,9 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref encounterPressure, "encounterPressure", 0);
             Scribe_Collections.Look(ref pendingGiftTicks, "pendingGiftTicks", LookMode.Value);
             Scribe_Collections.Look(ref pendingGiftCells, "pendingGiftCells", LookMode.Value);
-            if (pendingGiftTicks == null || pendingGiftCells == null || pendingGiftTicks.Count != pendingGiftCells.Count)
-            {
-                pendingGiftTicks = new List<int>();
-                pendingGiftCells = new List<IntVec3>();
-            }
             Scribe_Collections.Look(ref pendingGiftRolls, "pendingGiftRolls", LookMode.Value);
-            if (pendingGiftRolls == null || pendingGiftRolls.Count != pendingGiftTicks.Count)
-            {
-                pendingGiftRolls = new List<int>(); // older save or mismatch: every pending gift rolls once
-                for (int i = 0; i < pendingGiftTicks.Count; i++)
-                {
-                    pendingGiftRolls.Add(1);
-                }
-            }
+            // mismatched tick/cell lists are dropped together; older save or mismatch: every pending gift rolls once
+            RM_BroodKernel.RepairQueues(ref pendingGiftTicks, ref pendingGiftCells, ref pendingGiftRolls);
             // sentinelCount is deliberately NOT scribed: every spawned
             // sentinel's own RM_CompTentacleLimb.PostSpawnSetup re-registers
             // with Notify_SentinelUp() on load too (PostSpawnSetup fires for

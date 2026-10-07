@@ -65,11 +65,11 @@ namespace RimMandrake.Contagion
             {
                 return;
             }
-            if (Find.TickManager.TicksGame < nextSpawnTick)
+            if (!RM_DraftprintKernel.SpawnDue(Find.TickManager.TicksGame, nextSpawnTick))
             {
                 return;
             }
-            if (NearbyCount() < Props.maxNearby)
+            if (RM_DraftprintKernel.NearbyAllows(NearbyCount(), Props.maxNearby))
             {
                 TrySpawn();
             }
@@ -120,7 +120,7 @@ namespace RimMandrake.Contagion
 
         private void ScheduleNext()
         {
-            nextSpawnTick = Find.TickManager.TicksGame + (int)(Props.intervalDaysRange.RandomInRange * 60000f);
+            nextSpawnTick = RM_DraftprintKernel.NextSpawn(Find.TickManager.TicksGame, Props.intervalDaysRange.RandomInRange);
         }
     }
 }

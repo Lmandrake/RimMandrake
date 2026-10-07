@@ -206,7 +206,7 @@ namespace RimMandrake.Wasteland
                 financeFaction = finance,
                 casksPerDelivery = casks,
                 deliveries = ext.deliveries,
-                silverPerDelivery = casks * ext.silverPerCask,
+                silverPerDelivery = RM_TippingKernel.SilverPerDelivery(casks, ext.silverPerCask),
                 outSignalSuccess = QuestGenUtility.HardcodedSignalWithQuestID(outSignalSuccess.GetValue(slate)),
                 outSignalFail = QuestGenUtility.HardcodedSignalWithQuestID(outSignalFail.GetValue(slate)),
             };
@@ -298,27 +298,45 @@ namespace RimMandrake.Wasteland
             {
                 return;
             }
-            if (map == null || convoyFaction == null || convoyFaction.HostileTo(Faction.OfPlayer))
+            if (RM_TippingKernel.ContractVoid(map != null, convoyFaction != null, convoyFaction != null && convoyFaction.HostileTo(Faction.OfPlayer)))
             {
                 Fail("The tipping contract is void: " + (convoyFaction?.Name ?? "the convoy") + " is no longer dealing with you.");
                 return;
             }
-            if (Find.TickManager.TicksGame >= nextDeliveryTick)
+            if (RM_TippingKernel.DeliveryDue(Find.TickManager.TicksGame, nextDeliveryTick))
             {
                 TryDeliver();
-                nextDeliveryTick = Find.TickManager.TicksGame + Mathf.RoundToInt(Ext.deliveryIntervalDays * GenDate.TicksPerDay);
+                nextDeliveryTick = RM_TippingKernel.NextDelivery(Find.TickManager.TicksGame, Ext.deliveryIntervalDays, GenDate.TicksPerDay);
             }
         }
 
         /// <summary>One convoy load. Public so a debug action / state read can drive it.</summary>
         public bool TryDeliver()
         {
-            RM_CompTippingPad pad = RM_CompTippingPad.FindPad(map);
-            if (pad == null)
+            if (State != QuestPartState.Enabled)
             {
-                missed++;
-                convoyFaction.TryAffectGoodwillWith(Faction.OfPlayer, -5, true, true, HistoryEventDefOf.QuestGoodwillReward);
-                if (missed > Ext.missedDeliveriesAllowed)
+                return false;
+            }
+            RM_CompTippingPad pad = RM_CompTippingPad.FindPad(map);
+            Building bay = map.listerBuildings.allBuildingsColonist.FirstOrDefault(b => b.GetComp<RM_CompWasteContainment>() != null);
+            TippingState st = new TippingState
+            {
+                deliveriesDone = deliveriesDone, missed = missed, evidenceAsked = evidenceAsked,
+                financeGranted = financeGranted, financeHinted = financeHinted, active = true
+            };
+            TippingResult r = RM_TippingKernel.Deliver(ref st, pad != null,
+                evidenceFaction != null, evidenceFaction != null && RM_TippingUtility.Usable(evidenceFaction),
+                financeFaction != null, financeFaction != null && RM_TippingUtility.Usable(financeFaction), bay != null,
+                Ext.goodwillPerDelivery, deliveries, Ext.missedDeliveriesAllowed);
+            deliveriesDone = st.deliveriesDone;
+            missed = st.missed;
+            evidenceAsked = st.evidenceAsked;
+            financeGranted = st.financeGranted;
+            financeHinted = st.financeHinted;
+            if (!r.delivered)
+            {
+                convoyFaction.TryAffectGoodwillWith(Faction.OfPlayer, r.convoyGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
+                if (r.failed)
                 {
                     Fail("The waste convoy found no licensed tipping pad again and has cancelled the contract.");
                 }
@@ -339,19 +357,17 @@ namespace RimMandrake.Wasteland
             silver.stackCount = silverPerDelivery;
             load.Add(silver);
             DropPodUtility.DropThingsNear(pad.parent.Position, map, load, 110, false, false, true, false, true, convoyFaction);
-            convoyFaction.TryAffectGoodwillWith(Faction.OfPlayer, Ext.goodwillPerDelivery, true, true, HistoryEventDefOf.QuestGoodwillReward);
-            deliveriesDone++;
+            convoyFaction.TryAffectGoodwillWith(Faction.OfPlayer, r.convoyGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
             Messages.Message((convoyFaction.Name ?? "The convoy") + " has tipped " + casksPerDelivery + " waste casks on your pad and paid "
                            + silverPerDelivery + " silver (" + deliveriesDone + " of " + deliveries + ").",
                 new LookTargets(pad.parent), MessageTypeDefOf.PositiveEvent);
 
-            if (!evidenceAsked && evidenceFaction != null && RM_TippingUtility.Usable(evidenceFaction))
+            if (r.askEvidence)
             {
-                evidenceAsked = true;
                 AskEvidence(pad);
             }
-            CheckFinance();
-            if (deliveriesDone >= deliveries)
+            DoFinance(r.finance, bay);
+            if (r.completed)
             {
                 Complete();
                 if (!outSignalSuccess.NullOrEmpty())
@@ -403,26 +419,20 @@ namespace RimMandrake.Wasteland
             evidenceFaction?.TryAffectGoodwillWith(Faction.OfPlayer, Ext.evidenceRefusedGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward);
         }
 
-        private void CheckFinance()
+        private void DoFinance(FinanceStep step, Building bay)
         {
-            if (financeGranted || financeFaction == null || !RM_TippingUtility.Usable(financeFaction))
+            if (step == FinanceStep.Hint)
+            {
+                Find.LetterStack.ReceiveLetter("Containment offered",
+                    financeFaction.Name + " will pay " + Ext.financeGrantSilver + " silver toward proper containment "
+                  + "the first time a waste load arrives and you have a sealed cask bay standing.",
+                    LetterDefOf.NeutralEvent, null, financeFaction, quest);
+                return;
+            }
+            if (step != FinanceStep.Grant)
             {
                 return;
             }
-            Building bay = map.listerBuildings.allBuildingsColonist.FirstOrDefault(b => b.GetComp<RM_CompWasteContainment>() != null);
-            if (bay == null)
-            {
-                if (!financeHinted)
-                {
-                    financeHinted = true;
-                    Find.LetterStack.ReceiveLetter("Containment offered",
-                        financeFaction.Name + " will pay " + Ext.financeGrantSilver + " silver toward proper containment "
-                      + "the first time a waste load arrives and you have a sealed cask bay standing.",
-                        LetterDefOf.NeutralEvent, null, financeFaction, quest);
-                }
-                return;
-            }
-            financeGranted = true;
             Thing silver = ThingMaker.MakeThing(ThingDefOf.Silver);
             silver.stackCount = Ext.financeGrantSilver;
             DropPodUtility.DropThingsNear(bay.Position, map, new List<Thing> { silver }, 110, false, false, true, false, true, financeFaction);
@@ -437,7 +447,7 @@ namespace RimMandrake.Wasteland
             RM_TippingQuestExtension ext = Ext;
             foreach (Faction f in new[] { evidenceFaction, financeFaction })
             {
-                if (f != null && RM_TippingUtility.Usable(f) && Rand.Chance(ext.reburialDiscoveryChance))
+                if (RM_TippingKernel.Discovers(f != null, f != null && RM_TippingUtility.Usable(f), ext.reburialDiscoveryChance, () => Rand.Value))
                 {
                     f.TryAffectGoodwillWith(Faction.OfPlayer, ext.reburialGoodwill, true, true, HistoryEventDefOf.QuestGoodwillReward,
                         new GlobalTargetInfo(cell, map));

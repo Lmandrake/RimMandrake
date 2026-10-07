@@ -61,6 +61,11 @@
     <Compile Include="RM_ForgeSkyPastures.cs" />
     <!-- FORGE_DHOKKUR_WAYS_1 -->
     <Compile Include="RM_ForgeDhokkurWays.cs" />
+    <Compile Include="Kernel\RM_CycleKernel.cs" />
+    <Compile Include="Kernel\RM_PlumeKernel.cs" />
+    <Compile Include="Kernel\RM_DhokkurKernel.cs" />
+    <Compile Include="Kernel\RM_DormancyKernel.cs" />
+    <Compile Include="Kernel\RM_SkyKernel.cs" />
   </ItemGroup>
 
   <!-- FORGE_CYCLE_MECHANICS_1: the cycle subclasses the F1 pulse

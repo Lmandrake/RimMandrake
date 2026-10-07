@@ -4,31 +4,7 @@ using Verse;
 
 namespace RimMandrake.WeepingStones
 {
-	/// <summary>
-	/// STOCKED_POOL_BUILD_1, wave 2. Ring-density READ state for one stocked
-	/// pool (spec §3's READ verb): "Ring density on the water IS the stock
-	/// gauge — art states, no inspector-diving." No overlay art ships this
-	/// wave (owed, see the item's ledger note) — the state is exposed via the
-	/// zone's inspect string in the meantime, same information, plainer
-	/// presentation.
-	/// </summary>
-	public enum RM_PoolStockState
-	{
-		/// <summary>Murrin rings are up, no vhorrin, population healthy relative to footprint.</summary>
-		Healthy,
-
-		/// <summary>Population present but thin relative to the pen's footprint — hungry or predated (spec §3).</summary>
-		Thin,
-
-		/// <summary>No rings at all — the dead-oasis image as farm telemetry (spec §3's READ row, §10b).</summary>
-		Silent,
-
-		/// <summary>One wide slow ring doing all the surfacing — a live RM_Vhorrin occupies the pen.
-		/// This wave only DETECTS the state (a vhorrin already present is read correctly); nothing
-		/// yet SPAWNS one — the OVERDRAW-to-emergence trigger is next wave's job (see the item's
-		/// ledger note).</summary>
-		Vhorrin,
-	}
+	// The RM_PoolStockState enum (Healthy / Thin / Silent / Vhorrin, the spec §3 READ gauge) lives in Kernel/RM_PoolKernel.cs.
 
 	/// <summary>
 	/// One stocked pool's bookkeeping — the per-pool-body record the spec calls the
@@ -73,18 +49,14 @@ namespace RimMandrake.WeepingStones
 		/// yet (see <see cref="lastFedTick"/>'s -1 handling).</summary>
 		public int UnfedDays(int currentTick)
 		{
-			if (lastFedTick < 0)
-			{
-				return 0;
-			}
-			return Mathf.Max(0, currentTick - lastFedTick) / GenDate.TicksPerDay;
+			return RM_PoolKernel.UnfedDays(lastFedTick, currentTick, GenDate.TicksPerDay);
 		}
 
 		/// <summary>FEED is due once a day (spec §3's cadence: fed "from the
 		/// bank" is the safe, expected rhythm; late is what goes wrong).</summary>
 		public bool NeedsFeed(int currentTick)
 		{
-			return lastFedTick < 0 || currentTick - lastFedTick >= GenDate.TicksPerDay;
+			return RM_PoolKernel.NeedsFeed(lastFedTick, currentTick, GenDate.TicksPerDay);
 		}
 
 		public RM_PoolBody()

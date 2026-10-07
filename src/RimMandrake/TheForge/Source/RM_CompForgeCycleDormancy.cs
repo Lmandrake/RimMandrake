@@ -119,16 +119,8 @@ namespace RimMandrake.TheForge
             {
                 return;
             }
-            int gap = Mathf.Max(10, Props.runSoundIntervalTicks);
-            int end = RunEndTick();
-            int left = end - now;
-            float window = Props.slowFinalHours * 2500f;
-            float f = 1f;
-            if (end > 0 && left > 0 && left <= window)
-            {
-                f = Mathf.Lerp(Props.runSoundSlowFactor, 1f, left / window);
-            }
-            nextScuttleTick = now + Mathf.RoundToInt(gap * f * Rand.Range(0.7f, 1.3f));
+            nextScuttleTick = now + RM_DormancyKernel.ScuttleDelay(Props.runSoundIntervalTicks, RunEndTick(), now, Props.slowFinalHours,
+                Props.runSoundSlowFactor, Rand.Range(0.7f, 1.3f));
             if (!parent.Position.Fogged(parent.Map))
             {
                 Props.runSound.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent.Position, parent.Map)));
@@ -155,19 +147,9 @@ namespace RimMandrake.TheForge
         public bool ShouldBeAwakeNow()
         {
             Map map = parent.Map;
-            if (map == null)
-            {
-                return true;
-            }
-            if (Props.awakeDuringRain && RM_ForgeCycleUtility.RainingNow(map))
-            {
-                return true;
-            }
-            if (Props.awakeDuringFlashWindow && RM_ForgeCycleUtility.FlashWindowNow(map))
-            {
-                return true;
-            }
-            return false;
+            return RM_DormancyKernel.ShouldBeAwake(map != null,
+                Props.awakeDuringRain, map != null && Props.awakeDuringRain && RM_ForgeCycleUtility.RainingNow(map),
+                Props.awakeDuringFlashWindow, map != null && Props.awakeDuringFlashWindow && RM_ForgeCycleUtility.FlashWindowNow(map));
         }
 
         private void Check()
@@ -180,58 +162,48 @@ namespace RimMandrake.TheForge
             }
 
             bool enabled = RM_TheForgeSettings.Active(RM_TheForgeSettings.cycleDormancyEnabled);
-            bool wantAwake = !enabled || ShouldBeAwakeNow();
+            bool wantAwake = RM_DormancyKernel.WantAwake(enabled, ShouldBeAwakeNow());
+            int now = Find.TickManager.TicksGame;
 
-            if (!d.Awake)
+            // The decision (wake, seal, or stay) is Kernel/RM_DormancyKernel.cs; this applies it. A fresh pawn's first check
+            // issues the initial seal with no minimum-awake wait (with jobDormancy, startsDormant alone never puts it to sleep:
+            // Awake reads the job and a fresh pawn has none, RM_CompPanSleeper's note); a pawn woken by something else, stock
+            // wake-on-damage included, is stamped now and gets the full minimum awake time.
+            DormancyState st = new DormancyState { awakeSinceTick = awakeSinceTick, initialCheckDone = initialCheckDone };
+            bool canSeal = CanSeal(pawn);
+            DormancyResult res = RM_DormancyKernel.Check(ref st, d.Awake, wantAwake, canSeal, now, Props.minAwakeHours);
+            awakeSinceTick = st.awakeSinceTick;
+            initialCheckDone = st.initialCheckDone;
+
+            if (res.action == DormancyAction.WakeUp)
             {
-                if (wantAwake || !CanSeal(pawn))
+                d.WakeUp();
+                DirtyGraphics(pawn);
+                if (wantAwake && ClockOn && pawn.Spawned)
                 {
-                    d.WakeUp();
-                    awakeSinceTick = Find.TickManager.TicksGame;
-                    DirtyGraphics(pawn);
-                    if (wantAwake && ClockOn && pawn.Spawned)
-                    {
-                        Props.wakeSound?.PlayOneShot(SoundInfo.InMap(new TargetInfo(pawn.Position, pawn.Map)));
-                        FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);
-                        LogSwarm(pawn.Map);
-                    }
-                    if (enabled && !Props.wakeMessage.NullOrEmpty() && !pawn.Position.Fogged(pawn.Map))
-                    {
-                        Messages.Message(Props.wakeMessage.Formatted(pawn.LabelShort).CapitalizeFirst(),
-                            pawn, MessageTypeDefOf.NeutralEvent, historical: false);
-                    }
+                    Props.wakeSound?.PlayOneShot(SoundInfo.InMap(new TargetInfo(pawn.Position, pawn.Map)));
+                    FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);
+                    LogSwarm(pawn.Map);
+                }
+                if (enabled && !Props.wakeMessage.NullOrEmpty() && !pawn.Position.Fogged(pawn.Map))
+                {
+                    Messages.Message(Props.wakeMessage.Formatted(pawn.LabelShort).CapitalizeFirst(),
+                        pawn, MessageTypeDefOf.NeutralEvent, historical: false);
                 }
                 return;
             }
-
-            // First check on a fresh pawn: with jobDormancy, startsDormant
-            // alone never puts it to sleep (Awake reads the job and a fresh
-            // pawn has none — RM_CompPanSleeper's note), so the initial seal
-            // is issued here, with no minimum-awake wait.
-            // (A pawn woken by something else — stock wake-on-damage — also
-            // arrives here with no stamp; it is stamped now and gets the
-            // full minimum awake time.)
-            bool firstCheck = !initialCheckDone;
-            initialCheckDone = true;
-            if (awakeSinceTick < 0)
+            if (res.slowingUpdate)
             {
-                awakeSinceTick = Find.TickManager.TicksGame;
+                UpdateSlowing(pawn, wantAwake);
             }
-            UpdateSlowing(pawn, wantAwake);
-            if (wantAwake || !CanSeal(pawn))
+            if (res.action == DormancyAction.ToSleep)
             {
-                return;
-            }
-            if (!firstCheck && Find.TickManager.TicksGame - awakeSinceTick < Props.minAwakeHours * 2500f)
-            {
-                return;
-            }
-            d.ToSleep();
-            awakeSinceTick = -1;
-            DirtyGraphics(pawn);
-            if (!firstCheck)
-            {
-                CurlBack(pawn);
+                d.ToSleep();
+                DirtyGraphics(pawn);
+                if (res.curlBack)
+                {
+                    CurlBack(pawn);
+                }
             }
         }
 
@@ -247,20 +219,22 @@ namespace RimMandrake.TheForge
             {
                 return -1;
             }
-            if (Props.awakeDuringFlashWindow && RM_ForgeCycleUtility.FlashWindowNow(map))
+            bool flashOpen = Props.awakeDuringFlashWindow && RM_ForgeCycleUtility.FlashWindowNow(map);
+            int flashEnd = -1;
+            if (flashOpen)
             {
                 RM_MapComponent_FlashCycle flash = map.GetComponent<RM_MapComponent_FlashCycle>();
-                return flash != null ? FlashWindowEnd(flash) : -1;
+                flashEnd = flash != null ? FlashWindowEnd(flash) : -1;
             }
-            if (Props.awakeDuringRain)
+            int phaseEnd = -1;
+            bool raining = false;
+            if (!flashOpen && Props.awakeDuringRain)
             {
                 RM_GameCondition_ForgeCycle cycle = RM_ForgeCycleUtility.CycleOn(map);
-                if (cycle != null && RM_GameCondition_ForgeCycle.CycleActive && cycle.Phase == ForgeCyclePhase.Rain)
-                {
-                    return cycle.PhaseEndTick;
-                }
+                raining = cycle != null && RM_GameCondition_ForgeCycle.CycleActive && cycle.Phase == ForgeCyclePhase.Rain;
+                phaseEnd = raining ? cycle.PhaseEndTick : -1;
             }
-            return -1;
+            return RM_DormancyKernel.RunEnd(true, Props.awakeDuringFlashWindow, flashOpen, flashEnd, Props.awakeDuringRain, raining, phaseEnd);
         }
 
         private void UpdateSlowing(Pawn pawn, bool wantAwake)
@@ -270,13 +244,8 @@ namespace RimMandrake.TheForge
             {
                 return;
             }
-            bool want = false;
-            if (ClockOn && wantAwake)
-            {
-                int end = RunEndTick();
-                int left = end - Find.TickManager.TicksGame;
-                want = end > 0 && left > 0 && left <= Props.slowFinalHours * 2500f;
-            }
+            bool want = ClockOn && wantAwake
+                && RM_DormancyKernel.SlowWanted(true, true, RunEndTick(), Find.TickManager.TicksGame, Props.slowFinalHours);
             Hediff have = pawn.health.hediffSet.GetFirstHediffOfDef(slow);
             if (want && have == null)
             {
@@ -320,9 +289,8 @@ namespace RimMandrake.TheForge
 
         private static bool CanSeal(Pawn pawn)
         {
-            return pawn.Faction == null && !pawn.Downed && !pawn.InMentalState
-                && (pawn.drafter == null || !pawn.Drafted)
-                && (pawn.mindState == null || pawn.mindState.enemyTarget == null);
+            return RM_DormancyKernel.CanSeal(pawn.Faction == null, pawn.Downed, pawn.InMentalState,
+                pawn.drafter != null && pawn.Drafted, pawn.mindState != null && pawn.mindState.enemyTarget != null);
         }
 
         private static void DirtyGraphics(Pawn pawn)

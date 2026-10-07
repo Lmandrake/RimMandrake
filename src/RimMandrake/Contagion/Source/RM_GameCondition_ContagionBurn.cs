@@ -46,14 +46,11 @@ namespace RimMandrake.Contagion
         private void Pressure(Map map)
         {
             RM_ContagionSkyExtension ext = RM_ContagionSky.ExtFor(map);
-            if (ext == null || !RM_ContagionSettings.burnEnabled) return;
-            // The tear needs the weather to have actually arrived: during the
-            // forced transition the sky is still closing over.
-            if (map.weatherManager.curWeather != def.weatherDef) return;
+            // The tear needs the weather to have actually arrived: during the forced transition the sky is still closing over.
+            float dmgFactor = RM_ContagionSettings.burnDamageFactor;
+            if (!RM_SkyKernel.PressureActive(ext != null, RM_ContagionSettings.burnEnabled, map.weatherManager.curWeather == def.weatherDef, dmgFactor)) return;
 
             HashSet<ThingDef> natives = RM_ContagionSky.NativesOf(map.Biome, ext);
-            float dmgFactor = RM_ContagionSettings.burnDamageFactor;
-            if (dmgFactor <= 0f) return;
 
             tmpPawns.Clear();
             tmpPawns.AddRange(map.mapPawns.AllPawnsSpawned);
@@ -63,14 +60,15 @@ namespace RimMandrake.Contagion
                 if (p == null || p.Dead || !p.Spawned) continue;
                 if (!RM_ContagionSky.Exposed(p.Position, map)) continue;
 
-                if (natives.Contains(p.def))
+                BurnEffect effect = RM_SkyKernel.Classify(natives.Contains(p.def), ext.armoredNatives.Contains(p.def),
+                    ext.leakerNatives.Contains(p.def), p.RaceProps != null && !p.RaceProps.IsMechanoid && p.health != null);
+                if (effect == BurnEffect.Damage || effect == BurnEffect.DamageAndDive)
                 {
-                    if (ext.armoredNatives.Contains(p.def)) continue;
                     p.TakeDamage(new DamageInfo(DamageDefOf.Burn, ext.nativeBurnDamagePerInterval * dmgFactor));
                     if (p.Dead || !p.Spawned) continue;
-                    if (!ext.leakerNatives.Contains(p.def)) TryDive(p, map);
+                    if (effect == BurnEffect.DamageAndDive) TryDive(p, map);
                 }
-                else if (p.RaceProps != null && !p.RaceProps.IsMechanoid && p.health != null)
+                else if (effect == BurnEffect.Dose)
                 {
                     HealthUtility.AdjustSeverity(p, RM_ContagionSkyDefOf.RM_BurnDose, ext.visitorDosePerInterval * dmgFactor);
                 }
@@ -83,23 +81,25 @@ namespace RimMandrake.Contagion
         // its fury), a downed one, and one already running for shelter.
         private static void TryDive(Pawn p, Map map)
         {
-            if (p.Downed || p.Drafted || p.InMentalState || p.jobs == null) return;
             Job cur = p.CurJob;
-            if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid
-                && !RM_ContagionSky.Exposed(cur.targetA.Cell, map)) return;
+            bool running = cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && !RM_ContagionSky.Exposed(cur.targetA.Cell, map);
+            if (!RM_SkyKernel.MayDive(p.Downed, p.Drafted, p.InMentalState, p.jobs != null, running)) return;
 
-            int tried = 0;
+            List<IntVec3> sheltered = new List<IntVec3>();
             foreach (IntVec3 c in GenRadial.RadialCellsAround(p.Position, DiveSearchRadius, false))
             {
                 if (!c.InBounds(map) || !c.Standable(map)) continue;
                 if (RM_ContagionSky.Exposed(c, map)) continue;
-                if (++tried > 4) return;
-                if (!p.CanReach(c, PathEndMode.OnCell, Danger.Deadly)) continue;
-                Job job = JobMaker.MakeJob(JobDefOf.Goto, c);
+                sheltered.Add(c);
+                if (sheltered.Count > 4) break;   // only the first four are ever tried
+            }
+            int pick = RM_SkyKernel.PickDive(sheltered.Count, i => p.CanReach(sheltered[i], PathEndMode.OnCell, Danger.Deadly));
+            if (pick >= 0)
+            {
+                Job job = JobMaker.MakeJob(JobDefOf.Goto, sheltered[pick]);
                 job.locomotionUrgency = LocomotionUrgency.Sprint;
                 job.expiryInterval = 2000;
                 p.jobs.StartJob(job, JobCondition.InterruptForced);
-                return;
             }
         }
     }

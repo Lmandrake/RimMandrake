@@ -40,9 +40,9 @@ namespace RimMandrake.Cauldron
     public class RM_MapComponent_CauldronDewfall : MapComponent
     {
         // PROVISIONAL tuning (spec V1: INVENTED 250 ticks / 6 cells / cap ~400).
-        private const int BeadIntervalTicks = 250;
-        private const float BeadsPerInterval = 6f;
-        private const int BeadCap = 400;
+        private const int BeadIntervalTicks = RM_YieldKernel.BeadIntervalTicks;
+        private const float BeadsPerInterval = RM_YieldKernel.BeadsPerInterval;
+        private const int BeadCap = RM_YieldKernel.BeadCap;
 
         private bool lastDew;
         private bool initialised;
@@ -63,10 +63,11 @@ namespace RimMandrake.Cauldron
             if (Find.TickManager.TicksGame % BeadIntervalTicks != 0) return;
             bool dew = DewNow;
             if (!initialised) { lastDew = dew; initialised = true; }
-            if (dew != lastDew)
+            bool flipped = RM_YieldKernel.DewFlip(initialised, lastDew, dew);
+            if (flipped)
             {
                 lastDew = dew;
-                if (RM_CauldronSettings.dewfallSaturationEnabled && RM_DewfallSaturation.Active)
+                if (RM_YieldKernel.RemeshOnFlip(true, RM_CauldronSettings.dewfallSaturationEnabled, RM_DewfallSaturation.Active))
                     map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
             }
             if (dew && RM_CauldronSettings.dewfallBeadsEnabled) SpawnBeads();
@@ -77,8 +78,8 @@ namespace RimMandrake.Cauldron
             ThingDef bead = RM_CauldronVisualsDefOf.RM_Filth_DewBeads;
             float density = RM_CauldronSettings.dewfallBeadDensity;
             if (density <= 0f) return;
-            int cap = Mathf.RoundToInt(BeadCap * density);
-            if (map.listerThings.ThingsOfDef(bead).Count >= cap) return;
+            int cap = RM_YieldKernel.BeadCap_(density);
+            if (!RM_YieldKernel.BeadsSpawn(density, map.listerThings.ThingsOfDef(bead).Count, cap)) return;
             int n = GenMath.RoundRandom(BeadsPerInterval * density);
             for (int i = 0; i < n; i++)
             {
@@ -95,7 +96,7 @@ namespace RimMandrake.Cauldron
             if (t == null || t.IsWater) return false;
             if (map.areaManager.Home[c]) return false;
             Room room = c.GetRoom(map);
-            return room == null || room.PsychologicallyOutdoors;
+            return RM_YieldKernel.CanBead(false, false, true, true, false, false, room != null, room != null && room.PsychologicallyOutdoors);
         }
 
         public override void ExposeData()
@@ -242,14 +243,14 @@ namespace RimMandrake.Cauldron
 
         public static void Postfix_Print(Plant __instance, SectionLayer layer)
         {
-            if (!RM_CauldronSettings.assayFlecksEnabled || !RM_CauldronSettings.assayGradeEnabled
-                || !RM_CauldronSettings.metalYieldEnabled) return;
+            if (!RM_YieldKernel.FlecksOn(RM_CauldronSettings.assayFlecksEnabled, RM_CauldronSettings.assayGradeEnabled,
+                    RM_CauldronSettings.metalYieldEnabled)) return;
             if (!table.TryGetValue(__instance.def, out var row)) return;
             RM_CompMetalYield comp = __instance.TryGetComp<RM_CompMetalYield>();
             if (comp == null) return;
             float frac = comp.GradeFraction();
-            Material mat = frac >= row.ext.heavyFrom ? (row.heavy ?? row.light)
-                         : frac >= row.ext.lightFrom ? (row.light ?? row.heavy) : null;
+            RM_AssayBand band = RM_YieldKernel.FleckBand(frac, row.ext.lightFrom, row.ext.heavyFrom, row.light != null, row.heavy != null);
+            Material mat = band == RM_AssayBand.Heavy ? row.heavy : band == RM_AssayBand.Light ? row.light : null;
             if (mat == null) return;
 
             ThingDef def = __instance.def;

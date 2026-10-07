@@ -145,14 +145,28 @@ namespace RimMandrake.Wasteland
         /// </summary>
         public bool IsHolding(WeatherDef weather)
         {
-            return Enabled && weather != null && weather == phaseWeather && !unleashed;
+            return RM_StormKernel.IsHolding(Enabled, weather != null, State, Id(weather));
+        }
+
+        private static int Id(WeatherDef w) { return w == null ? -1 : w.index; }
+
+        private PhaseState State
+        {
+            get { return new PhaseState { weather = Id(phaseWeather), startTick = phaseStartTick, unleashed = unleashed }; }
+        }
+
+        private void Apply(PhaseState s, WeatherDef cur)
+        {
+            phaseWeather = s.weather == -1 ? null : (s.weather == Id(cur) ? cur : phaseWeather);
+            phaseStartTick = s.startTick;
+            unleashed = s.unleashed;
         }
 
         public static RM_StormPhaseExtension ExtOf(WeatherDef w) =>
             w?.GetModExtension<RM_StormPhaseExtension>();
 
         public int WarningTicksFor(RM_StormPhaseExtension ext) =>
-            Mathf.RoundToInt(ext.warningTicks * RM_WastelandSettings.namedStormWarningFactor);
+            RM_StormKernel.WarningTicks(ext.warningTicks, RM_WastelandSettings.namedStormWarningFactor);
 
         public override void ExposeData()
         {
@@ -170,24 +184,34 @@ namespace RimMandrake.Wasteland
         public void BeginPhase(WeatherDef weather)
         {
             RM_StormPhaseExtension ext = ExtOf(weather);
-            if (ext == null)
+            PhaseState st = State;
+            PhaseEvent e = RM_StormKernel.Begin(ref st, Id(weather), ext != null, Enabled,
+                ext != null ? WarningTicksFor(ext) : 0, Find.TickManager.TicksGame);
+            Apply(st, weather);
+            OnEvents(e, ext);
+        }
+
+        /// <summary>The side effects of a phase transition (the state already moved in the kernel).</summary>
+        private void OnEvents(PhaseEvent e, RM_StormPhaseExtension ext)
+        {
+            if ((e & PhaseEvent.Ended) != 0)
             {
-                EndPhase();
+                StopWhine();
                 return;
             }
-            phaseWeather = weather;
-            phaseStartTick = Find.TickManager.TicksGame;
-            unleashed = !Enabled || WarningTicksFor(ext) <= 0;
-            nextClickTick = phaseStartTick + ext.clickIntervalStartTicks;
-            nextEmpTick = -1;
-            nextStrikeTick = -1;
-            nextFlashTick = -1;
-            if (Enabled && !ext.warningMessage.NullOrEmpty())
+            if ((e & PhaseEvent.Began) != 0)
             {
-                Messages.Message(ext.warningMessage, new LookTargets(map.Center, map),
-                    MessageTypeDefOf.ThreatSmall, historical: true);
+                nextClickTick = phaseStartTick + ext.clickIntervalStartTicks;
+                nextEmpTick = -1;
+                nextStrikeTick = -1;
+                nextFlashTick = -1;
+                if (Enabled && !ext.warningMessage.NullOrEmpty())
+                {
+                    Messages.Message(ext.warningMessage, new LookTargets(map.Center, map),
+                        MessageTypeDefOf.ThreatSmall, historical: true);
+                }
             }
-            if (unleashed)
+            if ((e & PhaseEvent.Unleash) != 0)
             {
                 OnUnleashed(ext);
             }
@@ -208,15 +232,15 @@ namespace RimMandrake.Wasteland
             int now = Find.TickManager.TicksGame;
             if (ext.empRadius > 0f)
             {
-                nextEmpTick = now + ext.empIntervalTicks.RandomInRange / 3;
+                nextEmpTick = now + RM_StormKernel.HandoffDelay(ext.empIntervalTicks.RandomInRange);
             }
             if (ext.lightningStrikeIntervalTicks.max > 0)
             {
-                nextStrikeTick = now + ext.lightningStrikeIntervalTicks.RandomInRange / 3;
+                nextStrikeTick = now + RM_StormKernel.HandoffDelay(ext.lightningStrikeIntervalTicks.RandomInRange);
             }
             if (ext.lightningFlashIntervalTicks.max > 0)
             {
-                nextFlashTick = now + ext.lightningFlashIntervalTicks.RandomInRange / 3;
+                nextFlashTick = now + RM_StormKernel.HandoffDelay(ext.lightningFlashIntervalTicks.RandomInRange);
             }
             if (Enabled && !ext.unleashedMessage.NullOrEmpty())
             {
@@ -230,40 +254,27 @@ namespace RimMandrake.Wasteland
             base.MapComponentTick();
             WeatherDef cur = map.weatherManager.curWeather;
             RM_StormPhaseExtension ext = ExtOf(cur);
+            int now = Find.TickManager.TicksGame;
+            PhaseState st = State;
+            PhaseEvent e = RM_StormKernel.Tick(ref st, Id(cur), ext != null, Enabled,
+                ext != null ? WarningTicksFor(ext) : 0, now, out float progress);
+            Apply(st, cur);
+            // Began covers a save made before this controller existed, or a weather set without OnWeatherStart.
+            OnEvents(e, ext);
             if (ext == null)
             {
-                if (phaseWeather != null)
-                {
-                    EndPhase();
-                }
                 return;
             }
-            if (cur != phaseWeather)
-            {
-                // Loaded mid-storm from a save made before this controller existed, or
-                // the weather was set without OnWeatherStart: start the phase now.
-                BeginPhase(cur);
-            }
-            if (!Enabled)
+            if ((e & PhaseEvent.Disabled) != 0)
             {
                 StopWhine();
                 return;
             }
-
-            int now = Find.TickManager.TicksGame;
-            if (!unleashed)
+            if ((e & PhaseEvent.Warn) != 0)
             {
-                int warn = WarningTicksFor(ext);
-                if (now - phaseStartTick >= warn)
-                {
-                    OnUnleashed(ext);
-                }
-                else
-                {
-                    TickWarning(ext, now, (now - phaseStartTick) / (float)Mathf.Max(1, warn));
-                }
+                TickWarning(ext, now, progress);
             }
-            if (unleashed)
+            if ((e & PhaseEvent.Storm) != 0)
             {
                 TickStorm(ext, now);
             }
@@ -281,7 +292,7 @@ namespace RimMandrake.Wasteland
             if (ext.clickSound != null && now >= nextClickTick)
             {
                 PlayClick(ext);
-                int interval = Mathf.RoundToInt(Mathf.Lerp(ext.clickIntervalStartTicks, ext.clickIntervalEndTicks, progress));
+                int interval = RM_StormKernel.ClickInterval(ext.clickIntervalStartTicks, ext.clickIntervalEndTicks, progress);
                 nextClickTick = now + Mathf.Max(1, Mathf.RoundToInt(interval * Rand.Range(0.6f, 1.4f)));
             }
             if (ext.warningSustainer != null && map == Find.CurrentMap)

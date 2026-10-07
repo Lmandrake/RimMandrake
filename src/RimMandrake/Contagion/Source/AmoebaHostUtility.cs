@@ -116,30 +116,27 @@ namespace RimMandrake.Contagion
             // limb, rolled at random from the built limbs, no organs, no donor
             // stamp (so the genome-match mood bonus never applies to it).
             // With grown limbs switched off it falls through to the normal batch.
-            if (monstrous && RM_ContagionSettings.grownLimbsEnabled)
+            List<ThingDef> limbPool = new List<ThingDef>
             {
-                List<ThingDef> limbPool = new List<ThingDef>
+                RM_OrganDefOf.RM_PillarArmItem,
+                RM_OrganDefOf.RM_LashItem,
+                RM_OrganDefOf.RM_EyeburstItem,
+                RM_OrganDefOf.RM_CaudalSpringItem,
+                RM_OrganDefOf.RM_BellowsItem
+            }.Where(d => d != null).ToList();
+            if (RM_DraftprintKernel.Plan(monstrous, RM_ContagionSettings.grownLimbsEnabled, limbPool.Count) == GestationPlan.OneLimb)
+            {
+                Thing limb = ThingMaker.MakeThing(limbPool.RandomElement());
+                bool placed = GenPlace.TryPlaceThing(limb, pos, map, ThingPlaceMode.Near);
+                host.Kill(null);
+                if (placed)
                 {
-                    RM_OrganDefOf.RM_PillarArmItem,
-                    RM_OrganDefOf.RM_LashItem,
-                    RM_OrganDefOf.RM_EyeburstItem,
-                    RM_OrganDefOf.RM_CaudalSpringItem,
-                    RM_OrganDefOf.RM_BellowsItem
-                }.Where(d => d != null).ToList();
-                if (limbPool.Count > 0)
-                {
-                    Thing limb = ThingMaker.MakeThing(limbPool.RandomElement());
-                    bool placed = GenPlace.TryPlaceThing(limb, pos, map, ThingPlaceMode.Near);
-                    host.Kill(null);
-                    if (placed)
-                    {
-                        Messages.Message(
-                            "A Contagion amoeba host has died producing a monstrous grown limb: " + limb.LabelCap + ".",
-                            new LookTargets(limb),
-                            MessageTypeDefOf.PositiveEvent);
-                    }
-                    return;
+                    Messages.Message(
+                        "A Contagion amoeba host has died producing a monstrous grown limb: " + limb.LabelCap + ".",
+                        new LookTargets(limb),
+                        MessageTypeDefOf.PositiveEvent);
                 }
+                return;
             }
 
             List<ThingDef> organPool = new List<ThingDef>
@@ -154,7 +151,8 @@ namespace RimMandrake.Contagion
 
             int count = OrganCountRange.RandomInRange;
             List<Thing> spawned = new List<Thing>();
-            for (int i = 0; i < count && organPool.Count > 0; i++)
+            count = RM_DraftprintKernel.BatchSize(count, organPool.Count);
+            for (int i = 0; i < count; i++)
             {
                 ThingDef organDef = organPool.RandomElement();
                 Thing organ = ThingMaker.MakeThing(organDef);

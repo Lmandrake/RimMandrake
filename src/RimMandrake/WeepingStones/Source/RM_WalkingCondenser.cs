@@ -74,7 +74,7 @@ namespace RimMandrake.WeepingStones
         }
     }
 
-    public enum RM_CondenserPhase : byte { Settled, Waiting, Walking, Gone }
+    // RM_CondenserPhase, the phase machine, the pool growth step and the drying schedule: Kernel/RM_CondenserKernel.cs.
 
     public class RM_CompWalkingCondenser : ThingComp
     {
@@ -84,6 +84,7 @@ namespace RimMandrake.WeepingStones
         public int poolRadius = 0;
         public bool drying;
         public int dryStartTick;
+        public int dryStartCount = -1;   // pool cells when drying began; the schedule falls linearly from here over dryDays
         public IntVec3 target = IntVec3.Invalid;
         public Dictionary<IntVec3, string> poolCells = new Dictionary<IntVec3, string>();
         private List<IntVec3> _k; private List<string> _v;
@@ -105,44 +106,43 @@ namespace RimMandrake.WeepingStones
             if (crab == null || !crab.Spawned || crab.Dead || crab.Map == null) return;
             if (!RM_WeepingStonesSettings.condenserEnabled) { if (poolCells.Count > 0) StartDrying(crab, silent: true); StepDrying(crab); return; }
             int now = Find.TickManager.TicksGame;
-            switch (phase)
+            CondenserState st = State;
+            bool targetValid = target.IsValid;
+            CondenserAct act = RM_CondenserKernel.Tick(ref st, ref targetValid, now, SeasonTicks, GenDate.TicksPerDay,
+                targetValid ? crab.Position.DistanceTo(target) : 0f, crab.CurJob != null && crab.CurJob.def == JobDefOf.Goto,
+                poolCells.Count, Props.maxRadius, Props.growDays, () => Rand.Value, radius => GrowPool(crab, radius),
+                () => { target = PickRandomSite(crab); return target.IsValid; });
+            Apply(st);
+            if (!targetValid) target = IntVec3.Invalid;
+            if ((act & CondenserAct.BeginWaiting) != 0) SendWaitingLetter(crab);
+            if ((act & CondenserAct.StartedDrying) != 0) SendDryingLetter(crab);
+            if ((act & CondenserAct.IssueGoto) != 0) crab.jobs.StartJob(JobMaker.MakeJob(JobDefOf.Goto, target), JobCondition.InterruptForced);
+            if ((act & CondenserAct.StepDry) != 0) StepDrying(crab);
+        }
+
+        private CondenserState State
+        {
+            get
             {
-                case RM_CondenserPhase.Settled:
-                    GrowPool(crab);
-                    if (now - settleTick >= SeasonTicks) BeginWaiting(crab, now);
-                    break;
-                case RM_CondenserPhase.Waiting:
-                    // one day's grace for the player to choose; the pool starts drying as it prepares to move
-                    if (now - phaseStartTick >= GenDate.TicksPerDay) BeginWalking(crab);
-                    break;
-                case RM_CondenserPhase.Walking:
-                    StepDrying(crab);
-                    if (!target.IsValid || crab.Position.DistanceTo(target) < 3f || now - phaseStartTick > 3 * GenDate.TicksPerDay)
-                    {
-                        phase = RM_CondenserPhase.Settled; settleTick = now; poolRadius = 0; drying = false;
-                    }
-                    else if (crab.CurJob == null || crab.CurJob.def != JobDefOf.Goto)
-                    {
-                        crab.jobs.StartJob(JobMaker.MakeJob(JobDefOf.Goto, target), JobCondition.InterruptForced);
-                    }
-                    break;
+                return new CondenserState { phase = phase, phaseStartTick = phaseStartTick, settleTick = settleTick, poolRadius = poolRadius,
+                                            drying = drying, dryStartTick = dryStartTick, dryStartCount = dryStartCount };
             }
-            if (drying && phase != RM_CondenserPhase.Walking) StepDrying(crab);
+        }
+
+        private void Apply(CondenserState st)
+        {
+            phase = st.phase; phaseStartTick = st.phaseStartTick; settleTick = st.settleTick; poolRadius = st.poolRadius;
+            drying = st.drying; dryStartTick = st.dryStartTick; dryStartCount = st.dryStartCount;
         }
 
         // --- pool ----------------------------------------------------------------------------------------
-        private void GrowPool(Pawn crab)
+        /// <summary>Paint the pool out to <paramref name="radius"/> (the kernel has already stepped it); returns the cell count.</summary>
+        private int GrowPool(Pawn crab, int radius)
         {
-            int max = Props.maxRadius;
-            if (poolRadius >= max) return;
-            // CompTickRare is 250 ticks; growDays*60000/250 steps to cover max radius
-            float stepsTotal = Props.growDays * GenDate.TicksPerDay / 250f;
-            float perStep = max / Mathf.Max(1f, stepsTotal);
-            poolRadius = Mathf.Min(max, Mathf.Max(poolRadius, 1) + (Rand.Chance(perStep % 1f) ? 1 : 0) + Mathf.FloorToInt(perStep));
             Map map = crab.Map;
             TerrainDef water = TerrainDefOf.WaterShallow;
             bool changed = false;
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(crab.Position, poolRadius, true))
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(crab.Position, radius, true))
             {
                 if (!c.InBounds(map) || poolCells.ContainsKey(c)) continue;
                 TerrainDef cur = map.terrainGrid.TerrainAt(c);
@@ -153,29 +153,39 @@ namespace RimMandrake.WeepingStones
                 changed = true;
             }
             if (changed) RebuildTruce(map);
+            return poolCells.Count;
         }
 
         private void StartDrying(Pawn crab, bool silent)
         {
-            if (drying || poolCells.Count == 0) return;
-            drying = true; dryStartTick = Find.TickManager.TicksGame;
-            if (!silent)
-                Find.LetterStack.ReceiveLetter("RM_CondenserDryingLabel".Translate(),
-                    "RM_CondenserDryingText".Translate(), LetterDefOf.NeutralEvent, new LookTargets(crab));
+            CondenserState st = State;
+            if (!RM_CondenserKernel.StartDrying(ref st, Find.TickManager.TicksGame, poolCells.Count)) return;
+            Apply(st);
+            if (!silent) SendDryingLetter(crab);
+        }
+
+        private void SendDryingLetter(Pawn crab)
+        {
+            Find.LetterStack.ReceiveLetter("RM_CondenserDryingLabel".Translate(),
+                "RM_CondenserDryingText".Translate(), LetterDefOf.NeutralEvent, new LookTargets(crab));
         }
 
         private void StepDrying(Pawn crab)
         {
             if (!drying || poolCells.Count == 0 || crab?.Map == null) { if (poolCells.Count == 0) drying = false; return; }
             Map map = crab.Map;
-            float stepsTotal = Props.dryDays * GenDate.TicksPerDay / 250f;
-            int n = Mathf.Max(1, Mathf.CeilToInt(poolCells.Count / Mathf.Max(1f, stepsTotal)));
+            CondenserState st = State;
+            int n = RM_CondenserKernel.DryRestore(ref st, Find.TickManager.TicksGame, poolCells.Count, Props.dryDays, GenDate.TicksPerDay);
+            Apply(st);
             // dry the outermost cells first
-            foreach (IntVec3 c in poolCells.Keys.OrderByDescending(k => k.DistanceToSquared(crab.Position)).Take(n).ToList())
+            if (n > 0)
             {
-                RestoreCell(map, c);
+                foreach (IntVec3 c in poolCells.Keys.OrderByDescending(k => k.DistanceToSquared(crab.Position)).Take(n).ToList())
+                {
+                    RestoreCell(map, c);
+                }
+                RebuildTruce(map);
             }
-            RebuildTruce(map);
             if (poolCells.Count == 0) drying = false;
         }
 
@@ -202,11 +212,8 @@ namespace RimMandrake.WeepingStones
         }
 
         // --- seasonal move ----------------------------------------------------------------------------------
-        private void BeginWaiting(Pawn crab, int now)
+        private void SendWaitingLetter(Pawn crab)
         {
-            phase = RM_CondenserPhase.Waiting; phaseStartTick = now;
-            target = IntVec3.Invalid;
-            RM_CondenserWorld w = RM_CondenserWorld.Get();
             ChoiceLetter letter = (ChoiceLetter)LetterMaker.MakeLetter(DefDatabase<LetterDef>.GetNamed("RM_CondenserChoiceLetter"));
             RM_ChoiceLetter_Condenser l = letter as RM_ChoiceLetter_Condenser;
             if (l != null)
@@ -218,16 +225,6 @@ namespace RimMandrake.WeepingStones
                 l.StartTimeout(GenDate.TicksPerDay);
                 Find.LetterStack.ReceiveLetter(l);
             }
-            StartDrying(crab, silent: false);
-        }
-
-        private void BeginWalking(Pawn crab)
-        {
-            phase = RM_CondenserPhase.Walking; phaseStartTick = Find.TickManager.TicksGame;
-            if (!target.IsValid) target = PickRandomSite(crab);
-            if (target.IsValid)
-                crab.jobs.StartJob(JobMaker.MakeJob(JobDefOf.Goto, target), JobCondition.InterruptForced);
-            else { phase = RM_CondenserPhase.Settled; settleTick = Find.TickManager.TicksGame; poolRadius = 0; }
         }
 
         private IntVec3 PickRandomSite(Pawn crab)
@@ -347,6 +344,7 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref poolRadius, "poolRadius");
             Scribe_Values.Look(ref drying, "drying");
             Scribe_Values.Look(ref dryStartTick, "dryStartTick");
+            Scribe_Values.Look(ref dryStartCount, "dryStartCount", -1);
             Scribe_Values.Look(ref target, "target", IntVec3.Invalid);
             Scribe_Collections.Look(ref poolCells, "poolCells", LookMode.Value, LookMode.Value, ref _k, ref _v);
             if (poolCells == null) poolCells = new Dictionary<IntVec3, string>();

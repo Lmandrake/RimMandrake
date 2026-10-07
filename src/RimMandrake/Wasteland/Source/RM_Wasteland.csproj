@@ -56,6 +56,10 @@
     <Compile Include="RM_MiddenshellProcession.cs" />
     <Compile Include="RM_WasteCaskBay.cs" />
     <Compile Include="RM_RiteOfTipping.cs" />
+    <Compile Include="Kernel\RM_WasteCaskKernel.cs" />
+    <Compile Include="Kernel\RM_StormKernel.cs" />
+    <Compile Include="Kernel\RM_TippingKernel.cs" />
+    <Compile Include="Kernel\RM_DoseKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

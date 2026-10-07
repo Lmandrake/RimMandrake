@@ -55,18 +55,13 @@ namespace RimMandrake.Contagion
         {
             Slate slate = QuestGen.slate;
             List<HediffDef> pool = limbPool;
-            int n = Mathf.Clamp(limbCountRange.RandomInRange, 1, pool.Count);
+            int n = RM_DraftprintKernel.FeatureCount(limbCountRange.RandomInRange, pool.Count);
 
             QuestPart_RM_DraftprintContract part = new QuestPart_RM_DraftprintContract();
             part.requiredLimbs = pool.InRandomOrder().Take(n).ToList();
             part.requireMonstrous = monstrousHediff != null && Rand.Chance(monstrousChance);
-            int per = silverPerFeature > 0 ? silverPerFeature : 120;
-            float reward = per * (part.requiredLimbs.Count + (part.requireMonstrous ? 1 : 0));
-            if (part.requireMonstrous)
-            {
-                reward *= monstrousRewardFactor > 0f ? monstrousRewardFactor : 2f;
-            }
-            part.reward = Mathf.Max(1, Mathf.RoundToInt(reward * RM_ContagionSettings.helixContractRewardFactor));
+            part.reward = RM_DraftprintKernel.Reward(silverPerFeature, part.requiredLimbs.Count, part.requireMonstrous,
+                monstrousRewardFactor, RM_ContagionSettings.helixContractRewardFactor);
             part.inSignalEnable = QuestGen.slate.Get<string>("inSignal");
             string done = outSignalFulfilled.GetValue(slate);
             if (!done.NullOrEmpty())
@@ -111,15 +106,13 @@ namespace RimMandrake.Contagion
 
         public bool Matches(CompDraftprint dp)
         {
-            if (dp == null || !dp.IsRecorded)
+            if (dp == null)
             {
                 return false;
             }
-            if (requireMonstrous && !dp.monstrous)
-            {
-                return false;
-            }
-            return requiredLimbs.All(d => d == null || dp.limbs.Contains(d));
+            List<int> required = requiredLimbs.Select(d => d == null ? -1 : (int)d.index).ToList();
+            HashSet<int> have = new HashSet<int>(dp.limbs.Where(d => d != null).Select(d => (int)d.index));
+            return RM_DraftprintKernel.Matches(dp.IsRecorded, requireMonstrous, dp.monstrous, required, have);
         }
 
         public static QuestPart_RM_DraftprintContract FirstOpenMatch(CompDraftprint dp)

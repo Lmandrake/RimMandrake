@@ -30,15 +30,15 @@ namespace RimMandrake.TheForge
 
     public class RM_MapComponent_PlumeFronts : MapComponent
     {
-        public const int StepTicks = 15;
-        public const int MaxFronts = 5;
+        public const int StepTicks = RM_PlumeKernel.StepTicks;
+        public const int MaxFronts = RM_PlumeKernel.MaxFronts;
         public const float SpawnChancePerCrust = 0.006f;
         public const float Radius = 3f;
-        public const float CellsPerStep = 0.75f;      // ~1 cell per 20 ticks
-        public const int LifeTicks = 1800;
-        public const int ExpiryTicks = StepTicks * 3;
-        public const float BaseGas = 50f;             // BlindSmoke density added per cell per step at strength 1
-        public const float BaseHeatOffset = 25f;      // degrees C at strength 1
+        public const float CellsPerStep = RM_PlumeKernel.CellsPerStep;      // ~1 cell per 20 ticks
+        public const int LifeTicks = RM_PlumeKernel.LifeTicks;
+        public const int ExpiryTicks = RM_PlumeKernel.ExpiryTicks;
+        public const float BaseGas = RM_PlumeKernel.BaseGas;             // BlindSmoke density added per cell per step at strength 1
+        public const float BaseHeatOffset = RM_PlumeKernel.BaseHeatOffset;      // degrees C at strength 1
         public const float SoakChance = 0.12f;
 
         // Last tick any map had a live front: lets the Harmony postfix bail out without touching a map.
@@ -47,7 +47,7 @@ namespace RimMandrake.TheForge
         private List<PlumeFront> fronts = new List<PlumeFront>();
         private bool announced;
         private float bearing = -1f;
-        private readonly Dictionary<int, int> cellExpiry = new Dictionary<int, int>();
+        private readonly RM_PlumeBook cellExpiry = new RM_PlumeBook();
 
         public int StatFrontsSpawned;
         public int StatSoakPuddles;
@@ -83,15 +83,14 @@ namespace RimMandrake.TheForge
             {
                 return false;
             }
-            int exp;
-            return comp.cellExpiry.TryGetValue(map.cellIndices.CellToIndex(c), out exp) && exp >= now;
+            return comp.cellExpiry.InPlume(comp.fronts.Count, map.cellIndices.CellToIndex(c), now);
         }
 
         // Called by the cycle's FreezeBatch for every cell it crusts over.
         public void NoteCrusted(IntVec3 c)
         {
-            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.plumeFrontsEnabled)
-                || fronts.Count >= MaxFronts || !Rand.Chance(SpawnChancePerCrust))
+            if (!RM_PlumeKernel.CanSpawn(RM_TheForgeSettings.Active(RM_TheForgeSettings.plumeFrontsEnabled), fronts.Count)
+                || !Rand.Chance(SpawnChancePerCrust))
             {
                 return;
             }
@@ -128,9 +127,9 @@ namespace RimMandrake.TheForge
             base.MapComponentTick();
             if (fronts.Count == 0)
             {
-                if (cellExpiry.Count > 0)
+                if (cellExpiry.Expiry.Count > 0)
                 {
-                    cellExpiry.Clear();
+                    cellExpiry.ClearAll();
                 }
                 announced = announced && RM_ForgeCycleUtility.CycleOn(map) != null && RM_ForgeCycleUtility.CycleOn(map).Phase == ForgeCyclePhase.Freeze;
                 return;
@@ -144,19 +143,19 @@ namespace RimMandrake.TheForge
             if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.plumeFrontsEnabled))
             {
                 fronts.Clear();
-                cellExpiry.Clear();
+                cellExpiry.ClearAll();
                 return;
             }
-            float strength = Mathf.Clamp(RM_TheForgeSettings.plumeStrength, 0.25f, 2f);
             bool obscure = RM_TheForgeSettings.plumeObscureEnabled;
             bool soak = RM_TheForgeSettings.plumeSoakEnabled;
             for (int i = fronts.Count - 1; i >= 0; i--)
             {
                 PlumeFront f = fronts[i];
-                f.pos += f.dir * CellsPerStep;
-                f.ticksLeft -= StepTicks;
+                float px = f.pos.x, pz = f.pos.y;
+                bool alive = RM_PlumeKernel.Step(ref px, ref pz, f.dir.x, f.dir.y, ref f.ticksLeft, map.Size.x, map.Size.z);
+                f.pos = new Vector2(px, pz);
                 IntVec3 center = new IntVec3(Mathf.FloorToInt(f.pos.x), 0, Mathf.FloorToInt(f.pos.y));
-                if (f.ticksLeft <= 0 || !center.InBounds(map))
+                if (!alive)
                 {
                     fronts.RemoveAt(i);
                     continue;
@@ -167,14 +166,14 @@ namespace RimMandrake.TheForge
                     {
                         continue;
                     }
-                    cellExpiry[map.cellIndices.CellToIndex(c)] = now + ExpiryTicks;
+                    cellExpiry.Mark(map.cellIndices.CellToIndex(c), now);
                     if (c.Filled(map))
                     {
                         continue;
                     }
                     if (obscure)
                     {
-                        map.gasGrid.AddGas(c, GasType.BlindSmoke, Mathf.Max(1, Mathf.RoundToInt(BaseGas * strength)));
+                        map.gasGrid.AddGas(c, GasType.BlindSmoke, RM_PlumeKernel.GasPerCell(RM_TheForgeSettings.plumeStrength));
                     }
                     if (soak && Rand.Chance(SoakChance) && c.Walkable(map))
                     {
@@ -197,27 +196,13 @@ namespace RimMandrake.TheForge
                     }
                 }
             }
-            if (cellExpiry.Count > 4000)
-            {
-                List<int> dead = new List<int>();
-                foreach (KeyValuePair<int, int> kv in cellExpiry)
-                {
-                    if (kv.Value < now)
-                    {
-                        dead.Add(kv.Key);
-                    }
-                }
-                for (int d = 0; d < dead.Count; d++)
-                {
-                    cellExpiry.Remove(dead[d]);
-                }
-            }
+            cellExpiry.Prune(now);
         }
 
         public string DebugReport()
         {
             return "plumeLive=" + fronts.Count + " plumeSpawned=" + StatFrontsSpawned + " plumePuddles=" + StatSoakPuddles
-                + " plumeCells=" + cellExpiry.Count;
+                + " plumeCells=" + cellExpiry.Expiry.Count;
         }
 
         public override void ExposeData()
@@ -240,21 +225,14 @@ namespace RimMandrake.TheForge
         // Vapour-adapted: carries the vapour-drifter comp (or is not flesh, so it has no heatstroke to speak of).
         public static bool IsExempt(Pawn p)
         {
-            if (p.RaceProps == null || !p.RaceProps.IsFlesh)
-            {
-                return true;
-            }
-            if (!RM_TheForgeSettings.plumeAdaptedExempt)
-            {
-                return false;
-            }
-            RM_CompVaporDrifter d = p.TryGetComp<RM_CompVaporDrifter>();
-            return d != null && d.Props.groundHazardImmune;
+            RM_CompVaporDrifter d = p.RaceProps != null && p.RaceProps.IsFlesh ? p.TryGetComp<RM_CompVaporDrifter>() : null;
+            return RM_PlumeKernel.Exempt(p.RaceProps != null && p.RaceProps.IsFlesh, RM_TheForgeSettings.plumeAdaptedExempt,
+                d != null && d.Props.groundHazardImmune);
         }
 
         public static float HeatOffset()
         {
-            return RM_MapComponent_PlumeFronts.BaseHeatOffset * Mathf.Clamp(RM_TheForgeSettings.plumeStrength, 0.25f, 2f);
+            return RM_PlumeKernel.HeatOffset(RM_TheForgeSettings.plumeStrength);
         }
     }
 
@@ -269,7 +247,7 @@ namespace RimMandrake.TheForge
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (now - RM_MapComponent_PlumeFronts.LastActiveTick > 60)
+            if (!RM_PlumeKernel.RecentlyActive(now, RM_MapComponent_PlumeFronts.LastActiveTick))
             {
                 return;
             }

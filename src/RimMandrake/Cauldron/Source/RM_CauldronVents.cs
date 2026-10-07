@@ -25,9 +25,7 @@ namespace RimMandrake.Cauldron
     // lerp is below 1 every vent is hushed (falterOutput); the bloom's raised output starts at lerp 1.
     // Public API only. The tell is one weather transition long, not a day's notice.
     // ════════════════════════════════════════════════════════════════════
-    public enum RM_VentTemperament { Stable, Leaking }
-
-    public enum RM_VentHabitat { None, StableRing, ChronicLeak, RecentBlowout }
+    // RM_VentTemperament / RM_VentHabitat live in Kernel/RM_VentKernel.cs.
 
     public class RM_VentWeatherOutput
     {
@@ -46,6 +44,27 @@ namespace RimMandrake.Cauldron
         public float suppressionNeeded = 6000f;   // drink-ticks to silence one
         public float suppressionDecayPerDay = 0.5f;
 
+        // Weather identity per row, built once (WeatherDef.shortHash; no weather = -1, matching a null current weather).
+        private int[] rowIds;
+        private float[] rowOutputs;
+
+        public void EnsureRows()
+        {
+            if (rowIds != null) return;
+            int[] ids = new int[weatherOutput.Count];
+            float[] outs = new float[weatherOutput.Count];
+            for (int i = 0; i < ids.Length; i++)
+            {
+                ids[i] = weatherOutput[i].weather != null ? weatherOutput[i].weather.shortHash : -1;
+                outs[i] = weatherOutput[i].output;
+            }
+            rowOutputs = outs;
+            rowIds = ids;
+        }
+
+        public int[] RowIds { get { EnsureRows(); return rowIds; } }
+        public float[] RowOutputs { get { EnsureRows(); return rowOutputs; } }
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors()) yield return e;
@@ -56,7 +75,7 @@ namespace RimMandrake.Cauldron
 
     public class RM_Building_CauldronVent : Building
     {
-        private const int NeverBlew = -900000000;
+        private const int NeverBlew = RM_VentKernel.NeverBlew;
 
         public RM_VentTemperament temperament = RM_VentTemperament.Stable;
         public int lastBlowoutTick = NeverBlew;
@@ -66,82 +85,68 @@ namespace RimMandrake.Cauldron
 
         private RM_VentExtension Ext => def.GetModExtension<RM_VentExtension>();
 
-        public bool IsSilenced => silencedUntil >= 0 && Find.TickManager.TicksGame < silencedUntil;
+        public bool IsSilenced => RM_VentKernel.IsSilenced(silencedUntil, Find.TickManager.TicksGame);
 
         // 0 while silenced, climbing to 1 over recoverTicks after; 1 for a vent never silenced.
         public float Recovery01
         {
             get
             {
-                if (silencedUntil < 0) return 1f;
-                int now = Find.TickManager.TicksGame;
-                if (now < silencedUntil) return 0f;
-                int span = Mathf.Max(1, Ext?.recoverTicks ?? 60000);
-                return Mathf.Clamp01((now - silencedUntil) / (float)span);
+                return RM_VentKernel.Recovery01(silencedUntil, Find.TickManager.TicksGame, Ext?.recoverTicks ?? 60000);
             }
+        }
+
+        private static bool WeatherState(Map map, out RM_VentExtension ext, out bool curIsBloom, out float lerp)
+        {
+            WeatherManager wm = map?.weatherManager;
+            ext = RM_CauldronDefOf.RM_CauldronVent?.GetModExtension<RM_VentExtension>();
+            curIsBloom = wm != null && ext != null && ext.bloomWeather != null && wm.curWeather == ext.bloomWeather;
+            lerp = wm != null ? wm.TransitionLerpFactor : 0f;
+            return wm != null && ext != null;
         }
 
         public static bool IsFaltering(Map map)
         {
-            if (!RM_CauldronSettings.ventWeatherEnabled || map == null) return false;
-            WeatherManager wm = map.weatherManager;
-            RM_VentExtension ext = RM_CauldronDefOf.RM_CauldronVent?.GetModExtension<RM_VentExtension>();
-            if (wm == null || ext == null || ext.bloomWeather == null) return false;
-            return wm.curWeather == ext.bloomWeather && !Mathf.Approximately(wm.TransitionLerpFactor, 1f);
+            bool has = WeatherState(map, out RM_VentExtension ext, out bool cur, out float lerp);
+            return RM_VentKernel.Faltering(RM_CauldronSettings.ventWeatherEnabled, map != null, has, ext != null && ext.bloomWeather != null, cur, lerp);
         }
 
         public static bool IsBlooming(Map map)
         {
-            if (!RM_CauldronSettings.ventWeatherEnabled || map == null) return false;
-            WeatherManager wm = map.weatherManager;
-            RM_VentExtension ext = RM_CauldronDefOf.RM_CauldronVent?.GetModExtension<RM_VentExtension>();
-            if (wm == null || ext == null || ext.bloomWeather == null) return false;
-            return wm.curWeather == ext.bloomWeather && Mathf.Approximately(wm.TransitionLerpFactor, 1f);
+            bool has = WeatherState(map, out RM_VentExtension ext, out bool cur, out float lerp);
+            return RM_VentKernel.Blooming(RM_CauldronSettings.ventWeatherEnabled, map != null, has, ext != null && ext.bloomWeather != null, cur, lerp);
         }
 
         public float WeatherMultiplier()
         {
             RM_VentExtension ext = Ext;
             if (ext == null || !RM_CauldronSettings.ventWeatherEnabled || Map == null) return 1f;
-            if (IsFaltering(Map)) return ext.falterOutput;
             WeatherDef cur = Map.weatherManager?.curWeather;
-            for (int i = 0; i < ext.weatherOutput.Count; i++)
-                if (ext.weatherOutput[i].weather == cur) return ext.weatherOutput[i].output;
-            return ext.defaultOutput;
+            return RM_VentKernel.WeatherMultiplier(true, true, true, IsFaltering(Map), ext.falterOutput,
+                cur != null ? cur.shortHash : -1, ext.RowIds, ext.RowOutputs, ext.defaultOutput);
         }
 
         // What the vent is doing right now: weather multiplier x recovery. 0 while silenced.
-        public float Output => WeatherMultiplier() * Recovery01;
+        public float Output => RM_VentKernel.Output(WeatherMultiplier(), Recovery01);
 
         public bool RecentlyBlewOut
         {
             get
             {
-                int window = Ext?.recentBlowoutTicks ?? 600000;
-                return Find.TickManager.TicksGame - lastBlowoutTick < window;
+                return RM_VentKernel.RecentlyBlewOut(Find.TickManager.TicksGame, lastBlowoutTick, Ext?.recentBlowoutTicks ?? 600000);
             }
         }
 
         public bool Matches(RM_VentHabitat h)
         {
-            switch (h)
-            {
-                case RM_VentHabitat.StableRing: return temperament == RM_VentTemperament.Stable && !RecentlyBlewOut;
-                case RM_VentHabitat.ChronicLeak: return temperament == RM_VentTemperament.Leaking;
-                case RM_VentHabitat.RecentBlowout: return RecentlyBlewOut;
-                default: return false;
-            }
+            return RM_VentKernel.Matches(h, temperament, RecentlyBlewOut);
         }
 
         // A drinker adds `amount` of the 0..1 suppression meter. At 1 the vent falls silent for several days.
         public void Inhale(float amount)
         {
-            if (IsSilenced || Ext == null) return;
-            suppression += amount;
-            if (suppression < 1f) return;
-            suppression = 0f;
-            float days = RM_CauldronSettings.ventSilenceDays * Rand.Range(0.85f, 1.15f);
-            silencedUntil = Find.TickManager.TicksGame + Mathf.RoundToInt(days * 60000f);
+            if (!RM_VentKernel.AddSuppression(ref suppression, amount, IsSilenced, Ext != null)) return;
+            silencedUntil = RM_VentKernel.SilenceUntil(Find.TickManager.TicksGame, RM_CauldronSettings.ventSilenceDays, Rand.Range(0.85f, 1.15f));
             if (Map != null && Map.mapPawns.AnyColonistSpawned)
                 Messages.Message("A vent has been drunk quiet.", new LookTargets(this), MessageTypeDefOf.NeutralEvent, false);
         }
@@ -151,26 +156,20 @@ namespace RimMandrake.Cauldron
             base.Tick();
             int now = Find.TickManager.TicksGame;
 
-            if (IsBlooming(Map))
-            {
-                if (!bloomSeen) { bloomSeen = true; lastBlowoutTick = now; }
-            }
-            else if (!IsFaltering(Map))
-            {
-                bloomSeen = false;
-            }
+            bool blooming = IsBlooming(Map);
+            RM_VentKernel.BloomTick(ref bloomSeen, ref lastBlowoutTick, blooming, !blooming && IsFaltering(Map), now);
 
             if (this.IsHashIntervalTick(250) && suppression > 0f && Ext != null)
-                suppression = Mathf.Max(0f, suppression - 250f * Ext.suppressionDecayPerDay / 60000f);
+                suppression = RM_VentKernel.Decay(suppression, Ext.suppressionDecayPerDay);
 
             if (this.IsHashIntervalTick(20))
             {
                 float o = Output;
-                if (o > 0.05f && Rand.Chance(Mathf.Clamp01(o * 0.3f)))
+                if (RM_VentKernel.PuffsAt(o) && Rand.Chance(RM_VentKernel.PuffChance(o)))
                 {
                     Vector3 p = DrawPos + new Vector3(Rand.Range(-0.6f, 0.6f), 0f, Rand.Range(-0.6f, 0.6f));
                     FleckMaker.ThrowAirPuffUp(p, Map);
-                    if (o > 1.5f) FleckMaker.ThrowSmoke(p, Map, 1.2f);
+                    if (RM_VentKernel.Smokes(o)) FleckMaker.ThrowSmoke(p, Map, 1.2f);
                 }
             }
         }
@@ -211,13 +210,10 @@ namespace RimMandrake.Cauldron
     // ── map side: generation, falter notice, exposure weight ─────────────
     public class RM_MapComponent_CauldronVents : MapComponent
     {
-        private const float VentsPerCell = 1f / 14000f;   // a 250x250 map gets ~4-5
+        private const float VentsPerCell = RM_VentKernel.VentsPerCell;   // a 250x250 map gets ~4-5
         private const int VentSpacing = 24;
         private const int StartClearRadius = 14;
-        private const float ExposureNear = 8f;
-        private const float ExposureFar = 45f;
-        private const float ExposureFloor = 0.1f;
-
+        
         private bool generated;
         private bool falterNotified;
 
@@ -250,7 +246,7 @@ namespace RimMandrake.Cauldron
             ThingDef def = RM_CauldronDefOf.RM_CauldronVent;
             if (def == null || map.Biome == null || map.Biome.defName != "RM_Cauldron") return;
 
-            int want = Mathf.Clamp(Mathf.RoundToInt(map.Area * VentsPerCell * Rand.Range(0.8f, 1.3f)), 2, 8);
+            int want = RM_VentKernel.VentCount(map.Area, Rand.Range(0.8f, 1.3f));
             var placed = new List<RM_Building_CauldronVent>();
             for (int attempt = 0; attempt < 600 && placed.Count < want; attempt++)
             {
@@ -259,7 +255,7 @@ namespace RimMandrake.Cauldron
                 if (!FootprintFree(rect)) continue;
                 bool close = false;
                 foreach (var p in placed)
-                    if ((p.Position - c).LengthHorizontal < VentSpacing) { close = true; break; }
+                    if (RM_VentKernel.TooClose((p.Position - c).LengthHorizontal, VentSpacing)) { close = true; break; }
                 if (close) continue;
                 if (MapGenerator.PlayerStartSpot.IsValid && (MapGenerator.PlayerStartSpot - c).LengthHorizontal < StartClearRadius) continue;
                 foreach (IntVec3 cell in rect) cell.GetPlant(map)?.Destroy();
@@ -271,8 +267,10 @@ namespace RimMandrake.Cauldron
             if (placed.Count >= 2)
             {
                 // Every map shows both a stable vent and a chronic leak, and one that blew out lately.
-                if (!placed.Exists(v => v.temperament == RM_VentTemperament.Leaking)) placed[placed.Count - 1].temperament = RM_VentTemperament.Leaking;
-                if (!placed.Exists(v => v.temperament == RM_VentTemperament.Stable)) placed[0].temperament = RM_VentTemperament.Stable;
+                var temps = new RM_VentTemperament[placed.Count];
+                for (int i = 0; i < temps.Length; i++) temps[i] = placed[i].temperament;
+                RM_VentKernel.MixTemperaments(temps);
+                for (int i = 0; i < temps.Length; i++) placed[i].temperament = temps[i];
                 placed[0].lastBlowoutTick = Find.TickManager.TicksGame - Rand.RangeInclusive(60000, 480000);
             }
         }
@@ -312,21 +310,22 @@ namespace RimMandrake.Cauldron
         // A silenced vent contributes its recovery fraction (0 while silenced).
         public static float ExposureWeight(Map map, IntVec3 at)
         {
-            if (!RM_CauldronSettings.ventLocalExposureEnabled) return 1f;
             var comp = map.GetComponent<RM_MapComponent_CauldronVents>();
-            if (comp == null) return 1f;
-            List<Thing> vents = comp.Vents();
-            if (vents.Count == 0) return 1f;
-            float best = 0f;
-            for (int i = 0; i < vents.Count; i++)
+            List<Thing> vents = comp != null && RM_CauldronSettings.ventLocalExposureEnabled ? comp.Vents() : null;
+            var dist = new List<float>();
+            var rec = new List<float>();
+            if (vents != null)
             {
-                var v = vents[i] as RM_Building_CauldronVent;
-                if (v == null) continue;
-                float d = (v.Position - at).LengthHorizontal;
-                float prox = d <= ExposureNear ? 1f : d >= ExposureFar ? 0f : 1f - (d - ExposureNear) / (ExposureFar - ExposureNear);
-                best = Mathf.Max(best, prox * v.Recovery01);
+                for (int i = 0; i < vents.Count; i++)
+                {
+                    var v = vents[i] as RM_Building_CauldronVent;
+                    if (v == null) continue;
+                    dist.Add((v.Position - at).LengthHorizontal);
+                    rec.Add(v.Recovery01);
+                }
             }
-            return Mathf.Lerp(ExposureFloor, 1f, best);
+            return RM_VentKernel.ExposureWeight(RM_CauldronSettings.ventLocalExposureEnabled, comp != null, vents != null ? vents.Count : 0,
+                dist.ToArray(), rec.ToArray());
         }
     }
 
@@ -349,7 +348,7 @@ namespace RimMandrake.Cauldron
                 var vent = job.targetA.Thing as RM_Building_CauldronVent;
                 if (vent == null) return;
                 float need = vent.def.GetModExtension<RM_VentExtension>()?.suppressionNeeded ?? 6000f;
-                vent.Inhale(1f / need);
+                vent.Inhale(RM_VentKernel.DrinkPerTick(need));
             };
             drink.AddEndCondition(() =>
             {

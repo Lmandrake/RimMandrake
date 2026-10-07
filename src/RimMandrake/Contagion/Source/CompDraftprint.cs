@@ -126,8 +126,7 @@ namespace RimMandrake.Contagion
             {
                 return base.GetStatFactor(stat);
             }
-            float v = 1f + limbs.Count * Props.valuePerLimb / Mathf.Max(1f, parent.def.BaseMarketValue);
-            return monstrous ? v * Props.monstrousValueFactor : v;
+            return RM_DraftprintKernel.MarketFactor(true, limbs.Count, Props.valuePerLimb, parent.def.BaseMarketValue, monstrous, Props.monstrousValueFactor);
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()

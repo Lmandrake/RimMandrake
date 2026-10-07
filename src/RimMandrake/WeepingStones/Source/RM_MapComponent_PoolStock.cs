@@ -57,11 +57,7 @@ namespace RimMandrake.WeepingStones
 			"RM_Loomu", "RM_Huldu", "RM_Ivvol", "RM_Vhorrin",
 		};
 
-		/// <summary>Below this fraction of the pen's own cell count, the pool
-		/// reads Thin rather than Healthy (spec §3 READ: "thin rings = hungry or
-		/// predated"). A flat fraction rather than a per-species curve — tuning
-		/// input for a future wave, not a claim this number is final.</summary>
-		private const float ThinPopulationFraction = 0.5f;
+		// Thresholds and the dice live in Kernel/RM_PoolKernel.cs.
 
 		private List<RM_PoolBody> bodies = new List<RM_PoolBody>();
 
@@ -229,34 +225,10 @@ namespace RimMandrake.WeepingStones
 			Pulse();
 		}
 
-		/// <summary>Below this many unfed days, FEED's "what goes wrong"
-		/// (spec §3) starts to bite: at least Thin regardless of raw
-		/// population. At <see cref="UnfedDecayDays"/> the stock curve
-		/// itself starts to bend down (a small chance per pulse of losing
-		/// one non-vhorrin resident) -- tuning inputs, not a claim these
-		/// are final, same honesty as <see cref="ThinPopulationFraction"/>.</summary>
-		private const int UnfedThinDays = 2;
-
-		private const int UnfedDecayDays = 3;
-
-		private const float UnfedDeathChancePerPulse = 0.03f;
-
-		/// <summary>Wave 4, vhorrin EMERGENCE (spec §2d/§3 OVERDRAW): "Any
-		/// stocked pool left crowded and unculled grows one" — population at
-		/// or above the pen's own cell count.</summary>
-		private const float VhorrinEmergenceChanceCrowded = 0.02f;
-
-		/// <summary>Wave 4, the OVERDRAW's other named path: "a stressed pool
-		/// turns nasty before it turns silent" — a pool already crashed
-		/// (unfed past <see cref="UnfedDecayDays"/>) carries a smaller but
-		/// real emergence chance too.</summary>
-		private const float VhorrinEmergenceChanceCrashed = 0.01f;
-
 		/// <summary>Wave 4, vizhik ESCAPE (spec §2c/§3 RECAPTURE): "When
-		/// a pen is overfull, a vizhik pours itself out of the pen." This fires
-		/// per pulse rather than per day.</summary>
-		private const float VizhikEscapeChance = 0.05f;
-
+		/// a pen is overfull, a vizhik pours itself out of the pen." Fires per pulse
+		/// rather than per day; the chance is Mod Settings' vizhikEscapeChance. The
+		/// starvation / emergence numbers are in Kernel/RM_PoolKernel.cs.</summary>
 		private const int VizhikEscapeSearchRadius = 8;
 
 		/// <summary>One census pass over every spawned pawn, bucketed by which
@@ -328,40 +300,33 @@ namespace RimMandrake.WeepingStones
 				populationByZone.TryGetValue(body.zoneId, out int population);
 				vhorrinByZone.TryGetValue(body.zoneId, out int vhorrinCount);
 				int unfedDays = body.UnfedDays(currentTick);
-				body.population = population;
-				body.state = ClassifyState(population, vhorrinCount, zone.CellCount, unfedDays);
-
 				starveCandidatesByZone.TryGetValue(body.zoneId, out List<Pawn> candidates);
+				vizhikByZone.TryGetValue(body.zoneId, out List<Pawn> vizhikCandidates);
 
-				if (unfedDays >= UnfedDecayDays
-					&& candidates != null && candidates.Count > 0
-					&& Rand.Chance(UnfedDeathChancePerPulse))
+				PoolPulse pulse = RM_PoolKernel.Decide(population, vhorrinCount, zone.CellCount, unfedDays,
+					candidates != null ? candidates.Count : 0, vizhikCandidates != null ? vizhikCandidates.Count : 0,
+					RM_WeepingStonesSettings.vhorrinOddsMultiplier, RM_WeepingStonesSettings.vizhikEscapeChance,
+					() => Rand.Value, n => Rand.Range(0, n));
+				body.population = population;
+				body.state = pulse.state;
+
+				if (pulse.starveIdx >= 0)
 				{
-					Pawn victim = candidates[Rand.Range(0, candidates.Count)];
+					Pawn victim = candidates[pulse.starveIdx];
 					if (victim.Spawned)
 					{
 						victim.Kill(null);
 					}
 				}
 
-				if (vhorrinCount <= 0 && candidates != null && candidates.Count > 0)
+				if (pulse.emergeIdx >= 0)
 				{
-					bool crowded = zone.CellCount > 0 && population >= zone.CellCount;
-					bool crashed = unfedDays >= UnfedDecayDays;
-					float emergenceChance = (crowded ? VhorrinEmergenceChanceCrowded
-						: crashed ? VhorrinEmergenceChanceCrashed
-						: 0f) * RM_WeepingStonesSettings.vhorrinOddsMultiplier;
-					if (emergenceChance > 0f && Rand.Chance(emergenceChance))
-					{
-						TrySpawnVhorrin(candidates);
-					}
+					TrySpawnVhorrin(candidates[pulse.emergeIdx]);
 				}
 
-				if (vizhikByZone.TryGetValue(body.zoneId, out List<Pawn> vizhikCandidates)
-					&& vizhikCandidates.Count > 0
-					&& Rand.Chance(RM_WeepingStonesSettings.vizhikEscapeChance))
+				if (pulse.escapeIdx >= 0)
 				{
-					TryEscapeVizhik(vizhikCandidates[Rand.Range(0, vizhikCandidates.Count)]);
+					TryEscapeVizhik(vizhikCandidates[pulse.escapeIdx]);
 				}
 			}
 		}
@@ -371,9 +336,8 @@ namespace RimMandrake.WeepingStones
 		/// one wide slow ring starts doing all the surfacing. Never picks an
 		/// existing vhorrin (candidates never contains one; see the census
 		/// pass in <see cref="Pulse"/>).</summary>
-		private static void TrySpawnVhorrin(List<Pawn> candidates)
+		private static void TrySpawnVhorrin(Pawn victim)
 		{
-			Pawn victim = candidates[Rand.Range(0, candidates.Count)];
 			if (!victim.Spawned)
 			{
 				return;
@@ -421,27 +385,6 @@ namespace RimMandrake.WeepingStones
 			{
 				Log.Message("[RimMandrake.WeepingStones] a vizhik escaped its pen at " + origin + ", now traveling near " + dest + ".");
 			}
-		}
-
-		private static RM_PoolStockState ClassifyState(int population, int vhorrinCount, int cellCount, int unfedDays)
-		{
-			if (vhorrinCount > 0)
-			{
-				return RM_PoolStockState.Vhorrin;
-			}
-			if (population <= 0)
-			{
-				return RM_PoolStockState.Silent;
-			}
-			if (unfedDays >= UnfedThinDays)
-			{
-				return RM_PoolStockState.Thin;
-			}
-			if (cellCount > 0 && population < cellCount * ThinPopulationFraction)
-			{
-				return RM_PoolStockState.Thin;
-			}
-			return RM_PoolStockState.Healthy;
 		}
 
 		public override void ExposeData()

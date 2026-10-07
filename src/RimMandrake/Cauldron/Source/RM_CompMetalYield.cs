@@ -38,6 +38,8 @@ namespace RimMandrake.Cauldron
 
     public class RM_CompMetalYield : ThingComp
     {
+        private static readonly string[] GradeNames = { "trace", "fair", "rich", "lode" };
+
         private RM_CompProperties_MetalYield Props => (RM_CompProperties_MetalYield)props;
 
         public int MetalCountNow()
@@ -46,10 +48,8 @@ namespace RimMandrake.Cauldron
             if (Props.metalDef == null) return 0;
             if (!(parent is RimWorld.Plant plant)) return 0;
 
-            float min = plant.def.plant.harvestMinGrowth;
-            float t = Mathf.InverseLerp(min, 1f, plant.Growth);
-            float count = Mathf.Lerp(Props.countAtMinGrowth, Props.countAtFullGrowth, t)
-                          * RM_CauldronSettings.metalYieldFactor;
+            float count = RM_YieldKernel.AtHarvest(true, true, plant.Growth, plant.def.plant.harvestMinGrowth,
+                Props.countAtMinGrowth, Props.countAtFullGrowth, RM_CauldronSettings.metalYieldFactor);
             return GenMath.RoundRandom(count);
         }
 
@@ -69,19 +69,15 @@ namespace RimMandrake.Cauldron
         public float ExpectedMetalNow()
         {
             if (Props.metalDef == null || !(parent is RimWorld.Plant plant)) return 0f;
-            float min = plant.def.plant.harvestMinGrowth;
-            if (plant.Growth < min) return 0f;
-            float t = Mathf.InverseLerp(min, 1f, plant.Growth);
-            return Mathf.Lerp(Props.countAtMinGrowth, Props.countAtFullGrowth, t)
-                   * RM_CauldronSettings.metalYieldFactor;
+            return RM_YieldKernel.Expected(plant.Growth, plant.def.plant.harvestMinGrowth, Props.countAtMinGrowth,
+                Props.countAtFullGrowth, RM_CauldronSettings.metalYieldFactor);
         }
 
         // Expected metal now as a fraction of the full-growth lode (0 while unripe). The settings factor
         // scales both sides, so it cancels. Read by the inspect grade and by the assay flecks (V3).
         public float GradeFraction()
         {
-            float full = Props.countAtFullGrowth * RM_CauldronSettings.metalYieldFactor;
-            return full > 0f ? ExpectedMetalNow() / full : 0f;
+            return RM_YieldKernel.GradeFraction(ExpectedMetalNow(), Props.countAtFullGrowth, RM_CauldronSettings.metalYieldFactor);
         }
 
         public override string CompInspectStringExtra()
@@ -93,7 +89,7 @@ namespace RimMandrake.Cauldron
 
             float expected = ExpectedMetalNow();
             float frac = GradeFraction();
-            string grade = frac >= 0.95f ? "lode" : frac >= 2f / 3f ? "rich" : frac >= 1f / 3f ? "fair" : "trace";
+            string grade = GradeNames[RM_YieldKernel.GradeTier(frac)];
             return "Assay grade: " + grade + " (~" + expected.ToString("0.#") + " " + Props.metalDef.label + " if cut now)";
         }
     }

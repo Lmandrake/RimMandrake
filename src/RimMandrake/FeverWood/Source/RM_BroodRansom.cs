@@ -36,15 +36,9 @@ namespace RimMandrake.FeverWood
 
         public int YoungFor(Settlement settlement)
         {
-            if (settlement == null)
-            {
-                return 0;
-            }
-            if (onlySettlementNames != null && onlySettlementNames.Count > 0 && !onlySettlementNames.Contains(settlement.Name))
-            {
-                return 0;
-            }
-            return Mathf.Max(0, youngPerSettlement);
+            bool hasFilter = onlySettlementNames != null && onlySettlementNames.Count > 0;
+            return RM_BroodKernel.KeeperYoung(settlement != null, youngPerSettlement, hasFilter,
+                hasFilter && settlement != null && onlySettlementNames.Contains(settlement.Name));
         }
     }
 
@@ -52,10 +46,10 @@ namespace RimMandrake.FeverWood
     /// interval (never per tick) and on the player's own release acts.</summary>
     public class RM_WorldComponent_DeepYoung : WorldComponent
     {
-        public const int RecomputeIntervalTicks = 15000; // 6 in-game hours
+        public const int RecomputeIntervalTicks = RM_BroodKernel.RecomputeIntervalTicks; // 6 in-game hours
 
         // INVENTED thresholds: the letter the player gets as the tally rises.
-        private static readonly int[] Thresholds = { 1, 3, 6, 10 };
+        private static readonly int[] Thresholds = RM_BroodKernel.Thresholds;
 
         private int tally;
         private int lastComputedTick = -999999;
@@ -87,16 +81,16 @@ namespace RimMandrake.FeverWood
         {
             get
             {
-                if (!RM_FeverWoodSettings.broodRansomEnabled)
-                {
-                    return 1f;
-                }
-                RM_WorldComponent_DeepYoung comp = Get;
-                int t = comp?.Tally ?? 0;
-                float cap = Mathf.Max(1f, RM_FeverWoodSettings.broodBoldnessCap);
-                return Mathf.Min(cap, 1f + Mathf.Max(0f, RM_FeverWoodSettings.broodBoldnessPerYoung) * t);
+                bool on = RM_FeverWoodSettings.broodRansomEnabled;
+                int t = on ? (Get?.Tally ?? 0) : 0;
+                return RM_BroodKernel.Boldness(on, RM_FeverWoodSettings.broodBoldnessPerYoung, RM_FeverWoodSettings.broodBoldnessCap, t);
             }
         }
+
+        private static readonly string[] MoodLines =
+        {
+            "the pools are quiet", "the pools are uneasy", "the pools are restless", "the pools are bold", "the pools are savage"
+        };
 
         public static string RestlessnessLine()
         {
@@ -105,11 +99,7 @@ namespace RimMandrake.FeverWood
                 return null;
             }
             int t = Get.Tally;
-            string mood = t == 0 ? "the pools are quiet"
-                : t < Thresholds[1] ? "the pools are uneasy"
-                : t < Thresholds[2] ? "the pools are restless"
-                : t < Thresholds[3] ? "the pools are bold"
-                : "the pools are savage";
+            string mood = MoodLines[RM_BroodKernel.MoodIndex(t)];
             return "Young of the deep held in the world: " + t + " (" + mood + ", tentacles x"
                 + BoldnessMultiplier.ToString("0.00") + ")";
         }
@@ -120,7 +110,7 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            settlementYoungOverride[settlement.ID] = Mathf.Max(0, count);
+            settlementYoungOverride[settlement.ID] = RM_BroodKernel.OverrideFor(count);
             Recompute();
         }
 
@@ -132,12 +122,9 @@ namespace RimMandrake.FeverWood
             {
                 return 0;
             }
-            if (settlementYoungOverride.TryGetValue(settlement.ID, out int ov))
-            {
-                return ov;
-            }
-            RM_DeepYoungKeeperExtension ext = settlement.Faction?.def?.GetModExtension<RM_DeepYoungKeeperExtension>();
-            return ext != null ? ext.YoungFor(settlement) : 0;
+            bool hasOverride = settlementYoungOverride.TryGetValue(settlement.ID, out int ov);
+            RM_DeepYoungKeeperExtension ext = hasOverride ? null : settlement.Faction?.def?.GetModExtension<RM_DeepYoungKeeperExtension>();
+            return RM_BroodKernel.SettlementYoung(hasOverride, ov, ext != null, ext != null ? ext.YoungFor(settlement) : 0);
         }
 
         /// <summary>FEVERWOOD_BROOD_RANSOM_1 §5: the settlement's display tank
@@ -150,9 +137,9 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            if (freedDisplayTanks.Add(settlement.ID))
+            if (RM_BroodKernel.FreedTankLowersYoung(!freedDisplayTanks.Add(settlement.ID)))
             {
-                settlementYoungOverride[settlement.ID] = Mathf.Max(0, SettlementYoung(settlement) - 1);
+                settlementYoungOverride[settlement.ID] = RM_BroodKernel.YoungAfterFreedTank(SettlementYoung(settlement));
             }
             Recompute();
         }
@@ -174,7 +161,8 @@ namespace RimMandrake.FeverWood
         public int Recompute()
         {
             lastComputedTick = Find.TickManager.TicksGame;
-            int n = 0;
+            int onMaps = 0, tanks = 0, inCaravans = 0;
+            long settlementTotal = 0;
             ThingDef cask = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SekkulaathYoungCask");
 
             List<Map> maps = Find.Maps;
@@ -189,9 +177,9 @@ namespace RimMandrake.FeverWood
                 for (int i = 0; i < buildings.Count; i++)
                 {
                     RM_CompCapturedSpecimen spec = buildings[i].TryGetComp<RM_CompCapturedSpecimen>();
-                    if (spec != null && spec.Occupied)
+                    if (spec != null && RM_TankKernel.CountsInTally(spec.Occupied))
                     {
-                        n++;
+                        tanks++;
                     }
                 }
                 if (cask != null)
@@ -199,7 +187,7 @@ namespace RimMandrake.FeverWood
                     List<Thing> casks = map.listerThings.ThingsOfDef(cask);
                     for (int i = 0; i < casks.Count; i++)
                     {
-                        n += casks[i].stackCount;
+                        onMaps += casks[i].stackCount;
                     }
                 }
             }
@@ -218,7 +206,7 @@ namespace RimMandrake.FeverWood
                     {
                         if (items[i].def == cask)
                         {
-                            n += items[i].stackCount;
+                            inCaravans += items[i].stackCount;
                         }
                     }
                 }
@@ -227,20 +215,10 @@ namespace RimMandrake.FeverWood
             List<Settlement> settlements = Find.WorldObjects.Settlements;
             for (int s = 0; s < settlements.Count; s++)
             {
-                Settlement st = settlements[s];
-                if (settlementYoungOverride.TryGetValue(st.ID, out int ov))
-                {
-                    n += ov;
-                    continue;
-                }
-                RM_DeepYoungKeeperExtension ext = st.Faction?.def?.GetModExtension<RM_DeepYoungKeeperExtension>();
-                if (ext != null)
-                {
-                    n += ext.YoungFor(st);
-                }
+                settlementTotal += SettlementYoung(settlements[s]);
             }
 
-            tally = n;
+            tally = RM_BroodKernel.Tally(tanks, onMaps, inCaravans, settlementTotal);
             Announce();
             return tally;
         }
@@ -251,20 +229,11 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            while (announcedLevel > 0 && tally < Thresholds[announcedLevel - 1])
-            {
-                announcedLevel--; // quiet step down; the next rise announces again
-            }
-            int reached = announcedLevel;
-            while (reached < Thresholds.Length && tally >= Thresholds[reached])
-            {
-                reached++;
-            }
-            if (reached <= announcedLevel)
+            // quiet step down when the tally falls; the next rise announces again
+            if (!RM_BroodKernel.AnnounceStep(true, ref announcedLevel, tally))
             {
                 return;
             }
-            announcedLevel = reached;
             Map home = Find.AnyPlayerHomeMap;
             string date = home != null
                 ? GenDate.DateFullStringAt(GenTicks.TicksAbs, Find.WorldGrid.LongLatOf(home.Tile))
@@ -314,8 +283,8 @@ namespace RimMandrake.FeverWood
 
         public float EffectiveWeight(RM_DeepGiftEntry e)
         {
-            float mult = RM_FeverWoodSettings.broodGiftWeightMultipliers.TryGetValue(e.thing.defName, out float m) ? m : 1f;
-            return Mathf.Max(0f, e.weight * mult);
+            bool has = RM_FeverWoodSettings.broodGiftWeightMultipliers.TryGetValue(e.thing.defName, out float m);
+            return RM_BroodKernel.GiftWeight(e.weight, has, m);
         }
     }
 
@@ -391,26 +360,20 @@ namespace RimMandrake.FeverWood
 
         private static Thing RollAndPlace(RM_DeepGiftTableDef table, Map map, IntVec3 pool)
         {
-            List<RM_DeepGiftEntry> candidates = new List<RM_DeepGiftEntry>();
-            for (int i = 0; i < table.entries.Count; i++)
+            // A row with no thing carries weight 0; a building that finds no footprint near the pool drops out and the roll
+            // is retried (the kernel owns that loop).
+            float[] weights = new float[table.entries.Count];
+            for (int i = 0; i < weights.Length; i++)
             {
-                if (table.entries[i].thing != null && table.EffectiveWeight(table.entries[i]) > 0f)
-                {
-                    candidates.Add(table.entries[i]);
-                }
+                weights[i] = table.entries[i].thing != null ? table.EffectiveWeight(table.entries[i]) : 0f;
             }
-            // A building that finds no footprint near the pool drops out and the roll is retried.
-            while (candidates.Count > 0)
+            Thing placed = null;
+            RM_BroodKernel.RollGift(weights, row =>
             {
-                RM_DeepGiftEntry e = candidates.RandomElementByWeight(table.EffectiveWeight);
-                Thing t = TryPlace(e, map, pool);
-                if (t != null)
-                {
-                    return t;
-                }
-                candidates.Remove(e);
-            }
-            return null;
+                placed = TryPlace(table.entries[row], map, pool);
+                return placed != null;
+            }, () => Rand.Value);
+            return placed;
         }
 
         private static Thing TryPlace(RM_DeepGiftEntry e, Map map, IntVec3 pool)
@@ -466,20 +429,17 @@ namespace RimMandrake.FeverWood
         public List<FactionDef> onlyFactions = new List<FactionDef>();
         public float stockChance = -1f;
 
-        public float EffectiveStockChance => Mathf.Clamp01(stockChance >= 0f ? stockChance : RM_FeverWoodSettings.broodCaskTraderStockChance);
+        public float EffectiveStockChance => RM_BroodKernel.StockChance(stockChance, RM_FeverWoodSettings.broodCaskTraderStockChance);
 
         public bool StocksFor(Faction faction)
         {
-            if (onlyFactions == null || onlyFactions.Count == 0)
-            {
-                return true;
-            }
-            return faction != null && onlyFactions.Contains(faction.def);
+            return RM_BroodKernel.StocksFor(onlyFactions == null ? 0 : onlyFactions.Count, faction != null,
+                faction != null && onlyFactions != null && onlyFactions.Contains(faction.def));
         }
 
         public override IEnumerable<Thing> GenerateThings(PlanetTile forTile, Faction faction = null)
         {
-            if (!RM_FeverWoodSettings.broodRansomEnabled || !StocksFor(faction))
+            if (!RM_BroodKernel.StocksCask(RM_FeverWoodSettings.broodRansomEnabled, StocksFor(faction)))
             {
                 yield break;
             }
@@ -577,25 +537,17 @@ namespace RimMandrake.FeverWood
 
         public static bool Applies(Settlement settlement, FactionDef faction, string settlementName)
         {
-            if (settlement == null || faction == null || settlement.Faction?.def != faction)
-            {
-                return false;
-            }
-            return settlementName.NullOrEmpty() || settlement.Name == settlementName;
+            return RM_BroodKernel.DisplayTankApplies(settlement != null, faction != null,
+                settlement != null && settlement.Faction?.def == faction,
+                settlementName.NullOrEmpty(), settlement != null && settlement.Name == settlementName);
         }
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RM_FeverWoodSettings.broodRansomEnabled || !RM_FeverWoodSettings.sekkulaathTankEnabled || tankDef == null)
-            {
-                return;
-            }
             Settlement settlement = map.Parent as Settlement;
-            if (!Applies(settlement, faction, settlementName))
-            {
-                return;
-            }
-            if (RM_WorldComponent_DeepYoung.Get?.DisplayTankFreed(settlement) == true)
+            if (!RM_BroodKernel.PlaceDisplayTank(RM_FeverWoodSettings.broodRansomEnabled, RM_FeverWoodSettings.sekkulaathTankEnabled,
+                    tankDef != null, Applies(settlement, faction, settlementName),
+                    RM_WorldComponent_DeepYoung.Get?.DisplayTankFreed(settlement) == true))
             {
                 return;
             }

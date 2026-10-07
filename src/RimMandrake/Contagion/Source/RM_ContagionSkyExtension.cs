@@ -68,7 +68,7 @@ namespace RimMandrake.Contagion
 
     public static class RM_ContagionSky
     {
-        public const int Interval = 250;
+        public const int Interval = RM_SkyKernel.Interval;
 
         public static RM_ContagionSkyExtension ExtFor(Map map)
         {
@@ -90,12 +90,9 @@ namespace RimMandrake.Contagion
         public static bool Exposed(IntVec3 c, Map map)
         {
             if (!c.InBounds(map)) return false;
-            if (c.Roofed(map)) return false;
             TerrainDef t = c.GetTerrain(map);
-            if (t != null && t.IsWater) return false;
             Plant p = c.GetPlant(map);
-            if (p != null && p.def.plant != null && p.def.plant.IsTree) return false;
-            return true;
+            return RM_SkyKernel.Exposed(true, c.Roofed(map), t != null && t.IsWater, p != null && p.def.plant != null && p.def.plant.IsTree);
         }
 
         private static readonly Dictionary<BiomeDef, HashSet<ThingDef>> nativeCache =

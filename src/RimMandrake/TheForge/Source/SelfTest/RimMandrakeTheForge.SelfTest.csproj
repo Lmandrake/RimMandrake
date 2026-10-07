@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    TheForge offline fuzz, Approach B (same shape as Scarlands/Bazaar/FlowWorks). Plain net8.0, zero RimWorld/Unity
+    references: ../Kernel/*.cs are the PRODUCTION files the mod compiles, pulled in directly. A `using Verse;` landing
+    in one of them breaks this build - that is the guard rail working.
+    Run (builds on Windows via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_theforge_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeTheForge.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.TheForge.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Kernel\RM_CycleKernel.cs" />
+    <Compile Include="..\Kernel\RM_PlumeKernel.cs" />
+    <Compile Include="..\Kernel\RM_DhokkurKernel.cs" />
+    <Compile Include="..\Kernel\RM_DormancyKernel.cs" />
+    <Compile Include="..\Kernel\RM_SkyKernel.cs" />
+    <Compile Include="TheForgeFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

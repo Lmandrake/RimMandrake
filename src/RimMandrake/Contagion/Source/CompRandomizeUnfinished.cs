@@ -97,7 +97,7 @@ namespace RimMandrake.Contagion
                 .ToList();
             List<HediffDef> pool = Props.limbPool.InRandomOrder().ToList();
 
-            int count = Math.Min(Props.limbCountRange.RandomInRange, Math.Min(leafParts.Count, pool.Count));
+            int count = RM_DraftprintKernel.LimbCount(Props.limbCountRange.RandomInRange, leafParts.Count, pool.Count);
             for (int i = 0; i < count; i++)
             {
                 pawn.health.AddHediff(pool[i], leafParts[i]);

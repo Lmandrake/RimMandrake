@@ -238,15 +238,14 @@ namespace RimMandrake.Wasteland
         /// </summary>
         public static int UnitsToTake(Pawn pawn, Thing t, RM_CompProperties_GripperThief props)
         {
-            if (t == null || !t.Spawned || t.def.category != ThingCategory.Item || !t.def.EverHaulable
-                || t is Corpse || t is MinifiedThing || t is Pawn || t.IsBurning()
-                || t.IsForbidden(Faction.OfPlayer) || t.Position.Fogged(t.Map))
+            bool legal = t != null && t.Spawned && t.def.category == ThingCategory.Item && t.def.EverHaulable
+                && !(t is Corpse) && !(t is MinifiedThing) && !(t is Pawn) && !t.IsBurning()
+                && !t.IsForbidden(Faction.OfPlayer) && !t.Position.Fogged(t.Map);
+            if (!legal)
             {
                 return 0;
             }
-            float unitMass = t.GetStatValue(StatDefOf.Mass);
-            int byMass = unitMass <= 0.0001f ? int.MaxValue : Mathf.FloorToInt(props.maxCarryMass / unitMass);
-            return Mathf.Max(0, Mathf.Min(t.stackCount, Mathf.Min(props.maxUnitsTaken, byMass)));
+            return RM_DoseKernel.UnitsToTake(true, t.GetStatValue(StatDefOf.Mass), t.stackCount, props.maxUnitsTaken, props.maxCarryMass);
         }
     }
 

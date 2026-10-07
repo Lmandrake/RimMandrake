@@ -85,16 +85,15 @@ namespace RimMandrake.TheForge
 
             RM_CompForgeCycleDormancy d = Dormancy;
             bool sealedNow = d != null && d.IsSealed;
-            if (seenState && sealedNow != wasSealed)
+            DhokkurTransition tr = RM_DhokkurKernel.Transition(seenState, wasSealed, sealedNow,
+                seenState && sealedNow != wasSealed && !sealedNow && RM_ForgeCycleUtility.RainingNow(map));
+            if (tr == DhokkurTransition.Wake)
             {
-                if (!sealedNow && RM_ForgeCycleUtility.RainingNow(map))
-                {
-                    Wake(pawn, map);
-                }
-                else if (sealedNow)
-                {
-                    Seal(pawn, map);
-                }
+                Wake(pawn, map);
+            }
+            else if (tr == DhokkurTransition.Seal)
+            {
+                Seal(pawn, map);
             }
             wasSealed = sealedNow;
             seenState = true;
@@ -226,31 +225,34 @@ namespace RimMandrake.TheForge
         /// falling back to 2 = damage. The setting picks where the chain starts.</summary>
         public static bool Shove(Building b, IntVec3 target, Map map)
         {
-            int mode = Mathf.Clamp(RM_TheForgeSettings.dhokkurShoveMode, 0, 2);
-            if (mode == 0 && b.def.size.x == 1 && b.def.size.z == 1 && CanReceive(target, map))
-            {
-                Rot4 rot = b.Rotation;
-                b.DeSpawn(DestroyMode.Vanish);
-                GenSpawn.Spawn(b, target, map, rot);
-                return true;
-            }
-            if (mode <= 1 && b.def.Minifiable)
-            {
-                IntVec3 at = b.Position;
-                MinifiedThing m = b.MakeMinified();
-                if (m != null)
+            return RM_DhokkurKernel.Shove(RM_TheForgeSettings.dhokkurShoveMode, b.def.size.x == 1 && b.def.size.z == 1,
+                CanReceive(target, map), b.def.Minifiable,
+                () =>
                 {
+                    IntVec3 at = b.Position;
+                    MinifiedThing m = b.MakeMinified();
+                    if (m == null)
+                    {
+                        return false;
+                    }
                     GenPlace.TryPlaceThing(m, CanReceive(target, map) ? target : at, map, ThingPlaceMode.Near);
                     return true;
-                }
-            }
-            float dmg = b.MaxHitPoints * Mathf.Clamp01(RM_TheForgeSettings.dhokkurShoveDamagePct);
-            if (dmg <= 0f)
-            {
-                return false;
-            }
-            b.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
-            return true;
+                },
+                RM_TheForgeSettings.dhokkurShoveDamagePct,
+                () =>
+                {
+                    Rot4 rot = b.Rotation;
+                    b.DeSpawn(DestroyMode.Vanish);
+                    GenSpawn.Spawn(b, target, map, rot);
+                },
+                pct =>
+                {
+                    float dmg = b.MaxHitPoints * pct;
+                    if (dmg > 0f)
+                    {
+                        b.TakeDamage(new DamageInfo(DamageDefOf.Blunt, dmg));
+                    }
+                }) != ShoveOutcome.None;
         }
 
         private static bool CanReceive(IntVec3 c, Map map)
@@ -272,9 +274,8 @@ namespace RimMandrake.TheForge
     {
         public const int FadePollTicks = 2500;
 
-        // cell index -> wear passes, and the tick each cell was last worn.
-        private Dictionary<int, int> wear = new Dictionary<int, int>();
-        private Dictionary<int, int> lastWorn = new Dictionary<int, int>();
+        // cell index -> wear passes, and the tick each cell was last worn (the bookkeeping is Kernel/RM_DhokkurKernel.cs).
+        private RM_WearBook book = new RM_WearBook();
 
         public int StatPolished, StatFaded;
 
@@ -285,11 +286,11 @@ namespace RimMandrake.TheForge
             return map == null ? null : map.GetComponent<RM_MapComponent_DhokkurPaths>();
         }
 
-        public int TrackedCells => wear.Count;
+        public int TrackedCells => book.Wear.Count;
 
         public int WearAt(IntVec3 c)
         {
-            return wear.TryGetValue(map.cellIndices.CellToIndex(c), out int w) ? w : 0;
+            return book.Wear.TryGetValue(map.cellIndices.CellToIndex(c), out int w) ? w : 0;
         }
 
         public bool IsPolished(IntVec3 c)
@@ -299,16 +300,8 @@ namespace RimMandrake.TheForge
 
         public void Walked(IntVec3 c)
         {
-            int i = map.cellIndices.CellToIndex(c);
-            int now = Find.TickManager.TicksGame;
-            if (lastWorn.TryGetValue(i, out int last) && now - last < RM_TheForgeSettings.DhokkurWearCooldownTicks)
-            {
-                return;
-            }
-            lastWorn[i] = now;
-            wear.TryGetValue(i, out int w);
-            wear[i] = ++w;
-            if (w >= Mathf.Max(1, RM_TheForgeSettings.dhokkurPassesToPolish) && !IsPolished(c) && CanPolish(c))
+            if (book.Walked(map.cellIndices.CellToIndex(c), Find.TickManager.TicksGame, RM_TheForgeSettings.DhokkurWearCooldownTicks,
+                    RM_TheForgeSettings.dhokkurPassesToPolish, () => !IsPolished(c) && CanPolish(c)))
             {
                 map.terrainGrid.SetTempTerrain(c, RM_TheForgeDefOf.RM_DhokkurPolishedTrail);
                 StatPolished++;
@@ -329,7 +322,7 @@ namespace RimMandrake.TheForge
         public override void MapComponentTick()
         {
             base.MapComponentTick();
-            if (Find.TickManager.TicksGame % FadePollTicks != 0 || wear.Count == 0)
+            if (Find.TickManager.TicksGame % FadePollTicks != 0 || book.Wear.Count == 0)
             {
                 return;
             }
@@ -345,45 +338,22 @@ namespace RimMandrake.TheForge
         // drops below the threshold goes back to its base terrain.
         public void Fade()
         {
-            int now = Find.TickManager.TicksGame;
-            int period = Mathf.Max(1, Mathf.RoundToInt(RM_TheForgeSettings.dhokkurTrailFadeDays * 60000f));
-            List<int> keys = new List<int>(wear.Keys);
-            foreach (int i in keys)
-            {
-                int last = lastWorn.TryGetValue(i, out int l) ? l : 0;
-                if (now - last < period)
-                {
-                    continue;
-                }
-                lastWorn[i] = now; // the next pass is lost one period later
-                int w = wear[i] - 1;
-                IntVec3 c = map.cellIndices.IndexToCell(i);
-                if (w < Mathf.Max(1, RM_TheForgeSettings.dhokkurPassesToPolish) && IsPolished(c))
-                {
-                    map.terrainGrid.RemoveTempTerrain(c, doLeavings: false, preventDestroyEffects: true);
-                    StatFaded++;
-                }
-                if (w <= 0)
-                {
-                    wear.Remove(i);
-                    lastWorn.Remove(i);
-                }
-                else
-                {
-                    wear[i] = w;
-                }
-            }
+            book.Fade(Find.TickManager.TicksGame, RM_DhokkurKernel.FadePeriodTicks(RM_TheForgeSettings.dhokkurTrailFadeDays),
+                RM_TheForgeSettings.dhokkurPassesToPolish, i => IsPolished(map.cellIndices.IndexToCell(i)),
+                i => map.terrainGrid.RemoveTempTerrain(map.cellIndices.IndexToCell(i), doLeavings: false, preventDestroyEffects: true),
+                out int unpolished);
+            StatFaded += unpolished;
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.Look(ref wear, "dhokkurWear", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref lastWorn, "dhokkurLastWorn", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref book.Wear, "dhokkurWear", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref book.LastWorn, "dhokkurLastWorn", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (wear == null) wear = new Dictionary<int, int>();
-                if (lastWorn == null) lastWorn = new Dictionary<int, int>();
+                if (book.Wear == null) book.Wear = new Dictionary<int, int>();
+                if (book.LastWorn == null) book.LastWorn = new Dictionary<int, int>();
             }
         }
     }

@@ -97,8 +97,8 @@ namespace RimMandrake.TheForge
     public class RM_MapComponent_SkyPastures : MapComponent
     {
         public const int PollTicks = 2500;
-        public const int MoteStepTicks = 4;
-        public const int MoteLifeTicks = 240;
+        public const int MoteStepTicks = RM_SkyKernel.MoteStepTicks;
+        public const int MoteLifeTicks = RM_SkyKernel.MoteLifeTicks;
         public const int MaxMotes = 36;
         public const int MaxHighlightCells = 2500;
 
@@ -223,15 +223,14 @@ namespace RimMandrake.TheForge
             {
                 AshMote m = motes[i];
                 m.age += MoteStepTicks;
-                if (m.age >= MoteLifeTicks)
+                if (!RM_SkyKernel.MoteAlive(m.age))
                 {
                     motes.RemoveAt(i);
                     continue;
                 }
                 float t = m.age / (float)MoteLifeTicks;
-                float ang = m.phase + t * m.spin;
-                float r = 1.6f * (1f - 0.65f * t);
-                Vector3 v = new Vector3(m.cx + Mathf.Cos(ang) * r, 0f, m.cz + Mathf.Sin(ang) * r * 0.55f + t * 3.2f);
+                RM_SkyKernel.MotePos(m.cx, m.cz, m.phase, m.spin, m.age, out float mx, out float mz);
+                Vector3 v = new Vector3(mx, 0f, mz);
                 if (v.ToIntVec3().InBounds(map))
                 {
                     FleckMaker.ThrowDustPuffThick(v, map, Rand.Range(0.7f, 1.3f) * (1f - 0.4f * t), new Color(0.42f, 0.40f, 0.38f, 0.55f * (1f - t * 0.6f)));
@@ -298,7 +297,7 @@ namespace RimMandrake.TheForge
         private void RebuildHighlight(Pawn p, CompProperties_VaporDrifter props)
         {
             highlight.Clear();
-            float reach = Mathf.Clamp(props.columnSearchRadius, 8f, 60f);
+            float reach = RM_SkyKernel.HighlightReach(props.columnSearchRadius);
             float r2 = reach * reach;
             IntVec3 at = p.Position;
             CellIndices ci = map.cellIndices;
@@ -365,7 +364,7 @@ namespace RimMandrake.TheForge
                 return;
             }
             float dist = (pawn.Position - prey.Position).LengthHorizontal;
-            if (dist < Props.stoopMinDistance || dist > Props.stoopMaxDistance)
+            if (!RM_SkyKernel.StoopBand(dist, Props.stoopMinDistance, Props.stoopMaxDistance))
             {
                 return;
             }
@@ -388,8 +387,8 @@ namespace RimMandrake.TheForge
     [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.GetPreyScoreFor))]
     public static class RM_Patch_ColumnPreyScore
     {
-        public const float InColumnBonus = 30f;
-        public const float OpenAshPenalty = 60f;
+        public const float InColumnBonus = RM_SkyKernel.InColumnBonus;
+        public const float OpenAshPenalty = RM_SkyKernel.OpenAshPenalty;
 
         public static void Postfix(Pawn predator, Pawn prey, ref float __result)
         {
@@ -407,14 +406,9 @@ namespace RimMandrake.TheForge
             {
                 return;
             }
-            if (cols.InColumn(prey.Position))
-            {
-                __result += InColumnBonus;
-            }
-            else if (d.Props.forageRadiusBeyondColumns <= 0f || !cols.NearestColumnCell(prey.Position, d.Props.forageRadiusBeyondColumns).IsValid)
-            {
-                __result -= OpenAshPenalty;
-            }
+            bool inColumn = cols.InColumn(prey.Position);
+            __result += RM_SkyKernel.PreyScoreDelta(inColumn, d.Props.forageRadiusBeyondColumns,
+                !inColumn && d.Props.forageRadiusBeyondColumns > 0f && cols.NearestColumnCell(prey.Position, d.Props.forageRadiusBeyondColumns).IsValid);
         }
     }
 }

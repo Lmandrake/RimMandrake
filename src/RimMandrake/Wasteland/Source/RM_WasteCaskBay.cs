@@ -60,7 +60,7 @@ namespace RimMandrake.Wasteland
         public bool reburyMarked;
 
         public RM_CompProperties_WasteCask Props => (RM_CompProperties_WasteCask)props;
-        public float StoredDose => Mathf.Max(0f, storedDose);
+        public float StoredDose => RM_WasteCaskKernel.StoredDose(storedDose);
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -96,18 +96,15 @@ namespace RimMandrake.Wasteland
 
         /// <summary>A breached cask: hit points below the leak threshold and not inside a sealed bay.</summary>
         public bool Breached =>
-            parent.def.useHitPoints && parent.HitPoints < parent.MaxHitPoints * Props.leakHpFraction && StoredDose > 0f;
+            RM_WasteCaskKernel.Breached(parent.def.useHitPoints, parent.HitPoints, parent.MaxHitPoints, Props.leakHpFraction, storedDose);
 
         public bool Leaking
         {
             get
             {
-                if (!parent.Spawned || !Breached || !RM_WastelandSettings.wastelandEnabled || !RM_WastelandSettings.caskLeaksEnabled)
-                {
-                    return false;
-                }
                 RM_CompWasteContainment bay = Bay;
-                return bay == null || !bay.Contained;
+                return RM_WasteCaskKernel.CaskLeaking(parent.Spawned, Breached, RM_WastelandSettings.wastelandEnabled,
+                    RM_WastelandSettings.caskLeaksEnabled, bay != null, bay != null && bay.Contained);
             }
         }
 
@@ -121,7 +118,7 @@ namespace RimMandrake.Wasteland
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (nextLeakTick < 0 || now >= nextLeakTick)
+            if (RM_WasteCaskKernel.LeakDue(nextLeakTick, now))
             {
                 LeakPulse();
                 nextLeakTick = now + Props.leakIntervalTicks;
@@ -137,9 +134,9 @@ namespace RimMandrake.Wasteland
                 return 0;
             }
             float sev = RM_WastelandSettings.caskLeakSeverity;
-            int polluted = RM_WasteLeakRegistry.PolluteAround(parent.Position, map, Mathf.Max(1, Mathf.RoundToInt(Props.leakPollutionCells * sev)));
-            RM_WasteLeakRegistry.GasAndFleck(parent.Position, map, Mathf.RoundToInt(Props.leakGasAmount * sev));
-            storedDose = Mathf.Max(0f, StoredDose - Props.dosePerLeak);
+            int polluted = RM_WasteLeakRegistry.PolluteAround(parent.Position, map, RM_WasteCaskKernel.PollutionCells(Props.leakPollutionCells, sev));
+            RM_WasteLeakRegistry.GasAndFleck(parent.Position, map, RM_WasteCaskKernel.GasAmount(Props.leakGasAmount, sev));
+            storedDose = RM_WasteCaskKernel.DoseAfterLeak(storedDose, Props.dosePerLeak);
             RM_WasteLeakRegistry.Announce(map, parent,
                 (everLeaked ? "A breached waste cask is still leaking" : "A waste cask has been breached and is leaking")
               + ": tox gas and pollution around " + parent.LabelShort + ". Repair nothing — move it into a powered sealed cask bay, or get it off the map.",
@@ -152,14 +149,13 @@ namespace RimMandrake.Wasteland
         {
             base.PostDestroy(mode, previousMap);
             RM_WasteLeakRegistry.Set(parent, false);
-            if (mode == DestroyMode.KillFinalize && previousMap != null && StoredDose > 0f
-                && RM_WastelandSettings.wastelandEnabled && RM_WastelandSettings.caskLeaksEnabled)
+            if (RM_WasteCaskKernel.BurstsOnKill(mode == DestroyMode.KillFinalize, previousMap != null, storedDose,
+                    RM_WastelandSettings.wastelandEnabled, RM_WastelandSettings.caskLeaksEnabled))
             {
                 // A destroyed cask dumps everything left in it, loudly.
                 IntVec3 c = parent.PositionHeld;
-                int cells = Mathf.RoundToInt(Props.leakPollutionCells * 4 * RM_WastelandSettings.caskLeakSeverity);
-                RM_WasteLeakRegistry.PolluteAround(c, previousMap, Mathf.Max(4, cells));
-                RM_WasteLeakRegistry.GasAndFleck(c, previousMap, Mathf.RoundToInt(Props.leakGasAmount * 3 * RM_WastelandSettings.caskLeakSeverity));
+                RM_WasteLeakRegistry.PolluteAround(c, previousMap, RM_WasteCaskKernel.BurstCells(Props.leakPollutionCells, RM_WastelandSettings.caskLeakSeverity));
+                RM_WasteLeakRegistry.GasAndFleck(c, previousMap, RM_WasteCaskKernel.BurstGas(Props.leakGasAmount, RM_WastelandSettings.caskLeakSeverity));
                 Messages.Message("A waste cask has burst open, spilling its whole load.",
                     new LookTargets(new TargetInfo(c, previousMap)), MessageTypeDefOf.NegativeEvent);
             }
@@ -219,8 +215,8 @@ namespace RimMandrake.Wasteland
             {
                 diggable = DefDatabase<TerrainAffordanceDef>.GetNamedSilentFail("Diggable");
             }
-            return t != null && t.affordances != null && diggable != null && t.affordances.Contains(diggable)
-                && c.GetEdifice(map) == null;
+            return RM_WasteCaskKernel.CanRebury(t != null && t.affordances != null && diggable != null,
+                t != null && t.affordances != null && diggable != null && t.affordances.Contains(diggable), c.GetEdifice(map) != null);
         }
 
         private static TerrainAffordanceDef diggable;
@@ -410,11 +406,11 @@ namespace RimMandrake.Wasteland
         private CompPowerTrader Power => power ?? (power = parent.GetComp<CompPowerTrader>());
 
         public bool Powered => Power == null || Power.PowerOn;
-        public float HpFraction => parent.MaxHitPoints > 0 ? parent.HitPoints / (float)parent.MaxHitPoints : 1f;
+        public float HpFraction => RM_WasteCaskKernel.HpFraction(parent.HitPoints, parent.MaxHitPoints);
         /// <summary>Seal integrity: the lower of the seal charge and the bay's structural state.</summary>
-        public float SealIntegrity => Mathf.Min(sealCharge, HpFraction);
+        public float SealIntegrity => RM_WasteCaskKernel.SealIntegrity(sealCharge, HpFraction);
         public float InternalHeat => internalHeat;
-        public bool Contained => SealIntegrity >= Props.leakThreshold;
+        public bool Contained => RM_WasteCaskKernel.Contained(SealIntegrity, Props.leakThreshold);
 
         public override void PostExposeData()
         {
@@ -475,27 +471,21 @@ namespace RimMandrake.Wasteland
                 dose += c.StoredDose;
                 heatTarget += c.StoredDose * c.Props.heatPerDose;
             }
-            if (Powered)
+            bool powered = Powered;
+            sealCharge = RM_WasteCaskKernel.NextCharge(sealCharge, powered, Props.chargeRegenPerRare, Props.chargeDrainPerRare);
+            heatTarget = RM_WasteCaskKernel.HeatTarget(heatTarget, powered, Props.poweredHeatFactor);
+            internalHeat = RM_WasteCaskKernel.NextHeat(internalHeat, heatTarget);
+            if (RM_WasteCaskKernel.PushesHeat(internalHeat))
             {
-                sealCharge = Mathf.Min(1f, sealCharge + Props.chargeRegenPerRare);
-                heatTarget *= Props.poweredHeatFactor;
-            }
-            else
-            {
-                sealCharge = Mathf.Max(0f, sealCharge - Props.chargeDrainPerRare);
-            }
-            internalHeat = Mathf.Lerp(internalHeat, heatTarget, 0.1f);
-            if (internalHeat > 1f)
-            {
-                GenTemperature.PushHeat(parent.Position, parent.Map, internalHeat * 0.5f);
+                GenTemperature.PushHeat(parent.Position, parent.Map, RM_WasteCaskKernel.HeatPushed(internalHeat));
             }
 
-            bool leaking = on && RM_WastelandSettings.caskLeaksEnabled && casks.Count > 0 && dose > 0f && !Contained;
+            bool leaking = RM_WasteCaskKernel.BayLeaking(on, RM_WastelandSettings.caskLeaksEnabled, casks.Count, dose, Contained);
             RM_WasteLeakRegistry.Set(parent, leaking);
             if (leaking)
             {
                 int now = Find.TickManager.TicksGame;
-                if (nextLeakTick < 0 || now >= nextLeakTick)
+                if (RM_WasteCaskKernel.LeakDue(nextLeakTick, now))
                 {
                     LeakPulse(casks);
                     nextLeakTick = now + Props.leakIntervalTicks;
@@ -513,8 +503,8 @@ namespace RimMandrake.Wasteland
         {
             Map map = parent.Map;
             float sev = RM_WastelandSettings.caskLeakSeverity;
-            int polluted = RM_WasteLeakRegistry.PolluteAround(parent.Position, map, Mathf.Max(1, Mathf.RoundToInt(Props.leakPollutionCells * sev)));
-            RM_WasteLeakRegistry.GasAndFleck(parent.OccupiedRect().RandomCell, map, Mathf.RoundToInt(Props.leakGasAmount * sev));
+            int polluted = RM_WasteLeakRegistry.PolluteAround(parent.Position, map, RM_WasteCaskKernel.PollutionCells(Props.leakPollutionCells, sev));
+            RM_WasteLeakRegistry.GasAndFleck(parent.OccupiedRect().RandomCell, map, RM_WasteCaskKernel.GasAmount(Props.leakGasAmount, sev));
             RM_WasteLeakRegistry.Announce(map, parent,
                 "The sealed cask bay's seals have failed (" + SealIntegrity.ToStringPercent() + " integrity"
               + (Powered ? "" : ", no power") + "): it is leaking tox gas and pollution.", !everLeaked);
@@ -529,18 +519,18 @@ namespace RimMandrake.Wasteland
             {
                 return;
             }
-            processProgress += RM_WastelandSettings.caskProcessingPerDay * GenTicks.TickRareInterval / (float)GenDate.TicksPerDay;
-            if (processProgress < 1f)
+            processProgress = RM_WasteCaskKernel.ProcessProgress(processProgress, RM_WastelandSettings.caskProcessingPerDay, GenTicks.TickRareInterval, GenDate.TicksPerDay);
+            if (!RM_WasteCaskKernel.ProcessDone(processProgress))
             {
                 return;
             }
             processProgress = 0f;
             Thing cask = casks[0];
             CompProperties_Milkable mp = (CompProperties_Milkable)proc.props;
-            int amount = Mathf.Max(1, Mathf.RoundToInt(mp.milkAmount * Props.processedOutputFactor));
+            int amount = RM_WasteCaskKernel.ProcessedAmount(mp.milkAmount, Props.processedOutputFactor, mp.milkDef.stackLimit);
             cask.Destroy(DestroyMode.Vanish);
             Thing product = ThingMaker.MakeThing(mp.milkDef);
-            product.stackCount = Mathf.Min(amount, mp.milkDef.stackLimit);
+            product.stackCount = amount;
             GenPlace.TryPlaceThing(product, parent.InteractionCell.IsValid ? parent.InteractionCell : parent.Position, parent.Map, ThingPlaceMode.Near);
             Messages.Message(animal.LabelShort + " has processed a waste cask into " + product.LabelCap + ".",
                 new LookTargets(product), MessageTypeDefOf.PositiveEvent);
@@ -589,25 +579,25 @@ namespace RimMandrake.Wasteland
 
         public AcceptanceReport LaunchSafety()
         {
-            if (Casks().Count == 0)
+            switch (Verdict())
             {
-                return AcceptanceReport.WasAccepted;
+                case LaunchVerdict.NoPower:
+                    return "sealed cask bay has no power to its seals";
+                case LaunchVerdict.LowIntegrity:
+                    return "sealed cask bay seal integrity is " + SealIntegrity.ToStringPercent()
+                         + " (needs " + Props.launchIntegrity.ToStringPercent() + ")";
+                case LaunchVerdict.TooHot:
+                    return "sealed cask bay is running hot (+" + internalHeat.ToString("0") + " °C, limit +"
+                         + Props.launchHeatLimit.ToString("0") + " °C)";
+                default:
+                    return AcceptanceReport.WasAccepted;
             }
-            if (!Powered)
-            {
-                return "sealed cask bay has no power to its seals";
-            }
-            if (SealIntegrity < Props.launchIntegrity)
-            {
-                return "sealed cask bay seal integrity is " + SealIntegrity.ToStringPercent()
-                     + " (needs " + Props.launchIntegrity.ToStringPercent() + ")";
-            }
-            if (internalHeat > Props.launchHeatLimit)
-            {
-                return "sealed cask bay is running hot (+" + internalHeat.ToString("0") + " °C, limit +"
-                     + Props.launchHeatLimit.ToString("0") + " °C)";
-            }
-            return AcceptanceReport.WasAccepted;
+        }
+
+        public LaunchVerdict Verdict()
+        {
+            return RM_WasteCaskKernel.LaunchSafety(Casks().Count, Powered, SealIntegrity, Props.launchIntegrity,
+                                                   internalHeat, Props.launchHeatLimit);
         }
 
         public override string CompInspectStringExtra()
@@ -685,7 +675,7 @@ namespace RimMandrake.Wasteland
 
         public static int Capacity(ThingDef bayDef)
         {
-            return bayDef.size.x * bayDef.size.z * Mathf.Max(1, bayDef.building?.maxItemsInCell ?? 1);
+            return RM_WasteCaskKernel.Capacity(bayDef.size.x, bayDef.size.z, bayDef.building?.maxItemsInCell ?? 1);
         }
 
         /// <summary>Casks-per-cell from Mod Settings into every bay def (live: StoreUtility reads it per call).</summary>
@@ -700,7 +690,7 @@ namespace RimMandrake.Wasteland
                              && typeof(Building_RM_WasteCaskBay).IsAssignableFrom(d.thingClass))
                     .ToList();
             }
-            int perCell = Mathf.Clamp(RM_WastelandSettings.caskBayPerCell, 1, 6);
+            int perCell = RM_WasteCaskKernel.PerCell(RM_WastelandSettings.caskBayPerCell);
             for (int i = 0; i < bayDefs.Count; i++)
             {
                 bayDefs[i].building.maxItemsInCell = perCell;
@@ -728,6 +718,8 @@ namespace RimMandrake.Wasteland
         public static AcceptanceReport CheckShip(Building_GravEngine engine, Map map)
         {
             List<Building> list = map.listerBuildings.allBuildingsColonist;
+            RM_CompWasteContainment firstBad = null;
+            List<LaunchVerdict> verdicts = new List<LaunchVerdict>();
             for (int i = 0; i < list.Count; i++)
             {
                 RM_CompWasteContainment bay = list[i].GetComp<RM_CompWasteContainment>();
@@ -735,12 +727,14 @@ namespace RimMandrake.Wasteland
                 {
                     continue;
                 }
-                AcceptanceReport r = bay.LaunchSafety();
-                if (!r.Accepted)
+                LaunchVerdict v = bay.Verdict();
+                verdicts.Add(v);
+                if (v != LaunchVerdict.Safe && firstBad == null)
                 {
-                    return new AcceptanceReport(("Unsafe waste aboard: " + r.Reason).CapitalizeFirst());
+                    firstBad = bay;
                 }
             }
+            int loose = 0;
             foreach (Thing cask in RM_CompWasteCask.AllCasks(map))
             {
                 if (!cask.Spawned || !engine.ValidSubstructureAt(cask.Position))
@@ -749,10 +743,18 @@ namespace RimMandrake.Wasteland
                 }
                 if (cask.TryGetComp<RM_CompWasteCask>().Bay == null)
                 {
-                    return new AcceptanceReport("Unsafe waste aboard: a waste cask is loose on the deck. Store it in a sealed cask bay.");
+                    loose++;
                 }
             }
-            return AcceptanceReport.WasAccepted;
+            switch (RM_WasteCaskKernel.CheckShip(verdicts, loose, out LaunchVerdict _))
+            {
+                case ShipVerdict.UnsafeBay:
+                    return new AcceptanceReport(("Unsafe waste aboard: " + firstBad.LaunchSafety().Reason).CapitalizeFirst());
+                case ShipVerdict.LooseCask:
+                    return new AcceptanceReport("Unsafe waste aboard: a waste cask is loose on the deck. Store it in a sealed cask bay.");
+                default:
+                    return AcceptanceReport.WasAccepted;
+            }
         }
     }
 

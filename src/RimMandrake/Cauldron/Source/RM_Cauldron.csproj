@@ -55,6 +55,9 @@
     <Compile Include="RM_VexxithAcidImmunity.cs" />
     <Compile Include="RM_VexxissPrints.cs" />
     <Compile Include="RM_CauldronDewfallVisuals.cs" />
+    <Compile Include="Kernel\RM_VentKernel.cs" />
+    <Compile Include="Kernel\RM_YieldKernel.cs" />
+    <Compile Include="Kernel\RM_VexxissKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>
