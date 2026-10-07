@@ -14,7 +14,7 @@ namespace RimMandrake.KeelHoist
     {
         public static void Postfix(Building_GravEngine __instance, ref AcceptanceReport __result)
         {
-            if (!__result.Accepted || !KeelHoistSettings.tetherLock || __instance.Map == null || KeelHoistDefOf.RM_KeelHoist == null)
+            if (!RM_HoistKernel.TetherBlocksLaunch(__result.Accepted, KeelHoistSettings.tetherLock, __instance.Map != null, KeelHoistDefOf.RM_KeelHoist != null, true))
             {
                 return;
             }
@@ -42,15 +42,12 @@ namespace RimMandrake.KeelHoist
                 return;
             }
 
-            if (!KeelHoistSettings.colonistsMayRide || ((RM_KeelHoist)___portal).targetHolder != null)
-            {
-                ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.Downed);
-            }
-            if (((RM_KeelHoist)___portal).targetHolder?.Buyer != null || ___portal is RM_ChanceChute)
-            {
-                // HUTT_SLAVE_PIT_SITE_BUILD_1 / HUTT_LOTTERY_CHUTE_BUILD_1: a buyer pit or chance chute never takes a free colonist.
-                ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.IsSlave);
-            }
+            // Awake colonists are hidden when riding is off or the cable ends in a holder; HUTT_SLAVE_PIT_SITE_BUILD_1 /
+            // HUTT_LOTTERY_CHUTE_BUILD_1: a buyer pit or chance chute never takes a free colonist.
+            bool holderCable = ((RM_KeelHoist)___portal).targetHolder != null;
+            bool buyerOrChute = ((RM_KeelHoist)___portal).targetHolder?.Buyer != null || ___portal is RM_ChanceChute;
+            ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p
+                && RM_HoistKernel.DialogHidesPawn(KeelHoistSettings.colonistsMayRide, holderCable, buyerOrChute, p.IsColonist, p.Downed, p.IsSlave));
 
             if (!KeelHoistSettings.downedStrangersAndBeasts)
             {
@@ -71,19 +68,9 @@ namespace RimMandrake.KeelHoist
 
         public static bool IsLowerableCaptive(Pawn p)
         {
-            if (p.Dead || !p.Downed || p.Faction == Faction.OfPlayer || p.IsPrisonerOfColony || p.IsSlaveOfColony)
-            {
-                return false;
-            }
-            if (!p.RaceProps.allowedOnCaravan || p.IsQuestHelper() || p.IsQuestLodger())
-            {
-                return false;
-            }
-            if (p.RaceProps.Humanlike)
-            {
-                return p.guest != null && !p.mindState.WillJoinColonyIfRescued;
-            }
-            return p.RaceProps.Animal && p.Faction == null;
+            return RM_HoistKernel.IsLowerableCaptive(p.Dead, p.Downed, p.Faction == Faction.OfPlayer, p.IsPrisonerOfColony || p.IsSlaveOfColony,
+                p.RaceProps.allowedOnCaravan, p.IsQuestHelper() || p.IsQuestLodger(), p.RaceProps.Humanlike, p.guest != null,
+                p.RaceProps.Humanlike && p.mindState.WillJoinColonyIfRescued, p.RaceProps.Animal, p.Faction == null);
         }
     }
 
@@ -92,19 +79,19 @@ namespace RimMandrake.KeelHoist
     public class RM_MapComponent_OpenLine : MapComponent
     {
         public float level;
-        public const float RisePerHour = 1f;
-        public const float FallPerHour = 0.5f;
+        public const float RisePerHour = RM_HoistKernel.OpenLineRisePerHour;
+        public const float FallPerHour = RM_HoistKernel.OpenLineFallPerHour;
 
         public RM_MapComponent_OpenLine(Map map) : base(map) { }
 
         public override void MapComponentTick()
         {
-            if (!KeelHoistSettings.openLineMeter || Find.TickManager.TicksGame % GenDate.TicksPerHour != 137 || KeelHoistDefOf.RM_KeelHoist == null)
+            if (!RM_HoistKernel.OpenLineStepsNow(KeelHoistSettings.openLineMeter, Find.TickManager.TicksGame, KeelHoistDefOf.RM_KeelHoist != null))
             {
                 return;
             }
             bool open = map.listerThings.ThingsOfDef(KeelHoistDefOf.RM_KeelHoist).Any(t => t is RM_KeelHoist h && h.CableDown);
-            level = open ? level + RisePerHour : Mathf.Max(0f, level - FallPerHour);
+            level = RM_HoistKernel.OpenLineNext(level, open);
         }
 
         public override void ExposeData()

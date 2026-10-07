@@ -7,15 +7,7 @@ using Verse;
 
 namespace RuthlessPursuingMechanoids
 {
-    public enum EmpireRungKind
-    {
-        Probe,
-        Spotter,
-        Strike,
-        Cordon,
-        Breach,
-        Bombardment,
-    }
+    // EmpireRungKind lives in Kernel/EmpireLadderKernel.cs (it is the kernel's vocabulary).
 
     public class RUT_EmpireRungDef : Def
     {

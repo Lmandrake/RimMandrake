@@ -24,14 +24,14 @@ namespace RimMandrake.KeelHoist
     //   * Every arrival is written to the manifest (ITab_HoistManifest): nothing leaves without a record.
     // No pocket map is ever generated: GetOtherMap never calls the base.
     [StaticConstructorOnStartup]
-    public class RM_KeelHoist : MapPortal, IThingHolder
+    public class RM_KeelHoist : MapPortal, IThingHolder, IHoistTransitSink
     {
         private static readonly Texture2D LowerTex = ContentFinder<Texture2D>.Get("UI/Commands/LaunchShip");
         private static readonly Texture2D ReelTex = ContentFinder<Texture2D>.Get("UI/Designators/Cancel");
         private static readonly Texture2D RaiseTex = ContentFinder<Texture2D>.Get("UI/Commands/PodEject");
 
-        public const int BaseCycleTicks = 625;   // a quarter hour for a weightless load
-        public const float CradleRadius = 1.5f;
+        public const int BaseCycleTicks = RM_HoistKernel.BaseCycleTicks;   // a quarter hour for a weightless load
+        public const float CradleRadius = RM_HoistKernel.CradleRadius;
 
         public MapPortal targetPortal;
         public RM_SealedHolder targetHolder;   // HOIST_FIXED_SITE_FRAMES_1: target kind 3, a sealed holder feature
@@ -39,9 +39,8 @@ namespace RimMandrake.KeelHoist
 
         private readonly RM_HoistTransitHolder transitHolder;
         private ThingOwner<Thing> transit;
-        private List<int> arriveAt = new List<int>();
-        private List<bool> goingUp = new List<bool>();
-        private List<string> fromLabel = new List<string>();
+        // The schedule beside the transit owner (arrive tick / direction / origin per thing) lives in the Verse-free kernel.
+        private readonly RM_TransitSchedule sched = new RM_TransitSchedule();
         private readonly List<Pawn> pendingRiders = new List<Pawn>();
 
         public List<RM_HoistManifestEntry> manifest = new List<RM_HoistManifestEntry>();
@@ -88,20 +87,15 @@ namespace RimMandrake.KeelHoist
             Scribe_References.Look(ref targetHolder, "targetHolder");
             Scribe_Values.Look(ref targetCell, "targetCell", IntVec3.Invalid);
             Scribe_Deep.Look(ref transit, "transit", transitHolder);
-            Scribe_Collections.Look(ref arriveAt, "arriveAt", LookMode.Value);
-            Scribe_Collections.Look(ref goingUp, "goingUp", LookMode.Value);
-            Scribe_Collections.Look(ref fromLabel, "fromLabel", LookMode.Value);
+            Scribe_Collections.Look(ref sched.arriveAt, "arriveAt", LookMode.Value);
+            Scribe_Collections.Look(ref sched.goingUp, "goingUp", LookMode.Value);
+            Scribe_Collections.Look(ref sched.fromLabel, "fromLabel", LookMode.Value);
             Scribe_Collections.Look(ref manifest, "manifest", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 transit = transit ?? new ThingOwner<Thing>(transitHolder);
-                arriveAt = arriveAt ?? new List<int>();
-                goingUp = goingUp ?? new List<bool>();
-                fromLabel = fromLabel ?? new List<string>();
                 manifest = manifest ?? new List<RM_HoistManifestEntry>();
-                while (arriveAt.Count < transit.Count) arriveAt.Add(0);
-                while (goingUp.Count < transit.Count) goingUp.Add(false);
-                while (fromLabel.Count < transit.Count) fromLabel.Add("?");
+                sched.PadTo(transit.Count);
             }
         }
 
@@ -138,20 +132,11 @@ namespace RimMandrake.KeelHoist
 
         public override bool IsEnterable(out string reason)
         {
-            if (!KeelHoistSettings.masterEnabled)
+            switch (RM_HoistKernel.EnterRefusal(KeelHoistSettings.masterEnabled, CableDown, Powered))
             {
-                reason = "The keel hoist is switched off in Mod Settings.";
-                return false;
-            }
-            if (!CableDown)
-            {
-                reason = "Lower the cable first.";
-                return false;
-            }
-            if (!Powered)
-            {
-                reason = "No power.";
-                return false;
+                case "off": reason = "The keel hoist is switched off in Mod Settings."; return false;
+                case "cable": reason = "Lower the cable first."; return false;
+                case "power": reason = "No power."; return false;
             }
             return base.IsEnterable(out reason);
         }
@@ -161,7 +146,7 @@ namespace RimMandrake.KeelHoist
             // The base would read def.portal letters and exit.Map; this portal has no exit of its own.
             Notify_ThingAdded(pawn);
             beenEntered = true;
-            if (!KeelHoistSettings.colonistsMayRide && pawn.IsColonist && !pawn.Downed)
+            if (!RM_HoistKernel.HoldsRiderInTransit(KeelHoistSettings.colonistsMayRide, pawn.IsColonist, pawn.Downed))
             {
                 return;   // the rider already stands below; with riding off it is not held in transit
             }
@@ -171,7 +156,7 @@ namespace RimMandrake.KeelHoist
         public static int CycleTicksFor(Thing t)
         {
             float mass = t is Pawn p ? p.GetStatValue(StatDefOf.Mass) : t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            return Mathf.Max(60, Mathf.RoundToInt(BaseCycleTicks * KeelHoistSettings.cycleTimeMultiplier * (1f + mass / 50f)));
+            return RM_HoistKernel.CycleTicks(mass, KeelHoistSettings.cycleTimeMultiplier);
         }
 
         public void BeginTransit(Thing t, bool up, string from)
@@ -194,9 +179,7 @@ namespace RimMandrake.KeelHoist
                 GenSpawn.Spawn(t, CellFinder.StandableCellNear(Position, Map, 3f), Map);
                 return;
             }
-            arriveAt.Add(Find.TickManager.TicksGame + CycleTicksFor(t));
-            goingUp.Add(up);
-            fromLabel.Add(from);
+            sched.Add(Find.TickManager.TicksGame + CycleTicksFor(t), up, from);
         }
 
         protected override void Tick()
@@ -223,22 +206,17 @@ namespace RimMandrake.KeelHoist
                 targetHolder = null;
             }
 
-            int now = Find.TickManager.TicksGame;
-            for (int i = transit.Count - 1; i >= 0; i--)
-            {
-                if (i < arriveAt.Count && arriveAt[i] > now)
-                {
-                    continue;
-                }
-                Arrive(i);
-            }
+            sched.Tick(this, Find.TickManager.TicksGame);
         }
+
+        int IHoistTransitSink.TransitCount => transit.Count;
+        void IHoistTransitSink.ArriveAt(int i) { Arrive(i); }
 
         private void Arrive(int i)
         {
             Thing t = transit[i];
-            bool up = i < goingUp.Count && goingUp[i];
-            string from = i < fromLabel.Count ? fromLabel[i] : "?";
+            bool up = sched.Up(i);
+            string from = sched.From(i);
             Map map = up ? Map : GetOtherMap();
             IntVec3 cell = up ? (InteractionCell.IsValid && InteractionCell.InBounds(Map) ? InteractionCell : Position) : GetDestinationLocation();
             if (map == null || !cell.IsValid || !cell.InBounds(map))
@@ -256,27 +234,23 @@ namespace RimMandrake.KeelHoist
                 }
             }
 
-            if (!up && HandlesBelow)
+            bool holderPath = RM_HoistKernel.GoesIntoHolder(up, targetHolder != null && targetHolder.Spawned, t is Pawn, t is Pawn colonistCheck && colonistCheck.IsColonist, t is Pawn downedCheck && downedCheck.Downed);
+            ArrivalPlan plan = RM_HoistKernel.PlanArrival(up, HandlesBelow, holderPath);
+            if (plan == ArrivalPlan.HandledBelow)
             {
                 string label = t.LabelCap;
                 transit.Remove(t);
-                arriveAt.RemoveAt(i);
-                goingUp.RemoveAt(i);
-                fromLabel.RemoveAt(i);
+                sched.RemoveAt(i);
                 manifest.Add(new RM_HoistManifestEntry
                 {
                     tick = Find.TickManager.TicksGame, label = label, up = false, from = from, to = ReceiveBelow(t) ?? "below",
                 });
-                if (manifest.Count > 200)
-                {
-                    manifest.RemoveAt(0);
-                }
+                RM_HoistKernel.CapList(manifest, RM_HoistKernel.ManifestCap);
                 return;
             }
 
             Thing dropped = null;
-            bool intoHolder = !up && targetHolder != null && targetHolder.Spawned && t is Pawn sunk
-                              && !(sunk.IsColonist && !sunk.Downed);
+            bool intoHolder = plan == ArrivalPlan.IntoHolder;
             if (intoHolder)
             {
                 transit.Remove(t);
@@ -291,13 +265,14 @@ namespace RimMandrake.KeelHoist
                     intoHolder = false;
                 }
             }
-            else
+            else if (!transit.TryDrop(t, cell, map, ThingPlaceMode.Near, out dropped))
             {
-                transit.TryDrop(t, cell, map, ThingPlaceMode.Near, out dropped);
+                // Nowhere to put it: it is still on the cable, so its schedule entry must stay with it (removing the entry
+                // while the thing stays desynchronises the lists from the owner). Try again in a quarter hour.
+                sched.Defer(i, Find.TickManager.TicksGame + RM_HoistKernel.BaseCycleTicks);
+                return;
             }
-            arriveAt.RemoveAt(i);
-            goingUp.RemoveAt(i);
-            fromLabel.RemoveAt(i);
+            sched.RemoveAt(i);
             if (dropped == null)
             {
                 return;
@@ -313,34 +288,28 @@ namespace RimMandrake.KeelHoist
                 to = intoHolder ? targetHolder.LabelCap.ToString() : (map.Parent?.LabelCap ?? map.ToString()),
                 captured = captured,
             });
-            if (manifest.Count > 200)
-            {
-                manifest.RemoveAt(0);
-            }
+            RM_HoistKernel.CapList(manifest, RM_HoistKernel.ManifestCap);
         }
 
         public static bool TryCapture(Pawn p)
         {
-            if (!KeelHoistSettings.downedStrangersAndBeasts || p.Dead || p.Faction == Faction.OfPlayer)
+            CaptureKind kind = RM_HoistKernel.CaptureFor(KeelHoistSettings.downedStrangersAndBeasts, p.Dead, p.Faction == Faction.OfPlayer,
+                p.RaceProps.Humanlike, p.IsPrisonerOfColony || p.IsSlaveOfColony, p.guest != null, p.RaceProps.Animal, p.Faction == null);
+            if (kind == CaptureKind.None)
             {
                 return false;
             }
-            if (p.RaceProps.Humanlike)
+            if (kind == CaptureKind.Prisoner)
             {
-                if (p.IsPrisonerOfColony || p.IsSlaveOfColony || p.guest == null)
-                {
-                    return false;
-                }
                 p.guest.CapturedBy(Faction.OfPlayer);
                 return true;
             }
-            if (p.RaceProps.Animal && p.Faction == null)
             {
                 Hediff h = HediffMaker.MakeHediff(KeelHoistDefOf.RM_HoistRestraint, p);
                 HediffComp_Disappears gone = h.TryGetComp<HediffComp_Disappears>();
                 if (gone != null)
                 {
-                    gone.ticksToDisappear = Mathf.RoundToInt(KeelHoistSettings.restraintHours * GenDate.TicksPerHour);
+                    gone.ticksToDisappear = RM_HoistKernel.RestraintTicks(KeelHoistSettings.restraintHours);
                 }
                 p.health.AddHediff(h);
                 return true;
@@ -359,7 +328,7 @@ namespace RimMandrake.KeelHoist
                     reason = "The cable cannot hang on another hoist.";
                     return false;
                 }
-                if (portal.Position.DistanceTo(Position) > range + portal.def.size.x)
+                if (!RM_HoistKernel.PortalInReach(portal.Position.DistanceTo(Position), range, portal.def.size.x))
                 {
                     reason = "Out of the cable's reach.";
                     return false;
@@ -368,7 +337,7 @@ namespace RimMandrake.KeelHoist
             }
             if (target.Thing is RM_SealedHolder holder)
             {
-                if (holder.Map != Map || holder.Position.DistanceTo(Position) > range + holder.def.size.x)
+                if (holder.Map != Map || !RM_HoistKernel.PortalInReach(holder.Position.DistanceTo(Position), range, holder.def.size.x))
                 {
                     reason = "Out of the cable's reach.";
                     return false;
@@ -376,7 +345,7 @@ namespace RimMandrake.KeelHoist
                 return true;   // lowering into it is allowed; lifting out waits for its gate (RaiseCradle)
             }
             IntVec3 c = target.Cell;
-            if (!c.IsValid || !c.InBounds(Map) || c.DistanceTo(Position) > range)
+            if (!c.IsValid || !c.InBounds(Map) || !RM_HoistKernel.CellInReach(c.DistanceTo(Position), range))
             {
                 reason = "Out of the cable's reach.";
                 return false;
@@ -417,17 +386,7 @@ namespace RimMandrake.KeelHoist
         /// <summary>Proof hook (RM_PitBuyerProof): everything now in transit arrives at once.</summary>
         public void DebugArriveAllNow()
         {
-            for (int i = 0; i < arriveAt.Count; i++)
-            {
-                arriveAt[i] = 0;
-            }
-            for (int i = transit.Count - 1; i >= 0; i--)
-            {
-                if (i < transit.Count)
-                {
-                    Arrive(i);
-                }
-            }
+            sched.ArriveAllNow(this);
         }
 
         public void ReelIn()
@@ -472,9 +431,7 @@ namespace RimMandrake.KeelHoist
                 if (t is Pawn p)
                 {
                     bool ours = p.Faction == Faction.OfPlayer || p.IsPrisonerOfColony || p.IsSlaveOfColony;
-                    bool rider = ours && (KeelHoistSettings.colonistsMayRide || p.Downed || !p.IsColonist);
-                    bool capturable = p.Downed && KeelHoistSettings.downedStrangersAndBeasts;
-                    if (rider || capturable)
+                    if (RM_HoistKernel.CradleTakesPawn(ours, KeelHoistSettings.colonistsMayRide, p.Downed, p.IsColonist, KeelHoistSettings.downedStrangersAndBeasts))
                     {
                         lift.Add(p);
                     }
@@ -618,7 +575,7 @@ namespace RimMandrake.KeelHoist
             }
             if (transit.Count > 0)
             {
-                int next = arriveAt.Count > 0 ? arriveAt.Min() - Find.TickManager.TicksGame : 0;
+                int next = sched.Count > 0 ? sched.Soonest() - Find.TickManager.TicksGame : 0;
                 lines.Add("On the cable: " + transit.Count + " (next arrives in " + Mathf.Max(0, next).ToStringTicksToPeriod() + ")");
             }
             if (KeelHoistSettings.openLineMeter && Map != null)

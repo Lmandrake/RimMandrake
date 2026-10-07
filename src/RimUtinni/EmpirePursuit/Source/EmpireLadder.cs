@@ -33,7 +33,7 @@ namespace RuthlessPursuingMechanoids
         /// so the storyteller-spacing patch can tell its own raids from the storyteller's.</summary>
         public static bool FiringLadder;
 
-        public const int StorytellerSpacingTicks = 2 * GenDate.TicksPerDay;
+        public const int StorytellerSpacingTicks = EmpireLadderState.StorytellerSpacingTicks;   // 2 * GenDate.TicksPerDay
 
         public static ScenPart_RuthlessPursuingMechanoids Part =>
             Find.Scenario?.AllParts.OfType<ScenPart_RuthlessPursuingMechanoids>()
@@ -50,11 +50,10 @@ namespace RuthlessPursuingMechanoids
             GameComponent_EmpireSearch g = GameComponent_EmpireSearch.Get();
             if (g == null) return;
             int before = g.rungFloor;
-            g.rungFloor = Mathf.Clamp(Math.Max(g.rungFloor, floor), 0, EmpireLadderMath.TopRung);
+            g.rungFloor = EmpireLadderState.RaisedFloor(g.rungFloor, floor);
             foreach (Map m in Find.Maps)
             {
-                MapComponent_EmpireSearch c = MapComponent_EmpireSearch.For(m);
-                if (c != null && c.nextRung >= 0) c.nextRung = EmpireLadderMath.Clamp(c.nextRung, g.rungFloor);
+                MapComponent_EmpireSearch.For(m)?.st.ApplyFloor(g.rungFloor);
             }
             Log.Message($"[EmpireSearch] rung floor {before} -> {g.rungFloor}: {reason}");
         }
@@ -66,8 +65,9 @@ namespace RuthlessPursuingMechanoids
             if (c == null || c.nextRung < 0) return;
             int floor = GameComponent_EmpireSearch.Get()?.rungFloor ?? 0;
             int before = c.nextRung;
-            c.nextRung = EmpireLadderMath.Clamp(c.nextRung - Math.Max(0, by), floor);
-            c.terminal = c.terminal && c.nextRung >= EmpireLadderMath.TopRung;
+            c.st.LowerRung(by, floor, out bool revived);
+            // A terminal ladder has no timer running (Resolve schedules only while not terminal): without this it never fires again.
+            if (revived && !c.ContactLive) Part?.ScheduleLadder(map);
             Log.Message($"[EmpireSearch] {map} rung {before} -> {c.nextRung}: {reason}");
         }
 
@@ -133,16 +133,17 @@ namespace RuthlessPursuingMechanoids
 
         public void RecordDeparture(PlanetTile tile, int rung)
         {
-            if (!tile.Valid || rung < 0) return;
+            if (!EmpireLadderState.ShouldRecordDeparture(tile.Valid, rung)) return;
             tileRungs[tile] = new RungMemory { rung = rung, departedTick = Find.TickManager.TicksGame };
         }
 
         /// <summary>The decayed remembered rung for a tile, or -1.</summary>
         public int Remembered(PlanetTile tile)
         {
-            if (!RFPSettings.rememberRungs || !tile.Valid || !tileRungs.TryGetValue(tile, out RungMemory m)) return -1;
-            float seasons = (Find.TickManager.TicksGame - m.departedTick) / (float)GenDate.TicksPerSeason;
-            return EmpireLadderMath.DecayedRung(m.rung, seasons, RFPSettings.rungDecayPerSeason);
+            RungMemory m = null;
+            bool has = tile.Valid && tileRungs.TryGetValue(tile, out m);
+            return EmpireLadderState.RememberedRung(RFPSettings.rememberRungs, tile.Valid, has, has ? m.rung : 0, has ? m.departedTick : 0,
+                Find.TickManager.TicksGame, GenDate.TicksPerSeason, RFPSettings.rungDecayPerSeason);
         }
     }
 
@@ -161,25 +162,27 @@ namespace RuthlessPursuingMechanoids
     /// <summary>Per-map ladder state and the one live contact.</summary>
     public class MapComponent_EmpireSearch : MapComponent
     {
-        public int nextRung = -1;           // -1 = not initialised on this map
-        public bool terminal;               // top rung reached: endless waves may run
-        public bool lastProbeBlind;
-        public int lastLadderFireTick = -9999999;
-        public int lastStorytellerRaidTick = -9999999;
+        // The scalar ladder state and its transitions live in the Verse-free kernel (fuzzed offline).
+        public readonly EmpireLadderState st = new EmpireLadderState();
+        public int nextRung { get { return st.nextRung; } set { st.nextRung = value; } }   // -1 = not initialised on this map
+        public bool terminal { get { return st.terminal; } set { st.terminal = value; } }   // top rung reached: endless waves may run
+        public bool lastProbeBlind { get { return st.lastProbeBlind; } set { st.lastProbeBlind = value; } }
+        public int lastLadderFireTick { get { return st.lastLadderFireTick; } set { st.lastLadderFireTick = value; } }
+        public int lastStorytellerRaidTick { get { return st.lastStorytellerRaidTick; } set { st.lastStorytellerRaidTick = value; } }
 
         // the live contact
         public RUT_EmpireRungDef activeRung;
-        public int contactStartTick = -1;
+        public int contactStartTick { get { return st.contactStartTick; } set { st.contactStartTick = value; } }
         public List<Pawn> contactPawns = new List<Pawn>();
         public Pawn spotter;
-        public int progressTicks;
-        public bool anyProbeDestroyed;
-        public int nextIonTick = -1;
-        public int bombardTick = -1;
+        public int progressTicks { get { return st.progressTicks; } set { st.progressTicks = value; } }
+        public bool anyProbeDestroyed { get { return st.anyProbeDestroyed; } set { st.anyProbeDestroyed = value; } }
+        public int nextIonTick { get { return st.nextIonTick; } set { st.nextIonTick = value; } }
+        public int bombardTick { get { return st.bombardTick; } set { st.bombardTick = value; } }
         public IntVec3 bombardCenter = IntVec3.Invalid;
-        public string aftermathOutcome;
+        public string aftermathOutcome { get { return st.aftermathOutcome; } set { st.aftermathOutcome = value; } }
 
-        private const int CheckInterval = 250;
+        private const int CheckInterval = EmpireLadderState.CheckInterval;
         public const float BombardRadius = 15f;
 
         public MapComponent_EmpireSearch(Map map) : base(map) { }
@@ -190,21 +193,21 @@ namespace RuthlessPursuingMechanoids
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref nextRung, "nextRung", -1);
-            Scribe_Values.Look(ref terminal, "terminal", false);
-            Scribe_Values.Look(ref lastProbeBlind, "lastProbeBlind", false);
-            Scribe_Values.Look(ref lastLadderFireTick, "lastLadderFireTick", -9999999);
-            Scribe_Values.Look(ref lastStorytellerRaidTick, "lastStorytellerRaidTick", -9999999);
+            Scribe_Values.Look(ref st.nextRung, "nextRung", -1);
+            Scribe_Values.Look(ref st.terminal, "terminal", false);
+            Scribe_Values.Look(ref st.lastProbeBlind, "lastProbeBlind", false);
+            Scribe_Values.Look(ref st.lastLadderFireTick, "lastLadderFireTick", -9999999);
+            Scribe_Values.Look(ref st.lastStorytellerRaidTick, "lastStorytellerRaidTick", -9999999);
             Scribe_Defs.Look(ref activeRung, "activeRung");
-            Scribe_Values.Look(ref contactStartTick, "contactStartTick", -1);
+            Scribe_Values.Look(ref st.contactStartTick, "contactStartTick", -1);
             Scribe_Collections.Look(ref contactPawns, "contactPawns", LookMode.Reference);
             Scribe_References.Look(ref spotter, "spotter");
-            Scribe_Values.Look(ref progressTicks, "progressTicks", 0);
-            Scribe_Values.Look(ref anyProbeDestroyed, "anyProbeDestroyed", false);
-            Scribe_Values.Look(ref nextIonTick, "nextIonTick", -1);
-            Scribe_Values.Look(ref bombardTick, "bombardTick", -1);
+            Scribe_Values.Look(ref st.progressTicks, "progressTicks", 0);
+            Scribe_Values.Look(ref st.anyProbeDestroyed, "anyProbeDestroyed", false);
+            Scribe_Values.Look(ref st.nextIonTick, "nextIonTick", -1);
+            Scribe_Values.Look(ref st.bombardTick, "bombardTick", -1);
             Scribe_Values.Look(ref bombardCenter, "bombardCenter", IntVec3.Invalid);
-            Scribe_Values.Look(ref aftermathOutcome, "aftermathOutcome");
+            Scribe_Values.Look(ref st.aftermathOutcome, "aftermathOutcome");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (contactPawns == null) contactPawns = new List<Pawn>();
@@ -220,7 +223,7 @@ namespace RuthlessPursuingMechanoids
             GameComponent_EmpireSearch g = GameComponent_EmpireSearch.Get();
             int floor = g?.rungFloor ?? 0;
             int remembered = g?.Remembered(map.Tile) ?? -1;
-            nextRung = EmpireLadderMath.StartingRung(floor, RFPSettings.probesOpen, remembered);
+            st.EnsureInit(floor, RFPSettings.probesOpen, remembered);
         }
 
         /// <summary>The factor the ScenPart multiplies its base interval by for the next rung.</summary>
@@ -229,29 +232,30 @@ namespace RuthlessPursuingMechanoids
             EnsureInit();
             float band = RFPSettings.visibilityDrivesPace
                 ? EmpireLadderMath.BandIntervalMultiplier(EmpireSearch.Visibility()) : 1f;
-            return band * Mathf.Max(0.05f, RFPSettings.ladderPace)
-                * EmpireLadderMath.RungIntervalFactor(nextRung, lastProbeBlind);
+            return st.NextIntervalFactor(band, RFPSettings.ladderPace);
         }
+
+        private sealed class DefTable : IEmpireRungTable
+        {
+            public bool TryGetRung(int index, out EmpireRungKind kind)
+            {
+                RUT_EmpireRungDef d = RUT_EmpireRungDef.ForIndex(index);
+                kind = d != null ? d.kind : EmpireRungKind.Probe;
+                return d != null;
+            }
+        }
+        private static readonly DefTable defTable = new DefTable();
 
         public RUT_EmpireRungDef NextRungDef()
         {
             EnsureInit();
-            int r = nextRung;
-            while (r <= EmpireLadderMath.TopRung)
+            int i = st.NextRungIndex(defTable, new EmpireRungGates
             {
-                RUT_EmpireRungDef d = RUT_EmpireRungDef.ForIndex(r);
-                if (d != null && RungEnabled(d)) return d;
-                r++;
-            }
-            return null;
-        }
-
-        private static bool RungEnabled(RUT_EmpireRungDef d)
-        {
-            if (d.kind == EmpireRungKind.Cordon && !RFPSettings.cordonEnabled) return false;
-            if (d.kind == EmpireRungKind.Bombardment && !RFPSettings.bombardmentEnabled) return false;
-            if (d.kind == EmpireRungKind.Probe && !RFPSettings.probesOpen) return false;
-            return true;
+                cordonEnabled = RFPSettings.cordonEnabled,
+                bombardmentEnabled = RFPSettings.bombardmentEnabled,
+                probesOpen = RFPSettings.probesOpen,
+            });
+            return i < 0 ? null : RUT_EmpireRungDef.ForIndex(i);
         }
 
         // ---- firing -----------------------------------------------------------------------
@@ -260,27 +264,20 @@ namespace RuthlessPursuingMechanoids
         /// spacing) or 0 when the rung fired / is already live / the ladder is terminal.</summary>
         public int FireNextRung(Faction faction)
         {
-            if (ContactLive || terminal) return 0;
             int now = Find.TickManager.TicksGame;
-            int sinceStoryteller = now - lastStorytellerRaidTick;
-            if (sinceStoryteller < EmpireSearch.StorytellerSpacingTicks)
-                return EmpireSearch.StorytellerSpacingTicks - sinceStoryteller;
+            int gate = st.FireGate(ContactLive, now);
+            if (gate >= 0) return gate;
 
             RUT_EmpireRungDef def = NextRungDef();
             if (def == null)
             {
-                terminal = true;
+                st.MarkExhausted();
                 return 0;
             }
-            nextRung = def.rungIndex;
+            st.Begin(def.rungIndex, now);
             activeRung = def;
-            contactStartTick = now;
             contactPawns.Clear();
             spotter = null;
-            progressTicks = 0;
-            anyProbeDestroyed = false;
-            aftermathOutcome = null;
-            lastLadderFireTick = now;
 
             bool fired;
             try
@@ -471,78 +468,71 @@ namespace RuthlessPursuingMechanoids
             switch (activeRung.kind)
             {
                 case EmpireRungKind.Probe:
-                    SelfDestructDeadProbes();
-                    if (contactPawns.Any(p => !p.Dead && !p.Downed && p.Spawned && SeesColony(p, 26f, 6f)))
-                        progressTicks += CheckInterval;
-                    if (progressTicks >= successTicks)
                     {
-                        EmpireSearch.AdjustVisibility(8f, "a probe transmitted a sighting");
-                        Memo(LordJob_ImperialProbe.MemoDone);
-                        lastProbeBlind = false;
-                        Resolve(true);
-                    }
-                    else if (contactPawns.All(p => p.Dead || !p.SpawnedOrAnyParentSpawned) || elapsed > timeoutTicks + GenDate.TicksPerDay)
-                    {
-                        if (anyProbeDestroyed) EmpireSearch.AdjustVisibility(-3f, "a probe destroyed before it transmitted");
-                        lastProbeBlind = !anyProbeDestroyed;
-                        Resolve(false);
+                        SelfDestructDeadProbes();
+                        bool sees = contactPawns.Any(p => !p.Dead && !p.Downed && p.Spawned && SeesColony(p, 26f, 6f));
+                        bool allGone = contactPawns.All(p => p.Dead || !p.SpawnedOrAnyParentSpawned);
+                        ContactOutcome o = st.ProbeStep(sees, successTicks, allGone, elapsed, timeoutTicks, out float vis);
+                        if (o == ContactOutcome.EmpireSucceeds)
+                        {
+                            EmpireSearch.AdjustVisibility(vis, "a probe transmitted a sighting");
+                            Memo(LordJob_ImperialProbe.MemoDone);
+                            Resolve(true);
+                        }
+                        else if (o == ContactOutcome.EmpireFails)
+                        {
+                            if (vis != 0f) EmpireSearch.AdjustVisibility(vis, "a probe destroyed before it transmitted");
+                            Resolve(false);
+                        }
                     }
                     break;
 
                 case EmpireRungKind.Spotter:
-                    if (spotter == null || spotter.Dead || spotter.Downed || !spotter.Spawned)
                     {
-                        Memo(LordJob_ImperialSpotter.MemoDone);
-                        Resolve(false);
-                    }
-                    else
-                    {
-                        if (SeesColony(spotter, 45f, 10f)) progressTicks += CheckInterval;
-                        if (progressTicks >= successTicks)
+                        bool gone = spotter == null || spotter.Dead || spotter.Downed || !spotter.Spawned;
+                        bool sees = !gone && SeesColony(spotter, 45f, 10f);
+                        ContactOutcome o = st.SpotterStep(gone, sees, successTicks, elapsed, timeoutTicks, out float vis);
+                        if (o == ContactOutcome.EmpireSucceeds)
                         {
-                            EmpireSearch.AdjustVisibility(8f, "a spotter called in the colony");
+                            EmpireSearch.AdjustVisibility(vis, "a spotter called in the colony");
                             Memo(LordJob_ImperialSpotter.MemoDone);
                             Resolve(true);
                         }
-                        else if (elapsed > timeoutTicks)
+                        else if (o == ContactOutcome.EmpireFails)
                         {
+                            if (gone) Memo(LordJob_ImperialSpotter.MemoDone);
                             Resolve(false);
                         }
                     }
                     break;
 
                 case EmpireRungKind.Cordon:
-                    bool standing = contactPawns.Any(Standing);
-                    if (standing && nextIonTick > 0 && now >= nextIonTick)
                     {
-                        IonVolley();
-                        nextIonTick = now + Mathf.RoundToInt(RFPSettings.ionVolleyIntervalHours * GenDate.TicksPerHour);
+                        bool standing = contactPawns.Any(Standing);
+                        ContactOutcome o = st.CordonStep(standing, now, Mathf.RoundToInt(RFPSettings.ionVolleyIntervalHours * GenDate.TicksPerHour),
+                            elapsed, successTicks, out bool volley);
+                        if (volley) IonVolley();
+                        if (o != ContactOutcome.Continue) Resolve(o == ContactOutcome.EmpireSucceeds);
                     }
-                    if (!standing) Resolve(false);
-                    else if (elapsed >= successTicks) Resolve(true);
                     break;
 
                 case EmpireRungKind.Strike:
                 case EmpireRungKind.Breach:
-                    if (aftermathOutcome != null)
                     {
-                        Resolve(aftermathOutcome != "Repelled");
-                    }
-                    else if (contactPawns.All(p => p.Dead || p.Downed || !p.SpawnedOrAnyParentSpawned) || elapsed > timeoutTicks)
-                    {
+                        bool allDown = contactPawns.All(p => p.Dead || p.Downed || !p.SpawnedOrAnyParentSpawned);
                         int fallen = contactPawns.Count(p => p.Dead || p.Downed);
-                        Resolve(!EmpireLadderMath.Repelled(contactPawns.Count, fallen));
+                        ContactOutcome o = st.StrikeStep(allDown, elapsed, timeoutTicks, contactPawns.Count, fallen);
+                        if (o != ContactOutcome.Continue) Resolve(o == ContactOutcome.EmpireSucceeds);
                     }
                     break;
 
                 case EmpireRungKind.Bombardment:
-                    if (bombardTick > 0 && now >= bombardTick)
+                    if (st.BombardmentDue(now))
                     {
                         Bombardment b = (Bombardment)GenSpawn.Spawn(ThingDefOf.Bombardment, bombardCenter, map);
                         b.impactAreaRadius = BombardRadius;
                         b.duration = 900;
-                        bombardTick = -1;
-                        terminal = true;
+                        st.BombardmentLanded();
                         Resolve(true);
                     }
                     break;
@@ -618,10 +608,9 @@ namespace RuthlessPursuingMechanoids
             RUT_EmpireRungDef def = activeRung;
             Faction faction = EmpireSearch.Part?.PursuitFaction;
             int floor = GameComponent_EmpireSearch.Get()?.rungFloor ?? 0;
+            bool schedule = st.Resolve(def != null ? def.rungIndex : -1, empireSucceeded, floor);
             if (def != null)
             {
-                nextRung = EmpireLadderMath.NextRungAfter(def.rungIndex, empireSucceeded, floor);
-                if (def.rungIndex >= EmpireLadderMath.TopRung && empireSucceeded) terminal = true;
                 if (!quiet && faction != null)
                 {
                     if (empireSucceeded) SendLetter(def.successLetterLabel, def.successLetterText, LetterDefOf.ThreatSmall, faction);
@@ -629,13 +618,9 @@ namespace RuthlessPursuingMechanoids
                 }
             }
             activeRung = null;
-            contactStartTick = -1;
             contactPawns.Clear();
             spotter = null;
-            progressTicks = 0;
-            nextIonTick = -1;
-            aftermathOutcome = null;
-            if (!terminal) EmpireSearch.Part?.ScheduleLadder(map);
+            if (schedule) EmpireSearch.Part?.ScheduleLadder(map);
         }
 
         // ---- the marked target area -------------------------------------------------------
@@ -708,7 +693,7 @@ namespace RuthlessPursuingMechanoids
             if (!IsStorytellerLadderRaid(__instance, parms, out Map map)) return true;
             MapComponent_EmpireSearch c = MapComponent_EmpireSearch.For(map);
             if (c == null) return true;
-            if (c.ContactLive || Find.TickManager.TicksGame - c.lastLadderFireTick < EmpireSearch.StorytellerSpacingTicks)
+            if (EmpireLadderState.BlockStorytellerRaid(c.ContactLive, Find.TickManager.TicksGame, c.lastLadderFireTick))
             {
                 __result = false;
                 return false;

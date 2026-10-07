@@ -61,25 +61,21 @@ namespace RimMandrake.KeelHoist
 
         public RM_PitBuyerExtension Buyer => def.GetModExtension<RM_PitBuyerExtension>();
 
-        public bool KeepersBuying => Buyer != null && KeelHoistSettings.pitSales && Faction != null && Faction != Faction.OfPlayer
-                                     && !Faction.HostileTo(Faction.OfPlayer) && !GateOpen(out _);
+        public bool KeepersBuying => RM_HoistKernel.KeepersBuying(Buyer != null, KeelHoistSettings.pitSales,
+            Faction != null && Faction != Faction.OfPlayer, Faction != null && Faction.HostileTo(Faction.OfPlayer), GateOpen(out _));
 
         public virtual bool CanAccept(Pawn p, out string reason)
         {
             reason = null;
-            if (Buyer == null)
+            switch (RM_HoistKernel.HolderRefusal(Buyer != null, p.IsColonist, p.IsSlave, Faction != null && Faction.HostileTo(Faction.OfPlayer),
+                Faction != null && Faction != Faction.OfPlayer, GateOpen(out _)))
             {
-                return true;
-            }
-            if (p.IsColonist && !p.IsSlave)
-            {
-                reason = Buyer.buyerLabel.CapitalizeFirst() + " will not take one of your own colonists, and you would not get them back.";
-                return false;
-            }
-            if (Faction != null && Faction != Faction.OfPlayer && Faction.HostileTo(Faction.OfPlayer) && !GateOpen(out _))
-            {
-                reason = Buyer.buyerLabel.CapitalizeFirst() + " do not deal with enemies.";
-                return false;
+                case "own":
+                    reason = Buyer.buyerLabel.CapitalizeFirst() + " will not take one of your own colonists, and you would not get them back.";
+                    return false;
+                case "enemy":
+                    reason = Buyer.buyerLabel.CapitalizeFirst() + " do not deal with enemies.";
+                    return false;
             }
             return true;
         }
@@ -137,13 +133,10 @@ namespace RimMandrake.KeelHoist
         {
             reason = null;
             Faction owner = Faction;
-            if (owner == null || owner == Faction.OfPlayer || Map?.ParentFaction == Faction.OfPlayer || owner.defeated)
-            {
-                return true;
-            }
-            bool keepersLeft = Map != null && Map.mapPawns.SpawnedPawnsInFaction(owner)
+            bool ownerFree = owner == null || owner == Faction.OfPlayer || owner.defeated;
+            bool keepersLeft = !ownerFree && Map?.ParentFaction != Faction.OfPlayer && Map != null && Map.mapPawns.SpawnedPawnsInFaction(owner)
                 .Any(p => !p.Dead && !p.Downed && !p.IsPrisoner && !p.IsSlave);
-            if (keepersLeft)
+            if (!RM_HoistKernel.GateOpen(ownerFree, Map?.ParentFaction == Faction.OfPlayer, keepersLeft))
             {
                 reason = LabelCap + " is sealed while " + owner.Name + " hold this place.";
                 return false;

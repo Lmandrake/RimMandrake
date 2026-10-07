@@ -52,6 +52,7 @@
     <Compile Include="RM_KethrelStartup.cs" />
     <Compile Include="RM_CapstanTurret.cs" />
     <Compile Include="RM_TheSumpProof.cs" />
+    <Compile Include="Kernel\RM_SumpKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -53,15 +54,15 @@ namespace RimMandrake.TheSump
         // size. Deliberately generous — smaller than this and "landmark-
         // scale... the biome's ocean at MAP scale" (ruling 7's own words) is
         // not true yet.
-        private const int MinMereCells = 180;
+        private const int MinMereCells = RM_MereKernel.MinMereCells;
 
-        private const int MaxMereCells = 420;
+        private const int MaxMereCells = RM_MereKernel.MaxMereCells;
 
-        private const int MinEdgeDistance = 12;
+        private const int MinEdgeDistance = RM_MereKernel.MinEdgeDistance;
 
         private const int SeedSampleTries = 300;
 
-        private const int MaxGrowAttempts = 4000;
+        private const int MaxGrowAttempts = RM_MereKernel.MaxGrowAttempts;
 
         public override void Generate(Map map, GenStepParams parms)
         {
@@ -89,13 +90,14 @@ namespace RimMandrake.TheSump
             TerrainDef shallow = DefDatabase<TerrainDef>.GetNamedSilentFail("RM_TarShallow");
 
             IntVec3 seed = CellFinderLoose.RandomCellWith(c => IsSeedCandidate(c, map), map, SeedSampleTries);
+            var grid = new MapGrid(map);
             if (!seed.IsValid)
             {
                 return; // map too small, or too obstructed, to seat a real mere -- skip gracefully
             }
 
-            HashSet<IntVec3> blob = GrowBlob(map, seed);
-            if (blob.Count < MinMereCells)
+            HashSet<IntVec3> blob = GrowBlob(map, grid, seed);
+            if (!RM_MereKernel.Acceptable(blob.Count))
             {
                 // Could not carve a real mere here -- leave the map
                 // untouched rather than ship an undersized puddle wearing
@@ -103,23 +105,12 @@ namespace RimMandrake.TheSump
                 return;
             }
 
-            HashSet<IntVec3> rim = new HashSet<IntVec3>();
             foreach (IntVec3 c in blob)
             {
                 map.terrainGrid.SetTerrain(c, deep);
-                if (shallow == null)
-                {
-                    continue;
-                }
-                for (int i = 0; i < 4; i++)
-                {
-                    IntVec3 n = c + GenAdj.CardinalDirections[i];
-                    if (n.InBounds(map) && !blob.Contains(n))
-                    {
-                        rim.Add(n);
-                    }
-                }
             }
+            var blobKeys = new HashSet<int>(blob.Select(c => RM_MereKernel.Key(c.x, c.z, map.Size.x)));
+            HashSet<IntVec3> rim = shallow == null ? new HashSet<IntVec3>() : new HashSet<IntVec3>(RM_MereKernel.RimOf(grid, blobKeys).Select(k => new IntVec3(k % map.Size.x, 0, k / map.Size.x)));
             if (shallow != null)
             {
                 foreach (IntVec3 c in rim)
@@ -150,14 +141,26 @@ namespace RimMandrake.TheSump
 
         private static bool IsSeedCandidate(IntVec3 c, Map map)
         {
-            return EdgeDistance(c, map) >= MinEdgeDistance && CanCarry(c, map);
+            return RM_MereKernel.IsSeedCandidate(new MapGrid(map), c.x, c.z);
         }
 
         private static int EdgeDistance(IntVec3 c, Map map)
         {
-            int distX = Mathf.Min(c.x, map.Size.x - 1 - c.x);
-            int distZ = Mathf.Min(c.z, map.Size.z - 1 - c.z);
-            return Mathf.Min(distX, distZ);
+            return RM_MereKernel.EdgeDistance(c.x, c.z, map.Size.x, map.Size.z);
+        }
+
+        private sealed class MapGrid : IMereGrid
+        {
+            private readonly Map map;
+            public MapGrid(Map map) { this.map = map; }
+            public int Width { get { return map.Size.x; } }
+            public int Height { get { return map.Size.z; } }
+            public bool CanCarry(int x, int z) { return RUT_GenStep_DeepBlackMere.CanCarry(new IntVec3(x, 0, z), map); }
+        }
+
+        private sealed class GameRng : IMereRng
+        {
+            public int Range(int minInclusive, int maxExclusive) { return Rand.Range(minInclusive, maxExclusive); }
         }
 
         // What may become part of the mere or its rim: ordinary open ground,
@@ -186,42 +189,12 @@ namespace RimMandrake.TheSump
         /// uniformly among the eligible ones via reservoir sampling -- the
         /// same shape Flood_FlowWorks.SpreadOneTile already uses, kept as an
         /// independent copy here (see the class header for why).</summary>
-        private static HashSet<IntVec3> GrowBlob(Map map, IntVec3 seed)
+        private static HashSet<IntVec3> GrowBlob(Map map, IMereGrid grid, IntVec3 seed)
         {
-            HashSet<IntVec3> placed = new HashSet<IntVec3> { seed };
-            List<IntVec3> frontier = new List<IntVec3> { seed };
             int targetSize = Rand.RangeInclusive(MinMereCells, MaxMereCells);
-            int attempts = MaxGrowAttempts;
-
-            while (placed.Count < targetSize && frontier.Count > 0 && attempts-- > 0)
-            {
-                int pick = Rand.Range(0, frontier.Count);
-                IntVec3 from = frontier[pick];
-                IntVec3 target = IntVec3.Invalid;
-                int seen = 0;
-                for (int i = 0; i < 4; i++)
-                {
-                    IntVec3 n = from + GenAdj.CardinalDirections[i];
-                    if (placed.Contains(n) || !CanCarry(n, map))
-                    {
-                        continue;
-                    }
-                    seen++;
-                    if (Rand.Range(0, seen) == 0)
-                    {
-                        target = n;
-                    }
-                }
-                if (!target.IsValid)
-                {
-                    frontier.RemoveAt(pick);
-                    continue;
-                }
-                placed.Add(target);
-                frontier.Add(target);
-            }
-
-            return placed;
+            HashSet<int> keys = RM_MereKernel.GrowBlob(grid, seed.x, seed.z, new GameRng(), targetSize, MaxGrowAttempts);
+            int w = map.Size.x;
+            return new HashSet<IntVec3>(keys.Select(k => new IntVec3(k % w, 0, k / w)));
         }
     }
 }

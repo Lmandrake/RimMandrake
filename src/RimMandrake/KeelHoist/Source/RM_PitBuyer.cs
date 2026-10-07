@@ -40,16 +40,16 @@ namespace RimMandrake.KeelHoist
 
     public static class RM_PitBuyerUtility
     {
-        public const int MeleeFighterSkill = 8;
-        public const float BeastFighterCombatPower = 100f;
+        public const int MeleeFighterSkill = RM_HoistKernel.MeleeFighterSkill;
+        public const float BeastFighterCombatPower = RM_HoistKernel.BeastFighterCombatPower;
 
         public static bool IsFighter(Pawn p)
         {
             if (p.RaceProps.Humanlike)
             {
-                return p.skills?.GetSkill(SkillDefOf.Melee)?.Level >= MeleeFighterSkill;
+                return RM_HoistKernel.IsFighter(true, p.skills?.GetSkill(SkillDefOf.Melee)?.Level ?? -1, 0f);
             }
-            return p.kindDef != null && p.kindDef.combatPower >= BeastFighterCombatPower;
+            return p.kindDef != null && RM_HoistKernel.IsFighter(false, -1, p.kindDef.combatPower);
         }
 
         /// <summary>One week in two (seeded per pit, so every reader agrees) the arena is short of fighters.</summary>
@@ -59,18 +59,13 @@ namespace RimMandrake.KeelHoist
             {
                 return false;
             }
-            int week = Find.TickManager.TicksGame / (GenDate.TicksPerDay * 7);
+            int week = RM_HoistKernel.WeekOf(Find.TickManager.TicksGame);
             return Rand.ChanceSeeded(0.5f, Gen.HashCombineInt(week, pit.thingIDNumber));
         }
 
         public static int PriceFor(Pawn p, Thing pit)
         {
-            float price = p.MarketValue * KeelHoistSettings.pitPriceMultiplier;
-            if (IsFighter(p) && ArenaWantsFightersNow(pit))
-            {
-                price *= KeelHoistSettings.arenaFighterBonus;
-            }
-            return Mathf.Max(1, Mathf.RoundToInt(price));
+            return RM_HoistKernel.Price(p.MarketValue, KeelHoistSettings.pitPriceMultiplier, IsFighter(p), ArenaWantsFightersNow(pit), KeelHoistSettings.arenaFighterBonus);
         }
 
         /// <summary>The pawn becomes the buyer's: a person as their slave, a beast as their animal.</summary>
@@ -89,11 +84,10 @@ namespace RimMandrake.KeelHoist
         /// <summary>Silver comes back up the cable: one transit per stack, so no stack exceeds its limit.</summary>
         public static void SendSilverUp(RM_KeelHoist hoist, int amount, string from)
         {
-            while (amount > 0)
+            foreach (int n in RM_HoistKernel.SilverStacks(amount, ThingDefOf.Silver.stackLimit))
             {
                 Thing silver = ThingMaker.MakeThing(ThingDefOf.Silver);
-                silver.stackCount = Mathf.Min(amount, ThingDefOf.Silver.stackLimit);
-                amount -= silver.stackCount;
+                silver.stackCount = n;
                 hoist.BeginTransit(silver, up: true, from: from);
             }
         }

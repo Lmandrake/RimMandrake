@@ -38,42 +38,48 @@ def main():
     check("shipped source: gates clean", V.gate_findings(srcs) == [], V.gate_findings(srcs))
     check("shipped source: formulas clean", V.formula_findings(srcs, hed) == [], V.formula_findings(srcs, hed))
     fm = V.cycle_formula(srcs)
-    check("sanity probe: formula parsed as (625, 60, 50) and 14 gates declared", fm == (625, 60, 50) and len(V.GATES) == 14, fm)
+    check("sanity probe: formula parsed as (625, 60, 50) and 19 gates declared", fm == (625, 60, 50) and len(V.GATES) == 19, fm)
     check("cycle ticks: 0 kg 625, 50 kg 1250, 0.25x 156, 4x 2500", [V.cycle_ticks(fm, 0, 1.0), V.cycle_ticks(fm, 50, 1.0),
           V.cycle_ticks(fm, 0, 0.25), V.cycle_ticks(fm, 0, 4.0)] == [625, 1250, 156, 2500])
     check("method_body reads an expression-bodied member", "KeelHoistSettings.pitSales" in (V.method_body(srcs["RM_HoistFrame.cs"], r"public bool KeepersBuying") or ""))
     check("method_body returns None for a missing method", V.method_body(srcs["RM_KeelHoist.cs"], r"NoSuchMethodHere\(") is None)
 
     K, P, M, H = "RM_KeelHoist.cs", "KeelHoistPatches.cs", "KeelHoistMod.cs", "RM_HoistFrame.cs"
+    KN = "RM_HoistKernel.cs"   # the Verse-free kernel the gates and formulas now live in
 
     def gate_break(tag, fn, old, new, must):
         got = V.gate_findings(mutated(fn, old, new))
         check("break gate: %-44s -> %s" % (tag, must), any(must in g for g in got), got)
 
-    gate_break("tetherLock ignored", P, "!KeelHoistSettings.tetherLock", "false", "tetherLock")
+    gate_break("tetherLock ignored", KN, "return accepted && tetherLock &&", "return accepted && true &&", "tetherLock")
+    gate_break("tetherLock not passed in", P, "TetherBlocksLaunch(__result.Accepted, KeelHoistSettings.tetherLock,", "TetherBlocksLaunch(__result.Accepted, true,", "tetherLock")
     gate_break("tether lock stops refusing", P, 'new AcceptanceReport("Reel in the keel hoist first.")', "AcceptanceReport.WasAccepted", "tether lock")
-    gate_break("masterEnabled dropped from IsEnterable", K, "if (!KeelHoistSettings.masterEnabled)\n            {\n                reason", "if (false)\n            {\n                reason", "masterEnabled")
+    gate_break("masterEnabled dropped from IsEnterable", K, "EnterRefusal(KeelHoistSettings.masterEnabled,", "EnterRefusal(true,", "masterEnabled")
+    gate_break("masterEnabled guard lost in the kernel", KN, 'if (!masterEnabled) return "off";', "", "masterEnabled")
     gate_break("requireGravEngine ignored", "PlaceWorker_NeedsGravEngine.cs", "!KeelHoistSettings.requireGravEngine", "false", "requireGravEngine")
     gate_break("cableRange unread", K, "float range = KeelHoistSettings.cableRange;", "float range = 14f;", "cableRange")
     gate_break("restraintHours unread", K, "KeelHoistSettings.restraintHours", "24f", "restraintHours")
     gate_break("cycleTimeMultiplier unread", K, "KeelHoistSettings.cycleTimeMultiplier", "1f", "cycleTimeMultiplier")
-    gate_break("openLineMeter unread", P, "!KeelHoistSettings.openLineMeter || ", "", "openLineMeter")
-    gate_break("downedStrangers guard lost in TryCapture", K, "!KeelHoistSettings.downedStrangersAndBeasts || p.Dead", "p.Dead", "downedStrangersAndBeasts")
-    gate_break("pitSales unread", H, "KeelHoistSettings.pitSales && ", "", "pitSales")
+    gate_break("openLineMeter unread", P, "OpenLineStepsNow(KeelHoistSettings.openLineMeter,", "OpenLineStepsNow(true,", "openLineMeter")
+    gate_break("openLineMeter dropped from the kernel step", KN, "return openLineMeter && ticksGame", "return ticksGame", "openLineMeter")
+    gate_break("downedStrangers guard lost in TryCapture", K, "CaptureFor(KeelHoistSettings.downedStrangersAndBeasts, p.Dead,", "CaptureFor(true, p.Dead,", "downedStrangersAndBeasts")
+    gate_break("downedStrangers guard lost in the kernel", KN, "if (!downedStrangersAndBeasts || dead || playerFaction)", "if (dead || playerFaction)", "downedStrangersAndBeasts")
+    gate_break("pitSales unread", H, "KeelHoistSettings.pitSales,", "true,", "pitSales")
+    gate_break("pitSales dropped from the kernel", KN, "return hasBuyer && pitSales &&", "return hasBuyer &&", "pitSales")
     gate_break("genstep ignores masterEnabled", H, "if (!KeelHoistSettings.masterEnabled)", "if (false)", "masterEnabled")
 
     def formula_break(tag, fn, old, new, must):
         got = V.formula_findings(mutated(fn, old, new), hed)
         check("break formula: %-40s -> %s" % (tag, must[:34]), any(must in g for g in got), got)
 
-    formula_break("base cycle 600", K, "BaseCycleTicks = 625", "BaseCycleTicks = 600", "BaseCycleTicks")
-    formula_break("mass divisor 100", K, "mass / 50f", "mass / 100f", "ruled 50")
-    formula_break("multiplier dropped", K, "BaseCycleTicks * KeelHoistSettings.cycleTimeMultiplier", "BaseCycleTicks", "no longer has the parsed shape")
+    formula_break("base cycle 600", KN, "BaseCycleTicks = 625;", "BaseCycleTicks = 600;", "BaseCycleTicks")
+    formula_break("mass divisor 100", KN, "mass / 50f", "mass / 100f", "ruled 50")
+    formula_break("multiplier dropped", KN, "BaseCycleTicks * cycleTimeMultiplier", "BaseCycleTicks", "no longer has the parsed shape")
     formula_break("stack mass ignores stackCount", K, "t.GetStatValue(StatDefOf.Mass) * t.stackCount", "t.GetStatValue(StatDefOf.Mass)", "stackCount")
-    formula_break("Open Line rises 2/h", P, "RisePerHour = 1f", "RisePerHour = 2f", "Open Line meter arithmetic")
-    formula_break("Open Line falls 0.25/h", P, "FallPerHour = 0.5f", "FallPerHour = 0.25f", "Open Line meter arithmetic")
-    formula_break("Open Line never stepped hourly", P, "% GenDate.TicksPerHour != 137", "% 5 != 137", "once per hour")
-    formula_break("restraint ignores hours", K, "KeelHoistSettings.restraintHours * GenDate.TicksPerHour", "60000", "restraintHours")
+    formula_break("Open Line rises 2/h", KN, "OpenLineRisePerHour = 1f", "OpenLineRisePerHour = 2f", "Open Line meter arithmetic")
+    formula_break("Open Line falls 0.25/h", KN, "OpenLineFallPerHour = 0.5f", "OpenLineFallPerHour = 0.25f", "Open Line meter arithmetic")
+    formula_break("Open Line never stepped hourly", KN, "ticksGame % TicksPerHour == OpenLineMinute", "ticksGame % 5 == OpenLineMinute", "once per hour")
+    formula_break("restraint ignores hours", KN, "Math.Round(restraintHours * TicksPerHour)", "60000", "restraintHours")
     formula_break("owned animals restrained", K, "p.Faction == null", "true", "unowned")
     s2 = dict(srcs)
     s2[M] = s2[M].replace("restraintHours = 24f;", "restraintHours = 12f;", 1)
@@ -109,7 +115,7 @@ def main():
     got = chain()
     check("clean chain: three static bars PASS", [got[k] for k in got if not k.startswith(("hoist_", "tether_", "beast_"))] == ["PASS"] * 3, got)
     check("live stubs are never a PASS", all(got[k] != "PASS" for k in ("hoist_cycle_moves_cargo_down_and_up", "tether_lock_refuses_a_real_launch", "beast_arrives_restrained_live")), got)
-    got = chain(mutated(P, "!KeelHoistSettings.tetherLock", "false"))
+    got = chain(mutated(KN, "return accepted && tetherLock &&", "return accepted && true &&"))
     check("a tether-lock break reddens every_gate_reads_its_toggle_where_it_must", got["every_gate_reads_its_toggle_where_it_must"] == "FAIL", got)
 
     if FAILS:

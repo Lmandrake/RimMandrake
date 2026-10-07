@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="RM_GrowthTop.cs" />
+    <Compile Include="Kernel\RM_ExplosiveGrowthKernel.cs" />
     <Compile Include="RM_ExplosiveGrowthProof.cs" />
     <Compile Include="RM_ExplosiveGrowthRegistry.cs" />
     <Compile Include="RM_ExplosiveGrowthDefOf.cs" />

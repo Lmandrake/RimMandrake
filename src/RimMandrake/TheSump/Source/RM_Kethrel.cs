@@ -87,49 +87,31 @@ namespace RimMandrake.TheSump
 
         public int StageForLoad(float kg)
         {
-            int s = 0;
-            for (int i = 0; i < Props.stageLoadKg.Count; i++)
-            {
-                if (kg >= Props.stageLoadKg[i])
-                {
-                    s = i + 1;
-                }
-            }
-            return s;
+            return RM_KethrelKernel.StageForLoad(Props.stageLoadKg, kg);
         }
 
         public override void CompTickRare()
         {
             base.CompTickRare();
             Pawn pawn = Pawn;
-            if (!RM_TheSumpSettings.kethrelShellEnabled || pawn.Dead || !pawn.Spawned || pawn.Downed)
+            Thing item = null, far = null;
+            switch (RM_KethrelKernel.Decide(RM_TheSumpSettings.kethrelShellEnabled, pawn.Dead, pawn.Spawned, pawn.Downed, () => LoadKg,
+                RM_TheSumpSettings.kethrelMoltLoadKg, TarNearby, () => (item = FindWantedItem(Props.pickupRadius)) != null, () => IsIdle(pawn),
+                () => { far = FindWantedItem(Props.seekRadius); return far != null && pawn.CanReach(far, PathEndMode.Touch, Danger.Some); }))
             {
-                return;
-            }
-            if (LoadKg >= RM_TheSumpSettings.kethrelMoltLoadKg)
-            {
-                Molt(null);
-                return;
-            }
-            if (!TarNearby())
-            {
-                return;
-            }
-            Thing item = FindWantedItem(Props.pickupRadius);
-            if (item != null)
-            {
-                PickUp(item);
-                return;
-            }
-            if (IsIdle(pawn))
-            {
-                Thing far = FindWantedItem(Props.seekRadius);
-                if (far != null && pawn.CanReach(far, PathEndMode.Touch, Danger.Some))
-                {
-                    Job job = JobMaker.MakeJob(JobDefOf.Goto, far.Position);
-                    job.expiryInterval = 900;
-                    pawn.jobs.StartJob(job, JobCondition.InterruptForced);
-                }
+                case KethrelAction.Molt:
+                    Molt(null);
+                    break;
+                case KethrelAction.PickUp:
+                    PickUp(item);
+                    break;
+                case KethrelAction.Seek:
+                    {
+                        Job job = JobMaker.MakeJob(JobDefOf.Goto, far.Position);
+                        job.expiryInterval = 900;
+                        pawn.jobs.StartJob(job, JobCondition.InterruptForced);
+                    }
+                    break;
             }
         }
 
@@ -156,14 +138,14 @@ namespace RimMandrake.TheSump
         public static bool IsTar(IntVec3 c, Map map)
         {
             TerrainDef t = c.GetTerrain(map);
-            if (t != null && t.defName.Contains("Tar"))
+            if (t != null && RM_KethrelKernel.IsTarName(t.defName))
             {
                 return true;
             }
             List<Thing> things = c.GetThingList(map);
             for (int i = 0; i < things.Count; i++)
             {
-                if (things[i].def.category == ThingCategory.Filth && things[i].def.defName.Contains("Tar"))
+                if (things[i].def.category == ThingCategory.Filth && RM_KethrelKernel.IsTarName(things[i].def.defName))
                 {
                     return true;
                 }
@@ -173,23 +155,12 @@ namespace RimMandrake.TheSump
 
         private bool Wanted(Thing t)
         {
-            if (t == null || t.Destroyed || !t.Spawned || t.def.category != ThingCategory.Item || t.IsForbidden(Pawn))
+            if (t == null || t.Destroyed || !t.Spawned)
             {
                 return false;
             }
-            if (!t.def.IsWeapon && !Props.pickupDefs.Contains(t.def))
-            {
-                return false;
-            }
-            if (t.MarketValue * t.stackCount > RM_TheSumpSettings.kethrelValueCeiling)
-            {
-                return false;
-            }
-            if (!RM_TheSumpSettings.kethrelTakeColonyProperty && parent.Map.areaManager.Home[t.Position])
-            {
-                return false;
-            }
-            return true;
+            return RM_KethrelKernel.Wanted(true, t.def.category == ThingCategory.Item, t.IsForbidden(Pawn), t.def.IsWeapon || Props.pickupDefs.Contains(t.def),
+                t.MarketValue * t.stackCount, RM_TheSumpSettings.kethrelValueCeiling, RM_TheSumpSettings.kethrelTakeColonyProperty, parent.Map.areaManager.Home[t.Position]);
         }
 
         private Thing FindWantedItem(int radius)
@@ -238,7 +209,7 @@ namespace RimMandrake.TheSump
         private void Refresh()
         {
             int s = StageForLoad(LoadKg);
-            if (s != stage)
+            if (RM_KethrelKernel.StageChanged(stage, s))
             {
                 stage = s;
                 SetHediff(s);
@@ -262,7 +233,7 @@ namespace RimMandrake.TheSump
             {
                 h = Pawn.health.AddHediff(def);
             }
-            h.Severity = s + 0.01f;
+            h.Severity = RM_KethrelKernel.HediffSeverity(s);
         }
 
         // Drops everything carried at the kethrel's feet. handler is the colonist who coaxed it, or null for a self molt.
@@ -323,21 +294,19 @@ namespace RimMandrake.TheSump
 
         private void CoaxMolt()
         {
-            Pawn best = null;
-            int bestSkill = -1;
+            var colonists = new List<Pawn>();
+            var skills = new List<int>();
+            var able = new List<bool>();
             foreach (Pawn p in parent.Map.mapPawns.FreeColonistsSpawned)
             {
-                if (p.Downed || p.WorkTagIsDisabled(WorkTags.Animals) || p.skills == null)
-                {
-                    continue;
-                }
-                int s = p.skills.GetSkill(SkillDefOf.Animals).Level;
-                if (s > bestSkill)
-                {
-                    bestSkill = s;
-                    best = p;
-                }
+                bool ok = !(p.Downed || p.WorkTagIsDisabled(WorkTags.Animals) || p.skills == null);
+                colonists.Add(p);
+                skills.Add(ok ? p.skills.GetSkill(SkillDefOf.Animals).Level : 0);
+                able.Add(ok);
             }
+            int pick = RM_KethrelKernel.BestHandler(skills, able);
+            Pawn best = pick < 0 ? null : colonists[pick];
+            int bestSkill = pick < 0 ? -1 : skills[pick];
             if (best == null)
             {
                 Messages.Message("RM_KethrelMoltNoHandler".Translate(), parent, MessageTypeDefOf.RejectInput, false);
@@ -355,7 +324,7 @@ namespace RimMandrake.TheSump
         // Chance a coaxed molt ends in a panicked charge. Pure, so the offline check can read it.
         public static float FailChance(int animalsSkill, float difficulty)
         {
-            return Mathf.Clamp(0.45f * difficulty - 0.03f * animalsSkill, 0.02f, 0.9f);
+            return RM_KethrelKernel.FailChance(animalsSkill, difficulty);
         }
 
         public override string CompInspectStringExtra()
@@ -369,13 +338,7 @@ namespace RimMandrake.TheSump
 
         public static string StageLabel(int s)
         {
-            switch (s)
-            {
-                case 1: return "light shell";
-                case 2: return "heavy shell";
-                case 3: return "full carapace";
-                default: return "bare";
-            }
+            return RM_KethrelKernel.StageLabel(s);
         }
     }
 

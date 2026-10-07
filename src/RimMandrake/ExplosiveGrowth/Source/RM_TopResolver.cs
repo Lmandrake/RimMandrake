@@ -95,20 +95,10 @@ namespace RimMandrake.ExplosiveGrowth
 
         public static RM_GrowthTop Effective(RM_GrowthTop top)
         {
-            switch (top)
-            {
-                case RM_GrowthTop.Burst: return ExplosiveGrowthSettings.burstEnabled ? top : Fallback();
-                case RM_GrowthTop.Tinder: return ExplosiveGrowthSettings.tinderEnabled ? top : Fallback();
-                case RM_GrowthTop.Slime: return ExplosiveGrowthSettings.slimeEnabled ? top : Fallback();
-                case RM_GrowthTop.Rupture: return ExplosiveGrowthSettings.ruptureEnabled ? top : Fallback();
-                case RM_GrowthTop.Flush: return ExplosiveGrowthSettings.flushEnabled ? top : Fallback();
-                case RM_GrowthTop.Churn: return Fallback();
-                default: return top;
-            }
+            return (RM_GrowthTop)RM_ExplosiveGrowthKernel.EffectiveTop((byte)top,
+                ExplosiveGrowthSettings.burstEnabled, ExplosiveGrowthSettings.tinderEnabled, ExplosiveGrowthSettings.slimeEnabled,
+                ExplosiveGrowthSettings.ruptureEnabled, ExplosiveGrowthSettings.flushEnabled, ExplosiveGrowthSettings.churnEnabled);
         }
-
-        private static RM_GrowthTop Fallback() =>
-            ExplosiveGrowthSettings.churnEnabled ? RM_GrowthTop.Churn : RM_GrowthTop.None;
 
         // ── CHURN: split, die, fruit, sow — endless, and never over your floor.
 
