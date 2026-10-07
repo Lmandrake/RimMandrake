@@ -8,8 +8,8 @@
     minifiable, so it travels in a caravan, a shuttle or a gravship hold with its stock inside — the
     tanker pillar's carrying half. Holds one liquid at a time, any liquid.
   PROVISIONAL: every cost, work, hit-point and capacity number below.
-  ART OWED: hose atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank borrows the
-  scavenger tank's UniversalCargoTank render (art_source/UniversalCargoTank) — the two need distinct looks.
+  ART OWED: hose atlas (placeholder: vanilla power-conduit atlas, tinted); cargo tank has its own
+  render (fwart_RM_UniversalCargoTank), distinct from the scavenger tank's.
 -->
 <Defs>
 
@@ -73,10 +73,9 @@
     <description>A sealed cargo tank on skids, made to be lifted, carried and set down again with its liquid still inside. Holds a large quantity of one liquid at a time, any liquid at all. Fill it by hand with bottles, buckets and barrels, or from a pump, still or works on its hose line; uninstall it and it travels in a caravan, a shuttle or a ship's hold with its stock intact.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank</thingClass>
     <graphicData>
-      <texPath>Things/Building/FlowWorks/RM_LiquidTank</texPath>
+      <texPath>Things/Building/FlowWorks/RM_UniversalCargoTank</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <color>(205,215,225)</color>
     </graphicData>
     <size>(2,2)</size>
     <rotatable>false</rotatable>

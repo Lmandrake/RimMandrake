@@ -12,7 +12,7 @@
     <description>A mat of scrap and woven fiber stretched over a superdeep hole and dusted to match the ground around it. Anything heavier than about 40 kg standing on the cover goes through.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
-      <texPath>Terrain/Surfaces/Soil</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_WovenScrap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <drawerType>MapMeshOnly</drawerType>
@@ -60,7 +60,7 @@
     <description>A lattice of planks over a superdeep hole, dusted to match the ground around it. It holds a person; it does not hold anything heavier than about 120 kg in total.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
-      <texPath>Terrain/Surfaces/Soil</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_PlankLattice</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <drawerType>MapMeshOnly</drawerType>
@@ -107,7 +107,7 @@
     <description>A braced steel frame over a superdeep hole, surfaced to match the ground around it. Only a load over about 220 kg in total, a great beast or several heavy bodies at once, breaks it.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
     <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
     <graphicData>
-      <texPath>Terrain/Surfaces/Soil</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_PitCover_ReinforcedFrame</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <drawerType>MapMeshOnly</drawerType>

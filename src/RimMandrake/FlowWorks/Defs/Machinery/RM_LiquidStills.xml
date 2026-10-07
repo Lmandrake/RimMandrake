@@ -7,8 +7,7 @@
   <conversions>, generator table LIQUID_CONVERSIONS), filtered by this def's <processes> and <tier>.
   Input: a liquid tank touching it or on its hose line. Output: another tank on the line.
   PROVISIONAL: every rate, cost, fuel and research number below (agent guesses, 2026-10-05).
-  ART OWED (placeholders are vanilla): solar still (SolarCollector), drip filter (FermentingBarrel),
-  fueled still (ChemfuelPoweredGenerator).
+  Art: fwart_RM_SunPanStill, fwart_RM_DripFilter, fwart_RM_FueledStill.
 -->
 <Defs>
 
@@ -34,10 +33,9 @@
     <label>sun-pan still</label>
     <description>A shallow pan under a sloped sheet of salvaged glass. The sun lifts clean water off whatever is in the pan and it runs down the glass into the gutter. Slow, free, and useless at night or under a roof. Stand it beside a tank of salt water and a tank to catch the fresh.</description>
     <graphicData>
-      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_SunPanStill</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <color>(170,200,215)</color>
     </graphicData>
     <size>(2,2)</size>
     <statBases>
@@ -75,10 +73,9 @@
     <label>drip filter</label>
     <description>A barrel packed with charcoal, sand and rags, dripping into a pan. Poisoned water poured in the top comes out drinkable at the bottom, a slow drop at a time; it wastes most of what it is given. Needs no power and no fuel.</description>
     <graphicData>
-      <texPath>Things/Building/Production/FermentingBarrel</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_DripFilter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <color>(150,150,135)</color>
     </graphicData>
     <size>(1,1)</size>
     <statBases>
@@ -114,10 +111,9 @@
     <label>fueled still</label>
     <description>A riveted boiler over a firebox, a coil of pipe and a cooling drum. Whatever goes into the boiler comes out of the coil as clean water: salt water, brine, even poisoned water. It burns wood or chemfuel and works day and night.</description>
     <graphicData>
-      <texPath>Things/Building/Power/ChemfuelPoweredGenerator</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_FueledStill</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <color>(205,175,140)</color>
     </graphicData>
     <size>(2,2)</size>
     <statBases>

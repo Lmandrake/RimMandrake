@@ -37,7 +37,7 @@ namespace RimMandrake.FlowWorks
 				+ "fits is pushed into the rest of the channel and back into the body it came "
 				+ "from; only what finds no room anywhere is lost. Filling a cell all the way "
 				+ "back to the surface restores the terrain that was there before it was dug.";
-			icon = ContentFinder<Texture2D>.Get("UI/Designators/FillCrater", true);
+			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_FillInCanal", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;
 			soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;

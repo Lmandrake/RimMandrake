@@ -25,12 +25,9 @@
        It deliberately does NOT change pathing, passability, line of sight
        or escape odds. Anything more is an elevation model in disguise.
 
-       PLACEHOLDER ART, and flagged as such: texPath borrows the vanilla
-       spike-trap sheet the pit family already ships against, so the mod
-       loads with no missing-texture error. Candidate ladder art exists but is
-       NOT wired and NOT ruled on by the owner: do not copy any into Textures/
-       before he picks one. The candidates carry the RUT_ tier prefix while
-       this def is RM_ tier, which is itself a question for him.
+       Art: fwart_RM_Ladder from the 2026-10-06 FlowWorks commission (owner:
+       commission versions of ALL FlowWorks art), installed through the art
+       ledger and shown on the review map for his look; not yet ruled on.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
@@ -38,7 +35,7 @@
     <description>A rough ladder braced against the wall of an excavation. Lowered, people climb down into the pit and back up by it, and haulers fetch what lies on the floor; it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Raised, nobody climbs it.</description>
     <thingClass>RimMandrake.FlowWorks.RM_Building_Ladder</thingClass>
     <graphicData>
-      <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_Ladder</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
@@ -67,8 +64,8 @@
     <comps>
       <!-- LADDER_PRISON_DOOR_1 + FLOWWORKS_LADDER_RAISE_LOWER_1: raised/lowered by the player's gizmo,
            prison-door climbing rule. raisedGraphicData is the raised state's own art: unset until the
-           raised variant (artpipe fwart_RM_LadderRaised) is ruled on and installed, so both states draw
-           the placeholder for now. -->
+           raised variant (artpipe fwart_RM_LadderRaised) is installed, so both states draw the lowered
+           ladder art (fwart_RM_Ladder) for now. -->
       <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder" />
     </comps>
     <placeWorkers>
@@ -82,16 +79,15 @@
        never while dry (Source/Swale/RM_Swale.cs). RM_ tier, a normal buildable; the Utinni
        campaign lock is CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1 (blocked on the survey loop).
        PROVISIONAL numbers (owner ruling 2026-10-03: first guesses, tuned live): radius 2.9,
-       one rung per fed day. PLACEHOLDER ART: vanilla's empty-grave sheet (a dug, lined trench). -->
+       one rung per fed day. Art: fwart_RM_Swale (a perforated liner in a dug channel). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Swale</defName>
     <label>swale</label>
     <description>A graded, perforated liner laid in a dug channel. While water stands in it, it seeps into the ground around it, and over days the sand within a couple of paces turns to soil and the soil to rich soil. It does nothing dry, and it never makes ground richer than rich soil.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <!-- Vanilla ships this sheet as Graphic_Multi (Buildings_Misc.xml GraveEmpty). -->
-      <texPath>Things/Building/Misc/GraveEmpty</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FlowWorks/Canals/RM_Swale</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
@@ -137,18 +133,16 @@
        ladder's shape: a Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Owner Q2
        2026-10-02 (by card): D = 4 only. Fire on descent only (RM_SuperdeepTrap.PitDescent), three
        Sharp hits scaled by body size (numbers PROVISIONAL in RM_PitTrapMath: first guesses, tuned live later, owner ruling 2026-10-03).
-       Graphic is a PLACEHOLDER (Ideology's skullspike: a spike at the pit's viewing angle; the item
-       forbids TrapSpikeArmed); the real floor-of-spikes art is EXCAVATION_WALL_ART_1. -->
+       Art: fwart_RM_Spikes (a cluster of stakes seen from above). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Spikes</defName>
     <label>pit spikes</label>
     <description>Sharpened stakes driven into the floor of a superdeep pit. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built on the floor of the deepest pits.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Misc/Skullspike/Skullspike</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_Spikes</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <shaderType>CutoutComplex</shaderType>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>

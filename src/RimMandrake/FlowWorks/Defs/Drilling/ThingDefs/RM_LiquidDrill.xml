@@ -17,10 +17,7 @@
     RM_LiquidDrill — powered, expensive, the higher-output rig.
     RM_LiquidTap   — hand-worked (no power), cheap, a slower bleed.
 
-  Texture: reuses vanilla DeepDrill's own real texPath as a placeholder, the
-  same "reuse vanilla art, no hold needed" posture RUT_DigShaft already used
-  for the same silhouette class (a shaft/rig standing over ground it draws
-  something up from). Art pass owns a bespoke replacement.
+  Texture: fwart_RM_LiquidDrill / fwart_RM_LiquidTap (2026-10-06 commission).
 
   No researchPrerequisites: gating this behind a ResearchProjectDef is
   content-authoring the owner has not ruled on, left always-buildable and
@@ -36,7 +33,7 @@
     <description>A cored rig staked over ground a survey says is worth drilling. Powered, and it runs as long as the power does and the ground still has something in it — point its open face at a dug channel and it pours straight in. It never touches a pond or a river; whatever it finds, it finds underground, on maps that have anything down there at all.</description>
     <thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidDrill</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
     </graphicData>
@@ -90,7 +87,7 @@
     <description>A hand-bled pipe hammered down to whatever a survey found. No power, no moving parts worth the name — it just bleeds, slowly, into whatever channel you have dug for it. Cheaper than a drill and a fraction of the output, but it never needs the grid.</description>
     <thingClass>RimMandrake.FlowWorks.Drilling.Building_LiquidDrill</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/DeepDrill</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
       <drawRotated>false</drawRotated>
