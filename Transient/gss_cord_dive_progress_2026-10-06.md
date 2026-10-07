@@ -5,3 +5,4 @@
 - selftest 793/793 (738 old + 55 new dive rows)
 - census 200 seeds: vanilla bases 221 unroutable (b 11, c-wall 89, c-wall-conduit-elsewhere 121) -> 0 with dive on, 208 dives laid; fuzz 2850 worlds 0
 - DLL built clean
+- pushed fc932419a (on origin/main). Not built: water/building dive plate art (none exists); live look unverified (bridge held elsewhere)
