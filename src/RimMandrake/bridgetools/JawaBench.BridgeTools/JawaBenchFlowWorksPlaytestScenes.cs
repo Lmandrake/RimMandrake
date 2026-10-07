@@ -182,6 +182,21 @@ namespace JawaBench.BridgeTools
                     if (!pg.Walkable(start) || !pg.Walkable(dest)) { row["crossTicks"] = null; row["crossNote"] = "not walkable"; continue; }
                     walker = QGenPawn(c, friend, D * 10 + F);
                     GenSpawn.Spawn(walker, start, m);
+                    // Fence the strip with walls so the only route is ALONG it. Route planning still prices a dry dug
+                    // cell by depth while leaving a pit onto soil costs only the soil, so an unfenced walker climbed
+                    // out and walked the rim - the scene then timed a climb and a detour, not pit-floor walking
+                    // (fwpt_20261007T061912_s1: D1F0 503 / D2F0 759 vs 401 with the step-cost override live).
+                    var fence = new List<Thing>();
+                    ThingDef wallDef = ThingDefOf.Wall;
+                    ThingDef wallStuff = ThingDefOf.BlocksGranite ?? GenStuff.DefaultStuffFor(wallDef);
+                    foreach (IntVec3 x in r.ExpandedBy(1).EdgeCells)
+                    {
+                        if (!x.InBounds(m) || x.GetEdifice(m) != null) continue;
+                        foreach (Thing pl in x.GetThingList(m).ToList()) if (pl is Plant) pl.Destroy(DestroyMode.Vanish);
+                        Thing wall = ThingMaker.MakeThing(wallDef, wallStuff);
+                        GenSpawn.Spawn(wall, x, m);
+                        fence.Add(wall);
+                    }
                     c.Phase("exec");
                     int t0 = TicksGameSafe(), lastOrder = t0, reissues = 0;
                     Pawn wk = walker;
@@ -199,6 +214,8 @@ namespace JawaBench.BridgeTools
                     row["crossReissues"] = reissues;
                     row["crossCells"] = r.Width - 1;
                     row["fillAfterCross"] = QFill(c, mid);
+                    row["fenceWalls"] = fence.Count;
+                    foreach (Thing wall in fence) if (wall.Spawned) wall.Destroy(DestroyMode.Vanish);
                     QVanish(walker); walker = null;
                 }
 
@@ -587,7 +604,7 @@ namespace JawaBench.BridgeTools
 
         private static IEnumerable<PWait> ScnSluice(PCtx c)
         {
-            c.ev["route"] = "flow pulse across a 5-cell D2 channel with a flow door spawned on the middle cell (doors closed unless held open)";
+            c.ev["route"] = "flow pulse from a 3x3 natural pond across a 5-cell D2 channel with a flow door spawned on the middle cell (doors closed unless held open)";
             c.ev["ruling"] = "owner 2026-10-06: sealed sluice gate holds liquid when shut, passes when open; grate gate always passes";
             Map m = c.map;
             Def water = QFluid("RM_Fluid_Water");
@@ -602,6 +619,7 @@ namespace JawaBench.BridgeTools
                                new { label = "sluice_shut", def = sluice, open = false, expectPass = false },
                                new { label = "sluice_open", def = sluice, open = true, expectPass = true } };
             Thing door = null;
+            var pondsToRestore = new List<KeyValuePair<IntVec3, TerrainDef>>();
             try
             {
                 foreach (var run in runs)
@@ -613,6 +631,18 @@ namespace JawaBench.BridgeTools
                     var cells = r.Cells.OrderBy(x => x.x).ToList();
                     foreach (IntVec3 x in cells) QDig(c, x, 2);
                     QSetFill(c, cells[0], 2, water); QSetFill(c, cells[1], 2, water);
+                    // A natural pond on the WEST end. Without a supplying source (or a sink) every cell's flow-order
+                    // hops are equal, and at equal depth MayFlowBetween only lets gravity move a level
+                    // (FLOWWORKS_CHANNEL_OSCILLATION_1) - so a sourceless flat channel never spreads, door or no door.
+                    // That, not the doors, is why every case "held" (fwpt_20261007T061912_s1: fills 2,2,0,0,0 in all three).
+                    var pond = new List<KeyValuePair<IntVec3, TerrainDef>>();
+                    foreach (IntVec3 x in CellRect.FromLimits(r.minX - 3, r.minZ - 1, r.minX - 1, r.minZ + 1).Cells)
+                    {
+                        if (!x.InBounds(m)) continue;
+                        pond.Add(new KeyValuePair<IntVec3, TerrainDef>(x, m.terrainGrid.TerrainAt(x)));
+                        m.terrainGrid.SetTerrain(x, TerrainDefOf.WaterShallow);
+                    }
+                    pondsToRestore.AddRange(pond);
                     IntVec3 gate = cells[2];
                     door = QMake(run.def); door.SetFaction(Faction.OfPlayer); GenSpawn.Spawn(door, gate, m);
                     if (run.open)
@@ -644,9 +674,11 @@ namespace JawaBench.BridgeTools
                     }
                     if (run.open && !openAtStart) unexpected.Add(run.label + ": fixture could not hold the sluice open");
                     QVanish(door); door = null;
+                    foreach (var kv in pond) m.terrainGrid.SetTerrain(kv.Key, kv.Value);
+                    pondsToRestore.Clear();
                 }
             }
-            finally { QVanish(door); }
+            finally { QVanish(door); foreach (var kv in pondsToRestore) m.terrainGrid.SetTerrain(kv.Key, kv.Value); }
             QSetExpectedFail(c, "FLOWWORKS_SLUICE_TWO_DOORS_1");
             if (unexpected.Count > 0) { c.expectedFailUntil = null; c.Defect(string.Join("; ", unexpected) + (sealedFailed ? "; and the shut sluice passed liquid" : "")); }
             else if (sealedFailed) c.Defect("shut sealed sluice passed liquid (ruled: holds) - expected until FLOWWORKS_SLUICE_TWO_DOORS_1 is built");
