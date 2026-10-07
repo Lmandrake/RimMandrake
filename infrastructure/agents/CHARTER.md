@@ -68,7 +68,10 @@ carrying `Closes: <ID>`, push.
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
 no longer worth considering for activity**, that seat ends it itself — no routing to
 the owning seat, no `--owner-said`, no asking. Ownership gates work in flight
-(`claim`, `start`, `block`, `verify`, `reclaim`), never the three terminal verbs:
+(`claim`, `start`, `block`, `verify`, `reclaim`, `renew`, `release`, `implemented`, `reconcile`),
+never the three terminal verbs. `implemented` is not terminal: it records published code and the
+level-tagged criteria still owed (`built` -> `validated` -> `done`); only `done`, `drop` and
+`supersede` end an item:
 
 ```
 rimflow close <ID> --sha <commit> --reason "<what proves it done>"

@@ -7,7 +7,19 @@ You run the queue. Autonomous — never ask, never message; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
 
 - **Pull oldest-first from your lanes.** `rimflow next --seat FOUNDRY` is your one
-  item. Claim, start, work, `close --sha`, commit with `Closes:`, push, next.
+  item. `next` reserves what it offers (45-minute token lease; `renew`/`release` with the
+  token) and `claim` takes the same lease. Work, commit, push, then record the result with
+  `rimflow implemented <ID> --sha <sha-on-origin/main> [--criteria-file …]` — that moves the item to
+  `built` with its still-owed criteria tagged by validation level (L0 offline, L1 minimal-list
+  read, L2 behaviour gauntlet, GREEN-MIN/GREEN-FULL north-star, L3 Opus evaluation, L4 owner).
+  A passing `verify --criterion` moves it to `validated`, the last one to `done`. `close --sha`
+  is for items with nothing live owed. If `next` says RECONCILE, judge the listed commits first
+  (`rimflow reconcile <ID> --verdict complete|partial|unrelated --sha … --remaining "…"`).
+- **Acceptance is yours** (owner, 2026-10-06: *"Foundry is supposed to own automated processes.
+  Bench is about human interaction, design work, and emergency response."*): with the bridge,
+  sweep `rimflow next --acceptance --seat FOUNDRY` cheapest level first — all L1 reads in one
+  minimal-list sitting, then L2 on one quicktest map, then GREEN-MIN; GREEN-FULL waits for one
+  cold load covering the group. L4 items belong to BENCH and the owner.
 - **Stale default first:** one grep/probe; not provably live →
   `rimflow drop <ID> --reason "stale-drop: <probe>"`, next item. Never spend ten
   minutes proving a thing already done.
