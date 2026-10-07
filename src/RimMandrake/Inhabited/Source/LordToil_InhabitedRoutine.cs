@@ -6,27 +6,6 @@ using Verse.AI.Group;
 namespace RimMandrake.Inhabited
 {
     /// <summary>Where the cast should be right now.</summary>
-    public enum RouteStance
-    {
-        /// <summary>Day. At the worksite.</summary>
-        AtWork,
-        /// <summary>Night. At the barracks.</summary>
-        AtRest,
-        /// <summary>Somebody hurt one of them. Stand and hold, wherever they are.</summary>
-        Defending
-    }
-
-    /// <summary>
-    /// THE ONLY TOIL. The design forbids a multi-toil StateGraph for anything we
-    /// intend to re-tune, because Lord.ExposeData_StateGraph saves the current
-    /// toil and each toil's data by POSITIONAL INDEX into the list CreateGraph()
-    /// returns, then re-runs CreateGraph() on load and looks those indices up in
-    /// the fresh graph. Change the order or the count of toils and every existing
-    /// save silently points at the wrong one.
-    ///
-    /// So the ROUTE is not a graph. It is this toil reassigning one duty's FOCUS
-    /// on a tick, and the schedule is ordinary C# that can be edited freely.
-    /// </summary>
     public class LordToil_InhabitedRoutine : LordToil
     {
         /// <summary>How often the stance is re-read. Roughly every ten seconds of
@@ -114,35 +93,17 @@ namespace RimMandrake.Inhabited
 
         private RouteStance CurrentStance()
         {
-            if (lord != null && Find.TickManager.TicksGame - lord.lastPawnHarmTick < 1200)
-            {
-                return RouteStance.Defending;
-            }
-            return InhabitedRoute.IsSleepingHour(GenLocalDate.HourOfDay(Map), sleepStartHour, wakeHour)
-                ? RouteStance.AtRest
-                : RouteStance.AtWork;
+            return InhabitedFateKernel.Stance(lord != null, Find.TickManager.TicksGame,
+                lord != null ? lord.lastPawnHarmTick : 0,
+                InhabitedRoute.IsSleepingHour(GenLocalDate.HourOfDay(Map), sleepStartHour, wakeHour));
         }
     }
 
-    /// <summary>The schedule, as ordinary C#. Nothing here is serialised, so it
-    /// can be re-tuned without touching a save.</summary>
     public static class InhabitedRoute
     {
-        /// <summary>
-        /// True inside the sleeping window. Handles the wrap across midnight,
-        /// which is the normal case: 22 -> 6 covers 22,23,0..5.
-        /// </summary>
         public static bool IsSleepingHour(int hour, int sleepStartHour, int wakeHour)
         {
-            if (sleepStartHour == wakeHour)
-            {
-                return false;
-            }
-            if (sleepStartHour < wakeHour)
-            {
-                return hour >= sleepStartHour && hour < wakeHour;
-            }
-            return hour >= sleepStartHour || hour < wakeHour;
+            return InhabitedFateKernel.IsSleepingHour(hour, sleepStartHour, wakeHour);
         }
     }
 }

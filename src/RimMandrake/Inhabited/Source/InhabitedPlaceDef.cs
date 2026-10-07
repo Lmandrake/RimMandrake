@@ -5,58 +5,6 @@ using Verse;
 namespace RimMandrake.Inhabited
 {
     /// <summary>
-    /// What could end a cast. The default is nothing: they live here.
-    /// Flight is CAUSED, never scheduled -- every value below names a cause,
-    /// not a timer.
-    ///
-    /// WIRED. InhabitedFateWorker.DetectCause turns each value below into a real
-    /// test on a live map, MapComponent_InhabitedWatch runs it during the visit,
-    /// and InhabitedFateWorker.Apply acts on it at teardown -- the cast goes to
-    /// the DisplacedPool and the place reads Abandoned or Looted from then on.
-    ///
-    /// ⏱️ CAUSE AND CONSEQUENCE ARE SEPARATED BY THE VISIT. Nobody walks off the
-    /// map in front of the player; the place is empty the next time they come.
-    /// InhabitedFateWorker's class comment has the engine reason (Pawn.ExitMap
-    /// hands a non-player pawn to WorldPawns, and WorldPawnGC then eats the
-    /// roster) and names what a visible walk-off would take.
-    /// </summary>
-    public enum InhabitedFate
-    {
-        /// <summary>Nothing ends them. The default and the great majority.</summary>
-        Resident,
-        /// <summary>They break and go if the player menaces them. Costs goodwill,
-        /// and hostility ends only at goodwill 0, so a fright is not a thing a
-        /// gift repairs.</summary>
-        FleeIfThreatened,
-        /// <summary>A gravship coming out of the sky is enough. The ship is a
-        /// presence in the world, not transport.</summary>
-        FleeOnArrival,
-        /// <summary>A genuine caravan passing through. The rare case.</summary>
-        Transient
-    }
-
-    /// <summary>
-    /// What the world map reports about a place. Drawn by
-    /// WorldObject_Inhabited.GetInspectString.
-    ///
-    /// Written in three places: GenStep_InhabitedCast and Patch_MapRemoval both
-    /// set Abandoned when nobody is left, and InhabitedFateWorker.Apply picks
-    /// Abandoned or Looted by whether the larder survived.
-    ///
-    /// ⚠️ Squatted is DECLARED, NOT WRITTEN. Nothing sets it, because nothing in
-    /// this mod yet moves a second party into an emptied place -- it is the state
-    /// a later "somebody else has taken it over" feature will write, and inventing
-    /// a trigger for it here would have been a guess.
-    /// </summary>
-    public enum InhabitedState
-    {
-        Inhabited,
-        Abandoned,
-        Looted,
-        Squatted
-    }
-
-    /// <summary>
     /// A PLACE archetype and its parameter table -- what the place IS, as opposed
     /// to who lives there.
     ///

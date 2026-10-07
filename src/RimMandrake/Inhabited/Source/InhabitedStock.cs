@@ -118,13 +118,11 @@ namespace RimMandrake.Inhabited
                 {
                     continue;
                 }
-                int limit = System.Math.Max(1, entry.thingDef.stackLimit);
-                int remaining = entry.count;
-                while (remaining > 0)
+                List<int> parts = InhabitedFateKernel.SplitStacks(entry.count, entry.thingDef.stackLimit);
+                for (int j = 0; j < parts.Count; j++)
                 {
                     Thing t = ThingMaker.MakeThing(entry.thingDef, GenStuff.DefaultStuffFor(entry.thingDef));
-                    t.stackCount = System.Math.Min(limit, remaining);
-                    remaining -= t.stackCount;
+                    t.stackCount = parts[j];
                     if (!things.TryAdd(t))
                     {
                         t.Destroy();
@@ -262,27 +260,17 @@ namespace RimMandrake.Inhabited
         /// </summary>
         public static bool IsPlaceGoods(Thing t, CellRect area, List<int> ledger)
         {
-            if (t == null || !t.Spawned || t.Destroyed)
+            if (t == null)
             {
                 return false;
             }
-            if (t.def?.category != ThingCategory.Item)
-            {
-                return false;
-            }
-            if (t is Corpse)
-            {
-                return false;
-            }
-            if (t.Faction != null && t.Faction == Faction.OfPlayer)
-            {
-                return false;
-            }
-            if (ledger != null && ledger.Contains(t.thingIDNumber))
-            {
-                return true;
-            }
-            return area.Area > 0 && area.Contains(t.Position);
+            return InhabitedFateKernel.IsPlaceGoods(
+                t.Spawned && !t.Destroyed,
+                t.def?.category == ThingCategory.Item,
+                t is Corpse,
+                t.Faction != null && t.Faction == Faction.OfPlayer,
+                ledger != null && ledger.Contains(t.thingIDNumber),
+                area.Area > 0 && area.Contains(t.Position));
         }
     }
 }

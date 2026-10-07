@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Inhabited offline fuzz (Approach B, same shape as DivingInteraction/Bazaar). Plain net8.0, zero RimWorld/Unity references:
+    ../Source/InhabitedCustodyKernel.cs and ../Source/InhabitedFateKernel.cs are the PRODUCTION files the mod compiles, pulled
+    in directly. If a `using Verse;` ever lands in either, this build breaks - the guard rail working.
+    Lives beside Source/ (not inside it) because Inhabited.csproj uses default compile globbing.
+    Run: python3 src/RimMandrake/Utils/selftest_inhabited_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeInhabited.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Inhabited.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Source\InhabitedCustodyKernel.cs" />
+    <Compile Include="..\Source\InhabitedFateKernel.cs" />
+    <Compile Include="InhabitedFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
