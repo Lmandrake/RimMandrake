@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
@@ -29,9 +30,15 @@ namespace RimMandrake.Stillsand
     // lets it through. Quest-driven incidents (parms.quest / questTag) are
     // never delayed: their signals expect them on time.
     //
-    // NOT covered (follow-up): wandering giants and herd migrations. Their
-    // workers (IncidentWorker_HerdMigration, ThrumboPasses) choose their own
-    // cells and ignore spawnCenter, so a bearing cannot be promised.
+    // Wandering giants (STILLSAND_SKELETONS_REMAINDER_1 §6): herd migrations
+    // and thrumbo-style passes choose their own entry cell through
+    // RCellFinder.TryFindRandomPawnEntryCell and ignore spawnCenter. So for
+    // those workers a prefix on IncidentWorker.TryExecute arms a one-shot
+    // [ThreadStatic] ForcedEntry from the queued parms.spawnCenter, and a
+    // prefix on TryFindRandomPawnEntryCell hands it back to the FIRST call
+    // (both workers' first call is their entry cell; HerdMigration's exit
+    // cell uses CellFinder.TryFindRandomEdgeCellWith, untouched). The
+    // finalizer always disarms it. Gated by horizonPassersEnabled.
     // ════════════════════════════════════════════════════════════════════
     [StaticConstructorOnStartup]
     public static class RM_HorizonWarningPatches
@@ -41,6 +48,67 @@ namespace RimMandrake.Stillsand
             Harmony harmony = new Harmony("mandrake.rm.stillsand.horizon");
             harmony.Patch(AccessTools.Method(typeof(Storyteller), nameof(Storyteller.TryFire)),
                 prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePrefix)));
+            harmony.Patch(AccessTools.Method(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute)),
+                prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecutePrefix)),
+                finalizer: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecuteFinalizer)));
+            harmony.Patch(AccessTools.Method(typeof(RCellFinder), nameof(RCellFinder.TryFindRandomPawnEntryCell)),
+                prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(EntryCellPrefix)));
+        }
+
+        [System.ThreadStatic] private static IntVec3 forcedEntry;
+        [System.ThreadStatic] private static Map forcedMap;
+
+        /// <summary>Session counter for a dev/bridge read: passers that really entered from the
+        /// announced bearing. Never saved.</summary>
+        public static int PassersHonoured;
+
+        /// <summary>The wandering-giant workers: they pick their own entry cell.</summary>
+        public static bool IsPasser(System.Type w)
+        {
+            return w != null && (typeof(IncidentWorker_HerdMigration).IsAssignableFrom(w)
+                                 || typeof(IncidentWorker_ThrumboPasses).IsAssignableFrom(w));
+        }
+
+        public static void TryExecutePrefix(IncidentWorker __instance, IncidentParms parms)
+        {
+            forcedEntry = IntVec3.Invalid;
+            forcedMap = null;
+            if (!RM_SkeletonSettings.horizonWarningsEnabled || !RM_SkeletonSettings.horizonPassersEnabled
+                || parms == null || !parms.spawnCenter.IsValid || __instance?.def == null
+                || !IsPasser(__instance.def.workerClass) || !(parms.target is Map map)
+                || !Applies(__instance.def, parms, map))
+            {
+                return;
+            }
+            forcedEntry = parms.spawnCenter;
+            forcedMap = map;
+        }
+
+        public static System.Exception TryExecuteFinalizer(System.Exception __exception)
+        {
+            forcedEntry = IntVec3.Invalid;
+            forcedMap = null;
+            return __exception;
+        }
+
+        public static bool EntryCellPrefix(ref IntVec3 result, Map map, Predicate<IntVec3> extraValidator, ref bool __result)
+        {
+            if (forcedMap == null || map != forcedMap || !forcedEntry.IsValid)
+            {
+                return true;
+            }
+            IntVec3 c = forcedEntry;
+            forcedEntry = IntVec3.Invalid; // one shot: the worker's first call only
+            forcedMap = null;
+            if (!c.InBounds(map) || !c.Standable(map) || c.Fogged(map)
+                || (extraValidator != null && !extraValidator(c)))
+            {
+                return true; // the announced cell went bad: vanilla picks, the bearing may be off
+            }
+            result = c;
+            __result = true;
+            PassersHonoured++;
+            return false;
         }
 
         public static bool TryFirePrefix(FiringIncident fi, bool queued, ref bool __result)
@@ -57,8 +125,10 @@ namespace RimMandrake.Stillsand
             {
                 return true; // let vanilla decline it as it would have
             }
+            bool passer = IsPasser(fi.def.workerClass);
             if (!fi.parms.spawnCenter.IsValid
-                && !RCellFinder.TryFindRandomPawnEntryCell(out fi.parms.spawnCenter, map, CellFinder.EdgeRoadChance_Hostile))
+                && !RCellFinder.TryFindRandomPawnEntryCell(out fi.parms.spawnCenter, map,
+                    passer ? CellFinder.EdgeRoadChance_Animal : CellFinder.EdgeRoadChance_Hostile))
             {
                 return true;
             }
@@ -85,6 +155,10 @@ namespace RimMandrake.Stillsand
                 return false;
             }
             System.Type w = def.workerClass;
+            if (IsPasser(w))
+            {
+                return RM_SkeletonSettings.horizonPassersEnabled;
+            }
             return w != null && (typeof(IncidentWorker_Raid).IsAssignableFrom(w)
                                  || typeof(IncidentWorker_NeutralGroup).IsAssignableFrom(w));
         }
@@ -105,6 +179,14 @@ namespace RimMandrake.Stillsand
             string bearing = Bearing(map.Center, parms.spawnCenter);
             string hours = RM_SkeletonSettings.horizonWarningHours.ToString("0.#");
             string who = parms.faction != null ? parms.faction.Name : "someone";
+            if (IsPasser(def.workerClass))
+            {
+                Find.LetterStack.ReceiveLetter("Dust on the horizon: " + bearing,
+                    "Dust on the horizon, bearing " + bearing + ", low and slow. Something big is walking the open "
+                    + "sand, and out here it cannot hide. It should reach the edge of the map in about " + hours + " hours.",
+                    LetterDefOf.NeutralEvent, new TargetInfo(parms.spawnCenter, map));
+                return;
+            }
             string text = "Dust on the horizon, bearing " + bearing + ". Out here you can see anything coming "
                           + "from hours away, and so can it.\n\n"
                           + (hostile
