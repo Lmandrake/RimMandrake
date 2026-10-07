@@ -50,16 +50,16 @@ Also on this item:
    (Graphic_Random) when the flora port lands; his three kept variants are being re-tinted (`abyss_glowinggrass_{a,b,c}_tint_v1`).
 2. **Wire the ruled art when it lands**: the jobs above and the sitting-2 jobs below, bound to the new defNames.
 3. **Install the sheet's other keeps** (`art.py install`): RM_Krizzak variants B–F, RM_Summ's summing pick B.
-4. **Sorter leftovers** (label/description/cleaning landed at `11a821c18`): three C# strings still say
-   "durrgak" — `RM_AbyssMod.cs` settings labels (lines ~116–118) and `RM_AbyssCryptid.cs` ~223; likewise
-   "Skarnixes flee light" in `RM_AbyssMod.cs` ~147. The labels `RM_Drokattak` → ombrathia and `RM_Cindermare` → saevitha landed
-   (defNames kept); "Drokattaks rattle their quills" in `RM_AbyssMod.cs` ~128 is owed the same rename. Rename + rebuild via `winbuild.py Abyss`.
+4. **Renamed labels in player text**: done. The C# settings/letter strings say sorter, ombrathia and ishvarith,
+   and the ishvarith/saevitha `labelPlural`s no longer say skarnixes/cindermares. `validation.py` `names_check()`
+   fails any race label/labelPlural or C# player string that still names a renamed defName stem.
 5. **Superseded art**: the 12 unwired `crags_<label>_*` sets (vrakk … thrizzik) were drawn for the
    superseded names; `ABYSS_CRAGS_ART_ON_PORTED_DEFS_1` step 1 is overtaken by this item for the 10
    rows here. The dusk rat redo there is dead (cut).
 6. **Twin roster**: `RUT_Abyss` (`src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Abyss.xml`) carries none of the cut rows
    (sitting 2 cut the shadow charger and thunderox from both rosters). When the ports land, its donor rows follow `RM_Abyss`.
-7. `Abyss_Rename.xml` labels for the 10 ported donors die with the port; delete those blocks then.
+7. `Abyss_Rename.xml`: the ported donors' blocks are deleted. AA_Murkling's block stays on purpose (the donor still
+   ships in the Cracked Lands rosters); the remaining blocks are donors this item does not port.
 
 ## sitting 2 (2026-10-05 evening) — picks, recolours, cuts
 

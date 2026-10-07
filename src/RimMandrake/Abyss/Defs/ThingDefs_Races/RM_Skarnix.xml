@@ -79,14 +79,14 @@
   <PawnKindDef ParentName="AnimalKindBaseWolf">
     <defName>RM_Skarnix</defName>
     <label>ishvarith</label>
-    <labelPlural>skarnixes</labelPlural>
+    <labelPlural>ishvariths</labelPlural>
     <race>RM_Skarnix</race>
     <combatPower>65</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <lifeStages>
       <li>
         <label>ishvarith kit</label>
-        <labelPlural>skarnix kits</labelPlural>
+        <labelPlural>ishvarith kits</labelPlural>
         <bodyGraphicData>
           <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
           <graphicClass>Graphic_Multi</graphicClass>

@@ -131,9 +131,9 @@ namespace RimMandrake.Abyss
             list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
                 "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
 
-            list.CheckboxLabeled("Wild durrgaks set rings of shards", ref durrgakRingsEnabled,
-                "On: wild durrgaks slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
-            list.CheckboxLabeled("New maps carry a durrgak den and rings", ref durrgakMapSignsEnabled,
+            list.CheckboxLabeled("Wild sorters set rings of shards", ref durrgakRingsEnabled,
+                "On: wild sorters slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
+            list.CheckboxLabeled("New maps carry a sorter den and rings", ref durrgakMapSignsEnabled,
                 "On: each new Abyss map has a tidy den lined with scrap steel, a row of shard rings, and sometimes a salvage cache. Off: none. Affects maps generated afterwards (map generation).");
 
             list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
@@ -143,8 +143,8 @@ namespace RimMandrake.Abyss
                 "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
             list.CheckboxLabeled("Summs burn in daylight", ref summUVSensitive,
                 "On: a summ under an open daylit sky takes a daylight burn (pain, slowness) that fades in shade or darkness. Off: daylight does nothing to it. Safe mid-game.");
-            list.CheckboxLabeled("Drokattaks rattle their quills before they lunge", ref drokattakHackleEnabled,
-                "On: a drokattak that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
+            list.CheckboxLabeled("Ombrathias rattle their quills before they lunge", ref drokattakHackleEnabled,
+                "On: an ombrathia that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
 
             list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
             etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
@@ -162,8 +162,8 @@ namespace RimMandrake.Abyss
             list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
                 "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
 
-            list.CheckboxLabeled("Skarnixes flee light", ref lightAversionEnabled,
-                "On: a skarnix standing in light breaks off what it is doing and slinks toward the nearest dark cell, so a lit camp neutralises it. Off: it ignores light entirely. Safe mid-game.");
+            list.CheckboxLabeled("Ishvariths flee light", ref lightAversionEnabled,
+                "On: an ishvarith standing in light breaks off what it is doing and slinks toward the nearest dark cell, so a lit camp neutralises it. Off: it ignores light entirely. Safe mid-game.");
             if (lightAversionEnabled)
             {
                 list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00") + "x (default searches 10 cells out)");
