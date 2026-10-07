@@ -1,0 +1,14 @@
+- 20:53 started: reading design
+- 20:55 read design + FlowWorks/GSS/engine APIs (ExplosionDamageThing, PawnFlyer)
+- 20:58 bridge held by another BENCH window (GREYSEA cold load, game running) — offline work first; mod skeleton made
+- 21:01 kernel + selftest 53/53 green; mutation run shows reds
+- 21:06 C#: kernel, hook, map component, flyer patches, compat, settings written (not yet compiled)
+- 21:12 FlowWorks change built+committed 2f1bb6861
+- 21:14 validation.py (STATIC PASS) + walk + knockback_runner.py written
+- 21:16 mod committed 458b69e42; next: live
+- 21:17 game killed (idle 27 min), tier applied (12 mods), deployed, launched
+- 21:30 debug game up (ticksGame 1)
+- 21:31 live run 1: 17/18 PASS; items scene's heavy thing was only 20 kg (scene defect) — fixing
+- 21:34 run 2: items fixed PASS; pit_enemy check read current cell (held hostile walks the floor) + killed_by_blast RNG survivor — both scene defects, fixed
+- 21:36 run 3: 18/18 PASS
+- 21:37 review save RM_knockback_review_20261006_2137 + grid key; screenshots looked at; bridge released
