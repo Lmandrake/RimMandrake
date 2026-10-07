@@ -27,25 +27,25 @@ tank, revert): every C# site that swaps a container's def carries the source thi
 Stuff (`RM_LiquidBottleUtility.MakeContainer`). Colour comes from the stuff tint, so the
 art must be a neutral greyscale silhouette per container.
 
-Buckets are NOT in the ruling and stay unstuffed until he says.
+| bucket | wood (Woody) | `RM_Make_Bucket_Wood` | crafting spot |
+| bucket | metal (Metallic, not plasteel) | `RM_Make_Bucket_Metal` | fueled/electric smithy |
+| bucket | leather (Leathery) | `RM_Make_Bucket_Leather` | crafting spot, hand/electric tailoring bench |
 
-## open questions for the owner
+## rulings 2026-10-06 23:45 (decision taken by question card)
 
-- Buckets: same treatment (and which materials)?
-- Should materials differ in behaviour (leather leaks or can't hold boiling/acid,
-  plasteel holds more)? Today only vanilla stuff stats differ (hit points,
-  flammability, beauty).
-- A stone bottle's label reads "granite empty bottle" (vanilla stuff naming), not
-  "glass bottle". OK, or should "glass" be its own material made from stone?
-- The planned per-liquid tint of the container art conflicts with the stuff tint;
-  material tint wins for now.
+1. Buckets get player-chosen materials too: wood, metal, leather.
+2. Material changes what a container can hold, capacity included: leather cannot hold hot/boiling
+   liquids or acid (fill refused with a readable reason); glass and metal can; plasteel barrels hold more.
+3. Any stone-made bottle is named "glass" (the stone only tints it).
+4. The contained LIQUID's colour shows on a filled container; an empty one shows its material colour.
+
 
 ## art
 
 Greyscale, stuff-tintable regen jobs for RM_Bottle and RM_Barrel (not the held glass
 render). See the progress log Transient/flowworks_container_materials_progress_2026-10-06.md.
 
-Queued 2026-10-06: `fwart_RM_Bottle_Stuffable_v1`, `fwart_RM_Barrel_Stuffable_v1` (greyscale,
+Queued 2026-10-06: `fwart_RM_Bottle_Stuffable_v1`, `fwart_RM_Barrel_Stuffable_v1`, `fwart_RM_Bucket_Stuffable_v1` (greyscale,
 owner_note = his words). Until they install, the coloured patchwork-metal art is
 multiplied by the stuff colour and reads muddy.
 

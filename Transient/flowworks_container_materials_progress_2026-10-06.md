@@ -5,3 +5,13 @@
 - 23:36 defs stuffable (bottle Leathery/Stony/Metallic, barrel Woody/Metallic), 6 recipes, C# MakeContainer carries stuff at 6 sites; XML validated 0 errors
 - 23:42 DLL built (0 err); selftests 212/213, the 1 failure is UtinniPatches dump (RUT_MindstoneMatrix not in dump), unrelated
 - 23:44 art: queued fwart_RM_Bottle_Stuffable_v1 + fwart_RM_Barrel_Stuffable_v1 (greyscale, owner_note); held glass render NOT installed; art comments updated
+
+## rulings 23:45
+
+Decisions taken by question card 2026-10-06 23:45: (1) buckets stuffable wood/metal/leather;
+(2) material changes what a container holds — leather refuses hot/boiling and acid, glass+metal
+hold anything, per-material capacity multipliers (plasteel barrels hold more); (3) any stone bottle
+is labelled "glass"; (4) contained liquid's colour tints the container, empty shows material colour.
+
+- started rulings pass
+- 23:58 buckets stuffable (Woody/Metallic/Leathery), 3 recipes RM_Make_Bucket_{Wood,Metal,Leather}; XML 0 errors; queued fwart_RM_Bucket_Stuffable_v1
