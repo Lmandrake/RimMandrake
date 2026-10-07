@@ -69,6 +69,12 @@
     <Compile Include="Building_RM_Coalescence.cs" />
     <!-- CONTAGION_GROWN_LIMBS_BUILD_1 -->
     <Compile Include="HediffComp_UnfinishedEmerge.cs" />
+    <!-- CONTAGION_GPT_ENRICHMENT_1 part 1: Draftprints -->
+    <Compile Include="CompDraftprint.cs" />
+    <Compile Include="DraftprintUtility.cs" />
+    <Compile Include="FloatMenuOptionProvider_SampleDraftprint.cs" />
+    <Compile Include="JobDriver_RM_SampleDraftprint.cs" />
+    <Compile Include="QuestNode_RM_HelixDraftprintContract.cs" />
   </ItemGroup>
 
   <ItemGroup>

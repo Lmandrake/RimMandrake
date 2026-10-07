@@ -48,12 +48,16 @@ namespace RimMandrake.Contagion
     {
         private bool rolled;
 
+        // CONTAGION_GPT_ENRICHMENT_1: one Draftprint per Unfinished.
+        public bool draftprintTaken;
+
         private CompProperties_RandomizeUnfinished Props => (CompProperties_RandomizeUnfinished)props;
 
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref rolled, "rmUnfinishedRolled", false);
+            Scribe_Values.Look(ref draftprintTaken, "rmDraftprintTaken", false);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)

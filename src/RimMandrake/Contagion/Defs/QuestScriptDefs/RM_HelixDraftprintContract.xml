@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    CONTAGION_GPT_ENRICHMENT_1 part 1: Draftprints. The Helix post a contract
+    for a particular combination of Unfinished features and buy a draftprint
+    that carries all of them. Shape copied from Core's TradeRequest
+    (Script_TradeRequest.xml): offer, timeout delay, success/fail ends.
+
+    Offered by the ordinary random quest chooser (rootSelectionWeight), but
+    QuestNode_RM_HelixDraftprintContract's TestRun refuses unless the player
+    holds a home map whose biome carries RM_ContagionSkyExtension and the
+    Draftprints Mod Setting is on. Payment (silver by drop pod) is made by
+    QuestPart_RM_DraftprintContract.Fulfil from the print's own gizmo; the
+    fulfilled signal ends the quest as a success.
+  -->
+
+  <QuestScriptDef>
+    <defName>RM_HelixDraftprintContract</defName>
+    <rootSelectionWeight>1.2</rootSelectionWeight>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <expireDaysRange>3~6</expireDaysRange>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Helix contract: [contractTraits]</li>
+        <li>questName->A [strange] draftprint</li>
+        <li>strange->strange</li>
+        <li>strange->particular</li>
+        <li>strange->wanted</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The Helix watchers at the valley mouth have posted a contract. They want a draftprint of one of the Unfinished carrying all of:\n\n  [contractTraits]\n\nThey will pay [contractReward] silver, dropped by pod where the print is transmitted. Taking the print means getting close enough to touch the thing. The Helix do not cover that part.\n\nTo fill it, scan a matching Unfinished (right-click it with a colonist), then select the draftprint and transmit it.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="RimMandrake.Contagion.QuestNode_RM_HelixDraftprintContract">
+          <limbPool>
+            <li>RM_UnfinishedClaw</li>
+            <li>RM_UnfinishedSpike</li>
+            <li>RM_UnfinishedFang</li>
+            <li>RM_UnfinishedStump</li>
+            <li>RM_UnfinishedVestigialWing</li>
+            <li>RM_UnfinishedUselessJaw</li>
+          </limbPool>
+          <monstrousHediff>RM_UnfinishedMonstrous</monstrousHediff>
+          <limbCountRange>1~2</limbCountRange>
+          <monstrousChance>0.2</monstrousChance>
+          <silverPerFeature>120</silverPerFeature>
+          <monstrousRewardFactor>2</monstrousRewardFactor>
+          <outSignalFulfilled>DraftprintFulfilled</outSignalFulfilled>
+          <storeTraitsAs>contractTraits</storeTraitsAs>
+          <storeRewardAs>contractReward</storeRewardAs>
+        </li>
+        <li Class="QuestNode_Delay">
+          <delayTicks>$(randInt(5,10)*60000)</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <outSignalComplete>DraftprintTimeout</outSignalComplete>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>DraftprintFulfilled</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>DraftprintTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

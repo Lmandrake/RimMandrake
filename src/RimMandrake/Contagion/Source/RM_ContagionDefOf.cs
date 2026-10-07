@@ -16,6 +16,11 @@ namespace RimMandrake.Contagion
         // CONTAGION_GENOME_LIMB_AND_MATCH_BONUS_1
         public static ThoughtDef RM_GenomeMatchedInstall;
 
+        // CONTAGION_GPT_ENRICHMENT_1 — Draftprints
+        public static ThingDef RM_Draftprint;
+        public static JobDef RM_SampleDraftprint;
+        public static HediffDef RM_UnfinishedMonstrous;
+
         static RM_ContagionDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_ContagionDefOf));
