@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BILEWORM_CORPSE_ROT_1: a colonist within 10 cells of a bileworm. RM_CompBilewormGas renews it while they
+     stay near, so it never stacks. Numbers PROVISIONAL. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RM_BilewormStench</defName>
+    <durationDays>0.25</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>bileworm stench</label>
+        <description>That slug breathes rot. I can taste it in the back of my throat.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

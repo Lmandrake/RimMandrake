@@ -87,6 +87,8 @@ namespace RimMandrake.Scarlands
         public static bool enableElectricTick = true;
         public static bool enableElectricGryllotalpa = true;
         public static bool enableJuggernautBeetle = true;
+        // BILEWORM_CORPSE_ROT_1: corpses near a bileworm rot fast into corpse bile it drinks; colonists nearby smell it.
+        public static bool bilewormGasEnabled = true;
 
         // WARSCAR_SETTLING_WEATHER_1 toggles.
         public static bool settlingEnabled = true;           // calm starts the Settling at all
@@ -175,6 +177,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref enableWreckLichenSeeder, "enableWreckLichenSeeder", true);
             Scribe_Values.Look(ref enableRimclaw, "enableRimclaw", true);
             Scribe_Values.Look(ref enableBileworm, "enableBileworm", true);
+            Scribe_Values.Look(ref bilewormGasEnabled, "bilewormGasEnabled", true);
             Scribe_Values.Look(ref enableElectricTick, "enableElectricTick", true);
             Scribe_Values.Look(ref enableElectricGryllotalpa, "enableElectricGryllotalpa", true);
             Scribe_Values.Look(ref enableJuggernautBeetle, "enableJuggernautBeetle", true);
@@ -400,6 +403,8 @@ namespace RimMandrake.Scarlands
             list.CheckboxLabeled("Scar roach (cleaner)", ref enableScarRoach);
             list.CheckboxLabeled("Rimclaw (rust-plated scavenger)", ref enableRimclaw);
             list.CheckboxLabeled("Bileworm (corpse slug)", ref enableBileworm);
+            list.CheckboxLabeled("  Bileworm gas rots nearby corpses into bile it drinks", ref bilewormGasEnabled,
+                "On: corpses near a bileworm rot within hours, frozen or not; one it reaches dissolves into corpse bile it drinks, and colonists nearby smell it. Off: an ordinary slug. Safe mid-game.");
             list.CheckboxLabeled("Electric tick (short-lived, bursts on death)", ref enableElectricTick);
             list.CheckboxLabeled("Electric gryllotalpa (throws arcs)", ref enableElectricGryllotalpa);
             list.CheckboxLabeled("Juggernaut beetle (armoured giant)", ref enableJuggernautBeetle);
