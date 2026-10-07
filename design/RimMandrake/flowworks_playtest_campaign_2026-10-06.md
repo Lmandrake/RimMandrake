@@ -39,3 +39,12 @@ owner-worthy questions (one pawn near-invisible, four skins grey). Owed: bridge 
 | Finding | Found by | Cost | Old method saw it? | Status |
 |---|---|---|---|---|
 | Xenotype grid: 3 pawns staged one cell off | artboard tier-a checks | one existing screenshot, seconds | no | staging script defect to fix |
+
+## Owner decisions, 2026-10-06 evening (question cards)
+
+- **Next mod for the new methods: Gimme Some Slack** (decision taken by question card).
+- **Screenshot pre-review policy** — owner typed: *"(1) plus regen the art if you already know how, only go to human
+  if you need judgement to fix it"*. So: staging faults are fixed silently; art faults with a known fix are regenerated
+  without asking; only faults needing judgement reach him, marked on the page.
+- **Which methods every mod gets: not decided.** Owner asked for the evidence first (relative costs, bug kinds found,
+  and plain live Claude debugging as the baseline), without a research project.
