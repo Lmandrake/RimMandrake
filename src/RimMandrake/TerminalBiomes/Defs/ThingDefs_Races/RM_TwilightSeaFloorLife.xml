@@ -237,6 +237,11 @@
     <combatPower>10</combatPower>
     <wildGroupSize>2~5</wildGroupSize>
     <ecoSystemWeight>0.35</ecoSystemWeight>
+    <!-- owner 2026-10-07: render B is the base, render C a valid variant -->
+    <alternateGraphicChance>0.4</alternateGraphicChance>
+    <alternateGraphics>
+      <li><texPath>Things/Pawn/Animal/RM_Nuudal/RM_NuudalC</texPath></li>
+    </alternateGraphics>
     <lifeStages>
       <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.6</drawSize><shadowData><volume>(0.349, 0.35, 0.087)</volume><offset>(0, 0, -0.072)</offset></shadowData></bodyGraphicData></li>
       <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.8</drawSize><shadowData><volume>(0.465, 0.35, 0.116)</volume><offset>(0, 0, -0.096)</offset></shadowData></bodyGraphicData></li>
