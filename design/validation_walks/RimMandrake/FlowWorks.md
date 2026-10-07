@@ -16,7 +16,7 @@ the depth/fill primitive (`RM_ExcavationDepth` on `RM_MapComponent_Excavation`, 
 - A flooded cell's *underlying* terrain is recoverable — `TerrainGrid.TopTerrainAt` (what remains once the flood drains) must differ from the temporary flood terrain and must not itself be destroyed. `Flood_FlowWorks.SpreadOneTile` writes `SetTempTerrain` + `QueueRemoveTerrain`, never `SetTerrain`, and the flood terrains deliberately carry no `tempTerrain.destroysFloors`.
 - A flood that is walled in before its volume runs out destroys itself at `ExpiryTick` = `spawnedTick + 2 * FloodingTicks` rather than ticking into every save.
 - `RM_Channel_Empty` (the dug-channel terrain, Diggable/Walkable/Light affordances, not itself water) is what a D=1 dig sets a cell to (`JobDriver_DigCanal`, or `jawa/flowworks_excavation_drive` in tests; `jawa/canal_dig` is a stub that always fails); D=2/3/4 set `RM_Channel_Mid`/`_Deep`/`_Superdeep`.
-- Spread IS channel-constrained: `Flood_FlowWorks.CanFloodInto` gates on `RM_MapComponent_Excavation.CanLiquidEnter`, behind the `channelConfinementEnabled` setting, which defaults to **true**. A player who turns it off is choosing the pre-2026-09-16 leak-across-open-ground behaviour deliberately.
+- Spread IS channel-constrained: `Flood_FlowWorks.CanFloodInto` always gates on `RM_MapComponent_Excavation.CanLiquidEnter`; the `channelConfinementEnabled` setting was retired (FLOWWORKS_CONFINEMENT_TOGGLE_VESTIGIAL_1) and there is no leak-across-open-ground mode.
 
 ## the walk
 Densified 2026-10-05 (`design/RimMandrake/northstar_densification_lessons.md`): ONE core live proof, extensions apart.

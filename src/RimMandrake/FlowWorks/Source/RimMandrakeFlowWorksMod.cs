@@ -33,15 +33,11 @@ namespace RimMandrake.FlowWorks
         //      Never per tick; pillar 2 forbids a fluid simulation outright.
         //   6. flowPerPulse — how many fill levels one cell may take in from
         //      its neighbours per pulse. The viscosity dial, effectively.
-        //   7. channelConfinementEnabled — the legacy release path may only
-        //      enter excavated cells. Off restores the pre-2026-09-16
-        //      behaviour where a release leaked across open ground.
-        //   8. digToDepthEnabled — deepening. Off: one level only, the way
+        //   7. digToDepthEnabled — deepening. Off: one level only, the way
         //      the mod shipped before the four-depth ruling.
         public static bool depthEngineEnabled = true;
         public static float pulseIntervalTicks = 250f;
         public static float flowPerPulse = 1f;
-        public static bool channelConfinementEnabled = true;
         public static bool digToDepthEnabled = true;
 
         // ── UNPROVEN MECHANICS, OFF BY DEFAULT ───────────────────────────
@@ -317,7 +313,6 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref depthEngineEnabled, "depthEngineEnabled", true);
             Scribe_Values.Look(ref pulseIntervalTicks, "pulseIntervalTicks", 250f);
             Scribe_Values.Look(ref flowPerPulse, "flowPerPulse", 1f);
-            Scribe_Values.Look(ref channelConfinementEnabled, "channelConfinementEnabled", true);
             Scribe_Values.Look(ref digToDepthEnabled, "digToDepthEnabled", true);
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
@@ -454,11 +449,6 @@ namespace RimMandrake.FlowWorks
                 "Digging a channel that is already dug cuts it one level further down — "
               + "shallow, mid, deep, then SUPERDEEP. Each level costs more labour than the "
               + "last. Off: channels are one level only.");
-
-            list.CheckboxLabeled("Liquid stays in the channel", ref channelConfinementEnabled,
-                "Liquid may only enter cells that have been excavated, or cells that are "
-              + "already part of a liquid body. Off restores the old behaviour, where a "
-              + "release spread across any open ground it could reach.");
 
             list.Gap();
             list.Label("Flow pulse: every " + PulseIntervalTicks + " ticks");

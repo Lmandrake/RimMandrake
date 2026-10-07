@@ -81,7 +81,7 @@ S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
 # Shipped defaults (O2 cross-checks these against the C# initializers AND Scribe defaults).
 BOOL_DEFAULTS = {
-    S_FW: dict(depthEngineEnabled=True, channelConfinementEnabled=True, digToDepthEnabled=True,
+    S_FW: dict(depthEngineEnabled=True, digToDepthEnabled=True,
                liquidCorrosionEnabled=False, liquidIgnitionEnabled=False, fillInEnabled=True,
                fillInDisplacementEnabled=True, sourceBudgetEnabled=True, stickyLimitlessEnabled=True,
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
@@ -726,13 +726,15 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 36:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity
-        probs.append("toggle census %d != 36" % seen)
+    if seen != 35:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
+        probs.append("toggle census %d != 35" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
         probs.append("Mod subclasses %s (want 2: FlowWorks + RiverSteam)" % mods)
     dead = re.findall(r"public static \w+ (\w*(?:struggle|escape|Escape|Struggle|pitCellExposure)\w*)\s*=", allsrc)
+    if re.search(r"public static bool channelConfinementEnabled\b", allsrc):
+        dead.append("channelConfinementEnabled")
     if dead:
         probs.append("retired settings still declared: %s" % dead)
     return Check("O2", not probs, "; ".join(probs) or "%d toggles + %d floats match C#; 2 Mod screens; no "
