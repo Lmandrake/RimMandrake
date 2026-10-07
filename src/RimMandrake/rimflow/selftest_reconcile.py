@@ -132,8 +132,19 @@ def ledger_events():
 
 
 def file_ready(iid, seat="FOUNDRY"):
+    """Filed and in plain `ready`. Step 3: `claim` now leases and STARTS the item, so the
+    route to an unleased `ready` item is claim + the owning seat's own `reclaim`."""
     ok("file", iid, "--for", seat, "--title", "test item %s" % iid, seat=seat)
     ok("claim", iid, seat=seat)
+    ok("reclaim", iid, seat=seat)
+
+
+def release_offer(out, iid, seat="FOUNDRY"):
+    """Give back the lease a non-peek `next` took (step 3), so the next call sees it."""
+    import re as _re
+    m = _re.search(r"lease token (\S+)", out)
+    assert m, "next reserved nothing:\n" + out
+    ok("release", iid, "--token", m.group(1), seat=seat)
 
 
 def state_of(iid):
@@ -291,16 +302,24 @@ def t_same_item_built_twice_yet_offered():
     file_ready("WRECK_FIELD_BUILD_1")
     write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1: wreck families"),
                    commit(2, "WRECK_FIELD_BUILD_1 slice 2: placement + density")])
-    ok("claim", "WRECK_FIELD_BUILD_1")                       # the second claim, hours later
-    out = ok("next")
-    assert "RECONCILE WRECK_FIELD_BUILD_1: commits %s %s" % (short(1), short(2)) in out, out
-    assert "rimflow start" not in out, "a built item was offered as build work:\n" + out
-    assert "rimflow reconcile WRECK_FIELD_BUILD_1 --verdict" in out
-    assert state_of("WRECK_FIELD_BUILD_1") == "ready", "next changed the state"
-    # the rendered queue's top entry says the same thing (render-on-read)
+    # the second claim, hours later. Step 3: a claim now STARTS the item under a lease, so
+    # it is no longer re-offered at all; `reclaim` puts it back in the pool, which is the
+    # state this case is about (a ready item git already names).
+    ok("claim", "WRECK_FIELD_BUILD_1")
+    ok("reclaim", "WRECK_FIELD_BUILD_1")
+    # the rendered queue's top entry says the same thing (render-on-read). Read BEFORE the
+    # non-peek `next`, which reserves the item and so moves it to IN PROGRESS.
     view = ok("queue", "FOUNDRY")
     top = view[view.index("# NEXT"):]
     assert "action:   RECONCILE WRECK_FIELD_BUILD_1" in top, top[:1500]
+    out = ok("next")
+    assert "RECONCILE WRECK_FIELD_BUILD_1: commits %s %s" % (short(1), short(2)) in out, out
+    assert "rimflow claim WRECK_FIELD_BUILD_1 --token" not in out, \
+        "a built item was offered as build work:\n" + out
+    assert "rimflow reconcile WRECK_FIELD_BUILD_1 --verdict" in out
+    assert state_of("WRECK_FIELD_BUILD_1") == "ready", "next changed the state"
+    view = ok("queue", "FOUNDRY")
+    assert "lease:    LIVE" in view, "the reserved item must show as active:\n" + view[:2000]
 
 
 def t_peek_writes_nothing():
@@ -325,7 +344,8 @@ def t_partial_keeps_item_offered_with_remaining_line():
     out = ok("next")
     assert "RECONCILE" not in out, "judged commits were offered again:\n" + out
     assert "PARTLY BUILT" in out and "slices 3-9: nest, appraisal, incident" in out, out
-    assert "-> rimflow start WRECK_FIELD_BUILD_1" in out, out
+    assert "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
+    release_offer(out, "WRECK_FIELD_BUILD_1")
     ev = [e for e in ledger_events() if e["event"] == "reconcile"]
     assert len(ev) == 1 and ev[0]["id"] == "WRECK_FIELD_BUILD_1" and \
         ev[0]["sha"] == "%s %s" % (short(1), short(2)), ev
@@ -347,8 +367,9 @@ def t_complete_is_not_offered_but_stays_open():
     out = ok("next")
     assert "RECONCILE WRECK_FIELD_BUILD_1" in out, out       # oldest first: it is on top
     ok("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "complete", "--sha", short(1))
+    release_offer(out, "WRECK_FIELD_BUILD_1")
     out = ok("next")
-    assert "-> rimflow start YET_UNBUILT_THING_1" in out, out
+    assert "-> rimflow claim YET_UNBUILT_THING_1" in out, out
     assert "NOT offered as build work" in out and "WRECK_FIELD_BUILD_1" in out, out
     assert state_of("WRECK_FIELD_BUILD_1") == "ready", "complete must not close or move it"
     view = ok("queue", "FOUNDRY")
@@ -361,7 +382,7 @@ def t_unrelated_returns_item_to_build_offer():
     write_fixture([commit(1, "Docs sweep: mentions WRECK_FIELD_BUILD_1 in passing")])
     ok("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "unrelated", "--sha", short(1))
     out = ok("next")
-    assert "RECONCILE" not in out and "-> rimflow start WRECK_FIELD_BUILD_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
 
 
 def t_note_cited_build_commit_triggers():
@@ -384,7 +405,7 @@ def t_bookkeeping_and_preexisting_commits_do_not_trigger():
                           files=["infrastructure/state/ledger/events/FOUNDRY.jsonl"]),
                    commit(2, "WRECK_FIELD_BUILD_1 named before it was filed", t=EARLIER)])
     out = ok("next")
-    assert "RECONCILE" not in out and "-> rimflow start WRECK_FIELD_BUILD_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
 
 
 def t_redirected_ledger_never_reads_real_history():
@@ -393,7 +414,7 @@ def t_redirected_ledger_never_reads_real_history():
     fresh("no_fixture")
     file_ready("SALVAGE_WRECKAGE_EVERYWHERE_1")             # a REAL id with real commits
     out = ok("next", fixture=False)
-    assert "RECONCILE" not in out and "-> rimflow start SALVAGE_WRECKAGE_EVERYWHERE_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim SALVAGE_WRECKAGE_EVERYWHERE_1" in out, out
 
 
 def t_reconcile_refuses_unknown_shas_and_items():

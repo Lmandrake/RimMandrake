@@ -986,6 +986,7 @@ def t_every_field_the_cli_emits_is_in_its_schema():
         known = set(spec["req"]) | set(spec["opt"]) | universal
         for node in ast.walk(fn):
             keys = []
+            ev_verb, ev_known = verb, known
             if isinstance(node, ast.Assign):
                 for t in node.targets:
                     if (isinstance(t, ast.Subscript) and isinstance(t.value, ast.Name)
@@ -993,19 +994,29 @@ def t_every_field_the_cli_emits_is_in_its_schema():
                             and isinstance(t.slice, ast.Constant)
                             and isinstance(t.slice.value, str)):
                         keys.append(t.slice.value)
-            elif isinstance(node, ast.Dict):
-                # the inline `_emit({...})` form
+            ev_verb, ev_known = verb, known
+            if isinstance(node, ast.Dict):
+                # the inline `_emit({...})` form. ⚠️ A builder may emit MORE than its own
+                # verb — `cmd_claim` writes `lease` + `claim` + `start` (step 3) — so a
+                # dict whose `event` is a literal is checked against THAT verb's schema.
                 lits = [k.value for k in node.keys
                         if isinstance(k, ast.Constant) and isinstance(k.value, str)]
                 if "event" in lits:
                     keys = [k for k in lits if k != "event"]
+                    v = node.values[node.keys.index(next(
+                        k for k in node.keys if isinstance(k, ast.Constant)
+                        and k.value == "event"))]
+                    if isinstance(v, ast.Constant) and v.value in model.VERBS:
+                        ev_verb = v.value
+                        sp = model.VERBS[ev_verb]
+                        ev_known = set(sp["req"]) | set(sp["opt"]) | universal
             for k in keys:
                 checked += 1
-                assert k in known, (
+                assert k in ev_known, (
                     "cmd_%s emits %r but VERBS[%r] does not accept it — the event will "
                     "pass every test that never calls validate() and then be refused at "
                     "the ledger, after any side effect the command already had."
-                    % (verb, k, verb))
+                    % (verb, k, ev_verb))
     assert checked >= 4, "found only %d emitted fields; the walker stopped matching" % checked
 
 
@@ -1086,6 +1097,9 @@ CANONICAL = {
     "implemented": dict(seat="BUILD", id="A_B_1", sha="598dec613", ref="origin/main",
                         needs="bridge", criteria=[{"id": "O1", "level": "L0", "text": "x"},
                                                   {"id": "A1", "level": "L1"}]),
+    # step 3 (selftest_lease.py covers the semantics; this fuzzes the field reads)
+    "lease":     dict(seat="BUILD", id="A_B_1", action="take", token="BUILD.abc.1234abcd",
+                      expires="2099-01-01T00:30:00Z"),
 }
 
 

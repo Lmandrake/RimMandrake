@@ -139,6 +139,26 @@ def prose(iid, spec="do the thing", verify="run it", criteria="it works"):
                  % (spec, verify, criteria))
 
 
+def make_ready(iid, seat="BUILD"):
+    """-> put `iid` in plain `ready` (owned, unleased) — the state `rank()` offers.
+
+    🔑 Step 3 (2026-10-07): `claim` no longer lands in `ready`. It takes a lease and
+    STARTS the item, because a claimed item used to be re-advertised to every subagent
+    (system doc §3.4). The supported CLI route to a plain `ready` item is now the owning
+    seat's own `reclaim` (doing -> ready, lease revoked), so ranking tests set up their
+    pool that way instead of relying on the old claim -> ready."""
+    ok("claim", iid, seat=seat)
+    ok("reclaim", iid, seat=seat)
+
+
+def token_of(out):
+    """-> the lease token a `next`/`claim` printed (`… lease token <T>`)."""
+    import re as _re
+    m = _re.search(r"lease token (\S+)", out)
+    assert m, "no lease token printed: %s" % out
+    return m.group(1)
+
+
 def fresh():
     """Wipe this case's own throwaway ledger so each fresh() call states its own
     premise (some cases call it more than once)."""
@@ -170,7 +190,7 @@ def t_a_free_bridge_offer_says_how_to_take_it():
        "--needs", "bridge")
     open(os.path.join(_tmp(), "items", "BRIDGE_OFFER_HINT_1.md"), "w").write(
         "## spec\nx\n## verify\ny\n## criteria\nz\n")
-    ok("claim", "BRIDGE_OFFER_HINT_1", seat="CHECK")
+    make_ready("BRIDGE_OFFER_HINT_1", seat="CHECK")
     out = ok("next", "--seat", "CHECK", seat="CHECK")
     assert "BRIDGE_OFFER_HINT_1" in out, (
         "a bridge item was withheld with the bridge FREE — the original defect: %s" % out)
@@ -185,7 +205,9 @@ def t_file_claim_start_close():
     assert "filed for BUILD" in out and "proposed" in out, out
     assert "## spec" in out, "filing must name the sections still missing: %s" % out
     prose("DESERT_STORM_TUNING_1")
-    assert "-> ready" in ok("claim", "DESERT_STORM_TUNING_1")
+    # step 3: claim takes a lease AND starts it; a bare `start` still works for scripts
+    out = ok("claim", "DESERT_STORM_TUNING_1")
+    assert "-> doing" in out and "lease token" in out, out
     assert "-> doing" in ok("start", "DESERT_STORM_TUNING_1")
     out = ok("close", "DESERT_STORM_TUNING_1", "--sha", "deadbee")
     assert "closed at deadbee" in out, out
@@ -249,13 +271,13 @@ def t_next_prints_one_item_with_its_spec():
     ok("file", "LATER_ROW_ITEM_1", "--for", "BUILD", "--title", "Later", "--row", "9")
     prose("OFFER_THIS_ONE_1", spec="SPEC-MARKER")
     prose("LATER_ROW_ITEM_1")
-    ok("claim", "OFFER_THIS_ONE_1")
-    ok("claim", "LATER_ROW_ITEM_1")
+    make_ready("OFFER_THIS_ONE_1")
+    make_ready("LATER_ROW_ITEM_1")
     out = ok("next", "--seat", "BUILD")
     assert body(out).startswith("OFFER_THIS_ONE_1"), "row 2 must beat row 9: %s" % out
     assert "LATER_ROW_ITEM_1" not in out, "`next` prints ONE item, not a list: %s" % out
     assert "SPEC-MARKER" in out, "next must carry the spec or the seat opens the file anyway"
-    assert "-> rimflow start OFFER_THIS_ONE_1" in out, out
+    assert "-> rimflow claim OFFER_THIS_ONE_1 --token " in out, out
 
 
 def t_next_offers_unclaimed_spec_complete_work_instead_of_nothing():
@@ -300,8 +322,9 @@ def t_a_thin_proposal_is_OFFERED_and_says_what_is_thin():
         "offered, but the seat must be told what is missing: %s" % out)
     assert "cannot be claimed" not in out and "owes the prose" not in out, (
         "the removed gate's wording came back: %s" % out)
-    # ...and it must actually be claimable, not merely advertised as such.
-    assert "claim" in ok("claim", "NO_PROSE_HANDOFF_1")
+    # ...and it must actually be claimable, not merely advertised as such. Step 3:
+    # `next` RESERVED it, so the claim carries the token it printed.
+    assert "-> doing" in ok("claim", "NO_PROSE_HANDOFF_1", "--token", token_of(out))
 
 
 def t_why_explains_a_v2_item_as_planning_not_breakage():
@@ -659,13 +682,13 @@ def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():
     ok("file", "HOST_ITEM_HERE_9", "--for", "CHECK", "--title", "t")
     prose("ROW_ONE_ITEM_HERE_1")
     prose("HOST_ITEM_HERE_9")
-    ok("claim", "ROW_ONE_ITEM_HERE_1", seat="CHECK")
-    ok("claim", "HOST_ITEM_HERE_9", seat="CHECK")
+    make_ready("ROW_ONE_ITEM_HERE_1", seat="CHECK")
+    make_ready("HOST_ITEM_HERE_9", seat="CHECK")
     ok("game", "UP", seat="OWNER")
     ok("spawn", "--from", "HOST_ITEM_HERE_9", "--for", "CHECK",
        "--name", "URGENT_FOLLOWUP_HERE_9", "--this-deployment", seat="CHECK")
     prose("URGENT_FOLLOWUP_HERE_9")
-    ok("claim", "URGENT_FOLLOWUP_HERE_9", seat="CHECK")
+    make_ready("URGENT_FOLLOWUP_HERE_9", seat="CHECK")
     out = ok("next", seat="CHECK")
     assert body(out).startswith("URGENT_FOLLOWUP_HERE_9"), (
         "the live window is closing and row 1 is not: %s" % out)
@@ -680,7 +703,7 @@ def t_blocked_is_reported_and_the_item_is_withheld():
     fresh()
     ok("file", "WAITING_ON_OWNER_1", "--for", "BUILD", "--title", "t")
     prose("WAITING_ON_OWNER_1")
-    ok("claim", "WAITING_ON_OWNER_1")
+    make_ready("WAITING_ON_OWNER_1")
     ok("block", "WAITING_ON_OWNER_1", "--reason", "needs a ruling", "--on",
        "SOME_DECISION_ITEM_1")
     out = ok("why", "WAITING_ON_OWNER_1")

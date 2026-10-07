@@ -439,6 +439,17 @@ VERBS = {
     # entry refuses the unknown verb and collects it into `world.errors` — counted,
     # never fatal, and no state or rank depends on it — so old clones stay correct.
     "reconcile": {"who": "any",   "req": ("verdict", "sha"), "opt": ("remaining",)},
+    # 🔑 `lease` (rimflow redesign step 3, 2026-10-07): an expiring reservation of ONE
+    # action on an item, held by an opaque `token`. `action` take|renew|release;
+    # `expires` (take/renew) is the absolute UTC stamp it lapses at. `next` takes one on
+    # the item it offers and `claim` takes one and starts the item, both under
+    # `lease.dispatch_lock`. Rules in `_apply_lease`: only the holder renews/releases,
+    # renewal needs a live lease, liveness is `expires` vs the clock and nothing else.
+    # Owner-seat verb, like `claim`. ⚠️ A reader older than this entry refuses the
+    # unknown verb into `world.errors` and applies nothing (selftest_lease.py measures
+    # it); the `claim`+`start` pair the new `claim` writes is what an old clone sees.
+    # ⛔ Protects ONE clone's agents only — see lease.py's docstring.
+    "lease":     {"who": "owner", "req": ("action", "token"), "opt": ("expires",)},
     # ⚠️ `note` is the HANDOFF and POLICY.md's 90% ritual instructs it by name:
     # `rimflow seat idle --reason context-exhausted --note "<where I stopped>"`.
     # It was missing from this table, so the documented command errored out — a rule
@@ -678,6 +689,20 @@ def _check_enums(ev):
                 "reconcile --verdict partial needs --remaining \"<what is left, one "
                 "line>\" — `next` prints that line instead of the whole spec, so the "
                 "next builder works the remainder rather than rebuilding the item.")
+    if verb == "lease":
+        if ev["action"] not in LEASE_ACTIONS:
+            raise SchemaError("lease action must be %s (got %r)"
+                              % ("|".join(LEASE_ACTIONS), ev["action"]))
+        if not LEASE_TOKEN_RE.match(str(ev["token"])):
+            raise SchemaError("lease token must be 8-80 chars of [A-Za-z0-9._-] "
+                              "(got %r)" % (ev["token"],))
+        exp = ev.get("expires")
+        if ev["action"] in ("take", "renew"):
+            if not isinstance(exp, str) or not TS_RE.match(exp):
+                raise SchemaError("lease %s needs `expires`, a UTC stamp like "
+                                  "2026-10-07T01:20:00Z (got %r)" % (ev["action"], exp))
+        elif exp is not None:
+            raise SchemaError("lease release takes no `expires`")
 
 
 def _check_implemented(ev):
@@ -739,6 +764,47 @@ SHA_RE = re.compile(r"^[0-9a-f]{7,40}$")
 # word ("defaced") is never read as a commit. Membership on the published ref is checked
 # by `gitindex.Index.resolve`, which is what actually filters false positives.
 CITED_SHA_RE = re.compile(r"(?<![0-9A-Za-z])(?=[0-9a-f]*\d)[0-9a-f]{7,40}(?![0-9A-Za-z])")
+
+# Leases (step 3). `LEASE_MAX_S` caps how far ahead one take/renew may push `expires`,
+# so a typo or a hand-written event cannot reserve an item for a week; the CLI default
+# is lease.LEASE_TTL_S (45 min).
+LEASE_ACTIONS = ("take", "renew", "release")
+LEASE_TOKEN_RE = re.compile(r"^[A-Za-z0-9._-]{8,80}$")
+LEASE_MAX_S = 4 * 3600
+TS_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+
+
+def epoch(ts):
+    """-> seconds since the epoch for a ledger stamp, or None if it is not one."""
+    import calendar as _cal
+    try:
+        return _cal.timegm(time.strptime(str(ts), "%Y-%m-%dT%H:%M:%SZ"))
+    except (TypeError, ValueError):
+        return None
+
+
+def epoch_now():
+    return int(time.time())
+
+
+def stamp(epoch_s, plus=0):
+    """-> the ledger stamp for `epoch_s + plus` seconds."""
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(int(epoch_s) + int(plus)))
+
+
+def lease_status(item, now_epoch):
+    """-> None (never leased since the last revoke), "live", "lapsed" (expired, never
+    released) or "released". Judged from the lease's own `expires` stamp and nothing
+    else — review §"Claims should be leases": not notes, not claims, not item activity."""
+    ls = getattr(item, "lease", None)
+    if not ls:
+        return None
+    if ls.get("released"):
+        return "released"
+    exp = epoch(ls.get("expires"))
+    if exp is not None and exp > now_epoch:
+        return "live"
+    return "lapsed"
 
 
 def _check_capability(ev):
@@ -1082,7 +1148,7 @@ def _seconds_between(a, b):
 VERB_RANK = {
     "file": 0, "spawn": 1, "finding": 1,
     "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
-    "reassign": 3, "reclaim": 3,
+    "reassign": 3, "reclaim": 3, "lease": 3.5,
     "claim": 4, "start": 5,
     "note": 7, "reconcile": 7, "implemented": 7.5, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
@@ -1217,7 +1283,7 @@ class Item(object):
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "criteria", "outstanding",
-                 "passed", "level_reached")
+                 "passed", "level_reached", "lease")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1243,6 +1309,9 @@ class Item(object):
         self.outstanding = []           # criterion ids still OWED (never L0), in order
         self.passed = []                # [{"criterion","level","run","ts"}] since built
         self.level_reached = None       # highest level passed since built (L0 at built)
+        # step 3 — the current lease, or None: {token, seat, taken, expires, renewed,
+        # released}. Liveness is a function of the clock: see `lease_status`.
+        self.lease = None
 
     @property
     def open(self):
@@ -1881,8 +1950,74 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.reconciles.append({"ts": ev["ts"], "seat": seat, "verdict": ev["verdict"],
                                 "shas": str(ev["sha"]).split(),
                                 "remaining": ev.get("remaining")})
+    elif verb == "lease":
+        _apply_lease(ev, item, seat)
+
+    # Review §"Claims should be leases": "Reassignment explicitly revokes the old lease."
+    # `reclaim` is the owning seat's own doing->ready, and revokes it for the same reason:
+    # the item is being handed back to the pool, so no earlier holder may keep it.
+    if verb in ("reassign", "reclaim"):
+        item.lease = None
 
     item.history.append(index)
+
+
+def _apply_lease(ev, item, seat):
+    """`lease take|renew|release` — the rules of a reservation (rimflow redesign step 3).
+
+    Every judgement is made at the EVENT's own `ts`, so replay is a pure function of the
+    ledger and a lease that was live when it was written stays valid history forever.
+    ⛔ Only the token holder renews or releases. ⛔ A renew needs a live lease — an
+    expired worker reacquires like anyone else. ⛔ A take is refused while ANOTHER token's
+    lease is live (the same token re-taking is a renew)."""
+    act, tok, ts = ev["action"], ev["token"], ev["ts"]
+    at = epoch(ts)
+    cur = item.lease
+    live = cur is not None and lease_status(item, at) == "live"
+    if act in ("take", "renew"):
+        exp = epoch(ev["expires"])
+        if at is None or exp is None or exp <= at:
+            raise SchemaError("lease %s on %s: `expires` %s is not after the event's ts %s"
+                              % (act, item.id, ev["expires"], ts))
+        if exp - at > LEASE_MAX_S:
+            raise SchemaError("lease %s on %s: %d s is longer than the %d s maximum. Renew "
+                              "instead of reserving far ahead." % (act, item.id, exp - at,
+                                                                   LEASE_MAX_S))
+    if act == "take":
+        if item.state in TERMINAL:
+            raise TransitionError("%s is `%s`: there is no work left to reserve."
+                                  % (item.id, item.state))
+        if live and cur["token"] != tok:
+            raise TransitionError(
+                "%s is LEASED until %s by %s (token %s…). Another worker holds it — take "
+                "the next item. A lease lapses on its own if its holder stops renewing.\n"
+                "If `rimflow next` reserved it for YOU, pass the token it printed: "
+                "rimflow claim %s --token <T>"
+                % (item.id, cur["expires"], cur["seat"], cur["token"][:12], item.id))
+        if live:                                   # same token: a re-take is a renewal
+            cur["expires"], cur["renewed"] = ev["expires"], ts
+            return
+        item.lease = {"token": tok, "seat": seat, "taken": ts, "expires": ev["expires"],
+                      "renewed": ts, "released": None}
+        return
+    if cur is None or cur["token"] != tok:
+        raise TransitionError(
+            "%s: lease token %s does not hold this item%s. Only the holder may %s it."
+            % (item.id, tok[:12] + "…",
+               (" (held by %s… until %s)" % (cur["token"][:12], cur["expires"]))
+               if cur else " (it has no lease)", act))
+    if cur.get("released"):
+        raise TransitionError("%s: lease %s… was already released at %s."
+                              % (item.id, tok[:12], cur["released"]))
+    if act == "renew":
+        if not live:
+            raise TransitionError(
+                "%s: lease %s… EXPIRED at %s. An expired worker must reacquire "
+                "(`rimflow next` or `rimflow claim %s`) — the item may have been "
+                "re-offered meanwhile." % (item.id, tok[:12], cur["expires"], item.id))
+        cur["expires"], cur["renewed"] = ev["expires"], ts
+        return
+    cur["released"] = ts                                       # release
 
 
 def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
