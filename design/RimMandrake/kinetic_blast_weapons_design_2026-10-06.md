@@ -419,15 +419,30 @@ other per-weapon behaviour is reached through what it already exposes:
   the mortar's 4 / 3 / 2. **Per-weapon caps** (`maxThrowCells` on each DamageDef): grav-ram 10, thump cannon 8, thump
   shell 8, repulsor 8, pulse cannon 8, slam 7, kicker 7, thudder 6, palm thumper 5.
 - **Pulse cannon charge (Q6):** `RM_Building_PulseCannon` stores pulse charges refilled from power; no charge, no target.
-- **No crafting, no research** (owner: found in Rakatan Ancient Danger ruins). Placement in those ruins is a Utinni
-  patch, not in this RM mod. Pirate raiders carry them rarely (§3.2): `RM_LootedKineticWeapons.cs`.
-
-**Still owed to Explosive Knockback (FOUNDRY):** per-projectile lookup, `impactFactor` (palm thumper
-arrest), `immuneBodySizeOverride` (grav-ram vs a centipede: today the global 2.5 holds), the stun-recovery window, and
-shield absorption (Q4). **Owed to Gimme Some Slack:** kinetic blasts sway cords instead of cutting (Q3).
+- **No crafting, no research** (owner: found in Rakatan Ancient Danger ruins). Pirate raiders carry them rarely (§3.2):
+  `RM_LootedKineticWeapons.cs`.
 
 **Art (2026-10-06):** the 16 def sprites from the `kba_` jobs are installed by `artpipe_state.py collect` (art ledger,
 `--reason artpipe-collect`). The art list asked for projectiles "pointing east", but RimWorld draws a projectile with
 its sprite's NORTH along the flight; `RM_Projectile_KineticExplosive` rotates the draw by −90° rather than regenerating.
-The 8 `kba_icon_*` and the ring fleck have no def using them yet (no research, no gizmo); `kba_icon_PulseCannon` failed
-in the daemon and was re-filed as `kba_icon_PulseCannon_r2`.
+The ring fleck is `RM_Fleck_KineticRing`, drawn at every Kinetic Arms blast. The 8 `kba_icon_*` have no consumer: there
+is no research and no gizmo (owner: found, not crafted).
+
+## 11. Build v2 — finish pass (2026-10-06/07, FOUNDRY, owner: "fully build ... start to finish")
+
+- **Ruins placement is in this RM mod:** `RM_ThingSetMaker_KineticRuins` is one more option of vanilla
+  `MapGen_AncientTempleContents` (`Patches/RM_KineticArms_RuinsLoot.xml`). Ancient Dangers are vanilla and the RM mod
+  must stand alone (Q11a); the campaign's ancients are Rakata by `AncientsAreRakata.xml`, so no Utinni patch is needed.
+  One weapon, or 5–12 thump shells, at 35% per temple (**PROVISIONAL**, Mod Setting), only weapons whose toggle is on.
+- **Explosive Knockback** (`ff6330011`): lookup projectile → weapon → DamageDef → unpatched, whole config;
+  `impactFactor`; `immuneBodySizeOverride`; stun-lock guard (landing stun + 120-tick window, **PROVISIONAL**, saved);
+  shield belt absorbs the throw and pays force × 10 damage-equivalents (**PROVISIONAL**). Kinetic Arms uses them on its
+  DamageDefs: palm thumper `impactFactor 0`, grav-ram `immuneBodySizeOverride 3.6`. `pushAlongShot` was not added to
+  Explosive Knockback: the back-step cone in `RM_Projectile_KineticBolt` already pushes along the shot.
+- **Cords (Q3):** both damage families carry `RM_KineticBlastExtension`; Gimme Some Slack's explosion hook skips a damage
+  def carrying it (matched by class name), so the span is not cut. There is no cord-sway animation; "sway" is "not cut".
+  Kinetic Arms setting "Kinetic blasts cut aerial cords" (default off) removes the marker.
+- **Settings added:** found in ruins + chance, kicker mines hidden from enemies (`KnowsOfTrap` postfix), pulse cannon
+  power draw, cords toggle. Throw recovery and shields are Explosive Knockback settings.
+- **Not built:** "a hit in the window does not refresh stagger" (§4): an immune hit skips the throw, but vanilla's
+  95-tick stagger on a concussive wound still applies.
