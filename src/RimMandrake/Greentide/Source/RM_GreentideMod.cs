@@ -147,6 +147,13 @@ namespace RimMandrake.Greentide
         public static float greatboleHealingThreshold = 0.60f;
         public static float greatboleCatastropheThreshold = 0.70f;
         public static bool greatboleCatastropheEnabled = true;
+        // GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1. Seed planting (spec §3c): gates the seed's
+        // CompPlantable (Patches/RM_Greatbole_Crossovers.xml) and RM_Plant_Greatbole's water rule and
+        // fast growth. Shipped behaviour, so default ON. Servants (spec §8b-ii): the opt-in Gauranlen
+        // crossover on RM_GreatboleCore, DEFAULT OFF by owner ruling (Utinni ships it off). Both are
+        // read when patches apply, so a change takes effect on the next game start.
+        public static bool greatboleSeedPlantingEnabled = true;
+        public static bool greatboleServantsEnabled = false;
 
         private string biomeListBuffer;
         private static Vector2 scrollPosition;
@@ -186,6 +193,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref greatboleHealingThreshold, "greatboleHealingThreshold", 0.60f);
             Scribe_Values.Look(ref greatboleCatastropheThreshold, "greatboleCatastropheThreshold", 0.70f);
             Scribe_Values.Look(ref greatboleCatastropheEnabled, "greatboleCatastropheEnabled", true);
+            Scribe_Values.Look(ref greatboleSeedPlantingEnabled, "greatboleSeedPlantingEnabled", true);
+            Scribe_Values.Look(ref greatboleServantsEnabled, "greatboleServantsEnabled", false);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -394,6 +403,17 @@ namespace RimMandrake.Greentide
                 list.Label("  The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
                 greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
             }
+            list.CheckboxLabeled("Greatbole seeds can be planted (next game start)", ref greatboleSeedPlantingEnabled,
+                "On: a greatbole seed can be planted like a Gauranlen seed. A planted greatbole grows only with open "
+              + "water in a neighbouring cell, and then grows far faster than any other tree; its inspect pane says "
+              + "which. Off: seeds are trade goods only, and any already-planted greatbole grows at the ordinary "
+              + "rate with no water rule. Takes effect the next time the game starts.");
+            list.CheckboxLabeled("Opt-in: greatbole servants (dryads) (next game start)", ref greatboleServantsEnabled,
+                "Changes the tree's character — default off, and the Utinni campaign ships with it off. On: the "
+              + "living heart of a greatbole works like a Gauranlen tree. A colonist can connect to it (stand in the "
+              + "mined-open cell just west of the heart) and direct its dryads; colony buildings near it do NOT "
+              + "weaken the connection. Expected: its dryads will fight the fruit's grubs, which stay hostile in "
+              + "every configuration. Takes effect the next time the game starts.");
             list.Label("Breaklight, wet-bulb overwhelm, the dry-air blower's field, living greatbole placement and "
               + "root causeways are switched in the Environmental Hazards Kit's settings.");
 

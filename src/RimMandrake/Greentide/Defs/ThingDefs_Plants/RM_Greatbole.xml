@@ -67,6 +67,9 @@
 
   <ThingDef ParentName="TreeBase">
     <defName>RM_Greatbole</defName>
+    <!-- GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1 §3c: a greatbole planted from RM_GreatboleSeed needs
+         open water beside it and then grows fast. Touches sown trees only; wild ones are unchanged. -->
+    <thingClass>RimMandrake.Greentide.RM_Plant_Greatbole</thingClass>
     <label>greatbole</label>
     <description>A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. Given centuries and left uncut, a greatbole like this one becomes something else entirely — a trunk too vast to still be called a tree.</description>
     <graphicData>
@@ -103,6 +106,10 @@
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
     <modExtensions>
+      <li Class="RimMandrake.Greentide.RM_GreatboleSeedlingExtension">
+        <waterRadius>1.5</waterRadius>
+        <sownGrowthMultiplier>20</sownGrowthMultiplier>
+      </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_FellableTreeExtension">
         <isGiantClass>true</isGiantClass>
         <fellLength>16</fellLength>

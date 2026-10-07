@@ -29,16 +29,10 @@ built and reusable.
    anima focus (fixed-strength first; harmony-tracking needs a runtime-variable focus strength,
    UNMEASURED) and arboreal servants (objection raised and dissolved in the spec's own §8b-ii —
    it holds only when the *design* chooses for the player, not when the player opts in).
-5. **The seed's actual planting/growth mechanic (§3c)** — DEFERRED, not attempted in
-   `GREATBOLE_HARVEST_LADDER_1`. `RM_GreatboleSeed` exists as a real, tradeable item (a product of
-   `RM_ButcherGreatboleFruit`); `RM_Greatbole` itself shipped at `f521c0c79`
-   (`GREENTIDE_JUNGLE_TREE_ROSTER_1`, 2026-09-26), so wiring the seed to plant it is unblocked. The growth-rate
-   mechanism itself (a `Plant` subclass overriding the virtual `GrowthRate` to read adjacent
-   terrain) is already ANSWERED and buildable — see the harvest spec's own §10 answer, MEASURED
-   2026-09-23 against the decompiled engine — this item only owes the wiring once the real tree
-   exists.
-6. **Gorbeleth toxin as the sealant's reagent (spec §11)** — blocked on Gorbeleth's own roster
-   entry; that creature/plant does not exist anywhere in `src/` yet (checked 2026-09-25).
+5. **The seed's planting/growth mechanic (§3c)** — BUILT OFFLINE 2026-10-06 (see "Built" below); live proof owed.
+6. **Gorbeleth toxin as the sealant's reagent (spec §11)** — `RM_Gorbeleth` now exists (tree roster,
+   `src/RimMandrake/Greentide/Defs/ThingDefs_Plants/RM_Greentide_TreeRoster.xml`), so this is no longer
+   blocked on the roster; the reagent wiring itself is not built.
 7. **Royal Rind's Contagion/Miasma stat wiring** — `RM_Apparel_RindCoat` ships today with the
    vanilla-stat portion (`ArmorRating_Heat`, `Insulation_Heat`, `Insulation_Cold`, ruled numbers).
    The Scald/Contagion/Miasma custom-stat portion (`RM_ScaldProtection` etc.) is blocked on
@@ -91,3 +85,27 @@ built and reusable.
 host, plus ~2 small C# classes for the two ritual gates. No need to go back to him.
 NEXT: build it in the free Greentide mod (where the 2026-10-03 ruling moves heartwood/core) when its DLL is not
 frozen for a live run; default OFF Mod Settings toggle per §8b.
+
+## Built offline 2026-10-06 (FOUNDRY) — game down, nothing deployed, nothing live-proven
+
+All in `src/RimMandrake/Greentide`; DLL rebuilt clean (`winbuild.py Greentide`, 0 warnings).
+
+- **Seed planting (§3c).** `RM_GreatboleSeed` gets vanilla `CompProperties_Plantable` → `RM_Greatbole`
+  (gated patch `Patches/RM_Greatbole_Crossovers.xml`, setting "Greatbole seeds can be planted", default ON).
+  `RM_Greatbole` now uses `RM_Plant_Greatbole` (`Source/RM_Plant_Greatbole.cs`): for **sown** trees only,
+  `GrowthRate` is 0 without open water within 1.5 cells and ×20 with it (INVENTED, 220 → 11 days), with an
+  inspect line saying which. Wild greatboles are unchanged. Dry cells are not refused at targeting time
+  (`CompPlantable.CanPlantAt` is not virtual); the sapling just doesn't grow and says why.
+- **Servant crossover (§8b-ii).** Same patch file, setting "Opt-in: greatbole servants", DEFAULT OFF:
+  `CompProperties_TreeConnection` on `RM_GreatboleCore` (vanilla numbers, building radius 0 + flat-zero
+  curve), `ritualFocus`, and the two ritual gates swapped for `RM_RitualObligationTargetWorker_UnconnectedDryadSpawner`
+  / `RM_RitualPosition_BesideDryadSpawner` (`Source/RM_GreatboleServants.cs`), which read
+  `ThingRequestGroup.DryadSpawner` and so keep vanilla Gauranlen trees working.
+- **Pre-existing defect fixed:** `RM_GreatboleCore` had no `tickerType`, so it defaulted to Never and
+  `RM_CompGreatboleHarvestLadder.CompTick` never ran — the whole harvest ladder could not fire. Now `Normal`.
+- **Not built:** the song (needs AtmosphericBase / the soundscape scalar driver, unbuilt), thermal pull,
+  pilgrims, anima crossover, Wildsteam goodwill-for-planting (campaign tier), Royal Rind stats.
+
+NEXT: live-verify on a quicktest: plant a seed beside water and on dry ground and read growth/inspect;
+with servants ON, start the connection ritual on a core whose west cell is mined open and check dryads spawn
+and connection strength takes no building loss.
