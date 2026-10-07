@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RM_SumpWalkways.xml           UtinniPatches · authored 2026-09-24
+  RM_SumpWalkways.xml           TheSump · authored 2026-09-24
   ============================================================================
   SUMP_WALKWAYS_1 build pass ("Sump walkways, two tiers"). Owner ruling
   (question card, 2026-09-24): duckboards (cheap, foul with tar, burn) and
@@ -20,7 +20,7 @@
   smooth deliberate floor. filthAcceptanceMask is left UNSET (defaults to
   FilthSourceFlags.Any, Source/Verse/TerrainDef.cs:311) — ordinary floors
   already accept filth; the actual souring comes from
-  RUT_TarShallow_FilthAcceptance.xml's amended <generatedFilth> wiring
+  RUT_TarShallow_GeneratedFilth.xml's <generatedFilth> wiring
   (RM_Filth_Tar, pathCost 34) tracked in from natural tar by vanilla's own
   Pawn_FilthTracker, and RM_Filth_Tar being the max-of-things-on-cell cost
   PathGrid.CalculatedCostAt already applies (Source/Verse/AI/PathGrid.cs:120)
@@ -36,13 +36,9 @@
   verified Verse/TerrainDef.cs — same requirement RUT_TarMoat.xml's own
   header already documents) rather than inventing a new one — no new art.
 
-  costList: WoodLog, 4/cell — PLACEHOLDER. `RM_Brindeth` (the flora this
-  is meant to be built from, flora roster row 5) does not exist yet
-  (checked this pass: 0 hits for RM_Brindeth outside design docs and this
-  item's own file) — same "flag a placeholder, do not invent the items
-  pass's own economy def" posture RUT_TarMoat.xml's own header already
-  established for barreled tar. ⚠️ OWED: re-point at real brindeth wood the
-  moment that flora ships.
+  costList: WoodLog, 4/cell — the real brindeth economy, not a placeholder:
+  `RM_Brindeth` (RM_SumpFlora.xml) harvests vanilla WoodLog (harvestYield
+  4), so brindeth wood IS WoodLog and no repoint is owed.
 
   Texture reuses vanilla WoodFloor (Terrain/Surfaces/WoodFloor), tinted
   greyer/duller than milled WoodPlankFloor's own warm brown to read as
@@ -82,10 +78,9 @@
   costList: RM_Bitumen, 6/cell — REPOINTED, SUMP_TAR_NASTINESS_1
   (2026-09-24): was Chemfuel/6 as a PLACEHOLDER pending a real bitumen def;
   RM_Bitumen.xml (this same pass) ships that def, so the placeholder is
-  retired here in the same commit that created its replacement. ⚠️ Still
-  OWED: RM_Bitumen itself has no harvest source yet (the korveth plant and
-  the dig-barrel economy are both separately unbuilt) — the cost is real,
-  the supply chain feeding it is not.
+  retired here in the same commit that created its replacement. RM_Bitumen
+  is made from RM_KorvethPitch (2 : 1, recipeMaker in RM_Bitumen.xml), the
+  RM_Korveth harvest, so the supply chain ships in this mod.
 
   Texture reuses RM_TarDeep's own texturePath (WaterDeepRamp) — same
   "poured/cooled tar IS the same substance" reasoning RUT_TarMoat.xml

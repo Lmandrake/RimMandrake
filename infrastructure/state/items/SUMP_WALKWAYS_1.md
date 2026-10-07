@@ -167,3 +167,11 @@ Every live-verification line from the 2026-09-24 pass above still stands;
 item stays in `doing`. Full session account (disarm interaction + the
 sibling bitumen reconciliation): `SUMP_MECHANICS_1.md`'s "Owner card 2 build
 pass" section, same commit.
+
+## Current locations — FOUNDRY, 2026-10-06
+
+`697cdc300` (`SUMP_FREE_TIER_MOVE_BUILD_1`) moved this kit into the free Sump under RM_ names.
+The `RUT_` paths above are history. Live files: `src/RimMandrake/TheSump/Defs/TerrainDefs/RM_SumpWalkways.xml`
+(`RM_Duckboards`, `RM_Glasswalk`); the korveth recipe is inlined in
+`src/RimMandrake/TheSump/Defs/ThingDefs_Items/RM_Bitumen.xml`, and `RUT_Bitumen_KorvethSource.xml` is gone.
+The slip comp is still `RM_MapComponent_GlasswalkSlip.cs`. Nothing is left to build offline. The `## verify` quicktest is the only thing still owed.
