@@ -1,0 +1,970 @@
+[
+ {
+  "item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1",
+  "criterion": "A2",
+  "text": "RUT_FeralSurvivor and RUT_Hediff_FeralScar resolve live on the minimal list via jawa/get_defs.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "PawnKindDef/RUT_FeralSurvivor",
+   "HediffDef/RUT_Hediff_FeralScar"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FORGE_ENRICHMENT_QUICKTEST_1",
+  "criterion": "A5",
+  "text": "Player.log is clean of the four named defs after load.",
+  "status": "NEEDS_LIVE",
+  "source": "PROSE",
+  "defs": [
+   "HediffDef/RM_DhuvvoxRunSlowing",
+   "ThingDef/RM_FloatstoneKeelBrace",
+   "ResearchProjectDef/RM_SpunstoneBonding"
+  ],
+  "missing": [],
+  "live_kind": [
+   "log"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "MINDSTONE_MATRIX_KINDLED_BUILD_1",
+  "criterion": "A1",
+  "text": "The mindstone recipes, RSW_DW_Head_Mindstone and related defs resolve live on the minimal list via jawa/get_de",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RSW_DW_Head_Mindstone"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "SCALD_WATER_AGITATION_FLECKS_1",
+  "criterion": "A1",
+  "text": "The Scald terrains, agitation tags and setting defs resolve live via jawa/get_defs.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "TerrainDef/RUT_ScaldMargin",
+   "TerrainDef/RUT_ScaldWaterMovingChestDeep",
+   "TerrainDef/RUT_ScaldWaterMovingShallow",
+   "TerrainDef/RUT_ScaldWaterOceanDeep",
+   "TerrainDef/RUT_ScaldWaterOceanShallow",
+   "ThingDef/RUT_ScaldWreckHull"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "VAULT_THAW_QUEST_FAMILY_1",
+  "criterion": "A1",
+  "text": "The eight vault quest defs resolve live via jawa/get_defs.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ResearchProjectDef/RUT_Antiq_Cartography",
+   "ResearchProjectDef/RUT_Antiq_Voice",
+   "IncidentDef/RUT_GiveQuest_VaultThaw_V1_RustCathedral",
+   "IncidentDef/RUT_GiveQuest_VaultThaw_V6_Umbra",
+   "QuestScriptDef/RUT_Reclamation",
+   "QuestScriptDef/RUT_VaultClaimConflict",
+   "ThingDef/RUT_VaultHeart",
+   "SitePartDef/RUT_VaultSite_Type3",
+   "QuestScriptDef/RUT_VaultThaw_V6_Umbra"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GREENTIDE_BASE_PORT_BUILD_1",
+  "criterion": "A2",
+  "text": "jawa/get_defs on the free tier returns foundCount equal to 17 for the listed Greentide defs with none in notFo",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "IncidentDef/RM_Breaklight",
+   "WeatherDef/RM_BreaklightClear",
+   "GameConditionDef/RM_BreaklightCondition",
+   "HediffDef/RM_DryAirAversion",
+   "ThingDef/RM_DryAirBlower",
+   "GenStepDef/RM_GenStep_LivingBoles",
+   "GenStepDef/RM_GenStep_RootCauseways",
+   "ThingDef/RM_GreatboleCore",
+   "ThingDef/RM_GreatboleDeadHusk",
+   "IncidentDef/RM_GreatboleFruitfall",
+   "ThingDef/RM_GreatboleGrub",
+   "ThingDef/RM_GreatboleHardwood",
+   "ThingDef/RM_GreatboleHeartwood",
+   "ThingDef/RM_GreatboleTrunkSegment",
+   "BiomeDef/RM_Greentide",
+   "GameConditionDef/RM_GreentideWetBulbLock",
+   "ThingDef/RM_Krannock",
+   "GameConditionDef/RM_RoilLock",
+   "WeatherDef/RM_RoilWeather",
+   "TerrainDef/RM_RootCauseway",
+   "ThingDef/RM_SteamDevil",
+   "IncidentDef/RM_SteamDevilAppears",
+   "TerrainDef/RM_ToxinSealedFloor",
+   "HediffDef/RM_WetBulbOverwhelm",
+   "BiomeDef/RUT_Greentide",
+   "ThingDef/RUT_Hardwood",
+   "FactionDef/RUT_Jawa_WildsteamClan"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_GreatboleGrub",
+   "RM_Krannock"
+  ]
+ },
+ {
+  "item": "JAWABENCH_DLL_STALE_REBUILD_1",
+  "criterion": "A2",
+  "text": "The flowworks_pulse and static_call tools appear in the live tool list once the game is up.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "tool list"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "MOD_OPTIONS_RETROFIT_1",
+  "criterion": "A1",
+  "text": "On a full-list load Mod Settings opens for each of our mods with no red errors.",
+  "status": "NEEDS_LIVE",
+  "source": "PROSE",
+  "defs": [
+   "TerrainDef/RM_Churnmud",
+   "QuestScriptDef/RUT_Reckoning_CartelOffer",
+   "BiomeDef/RUT_Scarlands",
+   "BiomeDef/RUT_Webwork"
+  ],
+  "missing": [],
+  "live_kind": [
+   "settings"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "PYRINTH_FIRST_SCRIPT_1",
+  "criterion": "A2",
+  "text": "the resolved-live checks in the Pyrinth script pass against jawa/get_defs on the minimal list.",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "STILLSAND_FIXES_LIVE_PROOF_1",
+  "criterion": "A1",
+  "text": "The full-list load log shows the expected strings for the Stillsand fixes.",
+  "status": "NEEDS_LIVE",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Filth_DisturbedSand",
+   "ThingDef/RM_KneelOllim",
+   "ThingDef/RM_Oorrik",
+   "ThingDef/RM_Soorrak",
+   "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+  ],
+  "missing": [],
+  "live_kind": [
+   "log"
+  ],
+  "multi_type": [
+   "RM_Oorrik",
+   "RM_Soorrak"
+  ]
+ },
+ {
+  "item": "STILLSAND_FIXES_LIVE_PROOF_1",
+  "criterion": "A2",
+  "text": "spawn_pawn of RM_Oorrik succeeds.",
+  "status": "NEEDS_LIVE",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_Oorrik"
+  ],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": [
+   "RM_Oorrik"
+  ]
+ },
+ {
+  "item": "SURFACE_RIVER_WEIRS_1",
+  "criterion": "A1",
+  "text": "The River Works defs (weir, levee, silt trap, ferry, drift) resolve live after deploy.",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "WASTELAND_MECHANICS_BUILD_1",
+  "criterion": "A1",
+  "text": "The Wasteland defs resolve via jawa/get_defs with none in notFound.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_ContaminantBezoar",
+   "ThingDef/RM_SootBrick",
+   "ThingDef/RM_VitrifiedBezoar"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "BARBSLINGER_SCORPION_REDESIGN_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_Barbslinger and RM_BarbslingerTailGun comps with no missing types",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_Barbslinger",
+   "ThingDef/RM_BarbslingerTailGun"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_Barbslinger"
+  ]
+ },
+ {
+  "item": "CAULDRON_ENRICHMENT_VISUALS_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves the dewfall bead, flora accent, assay fleck and vexxiss print defs with foundCount matc",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FEVERWOOD_BOUGH_SOIL_TERRAIN_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs returns RUT_BoughSoil with foundCount 1 and fertility as expected",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "TerrainDef/RUT_BoughSoil"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "JAWA_SWIM_HOOD_KEEP_1",
+  "criterion": "A1",
+  "text": "the deployed JawaRules DLL state-read shows Apparel_Head.CanDrawNow true for a swimming Jawa wearing a hood",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "LIQUID_INDUSTRY_SETPIECES_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves the desal, detox, tar and pumping Wrecked, Kludged and Repaired defs",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "MOVING_DUNES_BUILD_1",
+  "criterion": "A3",
+  "text": "the shader tint gate (MaterialColor vs VertexColor) is resolved by a live load",
+  "status": "NEEDS_LIVE",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Dunes_BuriedCache",
+   "RimMandrake.MovingDunes.RM_DuneMaterialDef/RM_Dunes_Sand"
+  ],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "STILLSAND_GEOPHONE_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_Geophone with expected fields",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_Geophone"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "WRECKED_DISTILLATION_MODULE_1",
+  "criterion": "A1",
+  "text": "the three distillation tier defs resolve live on the minimal list",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "DROIDWORKS_WIPE_SEVERITY_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves RSW_DW_RecentlyWiped and the five quirk traits with foundCount matc",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "HediffDef/RSW_DW_RecentlyWiped"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FEVERWOOD_RM_CAST_COMPLETION_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list for the seven creature ThingDefs and PawnKindDefs plus RM_SkrethMatron and R",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "PawnKindDef/RM_SkrethMatron"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FORGE_SPUNSTONE_SOURCES_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves RM_FloatstoneDoor, RM_SpunstoneHull and the salvage-cache study pat",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_FloatstoneDoor",
+   "ThingDef/RM_SpunstoneHull"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "LIVE_ROUND2_FIXES_PROOF_1",
+  "criterion": "A3",
+  "text": "Player.log after the WhisperSarlaccSign genstep shows 0 MakeThing stuff=null errors.",
+  "status": "NEEDS_LIVE",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Muurrok",
+   "IncidentDef/RM_MuurrokEmergence",
+   "ThingDef/RM_Soorrak",
+   "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+  ],
+  "missing": [],
+  "live_kind": [
+   "log"
+  ],
+  "multi_type": [
+   "RM_Muurrok",
+   "RM_Soorrak"
+  ]
+ },
+ {
+  "item": "PIT_TEMPERATURE_SOFTENING_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves the exposure hediff and RM_ExposedPrisoner thought.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThoughtDef/RM_ExposedPrisoner"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "SCARLANDS_MECHANICS_2",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves the Scarlands mark, scaria incubation hediffs and sentinel defs wit",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "JobDef/RM_Gnaw",
+   "BiomeDef/RM_Warscar",
+   "ThingDef/RSW_FoundryBeetle",
+   "PawnKindDef/RSW_Mynock",
+   "GameConditionDef/RUT_MiasmaWeatherLock",
+   "HediffDef/RUT_ScariaIncubation",
+   "GameConditionDef/RUT_ScariaOnsetArming",
+   "BiomeDef/RUT_Scarlands",
+   "GenStepDef/RUT_ScarlandsGraveWardScatter",
+   "HediffDef/RUT_ScarlandsMark",
+   "GameConditionDef/RUT_ScarlandsMarkLock",
+   "GenStepDef/RUT_ScarlandsSprungDangers",
+   "DutyDef/RUT_SentinelDefend",
+   "ThingDef/RUT_SentinelGraveWard",
+   "PrefabDef/RUT_SprungMechShell",
+   "PrefabDef/RUT_SprungOpenedContainer",
+   "PrefabDef/RUT_SprungVaultBreach",
+   "ThingDef/RUT_VaultHeart"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RSW_FoundryBeetle",
+   "RSW_Mynock",
+   "RUT_ScarlandsMark"
+  ]
+ },
+ {
+  "item": "STILLSAND_PRECIOUS_CAVES_LIVE_1",
+  "criterion": "A1",
+  "text": "The Stillsand mod deploys and its defs and genstep resolve on the minimal list.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "BiomeDef/RM_Stillsand"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "WARSCAR_RAINBOW_POOLS_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves the reagent defs and the liquid registry row.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_BloomLiquor",
+   "ThingDef/RM_DielectricGel",
+   "ThingDef/RM_Etchant",
+   "ThingDef/RM_GlowerCrust",
+   "RimMandrake.FlowWorks.LiquidTypes.LiquidDef/RM_Liquid_ReactionLiquor",
+   "ThingDef/RM_MedicalCoagulant",
+   "TerrainDef/RM_ReactionLiquorShallow",
+   "ThingDef/RM_ReactionTap"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "WYYYSCHOKK_FANG_PENDANT_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs on the minimal list resolves the fang item, pendant apparel, recipes and thought worker.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RSW_Apparel_FangPendant",
+   "ThingDef/RSW_WyyyschokkFang"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "ARMOURY_KOTOR_BOLT_GUARD_1",
+  "criterion": "A1",
+  "text": "After deploying Armoury, jawa/get_defs shows KotORBlasterBolt_default ranged patch damage reading 33.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/KotORBlasterBolt_default"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "DEBUG_ACTION_ENUM_CRASH_1",
+  "criterion": "A1",
+  "text": "jawa/debug_action_yielders called live in the main-menu state returns without crashing.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "DEBUG_ACTION_ENUM_CRASH_1",
+  "criterion": "A2",
+  "text": "jawa/debug_action_yielders called live in a loaded-game state returns without crashing.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "FORGE_WHITE_PLUME_FRONTS_1",
+  "criterion": "A2",
+  "text": "The plume-front defs and settings resolve live on the minimal list via jawa/get_defs.",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1",
+  "criterion": "A1",
+  "text": "thing_graphic, spawn_variant, running_mods, glow_at and site_state appear in the live tool list and answer on",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "tool list"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "LASSO_CHERRYPICKER_REMOVAL_1",
+  "criterion": "A1",
+  "text": "The live CherryPicker config is reconciled (2133 unrecognised cuts) and cherrypicker_swap --ship --apply succe",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "LASSO_CHERRYPICKER_REMOVAL_1",
+  "criterion": "A2",
+  "text": "Melee Animation LassoSpawnChance is set to 0.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "settings"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "STILLSAND_SAND_SIEVE_CHORE_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_SandSieve, the RM_SiftGlassSand job and its WorkGiver.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_SandSieve",
+   "JobDef/RM_SiftGlassSand"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_SiftGlassSand"
+  ]
+ },
+ {
+  "item": "WARSCAR_TOTCHAK_WAKES_1",
+  "criterion": "A1",
+  "text": "The totchak genstep, gnaw job and lie-down giver defs resolve live.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RUT_SealedSleeper"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RUT_SealedSleeper"
+  ]
+ },
+ {
+  "item": "WEBWORK_TRACTION_LANCE_BUILD_1",
+  "criterion": "A2",
+  "text": "jawa/get_defs resolves RM_TractionLance, its research def and the repointed junctions.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_TractionLance"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "ARMOURY_PROJECTILE_DAMAGE_TOOL_1",
+  "criterion": "A3",
+  "text": "jawa/projectile_damage returns the vanilla control value (Bullet_Revolver 12) live on the minimal list.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "FIREHAWK_FLIGHT_BEHAVIOR_1",
+  "criterion": "A2",
+  "text": "jawa/get_defs resolves the flyingAnimation fields on the RM_FireHawk PawnKindDef as expected.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_FireHawk"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_FireHawk"
+  ]
+ },
+ {
+  "item": "FLOWWORKS_VISUAL_PRINCIPLES_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves the surfaceLook data on the liquid defs as expected.",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GREENTIDE_STELLOCK_LACE_BUILD_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_StellockBranch, Lace and Laced defs as expected.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_StellockBranch"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "LEANINGSCRUB_ENRICHMENT_QUICKTEST_1",
+  "criterion": "A1",
+  "text": "The flora_spawns check passes after fixing the RM_Grellspine failure.",
+  "status": "NEEDS_LIVE",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_Grellspine"
+  ],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "PROXIMITY_HATCH_FIRST_SCRIPT_1",
+  "criterion": "A2",
+  "text": "The settings and defs_resolve checks pass live on the minimal list.",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [
+   "state-read"
+  ],
+  "multi_type": []
+ },
+ {
+  "item": "RUST_CATHEDRAL_MECHANICS_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves all RustCathedral defs as expected.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RUT_CathedralRoach",
+   "ThingDef/RUT_CathedralRoachShell",
+   "BiomeDef/RUT_RustCathedral",
+   "ThingDef/RUT_ScarRoach"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RUT_CathedralRoach",
+   "RUT_ScarRoach"
+  ]
+ },
+ {
+  "item": "STILLSAND_CAVE_AS_PLACE_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves the Stillsand cave preservation, RM_CaveDrip and RM_GrownBiosilicaWall defs as expected",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "SoundDef/RM_CaveDrip",
+   "ThingDef/RM_GrownBiosilicaWall"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "STILLSAND_SUN_LANCE_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_SunLance as expected.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_SunLance"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "WARSCAR_TURRETS_TRACK_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs resolves RM_OldLineTurret and its patch as expected.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_OldLineTurret"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FOOTPRINT_TRACK_GRID_1",
+  "criterion": "A2",
+  "text": "The Stillsand track patch resolves live on the minimal list.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "TerrainDef/RM_DeepSand",
+   "ThingDef/RM_Filth_SettledFilm",
+   "GameConditionDef/RM_Settling",
+   "BiomeDef/RM_Stillsand"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GREENTIDE_THURROCK_HERD_BUILD_1",
+  "criterion": "A2",
+  "text": "RM_Thurrock race, kind, RM_ThurrockShatter and the aura applier defs resolve live on the minimal list.",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_Thurrock",
+   "HediffDef/RM_ThurrockShatter"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_Thurrock"
+  ]
+ },
+ {
+  "item": "SEA_FISHABLES_ALIVE_IN_DEPTHS_1",
+  "criterion": "A2",
+  "text": "Each sea's defs and wildAnimals resolve live on the minimal list with a living body for every catch.",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Essarn",
+   "ThingDef/RM_EssarnCatch",
+   "BiomeDef/RM_GreySea",
+   "ThingDef/RM_HaarnCatch",
+   "ThingDef/RM_HessalCatch",
+   "ThingDef/RM_ImmuCatch",
+   "ThingDef/RM_Karrud",
+   "ThingDef/RM_KarrudCatch",
+   "ThingDef/RM_MaaluCatch",
+   "ThingDef/RM_OomalCatch",
+   "ThingDef/RM_Sallik",
+   "ThingDef/RM_SallikCatch",
+   "ThingDef/RM_Sorruth",
+   "ThingDef/RM_SorruthCatch",
+   "BiomeDef/RM_TheChill",
+   "BiomeDef/RM_TheScald",
+   "BiomeDef/RM_TwilightSea",
+   "ThingDef/RUT_Haarn",
+   "ThingDef/RUT_Hessal",
+   "ThingDef/RUT_Immu",
+   "ThingDef/RUT_Karrud",
+   "ThingDef/RUT_Maalu",
+   "ThingDef/RUT_Oomal",
+   "ThingDef/RUT_Sallik"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_Essarn",
+   "RM_Karrud",
+   "RM_Sallik",
+   "RM_Sorruth"
+  ]
+ },
+ {
+  "item": "UTINNI_WORLDMAP_FLIGHT_ICON_1",
+  "criterion": "A1",
+  "text": "The UtinniWorldIcon texPath fields resolve live to the RUT_Utinni textures.",
+  "status": "DEFS_UNRESOLVED_OFFLINE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [
+   "RUT_Utinni"
+  ],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "FORCE_DISTURBANCE_REFLAVOR_1",
+  "criterion": "A1",
+  "text": "after deploy, the patched psychic event defs resolve live with Force-flavoured label and letter text and no va",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+  "criterion": "A1",
+  "text": "jawa/get_defs ThingDef/RM_TitanoslimeChunk returns foundCount 1",
+  "status": "OFFLINE_PRESENT",
+  "source": "NAMED",
+  "defs": [
+   "ThingDef/RM_TitanoslimeChunk"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "GRAVSHIP_ACOUSTIC_SCANNER_1",
+  "criterion": "A1",
+  "text": "the Sounder, its research and the BiomeDef payload extension resolve live via jawa/get_defs",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1",
+  "criterion": "A1",
+  "text": "the Vissler arm resolves live as rottable and ingestible via jawa/get_defs",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Vissler",
+   "ThingDef/RM_VisslerArm"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_Vissler"
+  ]
+ },
+ {
+  "item": "NORTHSTAR_COMPANION_GAPS_1",
+  "criterion": "A1",
+  "text": "the six JawaBenchSituationalTools tools (pawn_census, pawn_roles, incident_queue_peek, incident_queue_remove,",
+  "status": "NEEDS_LIVE",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "SHIELD_MODS_LEVERAGE_1",
+  "criterion": "A1",
+  "text": "the four shield fields, landing advisory and hazard exposure tracker defs resolve live via jawa/get_defs",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RUT_ShieldGenerator",
+   "ThingDef/RUT_ShieldModule_Cryo"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ },
+ {
+  "item": "SUMP_TAR_NASTINESS_1",
+  "criterion": "A1",
+  "text": "the tar kit defs resolve live under their RM_ names via jawa/get_defs",
+  "status": "OFFLINE_PRESENT_PROSE_DERIVED",
+  "source": "PROSE",
+  "defs": [
+   "ThingDef/RM_Filth_Tar",
+   "ThingDef/RM_SapResin",
+   "ThingDef/RM_Seepwax",
+   "TerrainDef/RM_TarShallow",
+   "BiomeDef/RM_TheSump",
+   "ThingDef/RM_Thrummel",
+   "ThingDef/RM_ThrummelBroodmother",
+   "ThingDef/RM_ThrummelWarden",
+   "ThingDef/RM_ToxinSealant",
+   "RecipeDef/RSW_RemoveBrainWorm",
+   "ThingDef/RUT_BeastBulge",
+   "ThingDef/RUT_Greenwood",
+   "ThingDef/RUT_Hardwood",
+   "BiomeDef/RUT_Sump",
+   "TerrainDef/RUT_TarMoat",
+   "ThingDef/RUT_WickStem"
+  ],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": [
+   "RM_Thrummel",
+   "RM_ThrummelBroodmother",
+   "RM_ThrummelWarden"
+  ]
+ },
+ {
+  "item": "THE_SUMP_FIRST_SCRIPT_1",
+  "criterion": "A2",
+  "text": "the 35 DEPLOY_HOLD held defs are resolved so their bars are measured rather than UNMEASURED",
+  "status": "DEFS_NO_NAMES_FOUND",
+  "source": "NONE",
+  "defs": [],
+  "missing": [],
+  "live_kind": [],
+  "multi_type": []
+ }
+]
