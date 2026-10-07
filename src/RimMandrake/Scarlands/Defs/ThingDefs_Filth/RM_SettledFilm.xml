@@ -32,6 +32,11 @@
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
         <biomes><li>RM_Warscar</li></biomes>
+        <!-- WARSCAR_CHOTRIX_SIGNS_1: the chotrix's own print class. RM_ChotrixPrint.png is a PLACEHOLDER copy of
+             the shared animal print until its real art lands through the art ledger. -->
+        <raceOverrides>
+          <li><race>RM_Chotrix</race><texPath>Things/Tracks/RM_ChotrixPrint</texPath></li>
+        </raceOverrides>
       </li>
     </modExtensions>
   </ThingDef>
