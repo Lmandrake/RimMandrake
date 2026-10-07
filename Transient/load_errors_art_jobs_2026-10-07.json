@@ -1,0 +1,49 @@
+[
+ {
+  "rimflow_item_id": "LOAD_ERRORS_FIX_2026-10-07",
+  "target_def": "RM_Borehulk",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "rust cathedral register: a flat metal plateau under a sun standing straight overhead forever, the ground an ancient factory roof of riveted deck plate cut by a maze of deliberate circuit-board walls, rust dust banked against them, heat shimmer, hard white overhead light; bake NO cast shadow onto the ground; painterly vanilla-RimWorld art style, grounded believable materials, matte except bare worked metal, never cartoonish, never cute, no outlines; genuinely transparent alpha background; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" - this subject's palette anchor is FADED SAFETY-YELLOW and OXIDE-RED paint worn down to bare gunmetal at every edge, with black track rubber and pale rust dust caked in the tracks; colossal scale, bs~6, drawSize ~5; idling, boom lowered; north facing is a true rear view seen from directly behind: the back of the hull, the engine housing and both tracks, no drill tip or lens visible",
+  "id": "RM_Borehulk_v2",
+  "prompt": "RimWorld game creature sprite: the borehulk, a colossal old mining droid that is more a digging tank than a robot: a long low armoured hull on two broad caterpillar tracks, slabs of thick riveted armour plate bolted over everything, a heavy articulated boom at the front ending in a big conical drill head that is WORN DOWN TO A BLUNT STUB with chipped flutes, a wide bucket scoop slung under the boom, and a tiny dim sensor head with one dull amber lens sitting almost lost on top of the hull. It looks enormously strong, slow, harmless and not very bright. Industrial mining machine, never a war machine: no guns, no weapons, no spikes.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 5.0,
+  "facings": [
+   "south"
+  ],
+  "derive_from": "RM_Borehulk_east"
+ },
+ {
+  "rimflow_item_id": "LOAD_ERRORS_FIX_2026-10-07",
+  "target_def": "RM_YearningFruitHarvested",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines; one centred subject on a transparent background, no ground plane, no props, no baked shadow. Our own original design.",
+  "id": "item_yearningfruitharvested_v1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1,
+  "facings": [],
+  "prompt": "RimWorld item sprite, top-down three-quarter view, painterly: a small heap of picked yearning fruit, plump sweet jungle fruit glossy with damp, saturated greens and warm flushed skin, still carrying a short twist of stem. Reads clearly at item size. One item heap, centred.",
+  "biome_register": "the greentide register: a steaming river jungle of the dayside under a sun that never sets, saturated deep greens and wet blacks, every surface glossy with damp"
+ },
+ {
+  "rimflow_item_id": "LOAD_ERRORS_FIX_2026-10-07",
+  "target_def": "RM_SweetlineToken",
+  "priority": 20,
+  "background": "transparent",
+  "channel": "codex",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines; one centred subject on a transparent background, no ground plane, no props, no baked shadow. Our own original design.",
+  "id": "item_sweetlinetoken_v1",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1,
+  "facings": [],
+  "prompt": "RimWorld item sprite, top-down three-quarter view, painterly: a pilgrim's token, a small knot of braided silver-grey wool with a single bead or small pebble tied into it, loose ends trailing. Reads clearly at item size. One item, centred.",
+  "biome_register": "the leaning scrub register: pale, wind-combed scrubland under open sky, silver-grey wool and dry grass, soft muted light"
+ }
+]
