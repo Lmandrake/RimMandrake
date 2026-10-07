@@ -1,10 +1,10 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261006_2226). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261006_art). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
-51 stations: 13 works in game, 26 built, not yet seen, 10 partly built, 2 not built yet.
+51 stations: 13 works in game, 27 built, not yet seen, 9 partly built, 2 not built yet.
 
 ## V - pits: what they look like (south-west block)
 
@@ -388,15 +388,13 @@ Pit walls are drawn with depth, Quarry-style, so a pit reads as one big dark hol
 
 **Look at:** two 4x4 pits: empty (left) and occupied (right)
 
-**Not built yet in this feature:** an occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a pit reading as a big dark hole; a large pit reading as one place, not a grid of tiles; a bare pit never looking like a building; depth and fill both readable at once
+**Not built yet in this feature:** an occupied pit reading differently from an empty one; painted pit-wall art for all four depths; a bare pit never looking like a building; depth and fill both readable at once
 
-### 37. Spikes, ladder, gates: own drawings - partly built
+### 37. Spikes, ladder, gates: own drawings - built, not yet seen
 
 Spikes, ladders and gates have their own drawings, not borrowed vanilla ones. Today the ladder still borrows the vanilla spike trap; gates borrow the vanilla door.
 
 **Look at:** a ladder, spikes, a sluice and a grate on dug ground, side by side
-
-**Not built yet in this feature:** spike art where some spike shows; ladder art, raised and lowered; a gate looking open or shut at a glance (its own art); no pit part borrowing the vanilla spike-trap drawing
 
 ### 38. Tar and slime look thick - partly built
 
@@ -438,7 +436,7 @@ A water-fed canal improves the land: a swale turns sand into soil, and crops bes
 
 - unpause for days: the sand beside the swale slowly turns to soil
 
-**Not built yet in this feature:** the swale being locked in the campaign until found; swale art drawn from a real canal; crops beside a filled canal counting as watered
+**Not built yet in this feature:** the swale being locked in the campaign until found; crops beside a filled canal counting as watered
 
 ### 43. Panning and the sluice box - not built yet
 
