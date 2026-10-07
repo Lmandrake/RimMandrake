@@ -43,6 +43,7 @@
         <radius>7.9</radius>
         <needsPower>false</needsPower>
         <dead>true</dead>
+        <wild>true</wild>
       </li>
       <li Class="RimMandrake.Scarlands.RM_CompProperties_RingAnalyzable">
         <analysisID>740100005</analysisID>
@@ -83,6 +84,7 @@
         <radius>7.9</radius>
         <needsPower>false</needsPower>
         <dead>false</dead>
+        <wild>true</wild>
       </li>
       <li Class="RimMandrake.Scarlands.RM_CompProperties_RingAnalyzable">
         <analysisID>740100005</analysisID>
@@ -105,6 +107,40 @@
           <canTargetMechs>false</canTargetMechs>
           <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
         </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Part 7: the player-installable ring. Salvaged from a working or failing wild ring (minified, condition carried in
+       the comp); reinstalls with NO research; self-powered like the wild live ring (needsPower=false). Not in any
+       architect menu: it only exists as a salvaged item. Deconstructs/uninstalls like an ordinary building. -->
+  <ThingDef ParentName="RM_WarscarProjectorBase">
+    <defName>RM_WarscarProjector_Salvaged</defName>
+    <label>salvaged projector ring</label>
+    <description>An old-line projector ring taken up whole and carried home. Holds a dome of still, clean air on the power it carries. If it is failing it must be repaired first.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/RM_OldLineTurret_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsMisc</li></thingCategories>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <statBases>
+      <WorkToBuild>2000</WorkToBuild>
+      <Mass>35</Mass>
+    </statBases>
+    <building>
+      <claimable>true</claimable>
+      <deconstructible>true</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_WarscarRing">
+        <radius>7.9</radius>
+        <needsPower>false</needsPower>
+        <dead>false</dead>
+        <wild>false</wild>
       </li>
     </comps>
   </ThingDef>
