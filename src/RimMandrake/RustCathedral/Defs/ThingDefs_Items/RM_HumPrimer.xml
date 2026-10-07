@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 2: the hum primer. A vanilla 1.6 book (thingClass Book, CompProperties_Book),
+  written by a hum reader (RecipeDefs/RM_WriteHumPrimer.xml, gated on the trait) and sellable. Reading it through
+  (BookOutcomeProperties_HumPrimer.readingTicksToLearn, PROVISIONAL 15000 reading-ticks) grants RM_HumReader.
+  PLACEHOLDER ART: vanilla schematic textures. Art exists in artpipe (done/RM_HumPrimer) and installs through the art
+  ledger, not here. MarketValue 120 is PROVISIONAL.
+-->
+<Defs>
+  <ThingDef ParentName="BookBase">
+    <defName>RM_HumPrimer</defName>
+    <label>hum primer</label>
+    <description>A hand-copied primer of tones and figures.</description>
+    <thingClass>Book</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Book/Schematic/Schematic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <uiIconPath>Things/Item/Book/Schematic/Schematic</uiIconPath>
+    <statBases>
+      <MarketValue>120</MarketValue>
+    </statBases>
+    <comps>
+      <li>
+        <compClass>CompQuality</compClass>
+      </li>
+      <li Class="CompProperties_Book">
+        <nameMaker>RM_Namer_HumPrimer</nameMaker>
+        <descriptionMaker>RM_Description_HumPrimer</descriptionMaker>
+        <ageYearsRange>0~2</ageYearsRange>
+        <openGraphic>
+          <texPath>Things/Item/Book/Schematic/Schematic_Open</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </openGraphic>
+        <verticalGraphic>
+          <texPath>Things/Item/Book/Schematic/Schematic_Vertical</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <addTopAltitudeBias>true</addTopAltitudeBias>
+        </verticalGraphic>
+        <doers>
+          <li Class="RimMandrake.RustCathedral.Hum.BookOutcomeProperties_HumPrimer">
+            <readingTicksToLearn>15000</readingTicksToLearn>
+          </li>
+        </doers>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

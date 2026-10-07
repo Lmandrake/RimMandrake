@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: the line-cycle. Sheet §3: "a mile of machinery turning over in its sleep,
+  and every living thing on the plateau stops until it passes".
+  Category Misc, never a threat. baseChance 0 on purpose: the storyteller never picks it on its own. It is fired by
+  RM_MapComponent_LineCycle's MTB roll (Mod Settings, default 8 days) on RM_RustCathedral maps only, and by dev tools.
+  The worker refuses every other biome. Ban 1: no letter, no description that explains it.
+-->
+<Defs>
+  <IncidentDef>
+    <defName>RM_LineCycle</defName>
+    <label>line-cycle</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+      <li>Map_TempIncident</li>
+      <li>Map_Misc</li>
+    </targetTags>
+    <workerClass>RimMandrake.RustCathedral.Hum.RM_IncidentWorker_LineCycle</workerClass>
+    <baseChance>0</baseChance>
+  </IncidentDef>
+</Defs>

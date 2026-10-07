@@ -50,6 +50,13 @@ namespace RimMandrake.RustCathedral
         public static bool borehulkGrindEnabled = true;
         public static float borehulkGrindMtbHours = 4f;
 
+        // RUSTCATHEDRAL_BASE_FINISH_BUILD_1 parts 3 and 5. Both are MAP GENERATION toggles: they affect maps
+        // generated afterwards. Counts are PROVISIONAL ("a handful" of strays; eels "at a low commonality").
+        public static bool coolantEelsEnabled = true;
+        public static int coolantEelCount = 4;
+        public static bool straysEnabled = true;
+        public static int strayCount = 5;
+
         // RUSTCATHEDRAL_RM_MOD_BUILD_1 §6a / MOD_OPTIONS_RETROFIT_1: reserved
         // fields for letting this biome's mechanics run on OTHER biomes too.
         // Persisted and exposed here honestly as NOT YET WIRED to any
@@ -72,6 +79,10 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref borehulkSpawnChance, "borehulkSpawnChance", 0.6f);
             Scribe_Values.Look(ref borehulkGrindEnabled, "borehulkGrindEnabled", true);
             Scribe_Values.Look(ref borehulkGrindMtbHours, "borehulkGrindMtbHours", 4f);
+            Scribe_Values.Look(ref coolantEelsEnabled, "coolantEelsEnabled", true);
+            Scribe_Values.Look(ref coolantEelCount, "coolantEelCount", 4);
+            Scribe_Values.Look(ref straysEnabled, "straysEnabled", true);
+            Scribe_Values.Look(ref strayCount, "strayCount", 5);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -94,6 +105,12 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref RustCathedralHumSettings.boltWatchedPricingEnabled, "hum_boltWatchedPricingEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.fishingPricingEnabled, "hum_fishingPricingEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.drillResponseEnabled, "hum_drillResponseEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.lineCycleEnabled, "hum_lineCycleEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.lineCycleMtbDays, "hum_lineCycleMtbDays", 8f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.lineCycleMinSeconds, "hum_lineCycleMinSeconds", 60f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.lineCycleMaxSeconds, "hum_lineCycleMaxSeconds", 120f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.humReadingEnabled, "hum_humReadingEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.humReaderThresholdDays, "hum_humReaderThresholdDays", 5f);
 
             Scribe_Values.Look(ref RustCathedralWallsSettings.wallTiersEnabled, "walls_wallTiersEnabled", true);
             Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallsEnabled, "walls_sacredWallsEnabled", true);
@@ -150,8 +167,8 @@ namespace RimMandrake.RustCathedral
             Widgets.EndScrollView();
         }
 
-        private const float OwnSectionHeight = 700f;
-        private const float HumSectionHeight = 430f;
+        private const float OwnSectionHeight = 900f;
+        private const float HumSectionHeight = 680f;
         private const float WallsSectionHeight = 240f;
         private Vector2 scrollPosition;
 
@@ -185,6 +202,21 @@ namespace RimMandrake.RustCathedral
             RM_RustCathedralSettings.borehulkGrindEnabled = borehulkGrindEnabled;
             list.Label("Grind roughly every " + RM_RustCathedralSettings.borehulkGrindMtbHours.ToString("0.0") + " hours");
             RM_RustCathedralSettings.borehulkGrindMtbHours = list.Slider(RM_RustCathedralSettings.borehulkGrindMtbHours, 0.5f, 24f);
+            list.GapLine();
+
+            list.Label("The canals and the edges (map generation)");
+            bool coolantEelsEnabled = RM_RustCathedralSettings.coolantEelsEnabled;
+            list.CheckboxLabeled("Map generation: living coolant eels in the canals", ref coolantEelsEnabled,
+                "Map generation only: applies to maps generated afterwards. Off: no new map gets living eels; the canals stay fishable.");
+            RM_RustCathedralSettings.coolantEelsEnabled = coolantEelsEnabled;
+            list.Label("Living eels per map: " + RM_RustCathedralSettings.coolantEelCount);
+            RM_RustCathedralSettings.coolantEelCount = (int)list.Slider(RM_RustCathedralSettings.coolantEelCount, 0f, 20f);
+            bool straysEnabled = RM_RustCathedralSettings.straysEnabled;
+            list.CheckboxLabeled("Map generation: dried-out dead at the edges", ref straysEnabled,
+                "Map generation only: applies to maps generated afterwards. Off: no new map gets the desiccated animal dead at its edges.");
+            RM_RustCathedralSettings.straysEnabled = straysEnabled;
+            list.Label("Dead per map: " + RM_RustCathedralSettings.strayCount);
+            RM_RustCathedralSettings.strayCount = (int)list.Slider(RM_RustCathedralSettings.strayCount, 0f, 20f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

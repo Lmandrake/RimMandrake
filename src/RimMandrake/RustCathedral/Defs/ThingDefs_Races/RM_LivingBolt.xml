@@ -283,6 +283,9 @@
         <spawnForbidden>false</spawnForbidden>
         <writeTimeLeftToSpawn>false</writeTimeLeftToSpawn>
       </li>
+      <!-- RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 2: a hum reader sees the plain-words band and figure line here
+           (RM_HumReading.ReadoutFor); everyone else sees nothing new. -->
+      <li Class="RimMandrake.RustCathedral.Hum.CompProperties_HumReadout" />
     </comps>
   </ThingDef>
 

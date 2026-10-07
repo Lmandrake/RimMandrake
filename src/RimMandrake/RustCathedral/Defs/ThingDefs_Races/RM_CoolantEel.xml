@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 3: the living coolant eel (sheet §4; roster new_defs: canal-locked
+  movement). The floor resident of the pair whose catch is RM_CoolantEelCatch (still the biome's only fishTypes row).
+
+  - Canal-locked: never in the biome's wildAnimals (the vanilla spawner places animals on walkable land); placed into
+    standable water cells by RM_GenStep_CoolantEels at map generation. RM_JobGiver_WaterWander offers it water
+    destinations only, and RM_CompWaterLocked (mandrake.rm.environmentalhazards, the warden mother's backstop) stops
+    it dead if it is ever found on dry plate; MayRequire because this mod does not hard-depend on that one.
+  - Never tamed (Wildness 1, trainability None), never hunts (no tools, foodType None so it has no food need), flees
+    nothing (an empty constant think tree), circles (wander root = where it is).
+  - Butchering it yields RM_CoolantEelCatch (specificMeatDef) and counts as one catch for the hum
+    (HarmonyPatch_CoolantEel_ButcherIsACatch -> RM_CathedralFishing.NoteCatch).
+  PLACEHOLDER ART: vanilla cobra textures. Real facings exist in artpipe (done/RM_CoolantEel_*) and install through the
+  art ledger, not here. All numbers PROVISIONAL.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_CoolantEel</defName>
+    <label>coolant eel</label>
+    <description>A pale, eyeless eel as long as a forearm, circling slowly in the canal water. It does not seem to notice anything at all.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>40</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <Wildness>1</Wildness>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked" MayRequire="mandrake.rm.environmentalhazards">
+        <checkIntervalTicks>60</checkIntervalTicks>
+      </li>
+    </comps>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>None</foodType>
+      <needsRest>false</needsRest>
+      <thinkTreeMain>RM_ThinkTree_CoolantEel</thinkTreeMain>
+      <thinkTreeConstant>RM_ThinkTree_CoolantEelConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <specificMeatDef>RM_CoolantEelCatch</specificMeatDef>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_CoolantEel</defName>
+    <label>coolant eel</label>
+    <race>RM_CoolantEel</race>
+    <combatPower>10</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
+          <drawSize>0.9</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

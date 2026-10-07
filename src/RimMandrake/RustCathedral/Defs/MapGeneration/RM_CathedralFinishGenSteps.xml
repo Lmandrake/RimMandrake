@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 parts 3 and 5. Both steps self-gate to RM_RustCathedral in C# and are added to
+  MapCommonBase by Patches/RM_CathedralFinish_MapGenPatch.xml. Both are map-generation toggles in Mod Settings.
+
+  RM_CathedralStrays: sheet §4 "the desiccated dead are map dressing, not spawns". Kinds come from the neighbouring
+  biomes' rosters: the Scarlands (RM_Warscar, and the frozen twin RUT_Scarlands). The sheet's "the Scorch" has no
+  BiomeDef of that name in src/ (measured 2026-10-07), so it is not listed; add its defName here when one exists.
+  The fallback kinds (vanilla desert animals) apply only when no source biome resolves. edgeBand 8 is the item's
+  "within 8 cells of the map edge".
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_CoolantEelSpawn</defName>
+    <order>1210</order>
+    <genStep Class="RimMandrake.RustCathedral.RM_GenStep_CoolantEels">
+      <pawnKind>RM_CoolantEel</pawnKind>
+    </genStep>
+  </GenStepDef>
+  <GenStepDef>
+    <defName>RM_CathedralStrays</defName>
+    <order>1215</order>
+    <genStep Class="RimMandrake.RustCathedral.RM_GenStep_CathedralStrays">
+      <sourceBiomes>
+        <li>RM_Warscar</li>
+        <li>RUT_Scarlands</li>
+      </sourceBiomes>
+      <fallbackKinds>
+        <li>Iguana</li>
+        <li>Fox_Fennec</li>
+        <li>Dromedary</li>
+        <li>Rat</li>
+      </fallbackKinds>
+      <edgeBand>8</edgeBand>
+    </genStep>
+  </GenStepDef>
+</Defs>

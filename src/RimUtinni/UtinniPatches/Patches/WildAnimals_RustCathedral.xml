@@ -13,6 +13,19 @@
   carried over verbatim from that row (giant-rare 0.0005); PROVISIONAL. The
   synthetic regeneration is an art job, not done here.
 
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 6: mynocks. Sheet §4 (the_rust_cathedral.md):
+  "the one grazer that belongs ... the Cathedral tolerates them, or grooms them".
+  Commonality 0.04 is PROVISIONAL ("a low commonality"; the biome's own rows are
+  the roach 0.12 and the living bolt 0.06).
+  🔑 DELIBERATE MULTI-HOMING, do not "fix": RSW_Mynock also lives on the
+  Warscar (WildAnimals_Warscar.xml, annotated there too). A real flier
+  (MaxFlightTime 30) under the owner's flyer carve-out, and the sheet's own
+  "one home, two ranges". Precedent: the screecher, 29ccede91.
+
+  Guard: PatchOperationFindMod on the bestiary by its NAME, wrapping a
+  Conditional on the biome's own wildAnimals node. NEVER MayRequire on the
+  <Operation> node: the engine ignores it (PATCH_MAYREQUIRE_GUARD_INERT_1).
+
   ⚠️ A patch that matches nothing logs nothing — validate with
   skills/rimworld-modding/scripts/validate_patch.py.
 -->
@@ -25,6 +38,7 @@
         <xpath>Defs/BiomeDef[defName="RM_RustCathedral"]/wildAnimals</xpath>
         <value>
           <RSW_Vozzik>0.0005</RSW_Vozzik>
+          <RSW_Mynock>0.04</RSW_Mynock>
         </value>
       </match>
     </match>

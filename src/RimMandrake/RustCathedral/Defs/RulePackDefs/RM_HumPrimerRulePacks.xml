@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 2: the primer's own title and description makers (vanilla Book grammar
+     reads "title" and "desc"). Self-contained on purpose: no subject rules, and ban 1: it describes the book, never
+     what it explains. -->
+<Defs>
+  <RulePackDef>
+    <defName>RM_Namer_HumPrimer</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>title->Notes on the Plate</li>
+        <li>title->Tones Heard Underfoot</li>
+        <li>title->A Listener's Primer</li>
+        <li>title->Figures Small Machines Walk</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RM_Description_HumPrimer</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>desc->A hand-copied primer of tones and of the shapes the small machines make. Its margins are crowded with corrections in more than one hand.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+</Defs>

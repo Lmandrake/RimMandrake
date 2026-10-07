@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 2: a hum reader writes a primer. Only a pawn with RM_HumReader may start the
+  bill (RM_RecipeRequiresTraitExtension, enforced by a Harmony postfix on Bill.PawnAllowedToStartAnew). The item says
+  "at a desk"; vanilla has no writing desk with bills, so the crafting spot and the tailoring benches stand in
+  (PROVISIONAL). 10 cloth and 3000 work are PROVISIONAL.
+-->
+<Defs>
+  <RecipeDef>
+    <defName>RM_WriteHumPrimer</defName>
+    <label>write hum primer</label>
+    <description>Write down what the plate sounds like and what the small machines do, for someone who has never listened.</description>
+    <jobString>Writing hum primer.</jobString>
+    <workAmount>3000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Intellectual</workSkill>
+    <effectWorking>Sculpt</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Cloth</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Cloth</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_HumPrimer>1</RM_HumPrimer>
+    </products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>HandTailoringBench</li>
+      <li>ElectricTailoringBench</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.RustCathedral.Hum.RM_RecipeRequiresTraitExtension">
+        <trait>RM_HumReader</trait>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+</Defs>

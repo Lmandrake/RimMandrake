@@ -67,6 +67,16 @@ namespace RimMandrake.RustCathedral.Hum
 		// plain vanilla behavior rather than a map where nothing can happen.
 		public static bool DrillResponseActive => drillResponseEnabled;
 
+		// RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1 (the line-cycle) and part 2 (hum reading). Live play only.
+		// lineCycleMtbDays 8 is the item's "about once per 8 days"; 60..120 s is its own duration range.
+		// humReaderThresholdDays 5 is the item's default; all PROVISIONAL until a live sitting tunes them.
+		public static bool lineCycleEnabled = true;
+		public static float lineCycleMtbDays = 8f;
+		public static float lineCycleMinSeconds = 60f;
+		public static float lineCycleMaxSeconds = 120f;
+		public static bool humReadingEnabled = true;
+		public static float humReaderThresholdDays = 5f;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -79,6 +89,12 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref boltWatchedPricingEnabled, "boltWatchedPricingEnabled", true);
 			Scribe_Values.Look(ref fishingPricingEnabled, "fishingPricingEnabled", true);
 			Scribe_Values.Look(ref drillResponseEnabled, "drillResponseEnabled", true);
+			Scribe_Values.Look(ref lineCycleEnabled, "lineCycleEnabled", true);
+			Scribe_Values.Look(ref lineCycleMtbDays, "lineCycleMtbDays", 8f);
+			Scribe_Values.Look(ref lineCycleMinSeconds, "lineCycleMinSeconds", 60f);
+			Scribe_Values.Look(ref lineCycleMaxSeconds, "lineCycleMaxSeconds", 120f);
+			Scribe_Values.Look(ref humReadingEnabled, "humReadingEnabled", true);
+			Scribe_Values.Look(ref humReaderThresholdDays, "humReaderThresholdDays", 5f);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -111,6 +127,20 @@ namespace RimMandrake.RustCathedral.Hum
 				"Off: fishing the coolant canals stops feeding the Cathedral's mood. The eels are still there, still catchable and still worth selling, and the occasional nasty catch still happens -- nothing about the water itself changes.");
 			list.CheckboxLabeled("Drilling the deep metal is answered", ref drillResponseEnabled,
 				"Off: a deep drill on the Rust Cathedral is treated like a deep drill anywhere else, and ordinary deep-drill infestations can occur there again instead.");
+
+			list.GapLine();
+			list.Label("Under the plate");
+			list.CheckboxLabeled("Something turns over under the plate", ref lineCycleEnabled,
+				"Off: the slow roll under the deck plate never comes, and nothing on the plateau stops for it.");
+			list.Label("It comes roughly every " + lineCycleMtbDays.ToString("0.0") + " days");
+			lineCycleMtbDays = list.Slider(lineCycleMtbDays, 1f, 30f);
+			list.Label("It takes " + lineCycleMinSeconds.ToString("0") + " to " + lineCycleMaxSeconds.ToString("0") + " seconds to pass");
+			lineCycleMinSeconds = list.Slider(lineCycleMinSeconds, 20f, 300f);
+			lineCycleMaxSeconds = Mathf.Max(lineCycleMinSeconds, list.Slider(lineCycleMaxSeconds, 20f, 300f));
+			list.CheckboxLabeled("Colonists learn to read the hum", ref humReadingEnabled,
+				"Off: nobody learns to read the hum by listening and nothing new is shown. Primers already written still teach.");
+			list.Label("Days of listening on calm ground before it comes: " + humReaderThresholdDays.ToString("0.0"));
+			humReaderThresholdDays = list.Slider(humReaderThresholdDays, 0.5f, 30f);
 
 			list.End();
 		}
