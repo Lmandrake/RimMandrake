@@ -1,0 +1,1 @@
+Pushing a texture add/move needs the art ledger: art.py install src/RimMandrake/<Mod> <path-under-Textures> <sha> --reason script:<writer>; deletions of old art are refused without a live event for its bytes.
