@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VenomvineFormSupport.xml       LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1
+
+  What two of the six forms in RM_VenomvineSixForms.xml need beyond the plant:
+
+    Sworn venomvine (form E)
+      RM_SwornHedgecraft   research: unlocks sowing the sworn stand and making its mark.
+      RM_SwornSapMark      a pot of anointing made from the dripping stand's RM_RawVenom.
+                           Used by a pawn (vanilla CompUsable + CompUseEffect_AddHediff +
+                           CompUseEffect_DestroySelf, the serum/neurotrainer shape).
+      RM_SwornSapMarked    the visible mark condition, with its expiry shown. A sworn stand's
+                           thorns spare whoever carries it (RM_CompMarkedThorns.sparingHediff).
+      RM_Make_SwornSapMark the recipe.
+
+    Shedding venomvine (form F)
+      RM_ThornLitter       the rust thorn litter a shedding stand throws downwind in a Gale.
+                           Ordinary filth (cleaned by the normal job, fades on its own); the
+                           scratch is RM_ThornLitterExtension, read by
+                           RM_MapComponent_VenomvineForms.
+
+  Numbers PROVISIONAL. Art: no render for the mark pot or the litter; both borrow a vanilla
+  texture tinted to their material (the RM_SmotherCraft.xml precedent). Bespoke art is owed.
+-->
+<Defs>
+
+  <!-- PROVISIONAL cost and position; Neolithic because a hedge-fort is a tribe's craft. -->
+  <ResearchProjectDef>
+    <defName>RM_SwornHedgecraft</defName>
+    <label>sworn hedgecraft</label>
+    <description>How the old settlements of the Leaning Scrub trained venomvine into walls, and the sap-mark that tells a sworn hedge who belongs. Unlocks sowing sworn venomvine and making its sap-mark from raw venom.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>1.00</researchViewX>
+    <researchViewY>6.40</researchViewY>
+  </ResearchProjectDef>
+
+  <HediffDef>
+    <defName>RM_SwornSapMarked</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>sworn sap-mark</label>
+    <description>Anointed with the sap of a sworn venomvine. While the smell lasts, sworn hedges know this one as their own and their thorns let them through. It does nothing against any other venomvine.</description>
+    <defaultLabelColor>(0.72, 0.62, 0.42)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <!-- PROVISIONAL: two days, so re-anointing is a running cost. -->
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>120000~120000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SwornSapMark</defName>
+    <label>sworn sap-mark</label>
+    <description>A small clay pot of raw venom cooked down with sworn-vine sap into a smell, not a poison. Daubed on skin and clothes it marks the wearer as the hedge's own for about two days: sworn venomvine will let them pass. Anyone can wear it - including whoever steals it.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_RawVenom</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(176,150,112)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>18</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <stackLimit>10</stackLimit>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Anoint with {0_label}</useLabel>
+        <useDuration>180</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_UseEffectAddHediff">
+        <hediffDef>RM_SwornSapMarked</hediffDef>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_Make_SwornSapMark</defName>
+    <label>make sworn sap-mark</label>
+    <description>Cook raw venom down into a sworn sap-mark.</description>
+    <jobString>Making a sworn sap-mark.</jobString>
+    <workAmount>800</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <researchPrerequisite>RM_SwornHedgecraft</researchPrerequisite>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>DrugLab</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_RawVenom</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_RawVenom</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SwornSapMark>1</RM_SwornSapMark>
+    </products>
+  </RecipeDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_ThornLitter</defName>
+    <label>thorn litter</label>
+    <description>Rust-coloured venomvine thorns torn off by the Gale. They still carry a little venom; walking through them scratches.</description>
+    <graphicData>
+      <texPath>Things/Filth/Grainy</texPath>
+      <color>(150,72,40,170)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-8</Beauty>
+      <Cleanliness>-3</Cleanliness>
+    </statBases>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+        <li>Unnatural</li>
+      </placementMask>
+      <!-- PROVISIONAL: "fades on its own over a few days". -->
+      <disappearsInDays>3~5</disappearsInDays>
+      <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+    </filth>
+    <modExtensions>
+      <!-- PROVISIONAL: the same venom, weaker (1 against the stand's 3). -->
+      <li Class="RimMandrake.LeaningScrub.RM_ThornLitterExtension">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>1</damageAmount>
+        <armorPenetration>0.02</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
