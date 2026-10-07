@@ -115,6 +115,19 @@ namespace RimMandrake.ExplosiveKnockback
             return cells < 1 ? 0 : cells;
         }
 
+        /// <summary>The throw cap for one blast (owner, 2026-10-06, by question card: each weapon sets its own).
+        /// ownCap > 0 = the blast's own maximum (its DamageDef's RM_KnockbackExtension.maxThrowCells) times the
+        /// "weapons with their own maximum" scale, never below 1; ownCap <= 0 = the global maximum, as before.</summary>
+        public static int CapFor(int ownCap, int globalCap, float ownCapScale)
+        {
+            if (ownCap <= 0)
+            {
+                return globalCap;
+            }
+            int c = (int)Math.Round(ownCap * ownCapScale, MidpointRounding.AwayFromZero);
+            return c < 1 ? 1 : c;
+        }
+
         /// <summary>Does this thing move at all, before geometry? bodySize only matters for pawns and corpses.</summary>
         public static bool Eligible(KbKind kind, float mass, float bodySize, KbSettings s)
         {

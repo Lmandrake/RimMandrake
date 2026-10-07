@@ -6,10 +6,12 @@ using Verse;
 namespace RimMandrake.ExplosiveKnockback
 {
     /// <summary>A DamageDef's throw strength (design §3.1). Bomb ships 1.0; Flame, EMP, Smoke, Extinguish and
-    /// ToxGas ship an explicit 0. Other mods' explosive DamageDefs get one by patch, never by guess.</summary>
+    /// ToxGas ship an explicit 0. Other mods' explosive DamageDefs get one by patch, never by guess.
+    /// maxThrowCells: this blast's own maximum throw (cells); 0 = the global "Maximum throw distance".</summary>
     public class RM_KnockbackExtension : DefModExtension
     {
         public float force = 1f;
+        public int maxThrowCells = 0;
     }
 
     [DefOf]
@@ -30,6 +32,7 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool enabled = true;
         public static float strength = 1f;
         public static int maxThrowCells = 6;
+        public static float ownCapScale = 1f;
         public static float unpatchedHarmfulPercent = 0f;
         public static bool throwDowned = true;
         public static bool throwAnimals = true;
@@ -49,12 +52,12 @@ namespace RimMandrake.ExplosiveKnockback
         public static int maxItemThrowsPerMapTick = 60;
         public static bool debugDrawVectors = false;
 
-        public static KbSettings Kernel()
+        public static KbSettings Kernel(int ownCap = 0)
         {
             return new KbSettings
             {
                 globalMultiplier = strength,
-                maxCells = maxThrowCells,
+                maxCells = RM_KnockbackMath.CapFor(ownCap, maxThrowCells, ownCapScale),
                 immuneBodySize = immuneBodySize,
                 lightMassLimit = lightMassLimit,
                 impactEnabled = impactDamageEnabled,
@@ -70,6 +73,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref strength, "strength", 1f);
             Scribe_Values.Look(ref maxThrowCells, "maxThrowCells", 6);
+            Scribe_Values.Look(ref ownCapScale, "ownCapScale", 1f);
             Scribe_Values.Look(ref unpatchedHarmfulPercent, "unpatchedHarmfulPercent", 0f);
             Scribe_Values.Look(ref throwDowned, "throwDowned", true);
             Scribe_Values.Look(ref throwAnimals, "throwAnimals", true);
@@ -116,8 +120,12 @@ namespace RimMandrake.ExplosiveKnockback
             l.Label("Throw strength: " + RimMandrakeExplosiveKnockbackSettings.strength.ToString("0.00")
                 + "x  (1.0 = a mortar shell beside a person throws them 3 cells)");
             RimMandrakeExplosiveKnockbackSettings.strength = l.Slider(RimMandrakeExplosiveKnockbackSettings.strength, 0f, 3f);
-            l.Label("Maximum throw distance: " + RimMandrakeExplosiveKnockbackSettings.maxThrowCells + " cells");
+            l.Label("Maximum throw distance: " + RimMandrakeExplosiveKnockbackSettings.maxThrowCells
+                + " cells  (blasts that do not set their own maximum: vanilla and most modded explosions)");
             RimMandrakeExplosiveKnockbackSettings.maxThrowCells = (int)l.Slider(RimMandrakeExplosiveKnockbackSettings.maxThrowCells, 1f, 10f);
+            l.Label("Weapons that set their own maximum throw: " + RimMandrakeExplosiveKnockbackSettings.ownCapScale.ToString("0.00")
+                + "x their maximum  (1.0 = as designed, e.g. grav-ram 10 cells, thump cannon 8)");
+            RimMandrakeExplosiveKnockbackSettings.ownCapScale = l.Slider(RimMandrakeExplosiveKnockbackSettings.ownCapScale, 0.25f, 2f);
             l.Label("Explosions from other mods with no knockback setting throw at: "
                 + RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent.ToString("0") + "%");
             RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent = l.Slider(RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent, 0f, 100f);
@@ -163,6 +171,7 @@ namespace RimMandrake.ExplosiveKnockback
             RimMandrakeExplosiveKnockbackSettings.enabled = true;
             RimMandrakeExplosiveKnockbackSettings.strength = 1f;
             RimMandrakeExplosiveKnockbackSettings.maxThrowCells = 6;
+            RimMandrakeExplosiveKnockbackSettings.ownCapScale = 1f;
             RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent = 0f;
             RimMandrakeExplosiveKnockbackSettings.throwDowned = true;
             RimMandrakeExplosiveKnockbackSettings.throwAnimals = true;

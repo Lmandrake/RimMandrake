@@ -333,7 +333,7 @@ namespace RimMandrake.ExplosiveKnockback
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_pit");
                 return false;
             }
-            KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel();
+            KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
             if (!RM_KnockbackMath.Eligible(kind, mass, bodySize, s))
             {
                 RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", bodySize >= s.immuneBodySize ? "too_big" : "too_heavy",
