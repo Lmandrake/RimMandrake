@@ -42,7 +42,14 @@ SETTINGS = "RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings"
 DIAG = "RimMandrake.CreatureBehaviors.RM_TrackGridDiag"
 HARMONY_ID = "mandrake.rm.creaturebehaviors.trackgrid"
 SURFACE_BIOME = "RM_Stillsand"
-INVISIBILITY_HEDIFF = "PsychicInvisibility"    # Royalty; HediffComp_Invisibility (RimSage search_defs)
+# Our own RM_SandSubmerged: HediffComp_Invisibility with NO HediffComp_Disappears, so it persists until removed;
+# nothing acts on it unless the pawn carries RM_CompSandSwim (a colonist does not).
+# RULED OUT: "PsychicInvisibility works when added bare" — its HediffCompProperties_Disappears sets no
+#   disappearsAfterTicks, so IntRange(0,0) -> ticksToDisappear 0 -> CompShouldRemove true -> Pawn_HealthTracker.HealthTick
+#   removes it on the walker's next health tick (RimSage: HediffComp_Disappears.CompPostMake / CompShouldRemove). Only the
+#   psycast sets a duration (SetDuration). Live 095254Z: walker Human276027 laid an UNFLAGGED print at 120,128 during the
+#   300-tick wait after pawn_health add returned success; flagged delta 0 across all four 2026-10-07 runs.
+INVISIBILITY_HEDIFF = "RM_SandSubmerged"
 WALK = 12                                       # cells walked per arm
 MISSING_TOOL = re.compile(r"(unknown|no such) tool|not (found|registered)|Method not found", re.I)
 
@@ -185,9 +192,10 @@ def _walk(t, dz, hediff=None):
                     t.session.call("jawa/set_draft", pawnId=row["id"], drafted=True)
         except Exception as ex:                                              # noqa: BLE001
             t._record("hold others failed", str(ex)[:200])
-    if hediff and _live(t):
-        # PsychicInvisibility fades in; a walker ordered at once is visible for its first steps (4 of 12 flagged).
-        t.bridge_call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=120000)
+    # RULED OUT: "the invisibility fades in, so wait before walking" — HediffComp_Invisibility.CompPostPostAdd calls
+    #   BecomeInvisible(instant: true) (lastBecameInvisibleTick = now - fadeDurationTicks -> FadePct 0 at once). The 4-of-12
+    #   flagged in 094550Z was either the bare PsychicInvisibility's last ticks or another invisible pawn (the counter is
+    #   GLOBAL, unattributed); never the walk itself. And the 300-tick wait added for it only guaranteed the hediff was gone before the walk (0 of 12 since).
     before = _diag(t)
     t.walk_over(pid, [(x + WALK, z + dz)], wait_ticks=900)
     after = _diag(t)
