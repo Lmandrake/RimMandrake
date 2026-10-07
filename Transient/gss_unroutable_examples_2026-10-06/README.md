@@ -40,8 +40,10 @@ there), not only where conduit is. Under that rule:
 - the boxed-in case goes under the neighbouring building's footprint, which hides it anyway (c-building),
 - two walls with a closed room between (`constructed_6`) dive twice and surface briefly in the middle room.
 
-No geometry defeats that. So the open question for you is not geometric. It is whether a cord may go through a wall where
-no conduit is (a drilled hole). Dive-through is **not** built yet, and no dive art has been commissioned, until you rule.
+No geometry defeats that. You ruled it built (2026-10-06): **dive-through is built** (setting "Cords dive under walls and
+water", default on). With it on, the same 2,000 bases hold **0** unroutable legs (MEASURED, 208 dives laid). A wall or rock
+crossing gets a plate on each face; water and buildings get no plate (no water art exists; buildings hide the cord).
+The PNGs above show the cords as drawn with it OFF.
 
 ## Regenerate
 
