@@ -20,6 +20,7 @@ Sources: `About/About.xml`, `Defs/**` (tier def, 4 crush rules, corpse site, har
 - T1-T2 butcher yield is reduced to the configured floor. → not_driven.butcher_yield_curve_reduces_t1_t2_yield (UNMEASURED: needs a butcher job and control)
 - A titan never paths under an overhead-mountain roof. → not_driven.thick_roof_cost_penalty_steers_paths (UNMEASURED: path-cost read; the patch being attached is proven by the harmony chain; commit 7c9b0e9ef fixed this)
 - The footprint rides Large Pawns when present and degrades to one cell when absent. → not_driven.large_pawns_footprint_bridge (UNMEASURED: soft dependency not loaded)
+- Every tiered race is opted into Huge Things, so it is selected by clicking anywhere on its drawn body. → UNCOVERED: the hitbox is Huge Things' mechanism and its suite's not_driven.huge_pawn_hitbox_covers_drawn_body; no tiered race with a large drawSize exists in a mod-only list
 - Any creature is wired to the engine. → UNCOVERED: out of scope by design (About.xml: engine only; campaign content gives a race the `RM_TitanicExtension` or a high bodySize)
 
 ## the walk
