@@ -220,10 +220,13 @@ SETUPS = {
                       spawn=[("RM_Sluice", 8, 6, "WoodLog")], pawns=[("WildBoar", 10, 6, "none", None)], keep=True,
                       try_=["open the sluice (select it): water pours into the pit"]),
     # ---- 5 holding
-    "hold_ladder": dict(short="A ladder in and out", notice="a pit with a ladder on its west wall and a colonist in it",
-                        dig=[_pit(6, 5)], spawn=[("RM_Ladder", 6, 6, None)],
-                        pawns=[("Colonist", 7, 6, "player", "drafted")],
-                        try_=["select the ladder: raise it and he is stranded; lower it and he climbs out"]),
+    "hold_ladder": dict(short="A ladder in and out", notice="a 5x5 pit with a ladder on its west wall, a colonist "
+                        "in it and steel on its floor",
+                        dig=[_pit(5, 4, 5, 5)], spawn=[("RM_Ladder", 5, 6, None)], items=[("Steel", 20, 7, 6)],
+                        pawns=[("Colonist", 6, 5, "player", "drafted")],
+                        try_=["select the ladder: Ladder up and nobody climbs it either way, he is stranded",
+                              "Ladder down and he climbs out; undrafted haulers then fetch the steel off the pit floor",
+                              "raise it again: the steel stays where it lies, nobody goes down for it"]),
     "hold_prison": dict(short="A pit prison, run from the lip", notice="a 3x4 pit with a prisoner bed and a prisoner",
                         dig=[(6, 5, 3, 4, 4)], beds=[(7, 7, 0)], pawns=[("Pirate", 6, 5, "hostile", "prisoner")], keep=True,
                         try_=["wardens feed and talk to him from the lip; nobody climbs down"]),

@@ -1,6 +1,6 @@
 # FlowWorks review map - key sheet
 
-Load the save in RimWorld (Load game > RM_fw_review_20261006g). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
+Load the save in RimWorld (Load game > RM_fw_review_20261006_2226). The game is paused, god mode is on, clear weather, noon, Peaceful. Mod Settings are the shipped defaults.
 
 Each station is labelled in the world with its number, a short name, its status and what to look at. Status colours: green = works in game, blue = built, not yet seen, gold = partly built, rust = not built.
 
@@ -286,11 +286,13 @@ Flood an occupied pit to drown, poison or burn whoever is in it. Water drowns no
 
 A ladder: lowered, people climb out; raised, they're stranded. It works like a prison door. Ladders only go on dug ground.
 
-**Look at:** a pit with a ladder on its west wall and a colonist in it
+**Look at:** a 5x5 pit with a ladder on its west wall, a colonist in it and steel on its floor
 
 **Try:**
 
-- select the ladder: raise it and he is stranded; lower it and he climbs out
+- select the ladder: Ladder up and nobody climbs it either way, he is stranded
+- Ladder down and he climbs out; undrafted haulers then fetch the steel off the pit floor
+- raise it again: the steel stays where it lies, nobody goes down for it
 
 ### 27. A pit prison, run from the lip - built, not yet seen
 
