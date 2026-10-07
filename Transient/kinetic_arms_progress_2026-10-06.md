@@ -22,3 +22,4 @@ Card 23:28. (1) Factions, owner typed: "Mostly ruins only, but rare on raids tha
 ## 2026-10-07 ruins + tier
 - started: found ruins loot already wired at 53186050e (vanilla MapGen_AncientTempleContents, uniform pick); remaining: rarity tiers, other ruin sources, test tier, item prose
 - 111ac3588 rarity tiers (RuinsWeights 30/20/15/10/12/15/5/3, grav-ram rarest) + RM_ThingSetMaker_KineticComplex on 3 ancient-complex tables, toggle foundInComplexes; kernel 49/49, STATIC+MOCK pass, DLL rebuilt
+- kineticarms tier added to modset_builder.py (13 mods, all 5 DLC; plan only, not applied)

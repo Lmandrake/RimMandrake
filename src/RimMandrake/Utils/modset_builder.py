@@ -175,6 +175,16 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "kineticarms": {
+        "why": "Kinetic Arms first script (KineticArms/validation.py, KINETIC_BLAST_WEAPONS_1): the explosiveknockback "
+               "tier plus Kinetic Arms. FlowWorks and Gimme Some Slack ride along for JawaBench's shared playtest "
+               "partial class and the KA.cords scene. Harmony and all five DLCs resolve automatically.",
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.explosiveknockback",
+                 "mandrake.rm.kineticarms"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes", "glitchgoblin.invisibleconduitcont"],
+        "forbid_substr": ["manywaters"],
+        "dlc": True,
+    },
     "gimmesomeslack": {
         "why": "MESSY_CONDUIT_MOD_1 phase 1a functional script (GimmeSomeSlack/validation.py): "
                "the cord overlay alone with the bridge on a dev quicktest map. Harmony and all "
